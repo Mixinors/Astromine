@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "astromine",
+  "version": "${version}",
+  "name": "Astromine",
+  "description": "Explore space; witness space; die in space.",
+  "authors": [
+    "vini2003",
+    "Draylar",
+    "HalfOf2",
+    "Shnupbups",
+    "SuperCoder79",
+    "shedaniel",
+    "AK9"
+  ],
+  "contact": {
+    "sources": "https://github.com/Chainmail-Studios/Astromine"
+  },
+  "license": "MIT",
+  "icon": "assets/astromine/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.github.chainmailstudios.astromine.AstromineCommon"
+    ],
+    "client": [
+      "com.github.chainmailstudios.astromine.AstromineClient"
+    ],
+    "server": [
+      "com.github.chainmailstudios.astromine.AstromineDedicated"
+    ]
+  },
+  "mixins": [
+    "astromine.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.8.7",
+    "fabric": ">=0.11.8",
+    "minecraft": "^1.16-rc.2"
+  }
+}

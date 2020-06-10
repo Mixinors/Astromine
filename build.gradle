@@ -1,0 +1,104 @@
+plugins {
+    id 'fabric-loom' version '0.2.7-SNAPSHOT'
+    id 'maven-publish'
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    maven {
+        name = "Onyx Studios"
+        url = "https://maven.onyxstudios.dev"
+    }
+    maven {
+        name = "JitPack"
+        url = "https://jitpack.io"
+    }
+    maven {
+        name = "Spinnery"
+        url = "https://dl.bintray.com/spinnery/Spinnery"
+    }
+}
+
+
+dependencies {
+    // Minecraft
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+
+    // Yarn
+    mappings "net.fabricmc:yarn:${yarn_mappings}:v2"
+
+    // Fabric Loader
+    modImplementation "net.fabricmc:fabric-loader:${loader_version}"
+
+    // Fabric API
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${api_version}"
+
+    // Cardinal-Components API
+    modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-base:${cardinal_components_version}"
+    modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-block:${cardinal_components_version}"
+    modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-chunk:${cardinal_components_version}"
+    modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-entity:${cardinal_components_version}"
+    modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-item:${cardinal_components_version}"
+    modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-level:${cardinal_components_version}"
+    modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-world:${cardinal_components_version}"
+
+    // Spinnery
+    modImplementation "com.github.vini2003:spinnery:${spinnery_version}"
+}
+
+processResources {
+    inputs.property "version", "${mod_version}"
+
+    from(sourceSets.main.resources.srcDirs) {
+        include "fabric.mod.json"
+        expand "version": "${mod_version}"
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude "fabric.mod.json"
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = "sources"
+    from sourceSets.main.allSource
+}
+
+jar {
+    from "LICENSE"
+    manifest {
+        attributes([
+                "Specification-Title": "${mod_name}",
+                "Specification-Vendor": "${mod_group}",
+                "Specification-Version": "${mod_version}",
+                "Implementation-Title": "${mod_name}",
+                "Implementation-Version": "${mod_version}",
+                "Implementation-Vendor" :"${mod_group}",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "MixinConfigs": "${mod_name}.mixins.json"
+        ])
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact(remapJar) {
+                builtBy remapJar
+            }
+            artifact(sourcesJar) {
+                builtBy remapSourcesJar
+            }
+        }
+    }
+
+    repositories {
+        mavenLocal()
+    }
+}
