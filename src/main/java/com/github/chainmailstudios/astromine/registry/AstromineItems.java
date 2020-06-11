@@ -7,7 +7,7 @@ import net.minecraft.util.registry.Registry;
 
 public class AstromineItems {
 	public static void initialize() {
-		// NO-OP
+		// Unused.
 	}
 
 	/**

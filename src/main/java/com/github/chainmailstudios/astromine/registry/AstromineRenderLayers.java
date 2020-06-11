@@ -6,7 +6,7 @@ import net.minecraft.client.render.RenderLayer;
 
 public class AstromineRenderLayers {
 	public static void initialize() {
-		// NO-OP
+		// Unused.
 	}
 
 	/**

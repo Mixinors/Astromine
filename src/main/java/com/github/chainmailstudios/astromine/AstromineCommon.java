@@ -17,6 +17,6 @@ public class AstromineCommon implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		// NO-OP
+		// Unused.
 	}
 }

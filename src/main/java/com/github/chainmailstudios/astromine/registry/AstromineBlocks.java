@@ -9,7 +9,7 @@ import net.minecraft.util.registry.Registry;
 
 public class AstromineBlocks {
 	public static void initialize() {
-		// NO-OP
+		// Unused.
 	}
 
 	/**

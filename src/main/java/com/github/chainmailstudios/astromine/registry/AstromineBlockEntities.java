@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 
 public class AstromineBlockEntities {
 	public static void initialize() {
-		// NO-OP
+		// Unused.
 	}
 
 	/**
