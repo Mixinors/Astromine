@@ -1,10 +1,12 @@
 package com.github.chainmailstudios.astromine.common.inventory;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.ActionResult;
 
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Simple implementation of an InventoryComponent for usage
