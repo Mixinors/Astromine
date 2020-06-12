@@ -7,6 +7,7 @@ import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.MobEntityRenderer;
 import net.minecraft.client.render.entity.feature.SlimeOverlayFeatureRenderer;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
@@ -22,6 +23,12 @@ public class SpaceSlimeEntityRenderer extends MobEntityRenderer<SpaceSlimeEntity
     @Override
     public void render(SpaceSlimeEntity slimeEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
         this.shadowRadius = 0.25F * (float) slimeEntity.getSize();
+
+        if(slimeEntity.isFloating()) {
+            float progress = slimeEntity.getFloatingProgress() / 200f;
+            matrixStack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(progress * 360));
+        }
+
         super.render(slimeEntity, f, g, matrixStack, vertexConsumerProvider, i);
     }
 
