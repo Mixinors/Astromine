@@ -10,7 +10,7 @@ import java.util.function.Supplier;
 
 public class AstromineToolMaterials {
     public static final AstromineToolMaterial ASTERITE = new AstromineToolMaterial(5, 2643, 10f, 5.0f, 20, () -> Ingredient.ofItems(AstromineItems.ASTERITE_FRAGMENT));
-    public static final AstromineToolMaterial STELLUM = new AstromineToolMaterial(4, 981, 14f, 6.0f, 5, () -> Ingredient.ofItems(AstromineItems.STELLUM_INGOT));
+    public static final AstromineToolMaterial STELLUM = new AstromineToolMaterial(2, 981, 14f, 6.0f, 5, () -> Ingredient.ofItems(AstromineItems.STELLUM_INGOT));
     public static final AstromineToolMaterial UNIVITE = new AstromineToolMaterial(6, 3918, 12f, 6.0f, 22, () -> Ingredient.EMPTY);
 
     public static class AstromineToolMaterial implements ToolMaterial {
