@@ -5,7 +5,6 @@ import com.github.chainmailstudios.astromine.common.block.AstromineOreBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
 import net.minecraft.item.BlockItem;
@@ -25,13 +24,13 @@ public class AstromineBlocks {
 	public static Block STELLUM_BLOCK = new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.YELLOW).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(10, 80).sounds(BlockSoundGroup.METAL));
 	public static Block GALAXIUM_BLOCK = new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.LIME).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(50, 1300).sounds(BlockSoundGroup.METAL));
 	public static Block UNIVITE_BLOCK = new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.PURPLE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 6).strength(80, 2000).sounds(BlockSoundGroup.METAL));
-	
+
 	public static void initialize() {
 		ASTERITE_ORE = register("asterite_ore", ASTERITE_ORE, AstromineItems.BASIC_SETTINGS);
 		METITE_ORE = register("metite_ore", METITE_ORE, AstromineItems.BASIC_SETTINGS);
 		STELLUM_ORE = register("stellum_ore", STELLUM_ORE, AstromineItems.BASIC_SETTINGS);
 		GALAXIUM_ORE = register("galaxium_ore", GALAXIUM_ORE, AstromineItems.BASIC_SETTINGS);
-		
+
 		ASTERITE_BLOCK = register("asterite_block", ASTERITE_BLOCK, AstromineItems.BASIC_SETTINGS);
 		METITE_BLOCK = register("metite_block", METITE_BLOCK, AstromineItems.BASIC_SETTINGS);
 		STELLUM_BLOCK = register("stellum_block", STELLUM_BLOCK, AstromineItems.BASIC_SETTINGS);
@@ -56,7 +55,7 @@ public class AstromineBlocks {
 	 * @return Block instance registered
 	 */
 	static <T extends Block> T register(String name, T block, BlockItem item) {
-		T b = register(AstromineCommon.id(name), block);
+		T b = register(AstromineCommon.identifier(name), block);
 		if (item != null) {
 			AstromineItems.register(name, item);
 		}
@@ -69,7 +68,7 @@ public class AstromineBlocks {
 	 * @return Block instance registered
 	 */
 	static <T extends Block> T register(String name, T block) {
-		return register(AstromineCommon.id(name), block);
+		return register(AstromineCommon.identifier(name), block);
 	}
 
 	/**
