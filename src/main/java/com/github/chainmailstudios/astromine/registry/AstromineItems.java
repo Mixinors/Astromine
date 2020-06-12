@@ -6,6 +6,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class AstromineItems {
+	public static final Item.Settings BASIC_SETTINGS = new Item.Settings().group(AstromineItemGroups.ASTROMINE);
+
 	public static void initialize() {
 		// Unused.
 	}
@@ -16,7 +18,7 @@ public class AstromineItems {
 	 * @return Item instanced registered
 	 */
 	public static <T extends Item> T register(String name, T item) {
-		return register(new Identifier(AstromineCommon.MOD_ID, name), item);
+		return register(AstromineCommon.id(name), item);
 	}
 
 	/**
