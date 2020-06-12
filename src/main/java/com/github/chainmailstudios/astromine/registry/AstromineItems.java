@@ -3,10 +3,12 @@ package com.github.chainmailstudios.astromine.registry;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.item.SuperSpaceSlimeShooterItem;
 import com.github.chainmailstudios.astromine.common.item.UncoloredSpawnEggItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.PickaxeItem;
-import net.minecraft.item.ShovelItem;
-import net.minecraft.item.SwordItem;
+import com.github.chainmailstudios.astromine.common.material.AstromineArmorMaterials;
+import com.github.chainmailstudios.astromine.common.material.AstromineToolMaterials;
+import com.github.chainmailstudios.astromine.common.weapon.variant.Weapon;
+import com.github.chainmailstudios.astromine.common.weapon.variant.ammo.Ammunition;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -14,11 +16,11 @@ public class AstromineItems {
 
 	public static final UncoloredSpawnEggItem SPACE_SLIME_SPAWN_EGG = register("space_slime_spawn_egg", new UncoloredSpawnEggItem(
 			AstromineEntities.SPACE_SLIME,
-			new Item.Settings().group(AstromineItemGroups.GROUP)
+			new Item.Settings().group(AstromineItemGroups.ASTROMINE)
 	));
 
-	public static final SuperSpaceSlimeShooterItem SUPER_SPACE_SLIME_SHOOTER = register("super_space_slime_shooter", new SuperSpaceSlimeShooterItem(new Item.Settings().group(AstromineItemGroups.GROUP)));
-	public static final Item SPACE_SLIME_BALL = register("space_slime_ball", new Item(new Item.Settings().group(AstromineItemGroups.GROUP)));
+	public static final SuperSpaceSlimeShooterItem SUPER_SPACE_SLIME_SHOOTER = register("super_space_slime_shooter", new SuperSpaceSlimeShooterItem(new Item.Settings().group(AstromineItemGroups.ASTROMINE)));
+	public static final Item SPACE_SLIME_BALL = register("space_slime_ball", new Item(new Item.Settings().group(AstromineItemGroups.ASTROMINE)));
 
 	// Weaponry
 	public static final Item SCAR_H = register("scar_h", new Weapon.ScarH());

@@ -24,7 +24,7 @@ public abstract class BossBarHudMixin extends DrawableHelper {
 
     @Shadow @Final private MinecraftClient client;
     @Shadow @Final private static Identifier BAR_TEX;
-    private static final Identifier CUSTOM_BAR_TEX = AstromineCommon.id("textures/gui/bars.png");
+    private static final Identifier CUSTOM_BAR_TEX = AstromineCommon.identifier("textures/gui/bars.png");
 
     @Inject(
             method = "renderBossBar",
