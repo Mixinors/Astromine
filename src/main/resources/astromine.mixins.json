@@ -4,7 +4,9 @@
   "package": "com.github.chainmailstudios.astromine.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "ItemRendererMixin"
+    "ItemRendererMixin",
+    "DimensionTypeMixin",
+    "MinecraftServerMixin"
   ],
   "client": [
   ],
