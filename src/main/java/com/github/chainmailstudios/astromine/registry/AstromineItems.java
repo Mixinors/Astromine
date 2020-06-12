@@ -91,6 +91,8 @@ public class AstromineItems {
 	public static Item SPACE_SUIT_PANTS = new ArmorItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.LEGS, BASIC_SETTINGS);
 	public static Item SPACE_BOOTS = new ArmorItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, BASIC_SETTINGS);
 
+	public static final Item YEAST = register("yeest", new Item(new Item.Settings()));
+
 	public static void initialize() {
 		ASTERITE_FRAGMENT = register("asterite_fragment", ASTERITE_FRAGMENT);
 		METITE_CLUSTER = register("metite_cluster", METITE_CLUSTER);

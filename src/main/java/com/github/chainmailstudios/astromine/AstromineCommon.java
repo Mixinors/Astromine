@@ -22,10 +22,9 @@ public class AstromineCommon implements ModInitializer {
 		AstromineItems.initialize();
 		AstromineBlocks.initialize();
 		AstromineEntities.initialize();
-
+		AstrominePotions.init();
 		AstromineBiomes.initialize();
 		AstromineChunkGenerators.initialize();
-
 		AstromineServerPackets.initialize();
 	}
 
