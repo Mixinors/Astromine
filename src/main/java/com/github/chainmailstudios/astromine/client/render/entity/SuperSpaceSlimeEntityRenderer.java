@@ -12,7 +12,7 @@ import net.minecraft.util.math.MathHelper;
 
 public class SuperSpaceSlimeEntityRenderer extends MobEntityRenderer<SuperSpaceSlimeEntity, SuperSpaceSlimeEntityModel> {
 
-    private static final Identifier TEXTURE = new Identifier("astromine", "textures/entity/space_slime/space_slime_ball.png");
+    private static final Identifier TEXTURE = new Identifier("astromine", "textures/entity/space_slime/space_slime.png");
     private static final Identifier EXPLODING_TEXTURE = new Identifier("astromine", "textures/entity/space_slime/space_slime_exploding.png");
 
     public SuperSpaceSlimeEntityRenderer(EntityRenderDispatcher entityRenderDispatcher) {
