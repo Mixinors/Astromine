@@ -6,6 +6,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineChunkGenerators;
 import com.github.chainmailstudios.astromine.registry.AstromineEntities;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import com.github.chainmailstudios.astromine.registry.AstrominePotions;
 import com.github.chainmailstudios.astromine.registry.AstromineServerPackets;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
@@ -33,10 +34,9 @@ public class AstromineCommon implements ModInitializer {
 		AstromineItems.initialize();
 		AstromineBlocks.initialize();
 		AstromineEntities.initialize();
-
+		AstrominePotions.init();
 		AstromineBiomes.initialize();
 		AstromineChunkGenerators.initialize();
-
 		AstromineServerPackets.initialize();
 	}
 }

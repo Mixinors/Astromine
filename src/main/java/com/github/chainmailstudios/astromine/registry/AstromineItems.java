@@ -5,15 +5,8 @@ import com.github.chainmailstudios.astromine.common.material.AstromineArmorMater
 import com.github.chainmailstudios.astromine.common.material.AstromineToolMaterials;
 import com.github.chainmailstudios.astromine.common.weapon.variant.Weapon;
 import com.github.chainmailstudios.astromine.common.weapon.variant.ammo.Ammunition;
-
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.HoeItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.PickaxeItem;
-import net.minecraft.item.ShovelItem;
-import net.minecraft.item.SwordItem;
+import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -86,6 +79,8 @@ public class AstromineItems {
 	public static Item SPACE_SUIT_CHEST = new ArmorItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.CHEST, BASIC_SETTINGS);
 	public static Item SPACE_SUIT_PANTS = new ArmorItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.LEGS, BASIC_SETTINGS);
 	public static Item SPACE_BOOTS = new ArmorItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, BASIC_SETTINGS);
+
+	public static final Item YEAST = register("yeest", new Item(new Item.Settings()));
 
 	public static void initialize() {
 		ASTERITE_FRAGMENT = register("asterite_fragment", ASTERITE_FRAGMENT);
