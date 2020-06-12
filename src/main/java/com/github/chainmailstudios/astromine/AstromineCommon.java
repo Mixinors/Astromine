@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine;
 
 import blue.endless.jankson.Jankson;
+import com.github.chainmailstudios.astromine.registry.AstromineEntities;
 import com.google.gson.Gson;
 import net.fabricmc.api.ModInitializer;
 import org.apache.logging.log4j.LogManager;
@@ -17,6 +18,6 @@ public class AstromineCommon implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		// Unused.
+		AstromineEntities.initialize();
 	}
 }
