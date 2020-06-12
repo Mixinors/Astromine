@@ -1,4 +1,12 @@
 {
+  "text.astromine.magazine.rounds": "Rounds",
+  "text.astromine.weapon.battle_rifle": "Battle Rifle",
+  "text.astromine.weapon.sniper_rifle": "Sniper Rifle",
+  "item.astromine.scar_h": "SCAR-H",
+  "item.astromine.nato_7_62x51mm": "7.62x51mm NATO",
+  "item.astromine.barret_m98b": "Barret M98B",
+  "item.astromine.lapua_8_6x70mm": "8.6x70mm Lapua"
+
 	"itemGroup.astromine.astromine": "Astromine",
 	
 	"block.astromine.asterite_ore": "Asterite Ore",

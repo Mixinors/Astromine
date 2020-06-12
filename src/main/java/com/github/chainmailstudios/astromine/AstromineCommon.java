@@ -1,6 +1,10 @@
 package com.github.chainmailstudios.astromine;
 
 import blue.endless.jankson.Jankson;
+
+import com.github.chainmailstudios.astromine.registry.AstromineEntities;
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import com.github.chainmailstudios.astromine.registry.AstromineServerPackets;
 import com.github.chainmailstudios.astromine.world.gen.AstromineBiomeSource;
 import com.github.chainmailstudios.astromine.world.gen.AstromineChunkGenerator;
 import com.google.gson.Gson;
@@ -26,14 +30,17 @@ public class AstromineCommon implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		AstromineBlocks.initialize();
 		AstromineItems.initialize();
+		AstromineBlocks.initialize();
+		AstromineEntities.initialize();
+		AstromineServerPackets.initialize();
     
-    		Registry.register(Registry.BIOME_SOURCE, id(MOD_ID), AstromineBiomeSource.CODEC);
+    // Make this into a registry class!
+    Registry.register(Registry.BIOME_SOURCE, id(MOD_ID), AstromineBiomeSource.CODEC);
 		Registry.register(Registry.CHUNK_GENERATOR, id(MOD_ID), AstromineChunkGenerator.CODEC);
 	}
 
-	public static Identifier id(String name) {
-		return new Identifier(MOD_ID, name);
+	public static Identifier id(String path) {
+		return new Identifier(MOD_ID, path);
 	}
 }
