@@ -111,6 +111,7 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
             }
 
             this.playSound(this.getSquishSound(), this.getSoundVolume(), ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) / 0.8F);
+            this.playSound(SoundEvents.BLOCK_GLASS_BREAK, this.getSoundVolume(), ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) / 0.8F);
             this.targetStretch = -0.5F;
         } else if (!this.onGround && this.onGroundLastTick) {
             this.targetStretch = 1.0F;
