@@ -14,10 +14,10 @@ public class Range<T extends Number> {
 	}
 
 	public T getMinimum() {
-		return minimum;
+		return this.minimum;
 	}
 
 	public T getMaximum() {
-		return maximum;
+		return this.maximum;
 	}
 }

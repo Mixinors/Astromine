@@ -4,10 +4,12 @@
   "package": "com.github.chainmailstudios.astromine.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "ItemRendererMixin",
     "SlimeEntityMixin"
   ],
   "client": [
+    "GameRendererMixin",
+    "ItemRendererMixin",
+    "MinecraftClientMixin"
     "BossBarHudMixin",
     "CrackParticleAccessor"
   ],

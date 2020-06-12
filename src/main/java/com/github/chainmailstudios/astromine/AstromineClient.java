@@ -1,5 +1,8 @@
 package com.github.chainmailstudios.astromine;
 
+import com.github.chainmailstudios.astromine.registry.AstromineEntityRenderers;
+import com.github.chainmailstudios.astromine.registry.AstromineSounds;
+
 import com.github.chainmailstudios.astromine.client.render.entity.SpaceSlimeEntityRenderer;
 import com.github.chainmailstudios.astromine.client.render.entity.SuperSpaceSlimeEntityRenderer;
 import com.github.chainmailstudios.astromine.registry.AstromineEntities;
@@ -14,6 +17,8 @@ public class AstromineClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+		AstromineEntityRenderers.initialize();
+		AstromineSounds.initialize();
 		AstromineParticles.initialize();
 
 		EntityRendererRegistry.INSTANCE.register(

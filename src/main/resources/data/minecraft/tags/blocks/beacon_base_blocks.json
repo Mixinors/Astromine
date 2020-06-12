@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:asterite_block",
+    "astromine:metite_block",
+    "astromine:stellum_block",
+    "astromine:galaxium_block",
+    "astromine:univite_block"
+  ]
+}

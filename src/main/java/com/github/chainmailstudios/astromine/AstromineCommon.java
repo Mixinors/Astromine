@@ -1,8 +1,7 @@
 package com.github.chainmailstudios.astromine;
 
 import blue.endless.jankson.Jankson;
-import com.github.chainmailstudios.astromine.registry.AstromineEntities;
-import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import com.github.chainmailstudios.astromine.registry.*;
 import com.google.gson.Gson;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
@@ -20,11 +19,17 @@ public class AstromineCommon implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		AstromineEntities.initialize();
 		AstromineItems.initialize();
+		AstromineBlocks.initialize();
+		AstromineEntities.initialize();
+
+		AstromineBiomes.initialize();
+		AstromineChunkGenerators.initialize();
+
+		AstromineServerPackets.initialize();
 	}
 
-	public static Identifier id(String name) {
+	public static Identifier identifier(String name) {
 		return new Identifier(MOD_ID, name);
 	}
 }

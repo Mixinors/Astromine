@@ -1,17 +1,18 @@
 package com.github.chainmailstudios.astromine.common.fluid.logic;
 
+import java.util.Collection;
+import java.util.List;
+
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.PropertyRegistry;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
+
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-
-import java.util.Collection;
-import java.util.List;
 
 public class Volume {
 	final List<Property> properties = Lists.newArrayList();
@@ -45,79 +46,6 @@ public class Volume {
 	}
 
 	/**
-	 * Adds a property to this Volume.
-	 */
-	public void addProperty(Property property) {
-		properties.add(property);
-	}
-
-	/**
-	 * Removes a property from this Volume.
-	 */
-	public void removeProperty(Property property) {
-		properties.remove(property);
-	}
-
-	/**
-	 * Retrieves the properties from this Volume.
-	 */
-	public Collection<Property> getProperties() {
-		return properties;
-	}
-
-	/**
-	 * Adds a condition to this Volume.
-	 */
-	public void addCondition(Condition condition) {
-		conditions.add(condition);
-	}
-
-	/**
-	 * Removes a condition from this Volume.
-	 */
-	public void removeCondition(Condition condition) {
-		conditions.remove(condition);
-	}
-
-	/**
-	 * Retrieves the conditions from this Volume.
-	 */
-	public Collection<Condition> getConditions() {
-		return conditions;
-	}
-
-	public boolean isEmpty() {
-		return getFraction().equals(Fraction.EMPTY);
-	}
-
-	public boolean isFull() {
-		return !isEmpty();
-	}
-
-	/**
-	 * Serializes this Volume and its properties
-	 * into a tag.
-	 *
-	 * @return a tag
-	 */
-	public CompoundTag toTag(CompoundTag tag) {
-		// TODO: Null checks.
-
-		tag.putString("fluid", Registry.FLUID.getId(fluid).toString());
-		tag.put("fraction", fraction.toTag(new CompoundTag()));
-
-		CompoundTag propertyTag = new CompoundTag();
-
-		for (Property property : properties) {
-			propertyTag.put(PropertyRegistry.INSTANCE.getId(property).toString(), property.toTag(this));
-		}
-
-		tag.put("properties", propertyTag);
-
-		return tag;
-	}
-
-	/**
 	 * Deserializes a Volume from a tag.
 	 *
 	 * @return a Volume
@@ -138,6 +66,97 @@ public class Volume {
 	}
 
 	/**
+	 * Adds a property to this Volume.
+	 */
+	public void addProperty(Property property) {
+		this.properties.add(property);
+	}
+
+	/**
+	 * Removes a property from this Volume.
+	 */
+	public void removeProperty(Property property) {
+		this.properties.remove(property);
+	}
+
+	/**
+	 * Retrieves the properties from this Volume.
+	 */
+	public Collection<Property> getProperties() {
+		return this.properties;
+	}
+
+	/**
+	 * Adds a condition to this Volume.
+	 */
+	public void addCondition(Condition condition) {
+		this.conditions.add(condition);
+	}
+
+	/**
+	 * Removes a condition from this Volume.
+	 */
+	public void removeCondition(Condition condition) {
+		this.conditions.remove(condition);
+	}
+
+	/**
+	 * Retrieves the conditions from this Volume.
+	 */
+	public Collection<Condition> getConditions() {
+		return this.conditions;
+	}
+
+	public boolean isFull() {
+		return !this.isEmpty();
+	}
+
+	public boolean isEmpty() {
+		return this.getFraction().equals(Fraction.EMPTY);
+	}
+
+	public Fraction getFraction() {
+		return this.fraction;
+	}
+
+	public void setFraction(Fraction fraction) {
+		this.fraction = fraction;
+	}
+
+	/**
+	 * Serializes this Volume and its properties
+	 * into a tag.
+	 *
+	 * @return a tag
+	 */
+	public CompoundTag toTag(CompoundTag tag) {
+		// TODO: Null checks.
+
+		tag.putString("fluid", Registry.FLUID.getId(this.fluid).toString());
+		tag.put("fraction", this.fraction.toTag(new CompoundTag()));
+
+		CompoundTag propertyTag = new CompoundTag();
+
+		for (Property property : this.properties) {
+			propertyTag.put(PropertyRegistry.INSTANCE.getId(property).toString(), property.toTag(this));
+		}
+
+		tag.put("properties", propertyTag);
+
+		return tag;
+	}
+
+	/**
+	 * Takes a Volume out of this Volume.
+	 */
+	public Volume take(Fraction pulled) {
+		Volume volume = new Volume();
+		Transaction transaction = this.pull(volume, pulled);
+		transaction.commit();
+		return volume;
+	}
+
+	/**
 	 * Pull fluids from a Volume into this Volume.
 	 * If the Volume's fractional available is smaller than
 	 * pulled, ask for the minimum. If not, ask for the
@@ -147,7 +166,7 @@ public class Volume {
 	 * @return a Transaction representing the request
 	 */
 	public Transaction pull(Volume target, Fraction pulled) {
-		Fraction available = Fraction.subtract(size, fraction);
+		Fraction available = Fraction.subtract(this.size, this.fraction);
 
 		pulled = Fraction.min(pulled, available);
 
@@ -159,11 +178,21 @@ public class Volume {
 			transaction = new Transaction(target, this, pulled, pulled);
 		}
 
-		if (conditions.stream().allMatch(condition -> condition.test(transaction))) {
+		if (this.conditions.stream().allMatch(condition -> condition.test(transaction))) {
 			return transaction;
 		} else {
 			return Transaction.EMPTY;
 		}
+	}
+
+	/**
+	 * Adds to this Volume.
+	 */
+	public Volume give(Fraction pushed) {
+		Volume volume = new Volume(this.fluid, pushed);
+		Transaction transaction = volume.push(this, pushed);
+		transaction.commit();
+		return volume;
 	}
 
 	/**
@@ -182,41 +211,21 @@ public class Volume {
 
 		Transaction transaction;
 
-		if (fraction.isSmallerThan(pushed)) {
-			transaction = new Transaction(this, target, fraction, fraction);
+		if (this.fraction.isSmallerThan(pushed)) {
+			transaction = new Transaction(this, target, this.fraction, this.fraction);
 		} else {
 			transaction = new Transaction(this, target, pushed, pushed);
 		}
 
-		if (conditions.stream().allMatch(condition -> condition.test(transaction))) {
+		if (this.conditions.stream().allMatch(condition -> condition.test(transaction))) {
 			return transaction;
 		} else {
 			return Transaction.EMPTY;
 		}
 	}
 
-	/**
-	 * Takes a Volume out of this Volume.
-	 */
-	public Volume take(Fraction pulled) {
-		Volume volume = new Volume();
-		Transaction transaction = pull(volume, pulled);
-		transaction.commit();
-		return volume;
-	}
-
-	/**
-	 * Adds to this Volume.
-	 */
-	public Volume give(Fraction pushed) {
-		Volume volume = new Volume(this.fluid, pushed);
-		Transaction transaction = volume.push(this, pushed);
-		transaction.commit();
-		return volume;
-	}
-
 	public Fraction getSize() {
-		return size;
+		return this.size;
 	}
 
 	public void setSize(Fraction size) {
@@ -224,27 +233,16 @@ public class Volume {
 	}
 
 	public Fluid getFluid() {
-		return fluid;
+		return this.fluid;
 	}
 
 	public void setFluid(Fluid fluid) {
 		this.fluid = fluid;
 	}
 
-	public Fraction getFraction() {
-		return fraction;
-	}
-
-	public void setFraction(Fraction fraction) {
-		this.fraction = fraction;
-	}
-
 	@Override
-	public String toString() {
-		return "Volume{" +
-				"fluid=" + fluid +
-				", fraction=" + fraction +
-				'}';
+	public int hashCode() {
+		return Objects.hashCode(this.properties, this.fluid, this.fraction);
 	}
 
 	@Override
@@ -254,11 +252,11 @@ public class Volume {
 
 		Volume volume = (Volume) object;
 
-		return Objects.equal(properties, volume.properties) && Objects.equal(fluid, volume.fluid) && Objects.equal(fraction, volume.fraction);
+		return Objects.equal(this.properties, volume.properties) && Objects.equal(this.fluid, volume.fluid) && Objects.equal(this.fraction, volume.fraction);
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hashCode(properties, fluid, fraction);
+	public String toString() {
+		return "Volume{" + "fluid=" + this.fluid + ", fraction=" + this.fraction + '}';
 	}
 }

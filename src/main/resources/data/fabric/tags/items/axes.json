@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:asterite_axe",
+    "astromine:stellum_axe",
+    "astromine:galaxium_axe",
+    "astromine:univite_axe"
+  ]
+}
