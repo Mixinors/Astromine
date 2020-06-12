@@ -21,6 +21,9 @@ repositories {
     }
 }
 
+minecraft {
+    accessWidener = file("src/main/resources/astromine.accesswidener")
+}
 
 dependencies {
     // Minecraft
@@ -46,8 +49,10 @@ dependencies {
 
     // Spinnery
     modImplementation "com.github.vini2003:spinnery:${spinnery_version}"
-
-    // DataBreaker
+	
+    // Dev Environment Conveniences
+    modCompile "io.github.prospector:modmenu:${modmenu_version}"
+    modCompile ("me.shedaniel:RoughlyEnoughItems:${rei_version}") { exclude(module: 'ModMenu') }
     modRuntime ("com.github.SuperCoder7979:databreaker:67716e92f689cf19afc88ab3d7fb0d0c061958ad") {
         exclude module : "fabric-loader"
     }
