@@ -1,11 +1,13 @@
 package com.github.chainmailstudios.astromine.common.entity;
 
 import com.github.chainmailstudios.astromine.common.entity.ai.JumpHoverGoal;
+import com.github.chainmailstudios.astromine.registry.AstromineParticles;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.SlimeEntity;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.world.World;
 
 public class SpaceSlimeEntity extends SlimeEntity {
@@ -44,6 +46,11 @@ public class SpaceSlimeEntity extends SlimeEntity {
     @Override
     protected int computeFallDamage(float fallDistance, float damageMultiplier) {
         return 0;
+    }
+
+    @Override
+    protected ParticleEffect getParticles() {
+        return AstromineParticles.SPACE_SLIME;
     }
 
     @Override

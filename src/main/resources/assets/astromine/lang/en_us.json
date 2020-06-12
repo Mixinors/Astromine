@@ -1,3 +1,7 @@
 {
-  "item.astromine.space_slime_spawn_egg": "Space Slime Spawn Egg"
+  "item.astromine.space_slime_spawn_egg": "Space Slime Spawn Egg",
+  "item.astromine.super_space_slime_shooter": "Super Space Slime Shooter",
+  "item.astromine.space_slime": "Space Slime",
+
+  "entity.astromine.super_space_slime": "Jelanium: Super Space Slime"
 }

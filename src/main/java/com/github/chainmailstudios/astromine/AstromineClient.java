@@ -1,7 +1,9 @@
 package com.github.chainmailstudios.astromine;
 
 import com.github.chainmailstudios.astromine.client.render.entity.SpaceSlimeEntityRenderer;
+import com.github.chainmailstudios.astromine.client.render.entity.SuperSpaceSlimeEntityRenderer;
 import com.github.chainmailstudios.astromine.registry.AstromineEntities;
+import com.github.chainmailstudios.astromine.registry.AstromineParticles;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -12,10 +14,19 @@ public class AstromineClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+		AstromineParticles.initialize();
+
 		EntityRendererRegistry.INSTANCE.register(
 				AstromineEntities.SPACE_SLIME,
 				(dispatcher, context) -> {
 					return new SpaceSlimeEntityRenderer(dispatcher);
+				}
+		);
+
+		EntityRendererRegistry.INSTANCE.register(
+				AstromineEntities.SUPER_SPACE_SLIME,
+				(dispatcher, context) -> {
+					return new SuperSpaceSlimeEntityRenderer(dispatcher);
 				}
 		);
 	}
