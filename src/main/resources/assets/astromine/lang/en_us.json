@@ -12,6 +12,8 @@
 
   "itemGroup.astromine.astromine": "Astromine",
 
+  "block.astromine.asteroid_stone": "Asteroid Stone",
+  "block.astromine.meteor_stone": "Meteor Stone",
   "block.astromine.asterite_ore": "Asterite Ore",
   "block.astromine.galaxium_ore": "Galaxium Ore",
   "block.astromine.metite_ore": "Metite Ore",
