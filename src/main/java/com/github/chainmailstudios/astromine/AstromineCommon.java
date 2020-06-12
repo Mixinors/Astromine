@@ -29,8 +29,8 @@ public class AstromineCommon implements ModInitializer {
 		AstromineBlocks.initialize();
 		AstromineItems.initialize();
     
-    Registry.register(Registry.BIOME_SOURCE, new Identifier(MOD_ID, MOD_ID), AstromineBiomeSource.CODEC);
-		Registry.register(Registry.CHUNK_GENERATOR, new Identifier(MOD_ID, MOD_ID), AstromineChunkGenerator.CODEC);
+    		Registry.register(Registry.BIOME_SOURCE, id(MOD_ID), AstromineBiomeSource.CODEC);
+		Registry.register(Registry.CHUNK_GENERATOR, id(MOD_ID), AstromineChunkGenerator.CODEC);
 	}
 
 	public static Identifier id(String name) {
