@@ -11,7 +11,8 @@ import java.util.function.Supplier;
 public class AstromineToolMaterials {
     public static final AstromineToolMaterial ASTERITE = new AstromineToolMaterial(5, 2643, 10f, 5.0f, 20, () -> Ingredient.ofItems(AstromineItems.ASTERITE_FRAGMENT));
     public static final AstromineToolMaterial STELLUM = new AstromineToolMaterial(2, 981, 14f, 6.0f, 5, () -> Ingredient.ofItems(AstromineItems.STELLUM_INGOT));
-    public static final AstromineToolMaterial UNIVITE = new AstromineToolMaterial(6, 3918, 12f, 6.0f, 22, () -> Ingredient.EMPTY);
+    public static final AstromineToolMaterial GALAXIUM = new AstromineToolMaterial(6, 3072, 11f, 5.0f, 18, () -> Ingredient.ofItems(AstromineItems.GALAXIUM_FRAGMENT));
+    public static final AstromineToolMaterial UNIVITE = new AstromineToolMaterial(7, 3918, 12f, 6.0f, 22, () -> Ingredient.ofItems(AstromineItems.UNIVITE_INGOT));
 
     public static class AstromineToolMaterial implements ToolMaterial {
         private final int miningLevel;

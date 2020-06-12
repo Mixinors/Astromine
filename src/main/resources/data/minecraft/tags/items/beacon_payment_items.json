@@ -3,6 +3,8 @@
   "values": [
     "astromine:asterite_fragment",
     "astromine:metite_ingot",
-    "astromine:stellum_ingot"
+    "astromine:stellum_ingot",
+    "astromine:galaxium_fragment",
+    "astromine:univite_ingot"
   ]
 }

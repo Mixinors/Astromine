@@ -18,22 +18,24 @@ public class AstromineBlocks {
 	public static Block ASTERITE_ORE = new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(40, 1000).sounds(BlockSoundGroup.STONE));
 	public static Block METITE_ORE = new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE));
 	public static Block STELLUM_ORE = new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(25, 80).sounds(BlockSoundGroup.STONE));
-	public static Block UNIVITE_ORE = new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(100, 2000).sounds(BlockSoundGroup.STONE));
+	public static Block GALAXIUM_ORE = new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(80, 1300).sounds(BlockSoundGroup.STONE));
 
 	public static Block ASTERITE_BLOCK = new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.RED).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(25, 1000).sounds(BlockSoundGroup.METAL));
 	public static Block METITE_BLOCK = new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.BLUE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(8, 100).sounds(BlockSoundGroup.METAL));
 	public static Block STELLUM_BLOCK = new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.YELLOW).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(10, 80).sounds(BlockSoundGroup.METAL));
-	public static Block UNIVITE_BLOCK = new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.PURPLE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(80, 2000).sounds(BlockSoundGroup.METAL));
+	public static Block GALAXIUM_BLOCK = new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.LIME).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(50, 1300).sounds(BlockSoundGroup.METAL));
+	public static Block UNIVITE_BLOCK = new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.PURPLE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 6).strength(80, 2000).sounds(BlockSoundGroup.METAL));
 	
 	public static void initialize() {
 		ASTERITE_ORE = register("asterite_ore", ASTERITE_ORE, AstromineItems.BASIC_SETTINGS);
 		METITE_ORE = register("metite_ore", METITE_ORE, AstromineItems.BASIC_SETTINGS);
 		STELLUM_ORE = register("stellum_ore", STELLUM_ORE, AstromineItems.BASIC_SETTINGS);
-		UNIVITE_ORE = register("univite_ore", UNIVITE_ORE, AstromineItems.BASIC_SETTINGS);
+		GALAXIUM_ORE = register("galaxium_ore", GALAXIUM_ORE, AstromineItems.BASIC_SETTINGS);
 		
 		ASTERITE_BLOCK = register("asterite_block", ASTERITE_BLOCK, AstromineItems.BASIC_SETTINGS);
 		METITE_BLOCK = register("metite_block", METITE_BLOCK, AstromineItems.BASIC_SETTINGS);
 		STELLUM_BLOCK = register("stellum_block", STELLUM_BLOCK, AstromineItems.BASIC_SETTINGS);
+		GALAXIUM_BLOCK = register("galaxium_block", GALAXIUM_BLOCK, AstromineItems.BASIC_SETTINGS);
 		UNIVITE_BLOCK = register("univite_block", UNIVITE_BLOCK, AstromineItems.BASIC_SETTINGS);
 	}
 

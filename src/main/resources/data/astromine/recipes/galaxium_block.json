@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "astromine:galaxium_fragment"
+    }
+  },
+  "result": {
+    "item": "astromine:galaxium_block"
+  }
+}

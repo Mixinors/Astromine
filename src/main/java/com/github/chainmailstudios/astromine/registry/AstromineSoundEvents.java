@@ -9,6 +9,7 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 public class AstromineSoundEvents {
     public static final SoundEvent ASTERITE_ARMOR_EQUIPPED = register("item.armor.equip_asterite");
     public static final SoundEvent STELLUM_ARMOR_EQUIPPED = register("item.armor.equip_stellum");
+    public static final SoundEvent GALAXIUM_ARMOR_EQUIPPED = register("item.armor.equip_galaxium");
     public static final SoundEvent UNIVITE_ARMOR_EQUIPPED = register("item.armor.equip_univite");
     public static final SoundEvent SPACE_SUIT_EQUIPPED = register("item.armor.equip_space_suit");
 
