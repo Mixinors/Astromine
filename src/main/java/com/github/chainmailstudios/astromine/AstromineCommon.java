@@ -5,6 +5,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineEntities;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.google.gson.Gson;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,5 +22,9 @@ public class AstromineCommon implements ModInitializer {
 	public void onInitialize() {
 		AstromineEntities.initialize();
 		AstromineItems.initialize();
+	}
+
+	public static Identifier id(String name) {
+		return new Identifier(MOD_ID, name);
 	}
 }
