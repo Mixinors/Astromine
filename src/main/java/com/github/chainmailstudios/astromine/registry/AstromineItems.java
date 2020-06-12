@@ -5,8 +5,15 @@ import com.github.chainmailstudios.astromine.common.material.AstromineArmorMater
 import com.github.chainmailstudios.astromine.common.material.AstromineToolMaterials;
 import com.github.chainmailstudios.astromine.common.weapon.variant.Weapon;
 import com.github.chainmailstudios.astromine.common.weapon.variant.ammo.Ammunition;
+
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.*;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.AxeItem;
+import net.minecraft.item.HoeItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.PickaxeItem;
+import net.minecraft.item.ShovelItem;
+import net.minecraft.item.SwordItem;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 

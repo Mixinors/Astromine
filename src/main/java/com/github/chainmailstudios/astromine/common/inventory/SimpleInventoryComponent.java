@@ -1,12 +1,12 @@
 package com.github.chainmailstudios.astromine.common.inventory;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
 
 /**
  * Simple implementation of an InventoryComponent for usage
@@ -30,28 +30,8 @@ public class SimpleInventoryComponent implements InventoryComponent {
 	}
 
 	@Override
-	public int getSize() {
-		return size;
-	}
-
-	@Override
-	public List<Runnable> getListeners() {
-		return listeners;
-	}
-
-	@Override
 	public AbstractMap<Integer, ItemStack> getContents() {
-		return contents;
-	}
-
-	@Override
-	public ActionResult canInsert(int slot) {
-		return ActionResult.SUCCESS;
-	}
-
-	@Override
-	public ActionResult canExtract(int slot) {
-		return ActionResult.SUCCESS;
+		return this.contents;
 	}
 
 	@Override
@@ -65,12 +45,12 @@ public class SimpleInventoryComponent implements InventoryComponent {
 	}
 
 	@Override
-	public ActionResult canInsert(ItemStack stack) {
+	public ActionResult canInsert(int slot) {
 		return ActionResult.SUCCESS;
 	}
 
 	@Override
-	public ActionResult canExtract(ItemStack stack) {
+	public ActionResult canExtract(int slot) {
 		return ActionResult.SUCCESS;
 	}
 
@@ -81,6 +61,26 @@ public class SimpleInventoryComponent implements InventoryComponent {
 
 	@Override
 	public ActionResult canExtract(ItemStack stack, int slot) {
+		return ActionResult.SUCCESS;
+	}
+
+	@Override
+	public ActionResult canInsert(ItemStack stack) {
+		return ActionResult.SUCCESS;
+	}
+
+	@Override
+	public int getSize() {
+		return this.size;
+	}
+
+	@Override
+	public List<Runnable> getListeners() {
+		return this.listeners;
+	}
+
+	@Override
+	public ActionResult canExtract(ItemStack stack) {
 		return ActionResult.SUCCESS;
 	}
 }

@@ -107,7 +107,7 @@ public class SpriteRenderer {
 		}
 
 		public RenderPass overlay(int uv) {
-			return overlay(uv & '\uffff', uv >> 16 & '\uffff');
+			return this.overlay(uv & '\uffff', uv >> 16 & '\uffff');
 		}
 
 		public RenderPass overlay(int u, int v) {
@@ -161,22 +161,22 @@ public class SpriteRenderer {
 		}
 
 		public void next() {
-			if (consumer == null) throw new RuntimeException("Invalid VertexConsumer!");
-			if (matrices == null) throw new RuntimeException("Invalid MatrixStack!");
-			if (sprite == null) throw new RuntimeException("Invalid Sprite!");
+			if (this.consumer == null) throw new RuntimeException("Invalid VertexConsumer!");
+			if (this.matrices == null) throw new RuntimeException("Invalid MatrixStack!");
+			if (this.sprite == null) throw new RuntimeException("Invalid Sprite!");
 
-			if (model == null) model = matrices.peek().getModel();
-			if (normal == null) normal = matrices.peek().getNormal();
+			if (this.model == null) this.model = this.matrices.peek().getModel();
+			if (this.normal == null) this.normal = this.matrices.peek().getNormal();
 
-			MinecraftClient.getInstance().getTextureManager().bindTexture(sprite.getId());
+			MinecraftClient.getInstance().getTextureManager().bindTexture(this.sprite.getId());
 
-			consumer.vertex(model, x1, y2, z1).color(r, g, b, a).texture(uStart, vEnd).overlay(u, v).light(l).normal(normal, nX, nY, nZ).next();
-			consumer.vertex(model, x2, y2, z1).color(r, g, b, a).texture(uEnd, vEnd).overlay(u, v).light(l).normal(normal, nX, nY, nZ).next();
-			consumer.vertex(model, x2, y1, z1).color(r, g, b, a).texture(uEnd, vStart).overlay(u, v).light(l).normal(normal, nX, nY, nZ).next();
-			consumer.vertex(model, x1, y1, z1).color(r, g, b, a).texture(uStart, vStart).overlay(u, v).light(l).normal(normal, nX, nY, nZ).next();
+			this.consumer.vertex(this.model, this.x1, this.y2, this.z1).color(this.r, this.g, this.b, this.a).texture(this.uStart, this.vEnd).overlay(this.u, this.v).light(this.l).normal(this.normal, this.nX, this.nY, this.nZ).next();
+			this.consumer.vertex(this.model, this.x2, this.y2, this.z1).color(this.r, this.g, this.b, this.a).texture(this.uEnd, this.vEnd).overlay(this.u, this.v).light(this.l).normal(this.normal, this.nX, this.nY, this.nZ).next();
+			this.consumer.vertex(this.model, this.x2, this.y1, this.z1).color(this.r, this.g, this.b, this.a).texture(this.uEnd, this.vStart).overlay(this.u, this.v).light(this.l).normal(this.normal, this.nX, this.nY, this.nZ).next();
+			this.consumer.vertex(this.model, this.x1, this.y1, this.z1).color(this.r, this.g, this.b, this.a).texture(this.uStart, this.vStart).overlay(this.u, this.v).light(this.l).normal(this.normal, this.nX, this.nY, this.nZ).next();
 
-			if (consumers instanceof VertexConsumerProvider.Immediate) {
-				((VertexConsumerProvider.Immediate) consumers).draw(layer);
+			if (this.consumers instanceof VertexConsumerProvider.Immediate) {
+				((VertexConsumerProvider.Immediate) this.consumers).draw(this.layer);
 			}
 		}
 	}

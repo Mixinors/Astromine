@@ -2,8 +2,7 @@ package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.AstromineOreBlock;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
@@ -12,6 +11,9 @@ import net.minecraft.item.Item;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 
 public class AstromineBlocks {
 	public static Block ASTERITE_ORE = new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(40, 1000).sounds(BlockSoundGroup.STONE));
@@ -39,8 +41,8 @@ public class AstromineBlocks {
 	}
 
 	/**
-	 * @param name     Name of block instance to be registered
-	 * @param block    Block instance to be registered
+	 * @param name Name of block instance to be registered
+	 * @param block Block instance to be registered
 	 * @param settings Item.Settings of BlockItem of Block instance to be registered
 	 * @return Block instance registered
 	 */
@@ -49,9 +51,9 @@ public class AstromineBlocks {
 	}
 
 	/**
-	 * @param name  Name of block instance to be registered
+	 * @param name Name of block instance to be registered
 	 * @param block Block instance to be registered
-	 * @param item  BlockItem instance of Block to be registered
+	 * @param item BlockItem instance of Block to be registered
 	 * @return Block instance registered
 	 */
 	static <T extends Block> T register(String name, T block, BlockItem item) {
@@ -63,20 +65,20 @@ public class AstromineBlocks {
 	}
 
 	/**
-	 * @param name  Name of block instance to be registered
-	 * @param block Block instance to be registered
-	 * @return Block instance registered
-	 */
-	static <T extends Block> T register(String name, T block) {
-		return register(AstromineCommon.identifier(name), block);
-	}
-
-	/**
-	 * @param name  Identifier of block instance to be registered
+	 * @param name Identifier of block instance to be registered
 	 * @param block Block instance to be registered
 	 * @return Block instance registered
 	 */
 	static <T extends Block> T register(Identifier name, T block) {
 		return Registry.register(Registry.BLOCK, name, block);
+	}
+
+	/**
+	 * @param name Name of block instance to be registered
+	 * @param block Block instance to be registered
+	 * @return Block instance registered
+	 */
+	static <T extends Block> T register(String name, T block) {
+		return register(AstromineCommon.identifier(name), block);
 	}
 }

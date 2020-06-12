@@ -5,11 +5,11 @@ public interface NetworkMember {
 		return NetworkTicker.EMPTY;
 	}
 
-	boolean accepts(Object... objects);
-
 	default boolean refuses(NetworkTicker type) {
-		return !accepts(type);
+		return !this.accepts(type);
 	}
+
+	boolean accepts(Object... objects);
 
 	default boolean isNode() {
 		return true;

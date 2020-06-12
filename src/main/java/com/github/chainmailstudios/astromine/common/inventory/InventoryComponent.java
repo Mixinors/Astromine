@@ -1,19 +1,37 @@
 package com.github.chainmailstudios.astromine.common.inventory;
 
+import java.util.AbstractMap;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
+import org.apache.logging.log4j.Level;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.TypedActionResult;
-import org.apache.logging.log4j.Level;
-
-import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public interface InventoryComponent {
+	/**
+	 * Retrieves contents of this inventory that
+	 * match a specific predicate as a collection
+	 * as ItemStack copies.
+	 *
+	 * @param predicate the specified predicate.
+	 * @return the retrieved collection.
+	 */
+	default Collection<ItemStack> getContentsMatching(Predicate<ItemStack> predicate) {
+		return this.getContents().values().stream().filter(predicate).collect(Collectors.toList());
+	}
+
 	/**
 	 * Retrieves contents of this inventory as
 	 * a collection of the held ItemStack copies.
@@ -30,8 +48,8 @@ public interface InventoryComponent {
 	 * @param predicate the specified predicate.
 	 * @return the retrieved collection.
 	 */
-	default Collection<ItemStack> getContentsMatching(Predicate<ItemStack> predicate) {
-		return getContents().values().stream().filter(predicate).collect(Collectors.toList());
+	default Collection<ItemStack> getContentsMatchingSimulated(Predicate<ItemStack> predicate) {
+		return this.getContentsSimulated().stream().map(ItemStack::copy).filter(predicate).collect(Collectors.toList());
 	}
 
 	/**
@@ -41,19 +59,7 @@ public interface InventoryComponent {
 	 * @return the retrieved collection.
 	 */
 	default Collection<ItemStack> getContentsSimulated() {
-		return getContents().values().stream().map(ItemStack::copy).collect(Collectors.toList());
-	}
-
-	/**
-	 * Retrieves contents of this inventory that
-	 * match a specific predicate as a collection
-	 * as ItemStack copies.
-	 *
-	 * @param predicate the specified predicate.
-	 * @return the retrieved collection.
-	 */
-	default Collection<ItemStack> getContentsMatchingSimulated(Predicate<ItemStack> predicate) {
-		return getContentsSimulated().stream().map(ItemStack::copy).filter(predicate).collect(Collectors.toList());
+		return this.getContents().values().stream().map(ItemStack::copy).collect(Collectors.toList());
 	}
 
 	/**
@@ -76,26 +82,6 @@ public interface InventoryComponent {
 
 	/**
 	 * Asserts whether an inventory allows insertion
-	 * of a specific ItemStack from a generic, non-
-	 * existent side.
-	 *
-	 * @param stack the specified stack.
-	 * @return the specified condition.
-	 */
-	ActionResult canInsert(ItemStack stack);
-
-	/**
-	 * Asserts whether an inventory allows extraction
-	 * of a specific ItemStack from a generic, non-
-	 * existent side.
-	 *
-	 * @param stack the specified stack.
-	 * @return SUCCESS if yes; FAIL if not.
-	 */
-	ActionResult canExtract(ItemStack stack);
-
-	/**
-	 * Asserts whether an inventory allows insertion
 	 * of a generic ItemStack into a specific slot.
 	 *
 	 * @param slot the specified slot.
@@ -112,13 +98,12 @@ public interface InventoryComponent {
 	 */
 	ActionResult canExtract(int slot);
 
-
 	/**
 	 * Asserts whether an inventory allows insertion
 	 * of a specific ItemStack into a specific slot.
 	 *
 	 * @param stack the specified stack.
-	 * @param slot  the specified slot.
+	 * @param slot the specified slot.
 	 * @return the specified condition.
 	 */
 	ActionResult canInsert(ItemStack stack, int slot);
@@ -128,11 +113,10 @@ public interface InventoryComponent {
 	 * of a specific ItemStack from a specific slot.
 	 *
 	 * @param stack the specified stack.
-	 * @param slot  the specified slot.
+	 * @param slot the specified slot.
 	 * @return SUCCESS if yes; FAIL if not.
 	 */
 	ActionResult canExtract(ItemStack stack, int slot);
-
 
 	/**
 	 * Inserts a specific ItemStack into this
@@ -143,30 +127,22 @@ public interface InventoryComponent {
 	 * @return SUCCESS w. empty if inserted; FAIL w. stack if not.
 	 */
 	default TypedActionResult<ItemStack> insert(ItemStack stack) {
-		if (canInsert(stack).isAccepted()) {
-			return insert(stack, stack.getCount());
+		if (this.canInsert(stack).isAccepted()) {
+			return this.insert(stack, stack.getCount());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, stack);
 		}
 	}
 
 	/**
-	 * Extracts a specific ItemStack from this
-	 * inventory if possible, from a generic,
-	 * non-existent position.
+	 * Asserts whether an inventory allows insertion
+	 * of a specific ItemStack from a generic, non-
+	 * existent side.
 	 *
-	 * @param slot the slot of the specified stack.
-	 * @return SUCCESS w. stack if extracted; FAIL w. empty if not.
+	 * @param stack the specified stack.
+	 * @return the specified condition.
 	 */
-	default TypedActionResult<ItemStack> extract(int slot) {
-		ItemStack matchingStack = getStack(slot);
-
-		if (!matchingStack.isEmpty() && canExtract(matchingStack).isAccepted()) {
-			return extract(slot, matchingStack.getCount());
-		} else {
-			return new TypedActionResult<>(ActionResult.FAIL, ItemStack.EMPTY);
-		}
-	}
+	ActionResult canInsert(ItemStack stack);
 
 	/**
 	 * Inserts a specific ItemStack into this
@@ -180,13 +156,10 @@ public interface InventoryComponent {
 	 */
 	default TypedActionResult<ItemStack> insert(ItemStack stack, int count) {
 		ItemStack finalStack = stack;
-		Optional<Map.Entry<Integer, ItemStack>> matchingStackOptional = getContents().entrySet().stream().filter(entry -> {
+		Optional<Map.Entry<Integer, ItemStack>> matchingStackOptional = this.getContents().entrySet().stream().filter(entry -> {
 			ItemStack storedStack = entry.getValue();
 
-			return ((storedStack.getItem() == finalStack.getItem()
-					&& storedStack.getMaxCount() - storedStack.getCount() >= count
-					&& (!storedStack.hasTag() && !finalStack.hasTag()) || (storedStack.hasTag() && finalStack.hasTag() && storedStack.getTag().equals(finalStack.getTag()))) || storedStack.isEmpty())
-					&& canInsert(finalStack).isAccepted();
+			return ((storedStack.getItem() == finalStack.getItem() && storedStack.getMaxCount() - storedStack.getCount() >= count && (!storedStack.hasTag() && !finalStack.hasTag()) || (storedStack.hasTag() && finalStack.hasTag() && storedStack.getTag().equals(finalStack.getTag()))) || storedStack.isEmpty()) && this.canInsert(finalStack).isAccepted();
 		}).findFirst();
 
 		if (matchingStackOptional.isPresent() && matchingStackOptional.get().getValue().getMaxCount() - stack.getCount() >= count) {
@@ -194,7 +167,7 @@ public interface InventoryComponent {
 			if (matchingStack.isEmpty()) {
 				matchingStack = stack.copy();
 				stack = ItemStack.EMPTY;
-				setStack(matchingStackOptional.get().getKey(), matchingStack);
+				this.setStack(matchingStackOptional.get().getKey(), matchingStack);
 			} else {
 				matchingStack.increment(stack.getCount());
 				stack.decrement(stack.getCount());
@@ -206,33 +179,34 @@ public interface InventoryComponent {
 	}
 
 	/**
-	 * Extracts a specific ItemStack from this
-	 * inventory if possible, from a generic
-	 * non-existent position, the count extracted
-	 * depending on the specified count.
-	 *
-	 * @param slot  the slot of the specified stack.
-	 * @param count the specified count.
-	 * @return SUCCESS w. stack if extracted; FAIL w. empty if not.
+	 * Sets an ItemStack in a given slot.
 	 */
-	default TypedActionResult<ItemStack> extract(int slot, int count) {
-		Optional<ItemStack> matchingStackOptional = Optional.ofNullable(getStack(slot));
-
-		if (matchingStackOptional.isPresent()) {
-			if (matchingStackOptional.get().getCount() >= count) {
-				ItemStack matchingStack = matchingStackOptional.get();
-				ItemStack remainingStack = matchingStack.copy();
-				remainingStack.decrement(count);
-				matchingStack.setCount(count);
-				setStack(slot, remainingStack);
-				return new TypedActionResult<>(ActionResult.SUCCESS, matchingStack);
-			} else {
-				return new TypedActionResult<>(ActionResult.FAIL, ItemStack.EMPTY);
-			}
-		} else {
-			return new TypedActionResult<>(ActionResult.FAIL, ItemStack.EMPTY);
+	default void setStack(int slot, ItemStack stack) {
+		if (slot <= this.getSize()) {
+			this.getContents().put(slot, stack);
+			this.dispatchConsumers();
 		}
 	}
+
+	/**
+	 * Retrieves the inventory's size.
+	 */
+	int getSize();
+
+	/**
+	 * Dispatches updates to all listeners.
+	 */
+	default void dispatchConsumers() {
+		this.getListeners().forEach(Runnable::run);
+	}
+
+	/**
+	 * Retrieves all listeners listening
+	 * to this inventory.
+	 *
+	 * @return
+	 */
+	List<Runnable> getListeners();
 
 	/**
 	 * Extracts the contents of this inventory
@@ -245,9 +219,9 @@ public interface InventoryComponent {
 	 */
 	default TypedActionResult<Collection<ItemStack>> extractMatching(Predicate<ItemStack> predicate) {
 		HashSet<ItemStack> extractedStacks = new HashSet<>();
-		getContents().forEach((slot, stack) -> {
+		this.getContents().forEach((slot, stack) -> {
 			if (predicate.test(stack)) {
-				TypedActionResult<ItemStack> extractionResult = extract(slot);
+				TypedActionResult<ItemStack> extractionResult = this.extract(slot);
 
 				if (extractionResult.getResult().isAccepted()) {
 					extractedStacks.add(extractionResult.getValue());
@@ -263,6 +237,89 @@ public interface InventoryComponent {
 	}
 
 	/**
+	 * Extracts a specific ItemStack from this
+	 * inventory if possible, from a generic,
+	 * non-existent position.
+	 *
+	 * @param slot the slot of the specified stack.
+	 * @return SUCCESS w. stack if extracted; FAIL w. empty if not.
+	 */
+	default TypedActionResult<ItemStack> extract(int slot) {
+		ItemStack matchingStack = this.getStack(slot);
+
+		if (!matchingStack.isEmpty() && this.canExtract(matchingStack).isAccepted()) {
+			return this.extract(slot, matchingStack.getCount());
+		} else {
+			return new TypedActionResult<>(ActionResult.FAIL, ItemStack.EMPTY);
+		}
+	}
+
+	/**
+	 * Retrieves an ItemStack from a given slot.
+	 */
+	default ItemStack getStack(int slot) {
+		return this.getContents().get(slot);
+	}
+
+	/**
+	 * Asserts whether an inventory allows extraction
+	 * of a specific ItemStack from a generic, non-
+	 * existent side.
+	 *
+	 * @param stack the specified stack.
+	 * @return SUCCESS if yes; FAIL if not.
+	 */
+	ActionResult canExtract(ItemStack stack);
+
+	/**
+	 * Extracts a specific ItemStack from this
+	 * inventory if possible, from a generic
+	 * non-existent position, the count extracted
+	 * depending on the specified count.
+	 *
+	 * @param slot the slot of the specified stack.
+	 * @param count the specified count.
+	 * @return SUCCESS w. stack if extracted; FAIL w. empty if not.
+	 */
+	default TypedActionResult<ItemStack> extract(int slot, int count) {
+		Optional<ItemStack> matchingStackOptional = Optional.ofNullable(this.getStack(slot));
+
+		if (matchingStackOptional.isPresent()) {
+			if (matchingStackOptional.get().getCount() >= count) {
+				ItemStack matchingStack = matchingStackOptional.get();
+				ItemStack remainingStack = matchingStack.copy();
+				remainingStack.decrement(count);
+				matchingStack.setCount(count);
+				this.setStack(slot, remainingStack);
+				return new TypedActionResult<>(ActionResult.SUCCESS, matchingStack);
+			} else {
+				return new TypedActionResult<>(ActionResult.FAIL, ItemStack.EMPTY);
+			}
+		} else {
+			return new TypedActionResult<>(ActionResult.FAIL, ItemStack.EMPTY);
+		}
+	}
+
+	/**
+	 * Serializes this inventory to a new
+	 * CompoundTag. If a subtag is passed,
+	 * contents are serialized to it. If
+	 * a range is passed, only contents
+	 * in slots within the range are serialized.
+	 * If a subtag is passed, the inventory
+	 * is written to the subtag.
+	 *
+	 * @param source the specified source.
+	 * @param subtag the optional subtag.
+	 * @param range the optional range.
+	 */
+	default CompoundTag write(InventoryComponent source, Optional<String> subtag, Optional<Range<Integer>> range) {
+		CompoundTag tag = new CompoundTag();
+		this.write(source, tag, subtag, range);
+		return tag;
+	}
+
+	/**
 	 * Serializes this inventory to an existing
 	 * CompoundTag. If a subtag is passed,
 	 * contents are serialized to it. If
@@ -271,9 +328,9 @@ public interface InventoryComponent {
 	 * If a subtag is specified, the inventory
 	 * is written to the subtag.
 	 *
-	 * @param tag    the specified tag.
+	 * @param tag the specified tag.
 	 * @param subtag the optional subtag.
-	 * @param range  the optional range.
+	 * @param range the optional range.
 	 */
 	default void write(InventoryComponent source, CompoundTag tag, Optional<String> subtag, Optional<Range<Integer>> range) {
 		if (source == null || source.getSize() <= 0) return;
@@ -313,25 +370,6 @@ public interface InventoryComponent {
 	}
 
 	/**
-	 * Serializes this inventory to a new
-	 * CompoundTag. If a subtag is passed,
-	 * contents are serialized to it. If
-	 * a range is passed, only contents
-	 * in slots within the range are serialized.
-	 * If a subtag is passed, the inventory
-	 * is written to the subtag.
-	 *
-	 * @param source the specified source.
-	 * @param subtag the optional subtag.
-	 * @param range  the optional range.
-	 */
-	default CompoundTag write(InventoryComponent source, Optional<String> subtag, Optional<Range<Integer>> range) {
-		CompoundTag tag = new CompoundTag();
-		write(source, tag, subtag, range);
-		return tag;
-	}
-
-	/**
 	 * Deserializes a CompoundTag to an existing
 	 * inventory. If a range is passed,
 	 * contents are only deserialized for the
@@ -339,9 +377,9 @@ public interface InventoryComponent {
 	 * the inventory is read form the subtag.
 	 *
 	 * @param target the specified target.
-	 * @param tag    the specified tag.
+	 * @param tag the specified tag.
 	 * @param subtag the optional subtag.
-	 * @param range  the optional range.
+	 * @param range the optional range.
 	 */
 	default void read(InventoryComponent target, CompoundTag tag, Optional<String> subtag, Optional<Range<Integer>> range) {
 		if (tag == null) return;
@@ -420,20 +458,12 @@ public interface InventoryComponent {
 	}
 
 	/**
-	 * Retrieves all listeners listening
-	 * to this inventory.
-	 *
-	 * @return
-	 */
-	List<Runnable> getListeners();
-
-	/**
 	 * Adds a listener to this inventory.
 	 *
 	 * @param listener the specified listener.
 	 */
 	default void addListener(Runnable listener) {
-		getListeners().add(listener);
+		this.getListeners().add(listener);
 	}
 
 	/**
@@ -442,14 +472,7 @@ public interface InventoryComponent {
 	 * @param listener the specified listener.
 	 */
 	default void removeListener(Runnable listener) {
-		getListeners().remove(listener);
-	}
-
-	/**
-	 * Dispatches updates to all listeners.
-	 */
-	default void dispatchConsumers() {
-		getListeners().forEach(Runnable::run);
+		this.getListeners().remove(listener);
 	}
 
 	/**
@@ -463,36 +486,13 @@ public interface InventoryComponent {
 	 * Clears this inventory.
 	 */
 	default void clear() {
-		getContents().clear();
-	}
-
-	/**
-	 * Retrieves an ItemStack from a given slot.
-	 */
-	default ItemStack getStack(int slot) {
-		return getContents().get(slot);
-	}
-
-
-	/**
-	 * Sets an ItemStack in a given slot.
-	 */
-	default void setStack(int slot, ItemStack stack) {
-		if (slot <= getSize()) {
-			getContents().put(slot, stack);
-			dispatchConsumers();
-		}
+		this.getContents().clear();
 	}
 
 	/**
 	 * Asserts whether this inventory is empty or not.
 	 */
 	default boolean isEmpty() {
-		return getContents().values().stream().allMatch(ItemStack::isEmpty);
+		return this.getContents().values().stream().allMatch(ItemStack::isEmpty);
 	}
-
-	/**
-	 * Retrieves the inventory's size.
-	 */
-	int getSize();
 }

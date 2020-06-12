@@ -4,6 +4,7 @@ import com.github.chainmailstudios.astromine.common.weapon.BaseWeapon;
 import com.github.chainmailstudios.astromine.common.weapon.WeaponElement;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.github.chainmailstudios.astromine.registry.AstromineSounds;
+
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.Item;
 import net.minecraft.sound.SoundEvent;
@@ -28,8 +29,13 @@ public class Weapon {
 		}
 
 		@Override
-		public long getInterval() {
-			return 6;
+		public float getDistance() {
+			return 256;
+		}
+
+		@Override
+		public int getPunch() {
+			return 2;
 		}
 
 		@Override
@@ -38,13 +44,8 @@ public class Weapon {
 		}
 
 		@Override
-		public float getDistance() {
-			return 256;
-		}
-
-		@Override
-		public int getPunch() {
-			return 2;
+		public long getInterval() {
+			return 6;
 		}
 
 		@Override
@@ -86,8 +87,13 @@ public class Weapon {
 		}
 
 		@Override
-		public long getInterval() {
-			return 2000;
+		public float getDistance() {
+			return 1024;
+		}
+
+		@Override
+		public int getPunch() {
+			return 8;
 		}
 
 		@Override
@@ -96,13 +102,8 @@ public class Weapon {
 		}
 
 		@Override
-		public float getDistance() {
-			return 1024;
-		}
-
-		@Override
-		public int getPunch() {
-			return 8;
+		public long getInterval() {
+			return 2000;
 		}
 
 		@Override
