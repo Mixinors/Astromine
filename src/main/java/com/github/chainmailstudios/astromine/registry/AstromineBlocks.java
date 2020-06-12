@@ -23,7 +23,7 @@ public class AstromineBlocks {
 	public static Block ASTERITE_BLOCK = new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.RED).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(25, 1000).sounds(BlockSoundGroup.METAL));
 	public static Block METITE_BLOCK = new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.BLUE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(8, 100).sounds(BlockSoundGroup.METAL));
 	public static Block STELLUM_BLOCK = new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.YELLOW).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(10, 80).sounds(BlockSoundGroup.METAL));
-	public static Block GALAXIUM_BLOCK = new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.LIME).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(50, 1300).sounds(BlockSoundGroup.METAL));
+	public static Block GALAXIUM_BLOCK = new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.ORANGE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(50, 1300).sounds(BlockSoundGroup.METAL));
 	public static Block UNIVITE_BLOCK = new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.PURPLE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 6).strength(80, 2000).sounds(BlockSoundGroup.METAL));
 	
 	public static void initialize() {
