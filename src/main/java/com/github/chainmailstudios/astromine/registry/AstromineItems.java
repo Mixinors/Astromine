@@ -15,7 +15,7 @@ public class AstromineItems {
 	));
 
 	public static final SuperSpaceSlimeShooterItem SUPER_SPACE_SLIME_SHOOTER = register("super_space_slime_shooter", new SuperSpaceSlimeShooterItem(new Item.Settings().group(AstromineItemGroups.GROUP)));
-	public static final Item SPACE_SLIME = register("space_slime", new Item(new Item.Settings().group(AstromineItemGroups.GROUP)));
+	public static final Item SPACE_SLIME_BALL = register("space_slime_ball", new Item(new Item.Settings().group(AstromineItemGroups.GROUP)));
 
 	/**
 	 * @param name Name of item instance to be registered

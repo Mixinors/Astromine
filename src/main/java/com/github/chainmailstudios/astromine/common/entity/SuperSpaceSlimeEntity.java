@@ -5,6 +5,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineEntities;
 import com.github.chainmailstudios.astromine.registry.AstromineParticles;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.FollowTargetGoal;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.boss.ServerBossBar;
@@ -77,6 +78,17 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
             world.spawnEntity(spaceSlime);
             spaceSlime.requestTeleport(this.getX(), this.getY(), this.getZ());
         }
+    }
+
+    /**
+     * Creates a {@link DefaultAttributeContainer.Builder} instance used for registering this entities' default attributes.
+     *
+     * @return  a {@link DefaultAttributeContainer.Builder} with default attribute information
+     */
+    public static DefaultAttributeContainer.Builder createAttributes() {
+        return MobEntity.createMobAttributes()
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, 300);
     }
 
     @Override

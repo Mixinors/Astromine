@@ -30,7 +30,7 @@ public class AstromineParticles {
         ParticleFactoryRegistryImpl.INSTANCE.register(
                 SPACE_SLIME,
                 (parameters, world, x, y, z, velocityX, velocityY, velocityZ) ->
-                        CrackParticleAccessor.createCrackParticle(world, x, y, z, new ItemStack(AstromineItems.SPACE_SLIME)
+                        CrackParticleAccessor.createCrackParticle(world, x, y, z, new ItemStack(AstromineItems.SPACE_SLIME_BALL)
         ));
     }
 }

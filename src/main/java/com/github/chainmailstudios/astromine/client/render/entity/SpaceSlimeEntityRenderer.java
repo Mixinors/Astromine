@@ -13,7 +13,7 @@ import net.minecraft.util.math.MathHelper;
 
 public class SpaceSlimeEntityRenderer extends MobEntityRenderer<SpaceSlimeEntity, SpaceSlimeEntityModel> {
 
-    private static final Identifier TEXTURE = new Identifier("astromine", "textures/entity/space_slime/space_slime.png");
+    private static final Identifier TEXTURE = new Identifier("astromine", "textures/entity/space_slime/space_slime_ball.png");
 
     public SpaceSlimeEntityRenderer(EntityRenderDispatcher entityRenderDispatcher) {
         super(entityRenderDispatcher, new SpaceSlimeEntityModel(16), 0.25F);
