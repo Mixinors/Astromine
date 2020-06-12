@@ -4,6 +4,9 @@ import blue.endless.jankson.Jankson;
 import com.google.gson.Gson;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
+
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,7 +21,8 @@ public class AstromineCommon implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		// Unused.
+		AstromineBlocks.initialize();
+		AstromineItems.initialize();
 	}
 
 	public static Identifier id(String name) {
