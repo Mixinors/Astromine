@@ -1,8 +1,9 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.minecraft.block.Block;
 import net.minecraft.client.render.RenderLayer;
+
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 
 public class AstromineRenderLayers {
 	public static void initialize() {
@@ -10,7 +11,7 @@ public class AstromineRenderLayers {
 	}
 
 	/**
-	 * @param block       Block instance to be registered
+	 * @param block Block instance to be registered
 	 * @param renderLayer RenderLayer of block instance to be registered
 	 * @return Block instance registered
 	 */

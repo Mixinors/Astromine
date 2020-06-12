@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.common.entity.projectile;
 
 import com.github.chainmailstudios.astromine.registry.AstromineEntities;
+
 import net.minecraft.block.AbstractGlassBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -34,14 +35,6 @@ public class BulletEntity extends PersistentProjectileEntity {
 	}
 
 	@Override
-	protected void onBlockCollision(BlockState state) {
-		Block block = state.getBlock();
-
-		if (block instanceof AbstractGlassBlock) {
-			world.setBlockState(getBlockPos(), Blocks.AIR.getDefaultState());
-		}
-	}
-
 	protected void checkBlockCollision() {
 		Box box = this.getBoundingBox();
 		BlockPos positionA = new BlockPos(box.minX + 0.001D, box.minY + 0.001D, box.minZ + 0.001D);
@@ -58,7 +51,7 @@ public class BulletEntity extends PersistentProjectileEntity {
 							blockState.onEntityCollision(this.world, mutable, this);
 
 							if (blockState.getBlock() instanceof AbstractGlassBlock) {
-								world.breakBlock(mutable, true);
+								this.world.breakBlock(mutable, true);
 							}
 						} catch (Throwable oops) {
 							CrashReport crashReport = CrashReport.create(oops, "Colliding entity with block");
@@ -69,6 +62,15 @@ public class BulletEntity extends PersistentProjectileEntity {
 					}
 				}
 			}
+		}
+	}
+
+	@Override
+	protected void onBlockCollision(BlockState state) {
+		Block block = state.getBlock();
+
+		if (block instanceof AbstractGlassBlock) {
+			this.world.setBlockState(this.getBlockPos(), Blocks.AIR.getDefaultState());
 		}
 	}
 

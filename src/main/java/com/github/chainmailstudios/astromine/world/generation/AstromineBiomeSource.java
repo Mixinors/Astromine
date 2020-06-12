@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.world.generation;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
+
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.biome.source.BiomeSource;

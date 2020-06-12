@@ -1,30 +1,28 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import spinnery.common.inventory.BaseInventory;
+
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
-import spinnery.common.inventory.BaseInventory;
 
-import java.util.*;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 public class InventoryUtilities extends spinnery.common.utility.InventoryUtilities {
-	@Environment(EnvType.CLIENT)
+	@Environment (EnvType.CLIENT)
 	public static List<ItemStack> toList(Ingredient ingredient) {
 		return new ArrayList<ItemStack>() {{
 			for (ItemStack stack : ingredient.getMatchingStacksClient()) {
-				add(stack);
+				this.add(stack);
 			}
 		}};
-	}
-
-	public static List<ItemStack> toList(Inventory inventory) {
-		List<ItemStack> stackSet = new ArrayList();
-		for (int i = 0; i < inventory.size(); ++i) {
-			stackSet.add(inventory.getStack(i));
-		}
-		return stackSet;
 	}
 
 	public static List<ItemStack> toList(ItemStack[] array) {
@@ -40,6 +38,18 @@ public class InventoryUtilities extends spinnery.common.utility.InventoryUtiliti
 		return stackSet;
 	}
 
+	public static List<ItemStack> toList(Inventory inventory) {
+		List<ItemStack> stackSet = new ArrayList();
+		for (int i = 0; i < inventory.size(); ++i) {
+			stackSet.add(inventory.getStack(i));
+		}
+		return stackSet;
+	}
+
+	public static BaseInventory singleOf(Inventory origin, int slot) {
+		return rangedOf(origin, new int[] {slot});
+	}
+
 	public static BaseInventory rangedOf(Inventory origin, int[] slots) {
 		BaseInventory recipeInventory = new BaseInventory(slots.length);
 		int k = 0;
@@ -47,10 +57,6 @@ public class InventoryUtilities extends spinnery.common.utility.InventoryUtiliti
 			recipeInventory.setStack(k, origin.getStack(i));
 		}
 		return recipeInventory;
-	}
-
-	public static BaseInventory singleOf(Inventory origin, int slot) {
-		return rangedOf(origin, new int[]{slot});
 	}
 
 	/**

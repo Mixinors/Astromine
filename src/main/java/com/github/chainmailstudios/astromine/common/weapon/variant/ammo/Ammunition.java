@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.common.weapon.variant.ammo;
 
 import com.github.chainmailstudios.astromine.common.weapon.BaseAmmo;
+
 import net.minecraft.item.Item;
 import net.minecraft.util.Rarity;
 

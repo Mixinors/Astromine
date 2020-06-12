@@ -1,4 +1,6 @@
 {
+  "entity.astromine.super_space_slime": "Jelanium: Super Space Slime",
+
   "text.astromine.magazine.rounds": "Rounds",
   "text.astromine.weapon.battle_rifle": "Battle Rifle",
   "text.astromine.weapon.sniper_rifle": "Sniper Rifle",
@@ -9,6 +11,7 @@
   "item.astromine.fire_extinguisher": "Fire Extinguisher",
 
   "itemGroup.astromine.astromine": "Astromine",
+
   "block.astromine.asterite_ore": "Asterite Ore",
   "block.astromine.galaxium_ore": "Galaxium Ore",
   "block.astromine.metite_ore": "Metite Ore",
@@ -63,5 +66,8 @@
   "item.astromine.space_helmet": "Space Helmet",
   "item.astromine.space_suit_chest": "Space Suit Chest",
   "item.astromine.space_suit_pants": "Space Suit Pants",
-  "item.astromine.space_boots": "Space Boots"
+  "item.astromine.space_boots": "Space Boots",
+  "item.astromine.space_slime_spawn_egg": "Space Slime Spawn Egg",
+  "item.astromine.super_space_slime_shooter": "Super Space Slime Shooter",
+  "item.astromine.space_slime_ball": "Space Slimeball"
 }
