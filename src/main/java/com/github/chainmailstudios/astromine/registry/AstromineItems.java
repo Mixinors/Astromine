@@ -7,6 +7,7 @@ import com.github.chainmailstudios.astromine.common.material.AstromineArmorMater
 import com.github.chainmailstudios.astromine.common.material.AstromineToolMaterials;
 import com.github.chainmailstudios.astromine.common.weapon.variant.Weapon;
 import com.github.chainmailstudios.astromine.common.weapon.variant.ammo.Ammunition;
+import com.github.chainmailstudios.astromine.tool.FireExtinguisher;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
@@ -29,6 +30,9 @@ public class AstromineItems {
 	// Ammunition
 	public static final Item NATO_7_62_X_51_MM = register("nato_7_62x51mm", new Ammunition.Nato762x51mm());
 	public static final Item LAPUA_8_6_X_70_MM = register("lapua_8_6x70mm", new Ammunition.Lapua86x70mm());
+
+	// Tooling
+	public static final Item FIRE_EXTINGUISHER = register("fire_extinguisher", new FireExtinguisher());
 
 	public static final Item.Settings BASIC_SETTINGS = new Item.Settings().group(AstromineItemGroups.ASTROMINE);
 

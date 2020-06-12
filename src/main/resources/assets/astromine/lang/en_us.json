@@ -4,6 +4,11 @@
   "text.astromine.magazine.rounds": "Rounds",
   "text.astromine.weapon.battle_rifle": "Battle Rifle",
   "text.astromine.weapon.sniper_rifle": "Sniper Rifle",
+  "item.astromine.scar_h": "SCAR-H",
+  "item.astromine.nato_7_62x51mm": "7.62x51mm NATO",
+  "item.astromine.barret_m98b": "Barret M98B",
+  "item.astromine.lapua_8_6x70mm": "8.6x70mm Lapua",
+  "item.astromine.fire_extinguisher": "Fire Extinguisher",
 
   "itemGroup.astromine.astromine": "Astromine",
 
@@ -62,10 +67,6 @@
   "item.astromine.space_suit_chest": "Space Suit Chest",
   "item.astromine.space_suit_pants": "Space Suit Pants",
   "item.astromine.space_boots": "Space Boots",
-  "item.astromine.scar_h": "SCAR-H",
-  "item.astromine.nato_7_62x51mm": "7.62x51mm NATO",
-  "item.astromine.barret_m98b": "Barret M98B",
-  "item.astromine.lapua_8_6x70mm": "8.6x70mm Lapua",
   "item.astromine.space_slime_spawn_egg": "Space Slime Spawn Egg",
   "item.astromine.super_space_slime_shooter": "Super Space Slime Shooter",
   "item.astromine.space_slime_ball": "Space Slimeball"
