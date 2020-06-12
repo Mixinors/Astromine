@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:asterite_fragment",
+    "astromine:metite_ingot",
+    "astromine:stellum_ingot"
+  ]
+}
