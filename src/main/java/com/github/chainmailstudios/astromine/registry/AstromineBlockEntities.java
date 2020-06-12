@@ -21,6 +21,6 @@ public class AstromineBlockEntities {
 	 * @return Registered BlockEntityType
 	 */
 	public static <B extends BlockEntity> BlockEntityType<B> register(String name, Supplier<B> supplier, Block... supportedBlocks) {
-		return Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(AstromineCommon.MOD_ID, name), BlockEntityType.Builder.create(supplier, supportedBlocks).build(null));
+		return Registry.register(Registry.BLOCK_ENTITY_TYPE, AstromineCommon.id(name), BlockEntityType.Builder.create(supplier, supportedBlocks).build(null));
 	}
 }

@@ -33,6 +33,7 @@
   "mixins": [
     "astromine.mixins.json"
   ],
+  "accessWidener": "astromine.accesswidener",
   "depends": {
     "fabricloader": ">=0.8.7",
     "fabric": ">=0.11.8",
