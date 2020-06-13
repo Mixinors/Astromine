@@ -22,6 +22,7 @@ import java.util.UUID;
 
 public class HolographicBridgeBlockEntity extends BlockEntity implements Tickable, BlockEntityClientSerializable {
 	public ArrayList<Vector3f> segments = null;
+	public ArrayList<Vec3i> members = null;
 
 	private HolographicBridgeBlockEntity child = null;
 	private HolographicBridgeBlockEntity parent = null;
@@ -71,20 +72,18 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 	}
 
 	public void buildBridge() {
-		if (child == null) return;
+		if (child == null || world == null) return;
 
 		BlockPos bCP = getChild().getPos();
 		BlockPos bOP = getPos();
 
 		BlockPos nCP = bCP;
-		BlockPos nOP = bOP;
 
-		Direction childDirection = getChild().getCachedState().get(HorizontalFacingBlock.FACING);
-		Direction ourDirection = getCachedState().get(HorizontalFacingBlock.FACING);
+		Direction cD = getChild().getCachedState().get(HorizontalFacingBlock.FACING);
 
-		if (childDirection == Direction.EAST) {
+		if (cD == Direction.EAST) {
 			nCP = nCP.add(1, 0, 0);
-		} else if (childDirection == Direction.SOUTH) {
+		} else if (cD == Direction.SOUTH) {
 			nCP = nCP.add(0, 0, 1);
 		}
 
@@ -92,55 +91,48 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 
 		if (distance == 0) return;
 
-		segments = (ArrayList<Vector3f>) LineUtilities.getBezierSegments(nOP.add(0, 1, 0), nCP.add(0, 1, 0), distance * 5);
+		segments = (ArrayList<Vector3f>) LineUtilities.getBezierSegments(bOP.add(0, 1, 0), nCP.add(0, 1, 0), distance * 5);
 
-		Vector3f origin = segments.get(0);
+		members = new ArrayList<>();
 
-		Vector3f previous = origin;
+		Vector3f o = segments.get(0);
 
-		for (int k = 0; k < segments.size(); ++k) {
-			Vector3f v = segments.get(k);
+		Vector3f p = o;
 
+		for (Vector3f v : segments) {
 			if ((bOP.getX() != v.getX() || bOP.getZ() != v.getZ()) && (bCP.getX() != v.getX() || bCP.getZ() != v.getZ())) {
-				BlockPos newPosition = new BlockPos(v.getX(), v.getY(), v.getZ());
+				BlockPos nP = new BlockPos(v.getX(), Math.min(bOP.getY(), v.getY()), v.getZ());
 
-				float percentage;
+				float f;
 
-				if (origin.getY() - previous.getY() > 1) {
-					percentage = previous.getY() + (origin.getY() - previous.getY()) - previous.getY();
-				} else {
-					percentage = origin.getY() - previous.getY();
-				}
+				//if (o.getY() - p.getY() > 1) {
+					f = o.getY() - p.getY();
 
-				HolographicBridgeManager.add(world, newPosition, (int) Math.ceil(16f * Math.max(0.0625, percentage)));
+					if (f > 0) {
+						f  -= (int) f;
+					}
+				//} else {
+				//	f = o.getY() - p.getY();
+				//}
 
-				world.setBlockState(newPosition, AstromineBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
+				HolographicBridgeManager.add(world, nP, (int) Math.ceil(16f * Math.max(0.0625, f)));
+
+				world.setBlockState(nP, AstromineBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
+
+				members.add(nP);
 			}
 
-			previous = v;
+			p = v;
 		}
 
 	}
 
 	public void destroyBridge() {
-		if (segments != null) {
-			Vector3f origin = segments.get(0);
-			Vector3f end = segments.get(segments.size() - 1);
+		if (segments != null && world != null) {
+			for (Vec3i v : members) {
+				HolographicBridgeManager.remove(world, (BlockPos) v);
 
-			for (int k = 0; k < segments.size(); ++k) {
-				Vector3f vector = segments.get(k);
-
-				Vec3i vec3iA = new Vec3i(origin.getX(), origin.getY(), origin.getZ());
-				Vec3i vec3iB = new Vec3i(end.getX(), end.getY(), end.getZ());
-				Vec3i vec3iC = new Vec3i(vector.getX(), vector.getY(), vector.getZ());
-
-				if ((vec3iA.getX() == vec3iC.getX() && vec3iA.getZ() == vec3iC.getZ()) || (vec3iB.getX() == vec3iC.getX() && vec3iB.getZ() == vec3iC.getZ()))
-					continue;
-				else {
-					BlockPos newPosition = new BlockPos(vector.getX(), vector.getY() + 1, vector.getZ());
-
-					world.setBlockState(newPosition, Blocks.AIR.getDefaultState());
-				}
+				world.setBlockState((BlockPos) v, Blocks.AIR.getDefaultState());
 			}
 		}
 	}

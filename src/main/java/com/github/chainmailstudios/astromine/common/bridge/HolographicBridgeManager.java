@@ -36,18 +36,26 @@ public class HolographicBridgeManager {
 		LEVELS.get(world).put(position, level);
 	}
 
+	public static void remove(BlockView world, BlockPos position) {
+		LEVELS.computeIfAbsent(world, (key) -> new Object2IntArrayMap<>());
+
+		LEVELS.get(world).removeInt(position);
+	}
+
 	public static int get(BlockView world, BlockPos position) {
 		LEVELS.computeIfAbsent(world, (key) -> new Object2IntArrayMap<>());
 
-		return LEVELS.get(world).getOrDefault(position, -1);
+		return LEVELS.get(world).getOrDefault(position, Integer.MIN_VALUE);
 	}
 
 	public static VoxelShape getShape(BlockView world, BlockPos position) {
 		int level = get(world, position);
-		return level == -1 ? SHAPES[15] : getShape(15 - level);
+		return level == Integer.MIN_VALUE ? SHAPES[15] : getShape(15 - level);
 	}
 
 	private static VoxelShape getShape(int level) {
+		if (level < 0) level = Math.abs(level);
+		if (level > 16) level = (15 - level % 16);
 		return SHAPES[Math.max(0, level - 1)];
 	}
 }
