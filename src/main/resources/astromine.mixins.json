@@ -4,6 +4,7 @@
   "package": "com.github.chainmailstudios.astromine.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "SlimeEntityMixin",
     "BrewingRecipeRegistryMixin",
     "ChunkSerializerMixin",
     "ChunkSerializerMixin$WorldChunkMixin",
@@ -12,7 +13,9 @@
   "client": [
     "GameRendererMixin",
     "ItemRendererMixin",
-    "MinecraftClientMixin"
+    "MinecraftClientMixin",
+    "BossBarHudMixin",
+    "CrackParticleAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
