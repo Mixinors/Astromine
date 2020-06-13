@@ -1,15 +1,9 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
 import com.github.chainmailstudios.astromine.access.WorldChunkAccess;
-import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ChunkHolder;
 import net.minecraft.util.crash.CrashException;
 import net.minecraft.util.crash.CrashReport;
@@ -18,7 +12,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.WorldChunk;
 
 /**
@@ -87,6 +80,7 @@ public class RegionalWorldAccess {
 
 					if ((flags & 1) != 0) {
 						if(!world.isDebugWorld()) {
+							// World#updateNeighbors or something
 							this.updateNeighbor(pos.west(), block, pos);
 							this.updateNeighbor(pos.east(), block, pos);
 							this.updateNeighbor(pos.down(), block, pos);
