@@ -107,7 +107,7 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 				float percentage;
 
 				if (origin.getY() - previous.getY() > 1) {
-					percentage = previous.getY() + 1 - previous.getY();
+					percentage = previous.getY() + (origin.getY() - previous.getY()) - previous.getY();
 				} else {
 					percentage = origin.getY() - previous.getY();
 				}
