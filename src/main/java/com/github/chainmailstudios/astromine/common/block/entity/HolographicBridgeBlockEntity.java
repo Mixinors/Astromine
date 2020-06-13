@@ -116,9 +116,9 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 				if (!nP.equals(oP)) {
 					oP = nP;
 
-					oF = f;
+					HolographicBridgeManager.add(world, nP, (int) (16f * f), (int) (16 * oF));
 
-					HolographicBridgeManager.add(world, nP, (int) (16f * f));
+					oF = f;
 
 					world.setBlockState(nP, AstromineBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
 
