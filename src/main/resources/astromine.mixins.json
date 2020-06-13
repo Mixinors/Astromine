@@ -5,6 +5,8 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "BrewingRecipeRegistryMixin",
+    "ChunkSerializerMixin",
+    "ChunkSerializerMixin$WorldChunkMixin",
     "FlamingAnvilCraftingMixin"
   ],
   "client": [
