@@ -34,7 +34,7 @@ public class AstromineBlocks {
 	public static Block UNIVITE_BLOCK = new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.PURPLE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 6).strength(80, 2000).sounds(BlockSoundGroup.METAL));
 
 	public static Block METEOR_STONE = register("meteor_stone", new Block(FabricBlockSettings.of(Material.STONE)), AstromineItems.BASIC_SETTINGS);
-	public static Block ASTEROID_sTONE = register("asteroid_stone", new Block(FabricBlockSettings.of(Material.STONE)), AstromineItems.BASIC_SETTINGS);
+	public static Block ASTEROID_STONE = register("asteroid_stone", new Block(FabricBlockSettings.of(Material.STONE)), AstromineItems.BASIC_SETTINGS);
 
 	public static void initialize() {
 		ASTERITE_ORE = register("asterite_ore", ASTERITE_ORE, AstromineItems.BASIC_SETTINGS);

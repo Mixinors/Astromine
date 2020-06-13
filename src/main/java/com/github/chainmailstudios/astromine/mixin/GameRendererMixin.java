@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.common.weapon.Weapon;
+import com.github.chainmailstudios.astromine.common.item.weapon.Weapon;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;

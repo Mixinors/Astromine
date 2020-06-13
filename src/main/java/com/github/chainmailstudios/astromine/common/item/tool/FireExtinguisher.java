@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.tool;
+package com.github.chainmailstudios.astromine.common.item.tool;
 
 import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
 import net.minecraft.block.BlockState;

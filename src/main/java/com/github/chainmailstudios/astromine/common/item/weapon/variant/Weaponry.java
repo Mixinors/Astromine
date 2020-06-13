@@ -1,7 +1,7 @@
-package com.github.chainmailstudios.astromine.common.weapon.variant;
+package com.github.chainmailstudios.astromine.common.item.weapon.variant;
 
-import com.github.chainmailstudios.astromine.common.weapon.BaseWeapon;
-import com.github.chainmailstudios.astromine.common.weapon.Weapon;
+import com.github.chainmailstudios.astromine.common.item.weapon.BaseWeapon;
+import com.github.chainmailstudios.astromine.common.item.weapon.Weapon;
 import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.github.chainmailstudios.astromine.registry.AstromineSounds;
