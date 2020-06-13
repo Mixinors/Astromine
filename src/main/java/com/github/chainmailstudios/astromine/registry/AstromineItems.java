@@ -3,20 +3,22 @@ package com.github.chainmailstudios.astromine.registry;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.material.AstromineArmorMaterials;
 import com.github.chainmailstudios.astromine.common.material.AstromineToolMaterials;
-
+import com.github.chainmailstudios.astromine.common.weapon.variant.Weapon;
+import com.github.chainmailstudios.astromine.common.weapon.variant.ammo.Ammunition;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.HoeItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.PickaxeItem;
-import net.minecraft.item.ShovelItem;
-import net.minecraft.item.SwordItem;
-import net.minecraft.item.ToolMaterials;
+import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class AstromineItems {
+	// Weaponry
+	public static final Item SCAR_H = register("scar_h", new Weapon.ScarH());
+	public static final Item BARRET_M98B = register("barret_m98b", new Weapon.BarretM98B());
+
+	// Ammunition
+	public static final Item NATO_7_62_X_51_MM = register("nato_7_62x51mm", new Ammunition.Nato762x51mm());
+	public static final Item LAPUA_8_6_X_70_MM = register("lapua_8_6x70mm", new Ammunition.Lapua86x70mm());
+
 	public static final Item.Settings BASIC_SETTINGS = new Item.Settings().group(AstromineItemGroups.ASTROMINE);
 
 	// Materials
@@ -39,13 +41,13 @@ public class AstromineItems {
 	public static Item STELLUM_SHOVEL = new ShovelItem(AstromineToolMaterials.STELLUM, 1.5f, -3.0f, BASIC_SETTINGS);
 	public static Item STELLUM_HOE = new HoeItem(AstromineToolMaterials.STELLUM, -6, 0f, BASIC_SETTINGS);
 	public static Item STELLUM_SWORD = new SwordItem(AstromineToolMaterials.STELLUM, 3, -2.4f, BASIC_SETTINGS);
-	
+
 	public static Item GALAXIUM_PICKAXE = new PickaxeItem(AstromineToolMaterials.GALAXIUM, 1, -2.8f, BASIC_SETTINGS);
 	public static Item GALAXIUM_AXE = new AxeItem(AstromineToolMaterials.GALAXIUM, 5f, -3.0f, BASIC_SETTINGS);
 	public static Item GALAXIUM_SHOVEL = new ShovelItem(AstromineToolMaterials.GALAXIUM, 1.5f, -3.0f, BASIC_SETTINGS);
 	public static Item GALAXIUM_HOE = new HoeItem(AstromineToolMaterials.GALAXIUM, -6, 0f, BASIC_SETTINGS);
 	public static Item GALAXIUM_SWORD = new SwordItem(AstromineToolMaterials.GALAXIUM, 3, -2.4f, BASIC_SETTINGS);
-	
+
 	public static Item UNIVITE_PICKAXE = new PickaxeItem(AstromineToolMaterials.UNIVITE, 1, -2.8f, BASIC_SETTINGS);
 	public static Item UNIVITE_AXE = new AxeItem(AstromineToolMaterials.UNIVITE, 5f, -3.0f, BASIC_SETTINGS);
 	public static Item UNIVITE_SHOVEL = new ShovelItem(AstromineToolMaterials.UNIVITE, 1.5f, -3.0f, BASIC_SETTINGS);
@@ -62,7 +64,7 @@ public class AstromineItems {
 	public static Item STELLUM_CHESTPLATE = new ArmorItem(AstromineArmorMaterials.STELLUM, EquipmentSlot.CHEST, BASIC_SETTINGS);
 	public static Item STELLUM_LEGGINGS = new ArmorItem(AstromineArmorMaterials.STELLUM, EquipmentSlot.LEGS, BASIC_SETTINGS);
 	public static Item STELLUM_BOOTS = new ArmorItem(AstromineArmorMaterials.STELLUM, EquipmentSlot.FEET, BASIC_SETTINGS);
-	
+
 	public static Item GALAXIUM_HELMET = new ArmorItem(AstromineArmorMaterials.GALAXIUM, EquipmentSlot.HEAD, BASIC_SETTINGS);
 	public static Item GALAXIUM_CHESTPLATE = new ArmorItem(AstromineArmorMaterials.GALAXIUM, EquipmentSlot.CHEST, BASIC_SETTINGS);
 	public static Item GALAXIUM_LEGGINGS = new ArmorItem(AstromineArmorMaterials.GALAXIUM, EquipmentSlot.LEGS, BASIC_SETTINGS);
@@ -85,7 +87,7 @@ public class AstromineItems {
 		STELLUM_INGOT = register("stellum_ingot", STELLUM_INGOT);
 		GALAXIUM_FRAGMENT = register("galaxium_fragment", GALAXIUM_FRAGMENT);
 		UNIVITE_INGOT = register("univite_ingot", UNIVITE_INGOT);
-		
+
 		ASTERITE_PICKAXE = register("asterite_pickaxe", ASTERITE_PICKAXE);
 		ASTERITE_AXE = register("asterite_axe", ASTERITE_AXE);
 		ASTERITE_SHOVEL = register("asterite_shovel", ASTERITE_SHOVEL);
@@ -97,7 +99,7 @@ public class AstromineItems {
 		STELLUM_SHOVEL = register("stellum_shovel", STELLUM_SHOVEL);
 		STELLUM_HOE = register("stellum_hoe", STELLUM_HOE);
 		STELLUM_SWORD = register("stellum_sword", STELLUM_SWORD);
-		
+
 		GALAXIUM_PICKAXE = register("galaxium_pickaxe", GALAXIUM_PICKAXE);
 		GALAXIUM_AXE = register("galaxium_axe", GALAXIUM_AXE);
 		GALAXIUM_SHOVEL = register("galaxium_shovel", GALAXIUM_SHOVEL);
@@ -119,7 +121,7 @@ public class AstromineItems {
 		STELLUM_CHESTPLATE = register("stellum_chestplate", STELLUM_CHESTPLATE);
 		STELLUM_LEGGINGS = register("stellum_leggings", STELLUM_LEGGINGS);
 		STELLUM_BOOTS = register("stellum_boots", STELLUM_BOOTS);
-		
+
 		GALAXIUM_HELMET = register("galaxium_helmet", GALAXIUM_HELMET);
 		GALAXIUM_CHESTPLATE = register("galaxium_chestplate", GALAXIUM_CHESTPLATE);
 		GALAXIUM_LEGGINGS = register("galaxium_leggings", GALAXIUM_LEGGINGS);
@@ -142,7 +144,7 @@ public class AstromineItems {
 	 * @return Item instanced registered
 	 */
 	public static <T extends Item> T register(String name, T item) {
-		return register(AstromineCommon.id(name), item);
+		return register(AstromineCommon.identifier(name), item);
 	}
 
 	/**

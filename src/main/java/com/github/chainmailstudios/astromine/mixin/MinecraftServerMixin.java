@@ -1,19 +1,9 @@
 package com.github.chainmailstudios.astromine.mixin;
 
-import java.util.Map;
-import java.util.concurrent.Executor;
-
 import com.github.chainmailstudios.astromine.world.AstromineDimensionType;
-import com.github.chainmailstudios.astromine.world.gen.AstromineBiomeSource;
-import com.github.chainmailstudios.astromine.world.gen.AstromineChunkGenerator;
+import com.github.chainmailstudios.astromine.world.generation.AstromineBiomeSource;
+import com.github.chainmailstudios.astromine.world.generation.AstromineChunkGenerator;
 import com.google.common.collect.ImmutableList;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.ServerWorld;
@@ -28,20 +18,33 @@ import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.GeneratorOptions;
 import net.minecraft.world.level.UnmodifiableLevelProperties;
 import net.minecraft.world.level.storage.LevelStorage;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.Map;
+import java.util.concurrent.Executor;
 
 @Mixin(MinecraftServer.class)
 public class MinecraftServerMixin {
 	@Shadow
-	protected @Final RegistryTracker.Modifiable dimensionTracker;
+	protected @Final
+	RegistryTracker.Modifiable dimensionTracker;
 	@Shadow
-	private @Final Map<RegistryKey<DimensionType>, ServerWorld> worlds;
+	private @Final
+	Map<RegistryKey<DimensionType>, ServerWorld> worlds;
 	@Shadow
 	protected @Final
 	SaveProperties saveProperties;
 	@Shadow
-	protected @Final LevelStorage.Session session;
+	protected @Final
+	LevelStorage.Session session;
 	@Shadow
-	private @Final Executor workerExecutor;
+	private @Final
+	Executor workerExecutor;
 
 	@Inject(method = "createWorlds", at = @At("HEAD"))
 	protected void createWorlds(WorldGenerationProgressListener listener, CallbackInfo callback) {
