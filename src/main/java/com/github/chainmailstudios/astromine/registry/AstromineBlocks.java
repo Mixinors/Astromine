@@ -2,9 +2,12 @@ package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.AstromineOreBlock;
+import com.github.chainmailstudios.astromine.common.block.HolographicBridgeBlock;
+import com.github.chainmailstudios.astromine.common.block.HolographicBridgeInvisibleBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
 import net.minecraft.item.BlockItem;
@@ -14,6 +17,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class AstromineBlocks {
+	public static Block HOLOGRAPHIC_BRIDGE = register("holographic_bridge", new HolographicBridgeBlock());
+	public static Block HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK = register("holographic_bridge_invisible", new HolographicBridgeInvisibleBlock());
+
 	public static Block ASTERITE_ORE = new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(40, 1000).sounds(BlockSoundGroup.STONE));
 	public static Block METITE_ORE = new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE));
 	public static Block STELLUM_ORE = new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(25, 80).sounds(BlockSoundGroup.STONE));
