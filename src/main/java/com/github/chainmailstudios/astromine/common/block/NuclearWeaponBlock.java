@@ -26,7 +26,7 @@ public class NuclearWeaponBlock extends Block {
 	private void tryDetonate(World world, BlockPos pos) {
 		if(world.isReceivingRedstonePower(pos)) {
 			RegionalWorldAccess access = new RegionalWorldAccess(world, pos);
-			LargeExplosionAlgorithm.explode(access, pos.getX(), pos.getY(), pos.getZ(), 100);
+			LargeExplosionAlgorithm.explode(access, pos.getX(), pos.getY(), pos.getZ(), 250);
 		}
 	}
 }

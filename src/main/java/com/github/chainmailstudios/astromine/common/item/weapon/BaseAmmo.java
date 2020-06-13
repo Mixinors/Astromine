@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.common.weapon;
+package com.github.chainmailstudios.astromine.common.item.weapon;
 
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;

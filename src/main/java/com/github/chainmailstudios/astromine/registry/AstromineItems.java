@@ -1,14 +1,11 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.item.HolographicConnector;
-import com.github.chainmailstudios.astromine.common.item.SuperSpaceSlimeShooterItem;
-import com.github.chainmailstudios.astromine.common.item.UncoloredSpawnEggItem;
-import com.github.chainmailstudios.astromine.common.material.AstromineArmorMaterials;
-import com.github.chainmailstudios.astromine.common.material.AstromineToolMaterials;
-import com.github.chainmailstudios.astromine.common.weapon.variant.Weaponry;
-import com.github.chainmailstudios.astromine.common.weapon.variant.ammo.Ammunition;
-import com.github.chainmailstudios.astromine.common.item.FireExtinguisher;
+import com.github.chainmailstudios.astromine.common.item.*;
+import com.github.chainmailstudios.astromine.common.item.tool.AstromineToolMaterials;
+import com.github.chainmailstudios.astromine.common.item.weapon.variant.Weaponry;
+import com.github.chainmailstudios.astromine.common.item.weapon.variant.ammo.Ammunition;
+
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;

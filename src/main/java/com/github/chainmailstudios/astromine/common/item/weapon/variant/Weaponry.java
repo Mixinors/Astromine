@@ -1,8 +1,7 @@
-package com.github.chainmailstudios.astromine.common.weapon.variant;
+package com.github.chainmailstudios.astromine.common.item.weapon.variant;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.weapon.BaseWeapon;
-import com.github.chainmailstudios.astromine.common.weapon.Weapon;
+import com.github.chainmailstudios.astromine.common.item.weapon.BaseWeapon;
 import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.github.chainmailstudios.astromine.registry.AstromineSounds;
@@ -13,7 +12,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
 public class Weaponry {
-	public static final class ScarH extends BaseWeapon implements Weapon {
+	public static final class ScarH extends BaseWeapon {
 		public static final Item.Settings SETTINGS = new Item.Settings().fireproof().maxCount(1).group(AstromineItemGroups.ASTROMINE);
 
 		public static final Identifier TEXTURE = new Identifier(AstromineCommon.MOD_ID, "textures/entity/projectiles/bullet.png");
@@ -83,7 +82,7 @@ public class Weaponry {
 		}
 	}
 
-	public static final class BarretM98B extends BaseWeapon implements Weapon {
+	public static final class BarretM98B extends BaseWeapon {
 		public static final Item.Settings SETTINGS = new Item.Settings().fireproof().maxCount(1).group(AstromineItemGroups.ASTROMINE);
 
 		public static final Identifier TEXTURE = new Identifier(AstromineCommon.MOD_ID, "textures/entity/projectiles/bullet.png");
