@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine;
 
+import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityRenderers;
 import com.github.chainmailstudios.astromine.registry.AstromineEntityRenderers;
 import com.github.chainmailstudios.astromine.registry.AstromineSounds;
 
@@ -18,6 +19,7 @@ public class AstromineClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		AstromineEntityRenderers.initialize();
+		AstromineBlockEntityRenderers.initialize();
 		AstromineSounds.initialize();
 		AstromineParticles.initialize();
 

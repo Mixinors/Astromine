@@ -1,14 +1,16 @@
 package com.github.chainmailstudios.astromine.tool;
 
+import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FireBlock;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
@@ -17,11 +19,9 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import java.util.stream.Stream;
-
 // TODO: Extinguish entities.
 public class FireExtinguisher extends Item {
-	public static final Item.Settings SETTINGS = new Item.Settings().maxCount(1);
+	public static final Item.Settings SETTINGS = new Item.Settings().maxCount(1).group(AstromineItemGroups.ASTROMINE);
 
 	public FireExtinguisher() {
 		super(SETTINGS);
@@ -55,6 +55,24 @@ public class FireExtinguisher extends Item {
 					world.setBlockState(position, Blocks.AIR.getDefaultState()));
 		});
 
+		world.getEntities(null, new Box(result.getBlockPos()).expand(1)).forEach(entity -> {
+			entity.setFireTicks(0);
+		});
+
 		return super.use(world, user, hand);
+	}
+
+	@Override
+	public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
+		use(user.world, user, hand);
+
+		return ActionResult.PASS;
+	}
+
+	@Override
+	public ActionResult useOnBlock(ItemUsageContext context) {
+		use(context.getWorld(), context.getPlayer(), context.getHand());
+
+		return ActionResult.PASS;
 	}
 }
