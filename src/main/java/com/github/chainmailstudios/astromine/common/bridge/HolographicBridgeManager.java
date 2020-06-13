@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
@@ -28,34 +29,51 @@ public class HolographicBridgeManager {
 			Block.createCuboidShape(0, 15, 0, 16, 16, 16)
 	};
 
-	public static final Object2ObjectArrayMap<BlockView, Object2IntArrayMap<BlockPos>> LEVELS = new Object2ObjectArrayMap<>();
+	public static final Object2ObjectArrayMap<BlockView, Object2ObjectArrayMap<BlockPos, Integer[]>> LEVELS = new Object2ObjectArrayMap<>();
 
-	public static void add(BlockView world, BlockPos position, int level) {
-		LEVELS.computeIfAbsent(world, (key) -> new Object2IntArrayMap<>());
+	public static void add(BlockView world, BlockPos position, int lA, int lB) {
+		LEVELS.computeIfAbsent(world, (key) -> new Object2ObjectArrayMap<>());
 
-		LEVELS.get(world).put(position, level);
+		LEVELS.get(world).put(position, new Integer[]{lA, lB});
 	}
 
 	public static void remove(BlockView world, BlockPos position) {
-		LEVELS.computeIfAbsent(world, (key) -> new Object2IntArrayMap<>());
+		LEVELS.computeIfAbsent(world, (key) -> new Object2ObjectArrayMap<>());
 
-		LEVELS.get(world).removeInt(position);
+		LEVELS.get(world).remove(position);
 	}
 
-	public static int get(BlockView world, BlockPos position) {
-		LEVELS.computeIfAbsent(world, (key) -> new Object2IntArrayMap<>());
+	public static Integer[] get(BlockView world, BlockPos position) {
+		LEVELS.computeIfAbsent(world, (key) -> new Object2ObjectArrayMap<>());
 
-		return LEVELS.get(world).getOrDefault(position, Integer.MIN_VALUE);
+		return LEVELS.get(world).getOrDefault(position, new Integer[]{Integer.MIN_VALUE, Integer.MIN_VALUE});
 	}
 
 	public static VoxelShape getShape(BlockView world, BlockPos position) {
-		int level = get(world, position);
-		return level == Integer.MIN_VALUE ? SHAPES[15] : getShape(15 - level);
+		Integer[] levels = get(world, position);
+		return levels[0] == Integer.MIN_VALUE ? VoxelShapes.fullCube(): getShape(levels);
 	}
 
-	private static VoxelShape getShape(int level) {
-		if (level < 0) level = Math.abs(level);
-		if (level > 16) level = (15 - level % 16);
-		return SHAPES[Math.max(0, level - 1)];
+	private static VoxelShape getShape(Integer[] levels) {
+		float t = levels[0];
+		float b = levels[1];
+
+		while (t >= 16) {
+			t -= 16;
+			b -= 16;
+		}
+
+		float y = t;
+
+		float dX = 16f / (t - b);
+
+		VoxelShape shape = VoxelShapes.empty();
+
+		for (float x = 16; x > 0; x -= dX) {
+			shape = VoxelShapes.union(shape, Block.createCuboidShape(0, y, 0, x, y + 1, 16));
+			y += 1;
+		}
+
+		return shape;
 	}
 }
