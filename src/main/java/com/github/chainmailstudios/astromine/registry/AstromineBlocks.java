@@ -6,6 +6,7 @@ import com.github.chainmailstudios.astromine.common.block.HolographicBridgeBlock
 import com.github.chainmailstudios.astromine.common.block.HolographicBridgeInvisibleBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
+import com.github.chainmailstudios.astromine.common.block.NuclearWeaponBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
@@ -19,6 +20,8 @@ public class AstromineBlocks {
 	public static Block HOLOGRAPHIC_BRIDGE = register("holographic_bridge", new HolographicBridgeBlock());
 	public static Block HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK = register("holographic_bridge_invisible", new HolographicBridgeInvisibleBlock());
 
+	public static final Block NUCLEAR_WEAPON = register("nuclear_weapon", new NuclearWeaponBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(80, 1300).sounds(BlockSoundGroup.STONE)));
+  
 	public static Block ASTERITE_ORE = new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(40, 1000).sounds(BlockSoundGroup.STONE));
 	public static Block METITE_ORE = new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE));
 	public static Block STELLUM_ORE = new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(25, 80).sounds(BlockSoundGroup.STONE));
@@ -29,6 +32,9 @@ public class AstromineBlocks {
 	public static Block STELLUM_BLOCK = new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.YELLOW).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(10, 80).sounds(BlockSoundGroup.METAL));
 	public static Block GALAXIUM_BLOCK = new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.LIME).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(50, 1300).sounds(BlockSoundGroup.METAL));
 	public static Block UNIVITE_BLOCK = new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.PURPLE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 6).strength(80, 2000).sounds(BlockSoundGroup.METAL));
+
+	public static Block METEOR_STONE = register("meteor_stone", new Block(FabricBlockSettings.of(Material.STONE)), AstromineItems.BASIC_SETTINGS);
+	public static Block ASTEROID_sTONE = register("asteroid_stone", new Block(FabricBlockSettings.of(Material.STONE)), AstromineItems.BASIC_SETTINGS);
 
 	public static void initialize() {
 		ASTERITE_ORE = register("asterite_ore", ASTERITE_ORE, AstromineItems.BASIC_SETTINGS);
