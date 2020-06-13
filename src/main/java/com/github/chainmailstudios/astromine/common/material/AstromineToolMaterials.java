@@ -1,11 +1,12 @@
 package com.github.chainmailstudios.astromine.common.material;
 
+import java.util.function.Supplier;
+
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
+
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Lazy;
-
-import java.util.function.Supplier;
 
 public class AstromineToolMaterials {
 	public static final AstromineToolMaterial ASTERITE = new AstromineToolMaterial(5, 2643, 10f, 5.0f, 20, () -> Ingredient.ofItems(AstromineItems.ASTERITE_FRAGMENT));
@@ -30,26 +31,32 @@ public class AstromineToolMaterials {
 			this.repairIngredient = new Lazy(repairIngredient);
 		}
 
+		@Override
 		public int getDurability() {
 			return this.itemDurability;
 		}
 
+		@Override
 		public float getMiningSpeedMultiplier() {
 			return this.miningSpeed;
 		}
 
+		@Override
 		public float getAttackDamage() {
 			return this.attackDamage;
 		}
 
+		@Override
 		public int getMiningLevel() {
 			return this.miningLevel;
 		}
 
+		@Override
 		public int getEnchantability() {
 			return this.enchantability;
 		}
 
+		@Override
 		public Ingredient getRepairIngredient() {
 			return this.repairIngredient.get();
 		}
