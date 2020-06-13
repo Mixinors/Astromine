@@ -91,40 +91,31 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 
 		if (distance == 0) return;
 
-		segments = (ArrayList<Vector3f>) LineUtilities.getBezierSegments(bOP.add(0, 1, 0), nCP.add(0, 1, 0), distance * 5);
+		segments = (ArrayList<Vector3f>) LineUtilities.getBezierSegments(bOP.add(0, 1, 0), nCP.add(0, 1, 0), distance * 2);
 
 		members = new ArrayList<>();
 
 		Vector3f o = segments.get(0);
 
-		Vector3f p = o;
-
 		for (Vector3f v : segments) {
 			if ((bOP.getX() != v.getX() || bOP.getZ() != v.getZ()) && (bCP.getX() != v.getX() || bCP.getZ() != v.getZ())) {
-				BlockPos nP = new BlockPos(v.getX(), Math.min(bOP.getY(), v.getY()), v.getZ());
+				BlockPos nP = new BlockPos(v.getX(), Math.min(bCP.getY(), v.getY()), v.getZ());
 
 				float f;
 
-				//if (o.getY() - p.getY() > 1) {
-					f = o.getY() - p.getY();
+				if (o.getY() >= v.getY()) {
+					f = o.getY() - v.getY();
+				} else {
+					f = v.getY() - o.getY();
+				}
 
-					if (f > 0) {
-						f  -= (int) f;
-					}
-				//} else {
-				//	f = o.getY() - p.getY();
-				//}
-
-				HolographicBridgeManager.add(world, nP, (int) Math.ceil(16f * Math.max(0.0625, f)));
+				HolographicBridgeManager.add(world, nP, (int) (16f * f));
 
 				world.setBlockState(nP, AstromineBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
 
 				members.add(nP);
 			}
-
-			p = v;
 		}
-
 	}
 
 	public void destroyBridge() {

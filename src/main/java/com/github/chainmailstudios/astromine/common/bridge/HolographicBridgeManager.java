@@ -50,12 +50,19 @@ public class HolographicBridgeManager {
 
 	public static VoxelShape getShape(BlockView world, BlockPos position) {
 		int level = get(world, position);
-		return level == Integer.MIN_VALUE ? SHAPES[15] : getShape(15 - level);
+		return level == Integer.MIN_VALUE ? SHAPES[15] : getShape(level);
 	}
 
 	private static VoxelShape getShape(int level) {
-		if (level < 0) level = Math.abs(level);
-		if (level > 16) level = (15 - level % 16);
+		if (level < 0) {
+			if (level < -16) {
+				level = level % -16;
+			}
+			level = 15 - level;
+		} else if (level > 16) {
+			level = level % 16;
+		}
+
 		return SHAPES[Math.max(0, level - 1)];
 	}
 }
