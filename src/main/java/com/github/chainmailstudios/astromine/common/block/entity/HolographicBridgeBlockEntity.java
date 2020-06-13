@@ -73,37 +73,36 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 	public void buildBridge() {
 		if (child == null) return;
 
-		BlockPos childPosition = getChild().getPos();
-		BlockPos ourPosition = getPos();
+		BlockPos bCP = getChild().getPos();
+		BlockPos bOP = getPos();
+
+		BlockPos nCP = bCP;
+		BlockPos nOP = bOP;
 
 		Direction childDirection = getChild().getCachedState().get(HorizontalFacingBlock.FACING);
 		Direction ourDirection = getCachedState().get(HorizontalFacingBlock.FACING);
 
 		if (childDirection == Direction.EAST) {
-			childPosition = childPosition.add(1, 0, 0);
+			nCP = nCP.add(1, 0, 0);
 		} else if (childDirection == Direction.SOUTH) {
-			childPosition = childPosition.add(0, 0, 1);
+			nCP = nCP.add(0, 0, 1);
 		}
 
 		int distance = (int) Math.sqrt(getPos().getSquaredDistance(getChild().getPos()));
 
 		if (distance == 0) return;
 
-		segments = (ArrayList<Vector3f>) LineUtilities.getBezierSegments(ourPosition, childPosition, distance * 5);
+		segments = (ArrayList<Vector3f>) LineUtilities.getBezierSegments(nOP, nCP, distance * 5);
 
 		Vector3f origin = segments.get(0);
 
 		Vector3f previous = origin;
 
 		for (int k = 0; k < segments.size(); ++k) {
-			Vector3f vector = segments.get(k);
+			Vector3f v = segments.get(k);
 
-			Vec3i vec3iA = new Vec3i(ourPosition.getX(), ourPosition.getY(), ourPosition.getZ());
-			Vec3i vec3iB = new Vec3i(childPosition.getX(), childPosition.getY(), childPosition.getZ());
-			Vec3i vec3iC = new Vec3i(vector.getX(), vector.getY(), vector.getZ());
-
-
-				BlockPos newPosition = new BlockPos(vector.getX(), vector.getY() + 1, vector.getZ());
+			if ((bOP.getX() != v.getX() || bOP.getZ() != v.getZ()) && (bCP.getX() != v.getX() || bCP.getZ() != v.getZ())) {
+				BlockPos newPosition = new BlockPos(v.getX(), v.getY() + 1, v.getZ());
 
 				float percentage;
 
@@ -116,8 +115,9 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 				HolographicBridgeManager.add(world, newPosition, (int) Math.ceil(16f * Math.max(0.0625, percentage)));
 
 				world.setBlockState(newPosition, AstromineBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
+			}
 
-			previous = vector;
+			previous = v;
 		}
 
 	}
