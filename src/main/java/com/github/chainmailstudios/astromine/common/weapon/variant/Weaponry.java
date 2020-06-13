@@ -1,18 +1,18 @@
 package com.github.chainmailstudios.astromine.common.weapon.variant;
 
 import com.github.chainmailstudios.astromine.common.weapon.BaseWeapon;
-import com.github.chainmailstudios.astromine.common.weapon.WeaponElement;
+import com.github.chainmailstudios.astromine.common.weapon.Weapon;
+import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.github.chainmailstudios.astromine.registry.AstromineSounds;
-
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.Item;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.TranslatableText;
 
-public class Weapon {
-	public static final class ScarH extends BaseWeapon implements WeaponElement {
-		public static final Item.Settings SETTINGS = new Item.Settings().fireproof().maxCount(1);
+public class Weaponry {
+	public static final class ScarH extends BaseWeapon implements Weapon {
+		public static final Item.Settings SETTINGS = new Item.Settings().fireproof().maxCount(1).group(AstromineItemGroups.ASTROMINE);
 
 		public ScarH() {
 			super(SETTINGS);
@@ -29,6 +29,16 @@ public class Weapon {
 		}
 
 		@Override
+		public long getShotInterval() {
+			return 6;
+		}
+
+		@Override
+		public float getRecoil() {
+			return 50f;
+		}
+
+		@Override
 		public float getDistance() {
 			return 256;
 		}
@@ -39,13 +49,8 @@ public class Weapon {
 		}
 
 		@Override
-		public float getRecoil() {
-			return 50f;
-		}
-
-		@Override
-		public long getInterval() {
-			return 6;
+		public long getReloadInterval() {
+			return 3000;
 		}
 
 		@Override
@@ -69,8 +74,8 @@ public class Weapon {
 		}
 	}
 
-	public static final class BarretM98B extends BaseWeapon implements WeaponElement {
-		public static final Item.Settings SETTINGS = new Item.Settings().fireproof().maxCount(1);
+	public static final class BarretM98B extends BaseWeapon implements Weapon {
+		public static final Item.Settings SETTINGS = new Item.Settings().fireproof().maxCount(1).group(AstromineItemGroups.ASTROMINE);
 
 		public BarretM98B() {
 			super(SETTINGS);
@@ -87,6 +92,16 @@ public class Weapon {
 		}
 
 		@Override
+		public long getShotInterval() {
+			return 2000;
+		}
+
+		@Override
+		public float getRecoil() {
+			return 100f;
+		}
+
+		@Override
 		public float getDistance() {
 			return 1024;
 		}
@@ -97,13 +112,8 @@ public class Weapon {
 		}
 
 		@Override
-		public float getRecoil() {
-			return 100f;
-		}
-
-		@Override
-		public long getInterval() {
-			return 2000;
+		public long getReloadInterval() {
+			return 6000;
 		}
 
 		@Override
