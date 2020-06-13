@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.common.weapon;
+package com.github.chainmailstudios.astromine.common.item.weapon;
 
 import com.github.chainmailstudios.astromine.common.entity.projectile.BulletEntity;
 import com.github.chainmailstudios.astromine.common.inventory.InventoryComponentFromInventory;
@@ -78,7 +78,7 @@ public abstract class BaseWeapon extends Item implements Weapon {
 				return;
 			}
 
-			if (!world.isClient) {
+			if (!world.isClient && !user.isCreative()) {
 				magazine.damage(1, world.random, (ServerPlayerEntity) user);
 
 				if (magazine.getDamage() >= magazine.getMaxDamage()) {

@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.common.material;
+package com.github.chainmailstudios.astromine.common.item.tool;
 
 import java.util.function.Supplier;
 
