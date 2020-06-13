@@ -1,23 +1,38 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.item.SuperSpaceSlimeShooterItem;
+import com.github.chainmailstudios.astromine.common.item.UncoloredSpawnEggItem;
 import com.github.chainmailstudios.astromine.common.material.AstromineArmorMaterials;
 import com.github.chainmailstudios.astromine.common.material.AstromineToolMaterials;
-import com.github.chainmailstudios.astromine.common.weapon.variant.Weapon;
+import com.github.chainmailstudios.astromine.common.weapon.variant.Weaponry;
 import com.github.chainmailstudios.astromine.common.weapon.variant.ammo.Ammunition;
+import com.github.chainmailstudios.astromine.tool.FireExtinguisher;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class AstromineItems {
+
+	public static final UncoloredSpawnEggItem SPACE_SLIME_SPAWN_EGG = register("space_slime_spawn_egg", new UncoloredSpawnEggItem(
+			AstromineEntities.SPACE_SLIME,
+			new Item.Settings().group(AstromineItemGroups.ASTROMINE)
+	));
+
+	public static final SuperSpaceSlimeShooterItem SUPER_SPACE_SLIME_SHOOTER = register("super_space_slime_shooter", new SuperSpaceSlimeShooterItem(new Item.Settings().group(AstromineItemGroups.ASTROMINE)));
+	public static final Item SPACE_SLIME_BALL = register("space_slime_ball", new Item(new Item.Settings().group(AstromineItemGroups.ASTROMINE)));
+
 	// Weaponry
-	public static final Item SCAR_H = register("scar_h", new Weapon.ScarH());
-	public static final Item BARRET_M98B = register("barret_m98b", new Weapon.BarretM98B());
+	public static final Item SCAR_H = register("scar_h", new Weaponry.ScarH());
+	public static final Item BARRET_M98B = register("barret_m98b", new Weaponry.BarretM98B());
 
 	// Ammunition
 	public static final Item NATO_7_62_X_51_MM = register("nato_7_62x51mm", new Ammunition.Nato762x51mm());
 	public static final Item LAPUA_8_6_X_70_MM = register("lapua_8_6x70mm", new Ammunition.Lapua86x70mm());
+
+	// Tooling
+	public static final Item FIRE_EXTINGUISHER = register("fire_extinguisher", new FireExtinguisher());
 
 	public static final Item.Settings BASIC_SETTINGS = new Item.Settings().group(AstromineItemGroups.ASTROMINE);
 
@@ -79,6 +94,8 @@ public class AstromineItems {
 	public static Item SPACE_SUIT_CHEST = new ArmorItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.CHEST, BASIC_SETTINGS);
 	public static Item SPACE_SUIT_PANTS = new ArmorItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.LEGS, BASIC_SETTINGS);
 	public static Item SPACE_BOOTS = new ArmorItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, BASIC_SETTINGS);
+
+	public static final Item YEAST = register("yeest", new Item(new Item.Settings()));
 
 	public static void initialize() {
 		ASTERITE_FRAGMENT = register("asterite_fragment", ASTERITE_FRAGMENT);

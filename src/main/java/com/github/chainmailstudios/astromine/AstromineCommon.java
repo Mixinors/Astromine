@@ -22,14 +22,13 @@ public class AstromineCommon implements ModInitializer {
 		AstromineItems.initialize();
 		AstromineBlocks.initialize();
 		AstromineEntities.initialize();
-
+		AstrominePotions.init();
 		AstromineBiomes.initialize();
 		AstromineChunkGenerators.initialize();
-
 		AstromineServerPackets.initialize();
 	}
 
-	public static Identifier identifier(String path) {
-		return new Identifier(MOD_ID, path);
+	public static Identifier identifier(String name) {
+		return new Identifier(MOD_ID, name);
 	}
 }

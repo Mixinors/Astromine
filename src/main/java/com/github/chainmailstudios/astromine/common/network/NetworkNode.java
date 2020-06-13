@@ -9,23 +9,23 @@ public class NetworkNode {
 		return new NetworkNode().setPosition(position);
 	}
 
+	public BlockPos getPosition() {
+		return this.position;
+	}
+
 	public NetworkNode setPosition(BlockPos position) {
 		this.position = position;
 		return this;
 	}
 
-	public BlockPos getPosition() {
-		return position;
+	@Override
+	public int hashCode() {
+		return this.position.hashCode();
 	}
 
 	@Override
 	public boolean equals(Object object) {
 		if (!(object instanceof NetworkNode)) return false;
-		return ((NetworkNode) object).position.equals(position);
-	}
-
-	@Override
-	public int hashCode() {
-		return position.hashCode();
+		return ((NetworkNode) object).position.equals(this.position);
 	}
 }

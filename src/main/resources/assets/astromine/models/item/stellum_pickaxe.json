@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "astromine:item/stellum_pickaxe"
+    "layer0": "astromine:item/tool/stellum_pickaxe"
   }
 }

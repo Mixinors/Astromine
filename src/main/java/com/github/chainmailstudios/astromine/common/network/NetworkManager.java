@@ -1,10 +1,11 @@
 package com.github.chainmailstudios.astromine.common.network;
 
+import java.util.Set;
+
 import com.google.common.collect.Sets;
+
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
-
-import java.util.Set;
 
 public class NetworkManager implements Tickable {
 	public static final NetworkManager INSTANCE = new NetworkManager();
@@ -15,15 +16,15 @@ public class NetworkManager implements Tickable {
 	}
 
 	public void add(NetworkController controller) {
-		controllers.add(controller);
+		this.controllers.add(controller);
 	}
 
 	public void remove(NetworkController controller) {
-		controllers.remove(controller);
+		this.controllers.remove(controller);
 	}
 
 	public NetworkController get(NetworkTicker type, BlockPos position) {
-		for (NetworkController controller : controllers) {
+		for (NetworkController controller : this.controllers) {
 			if (controller.getType() == type && controller.nodes.contains(NetworkNode.of(position))) return controller;
 		}
 
@@ -32,6 +33,6 @@ public class NetworkManager implements Tickable {
 
 	@Override
 	public void tick() {
-		controllers.forEach(NetworkController::tick);
+		this.controllers.forEach(NetworkController::tick);
 	}
 }
