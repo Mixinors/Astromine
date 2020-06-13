@@ -70,6 +70,7 @@ public class ChunkSerializerMixin {
 		@Override
 		public void astromine_yeet(int subchunk) {
 			this.sections[subchunk] = WorldChunk.EMPTY_SECTION;
+
 		}
 
 		@Override

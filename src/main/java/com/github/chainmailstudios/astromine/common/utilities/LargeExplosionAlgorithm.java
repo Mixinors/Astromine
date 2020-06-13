@@ -4,7 +4,11 @@ import com.github.chainmailstudios.astromine.access.WorldChunkAccess;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
+import net.minecraft.server.world.ServerChunkManager;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.ChunkSectionPos;
+import net.minecraft.world.chunk.ChunkManager;
 
 public class LargeExplosionAlgorithm {
 	private static final int FLOOR_MASK = ~15;
@@ -46,9 +50,16 @@ public class LargeExplosionAlgorithm {
 				// check if chunk is in area
 				int box = cox * 16, boz = coz * 16;
 				// if we can skip the entire chunk, do so
-				if(touchesOrIsIn(box, 0, boz, box + 15, 255, boz + 15, radius))
+				if(touchesOrIsIn(box, 0, boz, box + 15, 255, boz + 15, radius)) {
 					forSubchunks(access, box, boz, x, y, z, radius);
-				// todo send packet
+					ChunkManager manager = access.getWorld().getChunkManager();
+					if(manager instanceof ServerChunkManager) {
+						int cx = (x >> 4) + cox, cz = (z >> 4) + coz;
+						((ServerChunkManager) manager).threadedAnvilChunkStorage.getPlayersWatchingChunk(new ChunkPos(cx, cz), false).forEach(s -> {
+							s.networkHandler.sendPacket(new ChunkDataS2CPacket(access.getChunk(cx, cz), 65535));
+						});
+					}
+				}
 			}
 		}
 	}
@@ -60,9 +71,9 @@ public class LargeExplosionAlgorithm {
 			int by = i * 16;
 			if(encompassed(bx, by, bz, bx + 15, by + 15, bz + 15, radius)) {
 				int rx = (bx + x) >> 4, rz = (bz + z) >> 4;
-				System.out.printf("yeeted %d, %d, %d\n", (bx + x) >> 4, i, (bz + z) >> 4);
-				((WorldChunkAccess)access.getChunk((bx + x) >> 4, (bz + z) >> 4)).astromine_yeet(i);
-				access.getWorld().getChunkManager().getLightingProvider().updateSectionStatus(ChunkSectionPos.from(rx, i, rz), true);
+				System.out.printf("yeeted %d, %d, %d\n", rx, i, rz);
+				((WorldChunkAccess)access.getChunk(rx, rz)).astromine_yeet(i);
+				//access.getWorld().getChunkManager().getLightingProvider().updateSectionStatus(ChunkSectionPos.from(rx, i, rz), true);
 			}
 		}
 	}
