@@ -1,11 +1,8 @@
 package com.github.chainmailstudios.astromine.client.render.block;
 
-import com.github.chainmailstudios.astromine.client.BaseRenderer;
 import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeBlockEntity;
-import com.github.chainmailstudios.astromine.common.utilities.LineUtilities;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
@@ -13,13 +10,11 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import spinnery.client.render.layer.InterfaceLayer;
 import spinnery.widget.api.Color;
 
 import java.util.Collection;
-import java.util.Set;
 
 public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<HolographicBridgeBlockEntity> {
 	public HolographicBridgeBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {

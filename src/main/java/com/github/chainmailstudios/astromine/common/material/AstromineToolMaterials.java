@@ -51,7 +51,7 @@ public class AstromineToolMaterials {
 		}
 
 		public Ingredient getRepairIngredient() {
-			return (Ingredient) this.repairIngredient.get();
+			return this.repairIngredient.get();
 		}
 	}
 }

@@ -2,7 +2,6 @@ package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeBlockEntity;
-import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;

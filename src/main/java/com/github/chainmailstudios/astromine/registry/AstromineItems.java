@@ -3,7 +3,7 @@ package com.github.chainmailstudios.astromine.registry;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.material.AstromineArmorMaterials;
 import com.github.chainmailstudios.astromine.common.material.AstromineToolMaterials;
-import com.github.chainmailstudios.astromine.common.weapon.variant.Weapon;
+import com.github.chainmailstudios.astromine.common.weapon.variant.Weaponry;
 import com.github.chainmailstudios.astromine.common.weapon.variant.ammo.Ammunition;
 import com.github.chainmailstudios.astromine.tool.FireExtinguisher;
 import net.minecraft.entity.EquipmentSlot;
@@ -13,8 +13,8 @@ import net.minecraft.util.registry.Registry;
 
 public class AstromineItems {
 	// Weaponry
-	public static final Item SCAR_H = register("scar_h", new Weapon.ScarH());
-	public static final Item BARRET_M98B = register("barret_m98b", new Weapon.BarretM98B());
+	public static final Item SCAR_H = register("scar_h", new Weaponry.ScarH());
+	public static final Item BARRET_M98B = register("barret_m98b", new Weaponry.BarretM98B());
 
 	// Ammunition
 	public static final Item NATO_7_62_X_51_MM = register("nato_7_62x51mm", new Ammunition.Nato762x51mm());

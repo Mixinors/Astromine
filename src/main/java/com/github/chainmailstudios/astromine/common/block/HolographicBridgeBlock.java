@@ -1,15 +1,12 @@
 package com.github.chainmailstudios.astromine.common.block;
 
 import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeBlockEntity;
-import com.github.chainmailstudios.astromine.common.bridge.HolographicBridgeManager;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 
 public class HolographicBridgeBlock extends HorizontalFacingBlock implements BlockEntityProvider {

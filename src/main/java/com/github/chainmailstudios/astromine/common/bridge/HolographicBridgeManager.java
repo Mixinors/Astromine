@@ -4,13 +4,9 @@ import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class HolographicBridgeManager {
-	private static final VoxelShape[] SHAPES = new VoxelShape[] {
+	private static final VoxelShape[] SHAPES = new VoxelShape[]{
 			Block.createCuboidShape(0, 0, 0, 16, 1, 16),
 			Block.createCuboidShape(0, 1, 0, 16, 2, 16),
 			Block.createCuboidShape(0, 2, 0, 16, 3, 16),

@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public abstract class BaseAmmo extends Item implements AmmoElement {
+public abstract class BaseAmmo extends Item implements Ammo {
 	public BaseAmmo(Settings settings) {
 		super(settings);
 	}

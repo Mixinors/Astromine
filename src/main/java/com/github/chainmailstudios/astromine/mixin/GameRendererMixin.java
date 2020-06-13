@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.common.weapon.WeaponElement;
+import com.github.chainmailstudios.astromine.common.weapon.Weapon;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
@@ -34,8 +34,8 @@ public class GameRendererMixin {
 			Item heldItem = MinecraftClient.getInstance().player.getMainHandStack().getItem();
 
 
-			if (heldItem instanceof WeaponElement) {
-				double weaponFov = ((WeaponElement) heldItem).getZoom();
+			if (heldItem instanceof Weapon) {
+				double weaponFov = ((Weapon) heldItem).getZoom();
 
 				if (gameFov > weaponFov) {
 					gameFov = MathHelper.lerp(tickDelta / 10, lastFov, weaponFov);
@@ -48,7 +48,7 @@ public class GameRendererMixin {
 		} else {
 			Item heldItem = MinecraftClient.getInstance().player.getMainHandStack().getItem();
 
-			if (heldItem instanceof WeaponElement) {
+			if (heldItem instanceof Weapon) {
 				if (isTransitioning && lastFov < gameFov) {
 					gameFov = MathHelper.lerp(tickDelta / 10, lastFov, gameFov);
 				} else {
@@ -68,8 +68,8 @@ public class GameRendererMixin {
 		if (MinecraftClient.getInstance().options.keyUse.isPressed()) {
 			Item heldItem = MinecraftClient.getInstance().player.getMainHandStack().getItem();
 
-			if (heldItem instanceof WeaponElement) {
-				WeaponElement weapon = (WeaponElement) heldItem;
+			if (heldItem instanceof Weapon) {
+				Weapon weapon = (Weapon) heldItem;
 
 				Vector3f translation = weapon.getTranslation();
 
