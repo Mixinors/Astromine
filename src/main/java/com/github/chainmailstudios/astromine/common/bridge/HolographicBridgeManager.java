@@ -58,6 +58,11 @@ public class HolographicBridgeManager {
 		float t = levels[0];
 		float b = levels[1];
 
+		while (t >= 16) {
+			t -= 16;
+			b -= 16;
+		}
+
 		float y = t;
 
 		float dX = 16f / (t - b);
