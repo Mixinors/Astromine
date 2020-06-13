@@ -54,14 +54,7 @@ public class HolographicBridgeManager {
 	}
 
 	private static VoxelShape getShape(int level) {
-		if (level < 0) {
-			if (level < -16) {
-				level = level % -16;
-			}
-			level = 15 - level;
-		} else if (level > 16) {
-			level = level % 16;
-		}
+
 
 		return SHAPES[Math.max(0, level - 1)];
 	}

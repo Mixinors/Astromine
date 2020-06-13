@@ -97,6 +97,10 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 
 		Vector3f o = segments.get(0);
 
+		BlockPos oP = getPos();
+
+		float oF = 0;
+
 		for (Vector3f v : segments) {
 			if ((bOP.getX() != v.getX() || bOP.getZ() != v.getZ()) && (bCP.getX() != v.getX() || bCP.getZ() != v.getZ())) {
 				BlockPos nP = new BlockPos(v.getX(), Math.min(bCP.getY(), v.getY()), v.getZ());
@@ -109,11 +113,17 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 					f = v.getY() - o.getY();
 				}
 
-				HolographicBridgeManager.add(world, nP, (int) (16f * f));
+				if (!nP.equals(oP)) {
+					oP = nP;
 
-				world.setBlockState(nP, AstromineBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
+					oF = f;
 
-				members.add(nP);
+					HolographicBridgeManager.add(world, nP, (int) (16f * f));
+
+					world.setBlockState(nP, AstromineBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
+
+					members.add(nP);
+				}
 			}
 		}
 	}
