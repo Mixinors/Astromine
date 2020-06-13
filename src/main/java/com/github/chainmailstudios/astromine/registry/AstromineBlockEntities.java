@@ -10,7 +10,7 @@ import net.minecraft.util.registry.Registry;
 import java.util.function.Supplier;
 
 public class AstromineBlockEntities {
-	public static BlockEntityType<HolographicBridgeBlockEntity> HOLOGRAPHIC_BRIDGE = register("holographic_bridge", HolographicBridgeBlockEntity::new, AstromineBlocks.HOLOGRAPHIC_BRIDGE);
+	public static BlockEntityType<HolographicBridgeBlockEntity> HOLOGRAPHIC_BRIDGE = register("holographic_bridge", HolographicBridgeBlockEntity::new, AstromineBlocks.HOLOGRAPHIC_BRIDGE_PROJECTOR);
 
 	public static void initialize() {
 		// Unused.

@@ -12,19 +12,12 @@ import net.minecraft.util.Identifier;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 
 public class BulletEntityRenderer extends ProjectileEntityRenderer<BulletEntity> {
-	public static final Identifier TEXTURE = new Identifier(AstromineCommon.MOD_ID, "textures/entity/projectiles/bullet.png");
-
 	public BulletEntityRenderer(final EntityRenderDispatcher dispatcher, final EntityRendererRegistry.Context context) {
 		super(dispatcher);
 	}
 
 	@Override
 	public Identifier getTexture(BulletEntity entity) {
-		return TEXTURE;
-	}
-
-	@Override
-	public void render(BulletEntity persistentProjectileEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
-		super.render(persistentProjectileEntity, f, g, matrixStack, vertexConsumerProvider, i);
+		return entity.getTexture();
 	}
 }

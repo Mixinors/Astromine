@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.entity.projectile;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.registry.AstromineEntities;
 
 import net.minecraft.block.AbstractGlassBlock;
@@ -10,6 +11,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.crash.CrashException;
 import net.minecraft.util.crash.CrashReport;
 import net.minecraft.util.crash.CrashReportSection;
@@ -18,6 +20,8 @@ import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 
 public class BulletEntity extends PersistentProjectileEntity {
+	public Identifier texture = new Identifier(AstromineCommon.MOD_ID, "textures/entity/projectiles/bullet.png");
+
 	public BulletEntity(World world) {
 		super(AstromineEntities.BULLET_ENTITY_TYPE, world);
 	}
@@ -77,5 +81,13 @@ public class BulletEntity extends PersistentProjectileEntity {
 	@Override
 	protected ItemStack asItemStack() {
 		return ItemStack.EMPTY;
+	}
+
+	public Identifier getTexture() {
+		return texture;
+	}
+
+	public void setTexture(Identifier texture) {
+		this.texture = texture;
 	}
 }

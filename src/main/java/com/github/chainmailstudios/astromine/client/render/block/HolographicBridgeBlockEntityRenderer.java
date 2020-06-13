@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.client.render.block;
 
 import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeBlockEntity;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumer;
@@ -28,10 +29,13 @@ public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<Ho
 
 	@Override
 	public void render(HolographicBridgeBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider provider, int light, int overlay) {
-		if (entity.hasFriend()) {
-			Vec3i posA = entity.getPos();
+		BlockState blockState = entity.getWorld().getBlockState(entity.getPos());
 
-			Direction direction = entity.getWorld().getBlockState(entity.getPos()).get(HorizontalFacingBlock.FACING);
+		if (entity.hasChild() && blockState.getBlock() instanceof HorizontalFacingBlock) {
+			Vec3i posA = entity.getPos();
+			Vec3i posB = entity.getChild().getPos();
+
+			Direction direction = blockState.get(HorizontalFacingBlock.FACING);
 
 			int oX = direction == Direction.NORTH ? 1 : 0;
 			int oZ = direction == Direction.WEST ? 1 : 0;
