@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.common.item.tool;
+package com.github.chainmailstudios.astromine.common.item;
 
 import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
 import net.minecraft.block.BlockState;
@@ -19,7 +19,6 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-// TODO: Extinguish entities.
 public class FireExtinguisher extends Item {
 	public static final Item.Settings SETTINGS = new Item.Settings().maxCount(1).group(AstromineItemGroups.ASTROMINE);
 
@@ -37,7 +36,7 @@ public class FireExtinguisher extends Item {
 
 		for (int i = 0; i < world.random.nextInt(64); ++i) {
 			float r = world.random.nextFloat();
-			world.addParticle(ParticleTypes.LARGE_SMOKE, placeVec.x + thrustVec.x, placeVec.y + thrustVec.y, placeVec.z + thrustVec.z, thrustVec.x * r, thrustVec.y * r, thrustVec.z * r);
+			world.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, placeVec.x + thrustVec.x, placeVec.y + thrustVec.y, placeVec.z + thrustVec.z, thrustVec.x * r, thrustVec.y * r, thrustVec.z * r);
 		}
 
 		thrustVec = thrustVec.multiply(-1);

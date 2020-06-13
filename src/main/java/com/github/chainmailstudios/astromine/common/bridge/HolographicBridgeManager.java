@@ -1,9 +1,12 @@
 package com.github.chainmailstudios.astromine.common.bridge;
 
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 
 public class HolographicBridgeManager {
 	private static final VoxelShape[] SHAPES = new VoxelShape[]{
@@ -25,22 +28,34 @@ public class HolographicBridgeManager {
 			Block.createCuboidShape(0, 15, 0, 16, 16, 16)
 	};
 
-	public static final Object2IntArrayMap<BlockPos> LEVELS = new Object2IntArrayMap<>();
+	public static final Object2ObjectArrayMap<BlockView, Object2IntArrayMap<BlockPos>> LEVELS = new Object2ObjectArrayMap<>();
 
-	public static void add(BlockPos position, int level) {
-		LEVELS.put(position, level);
+	public static void add(BlockView world, BlockPos position, int level) {
+		LEVELS.computeIfAbsent(world, (key) -> new Object2IntArrayMap<>());
+
+		LEVELS.get(world).put(position, level);
 	}
 
-	public static int get(BlockPos position) {
-		return LEVELS.getOrDefault(position, -1);
+	public static void remove(BlockView world, BlockPos position) {
+		LEVELS.computeIfAbsent(world, (key) -> new Object2IntArrayMap<>());
+
+		LEVELS.get(world).removeInt(position);
 	}
 
-	public static VoxelShape getShape(BlockPos position) {
-		int level = get(position);
-		return level == -1 ? SHAPES[15] : getShape(15 - level);
+	public static int get(BlockView world, BlockPos position) {
+		LEVELS.computeIfAbsent(world, (key) -> new Object2IntArrayMap<>());
+
+		return LEVELS.get(world).getOrDefault(position, Integer.MIN_VALUE);
+	}
+
+	public static VoxelShape getShape(BlockView world, BlockPos position) {
+		int level = get(world, position);
+		return level == Integer.MIN_VALUE ? SHAPES[15] : getShape(15 - level);
 	}
 
 	private static VoxelShape getShape(int level) {
-		return SHAPES[level - 1];
+		if (level < 0) level = Math.abs(level);
+		if (level > 16) level = (15 - level % 16);
+		return SHAPES[Math.max(0, level - 1)];
 	}
 }

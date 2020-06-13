@@ -5,15 +5,14 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
 import net.minecraft.world.BlockView;
 
-public class HolographicBridgeBlock extends HorizontalFacingBlock implements BlockEntityProvider {
-	public static final AbstractBlock.Settings SETTINGS = FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(4, 16).sounds(BlockSoundGroup.METAL);
-
-	public HolographicBridgeBlock() {
-		super(SETTINGS);
+public class HolographicBridgeProjectorBlock extends HorizontalFacingBlock implements BlockEntityProvider {
+	public HolographicBridgeProjectorBlock(AbstractBlock.Settings settings) {
+		super(settings);
 	}
 
 	@Override
@@ -25,5 +24,9 @@ public class HolographicBridgeBlock extends HorizontalFacingBlock implements Blo
 	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
 		return new HolographicBridgeBlockEntity();
+	}
+
+	public BlockState getPlacementState(ItemPlacementContext context) {
+		return this.getDefaultState().with(FACING, context.getPlayerFacing().getOpposite());
 	}
 }
