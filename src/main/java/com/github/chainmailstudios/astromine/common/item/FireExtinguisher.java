@@ -1,6 +1,8 @@
 package com.github.chainmailstudios.astromine.common.item;
 
+import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
+import com.github.chainmailstudios.astromine.registry.AstromineSounds;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FireBlock;
@@ -10,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -25,6 +28,8 @@ public class FireExtinguisher extends Item {
 	public FireExtinguisher() {
 		super(SETTINGS);
 	}
+
+	long lastPlayed = 0;
 
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
@@ -57,6 +62,10 @@ public class FireExtinguisher extends Item {
 		world.getEntities(null, new Box(result.getBlockPos()).expand(1)).forEach(entity -> {
 			entity.setFireTicks(0);
 		});
+
+		if (world.isClient) {
+			ClientUtilities.playSound(user.getBlockPos(), AstromineSounds.FIRE_EXTINGUISHER_OPEN, SoundCategory.PLAYERS, 1f, 1f, false);
+		}
 
 		return super.use(world, user, hand);
 	}

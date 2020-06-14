@@ -7,5 +7,8 @@
   },
   "barret_m98b_shot": {
     "sounds": ["astromine:barret_m98b_shot"]
+  },
+  "fire_extinguisher_open": {
+    "sounds": ["astromine:fire_extinguisher_open"]
   }
 }

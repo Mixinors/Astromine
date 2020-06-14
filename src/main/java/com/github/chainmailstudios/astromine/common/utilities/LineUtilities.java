@@ -16,19 +16,19 @@ public class LineUtilities {
 	 * @param segments the segments between both positions.
 	 * @return the dots of the requested curve.
 	 */
-	public static Collection<Vector3f> getBezierSegments(Vec3i posA, Vec3i posB, float segments) {
+	public static Collection<Vector3f> getBezierSegments(Vec3i posA, Vec3i posB, Vec3i posC, float segments) {
 		ArrayList<Vector3f> positions = new ArrayList<>();
 
 		double x1 = posA.getX();
 		double y1 = posA.getY();
 		double z1 = posA.getZ();
 
+		double x2 = posB.getX();
+		double y2 = posB.getY();
+
 		double x3 = posB.getX();
 		double y3 = posB.getY();
 		double z3 = posB.getZ();
-
-		double x2 = ((x3 + x1)) / 2;
-		double y2 = ((y1 + y3) / 2) - (Math.sqrt(Math.pow(x3 - x1, 2) + Math.pow(y3 - y1, 2) + Math.pow(z3 - z1, 2)) * (1f / segments));
 
 		double dZ = (z3 - z1) / segments;
 		double cZ = 0;

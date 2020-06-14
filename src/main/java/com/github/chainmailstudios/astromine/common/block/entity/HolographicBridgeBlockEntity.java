@@ -95,7 +95,7 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 
 		if (distance == 0) return;
 
-		segments = (ArrayList<Vector3f>) LineUtilities.getBezierSegments(bOP.add(0, 1, 0), nCP.add(0, 1, 0), distance * 2);
+		segments = (ArrayList<Vector3f>) LineUtilities.getBezierSegments(bOP.add(0, 1, 0), nCP.add(0, 1, 0), new Vec3i((bOP.getX() + bCP.getX()) / 2, (bOP.getY() + bCP.getY()) / 2, 0), distance * 2);
 
 		members = new ArrayList<>();
 
