@@ -10,5 +10,11 @@
   },
   "fire_extinguisher_open": {
     "sounds": ["astromine:fire_extinguisher_open"]
+  },
+  "holographic_connector_click": {
+    "sounds": ["astromine:holographic_connector_click"]
+  },
+  "humming": {
+    "sounds": ["astromine:humming"]
   }
 }

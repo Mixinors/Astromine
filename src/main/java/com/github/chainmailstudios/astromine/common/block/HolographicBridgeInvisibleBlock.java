@@ -6,6 +6,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.block.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 
 public class HolographicBridgeInvisibleBlock extends Block {
@@ -28,11 +29,11 @@ public class HolographicBridgeInvisibleBlock extends Block {
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos position, ShapeContext context) {
-		return HolographicBridgeManager.getShape(world, position);
+		return VoxelShapes.empty();
 	}
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos position, ShapeContext context) {
-		return getOutlineShape(state, world, position, context);
+		return HolographicBridgeManager.getShape(world, position);
 	}
 }

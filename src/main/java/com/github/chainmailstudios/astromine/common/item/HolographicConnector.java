@@ -1,11 +1,13 @@
 package com.github.chainmailstudios.astromine.common.item;
 
 import com.github.chainmailstudios.astromine.common.block.HolographicBridgeProjectorBlock;
-import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
+import com.github.chainmailstudios.astromine.registry.AstromineSounds;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
@@ -26,12 +28,14 @@ public class HolographicConnector extends Item {
 		BlockPos position = context.getBlockPos();
 
 		if (world.getBlockState(position).getBlock() instanceof HolographicBridgeProjectorBlock) {
-			HolographicBridgeBlockEntity entity = (HolographicBridgeBlockEntity) world.getBlockEntity(position);
+			HolographicBridgeProjectorBlockEntity entity = (HolographicBridgeProjectorBlockEntity) world.getBlockEntity(position);
 
 			if (CACHE.getOrDefault(world, null) == null) {
-				CACHE.put(world, entity); // Parent.
+				CACHE.put(world, entity);
+				context.getPlayer().sendMessage(new TranslatableText("text.astromine.message.holographic_connector_select", entity.getPos().toShortString()).formatted(Formatting.BLUE), true);
+				world.playSound(context.getPlayer(), context.getBlockPos(), AstromineSounds.HOLOGRAPHIC_CONNECTOR_CLICK, SoundCategory.PLAYERS, 0.5f, 0.33f);
 			} else {
-				HolographicBridgeBlockEntity parent = (HolographicBridgeBlockEntity) CACHE.get(world);
+				HolographicBridgeProjectorBlockEntity parent = (HolographicBridgeProjectorBlockEntity) CACHE.get(world);
 
 				BlockPos nP = entity.getPos();
 				BlockPos oP = parent.getPos();
@@ -50,7 +54,7 @@ public class HolographicConnector extends Item {
 				}
 
 				if (parent.getPos().getZ() < entity.getPos().getZ() || parent.getPos().getX() < entity.getPos().getX()) {
-					HolographicBridgeBlockEntity temporary = parent;
+					HolographicBridgeProjectorBlockEntity temporary = parent;
 					parent = entity;
 					entity = temporary;
 				}
@@ -58,10 +62,12 @@ public class HolographicConnector extends Item {
 				if (parent.getPos().getX() != entity.getPos().getX() && parent.getPos().getZ() != entity.getPos().getZ()) {
 					CACHE.put(world, null);
 					context.getPlayer().sendMessage(new TranslatableText("text.astromine.message.holographic_connection_failed", parent.getPos().toShortString(), entity.getPos().toShortString()).formatted(Formatting.RED), true);
+					world.playSound(context.getPlayer(), context.getBlockPos(), AstromineSounds.HOLOGRAPHIC_CONNECTOR_CLICK, SoundCategory.PLAYERS, 0.5f, 0.33f);
 					return ActionResult.FAIL;
 				} else if (parent.getCachedState().get(HorizontalFacingBlock.FACING).getOpposite() != entity.getCachedState().get(HorizontalFacingBlock.FACING)) {
 					CACHE.put(world, null);
 					context.getPlayer().sendMessage(new TranslatableText("text.astromine.message.holographic_connection_failed", parent.getPos().toShortString(), entity.getPos().toShortString()).formatted(Formatting.RED), true);
+					world.playSound(context.getPlayer(), context.getBlockPos(), AstromineSounds.HOLOGRAPHIC_CONNECTOR_CLICK, SoundCategory.PLAYERS, 0.5f, 0.33f);
 					return ActionResult.FAIL;
 				}
 
@@ -79,11 +85,13 @@ public class HolographicConnector extends Item {
 				if (world.isClient) {
 					CACHE.put(world, null);
 					context.getPlayer().sendMessage(new TranslatableText("text.astromine.message.holographic_connection_successful", parent.getPos().toShortString(), entity.getPos().toShortString()).formatted(Formatting.GREEN), true);
+					world.playSound(context.getPlayer(), context.getBlockPos(), AstromineSounds.HOLOGRAPHIC_CONNECTOR_CLICK, SoundCategory.PLAYERS, 0.5f, 0.33f);
 				}
 			}
 		} else {
 			if (world.isClient) {
 				context.getPlayer().sendMessage(new TranslatableText("text.astromine.message.holographic_connection_clear").formatted(Formatting.YELLOW), true);
+				world.playSound(context.getPlayer(), context.getBlockPos(), AstromineSounds.HOLOGRAPHIC_CONNECTOR_CLICK, SoundCategory.PLAYERS, 0.5f, 0.33f);
 			}
 
 			CACHE.put(world, null);

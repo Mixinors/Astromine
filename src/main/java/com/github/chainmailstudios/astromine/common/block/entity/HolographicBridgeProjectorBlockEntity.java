@@ -4,6 +4,7 @@ import com.github.chainmailstudios.astromine.common.bridge.HolographicBridgeMana
 import com.github.chainmailstudios.astromine.common.utilities.LineUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntities;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.registry.AstromineSounds;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -11,20 +12,22 @@ import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import org.jetbrains.annotations.NotNull;
+import spinnery.widget.api.Color;
 
 import java.util.ArrayList;
 
-public class HolographicBridgeBlockEntity extends BlockEntity implements Tickable, BlockEntityClientSerializable {
+public class HolographicBridgeProjectorBlockEntity extends BlockEntity implements Tickable, BlockEntityClientSerializable {
 	public ArrayList<Vector3f> segments = null;
 	public ArrayList<Vec3i> members = null;
 
-	private HolographicBridgeBlockEntity child = null;
-	private HolographicBridgeBlockEntity parent = null;
+	private HolographicBridgeProjectorBlockEntity child = null;
+	private HolographicBridgeProjectorBlockEntity parent = null;
 
 	private BlockPos childPosition = null;
 	private BlockPos parentPosition = null;
@@ -34,15 +37,19 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 
 	public Direction direction = Direction.NORTH;
 
-	public HolographicBridgeBlockEntity() {
+	public Color color = Color.of(0x7e2fd3da);
+
+	public long last = 0;
+
+	public HolographicBridgeProjectorBlockEntity() {
 		super(AstromineBlockEntities.HOLOGRAPHIC_BRIDGE);
 	}
 
-	public HolographicBridgeBlockEntity getChild() {
+	public HolographicBridgeProjectorBlockEntity getChild() {
 		return child;
 	}
 
-	public void setChild(HolographicBridgeBlockEntity child) {
+	public void setChild(HolographicBridgeProjectorBlockEntity child) {
 		if (child != null && child.parent != null) {
 			child.parent.destroyBridge();
 		}
@@ -55,11 +62,11 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 		return this.child != null;
 	}
 
-	public HolographicBridgeBlockEntity getParent() {
+	public HolographicBridgeProjectorBlockEntity getParent() {
 		return parent;
 	}
 
-	public void setParent(HolographicBridgeBlockEntity parent) {
+	public void setParent(HolographicBridgeProjectorBlockEntity parent) {
 		if (parent != null) {
 			parent.destroyBridge();
 		}
@@ -78,9 +85,6 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 		BlockPos bCP = getChild().getPos();
 		BlockPos bOP = getPos();
 
-		world.setBlockState(bCP.offset(Direction.UP, 2), Blocks.EMERALD_BLOCK.getDefaultState());
-		world.setBlockState(bOP.offset(Direction.UP, 2), Blocks.DIAMOND_BLOCK.getDefaultState());
-
 		BlockPos nCP = bCP;
 
 		Direction cD = getChild().getCachedState().get(HorizontalFacingBlock.FACING);
@@ -95,7 +99,10 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 
 		if (distance == 0) return;
 
-		segments = (ArrayList<Vector3f>) LineUtilities.getBezierSegments(bOP.add(0, 1, 0), nCP.add(0, 1, 0), new Vec3i((bOP.getX() + bCP.getX()) / 2, (bOP.getY() + bCP.getY()) / 2, 0), distance * 2);
+		segments = (ArrayList<Vector3f>) LineUtilities.getBezierSegments(
+				new Vector3f(bOP.getX(), bOP.getY() + 1, bOP.getZ()),
+				new Vector3f(nCP.getX(), nCP.getY() + 1, nCP.getZ()),
+				new Vector3f(Math.max(bCP.getX(), nCP.getX()), (bOP.getY() + nCP.getY()) / 2f + 1, Math.max(bCP.getZ(), bCP.getZ())), distance * 2);
 
 		members = new ArrayList<>();
 
@@ -166,8 +173,8 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 			if (world != null) {
 				BlockEntity childEntity = world.getBlockEntity(childPosition);
 
-				if (childEntity instanceof HolographicBridgeBlockEntity) {
-					this.child = (HolographicBridgeBlockEntity) childEntity;
+				if (childEntity instanceof HolographicBridgeProjectorBlockEntity) {
+					this.child = (HolographicBridgeProjectorBlockEntity) childEntity;
 					this.child.setParent(this);
 					this.buildBridge();
 					hasCheckedChild = true;
@@ -181,8 +188,8 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 			if (world != null) {
 				BlockEntity parentEntity = world.getBlockEntity(parentPosition);
 
-				if (parentEntity instanceof HolographicBridgeBlockEntity) {
-					this.parent = (HolographicBridgeBlockEntity) parentEntity;
+				if (parentEntity instanceof HolographicBridgeProjectorBlockEntity) {
+					this.parent = (HolographicBridgeProjectorBlockEntity) parentEntity;
 					this.parent.setChild(this);
 					this.parent.buildBridge();
 					hasCheckedParent = true;
@@ -190,6 +197,13 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 					hasCheckedParent = true;
 				}
 			}
+		}
+
+		long current = System.currentTimeMillis();
+
+		if (current - last >= 11187) {
+			world.playSound(getPos().getX(), getPos().getY(), getPos().getZ(), AstromineSounds.HUMMING, SoundCategory.BLOCKS, 0.005f, 0.5f, true);
+			last = current;
 		}
 	}
 
@@ -199,6 +213,7 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 		if (parent != null) tag.putLong("parent_position", parent.getPos().asLong());
 
 		tag.putInt("direction", direction.getId());
+		tag.putInt("color", color.ARGB);
 
 		return super.toTag(tag);
 	}
@@ -209,6 +224,7 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 		if (tag.contains("parent_position")) parentPosition = BlockPos.fromLong(tag.getLong("parent_position"));
 
 		direction = Direction.byId(tag.getInt("direction"));
+		color = Color.of(tag.getInt("color"));
 
 		super.fromTag(state, tag);
 	}
@@ -222,4 +238,6 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 	public void fromClientTag(CompoundTag compoundTag) {
 		fromTag(null, compoundTag);
 	}
+
+
 }

@@ -15,6 +15,10 @@ public class AstromineSounds {
 
 	// Tooling
 	public static final SoundEvent FIRE_EXTINGUISHER_OPEN = register("fire_extinguisher_open");
+	public static final SoundEvent HOLOGRAPHIC_CONNECTOR_CLICK = register("holographic_connector_click");
+
+	// Machinery
+	public static final SoundEvent HUMMING = register("humming");
 
 	// Armory
 	public static final SoundEvent ASTERITE_ARMOR_EQUIPPED = register("item.armor.equip_asterite");

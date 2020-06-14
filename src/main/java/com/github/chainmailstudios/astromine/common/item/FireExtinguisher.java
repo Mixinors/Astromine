@@ -6,6 +6,9 @@ import com.github.chainmailstudios.astromine.registry.AstromineSounds;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FireBlock;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.sound.PositionedSoundInstance;
+import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -64,7 +67,7 @@ public class FireExtinguisher extends Item {
 		});
 
 		if (world.isClient) {
-			ClientUtilities.playSound(user.getBlockPos(), AstromineSounds.FIRE_EXTINGUISHER_OPEN, SoundCategory.PLAYERS, 1f, 1f, false);
+			world.playSound(user, user.getBlockPos(), AstromineSounds.FIRE_EXTINGUISHER_OPEN, SoundCategory.PLAYERS, 1f, 1f);
 		}
 
 		return super.use(world, user, hand);

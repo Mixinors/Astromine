@@ -61,54 +61,58 @@ public abstract class BaseWeapon extends Item implements Weapon {
 	public void tryShoot(World world, PlayerEntity user) {
 		Optional<ItemStack> optionalMagazine = InventoryComponentFromInventory.of(user.inventory).getContentsMatching(stack -> stack.getItem() == getAmmo()).stream().filter(stack -> stack.getDamage() < stack.getMaxDamage()).findFirst();
 
-		if (optionalMagazine.isPresent()) {
-			ItemStack magazine = optionalMagazine.get();
-
+		if (optionalMagazine.isPresent() || user.isCreative()) {
 			long currentAttempt = System.currentTimeMillis();
 
 			if (isReloading(currentAttempt)) {
 				return;
 			}
 
-			if (magazine.getDamage() >= magazine.getMaxDamage()) {
-				if (world.isClient) {
-					ClientUtilities.playSound(user.getBlockPos(), AstromineSounds.EMPTY_MAGAZINE, SoundCategory.PLAYERS, 1, 1, true);
-				}
-
-				return;
-			}
-
-			if (!world.isClient && !user.isCreative()) {
-				magazine.damage(1, world.random, (ServerPlayerEntity) user);
+			if (optionalMagazine.isPresent() && !user.isCreative()) {
+				ItemStack magazine = optionalMagazine.get();
 
 				if (magazine.getDamage() >= magazine.getMaxDamage()) {
-					setLastReload(currentAttempt);
+					if (world.isClient) {
+						world.playSound(user, user.getBlockPos(), AstromineSounds.EMPTY_MAGAZINE, SoundCategory.PLAYERS, 1f, 1f);
+					}
+
+					return;
+				}
+
+				if (!world.isClient) {
+					magazine.damage(1, world.random, (ServerPlayerEntity) user);
+
+					if (magazine.getDamage() >= magazine.getMaxDamage()) {
+						setLastReload(currentAttempt);
+					}
 				}
 			}
 
-			PersistentProjectileEntity persistentProjectileEntity = new BulletEntity(AstromineEntities.BULLET_ENTITY_TYPE, user, world);
+			if (optionalMagazine.isPresent() || user.isCreative()) {
+				PersistentProjectileEntity persistentProjectileEntity = new BulletEntity(AstromineEntities.BULLET_ENTITY_TYPE, user, world);
 
-			persistentProjectileEntity.setProperties(user, user.pitch, user.yaw, 0.0F, getDistance(), 0);
+				persistentProjectileEntity.setProperties(user, user.pitch, user.yaw, 0.0F, getDistance(), 0);
 
-			persistentProjectileEntity.setCritical(true);
+				persistentProjectileEntity.setCritical(true);
 
-			persistentProjectileEntity.setDamage(getDamage());
+				persistentProjectileEntity.setDamage(getDamage());
 
-			persistentProjectileEntity.setPunch(getPunch());
+				persistentProjectileEntity.setPunch(getPunch());
 
-			persistentProjectileEntity.setSound(AstromineSounds.EMPTY);
+				persistentProjectileEntity.setSound(AstromineSounds.EMPTY);
 
-			if (world.isClient) {
-				ClientUtilities.addEntity(persistentProjectileEntity);
+				if (world.isClient) {
+					ClientUtilities.addEntity(persistentProjectileEntity);
 
-				ClientUtilities.playSound(user.getBlockPos(), getShotSound(), SoundCategory.PLAYERS, 1, 1f, false);
-			} else {
-				user.world.spawnEntity(persistentProjectileEntity);
-			}
+					world.playSound(user, user.getBlockPos(), getShotSound(), SoundCategory.PLAYERS, 1f, 1f);
+				} else {
+					user.world.spawnEntity(persistentProjectileEntity);
+				}
 
-			if (world.isClient) {
-				user.pitch -= getRecoil() / 16f / (ClientUtilities.Weapon.isAiming() ? 2 : 1);
-				user.yaw += (world.random.nextBoolean() ? world.random.nextInt(16) / 16f : -world.random.nextInt(16) / 16f) / (ClientUtilities.Weapon.isAiming() ? 2 : 1);
+				if (world.isClient) {
+					user.pitch -= getRecoil() / 16f / (ClientUtilities.Weapon.isAiming() ? 2 : 1);
+					user.yaw += (world.random.nextBoolean() ? world.random.nextInt(16) / 16f : -world.random.nextInt(16) / 16f) / (ClientUtilities.Weapon.isAiming() ? 2 : 1);
+				}
 			}
 		}
 	}
