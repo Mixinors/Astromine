@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.common.item.tool;
+package com.github.chainmailstudios.astromine.common.item;
 
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import net.minecraft.item.ToolMaterial;

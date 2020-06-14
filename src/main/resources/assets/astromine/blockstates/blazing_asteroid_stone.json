@@ -1,0 +1,9 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "astromine:block/blazing_asteroid_stone"
+      }
+    ]
+  }
+}
