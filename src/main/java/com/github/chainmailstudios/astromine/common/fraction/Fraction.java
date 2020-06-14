@@ -1,11 +1,10 @@
 package com.github.chainmailstudios.astromine.common.fraction;
 
-import java.math.RoundingMode;
-
 import com.google.common.base.Objects;
 import com.google.common.math.LongMath;
-
 import net.minecraft.nbt.CompoundTag;
+
+import java.math.RoundingMode;
 
 public class Fraction extends Number implements Comparable<Fraction> {
 	public static final Fraction EMPTY = new Fraction(0, 1);
@@ -27,7 +26,7 @@ public class Fraction extends Number implements Comparable<Fraction> {
 
 		try {
 			return new Fraction(LongMath.checkedMultiply(fractionA.numerator, LongMath.divide(denominator, fractionA.denominator, RoundingMode.DOWN)) + LongMath.checkedMultiply(fractionB.numerator, LongMath.divide(denominator, fractionB.denominator,
-			                                                                                                                                                                                                          RoundingMode.DOWN)), denominator);
+					RoundingMode.DOWN)), denominator);
 		} catch (ArithmeticException exception) {
 			throw new UnsupportedOperationException("Attempt to add fractions whose numerator, adjusted for lowest common denominator, would cause an overflow!");
 		}
@@ -84,7 +83,7 @@ public class Fraction extends Number implements Comparable<Fraction> {
 
 		try {
 			return new Fraction(LongMath.checkedMultiply(fractionA.numerator, LongMath.divide(denominator, fractionA.denominator, RoundingMode.DOWN)) - LongMath.checkedMultiply(fractionB.numerator, LongMath.divide(denominator, fractionB.denominator,
-			                                                                                                                                                                                                          RoundingMode.DOWN)), denominator);
+					RoundingMode.DOWN)), denominator);
 		} catch (ArithmeticException exception) {
 			throw new UnsupportedOperationException("Attempt to subtract fractions whose numerator, adjusted for lowest common denominator, would cause an overflow!");
 		}
@@ -170,7 +169,7 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	}
 
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putLongArray("values", new long[] {this.numerator, this.denominator});
+		tag.putLongArray("values", new long[]{this.numerator, this.denominator});
 
 		return tag;
 	}

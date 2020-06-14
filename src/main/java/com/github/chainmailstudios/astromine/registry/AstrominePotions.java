@@ -1,14 +1,11 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import static com.github.chainmailstudios.astromine.AstromineCommon.identifier;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-
-import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.registry.Registry;
+
+import static com.github.chainmailstudios.astromine.AstromineCommon.identifier;
 
 public class AstrominePotions {
 	public static final Potion ROCKET_FUEL = Registry.register(Registry.POTION, identifier("rocket_fuel"), new Potion(
@@ -17,10 +14,11 @@ public class AstrominePotions {
 			new StatusEffectInstance(StatusEffects.NAUSEA, 72000, 10)
 	));
 
-		public static final Potion SUGAR_WATER = Registry.register(Registry.POTION, identifier("sugar_water"), new Potion(
+	public static final Potion SUGAR_WATER = Registry.register(Registry.POTION, identifier("sugar_water"), new Potion(
 			new StatusEffectInstance(StatusEffects.SPEED, 20, 2),
 			new StatusEffectInstance(StatusEffects.SLOWNESS, 40, 1)
 	));
 
-	public static void init() {}
+	public static void initialize() {
+	}
 }

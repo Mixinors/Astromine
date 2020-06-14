@@ -1,7 +1,6 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -13,6 +12,13 @@ public class AstromineSounds {
 	public static final SoundEvent EMPTY_MAGAZINE = register("empty_magazine");
 	public static final SoundEvent SCAR_H_SHOT = register("scar_h_shot");
 	public static final SoundEvent BARRET_M98B_SHOT = register("barret_m98b_shot");
+
+	// Tooling
+	public static final SoundEvent FIRE_EXTINGUISHER_OPEN = register("fire_extinguisher_open");
+	public static final SoundEvent HOLOGRAPHIC_CONNECTOR_CLICK = register("holographic_connector_click");
+
+	// Machinery
+	public static final SoundEvent HUMMING = register("humming");
 
 	// Armory
 	public static final SoundEvent ASTERITE_ARMOR_EQUIPPED = register("item.armor.equip_asterite");

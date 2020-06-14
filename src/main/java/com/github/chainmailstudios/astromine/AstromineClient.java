@@ -1,23 +1,25 @@
 package com.github.chainmailstudios.astromine;
 
-import com.github.chainmailstudios.astromine.registry.AstromineEntityRenderers;
-import com.github.chainmailstudios.astromine.registry.AstromineSounds;
-
 import com.github.chainmailstudios.astromine.client.render.entity.SpaceSlimeEntityRenderer;
 import com.github.chainmailstudios.astromine.client.render.entity.SuperSpaceSlimeEntityRenderer;
-import com.github.chainmailstudios.astromine.registry.AstromineEntities;
-import com.github.chainmailstudios.astromine.registry.AstromineParticles;
+import com.github.chainmailstudios.astromine.registry.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.resource.ResourceManager;
+import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class AstromineClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+
+
 		AstromineEntityRenderers.initialize();
+		AstromineBlockEntityRenderers.initialize();
 		AstromineSounds.initialize();
 		AstromineParticles.initialize();
 

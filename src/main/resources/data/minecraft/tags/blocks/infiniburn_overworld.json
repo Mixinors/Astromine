@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:meteor_stone",
+    "astromine:asteroid_stone"
+  ]
+}

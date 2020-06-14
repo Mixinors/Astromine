@@ -1,10 +1,10 @@
 package com.github.chainmailstudios.astromine.world.generation;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
-
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.biome.source.BiomeSource;
 
 public class AstromineBiomeSource extends BiomeSource {
@@ -28,6 +28,6 @@ public class AstromineBiomeSource extends BiomeSource {
 
 	@Override
 	public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
-		return Biomes.THE_VOID;
+		return AstromineBiomes.ASTEROIDS;
 	}
 }

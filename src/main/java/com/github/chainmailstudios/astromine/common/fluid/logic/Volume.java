@@ -1,18 +1,17 @@
 package com.github.chainmailstudios.astromine.common.fluid.logic;
 
-import java.util.Collection;
-import java.util.List;
-
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.PropertyRegistry;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
-
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+
+import java.util.Collection;
+import java.util.List;
 
 public class Volume {
 	final List<Property> properties = Lists.newArrayList();

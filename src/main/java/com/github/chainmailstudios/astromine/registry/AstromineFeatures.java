@@ -3,20 +3,21 @@ package com.github.chainmailstudios.astromine.registry;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.world.feature.MeteorFeature;
 import com.github.chainmailstudios.astromine.common.world.feature.MeteorGenerator;
+import com.github.chainmailstudios.astromine.world.feature.AsteroidFeature;
 import net.earthcomputer.libstructure.LibStructure;
-import net.minecraft.structure.JungleTempleGenerator;
 import net.minecraft.structure.StructurePieceType;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.chunk.StructureConfig;
 import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
+import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.StructureFeature;
 
 import java.util.Locale;
 
 public class AstromineFeatures {
-
+	public static Feature<DefaultFeatureConfig> ASTEROIDS_FEATURE;
 	public static final StructurePieceType METEOR = register(MeteorGenerator::new, "meteor");
 
 	public static StructurePieceType register(StructurePieceType pieceType, String id) {
@@ -24,6 +25,8 @@ public class AstromineFeatures {
 	}
 
 	public static void initialize() {
+		ASTEROIDS_FEATURE = Registry.register(Registry.FEATURE, AstromineCommon.identifier("asteroids_feature"), new AsteroidFeature(DefaultFeatureConfig.CODEC));
+
 		// initialize meteor structure/feature
 		MeteorFeature meteor = new MeteorFeature(DefaultFeatureConfig.CODEC);
 		DefaultFeatureConfig config = new DefaultFeatureConfig();
