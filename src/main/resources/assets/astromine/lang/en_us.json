@@ -1,12 +1,10 @@
 {
   "entity.astromine.super_space_slime": "Jelanium: Super Space Slime",
-
   "text.astromine.magazine.rounds": "Rounds",
   "text.astromine.weapon.battle_rifle": "Battle Rifle",
   "text.astromine.weapon.sniper_rifle": "Sniper Rifle",
   "text.astromine.weapon.fantasy": "Fantasy",
   "text.astromine.message.holographic_connection_successful": "Connected projector at %s with projector at %s.",
-
   "item.astromine.scar_h": "SCAR-H",
   "item.astromine.nato_7_62x51mm": "7.62x51mm NATO",
   "item.astromine.barret_m98b": "Barret M98B",
@@ -14,9 +12,7 @@
   "item.astromine.fire_extinguisher": "Fire Extinguisher",
   "item.astromine.holographic_connector": "Holographic Connector",
   "item.astromine.holographic_bridge_projector": "Holographic Bridge Projector",
-
   "itemGroup.astromine.astromine": "Astromine",
-
   "block.astromine.holographic_bridge_projector": "Holographic Bridge Projector",
   "block.astromine.asteroid_stone": "Asteroid Stone",
   "block.astromine.meteor_stone": "Meteor Stone",

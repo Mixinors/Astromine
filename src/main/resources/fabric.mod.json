@@ -20,19 +20,11 @@
   "icon": "assets/astromine/icon.png",
   "environment": "*",
   "entrypoints": {
-    "main": [
-      "com.github.chainmailstudios.astromine.AstromineCommon"
-    ],
-    "client": [
-      "com.github.chainmailstudios.astromine.AstromineClient"
-    ],
-    "server": [
-      "com.github.chainmailstudios.astromine.AstromineDedicated"
-    ]
+    "main": ["com.github.chainmailstudios.astromine.AstromineCommon"],
+    "client": ["com.github.chainmailstudios.astromine.AstromineClient"],
+    "server": ["com.github.chainmailstudios.astromine.AstromineDedicated"]
   },
-  "mixins": [
-    "astromine.mixins.json"
-  ],
+  "mixins": ["astromine.mixins.json"],
   "accessWidener": "astromine.accesswidener",
   "depends": {
     "fabricloader": ">=0.8.7",
