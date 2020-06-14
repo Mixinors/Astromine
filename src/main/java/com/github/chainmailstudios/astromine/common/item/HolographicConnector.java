@@ -39,7 +39,8 @@ public class HolographicConnector extends Item {
 
 				if (nP.getX() > oP.getX()) {
 					d = Direction.EAST;
-				} if (nP.getX() < oP.getX()) {
+				}
+				if (nP.getX() < oP.getX()) {
 					d = Direction.WEST;
 				} else if (nP.getZ() > oP.getZ()) {
 					d = Direction.SOUTH;

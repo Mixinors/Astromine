@@ -5,7 +5,6 @@ import com.github.chainmailstudios.astromine.common.item.*;
 import com.github.chainmailstudios.astromine.common.item.tool.AstromineToolMaterials;
 import com.github.chainmailstudios.astromine.common.item.weapon.variant.Weaponry;
 import com.github.chainmailstudios.astromine.common.item.weapon.variant.ammo.Ammunition;
-
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;

@@ -1,7 +1,6 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.client.render.entity.BulletEntityRenderer;
-
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 
 public class AstromineEntityRenderers {

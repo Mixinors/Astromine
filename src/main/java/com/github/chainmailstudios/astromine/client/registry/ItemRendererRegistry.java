@@ -1,13 +1,12 @@
 package com.github.chainmailstudios.astromine.client.registry;
 
+import com.github.chainmailstudios.astromine.client.ItemRenderer;
+import net.minecraft.item.Item;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
-
-import com.github.chainmailstudios.astromine.client.ItemRenderer;
-
-import net.minecraft.item.Item;
 
 public class ItemRendererRegistry {
 	public static final ItemRendererRegistry INSTANCE = new ItemRendererRegistry();

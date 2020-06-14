@@ -18,7 +18,6 @@ import net.minecraft.util.math.Vec3i;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class HolographicBridgeBlockEntity extends BlockEntity implements Tickable, BlockEntityClientSerializable {
 	public ArrayList<Vector3f> segments = null;

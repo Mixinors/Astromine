@@ -2,7 +2,6 @@ package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.world.generation.AstromineBiomeSource;
-
 import com.mojang.serialization.Codec;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;

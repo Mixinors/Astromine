@@ -1,9 +1,9 @@
 package com.github.chainmailstudios.astromine.common.block;
 
-import java.util.Random;
-
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.OreBlock;
+
+import java.util.Random;
 
 public class AstromineOreBlock extends OreBlock {
 	public AstromineOreBlock(AbstractBlock.Settings settings) {

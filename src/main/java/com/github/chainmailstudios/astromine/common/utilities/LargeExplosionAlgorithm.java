@@ -1,7 +1,6 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
 import com.github.chainmailstudios.astromine.access.WorldChunkAccess;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.ChunkSectionPos;
@@ -46,7 +45,7 @@ public class LargeExplosionAlgorithm {
 				// check if chunk is in area
 				int box = cox * 16, boz = coz * 16;
 				// if we can skip the entire chunk, do so
-				if(touchesOrIsIn(box, 0, boz, box + 15, 255, boz + 15, radius))
+				if (touchesOrIsIn(box, 0, boz, box + 15, 255, boz + 15, radius))
 					forSubchunks(access, box, boz, x, y, z, radius);
 				// todo send packet
 			}
@@ -58,10 +57,10 @@ public class LargeExplosionAlgorithm {
 		int subchunk = y >> 4;
 		for (int i = Math.max(-subChunkRadius + subchunk, 0); i <= Math.min(subchunk + subChunkRadius + 1, 15); i++) {
 			int by = i * 16;
-			if(encompassed(bx, by, bz, bx + 15, by + 15, bz + 15, radius)) {
+			if (encompassed(bx, by, bz, bx + 15, by + 15, bz + 15, radius)) {
 				int rx = (bx + x) >> 4, rz = (bz + z) >> 4;
 				System.out.printf("yeeted %d, %d, %d\n", (bx + x) >> 4, i, (bz + z) >> 4);
-				((WorldChunkAccess)access.getChunk((bx + x) >> 4, (bz + z) >> 4)).astromine_yeet(i);
+				((WorldChunkAccess) access.getChunk((bx + x) >> 4, (bz + z) >> 4)).astromine_yeet(i);
 				access.getWorld().getChunkManager().getLightingProvider().updateSectionStatus(ChunkSectionPos.from(rx, i, rz), true);
 			}
 		}

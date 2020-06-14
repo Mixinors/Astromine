@@ -1,13 +1,13 @@
 package com.github.chainmailstudios.astromine.common.inventory;
 
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
 
 /**
  * An InventoryComponentFromInventory

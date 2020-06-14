@@ -5,9 +5,6 @@ import com.github.chainmailstudios.astromine.registry.*;
 import com.google.gson.Gson;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-
-import com.github.chainmailstudios.astromine.world.AstromineDimensionType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

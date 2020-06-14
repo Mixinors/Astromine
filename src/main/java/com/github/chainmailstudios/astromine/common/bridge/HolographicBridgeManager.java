@@ -1,8 +1,6 @@
 package com.github.chainmailstudios.astromine.common.bridge;
 
 import com.github.chainmailstudios.astromine.common.utilities.VoxelShapeUtilities;
-import com.google.common.collect.ImmutableMap;
-import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.block.Block;
 import net.minecraft.util.Pair;
@@ -11,7 +9,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
 
 public class HolographicBridgeManager {
 	public static final Object2ObjectArrayMap<BlockView, Object2ObjectArrayMap<BlockPos, Pair<Direction, Integer[]>>> LEVELS = new Object2ObjectArrayMap<>();
@@ -37,7 +34,7 @@ public class HolographicBridgeManager {
 	public static VoxelShape getShape(BlockView world, BlockPos position) {
 		Pair<Direction, Integer[]> pair = get(world, position);
 		Integer[] levels = pair.getRight();
-		return levels[0] == Integer.MIN_VALUE ? VoxelShapes.fullCube(): getShape(pair.getLeft(), pair.getRight());
+		return levels[0] == Integer.MIN_VALUE ? VoxelShapes.fullCube() : getShape(pair.getLeft(), pair.getRight());
 	}
 
 	private static VoxelShape getShape(Direction direction, Integer[] levels) {
