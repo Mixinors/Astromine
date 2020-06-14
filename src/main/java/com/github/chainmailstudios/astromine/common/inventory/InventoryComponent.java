@@ -1,23 +1,17 @@
 package com.github.chainmailstudios.astromine.common.inventory;
 
-import java.util.AbstractMap;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
-import org.apache.logging.log4j.Level;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.TypedActionResult;
+import org.apache.logging.log4j.Level;
+
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public interface InventoryComponent {
 	/**
@@ -103,7 +97,7 @@ public interface InventoryComponent {
 	 * of a specific ItemStack into a specific slot.
 	 *
 	 * @param stack the specified stack.
-	 * @param slot the specified slot.
+	 * @param slot  the specified slot.
 	 * @return the specified condition.
 	 */
 	ActionResult canInsert(ItemStack stack, int slot);
@@ -113,7 +107,7 @@ public interface InventoryComponent {
 	 * of a specific ItemStack from a specific slot.
 	 *
 	 * @param stack the specified stack.
-	 * @param slot the specified slot.
+	 * @param slot  the specified slot.
 	 * @return SUCCESS if yes; FAIL if not.
 	 */
 	ActionResult canExtract(ItemStack stack, int slot);
@@ -277,7 +271,7 @@ public interface InventoryComponent {
 	 * non-existent position, the count extracted
 	 * depending on the specified count.
 	 *
-	 * @param slot the slot of the specified stack.
+	 * @param slot  the slot of the specified stack.
 	 * @param count the specified count.
 	 * @return SUCCESS w. stack if extracted; FAIL w. empty if not.
 	 */
@@ -311,7 +305,7 @@ public interface InventoryComponent {
 	 *
 	 * @param source the specified source.
 	 * @param subtag the optional subtag.
-	 * @param range the optional range.
+	 * @param range  the optional range.
 	 */
 	default CompoundTag write(InventoryComponent source, Optional<String> subtag, Optional<Range<Integer>> range) {
 		CompoundTag tag = new CompoundTag();
@@ -328,9 +322,9 @@ public interface InventoryComponent {
 	 * If a subtag is specified, the inventory
 	 * is written to the subtag.
 	 *
-	 * @param tag the specified tag.
+	 * @param tag    the specified tag.
 	 * @param subtag the optional subtag.
-	 * @param range the optional range.
+	 * @param range  the optional range.
 	 */
 	default void write(InventoryComponent source, CompoundTag tag, Optional<String> subtag, Optional<Range<Integer>> range) {
 		if (source == null || source.getSize() <= 0) return;
@@ -377,9 +371,9 @@ public interface InventoryComponent {
 	 * the inventory is read form the subtag.
 	 *
 	 * @param target the specified target.
-	 * @param tag the specified tag.
+	 * @param tag    the specified tag.
 	 * @param subtag the optional subtag.
-	 * @param range the optional range.
+	 * @param range  the optional range.
 	 */
 	default void read(InventoryComponent target, CompoundTag tag, Optional<String> subtag, Optional<Range<Integer>> range) {
 		if (tag == null) return;

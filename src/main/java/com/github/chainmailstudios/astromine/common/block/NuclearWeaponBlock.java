@@ -2,7 +2,6 @@ package com.github.chainmailstudios.astromine.common.block;
 
 import com.github.chainmailstudios.astromine.common.utilities.LargeExplosionAlgorithm;
 import com.github.chainmailstudios.astromine.common.utilities.RegionalWorldAccess;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
@@ -24,7 +23,7 @@ public class NuclearWeaponBlock extends Block {
 	}
 
 	private void tryDetonate(World world, BlockPos pos) {
-		if(world.isReceivingRedstonePower(pos)) {
+		if (world.isReceivingRedstonePower(pos)) {
 			RegionalWorldAccess access = new RegionalWorldAccess(world, pos);
 			LargeExplosionAlgorithm.explode(access, pos.getX(), pos.getY(), pos.getZ(), 250);
 		}

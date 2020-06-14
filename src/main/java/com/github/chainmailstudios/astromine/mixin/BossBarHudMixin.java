@@ -22,31 +22,35 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(BossBarHud.class)
 public abstract class BossBarHudMixin extends DrawableHelper {
 
-    @Shadow @Final private MinecraftClient client;
-    @Shadow @Final private static Identifier BAR_TEX;
-    private static final Identifier CUSTOM_BAR_TEX = AstromineCommon.identifier("textures/gui/bars.png");
+	@Shadow
+	@Final
+	private MinecraftClient client;
+	@Shadow
+	@Final
+	private static Identifier BAR_TEX;
+	private static final Identifier CUSTOM_BAR_TEX = AstromineCommon.identifier("textures/gui/bars.png");
 
-    @Inject(
-            method = "renderBossBar",
-            at = @At("HEAD"),
-            cancellable = true
-    )
-    private void renderCustomBossBar(MatrixStack matrixStack, int i, int j, BossBar bossBar, CallbackInfo ci) {
-        if(bossBar instanceof ClientBossBar && ((TranslatableText) bossBar.getName()).getKey().contains("super_space_slim")) {
-            this.client.getTextureManager().bindTexture(CUSTOM_BAR_TEX);
+	@Inject(
+			method = "renderBossBar",
+			at = @At("HEAD"),
+			cancellable = true
+	)
+	private void renderCustomBossBar(MatrixStack matrixStack, int i, int j, BossBar bossBar, CallbackInfo ci) {
+		if (bossBar instanceof ClientBossBar && ((TranslatableText) bossBar.getName()).getKey().contains("super_space_slim")) {
+			this.client.getTextureManager().bindTexture(CUSTOM_BAR_TEX);
 
-            // draw empty background bar
-            this.drawTexture(matrixStack, i, j, 0, 0, 185, 12);
+			// draw empty background bar
+			this.drawTexture(matrixStack, i, j, 0, 0, 185, 12);
 
-            // percentage -> texture width
-            int overlayBarWidth = (int)(bossBar.getPercent() * 185.0F);
+			// percentage -> texture width
+			int overlayBarWidth = (int) (bossBar.getPercent() * 185.0F);
 
-            // draw overlay
-            this.drawTexture(matrixStack, i, j, 0, 12, overlayBarWidth, 12);
+			// draw overlay
+			this.drawTexture(matrixStack, i, j, 0, 12, overlayBarWidth, 12);
 
-            ci.cancel();
-        }
+			ci.cancel();
+		}
 
-        this.client.getTextureManager().bindTexture(BAR_TEX);
-    }
+		this.client.getTextureManager().bindTexture(BAR_TEX);
+	}
 }

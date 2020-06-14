@@ -1,12 +1,11 @@
 package com.github.chainmailstudios.astromine.common.item.tool;
 
-import java.util.function.Supplier;
-
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
-
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Lazy;
+
+import java.util.function.Supplier;
 
 public class AstromineToolMaterials {
 	public static final AstromineToolMaterial ASTERITE = new AstromineToolMaterial(5, 2643, 10f, 5.0f, 20, () -> Ingredient.ofItems(AstromineItems.ASTERITE_FRAGMENT));

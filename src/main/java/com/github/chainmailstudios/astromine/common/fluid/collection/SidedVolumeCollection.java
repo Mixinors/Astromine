@@ -1,13 +1,12 @@
 package com.github.chainmailstudios.astromine.common.fluid.collection;
 
+import com.google.common.collect.Maps;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.math.Direction;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-
-import com.google.common.collect.Maps;
-
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.math.Direction;
 
 public class SidedVolumeCollection implements Iterable<Map.Entry<Direction, IndexedVolumeCollection>> {
 	private final Map<Direction, IndexedVolumeCollection> collections;

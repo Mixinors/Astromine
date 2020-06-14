@@ -65,7 +65,7 @@ public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<Ho
 					float zA = vector.getZ() - posA.getZ();
 					float zB = previous.getZ() - posA.getZ();
 
-					consumer.vertex(matrices.peek().getModel(), xA, yA , zA).color(colorStart.R, colorStart.G, colorStart.B, colorStart.A).texture(0, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
+					consumer.vertex(matrices.peek().getModel(), xA, yA, zA).color(colorStart.R, colorStart.G, colorStart.B, colorStart.A).texture(0, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
 					consumer.vertex(matrices.peek().getModel(), xB, yB, zB).color(colorStart.R, colorStart.G, colorStart.B, colorStart.A).texture(0, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
 					consumer.vertex(matrices.peek().getModel(), xB + oX, yB, zB + oZ).color(colorEnd.R, colorEnd.G, colorEnd.B, colorEnd.A).texture(1, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
 					consumer.vertex(matrices.peek().getModel(), xA + oX, yA, zA + oZ).color(colorEnd.R, colorEnd.G, colorEnd.B, colorEnd.A).texture(1, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();

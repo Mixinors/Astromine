@@ -1,13 +1,12 @@
 package com.github.chainmailstudios.astromine.common.network;
 
-import java.util.Iterator;
-import java.util.Set;
-
 import com.google.common.collect.Sets;
-
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.Iterator;
+import java.util.Set;
 
 public class NetworkController implements Iterable<NetworkNode>, Tickable {
 	public static final NetworkController EMPTY = new NetworkController();

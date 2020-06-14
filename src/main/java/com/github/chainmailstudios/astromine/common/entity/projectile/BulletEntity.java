@@ -2,7 +2,6 @@ package com.github.chainmailstudios.astromine.common.entity.projectile;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.registry.AstromineEntities;
-
 import net.minecraft.block.AbstractGlassBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
