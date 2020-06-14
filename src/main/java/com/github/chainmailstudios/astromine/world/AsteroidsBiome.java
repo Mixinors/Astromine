@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.world;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.registry.AstromineFeatures;
 
 import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.world.biome.Biome;
@@ -29,7 +30,7 @@ public class AsteroidsBiome extends Biome {
 						.moodSound(BiomeMoodSound.CAVE).build())
 				.parent(null));
 		this.addFeature(GenerationStep.Feature.RAW_GENERATION,
-				AstromineCommon.ASTEROIDS_FEATURE.configure(DefaultFeatureConfig.INSTANCE)
+				AstromineFeatures.ASTEROIDS_FEATURE.configure(DefaultFeatureConfig.INSTANCE)
 						.createDecoratedFeature(Decorator.CHANCE_HEIGHTMAP.configure(new ChanceDecoratorConfig(16))));
 	}
 }

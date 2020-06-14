@@ -19,6 +19,6 @@ public class AstrominePotions {
 			new StatusEffectInstance(StatusEffects.SLOWNESS, 40, 1)
 	));
 
-	public static void init() {
+	public static void initialize() {
 	}
 }
