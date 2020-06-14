@@ -29,48 +29,47 @@ public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<Ho
 
 	@Override
 	public void render(HolographicBridgeBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider provider, int light, int overlay) {
-		BlockState blockState = entity.getWorld().getBlockState(entity.getPos());
+		BlockState b = entity.getWorld().getBlockState(entity.getPos());
 
-		if (entity.hasChild() && blockState.getBlock() instanceof HorizontalFacingBlock) {
-			Vec3i posA = entity.getPos();
-			Vec3i posB = entity.getChild().getPos();
+		if (entity.hasChild() && b.getBlock() instanceof HorizontalFacingBlock) {
+			Vec3i pA = entity.getPos();
 
-			Direction direction = blockState.get(HorizontalFacingBlock.FACING);
+			Direction d = b.get(HorizontalFacingBlock.FACING);
 
-			int oX = direction == Direction.NORTH ? 1 : 0;
-			int oZ = direction == Direction.WEST ? 1 : 0;
+			int oX = d == Direction.NORTH ? 1 : 0;
+			int oZ = d == Direction.WEST ? 1 : 0;
 
-			Collection<Vector3f> segments = entity.segments;
+			Collection<Vector3f> s = entity.segments;
 
-			if (segments.size() == 0) return;
+			if (s.size() == 0) return;
 
-			Vector3f origin = segments.iterator().next();
-			Vector3f previous = origin;
+			Vector3f o = s.iterator().next();
+			Vector3f p = o;
 
 			matrices.push();
 
-			VertexConsumer consumer = provider.getBuffer(InterfaceLayer.getInterface());
+			VertexConsumer c = provider.getBuffer(InterfaceLayer.getInterface());
 
-			final Color colorStart = Color.of("0x7E2FD3DA");
-			final Color colorEnd = Color.of("0x7E2FD3DA");
+			final Color cS = Color.of("0x7e2Fd3da");
+			final Color cE = Color.of("0x7e2Fd3da");
 
-			for (Vector3f vector : segments) {
-				if (vector != origin) {
-					float xA = vector.getX() - posA.getX();
-					float xB = previous.getX() - posA.getX();
+			for (Vector3f v : s) {
+				if (v != o) {
+					float xA = v.getX() - pA.getX();
+					float xB = p.getX() - pA.getX();
 
-					float yA = vector.getY() - posA.getY();
-					float yB = previous.getY() - posA.getY();
+					float yA = v.getY() - pA.getY();
+					float yB = p.getY() - pA.getY();
 
-					float zA = vector.getZ() - posA.getZ();
-					float zB = previous.getZ() - posA.getZ();
+					float zA = v.getZ() - pA.getZ();
+					float zB = p.getZ() - pA.getZ();
 
-					consumer.vertex(matrices.peek().getModel(), xA, yA, zA).color(colorStart.R, colorStart.G, colorStart.B, colorStart.A).texture(0, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
-					consumer.vertex(matrices.peek().getModel(), xB, yB, zB).color(colorStart.R, colorStart.G, colorStart.B, colorStart.A).texture(0, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
-					consumer.vertex(matrices.peek().getModel(), xB + oX, yB, zB + oZ).color(colorEnd.R, colorEnd.G, colorEnd.B, colorEnd.A).texture(1, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
-					consumer.vertex(matrices.peek().getModel(), xA + oX, yA, zA + oZ).color(colorEnd.R, colorEnd.G, colorEnd.B, colorEnd.A).texture(1, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
+					c.vertex(matrices.peek().getModel(), xA, yA, zA).color(cS.R, cS.G, cS.B, cS.A).texture(0, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
+					c.vertex(matrices.peek().getModel(), xB, yB, zB).color(cS.R, cS.G, cS.B, cS.A).texture(0, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
+					c.vertex(matrices.peek().getModel(), xB + oX, yB, zB + oZ).color(cE.R, cE.G, cE.B, cE.A).texture(1, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
+					c.vertex(matrices.peek().getModel(), xA + oX, yA, zA + oZ).color(cE.R, cE.G, cE.B, cE.A).texture(1, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
 				}
-				previous = vector;
+				p = v;
 			}
 
 			matrices.pop();
