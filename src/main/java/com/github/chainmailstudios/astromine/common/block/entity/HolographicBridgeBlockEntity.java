@@ -33,6 +33,8 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 	private boolean hasCheckedChild = false;
 	private boolean hasCheckedParent = false;
 
+	public Direction direction = Direction.NORTH;
+
 	public HolographicBridgeBlockEntity() {
 		super(AstromineBlockEntities.HOLOGRAPHIC_BRIDGE);
 	}
@@ -77,6 +79,9 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 		BlockPos bCP = getChild().getPos();
 		BlockPos bOP = getPos();
 
+		world.setBlockState(bCP.offset(Direction.UP, 2), Blocks.EMERALD_BLOCK.getDefaultState());
+		world.setBlockState(bOP.offset(Direction.UP, 2), Blocks.DIAMOND_BLOCK.getDefaultState());
+
 		BlockPos nCP = bCP;
 
 		Direction cD = getChild().getCachedState().get(HorizontalFacingBlock.FACING);
@@ -103,20 +108,14 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 
 		for (Vector3f v : segments) {
 			if ((bOP.getX() != v.getX() || bOP.getZ() != v.getZ()) && (bCP.getX() != v.getX() || bCP.getZ() != v.getZ())) {
-				BlockPos nP = new BlockPos(v.getX(), Math.min(bCP.getY(), v.getY()), v.getZ());
+				BlockPos nP = new BlockPos(v.getX(), Math.min(Math.max(bOP.getY(), bCP.getY()), v.getY()), v.getZ());
 
-				float f;
-
-				if (o.getY() >= v.getY()) {
-					f = o.getY() - v.getY();
-				} else {
-					f = v.getY() - o.getY();
-				}
+				float f = v.getY() - o.getY();
 
 				if (!nP.equals(oP)) {
 					oP = nP;
 
-					HolographicBridgeManager.add(world, nP, (int) (16f * f), (int) (16 * oF));
+					HolographicBridgeManager.add(world, direction, nP, (int) (16f * f), (int) (16 * oF));
 
 					oF = f;
 
@@ -200,6 +199,8 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 		if (child != null) tag.putLong("child_position", child.getPos().asLong());
 		if (parent != null) tag.putLong("parent_position", parent.getPos().asLong());
 
+		tag.putInt("direction", direction.getId());
+
 		return super.toTag(tag);
 	}
 
@@ -207,6 +208,8 @@ public class HolographicBridgeBlockEntity extends BlockEntity implements Tickabl
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
 		if (tag.contains("child_position")) childPosition = BlockPos.fromLong(tag.getLong("child_position"));
 		if (tag.contains("parent_position")) parentPosition = BlockPos.fromLong(tag.getLong("parent_position"));
+
+		direction = Direction.byId(tag.getInt("direction"));
 
 		super.fromTag(state, tag);
 	}

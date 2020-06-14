@@ -101,7 +101,7 @@ public abstract class BaseWeapon extends Item implements Weapon {
 			if (world.isClient) {
 				ClientUtilities.addEntity(persistentProjectileEntity);
 
-				ClientUtilities.playSound(user.getBlockPos(), getShotSound(), SoundCategory.PLAYERS, 1, 1, true);
+				ClientUtilities.playSound(user.getBlockPos(), getShotSound(), SoundCategory.PLAYERS, 1, 1f, false);
 			} else {
 				user.world.spawnEntity(persistentProjectileEntity);
 			}
