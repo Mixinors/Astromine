@@ -9,6 +9,7 @@
     "ChunkSerializerMixin$WorldChunkMixin",
     "Fixin",
     "FlamingAnvilCraftingMixin",
+    "SkyPropertiesMixin",
     "SlimeEntityMixin"
   ],
   "client": [
