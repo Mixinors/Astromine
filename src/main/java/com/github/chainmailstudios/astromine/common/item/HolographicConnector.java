@@ -9,6 +9,7 @@ import net.minecraft.item.ItemUsageContext;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
 public class HolographicConnector extends Item {
@@ -31,6 +32,21 @@ public class HolographicConnector extends Item {
 			} else {
 				HolographicBridgeBlockEntity parent = (HolographicBridgeBlockEntity) CACHE.get(world);
 
+				BlockPos nP = entity.getPos();
+				BlockPos oP = parent.getPos();
+
+				Direction d = Direction.NORTH;
+
+				if (nP.getX() > oP.getX()) {
+					d = Direction.EAST;
+				} if (nP.getX() < oP.getX()) {
+					d = Direction.WEST;
+				} else if (nP.getZ() > oP.getZ()) {
+					d = Direction.SOUTH;
+				} else if (nP.getZ() < oP.getZ()) {
+					d = Direction.NORTH;
+				}
+
 				if (parent.getPos().getZ() < entity.getPos().getZ() || parent.getPos().getX() < entity.getPos().getX()) {
 					HolographicBridgeBlockEntity temporary = parent;
 					parent = entity;
@@ -51,6 +67,8 @@ public class HolographicConnector extends Item {
 				if (parent.getParent() == entity.getParent()) {
 					parent.setParent(null);
 				}
+
+				parent.direction = d;
 
 				parent.buildBridge();
 

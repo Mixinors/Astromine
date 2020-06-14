@@ -1,40 +1,25 @@
 package com.github.chainmailstudios.astromine.common.bridge;
 
+import com.github.chainmailstudios.astromine.common.utilities.VoxelShapeUtilities;
+import com.google.common.collect.ImmutableMap;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.block.Block;
+import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 public class HolographicBridgeManager {
-	private static final VoxelShape[] SHAPES = new VoxelShape[]{
-			Block.createCuboidShape(0, 0, 0, 16, 1, 16),
-			Block.createCuboidShape(0, 1, 0, 16, 2, 16),
-			Block.createCuboidShape(0, 2, 0, 16, 3, 16),
-			Block.createCuboidShape(0, 3, 0, 16, 4, 16),
-			Block.createCuboidShape(0, 4, 0, 16, 5, 16),
-			Block.createCuboidShape(0, 5, 0, 16, 6, 16),
-			Block.createCuboidShape(0, 6, 0, 16, 7, 16),
-			Block.createCuboidShape(0, 7, 0, 16, 8, 16),
-			Block.createCuboidShape(0, 8, 0, 16, 9, 16),
-			Block.createCuboidShape(0, 9, 0, 16, 10, 16),
-			Block.createCuboidShape(0, 10, 0, 16, 11, 16),
-			Block.createCuboidShape(0, 11, 0, 16, 12, 16),
-			Block.createCuboidShape(0, 12, 0, 16, 13, 16),
-			Block.createCuboidShape(0, 13, 0, 16, 14, 16),
-			Block.createCuboidShape(0, 14, 0, 16, 15, 16),
-			Block.createCuboidShape(0, 15, 0, 16, 16, 16)
-	};
+	public static final Object2ObjectArrayMap<BlockView, Object2ObjectArrayMap<BlockPos, Pair<Direction, Integer[]>>> LEVELS = new Object2ObjectArrayMap<>();
 
-	public static final Object2ObjectArrayMap<BlockView, Object2ObjectArrayMap<BlockPos, Integer[]>> LEVELS = new Object2ObjectArrayMap<>();
-
-	public static void add(BlockView world, BlockPos position, int lA, int lB) {
+	public static void add(BlockView world, Direction direction, BlockPos position, int lA, int lB) {
 		LEVELS.computeIfAbsent(world, (key) -> new Object2ObjectArrayMap<>());
 
-		LEVELS.get(world).put(position, new Integer[]{lA, lB});
+		LEVELS.get(world).put(position, new Pair<>(direction, new Integer[]{lA, lB}));
 	}
 
 	public static void remove(BlockView world, BlockPos position) {
@@ -43,29 +28,40 @@ public class HolographicBridgeManager {
 		LEVELS.get(world).remove(position);
 	}
 
-	public static Integer[] get(BlockView world, BlockPos position) {
+	public static Pair<Direction, Integer[]> get(BlockView world, BlockPos position) {
 		LEVELS.computeIfAbsent(world, (key) -> new Object2ObjectArrayMap<>());
 
-		return LEVELS.get(world).getOrDefault(position, new Integer[]{Integer.MIN_VALUE, Integer.MIN_VALUE});
+		return LEVELS.get(world).getOrDefault(position, new Pair<>(Direction.NORTH, new Integer[]{Integer.MIN_VALUE, Integer.MIN_VALUE}));
 	}
 
 	public static VoxelShape getShape(BlockView world, BlockPos position) {
-		Integer[] levels = get(world, position);
-		return levels[0] == Integer.MIN_VALUE ? VoxelShapes.fullCube(): getShape(levels);
+		Pair<Direction, Integer[]> pair = get(world, position);
+		Integer[] levels = pair.getRight();
+		return levels[0] == Integer.MIN_VALUE ? VoxelShapes.fullCube(): getShape(pair.getLeft(), pair.getRight());
 	}
 
-	private static VoxelShape getShape(Integer[] levels) {
+	private static VoxelShape getShape(Direction direction, Integer[] levels) {
 		float t = levels[0];
 		float b = levels[1];
+
+		while (t < 0) {
+			t += 16;
+			b += 16;
+		}
 
 		while (t >= 16) {
 			t -= 16;
 			b -= 16;
 		}
 
+		if (direction == Direction.SOUTH || direction == Direction.EAST) {
+			t -= 2;
+			b -= 2;
+		}
+
 		float y = t;
 
-		float dX = 16f / (t - b);
+		float dX = 16f / Math.abs((t - b));
 
 		VoxelShape shape = VoxelShapes.empty();
 
@@ -74,6 +70,19 @@ public class HolographicBridgeManager {
 			y += 1;
 		}
 
-		return shape;
+		switch (direction) {
+			case SOUTH: {
+				return VoxelShapeUtilities.rotate(Direction.Axis.Y, Math.toRadians(270), shape);
+			}
+			case NORTH: {
+				return VoxelShapeUtilities.rotate(Direction.Axis.Y, Math.toRadians(90), shape);
+			}
+			case WEST: {
+				return VoxelShapeUtilities.rotate(Direction.Axis.Y, Math.toRadians(0), shape);
+			}
+			default: {
+				return VoxelShapeUtilities.rotate(Direction.Axis.Y, Math.toRadians(180), shape);
+			}
+		}
 	}
 }
