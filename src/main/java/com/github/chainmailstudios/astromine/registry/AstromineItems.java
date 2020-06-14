@@ -34,7 +34,8 @@ public class AstromineItems {
 
 	// Materials
 	public static final Item ASTERITE_FRAGMENT = register("asterite_fragment", new Item(BASIC_SETTINGS));
-	public static final Item METITE_CLUSTER = register("metite_cluster", new Item(BASIC_SETTINGS));
+	public static final Item ASTEROID_METITE_CLUSTER = register("asteroid_metite_cluster", new Item(BASIC_SETTINGS));
+	public static final Item METEOR_METITE_CLUSTER = register("meteor_metite_cluster", new Item(BASIC_SETTINGS));
 	public static final Item METITE_INGOT = register("metite_ingot", new Item(BASIC_SETTINGS));
 	public static final Item STELLUM_INGOT = register("stellum_ingot", new Item(BASIC_SETTINGS));
 	public static final Item GALAXIUM_FRAGMENT = register("galaxium_fragment", new Item(BASIC_SETTINGS));
@@ -42,6 +43,12 @@ public class AstromineItems {
 
 	// Tools
 	public static final Item HOLOGRAPHIC_CONNECTOR = register("holographic_connector", new HolographicConnector(new Item.Settings().group(AstromineItemGroups.ASTROMINE).maxCount(1)));
+
+	public static final Item METITE_PICKAXE = register("metite_pickaxe", new PickaxeItem(AstromineToolMaterials.METITE, 1, -2.8f, BASIC_SETTINGS));
+	public static final Item METITE_AXE = register("metite_axe", new AxeItem(AstromineToolMaterials.METITE, 5f, -3.0f, BASIC_SETTINGS));
+	public static final Item METITE_SHOVEL = register("metite_shovel", new ShovelItem(AstromineToolMaterials.METITE, 1.5f, -3.0f, BASIC_SETTINGS));
+	public static final Item METITE_HOE = register("metite_hoe", new HoeItem(AstromineToolMaterials.METITE, -5, 0f, BASIC_SETTINGS));
+	public static final Item METITE_SWORD = register("metite_sword", new SwordItem(AstromineToolMaterials.METITE, 3, -2.4f, BASIC_SETTINGS));
 
 	public static final Item ASTERITE_PICKAXE = register("asterite_pickaxe", new PickaxeItem(AstromineToolMaterials.ASTERITE, 1, -2.8f, BASIC_SETTINGS));
 	public static final Item ASTERITE_AXE = register("asterite_axe", new AxeItem(AstromineToolMaterials.ASTERITE, 5f, -3.0f, BASIC_SETTINGS));
@@ -68,6 +75,11 @@ public class AstromineItems {
 	public static final Item UNIVITE_SWORD = register("univite_sword", new SwordItem(AstromineToolMaterials.UNIVITE, 3, -2.4f, BASIC_SETTINGS));
 
 	// Armor
+	public static final Item METITE_HELMET = register("metite_helmet", new ArmorItem(AstromineArmorMaterials.METITE, EquipmentSlot.HEAD, BASIC_SETTINGS));
+	public static final Item METITE_CHESTPLATE = register("metite_chestplate", new ArmorItem(AstromineArmorMaterials.METITE, EquipmentSlot.CHEST, BASIC_SETTINGS));
+	public static final Item METITE_LEGGINGS = register("metite_leggings", new ArmorItem(AstromineArmorMaterials.METITE, EquipmentSlot.LEGS, BASIC_SETTINGS));
+	public static final Item METITE_BOOTS = register("metite_boots", new ArmorItem(AstromineArmorMaterials.METITE, EquipmentSlot.FEET, BASIC_SETTINGS));
+
 	public static final Item ASTERITE_HELMET = register("asterite_helmet", new ArmorItem(AstromineArmorMaterials.ASTERITE, EquipmentSlot.HEAD, BASIC_SETTINGS));
 	public static final Item ASTERITE_CHESTPLATE = register("asterite_chestplate", new ArmorItem(AstromineArmorMaterials.ASTERITE, EquipmentSlot.CHEST, BASIC_SETTINGS));
 	public static final Item ASTERITE_LEGGINGS = register("asterite_leggings", new ArmorItem(AstromineArmorMaterials.ASTERITE, EquipmentSlot.LEGS, BASIC_SETTINGS));

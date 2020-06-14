@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "astromine:item/metite_cluster"
+    "layer0": "astromine:item/asteroid_metite_cluster"
   }
 }
