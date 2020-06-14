@@ -95,71 +95,73 @@ public class SuperSpaceSlimeShooterItem extends BaseWeapon {
 	public void tryShoot(World world, PlayerEntity user) {
 		Optional<ItemStack> optionalMagazine = InventoryComponentFromInventory.of(user.inventory).getContentsMatching(stack -> stack.getItem() == getAmmo()).stream().findFirst();
 
-		if (optionalMagazine.isPresent()) {
-			ItemStack magazine = optionalMagazine.get();
-
+		if (optionalMagazine.isPresent() || user.isCreative()) {
 			long currentAttempt = System.currentTimeMillis();
 
 			if (isReloading(currentAttempt)) {
 				return;
 			}
 
-			if (!world.isClient && world.random.nextInt(8) == 0) {
-				magazine.decrement(1);
+			if (optionalMagazine.isPresent() && !user.isCreative()) {
+				ItemStack magazine = optionalMagazine.get();
 
-				if (magazine.isEmpty()) {
-					setLastReload(currentAttempt);
+				if (!world.isClient && world.random.nextInt(8) == 0) {
+					magazine.decrement(1);
+
+					if (magazine.isEmpty()) {
+						setLastReload(currentAttempt);
+					}
 				}
 			}
 
-			BulletEntity bulletEntity = new BulletEntity(AstromineEntities.BULLET_ENTITY_TYPE, user, world);
+			if (optionalMagazine.isPresent() || user.isCreative()) {
+				BulletEntity bulletEntity = new BulletEntity(AstromineEntities.BULLET_ENTITY_TYPE, user, world);
 
-			bulletEntity.setProperties(user, user.pitch, user.yaw, 0.0F, getDistance(), 0);
+				bulletEntity.setProperties(user, user.pitch, user.yaw, 0.0F, getDistance(), 0);
 
-			bulletEntity.setCritical(false);
+				bulletEntity.setCritical(false);
 
-			bulletEntity.setDamage(getDamage());
+				bulletEntity.setDamage(getDamage());
 
-			bulletEntity.setPunch(getPunch());
+				bulletEntity.setPunch(getPunch());
 
-			bulletEntity.setTexture(getBulletTexture());
+				bulletEntity.setTexture(getBulletTexture());
 
-			bulletEntity.setSound(AstromineSounds.EMPTY);
+				bulletEntity.setSound(AstromineSounds.EMPTY);
 
-			if (world.isClient) {
-				ClientUtilities.addEntity(bulletEntity);
+				if (world.isClient) {
+					ClientUtilities.addEntity(bulletEntity);
 
-				ClientUtilities.playSound(user.getBlockPos(), getShotSound(), SoundCategory.PLAYERS, 1, 1, true);
-			} else {
-				user.world.spawnEntity(bulletEntity);
-			}
-
-			if (world.isClient) {
-				user.pitch -= getRecoil() / 16f / (ClientUtilities.Weapon.isAiming() ? 2 : 1);
-				user.yaw += (world.random.nextBoolean() ? world.random.nextInt(16) / 16f : -world.random.nextInt(16) / 16f) / (ClientUtilities.Weapon.isAiming() ? 2 : 1);
-			} else {
-				// Ray-trace out to find end location of particle beam.
-				HitResult result = user.rayTrace(10, 0, false);
-				Vec3d hitPos = result.getPos();
-				Vec3d originPos = user.getPos().add(0, 1, 0);
-
-				// Calculate change in slope for particles.
-				Vec3d change = originPos.subtract(hitPos);
-				double distance = Math.sqrt(Math.pow(change.x, 2) + Math.pow(change.y, 2) + Math.pow(change.z, 2));
-				change = new Vec3d(change.x / distance, change.y / distance, change.z / distance);
-
-				ServerWorld serverWorld = (ServerWorld) world;
-				Vec3d increase = originPos;
-
-				// Spawn particles.
-				for (int i = 0; i < 5; i++) {
-					serverWorld.spawnParticles(AstromineParticles.SPACE_SLIME, increase.getX(), increase.getY(), increase.getZ(), 1, 0, 0, 0, 0);
-					increase = increase.subtract(change);
+					world.playSound(user, user.getBlockPos(), getShotSound(), SoundCategory.PLAYERS, 1f, 1f);
+				} else {
+					user.world.spawnEntity(bulletEntity);
 				}
-			}
-		} else {
-			if (world.isClient) {
-				ClientUtilities.playSound(user.getBlockPos(), AstromineSounds.EMPTY_MAGAZINE, SoundCategory.PLAYERS, 1, 1, true);
+
+				if (world.isClient) {
+					user.pitch -= getRecoil() / 16f / (ClientUtilities.Weapon.isAiming() ? 2 : 1);
+					user.yaw += (world.random.nextBoolean() ? world.random.nextInt(16) / 16f : -world.random.nextInt(16) / 16f) / (ClientUtilities.Weapon.isAiming() ? 2 : 1);
+				} else {
+					// Ray-trace out to find end location of particle beam.
+					HitResult result = user.rayTrace(10, 0, false);
+					Vec3d hitPos = result.getPos();
+					Vec3d originPos = user.getPos().add(0, 1, 0);
+
+					// Calculate change in slope for particles.
+					Vec3d change = originPos.subtract(hitPos);
+					double distance = Math.sqrt(Math.pow(change.x, 2) + Math.pow(change.y, 2) + Math.pow(change.z, 2));
+					change = new Vec3d(change.x / distance, change.y / distance, change.z / distance);
+
+					ServerWorld serverWorld = (ServerWorld) world;
+					Vec3d increase = originPos;
+
+					// Spawn particles.
+					for (int i = 0; i < 5; i++) {
+						serverWorld.spawnParticles(AstromineParticles.SPACE_SLIME, increase.getX(), increase.getY(), increase.getZ(), 1, 0, 0, 0, 0);
+						increase = increase.subtract(change);
+					}
+				}
+			} else {
+				world.playSound(user, user.getBlockPos(), AstromineSounds.EMPTY_MAGAZINE, SoundCategory.PLAYERS, 1f, 1f);
 			}
 		}
 	}

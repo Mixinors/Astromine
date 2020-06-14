@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.client.render.block;
 
-import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.client.render.OverlayTexture;
@@ -17,18 +17,18 @@ import spinnery.widget.api.Color;
 
 import java.util.Collection;
 
-public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<HolographicBridgeBlockEntity> {
+public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<HolographicBridgeProjectorBlockEntity> {
 	public HolographicBridgeBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
 		super(dispatcher);
 	}
 
 	@Override
-	public boolean rendersOutsideBoundingBox(HolographicBridgeBlockEntity blockEntity) {
+	public boolean rendersOutsideBoundingBox(HolographicBridgeProjectorBlockEntity blockEntity) {
 		return true;
 	}
 
 	@Override
-	public void render(HolographicBridgeBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider provider, int light, int overlay) {
+	public void render(HolographicBridgeProjectorBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider provider, int light, int overlay) {
 		BlockState b = entity.getWorld().getBlockState(entity.getPos());
 
 		if (entity.hasChild() && b.getBlock() instanceof HorizontalFacingBlock) {
@@ -50,8 +50,7 @@ public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<Ho
 
 			VertexConsumer c = provider.getBuffer(InterfaceLayer.getInterface());
 
-			final Color cS = Color.of("0x7e2Fd3da");
-			final Color cE = Color.of("0x7e2Fd3da");
+			Color bC = entity.color;
 
 			for (Vector3f v : s) {
 				if (v != o) {
@@ -64,10 +63,10 @@ public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<Ho
 					float zA = v.getZ() - pA.getZ();
 					float zB = p.getZ() - pA.getZ();
 
-					c.vertex(matrices.peek().getModel(), xA, yA, zA).color(cS.R, cS.G, cS.B, cS.A).texture(0, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
-					c.vertex(matrices.peek().getModel(), xB, yB, zB).color(cS.R, cS.G, cS.B, cS.A).texture(0, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
-					c.vertex(matrices.peek().getModel(), xB + oX, yB, zB + oZ).color(cE.R, cE.G, cE.B, cE.A).texture(1, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
-					c.vertex(matrices.peek().getModel(), xA + oX, yA, zA + oZ).color(cE.R, cE.G, cE.B, cE.A).texture(1, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
+					c.vertex(matrices.peek().getModel(), xA, yA, zA).color(bC.R, bC.G, bC.B, bC.A).texture(0, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
+					c.vertex(matrices.peek().getModel(), xB, yB, zB).color(bC.R, bC.G, bC.B, bC.A).texture(0, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
+					c.vertex(matrices.peek().getModel(), xB + oX, yB, zB + oZ).color(bC.R, bC.G, bC.B, bC.A).texture(1, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
+					c.vertex(matrices.peek().getModel(), xA + oX, yA, zA + oZ).color(bC.R, bC.G, bC.B, bC.A).texture(1, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
 				}
 				p = v;
 			}

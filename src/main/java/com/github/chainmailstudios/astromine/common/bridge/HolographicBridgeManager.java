@@ -42,13 +42,13 @@ public class HolographicBridgeManager {
 		float b = levels[1];
 
 		while (t < 0) {
-			t += 16;
-			b += 16;
+			t += 15;
+			b += 15;
 		}
 
 		while (t >= 16) {
-			t -= 16;
-			b -= 16;
+			t -= 15;
+			b -= 15;
 		}
 
 		if (direction == Direction.SOUTH || direction == Direction.EAST) {

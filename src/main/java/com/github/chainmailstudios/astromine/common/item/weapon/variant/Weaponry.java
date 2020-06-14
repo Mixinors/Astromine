@@ -33,7 +33,7 @@ public class Weaponry {
 
 		@Override
 		public long getShotInterval() {
-			return 6;
+			return 100;
 		}
 
 		@Override
