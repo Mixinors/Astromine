@@ -15,32 +15,11 @@ public class SidedVolumeCollection implements Iterable<Map.Entry<Direction, Inde
 	 * Instantiates an empty SidedIndexedVolumeCollection instance.
 	 */
 	public SidedVolumeCollection() {
-		collections = Maps.newHashMap();
+		this.collections = Maps.newHashMap();
 
 		for (Direction direction : Direction.values()) {
-			collections.put(direction, new IndexedVolumeCollection());
+			this.collections.put(direction, new IndexedVolumeCollection());
 		}
-	}
-
-	public IndexedVolumeCollection getCollection(Direction direction) {
-		return collections.get(direction);
-	}
-
-	public Collection<IndexedVolumeCollection> getCollections() {
-		return collections.values();
-	}
-
-	/**
-	 * Serializes a SidedVolumeCollection to a tag.
-	 *
-	 * @return a tag
-	 */
-	public CompoundTag toTag(CompoundTag tag) {
-		for (Map.Entry<Direction, IndexedVolumeCollection> entry : collections.entrySet()) {
-			tag.put(entry.getKey().asString(), entry.getValue().toTag(new CompoundTag()));
-		}
-
-		return tag;
 	}
 
 	/**
@@ -58,8 +37,29 @@ public class SidedVolumeCollection implements Iterable<Map.Entry<Direction, Inde
 		return collection;
 	}
 
+	public IndexedVolumeCollection getCollection(Direction direction) {
+		return this.collections.get(direction);
+	}
+
+	public Collection<IndexedVolumeCollection> getCollections() {
+		return this.collections.values();
+	}
+
+	/**
+	 * Serializes a SidedVolumeCollection to a tag.
+	 *
+	 * @return a tag
+	 */
+	public CompoundTag toTag(CompoundTag tag) {
+		for (Map.Entry<Direction, IndexedVolumeCollection> entry : this.collections.entrySet()) {
+			tag.put(entry.getKey().asString(), entry.getValue().toTag(new CompoundTag()));
+		}
+
+		return tag;
+	}
+
 	@Override
 	public Iterator<Map.Entry<Direction, IndexedVolumeCollection>> iterator() {
-		return collections.entrySet().iterator();
+		return this.collections.entrySet().iterator();
 	}
 }

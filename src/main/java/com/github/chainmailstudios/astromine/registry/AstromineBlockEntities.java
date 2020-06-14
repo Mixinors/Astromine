@@ -1,15 +1,17 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import java.util.function.Supplier;
 
 public class AstromineBlockEntities {
+	public static BlockEntityType<HolographicBridgeBlockEntity> HOLOGRAPHIC_BRIDGE = register("holographic_bridge", HolographicBridgeBlockEntity::new, AstromineBlocks.HOLOGRAPHIC_BRIDGE_PROJECTOR);
+
 	public static void initialize() {
 		// Unused.
 	}
@@ -21,6 +23,6 @@ public class AstromineBlockEntities {
 	 * @return Registered BlockEntityType
 	 */
 	public static <B extends BlockEntity> BlockEntityType<B> register(String name, Supplier<B> supplier, Block... supportedBlocks) {
-		return Registry.register(Registry.BLOCK_ENTITY_TYPE, AstromineCommon.id(name), BlockEntityType.Builder.create(supplier, supportedBlocks).build(null));
+		return Registry.register(Registry.BLOCK_ENTITY_TYPE, AstromineCommon.identifier(name), BlockEntityType.Builder.create(supplier, supportedBlocks).build(null));
 	}
 }

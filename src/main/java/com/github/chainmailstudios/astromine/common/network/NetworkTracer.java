@@ -48,7 +48,7 @@ public class NetworkTracer {
 			if (!NetworkManager.INSTANCE.get(type, initialPosition).isNullOrEmpty()) {
 				return;
 			} else {
-				controller.addPosition(initialPosition);
+				this.controller.addPosition(initialPosition);
 			}
 
 			while (!positions.isEmpty()) {
@@ -67,18 +67,18 @@ public class NetworkTracer {
 					NetworkController existingController = NetworkManager.INSTANCE.get(type, offsetPosition);
 
 					if (!existingController.isNullOrEmpty()) {
-						controller = existingController.join(controller);
+						this.controller = existingController.join(this.controller);
 						joined.setTrue();
 					} else if (offsetObject instanceof NetworkMember) {
 						NetworkMember offsetMember = (NetworkMember) offsetObject;
 
 						if ((offsetMember.isRequester() || offsetMember.isProvider() || offsetMember.isBuffer()) && offsetMember.accepts(type)) {
-							controller.addMember(NetworkNode.of(offsetPosition));
+							this.controller.addMember(NetworkNode.of(offsetPosition));
 						}
 						if (offsetMember.isNode()) {
 							if (offsetMember.accepts(type, initialObject)) {
 								positions.addLast(offsetPosition);
-								controller.addNode(NetworkNode.of(offsetPosition));
+								this.controller.addNode(NetworkNode.of(offsetPosition));
 							}
 						}
 					}
@@ -91,7 +91,7 @@ public class NetworkTracer {
 				}
 			}
 
-			NetworkManager.INSTANCE.add(controller);
+			NetworkManager.INSTANCE.add(this.controller);
 		}
 	}
 }

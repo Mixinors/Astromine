@@ -25,42 +25,42 @@ public class NetworkController implements Iterable<NetworkNode>, Tickable {
 
 	@Override
 	public Iterator<NetworkNode> iterator() {
-		return nodes.iterator();
+		return this.nodes.iterator();
 	}
 
 	public void addNode(NetworkNode node) {
-		nodes.add(node);
+		this.nodes.add(node);
 	}
 
 	public void addPosition(BlockPos position) {
-		nodes.add(NetworkNode.of(position));
+		this.nodes.add(NetworkNode.of(position));
 	}
 
 	public void addMember(NetworkNode member) {
-		memberNodes.add(member);
+		this.memberNodes.add(member);
 	}
 
 	public void removeNode(NetworkNode node) {
-		nodes.remove(node);
+		this.nodes.remove(node);
 	}
 
 	public void removeMember(NetworkNode node) {
-		memberNodes.remove(node);
+		this.memberNodes.remove(node);
 	}
 
 	public NetworkController join(NetworkController controller) {
-		nodes.addAll(controller.nodes);
-		memberNodes.addAll(controller.memberNodes);
+		this.nodes.addAll(controller.nodes);
+		this.memberNodes.addAll(controller.memberNodes);
 		NetworkManager.INSTANCE.remove(controller);
 		return this;
 	}
 
 	public Boolean isNullOrEmpty() {
-		return type == NetworkTicker.EMPTY;
+		return this.type == NetworkTicker.EMPTY;
 	}
 
 	public NetworkTicker getType() {
-		return type;
+		return this.type;
 	}
 
 	public NetworkController setType(NetworkTicker type) {
@@ -69,11 +69,11 @@ public class NetworkController implements Iterable<NetworkNode>, Tickable {
 	}
 
 	public int size() {
-		return nodes.size();
+		return this.nodes.size();
 	}
 
 	@Override
 	public void tick() {
-		type.tick(this);
+		this.type.tick(this);
 	}
 }

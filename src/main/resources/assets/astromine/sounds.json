@@ -1,0 +1,11 @@
+{
+  "empty_magazine": {
+    "sounds": ["astromine:empty_magazine"]
+  },
+  "scar_h_shot": {
+    "sounds": ["astromine:scar_h_shot"]
+  },
+  "barret_m98b_shot": {
+    "sounds": ["astromine:barret_m98b_shot"]
+  }
+}

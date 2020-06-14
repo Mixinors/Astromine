@@ -1,7 +1,7 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
 import net.minecraft.client.util.math.Vector3f;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,7 +16,7 @@ public class LineUtilities {
 	 * @param segments the segments between both positions.
 	 * @return the dots of the requested curve.
 	 */
-	public static Collection<Vector3f> getBezierSegments(BlockPos posA, BlockPos posB, float segments) {
+	public static Collection<Vector3f> getBezierSegments(Vec3i posA, Vec3i posB, float segments) {
 		ArrayList<Vector3f> positions = new ArrayList<>();
 
 		double x1 = posA.getX();

@@ -10,14 +10,6 @@ import net.minecraft.util.TypedActionResult;
  */
 public interface InventoryFromInventoryComponent extends Inventory {
 	/**
-	 * Retrieves the InventoryComponent this wrapper
-	 * is wrapping.
-	 *
-	 * @return the requested component.
-	 */
-	InventoryComponent getComponent();
-
-	/**
 	 * Builds an wrapper over the given component
 	 * for vanilla Inventory usage.
 	 *
@@ -34,8 +26,16 @@ public interface InventoryFromInventoryComponent extends Inventory {
 	 */
 	@Override
 	default int size() {
-		return getComponent().getSize();
+		return this.getComponent().getSize();
 	}
+
+	/**
+	 * Retrieves the InventoryComponent this wrapper
+	 * is wrapping.
+	 *
+	 * @return the requested component.
+	 */
+	InventoryComponent getComponent();
 
 	/**
 	 * Asserts whether inventory is empty or not.
@@ -44,7 +44,7 @@ public interface InventoryFromInventoryComponent extends Inventory {
 	 */
 	@Override
 	default boolean isEmpty() {
-		return getComponent().isEmpty();
+		return this.getComponent().isEmpty();
 	}
 
 	/**
@@ -55,7 +55,7 @@ public interface InventoryFromInventoryComponent extends Inventory {
 	 */
 	@Override
 	default ItemStack getStack(int slot) {
-		return getComponent().getStack(slot);
+		return this.getComponent().getStack(slot);
 	}
 
 	/**
@@ -69,13 +69,13 @@ public interface InventoryFromInventoryComponent extends Inventory {
 	 */
 	@Override
 	default ItemStack removeStack(int slot, int count) {
-		if (getComponent().getStack(slot).getCount() < count) {
-			TypedActionResult<ItemStack> result = getComponent().extract(slot);
-			if (!result.getValue().isEmpty()) markDirty();
+		if (this.getComponent().getStack(slot).getCount() < count) {
+			TypedActionResult<ItemStack> result = this.getComponent().extract(slot);
+			if (!result.getValue().isEmpty()) this.markDirty();
 			return result.getValue();
 		} else {
-			TypedActionResult<ItemStack> result = getComponent().extract(slot, count);
-			if (!result.getValue().isEmpty()) markDirty();
+			TypedActionResult<ItemStack> result = this.getComponent().extract(slot, count);
+			if (!result.getValue().isEmpty()) this.markDirty();
 			return result.getValue();
 		}
 	}
@@ -88,7 +88,7 @@ public interface InventoryFromInventoryComponent extends Inventory {
 	 */
 	@Override
 	default ItemStack removeStack(int slot) {
-		return getComponent().extract(slot).getValue();
+		return this.getComponent().extract(slot).getValue();
 	}
 
 	/**
@@ -100,18 +100,10 @@ public interface InventoryFromInventoryComponent extends Inventory {
 	 */
 	@Override
 	default void setStack(int slot, ItemStack stack) {
-		if (getComponent().getMaximumCount(slot) < stack.getCount()) {
-			stack.setCount(getComponent().getMaximumCount(slot));
+		if (this.getComponent().getMaximumCount(slot) < stack.getCount()) {
+			stack.setCount(this.getComponent().getMaximumCount(slot));
 		}
-		getComponent().setStack(slot, stack);
-	}
-
-	/**
-	 * Clears this inventory.
-	 */
-	@Override
-	default void clear() {
-		getComponent().clear();
+		this.getComponent().setStack(slot, stack);
 	}
 
 	/**
@@ -119,7 +111,7 @@ public interface InventoryFromInventoryComponent extends Inventory {
 	 */
 	@Override
 	default void markDirty() {
-		getComponent().dispatchConsumers();
+		this.getComponent().dispatchConsumers();
 	}
 
 	/**
@@ -132,6 +124,14 @@ public interface InventoryFromInventoryComponent extends Inventory {
 	@Override
 	default boolean canPlayerUse(PlayerEntity player) {
 		return true;
+	}
+
+	/**
+	 * Clears this inventory.
+	 */
+	@Override
+	default void clear() {
+		this.getComponent().clear();
 	}
 }
 

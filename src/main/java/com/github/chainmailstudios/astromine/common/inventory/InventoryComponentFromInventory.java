@@ -30,8 +30,8 @@ public class InventoryComponentFromInventory implements InventoryComponent {
 	@Override
 	public AbstractMap<Integer, ItemStack> getContents() {
 		HashMap<Integer, ItemStack> contents = new HashMap<>();
-		for (int i = 0; i < inventory.size(); ++i) {
-			contents.put(i, inventory.getStack(i));
+		for (int i = 0; i < this.inventory.size(); ++i) {
+			contents.put(i, this.inventory.getStack(i));
 		}
 		return contents;
 	}
@@ -43,16 +43,6 @@ public class InventoryComponentFromInventory implements InventoryComponent {
 
 	@Override
 	public ActionResult canExtract() {
-		return ActionResult.SUCCESS;
-	}
-
-	@Override
-	public ActionResult canInsert(ItemStack stack) {
-		return ActionResult.SUCCESS;
-	}
-
-	@Override
-	public ActionResult canExtract(ItemStack stack) {
 		return ActionResult.SUCCESS;
 	}
 
@@ -77,22 +67,32 @@ public class InventoryComponentFromInventory implements InventoryComponent {
 	}
 
 	@Override
-	public int getSize() {
-		return inventory.size();
+	public ActionResult canInsert(ItemStack stack) {
+		return ActionResult.SUCCESS;
 	}
 
 	@Override
 	public void setStack(int slot, ItemStack stack) {
-		inventory.setStack(slot, stack);
+		this.inventory.setStack(slot, stack);
 	}
 
 	@Override
-	public ItemStack getStack(int slot) {
-		return inventory.getStack(slot);
+	public int getSize() {
+		return this.inventory.size();
 	}
 
 	@Override
 	public List<Runnable> getListeners() {
-		return listeners;
+		return this.listeners;
+	}
+
+	@Override
+	public ItemStack getStack(int slot) {
+		return this.inventory.getStack(slot);
+	}
+
+	@Override
+	public ActionResult canExtract(ItemStack stack) {
+		return ActionResult.SUCCESS;
 	}
 }
