@@ -29,6 +29,7 @@ public class AstromineCommon implements ModInitializer {
 		AstromineChunkGenerators.initialize();
 		AstromineServerPackets.initialize();
 		AstromineGravities.initialize();
+		AstromineDimensionLayers.initialize();
 	}
 
 	public static Identifier identifier(String name) {

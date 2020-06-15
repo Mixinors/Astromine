@@ -13,12 +13,11 @@ public class AstromineClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-
-
 		AstromineEntityRenderers.initialize();
 		AstromineBlockEntityRenderers.initialize();
 		AstromineSounds.initialize();
 		AstromineParticles.initialize();
+		AstromineSkyboxes.initialize();
 
 		EntityRendererRegistry.INSTANCE.register(
 				AstromineEntities.SPACE_SLIME,

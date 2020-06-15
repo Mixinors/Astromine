@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.world.AstromineDimensionType;
+import com.github.chainmailstudios.astromine.world.AstromineDimensionTypes;
 import com.github.chainmailstudios.astromine.world.generation.AstromineBiomeSource;
 import com.github.chainmailstudios.astromine.world.generation.AstromineChunkGenerator;
 import com.google.common.collect.ImmutableList;
@@ -49,8 +49,8 @@ public class MinecraftServerMixin {
 	@Inject(method = "createWorlds",
 			at = @At("HEAD"))
 	protected void createWorlds(WorldGenerationProgressListener listener, CallbackInfo callback) {
-		if (this.dimensionTracker.getDimensionTypeRegistry().get(AstromineDimensionType.REGISTRY_KEY) == null) {
-			this.dimensionTracker.addDimensionType(AstromineDimensionType.REGISTRY_KEY, AstromineDimensionType.INSTANCE);
+		if (this.dimensionTracker.getDimensionTypeRegistry().get(AstromineDimensionTypes.REGISTRY_KEY) == null) {
+			this.dimensionTracker.addDimensionType(AstromineDimensionTypes.REGISTRY_KEY, AstromineDimensionTypes.INSTANCE);
 		}
 
 		GeneratorOptions options = this.saveProperties.getGeneratorOptions(); // getGeneratorOptions
@@ -58,12 +58,12 @@ public class MinecraftServerMixin {
 
 		AstromineChunkGenerator generator = new AstromineChunkGenerator(new AstromineBiomeSource(seed), seed);
 		UnmodifiableLevelProperties properties = new UnmodifiableLevelProperties(this.saveProperties, this.saveProperties.getMainWorldProperties());
-		ServerWorld serverWorld = new ServerWorld((MinecraftServer) (Object) this, this.workerExecutor, this.session, properties, RegistryKey.of(Registry.DIMENSION, AstromineDimensionType.OPTIONS.getValue()), AstromineDimensionType.REGISTRY_KEY,
-				AstromineDimensionType.INSTANCE, listener, generator, false, BiomeAccess.hashSeed(seed), ImmutableList.of(), false);
+		ServerWorld serverWorld = new ServerWorld((MinecraftServer) (Object) this, this.workerExecutor, this.session, properties, RegistryKey.of(Registry.DIMENSION, AstromineDimensionTypes.OPTIONS.getValue()), AstromineDimensionTypes.REGISTRY_KEY,
+				AstromineDimensionTypes.INSTANCE, listener, generator, false, BiomeAccess.hashSeed(seed), ImmutableList.of(), false);
 
 		WorldBorder worldBorder = serverWorld.getWorldBorder();
 
 		worldBorder.addListener(new WorldBorderListener.WorldBorderSyncer(serverWorld.getWorldBorder()));
-		this.worlds.put(AstromineDimensionType.REGISTRY_KEY, serverWorld);
+		this.worlds.put(AstromineDimensionTypes.REGISTRY_KEY, serverWorld);
 	}
 }
