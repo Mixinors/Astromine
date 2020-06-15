@@ -1,22 +1,32 @@
 package com.github.chainmailstudios.astromine.common.bridge;
 
 import com.github.chainmailstudios.astromine.common.utilities.VoxelShapeUtilities;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.Pair;
+import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.*;
 
 public class HolographicBridgeManager {
-	public static final Object2ObjectArrayMap<BlockView, Object2ObjectArrayMap<BlockPos, Pair<Direction, Integer[]>>> LEVELS = new Object2ObjectArrayMap<>();
+	public static final Object2ObjectArrayMap<BlockView, Object2ObjectArrayMap<BlockPos, Pair<Direction, Set<Vec3i>>>> LEVELS = new Object2ObjectArrayMap<>();
 
-	public static void add(BlockView world, Direction direction, BlockPos position, int lA, int lB) {
+	public static void add(BlockView world, Direction direction, BlockPos position, Vec3i top) {
 		LEVELS.computeIfAbsent(world, (key) -> new Object2ObjectArrayMap<>());
 
-		LEVELS.get(world).put(position, new Pair<>(direction, new Integer[]{lA, lB}));
+		LEVELS.get(world).computeIfAbsent(position, (key) -> new Pair<>(direction, new HashSet<>()));
+
+		LEVELS.get(world).get(position).getRight().add(top);
 	}
 
 	public static void remove(BlockView world, BlockPos position) {
@@ -25,46 +35,23 @@ public class HolographicBridgeManager {
 		LEVELS.get(world).remove(position);
 	}
 
-	public static Pair<Direction, Integer[]> get(BlockView world, BlockPos position) {
+	public static Pair<Direction, Set<Vec3i>> get(BlockView world, BlockPos position) {
 		LEVELS.computeIfAbsent(world, (key) -> new Object2ObjectArrayMap<>());
 
-		return LEVELS.get(world).getOrDefault(position, new Pair<>(Direction.NORTH, new Integer[]{Integer.MIN_VALUE, Integer.MIN_VALUE}));
+		return LEVELS.get(world).getOrDefault(position, new Pair<>(Direction.NORTH, Sets.newHashSet()));
 	}
 
 	public static VoxelShape getShape(BlockView world, BlockPos position) {
-		Pair<Direction, Integer[]> pair = get(world, position);
-		Integer[] levels = pair.getRight();
-		return levels[0] == Integer.MIN_VALUE ? VoxelShapes.fullCube() : getShape(pair.getLeft(), pair.getRight());
+		Pair<Direction, Set<Vec3i>> pair = get(world, position);
+		if (pair == null) return VoxelShapes.fullCube();
+		else return getShape(pair.getLeft(), pair.getRight());
 	}
 
-	private static VoxelShape getShape(Direction direction, Integer[] levels) {
-		float t = levels[0];
-		float b = levels[1];
-
-		while (t < 0) {
-			t += 15;
-			b += 15;
-		}
-
-		while (t >= 16) {
-			t -= 15;
-			b -= 15;
-		}
-
-		if (direction == Direction.SOUTH || direction == Direction.EAST) {
-			t -= 2;
-			b -= 2;
-		}
-
-		float y = t;
-
-		float dX = 16f / Math.abs((t - b));
-
+	private static VoxelShape getShape(Direction direction, Set<Vec3i> vecs) {
 		VoxelShape shape = VoxelShapes.empty();
 
-		for (float x = 16; x > 0; x -= dX) {
-			shape = VoxelShapes.union(shape, Block.createCuboidShape(0, y, 0, x, y + 1, 16));
-			y += 1;
+		for (Vec3i vec : vecs) {
+			shape = VoxelShapes.union(shape, Block.createCuboidShape(Math.abs(vec.getX()), Math.abs(vec.getY()), 0, Math.abs(vec.getX()) + 1, Math.abs(vec.getY()) + 1, 16));
 		}
 
 		switch (direction) {
