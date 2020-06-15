@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.world.feature;
 
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineFeatures;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -36,15 +37,19 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
                 originPos,
                 30,
                 state -> {
-                    return Blocks.FIRE.getDefaultState();
+                    if(world.getRandom().nextInt(10) == 0) {
+                        return Blocks.FIRE.getDefaultState();
+                    } else {
+                        return Blocks.AIR.getDefaultState();
+                    }
                 },
                 state -> {
-                    return Blocks.ANDESITE.getDefaultState();
+                    return Blocks.COBBLESTONE.getDefaultState();
                 }
         );
 
         originPos = world.getTopPosition(Heightmap.Type.WORLD_SURFACE, new BlockPos(chunkPos.getStartX() + 8, 0, chunkPos.getStartZ() + 8));
-        buildSphere(world, originPos, 15, Blocks.OBSIDIAN.getDefaultState());
+        buildSphere(world, originPos, 15, AstromineBlocks.METEOR_STONE.getDefaultState());
 
         return true;
     }
