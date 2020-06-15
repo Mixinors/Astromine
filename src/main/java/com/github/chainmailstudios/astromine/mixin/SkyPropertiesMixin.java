@@ -1,7 +1,7 @@
 package com.github.chainmailstudios.astromine.mixin;
 
 import com.github.chainmailstudios.astromine.client.render.AstromineSkyProperties;
-import com.github.chainmailstudios.astromine.world.AstromineDimensionType;
+import com.github.chainmailstudios.astromine.registry.AstromineDimensionTypes;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -20,7 +20,7 @@ public class SkyPropertiesMixin {
 
     static {
         BY_DIMENSION_TYPE.put(
-                AstromineDimensionType.REGISTRY_KEY,
+                AstromineDimensionTypes.REGISTRY_KEY,
                 new AstromineSkyProperties()
         );
     }

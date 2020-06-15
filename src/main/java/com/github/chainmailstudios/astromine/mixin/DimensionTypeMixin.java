@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.world.AstromineDimensionType;
+import com.github.chainmailstudios.astromine.registry.AstromineDimensionTypes;
 import com.github.chainmailstudios.astromine.world.generation.AstromineBiomeSource;
 import com.github.chainmailstudios.astromine.world.generation.AstromineChunkGenerator;
 import net.minecraft.util.registry.SimpleRegistry;
@@ -18,7 +18,7 @@ public class DimensionTypeMixin {
 			cancellable = true)
 	private static void method_28517(long seed, CallbackInfoReturnable<SimpleRegistry<DimensionOptions>> cir) {
 		SimpleRegistry<DimensionOptions> registry = cir.getReturnValue();
-		registry.add(AstromineDimensionType.OPTIONS, new DimensionOptions(() -> AstromineDimensionType.INSTANCE, new AstromineChunkGenerator(new AstromineBiomeSource(seed), seed)));
+		registry.add(AstromineDimensionTypes.OPTIONS, new DimensionOptions(() -> AstromineDimensionTypes.INSTANCE, new AstromineChunkGenerator(new AstromineBiomeSource(seed), seed)));
 		cir.setReturnValue(registry);
 	}
 }

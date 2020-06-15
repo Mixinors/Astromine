@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.world;
+package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import net.minecraft.tag.BlockTags;
@@ -10,13 +10,13 @@ import net.minecraft.world.dimension.DimensionType;
 
 import java.util.OptionalLong;
 
-public class AstromineDimensionType extends DimensionType {
+public class AstromineDimensionTypes extends DimensionType {
 	public static final RegistryKey<DimensionOptions> OPTIONS = RegistryKey.of(Registry.DIMENSION_OPTIONS, AstromineCommon.identifier("space"));
 	public static final RegistryKey<DimensionType> REGISTRY_KEY = RegistryKey.of(Registry.DIMENSION_TYPE_KEY, AstromineCommon.identifier("space_type"));
 
-	public static final DimensionType INSTANCE = new AstromineDimensionType();
+	public static final DimensionType INSTANCE = new AstromineDimensionTypes();
 
-	protected AstromineDimensionType() {
+	protected AstromineDimensionTypes() {
 		super(OptionalLong.of(15000L), false, false, false, false, false, false, false, false, true, false, 256, VoronoiBiomeAccessType.INSTANCE, BlockTags.INFINIBURN_OVERWORLD.getId(), 0.025f);
 	}
 }
