@@ -21,6 +21,7 @@ public class AstromineSounds {
 	public static final SoundEvent HUMMING = register("humming");
 
 	// Armory
+	public static final SoundEvent METITE_ARMOR_EQUIPPED = register("item.armor.equip_metite");
 	public static final SoundEvent ASTERITE_ARMOR_EQUIPPED = register("item.armor.equip_asterite");
 	public static final SoundEvent STELLUM_ARMOR_EQUIPPED = register("item.armor.equip_stellum");
 	public static final SoundEvent GALAXIUM_ARMOR_EQUIPPED = register("item.armor.equip_galaxium");
@@ -28,7 +29,7 @@ public class AstromineSounds {
 	public static final SoundEvent SPACE_SUIT_EQUIPPED = register("item.armor.equip_space_suit");
 
 	public static SoundEvent register(String id) {
-		return Registry.register(Registry.SOUND_EVENT, new Identifier(AstromineCommon.MOD_ID, id), new SoundEvent(new Identifier(AstromineCommon.MOD_ID, id)));
+		return Registry.register(Registry.SOUND_EVENT, AstromineCommon.identifier(id), new SoundEvent(AstromineCommon.identifier(id)));
 	}
 
 	public static void initialize() {

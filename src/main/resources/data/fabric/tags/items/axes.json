@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "astromine:metite_axe",
     "astromine:asterite_axe",
     "astromine:stellum_axe",
     "astromine:galaxium_axe",

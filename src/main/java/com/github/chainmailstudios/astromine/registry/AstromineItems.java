@@ -112,7 +112,7 @@ public class AstromineItems {
 	public static final Item UNIVITE_BOOTS = register("univite_boots", new ArmorItem(AstromineArmorMaterials.UNIVITE, EquipmentSlot.FEET, BASIC_SETTINGS));
 
 	public static final Item SPACE_SUIT_HELMET = register("space_suit_helmet", new ArmorItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.HEAD, BASIC_SETTINGS));
-	public static final Item SPACE_SUIT_CHEST = register("space_suit_chest", new ArmorItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.CHEST, BASIC_SETTINGS));
+	public static final Item SPACE_SUIT_CHESTPLATE = register("space_suit_chestplate", new ArmorItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.CHEST, BASIC_SETTINGS));
 	public static final Item SPACE_SUIT_LEGGINGS = register("space_suit_leggings", new ArmorItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.LEGS, BASIC_SETTINGS));
 	public static final Item SPACE_SUIT_BOOTS = register("space_suit_boots", new ArmorItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, BASIC_SETTINGS));
 

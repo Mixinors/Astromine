@@ -28,6 +28,6 @@ public class AstromineBiomeSource extends BiomeSource {
 
 	@Override
 	public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
-		return AstromineBiomes.ASTEROIDS;
+		return AstromineBiomes.ASTEROID_BELT;
 	}
 }
