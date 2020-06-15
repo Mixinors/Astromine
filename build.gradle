@@ -12,12 +12,16 @@ repositories {
         url = "https://maven.onyxstudios.dev"
     }
     maven {
+        name = "Spinnery"
+        url = "https://dl.bintray.com/spinnery/Spinnery"
+    }
+    maven {
         name = "JitPack"
         url = "https://jitpack.io"
     }
     maven {
-        name = "Spinnery"
-        url = "https://dl.bintray.com/spinnery/Spinnery"
+        name = "Fabric"
+        url = "https://maven.fabricmc.net/"
     }
 }
 
@@ -48,19 +52,23 @@ dependencies {
     modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-world:${cardinal_components_version}"
 
     // Shapes
-    modImplementation "com.github.Cumulus-Mods:Shapes:${shapes_version}"
+    modImplementation "com.terraformersmc:shapes:${shapes_version}"
 
     // Spinnery
     modImplementation "com.github.vini2003:spinnery:${spinnery_version}"
 
-    // Dev Environment Conveniences
-    modCompile "io.github.prospector:modmenu:${modmenu_version}"
-    modCompile ("me.shedaniel:RoughlyEnoughItems:${rei_version}") { exclude(module: 'ModMenu') }
-    modRuntime ("com.github.SuperCoder7979:databreaker:67716e92f689cf19afc88ab3d7fb0d0c061958ad") {
-        exclude module : "fabric-loader"
+    // ModMenu
+    modImplementation "io.github.prospector:modmenu:${modmenu_version}"
+
+    // RoughlyEnoughItems
+    modImplementation ("me.shedaniel:RoughlyEnoughItems:${rei_version}") {
+        exclude (module: 'ModMenu')
     }
 
-
+    // DataBreaker
+    modRuntime ("com.github.SuperCoder7979:databreaker:${databreaker_version}") {
+        exclude (module: "fabric-loader")
+    }
 }
 
 processResources {

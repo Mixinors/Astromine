@@ -6,18 +6,20 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.cumulus.shapes.api.Position;
-import com.cumulus.shapes.api.Quaternion;
-import com.cumulus.shapes.api.Shape;
-import com.cumulus.shapes.impl.Shapes;
-import com.cumulus.shapes.impl.layer.transform.RotateLayer;
-import com.cumulus.shapes.impl.layer.transform.TranslateLayer;
+import com.terraformersmc.shapes.api.Position;
+import com.terraformersmc.shapes.api.Quaternion;
+import com.terraformersmc.shapes.api.Shape;
+import com.terraformersmc.shapes.impl.Shapes;
+import com.terraformersmc.shapes.impl.layer.transform.NoiseTranslateLayer;
+import com.terraformersmc.shapes.impl.layer.transform.RotateLayer;
+import com.terraformersmc.shapes.impl.layer.transform.TranslateLayer;
 import com.github.chainmailstudios.astromine.common.registry.AsteroidOreRegistry;
 import com.github.chainmailstudios.astromine.misc.SimpleFiller;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineOres;
 import com.mojang.serialization.Codec;
 
+import com.terraformersmc.shapes.api.Shape;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
