@@ -1,15 +1,24 @@
 package com.github.chainmailstudios.astromine.world.feature;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.cumulus.shapes.api.Position;
 import com.cumulus.shapes.api.Quaternion;
+import com.cumulus.shapes.api.Shape;
 import com.cumulus.shapes.impl.Shapes;
 import com.cumulus.shapes.impl.layer.transform.RotateLayer;
 import com.cumulus.shapes.impl.layer.transform.TranslateLayer;
+import com.github.chainmailstudios.astromine.common.registry.AsteroidOreRegistry;
 import com.github.chainmailstudios.astromine.misc.SimpleFiller;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.registry.AstromineOres;
 import com.mojang.serialization.Codec;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ServerWorldAccess;
@@ -24,29 +33,50 @@ public class AsteroidFeature extends Feature<DefaultFeatureConfig> {
 	}
 
 	@Override
-	public boolean generate(ServerWorldAccess world, StructureAccessor accessor, ChunkGenerator generator, Random random, BlockPos pos, DefaultFeatureConfig config) {
-		pos = new BlockPos(pos.getX(), random.nextInt(256), pos.getZ());
-//
-		double xSize = 4.0 + random.nextDouble() * 8;
-		double ySize = 4.0 + random.nextDouble() * 8;
-		double zSize = 4.0 + random.nextDouble() * 8;
-//
-//		double radius = xSize * zSize * ySize;
-//
-//		for (int x = (int) -xSize; x <= xSize; x++) {
-//			for (int z = (int) -zSize; z <= zSize; z++) {
-//				for (int y = (int) -ySize; y <= ySize; y++) {
-//					if (x * x + z * z + y * y <= radius) {
-//						world.setBlockState(pos.add(x, y, z), Blocks.STONE.getDefaultState(), 3);
-//					}
-//				}
-//			}
-//		}
+	public boolean generate(ServerWorldAccess world, StructureAccessor accessor, ChunkGenerator generator, Random random, BlockPos fP, DefaultFeatureConfig config) {
+		if (random.nextInt(4) != 3) return false;
 
-		Shapes.ellipsoid((float) xSize, (float) ySize, (float) zSize)
-				.applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true)))
-				.applyLayer(TranslateLayer.of(Position.of(pos)))
-				.fill(SimpleFiller.of(world, Blocks.STONE.getDefaultState()));
+		fP = new BlockPos(fP.getX(), random.nextInt(256), fP.getZ());
+
+		double xSize = 4 + random.nextDouble() * 8;
+		double ySize = 4 + random.nextDouble() * 8;
+		double zSize = 4 + random.nextDouble() * 8;
+
+		if (fP.getY() + ySize >= 255) {
+			return false;
+		}
+
+		if (fP.getY() - ySize < 0) {
+			return false;
+		}
+
+		Shape asteroid = Shapes.ellipsoid((float) xSize, (float) ySize, (float) zSize)
+				.applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 720, random.nextDouble() * 720, random.nextDouble() * 720, true)))
+				.applyLayer(TranslateLayer.of(Position.of(fP)));
+
+		for (Position vP : asteroid.stream().collect(Collectors.toSet())) {
+			world.setBlockState(vP.toBlockPos(), AstromineBlocks.ASTEROID_STONE.getDefaultState(), 0b0110100);
+		}
+
+		List<Block> ores = AsteroidOreRegistry.INSTANCE.get(random.nextInt(100));
+
+		if (ores.isEmpty()) return true;
+
+		Collections.shuffle(ores);
+
+		for (int i = 0; i < Math.min(2, random.nextInt(ores.size())); ++i) {
+			Shape vein = Shapes.ellipsoid((float) xSize, (float) ySize, (float) zSize)
+					.applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true)))
+					.applyLayer(TranslateLayer.of(Position.of(fP)));
+
+			for (Position vP : vein.stream().collect(Collectors.toSet())) {
+				BlockPos cP = vP.toBlockPos();
+
+				if (world.getBlockState(cP).getBlock() == AstromineBlocks.ASTEROID_STONE) {
+					world.setBlockState(cP, ores.get(i).getDefaultState(), 0b0110100);
+				}
+			}
+		}
 
 		return true;
 	}
