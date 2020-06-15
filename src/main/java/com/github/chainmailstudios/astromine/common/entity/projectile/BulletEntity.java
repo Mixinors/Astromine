@@ -19,7 +19,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 
 public class BulletEntity extends PersistentProjectileEntity {
-	public Identifier texture = new Identifier(AstromineCommon.MOD_ID, "textures/entity/projectiles/bullet.png");
+	public Identifier texture = AstromineCommon.identifier("textures/entity/projectiles/bullet.png");
 
 	public BulletEntity(World world) {
 		super(AstromineEntities.BULLET_ENTITY_TYPE, world);

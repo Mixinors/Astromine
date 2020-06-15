@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.item;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.entity.projectile.BulletEntity;
 import com.github.chainmailstudios.astromine.common.inventory.InventoryComponentFromInventory;
 import com.github.chainmailstudios.astromine.common.item.weapon.BaseWeapon;
@@ -25,7 +26,7 @@ import net.minecraft.world.World;
 import java.util.Optional;
 
 public class SuperSpaceSlimeShooterItem extends BaseWeapon {
-	public static final Identifier TEXTURE = new Identifier("astromine", "textures/item/empty.png");
+	public static final Identifier TEXTURE = AstromineCommon.identifier("textures/item/empty.png");
 
 	public SuperSpaceSlimeShooterItem(Item.Settings settings) {
 		super(settings);

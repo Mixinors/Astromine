@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.client.render.entity;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.model.SpaceSlimeEntityModel;
 import com.github.chainmailstudios.astromine.common.entity.SpaceSlimeEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -13,7 +14,7 @@ import net.minecraft.util.math.MathHelper;
 
 public class SpaceSlimeEntityRenderer extends MobEntityRenderer<SpaceSlimeEntity, SpaceSlimeEntityModel> {
 
-	private static final Identifier TEXTURE = new Identifier("astromine", "textures/entity/space_slime/space_slime.png");
+	private static final Identifier TEXTURE = AstromineCommon.identifier("textures/entity/space_slime/space_slime.png");
 
 	public SpaceSlimeEntityRenderer(EntityRenderDispatcher entityRenderDispatcher) {
 		super(entityRenderDispatcher, new SpaceSlimeEntityModel(16), 0.25F);
