@@ -15,7 +15,7 @@ public class Weaponry {
 	public static final class ScarH extends BaseWeapon {
 		public static final Item.Settings SETTINGS = new Item.Settings().fireproof().maxCount(1).group(AstromineItemGroups.ASTROMINE);
 
-		public static final Identifier TEXTURE = new Identifier(AstromineCommon.MOD_ID, "textures/entity/projectiles/bullet.png");
+		public static final Identifier TEXTURE = AstromineCommon.identifier("textures/entity/projectiles/bullet.png");
 
 		public ScarH() {
 			super(SETTINGS);
@@ -85,7 +85,7 @@ public class Weaponry {
 	public static final class BarretM98B extends BaseWeapon {
 		public static final Item.Settings SETTINGS = new Item.Settings().fireproof().maxCount(1).group(AstromineItemGroups.ASTROMINE);
 
-		public static final Identifier TEXTURE = new Identifier(AstromineCommon.MOD_ID, "textures/entity/projectiles/bullet.png");
+		public static final Identifier TEXTURE = AstromineCommon.identifier("textures/entity/projectiles/bullet.png");
 
 		public BarretM98B() {
 			super(SETTINGS);
