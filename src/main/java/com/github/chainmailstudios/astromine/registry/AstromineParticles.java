@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.mixin.CrackParticleAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -23,7 +24,7 @@ public class AstromineParticles {
 	 * @return Registered {@link DefaultParticleType}
 	 */
 	public static DefaultParticleType register(String name, boolean alwaysShow) {
-		return Registry.register(Registry.PARTICLE_TYPE, new Identifier("astromine", name), FabricParticleTypes.simple(alwaysShow));
+		return Registry.register(Registry.PARTICLE_TYPE, AstromineCommon.identifier(name), FabricParticleTypes.simple(alwaysShow));
 	}
 
 	public static void initialize() {

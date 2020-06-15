@@ -17,8 +17,7 @@ import net.minecraft.world.gen.feature.StructureFeature;
 import java.util.Locale;
 
 public class AstromineFeatures {
-
-	public static final Feature<DefaultFeatureConfig> ASTEROIDS_FEATURE = Registry.register(
+	public static final Feature<DefaultFeatureConfig> ASTEROIDS = Registry.register(
 			Registry.FEATURE,
 			AstromineCommon.identifier("asteroids_feature"),
 			new AsteroidFeature(DefaultFeatureConfig.CODEC)

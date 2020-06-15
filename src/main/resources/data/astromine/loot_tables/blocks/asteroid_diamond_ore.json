@@ -24,19 +24,11 @@
                   }
                 }
               ],
-              "name": "astromine:metite_ore"
+              "name": "astromine:asteroid_diamond_ore"
             },
             {
               "type": "minecraft:item",
               "functions": [
-                {
-                  "function": "minecraft:set_count",
-                  "count": {
-                    "min": 1.0,
-                    "max": 3.0,
-                    "type": "minecraft:uniform"
-                  }
-                },
                 {
                   "function": "minecraft:apply_bonus",
                   "enchantment": "minecraft:fortune",
@@ -46,7 +38,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "astromine:metite_cluster"
+              "name": "astromine:asteroid_diamond_cluster"
             }
           ]
         }

@@ -82,11 +82,16 @@
   "item.astromine.univite_chestplate": "Univite Chestplate",
   "item.astromine.univite_leggings": "Univite Leggings",
   "item.astromine.univite_boots": "Univite Boots",
-  "item.astromine.space_helmet": "Space Helmet",
-  "item.astromine.space_suit_chest": "Space Suit Chest",
-  "item.astromine.space_suit_pants": "Space Suit Pants",
-  "item.astromine.space_boots": "Space Boots",
+  "item.astromine.space_suit_helmet": "Space Helmet",
+  "item.astromine.space_suit_chestplate": "Space Suit Chest",
+  "item.astromine.space_suit_leggings": "Space Suit Pants",
+  "item.astromine.space_suit_boots": "Space Boots",
   "item.astromine.space_slime_spawn_egg": "Space Slime Spawn Egg",
   "item.astromine.super_space_slime_shooter": "Super Space Slime Shooter",
-  "item.astromine.space_slime_ball": "Space Slimeball"
+  "item.astromine.space_slime_ball": "Space Slimeball",
+  "subtitles.astromine.humming": "Humming",
+  "subtitles.astromine.holographic_connector_click": "Holographic Connector clicks",
+  "subtitles.astromine.fire_extinguisher_open": "Fire Extinguisher opens",
+  "subtitles.astromine.gunshot": "Gunshot",
+  "subtitles.astromine.empty_magazine": "Magazine is empty"
 }

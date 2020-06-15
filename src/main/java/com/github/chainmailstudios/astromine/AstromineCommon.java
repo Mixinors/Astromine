@@ -20,6 +20,7 @@ public class AstromineCommon implements ModInitializer {
 	public void onInitialize() {
 		AstromineItems.initialize();
 		AstromineBlocks.initialize();
+		AstromineOres.initialize();
 		AstromineEntities.initialize();
 		AstrominePotions.initialize();
 		AstromineFeatures.initialize();

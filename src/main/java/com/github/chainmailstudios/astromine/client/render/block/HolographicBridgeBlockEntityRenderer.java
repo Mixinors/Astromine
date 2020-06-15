@@ -12,7 +12,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
-import spinnery.client.render.layer.InterfaceLayer;
+
+import spinnery.client.render.layer.SpinneryLayers;
 import spinnery.widget.api.Color;
 
 import java.util.Collection;
@@ -48,7 +49,7 @@ public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<Ho
 
 			matrices.push();
 
-			VertexConsumer c = provider.getBuffer(InterfaceLayer.getInterface());
+			VertexConsumer c = provider.getBuffer(SpinneryLayers.getInterface());
 
 			Color bC = entity.color;
 

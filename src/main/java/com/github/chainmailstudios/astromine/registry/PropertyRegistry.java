@@ -8,7 +8,7 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.util.registry.SimpleRegistry;
 
 public class PropertyRegistry extends SimpleRegistry<Property> {
-	public static final Identifier IDENTIFIER = new Identifier(AstromineCommon.LOG_ID, "property");
+	public static final Identifier IDENTIFIER = AstromineCommon.identifier("property");
 
 	public static final PropertyRegistry INSTANCE = new PropertyRegistry();
 

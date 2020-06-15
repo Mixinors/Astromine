@@ -32,14 +32,25 @@ public class AstromineItems {
 	// Realistic tooling
 	public static final Item FIRE_EXTINGUISHER = register("fire_extinguisher", new FireExtinguisher());
 
-	// Materials
+	// Materials - Fragments
 	public static final Item ASTERITE_FRAGMENT = register("asterite_fragment", new Item(BASIC_SETTINGS));
-	public static final Item ASTEROID_METITE_CLUSTER = register("asteroid_metite_cluster", new Item(BASIC_SETTINGS));
-	public static final Item METEOR_METITE_CLUSTER = register("meteor_metite_cluster", new Item(BASIC_SETTINGS));
+	public static final Item GALAXIUM_FRAGMENT = register("galaxium_fragment", new Item(BASIC_SETTINGS));
+
+	// Materials - Ingots
 	public static final Item METITE_INGOT = register("metite_ingot", new Item(BASIC_SETTINGS));
 	public static final Item STELLUM_INGOT = register("stellum_ingot", new Item(BASIC_SETTINGS));
-	public static final Item GALAXIUM_FRAGMENT = register("galaxium_fragment", new Item(BASIC_SETTINGS));
 	public static final Item UNIVITE_INGOT = register("univite_ingot", new Item(BASIC_SETTINGS));
+
+	// Materials - Clusters
+	public static final Item ASTEROID_METITE_CLUSTER = register("asteroid_metite_cluster", new Item(BASIC_SETTINGS));
+	public static final Item METEOR_METITE_CLUSTER = register("meteor_metite_cluster", new Item(BASIC_SETTINGS));
+	public static final Item ASTEROID_COAL_CLUSTER = register("asteroid_coal_cluster", new Item(BASIC_SETTINGS));
+	public static final Item ASTEROID_IRON_CLUSTER = register("asteroid_iron_cluster", new Item(BASIC_SETTINGS));
+	public static final Item ASTEROID_GOLD_CLUSTER = register("asteroid_gold_cluster", new Item(BASIC_SETTINGS));
+	public static final Item ASTEROID_REDSTONE_CLUSTER = register("asteroid_redstone_cluster", new Item(BASIC_SETTINGS));
+	public static final Item ASTEROID_LAPIS_CLUSTER = register("asteroid_lapis_cluster", new Item(BASIC_SETTINGS));
+	public static final Item ASTEROID_DIAMOND_CLUSTER = register("asteroid_diamond_cluster", new Item(BASIC_SETTINGS));
+	public static final Item ASTEROID_EMERALD_CLUSTER = register("asteroid_emerald_cluster", new Item(BASIC_SETTINGS));
 
 	// Tools
 	public static final Item HOLOGRAPHIC_CONNECTOR = register("holographic_connector", new HolographicConnector(new Item.Settings().group(AstromineItemGroups.ASTROMINE).maxCount(1)));
@@ -101,7 +112,7 @@ public class AstromineItems {
 	public static final Item UNIVITE_BOOTS = register("univite_boots", new ArmorItem(AstromineArmorMaterials.UNIVITE, EquipmentSlot.FEET, BASIC_SETTINGS));
 
 	public static final Item SPACE_SUIT_HELMET = register("space_suit_helmet", new ArmorItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.HEAD, BASIC_SETTINGS));
-	public static final Item SPACE_SUIT_CHEST = register("space_suit_chest", new ArmorItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.CHEST, BASIC_SETTINGS));
+	public static final Item SPACE_SUIT_CHESTPLATE = register("space_suit_chestplate", new ArmorItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.CHEST, BASIC_SETTINGS));
 	public static final Item SPACE_SUIT_LEGGINGS = register("space_suit_leggings", new ArmorItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.LEGS, BASIC_SETTINGS));
 	public static final Item SPACE_SUIT_BOOTS = register("space_suit_boots", new ArmorItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, BASIC_SETTINGS));
 

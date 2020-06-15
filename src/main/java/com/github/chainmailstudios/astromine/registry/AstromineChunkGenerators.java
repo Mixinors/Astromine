@@ -6,6 +6,6 @@ import net.minecraft.util.registry.Registry;
 
 public class AstromineChunkGenerators {
 	public static void initialize() {
-		Registry.register(Registry.CHUNK_GENERATOR, AstromineCommon.identifier(AstromineCommon.MOD_ID), AstromineChunkGenerator.CODEC);
+		Registry.register(Registry.CHUNK_GENERATOR, AstromineCommon.identifier("space"), AstromineChunkGenerator.CODEC);
 	}
 }

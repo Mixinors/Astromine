@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.client.render.entity;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.model.SuperSpaceSlimeEntityModel;
 import com.github.chainmailstudios.astromine.common.entity.SuperSpaceSlimeEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -12,8 +13,8 @@ import net.minecraft.util.math.MathHelper;
 
 public class SuperSpaceSlimeEntityRenderer extends MobEntityRenderer<SuperSpaceSlimeEntity, SuperSpaceSlimeEntityModel> {
 
-	private static final Identifier TEXTURE = new Identifier("astromine", "textures/entity/space_slime/space_slime.png");
-	private static final Identifier EXPLODING_TEXTURE = new Identifier("astromine", "textures/entity/space_slime/space_slime_exploding.png");
+	private static final Identifier TEXTURE = AstromineCommon.identifier("textures/entity/space_slime/space_slime.png");
+	private static final Identifier EXPLODING_TEXTURE = AstromineCommon.identifier("textures/entity/space_slime/space_slime_exploding.png");
 
 	public SuperSpaceSlimeEntityRenderer(EntityRenderDispatcher entityRenderDispatcher) {
 		super(entityRenderDispatcher, new SuperSpaceSlimeEntityModel(16), 0.25F);

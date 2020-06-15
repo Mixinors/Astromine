@@ -96,9 +96,9 @@ public class RegionalWorldAccess {
 
 					if ((flags & 16) == 0) {
 						int i = flags & -34;
-						blockState.prepare(world, pos, i);
-						state.updateNeighbors(world, pos, i);
-						state.prepare(world, pos, i);
+						blockState.prepare(world, pos, i, 512);
+						state.updateNeighbors(world, pos, i, 512);
+						state.prepare(world, pos, i, 512);
 					}
 
 					world.onBlockChanged(pos, blockState, blockState2);
