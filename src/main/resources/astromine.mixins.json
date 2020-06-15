@@ -4,19 +4,32 @@
   "package": "com.github.chainmailstudios.astromine.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "AbstractMinecartEntityMixin",
     "BrewingRecipeRegistryMixin",
     "ChunkSerializerMixin",
     "ChunkSerializerMixin$WorldChunkMixin",
-    "Fixin",
+    "EggEntityMixin",
+    "FallingBlockEntityMixin",
+    "FishingBobberEntityMixin",
     "FlamingAnvilCraftingMixin",
-    "SlimeEntityMixin"
+    "HoneyBlockMixin",
+    "ItemEntityMixin",
+    "LivingEntityMixin",
+    "ShulkerBulletEntityMixin",
+    "SlimeEntityMixin",
+    "SquidEntityMixin",
+    "StepAndDestroyBlockGoalMixin",
+    "ThreadExecutorMixin",
+    "TntEntityMixin"
   ],
   "client": [
     "BossBarHudMixin",
     "CrackParticleAccessor",
     "GameRendererMixin",
     "ItemRendererMixin",
-    "MinecraftClientMixin"
+    "MinecraftClientMixin",
+    "WorldRendererMixin",
+    "CurrentDownParticleMixin"
   ],
   "injectors": {
     "defaultRequire": 1

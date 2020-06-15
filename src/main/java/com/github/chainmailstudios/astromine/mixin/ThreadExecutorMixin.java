@@ -5,12 +5,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
 @Mixin(ThreadExecutor.class)
-public class Fixin {
-	/**
-	 * @author HalfOf2
-	 * @reason Testing
-	 */
-	@Overwrite
-	public void waitForTasks() {
-	}
+public class ThreadExecutorMixin {
+    /**
+     * @author HalfOf2
+     * @reason Testing
+     */
+    @Overwrite
+    public void waitForTasks() {
+    }
 }

@@ -30,40 +30,40 @@ import java.util.concurrent.Executor;
 
 @Mixin(MinecraftServer.class)
 public class MinecraftServerMixin {
-	@Shadow
-	protected @Final
-	RegistryTracker.Modifiable dimensionTracker;
-	@Shadow
-	protected @Final
-	SaveProperties saveProperties;
-	@Shadow
-	protected @Final
-	LevelStorage.Session session;
-	@Shadow
-	private @Final
-	Map<RegistryKey<DimensionType>, ServerWorld> worlds;
-	@Shadow
-	private @Final
-	Executor workerExecutor;
+    @Shadow
+    protected @Final
+    RegistryTracker.Modifiable dimensionTracker;
+    @Shadow
+    protected @Final
+    SaveProperties saveProperties;
+    @Shadow
+    protected @Final
+    LevelStorage.Session session;
+    @Shadow
+    private @Final
+    Map<RegistryKey<DimensionType>, ServerWorld> worlds;
+    @Shadow
+    private @Final
+    Executor workerExecutor;
 
-	@Inject(method = "createWorlds",
-			at = @At("HEAD"))
-	protected void createWorlds(WorldGenerationProgressListener listener, CallbackInfo callback) {
-		if (this.dimensionTracker.getDimensionTypeRegistry().get(AstromineDimensionType.REGISTRY_KEY) == null) {
-			this.dimensionTracker.addDimensionType(AstromineDimensionType.REGISTRY_KEY, AstromineDimensionType.INSTANCE);
-		}
+    @Inject(method = "createWorlds",
+            at = @At("HEAD"))
+    protected void createWorlds(WorldGenerationProgressListener listener, CallbackInfo callback) {
+        if (this.dimensionTracker.getDimensionTypeRegistry().get(AstromineDimensionType.REGISTRY_KEY) == null) {
+            this.dimensionTracker.addDimensionType(AstromineDimensionType.REGISTRY_KEY, AstromineDimensionType.INSTANCE);
+        }
 
-		GeneratorOptions options = this.saveProperties.getGeneratorOptions(); // getGeneratorOptions
-		long seed = options.getSeed();
+        GeneratorOptions options = this.saveProperties.getGeneratorOptions(); // getGeneratorOptions
+        long seed = options.getSeed();
 
-		AstromineChunkGenerator generator = new AstromineChunkGenerator(new AstromineBiomeSource(seed), seed);
-		UnmodifiableLevelProperties properties = new UnmodifiableLevelProperties(this.saveProperties, this.saveProperties.getMainWorldProperties());
-		ServerWorld serverWorld = new ServerWorld((MinecraftServer) (Object) this, this.workerExecutor, this.session, properties, RegistryKey.of(Registry.DIMENSION, AstromineDimensionType.OPTIONS.getValue()), AstromineDimensionType.REGISTRY_KEY,
-				AstromineDimensionType.INSTANCE, listener, generator, false, BiomeAccess.hashSeed(seed), ImmutableList.of(), false);
+        AstromineChunkGenerator generator = new AstromineChunkGenerator(new AstromineBiomeSource(seed), seed);
+        UnmodifiableLevelProperties properties = new UnmodifiableLevelProperties(this.saveProperties, this.saveProperties.getMainWorldProperties());
+        ServerWorld serverWorld = new ServerWorld((MinecraftServer) (Object) this, this.workerExecutor, this.session, properties, RegistryKey.of(Registry.DIMENSION, AstromineDimensionType.OPTIONS.getValue()), AstromineDimensionType.REGISTRY_KEY,
+                AstromineDimensionType.INSTANCE, listener, generator, false, BiomeAccess.hashSeed(seed), ImmutableList.of(), false);
 
-		WorldBorder worldBorder = serverWorld.getWorldBorder();
+        WorldBorder worldBorder = serverWorld.getWorldBorder();
 
-		worldBorder.addListener(new WorldBorderListener.WorldBorderSyncer(serverWorld.getWorldBorder()));
-		this.worlds.put(AstromineDimensionType.REGISTRY_KEY, serverWorld);
-	}
+        worldBorder.addListener(new WorldBorderListener.WorldBorderSyncer(serverWorld.getWorldBorder()));
+        this.worlds.put(AstromineDimensionType.REGISTRY_KEY, serverWorld);
+    }
 }

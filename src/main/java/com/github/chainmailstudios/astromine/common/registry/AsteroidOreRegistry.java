@@ -1,11 +1,11 @@
 package com.github.chainmailstudios.astromine.common.registry;
 
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
-import com.google.common.collect.*;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 
-import java.util.*;
+import java.util.List;
 
 public class AsteroidOreRegistry {
     private final HashMultimap<Integer, Block> ENTRIES = HashMultimap.create();

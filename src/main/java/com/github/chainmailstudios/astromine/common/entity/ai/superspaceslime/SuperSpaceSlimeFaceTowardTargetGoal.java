@@ -12,51 +12,51 @@ import java.util.EnumSet;
  */
 public class SuperSpaceSlimeFaceTowardTargetGoal extends Goal {
 
-	private final SuperSpaceSlimeEntity slime;
-	private int ticksLeft;
+    private final SuperSpaceSlimeEntity slime;
+    private int ticksLeft;
 
-	public SuperSpaceSlimeFaceTowardTargetGoal(SuperSpaceSlimeEntity slime) {
-		this.slime = slime;
-		this.setControls(EnumSet.of(Goal.Control.LOOK));
-	}
+    public SuperSpaceSlimeFaceTowardTargetGoal(SuperSpaceSlimeEntity slime) {
+        this.slime = slime;
+        this.setControls(EnumSet.of(Goal.Control.LOOK));
+    }
 
-	@Override
-	public boolean canStart() {
-		LivingEntity livingEntity = this.slime.getTarget();
+    @Override
+    public boolean canStart() {
+        LivingEntity livingEntity = this.slime.getTarget();
 
-		if (livingEntity == null) {
-			return false;
-		} else if (!livingEntity.isAlive()) {
-			return false;
-		} else {
-			return (!(livingEntity instanceof PlayerEntity) || !((PlayerEntity) livingEntity).abilities.invulnerable) && this.slime.getMoveControl() instanceof SuperSpaceSlimeMoveControl;
-		}
-	}
+        if (livingEntity == null) {
+            return false;
+        } else if (!livingEntity.isAlive()) {
+            return false;
+        } else {
+            return (!(livingEntity instanceof PlayerEntity) || !((PlayerEntity) livingEntity).abilities.invulnerable) && this.slime.getMoveControl() instanceof SuperSpaceSlimeMoveControl;
+        }
+    }
 
-	@Override
-	public void start() {
-		this.ticksLeft = 300;
-		super.start();
-	}
+    @Override
+    public void start() {
+        this.ticksLeft = 300;
+        super.start();
+    }
 
-	@Override
-	public boolean shouldContinue() {
-		LivingEntity livingEntity = this.slime.getTarget();
+    @Override
+    public boolean shouldContinue() {
+        LivingEntity livingEntity = this.slime.getTarget();
 
-		if (livingEntity == null) {
-			return false;
-		} else if (!livingEntity.isAlive()) {
-			return false;
-		} else if (livingEntity instanceof PlayerEntity && ((PlayerEntity) livingEntity).abilities.invulnerable) {
-			return false;
-		} else {
-			return --this.ticksLeft > 0;
-		}
-	}
+        if (livingEntity == null) {
+            return false;
+        } else if (!livingEntity.isAlive()) {
+            return false;
+        } else if (livingEntity instanceof PlayerEntity && ((PlayerEntity) livingEntity).abilities.invulnerable) {
+            return false;
+        } else {
+            return --this.ticksLeft > 0;
+        }
+    }
 
-	@Override
-	public void tick() {
-		this.slime.lookAtEntity(this.slime.getTarget(), 10.0F, 10.0F);
-		((SuperSpaceSlimeMoveControl) this.slime.getMoveControl()).look(this.slime.yaw, true);
-	}
+    @Override
+    public void tick() {
+        this.slime.lookAtEntity(this.slime.getTarget(), 10.0F, 10.0F);
+        ((SuperSpaceSlimeMoveControl) this.slime.getMoveControl()).look(this.slime.yaw, true);
+    }
 }

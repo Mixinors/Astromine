@@ -21,70 +21,70 @@ import java.util.Stack;
  * restoring the original state.
  */
 public class Transaction {
-	public static final Transaction EMPTY = new Transaction(null, null, null, null);
-	private final Volume target;
-	private final Volume source;
-	private final Fraction targetRollback;
-	private final Fraction sourceRollback;
-	private final Fraction targetOperator;
-	private final Fraction sourceOperator;
-	private boolean finished = false;
-	private Stack<Transaction> stack = new Stack<>();
+    public static final Transaction EMPTY = new Transaction(null, null, null, null);
+    private final Volume target;
+    private final Volume source;
+    private final Fraction targetRollback;
+    private final Fraction sourceRollback;
+    private final Fraction targetOperator;
+    private final Fraction sourceOperator;
+    private boolean finished = false;
+    private Stack<Transaction> stack = new Stack<>();
 
-	/**
-	 * Instantiates a Transaction based on two Volumes and two Fractions.
-	 */
-	public Transaction(Volume target, Volume source, Fraction targetOperator, Fraction sourceOperator) {
-		this.target = target;
-		this.source = source;
+    /**
+     * Instantiates a Transaction based on two Volumes and two Fractions.
+     */
+    public Transaction(Volume target, Volume source, Fraction targetOperator, Fraction sourceOperator) {
+        this.target = target;
+        this.source = source;
 
-		this.targetRollback = target == null ? Fraction.EMPTY : target.getFraction();
-		this.sourceRollback = source == null ? Fraction.EMPTY : source.getFraction();
+        this.targetRollback = target == null ? Fraction.EMPTY : target.getFraction();
+        this.sourceRollback = source == null ? Fraction.EMPTY : source.getFraction();
 
-		this.targetOperator = targetOperator;
-		this.sourceOperator = sourceOperator;
-	}
+        this.targetOperator = targetOperator;
+        this.sourceOperator = sourceOperator;
+    }
 
-	public Transaction child(Volume target, Volume source, Fraction targetOperator, Fraction sourceOperator) {
-		Transaction child = new Transaction(target, source, targetOperator, sourceOperator);
-		this.stack.add(child);
-		child.stack = this.stack;
-		return child;
-	}
+    public Transaction child(Volume target, Volume source, Fraction targetOperator, Fraction sourceOperator) {
+        Transaction child = new Transaction(target, source, targetOperator, sourceOperator);
+        this.stack.add(child);
+        child.stack = this.stack;
+        return child;
+    }
 
-	/**
-	 * Applies a Transaction to two Volumes, altering them.
-	 */
-	public void commit() {
-		if (this == EMPTY) return;
+    /**
+     * Applies a Transaction to two Volumes, altering them.
+     */
+    public void commit() {
+        if (this == EMPTY) return;
 
-		if (this.finished) {
-			throw new UnsupportedOperationException("Attempting to reuse finished Transaction!");
-		}
+        if (this.finished) {
+            throw new UnsupportedOperationException("Attempting to reuse finished Transaction!");
+        }
 
-		this.target.setFraction(Fraction.subtract(this.target.getFraction(), this.targetOperator));
-		this.source.setFraction(Fraction.add(this.source.getFraction(), this.sourceOperator));
+        this.target.setFraction(Fraction.subtract(this.target.getFraction(), this.targetOperator));
+        this.source.setFraction(Fraction.add(this.source.getFraction(), this.sourceOperator));
 
-		this.target.setFraction(Fraction.simplify(this.target.getFraction()));
-		this.source.setFraction(Fraction.simplify(this.source.getFraction()));
+        this.target.setFraction(Fraction.simplify(this.target.getFraction()));
+        this.source.setFraction(Fraction.simplify(this.source.getFraction()));
 
-		this.finished = true;
-	}
+        this.finished = true;
+    }
 
-	/**
-	 * Inversely applies a Transaction to two Volumes, altering them.
-	 */
-	public void abort() {
-		if (this == EMPTY) return;
+    /**
+     * Inversely applies a Transaction to two Volumes, altering them.
+     */
+    public void abort() {
+        if (this == EMPTY) return;
 
-		this.target.setFraction(this.targetRollback);
-		this.source.setFraction(this.sourceRollback);
+        this.target.setFraction(this.targetRollback);
+        this.source.setFraction(this.sourceRollback);
 
-		this.finished = false;
-	}
+        this.finished = false;
+    }
 
-	@Override
-	public String toString() {
-		return "Transaction{" + "volumeA=" + this.target + ", volumeB=" + this.source + ", fractionA=" + this.targetOperator + ", fractionB=" + this.sourceOperator + ", finished=" + this.finished + '}';
-	}
+    @Override
+    public String toString() {
+        return "Transaction{" + "volumeA=" + this.target + ", volumeB=" + this.source + ", fractionA=" + this.targetOperator + ", fractionB=" + this.sourceOperator + ", finished=" + this.finished + '}';
+    }
 }

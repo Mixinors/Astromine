@@ -11,32 +11,32 @@ import net.minecraft.item.Items;
 
 public class SuperSpaceSlimeEntityModel extends SlimeEntityModel<SuperSpaceSlimeEntity> {
 
-	private static final ItemStack GLASS = new ItemStack(Items.GLASS);
+    private static final ItemStack GLASS = new ItemStack(Items.GLASS);
 
-	public SuperSpaceSlimeEntityModel(int size) {
-		super(size);
-	}
+    public SuperSpaceSlimeEntityModel(int size) {
+        super(size);
+    }
 
-	@Override
-	public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
-		this.getParts().forEach((modelPart) -> modelPart.render(matrices, vertices, light, overlay, red, green, blue, alpha));
+    @Override
+    public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
+        this.getParts().forEach((modelPart) -> modelPart.render(matrices, vertices, light, overlay, red, green, blue, alpha));
 
-		// translate & scale for glass outline
-		matrices.translate(0, 1.25, 0);
-		matrices.scale(1.25f, 1.25f, 1.25f);
+        // translate & scale for glass outline
+        matrices.translate(0, 1.25, 0);
+        matrices.scale(1.25f, 1.25f, 1.25f);
 
-		// render glass block
-		MinecraftClient.getInstance().getItemRenderer().renderItem(
-				GLASS,
-				ModelTransformation.Mode.FIXED,
-				light,
-				overlay,
-				matrices,
-				MinecraftClient.getInstance().getBufferBuilders().getEffectVertexConsumers()
-		);
+        // render glass block
+        MinecraftClient.getInstance().getItemRenderer().renderItem(
+                GLASS,
+                ModelTransformation.Mode.FIXED,
+                light,
+                overlay,
+                matrices,
+                MinecraftClient.getInstance().getBufferBuilders().getEffectVertexConsumers()
+        );
 
-		// undo translation & scale
-		matrices.scale(.75f, .75f, .75f);
-		matrices.translate(0, -1.25, 0);
-	}
+        // undo translation & scale
+        matrices.scale(.75f, .75f, .75f);
+        matrices.translate(0, -1.25, 0);
+    }
 }

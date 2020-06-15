@@ -7,20 +7,20 @@ import java.util.EnumSet;
 
 public class SuperSpaceSlimeMoveGoal extends Goal {
 
-	private final SuperSpaceSlimeEntity slime;
+    private final SuperSpaceSlimeEntity slime;
 
-	public SuperSpaceSlimeMoveGoal(SuperSpaceSlimeEntity slime) {
-		this.slime = slime;
-		this.setControls(EnumSet.of(Goal.Control.JUMP, Goal.Control.MOVE));
-	}
+    public SuperSpaceSlimeMoveGoal(SuperSpaceSlimeEntity slime) {
+        this.slime = slime;
+        this.setControls(EnumSet.of(Goal.Control.JUMP, Goal.Control.MOVE));
+    }
 
-	@Override
-	public boolean canStart() {
-		return !this.slime.hasVehicle();
-	}
+    @Override
+    public boolean canStart() {
+        return !this.slime.hasVehicle();
+    }
 
-	@Override
-	public void tick() {
-		((SuperSpaceSlimeMoveControl) this.slime.getMoveControl()).move(1.0D);
-	}
+    @Override
+    public void tick() {
+        ((SuperSpaceSlimeMoveControl) this.slime.getMoveControl()).move(1.0D);
+    }
 }

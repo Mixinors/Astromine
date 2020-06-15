@@ -10,30 +10,30 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 
 public class HolographicBridgeInvisibleBlock extends Block {
-	public HolographicBridgeInvisibleBlock(AbstractBlock.Settings settings) {
-		super(settings);
-	}
+    public HolographicBridgeInvisibleBlock(AbstractBlock.Settings settings) {
+        super(settings);
+    }
 
-	public boolean isTranslucent(BlockState state, BlockView world, BlockPos pos) {
-		return true;
-	}
+    public boolean isTranslucent(BlockState state, BlockView world, BlockPos pos) {
+        return true;
+    }
 
-	public BlockRenderType getRenderType(BlockState state) {
-		return BlockRenderType.INVISIBLE;
-	}
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.INVISIBLE;
+    }
 
-	@Environment(EnvType.CLIENT)
-	public float getAmbientOcclusionLightLevel(BlockState state, BlockView world, BlockPos pos) {
-		return 1.0F;
-	}
+    @Environment(EnvType.CLIENT)
+    public float getAmbientOcclusionLightLevel(BlockState state, BlockView world, BlockPos pos) {
+        return 1.0F;
+    }
 
-	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos position, ShapeContext context) {
-		return VoxelShapes.empty();
-	}
+    @Override
+    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos position, ShapeContext context) {
+        return VoxelShapes.empty();
+    }
 
-	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos position, ShapeContext context) {
-		return HolographicBridgeManager.getShape(world, position);
-	}
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos position, ShapeContext context) {
+        return HolographicBridgeManager.getShape(world, position);
+    }
 }

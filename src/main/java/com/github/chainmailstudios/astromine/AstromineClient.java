@@ -7,34 +7,31 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class AstromineClient implements ClientModInitializer {
 
-	@Override
-	public void onInitializeClient() {
+    @Override
+    public void onInitializeClient() {
 
 
-		AstromineEntityRenderers.initialize();
-		AstromineBlockEntityRenderers.initialize();
-		AstromineSounds.initialize();
-		AstromineParticles.initialize();
+        AstromineEntityRenderers.initialize();
+        AstromineBlockEntityRenderers.initialize();
+        AstromineSounds.initialize();
+        AstromineParticles.initialize();
 
-		EntityRendererRegistry.INSTANCE.register(
-				AstromineEntities.SPACE_SLIME,
-				(dispatcher, context) -> {
-					return new SpaceSlimeEntityRenderer(dispatcher);
-				}
-		);
+        EntityRendererRegistry.INSTANCE.register(
+                AstromineEntities.SPACE_SLIME,
+                (dispatcher, context) -> {
+                    return new SpaceSlimeEntityRenderer(dispatcher);
+                }
+        );
 
-		EntityRendererRegistry.INSTANCE.register(
-				AstromineEntities.SUPER_SPACE_SLIME,
-				(dispatcher, context) -> {
-					return new SuperSpaceSlimeEntityRenderer(dispatcher);
-				}
-		);
-	}
+        EntityRendererRegistry.INSTANCE.register(
+                AstromineEntities.SUPER_SPACE_SLIME,
+                (dispatcher, context) -> {
+                    return new SuperSpaceSlimeEntityRenderer(dispatcher);
+                }
+        );
+    }
 }

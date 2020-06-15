@@ -17,43 +17,43 @@ import net.minecraft.world.World;
 import spinnery.widget.api.Color;
 
 public class HolographicBridgeProjectorBlock extends HorizontalFacingBlock implements BlockEntityProvider {
-	public HolographicBridgeProjectorBlock(AbstractBlock.Settings settings) {
-		super(settings);
-	}
+    public HolographicBridgeProjectorBlock(AbstractBlock.Settings settings) {
+        super(settings);
+    }
 
-	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(FACING);
-		super.appendProperties(builder);
-	}
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
+        super.appendProperties(builder);
+    }
 
-	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos position, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		ItemStack stack = player.getStackInHand(hand);
+    @Override
+    public ActionResult onUse(BlockState state, World world, BlockPos position, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        ItemStack stack = player.getStackInHand(hand);
 
-		if (stack.getItem() instanceof DyeItem) {
-			DyeItem dye = (DyeItem) stack.getItem();
+        if (stack.getItem() instanceof DyeItem) {
+            DyeItem dye = (DyeItem) stack.getItem();
 
-			HolographicBridgeProjectorBlockEntity entity = (HolographicBridgeProjectorBlockEntity) world.getBlockEntity(position);
+            HolographicBridgeProjectorBlockEntity entity = (HolographicBridgeProjectorBlockEntity) world.getBlockEntity(position);
 
-			if (entity != null) {
-				entity.color = Color.of(0x7e000000 >> 2 | dye.getColor().getSignColor());
+            if (entity != null) {
+                entity.color = Color.of(0x7e000000 >> 2 | dye.getColor().getSignColor());
 
-				if (!player.isCreative()) {
-					stack.decrement(1);
-				}
-			}
-		}
+                if (!player.isCreative()) {
+                    stack.decrement(1);
+                }
+            }
+        }
 
-		return ActionResult.PASS;
-	}
+        return ActionResult.PASS;
+    }
 
-	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return new HolographicBridgeProjectorBlockEntity();
-	}
+    @Override
+    public BlockEntity createBlockEntity(BlockView world) {
+        return new HolographicBridgeProjectorBlockEntity();
+    }
 
-	public BlockState getPlacementState(ItemPlacementContext context) {
-		return this.getDefaultState().with(FACING, context.getPlayerFacing().getOpposite());
-	}
+    public BlockState getPlacementState(ItemPlacementContext context) {
+        return this.getDefaultState().with(FACING, context.getPlayerFacing().getOpposite());
+    }
 }

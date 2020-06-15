@@ -17,23 +17,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BrewingRecipeRegistry.class)
 public abstract class BrewingRecipeRegistryMixin {
-	@Shadow
-	private static native void registerPotionRecipe(Potion input, Item item, Potion output);
+    @Shadow
+    private static native void registerPotionRecipe(Potion input, Item item, Potion output);
 
-	@Redirect(method = "registerDefaults",
-			at = @At(value = "INVOKE",
-					target = "Lnet/minecraft/recipe/BrewingRecipeRegistry;registerPotionRecipe(Lnet/minecraft/potion/Potion;Lnet/minecraft/item/Item;Lnet/minecraft/potion/Potion;)V",
-					ordinal = 0),
-			slice = @Slice(from = @At(value = "FIELD",
-					target = "Lnet/minecraft/item/Items;SUGAR:Lnet/minecraft/item/Item;")))
-	private static void yoteMundane(Potion input, Item item, Potion output) {
-		// corb
-	}
+    @Redirect(method = "registerDefaults",
+            at = @At(value = "INVOKE",
+                    target = "Lnet/minecraft/recipe/BrewingRecipeRegistry;registerPotionRecipe(Lnet/minecraft/potion/Potion;Lnet/minecraft/item/Item;Lnet/minecraft/potion/Potion;)V",
+                    ordinal = 0),
+            slice = @Slice(from = @At(value = "FIELD",
+                    target = "Lnet/minecraft/item/Items;SUGAR:Lnet/minecraft/item/Item;")))
+    private static void yoteMundane(Potion input, Item item, Potion output) {
+        // corb
+    }
 
-	@Inject(method = "registerDefaults",
-			at = @At("TAIL"))
-	private static void addRocketFueling(CallbackInfo ci) {
-		registerPotionRecipe(Potions.WATER, Items.SUGAR, AstrominePotions.SUGAR_WATER);
-		registerPotionRecipe(AstrominePotions.SUGAR_WATER, AstromineItems.YEAST, AstrominePotions.ROCKET_FUEL);
-	}
+    @Inject(method = "registerDefaults",
+            at = @At("TAIL"))
+    private static void addRocketFueling(CallbackInfo ci) {
+        registerPotionRecipe(Potions.WATER, Items.SUGAR, AstrominePotions.SUGAR_WATER);
+        registerPotionRecipe(AstrominePotions.SUGAR_WATER, AstromineItems.YEAST, AstrominePotions.ROCKET_FUEL);
+    }
 }

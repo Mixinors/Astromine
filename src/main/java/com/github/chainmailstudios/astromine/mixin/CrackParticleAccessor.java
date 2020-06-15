@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(CrackParticle.class)
 public interface CrackParticleAccessor {
-	@Invoker
-	static CrackParticle createCrackParticle(ClientWorld world, double x, double y, double z, ItemStack stack) {
-		throw new UnsupportedOperationException();
-	}
+    @Invoker
+    static CrackParticle createCrackParticle(ClientWorld world, double x, double y, double z, ItemStack stack) {
+        throw new UnsupportedOperationException();
+    }
 }

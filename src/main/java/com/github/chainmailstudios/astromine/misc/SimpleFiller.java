@@ -4,7 +4,6 @@ import com.terraformersmc.shapes.api.Filler;
 import com.terraformersmc.shapes.api.Position;
 import net.minecraft.block.BlockState;
 import net.minecraft.world.ModifiableWorld;
-import net.minecraft.world.World;
 
 public class SimpleFiller implements Filler {
     private final ModifiableWorld world;
