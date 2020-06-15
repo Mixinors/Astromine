@@ -15,7 +15,7 @@ public class GravityRegistry {
 	}
 
 	public double get(Identifier identifier) {
-		return ENTRIES.getOrDefault(identifier, 0.98D);
+		return ENTRIES.getOrDefault(identifier, 0.08D);
 	}
 
 	public void register(Identifier identifier, double gravity) {

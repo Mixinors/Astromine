@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 @Mixin(StepAndDestroyBlockGoal.class)
 public class StepAndDestroyBlockGoalMixin {
 	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = 0.08D))
-	double getGravityB(double original) {
+	double getGravity(double original) {
 		World world = ((Entity) (Object) this).world;
 
 		Identifier dimension = world.getDimensionRegistryKey().getValue();

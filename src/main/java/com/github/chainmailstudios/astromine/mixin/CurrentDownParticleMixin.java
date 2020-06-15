@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 @Mixin(CurrentDownParticle.class)
 public class CurrentDownParticleMixin {
 	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = 0.08D))
-	double getGravityB(double original) {
+	double getGravity(double original) {
 		World world = ((Entity) (Object) this).world;
 
 		Identifier dimension = world.getDimensionRegistryKey().getValue();

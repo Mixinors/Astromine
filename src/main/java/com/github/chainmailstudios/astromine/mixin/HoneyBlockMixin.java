@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 @Mixin(HoneyBlock.class)
 public class HoneyBlockMixin {
 	@ModifyConstant(method = "isSliding(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/entity/Entity;)Z", constant = @Constant(doubleValue = -0.08D))
-	double getGravityB(double original) {
+	double getGravity(double original) {
 		World world = ((Entity) (Object) this).world;
 
 		Identifier dimension = world.getDimensionRegistryKey().getValue();
