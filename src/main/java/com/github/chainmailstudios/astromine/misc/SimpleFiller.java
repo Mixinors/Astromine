@@ -1,7 +1,7 @@
 package com.github.chainmailstudios.astromine.misc;
 
-import com.cumulus.shapes.api.Filler;
-import com.cumulus.shapes.api.Position;
+import com.terraformersmc.shapes.api.Filler;
+import com.terraformersmc.shapes.api.Position;
 import net.minecraft.block.BlockState;
 import net.minecraft.world.ModifiableWorld;
 import net.minecraft.world.World;
