@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "astromine:metite_hoe",
     "astromine:asterite_hoe",
     "astromine:stellum_hoe",
     "astromine:galaxium_hoe",

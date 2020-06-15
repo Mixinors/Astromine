@@ -13,7 +13,7 @@ import net.minecraft.util.Lazy;
 import java.util.function.Supplier;
 
 public class AstromineArmorMaterials {
-	public static final AstromineArmorMaterial METITE = new AstromineArmorMaterial("metite", 15, new int[] {2, 4, 6, 2}, 15, AstromineSounds.ASTERITE_ARMOR_EQUIPPED, 0.0f, 0.0f, () -> Ingredient.ofItems(AstromineItems.METITE_INGOT));
+	public static final AstromineArmorMaterial METITE = new AstromineArmorMaterial("metite", 15, new int[] {2, 5, 6, 2}, 15, AstromineSounds.METITE_ARMOR_EQUIPPED, 0.0f, 0.0f, () -> Ingredient.ofItems(AstromineItems.METITE_INGOT));
 	public static final AstromineArmorMaterial ASTERITE = new AstromineArmorMaterial("asterite", 41, new int[] {4, 7, 8, 4}, 20, AstromineSounds.ASTERITE_ARMOR_EQUIPPED, 4.0f, 0.1f, () -> Ingredient.ofItems(AstromineItems.ASTERITE_FRAGMENT));
 	public static final AstromineArmorMaterial STELLUM = new AstromineArmorMaterial("stellum", 22, new int[] {2, 4, 6, 2}, 7, AstromineSounds.STELLUM_ARMOR_EQUIPPED, 6.0f, 0.2f, () -> Ingredient.ofItems(AstromineItems.STELLUM_INGOT));
 	public static final AstromineArmorMaterial GALAXIUM = new AstromineArmorMaterial("galaxium", 44, new int[] {4, 8, 9, 4}, 18, AstromineSounds.GALAXIUM_ARMOR_EQUIPPED, 4.5f, 0.1f, () -> Ingredient.ofItems(AstromineItems.GALAXIUM_FRAGMENT));

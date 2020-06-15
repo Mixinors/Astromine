@@ -1,20 +1,92 @@
 {
   "empty_magazine": {
-    "sounds": ["astromine:empty_magazine"]
+    "sounds": ["astromine:empty_magazine"],
+    "subtitle": "subtitles.astromine.empty_magazine"
   },
   "scar_h_shot": {
-    "sounds": ["astromine:scar_h_shot"]
+    "sounds": ["astromine:scar_h_shot"],
+    "subtitle": "subtitles.astromine.gunshot"
   },
   "barret_m98b_shot": {
-    "sounds": ["astromine:barret_m98b_shot"]
+    "sounds": ["astromine:barret_m98b_shot"],
+    "subtitle": "subtitles.astromine.gunshot"
   },
   "fire_extinguisher_open": {
-    "sounds": ["astromine:fire_extinguisher_open"]
+    "sounds": ["astromine:fire_extinguisher_open"],
+    "subtitle": "subtitles.astromine.fire_extinguisher_open"
   },
   "holographic_connector_click": {
-    "sounds": ["astromine:holographic_connector_click"]
+    "sounds": ["astromine:holographic_connector_click"],
+    "subtitle": "subtitles.astromine.holographic_connector_click"
   },
   "humming": {
-    "sounds": ["astromine:humming"]
+    "sounds": ["astromine:humming"],
+    "subtitle": "subtitles.astromine.humming"
+  },
+  "item.armor.equip_metite": {
+    "sounds": [
+      "minecraft:item/armor/equip_generic1",
+      "minecraft:item/armor/equip_generic2",
+      "minecraft:item/armor/equip_generic3",
+      "minecraft:item/armor/equip_generic4",
+      "minecraft:item/armor/equip_generic5",
+      "minecraft:item/armor/equip_generic6"
+    ],
+    "subtitle": "subtitles.item.armor.equip"
+  },
+  "item.armor.equip_asterite": {
+    "sounds": [
+      "minecraft:item/armor/equip_generic1",
+      "minecraft:item/armor/equip_generic2",
+      "minecraft:item/armor/equip_generic3",
+      "minecraft:item/armor/equip_generic4",
+      "minecraft:item/armor/equip_generic5",
+      "minecraft:item/armor/equip_generic6"
+    ],
+    "subtitle": "subtitles.item.armor.equip"
+  },
+  "item.armor.equip_stellum": {
+    "sounds": [
+      "minecraft:item/armor/equip_generic1",
+      "minecraft:item/armor/equip_generic2",
+      "minecraft:item/armor/equip_generic3",
+      "minecraft:item/armor/equip_generic4",
+      "minecraft:item/armor/equip_generic5",
+      "minecraft:item/armor/equip_generic6"
+    ],
+    "subtitle": "subtitles.item.armor.equip"
+  },
+  "item.armor.equip_galaxium": {
+    "sounds": [
+      "minecraft:item/armor/equip_generic1",
+      "minecraft:item/armor/equip_generic2",
+      "minecraft:item/armor/equip_generic3",
+      "minecraft:item/armor/equip_generic4",
+      "minecraft:item/armor/equip_generic5",
+      "minecraft:item/armor/equip_generic6"
+    ],
+    "subtitle": "subtitles.item.armor.equip"
+  },
+  "item.armor.equip_univite": {
+    "sounds": [
+      "minecraft:item/armor/equip_generic1",
+      "minecraft:item/armor/equip_generic2",
+      "minecraft:item/armor/equip_generic3",
+      "minecraft:item/armor/equip_generic4",
+      "minecraft:item/armor/equip_generic5",
+      "minecraft:item/armor/equip_generic6"
+    ],
+    "subtitle": "subtitles.item.armor.equip"
+  },
+  "item.armor.equip_space_suit": {
+    "sounds": [
+      "minecraft:item/armor/equip_generic1",
+      "minecraft:item/armor/equip_generic2",
+      "minecraft:item/armor/equip_generic3",
+      "minecraft:item/armor/equip_generic4",
+      "minecraft:item/armor/equip_generic5",
+      "minecraft:item/armor/equip_generic6"
+    ],
+    "subtitle": "subtitles.item.armor.equip"
   }
 }

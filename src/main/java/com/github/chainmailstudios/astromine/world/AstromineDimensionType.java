@@ -11,8 +11,8 @@ import net.minecraft.world.dimension.DimensionType;
 import java.util.OptionalLong;
 
 public class AstromineDimensionType extends DimensionType {
-	public static final RegistryKey<DimensionOptions> OPTIONS = RegistryKey.of(Registry.DIMENSION_OPTIONS, AstromineCommon.identifier("astromine"));
-	public static final RegistryKey<DimensionType> REGISTRY_KEY = RegistryKey.of(Registry.DIMENSION_TYPE_KEY, AstromineCommon.identifier("astromine_type"));
+	public static final RegistryKey<DimensionOptions> OPTIONS = RegistryKey.of(Registry.DIMENSION_OPTIONS, AstromineCommon.identifier("space"));
+	public static final RegistryKey<DimensionType> REGISTRY_KEY = RegistryKey.of(Registry.DIMENSION_TYPE_KEY, AstromineCommon.identifier("space_type"));
 
 	public static final DimensionType INSTANCE = new AstromineDimensionType();
 

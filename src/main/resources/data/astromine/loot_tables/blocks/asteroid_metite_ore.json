@@ -24,7 +24,7 @@
                   }
                 }
               ],
-              "name": "astromine:metite_ore"
+              "name": "astromine:asteroid_metite_ore"
             },
             {
               "type": "minecraft:item",
@@ -46,7 +46,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "astromine:metite_cluster"
+              "name": "astromine:asteroid_metite_cluster"
             }
           ]
         }

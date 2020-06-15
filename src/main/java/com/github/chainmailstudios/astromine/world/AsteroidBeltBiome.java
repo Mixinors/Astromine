@@ -12,9 +12,9 @@ import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
 
-public class AsteroidsBiome extends Biome {
+public class AsteroidBeltBiome extends Biome {
 
-	public AsteroidsBiome() {
+	public AsteroidBeltBiome() {
 		super(new Biome.Settings()
 				.configureSurfaceBuilder(SurfaceBuilder.NOPE, SurfaceBuilder.STONE_CONFIG)
 				.precipitation(Biome.Precipitation.NONE)
@@ -30,7 +30,7 @@ public class AsteroidsBiome extends Biome {
 						.moodSound(BiomeMoodSound.CAVE).build())
 				.parent(null));
 		this.addFeature(GenerationStep.Feature.RAW_GENERATION,
-				AstromineFeatures.ASTEROIDS_FEATURE.configure(DefaultFeatureConfig.INSTANCE)
+				AstromineFeatures.ASTEROIDS.configure(DefaultFeatureConfig.INSTANCE)
 						.createDecoratedFeature(Decorator.CHANCE_HEIGHTMAP.configure(new ChanceDecoratorConfig(16))));
 	}
 }
