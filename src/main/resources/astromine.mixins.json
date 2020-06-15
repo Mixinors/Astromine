@@ -1,25 +1,20 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "com.github.chainmailstudios.astromine.mixin",
-  "compatibilityLevel": "JAVA_8",
-  "mixins": [
-    "BrewingRecipeRegistryMixin",
-    "ChunkSerializerMixin",
-    "ChunkSerializerMixin$WorldChunkMixin",
-    "Fixin",
-    "FlamingAnvilCraftingMixin",
-    "SkyPropertiesMixin",
-    "SlimeEntityMixin"
-  ],
-  "client": [
-    "BossBarHudMixin",
-    "CrackParticleAccessor",
-    "GameRendererMixin",
-    "ItemRendererMixin",
-    "MinecraftClientMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  }
+	"required": true,
+	"minVersion": "0.8",
+	"package": "com.github.chainmailstudios.astromine.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"mixins": [
+		"AbstractMinecartEntityMixin", "BrewingRecipeRegistryMixin", "ChunkSerializerMixin",
+		"ChunkSerializerMixin$WorldChunkMixin", "EggEntityMixin", "EntityMixin", "FallingBlockEntityMixin",
+		"FishingBobberEntityMixin", "FlamingAnvilCraftingMixin", "HoneyBlockMixin", "ItemEntityMixin",
+		"LivingEntityMixin", "ShulkerBulletEntityMixin", "SlimeEntityMixin", "SquidEntityMixin",
+		"StepAndDestroyBlockGoalMixin", "ThreadExecutorMixin", "TntEntityMixin", "SkyPropertiesMixin"
+	],
+	"client": [
+		"BossBarHudMixin", "CrackParticleAccessor", "CurrentDownParticleMixin", "GameRendererMixin",
+		"ItemRendererMixin", "MinecraftClientMixin", "WorldRendererMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
 }

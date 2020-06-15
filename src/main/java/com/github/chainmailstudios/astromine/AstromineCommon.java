@@ -7,6 +7,7 @@ import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 public class AstromineCommon implements ModInitializer {
 	public static final String LOG_ID = "Astromine";
 	public static final String MOD_ID = "astromine";
@@ -27,6 +28,8 @@ public class AstromineCommon implements ModInitializer {
 		AstromineBiomes.initialize();
 		AstromineChunkGenerators.initialize();
 		AstromineServerPackets.initialize();
+		AstromineGravities.initialize();
+		AstromineDimensionLayers.initialize();
 	}
 
 	public static Identifier identifier(String name) {
