@@ -7,31 +7,31 @@ import net.minecraft.util.math.BlockPos;
 import java.util.Set;
 
 public class NetworkManager implements Tickable {
-    public static final NetworkManager INSTANCE = new NetworkManager();
+	public static final NetworkManager INSTANCE = new NetworkManager();
 
-    private final Set<NetworkController> controllers = Sets.newConcurrentHashSet();
+	private final Set<NetworkController> controllers = Sets.newConcurrentHashSet();
 
-    private NetworkManager() {
-    }
+	private NetworkManager() {
+	}
 
-    public void add(NetworkController controller) {
-        this.controllers.add(controller);
-    }
+	public void add(NetworkController controller) {
+		this.controllers.add(controller);
+	}
 
-    public void remove(NetworkController controller) {
-        this.controllers.remove(controller);
-    }
+	public void remove(NetworkController controller) {
+		this.controllers.remove(controller);
+	}
 
-    public NetworkController get(NetworkTicker type, BlockPos position) {
-        for (NetworkController controller : this.controllers) {
-            if (controller.getType() == type && controller.nodes.contains(NetworkNode.of(position))) return controller;
-        }
+	public NetworkController get(NetworkTicker type, BlockPos position) {
+		for (NetworkController controller : this.controllers) {
+			if (controller.getType() == type && controller.nodes.contains(NetworkNode.of(position))) return controller;
+		}
 
-        return NetworkController.EMPTY;
-    }
+		return NetworkController.EMPTY;
+	}
 
-    @Override
-    public void tick() {
-        this.controllers.forEach(NetworkController::tick);
-    }
+	@Override
+	public void tick() {
+		this.controllers.forEach(NetworkController::tick);
+	}
 }

@@ -11,12 +11,12 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(EggEntity.class)
 public class EggEntityMixin {
-    @ModifyConstant(method = "handleStatus(B)V", constant = @Constant(doubleValue = 0.08D))
-    double getGravityA(double original) {
-        World world = ((Entity) (Object) this).world;
+	@ModifyConstant(method = "handleStatus(B)V", constant = @Constant(doubleValue = 0.08D))
+	double getGravityA(double original) {
+		World world = ((Entity) (Object) this).world;
 
-        Identifier dimension = world.getDimensionRegistryKey().getValue();
+		Identifier dimension = world.getDimensionRegistryKey().getValue();
 
-        return GravityRegistry.INSTANCE.get(dimension);
-    }
+		return GravityRegistry.INSTANCE.get(dimension);
+	}
 }

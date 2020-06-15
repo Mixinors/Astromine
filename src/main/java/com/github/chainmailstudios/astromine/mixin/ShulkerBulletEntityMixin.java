@@ -11,12 +11,12 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(ShulkerBulletEntity.class)
 public class ShulkerBulletEntityMixin {
-    @ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = -0.04D))
-    double getGravityB(double original) {
-        World world = ((Entity) (Object) this).world;
+	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = -0.04D))
+	double getGravityB(double original) {
+		World world = ((Entity) (Object) this).world;
 
-        Identifier dimension = world.getDimensionRegistryKey().getValue();
+		Identifier dimension = world.getDimensionRegistryKey().getValue();
 
-        return -GravityRegistry.INSTANCE.get(dimension);
-    }
+		return -GravityRegistry.INSTANCE.get(dimension);
+	}
 }

@@ -5,7 +5,7 @@ import com.github.chainmailstudios.astromine.world.generation.AstromineChunkGene
 import net.minecraft.util.registry.Registry;
 
 public class AstromineChunkGenerators {
-    public static void initialize() {
-        Registry.register(Registry.CHUNK_GENERATOR, AstromineCommon.identifier(AstromineCommon.MOD_ID), AstromineChunkGenerator.CODEC);
-    }
+	public static void initialize() {
+		Registry.register(Registry.CHUNK_GENERATOR, AstromineCommon.identifier(AstromineCommon.MOD_ID), AstromineChunkGenerator.CODEC);
+	}
 }

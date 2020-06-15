@@ -7,18 +7,18 @@ import net.minecraft.nbt.CompoundTag;
  * in Volumes.
  */
 public interface Property {
-    /**
-     * Serializes this FluidProperty to a tag
-     * based on a Volume.
-     *
-     * @return a tag
-     */
-    <T extends Volume> CompoundTag toTag(T volume);
+	/**
+	 * Serializes this FluidProperty to a tag
+	 * based on a Volume.
+	 *
+	 * @return a tag
+	 */
+	<T extends Volume> CompoundTag toTag(T volume);
 
-    /**
-     * Deserializes a FluidProperty from a tag.
-     *
-     * @return a FluidProperty
-     */
-    <T extends Property> T fromTag(CompoundTag tag);
+	/**
+	 * Deserializes a FluidProperty from a tag.
+	 *
+	 * @return a FluidProperty
+	 */
+	<T extends Property> T fromTag(CompoundTag tag);
 }

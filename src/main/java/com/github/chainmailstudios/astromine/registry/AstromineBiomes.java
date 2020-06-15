@@ -10,14 +10,14 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
 
 public class AstromineBiomes {
-    public static final Codec<AstromineBiomeSource> ASTROMINE = Registry.register(Registry.BIOME_SOURCE, AstromineCommon.identifier(AstromineCommon.MOD_ID), AstromineBiomeSource.CODEC);
-    public static Biome ASTEROIDS;
+	public static final Codec<AstromineBiomeSource> ASTROMINE = Registry.register(Registry.BIOME_SOURCE, AstromineCommon.identifier(AstromineCommon.MOD_ID), AstromineBiomeSource.CODEC);
+	public static Biome ASTEROIDS;
 
-    public static void initialize() {
-        ASTEROIDS = Registry.register(Registry.BIOME, AstromineCommon.identifier("asteroids"), new AsteroidsBiome());
-    }
+	public static void initialize() {
+		ASTEROIDS = Registry.register(Registry.BIOME, AstromineCommon.identifier("asteroids"), new AsteroidsBiome());
+	}
 
-    public <T extends BiomeSource> Codec<T> register(Identifier id, Codec<BiomeSource> codec) {
-        return (Codec<T>) Registry.register(Registry.BIOME_SOURCE, id, codec);
-    }
+	public <T extends BiomeSource> Codec<T> register(Identifier id, Codec<BiomeSource> codec) {
+		return (Codec<T>) Registry.register(Registry.BIOME_SOURCE, id, codec);
+	}
 }

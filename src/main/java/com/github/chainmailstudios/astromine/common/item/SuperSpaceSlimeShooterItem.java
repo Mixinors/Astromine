@@ -25,144 +25,144 @@ import net.minecraft.world.World;
 import java.util.Optional;
 
 public class SuperSpaceSlimeShooterItem extends BaseWeapon {
-    public static final Identifier TEXTURE = new Identifier("astromine", "textures/item/empty.png");
+	public static final Identifier TEXTURE = new Identifier("astromine", "textures/item/empty.png");
 
-    public SuperSpaceSlimeShooterItem(Item.Settings settings) {
-        super(settings);
-    }
+	public SuperSpaceSlimeShooterItem(Item.Settings settings) {
+		super(settings);
+	}
 
-    @Override
-    public TranslatableText getCategory() {
-        return new TranslatableText("text.astromine.weapon.fantasy");
-    }
+	@Override
+	public TranslatableText getCategory() {
+		return new TranslatableText("text.astromine.weapon.fantasy");
+	}
 
-    @Override
-    public float getZoom() {
-        return 50;
-    }
+	@Override
+	public float getZoom() {
+		return 50;
+	}
 
-    @Override
-    public float getDamage() {
-        return 1;
-    }
+	@Override
+	public float getDamage() {
+		return 1;
+	}
 
-    @Override
-    public float getDistance() {
-        return 10;
-    }
+	@Override
+	public float getDistance() {
+		return 10;
+	}
 
-    @Override
-    public int getPunch() {
-        return 1;
-    }
+	@Override
+	public int getPunch() {
+		return 1;
+	}
 
-    @Override
-    public float getRecoil() {
-        return 1;
-    }
+	@Override
+	public float getRecoil() {
+		return 1;
+	}
 
-    @Override
-    public long getShotInterval() {
-        return 0;
-    }
+	@Override
+	public long getShotInterval() {
+		return 0;
+	}
 
-    @Override
-    public long getReloadInterval() {
-        return 0;
-    }
+	@Override
+	public long getReloadInterval() {
+		return 0;
+	}
 
-    @Override
-    public SoundEvent getShotSound() {
-        return SoundEvents.BLOCK_SLIME_BLOCK_HIT;
-    }
+	@Override
+	public SoundEvent getShotSound() {
+		return SoundEvents.BLOCK_SLIME_BLOCK_HIT;
+	}
 
-    @Override
-    public Vector3f getTranslation() {
-        return new Vector3f(0, 0, 0);
-    }
+	@Override
+	public Vector3f getTranslation() {
+		return new Vector3f(0, 0, 0);
+	}
 
-    @Override
-    public Item getAmmo() {
-        return AstromineItems.SPACE_SLIME_BALL;
-    }
+	@Override
+	public Item getAmmo() {
+		return AstromineItems.SPACE_SLIME_BALL;
+	}
 
-    @Override
-    public Identifier getBulletTexture() {
-        return TEXTURE;
-    }
+	@Override
+	public Identifier getBulletTexture() {
+		return TEXTURE;
+	}
 
-    @Override
-    public void tryShoot(World world, PlayerEntity user) {
-        Optional<ItemStack> optionalMagazine = InventoryComponentFromInventory.of(user.inventory).getContentsMatching(stack -> stack.getItem() == getAmmo()).stream().findFirst();
+	@Override
+	public void tryShoot(World world, PlayerEntity user) {
+		Optional<ItemStack> optionalMagazine = InventoryComponentFromInventory.of(user.inventory).getContentsMatching(stack -> stack.getItem() == getAmmo()).stream().findFirst();
 
-        if (optionalMagazine.isPresent() || user.isCreative()) {
-            long currentAttempt = System.currentTimeMillis();
+		if (optionalMagazine.isPresent() || user.isCreative()) {
+			long currentAttempt = System.currentTimeMillis();
 
-            if (isReloading(currentAttempt)) {
-                return;
-            }
+			if (isReloading(currentAttempt)) {
+				return;
+			}
 
-            if (optionalMagazine.isPresent() && !user.isCreative()) {
-                ItemStack magazine = optionalMagazine.get();
+			if (optionalMagazine.isPresent() && !user.isCreative()) {
+				ItemStack magazine = optionalMagazine.get();
 
-                if (!world.isClient && world.random.nextInt(8) == 0) {
-                    magazine.decrement(1);
+				if (!world.isClient && world.random.nextInt(8) == 0) {
+					magazine.decrement(1);
 
-                    if (magazine.isEmpty()) {
-                        setLastReload(currentAttempt);
-                    }
-                }
-            }
+					if (magazine.isEmpty()) {
+						setLastReload(currentAttempt);
+					}
+				}
+			}
 
-            if (optionalMagazine.isPresent() || user.isCreative()) {
-                BulletEntity bulletEntity = new BulletEntity(AstromineEntities.BULLET_ENTITY_TYPE, user, world);
+			if (optionalMagazine.isPresent() || user.isCreative()) {
+				BulletEntity bulletEntity = new BulletEntity(AstromineEntities.BULLET_ENTITY_TYPE, user, world);
 
-                bulletEntity.setProperties(user, user.pitch, user.yaw, 0.0F, getDistance(), 0);
+				bulletEntity.setProperties(user, user.pitch, user.yaw, 0.0F, getDistance(), 0);
 
-                bulletEntity.setCritical(false);
+				bulletEntity.setCritical(false);
 
-                bulletEntity.setDamage(getDamage());
+				bulletEntity.setDamage(getDamage());
 
-                bulletEntity.setPunch(getPunch());
+				bulletEntity.setPunch(getPunch());
 
-                bulletEntity.setTexture(getBulletTexture());
+				bulletEntity.setTexture(getBulletTexture());
 
-                bulletEntity.setSound(AstromineSounds.EMPTY);
+				bulletEntity.setSound(AstromineSounds.EMPTY);
 
-                if (world.isClient) {
-                    ClientUtilities.addEntity(bulletEntity);
+				if (world.isClient) {
+					ClientUtilities.addEntity(bulletEntity);
 
-                    world.playSound(user, user.getBlockPos(), getShotSound(), SoundCategory.PLAYERS, 1f, 1f);
-                } else {
-                    user.world.spawnEntity(bulletEntity);
-                }
+					world.playSound(user, user.getBlockPos(), getShotSound(), SoundCategory.PLAYERS, 1f, 1f);
+				} else {
+					user.world.spawnEntity(bulletEntity);
+				}
 
-                if (world.isClient) {
-                    user.pitch -= getRecoil() / 16f / (ClientUtilities.Weapon.isAiming() ? 2 : 1);
-                    user.yaw += (world.random.nextBoolean() ? world.random.nextInt(16) / 16f : -world.random.nextInt(16) / 16f) / (ClientUtilities.Weapon.isAiming() ? 2 : 1);
-                } else {
-                    // Ray-trace out to find end location of particle beam.
-                    HitResult result = user.rayTrace(10, 0, false);
-                    Vec3d hitPos = result.getPos();
-                    Vec3d originPos = user.getPos().add(0, 1, 0);
+				if (world.isClient) {
+					user.pitch -= getRecoil() / 16f / (ClientUtilities.Weapon.isAiming() ? 2 : 1);
+					user.yaw += (world.random.nextBoolean() ? world.random.nextInt(16) / 16f : -world.random.nextInt(16) / 16f) / (ClientUtilities.Weapon.isAiming() ? 2 : 1);
+				} else {
+					// Ray-trace out to find end location of particle beam.
+					HitResult result = user.rayTrace(10, 0, false);
+					Vec3d hitPos = result.getPos();
+					Vec3d originPos = user.getPos().add(0, 1, 0);
 
-                    // Calculate change in slope for particles.
-                    Vec3d change = originPos.subtract(hitPos);
-                    double distance = Math.sqrt(Math.pow(change.x, 2) + Math.pow(change.y, 2) + Math.pow(change.z, 2));
-                    change = new Vec3d(change.x / distance, change.y / distance, change.z / distance);
+					// Calculate change in slope for particles.
+					Vec3d change = originPos.subtract(hitPos);
+					double distance = Math.sqrt(Math.pow(change.x, 2) + Math.pow(change.y, 2) + Math.pow(change.z, 2));
+					change = new Vec3d(change.x / distance, change.y / distance, change.z / distance);
 
-                    ServerWorld serverWorld = (ServerWorld) world;
-                    Vec3d increase = originPos;
+					ServerWorld serverWorld = (ServerWorld) world;
+					Vec3d increase = originPos;
 
-                    // Spawn particles.
-                    for (int i = 0; i < 5; i++) {
-                        serverWorld.spawnParticles(AstromineParticles.SPACE_SLIME, increase.getX(), increase.getY(), increase.getZ(), 1, 0, 0, 0, 0);
-                        increase = increase.subtract(change);
-                    }
-                }
-            } else {
-                world.playSound(user, user.getBlockPos(), AstromineSounds.EMPTY_MAGAZINE, SoundCategory.PLAYERS, 1f, 1f);
-            }
-        }
-    }
+					// Spawn particles.
+					for (int i = 0; i < 5; i++) {
+						serverWorld.spawnParticles(AstromineParticles.SPACE_SLIME, increase.getX(), increase.getY(), increase.getZ(), 1, 0, 0, 0, 0);
+						increase = increase.subtract(change);
+					}
+				}
+			} else {
+				world.playSound(user, user.getBlockPos(), AstromineSounds.EMPTY_MAGAZINE, SoundCategory.PLAYERS, 1f, 1f);
+			}
+		}
+	}
 }

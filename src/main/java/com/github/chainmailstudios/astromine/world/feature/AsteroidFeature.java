@@ -23,56 +23,56 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class AsteroidFeature extends Feature<DefaultFeatureConfig> {
-    public AsteroidFeature(Codec<DefaultFeatureConfig> codec) {
-        super(codec);
-    }
+	public AsteroidFeature(Codec<DefaultFeatureConfig> codec) {
+		super(codec);
+	}
 
-    @Override
-    public boolean generate(ServerWorldAccess world, StructureAccessor accessor, ChunkGenerator generator, Random random, BlockPos fP, DefaultFeatureConfig config) {
-        if (random.nextInt(4) != 3) return false;
+	@Override
+	public boolean generate(ServerWorldAccess world, StructureAccessor accessor, ChunkGenerator generator, Random random, BlockPos fP, DefaultFeatureConfig config) {
+		if (random.nextInt(4) != 3) return false;
 
-        fP = new BlockPos(fP.getX(), random.nextInt(256), fP.getZ());
+		fP = new BlockPos(fP.getX(), random.nextInt(256), fP.getZ());
 
-        double xSize = 4 + random.nextDouble() * 8;
-        double ySize = 4 + random.nextDouble() * 8;
-        double zSize = 4 + random.nextDouble() * 8;
+		double xSize = 4 + random.nextDouble() * 8;
+		double ySize = 4 + random.nextDouble() * 8;
+		double zSize = 4 + random.nextDouble() * 8;
 
-        if (fP.getY() + ySize >= 255) {
-            return false;
-        }
+		if (fP.getY() + ySize >= 255) {
+			return false;
+		}
 
-        if (fP.getY() - ySize < 0) {
-            return false;
-        }
+		if (fP.getY() - ySize < 0) {
+			return false;
+		}
 
-        Shape asteroid = Shapes.ellipsoid((float) xSize, (float) ySize, (float) zSize)
-                .applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 720, random.nextDouble() * 720, random.nextDouble() * 720, true)))
-                .applyLayer(TranslateLayer.of(Position.of(fP)));
+		Shape asteroid = Shapes.ellipsoid((float) xSize, (float) ySize, (float) zSize)
+				.applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 720, random.nextDouble() * 720, random.nextDouble() * 720, true)))
+				.applyLayer(TranslateLayer.of(Position.of(fP)));
 
-        for (Position vP : asteroid.stream().collect(Collectors.toSet())) {
-            world.setBlockState(vP.toBlockPos(), AstromineBlocks.ASTEROID_STONE.getDefaultState(), 0b0110100);
-        }
+		for (Position vP : asteroid.stream().collect(Collectors.toSet())) {
+			world.setBlockState(vP.toBlockPos(), AstromineBlocks.ASTEROID_STONE.getDefaultState(), 0b0110100);
+		}
 
-        List<Block> ores = AsteroidOreRegistry.INSTANCE.get(random.nextInt(100));
+		List<Block> ores = AsteroidOreRegistry.INSTANCE.get(random.nextInt(100));
 
-        if (ores.isEmpty()) return true;
+		if (ores.isEmpty()) return true;
 
-        Collections.shuffle(ores);
+		Collections.shuffle(ores);
 
-        for (int i = 0; i < Math.min(2, random.nextInt(ores.size())); ++i) {
-            Shape vein = Shapes.ellipsoid((float) xSize, (float) ySize, (float) zSize)
-                    .applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true)))
-                    .applyLayer(TranslateLayer.of(Position.of(fP)));
+		for (int i = 0; i < Math.min(2, random.nextInt(ores.size())); ++i) {
+			Shape vein = Shapes.ellipsoid((float) xSize, (float) ySize, (float) zSize)
+					.applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true)))
+					.applyLayer(TranslateLayer.of(Position.of(fP)));
 
-            for (Position vP : vein.stream().collect(Collectors.toSet())) {
-                BlockPos cP = vP.toBlockPos();
+			for (Position vP : vein.stream().collect(Collectors.toSet())) {
+				BlockPos cP = vP.toBlockPos();
 
-                if (world.getBlockState(cP).getBlock() == AstromineBlocks.ASTEROID_STONE) {
-                    world.setBlockState(cP, ores.get(i).getDefaultState(), 0b0110100);
-                }
-            }
-        }
+				if (world.getBlockState(cP).getBlock() == AstromineBlocks.ASTEROID_STONE) {
+					world.setBlockState(cP, ores.get(i).getDefaultState(), 0b0110100);
+				}
+			}
+		}
 
-        return true;
-    }
+		return true;
+	}
 }

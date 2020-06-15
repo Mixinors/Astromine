@@ -19,74 +19,74 @@ import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 
 public class BulletEntity extends PersistentProjectileEntity {
-    public Identifier texture = new Identifier(AstromineCommon.MOD_ID, "textures/entity/projectiles/bullet.png");
+	public Identifier texture = new Identifier(AstromineCommon.MOD_ID, "textures/entity/projectiles/bullet.png");
 
-    public BulletEntity(World world) {
-        super(AstromineEntities.BULLET_ENTITY_TYPE, world);
-    }
+	public BulletEntity(World world) {
+		super(AstromineEntities.BULLET_ENTITY_TYPE, world);
+	}
 
-    public BulletEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
-        super(entityType, world);
-    }
+	public BulletEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
+		super(entityType, world);
+	}
 
-    public BulletEntity(EntityType<? extends PersistentProjectileEntity> type, double x, double y, double z, World world) {
-        super(type, x, y, z, world);
-    }
+	public BulletEntity(EntityType<? extends PersistentProjectileEntity> type, double x, double y, double z, World world) {
+		super(type, x, y, z, world);
+	}
 
-    public BulletEntity(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world) {
-        super(type, owner, world);
-    }
+	public BulletEntity(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world) {
+		super(type, owner, world);
+	}
 
-    @Override
-    protected void checkBlockCollision() {
-        Box box = this.getBoundingBox();
-        BlockPos positionA = new BlockPos(box.minX + 0.001D, box.minY + 0.001D, box.minZ + 0.001D);
-        BlockPos positionB = new BlockPos(box.maxX - 0.001D, box.maxY - 0.001D, box.maxZ - 0.001D);
-        BlockPos.Mutable mutable = new BlockPos.Mutable();
-        if (this.world.isRegionLoaded(positionA, positionB)) {
-            for (int i = positionA.getX(); i <= positionB.getX(); ++i) {
-                for (int j = positionA.getY(); j <= positionB.getY(); ++j) {
-                    for (int k = positionA.getZ(); k <= positionB.getZ(); ++k) {
-                        mutable.set(i, j, k);
-                        BlockState blockState = this.world.getBlockState(mutable);
+	@Override
+	protected void checkBlockCollision() {
+		Box box = this.getBoundingBox();
+		BlockPos positionA = new BlockPos(box.minX + 0.001D, box.minY + 0.001D, box.minZ + 0.001D);
+		BlockPos positionB = new BlockPos(box.maxX - 0.001D, box.maxY - 0.001D, box.maxZ - 0.001D);
+		BlockPos.Mutable mutable = new BlockPos.Mutable();
+		if (this.world.isRegionLoaded(positionA, positionB)) {
+			for (int i = positionA.getX(); i <= positionB.getX(); ++i) {
+				for (int j = positionA.getY(); j <= positionB.getY(); ++j) {
+					for (int k = positionA.getZ(); k <= positionB.getZ(); ++k) {
+						mutable.set(i, j, k);
+						BlockState blockState = this.world.getBlockState(mutable);
 
-                        try {
-                            blockState.onEntityCollision(this.world, mutable, this);
+						try {
+							blockState.onEntityCollision(this.world, mutable, this);
 
-                            if (blockState.getBlock() instanceof AbstractGlassBlock) {
-                                this.world.breakBlock(mutable, true);
-                            }
-                        } catch (Throwable oops) {
-                            CrashReport crashReport = CrashReport.create(oops, "Colliding entity with block");
-                            CrashReportSection crashReportSection = crashReport.addElement("Block being collided with");
-                            CrashReportSection.addBlockInfo(crashReportSection, mutable, blockState);
-                            throw new CrashException(crashReport);
-                        }
-                    }
-                }
-            }
-        }
-    }
+							if (blockState.getBlock() instanceof AbstractGlassBlock) {
+								this.world.breakBlock(mutable, true);
+							}
+						} catch (Throwable oops) {
+							CrashReport crashReport = CrashReport.create(oops, "Colliding entity with block");
+							CrashReportSection crashReportSection = crashReport.addElement("Block being collided with");
+							CrashReportSection.addBlockInfo(crashReportSection, mutable, blockState);
+							throw new CrashException(crashReport);
+						}
+					}
+				}
+			}
+		}
+	}
 
-    @Override
-    protected void onBlockCollision(BlockState state) {
-        Block block = state.getBlock();
+	@Override
+	protected void onBlockCollision(BlockState state) {
+		Block block = state.getBlock();
 
-        if (block instanceof AbstractGlassBlock) {
-            this.world.setBlockState(this.getBlockPos(), Blocks.AIR.getDefaultState());
-        }
-    }
+		if (block instanceof AbstractGlassBlock) {
+			this.world.setBlockState(this.getBlockPos(), Blocks.AIR.getDefaultState());
+		}
+	}
 
-    @Override
-    protected ItemStack asItemStack() {
-        return ItemStack.EMPTY;
-    }
+	@Override
+	protected ItemStack asItemStack() {
+		return ItemStack.EMPTY;
+	}
 
-    public Identifier getTexture() {
-        return texture;
-    }
+	public Identifier getTexture() {
+		return texture;
+	}
 
-    public void setTexture(Identifier texture) {
-        this.texture = texture;
-    }
+	public void setTexture(Identifier texture) {
+		this.texture = texture;
+	}
 }

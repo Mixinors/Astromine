@@ -6,11 +6,11 @@ import org.spongepowered.asm.mixin.Overwrite;
 
 @Mixin(ThreadExecutor.class)
 public class ThreadExecutorMixin {
-    /**
-     * @author HalfOf2
-     * @reason Testing
-     */
-    @Overwrite
-    public void waitForTasks() {
-    }
+	/**
+	 * @author HalfOf2
+	 * @reason Testing
+	 */
+	@Overwrite
+	public void waitForTasks() {
+	}
 }

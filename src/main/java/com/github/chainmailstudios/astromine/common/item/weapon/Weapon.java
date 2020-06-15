@@ -6,41 +6,41 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 
 public interface Weapon {
-    float getZoom();
+	float getZoom();
 
-    float getDamage();
+	float getDamage();
 
-    float getDistance();
+	float getDistance();
 
-    int getPunch();
+	int getPunch();
 
-    float getRecoil();
+	float getRecoil();
 
-    long getShotInterval();
+	long getShotInterval();
 
-    long getReloadInterval();
+	long getReloadInterval();
 
-    long getLastShot();
+	long getLastShot();
 
-    void setLastShot(long lastShot);
+	void setLastShot(long lastShot);
 
-    long getLastReload();
+	long getLastReload();
 
-    void setLastReload(long lastReload);
+	void setLastReload(long lastReload);
 
-    default boolean isReloading(long currentTime) {
-        return currentTime - getLastReload() < getReloadInterval();
-    }
+	default boolean isReloading(long currentTime) {
+		return currentTime - getLastReload() < getReloadInterval();
+	}
 
-    default boolean isWaiting(long currentTime) {
-        return currentTime - getLastShot() < getShotInterval();
-    }
+	default boolean isWaiting(long currentTime) {
+		return currentTime - getLastShot() < getShotInterval();
+	}
 
-    SoundEvent getShotSound();
+	SoundEvent getShotSound();
 
-    Vector3f getTranslation();
+	Vector3f getTranslation();
 
-    Item getAmmo();
+	Item getAmmo();
 
-    Identifier getBulletTexture();
+	Identifier getBulletTexture();
 }

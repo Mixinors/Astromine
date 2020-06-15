@@ -7,9 +7,9 @@ import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 
 public class AstromineFeatures {
-    public static Feature<DefaultFeatureConfig> ASTEROIDS_FEATURE;
+	public static Feature<DefaultFeatureConfig> ASTEROIDS_FEATURE;
 
-    public static void initialize() {
-        ASTEROIDS_FEATURE = Registry.register(Registry.FEATURE, AstromineCommon.identifier("asteroids_feature"), new AsteroidFeature(DefaultFeatureConfig.CODEC));
-    }
+	public static void initialize() {
+		ASTEROIDS_FEATURE = Registry.register(Registry.FEATURE, AstromineCommon.identifier("asteroids_feature"), new AsteroidFeature(DefaultFeatureConfig.CODEC));
+	}
 }

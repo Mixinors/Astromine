@@ -19,42 +19,42 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
-    @Shadow
-    public Screen currentScreen;
+	@Shadow
+	public Screen currentScreen;
 
-    @Shadow
-    @Final
-    public GameOptions options;
+	@Shadow
+	@Final
+	public GameOptions options;
 
-    @Shadow
-    public ClientPlayerEntity player;
+	@Shadow
+	public ClientPlayerEntity player;
 
-    @Shadow
-    public ClientWorld world;
+	@Shadow
+	public ClientWorld world;
 
-    @Shadow
-    protected int attackCooldown;
+	@Shadow
+	protected int attackCooldown;
 
-    @Inject(at = @At("HEAD"), method = "handleInputEvents()V", cancellable = true)
-    void onHandleInputEvents(CallbackInfo callbackInformation) {
-        if (this.currentScreen == null && this.options.keyAttack.isPressed()) {
-            if (player.getMainHandStack().getItem() instanceof BaseWeapon) {
-                BaseWeapon weapon = (BaseWeapon) player.getMainHandStack().getItem();
+	@Inject(at = @At("HEAD"), method = "handleInputEvents()V", cancellable = true)
+	void onHandleInputEvents(CallbackInfo callbackInformation) {
+		if (this.currentScreen == null && this.options.keyAttack.isPressed()) {
+			if (player.getMainHandStack().getItem() instanceof BaseWeapon) {
+				BaseWeapon weapon = (BaseWeapon) player.getMainHandStack().getItem();
 
-                long currentShot = System.currentTimeMillis();
+				long currentShot = System.currentTimeMillis();
 
-                if (!weapon.isWaiting(currentShot)) {
-                    weapon.tryShoot(world, player);
+				if (!weapon.isWaiting(currentShot)) {
+					weapon.tryShoot(world, player);
 
-                    ClientSidePacketRegistry.INSTANCE.sendToServer(AstromineServerPackets.SHOT_PACKET, new PacketByteBuf(Unpooled.buffer()));
+					ClientSidePacketRegistry.INSTANCE.sendToServer(AstromineServerPackets.SHOT_PACKET, new PacketByteBuf(Unpooled.buffer()));
 
-                    weapon.setLastShot(currentShot);
-                }
+					weapon.setLastShot(currentShot);
+				}
 
-                attackCooldown = 64;
+				attackCooldown = 64;
 
-                callbackInformation.cancel();
-            }
-        }
-    }
+				callbackInformation.cancel();
+			}
+		}
+	}
 }

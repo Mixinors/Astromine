@@ -7,12 +7,12 @@ import net.minecraft.client.render.entity.ProjectileEntityRenderer;
 import net.minecraft.util.Identifier;
 
 public class BulletEntityRenderer extends ProjectileEntityRenderer<BulletEntity> {
-    public BulletEntityRenderer(final EntityRenderDispatcher dispatcher, final EntityRendererRegistry.Context context) {
-        super(dispatcher);
-    }
+	public BulletEntityRenderer(final EntityRenderDispatcher dispatcher, final EntityRendererRegistry.Context context) {
+		super(dispatcher);
+	}
 
-    @Override
-    public Identifier getTexture(BulletEntity entity) {
-        return entity.getTexture();
-    }
+	@Override
+	public Identifier getTexture(BulletEntity entity) {
+		return entity.getTexture();
+	}
 }

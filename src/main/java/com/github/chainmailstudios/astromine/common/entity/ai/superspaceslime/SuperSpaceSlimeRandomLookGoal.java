@@ -8,33 +8,33 @@ import java.util.EnumSet;
 
 public class SuperSpaceSlimeRandomLookGoal extends Goal {
 
-    private final SuperSpaceSlimeEntity slime;
-    private float targetYaw;
-    private int timer;
+	private final SuperSpaceSlimeEntity slime;
+	private float targetYaw;
+	private int timer;
 
-    public SuperSpaceSlimeRandomLookGoal(SuperSpaceSlimeEntity slime) {
-        this.slime = slime;
-        this.setControls(EnumSet.of(Goal.Control.LOOK));
-    }
+	public SuperSpaceSlimeRandomLookGoal(SuperSpaceSlimeEntity slime) {
+		this.slime = slime;
+		this.setControls(EnumSet.of(Goal.Control.LOOK));
+	}
 
-    @Override
-    public boolean canStart() {
-        boolean validTarget = this.slime.getTarget() == null;
-        boolean validState = this.slime.isOnGround() || this.slime.isTouchingWater() || this.slime.isInLava() || this.slime.hasStatusEffect(StatusEffects.LEVITATION);
-        boolean hasSlimeMoveControls = this.slime.getMoveControl() instanceof SuperSpaceSlimeMoveControl;
+	@Override
+	public boolean canStart() {
+		boolean validTarget = this.slime.getTarget() == null;
+		boolean validState = this.slime.isOnGround() || this.slime.isTouchingWater() || this.slime.isInLava() || this.slime.hasStatusEffect(StatusEffects.LEVITATION);
+		boolean hasSlimeMoveControls = this.slime.getMoveControl() instanceof SuperSpaceSlimeMoveControl;
 
-        return validTarget && validState && hasSlimeMoveControls;
-    }
+		return validTarget && validState && hasSlimeMoveControls;
+	}
 
-    @Override
-    public void tick() {
-        this.timer = this.timer - 1;
+	@Override
+	public void tick() {
+		this.timer = this.timer - 1;
 
-        if (this.timer <= 0) {
-            this.timer = 40 + this.slime.getRandom().nextInt(60);
-            this.targetYaw = (float) this.slime.getRandom().nextInt(360);
-        }
+		if (this.timer <= 0) {
+			this.timer = 40 + this.slime.getRandom().nextInt(60);
+			this.targetYaw = (float) this.slime.getRandom().nextInt(360);
+		}
 
-        ((SuperSpaceSlimeMoveControl) this.slime.getMoveControl()).look(this.targetYaw, false);
-    }
+		((SuperSpaceSlimeMoveControl) this.slime.getMoveControl()).look(this.targetYaw, false);
+	}
 }

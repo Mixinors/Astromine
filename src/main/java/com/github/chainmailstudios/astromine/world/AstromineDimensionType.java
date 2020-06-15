@@ -12,15 +12,15 @@ import net.minecraft.world.dimension.DimensionType;
 import java.util.OptionalLong;
 
 public class AstromineDimensionType extends DimensionType {
-    public static final Identifier ID = AstromineCommon.identifier("astromine");
-    public static final Identifier KEY_ID = AstromineCommon.identifier("astromine_type");
+	public static final Identifier ID = AstromineCommon.identifier("astromine");
+	public static final Identifier KEY_ID = AstromineCommon.identifier("astromine_type");
 
-    public static final RegistryKey<DimensionOptions> OPTIONS = RegistryKey.of(Registry.DIMENSION_OPTIONS, ID);
-    public static final RegistryKey<DimensionType> REGISTRY_KEY = RegistryKey.of(Registry.DIMENSION_TYPE_KEY, ID);
+	public static final RegistryKey<DimensionOptions> OPTIONS = RegistryKey.of(Registry.DIMENSION_OPTIONS, ID);
+	public static final RegistryKey<DimensionType> REGISTRY_KEY = RegistryKey.of(Registry.DIMENSION_TYPE_KEY, ID);
 
-    public static final DimensionType INSTANCE = new AstromineDimensionType();
+	public static final DimensionType INSTANCE = new AstromineDimensionType();
 
-    protected AstromineDimensionType() {
-        super(OptionalLong.of(15000L), false, false, false, false, false, false, false, false, true, false, 256, VoronoiBiomeAccessType.INSTANCE, BlockTags.INFINIBURN_OVERWORLD.getId(), 0.025f);
-    }
+	protected AstromineDimensionType() {
+		super(OptionalLong.of(15000L), false, false, false, false, false, false, false, false, true, false, 256, VoronoiBiomeAccessType.INSTANCE, BlockTags.INFINIBURN_OVERWORLD.getId(), 0.025f);
+	}
 }
