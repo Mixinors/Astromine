@@ -19,7 +19,7 @@ public class AstromineOreBlock extends OreBlock {
 			return MathHelper.nextInt(random, 4, 8);
 		} else if(this == AstromineBlocks.GALAXIUM_ORE) {
 			return MathHelper.nextInt(random, 5, 9);
-		} else if(this == AstromineBlocks.METITE_ORE) {
+		} else if(this == AstromineBlocks.ASTEROID_METITE_ORE) {
 			return MathHelper.nextInt(random, 3, 7);
 		} else return 0;
 	}
