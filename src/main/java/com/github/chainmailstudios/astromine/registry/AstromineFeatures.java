@@ -4,6 +4,7 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.world.feature.MeteorFeature;
 import com.github.chainmailstudios.astromine.common.world.feature.MeteorGenerator;
 import com.github.chainmailstudios.astromine.world.feature.AsteroidFeature;
+import com.github.chainmailstudios.astromine.world.feature.TestAsteroidFeature;
 import net.earthcomputer.libstructure.LibStructure;
 import net.minecraft.structure.StructurePieceType;
 import net.minecraft.util.registry.Registry;
@@ -20,7 +21,7 @@ public class AstromineFeatures {
 	public static final Feature<DefaultFeatureConfig> ASTEROIDS = Registry.register(
 			Registry.FEATURE,
 			AstromineCommon.identifier("asteroids_feature"),
-			new AsteroidFeature(DefaultFeatureConfig.CODEC)
+			new TestAsteroidFeature(DefaultFeatureConfig.CODEC)
 	);
 
 	public static final StructurePieceType METEOR = register(MeteorGenerator::new, "meteor");

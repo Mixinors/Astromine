@@ -5,6 +5,7 @@ import com.github.chainmailstudios.astromine.common.item.*;
 import com.github.chainmailstudios.astromine.common.item.AstromineToolMaterials;
 import com.github.chainmailstudios.astromine.common.item.weapon.variant.Weaponry;
 import com.github.chainmailstudios.astromine.common.item.weapon.variant.ammo.Ammunition;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
@@ -119,7 +120,9 @@ public class AstromineItems {
 	public static final Item YEAST = register("yeast", new Item(new Item.Settings()));
 
 	public static void initialize() {
-		// Unused.
+		if(FabricLoader.getInstance().isDevelopmentEnvironment()) {
+			Registry.register(Registry.ITEM, AstromineCommon.identifier("meteor_spawner"), new MeteorSpawnerDevItem(new Item.Settings()));
+		}
 	}
 
 	/**

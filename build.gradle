@@ -23,10 +23,6 @@ repositories {
         name = "Fabric"
         url = "https://maven.fabricmc.net/"
     }
-    maven {
-        name = 'Earthcomputer Mods'
-        url = 'https://dl.bintray.com/earthcomputer/mods'
-    }
 }
 
 minecraft {
@@ -74,8 +70,8 @@ dependencies {
         exclude (module: "fabric-loader")
     }
     // lib structure
-    modImplementation 'net.earthcomputer:libstructure:1.0' // Or the latest version
-    include 'net.earthcomputer:libstructure:1.0'
+    modImplementation 'com.github.Draylar:LibStructure:master-SNAPSHOT' // Or the latest version
+    include 'com.github.Draylar:LibStructure:master-SNAPSHOTiiii'
 }
 
 processResources {
