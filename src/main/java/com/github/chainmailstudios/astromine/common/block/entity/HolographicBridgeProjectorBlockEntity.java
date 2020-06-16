@@ -102,34 +102,24 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 		segments = (ArrayList<Vector3f>) LineUtilities.getBezierSegments(
 				new Vector3f(bOP.getX(), bOP.getY() + 1, bOP.getZ()),
 				new Vector3f(nCP.getX(), nCP.getY() + 1, nCP.getZ()),
-				new Vector3f(Math.max(bCP.getX(), nCP.getX()), (bOP.getY() + nCP.getY()) / 2f + 1, Math.max(bCP.getZ(), bCP.getZ())), distance * 2);
+				new Vector3f(nCP.getX(), (bOP.getY() + nCP.getY()) / 2f, bCP.getZ()), distance * 16);
 
 		members = new ArrayList<>();
 
-		Vector3f o = segments.get(0);
-
-		BlockPos oP = getPos();
-
-		float oF = 0;
-
 		for (Vector3f v : segments) {
-			if ((bOP.getX() != v.getX() || bOP.getZ() != v.getZ()) && (bCP.getX() != v.getX() || bCP.getZ() != v.getZ())) {
-				BlockPos nP = new BlockPos(v.getX(), Math.min(Math.max(bOP.getY(), bCP.getY()), v.getY()), v.getZ());
+			BlockPos nP = new BlockPos(v.getX(), v.getY(), v.getZ());
 
-				float f = v.getY() - o.getY();
+			if ((nP.getX() != bCP.getX() && nP.getZ() != bCP.getZ()) || (nP.getX() != bOP.getX() && nP.getZ() != bOP.getZ())) {
+				world.setBlockState(nP, AstromineBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
 
-				if (!nP.equals(oP)) {
-					oP = nP;
-
-					HolographicBridgeManager.add(world, direction, nP, (int) (16f * f), (int) (16 * oF));
-
-					oF = f;
-
-					world.setBlockState(nP, AstromineBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
-
-					members.add(nP);
-				}
+				members.add(nP);
 			}
+
+			HolographicBridgeManager.add(world, nP, new Vec3i(
+					(v.getX() - (int) v.getX()) * 16f,
+					(v.getY() - (int) v.getY()) * 16f,
+					(v.getZ() - (int) v.getZ()) * 16f
+			));
 		}
 	}
 
