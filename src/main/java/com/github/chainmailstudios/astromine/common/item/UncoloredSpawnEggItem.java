@@ -11,6 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.ActionResult;
@@ -24,18 +25,22 @@ import net.minecraft.world.MobSpawnerLogic;
 import net.minecraft.world.RayTraceContext;
 import net.minecraft.world.World;
 
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Maps;
+import java.util.Map;
 import java.util.Objects;
 
 /**
  * Provides an alternative to {@link net.minecraft.item.SpawnEggItem} which doesn't force hue/color through {@link net.minecraft.client.color.item.ItemColors}.
  */
 public class UncoloredSpawnEggItem extends Item {
-
+	private static final Map<EntityType<?>, UncoloredSpawnEggItem> SPAWN_EGGS = Maps.newIdentityHashMap();
 	private final EntityType<?> type;
 
 	public UncoloredSpawnEggItem(EntityType<?> type, Item.Settings settings) {
 		super(settings);
 		this.type = type;
+		SPAWN_EGGS.put(type, this);
 	}
 
 	@Override
@@ -130,5 +135,9 @@ public class UncoloredSpawnEggItem extends Item {
 		}
 
 		return this.type;
+	}
+
+	public static Iterable<UncoloredSpawnEggItem> getAll() {
+		return Iterables.unmodifiableIterable(SPAWN_EGGS.values());
 	}
 }
