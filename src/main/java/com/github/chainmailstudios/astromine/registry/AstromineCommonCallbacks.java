@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.common.gas.GasManager;
+import com.github.chainmailstudios.astromine.common.gas.AtmosphericManager;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.event.server.ServerTickCallback;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
@@ -15,7 +15,7 @@ public class AstromineCommonCallbacks {
 		ServerTickCallback.EVENT.register((server) -> {
 			if (System.currentTimeMillis() - lastSimulation >= 250) {
 				for (ServerWorld world : server.getWorlds()) {
-					GasManager.simulate(world);
+					AtmosphericManager.simulate(world);
 				}
 
 				lastSimulation = System.currentTimeMillis();
@@ -25,7 +25,7 @@ public class AstromineCommonCallbacks {
 		ServerTickCallback.EVENT.register((server) -> {
 			for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
 				PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
-				buffer.writeString(GasManager.get(player.world, player.getBlockPos()).toInterfaceString());
+				buffer.writeString(AtmosphericManager.get(player.world, player.getBlockPos()).toInterfaceString());
 				ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, AstromineClientPackets.PRESSURE_UPDATE, buffer);
 			}
 		});

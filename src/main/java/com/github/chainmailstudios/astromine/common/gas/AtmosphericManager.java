@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.common.gas;
 
-import com.github.chainmailstudios.astromine.common.fluid.logic.Volume;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.google.common.collect.Lists;
 import net.minecraft.block.AirBlock;
@@ -11,7 +11,6 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.WorldView;
 
 import java.util.Collections;
 import java.util.List;
@@ -20,15 +19,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class GasManager {
+public class AtmosphericManager {
 	private static final ExecutorService pool = Executors.newCachedThreadPool();
 
-	private static final Map<BlockView, Map<BlockPos, Volume>> LEVELS = new ConcurrentHashMap<>();
+	private static final Map<BlockView, Map<BlockPos, FluidVolume>> LEVELS = new ConcurrentHashMap<>();
 
-	public static void add(BlockView world, BlockPos position, Volume volume) {
+	public static void add(BlockView world, BlockPos position, FluidVolume fluidVolume) {
 		LEVELS.computeIfAbsent(world, (key) -> new ConcurrentHashMap<>());
 
-		LEVELS.get(world).put(position, volume);
+		LEVELS.get(world).put(position, fluidVolume);
 	}
 
 	public static void remove(BlockView world, BlockPos position) {
@@ -37,29 +36,26 @@ public class GasManager {
 		LEVELS.get(world).remove(position);
 	}
 
-	public static Volume get(BlockView world, BlockPos position) {
+	public static FluidVolume get(BlockView world, BlockPos position) {
 		LEVELS.computeIfAbsent(world, (key) -> new ConcurrentHashMap<>());
 
-		return LEVELS.get(world).getOrDefault(position, Volume.EMPTY);
+		return LEVELS.get(world).getOrDefault(position, FluidVolume.EMPTY);
 	}
 
 	public static void simulate(BlockView world) {
 		pool.execute(() -> {
 			List<Direction> directions = Lists.newArrayList(Direction.values());
 
-			Map<BlockPos, Volume> map = LEVELS.get(world);
+			Map<BlockPos, FluidVolume> map = LEVELS.get(world);
 
 			if (map == null) return;
 
-			final int maxAdditions = 16;
-			int additions = 0;
-
-			for (Map.Entry<BlockPos, Volume> pair : map.entrySet()) {
+			for (Map.Entry<BlockPos, FluidVolume> pair : map.entrySet()) {
 				Collections.shuffle(directions);
 
 				BlockPos position = pair.getKey();
 
-				Volume volume = get(world, position);
+				FluidVolume fluidVolume = get(world, position);
 
 				for (Direction direction : directions) {
 					BlockPos offsetPosition = position.offset(direction);
@@ -72,22 +68,22 @@ public class GasManager {
 					}
 
 					if (offsetBlock instanceof AirBlock) {
-						Volume offsetVolume = get(world, offsetPosition);
+						FluidVolume offsetFluidVolume = get(world, offsetPosition);
 
-						if (offsetVolume.isEmpty() && volume.isEmpty()) {
-							GasManager.remove(world, position);
-							GasManager.remove(world, offsetPosition);
+						if (offsetFluidVolume.isEmpty() && fluidVolume.isEmpty()) {
+							AtmosphericManager.remove(world, position);
+							AtmosphericManager.remove(world, offsetPosition);
 
 							break;
 						}
 
-						if (offsetVolume == Volume.EMPTY) {
-							add(world, offsetPosition, new Volume(Fluids.WATER, Fraction.EMPTY));
-						} else if (!volume.isFull()) {
-							volume.pull(offsetVolume, Fraction.BOTTLE).commit();
+						if (offsetFluidVolume == FluidVolume.EMPTY) {
+							add(world, offsetPosition, new FluidVolume(Fluids.WATER, Fraction.EMPTY));
+						} else if (!fluidVolume.isFull()) {
+							fluidVolume.pull(offsetFluidVolume, Fraction.BOTTLE);
 						}
 					} else {
-						GasManager.remove(world, offsetPosition);
+						AtmosphericManager.remove(world, offsetPosition);
 					}
 				}
 			}

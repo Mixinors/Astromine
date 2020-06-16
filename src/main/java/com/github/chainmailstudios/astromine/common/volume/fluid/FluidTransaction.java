@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.common.fluid.logic;
+package com.github.chainmailstudios.astromine.common.volume.fluid;
 
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 
@@ -20,21 +20,21 @@ import java.util.Stack;
  * the transaction may be reverted,
  * restoring the original state.
  */
-public class Transaction {
-	public static final Transaction EMPTY = new Transaction(null, null, null, null);
-	private final Volume target;
-	private final Volume source;
+public class FluidTransaction {
+	public static final FluidTransaction EMPTY = new FluidTransaction(null, null, null, null);
+	private final FluidVolume target;
+	private final FluidVolume source;
 	private final Fraction targetRollback;
 	private final Fraction sourceRollback;
 	private final Fraction targetOperator;
 	private final Fraction sourceOperator;
 	private boolean finished = false;
-	private Stack<Transaction> stack = new Stack<>();
+	private Stack<FluidTransaction> stack = new Stack<>();
 
 	/**
 	 * Instantiates a Transaction based on two Volumes and two Fractions.
 	 */
-	public Transaction(Volume target, Volume source, Fraction targetOperator, Fraction sourceOperator) {
+	public FluidTransaction(FluidVolume target, FluidVolume source, Fraction targetOperator, Fraction sourceOperator) {
 		this.target = target;
 		this.source = source;
 
@@ -45,8 +45,8 @@ public class Transaction {
 		this.sourceOperator = sourceOperator;
 	}
 
-	public Transaction child(Volume target, Volume source, Fraction targetOperator, Fraction sourceOperator) {
-		Transaction child = new Transaction(target, source, targetOperator, sourceOperator);
+	public FluidTransaction child(FluidVolume target, FluidVolume source, Fraction targetOperator, Fraction sourceOperator) {
+		FluidTransaction child = new FluidTransaction(target, source, targetOperator, sourceOperator);
 		this.stack.add(child);
 		child.stack = this.stack;
 		return child;

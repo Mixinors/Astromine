@@ -1,30 +1,20 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.fluid.collection.IndexedVolumeCollection;
-import com.github.chainmailstudios.astromine.common.fluid.collection.SidedVolumeCollection;
-import com.github.chainmailstudios.astromine.common.fluid.collection.SimpleSidedVolumeCollection;
-import com.github.chainmailstudios.astromine.common.fluid.logic.Volume;
+import com.github.chainmailstudios.astromine.common.gas.AtmosphericManager;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.gas.GasManager;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.FacingBlock;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import org.apache.logging.log4j.Level;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class OxygenVentBlockEntity extends BlockEntity implements Tickable, SidedVolumeCollection {
-	private long counter = 0;
+public class OxygenVentBlockEntity extends BaseBiBlockEntity implements Tickable  {
 	private boolean locked = false;
-
-	private SimpleSidedVolumeCollection sidedVolumeCollection = new SimpleSidedVolumeCollection();
 
 	public OxygenVentBlockEntity() {
 		super(AstromineBlockEntityTypes.ELECTROLYZER);
@@ -32,33 +22,25 @@ public class OxygenVentBlockEntity extends BlockEntity implements Tickable, Side
 
 	@Override
 	public void tick() {
-		if (System.currentTimeMillis() - counter >= 50 && !locked) {
-			long start = System.currentTimeMillis();
+		if (locked) return;
 
-			BlockPos position = getPos();
+		long start = System.currentTimeMillis();
 
-			Direction direction = world.getBlockState(position).get(FacingBlock.FACING);
+		BlockPos position = getPos();
 
-			BlockPos output = position.offset(direction);
+		Direction direction = world.getBlockState(position).get(FacingBlock.FACING);
 
-			if (world.getBlockState(output).getBlock() instanceof AirBlock) {
-				GasManager.add(world, output, new Volume(Fluids.WATER, Fraction.BUCKET));
-			}
+		BlockPos output = position.offset(direction);
 
-			counter = System.currentTimeMillis();
-
-			long end = System.currentTimeMillis();
-
-			if (start - end > 50) {
-				locked = true;
-
-				AstromineCommon.LOGGER.log(Level.WARN, "Electrolyzer tick took over 50ms; suspending its activity!");
-			}
+		if (world.getBlockState(output).getBlock() instanceof AirBlock) {
+			AtmosphericManager.add(world, output, new FluidVolume(Fluids.WATER, Fraction.BUCKET));
 		}
-	}
 
-	@Override
-	public Map<Direction, IndexedVolumeCollection> getCollections() {
-		return sidedVolumeCollection.getCollections();
+		long end = System.currentTimeMillis();
+
+		if (end - start > 50) {
+			locked = true;
+			AstromineCommon.LOGGER.log(Level.WARN, "Oxygen Vent tick took over 50ms; suspending its activity!");
+		}
 	}
 }
