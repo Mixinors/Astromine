@@ -2,7 +2,7 @@ package com.github.chainmailstudios.astromine.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.bridge.HolographicBridgeManager;
 import com.github.chainmailstudios.astromine.common.utilities.LineUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntities;
+import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineSounds;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
@@ -42,7 +42,7 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 	public long last = 0;
 
 	public HolographicBridgeProjectorBlockEntity() {
-		super(AstromineBlockEntities.HOLOGRAPHIC_BRIDGE);
+		super(AstromineBlockEntityTypes.HOLOGRAPHIC_BRIDGE);
 	}
 
 	public HolographicBridgeProjectorBlockEntity getChild() {

@@ -1,10 +1,7 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.AstromineOreBlock;
-import com.github.chainmailstudios.astromine.common.block.HolographicBridgeInvisibleBlock;
-import com.github.chainmailstudios.astromine.common.block.HolographicBridgeProjectorBlock;
-import com.github.chainmailstudios.astromine.common.block.NuclearWeaponBlock;
+import com.github.chainmailstudios.astromine.common.block.*;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Block;
@@ -20,6 +17,8 @@ import net.minecraft.util.registry.Registry;
 public class AstromineBlocks {
 	public static final Block HOLOGRAPHIC_BRIDGE_PROJECTOR = register("holographic_bridge_projector", new HolographicBridgeProjectorBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(4, 16).sounds(BlockSoundGroup.METAL)), AstromineItems.BASIC_SETTINGS);
 	public static final Block HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK = register("holographic_bridge_invisible", new HolographicBridgeInvisibleBlock(FabricBlockSettings.of(Material.AIR).dropsNothing().strength(-1.0F, 3600000.8F).nonOpaque().lightLevel(15).allowsSpawning((a, b, c, d) -> false)));
+
+	public static final Block ELECTROLZYZER = register("electrolyzer", new ElectrolyzerBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(4, 16).sounds(BlockSoundGroup.METAL)), AstromineItems.BASIC_SETTINGS);
 
 	public static final Block NUCLEAR_WEAPON = register("nuclear_weapon", new NuclearWeaponBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(80, 1300).sounds(BlockSoundGroup.STONE)), AstromineItems.BASIC_SETTINGS);
 

@@ -23,6 +23,8 @@ public class Volume {
 
 	private Fraction size = Fraction.BUCKET;
 
+	public static final Volume EMPTY = new Volume();
+
 	/**
 	 * Instantiates a Volume with an empty fraction and fluid.
 	 */

@@ -149,7 +149,7 @@ public class Fraction extends Number implements Comparable<Fraction> {
 		long denominator = lowestCommonDenominator(this.denominator, fraction.denominator);
 
 		try {
-			return LongMath.checkedMultiply(this.numerator, (LongMath.divide(this.denominator, denominator, RoundingMode.DOWN))) > LongMath.checkedMultiply(fraction.numerator, LongMath.divide(fraction.denominator, denominator, RoundingMode.DOWN));
+			return LongMath.checkedMultiply(this.numerator, (LongMath.divide(denominator, this.denominator, RoundingMode.DOWN))) > LongMath.checkedMultiply(fraction.numerator, LongMath.divide(denominator, fraction.denominator, RoundingMode.DOWN));
 		} catch (ArithmeticException exception) {
 			throw new UnsupportedOperationException("Attempted to compare fractions whose lowest common denominator would cause an overflow!");
 		}

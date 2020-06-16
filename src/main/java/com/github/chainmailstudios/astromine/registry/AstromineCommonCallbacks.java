@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.registry;
 
-public class AstromineCallbacks {
+public class AstromineCommonCallbacks {
 	public static void initialize() {
 		// Unused.
 	}
