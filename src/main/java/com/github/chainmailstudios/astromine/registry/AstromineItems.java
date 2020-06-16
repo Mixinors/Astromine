@@ -4,10 +4,20 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.item.*;
 import com.github.chainmailstudios.astromine.common.item.weapon.variant.Weaponry;
 import com.github.chainmailstudios.astromine.common.item.weapon.variant.ammo.Ammunition;
+
+import net.minecraft.block.DispenserBlock;
+import net.minecraft.block.dispenser.ItemDispenserBehavior;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPointer;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
+
+import java.util.Iterator;
 
 public class AstromineItems {
 	public static final Item.Settings BASIC_SETTINGS = new Item.Settings().group(AstromineItemGroups.ASTROMINE);
@@ -118,7 +128,21 @@ public class AstromineItems {
 	public static final Item YEAST = register("yeast", new Item(new Item.Settings()));
 
 	public static void initialize() {
-		// Unused.
+		Iterator var1 = UncoloredSpawnEggItem.getAll().iterator();
+
+		while(var1.hasNext()) {
+			UncoloredSpawnEggItem spawnEggItem = (UncoloredSpawnEggItem)var1.next();
+			DispenserBlock.registerBehavior(spawnEggItem, new ItemDispenserBehavior() {
+				public ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
+					Direction direction = pointer.getBlockState().get(DispenserBlock.FACING);
+					EntityType<?> entityType = ((UncoloredSpawnEggItem)stack.getItem()).getEntityType(stack.getTag());
+					entityType.spawnFromItemStack(pointer.getWorld(), stack, null, pointer.getBlockPos().offset(direction), SpawnReason.DISPENSER, direction != Direction.UP, false);
+					stack.decrement(1);
+					return stack;
+				}
+			});
+		}
+
 	}
 
 	/**

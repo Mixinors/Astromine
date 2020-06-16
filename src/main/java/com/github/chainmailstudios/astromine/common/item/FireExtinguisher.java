@@ -4,6 +4,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
 import com.github.chainmailstudios.astromine.registry.AstromineSounds;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.CampfireBlock;
 import net.minecraft.block.FireBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -56,6 +57,8 @@ public class FireExtinguisher extends Item {
 
 			state.getEntries().keySet().stream().filter(property -> property == FireBlock.EAST || property == FireBlock.WEST || property == FireBlock.NORTH || property == FireBlock.SOUTH || property == FireBlock.UP).forEach(property ->
 					world.setBlockState(position, Blocks.AIR.getDefaultState()));
+			state.getEntries().keySet().stream().filter(property -> property == CampfireBlock.LIT).forEach(property ->
+					world.setBlockState(position, world.getBlockState(position).with(CampfireBlock.LIT, false)));
 		});
 
 		world.getEntities(null, new Box(result.getBlockPos()).expand(1)).forEach(entity -> {
