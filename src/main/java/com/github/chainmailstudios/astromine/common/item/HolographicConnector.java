@@ -25,6 +25,7 @@ public class HolographicConnector extends Item {
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
 		World world = context.getWorld();
+
 		BlockPos position = context.getBlockPos();
 
 		if (world.getBlockState(position).getBlock() instanceof HolographicBridgeProjectorBlock) {
@@ -44,8 +45,7 @@ public class HolographicConnector extends Item {
 
 				if (nP.getX() > oP.getX()) {
 					d = Direction.EAST;
-				}
-				if (nP.getX() < oP.getX()) {
+				} else if (nP.getX() < oP.getX()) {
 					d = Direction.WEST;
 				} else if (nP.getZ() > oP.getZ()) {
 					d = Direction.SOUTH;
@@ -59,13 +59,12 @@ public class HolographicConnector extends Item {
 					entity = temporary;
 				}
 
-				//if (parent.getPos().getX() != entity.getPos().getX() && parent.getPos().getZ() != entity.getPos().getZ()) {
-				//	CACHE.put(world, null);
-				//	context.getPlayer().sendMessage(new TranslatableText("text.astromine.message.holographic_connection_failed", parent.getPos().toShortString(), entity.getPos().toShortString()).formatted(Formatting.RED), true);
-				//	world.playSound(context.getPlayer(), context.getBlockPos(), AstromineSounds.HOLOGRAPHIC_CONNECTOR_CLICK, SoundCategory.PLAYERS, 0.5f, 0.33f);
-				//	return ActionResult.FAIL;
-				//}
-				if (parent.getCachedState().get(HorizontalFacingBlock.FACING).getOpposite() != entity.getCachedState().get(HorizontalFacingBlock.FACING)) {
+				if (parent.getPos().getX() != entity.getPos().getX() && parent.getPos().getZ() != entity.getPos().getZ()) {
+					CACHE.put(world, null);
+					context.getPlayer().sendMessage(new TranslatableText("text.astromine.message.holographic_connection_failed", parent.getPos().toShortString(), entity.getPos().toShortString()).formatted(Formatting.RED), true);
+					world.playSound(context.getPlayer(), context.getBlockPos(), AstromineSounds.HOLOGRAPHIC_CONNECTOR_CLICK, SoundCategory.PLAYERS, 0.5f, 0.33f);
+					return ActionResult.FAIL;
+				} else if (parent.getCachedState().get(HorizontalFacingBlock.FACING).getOpposite() != entity.getCachedState().get(HorizontalFacingBlock.FACING)) {
 					CACHE.put(world, null);
 					context.getPlayer().sendMessage(new TranslatableText("text.astromine.message.holographic_connection_failed", parent.getPos().toShortString(), entity.getPos().toShortString()).formatted(Formatting.RED), true);
 					world.playSound(context.getPlayer(), context.getBlockPos(), AstromineSounds.HOLOGRAPHIC_CONNECTOR_CLICK, SoundCategory.PLAYERS, 0.5f, 0.33f);

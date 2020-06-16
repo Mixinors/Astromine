@@ -109,15 +109,17 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 		for (Vector3f v : segments) {
 			BlockPos nP = new BlockPos(v.getX(), v.getY(), v.getZ());
 
-			world.setBlockState(nP, AstromineBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
+			if ((nP.getX() != bCP.getX() && nP.getZ() != bCP.getZ()) || (nP.getX() != bOP.getX() && nP.getZ() != bOP.getZ())) {
+				world.setBlockState(nP, AstromineBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
 
-			HolographicBridgeManager.add(world, direction, nP, new Vec3i(
+				members.add(nP);
+			}
+
+			HolographicBridgeManager.add(world, nP, new Vec3i(
 					(v.getX() - (int) v.getX()) * 16f,
 					(v.getY() - (int) v.getY()) * 16f,
 					(v.getZ() - (int) v.getZ()) * 16f
 			));
-
-			members.add(nP);
 		}
 	}
 

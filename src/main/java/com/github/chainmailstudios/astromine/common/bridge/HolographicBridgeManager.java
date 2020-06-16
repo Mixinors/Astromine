@@ -19,14 +19,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public class HolographicBridgeManager {
-	public static final Object2ObjectArrayMap<BlockView, Object2ObjectArrayMap<BlockPos, Pair<Direction, Set<Vec3i>>>> LEVELS = new Object2ObjectArrayMap<>();
+	public static final Object2ObjectArrayMap<BlockView, Object2ObjectArrayMap<BlockPos, Set<Vec3i>>> LEVELS = new Object2ObjectArrayMap<>();
 
-	public static void add(BlockView world, Direction direction, BlockPos position, Vec3i top) {
+	public static void add(BlockView world, BlockPos position, Vec3i top) {
 		LEVELS.computeIfAbsent(world, (key) -> new Object2ObjectArrayMap<>());
 
-		LEVELS.get(world).computeIfAbsent(position, (key) -> new Pair<>(direction, new HashSet<>()));
+		LEVELS.get(world).computeIfAbsent(position, (key) -> new HashSet<>());
 
-		LEVELS.get(world).get(position).getRight().add(top);
+		LEVELS.get(world).get(position).add(top);
 	}
 
 	public static void remove(BlockView world, BlockPos position) {
@@ -35,19 +35,19 @@ public class HolographicBridgeManager {
 		LEVELS.get(world).remove(position);
 	}
 
-	public static Pair<Direction, Set<Vec3i>> get(BlockView world, BlockPos position) {
+	public static Set<Vec3i> get(BlockView world, BlockPos position) {
 		LEVELS.computeIfAbsent(world, (key) -> new Object2ObjectArrayMap<>());
 
-		return LEVELS.get(world).getOrDefault(position, new Pair<>(Direction.NORTH, Sets.newHashSet()));
+		return LEVELS.get(world).getOrDefault(position, new HashSet<>());
 	}
 
 	public static VoxelShape getShape(BlockView world, BlockPos position) {
-		Pair<Direction, Set<Vec3i>> pair = get(world, position);
-		if (pair == null) return VoxelShapes.fullCube();
-		else return getShape(pair.getLeft(), pair.getRight());
+		Set<Vec3i> vecs = get(world, position);
+		if (vecs == null) return VoxelShapes.fullCube();
+		else return getShape(vecs);
 	}
 
-	private static VoxelShape getShape(Direction direction, Set<Vec3i> vecs) {
+	private static VoxelShape getShape(Set<Vec3i> vecs) {
 		VoxelShape shape = VoxelShapes.empty();
 
 		boolean a = vecs.stream().allMatch(vec -> vec.getZ() == 0);

@@ -29,7 +29,7 @@ public class HolographicBridgeInvisibleBlock extends Block {
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos position, ShapeContext context) {
-		return HolographicBridgeManager.getShape(world, position);
+		return VoxelShapes.empty();
 	}
 
 	@Override
