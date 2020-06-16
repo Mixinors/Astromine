@@ -225,8 +225,20 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 	}
 
 	@Override
-	public void fromClientTag(CompoundTag compoundTag) {
-		fromTag(null, compoundTag);
+	public void fromClientTag(CompoundTag tag) {
+		fromTag(null, tag);
+
+		destroyBridge();
+
+		if (childPosition != null) {
+			child = (HolographicBridgeProjectorBlockEntity) world.getBlockEntity(childPosition);
+		}
+
+		if (parentPosition != null) {
+			parent = (HolographicBridgeProjectorBlockEntity) world.getBlockEntity(parentPosition);
+		}
+
+		buildBridge();
 	}
 
 
