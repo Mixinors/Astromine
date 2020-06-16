@@ -1,7 +1,7 @@
 {
   "parent": "block/orientable",
   "textures": {
-    "top": "astromine:block/machine_side_blank",
+    "top": "astromine:block/holographic_bridge_projector_top",
     "front": "astromine:block/holographic_bridge_projector_front",
     "side": "astromine:block/machine_side_blank"
   }
