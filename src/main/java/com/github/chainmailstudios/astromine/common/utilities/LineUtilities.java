@@ -1,7 +1,6 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
 import net.minecraft.client.util.math.Vector3f;
-import net.minecraft.util.math.Vec3i;
 
 import java.util.ArrayList;
 import java.util.Collection;

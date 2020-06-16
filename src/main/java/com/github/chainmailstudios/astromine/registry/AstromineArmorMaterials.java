@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.common.item;
+package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.github.chainmailstudios.astromine.registry.AstromineSounds;
@@ -68,7 +68,7 @@ public class AstromineArmorMaterials {
 		}
 
 		@Override
-		@Environment (EnvType.CLIENT)
+		@Environment(EnvType.CLIENT)
 		public String getName() {
 			return this.name;
 		}

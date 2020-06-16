@@ -25,6 +25,7 @@ public class HolographicConnector extends Item {
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
 		World world = context.getWorld();
+
 		BlockPos position = context.getBlockPos();
 
 		if (world.getBlockState(position).getBlock() instanceof HolographicBridgeProjectorBlock) {
@@ -44,8 +45,7 @@ public class HolographicConnector extends Item {
 
 				if (nP.getX() > oP.getX()) {
 					d = Direction.EAST;
-				}
-				if (nP.getX() < oP.getX()) {
+				} else if (nP.getX() < oP.getX()) {
 					d = Direction.WEST;
 				} else if (nP.getZ() > oP.getZ()) {
 					d = Direction.SOUTH;

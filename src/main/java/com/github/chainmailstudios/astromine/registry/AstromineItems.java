@@ -2,7 +2,6 @@ package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.item.*;
-import com.github.chainmailstudios.astromine.common.item.AstromineToolMaterials;
 import com.github.chainmailstudios.astromine.common.item.weapon.variant.Weaponry;
 import com.github.chainmailstudios.astromine.common.item.weapon.variant.ammo.Ammunition;
 import net.minecraft.entity.EquipmentSlot;
