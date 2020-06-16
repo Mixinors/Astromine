@@ -50,23 +50,19 @@ public class HolographicBridgeManager {
 	private static VoxelShape getShape(Direction direction, Set<Vec3i> vecs) {
 		VoxelShape shape = VoxelShapes.empty();
 
+		boolean a = vecs.stream().allMatch(vec -> vec.getZ() == 0);
+		boolean b = vecs.stream().allMatch(vec -> vec.getX() == 0);
+
 		for (Vec3i vec : vecs) {
-			shape = VoxelShapes.union(shape, Block.createCuboidShape(Math.abs(vec.getX()), Math.abs(vec.getY()), 0, Math.abs(vec.getX()) + 1, Math.abs(vec.getY()) + 1, 16));
+			shape = VoxelShapes.union(shape, Block.createCuboidShape(
+					Math.abs(vec.getX()) - 1,
+					Math.abs(vec.getY()) - 1,
+					Math.abs(vec.getZ()) - 1,
+					b ? 16 : Math.abs(vec.getX()),
+					Math.abs(vec.getY()) + 1,
+					a ? 16 : Math.abs(vec.getZ())));
 		}
 
-		switch (direction) {
-			case SOUTH: {
-				return VoxelShapeUtilities.rotate(Direction.Axis.Y, Math.toRadians(270), shape);
-			}
-			case NORTH: {
-				return VoxelShapeUtilities.rotate(Direction.Axis.Y, Math.toRadians(90), shape);
-			}
-			case WEST: {
-				return VoxelShapeUtilities.rotate(Direction.Axis.Y, Math.toRadians(0), shape);
-			}
-			default: {
-				return VoxelShapeUtilities.rotate(Direction.Axis.Y, Math.toRadians(180), shape);
-			}
-		}
+		return shape;
 	}
 }
