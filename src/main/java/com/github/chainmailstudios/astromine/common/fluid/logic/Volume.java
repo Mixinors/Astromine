@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -109,7 +110,7 @@ public class Volume {
 	}
 
 	public boolean isFull() {
-		return !this.isEmpty();
+		return getFraction().equals(getSize());
 	}
 
 	public boolean isEmpty() {
@@ -145,6 +146,10 @@ public class Volume {
 		tag.put("properties", propertyTag);
 
 		return tag;
+	}
+
+	public String toInterfaceString() {
+		return new TranslatableText(fluid.getBucketItem().getTranslationKey()).getString().replace(" Bucket", "") + " | " + fraction.getNumerator() + "/" + fraction.getDenominator();
 	}
 
 	/**

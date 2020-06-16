@@ -1,113 +1,102 @@
 package com.github.chainmailstudios.astromine.common.gas;
 
-import com.github.chainmailstudios.astromine.common.fluid.logic.Transaction;
 import com.github.chainmailstudios.astromine.common.fluid.logic.Volume;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.network.*;
 import com.google.common.collect.Lists;
-import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FenceBlock;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
-import org.apache.commons.lang3.mutable.MutableBoolean;
+import net.minecraft.world.WorldView;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class GasManager {
-	private static final Map<BlockView, Map<BlockPos, Volume>> LEVELS = new HashMap<>();
+	private static final ExecutorService pool = Executors.newCachedThreadPool();
+
+	private static final Map<BlockView, Map<BlockPos, Volume>> LEVELS = new ConcurrentHashMap<>();
 
 	public static void add(BlockView world, BlockPos position, Volume volume) {
-		LEVELS.computeIfAbsent(world, (key) -> new Object2ObjectArrayMap<>());
+		LEVELS.computeIfAbsent(world, (key) -> new ConcurrentHashMap<>());
 
 		LEVELS.get(world).put(position, volume);
 	}
 
 	public static void remove(BlockView world, BlockPos position) {
-		LEVELS.computeIfAbsent(world, (key) -> new Object2ObjectArrayMap<>());
+		LEVELS.computeIfAbsent(world, (key) -> new ConcurrentHashMap<>());
 
 		LEVELS.get(world).remove(position);
 	}
 
 	public static Volume get(BlockView world, BlockPos position) {
-		LEVELS.computeIfAbsent(world, (key) -> new Object2ObjectArrayMap<>());
+		LEVELS.computeIfAbsent(world, (key) -> new ConcurrentHashMap<>());
 
 		return LEVELS.get(world).getOrDefault(position, Volume.EMPTY);
 	}
 
-	public static void propagate(BlockView world, BlockPos initialPosition) {
-		Block block = world.getBlockState(initialPosition).getBlock();
+	public static void simulate(BlockView world) {
+		pool.execute(() -> {
+			List<Direction> directions = Lists.newArrayList(Direction.values());
 
-		if (!(block instanceof AirBlock)) {
-			return;
-		}
+			Map<BlockPos, Volume> map = LEVELS.get(world);
 
-		Set<BlockPos> cache = new HashSet<>();
-		cache.add(initialPosition);
+			if (map == null) return;
 
-		ArrayDeque<BlockPos> positions = new ArrayDeque<>();
-		positions.add(initialPosition);
+			final int maxAdditions = 16;
+			int additions = 0;
 
-		Direction[] directions = Direction.values();
+			for (Map.Entry<BlockPos, Volume> pair : map.entrySet()) {
+				Collections.shuffle(directions);
 
-		while (!positions.isEmpty()) {
-			BlockPos position = positions.getLast();
+				BlockPos position = pair.getKey();
 
-			positions.removeLast();
+				Volume volume = get(world, position);
 
-			Volume previousVolume = get(world, initialPosition);
+				for (Direction direction : directions) {
+					BlockPos offsetPosition = position.offset(direction);
 
-			BlockPos[] airPositions = new BlockPos[6];
+					BlockState offsetBlockState = world.getBlockState(offsetPosition);
+					Block offsetBlock = offsetBlockState.getBlock();
 
-			for (int i = 0; i < 6; ++i) {
-				Direction direction = directions[i];
-
-
-			}
-
-			for (Direction direction : directions) {
-				BlockPos offsetPosition = position.offset(direction);
-
-				if (cache.contains(offsetPosition)) continue;
-
-				Block offsetBlock = world.getBlockState(offsetPosition).getBlock();
-
-				if (offsetBlock instanceof AirBlock) {
-					Volume volume = get(world, offsetPosition);
-
-					if (volume == Volume.EMPTY) {
-						volume = new Volume(Fluids.WATER, Fraction.EMPTY);
-
-						add(world, offsetPosition, volume);
-					} else {
-						positions.add(offsetPosition);
+					if (offsetBlock instanceof FenceBlock) {
+						System.out.println("fuck!");
 					}
-					airPositions.add(offsetPosition);
-				} else {
-					GasManager.remove(world, offsetPosition);
+
+					if (offsetBlock instanceof AirBlock) {
+						Volume offsetVolume = get(world, offsetPosition);
+
+						if (offsetVolume.isEmpty() && volume.isEmpty()) {
+							GasManager.remove(world, position);
+							GasManager.remove(world, offsetPosition);
+
+							break;
+						}
+
+						if (offsetVolume == Volume.EMPTY) {
+							add(world, offsetPosition, new Volume(Fluids.WATER, Fraction.EMPTY));
+						} else if (!volume.isFull()) {
+							volume.pull(offsetVolume, Fraction.BOTTLE).commit();
+						}
+					} else {
+						GasManager.remove(world, offsetPosition);
+					}
 				}
-
-				cache.add(offsetPosition);
 			}
+		});
+	}
 
-			Fraction share = new Fraction(1, airPositions.size());
-
-			for (BlockPos airPos : airPositions) {
-				Volume volume = get(world, airPos);
-
-				if (volume.getFraction().isSmallerThan(Fraction.BUCKET) && volume.getFraction().isSmallerThan(previousVolume.getFraction())) {
-					previousVolume.push(volume, share).commit();
-				}
-			}
-
-			if (cache.size() > 512) {
-				break;
-			}
-		}
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+		pool.shutdown();
 	}
 }

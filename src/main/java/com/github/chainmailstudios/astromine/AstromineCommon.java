@@ -30,6 +30,7 @@ public class AstromineCommon implements ModInitializer {
 		AstromineServerPackets.initialize();
 		AstromineGravities.initialize();
 		AstromineDimensionLayers.initialize();
+		AstromineCommonCallbacks.initialize();
 	}
 
 	public static Identifier identifier(String name) {

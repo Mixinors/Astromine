@@ -5,44 +5,30 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class SidedVolumeCollection implements Iterable<Map.Entry<Direction, IndexedVolumeCollection>> {
-	private final Map<Direction, IndexedVolumeCollection> collections;
-
-	/**
-	 * Instantiates an empty SidedIndexedVolumeCollection instance.
-	 */
-	public SidedVolumeCollection() {
-		this.collections = Maps.newHashMap();
-
-		for (Direction direction : Direction.values()) {
-			this.collections.put(direction, new IndexedVolumeCollection());
-		}
-	}
-
+public interface SidedVolumeCollection extends Iterable<Map.Entry<Direction, IndexedVolumeCollection>> {
 	/**
 	 * Deserializes a SidedVolumeCollection from a tag.
 	 *
 	 * @return a SidedVolumeCollection
 	 */
-	public static SidedVolumeCollection fromTag(CompoundTag tag) {
-		SidedVolumeCollection collection = new SidedVolumeCollection();
+	static SidedVolumeCollection fromTag(CompoundTag tag) {
+		SidedVolumeCollection collection = new SimpleSidedVolumeCollection();
 
 		for (Direction direction : Direction.values()) {
-			collection.collections.put(direction, IndexedVolumeCollection.fromTag(tag.getCompound(direction.asString())));
+			collection.getCollections().put(direction, IndexedVolumeCollection.fromTag(tag.getCompound(direction.asString())));
 		}
 
 		return collection;
 	}
+	
+	Map<Direction, IndexedVolumeCollection> getCollections();
 
-	public IndexedVolumeCollection getCollection(Direction direction) {
-		return this.collections.get(direction);
-	}
-
-	public Collection<IndexedVolumeCollection> getCollections() {
-		return this.collections.values();
+	default IndexedVolumeCollection getCollection(Direction direction) {
+		return getCollections().get(direction);
 	}
 
 	/**
@@ -50,8 +36,8 @@ public class SidedVolumeCollection implements Iterable<Map.Entry<Direction, Inde
 	 *
 	 * @return a tag
 	 */
-	public CompoundTag toTag(CompoundTag tag) {
-		for (Map.Entry<Direction, IndexedVolumeCollection> entry : this.collections.entrySet()) {
+	default CompoundTag toTag(CompoundTag tag) {
+		for (Map.Entry<Direction, IndexedVolumeCollection> entry : getCollections().entrySet()) {
 			tag.put(entry.getKey().asString(), entry.getValue().toTag(new CompoundTag()));
 		}
 
@@ -59,7 +45,7 @@ public class SidedVolumeCollection implements Iterable<Map.Entry<Direction, Inde
 	}
 
 	@Override
-	public Iterator<Map.Entry<Direction, IndexedVolumeCollection>> iterator() {
-		return this.collections.entrySet().iterator();
+	default Iterator<Map.Entry<Direction, IndexedVolumeCollection>> iterator() {
+		return getCollections().entrySet().iterator();
 	}
 }

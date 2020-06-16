@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.entity.ElectrolyzerBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.OxygenVentBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -17,7 +17,7 @@ public class ElectrolyzerBlock extends FacingBlock implements BlockEntityProvide
 
 	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
-		return new ElectrolyzerBlockEntity();
+		return new OxygenVentBlockEntity();
 	}
 
 	@Override

@@ -202,6 +202,10 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 		if (child != null) tag.putLong("child_position", child.getPos().asLong());
 		if (parent != null) tag.putLong("parent_position", parent.getPos().asLong());
 
+		if (childPosition != null) tag.putLong("parent_position", childPosition.asLong());
+		if (parentPosition != null) tag.putLong("parent_position", parentPosition.asLong());
+
+
 		tag.putInt("direction", direction.getId());
 		tag.putInt("color", color.ARGB);
 
