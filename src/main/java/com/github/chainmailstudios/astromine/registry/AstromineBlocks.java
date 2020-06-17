@@ -20,6 +20,8 @@ public class AstromineBlocks {
 
 	public static final Block OXYGEN_VENT = register("oxygen_vent", new OxygenVentBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(4, 16).sounds(BlockSoundGroup.METAL)), AstromineItems.BASIC_SETTINGS);
 
+	public static final Block FLUID_CABLE_BLOCK = register("fluid_cable", new FluidCableBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 3).strength(2, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.BASIC_SETTINGS);
+
 	public static final Block NUCLEAR_WEAPON = register("nuclear_weapon", new NuclearWeaponBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(80, 1300).sounds(BlockSoundGroup.STONE)), AstromineItems.BASIC_SETTINGS);
 
 	public static final Block ASTERITE_ORE = register("asterite_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(40, 1000).sounds(BlockSoundGroup.STONE)), AstromineItems.BASIC_SETTINGS);
