@@ -1,7 +1,6 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
 import com.github.chainmailstudios.astromine.access.WorldChunkAccess;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.server.world.ChunkHolder;
@@ -77,7 +76,7 @@ public class RegionalWorldAccess {
 					}
 
 					if ((flags & 1) != 0) {
-						if(!world.isDebugWorld()) {
+						if (!world.isDebugWorld()) {
 							// World#updateNeighbors or something
 							this.updateNeighbor(pos.west(), block, pos);
 							this.updateNeighbor(pos.east(), block, pos);
@@ -95,9 +94,9 @@ public class RegionalWorldAccess {
 
 					if ((flags & 16) == 0) {
 						int i = flags & -34;
-						blockState.prepare(world, pos, i);
-						state.updateNeighbors(world, pos, i);
-						state.prepare(world, pos, i);
+						blockState.prepare(world, pos, i, 512);
+						state.updateNeighbors(world, pos, i, 512);
+						state.prepare(world, pos, i, 512);
 					}
 
 					world.onBlockChanged(pos, blockState, blockState2);

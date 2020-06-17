@@ -20,7 +20,7 @@ import net.minecraft.util.registry.Registry;
 
 public class AstromineEntities {
 
-	public static final EntityType<BulletEntity> BULLET_ENTITY_TYPE = register("bullet_entity", new EntityType<>(BulletEntity::new, SpawnGroup.MISC, false, true, true, true, ImmutableSet.<Block>builder().build(), EntityDimensions.fixed(0.1875f, 0.125f),4, 20));
+	public static final EntityType<BulletEntity> BULLET_ENTITY_TYPE = register("bullet", new EntityType<>(BulletEntity::new, SpawnGroup.MISC, false, true, true, true, ImmutableSet.<Block>builder().build(), EntityDimensions.fixed(0.1875f, 0.125f), 4, 20));
 
 	public static final EntityType<SpaceSlimeEntity> SPACE_SLIME = register(
 			"space_slime",
@@ -46,8 +46,8 @@ public class AstromineEntities {
 
 		// register behavior for super space slime spawning minions when hit
 		AttackEntityCallback.EVENT.register((playerEntity, world, hand, entity, entityHitResult) -> {
-			if(entity instanceof SuperSpaceSlimeEntity) {
-				if(world.random.nextInt(10) == 0) {
+			if (entity instanceof SuperSpaceSlimeEntity) {
+				if (world.random.nextInt(10) == 0) {
 					SpaceSlimeEntity spaceSlimeEntity = AstromineEntities.SPACE_SLIME.create(world);
 					spaceSlimeEntity.setPos(entity.getX(), entity.getY(), entity.getZ());
 					world.spawnEntity(spaceSlimeEntity);
@@ -59,7 +59,7 @@ public class AstromineEntities {
 	}
 
 	private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder<T> builder) {
-		return register(new Identifier(AstromineCommon.MOD_ID, id), builder);
+		return register(AstromineCommon.identifier(id), builder);
 	}
 
 	private static <T extends Entity> EntityType<T> register(Identifier id, EntityType.Builder<T> builder) {
@@ -67,12 +67,12 @@ public class AstromineEntities {
 	}
 
 	/**
-	 * @param id            Name of EntityType instance to be registered
-	 * @param type      	EntityType instance to register
-	 * @return              Registered EntityType
+	 * @param id   Name of EntityType instance to be registered
+	 * @param type EntityType instance to register
+	 * @return Registered EntityType
 	 */
 	private static <T extends Entity> EntityType<T> register(String id, EntityType<T> type) {
-		return register(new Identifier(AstromineCommon.MOD_ID, id), type);
+		return register(AstromineCommon.identifier(id), type);
 	}
 
 	private static <T extends Entity> EntityType<T> register(Identifier id, EntityType<T> type) {

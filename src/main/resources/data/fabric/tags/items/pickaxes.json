@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "astromine:metite_pickaxe",
     "astromine:asterite_pickaxe",
     "astromine:stellum_pickaxe",
     "astromine:galaxium_pickaxe",

@@ -1,13 +1,13 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.weapon.BaseWeapon;
-import com.github.chainmailstudios.astromine.common.weapon.Weapon;
+import com.github.chainmailstudios.astromine.common.item.weapon.BaseWeapon;
+import com.github.chainmailstudios.astromine.common.item.weapon.Weapon;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.minecraft.util.Identifier;
 
 public class AstromineServerPackets {
-	public static final Identifier SHOT_PACKET = new Identifier(AstromineCommon.MOD_ID, "shot");
+	public static final Identifier SHOT_PACKET = AstromineCommon.identifier("shot");
 
 	public static void initialize() {
 		ServerSidePacketRegistry.INSTANCE.register(SHOT_PACKET, ((context, buffer) -> {

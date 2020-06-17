@@ -1,17 +1,16 @@
 package com.github.chainmailstudios.astromine.common.fluid.collection;
 
+import com.github.chainmailstudios.astromine.common.fluid.logic.Volume;
+import com.google.common.collect.Lists;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.nbt.CompoundTag;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
-import com.github.chainmailstudios.astromine.common.fluid.logic.Volume;
-import com.google.common.collect.Lists;
-
-import net.minecraft.fluid.Fluid;
-import net.minecraft.nbt.CompoundTag;
 
 public class IndexedVolumeCollection implements Iterable<Volume> {
 	private final List<Volume> volumes;

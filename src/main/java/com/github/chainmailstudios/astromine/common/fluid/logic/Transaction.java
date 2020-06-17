@@ -1,8 +1,8 @@
 package com.github.chainmailstudios.astromine.common.fluid.logic;
 
-import java.util.Stack;
-
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+
+import java.util.Stack;
 
 /**
  * A class representing a fractional fluid

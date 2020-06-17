@@ -1,7 +1,7 @@
 {
   "type": "minecraft:blasting",
   "ingredient": {
-    "item": "astromine:metite_cluster"
+    "tag": "astromine:metite_clusters"
   },
   "result": "astromine:metite_ingot",
   "experience": 0.1,

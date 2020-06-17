@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "astromine:item/asterite_hoe"
+    "layer0": "astromine:item/tool/asterite_hoe"
   }
 }

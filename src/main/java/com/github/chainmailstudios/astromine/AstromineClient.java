@@ -1,13 +1,8 @@
 package com.github.chainmailstudios.astromine;
 
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityRenderers;
-import com.github.chainmailstudios.astromine.registry.AstromineEntityRenderers;
-import com.github.chainmailstudios.astromine.registry.AstromineSounds;
-
 import com.github.chainmailstudios.astromine.client.render.entity.SpaceSlimeEntityRenderer;
 import com.github.chainmailstudios.astromine.client.render.entity.SuperSpaceSlimeEntityRenderer;
-import com.github.chainmailstudios.astromine.registry.AstromineEntities;
-import com.github.chainmailstudios.astromine.registry.AstromineParticles;
+import com.github.chainmailstudios.astromine.registry.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -22,19 +17,16 @@ public class AstromineClient implements ClientModInitializer {
 		AstromineBlockEntityRenderers.initialize();
 		AstromineSounds.initialize();
 		AstromineParticles.initialize();
+		AstromineSkyboxes.initialize();
 
 		EntityRendererRegistry.INSTANCE.register(
 				AstromineEntities.SPACE_SLIME,
-				(dispatcher, context) -> {
-					return new SpaceSlimeEntityRenderer(dispatcher);
-				}
+				(dispatcher, context) -> new SpaceSlimeEntityRenderer(dispatcher)
 		);
 
 		EntityRendererRegistry.INSTANCE.register(
 				AstromineEntities.SUPER_SPACE_SLIME,
-				(dispatcher, context) -> {
-					return new SuperSpaceSlimeEntityRenderer(dispatcher);
-				}
+				(dispatcher, context) -> new SuperSpaceSlimeEntityRenderer(dispatcher)
 		);
 	}
 }

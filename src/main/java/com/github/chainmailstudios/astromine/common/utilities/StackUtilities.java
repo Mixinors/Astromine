@@ -1,10 +1,6 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import java.util.Collection;
-import java.util.List;
-
 import com.google.gson.JsonObject;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -12,6 +8,9 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.text.Text;
+
+import java.util.Collection;
+import java.util.List;
 
 public class StackUtilities extends spinnery.common.utility.StackUtilities {
 	public static boolean areEqual(List<ItemStack> stackListA, List<ItemStack> stackListB) {

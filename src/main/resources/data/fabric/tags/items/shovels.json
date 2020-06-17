@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "astromine:metite_shovel",
     "astromine:asterite_shovel",
     "astromine:stellum_shovel",
     "astromine:galaxium_shovel",

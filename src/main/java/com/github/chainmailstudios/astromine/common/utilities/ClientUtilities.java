@@ -12,7 +12,7 @@ public class ClientUtilities {
 	}
 
 	public static void playSound(BlockPos position, SoundEvent sound, SoundCategory category, float volume, float pitch, boolean useDistance) {
-		MinecraftClient.getInstance().world.playSound(position, sound, category, volume, pitch, useDistance);
+		MinecraftClient.getInstance().world.playSoundFromEntity(MinecraftClient.getInstance().player, MinecraftClient.getInstance().player, sound, category, volume, pitch);
 	}
 
 	public static final class Weapon {

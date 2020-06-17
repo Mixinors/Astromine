@@ -1,11 +1,10 @@
 package com.github.chainmailstudios.astromine.common.network;
 
-import java.util.Set;
-
 import com.google.common.collect.Sets;
-
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
+
+import java.util.Set;
 
 public class NetworkManager implements Tickable {
 	public static final NetworkManager INSTANCE = new NetworkManager();

@@ -21,11 +21,15 @@ public class AstromineCommon implements ModInitializer {
 	public void onInitialize() {
 		AstromineItems.initialize();
 		AstromineBlocks.initialize();
+		AstromineOres.initialize();
 		AstromineEntities.initialize();
-		AstrominePotions.init();
+		AstrominePotions.initialize();
+		AstromineFeatures.initialize();
 		AstromineBiomes.initialize();
 		AstromineChunkGenerators.initialize();
 		AstromineServerPackets.initialize();
+		AstromineGravities.initialize();
+		AstromineDimensionLayers.initialize();
 	}
 
 	public static Identifier identifier(String name) {

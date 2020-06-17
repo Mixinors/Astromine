@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.common.weapon.BaseWeapon;
+import com.github.chainmailstudios.astromine.common.item.weapon.BaseWeapon;
 import com.github.chainmailstudios.astromine.registry.AstromineServerPackets;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
@@ -51,7 +51,7 @@ public class MinecraftClientMixin {
 					weapon.setLastShot(currentShot);
 				}
 
-				attackCooldown = 50;
+				attackCooldown = 64;
 
 				callbackInformation.cancel();
 			}

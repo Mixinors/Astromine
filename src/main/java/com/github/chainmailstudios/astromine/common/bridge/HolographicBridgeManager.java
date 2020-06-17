@@ -1,46 +1,68 @@
 package com.github.chainmailstudios.astromine.common.bridge;
 
-import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
+import com.github.chainmailstudios.astromine.common.utilities.VoxelShapeUtilities;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Pair;
+import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.*;
 
 public class HolographicBridgeManager {
-	private static final VoxelShape[] SHAPES = new VoxelShape[]{
-			Block.createCuboidShape(0, 0, 0, 16, 1, 16),
-			Block.createCuboidShape(0, 1, 0, 16, 2, 16),
-			Block.createCuboidShape(0, 2, 0, 16, 3, 16),
-			Block.createCuboidShape(0, 3, 0, 16, 4, 16),
-			Block.createCuboidShape(0, 4, 0, 16, 5, 16),
-			Block.createCuboidShape(0, 5, 0, 16, 6, 16),
-			Block.createCuboidShape(0, 6, 0, 16, 7, 16),
-			Block.createCuboidShape(0, 7, 0, 16, 8, 16),
-			Block.createCuboidShape(0, 8, 0, 16, 9, 16),
-			Block.createCuboidShape(0, 9, 0, 16, 10, 16),
-			Block.createCuboidShape(0, 10, 0, 16, 11, 16),
-			Block.createCuboidShape(0, 11, 0, 16, 12, 16),
-			Block.createCuboidShape(0, 12, 0, 16, 13, 16),
-			Block.createCuboidShape(0, 13, 0, 16, 14, 16),
-			Block.createCuboidShape(0, 14, 0, 16, 15, 16),
-			Block.createCuboidShape(0, 15, 0, 16, 16, 16)
-	};
+	public static final Object2ObjectArrayMap<BlockView, Object2ObjectArrayMap<BlockPos, Set<Vec3i>>> LEVELS = new Object2ObjectArrayMap<>();
 
-	public static final Object2IntArrayMap<BlockPos> LEVELS = new Object2IntArrayMap<>();
+	public static void add(BlockView world, BlockPos position, Vec3i top) {
+		LEVELS.computeIfAbsent(world, (key) -> new Object2ObjectArrayMap<>());
 
-	public static void add(BlockPos position, int level) {
-		LEVELS.put(position, level);
+		LEVELS.get(world).computeIfAbsent(position, (key) -> new HashSet<>());
+
+		LEVELS.get(world).get(position).add(top);
 	}
 
-	public static int get(BlockPos position) {
-		return LEVELS.getOrDefault(position, -1);
+	public static void remove(BlockView world, BlockPos position) {
+		LEVELS.computeIfAbsent(world, (key) -> new Object2ObjectArrayMap<>());
+
+		LEVELS.get(world).remove(position);
 	}
 
-	public static VoxelShape getShape(BlockPos position) {
-		int level = get(position);
-		return level == -1 ? SHAPES[15] : getShape(15 - level);
+	public static Set<Vec3i> get(BlockView world, BlockPos position) {
+		LEVELS.computeIfAbsent(world, (key) -> new Object2ObjectArrayMap<>());
+
+		return LEVELS.get(world).getOrDefault(position, new HashSet<>());
 	}
 
-	private static VoxelShape getShape(int level) {
-		return SHAPES[level - 1];
+	public static VoxelShape getShape(BlockView world, BlockPos position) {
+		Set<Vec3i> vecs = get(world, position);
+		if (vecs == null) return VoxelShapes.fullCube();
+		else return getShape(vecs);
+	}
+
+	private static VoxelShape getShape(Set<Vec3i> vecs) {
+		VoxelShape shape = VoxelShapes.empty();
+
+		boolean a = vecs.stream().allMatch(vec -> vec.getZ() == 0);
+		boolean b = vecs.stream().allMatch(vec -> vec.getX() == 0);
+
+		for (Vec3i vec : vecs) {
+			shape = VoxelShapes.union(shape, Block.createCuboidShape(
+					Math.abs(vec.getX()) - 1,
+					Math.abs(vec.getY()) - 1,
+					Math.abs(vec.getZ()) - 1,
+					b ? 16 : Math.abs(vec.getX()),
+					Math.abs(vec.getY()) + 1,
+					a ? 16 : Math.abs(vec.getZ())));
+		}
+
+		return shape;
 	}
 }
