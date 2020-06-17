@@ -13,13 +13,13 @@ public class AstromineCommonCallbacks {
 
 	public static void initialize() {
 		ServerTickCallback.EVENT.register((server) -> {
-			if (System.currentTimeMillis() - lastSimulation >= 250) {
+			//if (System.currentTimeMillis() - lastSimulation >= 250) {
 				for (ServerWorld world : server.getWorlds()) {
 					AtmosphericManager.simulate(world);
 				}
 
 				lastSimulation = System.currentTimeMillis();
-			}
+			//}
 		});
 
 		ServerTickCallback.EVENT.register((server) -> {

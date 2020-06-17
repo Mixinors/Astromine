@@ -173,6 +173,16 @@ public class FluidVolume extends BaseVolume {
 		else super.push(target, pushed);
 	}
 
+	@Override
+	public boolean isFull() {
+		return getFraction().equals(getSize()) && this.fluid != Fluids.EMPTY;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return this.getFraction().equals(Fraction.EMPTY) || this.fluid == Fluids.EMPTY;
+	}
+
 	@Deprecated
 	public void pull(BaseVolume target, Fraction pulled) {
 		// Deprecated!

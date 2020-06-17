@@ -10,8 +10,8 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.world.BlockView;
 
-public class ElectrolyzerBlock extends FacingBlock implements BlockEntityProvider {
-	public ElectrolyzerBlock(Settings settings) {
+public class OxygenVentBlock extends FacingBlock implements BlockEntityProvider {
+	public OxygenVentBlock(Settings settings) {
 		super(settings);
 	}
 

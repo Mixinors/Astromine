@@ -1,21 +1,22 @@
 package com.github.chainmailstudios.astromine.common.gas;
 
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineFluids;
 import com.google.common.collect.Lists;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.FenceBlock;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
+import org.apache.commons.lang3.builder.CompareToBuilder;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -40,7 +41,18 @@ public class AtmosphericManager {
 	public static FluidVolume get(BlockView world, BlockPos position) {
 		LEVELS.computeIfAbsent(world, (key) -> new ConcurrentHashMap<>());
 
-		return LEVELS.get(world).getOrDefault(position, new FluidVolume(AstromineFluids.OXYGEN, Fraction.BUCKET));
+		if (world instanceof World) {
+			RegistryKey<DimensionType> key = ((World) world).getDimensionRegistryKey();
+			boolean isVanilla = (key == DimensionType.OVERWORLD_REGISTRY_KEY || key == DimensionType.OVERWORLD_CAVES_REGISTRY_KEY || key == DimensionType.THE_NETHER_REGISTRY_KEY || key == DimensionType.THE_END_REGISTRY_KEY);
+
+			if (isVanilla) {
+				return new FluidVolume(AstromineFluids.OXYGEN, Fraction.BUCKET);
+			} else {
+				return LEVELS.get(world).getOrDefault(position, new FluidVolume(Fluids.EMPTY, Fraction.BUCKET));
+			}
+		} else {
+			return LEVELS.get(world).getOrDefault(position, new FluidVolume(Fluids.EMPTY, Fraction.BUCKET));
+		}
 	}
 
 	public static void simulate(BlockView world) {
@@ -51,41 +63,46 @@ public class AtmosphericManager {
 
 			if (map == null) return;
 
-			for (Map.Entry<BlockPos, FluidVolume> pair : map.entrySet()) {
+			Set<BlockPos> cache = new HashSet<>();
+
+			List<Map.Entry<BlockPos, FluidVolume>> list = new ArrayList<>(map.entrySet());
+
+			list.sort((o1, o2) -> new CompareToBuilder()
+					.append(o1.getKey().getX(), o2.getKey().getX())
+					.append(o1.getKey().getY(), o2.getKey().getY())
+					.append(o1.getKey().getZ(), o2.getKey().getZ()).build());
+
+			for (Map.Entry<BlockPos, FluidVolume> pair : list) {
 				Collections.shuffle(directions);
 
 				BlockPos position = pair.getKey();
 
+				if (cache.contains(position)) continue;
+
 				FluidVolume fluidVolume = get(world, position);
 
-				for (Direction direction : directions) {
-					BlockPos offsetPosition = position.offset(direction);
+				Direction direction = directions.get(((World) world).random.nextInt(6));
 
-					BlockState offsetBlockState = world.getBlockState(offsetPosition);
-					Block offsetBlock = offsetBlockState.getBlock();
+				BlockPos offsetPosition = position.offset(direction);
 
-					if (offsetBlock instanceof FenceBlock) {
-						System.out.println("fuck!");
+				if (cache.contains(offsetPosition)) continue;
+
+				BlockState offsetBlockState = world.getBlockState(offsetPosition);
+				Block offsetBlock = offsetBlockState.getBlock();
+
+				if (offsetBlock instanceof AirBlock) {
+					FluidVolume offsetFluidVolume = get(world, offsetPosition);
+
+					if (!offsetFluidVolume.isFull() && !fluidVolume.isEmpty() && offsetFluidVolume.getFluid() == fluidVolume.getFluid()) {
+						fluidVolume.push(offsetFluidVolume, Fraction.BUCKET);
+						add(world, offsetPosition, offsetFluidVolume);
+					} else if (offsetFluidVolume.isEmpty() && !fluidVolume.isEmpty()) {
+						offsetFluidVolume = new FluidVolume(fluidVolume.getFluid(), Fraction.EMPTY);
+						fluidVolume.push(offsetFluidVolume, Fraction.BUCKET);
+						add(world, offsetPosition, offsetFluidVolume);
 					}
-
-					if (offsetBlock instanceof AirBlock) {
-						FluidVolume offsetFluidVolume = get(world, offsetPosition);
-
-						if (offsetFluidVolume.isEmpty() && fluidVolume.isEmpty()) {
-							AtmosphericManager.remove(world, position);
-							AtmosphericManager.remove(world, offsetPosition);
-
-							break;
-						}
-
-						if (offsetFluidVolume == FluidVolume.EMPTY) {
-							add(world, offsetPosition, new FluidVolume(Fluids.WATER, Fraction.EMPTY));
-						} else if (!fluidVolume.isFull()) {
-							fluidVolume.pull(offsetFluidVolume, Fraction.BOTTLE);
-						}
-					} else {
-						AtmosphericManager.remove(world, offsetPosition);
-					}
+				} else {
+					AtmosphericManager.remove(world, offsetPosition);
 				}
 			}
 		});

@@ -22,7 +22,11 @@ public class EnergyVolume extends BaseVolume {
 
 		EnergyVolume volume = new EnergyVolume();
 
-		volume.fraction = Fraction.fromTag(tag.getCompound("fraction"));
+		if (!tag.contains("fraction")) {
+			volume.fraction = Fraction.EMPTY;
+		} else {
+			volume.fraction = Fraction.fromTag(tag.getCompound("fraction"));
+		}
 
 		return volume;
 	}

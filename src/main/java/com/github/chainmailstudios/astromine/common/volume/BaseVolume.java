@@ -108,14 +108,14 @@ public class BaseVolume {
 		pushed = Fraction.min(pushed, available);
 
 		if (fraction.isSmallerThan(pushed)) { // If target has less than required.
-			setFraction(Fraction.subtract(fraction, fraction));
 			target.setFraction(Fraction.add(target.getFraction(), fraction));
+			setFraction(Fraction.subtract(fraction, fraction));
 
 			target.setFraction(Fraction.simplify(target.getFraction()));
 			setFraction(Fraction.simplify(getFraction()));
 		} else { // If target has more than or equal to required.
-			setFraction(Fraction.subtract(fraction, pushed));
 			target.setFraction(Fraction.add(target.getFraction(), pushed));
+			setFraction(Fraction.subtract(fraction, pushed));
 
 			target.setFraction(Fraction.simplify(target.getFraction()));
 			setFraction(Fraction.simplify(getFraction()));
