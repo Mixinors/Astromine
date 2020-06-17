@@ -77,15 +77,11 @@ public class AtmosphericManager {
 
 				BlockPos position = pair.getKey();
 
-				if (cache.contains(position)) continue;
-
 				FluidVolume fluidVolume = get(world, position);
 
 				Direction direction = directions.get(((World) world).random.nextInt(6));
 
 				BlockPos offsetPosition = position.offset(direction);
-
-				if (cache.contains(offsetPosition)) continue;
 
 				BlockState offsetBlockState = world.getBlockState(offsetPosition);
 				Block offsetBlock = offsetBlockState.getBlock();
@@ -100,6 +96,9 @@ public class AtmosphericManager {
 						offsetFluidVolume = new FluidVolume(fluidVolume.getFluid(), Fraction.EMPTY);
 						fluidVolume.push(offsetFluidVolume, Fraction.BUCKET);
 						add(world, offsetPosition, offsetFluidVolume);
+					} else if (offsetFluidVolume.isEmpty() && fluidVolume.isEmpty()) {
+						AtmosphericManager.remove(world, offsetPosition);
+						AtmosphericManager.remove(world, position);
 					}
 				} else {
 					AtmosphericManager.remove(world, offsetPosition);
