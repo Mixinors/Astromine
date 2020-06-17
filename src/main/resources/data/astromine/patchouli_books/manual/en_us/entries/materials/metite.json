@@ -1,0 +1,29 @@
+{
+	"name": "Metite",
+	"icon": "astromine:metite_ingot",
+	"category": "materials",
+	"pages": [
+		{
+			"type": "spotlight",
+			"item": "astromine:metite_ingot",
+			"title": "Metite",
+			"text": "Metite is a foreign metal with incredible pressure resistance. It is perfect for objects that may visit an area with high compression.$(p)It will be instrumental in beginning your interstellar travels."
+		},
+		{
+			"type": "smelting",
+			"recipe": "astromine:metite_from_smelting_cluster",
+			"title": "Obtaining Metite",
+			"text": "$(item)Metite Ore$() can be found within $(thing)Meteors$() that have crashed to Earth. A variant can also be found inside $(thing)Asteroids$() in $(thing)Space$().$(p)Mining Metite Ore will require a $(item)Netherite Pickaxe$() or better, and will result in a $(item)Metite Cluster$() which must then be smelted to obtain a $(item)Metite Ingot$()."
+		},
+		{
+			"type": "text",
+			"title": "Usages",
+			"text": "Metite can be made into standard tools and armor, though it isn't particularly effective in these areas.$(p)Instead, you'll primarily want to use Metite to create $(thing)Rocket Parts$() and $(thing)Space Suits$()."
+		},
+		{
+			"type": "text",
+			"title": "Stats",
+			"text": "$(l)Tools$()$(br)Mining Level: 2$(br)Base Durability: 981$(br)Mining Speed: 14$(br)Attack Damage: 5$(br)Enchantability: 5$(p)$(l)Armor$()$(br)Durability Multiplier: 15$(br)Total Defense: 14$(br)Toughness: 0$(br)Enchantability: 7"
+		}
+	]
+}

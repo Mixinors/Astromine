@@ -1,0 +1,13 @@
+{
+	"name": "Asterite",
+	"icon": "astromine:asterite_fragment",
+	"category": "materials",
+	"pages": [
+		{
+			"type": "spotlight",
+			"item": "astromine:asterite_fragment",
+			"title": "Asterite",
+			"text": "Asterite is a material found in space. It can be used to create powerful tools and armor."
+		}
+	]
+}

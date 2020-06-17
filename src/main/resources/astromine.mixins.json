@@ -1,36 +1,24 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "com.github.chainmailstudios.astromine.mixin",
-  "compatibilityLevel": "JAVA_8",
-  "mixins": [
-    "AbstractMinecartEntityMixin",
-    "BrewingRecipeRegistryMixin",
-    "DimensionTypeMixin",
-    "EggEntityMixin",
-    "EntityMixin",
-    "FishingBobberEntityMixin",
-    "FlamingAnvilCraftingMixin",
-    "GravityEntityMixin",
-    "HoneyBlockMixin",
-    "LivingEntityMixin",
-    "SkyPropertiesMixin",
-    "SlimeEntityMixin",
-    "SquidEntityMixin",
-    "StepAndDestroyBlockGoalMixin",
-    "ThreadExecutorMixin",
-    "WorldChunkMixin"
-  ],
-  "client": [
-    "BossBarHudMixin",
-    "CrackParticleAccessor",
-    "CurrentDownParticleMixin",
-    "GameRendererMixin",
-    "ItemRendererMixin",
-    "MinecraftClientMixin",
-    "WorldRendererMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  }
+	"required": true,
+	"minVersion": "0.8",
+	"package": "com.github.chainmailstudios.astromine.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"mixins": [
+		"AbstractMinecartEntityMixin", "BrewingRecipeRegistryMixin", "DimensionTypeMixin", "EggEntityMixin",
+		"EntityMixin", "FishingBobberEntityMixin", "FlamingAnvilCraftingMixin", "GravityEntityMixin", "HoneyBlockMixin",
+		"LivingEntityMixin", "MinecraftServerMixin", "SkyPropertiesMixin", "SlimeEntityMixin", "SquidEntityMixin",
+		"StepAndDestroyBlockGoalMixin", "ThreadExecutorMixin", "WorldChunkMixin"
+	],
+	"client": [
+		"BossBarHudMixin",
+		"CrackParticleAccessor",
+		"CurrentDownParticleMixin",
+		"GameRendererMixin",
+		"ItemRendererMixin",
+		"MinecraftClientMixin",
+		"WorldRendererMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
 }

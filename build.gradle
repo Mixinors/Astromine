@@ -27,6 +27,10 @@ repositories {
         name = "Fabric"
         url = "https://maven.fabricmc.net/"
     }
+	maven {
+		name = "Jared"
+		url = "https://maven.blamejared.com"
+	}
 }
 
 minecraft {
@@ -61,11 +65,14 @@ dependencies {
     // Spinnery
     modImplementation "com.github.vini2003:spinnery:${spinnery_version}"
 
-    // ModMenu
-    modImplementation "io.github.prospector:modmenu:${modmenu_version}"
-
     // Advanced Runtime Resource Packs
     modImplementation "net.devtech:arrp:${arrp_version}"
+	
+	// Patchouli
+	modImplementation "vazkii.patchouli:Patchouli_1.16-fabric:${patchouli_version}"
+
+	// ModMenu
+    modImplementation "io.github.prospector:modmenu:${modmenu_version}"
 
     // RoughlyEnoughItems
     modImplementation ("me.shedaniel:RoughlyEnoughItems:${rei_version}") {
