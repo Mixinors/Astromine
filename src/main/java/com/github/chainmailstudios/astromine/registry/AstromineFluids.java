@@ -15,6 +15,15 @@ public class AstromineFluids {
 			.name("oxygen")
 			.build();
 
+	public static final Fluid ROCKET_FUEL = AdvancedFluid.builder()
+			.fog(0x7ebf6952)
+			.tint(0x7ebf6952)
+			.damage(4)
+			.toxic(true)
+			.infinite(false)
+			.name("roccket_fuel")
+			.build();
+
 	public static void initialize() {
 
 	}

@@ -15,18 +15,12 @@ import net.minecraft.util.math.Direction;
 import org.apache.logging.log4j.Level;
 
 public class OxygenVentBlockEntity extends BaseBiBlockEntity implements Tickable  {
-	private boolean locked = false;
-
 	public OxygenVentBlockEntity() {
 		super(AstromineBlockEntityTypes.ELECTROLYZER);
 	}
 
 	@Override
 	public void tick() {
-		//if (locked) return;
-
-		long start = System.currentTimeMillis();
-
 		BlockPos position = getPos();
 
 		Direction direction = world.getBlockState(position).get(FacingBlock.FACING);
@@ -35,13 +29,6 @@ public class OxygenVentBlockEntity extends BaseBiBlockEntity implements Tickable
 
 		if (world.getBlockState(output).getBlock() instanceof AirBlock) {
 			AtmosphericManager.add(world, output, new FluidVolume(AstromineFluids.OXYGEN, Fraction.BUCKET));
-		}
-
-		long end = System.currentTimeMillis();
-
-		if (end - start > 50) {
-			locked = true;
-			AstromineCommon.LOGGER.log(Level.WARN, "Oxygen Vent tick took over 50ms; suspending its activity!");
 		}
 	}
 }

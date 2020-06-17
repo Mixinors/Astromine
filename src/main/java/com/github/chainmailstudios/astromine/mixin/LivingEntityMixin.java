@@ -19,6 +19,7 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
@@ -49,7 +50,6 @@ public abstract class LivingEntityMixin {
 	void onTick(CallbackInfo callbackInformation) {
 		Entity entity = (Entity) (Object) this;
 
-
 		if ((int) entity.getPos().getY() != lastY && !entity.world.isClient) {
 			lastY = (int) entity.getPos().getY();
 
@@ -71,7 +71,7 @@ public abstract class LivingEntityMixin {
 			}
 		}
 
-		FluidVolume atmosphere = AtmosphericManager.get(entity.world, entity.getBlockPos());
+		FluidVolume atmosphere = AtmosphericManager.get(entity.world, entity.getBlockPos().offset(Direction.UP));
 
 		Fluid fluid;
 
