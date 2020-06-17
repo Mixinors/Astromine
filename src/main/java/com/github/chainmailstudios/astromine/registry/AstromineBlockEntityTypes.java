@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.entity.OxygenVentBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
@@ -9,8 +10,9 @@ import net.minecraft.util.registry.Registry;
 
 import java.util.function.Supplier;
 
-public class AstromineBlockEntities {
+public class AstromineBlockEntityTypes {
 	public static BlockEntityType<HolographicBridgeProjectorBlockEntity> HOLOGRAPHIC_BRIDGE = register("holographic_bridge", HolographicBridgeProjectorBlockEntity::new, AstromineBlocks.HOLOGRAPHIC_BRIDGE_PROJECTOR);
+	public static BlockEntityType<OxygenVentBlockEntity> ELECTROLYZER = register("oxygen_vent", OxygenVentBlockEntity::new, AstromineBlocks.OXYGEN_VENT);
 
 	public static void initialize() {
 		// Unused.

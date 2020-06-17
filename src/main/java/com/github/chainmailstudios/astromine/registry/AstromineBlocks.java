@@ -1,10 +1,7 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.AstromineOreBlock;
-import com.github.chainmailstudios.astromine.common.block.HolographicBridgeInvisibleBlock;
-import com.github.chainmailstudios.astromine.common.block.HolographicBridgeProjectorBlock;
-import com.github.chainmailstudios.astromine.common.block.NuclearWeaponBlock;
+import com.github.chainmailstudios.astromine.common.block.*;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Block;
@@ -20,6 +17,8 @@ import net.minecraft.util.registry.Registry;
 public class AstromineBlocks {
 	public static final Block HOLOGRAPHIC_BRIDGE_PROJECTOR = register("holographic_bridge_projector", new HolographicBridgeProjectorBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(4, 16).sounds(BlockSoundGroup.METAL)), AstromineItems.BASIC_SETTINGS);
 	public static final Block HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK = register("holographic_bridge_invisible", new HolographicBridgeInvisibleBlock(FabricBlockSettings.of(Material.AIR).dropsNothing().strength(-1.0F, 3600000.8F).nonOpaque().lightLevel(15).allowsSpawning((a, b, c, d) -> false)));
+
+	public static final Block OXYGEN_VENT = register("oxygen_vent", new ElectrolyzerBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(4, 16).sounds(BlockSoundGroup.METAL)), AstromineItems.BASIC_SETTINGS);
 
 	public static final Block NUCLEAR_WEAPON = register("nuclear_weapon", new NuclearWeaponBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(80, 1300).sounds(BlockSoundGroup.STONE)), AstromineItems.BASIC_SETTINGS);
 
@@ -57,7 +56,7 @@ public class AstromineBlocks {
 	 * @param settings Item.Settings of BlockItem of Block instance to be registered
 	 * @return Block instance registered
 	 */
-	static <T extends Block> T register(String name, T block, Item.Settings settings) {
+	public static <T extends Block> T register(String name, T block, Item.Settings settings) {
 		return register(name, block, new BlockItem(block, settings));
 	}
 
@@ -67,7 +66,7 @@ public class AstromineBlocks {
 	 * @param item  BlockItem instance of Block to be registered
 	 * @return Block instance registered
 	 */
-	static <T extends Block> T register(String name, T block, BlockItem item) {
+	public static <T extends Block> T register(String name, T block, BlockItem item) {
 		T b = register(AstromineCommon.identifier(name), block);
 		if (item != null) {
 			AstromineItems.register(name, item);
@@ -80,7 +79,7 @@ public class AstromineBlocks {
 	 * @param block Block instance to be registered
 	 * @return Block instance registered
 	 */
-	static <T extends Block> T register(String name, T block) {
+	public static <T extends Block> T register(String name, T block) {
 		return register(AstromineCommon.identifier(name), block);
 	}
 
@@ -89,7 +88,7 @@ public class AstromineBlocks {
 	 * @param block Block instance to be registered
 	 * @return Block instance registered
 	 */
-	static <T extends Block> T register(Identifier name, T block) {
+	public static <T extends Block> T register(Identifier name, T block) {
 		return Registry.register(Registry.BLOCK, name, block);
 	}
 }

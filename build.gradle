@@ -8,6 +8,10 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     maven {
+        name = "HalfOf2"
+        url = "https://raw.githubusercontent.com/Devan-Kerman/Devan-Repo/master/"
+    }
+    maven {
         name = "Onyx Studios"
         url = "https://maven.onyxstudios.dev"
     }
@@ -59,6 +63,9 @@ dependencies {
 
     // ModMenu
     modImplementation "io.github.prospector:modmenu:${modmenu_version}"
+
+    // Advanced Runtime Resource Packs
+    modImplementation "net.devtech:arrp:${arrp_version}"
 
     // RoughlyEnoughItems
     modImplementation ("me.shedaniel:RoughlyEnoughItems:${rei_version}") {

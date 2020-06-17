@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.common.fluid.logic;
+package com.github.chainmailstudios.astromine.common.volume.fluid;
 
 import net.minecraft.nbt.CompoundTag;
 
@@ -6,19 +6,19 @@ import net.minecraft.nbt.CompoundTag;
  * Interface for implementation of NBT data
  * in Volumes.
  */
-public interface Property {
+public interface FluidProperty {
 	/**
 	 * Serializes this FluidProperty to a tag
 	 * based on a Volume.
 	 *
 	 * @return a tag
 	 */
-	<T extends Volume> CompoundTag toTag(T volume);
+	<T extends FluidVolume> CompoundTag toTag(T volume);
 
 	/**
 	 * Deserializes a FluidProperty from a tag.
 	 *
 	 * @return a FluidProperty
 	 */
-	<T extends Property> T fromTag(CompoundTag tag);
+	<T extends FluidProperty> T fromTag(CompoundTag tag);
 }
