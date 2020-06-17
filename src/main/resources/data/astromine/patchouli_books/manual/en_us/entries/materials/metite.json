@@ -2,6 +2,7 @@
 	"name": "Metite",
 	"icon": "astromine:metite_ingot",
 	"category": "materials",
+	"sortnum": 0,
 	"pages": [
 		{
 			"type": "spotlight",
@@ -13,12 +14,12 @@
 			"type": "smelting",
 			"recipe": "astromine:metite_from_smelting_cluster",
 			"title": "Obtaining Metite",
-			"text": "$(item)Metite Ore$() can be found within $(thing)Meteors$() that have crashed to Earth. A variant can also be found inside $(thing)Asteroids$() in $(thing)Space$().$(p)Mining Metite Ore will require a $(item)Netherite Pickaxe$() or better, and will result in a $(item)Metite Cluster$() which must then be smelted to obtain a $(item)Metite Ingot$()."
+			"text": "$(item)Metite Ore$() can be found within $(thing)Meteors$() that have crashed to Earth. A variant can also be found inside $(thing)Asteroids$() in $(thing)Space$().$(p)Mining Metite Ore will require a $(item)Netherite Pickaxe$() (Mining Level 4) or better, and will result in between 1 and 3 $(item)Metite Clusters$() which can then be smelted to obtain a $(item)Metite Ingot$()."
 		},
 		{
 			"type": "text",
 			"title": "Usages",
-			"text": "Metite can be made into standard tools and armor, though it isn't particularly effective in these areas.$(p)Instead, you'll primarily want to use Metite to create $(thing)Rocket Parts$() and $(thing)Space Suits$()."
+			"text": "Metite can be made into standard $(thing)tools$() and $(thing)armor$(), though it isn't particularly effective in these areas.$(p)Instead, you'll primarily want to use Metite to create $(thing)Rocket Parts$() and $(thing)Space Suits$()."
 		},
 		{
 			"type": "text",

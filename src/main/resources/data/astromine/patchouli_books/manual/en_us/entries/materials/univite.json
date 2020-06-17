@@ -1,0 +1,29 @@
+{
+	"name": "Univite",
+	"icon": "astromine:univite_ingot",
+	"category": "materials",
+	"sortnum": 4,
+	"pages": [
+		{
+			"type": "spotlight",
+			"item": "astromine:univite_ingot",
+			"title": "Univite",
+			"text": "The heartbeat of the universe pulsates within this ingot. An otherworldly alloy of various extraterrestrial materials.$(p)This should truly make the most powerful items known to mankind."
+		},
+		{
+			"type": "text",
+			"title": "Obtaining Univite",
+			"text": "There is no currently known method of creating Univite synthetically, and it does not generate in nature.$(p)Its very existence is a mystery of the universe lost to the sands of time. Perhaps someday, it'll be rediscovered..."
+		},
+		{
+			"type": "text",
+			"title": "Usages",
+			"text": "Univite can be used to create top tier $(thing)tools$() and $(thing)armor$()."
+		},
+		{
+			"type": "text",
+			"title": "Stats",
+			"text": "$(l)Tools$()$(br)Mining Level: 7$(br)Base Durability: 3918$(br)Mining Speed: 12$(br)Attack Damage: 6$(br)Enchantability: 22$(p)$(l)Armor$()$(br)Durability Multiplier: 50$(br)Total Defense: 27$(br)Toughness: 5$(br)Enchantability: 22"
+		}
+	]
+}
