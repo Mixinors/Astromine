@@ -56,7 +56,7 @@ public class AstromineBlocks {
 	 * @param settings Item.Settings of BlockItem of Block instance to be registered
 	 * @return Block instance registered
 	 */
-	static <T extends Block> T register(String name, T block, Item.Settings settings) {
+	public static <T extends Block> T register(String name, T block, Item.Settings settings) {
 		return register(name, block, new BlockItem(block, settings));
 	}
 
@@ -66,7 +66,7 @@ public class AstromineBlocks {
 	 * @param item  BlockItem instance of Block to be registered
 	 * @return Block instance registered
 	 */
-	static <T extends Block> T register(String name, T block, BlockItem item) {
+	public static <T extends Block> T register(String name, T block, BlockItem item) {
 		T b = register(AstromineCommon.identifier(name), block);
 		if (item != null) {
 			AstromineItems.register(name, item);
@@ -79,7 +79,7 @@ public class AstromineBlocks {
 	 * @param block Block instance to be registered
 	 * @return Block instance registered
 	 */
-	static <T extends Block> T register(String name, T block) {
+	public static <T extends Block> T register(String name, T block) {
 		return register(AstromineCommon.identifier(name), block);
 	}
 
@@ -88,7 +88,7 @@ public class AstromineBlocks {
 	 * @param block Block instance to be registered
 	 * @return Block instance registered
 	 */
-	static <T extends Block> T register(Identifier name, T block) {
+	public static <T extends Block> T register(Identifier name, T block) {
 		return Registry.register(Registry.BLOCK, name, block);
 	}
 }

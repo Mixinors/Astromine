@@ -21,6 +21,7 @@ public class AstromineClient implements ClientModInitializer {
 		AstromineScreens.initialize();
 		AstromineClientCallbacks.initialize();
 		AstromineClientPackets.initialize();
+		AstromineResources.initialize();
 
 		EntityRendererRegistry.INSTANCE.register(
 				AstromineEntities.SPACE_SLIME,
