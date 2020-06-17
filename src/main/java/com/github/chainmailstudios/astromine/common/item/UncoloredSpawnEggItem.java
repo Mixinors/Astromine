@@ -1,11 +1,5 @@
 package com.github.chainmailstudios.astromine.common.item;
 
-import java.util.Map;
-import java.util.Objects;
-
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Maps;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FluidBlock;
@@ -29,6 +23,11 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.MobSpawnerLogic;
 import net.minecraft.world.RayTraceContext;
 import net.minecraft.world.World;
+
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Maps;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Provides an alternative to {@link net.minecraft.item.SpawnEggItem} which doesn't force hue/color through {@link net.minecraft.client.color.item.ItemColors}.

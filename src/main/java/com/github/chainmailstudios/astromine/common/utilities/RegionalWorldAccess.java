@@ -1,7 +1,5 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import com.github.chainmailstudios.astromine.access.WorldChunkAccess;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.server.world.ChunkHolder;
@@ -13,6 +11,8 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.WorldChunk;
+
+import com.github.chainmailstudios.astromine.access.WorldChunkAccess;
 
 /**
  * faster world access for small areas (like when u don't need to access blocks on the other side of the world) warning: not threadsafe!

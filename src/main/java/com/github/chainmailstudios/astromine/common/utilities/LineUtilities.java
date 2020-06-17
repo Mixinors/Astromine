@@ -1,9 +1,9 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
+import net.minecraft.client.util.math.Vector3f;
+
 import java.util.ArrayList;
 import java.util.Collection;
-
-import net.minecraft.client.util.math.Vector3f;
 
 public class LineUtilities {
 	/**

@@ -1,14 +1,6 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import java.util.ArrayList;
-
-import com.github.chainmailstudios.astromine.common.bridge.HolographicBridgeManager;
-import com.github.chainmailstudios.astromine.common.utilities.LineUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
-import com.github.chainmailstudios.astromine.registry.AstromineSounds;
-import org.jetbrains.annotations.NotNull;
-import spinnery.widget.api.Color;
+import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -22,7 +14,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
+import com.github.chainmailstudios.astromine.common.bridge.HolographicBridgeManager;
+import com.github.chainmailstudios.astromine.common.utilities.LineUtilities;
+import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.registry.AstromineSounds;
+import org.jetbrains.annotations.NotNull;
+import spinnery.widget.api.Color;
+
+import java.util.ArrayList;
 
 public class HolographicBridgeProjectorBlockEntity extends BlockEntity implements Tickable, BlockEntityClientSerializable {
 	public ArrayList<Vector3f> segments = null;

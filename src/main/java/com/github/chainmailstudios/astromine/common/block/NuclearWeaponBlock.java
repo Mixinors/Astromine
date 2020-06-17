@@ -1,11 +1,11 @@
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.utilities.LargeExplosionAlgorithm;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.utilities.LargeExplosionAlgorithm;
 
 public class NuclearWeaponBlock extends Block {
 	public NuclearWeaponBlock(Settings settings) {

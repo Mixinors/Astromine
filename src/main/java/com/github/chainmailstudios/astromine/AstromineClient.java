@@ -1,5 +1,10 @@
 package com.github.chainmailstudios.astromine;
 
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
+
 import com.github.chainmailstudios.astromine.client.render.entity.SpaceSlimeEntityRenderer;
 import com.github.chainmailstudios.astromine.client.render.entity.SuperSpaceSlimeEntityRenderer;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityRenderers;
@@ -12,11 +17,6 @@ import com.github.chainmailstudios.astromine.registry.AstromineResources;
 import com.github.chainmailstudios.astromine.registry.AstromineScreens;
 import com.github.chainmailstudios.astromine.registry.AstromineSkyboxes;
 import com.github.chainmailstudios.astromine.registry.AstromineSounds;
-
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 
 @Environment (EnvType.CLIENT)
 public class AstromineClient implements ClientModInitializer {

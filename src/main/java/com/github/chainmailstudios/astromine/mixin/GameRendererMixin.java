@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.common.item.weapon.Weapon;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -16,6 +15,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.MathHelper;
+
+import com.github.chainmailstudios.astromine.common.item.weapon.Weapon;
 
 @Mixin (GameRenderer.class)
 public class GameRendererMixin {

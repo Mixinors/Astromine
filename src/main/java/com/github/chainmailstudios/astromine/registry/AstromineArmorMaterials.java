@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import java.util.function.Supplier;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorMaterial;
@@ -8,8 +9,7 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Lazy;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import java.util.function.Supplier;
 
 public class AstromineArmorMaterials {
 	public static final AstromineArmorMaterial METITE = new AstromineArmorMaterial("metite", 15, new int[] {2, 4, 6, 2}, 7, AstromineSounds.METITE_ARMOR_EQUIPPED, 0.0f, 0.0f, () -> Ingredient.ofItems(AstromineItems.METITE_INGOT));

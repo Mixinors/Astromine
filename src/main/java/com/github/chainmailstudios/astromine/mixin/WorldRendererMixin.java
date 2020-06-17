@@ -1,7 +1,5 @@
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.client.registry.SkyboxRegistry;
-import com.github.chainmailstudios.astromine.client.render.skybox.Skybox;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -12,6 +10,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.util.math.MatrixStack;
+
+import com.github.chainmailstudios.astromine.client.registry.SkyboxRegistry;
+import com.github.chainmailstudios.astromine.client.render.skybox.Skybox;
 
 @Mixin (WorldRenderer.class)
 public abstract class WorldRendererMixin {

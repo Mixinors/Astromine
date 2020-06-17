@@ -1,13 +1,13 @@
 package com.github.chainmailstudios.astromine.client;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import spinnery.widget.api.Color;
-
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+
+import spinnery.widget.api.Color;
 
 public class BaseRenderer extends spinnery.client.render.BaseRenderer {
 	public static void drawGradientQuadExtended(MatrixStack matrices, VertexConsumerProvider provider, float startX, float startY, float endX, float endY, float startZ, float endZ, Color colorStart, Color colorEnd) {

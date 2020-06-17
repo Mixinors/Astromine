@@ -1,10 +1,10 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import java.util.function.Supplier;
-
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Lazy;
+
+import java.util.function.Supplier;
 
 public class AstromineToolMaterials {
 	public static final AstromineToolMaterial METITE = new AstromineToolMaterial(2, 981, 14f, 5.0f, 5, () -> Ingredient.ofItems(AstromineItems.METITE_INGOT));

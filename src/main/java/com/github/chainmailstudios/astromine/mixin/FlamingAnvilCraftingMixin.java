@@ -1,9 +1,8 @@
 package com.github.chainmailstudios.astromine.mixin;
 
-import java.util.Iterator;
-import java.util.List;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
-import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -18,8 +17,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.world.World;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
+
+import java.util.Iterator;
+import java.util.List;
 
 @Mixin (FallingBlockEntity.class)
 public abstract class FlamingAnvilCraftingMixin extends Entity {

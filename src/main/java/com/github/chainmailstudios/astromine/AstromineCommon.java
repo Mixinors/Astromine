@@ -1,5 +1,9 @@
 package com.github.chainmailstudios.astromine;
 
+import net.fabricmc.api.ModInitializer;
+
+import net.minecraft.util.Identifier;
+
 import blue.endless.jankson.Jankson;
 import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
@@ -14,13 +18,10 @@ import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.github.chainmailstudios.astromine.registry.AstromineOres;
 import com.github.chainmailstudios.astromine.registry.AstrominePotions;
 import com.github.chainmailstudios.astromine.registry.AstromineServerPackets;
-import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.util.Identifier;
-
-import net.fabricmc.api.ModInitializer;
+import com.google.gson.Gson;
 
 public class AstromineCommon implements ModInitializer {
 	public static final String LOG_ID = "Astromine";

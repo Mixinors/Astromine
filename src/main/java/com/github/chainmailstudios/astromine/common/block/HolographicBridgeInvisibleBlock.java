@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.bridge.HolographicBridgeManager;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -11,8 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import com.github.chainmailstudios.astromine.common.bridge.HolographicBridgeManager;
 
 public class HolographicBridgeInvisibleBlock extends Block {
 	public HolographicBridgeInvisibleBlock(AbstractBlock.Settings settings) {

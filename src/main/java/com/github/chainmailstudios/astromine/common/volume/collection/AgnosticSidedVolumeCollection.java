@@ -1,8 +1,8 @@
 package com.github.chainmailstudios.astromine.common.volume.collection;
 
-import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
-
 import net.minecraft.util.math.Direction;
+
+import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
 
 public interface AgnosticSidedVolumeCollection {
 	boolean contains(Direction direction, int volumeType);

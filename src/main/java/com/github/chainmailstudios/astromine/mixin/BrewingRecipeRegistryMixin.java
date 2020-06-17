@@ -1,7 +1,5 @@
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.registry.AstromineItems;
-import com.github.chainmailstudios.astromine.registry.AstrominePotions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,6 +13,9 @@ import net.minecraft.item.Items;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
 import net.minecraft.recipe.BrewingRecipeRegistry;
+
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import com.github.chainmailstudios.astromine.registry.AstrominePotions;
 
 @Mixin (BrewingRecipeRegistry.class)
 public abstract class BrewingRecipeRegistryMixin {

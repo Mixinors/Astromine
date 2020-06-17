@@ -1,15 +1,5 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import java.util.Iterator;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.item.FireExtinguisher;
-import com.github.chainmailstudios.astromine.common.item.HolographicConnector;
-import com.github.chainmailstudios.astromine.common.item.SuperSpaceSlimeShooterItem;
-import com.github.chainmailstudios.astromine.common.item.UncoloredSpawnEggItem;
-import com.github.chainmailstudios.astromine.common.item.weapon.variant.Weaponry;
-import com.github.chainmailstudios.astromine.common.item.weapon.variant.ammo.Ammunition;
-
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.entity.EntityType;
@@ -27,6 +17,16 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.item.FireExtinguisher;
+import com.github.chainmailstudios.astromine.common.item.HolographicConnector;
+import com.github.chainmailstudios.astromine.common.item.SuperSpaceSlimeShooterItem;
+import com.github.chainmailstudios.astromine.common.item.UncoloredSpawnEggItem;
+import com.github.chainmailstudios.astromine.common.item.weapon.variant.Weaponry;
+import com.github.chainmailstudios.astromine.common.item.weapon.variant.ammo.Ammunition;
+
+import java.util.Iterator;
 
 public class AstromineItems {
 	public static final Item.Settings BASIC_SETTINGS = new Item.Settings().group(AstromineItemGroups.ASTROMINE);

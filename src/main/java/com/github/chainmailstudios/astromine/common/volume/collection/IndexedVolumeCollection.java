@@ -1,13 +1,13 @@
 package com.github.chainmailstudios.astromine.common.volume.collection;
 
+import net.minecraft.nbt.CompoundTag;
+
+import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
-import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
-
-import net.minecraft.nbt.CompoundTag;
 
 public interface IndexedVolumeCollection<T extends BaseVolume> extends Iterable<T> {
 	/**
