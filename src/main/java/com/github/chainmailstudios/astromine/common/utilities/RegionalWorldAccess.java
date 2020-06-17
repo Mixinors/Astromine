@@ -20,8 +20,8 @@ import net.minecraft.world.chunk.WorldChunk;
  */
 public class RegionalWorldAccess {
 	private final BlockPos.Mutable current = new BlockPos.Mutable();
-	private final World world;
-	private final boolean isClient;
+	public final World world;
+	public final boolean isClient;
 	private WorldChunk chunk;
 	private int cx, cz;
 
@@ -32,15 +32,13 @@ public class RegionalWorldAccess {
 		ChunkPos pos = chunk.getPos();
 		this.cx = pos.x;
 		this.cz = pos.z;
+		this.addDetatch();
 	}
 
 	public RegionalWorldAccess(World world, BlockPos pos) {
 		this(world.getWorldChunk(pos));
 	}
 
-	public World getWorld() {
-		return this.world;
-	}
 
 	public boolean setBlockState(BlockState state, int x, int y, int z) {
 		return this.setBlockState(state, x, y, z, 3);
@@ -150,23 +148,33 @@ public class RegionalWorldAccess {
 		this.cz += offZ;
 		this.cx += offX;
 
-		while (offX > 0) {
-			this.chunk = ((WorldChunkAccess) this.chunk).astromine_east();
-			offX--;
+		if(this.chunk != null) {
+			while (offX > 0) {
+				this.chunk = ((WorldChunkAccess) this.chunk).astromine_east();
+				offX--;
+			}
+
+			while (offX < 0) {
+				this.chunk = ((WorldChunkAccess) this.chunk).astromine_west();
+				offX++;
+			}
+
+			while (offZ > 0) {
+				this.chunk = ((WorldChunkAccess) this.chunk).astromine_south();
+				offZ--;
+			}
+			while (offZ < 0) {
+				this.chunk = ((WorldChunkAccess) this.chunk).astromine_north();
+				offZ++;
+			}
+		} else {
+			this.chunk = this.world.getChunk(this.cx, this.cz);
 		}
 
-		while (offX < 0) {
-			this.chunk = ((WorldChunkAccess) this.chunk).astromine_west();
-			offX++;
-		}
+		this.addDetatch();
+	}
 
-		while (offZ > 0) {
-			this.chunk = ((WorldChunkAccess) this.chunk).astromine_south();
-			offZ--;
-		}
-		while (offZ < 0) {
-			this.chunk = ((WorldChunkAccess) this.chunk).astromine_north();
-			offZ++;
-		}
+	private void addDetatch() {
+		((WorldChunkAccess)this.chunk).astromine_addUnloadListener(() -> this.chunk = null);
 	}
 }

@@ -5,11 +5,10 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "BrewingRecipeRegistryMixin",
-    "ChunkSerializerMixin",
-    "ChunkSerializerMixin$WorldChunkMixin",
     "Fixin",
     "FlamingAnvilCraftingMixin",
-    "SlimeEntityMixin"
+    "SlimeEntityMixin",
+    "WorldChunkMixin"
   ],
   "client": [
     "BossBarHudMixin",
