@@ -6,18 +6,20 @@
   "mixins": [
     "AbstractMinecartEntityMixin",
     "BrewingRecipeRegistryMixin",
+    "DimensionTypeMixin",
     "EggEntityMixin",
     "EntityMixin",
-    "GravityEntityMixin",
     "FishingBobberEntityMixin",
     "FlamingAnvilCraftingMixin",
+    "GravityEntityMixin",
     "HoneyBlockMixin",
     "LivingEntityMixin",
     "SkyPropertiesMixin",
     "SlimeEntityMixin",
     "SquidEntityMixin",
     "StepAndDestroyBlockGoalMixin",
-    "ThreadExecutorMixin"
+    "ThreadExecutorMixin",
+    "WorldChunkMixin"
   ],
   "client": [
     "BossBarHudMixin",
