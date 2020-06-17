@@ -56,7 +56,7 @@ public class AstromineBlocks {
 	                                                         AstromineItems.BASIC_SETTINGS
 	);
 	public static final Block STELLUM_ORE = register("stellum_ore",
-	                                                 new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(25, 80).sounds(BlockSoundGroup.STONE)),
+	                                                 new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(25, 80).sounds(BlockSoundGroup.STONE)),
 	                                                 AstromineItems.BASIC_SETTINGS
 	);
 	public static final Block GALAXIUM_ORE = register("galaxium_ore",
@@ -102,7 +102,7 @@ public class AstromineBlocks {
 	                                                  AstromineItems.BASIC_SETTINGS
 	);
 	public static final Block STELLUM_BLOCK = register("stellum_block",
-	                                                   new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.YELLOW).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(10, 80).sounds(BlockSoundGroup.METAL)),
+	                                                   new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.YELLOW).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(10, 80).sounds(BlockSoundGroup.METAL)),
 	                                                   AstromineItems.BASIC_SETTINGS
 	);
 	public static final Block GALAXIUM_BLOCK = register("galaxium_block",
