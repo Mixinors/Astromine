@@ -51,6 +51,9 @@ public class AstromineItems {
 	public static final Item ASTEROID_DIAMOND_CLUSTER = register("asteroid_diamond_cluster", new Item(BASIC_SETTINGS));
 	public static final Item ASTEROID_EMERALD_CLUSTER = register("asteroid_emerald_cluster", new Item(BASIC_SETTINGS));
 
+	// Wires
+	public static final Item WIRE_COIL = register("wire_coil", new Item(new Item.Settings().group(AstromineItemGroups.ASTROMINE)));
+
 	// Tools
 	public static final Item HOLOGRAPHIC_CONNECTOR = register("holographic_connector", new HolographicConnector(new Item.Settings().group(AstromineItemGroups.ASTROMINE).maxCount(1)));
 

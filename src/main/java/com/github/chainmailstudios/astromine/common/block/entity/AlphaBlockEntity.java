@@ -17,11 +17,11 @@ import net.minecraft.util.math.Direction;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class BaseBiBlockEntity extends BlockEntity implements AgnosticSidedVolumeCollection {
+public abstract class AlphaBlockEntity extends BlockEntity implements AgnosticSidedVolumeCollection {
 	private SimpleIndexedVolumeCollection<FluidVolume> fluidVolumeCollection = new SimpleIndexedVolumeCollection();
 	private SimpleIndexedVolumeCollection<EnergyVolume> energyVolumeCollection = new SimpleIndexedVolumeCollection();
 
-	public BaseBiBlockEntity(BlockEntityType<?> type) {
+	public AlphaBlockEntity(BlockEntityType<?> type) {
 		super(type);
 
 		fluidVolumeCollection.addVolume(new FluidVolume());

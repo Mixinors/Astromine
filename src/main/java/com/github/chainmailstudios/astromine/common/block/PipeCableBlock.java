@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class CableBlock extends Block implements NetworkMember {
+public abstract class PipeCableBlock extends Block implements NetworkMember {
     public static final BooleanProperty EAST = BooleanProperty.of("east");
     public static final BooleanProperty WEST = BooleanProperty.of("west");
     public static final BooleanProperty NORTH = BooleanProperty.of("north");
@@ -50,7 +50,7 @@ public abstract class CableBlock extends Block implements NetworkMember {
 
     protected static final VoxelShape CENTER_SHAPE = Block.createCuboidShape(6.0D, 6.0D, 6.0D, 10.0D, 10.0D, 10.0D);
 
-    public CableBlock(AbstractBlock.Settings settings) {
+    public PipeCableBlock(AbstractBlock.Settings settings) {
         super(settings);
     }
 

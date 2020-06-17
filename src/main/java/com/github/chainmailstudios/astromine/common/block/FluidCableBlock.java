@@ -5,7 +5,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
 import java.util.Arrays;
 
-public class FluidCableBlock extends CableBlock {
+public class FluidCableBlock extends PipeCableBlock {
 	public FluidCableBlock(Settings settings) {
 		super(settings);
 	}

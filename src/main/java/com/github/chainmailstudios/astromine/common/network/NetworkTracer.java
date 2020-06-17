@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.common.network;
 
-import com.github.chainmailstudios.astromine.common.block.CableBlock;
+import com.github.chainmailstudios.astromine.common.block.PipeCableBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -105,7 +105,7 @@ public class NetworkTracer {
 		private Set<Direction> directions = new HashSet<>();
 
 		public void scanBlockState(BlockState blockState) {
-			for (Map.Entry<Direction, BooleanProperty> property : CableBlock.PROPERTY_MAP.entrySet()) {
+			for (Map.Entry<Direction, BooleanProperty> property : PipeCableBlock.PROPERTY_MAP.entrySet()) {
 				if (blockState.get(property.getValue())) {
 					directions.add(property.getKey());
 				}
@@ -125,9 +125,9 @@ public class NetworkTracer {
 		}
 
 		public BlockState applyToBlockState(BlockState state) {
-			if (!(state.getBlock() instanceof CableBlock)) return state;
+			if (!(state.getBlock() instanceof PipeCableBlock)) return state;
 			for (Direction direction : Direction.values()) {
-				state = state.with(CableBlock.PROPERTY_MAP.get(direction), directions.contains(direction));
+				state = state.with(PipeCableBlock.PROPERTY_MAP.get(direction), directions.contains(direction));
 			}
 			return state;
 		}
@@ -135,7 +135,7 @@ public class NetworkTracer {
 		public VoxelShape applyToVoxelShape(VoxelShape shape) {
 			for (Direction direction : Direction.values()) {
 				if (directions.contains(direction)) {
-					shape = VoxelShapes.union(shape, CableBlock.SHAPE_MAP.get(CableBlock.PROPERTY_MAP.get(direction)));
+					shape = VoxelShapes.union(shape, PipeCableBlock.SHAPE_MAP.get(PipeCableBlock.PROPERTY_MAP.get(direction)));
 				}
 			}
 			return shape;
