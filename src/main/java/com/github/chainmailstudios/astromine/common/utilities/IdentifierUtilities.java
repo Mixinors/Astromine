@@ -1,8 +1,7 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
 /**
- * Utilities for dealing
- * with Identifiers.
+ * Utilities for dealing with Identifiers.
  */
 public class IdentifierUtilities {
 	/**

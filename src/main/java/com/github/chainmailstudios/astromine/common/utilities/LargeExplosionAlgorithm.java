@@ -1,9 +1,5 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
 import com.github.chainmailstudios.astromine.access.WorldChunkAccess;
@@ -50,6 +46,30 @@ public class LargeExplosionAlgorithm {
 		return blocks;
 	}
 
+	/**
+	 * copied from https://stackoverflow.com/a/4579069/9773993 and converted to java
+	 */
+	private static boolean touchesOrIsIn(int x1, int y1, int z1, int x2, int y2, int z2, int radius) {
+		int dist_squared = radius * radius;
+		/* assume C1 and C2 are element-wise sorted, if not, do that now */
+		if (0 < x1) {
+			dist_squared -= x1 * x1;
+		} else if (0 > x2) {
+			dist_squared -= x2 * x2;
+		}
+		if (0 < y1) {
+			dist_squared -= y1 * y1;
+		} else if (0 > y2) {
+			dist_squared -= y2 * y2;
+		}
+		if (0 < z1) {
+			dist_squared -= z1 * z1;
+		} else if (0 > z2) {
+			dist_squared -= z2 * z2;
+		}
+		return dist_squared > 0;
+	}
+
 	private static long forSubchunks(WorldChunk chunk, int bx, int bz, int x, int y, int z, int radius) {
 		int scr = radius >> 4;
 		int sc = y >> 4;
@@ -85,30 +105,6 @@ public class LargeExplosionAlgorithm {
 			}
 		}
 		return destroyed;
-	}
-
-	/**
-	 * copied from https://stackoverflow.com/a/4579069/9773993 and converted to java
-	 */
-	private static boolean touchesOrIsIn(int x1, int y1, int z1, int x2, int y2, int z2, int radius) {
-		int dist_squared = radius * radius;
-		/* assume C1 and C2 are element-wise sorted, if not, do that now */
-		if (0 < x1) {
-			dist_squared -= x1 * x1;
-		} else if (0 > x2) {
-			dist_squared -= x2 * x2;
-		}
-		if (0 < y1) {
-			dist_squared -= y1 * y1;
-		} else if (0 > y2) {
-			dist_squared -= y2 * y2;
-		}
-		if (0 < z1) {
-			dist_squared -= z1 * z1;
-		} else if (0 > z2) {
-			dist_squared -= z2 * z2;
-		}
-		return dist_squared > 0;
 	}
 
 	private static boolean encompassed(int x1, int y1, int z1, int x2, int y2, int z2, int radius) {

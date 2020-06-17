@@ -1,17 +1,16 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import net.minecraft.client.util.math.Vector3f;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
+import net.minecraft.client.util.math.Vector3f;
+
 public class LineUtilities {
 	/**
-	 * Builds a Bezier curve from two points.
-	 * Current implementation needs to be reworked.
+	 * Builds a Bezier curve from two points. Current implementation needs to be reworked.
 	 *
-	 * @param posA     the first specified position.
-	 * @param posB     the second specified position.
+	 * @param posA the first specified position.
+	 * @param posB the second specified position.
 	 * @param segments the segments between both positions.
 	 * @return the dots of the requested curve.
 	 */

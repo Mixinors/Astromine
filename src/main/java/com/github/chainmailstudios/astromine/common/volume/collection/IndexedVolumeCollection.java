@@ -1,11 +1,13 @@
 package com.github.chainmailstudios.astromine.common.volume.collection;
 
-import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
-import net.minecraft.nbt.CompoundTag;
-
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
+
+import net.minecraft.nbt.CompoundTag;
 
 public interface IndexedVolumeCollection<T extends BaseVolume> extends Iterable<T> {
 	/**
@@ -24,16 +26,17 @@ public interface IndexedVolumeCollection<T extends BaseVolume> extends Iterable<
 	//
 	//	return collection;
 	//}
-
 	default void addVolume(T fluidVolume) {
-		getVolumes().add(fluidVolume);
+		this.getVolumes().add(fluidVolume);
 	}
+
+	List<T> getVolumes();
 
 	/**
 	 * Position-based Volume gathering.
 	 */
 	default T getVolume(int position) {
-		return getVolumes().get(position);
+		return this.getVolumes().get(position);
 	}
 
 	/**
@@ -43,16 +46,14 @@ public interface IndexedVolumeCollection<T extends BaseVolume> extends Iterable<
 		return this.getVolumes().stream().filter(predicate).collect(Collectors.toList());
 	}
 
-	List<T> getVolumes();
-
 	/**
 	 * Serializes an IndexedVolumeCollection to a tag.
 	 *
 	 * @return a tag
 	 */
 	default CompoundTag toTag(CompoundTag tag) {
-		for (int i = 0; i < getVolumes().size(); ++i) {
-			tag.put(String.valueOf(i), getVolumes().get(i).toTag(new CompoundTag()));
+		for (int i = 0; i < this.getVolumes().size(); ++i) {
+			tag.put(String.valueOf(i), this.getVolumes().get(i).toTag(new CompoundTag()));
 		}
 
 		return tag;
@@ -60,6 +61,6 @@ public interface IndexedVolumeCollection<T extends BaseVolume> extends Iterable<
 
 	@Override
 	default Iterator<T> iterator() {
-		return getVolumes().iterator();
+		return this.getVolumes().iterator();
 	}
 }

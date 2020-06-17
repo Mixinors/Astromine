@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.common.item.weapon.variant.ammo;
 
 import com.github.chainmailstudios.astromine.common.item.weapon.BaseAmmo;
 import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
+
 import net.minecraft.item.Item;
 
 public class Ammunition {

@@ -1,13 +1,18 @@
 package com.github.chainmailstudios.astromine.common.volume.collection;
 
-import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.math.Direction;
-
 import java.util.Iterator;
 import java.util.Map;
 
+import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
+
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.math.Direction;
+
 public interface SidedVolumeCollection<T extends BaseVolume> extends Iterable<Map.Entry<Direction, IndexedVolumeCollection<T>>> {
+	default IndexedVolumeCollection<T> getCollection(Direction direction) {
+		return this.getCollections().get(direction);
+	}
+
 	/**
 	 * An example implementation of a fromTag method.
 	 */
@@ -20,12 +25,8 @@ public interface SidedVolumeCollection<T extends BaseVolume> extends Iterable<Ma
 	//
 	//	return collection;
 	//
-	
-	Map<Direction, IndexedVolumeCollection<T>> getCollections();
 
-	default IndexedVolumeCollection<T> getCollection(Direction direction) {
-		return getCollections().get(direction);
-	}
+	Map<Direction, IndexedVolumeCollection<T>> getCollections();
 
 	/**
 	 * Serializes a SidedVolumeCollection to a tag.
@@ -33,7 +34,7 @@ public interface SidedVolumeCollection<T extends BaseVolume> extends Iterable<Ma
 	 * @return a tag
 	 */
 	default CompoundTag toTag(CompoundTag tag) {
-		for (Map.Entry<Direction, IndexedVolumeCollection<T>> entry : getCollections().entrySet()) {
+		for (Map.Entry<Direction, IndexedVolumeCollection<T>> entry : this.getCollections().entrySet()) {
 			tag.put(entry.getKey().asString(), entry.getValue().toTag(new CompoundTag()));
 		}
 
@@ -42,6 +43,6 @@ public interface SidedVolumeCollection<T extends BaseVolume> extends Iterable<Ma
 
 	@Override
 	default Iterator<Map.Entry<Direction, IndexedVolumeCollection<T>>> iterator() {
-		return getCollections().entrySet().iterator();
+		return this.getCollections().entrySet().iterator();
 	}
 }

@@ -1,14 +1,15 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import java.util.OptionalLong;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
+
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.source.VoronoiBiomeAccessType;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
-
-import java.util.OptionalLong;
 
 public class AstromineDimensionTypes extends DimensionType {
 	public static final RegistryKey<DimensionOptions> OPTIONS = RegistryKey.of(Registry.DIMENSION_OPTIONS, AstromineCommon.identifier("space"));

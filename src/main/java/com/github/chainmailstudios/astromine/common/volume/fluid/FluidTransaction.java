@@ -1,24 +1,15 @@
 package com.github.chainmailstudios.astromine.common.volume.fluid;
 
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-
 import java.util.Stack;
 
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+
 /**
- * A class representing a fractional fluid
- * transaction between two volumes.
+ * A class representing a fractional fluid transaction between two volumes.
  * <p>
- * Only one transaction may be active at a time.
- * If a transaction is not completed, reverted
- * or cancelled, all further transactions will
- * be locked.
+ * Only one transaction may be active at a time. If a transaction is not completed, reverted or cancelled, all further transactions will be locked.
  * <p>
- * A transaction will alter the state of its
- * source and target upon completion.
- * `
- * If the resulting data is invalid,
- * the transaction may be reverted,
- * restoring the original state.
+ * A transaction will alter the state of its source and target upon completion. ` If the resulting data is invalid, the transaction may be reverted, restoring the original state.
  */
 public class FluidTransaction {
 	public static final FluidTransaction EMPTY = new FluidTransaction(null, null, null, null);
@@ -56,7 +47,9 @@ public class FluidTransaction {
 	 * Applies a Transaction to two Volumes, altering them.
 	 */
 	public void commit() {
-		if (this == EMPTY) return;
+		if (this == EMPTY) {
+			return;
+		}
 
 		if (this.finished) {
 			throw new UnsupportedOperationException("Attempting to reuse finished Transaction!");
@@ -75,7 +68,9 @@ public class FluidTransaction {
 	 * Inversely applies a Transaction to two Volumes, altering them.
 	 */
 	public void abort() {
-		if (this == EMPTY) return;
+		if (this == EMPTY) {
+			return;
+		}
 
 		this.target.setFraction(this.targetRollback);
 		this.source.setFraction(this.sourceRollback);

@@ -1,10 +1,11 @@
 package com.github.chainmailstudios.astromine.common.entity.ai.superspaceslime;
 
+import java.util.EnumSet;
+
 import com.github.chainmailstudios.astromine.common.entity.SuperSpaceSlimeEntity;
+
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.effect.StatusEffects;
-
-import java.util.EnumSet;
 
 public class SuperSpaceSlimeRandomLookGoal extends Goal {
 

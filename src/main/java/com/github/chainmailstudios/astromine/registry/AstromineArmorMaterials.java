@@ -1,16 +1,15 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.registry.AstromineItems;
-import com.github.chainmailstudios.astromine.registry.AstromineSounds;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import java.util.function.Supplier;
+
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Lazy;
 
-import java.util.function.Supplier;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 public class AstromineArmorMaterials {
 	public static final AstromineArmorMaterial METITE = new AstromineArmorMaterial("metite", 15, new int[] {2, 5, 6, 2}, 15, AstromineSounds.METITE_ARMOR_EQUIPPED, 0.0f, 0.0f, () -> Ingredient.ofItems(AstromineItems.METITE_INGOT));
@@ -21,7 +20,7 @@ public class AstromineArmorMaterials {
 	public static final AstromineArmorMaterial SPACE_SUIT = new AstromineArmorMaterial("space_suit", 50, new int[] {1, 2, 3, 1}, 2, AstromineSounds.SPACE_SUIT_EQUIPPED, 0.0f, 0.0f, () -> Ingredient.ofItems(AstromineItems.METITE_INGOT));
 
 	public static class AstromineArmorMaterial implements ArmorMaterial {
-		private static final int[] BASE_DURABILITY = new int[]{13, 15, 16, 11};
+		private static final int[] BASE_DURABILITY = new int[] {13, 15, 16, 11};
 		private final String name;
 		private final int durabilityMultiplier;
 		private final int[] protectionAmounts;
@@ -68,7 +67,7 @@ public class AstromineArmorMaterials {
 		}
 
 		@Override
-		@Environment(EnvType.CLIENT)
+		@Environment (EnvType.CLIENT)
 		public String getName() {
 			return this.name;
 		}

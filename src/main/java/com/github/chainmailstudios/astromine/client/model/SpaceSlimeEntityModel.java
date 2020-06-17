@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.client.model;
 
 import com.github.chainmailstudios.astromine.common.entity.SpaceSlimeEntity;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.SlimeEntityModel;
@@ -26,14 +27,7 @@ public class SpaceSlimeEntityModel extends SlimeEntityModel<SpaceSlimeEntity> {
 		matrices.scale(1.25f, 1.25f, 1.25f);
 
 		// render glass block
-		MinecraftClient.getInstance().getItemRenderer().renderItem(
-				new ItemStack(Items.GLASS),
-				ModelTransformation.Mode.FIXED,
-				light,
-				overlay,
-				matrices,
-				MinecraftClient.getInstance().getBufferBuilders().getEffectVertexConsumers()
-		);
+		MinecraftClient.getInstance().getItemRenderer().renderItem(new ItemStack(Items.GLASS), ModelTransformation.Mode.FIXED, light, overlay, matrices, MinecraftClient.getInstance().getBufferBuilders().getEffectVertexConsumers());
 
 		// undo translation & scale
 		matrices.scale(.75f, .75f, .75f);

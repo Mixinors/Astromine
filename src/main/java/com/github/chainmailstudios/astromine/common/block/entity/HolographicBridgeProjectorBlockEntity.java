@@ -1,11 +1,15 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import java.util.ArrayList;
+
 import com.github.chainmailstudios.astromine.common.bridge.HolographicBridgeManager;
 import com.github.chainmailstudios.astromine.common.utilities.LineUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineSounds;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
+import org.jetbrains.annotations.NotNull;
+import spinnery.widget.api.Color;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -17,45 +21,24 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
-import org.jetbrains.annotations.NotNull;
-import spinnery.widget.api.Color;
 
-import java.util.ArrayList;
+import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 
 public class HolographicBridgeProjectorBlockEntity extends BlockEntity implements Tickable, BlockEntityClientSerializable {
 	public ArrayList<Vector3f> segments = null;
 	public ArrayList<Vec3i> members = null;
-
+	public Direction direction = Direction.NORTH;
+	public Color color = Color.of(0x7e2fd3da);
+	public long last = 0;
 	private HolographicBridgeProjectorBlockEntity child = null;
 	private HolographicBridgeProjectorBlockEntity parent = null;
-
 	private BlockPos childPosition = null;
 	private BlockPos parentPosition = null;
-
 	private boolean hasCheckedChild = false;
 	private boolean hasCheckedParent = false;
 
-	public Direction direction = Direction.NORTH;
-
-	public Color color = Color.of(0x7e2fd3da);
-
-	public long last = 0;
-
 	public HolographicBridgeProjectorBlockEntity() {
 		super(AstromineBlockEntityTypes.HOLOGRAPHIC_BRIDGE);
-	}
-
-	public HolographicBridgeProjectorBlockEntity getChild() {
-		return child;
-	}
-
-	public void setChild(HolographicBridgeProjectorBlockEntity child) {
-		if (child != null && child.parent != null) {
-			child.parent.destroyBridge();
-		}
-
-		this.child = child;
-		markDirty();
 	}
 
 	public boolean hasChild() {
@@ -63,7 +46,7 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 	}
 
 	public HolographicBridgeProjectorBlockEntity getParent() {
-		return parent;
+		return this.parent;
 	}
 
 	public void setParent(HolographicBridgeProjectorBlockEntity parent) {
@@ -72,22 +55,64 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 		}
 
 		this.parent = parent;
-		markDirty();
+		this.markDirty();
 	}
 
 	public boolean hasParent() {
 		return this.parent != null;
 	}
 
-	public void buildBridge() {
-		if (child == null || world == null) return;
+	@Override
+	public void tick() {
+		if (!this.hasCheckedChild && this.childPosition != null) {
+			if (this.world != null) {
+				BlockEntity childEntity = this.world.getBlockEntity(this.childPosition);
 
-		BlockPos bCP = getChild().getPos();
-		BlockPos bOP = getPos();
+				if (childEntity instanceof HolographicBridgeProjectorBlockEntity) {
+					this.child = (HolographicBridgeProjectorBlockEntity) childEntity;
+					this.child.setParent(this);
+					this.buildBridge();
+					this.hasCheckedChild = true;
+				} else if (childEntity != null) {
+					this.hasCheckedChild = true;
+				}
+			}
+		}
+
+		if (!this.hasCheckedParent && this.parentPosition != null) {
+			if (this.world != null) {
+				BlockEntity parentEntity = this.world.getBlockEntity(this.parentPosition);
+
+				if (parentEntity instanceof HolographicBridgeProjectorBlockEntity) {
+					this.parent = (HolographicBridgeProjectorBlockEntity) parentEntity;
+					this.parent.setChild(this);
+					this.parent.buildBridge();
+					this.hasCheckedParent = true;
+				} else if (parentEntity != null) {
+					this.hasCheckedParent = true;
+				}
+			}
+		}
+
+		long current = System.currentTimeMillis();
+
+		if (current - this.last >= 11187) {
+			this.world.playSound(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), AstromineSounds.HUMMING, SoundCategory.BLOCKS, 0.005f, 0.5f, true);
+			this.last = current;
+		}
+	}
+
+	public void buildBridge() {
+		if (this.child == null || this.world == null) {
+			return;
+		}
+
+		BlockPos bCP = this.getChild().getPos();
+		BlockPos bOP = this.getPos();
 
 		BlockPos nCP = bCP;
 
-		Direction cD = getChild().getCachedState().get(HorizontalFacingBlock.FACING);
+		Direction cD = this.getChild().getCachedState().get(HorizontalFacingBlock.FACING);
 
 		if (cD == Direction.EAST) {
 			nCP = nCP.add(1, 0, 0);
@@ -95,61 +120,99 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 			nCP = nCP.add(0, 0, 1);
 		}
 
-		int distance = (int) Math.sqrt(getPos().getSquaredDistance(getChild().getPos()));
+		int distance = (int) Math.sqrt(this.getPos().getSquaredDistance(this.getChild().getPos()));
 
-		if (distance == 0) return;
+		if (distance == 0) {
+			return;
+		}
 
-		segments = (ArrayList<Vector3f>) LineUtilities.getBezierSegments(
-				new Vector3f(bOP.getX(), bOP.getY() + 1, bOP.getZ()),
-				new Vector3f(nCP.getX(), nCP.getY() + 1, nCP.getZ()),
-				new Vector3f(nCP.getX(), (bOP.getY() + nCP.getY()) / 2f, bCP.getZ()), distance * 16);
+		this.segments = (ArrayList<Vector3f>) LineUtilities.getBezierSegments(new Vector3f(bOP.getX(), bOP.getY() + 1, bOP.getZ()),
+		                                                                      new Vector3f(nCP.getX(), nCP.getY() + 1, nCP.getZ()),
+		                                                                      new Vector3f(nCP.getX(), (bOP.getY() + nCP.getY()) / 2f, bCP.getZ()),
+		                                                                 distance * 16
+		);
 
-		members = new ArrayList<>();
+		this.members = new ArrayList<>();
 
-		for (Vector3f v : segments) {
+		for (Vector3f v : this.segments) {
 			BlockPos nP = new BlockPos(v.getX(), v.getY(), v.getZ());
 
 			if ((nP.getX() != bCP.getX() || nP.getZ() != bCP.getZ()) || (nP.getX() != bOP.getX() || nP.getZ() != bOP.getZ())) {
-				world.setBlockState(nP, AstromineBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
+				this.world.setBlockState(nP, AstromineBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
 
-				members.add(nP);
+				this.members.add(nP);
 			}
 
-			HolographicBridgeManager.add(world, nP, new Vec3i(
-					(v.getX() - (int) v.getX()) * 16f,
-					(v.getY() - (int) v.getY()) * 16f,
-					(v.getZ() - (int) v.getZ()) * 16f
-			));
+			HolographicBridgeManager.add(this.world, nP, new Vec3i((v.getX() - (int) v.getX()) * 16f, (v.getY() - (int) v.getY()) * 16f, (v.getZ() - (int) v.getZ()) * 16f));
 		}
 	}
 
-	public void destroyBridge() {
-		if (segments != null && world != null) {
-			for (Vec3i v : members) {
-				HolographicBridgeManager.remove(world, (BlockPos) v);
+	public HolographicBridgeProjectorBlockEntity getChild() {
+		return this.child;
+	}
 
-				world.setBlockState((BlockPos) v, Blocks.AIR.getDefaultState());
-			}
+	public void setChild(HolographicBridgeProjectorBlockEntity child) {
+		if (child != null && child.parent != null) {
+			child.parent.destroyBridge();
 		}
+
+		this.child = child;
+		this.markDirty();
 	}
 
 	@Override
-	public void markRemoved() {
-		if (child != null) {
-			child.setParent(null);
-			this.destroyBridge();
+	public void fromClientTag(CompoundTag tag) {
+		this.fromTag(null, tag);
 
-			setChild(null);
+		this.destroyBridge();
+
+		if (this.childPosition != null) {
+			this.child = (HolographicBridgeProjectorBlockEntity) this.world.getBlockEntity(this.childPosition);
 		}
 
-		if (parent != null) {
-			parent.setChild(null);
-			parent.destroyBridge();
-
-			setParent(null);
+		if (this.parentPosition != null) {
+			this.parent = (HolographicBridgeProjectorBlockEntity) this.world.getBlockEntity(this.parentPosition);
 		}
 
-		super.markRemoved();
+		this.buildBridge();
+	}
+
+	@Override
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+		if (tag.contains("child_position")) {
+			this.childPosition = BlockPos.fromLong(tag.getLong("child_position"));
+		}
+		if (tag.contains("parent_position")) {
+			this.parentPosition = BlockPos.fromLong(tag.getLong("parent_position"));
+		}
+
+		this.direction = Direction.byId(tag.getInt("direction"));
+		this.color = Color.of(tag.getInt("color"));
+
+		super.fromTag(state, tag);
+	}
+
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		if (this.child != null) {
+			tag.putLong("child_position", this.child.getPos().asLong());
+		}
+		if (this.parent != null) {
+			tag.putLong("parent_position", this.parent.getPos().asLong());
+		}
+
+		if (this.childPosition != null) {
+			tag.putLong("parent_position", this.childPosition.asLong());
+		}
+		if (this.parentPosition != null) {
+			tag.putLong("parent_position", this.parentPosition.asLong());
+		}
+
+
+		tag.putInt("direction", this.direction.getId());
+		tag.putInt("color", this.color.ARGB);
+
+		return super.toTag(tag);
 	}
 
 	@Override
@@ -158,91 +221,37 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 	}
 
 	@Override
-	public void tick() {
-		if (!hasCheckedChild && childPosition != null) {
-			if (world != null) {
-				BlockEntity childEntity = world.getBlockEntity(childPosition);
+	public void markRemoved() {
+		if (this.child != null) {
+			this.child.setParent(null);
+			this.destroyBridge();
 
-				if (childEntity instanceof HolographicBridgeProjectorBlockEntity) {
-					this.child = (HolographicBridgeProjectorBlockEntity) childEntity;
-					this.child.setParent(this);
-					this.buildBridge();
-					hasCheckedChild = true;
-				} else if (childEntity != null) {
-					hasCheckedChild = true;
-				}
-			}
+			this.setChild(null);
 		}
 
-		if (!hasCheckedParent && parentPosition != null) {
-			if (world != null) {
-				BlockEntity parentEntity = world.getBlockEntity(parentPosition);
+		if (this.parent != null) {
+			this.parent.setChild(null);
+			this.parent.destroyBridge();
 
-				if (parentEntity instanceof HolographicBridgeProjectorBlockEntity) {
-					this.parent = (HolographicBridgeProjectorBlockEntity) parentEntity;
-					this.parent.setChild(this);
-					this.parent.buildBridge();
-					hasCheckedParent = true;
-				} else if (parentEntity != null) {
-					hasCheckedParent = true;
-				}
-			}
+			this.setParent(null);
 		}
 
-		long current = System.currentTimeMillis();
-
-		if (current - last >= 11187) {
-			world.playSound(getPos().getX(), getPos().getY(), getPos().getZ(), AstromineSounds.HUMMING, SoundCategory.BLOCKS, 0.005f, 0.5f, true);
-			last = current;
-		}
+		super.markRemoved();
 	}
 
-	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		if (child != null) tag.putLong("child_position", child.getPos().asLong());
-		if (parent != null) tag.putLong("parent_position", parent.getPos().asLong());
+	public void destroyBridge() {
+		if (this.segments != null && this.world != null) {
+			for (Vec3i v : this.members) {
+				HolographicBridgeManager.remove(this.world, (BlockPos) v);
 
-		if (childPosition != null) tag.putLong("parent_position", childPosition.asLong());
-		if (parentPosition != null) tag.putLong("parent_position", parentPosition.asLong());
-
-
-		tag.putInt("direction", direction.getId());
-		tag.putInt("color", color.ARGB);
-
-		return super.toTag(tag);
-	}
-
-	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		if (tag.contains("child_position")) childPosition = BlockPos.fromLong(tag.getLong("child_position"));
-		if (tag.contains("parent_position")) parentPosition = BlockPos.fromLong(tag.getLong("parent_position"));
-
-		direction = Direction.byId(tag.getInt("direction"));
-		color = Color.of(tag.getInt("color"));
-
-		super.fromTag(state, tag);
+				this.world.setBlockState((BlockPos) v, Blocks.AIR.getDefaultState());
+			}
+		}
 	}
 
 	@Override
 	public CompoundTag toClientTag(CompoundTag compoundTag) {
-		return toTag(compoundTag);
-	}
-
-	@Override
-	public void fromClientTag(CompoundTag tag) {
-		fromTag(null, tag);
-
-		destroyBridge();
-
-		if (childPosition != null) {
-			child = (HolographicBridgeProjectorBlockEntity) world.getBlockEntity(childPosition);
-		}
-
-		if (parentPosition != null) {
-			parent = (HolographicBridgeProjectorBlockEntity) world.getBlockEntity(parentPosition);
-		}
-
-		buildBridge();
+		return this.toTag(compoundTag);
 	}
 
 

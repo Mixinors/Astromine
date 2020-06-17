@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.client.render.skybox;
 
 import com.google.common.collect.ImmutableMap;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
@@ -8,9 +9,7 @@ import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
 public class SpaceSkybox implements Skybox {
@@ -26,9 +25,9 @@ public class SpaceSkybox implements Skybox {
 	public ImmutableMap<Identifier, Identifier> textures;
 
 	private SpaceSkybox(Builder builder) {
-		textures = builder.textures.build();
+		this.textures = builder.textures.build();
 
-		if (textures.size() != 7) {
+		if (this.textures.size() != 7) {
 			throw new UnsupportedOperationException("Skybox constructed without necessary information!");
 		}
 	}
@@ -45,7 +44,9 @@ public class SpaceSkybox implements Skybox {
 
 		World world = client.world;
 
-		if (world == null) return;
+		if (world == null) {
+			return;
+		}
 
 		float rotation = (world.getTimeOfDay() / 12000f) * 360;
 
@@ -57,53 +58,53 @@ public class SpaceSkybox implements Skybox {
 			matrices.push();
 
 			switch (i) {
-				case 0: {
-					textureManager.bindTexture(textures.get(DOWN));
+			case 0: {
+				textureManager.bindTexture(this.textures.get(DOWN));
 
-					matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
+				matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
 
-					break;
-				}
-				case 1: {
-					textureManager.bindTexture(textures.get(WEST));
+				break;
+			}
+			case 1: {
+				textureManager.bindTexture(this.textures.get(WEST));
 
-					matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90.0F));
-					matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(rotation));
+				matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90.0F));
+				matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(rotation));
 
-					break;
-				}
-				case 2: {
-					textureManager.bindTexture(textures.get(EAST));
+				break;
+			}
+			case 2: {
+				textureManager.bindTexture(this.textures.get(EAST));
 
-					matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-90.0F));
-					matrices.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion(rotation));
+				matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-90.0F));
+				matrices.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion(rotation));
 
-					break;
-				}
-				case 3: {
-					textureManager.bindTexture(textures.get(UP));
+				break;
+			}
+			case 3: {
+				textureManager.bindTexture(this.textures.get(UP));
 
-					matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(180.0F));
-					matrices.multiply(Vector3f.NEGATIVE_Z.getDegreesQuaternion(rotation));
+				matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(180.0F));
+				matrices.multiply(Vector3f.NEGATIVE_Z.getDegreesQuaternion(rotation));
 
-					break;
-				}
-				case 4: {
-					textureManager.bindTexture(textures.get(NORTH));
+				break;
+			}
+			case 4: {
+				textureManager.bindTexture(this.textures.get(NORTH));
 
-					matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(90.0F));
-					matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
+				matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(90.0F));
+				matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
 
-					break;
-				}
-				case 5: {
-					textureManager.bindTexture(textures.get(SOUTH));
+				break;
+			}
+			case 5: {
+				textureManager.bindTexture(this.textures.get(SOUTH));
 
-					matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(-90.0F));
-					matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
+				matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(-90.0F));
+				matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
 
-					break;
-				}
+				break;
+			}
 			}
 
 
@@ -119,7 +120,7 @@ public class SpaceSkybox implements Skybox {
 			matrices.pop();
 		}
 
-		textureManager.bindTexture(textures.get(PLANET));
+		textureManager.bindTexture(this.textures.get(PLANET));
 
 		matrices.push();
 
@@ -143,37 +144,37 @@ public class SpaceSkybox implements Skybox {
 		}
 
 		public Builder up(Identifier up) {
-			textures.put(UP, up);
+			this.textures.put(UP, up);
 			return this;
 		}
 
 		public Builder down(Identifier down) {
-			textures.put(DOWN, down);
+			this.textures.put(DOWN, down);
 			return this;
 		}
 
 		public Builder east(Identifier east) {
-			textures.put(EAST, east);
+			this.textures.put(EAST, east);
 			return this;
 		}
 
 		public Builder west(Identifier west) {
-			textures.put(WEST, west);
+			this.textures.put(WEST, west);
 			return this;
 		}
 
 		public Builder north(Identifier north) {
-			textures.put(NORTH, north);
+			this.textures.put(NORTH, north);
 			return this;
 		}
 
 		public Builder south(Identifier south) {
-			textures.put(SOUTH, south);
+			this.textures.put(SOUTH, south);
 			return this;
 		}
 
 		public Builder planet(Identifier planet) {
-			textures.put(PLANET, planet);
+			this.textures.put(PLANET, planet);
 			return this;
 		}
 

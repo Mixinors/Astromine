@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
 import com.github.chainmailstudios.astromine.access.WorldChunkAccess;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.server.world.ChunkHolder;
@@ -14,15 +15,18 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.WorldChunk;
 
 /**
- * faster world access for small areas (like when u don't need to access blocks on the other side of the world)
- * warning: not threadsafe!
+ * faster world access for small areas (like when u don't need to access blocks on the other side of the world) warning: not threadsafe!
  */
 public class RegionalWorldAccess {
-	private final BlockPos.Mutable current = new BlockPos.Mutable();
 	public final World world;
 	public final boolean isClient;
+	private final BlockPos.Mutable current = new BlockPos.Mutable();
 	private WorldChunk chunk;
 	private int cx, cz;
+
+	public RegionalWorldAccess(World world, BlockPos pos) {
+		this(world.getWorldChunk(pos));
+	}
 
 	public RegionalWorldAccess(WorldChunk chunk) {
 		this.chunk = chunk;
@@ -34,10 +38,9 @@ public class RegionalWorldAccess {
 		this.addDetatch();
 	}
 
-	public RegionalWorldAccess(World world, BlockPos pos) {
-		this(world.getWorldChunk(pos));
+	private void addDetatch() {
+		((WorldChunkAccess) this.chunk).astromine_addUnloadListener(() -> this.chunk = null);
 	}
-
 
 	public boolean setBlockState(BlockState state, int x, int y, int z) {
 		return this.setBlockState(state, x, y, z, 3);
@@ -62,7 +65,9 @@ public class RegionalWorldAccess {
 				return false;
 			} else {
 				BlockState blockState2 = this.getBlockState(x, y, z);
-				if (blockState2 != blockState && (blockState2.getOpacity(world, pos) != blockState.getOpacity(world, pos) || blockState2.getLuminance() != blockState.getLuminance() || blockState2.hasSidedTransparency() || blockState.hasSidedTransparency())) {
+				if (blockState2 != blockState && (blockState2.getOpacity(world, pos) != blockState.getOpacity(world,
+				                                                                                              pos
+				) || blockState2.getLuminance() != blockState.getLuminance() || blockState2.hasSidedTransparency() || blockState.hasSidedTransparency())) {
 					world.getChunkManager().getLightingProvider().checkBlock(pos);
 				}
 
@@ -118,27 +123,6 @@ public class RegionalWorldAccess {
 		return this.chunk;
 	}
 
-	public void updateNeighbor(BlockPos sourcePos, Block sourceBlock, BlockPos neighborPos) {
-		if (!this.isClient) {
-			BlockState blockState = this.getBlockState(sourcePos.getX(), sourcePos.getY(), sourcePos.getZ());
-			try {
-				blockState.neighborUpdate(this.world, sourcePos, sourceBlock, neighborPos, false);
-			} catch (Throwable var8) {
-				CrashReport crashReport = CrashReport.create(var8, "Exception while updating neighbours");
-				CrashReportSection crashReportSection = crashReport.addElement("Block being updated");
-				crashReportSection.add("Source block type", () -> {
-					try {
-						return String.format("ID #%s (%s // %s)", Registry.BLOCK.getId(sourceBlock), sourceBlock.getTranslationKey(), sourceBlock.getClass().getCanonicalName());
-					} catch (Throwable var2) {
-						return "ID #" + Registry.BLOCK.getId(sourceBlock);
-					}
-				});
-				CrashReportSection.addBlockInfo(crashReportSection, sourcePos, blockState);
-				throw new CrashException(crashReport);
-			}
-		}
-	}
-
 	private void moveTo(int toCx, int toCz) {
 		this.moveIn(toCx - this.cx, toCz - this.cz);
 	}
@@ -147,7 +131,7 @@ public class RegionalWorldAccess {
 		this.cz += offZ;
 		this.cx += offX;
 
-		if(this.chunk != null) {
+		if (this.chunk != null) {
 			while (offX > 0) {
 				this.chunk = ((WorldChunkAccess) this.chunk).astromine_east();
 				offX--;
@@ -173,7 +157,24 @@ public class RegionalWorldAccess {
 		this.addDetatch();
 	}
 
-	private void addDetatch() {
-		((WorldChunkAccess)this.chunk).astromine_addUnloadListener(() -> this.chunk = null);
+	public void updateNeighbor(BlockPos sourcePos, Block sourceBlock, BlockPos neighborPos) {
+		if (!this.isClient) {
+			BlockState blockState = this.getBlockState(sourcePos.getX(), sourcePos.getY(), sourcePos.getZ());
+			try {
+				blockState.neighborUpdate(this.world, sourcePos, sourceBlock, neighborPos, false);
+			} catch (Throwable var8) {
+				CrashReport crashReport = CrashReport.create(var8, "Exception while updating neighbours");
+				CrashReportSection crashReportSection = crashReport.addElement("Block being updated");
+				crashReportSection.add("Source block type", () -> {
+					try {
+						return String.format("ID #%s (%s // %s)", Registry.BLOCK.getId(sourceBlock), sourceBlock.getTranslationKey(), sourceBlock.getClass().getCanonicalName());
+					} catch (Throwable var2) {
+						return "ID #" + Registry.BLOCK.getId(sourceBlock);
+					}
+				});
+				CrashReportSection.addBlockInfo(crashReportSection, sourcePos, blockState);
+				throw new CrashException(crashReport);
+			}
+		}
 	}
 }

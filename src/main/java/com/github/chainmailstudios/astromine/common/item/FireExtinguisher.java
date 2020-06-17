@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.common.item;
 
 import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
 import com.github.chainmailstudios.astromine.registry.AstromineSounds;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
@@ -24,12 +25,18 @@ import net.minecraft.world.World;
 
 public class FireExtinguisher extends Item {
 	public static final Item.Settings SETTINGS = new Item.Settings().maxCount(1).group(AstromineItemGroups.ASTROMINE);
+	long lastPlayed = 0;
 
 	public FireExtinguisher() {
 		super(SETTINGS);
 	}
 
-	long lastPlayed = 0;
+	@Override
+	public ActionResult useOnBlock(ItemUsageContext context) {
+		this.use(context.getWorld(), context.getPlayer(), context.getHand());
+
+		return ActionResult.PASS;
+	}
 
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
@@ -55,10 +62,11 @@ public class FireExtinguisher extends Item {
 		BlockPos.Mutable.method_29715(new Box(result.getBlockPos()).expand(1)).forEach(position -> {
 			BlockState state = world.getBlockState(position);
 
-			state.getEntries().keySet().stream().filter(property -> property == FireBlock.EAST || property == FireBlock.WEST || property == FireBlock.NORTH || property == FireBlock.SOUTH || property == FireBlock.UP).forEach(property ->
-					world.setBlockState(position, Blocks.AIR.getDefaultState()));
-			state.getEntries().keySet().stream().filter(property -> property == CampfireBlock.LIT).forEach(property ->
-					world.setBlockState(position, world.getBlockState(position).with(CampfireBlock.LIT, false)));
+			state.getEntries().keySet().stream().filter(property -> property == FireBlock.EAST || property == FireBlock.WEST || property == FireBlock.NORTH || property == FireBlock.SOUTH || property == FireBlock.UP).forEach(property -> world.setBlockState(
+					position,
+					Blocks.AIR.getDefaultState()
+			));
+			state.getEntries().keySet().stream().filter(property -> property == CampfireBlock.LIT).forEach(property -> world.setBlockState(position, world.getBlockState(position).with(CampfireBlock.LIT, false)));
 		});
 
 		world.getEntities(null, new Box(result.getBlockPos()).expand(1)).forEach(entity -> {
@@ -74,14 +82,7 @@ public class FireExtinguisher extends Item {
 
 	@Override
 	public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
-		use(user.world, user, hand);
-
-		return ActionResult.PASS;
-	}
-
-	@Override
-	public ActionResult useOnBlock(ItemUsageContext context) {
-		use(context.getWorld(), context.getPlayer(), context.getHand());
+		this.use(user.world, user, hand);
 
 		return ActionResult.PASS;
 	}

@@ -1,15 +1,16 @@
 package com.github.chainmailstudios.astromine.common.network;
 
+import java.util.ArrayDeque;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.apache.commons.lang3.mutable.MutableBoolean;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import org.apache.commons.lang3.mutable.MutableBoolean;
-
-import java.util.ArrayDeque;
-import java.util.HashSet;
-import java.util.Set;
 
 public class NetworkTracer {
 	public static Object getObjectAt(World world, BlockPos position) {
@@ -60,7 +61,9 @@ public class NetworkTracer {
 				for (Direction direction : Direction.values()) {
 					BlockPos offsetPosition = position.offset(direction);
 
-					if (cache.contains(offsetPosition)) continue;
+					if (cache.contains(offsetPosition)) {
+						continue;
+					}
 
 					Object offsetObject = getObjectAt(world, offsetPosition);
 

@@ -1,8 +1,16 @@
 package com.github.chainmailstudios.astromine.common.gas;
 
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.google.common.collect.Lists;
+
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -12,35 +20,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 public class AtmosphericManager {
 	private static final ExecutorService pool = Executors.newCachedThreadPool();
 
 	private static final Map<BlockView, Map<BlockPos, FluidVolume>> LEVELS = new ConcurrentHashMap<>();
-
-	public static void add(BlockView world, BlockPos position, FluidVolume fluidVolume) {
-		LEVELS.computeIfAbsent(world, (key) -> new ConcurrentHashMap<>());
-
-		LEVELS.get(world).put(position, fluidVolume);
-	}
-
-	public static void remove(BlockView world, BlockPos position) {
-		LEVELS.computeIfAbsent(world, (key) -> new ConcurrentHashMap<>());
-
-		LEVELS.get(world).remove(position);
-	}
-
-	public static FluidVolume get(BlockView world, BlockPos position) {
-		LEVELS.computeIfAbsent(world, (key) -> new ConcurrentHashMap<>());
-
-		return LEVELS.get(world).getOrDefault(position, FluidVolume.EMPTY);
-	}
 
 	public static void simulate(BlockView world) {
 		pool.execute(() -> {
@@ -48,7 +31,9 @@ public class AtmosphericManager {
 
 			Map<BlockPos, FluidVolume> map = LEVELS.get(world);
 
-			if (map == null) return;
+			if (map == null) {
+				return;
+			}
 
 			for (Map.Entry<BlockPos, FluidVolume> pair : map.entrySet()) {
 				Collections.shuffle(directions);
@@ -88,6 +73,24 @@ public class AtmosphericManager {
 				}
 			}
 		});
+	}
+
+	public static FluidVolume get(BlockView world, BlockPos position) {
+		LEVELS.computeIfAbsent(world, (key) -> new ConcurrentHashMap<>());
+
+		return LEVELS.get(world).getOrDefault(position, FluidVolume.EMPTY);
+	}
+
+	public static void remove(BlockView world, BlockPos position) {
+		LEVELS.computeIfAbsent(world, (key) -> new ConcurrentHashMap<>());
+
+		LEVELS.get(world).remove(position);
+	}
+
+	public static void add(BlockView world, BlockPos position, FluidVolume fluidVolume) {
+		LEVELS.computeIfAbsent(world, (key) -> new ConcurrentHashMap<>());
+
+		LEVELS.get(world).put(position, fluidVolume);
 	}
 
 	@Override

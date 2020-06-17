@@ -1,22 +1,29 @@
 package com.github.chainmailstudios.astromine.common.fluid;
 
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.util.function.Function;
+
+import javax.imageio.ImageIO;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.registry.*;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.registry.AstromineFluids;
+import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import com.github.chainmailstudios.astromine.registry.AstromineResources;
 import net.devtech.arrp.api.RuntimeResourcePack;
-import net.devtech.arrp.impl.RuntimeResourcePackImpl;
 import net.devtech.arrp.json.blockstate.JState;
-import net.devtech.arrp.json.blockstate.JVariant;
 import net.devtech.arrp.json.models.JModel;
 import net.devtech.arrp.json.models.JTextures;
 import net.devtech.arrp.util.ImageUtil;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
-import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.block.*;
+import spinnery.widget.api.Color;
+
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FluidBlock;
+import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.Sprite;
@@ -24,7 +31,6 @@ import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -34,24 +40,21 @@ import net.minecraft.state.StateManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
-import spinnery.widget.api.Color;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.function.Function;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
+import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
+import net.fabricmc.loader.api.FabricLoader;
 
 public abstract class BaseFluid extends FlowableFluid {
-	private static final String BASE_BLOCKSTATE = "{\n" +
-			"    \"variants\": {\n" +
-			"        \"\": { \"model\": \"block/water\" }\n" +
-			"    }\n" +
-			"}\n";
+	private static final String BASE_BLOCKSTATE = "{\n" + "    \"variants\": {\n" + "        \"\": { \"model\": \"block/water\" }\n" + "    }\n" + "}\n";
 
 	final int fogColor;
 
@@ -69,30 +72,29 @@ public abstract class BaseFluid extends FlowableFluid {
 		this.isInfinite = isInfinite;
 	}
 
-	@Override
-	public Fluid getStill() {
-		return still;
+	public static Builder builder() {
+		return new Builder();
 	}
 
 	@Override
 	public Fluid getFlowing() {
-		return flowing;
+		return this.flowing;
+	}
+
+	@Override
+	public Fluid getStill() {
+		return this.still;
 	}
 
 	@Override
 	protected boolean isInfinite() {
-		return isInfinite;
+		return this.isInfinite;
 	}
 
 	@Override
 	protected void beforeBreakingBlock(WorldAccess world, BlockPos position, BlockState state) {
 		BlockEntity blockEntity = state.getBlock().hasBlockEntity() ? world.getBlockEntity(position) : null;
 		Block.dropStacks(state, world.getWorld(), position, blockEntity);
-	}
-
-	@Override
-	public boolean matchesType(Fluid fluid) {
-		return fluid == flowing || fluid == still;
 	}
 
 	@Override
@@ -107,12 +109,12 @@ public abstract class BaseFluid extends FlowableFluid {
 
 	@Override
 	public Item getBucketItem() {
-		return bucket;
+		return this.bucket;
 	}
 
 	@Override
 	protected boolean canBeReplacedWith(FluidState state, BlockView world, BlockPos pos, Fluid fluid, Direction direction) {
-		return direction == Direction.DOWN && fluid != flowing && fluid != still;
+		return direction == Direction.DOWN && fluid != this.flowing && fluid != this.still;
 	}
 
 	@Override
@@ -127,7 +129,7 @@ public abstract class BaseFluid extends FlowableFluid {
 
 	@Override
 	protected BlockState toBlockState(FluidState state) {
-		return block.getDefaultState().with(FluidBlock.LEVEL, method_15741(state));
+		return this.block.getDefaultState().with(FluidBlock.LEVEL, method_15741(state));
 	}
 
 	@Override
@@ -140,8 +142,9 @@ public abstract class BaseFluid extends FlowableFluid {
 		return 0;
 	}
 
-	public static Builder builder() {
-		return new Builder();
+	@Override
+	public boolean matchesType(Fluid fluid) {
+		return fluid == this.flowing || fluid == this.still;
 	}
 
 	public static class Builder {
@@ -185,8 +188,8 @@ public abstract class BaseFluid extends FlowableFluid {
 		}
 
 		public Fluid build() {
-			BaseFluid flowing = AstromineFluids.register(name + "_flowing", new Flowing(fogColor, isInfinite));
-			BaseFluid still = AstromineFluids.register(name, new Still(fogColor, isInfinite));
+			BaseFluid flowing = AstromineFluids.register(this.name + "_flowing", new Flowing(this.fogColor, this.isInfinite));
+			BaseFluid still = AstromineFluids.register(this.name, new Still(this.fogColor, this.isInfinite));
 
 			flowing.flowing = flowing;
 			still.flowing = flowing;
@@ -196,9 +199,9 @@ public abstract class BaseFluid extends FlowableFluid {
 			still.still = still;
 			this.still = still;
 
-			Block block = AstromineBlocks.register(name, new FluidBlock(still, AbstractBlock.Settings.of(Material.WATER).noCollision().strength(100.0F).dropsNothing()));
+			Block block = AstromineBlocks.register(this.name, new FluidBlock(still, AbstractBlock.Settings.of(Material.WATER).noCollision().strength(100.0F).dropsNothing()));
 
-			Item bucket = AstromineItems.register(name + "_bucket", new BucketItem(still, (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1).group(AstromineItemGroups.ASTROMINE)));
+			Item bucket = AstromineItems.register(this.name + "_bucket", new BucketItem(still, (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1).group(AstromineItemGroups.ASTROMINE)));
 
 			flowing.block = block;
 			still.block = block;
@@ -209,7 +212,7 @@ public abstract class BaseFluid extends FlowableFluid {
 			this.bucket = bucket;
 
 			if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-				buildClient();
+				this.buildClient();
 			}
 
 			return still;
@@ -218,9 +221,9 @@ public abstract class BaseFluid extends FlowableFluid {
 		private void buildClient() {
 			final Identifier stillSpriteIdentifier = new Identifier("block/water_still"); // AstromineCommon.identifier("block/" + name + "_still");
 			final Identifier flowingSpriteIdentifier = new Identifier("block/water_flow"); // AstromineCommon.identifier("block/" + name + "_flow");
-			final Identifier listenerIdentifier = AstromineCommon.identifier(name + "_reload_listener");
+			final Identifier listenerIdentifier = AstromineCommon.identifier(this.name + "_reload_listener");
 
-			final Sprite[] fluidSprites = { null, null };
+			final Sprite[] fluidSprites = {null, null};
 
 			ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEX).register((atlasTexture, registry) -> {
 				registry.register(stillSpriteIdentifier);
@@ -241,22 +244,13 @@ public abstract class BaseFluid extends FlowableFluid {
 
 					RuntimeResourcePack pack = AstromineResources.RESOURCE_PACK;
 
-					JState state = JState.state(
-							JState.variant(
-									JState.model("block/water")
-							)
-					);
+					JState state = JState.state(JState.variant(JState.model("block/water")));
 
-					pack.addBlockState(state, AstromineCommon.identifier(name));
+					pack.addBlockState(state, AstromineCommon.identifier(Builder.this.name));
 
-					JModel itemModel = JModel.model(
-							"item/generated"
-					).textures(
-							new JTextures()
-									.layer0(AstromineCommon.MOD_ID + ":textures/item/bucket/" + name)
-					);
+					JModel itemModel = JModel.model("item/generated").textures(new JTextures().layer0(AstromineCommon.MOD_ID + ":textures/item/bucket/" + Builder.this.name));
 
-					pack.addModel(itemModel, AstromineCommon.identifier("item/" + name + "_bucket"));
+					pack.addModel(itemModel, AstromineCommon.identifier("item/" + Builder.this.name + "_bucket"));
 
 					try {
 						BufferedImage bucketLayerA = ImageIO.read(resourceManager.getResource(AstromineCommon.identifier("textures/item/bucket_base.png")).getInputStream());
@@ -268,7 +262,7 @@ public abstract class BaseFluid extends FlowableFluid {
 						for (int y = 0; y < sYB; ++sYB) {
 							for (int x = 0; x < sXB; ++sXB) {
 								if (bucketLayerB.getRGB(x, y) != 0x00000000) {
-									bucketLayerB.setRGB(x, y, ImageUtil.recolor(bucketLayerB.getRGB(x, y), tint));
+									bucketLayerB.setRGB(x, y, ImageUtil.recolor(bucketLayerB.getRGB(x, y), Builder.this.tint));
 								}
 							}
 						}
@@ -285,7 +279,7 @@ public abstract class BaseFluid extends FlowableFluid {
 
 						graphics.dispose();
 
-						pack.addTexture(AstromineCommon.identifier("item/bucket/" + name),  bucketLayered);
+						pack.addTexture(AstromineCommon.identifier("item/bucket/" + Builder.this.name), bucketLayered);
 					} catch (Exception ignored) {
 						// Unused.
 					}
@@ -302,12 +296,12 @@ public abstract class BaseFluid extends FlowableFluid {
 
 				@Override
 				public int getFluidColor(BlockRenderView view, BlockPos pos, FluidState state) {
-					return tint;
+					return Builder.this.tint;
 				}
 			};
 
-			FluidRenderHandlerRegistry.INSTANCE.register(still, handler);
-			FluidRenderHandlerRegistry.INSTANCE.register(flowing, handler);
+			FluidRenderHandlerRegistry.INSTANCE.register(this.still, handler);
+			FluidRenderHandlerRegistry.INSTANCE.register(this.flowing, handler);
 		}
 	}
 
@@ -323,13 +317,13 @@ public abstract class BaseFluid extends FlowableFluid {
 		}
 
 		@Override
-		public int getLevel(FluidState state) {
-			return state.get(LEVEL);
+		public boolean isStill(FluidState state) {
+			return false;
 		}
 
 		@Override
-		public boolean isStill(FluidState state) {
-			return false;
+		public int getLevel(FluidState state) {
+			return state.get(LEVEL);
 		}
 	}
 
@@ -339,13 +333,13 @@ public abstract class BaseFluid extends FlowableFluid {
 		}
 
 		@Override
-		public int getLevel(FluidState state) {
-			return 8;
+		public boolean isStill(FluidState state) {
+			return true;
 		}
 
 		@Override
-		public boolean isStill(FluidState state) {
-			return true;
+		public int getLevel(FluidState state) {
+			return 8;
 		}
 	}
 }

@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.common.entity.projectile;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.registry.AstromineEntities;
+
 import net.minecraft.block.AbstractGlassBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -83,7 +84,7 @@ public class BulletEntity extends PersistentProjectileEntity {
 	}
 
 	public Identifier getTexture() {
-		return texture;
+		return this.texture;
 	}
 
 	public void setTexture(Identifier texture) {

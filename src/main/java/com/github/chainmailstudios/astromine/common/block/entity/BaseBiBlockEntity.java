@@ -1,5 +1,8 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import java.util.Collections;
+import java.util.List;
+
 import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
 import com.github.chainmailstudios.astromine.common.volume.collection.AgnosticSidedVolumeCollection;
 import com.github.chainmailstudios.astromine.common.volume.collection.IndexedVolumeCollection;
@@ -7,15 +10,13 @@ import com.github.chainmailstudios.astromine.common.volume.collection.SimpleInde
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.google.common.collect.Lists;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
-
-import java.util.Collections;
-import java.util.List;
 
 public abstract class BaseBiBlockEntity extends BlockEntity implements AgnosticSidedVolumeCollection {
 	private SimpleIndexedVolumeCollection<FluidVolume> fluidVolumeCollection = new SimpleIndexedVolumeCollection();
@@ -24,30 +25,22 @@ public abstract class BaseBiBlockEntity extends BlockEntity implements AgnosticS
 	public BaseBiBlockEntity(BlockEntityType<?> type) {
 		super(type);
 
-		fluidVolumeCollection.addVolume(new FluidVolume());
-		energyVolumeCollection.addVolume(new EnergyVolume());
+		this.fluidVolumeCollection.addVolume(new FluidVolume());
+		this.energyVolumeCollection.addVolume(new EnergyVolume());
 	}
 
 	@Override
 	public boolean contains(Direction direction, int volumeType) {
-		Direction facing = getCachedState().get(FacingBlock.FACING);
+		Direction facing = this.getCachedState().get(FacingBlock.FACING);
 
 		return (volumeType == EnergyVolume.TYPE || volumeType == FluidVolume.TYPE) && direction != facing;
 	}
 
 	@Override
 	public <U extends BaseVolume, T extends IndexedVolumeCollection<U>> T get(Direction direction, int volumeType) {
-		Direction facing = getCachedState().get(FacingBlock.FACING);
+		Direction facing = this.getCachedState().get(FacingBlock.FACING);
 
-		return direction != facing ? volumeType == EnergyVolume.TYPE ? (T) energyVolumeCollection : volumeType == FluidVolume.TYPE ? (T) fluidVolumeCollection : null : null;
-	}
-
-	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		tag.put("energy", energyVolumeCollection.toTag(new CompoundTag()));
-		tag.put("fluid", fluidVolumeCollection.toTag(new CompoundTag()));
-
-		return super.toTag(tag);
+		return direction != facing ? volumeType == EnergyVolume.TYPE ? (T) this.energyVolumeCollection : volumeType == FluidVolume.TYPE ? (T) this.fluidVolumeCollection : null : null;
 	}
 
 	@Override
@@ -77,5 +70,13 @@ public abstract class BaseBiBlockEntity extends BlockEntity implements AgnosticS
 		this.fluidVolumeCollection = (SimpleIndexedVolumeCollection<FluidVolume>) fluidCollection;
 
 		super.fromTag(state, tag);
+	}
+
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		tag.put("energy", this.energyVolumeCollection.toTag(new CompoundTag()));
+		tag.put("fluid", this.fluidVolumeCollection.toTag(new CompoundTag()));
+
+		return super.toTag(tag);
 	}
 }

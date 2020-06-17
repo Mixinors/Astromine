@@ -1,17 +1,17 @@
 package com.github.chainmailstudios.astromine.mixin;
 
 import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.projectile.thrown.EggEntity;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-@Mixin(EggEntity.class)
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.projectile.thrown.EggEntity;
+import net.minecraft.world.World;
+
+@Mixin (EggEntity.class)
 public class EggEntityMixin {
-	@ModifyConstant(method = "handleStatus(B)V", constant = @Constant(doubleValue = 0.08D))
+	@ModifyConstant (method = "handleStatus(B)V", constant = @Constant (doubleValue = 0.08D))
 	double getGravityA(double original) {
 		World world = ((Entity) (Object) this).world;
 

@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.common.volume;
 
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.google.common.base.Objects;
+
 import net.minecraft.nbt.CompoundTag;
 
 public class BaseVolume {
@@ -23,11 +24,7 @@ public class BaseVolume {
 	}
 
 	public boolean isFull() {
-		return getFraction().equals(getSize());
-	}
-
-	public boolean isEmpty() {
-		return this.getFraction().equals(Fraction.EMPTY);
+		return this.getFraction().equals(this.getSize());
 	}
 
 	public Fraction getFraction() {
@@ -38,9 +35,20 @@ public class BaseVolume {
 		this.fraction = fraction;
 	}
 
+	public Fraction getSize() {
+		return this.size;
+	}
+
+	public void setSize(Fraction size) {
+		this.size = size;
+	}
+
+	public boolean isEmpty() {
+		return this.getFraction().equals(Fraction.EMPTY);
+	}
+
 	/**
-	 * Serializes this Volume and its properties
-	 * into a tag.
+	 * Serializes this Volume and its properties into a tag.
 	 *
 	 * @return a tag
 	 */
@@ -57,23 +65,42 @@ public class BaseVolume {
 	 */
 	public <T extends BaseVolume> T take(Fraction taken) {
 		T volume = (T) new BaseVolume();
-		push(volume, taken);
+		this.push(volume, taken);
 		return volume;
+	}
+
+	/**
+	 * Push fluids from this Volume into a Volume. If the Volume's fractional available is smaller than pushed, ask for the minimum. If not, ask for the minimum between requested size and available for pushing into target.
+	 */
+	public void push(BaseVolume target, Fraction pushed) {
+		Fraction available = Fraction.subtract(target.size, target.fraction);
+
+		pushed = Fraction.min(pushed, available);
+
+		if (this.fraction.isSmallerThan(pushed)) { // If target has less than required.
+			this.setFraction(Fraction.subtract(this.fraction, this.fraction));
+			target.setFraction(Fraction.add(target.getFraction(), this.fraction));
+
+			target.setFraction(Fraction.simplify(target.getFraction()));
+			this.setFraction(Fraction.simplify(this.getFraction()));
+		} else { // If target has more than or equal to required.
+			this.setFraction(Fraction.subtract(this.fraction, pushed));
+			target.setFraction(Fraction.add(target.getFraction(), pushed));
+
+			target.setFraction(Fraction.simplify(target.getFraction()));
+			this.setFraction(Fraction.simplify(this.getFraction()));
+		}
 	}
 
 	/**
 	 * Adds to this Volume.
 	 */
 	public <T extends BaseVolume> T give(Fraction pushed) {
-		return (T) new BaseVolume(Fraction.add(fraction, pushed));
+		return (T) new BaseVolume(Fraction.add(this.fraction, pushed));
 	}
 
 	/**
-	 * Pull fluids from a Volume into this Volume.
-	 * If the Volume's fractional available is smaller than
-	 * pulled, ask for the minimum. If not, ask for the
-	 * minimum between requested size and available
-	 * for pulling into this.
+	 * Pull fluids from a Volume into this Volume. If the Volume's fractional available is smaller than pulled, ask for the minimum. If not, ask for the minimum between requested size and available for pulling into this.
 	 */
 	public void pull(BaseVolume target, Fraction pulled) {
 		Fraction available = Fraction.subtract(this.size, this.fraction);
@@ -82,52 +109,17 @@ public class BaseVolume {
 
 		if (target.fraction.isSmallerThan(pulled)) { // If target has less than required.
 			target.setFraction(Fraction.subtract(target.fraction, target.fraction));
-			setFraction(Fraction.add(getFraction(), target.fraction));
+			this.setFraction(Fraction.add(this.getFraction(), target.fraction));
 
 			target.setFraction(Fraction.simplify(target.getFraction()));
-			setFraction(Fraction.simplify(getFraction()));
+			this.setFraction(Fraction.simplify(this.getFraction()));
 		} else { // If target has more than or equal to required.
 			target.setFraction(Fraction.subtract(target.fraction, pulled));
-			setFraction(Fraction.add(getFraction(), pulled));
+			this.setFraction(Fraction.add(this.getFraction(), pulled));
 
 			target.setFraction(Fraction.simplify(target.getFraction()));
-			setFraction(Fraction.simplify(getFraction()));
+			this.setFraction(Fraction.simplify(this.getFraction()));
 		}
-	}
-
-	/**
-	 * Push fluids from this Volume into a Volume.
-	 * If the Volume's fractional available is smaller than
-	 * pushed, ask for the minimum. If not, ask for the
-	 * minimum between requested size and available for
-	 * pushing into target.
-	 */
-	public void push(BaseVolume target, Fraction pushed) {
-		Fraction available = Fraction.subtract(target.size, target.fraction);
-
-		pushed = Fraction.min(pushed, available);
-
-		if (fraction.isSmallerThan(pushed)) { // If target has less than required.
-			setFraction(Fraction.subtract(fraction, fraction));
-			target.setFraction(Fraction.add(target.getFraction(), fraction));
-
-			target.setFraction(Fraction.simplify(target.getFraction()));
-			setFraction(Fraction.simplify(getFraction()));
-		} else { // If target has more than or equal to required.
-			setFraction(Fraction.subtract(fraction, pushed));
-			target.setFraction(Fraction.add(target.getFraction(), pushed));
-
-			target.setFraction(Fraction.simplify(target.getFraction()));
-			setFraction(Fraction.simplify(getFraction()));
-		}
-	}
-
-	public Fraction getSize() {
-		return this.size;
-	}
-
-	public void setSize(Fraction size) {
-		this.size = size;
 	}
 
 	@Override
@@ -137,8 +129,12 @@ public class BaseVolume {
 
 	@Override
 	public boolean equals(Object object) {
-		if (this == object) return true;
-		if (!(object instanceof BaseVolume)) return false;
+		if (this == object) {
+			return true;
+		}
+		if (!(object instanceof BaseVolume)) {
+			return false;
+		}
 
 		BaseVolume volume = (BaseVolume) object;
 

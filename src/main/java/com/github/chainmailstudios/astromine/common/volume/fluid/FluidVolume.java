@@ -1,10 +1,14 @@
 package com.github.chainmailstudios.astromine.common.volume.fluid;
 
-import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
+import java.util.Collection;
+import java.util.List;
+
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
 import com.github.chainmailstudios.astromine.registry.PropertyRegistry;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
+
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
@@ -12,18 +16,12 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import java.util.Collection;
-import java.util.List;
-
 public class FluidVolume extends BaseVolume {
 	public static final int TYPE = 0;
-
+	public static final FluidVolume EMPTY = new FluidVolume();
 	final List<FluidProperty> properties = Lists.newArrayList();
 	final List<FluidCondition> fluidConditions = Lists.newArrayList();
-
 	private Fluid fluid = Fluids.EMPTY;
-
-	public static final FluidVolume EMPTY = new FluidVolume();
 
 	/**
 	 * Instantiates a Volume with an empty fraction and fluid.
@@ -109,11 +107,11 @@ public class FluidVolume extends BaseVolume {
 	}
 
 	/**
-	 * Serializes this Volume and its properties
-	 * into a tag.
+	 * Serializes this Volume and its properties into a tag.
 	 *
 	 * @return a tag
 	 */
+	@Override
 	public CompoundTag toTag(CompoundTag tag) {
 		// TODO: Null checks.
 
@@ -131,43 +129,23 @@ public class FluidVolume extends BaseVolume {
 		return tag;
 	}
 
-	public Fluid getFluid() {
-		return this.fluid;
-	}
-
-	public void setFluid(Fluid fluid) {
-		this.fluid = fluid;
-	}
-
-	public String toInterfaceString() {
-		return new TranslatableText(fluid.getBucketItem().getTranslationKey()).getString().replace(" Bucket", "") + " | " + fraction.getNumerator() + "/" + fraction.getDenominator();
-	}
-
 	@Override
 	public <T extends BaseVolume> T take(Fraction taken) {
-		return (T) new FluidVolume(fluid, super.take(taken).getFraction());
+		return (T) new FluidVolume(this.fluid, super.take(taken).getFraction());
 	}
 
 	@Override
 	public <T extends BaseVolume> T give(Fraction pushed) {
-		return (T) new FluidVolume(fluid, super.give(pushed).getFraction());
+		return (T) new FluidVolume(this.fluid, super.give(pushed).getFraction());
 	}
 
-	public void pull(FluidVolume target, Fraction pulled) {
-		if (fluidConditions.stream().anyMatch(condition -> !condition.test(this, target))) return;
-		else super.pull(target, pulled);
-	}
-
-	public void push(FluidVolume target, Fraction pushed) {
-		if (fluidConditions.stream().anyMatch(condition -> !condition.test(this, target))) return;
-		else super.push(target, pushed);
-	}
-
+	@Override
 	@Deprecated
 	public void pull(BaseVolume target, Fraction pulled) {
 		// Deprecated!
 	}
 
+	@Override
 	@Deprecated
 	public void push(BaseVolume target, Fraction pushed) {
 		// Deprecated!
@@ -180,12 +158,44 @@ public class FluidVolume extends BaseVolume {
 
 	@Override
 	public boolean equals(Object object) {
-		if (this == object) return true;
-		if (!(object instanceof FluidVolume)) return false;
+		if (this == object) {
+			return true;
+		}
+		if (!(object instanceof FluidVolume)) {
+			return false;
+		}
 
 		FluidVolume fluidVolume = (FluidVolume) object;
 
 		return Objects.equal(this.properties, fluidVolume.properties) && Objects.equal(this.fluid, fluidVolume.fluid) && Objects.equal(this.fraction, fluidVolume.fraction);
+	}
+
+	public Fluid getFluid() {
+		return this.fluid;
+	}
+
+	public void setFluid(Fluid fluid) {
+		this.fluid = fluid;
+	}
+
+	public String toInterfaceString() {
+		return new TranslatableText(this.fluid.getBucketItem().getTranslationKey()).getString().replace(" Bucket", "") + " | " + this.fraction.getNumerator() + "/" + this.fraction.getDenominator();
+	}
+
+	public void pull(FluidVolume target, Fraction pulled) {
+		if (this.fluidConditions.stream().anyMatch(condition -> !condition.test(this, target))) {
+			return;
+		} else {
+			super.pull(target, pulled);
+		}
+	}
+
+	public void push(FluidVolume target, Fraction pushed) {
+		if (this.fluidConditions.stream().anyMatch(condition -> !condition.test(this, target))) {
+			return;
+		} else {
+			super.push(target, pushed);
+		}
 	}
 
 	@Override

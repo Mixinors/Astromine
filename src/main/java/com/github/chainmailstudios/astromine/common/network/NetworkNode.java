@@ -25,7 +25,9 @@ public class NetworkNode {
 
 	@Override
 	public boolean equals(Object object) {
-		if (!(object instanceof NetworkNode)) return false;
+		if (!(object instanceof NetworkNode)) {
+			return false;
+		}
 		return ((NetworkNode) object).position.equals(this.position);
 	}
 }

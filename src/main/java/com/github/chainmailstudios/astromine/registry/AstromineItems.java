@@ -1,7 +1,12 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import java.util.Iterator;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.item.*;
+import com.github.chainmailstudios.astromine.common.item.FireExtinguisher;
+import com.github.chainmailstudios.astromine.common.item.HolographicConnector;
+import com.github.chainmailstudios.astromine.common.item.SuperSpaceSlimeShooterItem;
+import com.github.chainmailstudios.astromine.common.item.UncoloredSpawnEggItem;
 import com.github.chainmailstudios.astromine.common.item.weapon.variant.Weaponry;
 import com.github.chainmailstudios.astromine.common.item.weapon.variant.ammo.Ammunition;
 
@@ -10,22 +15,23 @@ import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.AxeItem;
+import net.minecraft.item.HoeItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.PickaxeItem;
+import net.minecraft.item.ShovelItem;
+import net.minecraft.item.SwordItem;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 
-import java.util.Iterator;
-
 public class AstromineItems {
 	public static final Item.Settings BASIC_SETTINGS = new Item.Settings().group(AstromineItemGroups.ASTROMINE);
 
-	public static final UncoloredSpawnEggItem SPACE_SLIME_SPAWN_EGG = register("space_slime_spawn_egg", new UncoloredSpawnEggItem(
-			AstromineEntities.SPACE_SLIME,
-			new Item.Settings().group(AstromineItemGroups.ASTROMINE)
-	));
+	public static final UncoloredSpawnEggItem SPACE_SLIME_SPAWN_EGG = register("space_slime_spawn_egg", new UncoloredSpawnEggItem(AstromineEntities.SPACE_SLIME, new Item.Settings().group(AstromineItemGroups.ASTROMINE)));
 
 	public static final SuperSpaceSlimeShooterItem SUPER_SPACE_SLIME_SHOOTER = register("super_space_slime_shooter", new SuperSpaceSlimeShooterItem(new Item.Settings().group(AstromineItemGroups.ASTROMINE)));
 	public static final Item SPACE_SLIME_BALL = register("space_slime_ball", new Item(new Item.Settings().group(AstromineItemGroups.ASTROMINE)));
@@ -130,12 +136,13 @@ public class AstromineItems {
 	public static void initialize() {
 		Iterator var1 = UncoloredSpawnEggItem.getAll().iterator();
 
-		while(var1.hasNext()) {
-			UncoloredSpawnEggItem spawnEggItem = (UncoloredSpawnEggItem)var1.next();
+		while (var1.hasNext()) {
+			UncoloredSpawnEggItem spawnEggItem = (UncoloredSpawnEggItem) var1.next();
 			DispenserBlock.registerBehavior(spawnEggItem, new ItemDispenserBehavior() {
+				@Override
 				public ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
 					Direction direction = pointer.getBlockState().get(DispenserBlock.FACING);
-					EntityType<?> entityType = ((UncoloredSpawnEggItem)stack.getItem()).getEntityType(stack.getTag());
+					EntityType<?> entityType = ((UncoloredSpawnEggItem) stack.getItem()).getEntityType(stack.getTag());
 					entityType.spawnFromItemStack(pointer.getWorld(), stack, null, pointer.getBlockPos().offset(direction), SpawnReason.DISPENSER, direction != Direction.UP, false);
 					stack.decrement(1);
 					return stack;
