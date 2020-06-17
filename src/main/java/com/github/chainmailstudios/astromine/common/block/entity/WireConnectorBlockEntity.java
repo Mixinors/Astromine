@@ -20,10 +20,10 @@ public abstract class WireConnectorBlockEntity extends BlockEntity implements Bl
 	public List<NetworkNode> children = new ArrayList<>();
 	public List<NetworkNode> parents = new ArrayList<>();
 
-	public static final Map<NetworkNode, List<Vector3f>> points = new HashMap<>();
+	public static final Map<NetworkNode, Collection<Vector3f>> points = new HashMap<>();
 
 	public WireConnectorBlockEntity() {
-		super(AstromineBlockEntityTypes.ENERGY_CABLE_NODE);
+		super(AstromineBlockEntityTypes.ENERGY_WIRE_CONNECTOR);
 	}
 
 	public static WireConnectorBlockEntity getSelected(World world) {
@@ -35,9 +35,10 @@ public abstract class WireConnectorBlockEntity extends BlockEntity implements Bl
 	}
 
 	public static Collection<Vector3f> getSegments(WireConnectorBlockEntity parent, WireConnectorBlockEntity child, float distance) {
-		if (!points.containsKey(NetworkNode.of(child.getPos()))) {
-			List<Vector3f> positions = (List<Vector3f>) WireConnectorBlockEntity.getSegments(parent, child, distance);
+		if (points.containsKey(NetworkNode.of(child.getPos()))) {
+			points.get(NetworkNode.of(child.getPos()));
 		}
+
 		List<Vector3f> positions = new ArrayList<>();
 
 		if (child == null || parent == null) return positions;
@@ -62,10 +63,14 @@ public abstract class WireConnectorBlockEntity extends BlockEntity implements Bl
 
 		float[] x3y3z3 = WireConnectorBlockEntity.applyTransformations(parent.world.getBlockState(parent.getPos()).get(WireConnectorBlock.FACING), x3, y3, z3, oY);
 		x3 = x3y3z3[0];
-		y3 = x3y3z3[3];
+		y3 = x3y3z3[1];
 		z3 = x3y3z3[2];
 
-		return LineUtilities.getBezierSegments(new Vector3f(x1, y1, z1), new Vector3f(x3, y3, z3), null, 1f / distance);
+		Collection<Vector3f> segments = LineUtilities.getBezierSegments(new Vector3f(x1, y1, z1), new Vector3f(x3, y3, z3), null, distance * 4);
+
+		points.put(NetworkNode.of(child.getPos()), segments);
+
+		return segments;
 	}
 
 	public static float[] applyTransformations(Direction direction, float x1, float y1, float z1, float oY) {

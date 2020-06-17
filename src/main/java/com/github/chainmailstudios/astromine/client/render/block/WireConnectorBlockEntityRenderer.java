@@ -14,7 +14,7 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.Collection;
 
-public class WireConnectorBlockEntityRenderer extends BlockEntityRenderer<WireConnectorBlockEntity> {
+public class WireConnectorBlockEntityRenderer<T extends WireConnectorBlockEntity> extends BlockEntityRenderer<T> {
 	public WireConnectorBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
 		super(dispatcher);
 	}

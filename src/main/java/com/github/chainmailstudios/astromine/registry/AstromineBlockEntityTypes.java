@@ -1,7 +1,8 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.entity.WireConnectorBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.EnergyWireConnectorBlock;
+import com.github.chainmailstudios.astromine.common.block.entity.EnergyWireConnectorBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.OxygenVentBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
 import net.minecraft.block.Block;
@@ -16,7 +17,7 @@ public class AstromineBlockEntityTypes {
 
 	public static BlockEntityType<OxygenVentBlockEntity> OXYGEN_VENT = register("oxygen_vent", OxygenVentBlockEntity::new, AstromineBlocks.OXYGEN_VENT);
 
-	public static BlockEntityType<WireConnectorBlockEntity> ENERGY_CABLE_NODE = register("energy_wire_node", WireConnectorBlockEntity::new, AstromineBlocks.ENERGY_CABLE_NODE);
+	public static BlockEntityType<EnergyWireConnectorBlockEntity> ENERGY_WIRE_CONNECTOR = register("energy_wire_connector", EnergyWireConnectorBlockEntity::new, AstromineBlocks.ENERGY_WIRE_CONNECTOR);
 
 	public static void initialize() {
 		// Unused.
