@@ -6,13 +6,15 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.util.registry.Registry;
 
 public class AstromineFluids {
+	public static final Fluid OXYGEN = BaseFluid.builder()
+			.fog(0x7e159ef9)
+			.tint(0xff159ef9)
+			.infinite(false)
+			.name("oxygen")
+			.build();
+
 	public static void initialize() {
-		BaseFluid.builder()
-				.fog(0xffffffff)
-				.tint(0x00ff0000)
-				.infinite(false)
-				.name("oxygen")
-				.build();
+
 	}
 
 	public static <T extends Fluid> T register(String name, T fluid) {

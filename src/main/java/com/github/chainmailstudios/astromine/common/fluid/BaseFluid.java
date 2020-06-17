@@ -3,9 +3,12 @@ package com.github.chainmailstudios.astromine.common.fluid;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.registry.*;
 import net.devtech.arrp.api.RuntimeResourcePack;
+import net.devtech.arrp.impl.RuntimeResourcePackImpl;
 import net.devtech.arrp.json.blockstate.JState;
 import net.devtech.arrp.json.blockstate.JVariant;
 import net.devtech.arrp.json.models.JModel;
+import net.devtech.arrp.json.models.JTextures;
+import net.devtech.arrp.util.ImageUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
@@ -38,6 +41,9 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import spinnery.widget.api.Color;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.function.Function;
 
 public abstract class BaseFluid extends FlowableFluid {
@@ -85,6 +91,11 @@ public abstract class BaseFluid extends FlowableFluid {
 	}
 
 	@Override
+	public boolean matchesType(Fluid fluid) {
+		return fluid == flowing || fluid == still;
+	}
+
+	@Override
 	protected int getFlowSpeed(WorldView world) {
 		return 4;
 	}
@@ -117,6 +128,16 @@ public abstract class BaseFluid extends FlowableFluid {
 	@Override
 	protected BlockState toBlockState(FluidState state) {
 		return block.getDefaultState().with(FluidBlock.LEVEL, method_15741(state));
+	}
+
+	@Override
+	public boolean isStill(FluidState state) {
+		return false;
+	}
+
+	@Override
+	public int getLevel(FluidState state) {
+		return 0;
 	}
 
 	public static Builder builder() {
@@ -163,7 +184,7 @@ public abstract class BaseFluid extends FlowableFluid {
 			return this;
 		}
 
-		public void build() {
+		public Fluid build() {
 			BaseFluid flowing = AstromineFluids.register(name + "_flowing", new Flowing(fogColor, isInfinite));
 			BaseFluid still = AstromineFluids.register(name, new Still(fogColor, isInfinite));
 
@@ -190,6 +211,8 @@ public abstract class BaseFluid extends FlowableFluid {
 			if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
 				buildClient();
 			}
+
+			return still;
 		}
 
 		private void buildClient() {
@@ -215,6 +238,59 @@ public abstract class BaseFluid extends FlowableFluid {
 					final Function<Identifier, Sprite> atlas = MinecraftClient.getInstance().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
 					fluidSprites[0] = atlas.apply(stillSpriteIdentifier);
 					fluidSprites[1] = atlas.apply(flowingSpriteIdentifier);
+
+					RuntimeResourcePack pack = AstromineResources.RESOURCE_PACK;
+
+					JState state = JState.state(
+							JState.variant(
+									JState.model("block/water")
+							)
+					);
+
+					pack.addBlockState(state, AstromineCommon.identifier(name));
+
+					JModel itemModel = JModel.model(
+							"item/generated"
+					).textures(
+							new JTextures()
+									.layer0(AstromineCommon.MOD_ID + ":textures/item/bucket/" + name)
+					);
+
+					pack.addModel(itemModel, AstromineCommon.identifier("item/" + name + "_bucket"));
+
+					try {
+						BufferedImage bucketLayerA = ImageIO.read(resourceManager.getResource(AstromineCommon.identifier("textures/item/bucket_base.png")).getInputStream());
+						BufferedImage bucketLayerB = ImageIO.read(resourceManager.getResource(AstromineCommon.identifier("textures/item/bucket_overlay.png")).getInputStream());
+
+						int sXB = bucketLayerB.getWidth();
+						int sYB = bucketLayerB.getHeight();
+
+						for (int y = 0; y < sYB; ++sYB) {
+							for (int x = 0; x < sXB; ++sXB) {
+								if (bucketLayerB.getRGB(x, y) != 0x00000000) {
+									bucketLayerB.setRGB(x, y, ImageUtil.recolor(bucketLayerB.getRGB(x, y), tint));
+								}
+							}
+						}
+
+						int sXA = bucketLayerA.getWidth();
+						int sYA = bucketLayerA.getHeight();
+
+						BufferedImage bucketLayered = new BufferedImage(sXA, sYA, BufferedImage.TYPE_INT_ARGB);
+
+						Graphics graphics = bucketLayered.getGraphics();
+
+						graphics.drawImage(bucketLayerA, 0, 0, null);
+						graphics.drawImage(bucketLayerB, 0, 0, null);
+
+						graphics.dispose();
+
+						pack.addTexture(AstromineCommon.identifier("item/bucket/" + name),  bucketLayered);
+					} catch (Exception ignored) {
+						// Unused.
+					}
+
+
 				}
 			});
 
@@ -232,16 +308,6 @@ public abstract class BaseFluid extends FlowableFluid {
 
 			FluidRenderHandlerRegistry.INSTANCE.register(still, handler);
 			FluidRenderHandlerRegistry.INSTANCE.register(flowing, handler);
-
-			RuntimeResourcePack pack = AstromineResources.RESOURCE_PACK;
-
-			JState state = JState.state(
-					JState.variant(
-							JState.model("block/water")
-					)
-			);
-
-			pack.addBlockState(state, AstromineCommon.identifier("blockstates/" + name));
 		}
 	}
 
