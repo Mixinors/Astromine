@@ -1,11 +1,7 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.AstromineOreBlock;
-import com.github.chainmailstudios.astromine.common.block.ElectrolyzerBlock;
-import com.github.chainmailstudios.astromine.common.block.HolographicBridgeInvisibleBlock;
-import com.github.chainmailstudios.astromine.common.block.HolographicBridgeProjectorBlock;
-import com.github.chainmailstudios.astromine.common.block.NuclearWeaponBlock;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.MagmaBlock;
@@ -17,8 +13,12 @@ import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.AstromineOreBlock;
+import com.github.chainmailstudios.astromine.common.block.ElectrolyzerBlock;
+import com.github.chainmailstudios.astromine.common.block.HolographicBridgeInvisibleBlock;
+import com.github.chainmailstudios.astromine.common.block.HolographicBridgeProjectorBlock;
+import com.github.chainmailstudios.astromine.common.block.NuclearWeaponBlock;
 
 public class AstromineBlocks {
 	public static final Block HOLOGRAPHIC_BRIDGE_PROJECTOR = register("holographic_bridge_projector", new HolographicBridgeProjectorBlock(FabricBlockSettings.of(Material.METAL)

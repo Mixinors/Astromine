@@ -1,11 +1,10 @@
 package com.github.chainmailstudios.astromine.common.fraction;
 
-import java.math.RoundingMode;
+import net.minecraft.nbt.CompoundTag;
 
 import com.google.common.base.Objects;
 import com.google.common.math.LongMath;
-
-import net.minecraft.nbt.CompoundTag;
+import java.math.RoundingMode;
 
 public class Fraction extends Number implements Comparable<Fraction> {
 	public static final Fraction EMPTY = new Fraction(0, 1);

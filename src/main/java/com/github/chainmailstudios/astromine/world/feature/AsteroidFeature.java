@@ -1,20 +1,5 @@
 package com.github.chainmailstudios.astromine.world.feature;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
-
-import com.github.chainmailstudios.astromine.common.registry.AsteroidOreRegistry;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
-import com.mojang.serialization.Codec;
-import com.terraformersmc.shapes.api.Position;
-import com.terraformersmc.shapes.api.Quaternion;
-import com.terraformersmc.shapes.api.Shape;
-import com.terraformersmc.shapes.impl.Shapes;
-import com.terraformersmc.shapes.impl.layer.transform.RotateLayer;
-import com.terraformersmc.shapes.impl.layer.transform.TranslateLayer;
-
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ServerWorldAccess;
@@ -22,6 +7,21 @@ import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
+import com.mojang.serialization.Codec;
+
+import com.github.chainmailstudios.astromine.common.registry.AsteroidOreRegistry;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.terraformersmc.shapes.api.Position;
+import com.terraformersmc.shapes.api.Quaternion;
+import com.terraformersmc.shapes.api.Shape;
+import com.terraformersmc.shapes.impl.Shapes;
+import com.terraformersmc.shapes.impl.layer.transform.RotateLayer;
+import com.terraformersmc.shapes.impl.layer.transform.TranslateLayer;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 public class AsteroidFeature extends Feature<DefaultFeatureConfig> {
 	public AsteroidFeature(Codec<DefaultFeatureConfig> codec) {

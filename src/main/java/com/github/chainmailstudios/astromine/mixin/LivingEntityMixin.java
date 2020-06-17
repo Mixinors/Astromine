@@ -1,7 +1,7 @@
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
-import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
+import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,7 +17,9 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
-import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
+import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
+import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
+import com.github.chainmailstudios.astromine.misc.SpaceEntityPlacer;
 
 @Mixin (LivingEntity.class)
 public abstract class LivingEntityMixin {
@@ -48,13 +50,13 @@ public abstract class LivingEntityMixin {
 
 				ServerWorld serverWorld = entity.world.getServer().getWorld(worldKey);
 
-				FabricDimensions.teleport(entity, serverWorld).updatePosition(entity.getPos().getX(), 256, entity.getPos().getZ());
+				FabricDimensions.teleport(entity, serverWorld, SpaceEntityPlacer.FALL_FROM_SPACE);
 			} else if (this.lastY >= tY && tY != Integer.MIN_VALUE) {
 				RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.TOP, entity.world.getDimensionRegistryKey()).getValue());
 
 				ServerWorld serverWorld = entity.world.getServer().getWorld(worldKey);
 
-				FabricDimensions.teleport(entity, serverWorld).updatePosition(entity.getPos().getX(), 256, entity.getPos().getZ());
+				FabricDimensions.teleport(entity, serverWorld, SpaceEntityPlacer.ENTER_SPACE);
 			}
 		}
 	}

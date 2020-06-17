@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -8,6 +7,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
 
 @Mixin (Entity.class)
 public abstract class EntityMixin {

@@ -1,10 +1,10 @@
 package com.github.chainmailstudios.astromine.client.render;
 
-import net.minecraft.client.render.SkyProperties;
-import net.minecraft.util.math.Vec3d;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
+import net.minecraft.client.render.SkyProperties;
+import net.minecraft.util.math.Vec3d;
 
 @Environment (EnvType.CLIENT)
 public class AstromineSkyProperties extends SkyProperties {

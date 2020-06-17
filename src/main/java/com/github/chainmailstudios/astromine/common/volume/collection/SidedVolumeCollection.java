@@ -1,12 +1,12 @@
 package com.github.chainmailstudios.astromine.common.volume.collection;
 
-import java.util.Iterator;
-import java.util.Map;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.math.Direction;
+import java.util.Iterator;
+import java.util.Map;
 
 public interface SidedVolumeCollection<T extends BaseVolume> extends Iterable<Map.Entry<Direction, IndexedVolumeCollection<T>>> {
 	default IndexedVolumeCollection<T> getCollection(Direction direction) {

@@ -1,7 +1,5 @@
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.entity.OxygenVentBlockEntity;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -10,6 +8,8 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.world.BlockView;
+
+import com.github.chainmailstudios.astromine.common.block.entity.OxygenVentBlockEntity;
 
 public class ElectrolyzerBlock extends FacingBlock implements BlockEntityProvider {
 	public ElectrolyzerBlock(Settings settings) {

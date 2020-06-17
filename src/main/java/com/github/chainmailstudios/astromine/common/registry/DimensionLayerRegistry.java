@@ -1,11 +1,11 @@
 package com.github.chainmailstudios.astromine.common.registry;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.minecraft.util.Pair;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.dimension.DimensionType;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DimensionLayerRegistry {
 	public static final DimensionLayerRegistry INSTANCE = new DimensionLayerRegistry();

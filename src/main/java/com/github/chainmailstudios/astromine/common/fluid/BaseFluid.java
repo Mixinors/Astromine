@@ -1,23 +1,12 @@
 package com.github.chainmailstudios.astromine.common.fluid;
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.util.function.Function;
-
-import javax.imageio.ImageIO;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
-import com.github.chainmailstudios.astromine.registry.AstromineFluids;
-import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
-import com.github.chainmailstudios.astromine.registry.AstromineItems;
-import com.github.chainmailstudios.astromine.registry.AstromineResources;
-import net.devtech.arrp.api.RuntimeResourcePack;
-import net.devtech.arrp.json.blockstate.JState;
-import net.devtech.arrp.json.models.JModel;
-import net.devtech.arrp.json.models.JTextures;
-import net.devtech.arrp.util.ImageUtil;
-import spinnery.widget.api.Color;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
+import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
+import net.fabricmc.loader.api.FabricLoader;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -45,13 +34,23 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
-import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.fabricmc.loader.api.FabricLoader;
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.registry.AstromineFluids;
+import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import com.github.chainmailstudios.astromine.registry.AstromineResources;
+import net.devtech.arrp.api.RuntimeResourcePack;
+import net.devtech.arrp.json.blockstate.JState;
+import net.devtech.arrp.json.models.JModel;
+import net.devtech.arrp.json.models.JTextures;
+import net.devtech.arrp.util.ImageUtil;
+import spinnery.widget.api.Color;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.function.Function;
 
 public abstract class BaseFluid extends FlowableFluid {
 	private static final String BASE_BLOCKSTATE = "{\n" + "    \"variants\": {\n" + "        \"\": { \"model\": \"block/water\" }\n" + "    }\n" + "}\n";

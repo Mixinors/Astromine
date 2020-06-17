@@ -1,12 +1,5 @@
 package com.github.chainmailstudios.astromine.mixin;
 
-import java.util.Map;
-import java.util.concurrent.Executor;
-
-import com.github.chainmailstudios.astromine.registry.AstromineDimensionTypes;
-import com.github.chainmailstudios.astromine.world.generation.AstromineBiomeSource;
-import com.github.chainmailstudios.astromine.world.generation.AstromineChunkGenerator;
-import com.google.common.collect.ImmutableList;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -28,6 +21,14 @@ import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.GeneratorOptions;
 import net.minecraft.world.level.UnmodifiableLevelProperties;
 import net.minecraft.world.level.storage.LevelStorage;
+
+import com.github.chainmailstudios.astromine.registry.AstromineDimensionTypes;
+import com.github.chainmailstudios.astromine.world.generation.AstromineBiomeSource;
+import com.github.chainmailstudios.astromine.world.generation.AstromineChunkGenerator;
+
+import com.google.common.collect.ImmutableList;
+import java.util.Map;
+import java.util.concurrent.Executor;
 
 @Mixin (MinecraftServer.class)
 public class MinecraftServerMixin {

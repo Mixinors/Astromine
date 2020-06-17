@@ -1,16 +1,5 @@
 package com.github.chainmailstudios.astromine.common.gas;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.google.common.collect.Lists;
-
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -19,6 +8,17 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
+
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+
+import com.google.common.collect.Lists;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class AtmosphericManager {
 	private static final ExecutorService pool = Executors.newCachedThreadPool();

@@ -1,7 +1,11 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import java.util.Collections;
-import java.util.List;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FacingBlock;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
 import com.github.chainmailstudios.astromine.common.volume.collection.AgnosticSidedVolumeCollection;
@@ -9,14 +13,10 @@ import com.github.chainmailstudios.astromine.common.volume.collection.IndexedVol
 import com.github.chainmailstudios.astromine.common.volume.collection.SimpleIndexedVolumeCollection;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.google.common.collect.Lists;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FacingBlock;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.math.Direction;
+import com.google.common.collect.Lists;
+import java.util.Collections;
+import java.util.List;
 
 public abstract class BaseBiBlockEntity extends BlockEntity implements AgnosticSidedVolumeCollection {
 	private SimpleIndexedVolumeCollection<FluidVolume> fluidVolumeCollection = new SimpleIndexedVolumeCollection();

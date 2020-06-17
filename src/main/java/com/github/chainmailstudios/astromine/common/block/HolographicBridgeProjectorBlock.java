@@ -1,8 +1,5 @@
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
-import spinnery.widget.api.Color;
-
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -20,6 +17,9 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
+import spinnery.widget.api.Color;
 
 public class HolographicBridgeProjectorBlock extends HorizontalFacingBlock implements BlockEntityProvider {
 	public HolographicBridgeProjectorBlock(AbstractBlock.Settings settings) {

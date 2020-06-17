@@ -1,10 +1,10 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
+
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
-
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 
 public class FluidUtilities {
 	public static int color(PlayerEntity player, Fluid fluid) {

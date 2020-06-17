@@ -1,9 +1,5 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import java.util.logging.Logger;
-
-import com.github.chainmailstudios.astromine.access.WorldChunkAccess;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
@@ -13,6 +9,10 @@ import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.chunk.WorldChunk;
+
+import com.github.chainmailstudios.astromine.access.WorldChunkAccess;
+
+import java.util.logging.Logger;
 
 public class LargeExplosionAlgorithm {
 	private static final Logger LOGGER = Logger.getLogger("LargeExplosions");

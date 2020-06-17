@@ -1,5 +1,15 @@
 package com.github.chainmailstudios.astromine.common.inventory;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.TypedActionResult;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.utilities.data.Range;
+import org.apache.logging.log4j.Level;
+
 import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.HashSet;
@@ -8,16 +18,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.utilities.data.Range;
-import org.apache.logging.log4j.Level;
-
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.TypedActionResult;
 
 public interface InventoryComponent {
 	/**

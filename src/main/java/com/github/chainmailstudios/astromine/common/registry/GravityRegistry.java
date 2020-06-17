@@ -1,10 +1,10 @@
 package com.github.chainmailstudios.astromine.common.registry;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.dimension.DimensionType;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class GravityRegistry {
 	public static final GravityRegistry INSTANCE = new GravityRegistry();
