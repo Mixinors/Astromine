@@ -1,14 +1,16 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.fluid.BaseFluid;
+import com.github.chainmailstudios.astromine.common.fluid.AdvancedFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.registry.Registry;
 
 public class AstromineFluids {
-	public static final Fluid OXYGEN = BaseFluid.builder()
+	public static final Fluid OXYGEN = AdvancedFluid.builder()
 			.fog(0x7e159ef9)
 			.tint(0xff159ef9)
+			.damage(0)
+			.toxic(false)
 			.infinite(false)
 			.name("oxygen")
 			.build();

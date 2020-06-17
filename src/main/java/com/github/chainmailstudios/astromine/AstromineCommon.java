@@ -27,6 +27,7 @@ public class AstromineCommon implements ModInitializer {
 		AstromineFeatures.initialize();
 		AstromineBiomes.initialize();
 		AstromineFluids.initialize();
+		AstromineBreathables.initialize();
 		AstromineChunkGenerators.initialize();
 		AstromineServerPackets.initialize();
 		AstromineGravities.initialize();

@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.common.gas;
 
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.registry.AstromineFluids;
 import com.google.common.collect.Lists;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
@@ -39,7 +40,7 @@ public class AtmosphericManager {
 	public static FluidVolume get(BlockView world, BlockPos position) {
 		LEVELS.computeIfAbsent(world, (key) -> new ConcurrentHashMap<>());
 
-		return LEVELS.get(world).getOrDefault(position, FluidVolume.EMPTY);
+		return LEVELS.get(world).getOrDefault(position, new FluidVolume(AstromineFluids.OXYGEN, Fraction.BUCKET));
 	}
 
 	public static void simulate(BlockView world) {

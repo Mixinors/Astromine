@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.common.volume.fluid;
 
 import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.registry.AstromineFluids;
 import com.github.chainmailstudios.astromine.registry.PropertyRegistry;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
@@ -56,8 +57,17 @@ public class FluidVolume extends BaseVolume {
 
 		FluidVolume fluidVolume = new FluidVolume(Fluids.EMPTY);
 
-		fluidVolume.fluid = Registry.FLUID.get(new Identifier(tag.getString("fluid")));
-		fluidVolume.fraction = Fraction.fromTag(tag.getCompound("fraction"));
+		if (!tag.contains("fluid")) {
+			fluidVolume.fluid = AstromineFluids.OXYGEN;
+		} else {
+			fluidVolume.fluid = Registry.FLUID.get(new Identifier(tag.getString("fluid")));
+		}
+
+		if (!tag.contains("fraction")) {
+			fluidVolume.fraction = Fraction.EMPTY;
+		} else {
+			fluidVolume.fraction = Fraction.fromTag(tag.getCompound("fraction"));
+		}
 
 		for (String string : tag.getCompound("properties").getKeys()) {
 			fluidVolume.properties.add(PropertyRegistry.INSTANCE.get(new Identifier(string)));

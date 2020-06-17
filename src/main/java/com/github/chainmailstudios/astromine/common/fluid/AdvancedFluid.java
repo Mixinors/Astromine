@@ -1,14 +1,8 @@
 package com.github.chainmailstudios.astromine.common.fluid;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.gas.GaseousMaterial;
 import com.github.chainmailstudios.astromine.registry.*;
-import net.devtech.arrp.api.RuntimeResourcePack;
-import net.devtech.arrp.impl.RuntimeResourcePackImpl;
-import net.devtech.arrp.json.blockstate.JState;
-import net.devtech.arrp.json.blockstate.JVariant;
-import net.devtech.arrp.json.models.JModel;
-import net.devtech.arrp.json.models.JTextures;
-import net.devtech.arrp.util.ImageUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
@@ -24,7 +18,6 @@ import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -34,28 +27,20 @@ import net.minecraft.state.StateManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import spinnery.widget.api.Color;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.function.Function;
 
-public abstract class BaseFluid extends FlowableFluid {
-	private static final String BASE_BLOCKSTATE = "{\n" +
-			"    \"variants\": {\n" +
-			"        \"\": { \"model\": \"block/water\" }\n" +
-			"    }\n" +
-			"}\n";
-
+public abstract class AdvancedFluid extends FlowableFluid implements GaseousMaterial {
 	final int fogColor;
+	final int damage;
 
 	final boolean isInfinite;
+	final boolean isToxic;
 
 	Block block;
 
@@ -64,9 +49,20 @@ public abstract class BaseFluid extends FlowableFluid {
 
 	Item bucket;
 
-	public BaseFluid(int fogColor, boolean isInfinite) {
+	public AdvancedFluid(int fogColor, int damage, boolean isInfinite, boolean isToxic) {
 		this.fogColor = fogColor;
+		this.damage = damage;
 		this.isInfinite = isInfinite;
+		this.isToxic = isToxic;
+	}
+
+	@Override
+	public boolean isToxic() {
+		return isToxic;
+	}
+
+	public int getDamage() {
+		return damage;
 	}
 
 	@Override
@@ -145,11 +141,12 @@ public abstract class BaseFluid extends FlowableFluid {
 	}
 
 	public static class Builder {
-		int fogColor = Color.DEFAULT.ARGB;
-
+		int fog = Color.DEFAULT.ARGB;
 		int tint = Color.DEFAULT.ARGB;
+		int damage = 0;
 
 		boolean isInfinite = false;
+		boolean isToxic = false;
 
 		String name = "";
 
@@ -164,8 +161,8 @@ public abstract class BaseFluid extends FlowableFluid {
 			// Unused.
 		}
 
-		public Builder fog(int fogColor) {
-			this.fogColor = fogColor;
+		public Builder fog(int fog) {
+			this.fog = fog;
 			return this;
 		}
 
@@ -174,8 +171,18 @@ public abstract class BaseFluid extends FlowableFluid {
 			return this;
 		}
 
+		public Builder damage(int damage) {
+			this.damage = damage;
+			return this;
+		}
+
 		public Builder infinite(boolean isInfinite) {
 			this.isInfinite = isInfinite;
+			return this;
+		}
+
+		public Builder toxic(boolean isToxic) {
+			this.isToxic = isToxic;
 			return this;
 		}
 
@@ -185,8 +192,8 @@ public abstract class BaseFluid extends FlowableFluid {
 		}
 
 		public Fluid build() {
-			BaseFluid flowing = AstromineFluids.register(name + "_flowing", new Flowing(fogColor, isInfinite));
-			BaseFluid still = AstromineFluids.register(name, new Still(fogColor, isInfinite));
+			AdvancedFluid flowing = AstromineFluids.register(name + "_flowing", new Flowing(fog, damage, isInfinite, isToxic));
+			AdvancedFluid still = AstromineFluids.register(name, new Still(fog, damage, isInfinite, isToxic));
 
 			flowing.flowing = flowing;
 			still.flowing = flowing;
@@ -216,8 +223,8 @@ public abstract class BaseFluid extends FlowableFluid {
 		}
 
 		private void buildClient() {
-			final Identifier stillSpriteIdentifier = new Identifier("block/water_still"); // AstromineCommon.identifier("block/" + name + "_still");
-			final Identifier flowingSpriteIdentifier = new Identifier("block/water_flow"); // AstromineCommon.identifier("block/" + name + "_flow");
+			final Identifier stillSpriteIdentifier = new Identifier("block/water_still");
+			final Identifier flowingSpriteIdentifier = new Identifier("block/water_flow");
 			final Identifier listenerIdentifier = AstromineCommon.identifier(name + "_reload_listener");
 
 			final Sprite[] fluidSprites = { null, null };
@@ -238,59 +245,6 @@ public abstract class BaseFluid extends FlowableFluid {
 					final Function<Identifier, Sprite> atlas = MinecraftClient.getInstance().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
 					fluidSprites[0] = atlas.apply(stillSpriteIdentifier);
 					fluidSprites[1] = atlas.apply(flowingSpriteIdentifier);
-
-					RuntimeResourcePack pack = AstromineResources.RESOURCE_PACK;
-
-					JState state = JState.state(
-							JState.variant(
-									JState.model("block/water")
-							)
-					);
-
-					pack.addBlockState(state, AstromineCommon.identifier(name));
-
-					JModel itemModel = JModel.model(
-							"item/generated"
-					).textures(
-							new JTextures()
-									.layer0(AstromineCommon.MOD_ID + ":textures/item/bucket/" + name)
-					);
-
-					pack.addModel(itemModel, AstromineCommon.identifier("item/" + name + "_bucket"));
-
-					try {
-						BufferedImage bucketLayerA = ImageIO.read(resourceManager.getResource(AstromineCommon.identifier("textures/item/bucket_base.png")).getInputStream());
-						BufferedImage bucketLayerB = ImageIO.read(resourceManager.getResource(AstromineCommon.identifier("textures/item/bucket_overlay.png")).getInputStream());
-
-						int sXB = bucketLayerB.getWidth();
-						int sYB = bucketLayerB.getHeight();
-
-						for (int y = 0; y < sYB; ++sYB) {
-							for (int x = 0; x < sXB; ++sXB) {
-								if (bucketLayerB.getRGB(x, y) != 0x00000000) {
-									bucketLayerB.setRGB(x, y, ImageUtil.recolor(bucketLayerB.getRGB(x, y), tint));
-								}
-							}
-						}
-
-						int sXA = bucketLayerA.getWidth();
-						int sYA = bucketLayerA.getHeight();
-
-						BufferedImage bucketLayered = new BufferedImage(sXA, sYA, BufferedImage.TYPE_INT_ARGB);
-
-						Graphics graphics = bucketLayered.getGraphics();
-
-						graphics.drawImage(bucketLayerA, 0, 0, null);
-						graphics.drawImage(bucketLayerB, 0, 0, null);
-
-						graphics.dispose();
-
-						pack.addTexture(AstromineCommon.identifier("item/bucket/" + name),  bucketLayered);
-					} catch (Exception ignored) {
-						// Unused.
-					}
-
-
 				}
 			});
 
@@ -311,9 +265,9 @@ public abstract class BaseFluid extends FlowableFluid {
 		}
 	}
 
-	public static class Flowing extends BaseFluid {
-		public Flowing(int fogColor, boolean isInfinite) {
-			super(fogColor, isInfinite);
+	public static class Flowing extends AdvancedFluid {
+		public Flowing(int fogColor, int damage, boolean isInfinite, boolean isToxic) {
+			super(fogColor, damage, isInfinite, isToxic);
 		}
 
 		@Override
@@ -333,9 +287,9 @@ public abstract class BaseFluid extends FlowableFluid {
 		}
 	}
 
-	public static class Still extends BaseFluid {
-		public Still(int fogColor, boolean isInfinite) {
-			super(fogColor, isInfinite);
+	public static class Still extends AdvancedFluid {
+		public Still(int fogColor, int damage, boolean isInfinite, boolean isToxic) {
+			super(fogColor, damage, isInfinite, isToxic);
 		}
 
 		@Override

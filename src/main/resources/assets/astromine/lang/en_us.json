@@ -39,6 +39,8 @@
   "block.astromine.asteroid_lapis_ore": "Asteroid Lapis Ore",
   "block.astromine.asteroid_diamond_ore": "Asteroid Diamond Ore",
   "block.astromine.asteroid_emerald_ore": "Asteroid Emerald Ore",
+  "block.astromine.oxygen": "Oxygen",
+  "item.astromine.oxygen_bucket": "Oxygen Bucket",
   "item.astromine.asterite_fragment": "Asterite Fragment",
   "item.astromine.meteor_metite_cluster": "Metite Cluster",
   "item.astromine.asteroid_metite_cluster": "Metite Cluster",
