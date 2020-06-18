@@ -130,6 +130,11 @@ public class BaseVolume {
 		this.size = size;
 	}
 
+	public boolean fits(Fraction fraction) {
+		Fraction available = Fraction.subtract(getSize(), getFraction());
+		return available.equals(fraction) || available.isBiggerThan(fraction);
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hashCode(this.fraction);

@@ -125,7 +125,7 @@ public class NetworkTracer {
 		}
 
 		public BlockState applyToBlockState(BlockState state) {
-			if (!(state.getBlock() instanceof PipeCableBlock)) return state;
+			if (!(state.getBlock() instanceof NetworkMember) || !(state.getBlock() instanceof PipeCableBlock)) return state;
 			for (Direction direction : Direction.values()) {
 				state = state.with(PipeCableBlock.PROPERTY_MAP.get(direction), directions.contains(direction));
 			}

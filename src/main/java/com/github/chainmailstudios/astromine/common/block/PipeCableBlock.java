@@ -69,6 +69,8 @@ public abstract class PipeCableBlock extends Block implements NetworkMember {
         for (Direction direction : Direction.values()) {
             BlockPos posA = position.offset(direction);
 
+            if (!(world.getBlockState(posA).getBlock() instanceof PipeCableBlock)) continue;
+
             NetworkTracer.Modeller modellerB = new NetworkTracer.Modeller();
             modellerB.scanNeighbours(posA, world);
             world.setBlockState(posA, modellerB.applyToBlockState(world.getBlockState(posA)));

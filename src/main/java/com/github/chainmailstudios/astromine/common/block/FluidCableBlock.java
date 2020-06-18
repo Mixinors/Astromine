@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.block;
 
+import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
@@ -17,6 +18,6 @@ public class FluidCableBlock extends PipeCableBlock {
 
 	@Override
 	public boolean accepts(Object... objects) {
-		return Arrays.stream(objects).allMatch(object -> object instanceof FluidCableBlock);
+		return true;
 	}
 }

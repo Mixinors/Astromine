@@ -3,6 +3,7 @@ package com.github.chainmailstudios.astromine.registry;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.EnergyWireConnectorBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.EnergyWireConnectorBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.FluidTankBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.OxygenVentBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
 import net.minecraft.block.Block;
@@ -16,6 +17,8 @@ public class AstromineBlockEntityTypes {
 	public static BlockEntityType<HolographicBridgeProjectorBlockEntity> HOLOGRAPHIC_BRIDGE = register("holographic_bridge", HolographicBridgeProjectorBlockEntity::new, AstromineBlocks.HOLOGRAPHIC_BRIDGE_PROJECTOR);
 
 	public static BlockEntityType<OxygenVentBlockEntity> OXYGEN_VENT = register("oxygen_vent", OxygenVentBlockEntity::new, AstromineBlocks.OXYGEN_VENT);
+
+	public static BlockEntityType<FluidTankBlockEntity> FLUID_TANK = register("fluid_tank", FluidTankBlockEntity::new, AstromineBlocks.FLUID_TANK);
 
 	public static BlockEntityType<EnergyWireConnectorBlockEntity> ENERGY_WIRE_CONNECTOR = register("energy_wire_connector", EnergyWireConnectorBlockEntity::new, AstromineBlocks.ENERGY_WIRE_CONNECTOR);
 

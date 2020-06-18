@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.common.gas.AtmosphericManager;
+import com.github.chainmailstudios.astromine.common.network.NetworkManager;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.event.server.ServerTickCallback;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
@@ -15,6 +16,10 @@ public class AstromineCommonCallbacks {
 			for (ServerWorld world : server.getWorlds()) {
 				AtmosphericManager.simulate(world);
 			}
+		});
+
+		ServerTickCallback.EVENT.register((server) -> {
+			NetworkManager.INSTANCE.tick();
 		});
 
 		ServerTickCallback.EVENT.register((server) -> {
