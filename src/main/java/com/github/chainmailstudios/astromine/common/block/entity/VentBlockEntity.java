@@ -14,21 +14,25 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public class OxygenVentBlockEntity extends AlphaBlockEntity implements Tickable, NetworkMember {
-	public OxygenVentBlockEntity() {
-		super(AstromineBlockEntityTypes.OXYGEN_VENT);
+public class VentBlockEntity extends AlphaBlockEntity implements Tickable, NetworkMember {
+	public VentBlockEntity() {
+		super(AstromineBlockEntityTypes.vent);
 	}
 
 	@Override
 	public void tick() {
-		BlockPos position = getPos();
+		if (energyVolume.getFraction().isBiggerThan(Fraction.BOTTLE)) {
+			BlockPos position = getPos();
 
-		Direction direction = world.getBlockState(position).get(FacingBlock.FACING);
+			Direction direction = world.getBlockState(position).get(FacingBlock.FACING);
 
-		BlockPos output = position.offset(direction);
+			BlockPos output = position.offset(direction);
 
-		if (world.getBlockState(output).getBlock() instanceof AirBlock) {
-			AtmosphericManager.add(world, output, new FluidVolume(AstromineFluids.OXYGEN, Fraction.BUCKET));
+			if (world.getBlockState(output).getBlock() instanceof AirBlock) {
+				AtmosphericManager.add(world, output, new FluidVolume(AstromineFluids.OXYGEN, Fraction.BUCKET));
+			}
+
+			energyVolume.setFraction(Fraction.subtract(energyVolume.getFraction(), Fraction.BOTTLE));
 		}
 	}
 

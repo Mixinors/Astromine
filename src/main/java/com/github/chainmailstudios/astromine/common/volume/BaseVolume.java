@@ -48,6 +48,7 @@ public class BaseVolume {
 		// TODO: Null checks.
 
 		tag.put("fraction", this.fraction.toTag(new CompoundTag()));
+		tag.put("size", this.size.toTag(new CompoundTag()));
 
 		return tag;
 	}

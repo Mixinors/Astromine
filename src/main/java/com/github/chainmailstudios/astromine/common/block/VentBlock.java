@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.entity.OxygenVentBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.VentBlockEntity;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
@@ -13,14 +13,14 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.world.BlockView;
 
-public class OxygenVentBlock extends FacingBlock implements BlockEntityProvider, NetworkMember {
-	public OxygenVentBlock(Settings settings) {
+public class VentBlock extends FacingBlock implements BlockEntityProvider, NetworkMember {
+	public VentBlock(Settings settings) {
 		super(settings);
 	}
 
 	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
-		return new OxygenVentBlockEntity();
+		return new VentBlockEntity();
 	}
 
 	@Override

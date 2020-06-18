@@ -1,22 +1,24 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.inventory.InventoryComponent;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineFluids;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
+import net.minecraft.util.Tickable;
 
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+public class FuelGeneratorBlockEntity extends AlphaBlockEntity implements Tickable {
+	public FuelGeneratorBlockEntity() {
+		super(AstromineBlockEntityTypes.FUEL_GENERATOR);
 
-public class FuelGeneratorBlockEntity extends AlphaBlockEntity {
-	private final Map<Integer, ItemStack> contents = new HashMap<>();
+		energyVolume.setSize(new Fraction(16, 1));
+		fluidVolume.setSize(new Fraction(16, 1));
+	}
 
-	public FuelGeneratorBlockEntity(BlockEntityType<?> type) {
-		super(type);
+	@Override
+	public void tick() {
+		if (fluidVolume.getFraction().isBiggerThan(Fraction.BOTTLE) && energyVolume.fits(Fraction.BUCKET) && fluidVolume.getFluid() == AstromineFluids.ROCKET_FUEL) {
+			fluidVolume.setFraction(Fraction.subtract(fluidVolume.getFraction(), Fraction.BOTTLE));
+			energyVolume.setFraction(Fraction.add(energyVolume.getFraction(), Fraction.BUCKET));
+		}
 	}
 }

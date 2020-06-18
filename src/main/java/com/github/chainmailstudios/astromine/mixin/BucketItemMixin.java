@@ -37,10 +37,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class BucketItemMixin {
 	@Shadow @Final private Fluid fluid;
 
-	@Shadow public abstract void onEmptied(World world, ItemStack stack, BlockPos pos);
-
 	@Inject(at = @At("HEAD"), method = "use(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/TypedActionResult;", cancellable = true)
 	void onUse(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> callbackInformationReturnable) {
+		ItemStack stack = user.getStackInHand(hand);
+
 		BlockHitResult result = rayTrace(world, user, fluid == Fluids.EMPTY ? RayTraceContext.FluidHandling.SOURCE_ONLY : RayTraceContext.FluidHandling.NONE);
 
 		if (result.getType() == HitResult.Type.BLOCK) {
@@ -66,14 +66,14 @@ public abstract class BucketItemMixin {
 								FluidVolume newVolume = volume.give(Fraction.BUCKET);
 								volume.setFluid(newVolume.getFluid());
 								volume.setFraction(newVolume.getFraction());
-								callbackInformationReturnable.setReturnValue(TypedActionResult.success(new ItemStack(Items.BUCKET)));
+								callbackInformationReturnable.setReturnValue(TypedActionResult.success(user.isCreative() ? stack : new ItemStack(Items.BUCKET)));
 								callbackInformationReturnable.cancel();
 							} else if (fluid != Fluids.EMPTY && volume.getFluid() == Fluids.EMPTY && volume.fits(Fraction.BUCKET)) {
 								volume.setFluid(fluid);
 								FluidVolume newVolume = volume.give(Fraction.BUCKET);
 								volume.setFluid(newVolume.getFluid());
 								volume.setFraction(newVolume.getFraction());
-								callbackInformationReturnable.setReturnValue(TypedActionResult.success(new ItemStack(Items.BUCKET)));
+								callbackInformationReturnable.setReturnValue(TypedActionResult.success(user.isCreative() ? stack : new ItemStack(Items.BUCKET)));
 								callbackInformationReturnable.cancel();
 							} else if (fluid == Fluids.EMPTY && !volume.isEmpty() && volume.getFraction().equals(Fraction.BUCKET) || volume.getFraction().isBiggerThan(Fraction.BUCKET)) {
 								FluidVolume newVolume = volume.take(Fraction.BUCKET);
@@ -97,14 +97,14 @@ public abstract class BucketItemMixin {
 								FluidVolume newVolume = volume.give(Fraction.BUCKET);
 								volume.setFluid(newVolume.getFluid());
 								volume.setFraction(newVolume.getFraction());
-								callbackInformationReturnable.setReturnValue(TypedActionResult.success(new ItemStack(Items.BUCKET)));
+								callbackInformationReturnable.setReturnValue(TypedActionResult.success(user.isCreative() ? stack : new ItemStack(Items.BUCKET)));
 								callbackInformationReturnable.cancel();
 							} else if (fluid != Fluids.EMPTY && volume.getFluid() == Fluids.EMPTY && volume.fits(Fraction.BUCKET)) {
 								volume.setFluid(fluid);
 								FluidVolume newVolume = volume.give(Fraction.BUCKET);
 								volume.setFluid(newVolume.getFluid());
 								volume.setFraction(newVolume.getFraction());
-								callbackInformationReturnable.setReturnValue(TypedActionResult.success(new ItemStack(Items.BUCKET)));
+								callbackInformationReturnable.setReturnValue(TypedActionResult.success(user.isCreative() ? stack : new ItemStack(Items.BUCKET)));
 								callbackInformationReturnable.cancel();
 							} else if (fluid == Fluids.EMPTY && !volume.isEmpty() && volume.getFraction().equals(Fraction.BUCKET) || volume.getFraction().isBiggerThan(Fraction.BUCKET)) {
 								FluidVolume newVolume = volume.take(Fraction.BUCKET);

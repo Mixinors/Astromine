@@ -14,8 +14,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
 
 public abstract class AlphaBlockEntity extends BlockEntity implements AgnosticIndexedVolumeCollection, BlockEntityClientSerializable {
-	private FluidVolume fluidVolume = new FluidVolume();
-	private EnergyVolume energyVolume = new EnergyVolume();
+	protected FluidVolume fluidVolume = new FluidVolume();
+	protected EnergyVolume energyVolume = new EnergyVolume();
 
 	public AlphaBlockEntity(BlockEntityType<?> type) {
 		super(type);

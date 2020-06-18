@@ -20,14 +20,20 @@ public class EnergyVolume extends BaseVolume {
 	public static EnergyVolume fromTag(CompoundTag tag) {
 		// TODO: Null checks.
 
-		EnergyVolume volume = new EnergyVolume();
+		EnergyVolume energyVolume = new EnergyVolume();
 
 		if (!tag.contains("fraction")) {
-			volume.fraction = Fraction.EMPTY;
+			energyVolume.fraction = Fraction.EMPTY;
 		} else {
-			volume.fraction = Fraction.fromTag(tag.getCompound("fraction"));
+			energyVolume.fraction = Fraction.fromTag(tag.getCompound("fraction"));
 		}
 
-		return volume;
+		if (!tag.contains("size")) {
+			energyVolume.size = Fraction.BUCKET;
+		} else {
+			energyVolume.size = Fraction.fromTag(tag.getCompound("size"));
+		}
+
+		return energyVolume;
 	}
 }

@@ -18,11 +18,13 @@ public class AstromineBlocks {
 	public static final Block HOLOGRAPHIC_BRIDGE_PROJECTOR = register("holographic_bridge_projector", new HolographicBridgeProjectorBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(4, 16).sounds(BlockSoundGroup.METAL)), AstromineItems.BASIC_SETTINGS);
 	public static final Block HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK = register("holographic_bridge_invisible", new HolographicBridgeInvisibleBlock(FabricBlockSettings.of(Material.AIR).dropsNothing().strength(-1.0F, 3600000.8F).nonOpaque().lightLevel(15).allowsSpawning((a, b, c, d) -> false)));
 
-	public static final Block OXYGEN_VENT = register("oxygen_vent", new OxygenVentBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(4, 16).sounds(BlockSoundGroup.METAL)), AstromineItems.BASIC_SETTINGS);
+	public static final Block vent = register("vent", new VentBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(4, 16).sounds(BlockSoundGroup.METAL)), AstromineItems.BASIC_SETTINGS);
 
 	public static final Block ENERGY_WIRE_CONNECTOR = register("energy_wire_connector", new EnergyWireConnectorBlock(FabricBlockSettings.of(Material.GLASS).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(4, 16).sounds(BlockSoundGroup.GLASS)), AstromineItems.BASIC_SETTINGS);
 
 	public static final Block FLUID_TANK = register("fluid_tank", new FluidTankBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(4, 16).sounds(BlockSoundGroup.METAL)), AstromineItems.BASIC_SETTINGS);
+
+	public static final Block FUEL_GENERATOR = register("fuel_generator", new FuelGeneratorBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(4, 16).sounds(BlockSoundGroup.METAL)), AstromineItems.BASIC_SETTINGS);
 
 	public static final Block FLUID_CABLE = register("fluid_cable", new FluidCableBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 3).strength(2, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.BASIC_SETTINGS);
 

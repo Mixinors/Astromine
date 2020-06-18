@@ -69,6 +69,12 @@ public class FluidVolume extends BaseVolume {
 			fluidVolume.fraction = Fraction.fromTag(tag.getCompound("fraction"));
 		}
 
+		if (!tag.contains("size")) {
+			fluidVolume.size = Fraction.BUCKET;
+		} else {
+			fluidVolume.size = Fraction.fromTag(tag.getCompound("size"));
+		}
+
 		for (String string : tag.getCompound("properties").getKeys()) {
 			fluidVolume.properties.add(PropertyRegistry.INSTANCE.get(new Identifier(string)));
 		}
@@ -129,6 +135,7 @@ public class FluidVolume extends BaseVolume {
 
 		tag.putString("fluid", Registry.FLUID.getId(this.fluid).toString());
 		tag.put("fraction", this.fraction.toTag(new CompoundTag()));
+		tag.put("size", this.size.toTag(new CompoundTag()));
 
 		CompoundTag propertyTag = new CompoundTag();
 

@@ -2,7 +2,7 @@
   "parent": "block/orientable",
   "textures": {
     "top": "astromine:block/machine_side_blank",
-    "front": "astromine:block/oxygen_vent_front",
+    "front": "astromine:block/fuel_generator_front",
     "side": "astromine:block/machine_side_blank"
   }
 }
