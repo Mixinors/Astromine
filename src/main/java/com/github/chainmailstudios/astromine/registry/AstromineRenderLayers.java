@@ -7,7 +7,7 @@ import net.minecraft.client.render.RenderLayer;
 
 public class AstromineRenderLayers {
 	public static void initialize() {
-		// Unused.
+		BlockRenderLayerMap.INSTANCE.putBlock(AstromineBlocks.ENERGY_WIRE_CONNECTOR, RenderLayer.getCutout());
 	}
 
 	/**

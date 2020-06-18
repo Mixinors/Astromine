@@ -1,15 +1,21 @@
 package com.github.chainmailstudios.astromine.common.network;
 
+import com.github.chainmailstudios.astromine.common.block.PipeCableBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 
 import org.apache.commons.lang3.mutable.MutableBoolean;
 
 import java.util.ArrayDeque;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class NetworkTracer {
@@ -31,7 +37,7 @@ public class NetworkTracer {
 	public static class Tracer {
 		private NetworkController controller;
 
-		public void trace(NetworkTicker type, BlockPos initialPosition, World world) {
+		public void trace(NetworkType type, BlockPos initialPosition, World world) {
 			this.controller = new NetworkController(world, type);
 
 			Block block = world.getBlockState(initialPosition).getBlock();
@@ -75,11 +81,11 @@ public class NetworkTracer {
 					} else if (offsetObject instanceof NetworkMember) {
 						NetworkMember offsetMember = (NetworkMember) offsetObject;
 
-						if ((offsetMember.isRequester() || offsetMember.isProvider() || offsetMember.isBuffer()) && offsetMember.accepts(type)) {
+						if ((offsetMember.isRequester() || offsetMember.isProvider() || offsetMember.isBuffer()) && offsetMember.getNetworkType() == type) {
 							this.controller.addMember(NetworkNode.of(offsetPosition));
 						}
 						if (offsetMember.isNode()) {
-							if (offsetMember.accepts(type, initialObject)) {
+							if (offsetMember.accepts(initialObject)) {
 								positions.addLast(offsetPosition);
 								this.controller.addNode(NetworkNode.of(offsetPosition));
 							}
@@ -95,6 +101,47 @@ public class NetworkTracer {
 			}
 
 			NetworkManager.INSTANCE.add(this.controller);
+		}
+	}
+
+	public static class Modeller {
+		private Set<Direction> directions = new HashSet<>();
+
+		public void scanBlockState(BlockState blockState) {
+			for (Map.Entry<Direction, BooleanProperty> property : PipeCableBlock.PROPERTY_MAP.entrySet()) {
+				if (blockState.get(property.getValue())) {
+					directions.add(property.getKey());
+				}
+			}
+		}
+
+		public void scanNeighbours(BlockPos initialPosition, World world) {
+			Object initialObject = getObjectAt(world, initialPosition);
+
+			for (Direction direction : Direction.values()) {
+				Object offsetObject = getObjectAt(world, initialPosition.offset(direction));
+
+				if (offsetObject instanceof NetworkMember && ((NetworkMember) offsetObject).accepts(initialObject)) {
+					directions.add(direction);
+				}
+			}
+		}
+
+		public BlockState applyToBlockState(BlockState state) {
+			if (!(state.getBlock() instanceof NetworkMember) || !(state.getBlock() instanceof PipeCableBlock)) return state;
+			for (Direction direction : Direction.values()) {
+				state = state.with(PipeCableBlock.PROPERTY_MAP.get(direction), directions.contains(direction));
+			}
+			return state;
+		}
+
+		public VoxelShape applyToVoxelShape(VoxelShape shape) {
+			for (Direction direction : Direction.values()) {
+				if (directions.contains(direction)) {
+					shape = VoxelShapes.union(shape, PipeCableBlock.SHAPE_MAP.get(PipeCableBlock.PROPERTY_MAP.get(direction)));
+				}
+			}
+			return shape;
 		}
 	}
 }

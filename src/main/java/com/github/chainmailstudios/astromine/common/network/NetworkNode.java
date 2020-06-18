@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.network;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
 
 public class NetworkNode {
@@ -16,6 +17,15 @@ public class NetworkNode {
 	public NetworkNode setPosition(BlockPos position) {
 		this.position = position;
 		return this;
+	}
+
+	public CompoundTag toTag(CompoundTag tag) {
+		tag.putLong("position", position.asLong());
+		return tag;
+	}
+
+	public static NetworkNode fromTag(CompoundTag tag) {
+		return of(BlockPos.fromLong(tag.getLong("position")));
 	}
 
 	@Override

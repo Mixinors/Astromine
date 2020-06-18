@@ -1,11 +1,11 @@
 package com.github.chainmailstudios.astromine.common.network;
 
 public interface NetworkMember {
-	default NetworkTicker getNetworkType() {
-		return NetworkTicker.EMPTY;
+	default NetworkType getNetworkType() {
+		return NetworkType.EMPTY;
 	}
 
-	default boolean refuses(NetworkTicker type) {
+	default boolean refuses(NetworkType type) {
 		return !this.accepts(type);
 	}
 

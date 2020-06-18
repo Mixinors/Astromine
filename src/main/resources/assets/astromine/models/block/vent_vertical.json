@@ -1,0 +1,7 @@
+{
+  "parent": "block/orientable_vertical",
+  "textures": {
+    "front": "astromine:block/vent_front",
+    "side": "astromine:block/machine_side_blank"
+  }
+}

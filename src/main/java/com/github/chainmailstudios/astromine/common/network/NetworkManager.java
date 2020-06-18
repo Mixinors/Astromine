@@ -12,6 +12,7 @@ public class NetworkManager implements Tickable {
 	private final Set<NetworkController> controllers = Sets.newConcurrentHashSet();
 
 	private NetworkManager() {
+		// Unused.
 	}
 
 	public void add(NetworkController controller) {
@@ -22,7 +23,7 @@ public class NetworkManager implements Tickable {
 		this.controllers.remove(controller);
 	}
 
-	public NetworkController get(NetworkTicker type, BlockPos position) {
+	public NetworkController get(NetworkType type, BlockPos position) {
 		for (NetworkController controller : this.controllers) {
 			if (controller.getType() == type && controller.nodes.contains(NetworkNode.of(position))) {
 				return controller;
@@ -30,6 +31,10 @@ public class NetworkManager implements Tickable {
 		}
 
 		return NetworkController.EMPTY;
+	}
+
+	public boolean contains(NetworkType type, BlockPos position) {
+		return get(type, position) != NetworkController.EMPTY;
 	}
 
 	@Override
