@@ -22,7 +22,7 @@
   "itemGroup.astromine.astromine": "Astromine",
   "block.astromine.fluid_cable": "Fluid Cable",
   "block.astromine.fluid_tank": "Fluid Tank",
-  "block.astromine.fluid_generator": "Fuel Generator",
+  "block.astromine.fuel_generator": "Fuel Generator",
   "block.astromine.vent": "Oxygen Vent",
   "block.astromine.nuclear_weapon": "Nuclear Warhead",
   "block.astromine.holographic_bridge_projector": "Holographic Bridge Projector",
