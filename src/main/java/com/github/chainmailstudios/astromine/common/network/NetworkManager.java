@@ -31,6 +31,10 @@ public class NetworkManager implements Tickable {
 		return NetworkController.EMPTY;
 	}
 
+	public boolean contains(NetworkType type, BlockPos position) {
+		return get(type, position) != NetworkController.EMPTY;
+	}
+
 	@Override
 	public void tick() {
 		this.controllers.forEach(NetworkController::tick);

@@ -6,5 +6,5 @@ import net.minecraft.util.math.Direction;
 public interface AgnosticSidedVolumeCollection {
 	boolean contains(Direction direction, int volumeType);
 
-	<U extends BaseVolume, T extends IndexedVolumeCollection<U>> T get(Direction direction, int volumeType);
+	<T extends BaseVolume> T get(Direction direction, int volumeType);
 }

@@ -17,13 +17,37 @@ import java.util.*;
 public abstract class WireConnectorBlockEntity extends BlockEntity implements BlockEntityClientSerializable {
 	private static final Map<World, WireConnectorBlockEntity> selection = new HashMap<>();
 
-	public List<NetworkNode> children = new ArrayList<>();
-	public List<NetworkNode> parents = new ArrayList<>();
+	private final List<NetworkNode> children = new ArrayList<>();
+	private final List<NetworkNode> parents = new ArrayList<>();
 
 	public static final Map<NetworkNode, Collection<Vector3f>> points = new HashMap<>();
 
 	public WireConnectorBlockEntity() {
 		super(AstromineBlockEntityTypes.ENERGY_WIRE_CONNECTOR);
+	}
+
+	public void addChild(WireConnectorBlockEntity child) {
+		children.add(NetworkNode.of(child.getPos()));
+	}
+
+	public void removeChild(NetworkNode child) {
+		children.remove(child);
+	}
+
+	public Collection<NetworkNode> getChildren() {
+		return children;
+	}
+
+	public void addParent(WireConnectorBlockEntity parent) {
+		parents.add(NetworkNode.of(parent.getPos()));
+	}
+
+	public void removeParent(NetworkNode child) {
+		parents.remove(child);
+	}
+
+	public Collection<NetworkNode> getParents() {
+		return parents;
 	}
 
 	public static WireConnectorBlockEntity getSelected(World world) {

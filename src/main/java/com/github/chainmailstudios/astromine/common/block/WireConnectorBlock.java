@@ -61,8 +61,8 @@ public abstract class WireConnectorBlock extends Block implements BlockEntityPro
 
 				player.sendMessage(new TranslatableText("text.astromine.message.wire_cable_connection_successful", pos.getX(), pos.getY(), pos.getZ(), parent.getPos().getX(), parent.getPos().getY(), parent.getPos().getZ()), true);
 
-				child.parents.add(NetworkNode.of(parent.getPos()));
-				parent.children.add(NetworkNode.of(child.getPos()));
+				child.addParent(parent);
+				parent.addChild(child);
 
 				parent.markDirty();
 				child.markDirty();
@@ -107,7 +107,7 @@ public abstract class WireConnectorBlock extends Block implements BlockEntityPro
 
 				onConnectorBroken(removedEntity, world);
 
-				for (NetworkNode node : removedEntity.children) {
+				for (NetworkNode node : removedEntity.getChildren()) {
 					BlockEntity blockEntityA = world.getBlockEntity(node.getPosition());
 
 					if (blockEntityA != null) {
@@ -116,7 +116,7 @@ public abstract class WireConnectorBlock extends Block implements BlockEntityPro
 					}
 				}
 
-				for (NetworkNode node : removedEntity.parents) {
+				for (NetworkNode node : removedEntity.getParents()) {
 					BlockEntity blockEntityA = world.getBlockEntity(node.getPosition());
 
 					if (blockEntityA != null) {
@@ -130,32 +130,19 @@ public abstract class WireConnectorBlock extends Block implements BlockEntityPro
 		super.onStateReplaced(state, world, position, newState, moved);
 	}
 
-	public static void onConnectorBroken(BlockPos connectorPosition, List<BlockPos> friends, World world) {
-		for (BlockPos friendPosition : friends) {
-			BlockEntity blockEntity = world.getBlockEntity(friendPosition);
-
-			if (blockEntity != null) {
-				WireConnectorBlockEntity friend = (WireConnectorBlockEntity) blockEntity;
-
-				friend.children.remove(connectorPosition);
-				friend.parents.remove(connectorPosition);
-			}
-		}
-	}
-
 	public static void onConnectorBroken(BlockEntity blockEntity, World world) {
 		WireConnectorBlockEntity wireEntity = (WireConnectorBlockEntity) blockEntity;
 
-		for (NetworkNode node : wireEntity.parents) {
+		for (NetworkNode node : wireEntity.getParents()) {
 			WireConnectorBlockEntity parent = (WireConnectorBlockEntity) world.getBlockEntity(node.getPosition());
 
-			if (parent != null) parent.children.remove(blockEntity.getPos());
+			if (parent != null) parent.removeChild(node);
 		}
 
-		for (NetworkNode node : wireEntity.children) {
+		for (NetworkNode node : wireEntity.getChildren()) {
 			WireConnectorBlockEntity child = (WireConnectorBlockEntity) world.getBlockEntity(node.getPosition());
 
-			if (child != null) child.parents.remove(blockEntity.getPos());
+			if (child != null) child.removeParent(node);
 		}
 	}
 

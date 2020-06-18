@@ -63,8 +63,6 @@ public class AtmosphericManager {
 
 			if (map == null) return;
 
-			Set<BlockPos> cache = new HashSet<>();
-
 			List<Map.Entry<BlockPos, FluidVolume>> list = new ArrayList<>(map.entrySet());
 
 			list.sort((o1, o2) -> new CompareToBuilder()

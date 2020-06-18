@@ -21,7 +21,7 @@ public class WireConnectorBlockEntityRenderer<T extends WireConnectorBlockEntity
 
 	@Override
 	public void render(WireConnectorBlockEntity parent, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light, int overlay) {
-		for (NetworkNode node : parent.children) {
+		for (NetworkNode node : parent.getChildren()) {
 			if (parent.getWorld().getBlockEntity(node.getPosition()) == null) {
 				continue;
 			}

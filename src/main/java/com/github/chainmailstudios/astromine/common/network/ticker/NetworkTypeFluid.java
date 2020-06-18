@@ -4,7 +4,7 @@ import com.github.chainmailstudios.astromine.common.network.NetworkController;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkNode;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
-import com.github.chainmailstudios.astromine.common.volume.collection.AgnosticIndexVolumeCollection;
+import com.github.chainmailstudios.astromine.common.volume.collection.AgnosticIndexedVolumeCollection;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
@@ -23,9 +23,9 @@ public class NetworkTypeFluid extends NetworkType {
             if (blockEntity != null) {
                 NetworkMember member = (NetworkMember) blockEntity;
                 if (member.isBuffer()) {
-                    bufferMap.put(blockEntity.getPos(), ((AgnosticIndexVolumeCollection) blockEntity).get(FluidVolume.TYPE));
+                    bufferMap.put(blockEntity.getPos(), ((AgnosticIndexedVolumeCollection) blockEntity).get(FluidVolume.TYPE));
                 } else if (member.isRequester()) {
-                    requesterMap.put(blockEntity.getPos(), ((AgnosticIndexVolumeCollection) blockEntity).get(FluidVolume.TYPE));
+                    requesterMap.put(blockEntity.getPos(), ((AgnosticIndexedVolumeCollection) blockEntity).get(FluidVolume.TYPE));
                 }
             }
         }
