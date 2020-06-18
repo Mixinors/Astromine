@@ -56,12 +56,12 @@ public class AstromineChunkGenerator extends ChunkGenerator {
 		int z2 = chunk.getPos().getEndZ();
 		int y2 = 256;
 
-		for (int x = x1; x < x2; ++x) {
-			for (int z = z1; z < z2; ++z) {
-				for (int y = y1; y < y2; ++y) {
+		for (int x = x1; x <= x2; ++x) {
+			for (int z = z1; z <= z2; ++z) {
+				for (int y = y1; y <= y2; ++y) {
 					double value = noise.eval(x * 0.01, y * 0.01, z  * 0.01);
 
-					if (value > 0.5) {
+					if (value > 0.65) {
 						chunk.setBlockState(new BlockPos(x, y, z), AstromineBlocks.ASTEROID_STONE.getDefaultState(), false);
 					}
 				}
