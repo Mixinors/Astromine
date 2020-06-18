@@ -36,9 +36,12 @@ public class AsteroidFeature extends Feature<DefaultFeatureConfig> {
 
 		fP = new BlockPos(fP.getX(), random.nextInt(256), fP.getZ());
 
-		double xSize = 4 + random.nextDouble() * 8;
-		double ySize = 4 + random.nextDouble() * 8;
-		double zSize = 4 + random.nextDouble() * 8;
+		int baseSize = 4;
+		if (random.nextInt(4) == 0) baseSize = 12;
+
+		double xSize = baseSize + random.nextDouble() * 8;
+		double ySize = baseSize + random.nextDouble() * 8;
+		double zSize = baseSize + random.nextDouble() * 8;
 
 		if (fP.getY() + ySize >= 255) {
 			return false;
