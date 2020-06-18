@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.common.item.*;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.entity.EntityType;
@@ -19,10 +20,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.item.FireExtinguisher;
-import com.github.chainmailstudios.astromine.common.item.HolographicConnector;
-import com.github.chainmailstudios.astromine.common.item.SuperSpaceSlimeShooterItem;
-import com.github.chainmailstudios.astromine.common.item.UncoloredSpawnEggItem;
 import com.github.chainmailstudios.astromine.common.item.weapon.variant.Weaponry;
 import com.github.chainmailstudios.astromine.common.item.weapon.variant.ammo.Ammunition;
 
@@ -66,6 +63,9 @@ public class AstromineItems {
 	public static final Item ASTEROID_LAPIS_CLUSTER = register("asteroid_lapis_cluster", new Item(BASIC_SETTINGS));
 	public static final Item ASTEROID_DIAMOND_CLUSTER = register("asteroid_diamond_cluster", new Item(BASIC_SETTINGS));
 	public static final Item ASTEROID_EMERALD_CLUSTER = register("asteroid_emerald_cluster", new Item(BASIC_SETTINGS));
+
+	// Wires
+	public static final Item WIRE_COIL = register("wire_coil", new Item(new Item.Settings().group(AstromineItemGroups.ASTROMINE)));
 
 	// Tools
 	public static final Item HOLOGRAPHIC_CONNECTOR = register("holographic_connector", new HolographicConnector(new Item.Settings().group(AstromineItemGroups.ASTROMINE).maxCount(1)));
@@ -126,10 +126,10 @@ public class AstromineItems {
 	public static final Item UNIVITE_LEGGINGS = register("univite_leggings", new ArmorItem(AstromineArmorMaterials.UNIVITE, EquipmentSlot.LEGS, BASIC_SETTINGS));
 	public static final Item UNIVITE_BOOTS = register("univite_boots", new ArmorItem(AstromineArmorMaterials.UNIVITE, EquipmentSlot.FEET, BASIC_SETTINGS));
 
-	public static final Item SPACE_SUIT_HELMET = register("space_suit_helmet", new ArmorItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.HEAD, BASIC_SETTINGS));
-	public static final Item SPACE_SUIT_CHESTPLATE = register("space_suit_chestplate", new ArmorItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.CHEST, BASIC_SETTINGS));
-	public static final Item SPACE_SUIT_LEGGINGS = register("space_suit_leggings", new ArmorItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.LEGS, BASIC_SETTINGS));
-	public static final Item SPACE_SUIT_BOOTS = register("space_suit_boots", new ArmorItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, BASIC_SETTINGS));
+	public static final Item SPACE_SUIT_HELMET = register("space_suit_helmet", new SpaceSuitItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.HEAD, BASIC_SETTINGS));
+	public static final Item SPACE_SUIT_CHESTPLATE = register("space_suit_chestplate", new SpaceSuitItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.CHEST, BASIC_SETTINGS));
+	public static final Item SPACE_SUIT_LEGGINGS = register("space_suit_leggings", new SpaceSuitItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.LEGS, BASIC_SETTINGS));
+	public static final Item SPACE_SUIT_BOOTS = register("space_suit_boots", new SpaceSuitItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, BASIC_SETTINGS));
 
 	public static final Item YEAST = register("yeast", new Item(new Item.Settings()));
 

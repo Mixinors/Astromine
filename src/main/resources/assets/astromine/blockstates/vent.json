@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "facing=down":  { "model": "astromine:block/vent_vertical", "x": 180 },
+    "facing=up":    { "model": "astromine:block/vent_vertical" },
+    "facing=north": { "model": "astromine:block/vent" },
+    "facing=south": { "model": "astromine:block/vent", "y": 180 },
+    "facing=west":  { "model": "astromine:block/vent", "y": 270 },
+    "facing=east":  { "model": "astromine:block/vent", "y": 90 }
+  }
+}
