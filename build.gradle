@@ -27,6 +27,10 @@ repositories {
         name = "Fabric"
         url = "https://maven.fabricmc.net/"
     }
+	maven {
+		name = "Jared"
+		url = "https://maven.blamejared.com"
+	}
 }
 
 minecraft {
@@ -46,13 +50,28 @@ dependencies {
     // Fabric API
     modImplementation "net.fabricmc.fabric-api:fabric-api:${api_version}"
 
+    // Cardinal-Components API
+    modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-base:${cardinal_components_version}"
+    modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-block:${cardinal_components_version}"
+    modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-chunk:${cardinal_components_version}"
+    modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-entity:${cardinal_components_version}"
+    modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-item:${cardinal_components_version}"
+    modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-level:${cardinal_components_version}"
+    modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-world:${cardinal_components_version}"
+
     // Shapes
     modImplementation "com.terraformersmc:shapes:${shapes_version}"
 
     // Spinnery
     modImplementation "com.github.vini2003:spinnery:${spinnery_version}"
 
-    // ModMenu
+    // Advanced Runtime Resource Packs
+    modImplementation "net.devtech:arrp:${arrp_version}"
+	
+	// Patchouli
+	modImplementation "vazkii.patchouli:Patchouli_1.16-fabric:${patchouli_version}"
+
+	// ModMenu
     modImplementation "io.github.prospector:modmenu:${modmenu_version}"
 
     // RoughlyEnoughItems

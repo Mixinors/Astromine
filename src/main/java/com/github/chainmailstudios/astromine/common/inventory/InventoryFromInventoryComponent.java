@@ -10,8 +10,7 @@ import net.minecraft.util.TypedActionResult;
  */
 public interface InventoryFromInventoryComponent extends Inventory {
 	/**
-	 * Builds an wrapper over the given component
-	 * for vanilla Inventory usage.
+	 * Builds an wrapper over the given component for vanilla Inventory usage.
 	 *
 	 * @return the requested wrapper.
 	 */
@@ -30,8 +29,7 @@ public interface InventoryFromInventoryComponent extends Inventory {
 	}
 
 	/**
-	 * Retrieves the InventoryComponent this wrapper
-	 * is wrapping.
+	 * Retrieves the InventoryComponent this wrapper is wrapping.
 	 *
 	 * @return the requested component.
 	 */
@@ -59,11 +57,9 @@ public interface InventoryFromInventoryComponent extends Inventory {
 	}
 
 	/**
-	 * Extracts an ItemStack from the specified slot,
-	 * the count extracted depending on the specified
-	 * count.
+	 * Extracts an ItemStack from the specified slot, the count extracted depending on the specified count.
 	 *
-	 * @param slot  the specified slot.
+	 * @param slot the specified slot.
 	 * @param count the specified count.
 	 * @return the requested ItemStack.
 	 */
@@ -71,11 +67,15 @@ public interface InventoryFromInventoryComponent extends Inventory {
 	default ItemStack removeStack(int slot, int count) {
 		if (this.getComponent().getStack(slot).getCount() < count) {
 			TypedActionResult<ItemStack> result = this.getComponent().extract(slot);
-			if (!result.getValue().isEmpty()) this.markDirty();
+			if (!result.getValue().isEmpty()) {
+				this.markDirty();
+			}
 			return result.getValue();
 		} else {
 			TypedActionResult<ItemStack> result = this.getComponent().extract(slot, count);
-			if (!result.getValue().isEmpty()) this.markDirty();
+			if (!result.getValue().isEmpty()) {
+				this.markDirty();
+			}
 			return result.getValue();
 		}
 	}
@@ -92,10 +92,9 @@ public interface InventoryFromInventoryComponent extends Inventory {
 	}
 
 	/**
-	 * Overrides the ItemStack in the specified slot
-	 * with the specified stack.
+	 * Overrides the ItemStack in the specified slot with the specified stack.
 	 *
-	 * @param slot  the specified slot.
+	 * @param slot the specified slot.
 	 * @param stack the specified stack.
 	 */
 	@Override
@@ -115,8 +114,7 @@ public interface InventoryFromInventoryComponent extends Inventory {
 	}
 
 	/**
-	 * Asserts whether the specified player
-	 * can access this inventory.
+	 * Asserts whether the specified player can access this inventory.
 	 *
 	 * @param player the specified player.
 	 * @return true if yes; false if no.

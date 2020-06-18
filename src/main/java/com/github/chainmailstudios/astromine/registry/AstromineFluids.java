@@ -21,7 +21,7 @@ public class AstromineFluids {
 			.damage(4)
 			.toxic(true)
 			.infinite(false)
-			.name("roccket_fuel")
+			.name("rocket_fuel")
 			.build();
 
 	public static void initialize() {

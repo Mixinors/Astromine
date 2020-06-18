@@ -1,8 +1,10 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
+
 import net.minecraft.util.Identifier;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
 
 public class AstromineClientPackets {
 	public static final Identifier PRESSURE_UPDATE = AstromineCommon.identifier("pressure_update");

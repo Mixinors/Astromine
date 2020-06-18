@@ -1,13 +1,9 @@
 package com.github.chainmailstudios.astromine.common.volume.energy;
 
+import net.minecraft.nbt.CompoundTag;
+
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.registry.PropertyRegistry;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 public class EnergyVolume extends BaseVolume {
 	public static final int TYPE = 1;

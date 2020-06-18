@@ -1,9 +1,9 @@
 package com.github.chainmailstudios.astromine.common.fraction;
 
-import com.google.common.base.Objects;
-import com.google.common.math.LongMath;
 import net.minecraft.nbt.CompoundTag;
 
+import com.google.common.base.Objects;
+import com.google.common.math.LongMath;
 import java.math.RoundingMode;
 
 public class Fraction extends Number implements Comparable<Fraction> {
@@ -25,8 +25,9 @@ public class Fraction extends Number implements Comparable<Fraction> {
 		long denominator = lowestCommonDenominator(fractionA.denominator, fractionB.denominator);
 
 		try {
-			return new Fraction(LongMath.checkedMultiply(fractionA.numerator, LongMath.divide(denominator, fractionA.denominator, RoundingMode.DOWN)) + LongMath.checkedMultiply(fractionB.numerator, LongMath.divide(denominator, fractionB.denominator,
-					RoundingMode.DOWN)), denominator);
+			return new Fraction(LongMath.checkedMultiply(fractionA.numerator, LongMath.divide(denominator, fractionA.denominator, RoundingMode.DOWN)) + LongMath.checkedMultiply(fractionB.numerator,
+			                                                                                                                                                                     LongMath.divide(denominator, fractionB.denominator, RoundingMode.DOWN)
+			), denominator);
 		} catch (ArithmeticException exception) {
 			throw new UnsupportedOperationException("Attempt to add fractions whose numerator, adjusted for lowest common denominator, would cause an overflow!");
 		}
@@ -44,14 +45,17 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	}
 
 	/**
-	 * Iterative version of Stein's Algorithm for
-	 * greatest common divisor.
+	 * Iterative version of Stein's Algorithm for greatest common divisor.
 	 */
 	private static long greatestCommonDivisor(long a, long b) {
 		long shift = 0;
 
-		if (a == 0) return b;
-		if (b == 0) return a;
+		if (a == 0) {
+			return b;
+		}
+		if (b == 0) {
+			return a;
+		}
 
 		while (((a | b) & 1) == 0) {
 			++shift;
@@ -59,10 +63,14 @@ public class Fraction extends Number implements Comparable<Fraction> {
 			b >>= 1;
 		}
 
-		while ((a & 1) == 0) a >>= 1;
+		while ((a & 1) == 0) {
+			a >>= 1;
+		}
 
 		do {
-			while ((b & 1) == 0) b >>= 1;
+			while ((b & 1) == 0) {
+				b >>= 1;
+			}
 			if (a > b) {
 				long t = b;
 				b = a;
@@ -82,17 +90,16 @@ public class Fraction extends Number implements Comparable<Fraction> {
 		long denominator = lowestCommonDenominator(fractionA.denominator, fractionB.denominator);
 
 		try {
-			return new Fraction(LongMath.checkedMultiply(fractionA.numerator, LongMath.divide(denominator, fractionA.denominator, RoundingMode.DOWN)) - LongMath.checkedMultiply(fractionB.numerator, LongMath.divide(denominator, fractionB.denominator,
-					RoundingMode.DOWN)), denominator);
+			return new Fraction(LongMath.checkedMultiply(fractionA.numerator, LongMath.divide(denominator, fractionA.denominator, RoundingMode.DOWN)) - LongMath.checkedMultiply(fractionB.numerator,
+			                                                                                                                                                                     LongMath.divide(denominator, fractionB.denominator, RoundingMode.DOWN)
+			), denominator);
 		} catch (ArithmeticException exception) {
 			throw new UnsupportedOperationException("Attempt to subtract fractions whose numerator, adjusted for lowest common denominator, would cause an overflow!");
 		}
 	}
 
 	/**
-	 * Fraction division method, lossless.
-	 * Fractions are divided sequentially following
-	 * array order.
+	 * Fraction division method, lossless. Fractions are divided sequentially following array order.
 	 */
 	public static Fraction divide(Fraction fractionA, Fraction fractionB) {
 		return multiply(fractionA, Fraction.inverse(fractionB));
@@ -114,9 +121,7 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	}
 
 	/**
-	 * Fraction denominator limiter method, lossy.
-	 * Loss of precision with indivisible denominators,
-	 * should only be used for the front-end display.
+	 * Fraction denominator limiter method, lossy. Loss of precision with indivisible denominators, should only be used for the front-end display.
 	 */
 	public static Fraction limit(Fraction source, Fraction target) {
 		try {
@@ -144,7 +149,9 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	 * Fraction comparison method.
 	 */
 	public boolean isBiggerThan(Fraction fraction) {
-		if (this.denominator == fraction.denominator) return this.numerator > fraction.numerator;
+		if (this.denominator == fraction.denominator) {
+			return this.numerator > fraction.numerator;
+		}
 
 		long denominator = lowestCommonDenominator(this.denominator, fraction.denominator);
 
@@ -169,7 +176,7 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	}
 
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putLongArray("values", new long[]{this.numerator, this.denominator});
+		tag.putLongArray("values", new long[] {this.numerator, this.denominator});
 
 		return tag;
 	}
@@ -194,8 +201,12 @@ public class Fraction extends Number implements Comparable<Fraction> {
 
 	@Override
 	public boolean equals(Object object) {
-		if (this == object) return true;
-		if (!(object instanceof Fraction)) return false;
+		if (this == object) {
+			return true;
+		}
+		if (!(object instanceof Fraction)) {
+			return false;
+		}
 
 		Fraction target = (Fraction) object;
 
@@ -209,7 +220,9 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	 * Fraction simplification method, lossless.
 	 */
 	public static Fraction simplify(Fraction fraction) {
-		if (fraction.numerator == 0) return Fraction.EMPTY;
+		if (fraction.numerator == 0) {
+			return Fraction.EMPTY;
+		}
 
 		long divisor = greatestCommonDivisor(fraction.numerator, fraction.denominator);
 

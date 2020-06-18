@@ -1,12 +1,15 @@
 package com.github.chainmailstudios.astromine;
 
-import blue.endless.jankson.Jankson;
 import com.github.chainmailstudios.astromine.registry.*;
-import com.google.gson.Gson;
 import net.fabricmc.api.ModInitializer;
+
 import net.minecraft.util.Identifier;
+
+import blue.endless.jankson.Jankson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.google.gson.Gson;
 
 public class AstromineCommon implements ModInitializer {
 	public static final String LOG_ID = "Astromine";
@@ -16,6 +19,10 @@ public class AstromineCommon implements ModInitializer {
 	public static final Gson GSON = new Gson();
 
 	public static final Logger LOGGER = LogManager.getLogger(LOG_ID);
+
+	public static Identifier identifier(String name) {
+		return new Identifier(MOD_ID, name);
+	}
 
 	@Override
 	public void onInitialize() {
@@ -33,9 +40,5 @@ public class AstromineCommon implements ModInitializer {
 		AstromineGravities.initialize();
 		AstromineDimensionLayers.initialize();
 		AstromineCommonCallbacks.initialize();
-	}
-
-	public static Identifier identifier(String name) {
-		return new Identifier(MOD_ID, name);
 	}
 }

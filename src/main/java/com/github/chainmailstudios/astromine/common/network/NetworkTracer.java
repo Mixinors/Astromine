@@ -10,6 +10,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
+
 import org.apache.commons.lang3.mutable.MutableBoolean;
 
 import java.util.ArrayDeque;
@@ -66,7 +67,9 @@ public class NetworkTracer {
 				for (Direction direction : Direction.values()) {
 					BlockPos offsetPosition = position.offset(direction);
 
-					if (cache.contains(offsetPosition)) continue;
+					if (cache.contains(offsetPosition)) {
+						continue;
+					}
 
 					Object offsetObject = getObjectAt(world, offsetPosition);
 

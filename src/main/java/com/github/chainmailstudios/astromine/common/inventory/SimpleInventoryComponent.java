@@ -9,9 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Simple implementation of an InventoryComponent for usage
- * anywhere one is required.
- * Size is immutable and therefore defined on instantiation.
+ * Simple implementation of an InventoryComponent for usage anywhere one is required. Size is immutable and therefore defined on instantiation.
  */
 public class SimpleInventoryComponent implements InventoryComponent {
 	private final HashMap<Integer, ItemStack> contents = new HashMap<Integer, ItemStack>() {

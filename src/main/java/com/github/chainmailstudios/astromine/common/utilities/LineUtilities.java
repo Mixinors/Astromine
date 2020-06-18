@@ -7,11 +7,10 @@ import java.util.Collection;
 
 public class LineUtilities {
 	/**
-	 * Builds a Bezier curve from two points.
-	 * Current implementation needs to be reworked.
+	 * Builds a Bezier curve from two points. Current implementation needs to be reworked.
 	 *
-	 * @param posA     the first specified position.
-	 * @param posB     the second specified position.
+	 * @param posA the first specified position.
+	 * @param posB the second specified position.
 	 * @param segments the segments between both positions.
 	 * @return the dots of the requested curve.
 	 */

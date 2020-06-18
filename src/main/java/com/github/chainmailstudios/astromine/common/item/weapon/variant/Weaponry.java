@@ -1,15 +1,16 @@
 package com.github.chainmailstudios.astromine.common.item.weapon.variant;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.item.weapon.BaseWeapon;
-import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
-import com.github.chainmailstudios.astromine.registry.AstromineItems;
-import com.github.chainmailstudios.astromine.registry.AstromineSounds;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.Item;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.item.weapon.BaseWeapon;
+import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import com.github.chainmailstudios.astromine.registry.AstromineSounds;
 
 public class Weaponry {
 	public static final class ScarH extends BaseWeapon {
@@ -32,8 +33,13 @@ public class Weaponry {
 		}
 
 		@Override
-		public long getShotInterval() {
-			return 100;
+		public float getDistance() {
+			return 256;
+		}
+
+		@Override
+		public int getPunch() {
+			return 2;
 		}
 
 		@Override
@@ -42,13 +48,8 @@ public class Weaponry {
 		}
 
 		@Override
-		public float getDistance() {
-			return 256;
-		}
-
-		@Override
-		public int getPunch() {
-			return 2;
+		public long getShotInterval() {
+			return 100;
 		}
 
 		@Override
@@ -102,8 +103,13 @@ public class Weaponry {
 		}
 
 		@Override
-		public long getShotInterval() {
-			return 2000;
+		public float getDistance() {
+			return 1024;
+		}
+
+		@Override
+		public int getPunch() {
+			return 8;
 		}
 
 		@Override
@@ -112,13 +118,8 @@ public class Weaponry {
 		}
 
 		@Override
-		public float getDistance() {
-			return 1024;
-		}
-
-		@Override
-		public int getPunch() {
-			return 8;
+		public long getShotInterval() {
+			return 2000;
 		}
 
 		@Override

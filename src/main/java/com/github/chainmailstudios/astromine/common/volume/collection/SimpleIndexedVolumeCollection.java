@@ -1,7 +1,6 @@
 package com.github.chainmailstudios.astromine.common.volume.collection;
 
 import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +10,6 @@ public class SimpleIndexedVolumeCollection<T extends BaseVolume> implements Inde
 
 	@Override
 	public List<T> getVolumes() {
-		return fluidVolumes;
+		return this.fluidVolumes;
 	}
 }

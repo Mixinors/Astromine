@@ -1,7 +1,5 @@
 package com.github.chainmailstudios.astromine.common.entity;
 
-import com.github.chainmailstudios.astromine.common.entity.ai.JumpHoverGoal;
-import com.github.chainmailstudios.astromine.registry.AstromineParticles;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -10,30 +8,24 @@ import net.minecraft.entity.mob.SlimeEntity;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.world.World;
 
+import com.github.chainmailstudios.astromine.common.entity.ai.JumpHoverGoal;
+import com.github.chainmailstudios.astromine.registry.AstromineParticles;
+
 public class SpaceSlimeEntity extends SlimeEntity {
 
-	private int floatingCooldown;
 	private static final TrackedData<Integer> FLOATING_PROGRESS = DataTracker.registerData(SpaceSlimeEntity.class, TrackedDataHandlerRegistry.INTEGER);
 	private static final TrackedData<Boolean> FLOATING = DataTracker.registerData(SpaceSlimeEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+	private int floatingCooldown;
 
 	public SpaceSlimeEntity(EntityType<? extends SlimeEntity> entityType, World world) {
 		super(entityType, world);
-		floatingCooldown = world.random.nextInt(200);
+		this.floatingCooldown = world.random.nextInt(200);
 	}
 
 	@Override
 	public void initGoals() {
 		super.initGoals();
 		this.goalSelector.add(3, new JumpHoverGoal(this));
-	}
-
-	@Override
-	public void tick() {
-		if (floatingCooldown > 0) {
-			floatingCooldown--;
-		}
-
-		super.tick();
 	}
 
 	@Override
@@ -44,13 +36,22 @@ public class SpaceSlimeEntity extends SlimeEntity {
 	}
 
 	@Override
-	protected int computeFallDamage(float fallDistance, float damageMultiplier) {
-		return 0;
+	protected ParticleEffect getParticles() {
+		return AstromineParticles.SPACE_SLIME;
 	}
 
 	@Override
-	protected ParticleEffect getParticles() {
-		return AstromineParticles.SPACE_SLIME;
+	public void tick() {
+		if (this.floatingCooldown > 0) {
+			this.floatingCooldown--;
+		}
+
+		super.tick();
+	}
+
+	@Override
+	protected int computeFallDamage(float fallDistance, float damageMultiplier) {
+		return 0;
 	}
 
 	@Override
@@ -59,7 +60,7 @@ public class SpaceSlimeEntity extends SlimeEntity {
 	}
 
 	public int getFloatingCooldown() {
-		return floatingCooldown;
+		return this.floatingCooldown;
 	}
 
 	public void setFloatingCooldown(int cooldown) {

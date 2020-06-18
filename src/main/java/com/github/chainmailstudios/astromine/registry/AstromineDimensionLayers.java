@@ -1,7 +1,8 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
 import net.minecraft.world.dimension.DimensionType;
+
+import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
 
 public class AstromineDimensionLayers {
 	public static void initialize() {
