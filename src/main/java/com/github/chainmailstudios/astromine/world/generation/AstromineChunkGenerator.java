@@ -71,7 +71,7 @@ public class AstromineChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public void populateNoise(WorldAccess world, StructureAccessor accessor, Chunk chunk) {
-
+		// Unused.
 	}
 
 	@Override
