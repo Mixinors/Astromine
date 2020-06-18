@@ -192,12 +192,12 @@ public class FluidVolume extends BaseVolume {
 
 	@Deprecated
 	public void pull(BaseVolume target, Fraction pulled) {
-		// Deprecated!
+		super.pull(target, pulled);
 	}
 
 	@Deprecated
 	public void push(BaseVolume target, Fraction pushed) {
-		// Deprecated!
+		super.push(target, pushed);
 	}
 
 	@Override

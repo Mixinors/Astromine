@@ -12,10 +12,14 @@ import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.util.math.Vector3f;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.Arrays;
+import java.util.Vector;
 
 public class EnergyWireConnectorBlockEntity extends WireConnectorBlockEntity implements Tickable, AgnosticIndexedVolumeCollection {
 	private EnergyVolume energyVolume = new EnergyVolume();
@@ -33,6 +37,14 @@ public class EnergyWireConnectorBlockEntity extends WireConnectorBlockEntity imp
 	@Override
 	public void tick() {
 		if (world == null) return;
+
+		Vector3f velocity = new Vector3f(1, 1, 0);
+
+		for (int i = 0; i < 360; ++i) {
+			velocity.rotate(Vector3f.POSITIVE_Y.getDegreesQuaternion(1));
+
+			world.addParticle(ParticleTypes.WHITE_ASH, getPos().getX(), getPos().getY(), getPos().getZ(), velocity.getX(), velocity.getY(), velocity.getZ());
+		}
 
 		EnergyVolume ourVolume = get(EnergyVolume.TYPE);
 

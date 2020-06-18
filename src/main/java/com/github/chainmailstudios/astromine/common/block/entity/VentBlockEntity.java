@@ -21,7 +21,7 @@ public class VentBlockEntity extends AlphaBlockEntity implements Tickable, Netwo
 
 	@Override
 	public void tick() {
-		if (energyVolume.getFraction().isBiggerThan(Fraction.BOTTLE)) {
+		if ((energyVolume.getFraction().isBiggerThan(Fraction.BOTTLE) || energyVolume.getFraction().equals(Fraction.BOTTLE)) && (fluidVolume.getFraction().isBiggerThan(Fraction.BUCKET) || fluidVolume.getFraction().equals(Fraction.BUCKET))){
 			BlockPos position = getPos();
 
 			Direction direction = world.getBlockState(position).get(FacingBlock.FACING);
@@ -29,7 +29,7 @@ public class VentBlockEntity extends AlphaBlockEntity implements Tickable, Netwo
 			BlockPos output = position.offset(direction);
 
 			if (world.getBlockState(output).getBlock() instanceof AirBlock) {
-				AtmosphericManager.add(world, output, new FluidVolume(AstromineFluids.OXYGEN, Fraction.BUCKET));
+				AtmosphericManager.add(world, output, fluidVolume.take(Fraction.BUCKET));
 			}
 
 			energyVolume.setFraction(Fraction.subtract(energyVolume.getFraction(), Fraction.BOTTLE));
