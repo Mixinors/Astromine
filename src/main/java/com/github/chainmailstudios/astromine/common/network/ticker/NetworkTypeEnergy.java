@@ -1,10 +1,10 @@
 package com.github.chainmailstudios.astromine.common.network.ticker;
 
+import com.github.chainmailstudios.astromine.common.component.EnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkController;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkNode;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
-import com.github.chainmailstudios.astromine.common.volume.collection.AgnosticIndexedVolumeCollection;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
@@ -22,9 +22,13 @@ public class NetworkTypeEnergy extends NetworkType {
             if (blockEntity != null) {
                 NetworkMember member = (NetworkMember) blockEntity;
                 if (member.isBuffer()) {
-                    bufferMap.put(blockEntity.getPos(), ((AgnosticIndexedVolumeCollection) blockEntity).get(EnergyVolume.TYPE));
+                    ((EnergyInventoryComponent) blockEntity).getContents().forEach((key, volume) -> {
+                        bufferMap.put(blockEntity.getPos(), volume);
+                    });
                 } else if (member.isRequester()) {
-                    requesterMap.put(blockEntity.getPos(), ((AgnosticIndexedVolumeCollection) blockEntity).get(EnergyVolume.TYPE));
+                    ((EnergyInventoryComponent) blockEntity).getContents().forEach((key, volume) -> {
+                        requesterMap.put(blockEntity.getPos(), volume);
+                    });
                 }
             }
         }

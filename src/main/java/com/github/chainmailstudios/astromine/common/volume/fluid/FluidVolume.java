@@ -10,6 +10,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -156,8 +157,52 @@ public class FluidVolume extends BaseVolume {
 		this.fluid = fluid;
 	}
 
-	public String toInterfaceString() {
-		return new TranslatableText(fluid.getBucketItem().getTranslationKey()).getString().replace(" Bucket", "") + " | " + fraction.getNumerator() + "/" + fraction.getDenominator();
+	public ActionResult canInsert(Fluid fluid, Fraction amount) {
+		return fluid == this.fluid && fits(fraction) ? ActionResult.SUCCESS : ActionResult.FAIL;
+	}
+
+	public ActionResult canExtract(Fluid fluid, Fraction amount) {
+		return fluid == this.fluid ? ActionResult.SUCCESS : ActionResult.FAIL;
+	}
+
+	public Fraction insert(Fluid fluid, Fraction fraction) {
+		if (fluid != this.fluid) return fraction;
+
+		FluidVolume volume = new FluidVolume(fluid, fraction);
+
+		this.push(volume, fraction);
+
+		return volume.fraction;
+	}
+
+	public FluidVolume extract(Fluid fluid, Fraction fraction) {
+		if (fluid != this.fluid) return FluidVolume.EMPTY;
+
+		FluidVolume volume = new FluidVolume(fluid, Fraction.EMPTY);
+
+		this.pull(volume, fraction);
+
+		return volume;
+	}
+
+	@Override
+	public <T extends BaseVolume> boolean isSmallerThan(T volume) {
+		return (volume instanceof FluidVolume && fluid == ((FluidVolume) volume).fluid && super.isSmallerThan(volume));
+	}
+
+	@Override
+	public <T extends BaseVolume> boolean isBiggerThan(T volume) {
+		return (volume instanceof FluidVolume && fluid == ((FluidVolume) volume).fluid && super.isBiggerThan(volume));
+	}
+
+	@Override
+	public <T extends BaseVolume> boolean isSmallerOrEqualThan(T volume) {
+		return (volume instanceof FluidVolume && fluid == ((FluidVolume) volume).fluid && super.isSmallerOrEqualThan(volume));
+	}
+
+	@Override
+	public <T extends BaseVolume> boolean isBiggerOrEqualThan(T volume) {
+		return (volume instanceof FluidVolume && fluid == ((FluidVolume) volume).fluid && super.isBiggerOrEqualThan(volume));
 	}
 
 	@Override
@@ -170,39 +215,35 @@ public class FluidVolume extends BaseVolume {
 		return (T) new FluidVolume(fluid, super.give(pushed).getFraction());
 	}
 
-	public void pull(FluidVolume target, Fraction pulled) {
-		if (fluidConditions.stream().anyMatch(condition -> !condition.test(this, target))) return;
+	public <T extends BaseVolume> void pull(T target, Fraction pulled) {
+		if (!(target instanceof FluidVolume)) return;
+		if (fluidConditions.stream().anyMatch(condition -> !condition.test(this, (FluidVolume) target))) return;
 		else super.pull(target, pulled);
 	}
 
-	public void push(FluidVolume target, Fraction pushed) {
-		if (fluidConditions.stream().anyMatch(condition -> !condition.test(this, target))) return;
+	public <T extends BaseVolume> void push(T target, Fraction pushed) {
+		if (!(target instanceof FluidVolume)) return;
+		if (fluidConditions.stream().anyMatch(condition -> !condition.test(this, (FluidVolume) target))) return;
 		else super.push(target, pushed);
 	}
 
 	@Override
 	public boolean isFull() {
-		return getFraction().equals(getSize()) && this.fluid != Fluids.EMPTY;
+		return fraction.equals(size) && this.fluid != Fluids.EMPTY;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return this.getFraction().equals(Fraction.EMPTY) || this.fluid == Fluids.EMPTY;
-	}
-
-	@Deprecated
-	public void pull(BaseVolume target, Fraction pulled) {
-		super.pull(target, pulled);
-	}
-
-	@Deprecated
-	public void push(BaseVolume target, Fraction pushed) {
-		super.push(target, pushed);
+		return fraction.equals(Fraction.EMPTY) || this.fluid == Fluids.EMPTY;
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hashCode(this.properties, this.fluid, this.fraction);
+	}
+
+	public FluidVolume copy() {
+		return new FluidVolume(fluid, fraction);
 	}
 
 	@Override
@@ -218,5 +259,9 @@ public class FluidVolume extends BaseVolume {
 	@Override
 	public String toString() {
 		return "Volume{" + "fluid=" + this.fluid + ", fraction=" + this.fraction + '}';
+	}
+
+	public String asString() {
+		return new TranslatableText(fluid.getBucketItem().getTranslationKey()).getString().replace(" Bucket", "") + " | " + fraction.getNumerator() + "/" + fraction.getDenominator();
 	}
 }

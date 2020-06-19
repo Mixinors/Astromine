@@ -8,6 +8,16 @@ import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
 public class EnergyVolume extends BaseVolume {
 	public static final int TYPE = 1;
 
+	public static final EnergyVolume EMPTY = new EnergyVolume();
+
+	public EnergyVolume() {
+		super();
+	}
+
+	public EnergyVolume(Fraction fraction) {
+		this.fraction = fraction;
+	}
+
 	/**
 	 * Deserializes a Volume from a tag.
 	 *
@@ -31,5 +41,9 @@ public class EnergyVolume extends BaseVolume {
 		}
 
 		return energyVolume;
+	}
+
+	public EnergyVolume copy() {
+		return new EnergyVolume(fraction);
 	}
 }

@@ -1,8 +1,12 @@
 package com.github.chainmailstudios.astromine.common.volume;
 
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.google.common.base.Objects;
+import com.google.common.math.LongMath;
 import net.minecraft.nbt.CompoundTag;
+
+import java.math.RoundingMode;
 
 public class BaseVolume {
 	protected Fraction fraction = Fraction.EMPTY;
@@ -76,7 +80,7 @@ public class BaseVolume {
 	 * minimum between requested size and available
 	 * for pulling into this.
 	 */
-	public void pull(BaseVolume target, Fraction pulled) {
+	public <T extends BaseVolume> void pull(T target, Fraction pulled) {
 		Fraction available = Fraction.subtract(this.size, this.fraction);
 
 		pulled = Fraction.min(pulled, available);
@@ -103,7 +107,7 @@ public class BaseVolume {
 	 * minimum between requested size and available for
 	 * pushing into target.
 	 */
-	public void push(BaseVolume target, Fraction pushed) {
+	public <T extends BaseVolume> void push(T target, Fraction pushed) {
 		Fraction available = Fraction.subtract(target.size, target.fraction);
 
 		pushed = Fraction.min(pushed, available);
@@ -134,6 +138,34 @@ public class BaseVolume {
 	public boolean fits(Fraction fraction) {
 		Fraction available = Fraction.subtract(getSize(), getFraction());
 		return available.equals(fraction) || available.isBiggerThan(fraction);
+	}
+
+	/**
+	 * Fraction comparison method.
+	 */
+	public <T extends BaseVolume> boolean isSmallerThan(T volume) {
+		return !this.isBiggerThan(volume);
+	}
+
+	/**
+	 * Fraction comparison method.
+	 */
+	public <T extends BaseVolume> boolean isBiggerThan(T volume) {
+		return fraction.isBiggerThan(volume.fraction);
+	}
+
+	/**
+	 * Fraction comparison method.
+	 */
+	public <T extends BaseVolume> boolean isSmallerOrEqualThan(T volume) {
+		return isSmallerThan(volume) || equals(volume);
+	}
+
+	/**
+	 * Fraction comparison method.
+	 */
+	public <T extends BaseVolume> boolean isBiggerOrEqualThan(T volume) {
+		return isBiggerThan(volume) || equals(volume);
 	}
 
 	@Override

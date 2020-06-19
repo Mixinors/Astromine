@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.entity.projectile.BulletEntity;
-import com.github.chainmailstudios.astromine.common.inventory.InventoryComponentFromInventory;
+import com.github.chainmailstudios.astromine.common.component.compatibility.ItemInventoryComponentFromItemInventory;
 import com.github.chainmailstudios.astromine.common.item.weapon.BaseWeapon;
 import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineEntities;
@@ -40,7 +40,7 @@ public class SuperSpaceSlimeShooterItem extends BaseWeapon {
 
 	@Override
 	public void tryShoot(World world, PlayerEntity user) {
-		Optional<ItemStack> optionalMagazine = InventoryComponentFromInventory.of(user.inventory).getContentsMatching(stack -> stack.getItem() == this.getAmmo()).stream().findFirst();
+		Optional<ItemStack> optionalMagazine = ItemInventoryComponentFromItemInventory.of(user.inventory).getContentsMatching(stack -> stack.getItem() == this.getAmmo()).stream().findFirst();
 
 		if (optionalMagazine.isPresent() || user.isCreative()) {
 			long currentAttempt = System.currentTimeMillis();
