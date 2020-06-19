@@ -4,6 +4,7 @@ import com.github.chainmailstudios.astromine.common.gas.AtmosphericManager;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.AirBlock;
@@ -27,7 +28,10 @@ public class VentBlockEntity extends AlphaBlockEntity implements Tickable, Netwo
 			BlockPos output = position.offset(direction);
 
 			if (world.getBlockState(output).getBlock() instanceof AirBlock) {
-				AtmosphericManager.add(world, output, fluidComponent.getVolume(0).take(Fraction.BUCKET));
+				FluidVolume bucketVolume = fluidComponent.getVolume(0).take(Fraction.BUCKET);
+				FluidVolume volume = AtmosphericManager.get(world, output);
+				volume.pull(bucketVolume, Fraction.BUCKET);
+				AtmosphericManager.add(world, output, volume);
 			}
 
 			energyComponent.getVolume(0).setFraction(Fraction.subtract(energyComponent.getVolume(0).getFraction(), Fraction.BOTTLE));

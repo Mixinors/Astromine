@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public abstract class WireConnectorBlock extends Block implements BlockEntityProvider {
+public abstract class WireConnectorBlock extends Block {
 	public static final DirectionProperty FACING = FacingBlock.FACING;
 
 	public WireConnectorBlock(Settings settings) {

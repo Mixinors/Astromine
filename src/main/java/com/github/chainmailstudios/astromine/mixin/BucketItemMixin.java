@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.mixin;
 
+import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.component.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
@@ -48,17 +49,21 @@ public abstract class BucketItemMixin {
 				}
 
 				if (attached != null) {
-					if (attached instanceof FluidInventoryComponent) {
-						FluidInventoryComponent inventory = (FluidInventoryComponent) attached;
+					if (attached instanceof ComponentProvider) {
+						ComponentProvider provider = (ComponentProvider) attached;
 
-						FluidVolume bucketVolume = new FluidVolume(this.fluid, Fraction.BUCKET);
+						FluidInventoryComponent inventory = provider.getComponent(result.getSide(), FluidInventoryComponent.class);
 
-						if (inventory.canInsert(bucketVolume).isAccepted()) {
-							inventory.insert(bucketVolume);
-						}
+						if (inventory != null) {
+							FluidVolume bucketVolume = new FluidVolume(this.fluid, Fraction.BUCKET);
 
-						if (attached instanceof BlockEntityClientSerializable && !world.isClient) {
-							((BlockEntityClientSerializable) attached).sync();
+							if (inventory.canInsert(bucketVolume).isAccepted()) {
+								inventory.insert(bucketVolume);
+							}
+
+							if (attached instanceof BlockEntityClientSerializable && !world.isClient) {
+								((BlockEntityClientSerializable) attached).sync();
+							}
 						}
 					}
 				}

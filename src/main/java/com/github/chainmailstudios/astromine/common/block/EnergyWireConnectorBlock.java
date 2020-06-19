@@ -5,10 +5,7 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FacingBlock;
-import net.minecraft.block.ShapeContext;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -18,7 +15,7 @@ import net.minecraft.world.BlockView;
 
 import java.util.Arrays;
 
-public class EnergyWireConnectorBlock extends WireConnectorBlock {
+public class EnergyWireConnectorBlock extends WireConnectorBlock implements BlockEntityProvider {
 	private static final ImmutableMap<Direction, VoxelShape> SHAPES = ImmutableMap.<Direction, VoxelShape>builder()
 			.put(Direction.UP, Block.createCuboidShape(5, 0, 5, 11, 4, 11))
 			.put(Direction.DOWN, Block.createCuboidShape(5, 12, 5, 11, 16, 11))

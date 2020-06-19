@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.component;
 
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 
 import java.util.ArrayList;
@@ -16,6 +17,9 @@ public class SimpleFluidInventoryComponent implements FluidInventoryComponent {
 
 	public SimpleFluidInventoryComponent(int size) {
 		this.size = size;
+		for (int i = 0; i < size; ++i) {
+			contents.put(i, FluidVolume.EMPTY);
+		}
 	}
 
 	@Override

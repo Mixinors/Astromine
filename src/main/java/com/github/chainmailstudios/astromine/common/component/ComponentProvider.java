@@ -9,7 +9,7 @@ public interface ComponentProvider {
 	<T extends Component> Collection<T> getComponents(Direction direction);
 
 	default <T extends Component> T getComponent(Direction direction, Class<T> clazz) {
-		Optional<T> optional = (Optional<T>) getComponents(direction).stream().filter(component -> component.getClass() == clazz).findFirst();
+		Optional<T> optional = (Optional<T>) getComponents(direction).stream().filter(component -> clazz.isInstance(component)).findFirst();
 		return optional.orElse(null);
 	}
 }

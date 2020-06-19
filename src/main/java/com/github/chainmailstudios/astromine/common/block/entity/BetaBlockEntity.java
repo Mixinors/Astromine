@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
+import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
@@ -24,8 +25,15 @@ public abstract class BetaBlockEntity extends BlockEntity implements ComponentPr
 
 	@Override
 	public <T extends Component> Collection<T> getComponents(Direction direction) {
-		Direction facing = getCachedState().get(FacingBlock.FACING);
-		return facing == direction ? Lists.newArrayList() : (Collection<T>) Lists.newArrayList(fluidComponent);
+		if (getCachedState().getBlock() instanceof FacingBlock) {
+			Direction facing = getCachedState().get(FacingBlock.FACING);
+			return facing == direction ? Lists.newArrayList() : (Collection<T>) Lists.newArrayList(fluidComponent);
+		} else if (getCachedState().getBlock() instanceof HorizontalFacingBlock) {
+			Direction facing = getCachedState().get(HorizontalFacingBlock.FACING);
+			return facing == direction ? Lists.newArrayList() : (Collection<T>) Lists.newArrayList(fluidComponent);
+		} else {
+			return (Collection<T>) Lists.newArrayList(fluidComponent);
+		}
 	}
 
 	@Override

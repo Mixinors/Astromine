@@ -11,7 +11,7 @@ import java.math.RoundingMode;
 public class BaseVolume {
 	protected Fraction fraction = Fraction.EMPTY;
 
-	protected Fraction size = Fraction.BUCKET;
+	protected Fraction size = new Fraction(Integer.MAX_VALUE, 1);
 
 	/**
 	 * Instantiates a Volume with an empty fraction.
@@ -86,11 +86,11 @@ public class BaseVolume {
 		pulled = Fraction.min(pulled, available);
 
 		if (target.fraction.isSmallerThan(pulled)) { // If target has less than required.
-			target.setFraction(Fraction.subtract(target.fraction, target.fraction));
 			setFraction(Fraction.add(getFraction(), target.fraction));
+			target.setFraction(Fraction.subtract(target.fraction, target.fraction));
 
-			target.setFraction(Fraction.simplify(target.getFraction()));
 			setFraction(Fraction.simplify(getFraction()));
+			target.setFraction(Fraction.simplify(target.getFraction()));
 		} else { // If target has more than or equal to required.
 			target.setFraction(Fraction.subtract(target.fraction, pulled));
 			setFraction(Fraction.add(getFraction(), pulled));

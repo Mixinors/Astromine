@@ -16,6 +16,9 @@ public class SimpleEnergyInventoryComponent implements EnergyInventoryComponent 
 
 	public SimpleEnergyInventoryComponent(int size) {
 		this.size = size;
+		for (int i = 0; i < size; ++i) {
+			contents.put(i, EnergyVolume.EMPTY);
+		}
 	}
 
 	public Map<Integer, EnergyVolume> getContents() {

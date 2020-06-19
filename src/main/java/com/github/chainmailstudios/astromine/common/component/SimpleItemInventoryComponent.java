@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.component;
 
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 
@@ -25,6 +26,9 @@ public class SimpleItemInventoryComponent implements ItemInventoryComponent {
 
 	public SimpleItemInventoryComponent(int size) {
 		this.size = size;
+		for (int i = 0; i < size; ++i) {
+			contents.put(i, ItemStack.EMPTY);
+		}
 	}
 
 	@Override

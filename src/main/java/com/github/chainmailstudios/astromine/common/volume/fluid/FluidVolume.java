@@ -158,7 +158,7 @@ public class FluidVolume extends BaseVolume {
 	}
 
 	public ActionResult canInsert(Fluid fluid, Fraction amount) {
-		return fluid == this.fluid && fits(fraction) ? ActionResult.SUCCESS : ActionResult.FAIL;
+		return (this.fluid == Fluids.EMPTY || fluid == this.fluid) && fits(amount) ? ActionResult.SUCCESS : ActionResult.FAIL;
 	}
 
 	public ActionResult canExtract(Fluid fluid, Fraction amount) {
@@ -166,11 +166,13 @@ public class FluidVolume extends BaseVolume {
 	}
 
 	public Fraction insert(Fluid fluid, Fraction fraction) {
-		if (fluid != this.fluid) return fraction;
+		if (this.fluid != Fluids.EMPTY && fluid != this.fluid) return fraction;
 
 		FluidVolume volume = new FluidVolume(fluid, fraction);
 
-		this.push(volume, fraction);
+		this.pull(volume, fraction);
+
+		if (this.fluid == Fluids.EMPTY) this.fluid = fluid;
 
 		return volume.fraction;
 	}
@@ -180,29 +182,9 @@ public class FluidVolume extends BaseVolume {
 
 		FluidVolume volume = new FluidVolume(fluid, Fraction.EMPTY);
 
-		this.pull(volume, fraction);
+		volume.pull(this, fraction);
 
 		return volume;
-	}
-
-	@Override
-	public <T extends BaseVolume> boolean isSmallerThan(T volume) {
-		return (volume instanceof FluidVolume && fluid == ((FluidVolume) volume).fluid && super.isSmallerThan(volume));
-	}
-
-	@Override
-	public <T extends BaseVolume> boolean isBiggerThan(T volume) {
-		return (volume instanceof FluidVolume && fluid == ((FluidVolume) volume).fluid && super.isBiggerThan(volume));
-	}
-
-	@Override
-	public <T extends BaseVolume> boolean isSmallerOrEqualThan(T volume) {
-		return (volume instanceof FluidVolume && fluid == ((FluidVolume) volume).fluid && super.isSmallerOrEqualThan(volume));
-	}
-
-	@Override
-	public <T extends BaseVolume> boolean isBiggerOrEqualThan(T volume) {
-		return (volume instanceof FluidVolume && fluid == ((FluidVolume) volume).fluid && super.isBiggerOrEqualThan(volume));
 	}
 
 	@Override
@@ -216,15 +198,17 @@ public class FluidVolume extends BaseVolume {
 	}
 
 	public <T extends BaseVolume> void pull(T target, Fraction pulled) {
-		if (!(target instanceof FluidVolume)) return;
 		if (fluidConditions.stream().anyMatch(condition -> !condition.test(this, (FluidVolume) target))) return;
+		if (target instanceof FluidVolume && ((FluidVolume) target).getFluid() != fluid) setFluid(((FluidVolume) target).getFluid());
 		else super.pull(target, pulled);
 	}
 
 	public <T extends BaseVolume> void push(T target, Fraction pushed) {
-		if (!(target instanceof FluidVolume)) return;
 		if (fluidConditions.stream().anyMatch(condition -> !condition.test(this, (FluidVolume) target))) return;
-		else super.push(target, pushed);
+		else {
+			if (target instanceof FluidVolume && ((FluidVolume) target).getFluid() != fluid) ((FluidVolume) target).setFluid(fluid);
+			super.push(target, pushed);
+		}
 	}
 
 	@Override

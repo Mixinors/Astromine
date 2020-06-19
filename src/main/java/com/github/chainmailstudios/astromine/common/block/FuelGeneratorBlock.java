@@ -1,14 +1,18 @@
 package com.github.chainmailstudios.astromine.common.block;
 
 import com.github.chainmailstudios.astromine.common.block.entity.AlphaBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.FuelGeneratorBlockEntity;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
+import net.minecraft.world.BlockView;
 
-public class FuelGeneratorBlock extends HorizontalFacingBlock {
+public class FuelGeneratorBlock extends HorizontalFacingBlock implements BlockEntityProvider {
 	public FuelGeneratorBlock(Settings settings) {
 		super(settings);
 	}
@@ -22,5 +26,10 @@ public class FuelGeneratorBlock extends HorizontalFacingBlock {
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		return this.getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite());
+	}
+
+	@Override
+	public BlockEntity createBlockEntity(BlockView world) {
+		return new FuelGeneratorBlockEntity();
 	}
 }
