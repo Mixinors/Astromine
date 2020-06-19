@@ -38,7 +38,9 @@ public class RocketEntity extends Entity {
     public Packet<?> createSpawnPacket() {
         PacketByteBuf packet = new PacketByteBuf(Unpooled.buffer());
 
-        packet.writeBlockPos(this.getBlockPos());
+        packet.writeDouble(this.getX());
+        packet.writeDouble(this.getY());
+        packet.writeDouble(this.getZ());
         packet.writeUuid(this.getUuid());
         packet.writeInt(this.getEntityId());
 

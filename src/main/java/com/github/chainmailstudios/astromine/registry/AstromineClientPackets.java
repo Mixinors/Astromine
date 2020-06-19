@@ -5,6 +5,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
@@ -22,18 +23,21 @@ public class AstromineClientPackets {
 		}));
 
 		ClientSidePacketRegistry.INSTANCE.register(RocketEntity.ROCKET_SPAWN, (context, buffer) -> {
-			BlockPos pos = buffer.readBlockPos();
+			double x = buffer.readDouble();
+			double y = buffer.readDouble();
+			double z = buffer.readDouble();
 			UUID uuid = buffer.readUuid();
 			int id = buffer.readInt();
 
 			context.getTaskQueue().execute(() -> {
-				RocketEntity rocketEntity = AstromineEntities.ROCKET.create(context.getPlayer().world);
+				RocketEntity rocketEntity = AstromineEntities.ROCKET.create(MinecraftClient.getInstance().world);
+
 				rocketEntity.setUuid(uuid);
-				rocketEntity.requestTeleport(pos.getX(), pos.getY(), pos.getZ());
-				rocketEntity.updatePosition(pos.getX(), pos.getY(), pos.getZ());
-				rocketEntity.updateTrackedPosition(pos.getX(), pos.getY(), pos.getZ());
 				rocketEntity.setEntityId(id);
-				context.getPlayer().world.spawnEntity(rocketEntity);
+				rocketEntity.updatePosition(x, y, z);
+				rocketEntity.updateTrackedPosition(x, y, z);
+
+				MinecraftClient.getInstance().world.addEntity(id, rocketEntity);
 			});
 		});
 	}
