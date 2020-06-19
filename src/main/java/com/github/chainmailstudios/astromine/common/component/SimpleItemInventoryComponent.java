@@ -1,9 +1,10 @@
-package com.github.chainmailstudios.astromine.common.inventory;
+package com.github.chainmailstudios.astromine.common.component;
 
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 
-import java.util.AbstractMap;
+import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * Simple implementation of an InventoryComponent for usage anywhere one is required. Size is immutable and therefore defined on instantiation.
  */
-public class SimpleInventoryComponent implements InventoryComponent {
+public class SimpleItemInventoryComponent implements ItemInventoryComponent {
 	private final HashMap<Integer, ItemStack> contents = new HashMap<Integer, ItemStack>() {
 		@Override
 		public ItemStack get(Object key) {
@@ -23,12 +24,15 @@ public class SimpleInventoryComponent implements InventoryComponent {
 
 	private final int size;
 
-	public SimpleInventoryComponent(int size) {
+	public SimpleItemInventoryComponent(int size) {
 		this.size = size;
+		for (int i = 0; i < size; ++i) {
+			contents.put(i, ItemStack.EMPTY);
+		}
 	}
 
 	@Override
-	public AbstractMap<Integer, ItemStack> getContents() {
+	public Map<Integer, ItemStack> getItemContents() {
 		return this.contents;
 	}
 
@@ -68,12 +72,12 @@ public class SimpleInventoryComponent implements InventoryComponent {
 	}
 
 	@Override
-	public int getSize() {
+	public int getItemSize() {
 		return this.size;
 	}
 
 	@Override
-	public List<Runnable> getListeners() {
+	public List<Runnable> getItemListeners() {
 		return this.listeners;
 	}
 

@@ -137,7 +137,7 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 		for (Vector3f v : this.segments) {
 			BlockPos nP = new BlockPos(v.getX(), v.getY(), v.getZ());
 
-			if ((nP.getX() != bCP.getX() || nP.getZ() != bCP.getZ()) || (nP.getX() != bOP.getX() || nP.getZ() != bOP.getZ())) {
+			if ((nP.getX() != bCP.getX() && nP.getX() != bOP.getX()) || (nP.getZ() != bCP.getZ() && nP.getZ() != bOP.getZ())) {
 				this.world.setBlockState(nP, AstromineBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
 
 				this.members.add(nP);

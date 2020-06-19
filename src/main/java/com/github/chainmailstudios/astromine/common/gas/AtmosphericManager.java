@@ -14,7 +14,6 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
-import org.apache.commons.lang3.builder.CompareToBuilder;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,7 +21,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class AtmosphericManager {
-	private static final ExecutorService pool = Executors.newCachedThreadPool();
+	private static final Fraction TRESHHOLD = new Fraction(2, 1);
+
+	private static final ExecutorService POOL = Executors.newCachedThreadPool();
 
 	private static final Map<BlockView, Map<BlockPos, FluidVolume>> LEVELS = new ConcurrentHashMap<>();
 
@@ -48,58 +49,44 @@ public class AtmosphericManager {
 			if (isVanilla) {
 				return new FluidVolume(AstromineFluids.OXYGEN, Fraction.BUCKET);
 			} else {
-				return LEVELS.get(world).getOrDefault(position, new FluidVolume(Fluids.EMPTY, Fraction.BUCKET));
+				return LEVELS.get(world).getOrDefault(position, new FluidVolume(Fluids.EMPTY, Fraction.EMPTY));
 			}
 		} else {
-			return LEVELS.get(world).getOrDefault(position, new FluidVolume(Fluids.EMPTY, Fraction.BUCKET));
+			return LEVELS.get(world).getOrDefault(position, new FluidVolume(Fluids.EMPTY, Fraction.EMPTY));
 		}
 	}
 
 	public static void simulate(BlockView world) {
-		pool.execute(() -> {
+		POOL.execute(() -> {
 			List<Direction> directions = Lists.newArrayList(Direction.values());
 
 			Map<BlockPos, FluidVolume> map = LEVELS.get(world);
 
 			if (map == null) return;
 
-			List<Map.Entry<BlockPos, FluidVolume>> list = new ArrayList<>(map.entrySet());
+			Collections.shuffle(directions);
 
-			list.sort((o1, o2) -> new CompareToBuilder()
-					.append(o1.getKey().getX(), o2.getKey().getX())
-					.append(o1.getKey().getY(), o2.getKey().getY())
-					.append(o1.getKey().getZ(), o2.getKey().getZ()).build());
-
-			for (Map.Entry<BlockPos, FluidVolume> pair : list) {
-				Collections.shuffle(directions);
-
+			for (Map.Entry<BlockPos, FluidVolume> pair : map.entrySet()) {
 				BlockPos position = pair.getKey();
 
 				FluidVolume fluidVolume = get(world, position);
 
-				Direction direction = directions.get(((World) world).random.nextInt(6));
+				for (Direction direction : Direction.values()) {
+					BlockPos offsetPosition = position.offset(direction);
 
-				BlockPos offsetPosition = position.offset(direction);
+					BlockState offsetBlockState = world.getBlockState(offsetPosition);
+					Block offsetBlock = offsetBlockState.getBlock();
 
-				BlockState offsetBlockState = world.getBlockState(offsetPosition);
-				Block offsetBlock = offsetBlockState.getBlock();
+					if (offsetBlock instanceof AirBlock) {
+						FluidVolume offsetFluidVolume = get(world, offsetPosition);
 
-				if (offsetBlock instanceof AirBlock) {
-					FluidVolume offsetFluidVolume = get(world, offsetPosition);
-
-					if (!offsetFluidVolume.isFull() && !fluidVolume.isEmpty() && offsetFluidVolume.getFluid() == fluidVolume.getFluid()) {
-						fluidVolume.push(offsetFluidVolume, Fraction.BUCKET);
-						add(world, offsetPosition, offsetFluidVolume);
-					} else if (offsetFluidVolume.isEmpty() && !fluidVolume.isEmpty()) {
-						offsetFluidVolume = new FluidVolume(fluidVolume.getFluid(), Fraction.EMPTY);
-						fluidVolume.push(offsetFluidVolume, Fraction.BUCKET);
-						add(world, offsetPosition, offsetFluidVolume);
-					} else if (offsetFluidVolume.isEmpty() && fluidVolume.isEmpty()) {
+						if (!fluidVolume.isEmpty() && fluidVolume.getFraction().isBiggerThan(Fraction.max(TRESHHOLD, offsetFluidVolume.getFraction()))) {
+							fluidVolume.push(offsetFluidVolume, Fraction.BUCKET);
+							add(world, offsetPosition, offsetFluidVolume);
+						}
+					} else {
 						AtmosphericManager.remove(world, offsetPosition);
-						AtmosphericManager.remove(world, position);
 					}
-				} else {
-					AtmosphericManager.remove(world, offsetPosition);
 				}
 			}
 		});
@@ -108,6 +95,6 @@ public class AtmosphericManager {
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
-		pool.shutdown();
+		POOL.shutdown();
 	}
 }

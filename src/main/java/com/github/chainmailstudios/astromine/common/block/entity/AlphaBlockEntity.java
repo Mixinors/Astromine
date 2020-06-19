@@ -1,48 +1,54 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
-import com.github.chainmailstudios.astromine.common.volume.collection.AgnosticIndexedVolumeCollection;
-import com.github.chainmailstudios.astromine.common.volume.collection.AgnosticSidedVolumeCollection;
+import com.github.chainmailstudios.astromine.common.component.*;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.google.common.collect.Lists;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
+import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
 
-public abstract class AlphaBlockEntity extends BlockEntity implements AgnosticIndexedVolumeCollection, BlockEntityClientSerializable {
-	protected FluidVolume fluidVolume = new FluidVolume();
-	protected EnergyVolume energyVolume = new EnergyVolume();
+import java.util.*;
+import java.util.Map;
+
+public abstract class AlphaBlockEntity extends BlockEntity implements ComponentProvider, BlockEntityClientSerializable {
+	protected final SimpleEnergyInventoryComponent energyComponent = new SimpleEnergyInventoryComponent(1);
+	protected final SimpleFluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1);
 
 	public AlphaBlockEntity(BlockEntityType<?> type) {
 		super(type);
 	}
 
 	@Override
-	public boolean contains(int volumeType) {
-		return volumeType == FluidVolume.TYPE || volumeType == EnergyVolume.TYPE;
-	}
-
-	@Override
-	public <T extends BaseVolume> T get(int volumeType) {
-		return volumeType == FluidVolume.TYPE ? (T) fluidVolume : volumeType == EnergyVolume.TYPE ? (T) energyVolume : null;
+	public <T extends Component> Collection<T> getComponents(Direction direction) {
+		if (getCachedState().getBlock() instanceof FacingBlock) {
+			Direction facing = getCachedState().get(FacingBlock.FACING);
+			return facing == direction ? Lists.newArrayList() : (Collection<T>) Lists.newArrayList(energyComponent, fluidComponent);
+		} else if (getCachedState().getBlock() instanceof HorizontalFacingBlock) {
+			Direction facing = getCachedState().get(HorizontalFacingBlock.FACING);
+			return facing == direction ? Lists.newArrayList() : (Collection<T>) Lists.newArrayList(energyComponent, fluidComponent);
+		} else {
+			return (Collection<T>) Lists.newArrayList(energyComponent, fluidComponent);
+		}
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.put("energy", energyVolume.toTag(new CompoundTag()));
-		tag.put("fluid", fluidVolume.toTag(new CompoundTag()));
+		tag.put("energy", energyComponent.write(energyComponent, Optional.empty(), Optional.empty()));
+		tag.put("fluid", fluidComponent.write(fluidComponent, Optional.empty(), Optional.empty()));
 
 		return super.toTag(tag);
 	}
 
 	@Override
 	public void fromTag(BlockState state, CompoundTag tag) {
-		this.energyVolume = EnergyVolume.fromTag(tag.getCompound("energy"));
-		this.fluidVolume = FluidVolume.fromTag(tag.getCompound("fluid"));;
+		energyComponent.read(energyComponent, tag.getCompound("energy"), Optional.empty(), Optional.empty());
+		fluidComponent.read(fluidComponent, tag.getCompound("fluid"), Optional.empty(), Optional.empty());
 
 		super.fromTag(state, tag);
 	}

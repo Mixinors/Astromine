@@ -1,5 +1,6 @@
-package com.github.chainmailstudios.astromine.common.inventory;
+package com.github.chainmailstudios.astromine.common.component.compatibility;
 
+import com.github.chainmailstudios.astromine.common.component.ItemInventoryComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -8,13 +9,13 @@ import net.minecraft.util.TypedActionResult;
 /**
  * Vanilla wrapper for an InventoryComponent.
  */
-public interface InventoryFromInventoryComponent extends Inventory {
+public interface ItemInventoryFromInventoryComponent extends Inventory {
 	/**
 	 * Builds an wrapper over the given component for vanilla Inventory usage.
 	 *
 	 * @return the requested wrapper.
 	 */
-	static InventoryFromInventoryComponent of(InventoryComponent component) {
+	static ItemInventoryFromInventoryComponent of(ItemInventoryComponent component) {
 		return () -> component;
 	}
 
@@ -25,7 +26,7 @@ public interface InventoryFromInventoryComponent extends Inventory {
 	 */
 	@Override
 	default int size() {
-		return this.getComponent().getSize();
+		return this.getComponent().getItemSize();
 	}
 
 	/**
@@ -33,7 +34,7 @@ public interface InventoryFromInventoryComponent extends Inventory {
 	 *
 	 * @return the requested component.
 	 */
-	InventoryComponent getComponent();
+	ItemInventoryComponent getComponent();
 
 	/**
 	 * Asserts whether inventory is empty or not.

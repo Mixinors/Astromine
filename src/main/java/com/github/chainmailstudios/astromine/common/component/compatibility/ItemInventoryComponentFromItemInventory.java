@@ -1,10 +1,11 @@
-package com.github.chainmailstudios.astromine.common.inventory;
+package com.github.chainmailstudios.astromine.common.component.compatibility;
 
+import com.github.chainmailstudios.astromine.common.component.ItemInventoryComponent;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 
-import java.util.AbstractMap;
+import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,20 +13,20 @@ import java.util.List;
 /**
  * An InventoryComponentFromInventory is a wrapper over an Inventory that provides the functions and utilities of an InventoryComponent.
  */
-public class InventoryComponentFromInventory implements InventoryComponent {
+public class ItemInventoryComponentFromItemInventory implements ItemInventoryComponent {
 	Inventory inventory;
 	List<Runnable> listeners = new ArrayList<>();
 
-	private InventoryComponentFromInventory(Inventory inventory) {
+	private ItemInventoryComponentFromItemInventory(Inventory inventory) {
 		this.inventory = inventory;
 	}
 
-	public static InventoryComponentFromInventory of(Inventory inventory) {
-		return new InventoryComponentFromInventory(inventory);
+	public static ItemInventoryComponentFromItemInventory of(Inventory inventory) {
+		return new ItemInventoryComponentFromItemInventory(inventory);
 	}
 
 	@Override
-	public AbstractMap<Integer, ItemStack> getContents() {
+	public Map<Integer, ItemStack> getItemContents() {
 		HashMap<Integer, ItemStack> contents = new HashMap<>();
 		for (int i = 0; i < this.inventory.size(); ++i) {
 			contents.put(i, this.inventory.getStack(i));
@@ -74,12 +75,12 @@ public class InventoryComponentFromInventory implements InventoryComponent {
 	}
 
 	@Override
-	public int getSize() {
+	public int getItemSize() {
 		return this.inventory.size();
 	}
 
 	@Override
-	public List<Runnable> getListeners() {
+	public List<Runnable> getItemListeners() {
 		return this.listeners;
 	}
 

@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 
 import java.util.*;
 
-public abstract class WireConnectorBlockEntity extends BlockEntity implements BlockEntityClientSerializable {
+public abstract class WireConnectorBlockEntity extends DeltaBlockEntity implements BlockEntityClientSerializable {
 	private static final Map<World, WireConnectorBlockEntity> selection = new HashMap<>();
 
 	private final List<NetworkNode> children = new ArrayList<>();
