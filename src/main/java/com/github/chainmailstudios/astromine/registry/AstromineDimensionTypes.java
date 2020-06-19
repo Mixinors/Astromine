@@ -12,8 +12,8 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import java.util.OptionalLong;
 
 public class AstromineDimensionTypes extends DimensionType {
-	public static final RegistryKey<DimensionOptions> OPTIONS = RegistryKey.of(Registry.DIMENSION_OPTIONS, AstromineCommon.identifier("space"));
-	public static final RegistryKey<DimensionType> REGISTRY_KEY = RegistryKey.of(Registry.DIMENSION_TYPE_KEY, AstromineCommon.identifier("space"));
+	public static final RegistryKey<DimensionOptions> SPACE_OPTIONS = RegistryKey.of(Registry.DIMENSION_OPTIONS, AstromineCommon.identifier("space"));
+	public static final RegistryKey<DimensionType> SPACE_REGISTRY_KEY = RegistryKey.of(Registry.DIMENSION_TYPE_KEY, AstromineCommon.identifier("space"));
 
 	public static final DimensionType INSTANCE = new AstromineDimensionTypes();
 

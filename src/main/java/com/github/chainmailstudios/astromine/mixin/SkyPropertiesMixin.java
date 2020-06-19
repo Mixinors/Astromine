@@ -22,6 +22,6 @@ public class SkyPropertiesMixin {
 	@Shadow @Final private static Object2ObjectMap<RegistryKey<DimensionType>, SkyProperties> BY_DIMENSION_TYPE;
 
 	static {
-		BY_DIMENSION_TYPE.put(AstromineDimensionTypes.REGISTRY_KEY, new AstromineSkyProperties());
+		BY_DIMENSION_TYPE.put(AstromineDimensionTypes.SPACE_REGISTRY_KEY, new AstromineSkyProperties());
 	}
 }

@@ -40,8 +40,8 @@ public class MinecraftServerMixin {
 
 	@Inject (method = "createWorlds", at = @At ("HEAD"))
 	protected void createWorlds(WorldGenerationProgressListener listener, CallbackInfo callback) {
-		if (this.dimensionTracker.getDimensionTypeRegistry().get(AstromineDimensionTypes.REGISTRY_KEY) == null) {
-			this.dimensionTracker.addDimensionType(AstromineDimensionTypes.REGISTRY_KEY, AstromineDimensionTypes.INSTANCE);
+		if (this.dimensionTracker.getDimensionTypeRegistry().get(AstromineDimensionTypes.SPACE_REGISTRY_KEY) == null) {
+			this.dimensionTracker.addDimensionType(AstromineDimensionTypes.SPACE_REGISTRY_KEY, AstromineDimensionTypes.INSTANCE);
 		}
 
 		GeneratorOptions options = this.saveProperties.getGeneratorOptions(); // getGeneratorOptions
@@ -53,8 +53,8 @@ public class MinecraftServerMixin {
 		                                          this.workerExecutor,
 		                                          this.session,
 		                                          properties,
-		                                          RegistryKey.of(Registry.DIMENSION, AstromineDimensionTypes.OPTIONS.getValue()),
-		                                          AstromineDimensionTypes.REGISTRY_KEY,
+		                                          RegistryKey.of(Registry.DIMENSION, AstromineDimensionTypes.SPACE_OPTIONS.getValue()),
+		                                          AstromineDimensionTypes.SPACE_REGISTRY_KEY,
 		                                          AstromineDimensionTypes.INSTANCE,
 		                                          listener,
 		                                          generator,
@@ -67,6 +67,6 @@ public class MinecraftServerMixin {
 		WorldBorder worldBorder = serverWorld.getWorldBorder();
 
 		worldBorder.addListener(new WorldBorderListener.WorldBorderSyncer(serverWorld.getWorldBorder()));
-		this.worlds.put(AstromineDimensionTypes.REGISTRY_KEY, serverWorld);
+		this.worlds.put(AstromineDimensionTypes.SPACE_REGISTRY_KEY, serverWorld);
 	}
 }
