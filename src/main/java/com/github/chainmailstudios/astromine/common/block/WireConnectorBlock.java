@@ -38,11 +38,8 @@ public abstract class WireConnectorBlock extends Block {
 
 				int squared = (int) pos.getSquaredDistance(parent.getPos());
 
-				if (squared > 32) {
-					player.sendMessage(new TranslatableText("text.astromine.message.wire_cable_connection_failed", pos.getX(), pos.getY(), pos.getZ(), parent.getPos().getX(), parent.getPos().getY(), parent.getPos().getZ()), true);
-					WireConnectorBlockEntity.setSelected(world, null);
-
-					return ActionResult.FAIL;
+				if(child.getParents().contains(parent) || parent.getChildren().contains(child) || squared > 32) {
+					return failConnecting(player, world, pos, parent.getPos());
 				}
 
 				List<Vector3f> positions = (List<Vector3f>) WireConnectorBlockEntity.getSegments(parent, child, squared);
@@ -51,11 +48,8 @@ public abstract class WireConnectorBlock extends Block {
 					BlockPos blockPosition = new BlockPos(position.getX(), position.getY(), position.getZ());
 
 					if (world.getBlockState(blockPosition).getBlock() != Blocks.AIR && !(world.getBlockState(blockPosition).getBlock() instanceof WireConnectorBlock)) {
-						player.sendMessage(new TranslatableText("text.astromine.message.wire_cable_connection_failed", pos.getX(), pos.getY(), pos.getZ(), parent.getPos().getX(), parent.getPos().getY(), parent.getPos().getZ()), true);
 						world.addParticle(ParticleTypes.BARRIER, blockPosition.getX() + 0.5f, blockPosition.getY() + 0.5f, blockPosition.getZ() + 0.5f, 0, 0, 0);
-						WireConnectorBlockEntity.setSelected(world, null);
-
-						return ActionResult.FAIL;
+						return failConnecting(player, world, pos, parent.getPos());
 					}
 				}
 
@@ -74,7 +68,7 @@ public abstract class WireConnectorBlock extends Block {
 
 				WireConnectorBlockEntity.setSelected(world, null);
 
-				player.getStackInHand(hand).decrement(1);
+				if(!player.isCreative()) player.getStackInHand(hand).decrement(1);
 
 				return ActionResult.SUCCESS;
 			} else {
@@ -162,5 +156,12 @@ public abstract class WireConnectorBlock extends Block {
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
 		builder.add(FACING);
+	}
+
+	private ActionResult failConnecting(PlayerEntity player, World world, BlockPos pos, BlockPos parentPos) {
+		player.sendMessage(new TranslatableText("text.astromine.message.wire_cable_connection_failed", pos.getX(), pos.getY(), pos.getZ(), parentPos.getX(), parentPos.getY(), parentPos.getZ()), true);
+		WireConnectorBlockEntity.setSelected(world, null);
+
+		return ActionResult.FAIL;
 	}
 }

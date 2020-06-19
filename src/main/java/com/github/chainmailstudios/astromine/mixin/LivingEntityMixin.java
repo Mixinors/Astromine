@@ -8,6 +8,8 @@ import com.github.chainmailstudios.astromine.common.registry.BreathableRegistry;
 import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
 import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.misc.SpaceEntityPlacer;
+
 import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
@@ -16,6 +18,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.collection.DefaultedList;
@@ -61,13 +64,13 @@ public abstract class LivingEntityMixin {
 
 				ServerWorld serverWorld = entity.world.getServer().getWorld(worldKey);
 
-				FabricDimensions.teleport(entity, serverWorld).updatePosition(entity.getPos().getX(), 256, entity.getPos().getZ());
+				FabricDimensions.teleport(entity, serverWorld, SpaceEntityPlacer.FALL_FROM_SPACE);
 			} else if (lastY >= tY && tY != Integer.MIN_VALUE) {
 				RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.TOP, entity.world.getDimensionRegistryKey()).getValue());
 
 				ServerWorld serverWorld = entity.world.getServer().getWorld(worldKey);
 
-				FabricDimensions.teleport(entity, serverWorld).updatePosition(entity.getPos().getX(), 256, entity.getPos().getZ());
+				FabricDimensions.teleport(entity, serverWorld, SpaceEntityPlacer.ENTER_SPACE);
 			}
 		}
 
@@ -82,12 +85,12 @@ public abstract class LivingEntityMixin {
 			fluid = volume.getFluid();
 
 			if (volume.isEmpty()) {
-				fluid = null;
+				fluid = Fluids.EMPTY;
 				entity.damage(DamageSource.DROWN, 1);
 			}
 		}
 
-		if (fluid != null && !BreathableRegistry.INSTANCE.contains(((Entity) (Object) this).getType(), fluid)) {
+		if (fluid != Fluids.EMPTY && !BreathableRegistry.INSTANCE.contains(((Entity) (Object) this).getType(), fluid)) {
 			if (fluid instanceof AdvancedFluid && ((AdvancedFluid) fluid).isToxic()) {
 				entity.damage(DamageSource.DROWN, ((AdvancedFluid) fluid).getDamage());
 			} else {

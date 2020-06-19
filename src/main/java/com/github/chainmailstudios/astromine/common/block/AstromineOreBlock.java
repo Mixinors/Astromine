@@ -20,13 +20,11 @@ public class AstromineOreBlock extends OreBlock {
 			return MathHelper.nextInt(random, 4, 8);
 		} else if (this == AstromineBlocks.GALAXIUM_ORE) {
 			return MathHelper.nextInt(random, 5, 9);
-		} else if (this == AstromineBlocks.ASTEROID_METITE_ORE) {
+		} else if (this == AstromineBlocks.ASTEROID_METITE_ORE || this ==  AstromineBlocks.METEOR_METITE_ORE) {
 			return MathHelper.nextInt(random, 3, 7);
 		} else if (this == AstromineBlocks.ASTEROID_COAL_ORE) {
 			return MathHelper.nextInt(random, 0, 2);
-		} else if (this == AstromineBlocks.ASTEROID_DIAMOND_ORE) {
-			return MathHelper.nextInt(random, 3, 7);
-		} else if (this == AstromineBlocks.ASTEROID_EMERALD_ORE) {
+		} else if (this == AstromineBlocks.ASTEROID_DIAMOND_ORE || this == AstromineBlocks.ASTEROID_EMERALD_ORE) {
 			return MathHelper.nextInt(random, 3, 7);
 		} else if (this == AstromineBlocks.ASTEROID_LAPIS_ORE) {
 			return MathHelper.nextInt(random, 2, 5);
