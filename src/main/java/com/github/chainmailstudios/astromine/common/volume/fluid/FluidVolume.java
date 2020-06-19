@@ -27,6 +27,8 @@ public class FluidVolume extends BaseVolume {
 
 	public static final FluidVolume EMPTY = new FluidVolume();
 
+	public static final FluidVolume DEFAULT = new FluidVolume(AstromineFluids.OXYGEN, Fraction.BUCKET);
+
 	/**
 	 * Instantiates a Volume with an empty fraction and fluid.
 	 */
@@ -157,12 +159,12 @@ public class FluidVolume extends BaseVolume {
 		this.fluid = fluid;
 	}
 
-	public ActionResult canInsert(Fluid fluid, Fraction amount) {
-		return (this.fluid == Fluids.EMPTY || fluid == this.fluid) && fits(amount) ? ActionResult.SUCCESS : ActionResult.FAIL;
+	public boolean canInsert(Fluid fluid, Fraction amount) {
+		return (this.fluid == Fluids.EMPTY || fluid == this.fluid) && fits(amount);
 	}
 
-	public ActionResult canExtract(Fluid fluid, Fraction amount) {
-		return fluid == this.fluid ? ActionResult.SUCCESS : ActionResult.FAIL;
+	public boolean canExtract(Fluid fluid, Fraction amount) {
+		return fluid == this.fluid;
 	}
 
 	public Fraction insert(Fluid fluid, Fraction fraction) {
@@ -245,7 +247,11 @@ public class FluidVolume extends BaseVolume {
 		return "Volume{" + "fluid=" + this.fluid + ", fraction=" + this.fraction + '}';
 	}
 
-	public String asString() {
-		return new TranslatableText(fluid.getBucketItem().getTranslationKey()).getString().replace(" Bucket", "") + " | " + fraction.getNumerator() + "/" + fraction.getDenominator();
+	public String getFluidString() {
+		return Registry.FLUID.getId(fluid).toString();
+	}
+
+	public String getFractionString() {
+		return fraction.getNumerator() + ":" + fraction.getDenominator();
 	}
 }

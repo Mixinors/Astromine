@@ -16,7 +16,7 @@ public class AstromineSkyProperties extends SkyProperties {
 	// 639 = nether with the weird overlay, no stars
 	// 641 = end, purple with noise
 	public AstromineSkyProperties() {
-		super(Float.NaN, false, class_5401.field_25640, true, true);
+		super(Float.NaN, false, SkyType.NONE,  true, true);
 	}
 
 	@Override

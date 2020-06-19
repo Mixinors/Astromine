@@ -57,8 +57,10 @@ public abstract class BucketItemMixin {
 						if (inventory != null) {
 							FluidVolume bucketVolume = new FluidVolume(this.fluid, Fraction.BUCKET);
 
-							if (inventory.canInsert(bucketVolume).isAccepted()) {
+							if (inventory.canInsert(bucketVolume)) {
 								inventory.insert(bucketVolume);
+								callbackInformationReturnable.setReturnValue(TypedActionResult.success(new ItemStack(bucketVolume.getFluid().getBucketItem().getRecipeRemainder())));
+								callbackInformationReturnable.cancel();
 							}
 
 							if (attached instanceof BlockEntityClientSerializable && !world.isClient) {

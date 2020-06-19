@@ -56,36 +56,36 @@ public interface ItemInventoryComponent extends Component {
 		return this.getItemContents().values().stream().map(ItemStack::copy).collect(Collectors.toList());
 	}
 
-	default ActionResult canInsert()  {
-		return ActionResult.SUCCESS;
+	default boolean  canInsert()  {
+		return true;
 	}
 
-	default ActionResult canInsert(int slot) {
-		return ActionResult.SUCCESS;
+	default boolean  canInsert(int slot) {
+		return true;
 	}
 
-	default ActionResult canInsert(ItemStack stack) {
-		return ActionResult.SUCCESS;
+	default boolean  canInsert(ItemStack stack) {
+		return true;
 	}
 
-	default ActionResult canInsert(ItemStack stack, int slot) {
-		return ActionResult.SUCCESS;
+	default boolean  canInsert(ItemStack stack, int slot) {
+		return true;
 	}
 
-	default ActionResult canExtract() {
-		return ActionResult.SUCCESS;
+	default boolean  canExtract() {
+		return true;
 	}
 
-	default ActionResult canExtract(int slot) {
-		return ActionResult.SUCCESS;
+	default boolean  canExtract(int slot) {
+		return true;
 	}
 
-	default ActionResult canExtract(ItemStack stack) {
-		return ActionResult.SUCCESS;
+	default boolean  canExtract(ItemStack stack) {
+		return true;
 	}
 
-	default ActionResult canExtract(ItemStack stack, int slot) {
-		return ActionResult.SUCCESS;
+	default boolean  canExtract(ItemStack stack, int slot) {
+		return true;
 	}
 
 	/**
@@ -95,7 +95,7 @@ public interface ItemInventoryComponent extends Component {
 	 * @return SUCCESS w. empty if inserted; FAIL w. stack if not.
 	 */
 	default TypedActionResult<ItemStack> insert(ItemStack stack) {
-		if (this.canInsert(stack).isAccepted()) {
+		if (this.canInsert(stack)) {
 			return this.insert(stack, stack.getCount());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, stack);
@@ -118,7 +118,7 @@ public interface ItemInventoryComponent extends Component {
 			                                                                                                                                                                                                                                       .equals(finalStack
 					                                                                                                                                                                                                                                               .getTag()))) || storedStack
 							                                                                                                                                                                                                                                                               .isEmpty()) && this.canInsert(
-					finalStack).isAccepted();
+					finalStack);
 		}).findFirst();
 
 		if (matchingStackOptional.isPresent() && matchingStackOptional.get().getValue().getMaxCount() - stack.getCount() >= count) {
@@ -200,7 +200,7 @@ public interface ItemInventoryComponent extends Component {
 	default TypedActionResult<ItemStack> extract(int slot) {
 		ItemStack matchingStack = this.getStack(slot);
 
-		if (!matchingStack.isEmpty() && this.canExtract(matchingStack).isAccepted()) {
+		if (!matchingStack.isEmpty() && this.canExtract(matchingStack)) {
 			return this.extract(slot, matchingStack.getCount());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, ItemStack.EMPTY);
