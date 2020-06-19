@@ -1,10 +1,5 @@
 package com.github.chainmailstudios.astromine.common.item.weapon;
 
-import com.github.chainmailstudios.astromine.common.entity.projectile.BulletEntity;
-import com.github.chainmailstudios.astromine.common.inventory.InventoryComponentFromInventory;
-import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineEntities;
-import com.github.chainmailstudios.astromine.registry.AstromineSounds;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -19,38 +14,38 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
+import com.github.chainmailstudios.astromine.common.entity.projectile.BulletEntity;
+import com.github.chainmailstudios.astromine.common.component.compatibility.ItemInventoryComponentFromItemInventory;
+import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
+import com.github.chainmailstudios.astromine.registry.AstromineEntities;
+import com.github.chainmailstudios.astromine.registry.AstromineSounds;
+
 import java.util.List;
 import java.util.Optional;
 
 public abstract class BaseWeapon extends Item implements Weapon {
+	private long lastShot = 0;
+	private long lastReload = 0;
+
 	public BaseWeapon(Settings settings) {
 		super(settings);
 	}
-
-	public abstract TranslatableText getCategory();
 
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		return TypedActionResult.pass(user.getStackInHand(hand));
 	}
 
-	private long lastShot = 0;
-
-	private long lastReload = 0;
-
 	@Override
-	public long getLastShot() {
-		return lastShot;
+	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+		tooltip.add(this.getCategory().formatted(Formatting.GRAY, Formatting.ITALIC));
 	}
 
-	@Override
-	public void setLastShot(long lastShot) {
-		this.lastShot = lastShot;
-	}
+	public abstract TranslatableText getCategory();
 
 	@Override
 	public long getLastReload() {
-		return lastReload;
+		return this.lastReload;
 	}
 
 	@Override
@@ -58,13 +53,23 @@ public abstract class BaseWeapon extends Item implements Weapon {
 		this.lastReload = lastReload;
 	}
 
+	@Override
+	public long getLastShot() {
+		return this.lastShot;
+	}
+
+	@Override
+	public void setLastShot(long lastShot) {
+		this.lastShot = lastShot;
+	}
+
 	public void tryShoot(World world, PlayerEntity user) {
-		Optional<ItemStack> optionalMagazine = InventoryComponentFromInventory.of(user.inventory).getContentsMatching(stack -> stack.getItem() == getAmmo()).stream().filter(stack -> stack.getDamage() < stack.getMaxDamage()).findFirst();
+		Optional<ItemStack> optionalMagazine = ItemInventoryComponentFromItemInventory.of(user.inventory).getContentsMatching(stack -> stack.getItem() == this.getAmmo()).stream().filter(stack -> stack.getDamage() < stack.getMaxDamage()).findFirst();
 
 		if (optionalMagazine.isPresent() || user.isCreative()) {
 			long currentAttempt = System.currentTimeMillis();
 
-			if (isReloading(currentAttempt)) {
+			if (this.isReloading(currentAttempt)) {
 				return;
 			}
 
@@ -83,7 +88,7 @@ public abstract class BaseWeapon extends Item implements Weapon {
 					magazine.damage(1, world.random, (ServerPlayerEntity) user);
 
 					if (magazine.getDamage() >= magazine.getMaxDamage()) {
-						setLastReload(currentAttempt);
+						this.setLastReload(currentAttempt);
 					}
 				}
 			}
@@ -91,34 +96,29 @@ public abstract class BaseWeapon extends Item implements Weapon {
 			if (optionalMagazine.isPresent() || user.isCreative()) {
 				PersistentProjectileEntity persistentProjectileEntity = new BulletEntity(AstromineEntities.BULLET_ENTITY_TYPE, user, world);
 
-				persistentProjectileEntity.setProperties(user, user.pitch, user.yaw, 0.0F, getDistance(), 0);
+				persistentProjectileEntity.setProperties(user, user.pitch, user.yaw, 0.0F, this.getDistance(), 0);
 
 				persistentProjectileEntity.setCritical(true);
 
-				persistentProjectileEntity.setDamage(getDamage());
+				persistentProjectileEntity.setDamage(this.getDamage());
 
-				persistentProjectileEntity.setPunch(getPunch());
+				persistentProjectileEntity.setPunch(this.getPunch());
 
 				persistentProjectileEntity.setSound(AstromineSounds.EMPTY);
 
 				if (world.isClient) {
 					ClientUtilities.addEntity(persistentProjectileEntity);
 
-					world.playSound(user, user.getBlockPos(), getShotSound(), SoundCategory.PLAYERS, 1f, 1f);
+					world.playSound(user, user.getBlockPos(), this.getShotSound(), SoundCategory.PLAYERS, 1f, 1f);
 				} else {
 					user.world.spawnEntity(persistentProjectileEntity);
 				}
 
 				if (world.isClient) {
-					user.pitch -= getRecoil() / 16f / (ClientUtilities.Weapon.isAiming() ? 2 : 1);
+					user.pitch -= this.getRecoil() / 16f / (ClientUtilities.Weapon.isAiming() ? 2 : 1);
 					user.yaw += (world.random.nextBoolean() ? world.random.nextInt(16) / 16f : -world.random.nextInt(16) / 16f) / (ClientUtilities.Weapon.isAiming() ? 2 : 1);
 				}
 			}
 		}
-	}
-
-	@Override
-	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-		tooltip.add(getCategory().formatted(Formatting.GRAY, Formatting.ITALIC));
 	}
 }

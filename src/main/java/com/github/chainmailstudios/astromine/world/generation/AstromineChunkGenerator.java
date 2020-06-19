@@ -1,9 +1,10 @@
 package com.github.chainmailstudios.astromine.world.generation;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.Heightmap;
@@ -14,20 +15,25 @@ import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import java.util.Arrays;
 
 public class AstromineChunkGenerator extends ChunkGenerator {
-	public static Codec<AstromineChunkGenerator> CODEC =
-			RecordCodecBuilder.create(instance -> instance.group(BiomeSource.field_24713.fieldOf("biome_source").forGetter(gen -> gen.biomeSource), Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed)).apply(instance, AstromineChunkGenerator::new));
+	public static Codec<AstromineChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(BiomeSource.field_24713.fieldOf("biome_source").forGetter(gen -> gen.biomeSource), Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed))
+	                                                                                                   .apply(instance, AstromineChunkGenerator::new));
 
 	private final BiomeSource biomeSource;
 	private final long seed;
+
+	private final OpenSimplexNoise noise;
 
 	public AstromineChunkGenerator(BiomeSource biomeSource, long seed) {
 		super(biomeSource, new StructuresConfig(false));
 		this.biomeSource = biomeSource;
 		this.seed = seed;
+		this.noise = new OpenSimplexNoise(seed);
 	}
 
 	@Override
@@ -42,12 +48,30 @@ public class AstromineChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public void buildSurface(ChunkRegion region, Chunk chunk) {
+		int x1 = chunk.getPos().getStartX();
+		int z1 = chunk.getPos().getStartZ();
+		int y1 = 0;
 
+		int x2 = chunk.getPos().getEndX();
+		int z2 = chunk.getPos().getEndZ();
+		int y2 = 256;
+
+		for (int x = x1; x <= x2; ++x) {
+			for (int z = z1; z <= z2; ++z) {
+				for (int y = y1; y <= y2; ++y) {
+					double value = noise.eval(x * 0.01, y * 0.01, z  * 0.01);
+
+					if (value > 0.65) {
+						chunk.setBlockState(new BlockPos(x, y, z), AstromineBlocks.ASTEROID_STONE.getDefaultState(), false);
+					}
+				}
+			}
+		}
 	}
 
 	@Override
 	public void populateNoise(WorldAccess world, StructureAccessor accessor, Chunk chunk) {
-
+		// Unused.
 	}
 
 	@Override

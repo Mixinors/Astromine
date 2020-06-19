@@ -1,14 +1,15 @@
 package com.github.chainmailstudios.astromine.common.entity.ai.superspaceslime;
 
-import com.github.chainmailstudios.astromine.common.entity.SuperSpaceSlimeEntity;
 import net.minecraft.entity.ai.control.MoveControl;
 import net.minecraft.entity.attribute.EntityAttributes;
 
+import com.github.chainmailstudios.astromine.common.entity.SuperSpaceSlimeEntity;
+
 public class SuperSpaceSlimeMoveControl extends MoveControl {
 
+	private final SuperSpaceSlimeEntity slime;
 	private float targetYaw;
 	private int ticksUntilJump;
-	private final SuperSpaceSlimeEntity slime;
 	private boolean jumpOften;
 
 	public SuperSpaceSlimeMoveControl(SuperSpaceSlimeEntity slime) {

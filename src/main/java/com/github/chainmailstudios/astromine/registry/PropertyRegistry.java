@@ -1,13 +1,14 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.fluid.logic.Property;
-import com.mojang.serialization.Lifecycle;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.util.registry.SimpleRegistry;
+import com.mojang.serialization.Lifecycle;
 
-public class PropertyRegistry extends SimpleRegistry<Property> {
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidProperty;
+
+public class PropertyRegistry extends SimpleRegistry<FluidProperty> {
 	public static final Identifier IDENTIFIER = AstromineCommon.identifier("property");
 
 	public static final PropertyRegistry INSTANCE = new PropertyRegistry();

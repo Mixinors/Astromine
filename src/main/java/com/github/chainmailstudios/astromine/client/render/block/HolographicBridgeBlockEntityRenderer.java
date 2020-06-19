@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine.client.render.block;
 
-import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.client.render.OverlayTexture;
@@ -13,6 +12,7 @@ import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 
+import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
 import spinnery.client.render.layer.SpinneryLayers;
 import spinnery.widget.api.Color;
 
@@ -21,11 +21,6 @@ import java.util.Collection;
 public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<HolographicBridgeProjectorBlockEntity> {
 	public HolographicBridgeBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
 		super(dispatcher);
-	}
-
-	@Override
-	public boolean rendersOutsideBoundingBox(HolographicBridgeProjectorBlockEntity blockEntity) {
-		return true;
 	}
 
 	@Override
@@ -42,7 +37,9 @@ public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<Ho
 
 			Collection<Vector3f> s = entity.segments;
 
-			if (s.size() == 0) return;
+			if (s.size() == 0) {
+				return;
+			}
 
 			Vector3f o = s.iterator().next();
 			Vector3f p = o;
@@ -74,5 +71,10 @@ public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<Ho
 
 			matrices.pop();
 		}
+	}
+
+	@Override
+	public boolean rendersOutsideBoundingBox(HolographicBridgeProjectorBlockEntity blockEntity) {
+		return true;
 	}
 }

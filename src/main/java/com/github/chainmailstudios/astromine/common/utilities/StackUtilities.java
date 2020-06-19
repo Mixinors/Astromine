@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import com.google.gson.JsonObject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -9,6 +8,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.text.Text;
 
+import com.google.gson.JsonObject;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,10 +17,16 @@ public class StackUtilities extends spinnery.common.utility.StackUtilities {
 		for (ItemStack stackA : stackListA) {
 			boolean found = false;
 			for (ItemStack stackB : stackListB) {
-				if (ItemStack.areEqual(stackA, stackB)) found = true;
-				if (found) break;
+				if (ItemStack.areEqual(stackA, stackB)) {
+					found = true;
+				}
+				if (found) {
+					break;
+				}
 			}
-			if (!found) return false;
+			if (!found) {
+				return false;
+			}
 		}
 		return true;
 	}

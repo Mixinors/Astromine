@@ -161,12 +161,22 @@ public class SpriteRenderer {
 		}
 
 		public void next() {
-			if (this.consumer == null) throw new RuntimeException("Invalid VertexConsumer!");
-			if (this.matrices == null) throw new RuntimeException("Invalid MatrixStack!");
-			if (this.sprite == null) throw new RuntimeException("Invalid Sprite!");
+			if (this.consumer == null) {
+				throw new RuntimeException("Invalid VertexConsumer!");
+			}
+			if (this.matrices == null) {
+				throw new RuntimeException("Invalid MatrixStack!");
+			}
+			if (this.sprite == null) {
+				throw new RuntimeException("Invalid Sprite!");
+			}
 
-			if (this.model == null) this.model = this.matrices.peek().getModel();
-			if (this.normal == null) this.normal = this.matrices.peek().getNormal();
+			if (this.model == null) {
+				this.model = this.matrices.peek().getModel();
+			}
+			if (this.normal == null) {
+				this.normal = this.matrices.peek().getNormal();
+			}
 
 			MinecraftClient.getInstance().getTextureManager().bindTexture(this.sprite.getId());
 

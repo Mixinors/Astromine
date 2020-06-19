@@ -1,9 +1,5 @@
 package com.github.chainmailstudios.astromine.common.item;
 
-import com.github.chainmailstudios.astromine.common.block.HolographicBridgeProjectorBlock;
-import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
-import com.github.chainmailstudios.astromine.registry.AstromineSounds;
-import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemUsageContext;
@@ -15,6 +11,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
+import com.github.chainmailstudios.astromine.common.block.HolographicBridgeProjectorBlock;
+import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
+import com.github.chainmailstudios.astromine.registry.AstromineSounds;
+import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
+
 public class HolographicConnector extends Item {
 	public static final Object2ObjectArrayMap<World, Object> CACHE = new Object2ObjectArrayMap<>();
 
@@ -25,6 +26,7 @@ public class HolographicConnector extends Item {
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
 		World world = context.getWorld();
+
 		BlockPos position = context.getBlockPos();
 
 		if (world.getBlockState(position).getBlock() instanceof HolographicBridgeProjectorBlock) {
@@ -44,8 +46,7 @@ public class HolographicConnector extends Item {
 
 				if (nP.getX() > oP.getX()) {
 					d = Direction.EAST;
-				}
-				if (nP.getX() < oP.getX()) {
+				} else if (nP.getX() < oP.getX()) {
 					d = Direction.WEST;
 				} else if (nP.getZ() > oP.getZ()) {
 					d = Direction.SOUTH;

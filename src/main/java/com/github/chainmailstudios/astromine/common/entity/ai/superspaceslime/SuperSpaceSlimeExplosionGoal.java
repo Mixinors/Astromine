@@ -1,7 +1,8 @@
 package com.github.chainmailstudios.astromine.common.entity.ai.superspaceslime;
 
-import com.github.chainmailstudios.astromine.common.entity.SuperSpaceSlimeEntity;
 import net.minecraft.entity.ai.goal.Goal;
+
+import com.github.chainmailstudios.astromine.common.entity.SuperSpaceSlimeEntity;
 
 import java.util.EnumSet;
 
@@ -28,36 +29,36 @@ public class SuperSpaceSlimeExplosionGoal extends Goal {
 	 */
 	@Override
 	public boolean canStart() {
-		return slime.getHealth() <= slime.getMaxHealth() * .5 && !slime.hasExploded();
+		return this.slime.getHealth() <= this.slime.getMaxHealth() * .5 && !this.slime.hasExploded();
+	}
+
+	@Override
+	public boolean shouldContinue() {
+		return this.ticksLeft > 0;
 	}
 
 	@Override
 	public void start() {
-		slime.setExploding(true);
-		ticksLeft = 100;
-		slime.setExplodingProgress(100);
+		this.slime.setExploding(true);
+		this.ticksLeft = 100;
+		this.slime.setExplodingProgress(100);
 		super.start();
 	}
 
 	@Override
 	public void stop() {
-		slime.setExploding(false);
-		slime.setExplodingProgress(0);
-		slime.setHasExploded(true);
-		slime.explode();
+		this.slime.setExploding(false);
+		this.slime.setExplodingProgress(0);
+		this.slime.setHasExploded(true);
+		this.slime.explode();
 
 		super.stop();
 	}
 
 	@Override
 	public void tick() {
-		ticksLeft--;
-		slime.setExplodingProgress(ticksLeft);
+		this.ticksLeft--;
+		this.slime.setExplodingProgress(this.ticksLeft);
 		super.tick();
-	}
-
-	@Override
-	public boolean shouldContinue() {
-		return ticksLeft > 0;
 	}
 }

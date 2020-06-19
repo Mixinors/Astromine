@@ -1,0 +1,78 @@
+package com.github.chainmailstudios.astromine.registry;
+
+import com.github.chainmailstudios.astromine.common.registry.BreathableRegistry;
+import net.minecraft.entity.*;
+
+public class AstromineBreathables {
+	public static void initialize() {
+		BreathableRegistry.INSTANCE.register(EntityType.PLAYER, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.BAT, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.BEE, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.BLAZE, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.CAT, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.CAVE_SPIDER, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.CHICKEN, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.COD, AstromineTags.WATER_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.COW, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.CREEPER, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.DOLPHIN, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.DONKEY, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.DROWNED, AstromineTags.NORMAL_BREATHABLE, AstromineTags.WATER_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.ELDER_GUARDIAN, AstromineTags.WATER_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.ENDER_DRAGON, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.ENDERMAN, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.ENDERMITE, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.EVOKER, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.FOX, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.GHAST, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.GIANT, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.GUARDIAN, AstromineTags.WATER_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.HOGLIN, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.HORSE, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.HUSK, AstromineTags.NORMAL_BREATHABLE, AstromineTags.WATER_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.ILLUSIONER, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.LLAMA, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.MAGMA_CUBE, AstromineTags.NORMAL_BREATHABLE, AstromineTags.LAVA_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.MULE, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.MOOSHROOM, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.OCELOT, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.PANDA, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.PARROT, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.PHANTOM, AstromineTags.NORMAL_BREATHABLE, AstromineTags.WATER_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.PIG, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.PIGLIN, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.PILLAGER, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.POLAR_BEAR, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.PUFFERFISH, AstromineTags.WATER_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.RABBIT, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.RAVAGER, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.SALMON, AstromineTags.WATER_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.SHEEP, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.SHULKER, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.SILVERFISH, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.SKELETON, AstromineTags.NORMAL_BREATHABLE, AstromineTags.WATER_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.SKELETON_HORSE, AstromineTags.NORMAL_BREATHABLE, AstromineTags.WATER_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.SLIME, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.SNOW_GOLEM, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.SPIDER, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.SQUID, AstromineTags.WATER_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.STRAY, AstromineTags.NORMAL_BREATHABLE, AstromineTags.WATER_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.STRIDER, AstromineTags.NORMAL_BREATHABLE, AstromineTags.LAVA_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.TRADER_LLAMA, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.TROPICAL_FISH, AstromineTags.WATER_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.TURTLE, AstromineTags.NORMAL_BREATHABLE, AstromineTags.WATER_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.VEX, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.VILLAGER, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.VINDICATOR, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.WANDERING_TRADER, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.WITCH, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.WITHER, AstromineTags.NORMAL_BREATHABLE, AstromineTags.WATER_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.WITHER_SKELETON, AstromineTags.NORMAL_BREATHABLE, AstromineTags.WATER_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.WOLF, AstromineTags.NORMAL_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.ZOGLIN, AstromineTags.NORMAL_BREATHABLE, AstromineTags.WATER_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.ZOMBIE, AstromineTags.NORMAL_BREATHABLE, AstromineTags.WATER_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.ZOMBIE_HORSE, AstromineTags.NORMAL_BREATHABLE, AstromineTags.WATER_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.ZOMBIE_VILLAGER, AstromineTags.NORMAL_BREATHABLE, AstromineTags.WATER_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.ZOMBIFIED_PIGLIN, AstromineTags.NORMAL_BREATHABLE, AstromineTags.WATER_BREATHABLE);
+	}
+}

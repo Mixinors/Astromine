@@ -16,25 +16,25 @@ public interface Weapon {
 
 	float getRecoil();
 
-	long getShotInterval();
-
-	long getReloadInterval();
-
-	long getLastShot();
-
-	void setLastShot(long lastShot);
+	default boolean isReloading(long currentTime) {
+		return currentTime - this.getLastReload() < this.getReloadInterval();
+	}
 
 	long getLastReload();
 
+	long getReloadInterval();
+
 	void setLastReload(long lastReload);
 
-	default boolean isReloading(long currentTime) {
-		return currentTime - getLastReload() < getReloadInterval();
+	default boolean isWaiting(long currentTime) {
+		return currentTime - this.getLastShot() < this.getShotInterval();
 	}
 
-	default boolean isWaiting(long currentTime) {
-		return currentTime - getLastShot() < getShotInterval();
-	}
+	long getLastShot();
+
+	long getShotInterval();
+
+	void setLastShot(long lastShot);
 
 	SoundEvent getShotSound();
 

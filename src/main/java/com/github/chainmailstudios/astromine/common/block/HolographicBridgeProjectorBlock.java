@@ -1,7 +1,10 @@
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.DyeItem;
@@ -14,17 +17,13 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
 import spinnery.widget.api.Color;
 
 public class HolographicBridgeProjectorBlock extends HorizontalFacingBlock implements BlockEntityProvider {
 	public HolographicBridgeProjectorBlock(AbstractBlock.Settings settings) {
 		super(settings);
-	}
-
-	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(FACING);
-		super.appendProperties(builder);
 	}
 
 	@Override
@@ -53,7 +52,14 @@ public class HolographicBridgeProjectorBlock extends HorizontalFacingBlock imple
 		return new HolographicBridgeProjectorBlockEntity();
 	}
 
+	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
 		return this.getDefaultState().with(FACING, context.getPlayerFacing().getOpposite());
+	}
+
+	@Override
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+		builder.add(FACING);
+		super.appendProperties(builder);
 	}
 }

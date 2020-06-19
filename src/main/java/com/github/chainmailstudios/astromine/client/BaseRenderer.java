@@ -1,11 +1,12 @@
 package com.github.chainmailstudios.astromine.client;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+
 import spinnery.widget.api.Color;
 
 public class BaseRenderer extends spinnery.client.render.BaseRenderer {
@@ -13,12 +14,11 @@ public class BaseRenderer extends spinnery.client.render.BaseRenderer {
 		drawGradientQuadExtended(matrices, provider, startX, startY, endX, endY, startZ, endZ, 0, 0, 1, 1, 0x00f000f0, colorStart, colorEnd, false);
 	}
 
-	public static void drawGradientQuadExtended(MatrixStack matrices, VertexConsumerProvider provider, float startX, float startY, float endX, float endY, float startZ, float endZ, int light, Color colorStart, Color colorEnd) {
-		drawGradientQuadExtended(matrices, provider, startX, startY, endX, endY, startZ, endZ, 0, 0, 1, 1, light, colorStart, colorEnd, false);
-	}
-
-	public static void drawGradientQuadExtended(MatrixStack matrices, VertexConsumerProvider provider, float startX, float startY, float endX, float endY, float startZ, float endZ, float uS, float vS, float uE, float vE, int light, Color colorStart, Color colorEnd, boolean textured) {
-		if (!textured) RenderSystem.disableTexture();
+	public static void drawGradientQuadExtended(MatrixStack matrices, VertexConsumerProvider provider, float startX, float startY, float endX, float endY, float startZ, float endZ, float uS, float vS, float uE, float vE, int light, Color colorStart,
+	                                            Color colorEnd, boolean textured) {
+		if (!textured) {
+			RenderSystem.disableTexture();
+		}
 
 		matrices.push();
 
@@ -34,8 +34,14 @@ public class BaseRenderer extends spinnery.client.render.BaseRenderer {
 
 		RenderSystem.disableBlend();
 
-		if (!textured) RenderSystem.enableTexture();
+		if (!textured) {
+			RenderSystem.enableTexture();
+		}
 
 		matrices.pop();
+	}
+
+	public static void drawGradientQuadExtended(MatrixStack matrices, VertexConsumerProvider provider, float startX, float startY, float endX, float endY, float startZ, float endZ, int light, Color colorStart, Color colorEnd) {
+		drawGradientQuadExtended(matrices, provider, startX, startY, endX, endY, startZ, endZ, 0, 0, 1, 1, light, colorStart, colorEnd, false);
 	}
 }

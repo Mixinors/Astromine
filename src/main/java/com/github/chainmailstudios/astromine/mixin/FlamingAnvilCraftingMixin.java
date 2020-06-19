@@ -1,8 +1,14 @@
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.FallingBlockEntity;
@@ -10,28 +16,25 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
 
 import java.util.Iterator;
 import java.util.List;
 
-@Mixin(FallingBlockEntity.class)
+@Mixin (FallingBlockEntity.class)
 public abstract class FlamingAnvilCraftingMixin extends Entity {
 	public FlamingAnvilCraftingMixin(EntityType<?> type, World world) {
 		super(type, world);
 	}
 
-	@Environment(EnvType.CLIENT)
-	@Inject(method = "doesRenderOnFire", at = @At("RETURN"), cancellable = true)
+	@Environment (EnvType.CLIENT)
+	@Inject (method = "doesRenderOnFire", at = @At ("RETURN"), cancellable = true)
 	private void ret(CallbackInfoReturnable<Boolean> cir) {
 		cir.setReturnValue(true);
 	}
 
-	@Inject(method = "handleFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isIn(Lnet/minecraft/tag/Tag;)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
+	@Inject (method = "handleFallDamage", at = @At (value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isIn(Lnet/minecraft/tag/Tag;)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
 	private void handle(float fallDistance, float damageMultiplier, CallbackInfoReturnable<Boolean> cir, int i, List<Entity> list) {
 		if (this.isOnFire()) {
 			Iterator<Entity> iterator = list.iterator();

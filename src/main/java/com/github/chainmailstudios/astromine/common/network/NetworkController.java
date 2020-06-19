@@ -1,24 +1,28 @@
 package com.github.chainmailstudios.astromine.common.network;
 
-import com.google.common.collect.Sets;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import com.google.common.collect.Sets;
 import java.util.Iterator;
 import java.util.Set;
 
 public class NetworkController implements Iterable<NetworkNode>, Tickable {
 	public static final NetworkController EMPTY = new NetworkController();
+
 	public final Set<NetworkNode> memberNodes = Sets.newConcurrentHashSet();
 	public final Set<NetworkNode> nodes = Sets.newConcurrentHashSet();
-	public NetworkTicker type = NetworkTicker.EMPTY;
+
+	public NetworkType type = NetworkType.EMPTY;
+
 	public World world;
 
 	private NetworkController() {
+		// Unused.
 	}
 
-	public NetworkController(World world, NetworkTicker type) {
+	public NetworkController(World world, NetworkType type) {
 		this.type = type;
 		this.world = world;
 	}
@@ -56,14 +60,14 @@ public class NetworkController implements Iterable<NetworkNode>, Tickable {
 	}
 
 	public Boolean isNullOrEmpty() {
-		return this.type == NetworkTicker.EMPTY;
+		return this.type == NetworkType.EMPTY;
 	}
 
-	public NetworkTicker getType() {
+	public NetworkType getType() {
 		return this.type;
 	}
 
-	public NetworkController setType(NetworkTicker type) {
+	public NetworkController setType(NetworkType type) {
 		this.type = type;
 		return this;
 	}
@@ -74,6 +78,6 @@ public class NetworkController implements Iterable<NetworkNode>, Tickable {
 
 	@Override
 	public void tick() {
-		this.type.tick(this);
+		this.type.simulate(this);
 	}
 }

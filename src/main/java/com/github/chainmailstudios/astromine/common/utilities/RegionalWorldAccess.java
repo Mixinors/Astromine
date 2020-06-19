@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import com.github.chainmailstudios.astromine.access.WorldChunkAccess;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.server.world.ChunkHolder;
@@ -13,16 +12,21 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.WorldChunk;
 
+import com.github.chainmailstudios.astromine.access.WorldChunkAccess;
+
 /**
- * faster world access for small areas (like when u don't need to access blocks on the other side of the world)
- * warning: not threadsafe!
+ * faster world access for small areas (like when u don't need to access blocks on the other side of the world) warning: not threadsafe!
  */
 public class RegionalWorldAccess {
+	public final World world;
+	public final boolean isClient;
 	private final BlockPos.Mutable current = new BlockPos.Mutable();
-	private final World world;
-	private final boolean isClient;
 	private WorldChunk chunk;
 	private int cx, cz;
+
+	public RegionalWorldAccess(World world, BlockPos pos) {
+		this(world.getWorldChunk(pos));
+	}
 
 	public RegionalWorldAccess(WorldChunk chunk) {
 		this.chunk = chunk;
@@ -31,14 +35,11 @@ public class RegionalWorldAccess {
 		ChunkPos pos = chunk.getPos();
 		this.cx = pos.x;
 		this.cz = pos.z;
+		this.addDetatch();
 	}
 
-	public RegionalWorldAccess(World world, BlockPos pos) {
-		this(world.getWorldChunk(pos));
-	}
-
-	public World getWorld() {
-		return this.world;
+	private void addDetatch() {
+		((WorldChunkAccess) this.chunk).astromine_addUnloadListener(() -> this.chunk = null);
 	}
 
 	public boolean setBlockState(BlockState state, int x, int y, int z) {
@@ -64,7 +65,9 @@ public class RegionalWorldAccess {
 				return false;
 			} else {
 				BlockState blockState2 = this.getBlockState(x, y, z);
-				if (blockState2 != blockState && (blockState2.getOpacity(world, pos) != blockState.getOpacity(world, pos) || blockState2.getLuminance() != blockState.getLuminance() || blockState2.hasSidedTransparency() || blockState.hasSidedTransparency())) {
+				if (blockState2 != blockState && (blockState2.getOpacity(world, pos) != blockState.getOpacity(world,
+				                                                                                              pos
+				) || blockState2.getLuminance() != blockState.getLuminance() || blockState2.hasSidedTransparency() || blockState.hasSidedTransparency())) {
 					world.getChunkManager().getLightingProvider().checkBlock(pos);
 				}
 
@@ -120,6 +123,40 @@ public class RegionalWorldAccess {
 		return this.chunk;
 	}
 
+	private void moveTo(int toCx, int toCz) {
+		this.moveIn(toCx - this.cx, toCz - this.cz);
+	}
+
+	private void moveIn(int offX, int offZ) {
+		this.cz += offZ;
+		this.cx += offX;
+
+		if (this.chunk != null) {
+			while (offX > 0) {
+				this.chunk = ((WorldChunkAccess) this.chunk).astromine_east();
+				offX--;
+			}
+
+			while (offX < 0) {
+				this.chunk = ((WorldChunkAccess) this.chunk).astromine_west();
+				offX++;
+			}
+
+			while (offZ > 0) {
+				this.chunk = ((WorldChunkAccess) this.chunk).astromine_south();
+				offZ--;
+			}
+			while (offZ < 0) {
+				this.chunk = ((WorldChunkAccess) this.chunk).astromine_north();
+				offZ++;
+			}
+		} else {
+			this.chunk = this.world.getChunk(this.cx, this.cz);
+		}
+
+		this.addDetatch();
+	}
+
 	public void updateNeighbor(BlockPos sourcePos, Block sourceBlock, BlockPos neighborPos) {
 		if (!this.isClient) {
 			BlockState blockState = this.getBlockState(sourcePos.getX(), sourcePos.getY(), sourcePos.getZ());
@@ -138,34 +175,6 @@ public class RegionalWorldAccess {
 				CrashReportSection.addBlockInfo(crashReportSection, sourcePos, blockState);
 				throw new CrashException(crashReport);
 			}
-		}
-	}
-
-	private void moveTo(int toCx, int toCz) {
-		this.moveIn(toCx - this.cx, toCz - this.cz);
-	}
-
-	private void moveIn(int offX, int offZ) {
-		this.cz += offZ;
-		this.cx += offX;
-
-		while (offX > 0) {
-			this.chunk = ((WorldChunkAccess) this.chunk).astromine_east();
-			offX--;
-		}
-
-		while (offX < 0) {
-			this.chunk = ((WorldChunkAccess) this.chunk).astromine_west();
-			offX++;
-		}
-
-		while (offZ > 0) {
-			this.chunk = ((WorldChunkAccess) this.chunk).astromine_south();
-			offZ--;
-		}
-		while (offZ < 0) {
-			this.chunk = ((WorldChunkAccess) this.chunk).astromine_north();
-			offZ++;
 		}
 	}
 }

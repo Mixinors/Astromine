@@ -1,9 +1,10 @@
 package com.github.chainmailstudios.astromine.common.entity.ai.superspaceslime;
 
-import com.github.chainmailstudios.astromine.common.entity.SuperSpaceSlimeEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.PlayerEntity;
+
+import com.github.chainmailstudios.astromine.common.entity.SuperSpaceSlimeEntity;
 
 import java.util.EnumSet;
 
@@ -34,12 +35,6 @@ public class SuperSpaceSlimeFaceTowardTargetGoal extends Goal {
 	}
 
 	@Override
-	public void start() {
-		this.ticksLeft = 300;
-		super.start();
-	}
-
-	@Override
 	public boolean shouldContinue() {
 		LivingEntity livingEntity = this.slime.getTarget();
 
@@ -52,6 +47,12 @@ public class SuperSpaceSlimeFaceTowardTargetGoal extends Goal {
 		} else {
 			return --this.ticksLeft > 0;
 		}
+	}
+
+	@Override
+	public void start() {
+		this.ticksLeft = 300;
+		super.start();
 	}
 
 	@Override

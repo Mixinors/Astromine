@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "astromine:block/reinforced_machine_side_blank"
+  }
+}

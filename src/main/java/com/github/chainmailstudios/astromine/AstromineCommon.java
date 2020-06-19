@@ -1,12 +1,23 @@
 package com.github.chainmailstudios.astromine;
 
-import blue.endless.jankson.Jankson;
+import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
 import com.github.chainmailstudios.astromine.registry.*;
-import com.google.gson.Gson;
 import net.fabricmc.api.ModInitializer;
+
 import net.minecraft.util.Identifier;
+
+import blue.endless.jankson.Jankson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.google.gson.Gson;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Random;
+
 public class AstromineCommon implements ModInitializer {
 	public static final String LOG_ID = "Astromine";
 	public static final String MOD_ID = "astromine";
@@ -15,6 +26,10 @@ public class AstromineCommon implements ModInitializer {
 	public static final Gson GSON = new Gson();
 
 	public static final Logger LOGGER = LogManager.getLogger(LOG_ID);
+
+	public static Identifier identifier(String name) {
+		return new Identifier(MOD_ID, name);
+	}
 
 	@Override
 	public void onInitialize() {
@@ -25,11 +40,12 @@ public class AstromineCommon implements ModInitializer {
 		AstrominePotions.initialize();
 		AstromineFeatures.initialize();
 		AstromineBiomes.initialize();
+		AstromineFluids.initialize();
+		AstromineBreathables.initialize();
 		AstromineChunkGenerators.initialize();
 		AstromineServerPackets.initialize();
-	}
-
-	public static Identifier identifier(String name) {
-		return new Identifier(MOD_ID, name);
+		AstromineGravities.initialize();
+		AstromineDimensionLayers.initialize();
+		AstromineCommonCallbacks.initialize();
 	}
 }
