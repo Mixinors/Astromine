@@ -14,8 +14,10 @@ public class BreathableRegistry {
 		// Unused.
 	}
 
-	public void register(EntityType<?> type, Fluid fluid) {
-		ENTRIES.put(type, fluid);
+	public void register(EntityType<?> type, Fluid... fluids) {
+		for (Fluid fluid : fluids) {
+			ENTRIES.put(type, fluid);
+		}
 	}
 
 	public void unregister(EntityType<?> type, Fluid fluid) {

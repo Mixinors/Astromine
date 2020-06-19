@@ -25,7 +25,7 @@ public class AstromineCommonCallbacks {
 		ServerTickCallback.EVENT.register((server) -> {
 			for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
 				PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
-				buffer.writeString(AtmosphericManager.get(player.world, player.getBlockPos().offset(Direction.UP)).asString());
+				buffer.writeString(AtmosphericManager.get(player.world, player.getBlockPos().offset(Direction.UP)).asString().replace("Air | 0/1", "Vacuum"));
 				ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, AstromineClientPackets.PRESSURE_UPDATE, buffer);
 			}
 		});

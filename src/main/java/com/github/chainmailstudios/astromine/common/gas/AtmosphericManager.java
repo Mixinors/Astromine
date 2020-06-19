@@ -14,7 +14,6 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
-import org.apache.commons.lang3.builder.CompareToBuilder;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,7 +21,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class AtmosphericManager {
-	private static final ExecutorService pool = Executors.newCachedThreadPool();
+	private static final Fraction TRESHHOLD = new Fraction(2, 1);
+
+	private static final ExecutorService POOL = Executors.newCachedThreadPool();
 
 	private static final Map<BlockView, Map<BlockPos, FluidVolume>> LEVELS = new ConcurrentHashMap<>();
 
@@ -56,7 +57,7 @@ public class AtmosphericManager {
 	}
 
 	public static void simulate(BlockView world) {
-		pool.execute(() -> {
+		POOL.execute(() -> {
 			List<Direction> directions = Lists.newArrayList(Direction.values());
 
 			Map<BlockPos, FluidVolume> map = LEVELS.get(world);
@@ -79,7 +80,7 @@ public class AtmosphericManager {
 					if (offsetBlock instanceof AirBlock) {
 						FluidVolume offsetFluidVolume = get(world, offsetPosition);
 
-						if (!fluidVolume.isEmpty() && fluidVolume.getFraction().isBiggerThan(Fraction.max(new Fraction(2, 1), offsetFluidVolume.getFraction()))) {
+						if (!fluidVolume.isEmpty() && fluidVolume.getFraction().isBiggerThan(Fraction.max(TRESHHOLD, offsetFluidVolume.getFraction()))) {
 							fluidVolume.push(offsetFluidVolume, Fraction.BUCKET);
 							add(world, offsetPosition, offsetFluidVolume);
 						}
@@ -94,6 +95,6 @@ public class AtmosphericManager {
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
-		pool.shutdown();
+		POOL.shutdown();
 	}
 }

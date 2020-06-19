@@ -95,7 +95,6 @@ public class AstromineBreathables {
 		BreathableRegistry.INSTANCE.register(EntityType.POTION, AstromineFluids.OXYGEN);
 		BreathableRegistry.INSTANCE.register(EntityType.TRIDENT, AstromineFluids.OXYGEN);
 		BreathableRegistry.INSTANCE.register(EntityType.TRADER_LLAMA, AstromineFluids.OXYGEN);
-		BreathableRegistry.INSTANCE.register(EntityType.TROPICAL_FISH, AstromineFluids.OXYGEN);
 		BreathableRegistry.INSTANCE.register(EntityType.TURTLE, AstromineFluids.OXYGEN);
 		BreathableRegistry.INSTANCE.register(EntityType.VEX, AstromineFluids.OXYGEN);
 		BreathableRegistry.INSTANCE.register(EntityType.VILLAGER, AstromineFluids.OXYGEN);
@@ -104,7 +103,6 @@ public class AstromineBreathables {
 		BreathableRegistry.INSTANCE.register(EntityType.WITCH, AstromineFluids.OXYGEN);
 		BreathableRegistry.INSTANCE.register(EntityType.WITHER, AstromineFluids.OXYGEN);
 		BreathableRegistry.INSTANCE.register(EntityType.WITHER_SKELETON, AstromineFluids.OXYGEN);
-		BreathableRegistry.INSTANCE.register(EntityType.WITHER_SKULL, AstromineFluids.OXYGEN);
 		BreathableRegistry.INSTANCE.register(EntityType.WOLF, AstromineFluids.OXYGEN);
 		BreathableRegistry.INSTANCE.register(EntityType.ZOGLIN, AstromineFluids.OXYGEN);
 		BreathableRegistry.INSTANCE.register(EntityType.ZOMBIE, AstromineFluids.OXYGEN);
@@ -112,6 +110,5 @@ public class AstromineBreathables {
 		BreathableRegistry.INSTANCE.register(EntityType.ZOMBIE_VILLAGER, AstromineFluids.OXYGEN);
 		BreathableRegistry.INSTANCE.register(EntityType.ZOMBIFIED_PIGLIN, AstromineFluids.OXYGEN);
 		BreathableRegistry.INSTANCE.register(EntityType.PLAYER, AstromineFluids.OXYGEN);
-		BreathableRegistry.INSTANCE.register(EntityType.FISHING_BOBBER, AstromineFluids.OXYGEN);
 	}
 }
