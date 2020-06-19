@@ -56,7 +56,7 @@ public class AtmosphericManager {
 	}
 
 	public static void simulate(BlockView world) {
-		//pool.execute(() -> {
+		pool.execute(() -> {
 			List<Direction> directions = Lists.newArrayList(Direction.values());
 
 			Map<BlockPos, FluidVolume> map = LEVELS.get(world);
@@ -88,7 +88,7 @@ public class AtmosphericManager {
 					}
 				}
 			}
-		//});
+		});
 	}
 
 	@Override
