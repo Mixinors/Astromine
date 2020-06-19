@@ -1,27 +1,20 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.item.*;
+import com.github.chainmailstudios.astromine.common.item.weapon.variant.Weaponry;
+import com.github.chainmailstudios.astromine.common.item.weapon.variant.ammo.Ammunition;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.HoeItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.PickaxeItem;
-import net.minecraft.item.ShovelItem;
-import net.minecraft.item.SwordItem;
+import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.item.weapon.variant.Weaponry;
-import com.github.chainmailstudios.astromine.common.item.weapon.variant.ammo.Ammunition;
 
 import java.util.Iterator;
 
@@ -150,6 +143,9 @@ public class AstromineItems {
 			});
 		}
 
+		if(FabricLoader.getInstance().isDevelopmentEnvironment()) {
+			Registry.register(Registry.ITEM, AstromineCommon.identifier("meteor_spawner"), new MeteorSpawnerDevItem(new Item.Settings()));
+		}
 	}
 
 	/**
