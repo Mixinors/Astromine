@@ -3,10 +3,9 @@ package com.github.chainmailstudios.astromine.common.block.entity;
 import com.github.chainmailstudios.astromine.common.gas.AtmosphericManager;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineFluids;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.FacingBlock;
@@ -21,7 +20,7 @@ public class VentBlockEntity extends AlphaBlockEntity implements Tickable, Netwo
 
 	@Override
 	public void tick() {
-		if (energyVolume.getFraction().isBiggerThan(Fraction.BOTTLE)) {
+		if ((energyComponent.getVolume(0).getFraction().isBiggerThan(Fraction.BOTTLE) || energyComponent.getVolume(0).getFraction().equals(Fraction.BOTTLE)) && (fluidComponent.getVolume(0).getFraction().isBiggerThan(Fraction.BUCKET) || fluidComponent.getVolume(0).getFraction().equals(Fraction.BUCKET))){
 			BlockPos position = getPos();
 
 			Direction direction = world.getBlockState(position).get(FacingBlock.FACING);
@@ -29,10 +28,13 @@ public class VentBlockEntity extends AlphaBlockEntity implements Tickable, Netwo
 			BlockPos output = position.offset(direction);
 
 			if (world.getBlockState(output).getBlock() instanceof AirBlock) {
-				AtmosphericManager.add(world, output, new FluidVolume(AstromineFluids.OXYGEN, Fraction.BUCKET));
+				FluidVolume bucketVolume = fluidComponent.getVolume(0).take(Fraction.BUCKET);
+				FluidVolume volume = AtmosphericManager.get(world, output);
+				volume.pull(bucketVolume, Fraction.BUCKET);
+				AtmosphericManager.add(world, output, volume);
 			}
 
-			energyVolume.setFraction(Fraction.subtract(energyVolume.getFraction(), Fraction.BOTTLE));
+			energyComponent.getVolume(0).setFraction(Fraction.subtract(energyComponent.getVolume(0).getFraction(), Fraction.BOTTLE));
 		}
 	}
 

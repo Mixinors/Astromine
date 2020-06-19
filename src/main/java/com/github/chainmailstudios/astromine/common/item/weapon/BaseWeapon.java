@@ -15,7 +15,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.entity.projectile.BulletEntity;
-import com.github.chainmailstudios.astromine.common.inventory.InventoryComponentFromInventory;
+import com.github.chainmailstudios.astromine.common.component.compatibility.ItemInventoryComponentFromItemInventory;
 import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineEntities;
 import com.github.chainmailstudios.astromine.registry.AstromineSounds;
@@ -64,7 +64,7 @@ public abstract class BaseWeapon extends Item implements Weapon {
 	}
 
 	public void tryShoot(World world, PlayerEntity user) {
-		Optional<ItemStack> optionalMagazine = InventoryComponentFromInventory.of(user.inventory).getContentsMatching(stack -> stack.getItem() == this.getAmmo()).stream().filter(stack -> stack.getDamage() < stack.getMaxDamage()).findFirst();
+		Optional<ItemStack> optionalMagazine = ItemInventoryComponentFromItemInventory.of(user.inventory).getContentsMatching(stack -> stack.getItem() == this.getAmmo()).stream().filter(stack -> stack.getDamage() < stack.getMaxDamage()).findFirst();
 
 		if (optionalMagazine.isPresent() || user.isCreative()) {
 			long currentAttempt = System.currentTimeMillis();

@@ -1,25 +1,16 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.block.EnergyWireConnectorBlock;
+import com.github.chainmailstudios.astromine.common.component.EnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.network.*;
-import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
-import com.github.chainmailstudios.astromine.common.volume.collection.AgnosticIndexedVolumeCollection;
-import com.github.chainmailstudios.astromine.common.volume.collection.AgnosticSidedVolumeCollection;
-import com.github.chainmailstudios.astromine.common.volume.collection.IndexedVolumeCollection;
-import com.github.chainmailstudios.astromine.common.volume.collection.SimpleIndexedVolumeCollection;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.util.math.Vector3f;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.Direction;
 
-import java.util.Arrays;
-
-public class EnergyWireConnectorBlockEntity extends WireConnectorBlockEntity implements Tickable, AgnosticIndexedVolumeCollection {
-	private EnergyVolume energyVolume = new EnergyVolume();
-
+public class EnergyWireConnectorBlockEntity extends WireConnectorBlockEntity implements Tickable {
 	@Override
 	public float getCableOffset() {
 		return 0f;
@@ -34,14 +25,22 @@ public class EnergyWireConnectorBlockEntity extends WireConnectorBlockEntity imp
 	public void tick() {
 		if (world == null) return;
 
-		EnergyVolume ourVolume = get(EnergyVolume.TYPE);
+		Vector3f velocity = new Vector3f(1, 1, 0);
+
+		for (int i = 0; i < 360; ++i) {
+			velocity.rotate(Vector3f.POSITIVE_Y.getDegreesQuaternion(1));
+
+			world.addParticle(ParticleTypes.WHITE_ASH, getPos().getX(), getPos().getY(), getPos().getZ(), velocity.getX(), velocity.getY(), velocity.getZ());
+		}
+
+		EnergyVolume ourVolume = energyComponent.getVolume(0);
 
 		for (NetworkNode parentNode : getParents()) {
 			EnergyWireConnectorBlockEntity parent = (EnergyWireConnectorBlockEntity) world.getBlockEntity(parentNode.getPosition());
 
 			if (parent == null) continue;
 
-			EnergyVolume parentVolume = parent.get(EnergyVolume.TYPE);
+			EnergyVolume parentVolume = parent.energyComponent.getVolume(0);
 
 			if (parentVolume != null) {
 				parentVolume.push(ourVolume, parentVolume.getSize());
@@ -57,22 +56,12 @@ public class EnergyWireConnectorBlockEntity extends WireConnectorBlockEntity imp
 		BlockEntity attached = world.getBlockEntity(getPos().offset(direction));
 
 		if (attached != null) {
-			if (attached instanceof AgnosticSidedVolumeCollection) {
-				AgnosticSidedVolumeCollection collection = (AgnosticSidedVolumeCollection) attached;
+			if (attached instanceof EnergyInventoryComponent) {
+				EnergyInventoryComponent inventory = (EnergyInventoryComponent) attached;
 
-				if (collection.contains(direction, EnergyVolume.TYPE)) {
-					EnergyVolume volume = collection.get(direction, EnergyVolume.TYPE);
+				EnergyVolume volume = inventory.getVolume(1);
 
-					ourVolume.push(volume, volume.getSize());
-				}
-			} else if (attached instanceof AgnosticIndexedVolumeCollection) {
-				AgnosticIndexedVolumeCollection collection = (AgnosticIndexedVolumeCollection) attached;
-
-				if (collection.contains(EnergyVolume.TYPE)) {
-					EnergyVolume volume = collection.get(EnergyVolume.TYPE);
-
-					ourVolume.push(volume, volume.getSize());
-				}
+				ourVolume.push(volume, volume.getSize());
 			}
 		}
 
@@ -81,7 +70,7 @@ public class EnergyWireConnectorBlockEntity extends WireConnectorBlockEntity imp
 
 			if (child == null) continue;
 
-			EnergyVolume childVolume = child.get(EnergyVolume.TYPE);
+			EnergyVolume childVolume = child.energyComponent.getVolume(0);
 
 			if (childVolume != null) {
 				childVolume.push(ourVolume, ourVolume.getSize());
@@ -91,15 +80,5 @@ public class EnergyWireConnectorBlockEntity extends WireConnectorBlockEntity imp
 				break;
 			}
 		}
-	}
-
-	@Override
-	public boolean contains(int volumeType) {
-		return volumeType == EnergyVolume.TYPE;
-	}
-
-	@Override
-	public <T extends BaseVolume> T get(int volumeType) {
-		return volumeType == EnergyVolume.TYPE ? (T) energyVolume : null;
 	}
 }

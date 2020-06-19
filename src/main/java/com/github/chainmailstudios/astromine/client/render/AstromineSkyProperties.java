@@ -10,8 +10,10 @@ import net.minecraft.util.math.Vec3d;
 public class AstromineSkyProperties extends SkyProperties {
 
 	// float = cloud height
+
+	// alternatveSkyColor
 	public AstromineSkyProperties() {
-		super(Float.NaN, false, SkyType.NORMAL, true, true);
+		super(Float.NaN, false, SkyType.NONE, true, true);
 	}
 
 	@Override
