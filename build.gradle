@@ -83,6 +83,9 @@ dependencies {
     modRuntime ("com.github.SuperCoder7979:databreaker:${databreaker_version}") {
         exclude (module: "fabric-loader")
     }
+    // lib structure
+    modImplementation 'com.github.Draylar:LibStructure:42bde13a36' // Or the latest version
+    include 'com.github.Draylar:LibStructure:42bde13a36'
 }
 
 processResources {
