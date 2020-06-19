@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.common.gas.AtmosphericManager;
 import com.github.chainmailstudios.astromine.common.network.NetworkManager;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.event.server.ServerTickCallback;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
@@ -25,7 +26,9 @@ public class AstromineCommonCallbacks {
 		ServerTickCallback.EVENT.register((server) -> {
 			for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
 				PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
-				buffer.writeString(AtmosphericManager.get(player.world, player.getBlockPos().offset(Direction.UP)).asString().replace("Air | 0/1", "Vacuum"));
+				FluidVolume volume = AtmosphericManager.get(player.world, player.getBlockPos().offset(Direction.UP));
+				buffer.writeString(volume.getFluidString());
+				buffer.writeString(volume.getFractionString());
 				ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, AstromineClientPackets.PRESSURE_UPDATE, buffer);
 			}
 		});

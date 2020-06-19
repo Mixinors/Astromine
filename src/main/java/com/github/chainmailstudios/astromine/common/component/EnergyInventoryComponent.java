@@ -30,40 +30,40 @@ public interface EnergyInventoryComponent extends Component {
 		return this.getContents().values().stream().map(EnergyVolume::copy).collect(Collectors.toList());
 	}
 
-	default ActionResult canInsert()  {
-		return ActionResult.SUCCESS;
+	default boolean  canInsert()  {
+		return true;
 	}
 
-	default ActionResult canInsert(int slot) {
-		return ActionResult.SUCCESS;
+	default boolean  canInsert(int slot) {
+		return true;
 	}
 
-	default ActionResult canInsert(EnergyVolume volume) {
-		return ActionResult.SUCCESS;
+	default boolean  canInsert(EnergyVolume volume) {
+		return true;
 	}
 
-	default ActionResult canInsert(EnergyVolume volume, int slot) {
-		return ActionResult.SUCCESS;
+	default boolean  canInsert(EnergyVolume volume, int slot) {
+		return true;
 	}
 	
-	default ActionResult canExtract() {
-		return ActionResult.SUCCESS;
+	default boolean  canExtract() {
+		return true;
 	}
 
-	default ActionResult canExtract(int slot) {
-		return ActionResult.SUCCESS;
+	default boolean  canExtract(int slot) {
+		return true;
 	}
 
-	default ActionResult canExtract(EnergyVolume volume) {
-		return ActionResult.SUCCESS;
+	default boolean  canExtract(EnergyVolume volume) {
+		return true;
 	}
 
-	default ActionResult canExtract(EnergyVolume volume, int slot) {
-		return ActionResult.SUCCESS;
+	default boolean  canExtract(EnergyVolume volume, int slot) {
+		return true;
 	}
 
 	default TypedActionResult<EnergyVolume> insert(EnergyVolume volume) {
-		if (this.canInsert(volume).isAccepted()) {
+		if (this.canInsert(volume)) {
 			return this.insert(volume.getFraction());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, volume);
@@ -120,7 +120,7 @@ public interface EnergyInventoryComponent extends Component {
 	default TypedActionResult<EnergyVolume> extract(int slot) {
 		EnergyVolume volume = this.getVolume(slot);
 
-		if (!volume.isEmpty() && this.canExtract(volume, slot).isAccepted()) {
+		if (!volume.isEmpty() && this.canExtract(volume, slot)) {
 			return this.extract(slot, volume.getFraction());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, EnergyVolume.EMPTY);

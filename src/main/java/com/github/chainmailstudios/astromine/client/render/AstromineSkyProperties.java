@@ -13,7 +13,7 @@ public class AstromineSkyProperties extends SkyProperties {
 
 	// alternatveSkyColor
 	public AstromineSkyProperties() {
-		super(Float.NaN, false, SkyType.NONE, true, true);
+		super(Float.NaN, false, SkyType.NONE,  true, true);
 	}
 
 	@Override

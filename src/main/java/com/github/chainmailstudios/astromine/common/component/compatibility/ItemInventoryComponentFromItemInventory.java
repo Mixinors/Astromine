@@ -35,38 +35,38 @@ public class ItemInventoryComponentFromItemInventory implements ItemInventoryCom
 	}
 
 	@Override
-	public ActionResult canInsert() {
-		return ActionResult.SUCCESS;
+	public boolean canInsert() {
+		return true;
 	}
 
 	@Override
-	public ActionResult canExtract() {
-		return ActionResult.SUCCESS;
+	public boolean canExtract() {
+		return true;
 	}
 
 	@Override
-	public ActionResult canInsert(int slot) {
-		return ActionResult.SUCCESS;
+	public boolean canInsert(int slot) {
+		return true;
 	}
 
 	@Override
-	public ActionResult canExtract(int slot) {
-		return ActionResult.SUCCESS;
+	public boolean canExtract(int slot) {
+		return true;
 	}
 
 	@Override
-	public ActionResult canInsert(ItemStack stack, int slot) {
-		return ActionResult.SUCCESS;
+	public boolean canInsert(ItemStack stack, int slot) {
+		return true;
 	}
 
 	@Override
-	public ActionResult canExtract(ItemStack stack, int slot) {
-		return ActionResult.SUCCESS;
+	public boolean canExtract(ItemStack stack, int slot) {
+		return true;
 	}
 
 	@Override
-	public ActionResult canInsert(ItemStack stack) {
-		return ActionResult.SUCCESS;
+	public boolean canInsert(ItemStack stack) {
+		return true;
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class ItemInventoryComponentFromItemInventory implements ItemInventoryCom
 	}
 
 	@Override
-	public ActionResult canExtract(ItemStack stack) {
-		return ActionResult.SUCCESS;
+	public boolean canExtract(ItemStack stack) {
+		return true;
 	}
 }

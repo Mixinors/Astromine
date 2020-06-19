@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -46,43 +47,38 @@ public class AtmosphericManager {
 			RegistryKey<DimensionType> key = ((World) world).getDimensionRegistryKey();
 			boolean isVanilla = (key == DimensionType.OVERWORLD_REGISTRY_KEY || key == DimensionType.OVERWORLD_CAVES_REGISTRY_KEY || key == DimensionType.THE_NETHER_REGISTRY_KEY || key == DimensionType.THE_END_REGISTRY_KEY);
 
-			if (isVanilla) {
-				return new FluidVolume(AstromineFluids.OXYGEN, Fraction.BUCKET);
+			if (isVanilla && !LEVELS.get(world).containsKey(position)) {
+				return FluidVolume.DEFAULT;
 			} else {
-				return LEVELS.get(world).getOrDefault(position, new FluidVolume(Fluids.EMPTY, Fraction.EMPTY));
+				return LEVELS.get(world).getOrDefault(position, FluidVolume.EMPTY);
 			}
 		} else {
-			return LEVELS.get(world).getOrDefault(position, new FluidVolume(Fluids.EMPTY, Fraction.EMPTY));
+			return LEVELS.get(world).getOrDefault(position, FluidVolume.EMPTY);
 		}
 	}
 
 	public static void simulate(BlockView world) {
 		POOL.execute(() -> {
-			List<Direction> directions = Lists.newArrayList(Direction.values());
-
 			Map<BlockPos, FluidVolume> map = LEVELS.get(world);
 
 			if (map == null) return;
 
-			Collections.shuffle(directions);
-
 			for (Map.Entry<BlockPos, FluidVolume> pair : map.entrySet()) {
-				BlockPos position = pair.getKey();
-
-				FluidVolume fluidVolume = get(world, position);
+				final FluidVolume fluidVolume = get(world, pair.getKey());
 
 				for (Direction direction : Direction.values()) {
-					BlockPos offsetPosition = position.offset(direction);
+					final BlockPos offsetPosition = pair.getKey().offset(direction);
 
-					BlockState offsetBlockState = world.getBlockState(offsetPosition);
-					Block offsetBlock = offsetBlockState.getBlock();
-
-					if (offsetBlock instanceof AirBlock) {
+					if (world.getBlockState(offsetPosition).getBlock() instanceof AirBlock) {
 						FluidVolume offsetFluidVolume = get(world, offsetPosition);
 
-						if (!fluidVolume.isEmpty() && fluidVolume.getFraction().isBiggerThan(Fraction.max(TRESHHOLD, offsetFluidVolume.getFraction()))) {
+						if (!fluidVolume.isEmpty() && fluidVolume.getFraction().isBiggerThan(Fraction.max(TRESHHOLD, offsetFluidVolume.getFraction())) && offsetFluidVolume.canInsert(fluidVolume.getFluid(), Fraction.BUCKET)) {
 							fluidVolume.push(offsetFluidVolume, Fraction.BUCKET);
-							add(world, offsetPosition, offsetFluidVolume);
+							AtmosphericManager.add(world, offsetPosition, offsetFluidVolume);
+						} else if (!fluidVolume.isEmpty() && fluidVolume.getFraction().isBiggerThan(Fraction.max(TRESHHOLD, offsetFluidVolume.getFraction())) && offsetFluidVolume == FluidVolume.DEFAULT) {
+							FluidVolume newVolume = new FluidVolume();
+							fluidVolume.push(newVolume, Fraction.BUCKET);
+							AtmosphericManager.add(world, offsetPosition, newVolume);
 						}
 					} else {
 						AtmosphericManager.remove(world, offsetPosition);

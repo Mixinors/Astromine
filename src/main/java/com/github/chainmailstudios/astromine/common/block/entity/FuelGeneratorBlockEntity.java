@@ -39,7 +39,7 @@ public class FuelGeneratorBlockEntity extends AlphaBlockEntity implements Tickab
 				EnergyInventoryComponent inventory = provider.getComponent(direction, EnergyInventoryComponent.class);
 
 				if (inventory != null) {
-					if (inventory.canInsert(energyComponent.getVolume(0)).isAccepted()) {
+					if (inventory.canInsert(energyComponent.getVolume(0))) {
 						inventory.insert(energyComponent.getVolume(0));
 					}
 
