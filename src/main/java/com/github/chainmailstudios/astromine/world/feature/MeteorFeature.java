@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.common.world.feature;
+package com.github.chainmailstudios.astromine.world.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.structure.StructureManager;

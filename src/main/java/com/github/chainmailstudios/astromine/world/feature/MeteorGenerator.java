@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.common.world.feature;
+package com.github.chainmailstudios.astromine.world.feature;
 
 import com.github.chainmailstudios.astromine.misc.OpenSimplexNoise;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;

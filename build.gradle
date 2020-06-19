@@ -84,8 +84,8 @@ dependencies {
         exclude (module: "fabric-loader")
     }
     // lib structure
-    modImplementation 'com.github.Draylar:LibStructure:master-SNAPSHOT' // Or the latest version
-    include 'com.github.Draylar:LibStructure:master-SNAPSHOTiiii'
+    modImplementation 'com.github.Draylar:LibStructure:42bde13a36' // Or the latest version
+    include 'com.github.Draylar:LibStructure:42bde13a36'
 }
 
 processResources {

@@ -12,11 +12,8 @@ public class AstromineSkyProperties extends SkyProperties {
 	// float = cloud height
 
 	// alternatveSkyColor
-	// 640 = overworld sky with stars and line
-	// 639 = nether with the weird overlay, no stars
-	// 641 = end, purple with noise
 	public AstromineSkyProperties() {
-		super(Float.NaN, false, class_5401.field_25640, true, true);
+		super(Float.NaN, false, SkyType.NORMAL, true, true);
 	}
 
 	@Override
