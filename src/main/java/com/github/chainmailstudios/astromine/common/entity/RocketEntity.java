@@ -183,17 +183,21 @@ public class RocketEntity extends Entity {
 
         this.move(MovementType.SELF, this.getVelocity());
 
-        Vec3d thrustVec = new Vec3d(0.035, 0, 0.035).multiply(getRotationVector());
+        Vec3d thrustVec = new Vec3d(0.035, -4, 0.035).multiply(getRotationVector());
 
         Vec3d vel = thrustVec.multiply(getRotationVector());
 
-        Vector3f speed = new Vector3f(0, -1, 0);
-        speed.rotate(Vector3f.NEGATIVE_Z.getDegreesQuaternion(getYaw(0)));
+        Vector3f speed = new Vector3f(0.3f, -1, 0);
+        speed.rotate(Vector3f.NEGATIVE_Z.getDegreesQuaternion(90 - (float) yaw));
 
-        for (int i = 0; i < 360; ++i) {
-          //speed.rotate(Vector3f.POSITIVE_Y.getDegreesQuaternion(1));
-
-           world.addParticle(AstromineParticles.ROCKET_FLAME, getX() + thrustVec.getX(), getY() + thrustVec.getY(), getZ() + thrustVec.getZ(), speed.getX(), speed.getY(), speed.getZ());
+        for (int i = 0; i < 120; ++i) {
+           world.addParticle(AstromineParticles.ROCKET_FLAME,
+                   getX() + ((thrustVec.getX() - (Math.min(0.6f, random.nextFloat())) * (random.nextBoolean() ? 1 : -1))),
+                   getY() + ((thrustVec.getY() - 1.5f - random.nextFloat() * 0.5f)),
+                   getZ() + ((thrustVec.getZ() - (Math.min(0.6f, random.nextFloat())) * (random.nextBoolean() ? 1 : -1))),
+                   speed.getX() * -1    ,
+                   speed.getY(),
+                   speed.getZ());
         }
 
         //if (getY() < 6) {
