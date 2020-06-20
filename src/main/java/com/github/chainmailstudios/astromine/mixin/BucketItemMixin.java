@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.mixin;
 
+import com.github.chainmailstudios.astromine.access.BucketAccessor;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.component.FluidInventoryComponent;
@@ -30,7 +31,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BucketItem.class)
-public abstract class BucketItemMixin {
+public abstract class BucketItemMixin implements BucketAccessor {
 	@Shadow @Final private Fluid fluid;
 
 	@Inject(at = @At("HEAD"), method = "use(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/TypedActionResult;", cancellable = true)
@@ -59,7 +60,7 @@ public abstract class BucketItemMixin {
 
 							if (inventory.canInsert(bucketVolume)) {
 								inventory.insert(bucketVolume);
-								callbackInformationReturnable.setReturnValue(TypedActionResult.success(new ItemStack(bucketVolume.getFluid().getBucketItem().getRecipeRemainder())));
+								callbackInformationReturnable.setReturnValue(TypedActionResult.success(user.isCreative() ? user.getStackInHand(hand) : new ItemStack(bucketVolume.getFluid().getBucketItem().getRecipeRemainder())));
 								callbackInformationReturnable.cancel();
 							}
 
@@ -87,4 +88,8 @@ public abstract class BucketItemMixin {
 		return world.rayTrace(new RayTraceContext(vec3d, vec3d2, RayTraceContext.ShapeType.OUTLINE, fluidHandling, player));
 	}
 
+	@Override
+	public Fluid getFluid() {
+		return fluid;
+	}
 }

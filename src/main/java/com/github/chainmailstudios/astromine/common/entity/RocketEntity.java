@@ -1,11 +1,23 @@
 package com.github.chainmailstudios.astromine.common.entity;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.access.BucketAccessor;
+import com.github.chainmailstudios.astromine.common.component.Component;
+import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.SimpleFluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.utilities.LineUtilities;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.mixin.BucketItemMixin;
+import com.github.chainmailstudios.astromine.registry.AstromineFluids;
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.github.chainmailstudios.astromine.registry.AstromineParticles;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.Lists;
 import io.netty.buffer.Unpooled;
+import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.minecraft.client.particle.CampfireSmokeParticle;
 import net.minecraft.client.util.math.Vector3f;
@@ -17,6 +29,9 @@ import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.entity.vehicle.MinecartEntity;
+import net.minecraft.item.BucketItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
@@ -25,7 +40,9 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -33,16 +50,21 @@ import net.minecraft.world.World;
 import java.util.*;
 
 public class RocketEntity extends Entity {
-    public static final Identifier ROCKET_SPAWN = AstromineCommon.identifier("rocket_spawn");
+    private final FluidInventoryComponent fluidInventory = new SimpleFluidInventoryComponent(1);
 
-    private static final ArrayList<Vector3f> ROUTE = new ArrayList<>();
+    public static final Identifier ROCKET_SPAWN = AstromineCommon.identifier("rocket_spawn");
 
     private final BiMap<Integer, Entity> passengers = HashBiMap.create();
 
+    private boolean isGo = false;
+
+    private double goY = 0;
+
     public RocketEntity(EntityType<?> type, World world) {
         super(type, world);
+        fluidInventory.getContents().forEach((k, v) -> v.setSize(new Fraction(16, 1)));
     }
-
+    
     @Override
     protected void initDataTracker() {
 
@@ -50,12 +72,12 @@ public class RocketEntity extends Entity {
 
     @Override
     protected void readCustomDataFromTag(CompoundTag tag) {
-
+        tag.put("fluid", fluidInventory.write(fluidInventory, Optional.empty(), Optional.empty()));
     }
 
     @Override
     protected void writeCustomDataToTag(CompoundTag tag) {
-
+        fluidInventory.read(fluidInventory, tag, Optional.empty(), Optional.empty());
     }
 
     public Box getHardCollisionBox(Entity collidingEntity) {
@@ -72,11 +94,20 @@ public class RocketEntity extends Entity {
 
     @Override
     public ActionResult interact(PlayerEntity player, Hand hand) {
+        ItemStack stack = player.getStackInHand(hand);
+
+        if (stack.getItem() == Items.FLINT_AND_STEEL) {
+            isGo = true;
+            goY = getY();
+        }
+
         return super.interact(player, hand);
     }
 
     @Override
     public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
+        if (player.getStackInHand(hand) != ItemStack.EMPTY) return ActionResult.PASS;
+
         passengers.inverse().remove(player);
 
         if (hitPos.getY() >= 2.4 && hitPos.getY() <= 4) {
@@ -102,16 +133,6 @@ public class RocketEntity extends Entity {
         }
 
         return super.interactAt(player, hitPos, hand);
-    }
-
-    @Override
-    protected void addPassenger(Entity passenger) {
-        super.addPassenger(passenger);
-    }
-
-    @Override
-    protected void removePassenger(Entity removed) {
-        super.removePassenger(removed);
     }
 
     @Override
@@ -158,30 +179,24 @@ public class RocketEntity extends Entity {
 
         getPassengerList().forEach(Entity::tickRiding);
 
-        addVelocity(0, 0.001f, 0);
+        if (isGo) {
+            addVelocity(0, 0.001f, 0);
 
-        this.move(MovementType.SELF, this.getVelocity());
+            this.move(MovementType.SELF, this.getVelocity());
 
-        Vec3d thrustVec = new Vec3d(0.035, -1, 0.035);
-        Vec3d speed = new Vec3d(0.1, -1, 0.1);
+            Vec3d thrustVec = new Vec3d(0.035, -1, 0.035);
+            Vec3d speed = new Vec3d(0.02, -0.2f, 0.02);
 
-        for (int i = 0; i < 480; ++i) {
-            speed = speed.rotateY(1);
-            world.addParticle(AstromineParticles.ROCKET_FLAME,
-                getX() + ((thrustVec.getX() - (Math.min(0.6f, random.nextFloat())) * (random.nextBoolean() ? 1 : -1))),
-                getY() + thrustVec.getY(),
-                getZ() + ((thrustVec.getZ() - (Math.min(0.6f, random.nextFloat())) * (random.nextBoolean() ? 1 : -1))),
-                speed.getX(),
-                speed.getY(),
-                speed.getZ());
+            for (int i = 0; i < 90; ++i) {
+                speed = speed.rotateY(1);
+                world.addParticle(AstromineParticles.ROCKET_FLAME,
+                        getX() + ((thrustVec.getX() - (Math.min(0.6f, random.nextFloat())) * (random.nextBoolean() ? 1 : -1))),
+                        getY() + thrustVec.getY(),
+                        getZ() + ((thrustVec.getZ() - (Math.min(0.6f, random.nextFloat())) * (random.nextBoolean() ? 1 : -1))),
+                        speed.getX(),
+                        speed.getY(),
+                        speed.getZ());
+            }
         }
-
-        //if (getY() < 6) {
-        //    for (int i = 0; i < 360; ++i) {
-        //        speed.rotate(Vector3f.POSITIVE_Y.getDegreesQuaternion(1));
-//
-        //        world.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, getX() + thrustVec.x,  getY() + thrustVec.y, getZ() + thrustVec.z - 0.05f, speed.getX() * 4, 0, speed.getZ() * 4);
-        //    }
-        //}
     }
 }
