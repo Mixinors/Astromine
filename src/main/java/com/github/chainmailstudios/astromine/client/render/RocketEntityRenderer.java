@@ -28,11 +28,8 @@ public class RocketEntityRenderer extends EntityRenderer<RocketEntity> {
         matrixStack.translate(0.0D, 0.375D, 0.0D);
 
         matrixStack.scale(-1.0F, -1.0F, 1.0F);
-        matrixStack.scale(2, 2, 2);
         matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90.0F));
         this.model.setAngles(rocket, 0, 0.0F, -0.1F, rocket.getYaw(tickDelta), rocket.getPitch(tickDelta));
-        matrixStack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(rocket.getYaw(tickDelta)));
-        matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rocket.getPitch(tickDelta)));
         VertexConsumer vertexConsumer = vertexConsumers.getBuffer(this.model.getLayer(this.getTexture(rocket)));
         this.model.render(matrixStack, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 
