@@ -24,8 +24,8 @@ public class AstromineClient implements ClientModInitializer {
 		AstromineClientPackets.initialize();
 		AstromineRenderLayers.initialize();
 
-		EntityRendererRegistry.INSTANCE.register(AstromineEntities.SPACE_SLIME, (dispatcher, context) -> new SpaceSlimeEntityRenderer(dispatcher));
+		EntityRendererRegistry.INSTANCE.register(AstromineEntityTypes.SPACE_SLIME, (dispatcher, context) -> new SpaceSlimeEntityRenderer(dispatcher));
 
-		EntityRendererRegistry.INSTANCE.register(AstromineEntities.SUPER_SPACE_SLIME, (dispatcher, context) -> new SuperSpaceSlimeEntityRenderer(dispatcher));
+		EntityRendererRegistry.INSTANCE.register(AstromineEntityTypes.SUPER_SPACE_SLIME, (dispatcher, context) -> new SuperSpaceSlimeEntityRenderer(dispatcher));
 	}
 }

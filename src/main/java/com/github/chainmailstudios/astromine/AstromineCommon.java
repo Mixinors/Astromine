@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine;
 
-import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
 import com.github.chainmailstudios.astromine.registry.*;
 import net.fabricmc.api.ModInitializer;
 
@@ -11,12 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.Gson;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.Random;
 
 public class AstromineCommon implements ModInitializer {
 	public static final String LOG_ID = "Astromine";
@@ -36,7 +29,7 @@ public class AstromineCommon implements ModInitializer {
 		AstromineItems.initialize();
 		AstromineBlocks.initialize();
 		AstromineOres.initialize();
-		AstromineEntities.initialize();
+		AstromineEntityTypes.initialize();
 		AstrominePotions.initialize();
 		AstromineFeatures.initialize();
 		AstromineBiomes.initialize();

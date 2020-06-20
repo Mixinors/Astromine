@@ -17,13 +17,13 @@ import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.registry.AstromineEntities;
+import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
 
 public class BulletEntity extends PersistentProjectileEntity {
 	public Identifier texture = AstromineCommon.identifier("textures/entity/projectiles/bullet.png");
 
 	public BulletEntity(World world) {
-		super(AstromineEntities.BULLET_ENTITY_TYPE, world);
+		super(AstromineEntityTypes.BULLET_ENTITY_TYPE, world);
 	}
 
 	public BulletEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {

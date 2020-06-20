@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.item.weapon;
 
+import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -17,7 +18,6 @@ import net.minecraft.world.World;
 import com.github.chainmailstudios.astromine.common.entity.projectile.BulletEntity;
 import com.github.chainmailstudios.astromine.common.component.compatibility.ItemInventoryComponentFromItemInventory;
 import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineEntities;
 import com.github.chainmailstudios.astromine.registry.AstromineSounds;
 
 import java.util.List;
@@ -94,7 +94,7 @@ public abstract class BaseWeapon extends Item implements Weapon {
 			}
 
 			if (optionalMagazine.isPresent() || user.isCreative()) {
-				PersistentProjectileEntity persistentProjectileEntity = new BulletEntity(AstromineEntities.BULLET_ENTITY_TYPE, user, world);
+				PersistentProjectileEntity persistentProjectileEntity = new BulletEntity(AstromineEntityTypes.BULLET_ENTITY_TYPE, user, world);
 
 				persistentProjectileEntity.setProperties(user, user.pitch, user.yaw, 0.0F, this.getDistance(), 0);
 
