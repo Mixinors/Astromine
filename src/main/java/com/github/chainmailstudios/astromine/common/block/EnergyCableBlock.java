@@ -9,7 +9,12 @@ public class EnergyCableBlock extends AbstractCableBlock {
 	}
 
 	@Override
-	public NetworkType getNetworkType() {
-		return AstromineNetworkTypes.ENERGY;
+	public <T extends NetworkType> boolean acceptsType(T type) {
+		return type == AstromineNetworkTypes.ENERGY;
+	}
+
+	@Override
+	public <T extends NetworkType> T getNetworkType() {
+		return (T) AstromineNetworkTypes.ENERGY;
 	}
 }

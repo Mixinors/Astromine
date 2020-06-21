@@ -55,6 +55,8 @@ public abstract class AbstractCableBlock extends Block implements NetworkMember 
         super(settings);
     }
 
+    public abstract <T extends NetworkType> T getNetworkType();
+
     @Override
     public void onPlaced(World world, BlockPos position, BlockState stateA, LivingEntity placer, ItemStack itemStack) {
         super.onPlaced(world, position, stateA, placer, itemStack);
@@ -74,7 +76,7 @@ public abstract class AbstractCableBlock extends Block implements NetworkMember 
             if (!(block instanceof AbstractCableBlock)) continue;
 
             NetworkTracer.Modeller modellerB = new NetworkTracer.Modeller();
-            modellerB.scanNeighbours(((NetworkMember) block).getNetworkType(), posA, world);
+            modellerB.scanNeighbours(((AbstractCableBlock) block).getNetworkType(), posA, world);
             world.setBlockState(posA, modellerB.applyToBlockState(world.getBlockState(posA)));
         }
     }

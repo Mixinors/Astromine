@@ -1,9 +1,7 @@
 package com.github.chainmailstudios.astromine.common.network;
 
 public interface NetworkMember {
-	default NetworkType getNetworkType() {
-		return NetworkType.EMPTY;
-	}
+	<T extends NetworkType> boolean acceptsType(T type);
 
 	default boolean isNode() {
 		return true;

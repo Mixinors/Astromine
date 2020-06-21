@@ -17,7 +17,7 @@ public class FluidTankBlockEntity extends BetaBlockEntity implements NetworkMemb
 	}
 
 	@Override
-	public NetworkType getNetworkType() {
-		return AstromineNetworkTypes.FLUID;
+	public <T extends NetworkType> boolean acceptsType(T type) {
+		return type == AstromineNetworkTypes.FLUID;
 	}
 }

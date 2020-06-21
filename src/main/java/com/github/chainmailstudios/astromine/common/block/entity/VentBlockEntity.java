@@ -42,13 +42,11 @@ public class VentBlockEntity extends AlphaBlockEntity implements Tickable, Netwo
 				energyComponent.getVolume(0).extractVolume(Fraction.BOTTLE);
 			}
 		}
-
-		System.out.print("\n-" + energyComponent.getVolume(0).getFraction().longValue());
 	}
 
 	@Override
-	public NetworkType getNetworkType() {
-		return AstromineNetworkTypes.FLUID;
+	public <T extends NetworkType> boolean acceptsType(T type) {
+		return type == AstromineNetworkTypes.FLUID || type == AstromineNetworkTypes.ENERGY;
 	}
 
 	@Override

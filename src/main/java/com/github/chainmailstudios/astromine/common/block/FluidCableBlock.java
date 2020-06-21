@@ -9,7 +9,12 @@ public class FluidCableBlock extends AbstractCableBlock {
 	}
 
 	@Override
-	public NetworkType getNetworkType() {
-		return AstromineNetworkTypes.FLUID;
+	public <T extends NetworkType> boolean acceptsType(T type) {
+		return type == AstromineNetworkTypes.FLUID;
+	}
+
+	@Override
+	public <T extends NetworkType> T getNetworkType() {
+		return (T) AstromineNetworkTypes.FLUID;
 	}
 }

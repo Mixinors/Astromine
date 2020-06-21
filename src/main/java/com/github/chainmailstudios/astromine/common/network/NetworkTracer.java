@@ -89,12 +89,12 @@ public class NetworkTracer {
 					} else if (offsetObject instanceof NetworkMember) {
 						NetworkMember offsetMember = (NetworkMember) offsetObject;
 
-						if ((offsetMember.isRequester() || offsetMember.isProvider() || offsetMember.isBuffer()) && offsetMember.getNetworkType() == type) {
+						if ((offsetMember.isRequester() || offsetMember.isProvider() || offsetMember.isBuffer()) && offsetMember.acceptsType(type)) {
 							instance.addMember(NetworkNode.of(offsetPosition));
 						}
 
 						if (offsetMember.isNode()) {
-							if (offsetMember.getNetworkType() == ((NetworkMember) initialObject).getNetworkType()) {
+							if (offsetMember.acceptsType(type)) {
 								positions.addLast(offsetPosition);
 								instance.addNode(NetworkNode.of(offsetPosition));
 							}
@@ -125,12 +125,10 @@ public class NetworkTracer {
 		}
 
 		public void scanNeighbours(NetworkType type, BlockPos initialPosition, World world) {
-			Object initialObject = getObjectAt(world, initialPosition);
-
 			for (Direction direction : Direction.values()) {
 				Object offsetObject = getObjectAt(world, initialPosition.offset(direction));
 
-				if (offsetObject instanceof NetworkMember && ((NetworkMember) offsetObject).getNetworkType() == type) {
+				if (offsetObject instanceof NetworkMember && ((NetworkMember) offsetObject).acceptsType(type)) {
 					directions.add(direction);
 				}
 			}
