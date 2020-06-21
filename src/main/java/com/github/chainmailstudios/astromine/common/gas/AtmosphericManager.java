@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.common.gas;
 
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.google.common.collect.Lists;
 import net.minecraft.block.AirBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -42,12 +43,12 @@ public class AtmosphericManager {
 			boolean isVanilla = (key == DimensionType.OVERWORLD_REGISTRY_KEY || key == DimensionType.OVERWORLD_CAVES_REGISTRY_KEY || key == DimensionType.THE_NETHER_REGISTRY_KEY || key == DimensionType.THE_END_REGISTRY_KEY);
 
 			if (isVanilla && !LEVELS.get(world).containsKey(position)) {
-				return FluidVolume.DEFAULT;
+				return FluidVolume.oxygen();
 			} else {
-				return LEVELS.get(world).getOrDefault(position, FluidVolume.EMPTY);
+				return LEVELS.get(world).getOrDefault(position, FluidVolume.empty());
 			}
 		} else {
-			return LEVELS.get(world).getOrDefault(position, FluidVolume.EMPTY);
+			return LEVELS.get(world).getOrDefault(position, FluidVolume.empty());
 		}
 	}
 
@@ -57,10 +58,14 @@ public class AtmosphericManager {
 
 			if (map == null) return;
 
+			List<Direction> directions = Lists.newArrayList(Direction.values());
+
 			for (Map.Entry<BlockPos, FluidVolume> pair : map.entrySet()) {
 				final FluidVolume fluidVolume = get(world, pair.getKey());
 
-				for (Direction direction : Direction.values()) {
+				Collections.shuffle(directions);
+
+				for (Direction direction : directions) {
 					final BlockPos offsetPosition = pair.getKey().offset(direction);
 
 					if (world.getBlockState(offsetPosition).getBlock() instanceof AirBlock) {
@@ -69,7 +74,7 @@ public class AtmosphericManager {
 						if (!fluidVolume.isEmpty() && fluidVolume.getFraction().isBiggerThan(Fraction.max(TRESHHOLD, offsetFluidVolume.getFraction())) && offsetFluidVolume.canInsert(fluidVolume.getFluid(), Fraction.BUCKET)) {
 							fluidVolume.pushVolume(offsetFluidVolume, Fraction.BUCKET);
 							AtmosphericManager.add(world, offsetPosition, offsetFluidVolume);
-						} else if (!fluidVolume.isEmpty() && fluidVolume.getFraction().isBiggerThan(Fraction.max(TRESHHOLD, offsetFluidVolume.getFraction())) && offsetFluidVolume == FluidVolume.DEFAULT) {
+						} else if (!fluidVolume.isEmpty() && fluidVolume.getFraction().isBiggerThan(Fraction.max(TRESHHOLD, offsetFluidVolume.getFraction())) && offsetFluidVolume.equals(FluidVolume.oxygen())) {
 							FluidVolume newVolume = new FluidVolume();
 							fluidVolume.pushVolume(newVolume, Fraction.BUCKET);
 							AtmosphericManager.add(world, offsetPosition, newVolume);

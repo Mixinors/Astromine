@@ -8,7 +8,7 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
 
 public class BaseVolume {
-	protected Fraction fraction = Fraction.EMPTY;
+	protected Fraction fraction = Fraction.empty();
 
 	protected Fraction size = new Fraction(Integer.MAX_VALUE, 1);
 
@@ -30,7 +30,7 @@ public class BaseVolume {
 	}
 
 	public boolean isEmpty() {
-		return this.getFraction().equals(Fraction.EMPTY);
+		return this.getFraction().equals(Fraction.empty());
 	}
 
 	public Fraction getFraction() {
@@ -59,33 +59,10 @@ public class BaseVolume {
 	/**
 	 * Takes a Volume out of this Volume.
 	 */
-	public <T extends BaseVolume> T takeVolume(Fraction taken) {
+	public <T extends BaseVolume> T extractVolume(Fraction taken) {
 		T volume = (T) new BaseVolume();
 		pushVolume(volume, taken);
 		return volume;
-	}
-
-	public void removeVolume(Fraction removed) {
-		fraction.subtract(removed);
-	}
-
-	public <T extends BaseVolume> T extractVolume(Fraction fraction) {
-		BaseVolume volume = new BaseVolume(Fraction.EMPTY);
-
-		volume.pullVolume(this, fraction);
-
-		return (T) volume;
-	}
-
-	/**
-	 * Adds to this Volume.
-	 */
-	public <T extends BaseVolume> T giveVolume(Fraction pushed) {
-		return (T) new BaseVolume(Fraction.add(fraction, pushed));
-	}
-
-	public void addVolume(Fraction added) {
-		fraction.add(added);
 	}
 
 	public <T extends BaseVolume> T insertVolume(Fraction fraction) {
@@ -104,6 +81,8 @@ public class BaseVolume {
 	 * for pulling into this.
 	 */
 	public <T extends BaseVolume> void pullVolume(T target, Fraction pulled) {
+		if (target.fraction.isSmallerOrEqualThan(Fraction.empty())) return;
+
 		Fraction available = Fraction.subtract(this.size, this.fraction);
 
 		pulled = Fraction.min(pulled, available);
@@ -131,6 +110,8 @@ public class BaseVolume {
 	 * pushing into target.
 	 */
 	public <T extends BaseVolume> void pushVolume(T target, Fraction pushed) {
+		if (fraction.isSmallerOrEqualThan(Fraction.empty())) return;
+
 		Fraction available = Fraction.subtract(target.size, target.fraction);
 
 		pushed = Fraction.min(pushed, available);
@@ -164,7 +145,7 @@ public class BaseVolume {
 	}
 
 	public boolean hasStored(Fraction fraction) {
-		return fraction.isBiggerOrEqualThan(fraction);
+		return this.fraction.isBiggerOrEqualThan(fraction);
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine;
 
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.*;
 import net.fabricmc.api.ModInitializer;
 

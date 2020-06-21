@@ -26,6 +26,7 @@ public class FuelGeneratorBlockEntity extends AlphaBlockEntity implements Tickab
 			energyComponent.getVolume(0).setFraction(Fraction.add(energyComponent.getVolume(0).getFraction(), Fraction.BUCKET));
 		}
 
+
 		for (Direction direction : Direction.values()) {
 			BlockPos position = getPos().offset(direction);
 
@@ -36,9 +37,9 @@ public class FuelGeneratorBlockEntity extends AlphaBlockEntity implements Tickab
 
 				EnergyInventoryComponent inventory = provider.getComponent(direction, EnergyInventoryComponent.class);
 
-				if (inventory != null) {
+				if (inventory != null && energyComponent.getVolume(0).getFraction().isBiggerOrEqualThan(Fraction.BOTTLE)) {
 					if (inventory.canInsert(energyComponent.getVolume(0))) {
-						inventory.insert(energyComponent.getVolume(0));
+						inventory.getVolume(0).pullVolume(energyComponent.getVolume(0), Fraction.BOTTLE);
 					}
 
 					if (attached instanceof BlockEntityClientSerializable && !world.isClient) {

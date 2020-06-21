@@ -75,7 +75,7 @@ public interface EnergyInventoryComponent extends Component {
 		}).findFirst();
 
 		if (matchingVolumeOptional.isPresent()) {
-			matchingVolumeOptional.get().getValue().giveVolume(fraction);
+			matchingVolumeOptional.get().getValue().insertVolume(fraction);
 			return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().getValue());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, null);
@@ -122,7 +122,7 @@ public interface EnergyInventoryComponent extends Component {
 		if (!volume.isEmpty() && this.canExtract(volume, slot)) {
 			return this.extract(slot, volume.getFraction());
 		} else {
-			return new TypedActionResult<>(ActionResult.FAIL, EnergyVolume.EMPTY);
+			return new TypedActionResult<>(ActionResult.FAIL, EnergyVolume.empty());
 		}
 	}
 
@@ -135,9 +135,9 @@ public interface EnergyInventoryComponent extends Component {
 		Optional<EnergyVolume> matchingVolumeOptional = Optional.ofNullable(this.getVolume(slot));
 
 		if (matchingVolumeOptional.isPresent()) {
-			return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().takeVolume(fraction));
+			return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().extractVolume(fraction));
 		} else {
-			return new TypedActionResult<>(ActionResult.FAIL, EnergyVolume.EMPTY);
+			return new TypedActionResult<>(ActionResult.FAIL, EnergyVolume.empty());
 		}
 	}
 
@@ -162,7 +162,7 @@ public interface EnergyInventoryComponent extends Component {
 		int maximum = range.isPresent() ? range.get().getMaximum() : source.getSize();
 
 		for (int position = minimum; position < maximum; ++position) {
-			if (source.getVolume(position) != null && source.getVolume(position) != EnergyVolume.EMPTY) {
+			if (source.getVolume(position) != null && !source.getVolume(position).isEmpty()) {
 				EnergyVolume volume = source.getVolume(position);
 
 				if (volume != null && !volume.isEmpty()) {

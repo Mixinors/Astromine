@@ -7,7 +7,6 @@ import com.google.common.math.LongMath;
 import java.math.RoundingMode;
 
 public class Fraction extends Number implements Comparable<Fraction> {
-	public static final Fraction EMPTY = new Fraction(0, 1);
 	public static final Fraction BUCKET = new Fraction(1, 1);
 	public static final Fraction BOTTLE = new Fraction(1, 3);
 
@@ -17,6 +16,10 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	public Fraction(long numerator, long denominator) {
 		this.numerator = numerator;
 		this.denominator = denominator;
+	}
+
+	public static Fraction empty() {
+		return new Fraction(0, 1);
 	}
 
 	public static Fraction add(Fraction fractionA, Fraction fractionB) {
@@ -144,7 +147,10 @@ public class Fraction extends Number implements Comparable<Fraction> {
 
 		long denominator = lowestCommonDenominator(this.denominator, fraction.denominator);
 
-		return this.numerator * (this.denominator * (denominator / this.denominator)) > fraction.numerator * (fraction.denominator * (denominator / fraction.denominator));
+		Fraction fA = new Fraction(this.numerator * (this.denominator * (denominator / this.denominator)), this.denominator);
+		Fraction fB = new Fraction(fraction.numerator * (fraction.denominator * (denominator / fraction.denominator)), fraction.denominator);
+
+		return fA.longValue() > fB.longValue();
 	}
 
 	/**
@@ -224,8 +230,8 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	}
 
 	public static Fraction simplify(Fraction fraction) {
-		if (fraction.numerator == 0) {
-			return Fraction.EMPTY;
+		if ((fraction.numerator <= 0 && fraction.denominator >= 0) || (fraction.numerator >= 0 && fraction.denominator <= 0)) {
+			return fraction;
 		}
 
 		long divisor = greatestCommonDivisor(fraction.numerator, fraction.denominator);

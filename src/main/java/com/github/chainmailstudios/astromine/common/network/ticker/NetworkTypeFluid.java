@@ -23,17 +23,19 @@ public class NetworkTypeFluid extends NetworkType {
         for (NetworkNode memberNode : controller.members) {
             BlockEntity blockEntity = controller.getWorld().getBlockEntity(memberNode.getBlockPos());
 
-            if (blockEntity != null && blockEntity instanceof ComponentProvider) {
+            if (blockEntity instanceof ComponentProvider && blockEntity instanceof NetworkMember) {
+                ComponentProvider provider = (ComponentProvider) blockEntity;
 
-                // TODO: Implement.
+                FluidInventoryComponent fluidComponent = provider.getComponent(null, FluidInventoryComponent.class);
 
                 NetworkMember member = (NetworkMember) blockEntity;
+
                 if (member.isBuffer()) {
-                    ((FluidInventoryComponent) blockEntity).getContents().forEach((key, volume) -> {
+                    fluidComponent.getContents().forEach((key, volume) -> {
                         bufferMap.put(blockEntity.getPos(), volume);
                     });
                 } else if (member.isRequester()) {
-                    ((FluidInventoryComponent) blockEntity).getContents().forEach((key, volume) -> {
+                    fluidComponent.getContents().forEach((key, volume) -> {
                         requesterMap.put(blockEntity.getPos(), volume);
                     });
                 }

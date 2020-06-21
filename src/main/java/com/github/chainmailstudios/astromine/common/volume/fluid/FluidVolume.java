@@ -13,9 +13,7 @@ import net.minecraft.util.registry.Registry;
 public class FluidVolume extends BaseVolume {
 	private Fluid fluid = Fluids.EMPTY;
 
-	public static final FluidVolume EMPTY = new FluidVolume();
-
-	public static final FluidVolume DEFAULT = new FluidVolume(AstromineFluids.OXYGEN, Fraction.BUCKET);
+	private byte signal = 0b0;
 
 	/**
 	 * Instantiates a Volume with an empty fraction and fluid.
@@ -38,6 +36,20 @@ public class FluidVolume extends BaseVolume {
 		this.fraction = fraction;
 	}
 
+	public FluidVolume(Fluid fluid, Fraction fraction, byte signal) {
+		this.fluid = fluid;
+		this.fraction = fraction;
+		this.signal = signal;
+	}
+
+	public static FluidVolume empty() {
+		return new FluidVolume();
+	}
+
+	public static FluidVolume oxygen() {
+		return new FluidVolume(AstromineFluids.OXYGEN, Fraction.BUCKET, (byte) 0b1);
+	}
+
 	/**
 	 * Deserializes a Volume from a tag.
 	 *
@@ -55,7 +67,7 @@ public class FluidVolume extends BaseVolume {
 		}
 
 		if (!tag.contains("fraction")) {
-			fluidVolume.fraction = Fraction.EMPTY;
+			fluidVolume.fraction = Fraction.empty();
 		} else {
 			fluidVolume.fraction = Fraction.fromTag(tag.getCompound("fraction"));
 		}
@@ -100,10 +112,9 @@ public class FluidVolume extends BaseVolume {
 	}
 
 	public <T extends BaseVolume> T insertVolume(Fluid fluid, Fraction fraction) {
-		if (this.fluid != Fluids.EMPTY && fluid != this.fluid) return (T) FluidVolume.EMPTY;
+		if (this.fluid != Fluids.EMPTY && fluid != this.fluid) return (T) FluidVolume.empty();
 
-		FluidVolume volume = super.insertVolume(fraction);
-		volume.setFluid(fluid);
+		FluidVolume volume = new FluidVolume(fluid, super.insertVolume(fraction).getFraction());
 
 		if (this.fluid == Fluids.EMPTY) this.fluid = fluid;
 
@@ -111,22 +122,21 @@ public class FluidVolume extends BaseVolume {
 	}
 
 	public <T extends BaseVolume> T extractVolume(Fluid fluid, Fraction fraction) {
-		if (fluid != this.fluid) return (T) FluidVolume.EMPTY;
+		if (fluid != this.fluid) return (T) FluidVolume.empty();
 
-		FluidVolume volume = super.extractVolume(fraction);
-		volume.setFluid(this.fluid);
+		FluidVolume volume = new FluidVolume(this.fluid, super.extractVolume(fraction).getFraction());
 
 		return (T) volume;
 	}
 
 	@Override
-	public <T extends BaseVolume> T takeVolume(Fraction taken) {
-		return (T) new FluidVolume(fluid, super.takeVolume(taken).getFraction());
+	public <T extends BaseVolume> T extractVolume(Fraction taken) {
+		return (T) new FluidVolume(fluid, super.extractVolume(taken).getFraction());
 	}
 
 	@Override
-	public <T extends BaseVolume> T giveVolume(Fraction pushed) {
-		return (T) new FluidVolume(fluid, super.giveVolume(pushed).getFraction());
+	public <T extends BaseVolume> T insertVolume(Fraction fraction) {
+		return (T) new FluidVolume(fluid, super.insertVolume(fraction).getFraction());
 	}
 
 	public <T extends BaseVolume> void pullVolume(T target, Fraction pulled) {
@@ -151,7 +161,7 @@ public class FluidVolume extends BaseVolume {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(this.fluid, this.fraction);
+		return Objects.hashCode(this.fluid, this.fraction, this.signal);
 	}
 
 	public FluidVolume copy() {
@@ -165,7 +175,7 @@ public class FluidVolume extends BaseVolume {
 
 		FluidVolume volume = (FluidVolume) object;
 
-		return Objects.equal(this.fluid, volume.fluid) && Objects.equal(this.fraction, volume.fraction);
+		return Objects.equal(this.fluid, volume.fluid) && Objects.equal(this.fraction, volume.fraction) && this.signal == volume.signal;
 	}
 
 	@Override

@@ -1,6 +1,8 @@
 package com.github.chainmailstudios.astromine.common.network.ticker;
 
+import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkNode;
@@ -19,14 +21,21 @@ public class NetworkTypeEnergy extends NetworkType {
 
         for (NetworkNode memberNode : controller.members) {
             BlockEntity blockEntity = controller.getWorld().getBlockEntity(memberNode.getBlockPos());
-            if (blockEntity != null) {
+
+            if (blockEntity instanceof ComponentProvider && blockEntity instanceof NetworkMember) {
+
+                ComponentProvider provider = (ComponentProvider) blockEntity;
+
+                EnergyInventoryComponent energyComponent = provider.getComponent(null, EnergyInventoryComponent.class);
+
                 NetworkMember member = (NetworkMember) blockEntity;
+
                 if (member.isBuffer()) {
-                    ((EnergyInventoryComponent) blockEntity).getContents().forEach((key, volume) -> {
+                    energyComponent.getContents().forEach((key, volume) -> {
                         bufferMap.put(blockEntity.getPos(), volume);
                     });
                 } else if (member.isRequester()) {
-                    ((EnergyInventoryComponent) blockEntity).getContents().forEach((key, volume) -> {
+                    energyComponent.getContents().forEach((key, volume) -> {
                         requesterMap.put(blockEntity.getPos(), volume);
                     });
                 }
