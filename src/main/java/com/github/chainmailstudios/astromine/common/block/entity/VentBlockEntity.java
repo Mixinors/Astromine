@@ -17,6 +17,9 @@ import net.minecraft.util.math.Direction;
 public class VentBlockEntity extends AlphaBlockEntity implements Tickable, NetworkMember {
 	public VentBlockEntity() {
 		super(AstromineBlockEntityTypes.vent);
+
+		energyComponent.getVolume(0).setSize(new Fraction(16, 1));
+		fluidComponent.getVolume(0).setSize(new Fraction(16, 1));
 	}
 
 	@Override

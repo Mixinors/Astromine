@@ -86,7 +86,9 @@ public class NetworkTracer {
 						networkComponent.addInstance(existingInstance);
 						instance = existingInstance;
 						joined.setTrue();
-					} else if (offsetObject instanceof NetworkMember) {
+					}
+
+					if (offsetObject instanceof NetworkMember) {
 						NetworkMember offsetMember = (NetworkMember) offsetObject;
 
 						if ((offsetMember.isRequester() || offsetMember.isProvider() || offsetMember.isBuffer()) && offsetMember.acceptsType(type)) {

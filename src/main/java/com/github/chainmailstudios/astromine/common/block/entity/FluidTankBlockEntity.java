@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
@@ -9,6 +10,8 @@ import net.minecraft.util.Tickable;
 public class FluidTankBlockEntity extends BetaBlockEntity implements NetworkMember {
 	public FluidTankBlockEntity() {
 		super(AstromineBlockEntityTypes.FLUID_TANK);
+
+		fluidComponent.getVolume(0).setSize(new Fraction(16, 1));
 	}
 
 	@Override

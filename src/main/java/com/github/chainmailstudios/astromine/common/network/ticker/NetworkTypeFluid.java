@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.common.network.ticker;
 
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkNode;
@@ -45,7 +46,7 @@ public class NetworkTypeFluid extends NetworkType {
         for (Map.Entry<BlockPos, FluidVolume> buffer : bufferMap.entries()) {
             for (Map.Entry<BlockPos, FluidVolume> requester : requesterMap.entries()) {
                 if (!buffer.getValue().isEmpty() && !requester.getValue().isFull() && buffer.getValue().getFluid() == requester.getValue().getFluid()) {
-                    buffer.getValue().pushVolume(requester.getValue(), requester.getValue().getSize());
+                    requester.getValue().pullVolume(buffer.getValue(), Fraction.BUCKET);
                 } else if (buffer.getValue().isEmpty()) {
                     break;
                 }

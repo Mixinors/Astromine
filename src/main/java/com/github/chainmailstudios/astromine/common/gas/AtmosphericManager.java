@@ -4,6 +4,7 @@ import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.google.common.collect.Lists;
 import net.minecraft.block.AirBlock;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.RegistryKey;
