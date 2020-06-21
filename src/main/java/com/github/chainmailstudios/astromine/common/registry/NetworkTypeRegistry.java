@@ -1,6 +1,8 @@
 package com.github.chainmailstudios.astromine.common.registry;
 
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import net.minecraft.util.Identifier;
 
 import java.util.HashMap;
@@ -9,7 +11,7 @@ import java.util.Map;
 public class NetworkTypeRegistry {
     public static final NetworkTypeRegistry INSTANCE = new NetworkTypeRegistry();
 
-    private static final Map<Identifier, NetworkType> entries = new HashMap<>();
+    private static final BiMap<Identifier, NetworkType> entries = HashBiMap.create();
 
     private NetworkTypeRegistry() {
         // Unused.
@@ -24,7 +26,11 @@ public class NetworkTypeRegistry {
         entries.remove(identifier, type);
     }
 
-    public NetworkType get(Identifier identifier) {
+    public NetworkType getById(Identifier identifier) {
         return entries.get(identifier);
+    }
+
+    public Identifier getId(NetworkType type) {
+        return entries.inverse().get(type);
     }
 }

@@ -19,7 +19,7 @@ import com.github.chainmailstudios.astromine.common.entity.projectile.BulletEnti
 import com.github.chainmailstudios.astromine.common.component.compatibility.ItemInventoryComponentFromItemInventory;
 import com.github.chainmailstudios.astromine.common.item.weapon.BaseWeapon;
 import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineEntities;
+import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.github.chainmailstudios.astromine.registry.AstromineParticles;
 import com.github.chainmailstudios.astromine.registry.AstromineSounds;
@@ -62,7 +62,7 @@ public class SuperSpaceSlimeShooterItem extends BaseWeapon {
 			}
 
 			if (optionalMagazine.isPresent() || user.isCreative()) {
-				BulletEntity bulletEntity = new BulletEntity(AstromineEntities.BULLET_ENTITY_TYPE, user, world);
+				BulletEntity bulletEntity = new BulletEntity(AstromineEntityTypes.BULLET_ENTITY_TYPE, user, world);
 
 				bulletEntity.setProperties(user, user.pitch, user.yaw, 0.0F, this.getDistance(), 0);
 

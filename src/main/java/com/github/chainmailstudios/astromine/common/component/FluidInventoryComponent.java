@@ -9,7 +9,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.Direction;
 import org.apache.logging.log4j.Level;
 
 import java.util.*;
@@ -77,7 +76,7 @@ public interface FluidInventoryComponent extends Component {
 		}).findFirst();
 
 		if (matchingVolumeOptional.isPresent()) {
-			matchingVolumeOptional.get().getValue().insert(fluid, fraction);
+			matchingVolumeOptional.get().getValue().insertVolume(fluid, fraction);
 			return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().getValue());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, null);
@@ -124,7 +123,7 @@ public interface FluidInventoryComponent extends Component {
 		if (!volume.isEmpty() && this.canExtract(volume, slot)) {
 			return this.extract(slot, volume.getFraction());
 		} else {
-			return new TypedActionResult<>(ActionResult.FAIL, FluidVolume.EMPTY);
+			return new TypedActionResult<>(ActionResult.FAIL, FluidVolume.empty());
 		}
 	}
 
@@ -138,12 +137,12 @@ public interface FluidInventoryComponent extends Component {
 
 		if (matchingVolumeOptional.isPresent()) {
 			if (matchingVolumeOptional.get().canExtract(matchingVolumeOptional.get().getFluid(), fraction)) { ;
-				return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().extract(matchingVolumeOptional.get().getFluid(), fraction));
+				return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().extractVolume(matchingVolumeOptional.get().getFluid(), fraction));
 			} else {
-				return new TypedActionResult<>(ActionResult.FAIL, FluidVolume.EMPTY);
+				return new TypedActionResult<>(ActionResult.FAIL, FluidVolume.empty());
 			}
 		} else {
-			return new TypedActionResult<>(ActionResult.FAIL, FluidVolume.EMPTY);
+			return new TypedActionResult<>(ActionResult.FAIL, FluidVolume.empty());
 		}
 	}
 
@@ -168,7 +167,7 @@ public interface FluidInventoryComponent extends Component {
 		int maximum = range.isPresent() ? range.get().getMaximum() : source.getSize();
 
 		for (int position = minimum; position < maximum; ++position) {
-			if (source.getVolume(position) != null && source.getVolume(position) != FluidVolume.EMPTY) {
+			if (source.getVolume(position) != null && !source.getVolume(position).isEmpty()) {
 				FluidVolume volume = source.getVolume(position);
 
 				if (volume != null && !volume.isEmpty()) {

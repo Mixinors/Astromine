@@ -22,7 +22,7 @@ import com.github.chainmailstudios.astromine.common.entity.projectile.BulletEnti
 
 import com.google.common.collect.ImmutableSet;
 
-public class AstromineEntities {
+public class AstromineEntityTypes {
 
 	public static final EntityType<BulletEntity> BULLET_ENTITY_TYPE = register("bullet", new EntityType<>(BulletEntity::new, SpawnGroup.MISC, false, true, true, true, ImmutableSet.<Block>builder().build(), EntityDimensions.fixed(0.1875f, 0.125f), 4, 20));
 
@@ -36,7 +36,7 @@ public class AstromineEntities {
 
 	public static final EntityType<RocketEntity> ROCKET = register(
 			"rocket", FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, RocketEntity::new)
-					.dimensions(EntityDimensions.changing(2f, 17f))
+					.dimensions(EntityDimensions.changing(1.5f, 17f))
 					.trackable(128, 4)
 					.build());
 	
@@ -48,7 +48,7 @@ public class AstromineEntities {
 		AttackEntityCallback.EVENT.register((playerEntity, world, hand, entity, entityHitResult) -> {
 			if (entity instanceof SuperSpaceSlimeEntity) {
 				if (world.random.nextInt(10) == 0) {
-					SpaceSlimeEntity spaceSlimeEntity = AstromineEntities.SPACE_SLIME.create(world);
+					SpaceSlimeEntity spaceSlimeEntity = AstromineEntityTypes.SPACE_SLIME.create(world);
 					spaceSlimeEntity.setPos(entity.getX(), entity.getY(), entity.getZ());
 					world.spawnEntity(spaceSlimeEntity);
 				}

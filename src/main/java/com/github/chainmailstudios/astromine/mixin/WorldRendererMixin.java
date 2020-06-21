@@ -12,7 +12,7 @@ import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 
 import com.github.chainmailstudios.astromine.client.registry.SkyboxRegistry;
-import com.github.chainmailstudios.astromine.client.render.skybox.Skybox;
+import com.github.chainmailstudios.astromine.client.render.skybox.AbstractSkybox;
 
 @Mixin (WorldRenderer.class)
 public abstract class WorldRendererMixin {
@@ -21,7 +21,7 @@ public abstract class WorldRendererMixin {
 
 	@Inject (at = @At ("HEAD"), method = "renderSky(Lnet/minecraft/client/util/math/MatrixStack;F)V", cancellable = true)
 	void onRenderSky(MatrixStack matrices, float tickDelta, CallbackInfo callbackInformation) {
-		Skybox skybox = SkyboxRegistry.INSTANCE.get(this.client.world.getDimensionRegistryKey());
+		AbstractSkybox skybox = SkyboxRegistry.INSTANCE.get(this.client.world.getDimensionRegistryKey());
 
 		if (skybox != null) {
 			skybox.render(matrices, tickDelta);

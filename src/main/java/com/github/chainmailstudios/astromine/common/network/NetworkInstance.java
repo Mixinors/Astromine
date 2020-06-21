@@ -2,27 +2,29 @@ package com.github.chainmailstudios.astromine.common.network;
 
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 import com.google.common.collect.Sets;
+import net.minecraft.world.World;
+
 import java.util.Iterator;
 import java.util.Set;
 
-public class NetworkController implements Iterable<NetworkNode>, Tickable {
-	public static final NetworkController EMPTY = new NetworkController();
+public class NetworkInstance implements Iterable<NetworkNode>, Tickable {
+	public static final NetworkInstance EMPTY = new NetworkInstance();
 
-	public final Set<NetworkNode> memberNodes = Sets.newConcurrentHashSet();
+	public final Set<NetworkNode> members = Sets.newConcurrentHashSet();
 	public final Set<NetworkNode> nodes = Sets.newConcurrentHashSet();
 
-	public NetworkType type = NetworkType.EMPTY;
+	private final World world;
 
-	public World world;
+	public NetworkType type;
 
-	private NetworkController() {
-		// Unused.
+	private NetworkInstance() {
+		this.type = NetworkType.EMPTY;
+		this.world = null;
 	}
 
-	public NetworkController(World world, NetworkType type) {
+	public NetworkInstance(World world, NetworkType type) {
 		this.type = type;
 		this.world = world;
 	}
@@ -36,12 +38,16 @@ public class NetworkController implements Iterable<NetworkNode>, Tickable {
 		this.nodes.add(node);
 	}
 
-	public void addPosition(BlockPos position) {
+	public void addPos(long pos) {
+		this.nodes.add(NetworkNode.of(pos));
+	}
+
+	public void addBlockPos(BlockPos position) {
 		this.nodes.add(NetworkNode.of(position));
 	}
 
 	public void addMember(NetworkNode member) {
-		this.memberNodes.add(member);
+		this.members.add(member);
 	}
 
 	public void removeNode(NetworkNode node) {
@@ -49,27 +55,27 @@ public class NetworkController implements Iterable<NetworkNode>, Tickable {
 	}
 
 	public void removeMember(NetworkNode node) {
-		this.memberNodes.remove(node);
+		this.members.remove(node);
 	}
 
-	public NetworkController join(NetworkController controller) {
+	public NetworkInstance join(NetworkInstance controller) {
 		this.nodes.addAll(controller.nodes);
-		this.memberNodes.addAll(controller.memberNodes);
-		NetworkManager.INSTANCE.remove(controller);
-		return this;
-	}
+		this.members.addAll(controller.members);
 
-	public Boolean isNullOrEmpty() {
-		return this.type == NetworkType.EMPTY;
+		return this;
 	}
 
 	public NetworkType getType() {
 		return this.type;
 	}
 
-	public NetworkController setType(NetworkType type) {
+	public NetworkInstance setType(NetworkType type) {
 		this.type = type;
 		return this;
+	}
+
+	public World getWorld() {
+		return world;
 	}
 
 	public int size() {

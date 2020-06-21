@@ -26,7 +26,7 @@ public class LineUtilities {
 		double z3 = posB.getZ();
 
 		double x2 = (x3 + x1) / 2d;
-		double y2 = (y3 + y1) / 2d;
+		double y2 = (y3 + y1) / 2d + 128;
 
 		double dZ = (z3 - z1) / segments;
 		double cZ = 0;

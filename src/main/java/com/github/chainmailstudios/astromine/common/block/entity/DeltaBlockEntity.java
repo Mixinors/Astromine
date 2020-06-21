@@ -25,7 +25,9 @@ public abstract class DeltaBlockEntity extends BlockEntity implements ComponentP
 
 	@Override
 	public <T extends Component> Collection<T> getComponents(Direction direction) {
-		if (getCachedState().getBlock() instanceof FacingBlock) {
+		if (direction == null) {
+			return (Collection<T>) Lists.newArrayList(energyComponent);
+		} else if (getCachedState().getBlock() instanceof FacingBlock) {
 			Direction facing = getCachedState().get(FacingBlock.FACING);
 			return facing == direction ? Lists.newArrayList() : (Collection<T>) Lists.newArrayList(energyComponent);
 		} else if (getCachedState().getBlock() instanceof HorizontalFacingBlock) {

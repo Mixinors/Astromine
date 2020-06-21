@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.common.gas;
 
-public interface GaseousMaterial {
+public interface Breathable {
 	boolean isToxic();
 
 	int getDamage();

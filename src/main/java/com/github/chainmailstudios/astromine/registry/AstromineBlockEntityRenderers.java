@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.client.render.block.EnergyWireConnectorBlockEntityRenderer;
 import com.github.chainmailstudios.astromine.client.render.block.HolographicBridgeBlockEntityRenderer;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import net.minecraft.block.entity.BlockEntity;
@@ -13,7 +12,6 @@ import java.util.function.Function;
 public class AstromineBlockEntityRenderers {
 	public static void initialize() {
 		register(AstromineBlockEntityTypes.HOLOGRAPHIC_BRIDGE, HolographicBridgeBlockEntityRenderer::new);
-		register(AstromineBlockEntityTypes.ENERGY_WIRE_CONNECTOR, EnergyWireConnectorBlockEntityRenderer::new);
 	}
 
 	public static <B extends BlockEntity, C extends BlockEntityType<B>> void register(C c, Function<BlockEntityRenderDispatcher, BlockEntityRenderer<B>> b) {

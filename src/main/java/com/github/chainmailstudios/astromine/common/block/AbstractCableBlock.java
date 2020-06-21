@@ -1,6 +1,9 @@
 package com.github.chainmailstudios.astromine.common.block;
 
 import com.github.chainmailstudios.astromine.common.network.*;
+import com.github.chainmailstudios.astromine.component.WorldNetworkComponent;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -9,18 +12,16 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class PipeCableBlock extends Block implements NetworkMember {
+public abstract class AbstractCableBlock extends Block implements NetworkMember {
     public static final BooleanProperty EAST = BooleanProperty.of("east");
     public static final BooleanProperty WEST = BooleanProperty.of("west");
     public static final BooleanProperty NORTH = BooleanProperty.of("north");
@@ -50,9 +51,11 @@ public abstract class PipeCableBlock extends Block implements NetworkMember {
 
     protected static final VoxelShape CENTER_SHAPE = Block.createCuboidShape(6.0D, 6.0D, 6.0D, 10.0D, 10.0D, 10.0D);
 
-    public PipeCableBlock(AbstractBlock.Settings settings) {
+    public AbstractCableBlock(AbstractBlock.Settings settings) {
         super(settings);
     }
+
+    public abstract <T extends NetworkType> T getNetworkType();
 
     @Override
     public void onPlaced(World world, BlockPos position, BlockState stateA, LivingEntity placer, ItemStack itemStack) {
@@ -62,17 +65,18 @@ public abstract class PipeCableBlock extends Block implements NetworkMember {
         tracer.trace(getNetworkType(), position, world);
 
         NetworkTracer.Modeller modeller = new NetworkTracer.Modeller();
-        modeller.scanNeighbours(position, world);
+        modeller.scanNeighbours(getNetworkType(), position, world);
 
         world.setBlockState(position, modeller.applyToBlockState(stateA));
 
         for (Direction direction : Direction.values()) {
             BlockPos posA = position.offset(direction);
+            Block block = world.getBlockState(posA).getBlock();
 
-            if (!(world.getBlockState(posA).getBlock() instanceof PipeCableBlock)) continue;
+            if (!(block instanceof AbstractCableBlock)) continue;
 
             NetworkTracer.Modeller modellerB = new NetworkTracer.Modeller();
-            modellerB.scanNeighbours(posA, world);
+            modellerB.scanNeighbours(((AbstractCableBlock) block).getNetworkType(), posA, world);
             world.setBlockState(posA, modellerB.applyToBlockState(world.getBlockState(posA)));
         }
     }
@@ -83,7 +87,11 @@ public abstract class PipeCableBlock extends Block implements NetworkMember {
 
         if (state.getBlock() == newState.getBlock()) return;
 
-        NetworkManager.INSTANCE.remove(NetworkManager.INSTANCE.get(getNetworkType(), position));
+        ComponentProvider provider = ComponentProvider.fromWorld(world);
+
+        WorldNetworkComponent networkComponent = provider.getComponent(AstromineComponentTypes.WORLD_NETWORK_COMPONENT);
+
+        networkComponent.removeInstance(networkComponent.getInstance(getNetworkType(), position));
 
         for (Direction directionA : Direction.values()) {
             BlockPos posA = position.offset(directionA);
@@ -92,7 +100,7 @@ public abstract class PipeCableBlock extends Block implements NetworkMember {
             tracer.trace(getNetworkType(), posA, world);
 
             NetworkTracer.Modeller modeller = new NetworkTracer.Modeller();
-            modeller.scanNeighbours(posA, world);
+            modeller.scanNeighbours(getNetworkType(), posA, world);
 
             BlockState stateB = world.getBlockState(posA);
 
@@ -106,14 +114,18 @@ public abstract class PipeCableBlock extends Block implements NetworkMember {
 
         if (world.getBlockState(neighborPosition).getBlock() == block) return;
 
-        NetworkManager.INSTANCE.get(getNetworkType(), position).removeMember(NetworkNode.of(neighborPosition));
-        NetworkManager.INSTANCE.get(getNetworkType(), position).removeNode(NetworkNode.of(position));
+        ComponentProvider provider = ComponentProvider.fromWorld(world);
+
+        WorldNetworkComponent networkComponent = provider.getComponent(AstromineComponentTypes.WORLD_NETWORK_COMPONENT);
+
+        networkComponent.getInstance(getNetworkType(), position).removeMember(NetworkNode.of(neighborPosition));
+        networkComponent.getInstance(getNetworkType(), position).removeNode(NetworkNode.of(position));
 
         NetworkTracer.Tracer tracer = new NetworkTracer.Tracer();
         tracer.trace(getNetworkType(), position, world);
 
         NetworkTracer.Modeller modeller = new NetworkTracer.Modeller();
-        modeller.scanNeighbours(position, world);
+        modeller.scanNeighbours(getNetworkType(), position, world);
 
         world.setBlockState(position, modeller.applyToBlockState(state));
     }

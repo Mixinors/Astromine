@@ -34,7 +34,7 @@ import com.github.chainmailstudios.astromine.common.entity.ai.superspaceslime.Su
 import com.github.chainmailstudios.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeMoveGoal;
 import com.github.chainmailstudios.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeRandomLookGoal;
 import com.github.chainmailstudios.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeSwimmingGoal;
-import com.github.chainmailstudios.astromine.registry.AstromineEntities;
+import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineParticles;
 
 public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
@@ -163,7 +163,7 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	 */
 	public void explode() {
 		for (int i = 0; i < 50; i++) {
-			SpaceSlimeEntity spaceSlime = AstromineEntities.SPACE_SLIME.create(this.world);
+			SpaceSlimeEntity spaceSlime = AstromineEntityTypes.SPACE_SLIME.create(this.world);
 			spaceSlime.initialize(this.world, this.world.getLocalDifficulty(this.getBlockPos()), SpawnReason.NATURAL, null, null);
 			this.world.spawnEntity(spaceSlime);
 			spaceSlime.requestTeleport(this.getX(), this.getY(), this.getZ());

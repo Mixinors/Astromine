@@ -34,13 +34,8 @@ public class VentBlock extends FacingBlock implements BlockEntityProvider, Netwo
 	}
 
 	@Override
-	public NetworkType getNetworkType() {
-		return AstromineNetworkTypes.FLUID;
-	}
-
-	@Override
-	public boolean accepts(Object... objects) {
-		return true;
+	public <T extends NetworkType> boolean acceptsType(T type) {
+		return type == AstromineNetworkTypes.ENERGY || type == AstromineNetworkTypes.FLUID;
 	}
 
 	@Override

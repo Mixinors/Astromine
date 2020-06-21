@@ -7,9 +7,9 @@ import com.google.common.math.LongMath;
 import java.math.RoundingMode;
 
 public class Fraction extends Number implements Comparable<Fraction> {
-	public static final Fraction EMPTY = new Fraction(0, 1);
 	public static final Fraction BUCKET = new Fraction(1, 1);
 	public static final Fraction BOTTLE = new Fraction(1, 3);
+
 	private long numerator;
 	private long denominator;
 
@@ -18,30 +18,24 @@ public class Fraction extends Number implements Comparable<Fraction> {
 		this.denominator = denominator;
 	}
 
-	/**
-	 * Fraction addition method, lossless.
-	 */
+	public static Fraction empty() {
+		return new Fraction(0, 1);
+	}
+
 	public static Fraction add(Fraction fractionA, Fraction fractionB) {
 		long denominator = lowestCommonDenominator(fractionA.denominator, fractionB.denominator);
 
-		try {
-			return new Fraction(LongMath.checkedMultiply(fractionA.numerator, LongMath.divide(denominator, fractionA.denominator, RoundingMode.DOWN)) + LongMath.checkedMultiply(fractionB.numerator,
-			                                                                                                                                                                     LongMath.divide(denominator, fractionB.denominator, RoundingMode.DOWN)
-			), denominator);
-		} catch (ArithmeticException exception) {
-			throw new UnsupportedOperationException("Attempt to add fractions whose numerator, adjusted for lowest common denominator, would cause an overflow!");
-		}
+		return new Fraction(fractionA.numerator * (denominator / fractionA.denominator) + fractionB.numerator * (denominator / fractionB.denominator), denominator);
 	}
 
-	/**
-	 * Returns the lowest common denominator between a series of fractions.
-	 */
+	public void add(Fraction fraction) {
+		Fraction result = Fraction.add(this, fraction);
+		this.numerator = result.numerator;
+		this.denominator = result.denominator;
+	}
+
 	private static long lowestCommonDenominator(long a, long b) {
-		try {
-			return a == b ? a : a == 1 ? b : b == 1 ? a : LongMath.divide(a, LongMath.checkedMultiply(greatestCommonDivisor(a, b), b), RoundingMode.DOWN);
-		} catch (ArithmeticException exception) {
-			throw new UnsupportedOperationException("Attempted to find lowest common denominator fractions whose lowest common denominator would cause an overflow!");
-		}
+		return a == b ? a : a == 1 ? b : b == 1 ? a : (a * b) /  greatestCommonDivisor(a, b);
 	}
 
 	/**
@@ -83,19 +77,10 @@ public class Fraction extends Number implements Comparable<Fraction> {
 		return a << shift;
 	}
 
-	/**
-	 * Fraction subtraction method, lossless.
-	 */
 	public static Fraction subtract(Fraction fractionA, Fraction fractionB) {
 		long denominator = lowestCommonDenominator(fractionA.denominator, fractionB.denominator);
 
-		try {
-			return new Fraction(LongMath.checkedMultiply(fractionA.numerator, LongMath.divide(denominator, fractionA.denominator, RoundingMode.DOWN)) - LongMath.checkedMultiply(fractionB.numerator,
-			                                                                                                                                                                     LongMath.divide(denominator, fractionB.denominator, RoundingMode.DOWN)
-			), denominator);
-		} catch (ArithmeticException exception) {
-			throw new UnsupportedOperationException("Attempt to subtract fractions whose numerator, adjusted for lowest common denominator, would cause an overflow!");
-		}
+		return new Fraction(fractionA.numerator * (denominator / fractionA.denominator) - fractionB.numerator * (denominator / fractionB.denominator), denominator);
 	}
 
 	public void subtract(Fraction fraction) {
@@ -104,9 +89,6 @@ public class Fraction extends Number implements Comparable<Fraction> {
 		this.denominator = result.denominator;
 	}
 
-	/**
-	 * Fraction division method, lossless. Fractions are divided sequentially following array order.
-	 */
 	public static Fraction divide(Fraction fractionA, Fraction fractionB) {
 		return multiply(fractionA, Fraction.inverse(fractionB));
 	}
@@ -117,15 +99,8 @@ public class Fraction extends Number implements Comparable<Fraction> {
 		this.denominator = result.denominator;
 	}
 
-	/**
-	 * Fraction multiplication method, lossless.
-	 */
 	public static Fraction multiply(Fraction fractionA, Fraction fractionB) {
-		try {
-			return new Fraction(LongMath.checkedMultiply(fractionA.numerator, fractionB.numerator), LongMath.checkedMultiply(fractionA.denominator, fractionB.denominator));
-		} catch (ArithmeticException exception) {
-			throw new UnsupportedOperationException("Attempted to multiply fractions whose lowest common denominator would cause an overflow!");
-		}
+		return new Fraction(fractionA.numerator * fractionB.numerator, fractionA.denominator * fractionB.denominator);
 	}
 
 	public void multiply(Fraction fraction) {
@@ -147,15 +122,8 @@ public class Fraction extends Number implements Comparable<Fraction> {
 		this.denominator = result.denominator;
 	}
 
-	/**
-	 * Fraction denominator limiter method, lossy. Loss of precision with indivisible denominators, should only be used for the front-end display.
-	 */
 	public static Fraction limit(Fraction source, Fraction target) {
-		try {
-			return new Fraction(LongMath.checkedMultiply(source.numerator, (target.denominator / source.denominator)), target.denominator);
-		} catch (ArithmeticException exception) {
-			throw new UnsupportedOperationException("Attempted to equalize fractions whose lowest common denominator would cause an overflow!");
-		}
+		return new Fraction(source.numerator * (target.denominator / source.denominator), target.denominator);
 	}
 
 	public void limit(Fraction fraction) {
@@ -164,23 +132,14 @@ public class Fraction extends Number implements Comparable<Fraction> {
 		this.denominator = result.denominator;
 	}
 
-	/**
-	 * Fraction comparison method.
-	 */
 	public static Fraction min(Fraction fractionA, Fraction fractionB) {
 		return (fractionA.isSmallerThan(fractionB) ? fractionA : fractionB);
 	}
 
-	/**
-	 * Fraction comparison method.
-	 */
 	public boolean isSmallerThan(Fraction fraction) {
 		return !this.isBiggerThan(fraction);
 	}
 
-	/**
-	 * Fraction comparison method.
-	 */
 	public boolean isBiggerThan(Fraction fraction) {
 		if (this.denominator == fraction.denominator) {
 			return this.numerator > fraction.numerator;
@@ -188,11 +147,10 @@ public class Fraction extends Number implements Comparable<Fraction> {
 
 		long denominator = lowestCommonDenominator(this.denominator, fraction.denominator);
 
-		try {
-			return LongMath.checkedMultiply(this.numerator, (LongMath.divide(denominator, this.denominator, RoundingMode.DOWN))) > LongMath.checkedMultiply(fraction.numerator, LongMath.divide(denominator, fraction.denominator, RoundingMode.DOWN));
-		} catch (ArithmeticException exception) {
-			throw new UnsupportedOperationException("Attempted to compare fractions whose lowest common denominator would cause an overflow!");
-		}
+		Fraction fA = new Fraction(this.numerator * (this.denominator * (denominator / this.denominator)), this.denominator);
+		Fraction fB = new Fraction(fraction.numerator * (fraction.denominator * (denominator / fraction.denominator)), fraction.denominator);
+
+		return fA.longValue() > fB.longValue();
 	}
 
 	/**
@@ -271,12 +229,9 @@ public class Fraction extends Number implements Comparable<Fraction> {
 		return simplifiedA.numerator == simplifiedB.numerator && simplifiedA.denominator == simplifiedB.denominator;
 	}
 
-	/**
-	 * Fraction simplification method, lossless.
-	 */
 	public static Fraction simplify(Fraction fraction) {
-		if (fraction.numerator == 0) {
-			return Fraction.EMPTY;
+		if ((fraction.numerator <= 0 && fraction.denominator >= 0) || (fraction.numerator >= 0 && fraction.denominator <= 0)) {
+			return fraction;
 		}
 
 		long divisor = greatestCommonDivisor(fraction.numerator, fraction.denominator);
@@ -296,11 +251,7 @@ public class Fraction extends Number implements Comparable<Fraction> {
 
 	@Override
 	public long longValue() {
-		try {
-			return LongMath.divide(this.numerator, this.denominator, RoundingMode.DOWN);
-		} catch (ArithmeticException exception) {
-			throw new UnsupportedOperationException("Attempted to retrieve value of fraction whose numerator, divided by denominator, would cause an overflow!");
-		}
+		return this.numerator / this.denominator;
 	}
 
 	@Override

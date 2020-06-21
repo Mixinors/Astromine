@@ -13,6 +13,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -24,8 +25,10 @@ public abstract class BetaBlockEntity extends BlockEntity implements ComponentPr
 	}
 
 	@Override
-	public <T extends Component> Collection<T> getComponents(Direction direction) {
-		if (getCachedState().getBlock() instanceof FacingBlock) {
+	public <T extends Component> Collection<T> getComponents(@Nullable Direction direction) {
+		if (direction == null) {
+			return (Collection<T>) Lists.newArrayList(fluidComponent);
+		} else if (getCachedState().getBlock() instanceof FacingBlock) {
 			Direction facing = getCachedState().get(FacingBlock.FACING);
 			return facing == direction ? Lists.newArrayList() : (Collection<T>) Lists.newArrayList(fluidComponent);
 		} else if (getCachedState().getBlock() instanceof HorizontalFacingBlock) {
