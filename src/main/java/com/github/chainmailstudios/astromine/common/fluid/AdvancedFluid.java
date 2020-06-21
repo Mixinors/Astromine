@@ -1,7 +1,7 @@
 package com.github.chainmailstudios.astromine.common.fluid;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.gas.GaseousMaterial;
+import com.github.chainmailstudios.astromine.common.gas.Breathable;
 import com.github.chainmailstudios.astromine.registry.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
@@ -35,7 +35,7 @@ import spinnery.widget.api.Color;
 
 import java.util.function.Function;
 
-public abstract class AdvancedFluid extends FlowableFluid implements GaseousMaterial {
+public abstract class AdvancedFluid extends FlowableFluid implements Breathable {
 	final int fogColor;
 	final int damage;
 

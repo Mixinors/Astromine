@@ -1,12 +1,14 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.gas.AtmosphericManager;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.component.WorldAtmosphereComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.particle.ParticleTypes;
@@ -16,7 +18,7 @@ import net.minecraft.util.math.Direction;
 
 public class VentBlockEntity extends AlphaBlockEntity implements Tickable, NetworkMember {
 	public VentBlockEntity() {
-		super(AstromineBlockEntityTypes.vent);
+		super(AstromineBlockEntityTypes.VENT);
 
 		energyComponent.getVolume(0).setSize(new Fraction(16, 1));
 		fluidComponent.getVolume(0).setSize(new Fraction(16, 1));
@@ -36,11 +38,15 @@ public class VentBlockEntity extends AlphaBlockEntity implements Tickable, Netwo
 			if (world.getBlockState(output).getBlock() instanceof AirBlock) {
 				FluidVolume bucketVolume = fluidComponent.getVolume(0).extractVolume(Fraction.BUCKET);
 
-				FluidVolume volume = AtmosphericManager.get(world, output);
+				ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
+
+				WorldAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);
+
+				FluidVolume volume = atmosphereComponent.get(output);
 
 				volume.pullVolume(bucketVolume, Fraction.BUCKET);
 
-				AtmosphericManager.add(world, output, volume);
+				atmosphereComponent.add(output, volume);
 
 				energyComponent.getVolume(0).extractVolume(Fraction.BOTTLE);
 			}

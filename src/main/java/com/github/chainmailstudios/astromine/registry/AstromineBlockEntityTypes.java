@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 public class AstromineBlockEntityTypes {
 	public static BlockEntityType<HolographicBridgeProjectorBlockEntity> HOLOGRAPHIC_BRIDGE = register("holographic_bridge", HolographicBridgeProjectorBlockEntity::new, AstromineBlocks.HOLOGRAPHIC_BRIDGE_PROJECTOR);
 
-	public static BlockEntityType<VentBlockEntity> vent = register("vent", VentBlockEntity::new, AstromineBlocks.VENT);
+	public static BlockEntityType<VentBlockEntity> VENT = register("vent", VentBlockEntity::new, AstromineBlocks.VENT);
 
 	public static BlockEntityType<FluidTankBlockEntity> FLUID_TANK = register("fluid_tank", FluidTankBlockEntity::new, AstromineBlocks.FLUID_TANK);
 
