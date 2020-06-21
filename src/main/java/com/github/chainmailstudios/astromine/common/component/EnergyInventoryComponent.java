@@ -8,7 +8,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.Direction;
 import org.apache.logging.log4j.Level;
 
 import java.util.*;
@@ -72,11 +71,11 @@ public interface EnergyInventoryComponent extends Component {
 
 	default TypedActionResult<EnergyVolume> insert(Fraction fraction) {
 		Optional<Map.Entry<Integer, EnergyVolume>> matchingVolumeOptional = this.getContents().entrySet().stream().filter(entry -> {
-			return entry.getValue().fits(fraction);
+			return entry.getValue().hasAvailable(fraction);
 		}).findFirst();
 
 		if (matchingVolumeOptional.isPresent()) {
-			matchingVolumeOptional.get().getValue().give(fraction);
+			matchingVolumeOptional.get().getValue().giveVolume(fraction);
 			return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().getValue());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, null);
@@ -136,7 +135,7 @@ public interface EnergyInventoryComponent extends Component {
 		Optional<EnergyVolume> matchingVolumeOptional = Optional.ofNullable(this.getVolume(slot));
 
 		if (matchingVolumeOptional.isPresent()) {
-			return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().take(fraction));
+			return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().takeVolume(fraction));
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, EnergyVolume.EMPTY);
 		}

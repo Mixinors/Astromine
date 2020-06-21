@@ -1,7 +1,7 @@
 package com.github.chainmailstudios.astromine.common.network.ticker;
 
 import com.github.chainmailstudios.astromine.common.component.EnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.network.NetworkController;
+import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkNode;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
@@ -13,12 +13,12 @@ import java.util.*;
 
 public class NetworkTypeEnergy extends NetworkType {
     @Override
-    public void simulate(NetworkController controller) {
+    public void simulate(NetworkInstance controller) {
         Map<BlockPos, EnergyVolume> bufferMap = new HashMap<>();
         Map<BlockPos, EnergyVolume> requesterMap = new HashMap<>();
 
-        for (NetworkNode memberNode : controller.memberNodes) {
-            BlockEntity blockEntity = controller.world.getBlockEntity(memberNode.position);
+        for (NetworkNode memberNode : controller.members) {
+            BlockEntity blockEntity = controller.getWorld().getBlockEntity(memberNode.getBlockPos());
             if (blockEntity != null) {
                 NetworkMember member = (NetworkMember) blockEntity;
                 if (member.isBuffer()) {
@@ -36,7 +36,7 @@ public class NetworkTypeEnergy extends NetworkType {
         for (Map.Entry<BlockPos, EnergyVolume> buffer : bufferMap.entrySet()) {
             for (Map.Entry<BlockPos, EnergyVolume> requester : requesterMap.entrySet()) {
                 if (!buffer.getValue().isEmpty() && !requester.getValue().isFull()) {
-                    buffer.getValue().push(requester.getValue(), requester.getValue().getSize());
+                    buffer.getValue().pushVolume(requester.getValue(), requester.getValue().getSize());
                 } else if (buffer.getValue().isEmpty()) {
                     break;
                 }

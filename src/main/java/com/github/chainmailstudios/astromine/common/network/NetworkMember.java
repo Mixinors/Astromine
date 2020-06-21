@@ -5,12 +5,6 @@ public interface NetworkMember {
 		return NetworkType.EMPTY;
 	}
 
-	default boolean refuses(NetworkType type) {
-		return !this.accepts(type);
-	}
-
-	boolean accepts(Object... objects);
-
 	default boolean isNode() {
 		return true;
 	}

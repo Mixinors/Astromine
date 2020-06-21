@@ -2,9 +2,7 @@ package com.github.chainmailstudios.astromine.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.EnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineFluids;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
@@ -23,7 +21,7 @@ public class FuelGeneratorBlockEntity extends AlphaBlockEntity implements Tickab
 
 	@Override
 	public void tick() {
-		if (fluidComponent.getVolume(0).getFraction().isBiggerThan(Fraction.BOTTLE) && energyComponent.getVolume(0).fits(Fraction.BUCKET) && fluidComponent.getVolume(0).getFluid() == AstromineFluids.ROCKET_FUEL) {
+		if (fluidComponent.getVolume(0).getFraction().isBiggerThan(Fraction.BOTTLE) && energyComponent.getVolume(0).hasAvailable(Fraction.BUCKET) && fluidComponent.getVolume(0).getFluid() == AstromineFluids.ROCKET_FUEL) {
 			fluidComponent.getVolume(0).setFraction(Fraction.subtract(fluidComponent.getVolume(0).getFraction(), Fraction.BOTTLE));
 			energyComponent.getVolume(0).setFraction(Fraction.add(energyComponent.getVolume(0).getFraction(), Fraction.BUCKET));
 		}

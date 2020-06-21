@@ -18,8 +18,6 @@ public class AstromineBlockEntityTypes {
 
 	public static BlockEntityType<FuelGeneratorBlockEntity> FUEL_GENERATOR = register("fuel_generator", FuelGeneratorBlockEntity::new, AstromineBlocks.FUEL_GENERATOR);
 
-	public static BlockEntityType<EnergyWireConnectorBlockEntity> ENERGY_WIRE_CONNECTOR = register("energy_wire_connector", EnergyWireConnectorBlockEntity::new, AstromineBlocks.ENERGY_WIRE_CONNECTOR);
-
 	public static void initialize() {
 		// Unused.
 	}

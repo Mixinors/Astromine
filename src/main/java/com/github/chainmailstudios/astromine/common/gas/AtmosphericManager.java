@@ -2,13 +2,7 @@ package com.github.chainmailstudios.astromine.common.gas;
 
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.registry.AstromineFluids;
-import com.google.common.collect.Lists;
 import net.minecraft.block.AirBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.RegistryKey;
@@ -73,11 +67,11 @@ public class AtmosphericManager {
 						FluidVolume offsetFluidVolume = get(world, offsetPosition);
 
 						if (!fluidVolume.isEmpty() && fluidVolume.getFraction().isBiggerThan(Fraction.max(TRESHHOLD, offsetFluidVolume.getFraction())) && offsetFluidVolume.canInsert(fluidVolume.getFluid(), Fraction.BUCKET)) {
-							fluidVolume.push(offsetFluidVolume, Fraction.BUCKET);
+							fluidVolume.pushVolume(offsetFluidVolume, Fraction.BUCKET);
 							AtmosphericManager.add(world, offsetPosition, offsetFluidVolume);
 						} else if (!fluidVolume.isEmpty() && fluidVolume.getFraction().isBiggerThan(Fraction.max(TRESHHOLD, offsetFluidVolume.getFraction())) && offsetFluidVolume == FluidVolume.DEFAULT) {
 							FluidVolume newVolume = new FluidVolume();
-							fluidVolume.push(newVolume, Fraction.BUCKET);
+							fluidVolume.pushVolume(newVolume, Fraction.BUCKET);
 							AtmosphericManager.add(world, offsetPosition, newVolume);
 						}
 					} else {

@@ -9,7 +9,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.Direction;
 import org.apache.logging.log4j.Level;
 
 import java.util.*;
@@ -77,7 +76,7 @@ public interface FluidInventoryComponent extends Component {
 		}).findFirst();
 
 		if (matchingVolumeOptional.isPresent()) {
-			matchingVolumeOptional.get().getValue().insert(fluid, fraction);
+			matchingVolumeOptional.get().getValue().insertVolume(fluid, fraction);
 			return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().getValue());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, null);
@@ -138,7 +137,7 @@ public interface FluidInventoryComponent extends Component {
 
 		if (matchingVolumeOptional.isPresent()) {
 			if (matchingVolumeOptional.get().canExtract(matchingVolumeOptional.get().getFluid(), fraction)) { ;
-				return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().extract(matchingVolumeOptional.get().getFluid(), fraction));
+				return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().extractVolume(matchingVolumeOptional.get().getFluid(), fraction));
 			} else {
 				return new TypedActionResult<>(ActionResult.FAIL, FluidVolume.EMPTY);
 			}

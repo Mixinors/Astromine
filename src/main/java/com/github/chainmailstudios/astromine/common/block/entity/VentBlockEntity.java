@@ -23,32 +23,27 @@ public class VentBlockEntity extends AlphaBlockEntity implements Tickable, Netwo
 
 	@Override
 	public void tick() {
-		////if ((energyComponent.getVolume(0).getFraction().isBiggerThan(Fraction.BOTTLE) || energyComponent.getVolume(0).getFraction().equals(Fraction.BOTTLE)) && (fluidComponent.getVolume(0).getFraction().isBiggerThan(Fraction.BUCKET) || fluidComponent.getVolume(0).getFraction().equals(Fraction.BUCKET))){
+		if (energyComponent.getVolume(0).hasStored(Fraction.BOTTLE) && (fluidComponent.getVolume(0).hasStored(Fraction.BUCKET))) {
 			BlockPos position = getPos();
-//
-			Direction direction = world.getBlockState(position).get(FacingBlock.FACING);
-//
-			BlockPos output = position.offset(direction);
-//
-		//	if (world.getBlockState(output).getBlock() instanceof AirBlock) {
-		//		FluidVolume bucketVolume = fluidComponent.getVolume(0).take(Fraction.BUCKET);
-		//		FluidVolume volume = AtmosphericManager.get(world, output);
-		//		volume.pull(bucketVolume, Fraction.BUCKET);
-				AtmosphericManager.add(world, output, new FluidVolume(AstromineFluids.ROCKET_FUEL, new Fraction(Integer.MAX_VALUE, 1)));
-			//}
 
-		//	energyComponent.getVolume(0).setFraction(Fraction.subtract(energyComponent.getVolume(0).getFraction(), Fraction.BOTTLE));
-		//}
+			Direction direction = world.getBlockState(position).get(FacingBlock.FACING);
+
+			BlockPos output = position.offset(direction);
+
+			if (world.getBlockState(output).getBlock() instanceof AirBlock) {
+				FluidVolume bucketVolume = fluidComponent.getVolume(0).takeVolume(Fraction.BUCKET);
+				FluidVolume volume = AtmosphericManager.get(world, output);
+				volume.pullVolume(bucketVolume, Fraction.BUCKET);
+				AtmosphericManager.add(world, output, new FluidVolume(AstromineFluids.ROCKET_FUEL, new Fraction(Integer.MAX_VALUE, 1)));
+			}
+
+			energyComponent.getVolume(0).setFraction(Fraction.subtract(energyComponent.getVolume(0).getFraction(), Fraction.BOTTLE));
+		}
 	}
 
 	@Override
 	public NetworkType getNetworkType() {
 		return AstromineNetworkTypes.FLUID;
-	}
-
-	@Override
-	public boolean accepts(Object... objects) {
-		return true;
 	}
 
 	@Override

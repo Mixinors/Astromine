@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.client.render.RocketEntityRenderer;
+import com.github.chainmailstudios.astromine.client.render.entity.RocketEntityRenderer;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 
 import com.github.chainmailstudios.astromine.client.render.entity.BulletEntityRenderer;

@@ -39,11 +39,6 @@ public class VentBlock extends FacingBlock implements BlockEntityProvider, Netwo
 	}
 
 	@Override
-	public boolean accepts(Object... objects) {
-		return true;
-	}
-
-	@Override
 	public boolean isRequester() {
 		return true;
 	}

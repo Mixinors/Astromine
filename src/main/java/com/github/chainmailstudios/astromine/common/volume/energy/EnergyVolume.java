@@ -6,8 +6,6 @@ import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
 
 public class EnergyVolume extends BaseVolume {
-	public static final int TYPE = 1;
-
 	public static final EnergyVolume EMPTY = new EnergyVolume();
 
 	public EnergyVolume() {

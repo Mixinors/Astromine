@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 
 import com.google.common.collect.ImmutableMap;
 
-public class SpaceSkybox implements Skybox {
+public class SpaceSkybox extends AbstractSkybox {
 	public static final Identifier UP = new Identifier("skybox", "up");
 	public static final Identifier DOWN = new Identifier("skybox", "down");
 	public static final Identifier WEST = new Identifier("skybox", "west");

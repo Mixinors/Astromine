@@ -12,11 +12,6 @@ public class FluidTankBlockEntity extends BetaBlockEntity implements NetworkMemb
 	}
 
 	@Override
-	public boolean accepts(Object... objects) {
-		return true;
-	}
-
-	@Override
 	public boolean isBuffer() {
 		return true;
 	}

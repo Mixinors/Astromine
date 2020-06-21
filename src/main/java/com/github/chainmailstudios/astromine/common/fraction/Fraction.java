@@ -10,6 +10,7 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	public static final Fraction EMPTY = new Fraction(0, 1);
 	public static final Fraction BUCKET = new Fraction(1, 1);
 	public static final Fraction BOTTLE = new Fraction(1, 3);
+
 	private long numerator;
 	private long denominator;
 
@@ -22,6 +23,12 @@ public class Fraction extends Number implements Comparable<Fraction> {
 		long denominator = lowestCommonDenominator(fractionA.denominator, fractionB.denominator);
 
 		return new Fraction(fractionA.numerator * (denominator / fractionA.denominator) + fractionB.numerator * (denominator / fractionB.denominator), denominator);
+	}
+
+	public void add(Fraction fraction) {
+		Fraction result = Fraction.add(this, fraction);
+		this.numerator = result.numerator;
+		this.denominator = result.denominator;
 	}
 
 	private static long lowestCommonDenominator(long a, long b) {

@@ -11,7 +11,7 @@ public class AstromineNetworkTypes {
 	public static final NetworkType FLUID = NetworkTypeRegistry.INSTANCE.register(AstromineCommon.identifier("fluid_network"), new NetworkTypeFluid());
 
 	public static void initialize() {
-		// Unused.
+		NetworkTypeRegistry.INSTANCE.register(AstromineCommon.identifier("empty_network"), NetworkType.EMPTY);
 	}
 }
 

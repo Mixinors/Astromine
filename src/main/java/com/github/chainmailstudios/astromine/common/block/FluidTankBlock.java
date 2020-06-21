@@ -15,11 +15,6 @@ public class FluidTankBlock extends Block implements BlockEntityProvider, Networ
 	}
 
 	@Override
-	public boolean accepts(Object... objects) {
-		return true;
-	}
-
-	@Override
 	public boolean isBuffer() {
 		return true;
 	}

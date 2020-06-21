@@ -1,6 +1,9 @@
 package com.github.chainmailstudios.astromine.common.network;
 
-import com.github.chainmailstudios.astromine.common.block.PipeCableBlock;
+import com.github.chainmailstudios.astromine.common.block.AbstractCableBlock;
+import com.github.chainmailstudios.astromine.component.WorldNetworkComponent;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -35,10 +38,12 @@ public class NetworkTracer {
 	}
 
 	public static class Tracer {
-		private NetworkController controller;
-
 		public void trace(NetworkType type, BlockPos initialPosition, World world) {
-			this.controller = new NetworkController(world, type);
+			ComponentProvider provider = ComponentProvider.fromWorld(world);
+
+			WorldNetworkComponent networkComponent = provider.getComponent(AstromineComponentTypes.WORLD_NETWORK_COMPONENT);
+
+			NetworkInstance instance = new NetworkInstance(world, type);
 
 			Block block = world.getBlockState(initialPosition).getBlock();
 
@@ -52,10 +57,10 @@ public class NetworkTracer {
 			ArrayDeque<BlockPos> positions = new ArrayDeque<>();
 			positions.add(initialPosition);
 
-			if (!NetworkManager.INSTANCE.get(type, initialPosition).isNullOrEmpty()) {
+			if (networkComponent.containsInstance(type, initialPosition)) {
 				return;
 			} else {
-				this.controller.addPosition(initialPosition);
+				instance.addBlockPos(initialPosition);
 			}
 
 			while (!positions.isEmpty()) {
@@ -73,21 +78,25 @@ public class NetworkTracer {
 
 					Object offsetObject = getObjectAt(world, offsetPosition);
 
-					NetworkController existingController = NetworkManager.INSTANCE.get(type, offsetPosition);
+					NetworkInstance existingInstance = networkComponent.getInstance(type, offsetPosition);
 
-					if (!existingController.isNullOrEmpty()) {
-						this.controller = existingController.join(this.controller);
+					if (existingInstance != NetworkInstance.EMPTY) {
+						existingInstance.join(instance);
+						networkComponent.removeInstance(instance);
+						networkComponent.addInstance(existingInstance);
+						instance = existingInstance;
 						joined.setTrue();
 					} else if (offsetObject instanceof NetworkMember) {
 						NetworkMember offsetMember = (NetworkMember) offsetObject;
 
 						if ((offsetMember.isRequester() || offsetMember.isProvider() || offsetMember.isBuffer()) && offsetMember.getNetworkType() == type) {
-							this.controller.addMember(NetworkNode.of(offsetPosition));
+							instance.addMember(NetworkNode.of(offsetPosition));
 						}
+
 						if (offsetMember.isNode()) {
-							if (offsetMember.accepts(initialObject)) {
+							if (offsetMember.getNetworkType() == ((NetworkMember) initialObject).getNetworkType()) {
 								positions.addLast(offsetPosition);
-								this.controller.addNode(NetworkNode.of(offsetPosition));
+								instance.addNode(NetworkNode.of(offsetPosition));
 							}
 						}
 					}
@@ -100,37 +109,37 @@ public class NetworkTracer {
 				}
 			}
 
-			NetworkManager.INSTANCE.add(this.controller);
+			networkComponent.addInstance(instance);
 		}
 	}
 
 	public static class Modeller {
-		private Set<Direction> directions = new HashSet<>();
+		private final Set<Direction> directions = new HashSet<>();
 
 		public void scanBlockState(BlockState blockState) {
-			for (Map.Entry<Direction, BooleanProperty> property : PipeCableBlock.PROPERTY_MAP.entrySet()) {
+			for (Map.Entry<Direction, BooleanProperty> property : AbstractCableBlock.PROPERTY_MAP.entrySet()) {
 				if (blockState.get(property.getValue())) {
 					directions.add(property.getKey());
 				}
 			}
 		}
 
-		public void scanNeighbours(BlockPos initialPosition, World world) {
+		public void scanNeighbours(NetworkType type, BlockPos initialPosition, World world) {
 			Object initialObject = getObjectAt(world, initialPosition);
 
 			for (Direction direction : Direction.values()) {
 				Object offsetObject = getObjectAt(world, initialPosition.offset(direction));
 
-				if (offsetObject instanceof NetworkMember && ((NetworkMember) offsetObject).accepts(initialObject)) {
+				if (offsetObject instanceof NetworkMember && ((NetworkMember) offsetObject).getNetworkType() == type) {
 					directions.add(direction);
 				}
 			}
 		}
 
 		public BlockState applyToBlockState(BlockState state) {
-			if (!(state.getBlock() instanceof NetworkMember) || !(state.getBlock() instanceof PipeCableBlock)) return state;
+			if (!(state.getBlock() instanceof NetworkMember)) return state;
 			for (Direction direction : Direction.values()) {
-				state = state.with(PipeCableBlock.PROPERTY_MAP.get(direction), directions.contains(direction));
+				state = state.with(AbstractCableBlock.PROPERTY_MAP.get(direction), directions.contains(direction));
 			}
 			return state;
 		}
@@ -138,7 +147,7 @@ public class NetworkTracer {
 		public VoxelShape applyToVoxelShape(VoxelShape shape) {
 			for (Direction direction : Direction.values()) {
 				if (directions.contains(direction)) {
-					shape = VoxelShapes.union(shape, PipeCableBlock.SHAPE_MAP.get(PipeCableBlock.PROPERTY_MAP.get(direction)));
+					shape = VoxelShapes.union(shape, AbstractCableBlock.SHAPE_MAP.get(AbstractCableBlock.PROPERTY_MAP.get(direction)));
 				}
 			}
 			return shape;
