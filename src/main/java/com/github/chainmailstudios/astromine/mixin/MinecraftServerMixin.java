@@ -1,8 +1,8 @@
 package com.github.chainmailstudios.astromine.mixin;
 
 import com.github.chainmailstudios.astromine.registry.AstromineDimensionTypes;
-import com.github.chainmailstudios.astromine.world.generation.AstromineBiomeSource;
-import com.github.chainmailstudios.astromine.world.generation.AstromineChunkGenerator;
+import com.github.chainmailstudios.astromine.common.world.generation.AstromineBiomeSource;
+import com.github.chainmailstudios.astromine.common.world.generation.AstromineChunkGenerator;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldGenerationProgressListener;

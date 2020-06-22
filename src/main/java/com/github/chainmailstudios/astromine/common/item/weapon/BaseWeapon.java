@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.common.item.weapon;
 
-import com.github.chainmailstudios.astromine.common.component.compatibility.ItemInventoryComponentFromItemInventory;
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
 import com.github.chainmailstudios.astromine.common.entity.projectile.BulletEntity;
 import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;

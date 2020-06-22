@@ -1,7 +1,7 @@
 package com.github.chainmailstudios.astromine.common.network;
 
 import com.github.chainmailstudios.astromine.common.block.AbstractCableBlock;
-import com.github.chainmailstudios.astromine.component.WorldNetworkComponent;
+import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.Block;

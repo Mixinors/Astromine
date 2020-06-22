@@ -1,12 +1,13 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
-import com.github.chainmailstudios.astromine.common.component.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.container.FuelGeneratorContainer;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineFluids;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
@@ -47,9 +48,9 @@ public class FuelGeneratorBlockEntity extends AlphaBlockEntity implements Networ
 			BlockEntity attached = world.getBlockEntity(position);
 
 			if (attached instanceof ComponentProvider) {
-				ComponentProvider provider = (ComponentProvider) attached;
+				ComponentProvider provider = ComponentProvider.fromBlockEntity(attached);
 
-				EnergyInventoryComponent inventory = provider.getComponent(direction, EnergyInventoryComponent.class);
+				EnergyInventoryComponent inventory = provider.getSidedComponent(direction, AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
 
 				if (inventory != null && energyComponent.getVolume(0).hasStored(Fraction.BOTTLE)) {
 					if (inventory.canInsert(energyComponent.getVolume(0))) {

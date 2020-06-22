@@ -1,10 +1,10 @@
 package com.github.chainmailstudios.astromine.client.screen;
 
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
-import com.github.chainmailstudios.astromine.common.component.EnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.container.DeltaContainer;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.widget.WEnergyVolumeFractionalVerticalBar;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.common.widget.WEnergyVolumeFractionalVerticalBar;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import spinnery.client.screen.BaseContainerScreen;
@@ -33,7 +33,7 @@ public abstract class DeltaScreen<T extends BaseContainer> extends BaseContainer
 
 		ComponentProvider componentProvider = linkedContainer.blockEntity;
 
-		EnergyVolume energyVolume = componentProvider.getComponent(null, EnergyInventoryComponent.class).getVolume(0);
+		EnergyVolume energyVolume = componentProvider.getSidedComponent(null, AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).getVolume(0);
 
 		energyBar.setEnergyVolume(energyVolume);
 	}

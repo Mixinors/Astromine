@@ -6,7 +6,7 @@ import com.github.chainmailstudios.astromine.common.item.SpaceSuitItem;
 import com.github.chainmailstudios.astromine.common.registry.BreathableRegistry;
 import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.component.WorldAtmosphereComponent;
+import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.BlockState;

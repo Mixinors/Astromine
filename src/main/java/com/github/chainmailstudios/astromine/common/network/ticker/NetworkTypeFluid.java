@@ -1,13 +1,14 @@
 package com.github.chainmailstudios.astromine.common.network.ticker;
 
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
-import com.github.chainmailstudios.astromine.common.component.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkNode;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.entity.BlockEntity;
@@ -25,9 +26,9 @@ public class NetworkTypeFluid extends NetworkType {
 			BlockEntity blockEntity = controller.getWorld().getBlockEntity(memberNode.getBlockPos());
 
 			if (blockEntity instanceof ComponentProvider && blockEntity instanceof NetworkMember) {
-				ComponentProvider provider = (ComponentProvider) blockEntity;
+				ComponentProvider provider = ComponentProvider.fromBlockEntity(blockEntity);
 
-				FluidInventoryComponent fluidComponent = provider.getComponent(null, FluidInventoryComponent.class);
+				FluidInventoryComponent fluidComponent = provider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
 				NetworkMember member = (NetworkMember) blockEntity;
 
