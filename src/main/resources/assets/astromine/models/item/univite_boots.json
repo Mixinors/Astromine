@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "astromine:item/univite_boots"
+    "layer0": "astromine:item/armor/univite_boots"
   }
 }

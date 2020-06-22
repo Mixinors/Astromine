@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "astromine:item/univite_pickaxe"
+    "layer0": "astromine:item/tool/univite_pickaxe"
   }
 }
