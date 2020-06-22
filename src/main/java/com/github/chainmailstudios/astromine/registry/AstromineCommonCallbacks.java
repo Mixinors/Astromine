@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.component.WorldAtmosphereComponent;
+import com.github.chainmailstudios.astromine.component.WorldBridgeComponent;
 import com.github.chainmailstudios.astromine.component.WorldNetworkComponent;
 import io.netty.buffer.Unpooled;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
@@ -52,5 +53,10 @@ public class AstromineCommonCallbacks {
 				}
 			}));
 		}));
+
+		WorldComponentCallback.EVENT.register((world, container) -> {
+			WorldBridgeComponent component = new WorldBridgeComponent(world);
+			container.put(AstromineComponentTypes.WORLD_BRIDGE_COMPONENT, component);
+		});
 	}
 }
