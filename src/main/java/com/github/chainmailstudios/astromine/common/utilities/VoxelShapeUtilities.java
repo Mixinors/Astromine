@@ -1,12 +1,12 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
+import com.google.common.collect.Lists;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
-import com.mojang.datafixers.util.Pair;
 
-import com.google.common.collect.Lists;
 import java.util.Collection;
 
 
@@ -48,13 +48,13 @@ public class VoxelShapeUtilities {
 			Pair<Double, Double> min = axis == Direction.Axis.X ? rotatePoint(box.minY, box.minZ, radians) : (axis == Direction.Axis.Z ? rotatePoint(box.minX, box.minY, radians) : rotatePoint(box.minX, box.minZ, radians));
 			Pair<Double, Double> max = axis == Direction.Axis.X ? rotatePoint(box.maxY, box.maxZ, radians) : (axis == Direction.Axis.Z ? rotatePoint(box.maxX, box.maxY, radians) : rotatePoint(box.maxX, box.maxZ, radians));
 			collision = VoxelShapes.union(collision,
-			                              axis == Direction.Axis.X ? VoxelShapes.cuboid(box.minX, min.getFirst(), min.getSecond(), box.maxX, max.getFirst(), max.getSecond()) : (axis == Direction.Axis.Z ? VoxelShapes.cuboid(min.getFirst(),
-			                                                                                                                                                                                                                   min.getSecond(),
-			                                                                                                                                                                                                                   box.minZ,
-			                                                                                                                                                                                                                   max.getFirst(),
-			                                                                                                                                                                                                                   max.getSecond(),
-			                                                                                                                                                                                                                   box.maxZ
-			                              ) : VoxelShapes.cuboid(min.getFirst(), box.minY, min.getSecond(), max.getFirst(), box.maxY, max.getSecond()))
+					axis == Direction.Axis.X ? VoxelShapes.cuboid(box.minX, min.getFirst(), min.getSecond(), box.maxX, max.getFirst(), max.getSecond()) : (axis == Direction.Axis.Z ? VoxelShapes.cuboid(min.getFirst(),
+							min.getSecond(),
+							box.minZ,
+							max.getFirst(),
+							max.getSecond(),
+							box.maxZ
+					) : VoxelShapes.cuboid(min.getFirst(), box.minY, min.getSecond(), max.getFirst(), box.maxY, max.getSecond()))
 			);
 		}
 		return collision;

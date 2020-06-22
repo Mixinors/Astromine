@@ -8,7 +8,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.Direction;
 import org.apache.logging.log4j.Level;
 
 import java.util.*;
@@ -30,35 +29,35 @@ public interface EnergyInventoryComponent extends Component {
 		return this.getContents().values().stream().map(EnergyVolume::copy).collect(Collectors.toList());
 	}
 
-	default boolean  canInsert()  {
+	default boolean canInsert() {
 		return true;
 	}
 
-	default boolean  canInsert(int slot) {
+	default boolean canInsert(int slot) {
 		return true;
 	}
 
-	default boolean  canInsert(EnergyVolume volume) {
+	default boolean canInsert(EnergyVolume volume) {
 		return true;
 	}
 
-	default boolean  canInsert(EnergyVolume volume, int slot) {
-		return true;
-	}
-	
-	default boolean  canExtract() {
+	default boolean canInsert(EnergyVolume volume, int slot) {
 		return true;
 	}
 
-	default boolean  canExtract(int slot) {
+	default boolean canExtract() {
 		return true;
 	}
 
-	default boolean  canExtract(EnergyVolume volume) {
+	default boolean canExtract(int slot) {
 		return true;
 	}
 
-	default boolean  canExtract(EnergyVolume volume, int slot) {
+	default boolean canExtract(EnergyVolume volume) {
+		return true;
+	}
+
+	default boolean canExtract(EnergyVolume volume, int slot) {
 		return true;
 	}
 
@@ -72,11 +71,11 @@ public interface EnergyInventoryComponent extends Component {
 
 	default TypedActionResult<EnergyVolume> insert(Fraction fraction) {
 		Optional<Map.Entry<Integer, EnergyVolume>> matchingVolumeOptional = this.getContents().entrySet().stream().filter(entry -> {
-			return entry.getValue().fits(fraction);
+			return entry.getValue().hasAvailable(fraction);
 		}).findFirst();
 
 		if (matchingVolumeOptional.isPresent()) {
-			matchingVolumeOptional.get().getValue().give(fraction);
+			matchingVolumeOptional.get().getValue().insertVolume(fraction);
 			return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().getValue());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, null);
@@ -123,7 +122,7 @@ public interface EnergyInventoryComponent extends Component {
 		if (!volume.isEmpty() && this.canExtract(volume, slot)) {
 			return this.extract(slot, volume.getFraction());
 		} else {
-			return new TypedActionResult<>(ActionResult.FAIL, EnergyVolume.EMPTY);
+			return new TypedActionResult<>(ActionResult.FAIL, EnergyVolume.empty());
 		}
 	}
 
@@ -136,9 +135,9 @@ public interface EnergyInventoryComponent extends Component {
 		Optional<EnergyVolume> matchingVolumeOptional = Optional.ofNullable(this.getVolume(slot));
 
 		if (matchingVolumeOptional.isPresent()) {
-			return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().take(fraction));
+			return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().extractVolume(fraction));
 		} else {
-			return new TypedActionResult<>(ActionResult.FAIL, EnergyVolume.EMPTY);
+			return new TypedActionResult<>(ActionResult.FAIL, EnergyVolume.empty());
 		}
 	}
 
@@ -163,7 +162,7 @@ public interface EnergyInventoryComponent extends Component {
 		int maximum = range.isPresent() ? range.get().getMaximum() : source.getSize();
 
 		for (int position = minimum; position < maximum; ++position) {
-			if (source.getVolume(position) != null && source.getVolume(position) != EnergyVolume.EMPTY) {
+			if (source.getVolume(position) != null && !source.getVolume(position).isEmpty()) {
 				EnergyVolume volume = source.getVolume(position);
 
 				if (volume != null && !volume.isEmpty()) {

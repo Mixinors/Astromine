@@ -1,7 +1,13 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.component.WorldBridgeComponent;
+import com.github.chainmailstudios.astromine.common.utilities.LineUtilities;
+import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineSounds;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -13,12 +19,6 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
-
-import com.github.chainmailstudios.astromine.common.bridge.HolographicBridgeManager;
-import com.github.chainmailstudios.astromine.common.utilities.LineUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
-import com.github.chainmailstudios.astromine.registry.AstromineSounds;
 import org.jetbrains.annotations.NotNull;
 import spinnery.widget.api.Color;
 
@@ -127,9 +127,9 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 		}
 
 		this.segments = (ArrayList<Vector3f>) LineUtilities.getBezierSegments(new Vector3f(bOP.getX(), bOP.getY() + 1, bOP.getZ()),
-		                                                                      new Vector3f(nCP.getX(), nCP.getY() + 1, nCP.getZ()),
-		                                                                      new Vector3f(nCP.getX(), (bOP.getY() + nCP.getY()) / 2f, bCP.getZ()),
-		                                                                 distance * 16
+				new Vector3f(nCP.getX(), nCP.getY() + 1, nCP.getZ()),
+				new Vector3f((bOP.getX() + nCP.getX()) / 2f, (bOP.getY() + nCP.getY() + 2) / 2f, bCP.getZ()),
+				distance * 16
 		);
 
 		this.members = new ArrayList<>();
@@ -143,7 +143,11 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 				this.members.add(nP);
 			}
 
-			HolographicBridgeManager.add(this.world, nP, new Vec3i((v.getX() - (int) v.getX()) * 16f, (v.getY() - (int) v.getY()) * 16f, (v.getZ() - (int) v.getZ()) * 16f));
+			ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
+
+			WorldBridgeComponent bridgeComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_BRIDGE_COMPONENT);
+
+			bridgeComponent.add(nP, new Vec3i((v.getX() - (int) v.getX()) * 16f, (v.getY() - (int) v.getY()) * 16f, (v.getZ() - (int) v.getZ()) * 16f));
 		}
 	}
 
@@ -241,10 +245,14 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 
 	public void destroyBridge() {
 		if (this.segments != null && this.world != null) {
-			for (Vec3i v : this.members) {
-				HolographicBridgeManager.remove(this.world, (BlockPos) v);
+			for (Vec3i vec : this.members) {
+				ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
 
-				this.world.setBlockState((BlockPos) v, Blocks.AIR.getDefaultState());
+				WorldBridgeComponent bridgeComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_BRIDGE_COMPONENT);
+
+				bridgeComponent.remove((BlockPos) vec);
+
+				this.world.setBlockState((BlockPos) vec, Blocks.AIR.getDefaultState());
 			}
 		}
 	}

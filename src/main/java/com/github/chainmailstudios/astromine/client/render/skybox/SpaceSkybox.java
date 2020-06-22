@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.client.render.skybox;
 
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
@@ -10,9 +11,7 @@ import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import com.google.common.collect.ImmutableMap;
-
-public class SpaceSkybox implements Skybox {
+public class SpaceSkybox extends AbstractSkybox {
 	public static final Identifier UP = new Identifier("skybox", "up");
 	public static final Identifier DOWN = new Identifier("skybox", "down");
 	public static final Identifier WEST = new Identifier("skybox", "west");
@@ -58,53 +57,53 @@ public class SpaceSkybox implements Skybox {
 			matrices.push();
 
 			switch (i) {
-			case 0: {
-				textureManager.bindTexture(this.textures.get(DOWN));
+				case 0: {
+					textureManager.bindTexture(this.textures.get(DOWN));
 
-				matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
+					matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
 
-				break;
-			}
-			case 1: {
-				textureManager.bindTexture(this.textures.get(WEST));
+					break;
+				}
+				case 1: {
+					textureManager.bindTexture(this.textures.get(WEST));
 
-				matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90.0F));
-				matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(rotation));
+					matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90.0F));
+					matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(rotation));
 
-				break;
-			}
-			case 2: {
-				textureManager.bindTexture(this.textures.get(EAST));
+					break;
+				}
+				case 2: {
+					textureManager.bindTexture(this.textures.get(EAST));
 
-				matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-90.0F));
-				matrices.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion(rotation));
+					matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-90.0F));
+					matrices.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion(rotation));
 
-				break;
-			}
-			case 3: {
-				textureManager.bindTexture(this.textures.get(UP));
+					break;
+				}
+				case 3: {
+					textureManager.bindTexture(this.textures.get(UP));
 
-				matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(180.0F));
-				matrices.multiply(Vector3f.NEGATIVE_Z.getDegreesQuaternion(rotation));
+					matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(180.0F));
+					matrices.multiply(Vector3f.NEGATIVE_Z.getDegreesQuaternion(rotation));
 
-				break;
-			}
-			case 4: {
-				textureManager.bindTexture(this.textures.get(NORTH));
+					break;
+				}
+				case 4: {
+					textureManager.bindTexture(this.textures.get(NORTH));
 
-				matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(90.0F));
-				matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
+					matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(90.0F));
+					matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
 
-				break;
-			}
-			case 5: {
-				textureManager.bindTexture(this.textures.get(SOUTH));
+					break;
+				}
+				case 5: {
+					textureManager.bindTexture(this.textures.get(SOUTH));
 
-				matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(-90.0F));
-				matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
+					matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(-90.0F));
+					matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
 
-				break;
-			}
+					break;
+				}
 			}
 
 

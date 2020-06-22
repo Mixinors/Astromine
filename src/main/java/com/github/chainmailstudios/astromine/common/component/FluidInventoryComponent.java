@@ -9,7 +9,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.Direction;
 import org.apache.logging.log4j.Level;
 
 import java.util.*;
@@ -31,35 +30,35 @@ public interface FluidInventoryComponent extends Component {
 		return this.getContents().values().stream().map(FluidVolume::copy).collect(Collectors.toList());
 	}
 
-	default boolean  canInsert()  {
+	default boolean canInsert() {
 		return true;
 	}
 
-	default boolean  canInsert(int slot) {
+	default boolean canInsert(int slot) {
 		return true;
 	}
 
-	default boolean  canInsert(FluidVolume volume) {
+	default boolean canInsert(FluidVolume volume) {
 		return true;
 	}
 
-	default boolean  canInsert(FluidVolume volume, int slot) {
-		return true;
-	}
-	
-	default boolean  canExtract() {
+	default boolean canInsert(FluidVolume volume, int slot) {
 		return true;
 	}
 
-	default boolean  canExtract(int slot) {
+	default boolean canExtract() {
 		return true;
 	}
 
-	default boolean  canExtract(FluidVolume volume) {
+	default boolean canExtract(int slot) {
 		return true;
 	}
 
-	default boolean  canExtract(FluidVolume volume, int slot) {
+	default boolean canExtract(FluidVolume volume) {
+		return true;
+	}
+
+	default boolean canExtract(FluidVolume volume, int slot) {
 		return true;
 	}
 
@@ -77,7 +76,7 @@ public interface FluidInventoryComponent extends Component {
 		}).findFirst();
 
 		if (matchingVolumeOptional.isPresent()) {
-			matchingVolumeOptional.get().getValue().insert(fluid, fraction);
+			matchingVolumeOptional.get().getValue().insertVolume(fluid, fraction);
 			return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().getValue());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, null);
@@ -124,7 +123,7 @@ public interface FluidInventoryComponent extends Component {
 		if (!volume.isEmpty() && this.canExtract(volume, slot)) {
 			return this.extract(slot, volume.getFraction());
 		} else {
-			return new TypedActionResult<>(ActionResult.FAIL, FluidVolume.EMPTY);
+			return new TypedActionResult<>(ActionResult.FAIL, FluidVolume.empty());
 		}
 	}
 
@@ -137,13 +136,13 @@ public interface FluidInventoryComponent extends Component {
 		Optional<FluidVolume> matchingVolumeOptional = Optional.ofNullable(this.getVolume(slot));
 
 		if (matchingVolumeOptional.isPresent()) {
-			if (matchingVolumeOptional.get().canExtract(matchingVolumeOptional.get().getFluid(), fraction)) { ;
-				return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().extract(matchingVolumeOptional.get().getFluid(), fraction));
+			if (matchingVolumeOptional.get().canExtract(matchingVolumeOptional.get().getFluid(), fraction)) {
+				return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().extractVolume(matchingVolumeOptional.get().getFluid(), fraction));
 			} else {
-				return new TypedActionResult<>(ActionResult.FAIL, FluidVolume.EMPTY);
+				return new TypedActionResult<>(ActionResult.FAIL, FluidVolume.empty());
 			}
 		} else {
-			return new TypedActionResult<>(ActionResult.FAIL, FluidVolume.EMPTY);
+			return new TypedActionResult<>(ActionResult.FAIL, FluidVolume.empty());
 		}
 	}
 
@@ -168,7 +167,7 @@ public interface FluidInventoryComponent extends Component {
 		int maximum = range.isPresent() ? range.get().getMaximum() : source.getSize();
 
 		for (int position = minimum; position < maximum; ++position) {
-			if (source.getVolume(position) != null && source.getVolume(position) != FluidVolume.EMPTY) {
+			if (source.getVolume(position) != null && !source.getVolume(position).isEmpty()) {
 				FluidVolume volume = source.getVolume(position);
 
 				if (volume != null && !volume.isEmpty()) {

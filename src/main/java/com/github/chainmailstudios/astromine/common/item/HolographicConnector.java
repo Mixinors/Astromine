@@ -1,5 +1,9 @@
 package com.github.chainmailstudios.astromine.common.item;
 
+import com.github.chainmailstudios.astromine.common.block.HolographicBridgeProjectorBlock;
+import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
+import com.github.chainmailstudios.astromine.registry.AstromineSounds;
+import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemUsageContext;
@@ -10,11 +14,6 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-
-import com.github.chainmailstudios.astromine.common.block.HolographicBridgeProjectorBlock;
-import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
-import com.github.chainmailstudios.astromine.registry.AstromineSounds;
-import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 
 public class HolographicConnector extends Item {
 	public static final Object2ObjectArrayMap<World, Object> CACHE = new Object2ObjectArrayMap<>();
@@ -60,7 +59,7 @@ public class HolographicConnector extends Item {
 					entity = temporary;
 				}
 
-				if (parent.getPos().getX() != entity.getPos().getX() && parent.getPos().getZ() != entity.getPos().getZ()) {
+				if ((parent.getPos().getX() != entity.getPos().getX() && parent.getPos().getZ() != entity.getPos().getZ()) || oP.getSquaredDistance(nP) > 65536) {
 					CACHE.put(world, null);
 					context.getPlayer().sendMessage(new TranslatableText("text.astromine.message.holographic_connection_failed", parent.getPos().toShortString(), entity.getPos().toShortString()).formatted(Formatting.RED), true);
 					world.playSound(context.getPlayer(), context.getBlockPos(), AstromineSounds.HOLOGRAPHIC_CONNECTOR_CLICK, SoundCategory.PLAYERS, 0.5f, 0.33f);

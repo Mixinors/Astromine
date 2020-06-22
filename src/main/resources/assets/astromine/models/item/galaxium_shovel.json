@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "astromine:item/galaxium_shovel"
+    "layer0": "astromine:item/tool/galaxium_shovel"
   }
 }

@@ -178,16 +178,30 @@ public class SpriteRenderer {
 				this.normal = this.matrices.peek().getNormal();
 			}
 
-			MinecraftClient.getInstance().getTextureManager().bindTexture(this.sprite.getId());
+			int sX = sprite.getWidth();
+			int sY = sprite.getHeight();
 
-			this.consumer.vertex(this.model, this.x1, this.y2, this.z1).color(this.r, this.g, this.b, this.a).texture(this.uStart, this.vEnd).overlay(this.u, this.v).light(this.l).normal(this.normal, this.nX, this.nY, this.nZ).next();
-			this.consumer.vertex(this.model, this.x2, this.y2, this.z1).color(this.r, this.g, this.b, this.a).texture(this.uEnd, this.vEnd).overlay(this.u, this.v).light(this.l).normal(this.normal, this.nX, this.nY, this.nZ).next();
-			this.consumer.vertex(this.model, this.x2, this.y1, this.z1).color(this.r, this.g, this.b, this.a).texture(this.uEnd, this.vStart).overlay(this.u, this.v).light(this.l).normal(this.normal, this.nX, this.nY, this.nZ).next();
-			this.consumer.vertex(this.model, this.x1, this.y1, this.z1).color(this.r, this.g, this.b, this.a).texture(this.uStart, this.vStart).overlay(this.u, this.v).light(this.l).normal(this.normal, this.nX, this.nY, this.nZ).next();
+			MinecraftClient.getInstance().getTextureManager().bindTexture(sprite.getId());
 
-			if (this.consumers instanceof VertexConsumerProvider.Immediate) {
-				((VertexConsumerProvider.Immediate) this.consumers).draw(this.layer);
+			for (int y = y1; y < y2; y += Math.min(y2 - y, sY)) {
+				for (int x = x1; x < x2; x += Math.min(x2 - x, sX)) {
+					float nSX = Math.min(x2 - x, sX);
+					float nSY = Math.min(y2 - y, sY);
+
+					this.consumer = consumers.getBuffer(RenderLayer.getSolid());
+
+					this.consumer.vertex(this.model, x, y + nSY, z1).color(this.r, this.g, this.b, this.a).texture(this.uStart, nSY >= sY ? this.vEnd : this.vEnd - ((this.vEnd - this.vStart) * (nSY / sY))).overlay(this.u, this.v).light(this.l).normal(this.normal, this.nX, this.nY, this.nZ).next();
+					this.consumer.vertex(this.model, x + nSX, y + nSY, z1).color(this.r, this.g, this.b, this.a).texture(nSX >= sX ? this.uEnd : this.uEnd - ((this.uEnd - this.uStart) * (nSX / sX)), nSY >= sY ? this.vEnd : this.vEnd - ((this.vEnd - this.vStart) * (nSY / sY))).overlay(this.u, this.v).light(this.l).normal(this.normal, this.nX, this.nY, this.nZ).next();
+					this.consumer.vertex(this.model, x + nSX, y, z1).color(this.r, this.g, this.b, this.a).texture(nSX >= sX ? this.uEnd : this.uEnd - ((this.uEnd - this.uStart) * (nSX / sX)), this.vStart).overlay(this.u, this.v).light(this.l).normal(this.normal, this.nX, this.nY, this.nZ).next();
+					this.consumer.vertex(this.model, x, y, z1).color(this.r, this.g, this.b, this.a).texture(this.uStart, this.vStart).overlay(this.u, this.v).light(this.l).normal(this.normal, this.nX, this.nY, this.nZ).next();
+
+					if (this.consumers instanceof VertexConsumerProvider.Immediate) {
+						((VertexConsumerProvider.Immediate) this.consumers).draw(this.layer);
+					}
+				}
 			}
+
+
 		}
 	}
 }

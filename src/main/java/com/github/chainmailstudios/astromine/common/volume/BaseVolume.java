@@ -1,15 +1,11 @@
 package com.github.chainmailstudios.astromine.common.volume;
 
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.google.common.base.Objects;
-import com.google.common.math.LongMath;
 import net.minecraft.nbt.CompoundTag;
 
-import java.math.RoundingMode;
-
 public class BaseVolume {
-	protected Fraction fraction = Fraction.EMPTY;
+	protected Fraction fraction = Fraction.empty();
 
 	protected Fraction size = new Fraction(Integer.MAX_VALUE, 1);
 
@@ -31,7 +27,7 @@ public class BaseVolume {
 	}
 
 	public boolean isEmpty() {
-		return this.getFraction().equals(Fraction.EMPTY);
+		return this.getFraction().equals(Fraction.empty());
 	}
 
 	public Fraction getFraction() {
@@ -60,17 +56,18 @@ public class BaseVolume {
 	/**
 	 * Takes a Volume out of this Volume.
 	 */
-	public <T extends BaseVolume> T take(Fraction taken) {
+	public <T extends BaseVolume> T extractVolume(Fraction taken) {
 		T volume = (T) new BaseVolume();
-		push(volume, taken);
+		pushVolume(volume, taken);
 		return volume;
 	}
 
-	/**
-	 * Adds to this Volume.
-	 */
-	public <T extends BaseVolume> T give(Fraction pushed) {
-		return (T) new BaseVolume(Fraction.add(fraction, pushed));
+	public <T extends BaseVolume> T insertVolume(Fraction fraction) {
+		BaseVolume volume = new BaseVolume(fraction);
+
+		this.pullVolume(volume, fraction);
+
+		return (T) volume;
 	}
 
 	/**
@@ -80,7 +77,9 @@ public class BaseVolume {
 	 * minimum between requested size and available
 	 * for pulling into this.
 	 */
-	public <T extends BaseVolume> void pull(T target, Fraction pulled) {
+	public <T extends BaseVolume> void pullVolume(T target, Fraction pulled) {
+		if (target.fraction.isSmallerOrEqualThan(Fraction.empty())) return;
+
 		Fraction available = Fraction.subtract(this.size, this.fraction);
 
 		pulled = Fraction.min(pulled, available);
@@ -107,7 +106,9 @@ public class BaseVolume {
 	 * minimum between requested size and available for
 	 * pushing into target.
 	 */
-	public <T extends BaseVolume> void push(T target, Fraction pushed) {
+	public <T extends BaseVolume> void pushVolume(T target, Fraction pushed) {
+		if (fraction.isSmallerOrEqualThan(Fraction.empty())) return;
+
 		Fraction available = Fraction.subtract(target.size, target.fraction);
 
 		pushed = Fraction.min(pushed, available);
@@ -135,9 +136,13 @@ public class BaseVolume {
 		this.size = size;
 	}
 
-	public boolean fits(Fraction fraction) {
+	public boolean hasAvailable(Fraction fraction) {
 		Fraction available = Fraction.subtract(getSize(), getFraction());
 		return available.equals(fraction) || available.isBiggerThan(fraction);
+	}
+
+	public boolean hasStored(Fraction fraction) {
+		return this.fraction.isBiggerOrEqualThan(fraction);
 	}
 
 	/**

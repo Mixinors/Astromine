@@ -21,7 +21,7 @@ import java.util.Iterator;
 public class AstromineItems {
 	public static final Item.Settings BASIC_SETTINGS = new Item.Settings().group(AstromineItemGroups.ASTROMINE);
 
-	public static final UncoloredSpawnEggItem SPACE_SLIME_SPAWN_EGG = register("space_slime_spawn_egg", new UncoloredSpawnEggItem(AstromineEntities.SPACE_SLIME, new Item.Settings().group(AstromineItemGroups.ASTROMINE)));
+	public static final UncoloredSpawnEggItem SPACE_SLIME_SPAWN_EGG = register("space_slime_spawn_egg", new UncoloredSpawnEggItem(AstromineEntityTypes.SPACE_SLIME, new Item.Settings().group(AstromineItemGroups.ASTROMINE)));
 
 	public static final SuperSpaceSlimeShooterItem SUPER_SPACE_SLIME_SHOOTER = register("super_space_slime_shooter", new SuperSpaceSlimeShooterItem(new Item.Settings().group(AstromineItemGroups.ASTROMINE)));
 	public static final Item SPACE_SLIME_BALL = register("space_slime_ball", new Item(new Item.Settings().group(AstromineItemGroups.ASTROMINE)));
@@ -143,7 +143,7 @@ public class AstromineItems {
 			});
 		}
 
-		if(FabricLoader.getInstance().isDevelopmentEnvironment()) {
+		if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
 			Registry.register(Registry.ITEM, AstromineCommon.identifier("meteor_spawner"), new MeteorSpawnerDevItem(new Item.Settings()));
 		}
 	}

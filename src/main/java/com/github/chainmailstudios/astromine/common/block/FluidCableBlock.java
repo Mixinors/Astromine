@@ -1,23 +1,20 @@
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
-import java.util.Arrays;
-
-public class FluidCableBlock extends PipeCableBlock {
+public class FluidCableBlock extends AbstractCableBlock {
 	public FluidCableBlock(Settings settings) {
 		super(settings);
 	}
 
 	@Override
-	public NetworkType getNetworkType() {
-		return AstromineNetworkTypes.FLUID;
+	public <T extends NetworkType> boolean acceptsType(T type) {
+		return type == AstromineNetworkTypes.FLUID;
 	}
 
 	@Override
-	public boolean accepts(Object... objects) {
-		return true;
+	public <T extends NetworkType> T getNetworkType() {
+		return (T) AstromineNetworkTypes.FLUID;
 	}
 }

@@ -2,29 +2,24 @@ package com.github.chainmailstudios.astromine.mixin;
 
 import com.github.chainmailstudios.astromine.common.fluid.AdvancedFluid;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.gas.AtmosphericManager;
 import com.github.chainmailstudios.astromine.common.item.SpaceSuitItem;
 import com.github.chainmailstudios.astromine.common.registry.BreathableRegistry;
-import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
 import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.misc.SpaceEntityPlacer;
-
-import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
+import com.github.chainmailstudios.astromine.component.WorldAtmosphereComponent;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -37,10 +32,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
-	@Shadow @Final private DefaultedList<ItemStack> equippedArmor;
-	int lastY = 0;
+	@Shadow
+	@Final
+	private DefaultedList<ItemStack> equippedArmor;
+
+	@Shadow
+	protected abstract int getNextAirUnderwater(int air);
+
+	@Shadow
+	protected abstract int getNextAirOnLand(int air);
+
+	int oxygen = 180;
 
 	long lastOxygenTick = 0;
+
+	private static int nextOxygen(boolean b, int o) {
+		return b ? o < 180 ? o + 1 : 180 : o > -20 ? o - 1 : -20;
+	}
 
 	@ModifyConstant(method = "travel(Lnet/minecraft/util/math/Vec3d;)V", constant = @Constant(doubleValue = 0.08D))
 	double getGravity(double original) {
@@ -53,30 +61,15 @@ public abstract class LivingEntityMixin {
 	void onTick(CallbackInfo callbackInformation) {
 		Entity entity = (Entity) (Object) this;
 
-		if ((int) entity.getPos().getY() != lastY && !entity.world.isClient) {
-			lastY = (int) entity.getPos().getY();
+		ComponentProvider componentProvider = ComponentProvider.fromWorld(entity.world);
 
-			int bY = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.BOTTOM, entity.world.getDimensionRegistryKey());
-			int tY = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.TOP, entity.world.getDimensionRegistryKey());
+		WorldAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);
 
-			if (lastY <= bY && bY != Integer.MIN_VALUE) {
-				RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.BOTTOM, entity.world.getDimensionRegistryKey()).getValue());
-
-				ServerWorld serverWorld = entity.world.getServer().getWorld(worldKey);
-
-				FabricDimensions.teleport(entity, serverWorld, SpaceEntityPlacer.FALL_FROM_SPACE);
-			} else if (lastY >= tY && tY != Integer.MIN_VALUE) {
-				RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.TOP, entity.world.getDimensionRegistryKey()).getValue());
-
-				ServerWorld serverWorld = entity.world.getServer().getWorld(worldKey);
-
-				FabricDimensions.teleport(entity, serverWorld, SpaceEntityPlacer.ENTER_SPACE);
-			}
-		}
-
-		FluidVolume atmosphere = AtmosphericManager.get(entity.world, entity.getBlockPos().offset(Direction.UP));
+		FluidVolume atmosphere = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
 
 		Fluid fluid;
+
+		boolean isBreathing = true;
 
 		if (!SpaceSuitItem.hasFullArmor(equippedArmor)) {
 			fluid = atmosphere.getFluid();
@@ -85,20 +78,23 @@ public abstract class LivingEntityMixin {
 			fluid = volume.getFluid();
 
 			if (volume.isEmpty()) {
-				fluid = Fluids.EMPTY;
-				entity.damage(DamageSource.DROWN, 1);
+				isBreathing = false;
 			}
 		}
 
-		if (fluid != Fluids.EMPTY && !BreathableRegistry.INSTANCE.contains(((Entity) (Object) this).getType(), fluid)) {
+		if (!BreathableRegistry.INSTANCE.contains(((Entity) (Object) this).getType(), fluid)) {
 			if (fluid instanceof AdvancedFluid && ((AdvancedFluid) fluid).isToxic()) {
-				entity.damage(DamageSource.DROWN, ((AdvancedFluid) fluid).getDamage());
-			} else {
-				entity.damage(DamageSource.DROWN, 1);
+				entity.damage(DamageSource.GENERIC, ((AdvancedFluid) fluid).getDamage());
 			}
+
+			isBreathing = false;
 		}
 
 		BlockState state = entity.world.getBlockState(entity.getBlockPos());
+
+		if (!(state.getBlock() instanceof FluidBlock)) {
+			state = entity.world.getBlockState(entity.getBlockPos().offset(Direction.UP));
+		}
 
 		if (state.getBlock() instanceof FluidBlock) {
 			FluidBlock block = (FluidBlock) state.getBlock();
@@ -108,8 +104,23 @@ public abstract class LivingEntityMixin {
 			fluid = fluidState.getFluid();
 
 			if (fluid instanceof AdvancedFluid && ((AdvancedFluid) fluid).isToxic()) {
-				entity.damage(DamageSource.LAVA, ((AdvancedFluid) fluid).getDamage());
+				entity.damage(DamageSource.GENERIC, ((AdvancedFluid) fluid).getDamage());
 			}
+
+			isBreathing = false;
+		}
+
+		if (!isBreathing && !((Object) this instanceof PlayerEntity && ((PlayerEntity) (Object) this).isCreative())) {
+			LivingEntity user = (LivingEntity) (Object) this;
+			oxygen = nextOxygen(false, oxygen);
+
+			if (oxygen <= -20) {
+				oxygen = 0;
+
+				user.damage(DamageSource.DROWN, 2.0F);
+			}
+		} else {
+			oxygen = nextOxygen(true, oxygen);
 		}
 
 		long currentTime = System.currentTimeMillis();

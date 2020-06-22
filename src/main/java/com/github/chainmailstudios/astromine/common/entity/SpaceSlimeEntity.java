@@ -1,5 +1,7 @@
 package com.github.chainmailstudios.astromine.common.entity;
 
+import com.github.chainmailstudios.astromine.common.entity.ai.JumpHoverGoal;
+import com.github.chainmailstudios.astromine.registry.AstromineParticles;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -7,9 +9,6 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.SlimeEntity;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.world.World;
-
-import com.github.chainmailstudios.astromine.common.entity.ai.JumpHoverGoal;
-import com.github.chainmailstudios.astromine.registry.AstromineParticles;
 
 public class SpaceSlimeEntity extends SlimeEntity {
 

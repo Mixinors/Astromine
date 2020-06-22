@@ -1,20 +1,13 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.entity.RocketEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
-
-
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.text.TranslatableText;
-
 import net.minecraft.client.MinecraftClient;
-
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.Identifier;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import net.minecraft.util.math.BlockPos;
 
 import java.util.UUID;
 
@@ -40,7 +33,7 @@ public class AstromineClientPackets {
 			int id = buffer.readInt();
 
 			context.getTaskQueue().execute(() -> {
-				RocketEntity rocketEntity = AstromineEntities.ROCKET.create(MinecraftClient.getInstance().world);
+				RocketEntity rocketEntity = AstromineEntityTypes.ROCKET.create(MinecraftClient.getInstance().world);
 
 				rocketEntity.setUuid(uuid);
 				rocketEntity.setEntityId(id);

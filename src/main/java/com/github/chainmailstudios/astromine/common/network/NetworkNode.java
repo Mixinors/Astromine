@@ -1,43 +1,67 @@
 package com.github.chainmailstudios.astromine.common.network;
 
+import com.google.common.base.Objects;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
 
 public class NetworkNode {
-	public BlockPos position;
+	private long pos;
 
-	public static NetworkNode of(BlockPos position) {
-		return new NetworkNode().setPosition(position);
+	public static NetworkNode of(BlockPos blockPos) {
+		return new NetworkNode(blockPos);
 	}
 
-	public BlockPos getPosition() {
-		return this.position;
+	public static NetworkNode of(long pos) {
+		return new NetworkNode(pos);
 	}
 
-	public NetworkNode setPosition(BlockPos position) {
-		this.position = position;
-		return this;
+	public NetworkNode() {
+		pos = Long.MIN_VALUE;
+	}
+
+	public NetworkNode(BlockPos blockPos) {
+		setBlockPos(blockPos);
+	}
+
+	public NetworkNode(long pos) {
+		setPos(pos);
+	}
+
+	public BlockPos getBlockPos() {
+		return BlockPos.fromLong(this.pos);
+	}
+
+	public void setBlockPos(BlockPos blockPos) {
+		this.pos = blockPos.asLong();
+	}
+
+	public long getPos() {
+		return pos;
+	}
+
+	public void setPos(long pos) {
+		this.pos = pos;
 	}
 
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putLong("position", position.asLong());
+		tag.putLong("pos", pos);
 		return tag;
 	}
 
 	public static NetworkNode fromTag(CompoundTag tag) {
-		return of(BlockPos.fromLong(tag.getLong("position")));
-	}
-
-	@Override
-	public int hashCode() {
-		return this.position.hashCode();
+		return of(tag.getLong("pos"));
 	}
 
 	@Override
 	public boolean equals(Object object) {
-		if (!(object instanceof NetworkNode)) {
-			return false;
-		}
-		return ((NetworkNode) object).position.equals(this.position);
+		if (this == object) return true;
+		if (!(object instanceof NetworkNode)) return false;
+		NetworkNode that = (NetworkNode) object;
+		return pos == that.pos;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(pos);
 	}
 }

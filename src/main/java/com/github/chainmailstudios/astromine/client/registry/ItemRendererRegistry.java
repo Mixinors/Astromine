@@ -1,8 +1,7 @@
 package com.github.chainmailstudios.astromine.client.registry;
 
-import net.minecraft.item.Item;
-
 import com.github.chainmailstudios.astromine.client.ItemRenderer;
+import net.minecraft.item.Item;
 
 import java.util.HashMap;
 import java.util.Map;
