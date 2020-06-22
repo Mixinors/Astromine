@@ -38,6 +38,7 @@ public class WorldBridgeComponent implements Component {
 	}
 
 	public void add(long pos, Vec3i top) {
+		entries.computeIfAbsent(pos, (k) -> Sets.newHashSet());
 		entries.get(pos).add(top);
 	}
 
@@ -105,13 +106,15 @@ public class WorldBridgeComponent implements Component {
 
 			pointTag.putLong("pos", entry.getKey());
 
+			int i = 0;
+
 			for (Vec3i vec : entry.getValue()) {
-				vecTag.putLong(String.valueOf(vec.hashCode()), BlockPos.asLong(vec.getX(), vec.getY(), vec.getZ()));
+				vecTag.putLong(String.valueOf(++i), BlockPos.asLong(vec.getX(), vec.getY(), vec.getZ()));
 			}
 
 			pointTag.put("vecs", vecTag);
 
-			dataTag.put(String.valueOf(pointTag.hashCode()), pointTag);
+			dataTag.put("0", pointTag);
 		}
 
 		tag.put("data", dataTag);

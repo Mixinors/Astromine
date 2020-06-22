@@ -92,7 +92,7 @@ public class WorldAtmosphereComponent implements Component, Tickable {
 			pointTag.putLong("pos", entry.getKey().asLong());
 			pointTag.put("volume", entry.getValue().toTag(new CompoundTag()));
 
-			dataTag.put(String.valueOf(pointTag.hashCode()), pointTag);
+			dataTag.put("0", pointTag);
 		}
 
 		tag.put("data", dataTag);

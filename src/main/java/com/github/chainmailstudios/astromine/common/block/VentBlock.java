@@ -79,6 +79,8 @@ public class VentBlock extends FacingBlock implements BlockEntityProvider, Netwo
 			});
 
 			return ActionResult.CONSUME;
+		} else if (player.getStackInHand(hand).getItem() instanceof BucketItem) {
+			return super.onUse(state, world, blockPos, player, hand, hit);
 		} else {
 			return ActionResult.SUCCESS;
 		}
