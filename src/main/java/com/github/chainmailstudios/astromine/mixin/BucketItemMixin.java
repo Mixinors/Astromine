@@ -2,9 +2,10 @@ package com.github.chainmailstudios.astromine.mixin;
 
 import com.github.chainmailstudios.astromine.access.BucketAccessor;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
-import com.github.chainmailstudios.astromine.common.component.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -53,9 +54,9 @@ public abstract class BucketItemMixin implements BucketAccessor {
 
 				if (attached != null) {
 					if (attached instanceof ComponentProvider) {
-						ComponentProvider provider = (ComponentProvider) attached;
+						ComponentProvider provider = ComponentProvider.fromBlockEntity(attached);
 
-						FluidInventoryComponent inventory = provider.getComponent(result.getSide(), FluidInventoryComponent.class);
+						FluidInventoryComponent inventory = provider.getSidedComponent(result.getSide(), AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
 						if (inventory != null) {
 							FluidVolume bucketVolume = new FluidVolume(this.fluid, Fraction.BUCKET);

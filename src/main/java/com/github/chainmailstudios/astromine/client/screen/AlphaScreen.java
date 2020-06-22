@@ -1,13 +1,12 @@
 package com.github.chainmailstudios.astromine.client.screen;
 
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
-import com.github.chainmailstudios.astromine.common.component.EnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.container.AlphaContainer;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.widget.WEnergyVolumeFractionalVerticalBar;
-import com.github.chainmailstudios.astromine.widget.WFluidVolumeFractionalVerticalBar;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.common.widget.WEnergyVolumeFractionalVerticalBar;
+import com.github.chainmailstudios.astromine.common.widget.WFluidVolumeFractionalVerticalBar;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import spinnery.client.screen.BaseContainerScreen;
@@ -38,9 +37,9 @@ public abstract class AlphaScreen<T extends BaseContainer> extends BaseContainer
 
 		ComponentProvider componentProvider = linkedContainer.blockEntity;
 
-		EnergyVolume energyVolume = componentProvider.getComponent(null, EnergyInventoryComponent.class).getVolume(0);
+		EnergyVolume energyVolume = componentProvider.getSidedComponent(null, AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).getVolume(0);
 
-		FluidVolume fluidVolume = componentProvider.getComponent(null, FluidInventoryComponent.class).getVolume(0);
+		FluidVolume fluidVolume = componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(0);
 
 		energyBar.setEnergyVolume(energyVolume);
 

@@ -1,9 +1,12 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.component.Component;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
-import com.github.chainmailstudios.astromine.common.component.SimpleFluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import nerdhub.cardinal.components.api.ComponentType;
+import nerdhub.cardinal.components.api.component.Component;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
@@ -16,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 
 public abstract class BetaBlockEntity extends BlockEntity implements ComponentProvider, BlockEntityClientSerializable {
 	protected final SimpleFluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1);
@@ -25,7 +29,7 @@ public abstract class BetaBlockEntity extends BlockEntity implements ComponentPr
 	}
 
 	@Override
-	public <T extends Component> Collection<T> getComponents(@Nullable Direction direction) {
+	public <T extends Component> Collection<T> getSidedComponents(@Nullable Direction direction) {
 		if (direction == null) {
 			return (Collection<T>) Lists.newArrayList(fluidComponent);
 		} else if (getCachedState().getBlock() instanceof FacingBlock) {
@@ -37,6 +41,21 @@ public abstract class BetaBlockEntity extends BlockEntity implements ComponentPr
 		} else {
 			return (Collection<T>) Lists.newArrayList(fluidComponent);
 		}
+	}
+
+	@Override
+	public boolean hasComponent(ComponentType<?> type) {
+		return type == AstromineComponentTypes.FLUID_INVENTORY_COMPONENT ? true : false;
+	}
+
+	@Override
+	public <C extends Component> C getComponent(ComponentType<C> type) {
+		return type == AstromineComponentTypes.FLUID_INVENTORY_COMPONENT ? (C) fluidComponent : null;
+	}
+
+	@Override
+	public Set<ComponentType<?>> getComponentTypes() {
+		return Sets.newHashSet(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 	}
 
 	@Override

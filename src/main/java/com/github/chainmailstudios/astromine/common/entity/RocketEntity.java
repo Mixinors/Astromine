@@ -1,8 +1,8 @@
 package com.github.chainmailstudios.astromine.common.entity;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.SimpleFluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineParticles;
 import com.google.common.collect.BiMap;
