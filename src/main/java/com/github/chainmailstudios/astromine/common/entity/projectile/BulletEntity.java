@@ -1,5 +1,7 @@
 package com.github.chainmailstudios.astromine.common.entity.projectile;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
 import net.minecraft.block.AbstractGlassBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -15,9 +17,6 @@ import net.minecraft.util.crash.CrashReportSection;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
 
 public class BulletEntity extends PersistentProjectileEntity {
 	public Identifier texture = AstromineCommon.identifier("textures/entity/projectiles/bullet.png");

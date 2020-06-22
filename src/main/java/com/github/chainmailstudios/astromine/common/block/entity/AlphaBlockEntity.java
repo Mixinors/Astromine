@@ -1,8 +1,9 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.component.*;
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.common.component.Component;
+import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.SimpleEnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.SimpleFluidInventoryComponent;
 import com.google.common.collect.Lists;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
@@ -14,8 +15,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
-import java.util.Map;
+import java.util.Collection;
+import java.util.Optional;
 
 public abstract class AlphaBlockEntity extends BlockEntity implements ComponentProvider, BlockEntityClientSerializable {
 	protected final SimpleEnergyInventoryComponent energyComponent = new SimpleEnergyInventoryComponent(1);

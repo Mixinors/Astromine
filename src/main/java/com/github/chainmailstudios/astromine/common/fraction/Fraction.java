@@ -1,10 +1,7 @@
 package com.github.chainmailstudios.astromine.common.fraction;
 
-import net.minecraft.nbt.CompoundTag;
-
 import com.google.common.base.Objects;
-import com.google.common.math.LongMath;
-import java.math.RoundingMode;
+import net.minecraft.nbt.CompoundTag;
 
 public class Fraction extends Number implements Comparable<Fraction> {
 	public static final Fraction BUCKET = new Fraction(1, 1);
@@ -35,7 +32,7 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	}
 
 	private static long lowestCommonDenominator(long a, long b) {
-		return a == b ? a : a == 1 ? b : b == 1 ? a : (a * b) /  greatestCommonDivisor(a, b);
+		return a == b ? a : a == 1 ? b : b == 1 ? a : (a * b) / greatestCommonDivisor(a, b);
 	}
 
 	/**
@@ -181,7 +178,7 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	}
 
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putLongArray("values", new long[] {this.numerator, this.denominator});
+		tag.putLongArray("values", new long[]{this.numerator, this.denominator});
 
 		return tag;
 	}

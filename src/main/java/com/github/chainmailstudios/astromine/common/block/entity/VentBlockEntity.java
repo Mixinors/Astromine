@@ -1,8 +1,8 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.component.WorldAtmosphereComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
@@ -44,11 +44,11 @@ public class VentBlockEntity extends AlphaBlockEntity implements Tickable, Netwo
 
 				FluidVolume volume = atmosphereComponent.get(output);
 
-				volume.pullVolume(bucketVolume, Fraction.BUCKET);
+				fluidComponent.getVolume(0).pushVolume(bucketVolume, Fraction.BUCKET);
+				energyComponent.getVolume(0).extractVolume(Fraction.BOTTLE);
 
 				atmosphereComponent.add(output, volume);
 
-				energyComponent.getVolume(0).extractVolume(Fraction.BOTTLE);
 			}
 		}
 	}

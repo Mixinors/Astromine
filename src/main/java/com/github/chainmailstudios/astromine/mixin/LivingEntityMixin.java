@@ -4,15 +4,11 @@ import com.github.chainmailstudios.astromine.common.fluid.AdvancedFluid;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.item.SpaceSuitItem;
 import com.github.chainmailstudios.astromine.common.registry.BreathableRegistry;
-import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
 import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.component.WorldAtmosphereComponent;
-import com.github.chainmailstudios.astromine.misc.SpaceEntityPlacer;
-
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
-import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.entity.Entity;
@@ -22,11 +18,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -39,13 +32,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
-	@Shadow @Final private DefaultedList<ItemStack> equippedArmor;
+	@Shadow
+	@Final
+	private DefaultedList<ItemStack> equippedArmor;
 
-	@Shadow protected abstract int getNextAirUnderwater(int air);
+	@Shadow
+	protected abstract int getNextAirUnderwater(int air);
 
-	@Shadow protected abstract int getNextAirOnLand(int air);
-
-	int lastY = 0;
+	@Shadow
+	protected abstract int getNextAirOnLand(int air);
 
 	int oxygen = 180;
 
@@ -65,27 +60,6 @@ public abstract class LivingEntityMixin {
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	void onTick(CallbackInfo callbackInformation) {
 		Entity entity = (Entity) (Object) this;
-
-		if ((int) entity.getPos().getY() != lastY && !entity.world.isClient) {
-			lastY = (int) entity.getPos().getY();
-
-			int bY = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.BOTTOM, entity.world.getDimensionRegistryKey());
-			int tY = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.TOP, entity.world.getDimensionRegistryKey());
-
-			if (lastY <= bY && bY != Integer.MIN_VALUE) {
-				RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.BOTTOM, entity.world.getDimensionRegistryKey()).getValue());
-
-				ServerWorld serverWorld = entity.world.getServer().getWorld(worldKey);
-
-				FabricDimensions.teleport(entity, serverWorld, SpaceEntityPlacer.FALL_FROM_SPACE);
-			} else if (lastY >= tY && tY != Integer.MIN_VALUE) {
-				RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.TOP, entity.world.getDimensionRegistryKey()).getValue());
-
-				ServerWorld serverWorld = entity.world.getServer().getWorld(worldKey);
-
-				FabricDimensions.teleport(entity, serverWorld, SpaceEntityPlacer.ENTER_SPACE);
-			}
-		}
 
 		ComponentProvider componentProvider = ComponentProvider.fromWorld(entity.world);
 

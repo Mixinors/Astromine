@@ -3,7 +3,6 @@ package com.github.chainmailstudios.astromine.common.block.entity;
 import com.github.chainmailstudios.astromine.common.component.Component;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.SimpleEnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.google.common.collect.Lists;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
@@ -14,7 +13,8 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Optional;
 
 public abstract class DeltaBlockEntity extends BlockEntity implements ComponentProvider, BlockEntityClientSerializable {
 	protected final SimpleEnergyInventoryComponent energyComponent = new SimpleEnergyInventoryComponent(1);
@@ -47,7 +47,7 @@ public abstract class DeltaBlockEntity extends BlockEntity implements ComponentP
 
 	@Override
 	public void fromTag(BlockState state, CompoundTag tag) {
-		energyComponent.read(energyComponent, tag.getCompound("energy"), Optional.empty(), Optional.empty());;
+		energyComponent.read(energyComponent, tag.getCompound("energy"), Optional.empty(), Optional.empty());
 
 		super.fromTag(state, tag);
 	}

@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine.common.component;
 
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 
 import java.util.ArrayList;

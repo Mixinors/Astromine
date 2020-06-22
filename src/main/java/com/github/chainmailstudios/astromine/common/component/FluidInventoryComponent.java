@@ -30,35 +30,35 @@ public interface FluidInventoryComponent extends Component {
 		return this.getContents().values().stream().map(FluidVolume::copy).collect(Collectors.toList());
 	}
 
-	default boolean  canInsert()  {
+	default boolean canInsert() {
 		return true;
 	}
 
-	default boolean  canInsert(int slot) {
+	default boolean canInsert(int slot) {
 		return true;
 	}
 
-	default boolean  canInsert(FluidVolume volume) {
+	default boolean canInsert(FluidVolume volume) {
 		return true;
 	}
 
-	default boolean  canInsert(FluidVolume volume, int slot) {
-		return true;
-	}
-	
-	default boolean  canExtract() {
+	default boolean canInsert(FluidVolume volume, int slot) {
 		return true;
 	}
 
-	default boolean  canExtract(int slot) {
+	default boolean canExtract() {
 		return true;
 	}
 
-	default boolean  canExtract(FluidVolume volume) {
+	default boolean canExtract(int slot) {
 		return true;
 	}
 
-	default boolean  canExtract(FluidVolume volume, int slot) {
+	default boolean canExtract(FluidVolume volume) {
+		return true;
+	}
+
+	default boolean canExtract(FluidVolume volume, int slot) {
 		return true;
 	}
 
@@ -136,7 +136,7 @@ public interface FluidInventoryComponent extends Component {
 		Optional<FluidVolume> matchingVolumeOptional = Optional.ofNullable(this.getVolume(slot));
 
 		if (matchingVolumeOptional.isPresent()) {
-			if (matchingVolumeOptional.get().canExtract(matchingVolumeOptional.get().getFluid(), fraction)) { ;
+			if (matchingVolumeOptional.get().canExtract(matchingVolumeOptional.get().getFluid(), fraction)) {
 				return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().extractVolume(matchingVolumeOptional.get().getFluid(), fraction));
 			} else {
 				return new TypedActionResult<>(ActionResult.FAIL, FluidVolume.empty());

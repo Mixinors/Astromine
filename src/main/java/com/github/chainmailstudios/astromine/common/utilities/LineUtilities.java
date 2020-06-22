@@ -9,8 +9,8 @@ public class LineUtilities {
 	/**
 	 * Builds a Bezier curve from two points. Current implementation needs to be reworked.
 	 *
-	 * @param posA the first specified position.
-	 * @param posB the second specified position.
+	 * @param posA     the first specified position.
+	 * @param posB     the second specified position.
 	 * @param segments the segments between both positions.
 	 * @return the dots of the requested curve.
 	 */
@@ -25,8 +25,8 @@ public class LineUtilities {
 		double y3 = posB.getY();
 		double z3 = posB.getZ();
 
-		double x2 = (x3 + x1) / 2d;
-		double y2 = (y3 + y1) / 2d + 128;
+		double x2 = posC.getX();
+		double y2 = posC.getY();
 
 		double dZ = (z3 - z1) / segments;
 		double cZ = 0;

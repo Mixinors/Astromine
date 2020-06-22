@@ -1,9 +1,8 @@
 package com.github.chainmailstudios.astromine.common.item.weapon.variant.ammo;
 
-import net.minecraft.item.Item;
-
 import com.github.chainmailstudios.astromine.common.item.weapon.BaseAmmo;
 import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
+import net.minecraft.item.Item;
 
 public class Ammunition {
 	public static final class Nato762x51mm extends BaseAmmo {

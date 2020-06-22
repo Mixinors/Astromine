@@ -29,35 +29,35 @@ public interface EnergyInventoryComponent extends Component {
 		return this.getContents().values().stream().map(EnergyVolume::copy).collect(Collectors.toList());
 	}
 
-	default boolean  canInsert()  {
+	default boolean canInsert() {
 		return true;
 	}
 
-	default boolean  canInsert(int slot) {
+	default boolean canInsert(int slot) {
 		return true;
 	}
 
-	default boolean  canInsert(EnergyVolume volume) {
+	default boolean canInsert(EnergyVolume volume) {
 		return true;
 	}
 
-	default boolean  canInsert(EnergyVolume volume, int slot) {
-		return true;
-	}
-	
-	default boolean  canExtract() {
+	default boolean canInsert(EnergyVolume volume, int slot) {
 		return true;
 	}
 
-	default boolean  canExtract(int slot) {
+	default boolean canExtract() {
 		return true;
 	}
 
-	default boolean  canExtract(EnergyVolume volume) {
+	default boolean canExtract(int slot) {
 		return true;
 	}
 
-	default boolean  canExtract(EnergyVolume volume, int slot) {
+	default boolean canExtract(EnergyVolume volume) {
+		return true;
+	}
+
+	default boolean canExtract(EnergyVolume volume, int slot) {
 		return true;
 	}
 

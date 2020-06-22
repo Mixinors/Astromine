@@ -2,8 +2,8 @@ package com.github.chainmailstudios.astromine.mixin;
 
 import com.github.chainmailstudios.astromine.access.BucketAccessor;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.component.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.Block;
@@ -32,7 +32,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BucketItem.class)
 public abstract class BucketItemMixin implements BucketAccessor {
-	@Shadow @Final private Fluid fluid;
+	@Shadow
+	@Final
+	private Fluid fluid;
 
 	@Inject(at = @At("HEAD"), method = "use(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/TypedActionResult;", cancellable = true)
 	void onUse(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> callbackInformationReturnable) {
@@ -84,7 +86,7 @@ public abstract class BucketItemMixin implements BucketAccessor {
 		float k = MathHelper.sin(-f * 0.017453292F);
 		float l = i * j;
 		float n = h * j;
-		Vec3d vec3d2 = vec3d.add((double)l * 5.0D, (double)k * 5.0D, (double)n * 5.0D);
+		Vec3d vec3d2 = vec3d.add((double) l * 5.0D, (double) k * 5.0D, (double) n * 5.0D);
 		return world.rayTrace(new RayTraceContext(vec3d, vec3d2, RayTraceContext.ShapeType.OUTLINE, fluidHandling, player));
 	}
 

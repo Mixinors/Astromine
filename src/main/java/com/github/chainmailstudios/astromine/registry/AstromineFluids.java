@@ -16,8 +16,8 @@ public class AstromineFluids {
 			.build();
 
 	public static final Fluid ROCKET_FUEL = AdvancedFluid.builder()
-			.fog(0x7ebf6952)
-			.tint(0x7ebf6952)
+			.fog(0x7e9ed5f7)
+			.tint(0xff9ed5f7)
 			.damage(4)
 			.toxic(true)
 			.infinite(false)

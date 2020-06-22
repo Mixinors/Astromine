@@ -1,21 +1,15 @@
 package com.github.chainmailstudios.astromine.common.component;
 
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.TypedActionResult;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 import org.apache.logging.log4j.Level;
 
-import java.util.Map;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -56,35 +50,35 @@ public interface ItemInventoryComponent extends Component {
 		return this.getItemContents().values().stream().map(ItemStack::copy).collect(Collectors.toList());
 	}
 
-	default boolean  canInsert()  {
+	default boolean canInsert() {
 		return true;
 	}
 
-	default boolean  canInsert(int slot) {
+	default boolean canInsert(int slot) {
 		return true;
 	}
 
-	default boolean  canInsert(ItemStack stack) {
+	default boolean canInsert(ItemStack stack) {
 		return true;
 	}
 
-	default boolean  canInsert(ItemStack stack, int slot) {
+	default boolean canInsert(ItemStack stack, int slot) {
 		return true;
 	}
 
-	default boolean  canExtract() {
+	default boolean canExtract() {
 		return true;
 	}
 
-	default boolean  canExtract(int slot) {
+	default boolean canExtract(int slot) {
 		return true;
 	}
 
-	default boolean  canExtract(ItemStack stack) {
+	default boolean canExtract(ItemStack stack) {
 		return true;
 	}
 
-	default boolean  canExtract(ItemStack stack, int slot) {
+	default boolean canExtract(ItemStack stack, int slot) {
 		return true;
 	}
 
@@ -115,9 +109,9 @@ public interface ItemInventoryComponent extends Component {
 			ItemStack storedStack = entry.getValue();
 
 			return ((storedStack.getItem() == finalStack.getItem() && storedStack.getMaxCount() - storedStack.getCount() >= count && (!storedStack.hasTag() && !finalStack.hasTag()) || (storedStack.hasTag() && finalStack.hasTag() && storedStack.getTag()
-			                                                                                                                                                                                                                                       .equals(finalStack
-					                                                                                                                                                                                                                                               .getTag()))) || storedStack
-							                                                                                                                                                                                                                                                               .isEmpty()) && this.canInsert(
+					.equals(finalStack
+							.getTag()))) || storedStack
+					.isEmpty()) && this.canInsert(
 					finalStack);
 		}).findFirst();
 
@@ -217,7 +211,7 @@ public interface ItemInventoryComponent extends Component {
 	/**
 	 * Extracts a specific ItemStack from this inventory if possible, from a generic non-existent position, the count extracted depending on the specified count.
 	 *
-	 * @param slot the slot of the specified stack.
+	 * @param slot  the slot of the specified stack.
 	 * @param count the specified count.
 	 * @return SUCCESS w. stack if extracted; FAIL w. empty if not.
 	 */
@@ -245,7 +239,7 @@ public interface ItemInventoryComponent extends Component {
 	 *
 	 * @param source the specified source.
 	 * @param subtag the optional subtag.
-	 * @param range the optional range.
+	 * @param range  the optional range.
 	 */
 	default CompoundTag write(ItemInventoryComponent source, Optional<String> subtag, Optional<Range<Integer>> range) {
 		CompoundTag tag = new CompoundTag();
@@ -257,9 +251,9 @@ public interface ItemInventoryComponent extends Component {
 	 * Serializes this inventory to an existing CompoundTag. If a subtag is passed, contents are serialized to it. If a range is passed, only contents in slots within the range are serialized. If a subtag is specified, the inventory is written to the
 	 * subtag.
 	 *
-	 * @param tag the specified tag.
+	 * @param tag    the specified tag.
 	 * @param subtag the optional subtag.
-	 * @param range the optional range.
+	 * @param range  the optional range.
 	 */
 	default void write(ItemInventoryComponent source, CompoundTag tag, Optional<String> subtag, Optional<Range<Integer>> range) {
 		if (source == null || source.getItemSize() <= 0) {
@@ -306,9 +300,9 @@ public interface ItemInventoryComponent extends Component {
 	 * Deserializes a CompoundTag to an existing inventory. If a range is passed, contents are only deserialized for the given range. If a subtag is passed, the inventory is read form the subtag.
 	 *
 	 * @param target the specified target.
-	 * @param tag the specified tag.
+	 * @param tag    the specified tag.
 	 * @param subtag the optional subtag.
-	 * @param range the optional range.
+	 * @param range  the optional range.
 	 */
 	default void read(ItemInventoryComponent target, CompoundTag tag, Optional<String> subtag, Optional<Range<Integer>> range) {
 		if (tag == null) {

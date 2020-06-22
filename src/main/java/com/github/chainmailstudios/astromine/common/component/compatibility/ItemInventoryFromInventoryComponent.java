@@ -60,7 +60,7 @@ public interface ItemInventoryFromInventoryComponent extends Inventory {
 	/**
 	 * Extracts an ItemStack from the specified slot, the count extracted depending on the specified count.
 	 *
-	 * @param slot the specified slot.
+	 * @param slot  the specified slot.
 	 * @param count the specified count.
 	 * @return the requested ItemStack.
 	 */
@@ -95,7 +95,7 @@ public interface ItemInventoryFromInventoryComponent extends Inventory {
 	/**
 	 * Overrides the ItemStack in the specified slot with the specified stack.
 	 *
-	 * @param slot the specified slot.
+	 * @param slot  the specified slot.
 	 * @param stack the specified stack.
 	 */
 	@Override

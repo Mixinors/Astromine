@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.container.FuelGeneratorContainer;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
@@ -10,6 +11,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineFluids;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -29,6 +31,15 @@ public class FuelGeneratorBlockEntity extends AlphaBlockEntity implements Networ
 			energyComponent.getVolume(0).setFraction(Fraction.add(energyComponent.getVolume(0).getFraction(), Fraction.BUCKET));
 		}
 
+		for (PlayerEntity playerEntity : world.getPlayers()) {
+			if (playerEntity.currentScreenHandler instanceof FuelGeneratorContainer) {
+				FuelGeneratorContainer container = (FuelGeneratorContainer) playerEntity.currentScreenHandler;
+
+				if (container.blockEntity == this && !world.isClient) {
+					sync();
+				}
+			}
+		}
 
 		for (Direction direction : Direction.values()) {
 			BlockPos position = getPos().offset(direction);

@@ -1,7 +1,7 @@
 package com.github.chainmailstudios.astromine.common.volume.fluid;
 
-import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineFluids;
 import com.google.common.base.Objects;
 import net.minecraft.fluid.Fluid;
@@ -126,26 +126,48 @@ public class FluidVolume extends BaseVolume {
 
 		FluidVolume volume = new FluidVolume(this.fluid, super.extractVolume(fraction).getFraction());
 
+		if (this.fraction.equals(Fraction.empty())) this.fluid = Fluids.EMPTY;
+
 		return (T) volume;
 	}
 
 	@Override
 	public <T extends BaseVolume> T extractVolume(Fraction taken) {
-		return (T) new FluidVolume(fluid, super.extractVolume(taken).getFraction());
+		T t = (T) new FluidVolume(fluid, super.extractVolume(taken).getFraction());
+
+		if (this.fraction.equals(Fraction.empty())) this.fluid = Fluids.EMPTY;
+
+		return t;
 	}
 
 	@Override
 	public <T extends BaseVolume> T insertVolume(Fraction fraction) {
-		return (T) new FluidVolume(fluid, super.insertVolume(fraction).getFraction());
+		T t = (T) new FluidVolume(fluid, super.insertVolume(fraction).getFraction());
+
+		return t;
 	}
 
 	public <T extends BaseVolume> void pullVolume(T target, Fraction pulled) {
-		if (target instanceof FluidVolume && ((FluidVolume) target).getFluid() != fluid) setFluid(((FluidVolume) target).getFluid());
+		if (target instanceof FluidVolume && ((FluidVolume) target).getFluid() != fluid) {
+			setFluid(((FluidVolume) target).getFluid());
+		}
+
+		if (target instanceof FluidVolume && target.getFraction().equals(Fraction.empty())) {
+			if (target.getFraction().equals(Fraction.empty())) {
+				((FluidVolume) target).setFluid(Fluids.EMPTY);
+			}
+		}
+
 		super.pullVolume(target, pulled);
 	}
 
 	public <T extends BaseVolume> void pushVolume(T target, Fraction pushed) {
-		if (target instanceof FluidVolume && ((FluidVolume) target).getFluid() != fluid) ((FluidVolume) target).setFluid(fluid);
+		if (target instanceof FluidVolume && ((FluidVolume) target).getFluid() != fluid) {
+			((FluidVolume) target).setFluid(fluid);
+		}
+
+		if (this.fraction.equals(Fraction.empty())) this.fluid = Fluids.EMPTY;
+
 		super.pushVolume(target, pushed);
 	}
 

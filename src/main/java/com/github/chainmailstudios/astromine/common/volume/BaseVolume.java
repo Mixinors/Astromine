@@ -1,10 +1,7 @@
 package com.github.chainmailstudios.astromine.common.volume;
 
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.google.common.base.Objects;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
 
 public class BaseVolume {

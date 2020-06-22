@@ -20,7 +20,7 @@ public class BreathableRegistry {
 	}
 
 	public void register(EntityType<?> type, Tag<Fluid>... tags) {
-		for(Tag<Fluid> tag:tags) {
+		for (Tag<Fluid> tag : tags) {
 			register(type, tag);
 		}
 	}
@@ -30,9 +30,9 @@ public class BreathableRegistry {
 	}
 
 	public boolean contains(EntityType<?> type, Fluid fluid) {
-		if(ENTRIES.containsKey(type)) {
-			for(Tag<Fluid> tag:ENTRIES.get(type)) {
-				if(tag.contains(fluid)) return true;
+		if (ENTRIES.containsKey(type)) {
+			for (Tag<Fluid> tag : ENTRIES.get(type)) {
+				if (tag.contains(fluid)) return true;
 			}
 		}
 		return false;

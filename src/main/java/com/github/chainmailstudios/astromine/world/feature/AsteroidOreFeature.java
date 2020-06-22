@@ -1,6 +1,14 @@
 package com.github.chainmailstudios.astromine.world.feature;
 
-import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
+import com.github.chainmailstudios.astromine.common.registry.AsteroidOreRegistry;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.mojang.serialization.Codec;
+import com.terraformersmc.shapes.api.Position;
+import com.terraformersmc.shapes.api.Quaternion;
+import com.terraformersmc.shapes.api.Shape;
+import com.terraformersmc.shapes.impl.Shapes;
+import com.terraformersmc.shapes.impl.layer.transform.RotateLayer;
+import com.terraformersmc.shapes.impl.layer.transform.TranslateLayer;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ServerWorldAccess;
@@ -8,16 +16,6 @@ import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
-import com.mojang.serialization.Codec;
-
-import com.github.chainmailstudios.astromine.common.registry.AsteroidOreRegistry;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
-import com.terraformersmc.shapes.api.Position;
-import com.terraformersmc.shapes.api.Quaternion;
-import com.terraformersmc.shapes.api.Shape;
-import com.terraformersmc.shapes.impl.Shapes;
-import com.terraformersmc.shapes.impl.layer.transform.RotateLayer;
-import com.terraformersmc.shapes.impl.layer.transform.TranslateLayer;
 
 import java.util.Collections;
 import java.util.List;
@@ -48,8 +46,8 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 		Block ore = ores.get(random.nextInt(ores.size()));
 
 		Shape vein = Shapes.ellipsoid((float) xSize, (float) ySize, (float) zSize)
-		                   .applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true)))
-		                   .applyLayer(TranslateLayer.of(Position.of(featurePosition)));
+				.applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true)))
+				.applyLayer(TranslateLayer.of(Position.of(featurePosition)));
 
 		for (Position streamPosition : vein.stream().collect(Collectors.toSet())) {
 			BlockPos orePosition = streamPosition.toBlockPos();

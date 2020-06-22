@@ -1,10 +1,14 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.entity.RocketEntity;
+import com.github.chainmailstudios.astromine.common.entity.SpaceSlimeEntity;
+import com.github.chainmailstudios.astromine.common.entity.SuperSpaceSlimeEntity;
+import com.github.chainmailstudios.astromine.common.entity.projectile.BulletEntity;
+import com.google.common.collect.ImmutableSet;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
@@ -14,13 +18,6 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.entity.SpaceSlimeEntity;
-import com.github.chainmailstudios.astromine.common.entity.SuperSpaceSlimeEntity;
-import com.github.chainmailstudios.astromine.common.entity.projectile.BulletEntity;
-
-import com.google.common.collect.ImmutableSet;
 
 public class AstromineEntityTypes {
 
@@ -39,7 +36,7 @@ public class AstromineEntityTypes {
 					.dimensions(EntityDimensions.changing(1.5f, 17f))
 					.trackable(128, 4)
 					.build());
-	
+
 	public static void initialize() {
 		FabricDefaultAttributeRegistry.register(SPACE_SLIME, HostileEntity.createHostileAttributes());
 		FabricDefaultAttributeRegistry.register(SUPER_SPACE_SLIME, SuperSpaceSlimeEntity.createAttributes());
@@ -67,7 +64,7 @@ public class AstromineEntityTypes {
 	}
 
 	/**
-	 * @param id Name of EntityType instance to be registered
+	 * @param id   Name of EntityType instance to be registered
 	 * @param type EntityType instance to register
 	 * @return Registered EntityType
 	 */

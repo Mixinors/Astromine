@@ -1,8 +1,7 @@
 package com.github.chainmailstudios.astromine.common.entity.ai.superspaceslime;
 
-import net.minecraft.entity.ai.goal.Goal;
-
 import com.github.chainmailstudios.astromine.common.entity.SuperSpaceSlimeEntity;
+import net.minecraft.entity.ai.goal.Goal;
 
 import java.util.EnumSet;
 

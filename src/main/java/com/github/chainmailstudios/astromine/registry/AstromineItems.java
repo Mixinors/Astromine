@@ -143,7 +143,7 @@ public class AstromineItems {
 			});
 		}
 
-		if(FabricLoader.getInstance().isDevelopmentEnvironment()) {
+		if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
 			Registry.register(Registry.ITEM, AstromineCommon.identifier("meteor_spawner"), new MeteorSpawnerDevItem(new Item.Settings()));
 		}
 	}

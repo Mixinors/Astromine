@@ -1,7 +1,10 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.entity.*;
+import com.github.chainmailstudios.astromine.common.block.entity.FluidTankBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.FuelGeneratorBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.VentBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
