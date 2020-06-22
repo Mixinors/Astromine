@@ -58,6 +58,7 @@ dependencies {
     modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-item:${cardinal_components_version}"
     modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-level:${cardinal_components_version}"
     modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-world:${cardinal_components_version}"
+    modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-util:${cardinal_components_version}"
 
     // Shapes
     modImplementation "com.terraformersmc:shapes:${shapes_version}"
