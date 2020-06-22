@@ -16,41 +16,41 @@ import net.minecraft.util.math.BlockPos;
 import java.util.Map;
 
 public class NetworkTypeFluid extends NetworkType {
-    @Override
-    public void simulate(NetworkInstance controller) {
-        Multimap<BlockPos, FluidVolume> bufferMap = HashMultimap.create();
-        Multimap<BlockPos, FluidVolume> requesterMap = HashMultimap.create();
+	@Override
+	public void simulate(NetworkInstance controller) {
+		Multimap<BlockPos, FluidVolume> bufferMap = HashMultimap.create();
+		Multimap<BlockPos, FluidVolume> requesterMap = HashMultimap.create();
 
-        for (NetworkNode memberNode : controller.members) {
-            BlockEntity blockEntity = controller.getWorld().getBlockEntity(memberNode.getBlockPos());
+		for (NetworkNode memberNode : controller.members) {
+			BlockEntity blockEntity = controller.getWorld().getBlockEntity(memberNode.getBlockPos());
 
-            if (blockEntity instanceof ComponentProvider && blockEntity instanceof NetworkMember) {
-                ComponentProvider provider = (ComponentProvider) blockEntity;
+			if (blockEntity instanceof ComponentProvider && blockEntity instanceof NetworkMember) {
+				ComponentProvider provider = (ComponentProvider) blockEntity;
 
-                FluidInventoryComponent fluidComponent = provider.getComponent(null, FluidInventoryComponent.class);
+				FluidInventoryComponent fluidComponent = provider.getComponent(null, FluidInventoryComponent.class);
 
-                NetworkMember member = (NetworkMember) blockEntity;
+				NetworkMember member = (NetworkMember) blockEntity;
 
-                if (member.isBuffer()) {
-                    fluidComponent.getContents().forEach((key, volume) -> {
-                        bufferMap.put(blockEntity.getPos(), volume);
-                    });
-                } else if (member.isRequester()) {
-                    fluidComponent.getContents().forEach((key, volume) -> {
-                        requesterMap.put(blockEntity.getPos(), volume);
-                    });
-                }
-            }
-        }
+				if (member.isBuffer()) {
+					fluidComponent.getContents().forEach((key, volume) -> {
+						bufferMap.put(blockEntity.getPos(), volume);
+					});
+				} else if (member.isRequester()) {
+					fluidComponent.getContents().forEach((key, volume) -> {
+						requesterMap.put(blockEntity.getPos(), volume);
+					});
+				}
+			}
+		}
 
-        for (Map.Entry<BlockPos, FluidVolume> buffer : bufferMap.entries()) {
-            for (Map.Entry<BlockPos, FluidVolume> requester : requesterMap.entries()) {
-                if (!buffer.getValue().isEmpty() && !requester.getValue().isFull() && buffer.getValue().getFluid() == requester.getValue().getFluid()) {
-                    requester.getValue().pullVolume(buffer.getValue(), Fraction.BUCKET);
-                } else if (buffer.getValue().isEmpty()) {
-                    break;
-                }
-            }
-        }
-    }
+		for (Map.Entry<BlockPos, FluidVolume> buffer : bufferMap.entries()) {
+			for (Map.Entry<BlockPos, FluidVolume> requester : requesterMap.entries()) {
+				if (!buffer.getValue().isEmpty() && !requester.getValue().isFull() && buffer.getValue().getFluid() == requester.getValue().getFluid()) {
+					requester.getValue().pullVolume(buffer.getValue(), Fraction.BUCKET);
+				} else if (buffer.getValue().isEmpty()) {
+					break;
+				}
+			}
+		}
+	}
 }

@@ -1,5 +1,7 @@
 package com.github.chainmailstudios.astromine.common.item;
 
+import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
+import com.github.chainmailstudios.astromine.registry.AstromineSounds;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
@@ -19,9 +21,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
-import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
-import com.github.chainmailstudios.astromine.registry.AstromineSounds;
 
 public class FireExtinguisher extends Item {
 	public static final Item.Settings SETTINGS = new Item.Settings().maxCount(1).group(AstromineItemGroups.ASTROMINE);

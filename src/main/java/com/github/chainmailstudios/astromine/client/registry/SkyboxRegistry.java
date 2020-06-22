@@ -1,9 +1,8 @@
 package com.github.chainmailstudios.astromine.client.registry;
 
+import com.github.chainmailstudios.astromine.client.render.skybox.AbstractSkybox;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.dimension.DimensionType;
-
-import com.github.chainmailstudios.astromine.client.render.skybox.AbstractSkybox;
 
 import java.util.HashMap;
 import java.util.Map;

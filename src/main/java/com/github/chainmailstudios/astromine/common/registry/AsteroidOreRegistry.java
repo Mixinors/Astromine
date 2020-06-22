@@ -1,11 +1,10 @@
 package com.github.chainmailstudios.astromine.common.registry;
 
-import net.minecraft.block.Block;
-
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
-
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
+import net.minecraft.block.Block;
+
 import java.util.List;
 
 public class AsteroidOreRegistry {

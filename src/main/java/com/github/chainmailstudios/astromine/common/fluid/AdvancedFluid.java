@@ -2,7 +2,10 @@ package com.github.chainmailstudios.astromine.common.fluid;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.gas.Breathable;
-import com.github.chainmailstudios.astromine.registry.*;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.registry.AstromineFluids;
+import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
@@ -227,7 +230,7 @@ public abstract class AdvancedFluid extends FlowableFluid implements Breathable 
 			final Identifier flowingSpriteIdentifier = new Identifier("block/water_flow");
 			final Identifier listenerIdentifier = AstromineCommon.identifier(name + "_reload_listener");
 
-			final Sprite[] fluidSprites = { null, null };
+			final Sprite[] fluidSprites = {null, null};
 
 			ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEX).register((atlasTexture, registry) -> {
 				registry.register(stillSpriteIdentifier);

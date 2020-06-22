@@ -15,36 +15,36 @@ import net.minecraft.util.Identifier;
 
 public class RocketEntityRenderer extends EntityRenderer<RocketEntity> {
 
-    public static final Identifier identifier = AstromineCommon.identifier("textures/entity/rocket/rocket.png");
-    private final RocketEntityModel model = new RocketEntityModel();
+	public static final Identifier identifier = AstromineCommon.identifier("textures/entity/rocket/rocket.png");
+	private final RocketEntityModel model = new RocketEntityModel();
 
-    public RocketEntityRenderer(EntityRenderDispatcher dispatcher, final EntityRendererRegistry.Context context) {
-        super(dispatcher);
-    }
+	public RocketEntityRenderer(EntityRenderDispatcher dispatcher, final EntityRendererRegistry.Context context) {
+		super(dispatcher);
+	}
 
-    @Override
-    public void render(RocketEntity rocket, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumers, int light) {
-        matrixStack.push();
+	@Override
+	public void render(RocketEntity rocket, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumers, int light) {
+		matrixStack.push();
 
-        matrixStack.translate(0.0D, 0.375D, 0.0D);
+		matrixStack.translate(0.0D, 0.375D, 0.0D);
 
-        matrixStack.scale(-1.0F, -1.0F, 1.0F);
+		matrixStack.scale(-1.0F, -1.0F, 1.0F);
 
-        matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90.0F));
+		matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90.0F));
 
-        this.model.setAngles(rocket, 0, 0.0F, -0.1F, rocket.getYaw(tickDelta), rocket.getPitch(tickDelta));
+		this.model.setAngles(rocket, 0, 0.0F, -0.1F, rocket.getYaw(tickDelta), rocket.getPitch(tickDelta));
 
-        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(this.model.getLayer(this.getTexture(rocket)));
+		VertexConsumer vertexConsumer = vertexConsumers.getBuffer(this.model.getLayer(this.getTexture(rocket)));
 
-        this.model.render(matrixStack, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
+		this.model.render(matrixStack, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 
-        matrixStack.pop();
+		matrixStack.pop();
 
-        super.render(rocket, yaw, tickDelta, matrixStack, vertexConsumers, light);
-    }
+		super.render(rocket, yaw, tickDelta, matrixStack, vertexConsumers, light);
+	}
 
-    @Override
-    public Identifier getTexture(RocketEntity entity) {
-        return identifier;
-    }
+	@Override
+	public Identifier getTexture(RocketEntity entity) {
+		return identifier;
+	}
 }

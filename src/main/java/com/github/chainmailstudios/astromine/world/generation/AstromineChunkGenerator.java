@@ -2,6 +2,8 @@ package com.github.chainmailstudios.astromine.world.generation;
 
 import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -15,14 +17,12 @@ import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import java.util.Arrays;
 
 public class AstromineChunkGenerator extends ChunkGenerator {
 	public static Codec<AstromineChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(BiomeSource.field_24713.fieldOf("biome_source").forGetter(gen -> gen.biomeSource), Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed))
-	                                                                                                   .apply(instance, AstromineChunkGenerator::new));
+			.apply(instance, AstromineChunkGenerator::new));
 
 	private final BiomeSource biomeSource;
 	private final long seed;
@@ -59,7 +59,7 @@ public class AstromineChunkGenerator extends ChunkGenerator {
 		for (int x = x1; x <= x2; ++x) {
 			for (int z = z1; z <= z2; ++z) {
 				for (int y = y1; y <= y2; ++y) {
-					double value = noise.eval(x * 0.01, y * 0.01, z  * 0.01);
+					double value = noise.eval(x * 0.01, y * 0.01, z * 0.01);
 
 					if (value > 0.65) {
 						chunk.setBlockState(new BlockPos(x, y, z), AstromineBlocks.ASTEROID_STONE.getDefaultState(), false);

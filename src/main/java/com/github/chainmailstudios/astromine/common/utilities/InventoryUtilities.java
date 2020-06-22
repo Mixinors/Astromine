@@ -2,21 +2,15 @@ package com.github.chainmailstudios.astromine.common.utilities;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
-
 import spinnery.common.inventory.BaseInventory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class InventoryUtilities extends spinnery.common.utility.InventoryUtilities {
-	@Environment (EnvType.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public static List<ItemStack> toList(Ingredient ingredient) {
 		return new ArrayList<ItemStack>() {{
 			for (ItemStack stack : ingredient.getMatchingStacksClient()) {
@@ -49,7 +43,7 @@ public class InventoryUtilities extends spinnery.common.utility.InventoryUtiliti
 	}
 
 	public static BaseInventory singleOf(Inventory origin, int slot) {
-		return rangedOf(origin, new int[] {slot});
+		return rangedOf(origin, new int[]{slot});
 	}
 
 	public static BaseInventory rangedOf(Inventory origin, int[] slots) {

@@ -11,7 +11,6 @@ import net.fabricmc.fabric.api.event.world.WorldTickCallback;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Direction;
 
 public class AstromineCommonCallbacks {
@@ -36,7 +35,7 @@ public class AstromineCommonCallbacks {
 			WorldNetworkComponent component = new WorldNetworkComponent(world);
 			container.put(AstromineComponentTypes.WORLD_NETWORK_COMPONENT, component);
 
-			WorldTickCallback.EVENT.register((tickWorld ->  {
+			WorldTickCallback.EVENT.register((tickWorld -> {
 				if (tickWorld == component.getWorld()) {
 					component.tick();
 				}
@@ -47,7 +46,7 @@ public class AstromineCommonCallbacks {
 			WorldAtmosphereComponent component = new WorldAtmosphereComponent(world);
 			container.put(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT, component);
 
-			WorldTickCallback.EVENT.register((tickWorld ->  {
+			WorldTickCallback.EVENT.register((tickWorld -> {
 				if (tickWorld == component.getWorld()) {
 					component.tick();
 				}

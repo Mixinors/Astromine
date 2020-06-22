@@ -1,22 +1,17 @@
 package com.github.chainmailstudios.astromine.common.bridge;
 
 import com.github.chainmailstudios.astromine.common.utilities.VoxelShapeUtilities;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.Pair;
-import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class HolographicBridgeManager {
 	public static final Object2ObjectArrayMap<BlockView, Object2ObjectArrayMap<BlockPos, Set<Vec3i>>> LEVELS = new Object2ObjectArrayMap<>();

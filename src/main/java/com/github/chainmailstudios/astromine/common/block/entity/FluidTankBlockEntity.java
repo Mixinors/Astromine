@@ -5,7 +5,6 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
-import net.minecraft.util.Tickable;
 
 public class FluidTankBlockEntity extends BetaBlockEntity implements NetworkMember {
 	public FluidTankBlockEntity() {

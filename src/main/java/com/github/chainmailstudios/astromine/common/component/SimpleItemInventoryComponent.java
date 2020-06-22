@@ -1,13 +1,11 @@
 package com.github.chainmailstudios.astromine.common.component;
 
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
 
-import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Simple implementation of an InventoryComponent for usage anywhere one is required. Size is immutable and therefore defined on instantiation.

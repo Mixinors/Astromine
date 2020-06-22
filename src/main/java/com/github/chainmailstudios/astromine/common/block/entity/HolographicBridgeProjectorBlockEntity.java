@@ -1,7 +1,11 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.bridge.HolographicBridgeManager;
+import com.github.chainmailstudios.astromine.common.utilities.LineUtilities;
+import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.registry.AstromineSounds;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -13,12 +17,6 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
-
-import com.github.chainmailstudios.astromine.common.bridge.HolographicBridgeManager;
-import com.github.chainmailstudios.astromine.common.utilities.LineUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
-import com.github.chainmailstudios.astromine.registry.AstromineSounds;
 import org.jetbrains.annotations.NotNull;
 import spinnery.widget.api.Color;
 
@@ -127,9 +125,9 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 		}
 
 		this.segments = (ArrayList<Vector3f>) LineUtilities.getBezierSegments(new Vector3f(bOP.getX(), bOP.getY() + 1, bOP.getZ()),
-		                                                                      new Vector3f(nCP.getX(), nCP.getY() + 1, nCP.getZ()),
-		                                                                      new Vector3f(nCP.getX(), (bOP.getY() + nCP.getY()) / 2f, bCP.getZ()),
-		                                                                 distance * 16
+				new Vector3f(nCP.getX(), nCP.getY() + 1, nCP.getZ()),
+				new Vector3f((bOP.getX() + nCP.getX()) / 2f, (bOP.getY() + nCP.getY() + 2) / 2f, bCP.getZ()),
+				distance * 16
 		);
 
 		this.members = new ArrayList<>();
