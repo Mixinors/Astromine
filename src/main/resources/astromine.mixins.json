@@ -5,9 +5,9 @@
 	"compatibilityLevel": "JAVA_8",
 	"mixins": [
 		"AbstractMinecartEntityMixin", "BrewingRecipeRegistryMixin", "BucketItemMixin", "EggEntityMixin", "EntityMixin",
-		"FishingBobberEntityMixin", "FlamingAnvilCraftingMixin", "GravityEntityMixin",
-		"HoneyBlockMixin", "LivingEntityMixin", "SkyPropertiesMixin",
-		"SlimeEntityMixin", "SquidEntityMixin", "StepAndDestroyBlockGoalMixin", "ThreadExecutorMixin"
+		"FishingBobberEntityMixin", "FlamingAnvilCraftingMixin", "GravityEntityMixin", "HoneyBlockMixin",
+		"ItemEntityMixin", "LivingEntityMixin", "SkyPropertiesMixin", "SlimeEntityMixin", "SquidEntityMixin",
+		"StepAndDestroyBlockGoalMixin", "ThreadExecutorMixin"
 	],
 	"client": [
 		"BossBarHudMixin", "CrackParticleAccessor", "CurrentDownParticleMixin", "GameRendererMixin",

@@ -29,7 +29,7 @@ public abstract class EntityMixin {
 	float getDamageMultiplier(float damageMultiplier) {
 		World world = ((Entity) (Object) this).world;
 
-		return damageMultiplier *= (float) GravityRegistry.INSTANCE.get(world.getDimensionRegistryKey());
+		return damageMultiplier *= GravityRegistry.INSTANCE.get(world.getDimensionRegistryKey());
 	}
 
 	@Inject(at = @At("HEAD"), method = "tick()V")
