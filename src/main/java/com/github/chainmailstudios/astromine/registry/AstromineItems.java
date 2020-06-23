@@ -19,7 +19,7 @@ import net.minecraft.util.registry.Registry;
 import java.util.Iterator;
 
 public class AstromineItems {
-	public static final Item.Settings BASIC_SETTINGS = new Item.Settings().group(AstromineItemGroups.ASTROMINE);
+	public static final Item.Settings BASIC_SETTINGS = new Item.Settings().group(AstromineItemGroups.ASTROMINE).maxCount(64);
 
 	public static final UncoloredSpawnEggItem SPACE_SLIME_SPAWN_EGG = register("space_slime_spawn_egg", new UncoloredSpawnEggItem(AstromineEntityTypes.SPACE_SLIME, new Item.Settings().group(AstromineItemGroups.ASTROMINE)));
 
@@ -56,6 +56,31 @@ public class AstromineItems {
 	public static final Item ASTEROID_LAPIS_CLUSTER = register("asteroid_lapis_cluster", new Item(BASIC_SETTINGS));
 	public static final Item ASTEROID_DIAMOND_CLUSTER = register("asteroid_diamond_cluster", new Item(BASIC_SETTINGS));
 	public static final Item ASTEROID_EMERALD_CLUSTER = register("asteroid_emerald_cluster", new Item(BASIC_SETTINGS));
+
+	public static final Item METITE_DUST = register("metite_dust", new Item(BASIC_SETTINGS));
+	public static final Item IRON_DUST = register("iron_dust", new Item(BASIC_SETTINGS));
+	public static final Item GOLD_DUST = register("gold_dust", new Item(BASIC_SETTINGS));
+	public static final Item LAPIS_DUST = register("lapis_dust", new Item(BASIC_SETTINGS));
+	public static final Item DIAMOND_DUST = register("diamond_dust", new Item(BASIC_SETTINGS));
+	public static final Item EMERALD_DUST = register("emerald_dust", new Item(BASIC_SETTINGS));
+	public static final Item NETHERITE_DUST = register("netherite_dust", new Item(BASIC_SETTINGS));
+	public static final Item STELLUM_DUST = register("stellum_dust", new Item(BASIC_SETTINGS));
+
+	public static final Item METITE_PLATES = register("metite_plates", new Item(BASIC_SETTINGS));
+	public static final Item IRON_PLATES = register("iron_plates", new Item(BASIC_SETTINGS));
+	public static final Item GOLD_PLATES = register("gold_plates", new Item(BASIC_SETTINGS));
+	public static final Item NETHERITE_PLATES = register("netherite_plates", new Item(BASIC_SETTINGS));
+	public static final Item STELLUM_PLATES = register("stellum_plates", new Item(BASIC_SETTINGS));
+
+	public static final Item METITE_GEAR = register("metite_gear", new Item(BASIC_SETTINGS));
+	public static final Item IRON_GEAR = register("iron_gear", new Item(BASIC_SETTINGS));
+	public static final Item GOLD_GEAR = register("gold_gear", new Item(BASIC_SETTINGS));
+	public static final Item NETHERITE_GEAR = register("netherite_gear", new Item(BASIC_SETTINGS));
+	public static final Item STELLUM_GEAR = register("stellum_gear", new Item(BASIC_SETTINGS));
+
+	public static final Item BASIC_CIRCUIT = register("basic_circuit", new Item(BASIC_SETTINGS));
+	public static final Item ADVANCED_CIRCUIT = register("advanced_circuit", new Item(BASIC_SETTINGS));
+	public static final Item ELITE_CIRCUIT = register("elite_circuit", new Item(BASIC_SETTINGS));
 
 	// Tools
 	public static final Item HOLOGRAPHIC_CONNECTOR = register("holographic_connector", new HolographicConnector(new Item.Settings().group(AstromineItemGroups.ASTROMINE).maxCount(1)));

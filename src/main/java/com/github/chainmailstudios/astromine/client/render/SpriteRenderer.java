@@ -8,6 +8,7 @@ import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Matrix3f;
 import net.minecraft.util.math.Matrix4f;
+import spinnery.client.utility.ScissorArea;
 
 public class SpriteRenderer {
 	public static RenderPass beginPass() {
@@ -15,11 +16,11 @@ public class SpriteRenderer {
 	}
 
 	public static class RenderPass {
-		int x1 = 0;
-		int x2 = 1;
-		int y1 = 0;
-		int y2 = 0;
-		int z1 = 0;
+		float x1 = 0;
+		float x2 = 1;
+		float y1 = 0;
+		float y2 = 0;
+		float z1 = 0;
 		float uStart = 0F;
 		float uEnd = 1F;
 		float vStart = 0F;
@@ -31,9 +32,9 @@ public class SpriteRenderer {
 		int b = 0xff;
 		int a = 0xff;
 		int l = 0;
-		int nX = 0;
-		int nY = 0;
-		int nZ = 0;
+		float nX = 0;
+		float nY = 0;
+		float nZ = 0;
 		Sprite sprite;
 		VertexConsumer consumer;
 		VertexConsumerProvider consumers;
@@ -69,14 +70,14 @@ public class SpriteRenderer {
 			return this;
 		}
 
-		public RenderPass position(Matrix4f model, int x1, int y1, int x2, int y2, int z1) {
+		public RenderPass position(Matrix4f model, float x1, float y1, float x2, float y2, float z1) {
 			this.position(x1, y1, x2, y2, z1);
 			this.model = model;
 
 			return this;
 		}
 
-		public RenderPass position(int x1, int y1, int x2, int y2, int z1) {
+		public RenderPass position(float x1, float y1, float x2, float y2, float z1) {
 			this.x1 = x1;
 			this.y1 = y1;
 			this.x2 = x2;
@@ -97,7 +98,7 @@ public class SpriteRenderer {
 			return this;
 		}
 
-		public RenderPass sprite(int uStart, int uEnd, int vStart, int vEnd) {
+		public RenderPass sprite(float uStart, float uEnd, float vStart, float vEnd) {
 			this.uStart = uStart;
 			this.uEnd = uEnd;
 			this.vStart = vStart;
@@ -145,14 +146,14 @@ public class SpriteRenderer {
 			return this;
 		}
 
-		public RenderPass normal(Matrix3f normal, int nX, int nY, int nZ) {
+		public RenderPass normal(Matrix3f normal, float nX, float nY, float nZ) {
 			this.normal(nX, nY, nZ);
 			this.normal = normal;
 
 			return this;
 		}
 
-		public RenderPass normal(int nX, int nY, int nZ) {
+		public RenderPass normal(float nX, float nY, float nZ) {
 			this.nX = nX;
 			this.nY = nY;
 			this.nZ = nZ;
@@ -178,22 +179,59 @@ public class SpriteRenderer {
 				this.normal = this.matrices.peek().getNormal();
 			}
 
-			int sX = sprite.getWidth();
-			int sY = sprite.getHeight();
+			float sX = sprite.getWidth();
+			float sY = sprite.getHeight();
 
 			MinecraftClient.getInstance().getTextureManager().bindTexture(sprite.getId());
 
-			for (int y = y1; y < y2; y += Math.min(y2 - y, sY)) {
-				for (int x = x1; x < x2; x += Math.min(x2 - x, sX)) {
+			for (float y = y1; y < y2; y += Math.min(y2 - y, sY)) {
+				for (float x = x1; x < x2; x += Math.min(x2 - x, sX)) {
 					float nSX = Math.min(x2 - x, sX);
 					float nSY = Math.min(y2 - y, sY);
 
+					boolean isOverX = nSX < sX;
+					boolean isOverY = nSY < sY;
+
+					float dX = 0;
+					float dY = 0;
+
+					if (isOverX) {
+						dX = (uEnd - uStart) * (1 - (nSX / sX));
+					}
+					
+					if (isOverY) {
+						dY = (uEnd - uStart) * (1 - (nSY / sY));
+					}
+
 					this.consumer = consumers.getBuffer(RenderLayer.getSolid());
 
-					this.consumer.vertex(this.model, x, y + nSY, z1).color(this.r, this.g, this.b, this.a).texture(this.uStart, nSY >= sY ? this.vEnd : this.vEnd - ((this.vEnd - this.vStart) * (nSY / sY))).overlay(this.u, this.v).light(this.l).normal(this.normal, this.nX, this.nY, this.nZ).next();
-					this.consumer.vertex(this.model, x + nSX, y + nSY, z1).color(this.r, this.g, this.b, this.a).texture(nSX >= sX ? this.uEnd : this.uEnd - ((this.uEnd - this.uStart) * (nSX / sX)), nSY >= sY ? this.vEnd : this.vEnd - ((this.vEnd - this.vStart) * (nSY / sY))).overlay(this.u, this.v).light(this.l).normal(this.normal, this.nX, this.nY, this.nZ).next();
-					this.consumer.vertex(this.model, x + nSX, y, z1).color(this.r, this.g, this.b, this.a).texture(nSX >= sX ? this.uEnd : this.uEnd - ((this.uEnd - this.uStart) * (nSX / sX)), this.vStart).overlay(this.u, this.v).light(this.l).normal(this.normal, this.nX, this.nY, this.nZ).next();
-					this.consumer.vertex(this.model, x, y, z1).color(this.r, this.g, this.b, this.a).texture(this.uStart, this.vStart).overlay(this.u, this.v).light(this.l).normal(this.normal, this.nX, this.nY, this.nZ).next();
+					this.consumer.vertex(this.model, x, y + nSY, z1)
+							.color(this.r, this.g, this.b, this.a)
+							.texture(this.uStart, this.vEnd - dY)
+							.overlay(this.u, this.v)
+							.light(this.l)
+							.normal(this.normal, this.nX, this.nY, this.nZ)
+							.next();
+					this.consumer.vertex(this.model, x + nSX, y + nSY, z1)
+							.color(this.r, this.g, this.b, this.a)
+							.texture(this.uEnd - dX, this.vEnd - dY)
+							.overlay(this.u, this.v)
+							.light(this.l)
+							.normal(this.normal, this.nX, this.nY, this.nZ)
+							.next();
+					this.consumer.vertex(this.model, x + nSX, y, z1)
+							.color(this.r, this.g, this.b, this.a)
+							.texture(this.uEnd - dX, this.vStart)
+							.overlay(this.u, this.v)
+							.light(this.l)
+							.normal(this.normal, this.nX, this.nY, this.nZ)
+							.next();
+					this.consumer.vertex(this.model, x, y, z1).color(this.r, this.g, this.b, this.a)
+							.texture(this.uStart, this.vStart)
+							.overlay(this.u, this.v)
+							.light(this.l)
+							.normal(this.normal, this.nX, this.nY, this.nZ)
+							.next();
 
 					if (this.consumers instanceof VertexConsumerProvider.Immediate) {
 						((VertexConsumerProvider.Immediate) this.consumers).draw(this.layer);

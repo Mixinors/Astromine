@@ -34,6 +34,10 @@ public class AstromineContainers {
 		return new CreativeBufferContainer(synchronizationID, inventory, buffer.readBlockPos());
 	}));
 
+	public static final ScreenHandlerType<SorterContainer> SORTER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("sorter"), ((synchronizationID, inventory, buffer) -> {
+		return new SorterContainer(synchronizationID, inventory, buffer.readBlockPos());
+	}));
+
 	public static void initialize() {
 		// Unused.
 	}

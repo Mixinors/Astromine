@@ -52,5 +52,10 @@ public class AstromineScreens {
 			return new CreativeBufferContainerScreen(title, handler, inventory.player);
 		}));
 
+		ScreenRegistry.register(AstromineContainers.SORTER, (ScreenRegistry.Factory<SorterContainer, SorterContainerScreen>) ((handler, inventory, title) -> {
+			return new SorterContainerScreen(title, handler, inventory.player);
+		}));
+
+
 	}
 }

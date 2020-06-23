@@ -49,5 +49,6 @@ public class AstromineCommon implements ModInitializer {
 		AstromineGravities.initialize();
 		AstromineDimensionLayers.initialize();
 		AstromineCommonCallbacks.initialize();
+		AstromineRecipeSerializers.initialize();
 	}
 }

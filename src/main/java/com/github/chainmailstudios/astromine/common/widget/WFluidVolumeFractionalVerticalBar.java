@@ -61,14 +61,9 @@ public class WFluidVolumeFractionalVerticalBar extends WFractionalVerticalBar {
 		float sX = getWidth();
 		float sY = getHeight();
 
-		float rawHeight = MinecraftClient.getInstance().getWindow().getHeight();
-		float scale = (float) MinecraftClient.getInstance().getWindow().getScaleFactor();
-
-		float sBGY = (((sY / getLimitFraction().get().intValue()) * getProgressFraction().get().intValue()));
+		float sBGY = (((sY / getLimitFraction().get().floatValue()) * getProgressFraction().get().floatValue()));
 
 		BaseRenderer.drawTexturedQuad(matrices, provider, getX(), getY(), z, getWidth(), getHeight(), getBackgroundTexture());
-
-		ScissorArea foregroundArea = new ScissorArea((int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sX * scale), (int) (sBGY * scale));
 
 		if (getFluidVolume().getFluid() != Fluids.EMPTY) {
 			SpriteRenderer.beginPass()
@@ -79,11 +74,9 @@ public class WFluidVolumeFractionalVerticalBar extends WFractionalVerticalBar {
 					.overlay(OverlayTexture.DEFAULT_UV)
 					.alpha(0xff)
 					.normal(matrices.peek().getNormal(), 0, 0, 0)
-					.position(matrices.peek().getModel(), (int) x + 4, (int) y + 4, (int) x + (int) sX - 4, (int) y + (int) sY - 4, (int) z)
+					.position(matrices.peek().getModel(), x + 1, y + 1, x + sX - 1, y + (sBGY), z)
 					.next();
 		}
-
-		foregroundArea.destroy();
 
 		if (isFocused()) {
 			long progressNumerator = getProgressFraction().get().getNumerator();
