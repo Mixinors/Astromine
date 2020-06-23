@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.client.render.skybox;
+package com.github.chainmailstudios.astromine.client.render.sky.skybox;
 
 import net.minecraft.client.util.math.MatrixStack;
 

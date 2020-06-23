@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.common.miscellaneous;
+package com.github.chainmailstudios.astromine.common.entity.placer;
 
 import net.fabricmc.fabric.api.dimension.v1.EntityPlacer;
 import net.minecraft.block.pattern.BlockPattern;

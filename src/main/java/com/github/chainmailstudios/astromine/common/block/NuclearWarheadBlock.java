@@ -1,7 +1,7 @@
 package com.github.chainmailstudios.astromine.common.block;
 
 import com.github.chainmailstudios.astromine.common.container.VentContainer;
-import com.github.chainmailstudios.astromine.common.utilities.LargeExplosionAlgorithm;
+import com.github.chainmailstudios.astromine.common.miscellaneous.ExplosionAlgorithm;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -36,7 +36,7 @@ public class NuclearWarheadBlock extends Block {
 
 	private void tryDetonate(World world, BlockPos pos) {
 		if (world.isReceivingRedstonePower(pos)) {
-			LargeExplosionAlgorithm.explode(world, pos.getX(), pos.getY(), pos.getZ(), 128);
+			ExplosionAlgorithm.tryExploding(world, pos.getX(), pos.getY(), pos.getZ(), 128);
 		}
 	}
 
