@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "astromine:block/fluid_cable_side",
-		"particle": "astromine:block/cable/fluid_cable_side"
+		"particle": "astromine:block/fluid_cable_side"
 	},
 	"elements": [
 		{

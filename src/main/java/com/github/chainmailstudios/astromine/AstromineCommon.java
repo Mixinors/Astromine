@@ -2,11 +2,20 @@ package com.github.chainmailstudios.astromine;
 
 import blue.endless.jankson.Jankson;
 import com.github.chainmailstudios.astromine.registry.*;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class AstromineCommon implements ModInitializer {
 	public static final String LOG_ID = "Astromine";

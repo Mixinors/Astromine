@@ -1,6 +1,12 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "block/cube",
   "textures": {
-    "all": "astromine:block/reinforced_machine_side_blank"
+    "particle": "astromine:block/crafting_table_front",
+    "down": "astromine:block/machine_bottom",
+    "up": "astromine:block/machine_top",
+    "north": "astromine:block/fluid_tank_front",
+    "east": "astromine:block/machine_side",
+    "south": "astromine:block/machine_side",
+    "west": "astromine:block/machine_side"
   }
 }
