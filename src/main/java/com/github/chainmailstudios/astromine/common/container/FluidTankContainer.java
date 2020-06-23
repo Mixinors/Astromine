@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.container;
 
+import com.github.chainmailstudios.astromine.common.container.base.BetaContainer;
 import com.github.chainmailstudios.astromine.registry.AstromineContainers;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ScreenHandlerType;
@@ -12,6 +13,6 @@ public class FluidTankContainer extends BetaContainer {
 
 	@Override
 	public ScreenHandlerType<?> getType() {
-		return AstromineContainers.FLUID_TANK;
+		return AstromineContainers.TANK;
 	}
 }

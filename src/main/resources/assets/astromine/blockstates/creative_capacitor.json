@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "facing=down":  { "model": "astromine:block/creative_capacitor", "x": 180 },
+    "facing=up":    { "model": "astromine:block/creative_capacitor" },
+    "facing=north": { "model": "astromine:block/creative_capacitor" },
+    "facing=south": { "model": "astromine:block/creative_capacitor", "y": 180 },
+    "facing=west":  { "model": "astromine:block/creative_capacitor", "y": 270 },
+    "facing=east":  { "model": "astromine:block/creative_capacitor", "y": 90 }
+  }
+}

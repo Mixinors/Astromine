@@ -28,7 +28,7 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 	public ArrayList<Vector3f> segments = null;
 	public ArrayList<Vec3i> members = null;
 	public Direction direction = Direction.NORTH;
-	public Color color = Color.of(0x7e2fd3da);
+	public Color color = Color.of(0x7e80cad4);
 	public long last = 0;
 	private HolographicBridgeProjectorBlockEntity child = null;
 	private HolographicBridgeProjectorBlockEntity parent = null;

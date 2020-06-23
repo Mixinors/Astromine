@@ -16,8 +16,10 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import spinnery.client.utility.ScissorArea;
 
+import java.util.function.Supplier;
+
 public class WFluidVolumeFractionalVerticalBar extends WFractionalVerticalBar {
-	private FluidVolume volume;
+	private Supplier<FluidVolume> volume;
 
 	private final Identifier FLUID_BACKGROUND = AstromineCommon.identifier("textures/widget/fluid_volume_fractional_vertical_bar_background.png");
 
@@ -35,12 +37,12 @@ public class WFluidVolumeFractionalVerticalBar extends WFractionalVerticalBar {
 	}
 
 	public FluidVolume getFluidVolume() {
-		return volume;
+		return volume.get();
 	}
 
-	public <W extends WFractionalVerticalBar> W setFluidVolume(FluidVolume volume) {
-		setProgressFraction(volume::getFraction);
-		setLimitFraction(volume::getSize);
+	public <W extends WFractionalVerticalBar> W setFluidVolume(Supplier<FluidVolume> volume) {
+		setProgressFraction(volume.get()::getFraction);
+		setLimitFraction(volume.get()::getSize);
 
 		this.volume = volume;
 		return (W) this;
