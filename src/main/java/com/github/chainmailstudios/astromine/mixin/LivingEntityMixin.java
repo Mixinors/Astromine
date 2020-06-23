@@ -82,7 +82,7 @@ public abstract class LivingEntityMixin {
 			}
 		}
 
-		if (!BreathableRegistry.INSTANCE.contains(((Entity) (Object) this).getType(), fluid)) {
+		if (!BreathableRegistry.INSTANCE.get(((Entity) (Object) this).getType()).contains(fluid)) {
 			if (fluid instanceof AdvancedFluid && ((AdvancedFluid) fluid).isToxic()) {
 				entity.damage(DamageSource.GENERIC, ((AdvancedFluid) fluid).getDamage());
 			}

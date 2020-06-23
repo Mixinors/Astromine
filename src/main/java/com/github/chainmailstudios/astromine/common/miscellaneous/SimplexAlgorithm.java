@@ -16,7 +16,7 @@ package com.github.chainmailstudios.astromine.common.miscellaneous;
  *   will be the same when ported to other languages.
  */
 
-public class OpenSimplexNoise {
+public class SimplexAlgorithm {
 
 	private static final double STRETCH_CONSTANT_2D = -0.211324865405187;    //(1/Math.sqrt(2+1)-1)/2;
 	private static final double SQUISH_CONSTANT_2D = 0.366025403784439;      //(Math.sqrt(2+1)-1)/2;
@@ -34,11 +34,11 @@ public class OpenSimplexNoise {
 	private final short[] perm;
 	private final short[] permGradIndex3D;
 
-	public OpenSimplexNoise() {
+	public SimplexAlgorithm() {
 		this(DEFAULT_SEED);
 	}
 
-	public OpenSimplexNoise(short[] perm) {
+	public SimplexAlgorithm(short[] perm) {
 		this.perm = perm;
 		permGradIndex3D = new short[256];
 
@@ -51,7 +51,7 @@ public class OpenSimplexNoise {
 	//Initializes the class using a permutation array generated from a 64-bit seed.
 	//Generates a proper permutation (i.e. doesn't merely perform N successive pair swaps on a base array)
 	//Uses a simple 64-bit LCG.
-	public OpenSimplexNoise(long seed) {
+	public SimplexAlgorithm(long seed) {
 		perm = new short[256];
 		permGradIndex3D = new short[256];
 		short[] source = new short[256];

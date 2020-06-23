@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.common.world.generation;
 
-import com.github.chainmailstudios.astromine.common.miscellaneous.OpenSimplexNoise;
+import com.github.chainmailstudios.astromine.common.miscellaneous.SimplexAlgorithm;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -27,13 +27,13 @@ public class AstromineChunkGenerator extends ChunkGenerator {
 	private final BiomeSource biomeSource;
 	private final long seed;
 
-	private final OpenSimplexNoise noise;
+	private final SimplexAlgorithm noise;
 
 	public AstromineChunkGenerator(BiomeSource biomeSource, long seed) {
 		super(biomeSource, new StructuresConfig(false));
 		this.biomeSource = biomeSource;
 		this.seed = seed;
-		this.noise = new OpenSimplexNoise(seed);
+		this.noise = new SimplexAlgorithm(seed);
 	}
 
 	@Override

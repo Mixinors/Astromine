@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.client.render;
+package com.github.chainmailstudios.astromine.client.render.sky;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -6,12 +6,8 @@ import net.minecraft.client.render.SkyProperties;
 import net.minecraft.util.math.Vec3d;
 
 @Environment(EnvType.CLIENT)
-public class AstromineSkyProperties extends SkyProperties {
-
-	// float = cloud height
-
-	// alternatveSkyColor
-	public AstromineSkyProperties() {
+public class SpaceSkyProperties extends SkyProperties {
+	public SpaceSkyProperties() {
 		super(Float.NaN, false, SkyType.NONE, true, true);
 	}
 

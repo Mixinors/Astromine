@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.client.render.skybox;
+package com.github.chainmailstudios.astromine.client.render.sky.skybox;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.MinecraftClient;

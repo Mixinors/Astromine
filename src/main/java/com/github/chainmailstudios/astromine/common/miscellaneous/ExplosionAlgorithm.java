@@ -1,5 +1,6 @@
-package com.github.chainmailstudios.astromine.common.utilities;
+package com.github.chainmailstudios.astromine.common.miscellaneous;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.access.WorldChunkAccess;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -13,20 +14,19 @@ import net.minecraft.world.chunk.WorldChunk;
 
 import java.util.logging.Logger;
 
-public class LargeExplosionAlgorithm {
-	private static final Logger LOGGER = Logger.getLogger("LargeExplosions");
+public class ExplosionAlgorithm {
 	private static final BlockState AIR = Blocks.AIR.getDefaultState();
 
-	public static void explode(World world, int x, int y, int z, int power) {
+	public static void tryExploding(World world, int x, int y, int z, int power) {
 		if (!world.isClient) {
 			long start = System.currentTimeMillis();
-			long blocks = nukeChunks(world, x, y, z, power);
+			long blocks = explode(world, x, y, z, power);
 			long end = System.currentTimeMillis();
-			LOGGER.info(String.format("Took %dms to destroy %d blocks from explosion with power %d", end - start, blocks, power));
+			AstromineCommon.LOGGER.info(String.format("Took %dms to destroy %d blocks from explosion with power %d.", end - start, blocks, power));
 		}
 	}
 
-	private static long nukeChunks(World access, int x, int y, int z, int radius) {
+	private static long explode(World access, int x, int y, int z, int radius) {
 		int cr = radius >> 4;
 		long blocks = 0;
 		for (int cox = -cr; cox <= cr + 1; cox++) {
@@ -49,24 +49,24 @@ public class LargeExplosionAlgorithm {
 	 * copied from https://stackoverflow.com/a/4579069/9773993 and converted to java
 	 */
 	private static boolean touchesOrIsIn(int x1, int y1, int z1, int x2, int y2, int z2, int radius) {
-		int dist_squared = radius * radius;
+		int squared = radius * radius;
 		/* assume C1 and C2 are element-wise sorted, if not, do that now */
 		if (0 < x1) {
-			dist_squared -= x1 * x1;
+			squared -= x1 * x1;
 		} else if (0 > x2) {
-			dist_squared -= x2 * x2;
+			squared -= x2 * x2;
 		}
 		if (0 < y1) {
-			dist_squared -= y1 * y1;
+			squared -= y1 * y1;
 		} else if (0 > y2) {
-			dist_squared -= y2 * y2;
+			squared -= y2 * y2;
 		}
 		if (0 < z1) {
-			dist_squared -= z1 * z1;
+			squared -= z1 * z1;
 		} else if (0 > z2) {
-			dist_squared -= z2 * z2;
+			squared -= z2 * z2;
 		}
-		return dist_squared > 0;
+		return squared > 0;
 	}
 
 	private static long forSubchunks(WorldChunk chunk, int bx, int bz, int x, int y, int z, int radius) {
@@ -79,7 +79,7 @@ public class LargeExplosionAlgorithm {
 			if (encompassed(bx, by, bz, bx + 15, by + 15, bz + 15, radius)) {
 				int val = i + sc;
 				if (val >= 0 && val < 16) {
-					((WorldChunkAccess) chunk).astromine_yeet(val);
+					((WorldChunkAccess) chunk).astromine_removeSubchunk(val);
 					destroyed += 4096;
 				}
 			} else {

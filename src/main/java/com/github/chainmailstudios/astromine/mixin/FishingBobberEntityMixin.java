@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 @Mixin(FishingBobberEntity.class)
 public class FishingBobberEntityMixin {
 	@ModifyConstant(method = "use(Lnet/minecraft/item/ItemStack;)I", constant = @Constant(doubleValue = 0.08D))
-	double getGravityA(double original) {
+	double getGravity(double original) {
 		World world = ((Entity) (Object) this).world;
 
 		return GravityRegistry.INSTANCE.get(world.getDimensionRegistryKey());

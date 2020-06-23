@@ -75,7 +75,9 @@ public class WorldNetworkComponent implements Component, Tickable {
 			}
 
 			CompoundTag data = new CompoundTag();
-			data.putString("type", NetworkTypeRegistry.INSTANCE.getId(instance.getType()).toString());
+
+			data.putString("type", NetworkTypeRegistry.INSTANCE.getKey(instance.getType()).toString());
+
 			data.put("nodes", nodeList);
 			data.put("members", memberList);
 
@@ -95,7 +97,7 @@ public class WorldNetworkComponent implements Component, Tickable {
 			CompoundTag nodeList = dataTag.getCompound("nodes");
 			CompoundTag memberList = dataTag.getCompound("nodes");
 
-			NetworkType type = NetworkTypeRegistry.INSTANCE.getById(new Identifier(dataTag.getString("type")));
+			NetworkType type = NetworkTypeRegistry.INSTANCE.get(new Identifier(dataTag.getString("type")));
 
 			NetworkInstance instance = new NetworkInstance(world, type);
 
