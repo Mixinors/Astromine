@@ -1,7 +1,7 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.entity.base.BetaBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.packet.PacketHandlerComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
@@ -17,7 +17,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.registry.Registry;
 
-public class CreativeTankBlockEntity extends BetaBlockEntity implements NetworkMember, Tickable {
+public class CreativeTankBlockEntity extends DefaultedFluidBlockEntity implements NetworkMember, Tickable {
 	public static final Identifier FLUID_CHANGE_PACKET = AstromineCommon.identifier("fluid_change_component");
 
 	private final PacketHandlerComponent packetComponent = ((identifier, buffer) -> {

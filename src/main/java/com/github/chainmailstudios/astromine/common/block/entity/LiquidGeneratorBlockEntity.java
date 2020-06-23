@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.AlphaBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.container.LiquidGeneratorContainer;
@@ -18,7 +18,7 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public class LiquidGeneratorBlockEntity extends AlphaBlockEntity implements NetworkMember, Tickable {
+public class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlockEntity implements NetworkMember, Tickable {
 	public LiquidGeneratorBlockEntity() {
 		super(AstromineBlockEntityTypes.LIQUID_GENERATOR);
 

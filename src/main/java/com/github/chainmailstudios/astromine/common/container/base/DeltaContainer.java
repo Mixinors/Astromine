@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.common.container.base;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.DeltaBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyBlockEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.math.BlockPos;
 import spinnery.common.container.BaseContainer;
@@ -12,7 +12,7 @@ import java.util.Collection;
 public class DeltaContainer extends BaseContainer {
 	public final Collection<WSlot> playerSlots;
 
-	public DeltaBlockEntity blockEntity;
+	public DefaultedEnergyBlockEntity blockEntity;
 
 	public DeltaContainer(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
 		super(synchronizationID, playerInventory);
@@ -21,6 +21,6 @@ public class DeltaContainer extends BaseContainer {
 
 		playerSlots = WSlot.addHeadlessPlayerInventory(mainInterface);
 
-		blockEntity = (DeltaBlockEntity) world.getBlockEntity(position);
+		blockEntity = (DefaultedEnergyBlockEntity) world.getBlockEntity(position);
 	}
 }

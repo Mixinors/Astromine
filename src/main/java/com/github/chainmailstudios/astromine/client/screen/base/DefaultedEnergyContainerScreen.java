@@ -1,12 +1,10 @@
 package com.github.chainmailstudios.astromine.client.screen.base;
 
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
-import com.github.chainmailstudios.astromine.common.container.base.AlphaContainer;
+import com.github.chainmailstudios.astromine.common.container.base.DeltaContainer;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.common.widget.WEnergyVolumeFractionalVerticalBar;
-import com.github.chainmailstudios.astromine.common.widget.WFluidVolumeFractionalVerticalBar;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import spinnery.client.screen.BaseContainerScreen;
@@ -20,14 +18,13 @@ import spinnery.widget.api.Size;
 
 import java.util.Collection;
 
-public abstract class AlphaScreen<T extends BaseContainer> extends BaseContainerScreen<T> {
+public abstract class DefaultedEnergyContainerScreen<T extends BaseContainer> extends BaseContainerScreen<T> {
 	public WInterface mainInterface;
 	public WPanel mainPanel;
 	public Collection<WSlot> playerSlots;
 	public WEnergyVolumeFractionalVerticalBar energyBar;
-	public WFluidVolumeFractionalVerticalBar fluidBar;
 
-	public AlphaScreen(Text name, AlphaContainer linkedContainer, PlayerEntity player) {
+	public DefaultedEnergyContainerScreen(Text name, DeltaContainer linkedContainer, PlayerEntity player) {
 		super(name, (T) linkedContainer, player);
 
 		mainInterface = getInterface();
@@ -41,12 +38,8 @@ public abstract class AlphaScreen<T extends BaseContainer> extends BaseContainer
 
 		energyBar = mainPanel.createChild(WEnergyVolumeFractionalVerticalBar::new, Position.of(mainPanel, 7, 7, 0), Size.of(24, 48));
 
-		fluidBar = mainPanel.createChild(WFluidVolumeFractionalVerticalBar::new, Position.of(energyBar, energyBar.getWidth() + 4, 0, 0), Size.of(energyBar));
-
 		ComponentProvider componentProvider = linkedContainer.blockEntity;
 
 		energyBar.setEnergyVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).getVolume(0));
-
-		fluidBar.setFluidVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(0));
 	}
 }

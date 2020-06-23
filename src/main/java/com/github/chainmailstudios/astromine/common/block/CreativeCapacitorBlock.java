@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.block;
 
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.CreativeCapacitorBlockEntity;
 import com.github.chainmailstudios.astromine.common.container.CreativeCapacitorContainer;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
@@ -25,7 +26,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class CreativeCapacitorBlock extends HorizontalFacingBlock implements BlockEntityProvider {
+public class CreativeCapacitorBlock extends DefaultedHorizontalFacingBlock implements BlockEntityProvider {
 	public CreativeCapacitorBlock(Settings settings) {
 		super(settings);
 	}
@@ -61,16 +62,5 @@ public class CreativeCapacitorBlock extends HorizontalFacingBlock implements Blo
 		} else {
 			return ActionResult.SUCCESS;
 		}
-	}
-
-	@Override
-	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		return this.getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite());
-	}
-
-	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(FACING);
-		super.appendProperties(builder);
 	}
 }

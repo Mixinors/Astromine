@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.block;
 
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.LiquidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.common.container.LiquidGeneratorContainer;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
@@ -28,20 +29,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class LiquidGeneratorBlock extends HorizontalFacingBlock implements NetworkMember, BlockEntityProvider {
+public class LiquidGeneratorBlock extends DefaultedHorizontalFacingBlock implements NetworkMember, BlockEntityProvider {
 	public LiquidGeneratorBlock(Settings settings) {
 		super(settings);
-	}
-
-	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(FACING);
-		super.appendProperties(builder);
-	}
-
-	@Override
-	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		return this.getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite());
 	}
 
 	@Override

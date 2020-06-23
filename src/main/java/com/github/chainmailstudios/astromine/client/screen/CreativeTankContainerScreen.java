@@ -1,9 +1,9 @@
 package com.github.chainmailstudios.astromine.client.screen;
 
-import com.github.chainmailstudios.astromine.client.screen.base.BetaScreen;
+import com.github.chainmailstudios.astromine.client.screen.base.DefaultedFluidContainerScreen;
 import com.github.chainmailstudios.astromine.common.block.entity.CreativeTankBlockEntity;
 import com.github.chainmailstudios.astromine.common.container.CreativeTankContainer;
-import com.github.chainmailstudios.astromine.common.container.base.BetaContainer;
+import com.github.chainmailstudios.astromine.common.container.base.DefaultedFluidContainer;
 import com.github.chainmailstudios.astromine.registry.AstromineServerPackets;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
@@ -17,8 +17,8 @@ import spinnery.widget.api.Filter;
 import spinnery.widget.api.Position;
 import spinnery.widget.api.Size;
 
-public class CreativeTankContainerScreen extends BetaScreen<CreativeTankContainer> {
-	public CreativeTankContainerScreen(Text name, BetaContainer linkedContainer, PlayerEntity player) {
+public class CreativeTankContainerScreen extends DefaultedFluidContainerScreen<CreativeTankContainer> {
+	public CreativeTankContainerScreen(Text name, DefaultedFluidContainer linkedContainer, PlayerEntity player) {
 		super(name, linkedContainer, player);
 
 		fluidBar.centerX();

@@ -1,13 +1,13 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.BetaBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
-public class TankBlockEntity extends BetaBlockEntity implements NetworkMember {
+public class TankBlockEntity extends DefaultedFluidBlockEntity implements NetworkMember {
 	public TankBlockEntity() {
 		super(AstromineBlockEntityTypes.FLUID_TANK);
 

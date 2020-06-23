@@ -1,10 +1,10 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.EpsilionBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedItemBlockEntity;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import net.minecraft.util.Tickable;
 
-public class CreativeBufferBlockEntity extends EpsilionBlockEntity implements Tickable {
+public class CreativeBufferBlockEntity extends DefaultedItemBlockEntity implements Tickable {
 	public CreativeBufferBlockEntity() {
 		super(AstromineBlockEntityTypes.CREATIVE_BUFFER);
 

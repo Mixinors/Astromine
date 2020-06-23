@@ -22,11 +22,11 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 
-public class AlphaBlockEntity extends BlockEntity implements ComponentProvider, BlockEntityClientSerializable {
+public abstract class DefaultedEnergyFluidBlockEntity extends BlockEntity implements ComponentProvider, BlockEntityClientSerializable {
 	protected final SimpleEnergyInventoryComponent energyComponent = new SimpleEnergyInventoryComponent(1);
 	protected final SimpleFluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1);
 
-	public AlphaBlockEntity(BlockEntityType<?> type) {
+	public DefaultedEnergyFluidBlockEntity(BlockEntityType<?> type) {
 		super(type);
 	}
 

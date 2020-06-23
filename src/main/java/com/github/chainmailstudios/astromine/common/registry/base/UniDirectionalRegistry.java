@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.common.registry;
+package com.github.chainmailstudios.astromine.common.registry.base;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -7,7 +7,7 @@ import com.google.common.collect.Maps;
 import java.util.Collection;
 import java.util.Map;
 
-public class BetaRegistry<T, U> {
+public abstract class UniDirectionalRegistry<T, U> {
 	private final Map<T, U> entries = Maps.newHashMap();
 
 	public U get(T t) {

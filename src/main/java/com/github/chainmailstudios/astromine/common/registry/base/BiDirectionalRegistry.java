@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.common.registry;
+package com.github.chainmailstudios.astromine.common.registry.base;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -6,7 +6,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.Collection;
 
-public abstract class AlphaRegistry<T, U> {
+public abstract class BiDirectionalRegistry<T, U> {
 	private final BiMap<T, U> entries = HashBiMap.create();
 
 	public U get(T t) {

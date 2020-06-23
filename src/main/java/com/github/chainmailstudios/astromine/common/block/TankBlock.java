@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.block;
 
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.TankBlockEntity;
 import com.github.chainmailstudios.astromine.common.container.FluidTankContainer;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
@@ -28,7 +29,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class TankBlock extends HorizontalFacingBlock implements BlockEntityProvider, NetworkMember {
+public class TankBlock extends DefaultedHorizontalFacingBlock implements BlockEntityProvider, NetworkMember {
 	public TankBlock(Settings settings) {
 		super(settings);
 	}
@@ -74,16 +75,5 @@ public class TankBlock extends HorizontalFacingBlock implements BlockEntityProvi
 		} else {
 			return ActionResult.SUCCESS;
 		}
-	}
-
-	@Override
-	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		return this.getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite());
-	}
-
-	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(FACING);
-		super.appendProperties(builder);
 	}
 }
