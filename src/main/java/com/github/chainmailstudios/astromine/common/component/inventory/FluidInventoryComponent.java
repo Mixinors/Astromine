@@ -174,9 +174,7 @@ public interface FluidInventoryComponent extends Component {
 				if (volume != null && !volume.isEmpty()) {
 					CompoundTag volumeTag = source.getVolume(position).toTag(new CompoundTag());
 
-					if (volumeTag.isEmpty()) {
-						volumesTag.put(String.valueOf(position), volumeTag);
-					}
+					volumesTag.put(String.valueOf(position), volumeTag);
 				}
 			}
 		}
@@ -266,7 +264,13 @@ public interface FluidInventoryComponent extends Component {
 				FluidVolume volume = FluidVolume.fromTag(volumeTag);
 
 				if (target.getSize() >= position) {
-					target.setVolume(position, volume);
+					if (target.getVolume(position) != null) {
+						target.getVolume(position).setFraction(volume.getFraction());
+						target.getVolume(position).setSize(volume.getSize());
+						target.getVolume(position).setFluid(volume.getFluid());
+					} else {
+						target.setVolume(position, volume);
+					}
 				}
 			}
 		}

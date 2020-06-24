@@ -5,8 +5,10 @@ import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
+import java.util.function.Supplier;
+
 public class WEnergyVolumeFractionalVerticalBar extends WFractionalVerticalBar {
-	private EnergyVolume volume;
+	private Supplier<EnergyVolume> volume;
 
 	private final Identifier ENERGY_BACKGROUND = AstromineCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_background.png");
 	private final Identifier ENERGY_FOREGROUND = AstromineCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_foreground.png");
@@ -32,12 +34,12 @@ public class WEnergyVolumeFractionalVerticalBar extends WFractionalVerticalBar {
 	}
 
 	public EnergyVolume getEnergyVolume() {
-		return volume;
+		return volume.get();
 	}
 
-	public <W extends WFractionalVerticalBar> W setEnergyVolume(EnergyVolume volume) {
-		setProgressFraction(volume::getFraction);
-		setLimitFraction(volume::getSize);
+	public <W extends WFractionalVerticalBar> W setEnergyVolume(Supplier<EnergyVolume> volume) {
+		setProgressFraction(volume.get()::getFraction);
+		setLimitFraction(volume.get()::getSize);
 
 		this.volume = volume;
 		return (W) this;

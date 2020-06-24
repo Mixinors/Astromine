@@ -1,0 +1,13 @@
+{
+	"type": "astromine:sorting",
+	"input": {
+		"item": "astromine:asteroid_coal_cluster",
+		"count": 1
+	},
+	"output": {
+		"item": "minecraft:coal",
+		"count": 2
+	},
+	"time_total": 16,
+	"energy_total": 16
+}

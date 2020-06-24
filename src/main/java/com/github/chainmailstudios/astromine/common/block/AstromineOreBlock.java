@@ -14,9 +14,9 @@ public class AstromineOreBlock extends OreBlock {
 
 	@Override
 	protected int getExperienceWhenMined(Random random) {
-		if (this == AstromineBlocks.ASTERITE_ORE) {
+		if (this == AstromineBlocks.ASTEROID_ASTERITE_ORE) {
 			return MathHelper.nextInt(random, 4, 8);
-		} else if (this == AstromineBlocks.GALAXIUM_ORE) {
+		} else if (this == AstromineBlocks.ASTEROID_GALAXIUM_ORE) {
 			return MathHelper.nextInt(random, 5, 9);
 		} else if (this == AstromineBlocks.ASTEROID_METITE_ORE || this == AstromineBlocks.METEOR_METITE_ORE) {
 			return MathHelper.nextInt(random, 3, 7);

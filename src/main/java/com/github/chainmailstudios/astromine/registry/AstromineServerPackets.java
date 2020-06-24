@@ -1,13 +1,19 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.packet.PacketHandlerComponent;
 import com.github.chainmailstudios.astromine.common.item.weapon.BaseWeapon;
 import com.github.chainmailstudios.astromine.common.item.weapon.Weapon;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 
 public class AstromineServerPackets {
 	public static final Identifier SHOT_PACKET = AstromineCommon.identifier("shot");
+	public static final Identifier BLOCK_ENTITY_UPDATE_PACKET = AstromineCommon.identifier("block_entity_update");
 
 	public static void initialize() {
 		ServerSidePacketRegistry.INSTANCE.register(SHOT_PACKET, ((context, buffer) -> {
@@ -17,5 +23,24 @@ public class AstromineServerPackets {
 				}
 			});
 		}));
+
+		ServerSidePacketRegistry.INSTANCE.register(BLOCK_ENTITY_UPDATE_PACKET, (((context, buffer) -> {
+			BlockPos blockPos = buffer.readBlockPos();
+			Identifier identifier = new Identifier(buffer.readString());
+			PacketByteBuf storedBuffer = new PacketByteBuf(buffer.copy());
+
+			context.getTaskQueue().execute(() -> {
+				BlockEntity blockEntity = context.getPlayer().getEntityWorld().getBlockEntity(blockPos);
+
+				if (blockEntity instanceof ComponentProvider) {
+					ComponentProvider componentProvider = ComponentProvider.fromBlockEntity(blockEntity);
+
+					PacketHandlerComponent packetComponent = componentProvider.getComponent(AstromineComponentTypes.PACKET_HANDLER_COMPONENT);
+
+					packetComponent.handle(identifier, storedBuffer);
+				}
+			});
+		})));
 	}
+
 }

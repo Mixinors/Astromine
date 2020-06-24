@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.block;
 
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -16,7 +17,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import spinnery.widget.api.Color;
 
-public class HolographicBridgeProjectorBlock extends HorizontalFacingBlock implements BlockEntityProvider {
+public class HolographicBridgeProjectorBlock extends DefaultedHorizontalFacingBlock implements BlockEntityProvider {
 	public HolographicBridgeProjectorBlock(AbstractBlock.Settings settings) {
 		super(settings);
 	}
@@ -45,16 +46,5 @@ public class HolographicBridgeProjectorBlock extends HorizontalFacingBlock imple
 	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
 		return new HolographicBridgeProjectorBlockEntity();
-	}
-
-	@Override
-	public BlockState getPlacementState(ItemPlacementContext context) {
-		return this.getDefaultState().with(FACING, context.getPlayerFacing().getOpposite());
-	}
-
-	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(FACING);
-		super.appendProperties(builder);
 	}
 }

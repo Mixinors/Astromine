@@ -261,7 +261,12 @@ public interface EnergyInventoryComponent extends Component {
 				EnergyVolume volume = EnergyVolume.fromTag(volumeTag);
 
 				if (target.getSize() >= position) {
-					target.setVolume(position, volume);
+					if (target.getVolume(position) != null) {
+						target.getVolume(position).setFraction(volume.getFraction());
+						target.getVolume(position).setSize(volume.getSize());
+					} else {
+						target.setVolume(position, volume);
+					}
 				}
 			}
 		}
