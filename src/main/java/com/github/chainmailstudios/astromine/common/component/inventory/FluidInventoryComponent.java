@@ -168,10 +168,10 @@ public interface FluidInventoryComponent extends Component {
 		int maximum = range.isPresent() ? range.get().getMaximum() : source.getSize();
 
 		for (int position = minimum; position < maximum; ++position) {
-			if (source.getVolume(position) != null && !source.getVolume(position).isEmpty()) {
+			if (source.getVolume(position) != null) {
 				FluidVolume volume = source.getVolume(position);
 
-				if (volume != null && !volume.isEmpty()) {
+				if (volume != null) {
 					CompoundTag volumeTag = source.getVolume(position).toTag(new CompoundTag());
 
 					volumesTag.put(String.valueOf(position), volumeTag);
