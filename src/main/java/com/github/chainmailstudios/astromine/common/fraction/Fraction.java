@@ -227,6 +227,7 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	}
 
 	public static Fraction simplify(Fraction fraction) {
+		if (fraction.numerator == 0) return new Fraction(0, 1);
 		if ((fraction.numerator <= 0 && fraction.denominator >= 0) || (fraction.numerator >= 0 && fraction.denominator <= 0)) {
 			return fraction;
 		}

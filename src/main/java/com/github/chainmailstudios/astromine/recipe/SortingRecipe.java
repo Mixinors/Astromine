@@ -19,6 +19,7 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 import java.util.*;
@@ -87,14 +88,13 @@ public class SortingRecipe implements Recipe<Inventory> {
 		return Type.INSTANCE;
 	}
 
-	public Identifier getIdentifier() {
-		return identifier;
+	@Override
+	public DefaultedList<Ingredient> getPreviewInputs() {
+		DefaultedList<Ingredient> defaultedList = DefaultedList.of();
+		defaultedList.add(this.input);
+		return defaultedList;
 	}
-
-	public Ingredient getInput() {
-		return input;
-	}
-
+	
 	public int getTimeTotal() {
 		return timeTotal;
 	}
