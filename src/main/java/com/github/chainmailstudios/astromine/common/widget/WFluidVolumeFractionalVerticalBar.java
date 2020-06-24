@@ -80,16 +80,11 @@ public class WFluidVolumeFractionalVerticalBar extends WFractionalVerticalBar {
 		}
 
 		if (isFocused()) {
-            getTooltipText().setText(FluidUtilities.fraction(getProgressFraction().get(), getLimitFraction().get(), getUnit()));
-			getTooltipText().setWidth(TextRenderer.width(getTooltipText().getText())); // update width dumb
-
-			getTooltip().draw(matrices, provider);
-
-			RenderSystem.translatef(0, 0, 250);
-
-			getTooltipText().draw(matrices, provider);
-
-			RenderSystem.translatef(0, 0, -250);
+			getTooltipText().clear();
+            getTooltipText().add(FluidUtilities.fraction(getProgressFraction().get(), getLimitFraction().get(), getUnit()));
+			getTooltipText().add(new TranslatableText("text.astromine.tooltip.fractional_value", getProgressFraction().get().toPrettyString(), getLimitFraction().get().toPrettyString()));
+			
+			drawTooltips(matrices, provider);
 		}
 	}
 }

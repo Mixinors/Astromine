@@ -41,7 +41,7 @@ public class AstromineCommonCallbacks {
 					DefaultedBlockEntityContainer container = (DefaultedBlockEntityContainer) playerEntity.currentScreenHandler;
 
 					if (container.syncBlockEntity instanceof DefaultedBlockEntity) {
-						(container.syncBlockEntity).sync();
+						((DefaultedBlockEntity)container.syncBlockEntity).sync();
 						break;
 					}
 				}
