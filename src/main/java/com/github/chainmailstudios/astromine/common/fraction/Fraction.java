@@ -260,4 +260,8 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	public double doubleValue() {
 		return (double) this.longValue();
 	}
+	
+	public Fraction copy() {
+		return new Fraction(this.numerator, this.denominator);
+	}
 }

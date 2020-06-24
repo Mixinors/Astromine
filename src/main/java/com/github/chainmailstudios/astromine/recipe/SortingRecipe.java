@@ -3,18 +3,14 @@ package com.github.chainmailstudios.astromine.recipe;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
-import com.github.chainmailstudios.astromine.common.utilities.IngredientUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.utilities.*;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.annotations.SerializedName;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -33,9 +29,9 @@ public class SortingRecipe implements Recipe<Inventory> {
 	final ItemStack output;
 
 	final int timeTotal;
-	final int energyTotal;
+	final Fraction energyTotal;
 
-	public SortingRecipe(Identifier identifier, Ingredient input, ItemStack output, int timeTotal, int energyTotal) {
+	public SortingRecipe(Identifier identifier, Ingredient input, ItemStack output, int timeTotal, Fraction energyTotal) {
 		this.identifier = identifier;
 		this.input = input;
 		this.output = output;
@@ -103,7 +99,7 @@ public class SortingRecipe implements Recipe<Inventory> {
 		return timeTotal;
 	}
 
-	public int getEnergyTotal() {
+	public Fraction getEnergyTotal() {
 		return energyTotal;
 	}
 
@@ -124,7 +120,7 @@ public class SortingRecipe implements Recipe<Inventory> {
 					IngredientUtilities.fromJson(format.input),
 					StackUtilities.fromJson(format.output),
 					ParsingUtilities.fromJson(format.timeTotal, Integer.class),
-					ParsingUtilities.fromJson(format.energyTotal, Integer.class));
+					FractionUtilities.fromJson(format.energyTotal));
 		}
 
 		@Override
@@ -133,7 +129,7 @@ public class SortingRecipe implements Recipe<Inventory> {
 					IngredientUtilities.fromPacket(buffer),
 					StackUtilities.fromPacket(buffer),
 					PacketUtilities.fromPacket(buffer, Integer.class),
-					PacketUtilities.fromPacket(buffer, Integer.class));
+					FractionUtilities.fromPacket(buffer));
 		}
 
 		@Override
@@ -141,7 +137,7 @@ public class SortingRecipe implements Recipe<Inventory> {
 			IngredientUtilities.toPacket(buffer, recipe.input);
 			StackUtilities.toPacket(buffer, recipe.output);
 			PacketUtilities.toPacket(buffer, recipe.timeTotal);
-			PacketUtilities.toPacket(buffer, recipe.energyTotal);
+			FractionUtilities.toPacket(buffer, recipe.energyTotal);
 		}
 	}
 
@@ -159,7 +155,7 @@ public class SortingRecipe implements Recipe<Inventory> {
 		@SerializedName("time_total")
 		JsonPrimitive timeTotal;
 		@SerializedName("energy_total")
-		JsonPrimitive energyTotal;
+		JsonElement energyTotal;
 
 		@Override
 		public String toString() {
