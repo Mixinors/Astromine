@@ -27,11 +27,12 @@ public class FluidUtilities {
 		return String.format("%.1f%s", value / Math.pow(1000, exponent), units[exponent - 1]);
 	}
 	
-	public static MutableText fraction(Fraction current, Fraction maxValue, Text unit) {
-        TranslatableText currentText = current.getDenominator() != 1 ? new TranslatableText("text.astromine.tooltip.fractional_value", current.getNumerator(), current.getDenominator())
-                : new TranslatableText("text.astromine.tooltip.fractional_value_simple", current.getNumerator());
-        TranslatableText maxText = maxValue.getDenominator() != 1 ? new TranslatableText("text.astromine.tooltip.fractional_value", maxValue.getNumerator(), maxValue.getDenominator())
-                : new TranslatableText("text.astromine.tooltip.fractional_value_simple", maxValue.getNumerator());
-        return new TranslatableText("text.astromine.tooltip.fractional_bar", currentText, maxText, unit);
+    public static MutableText fraction(Fraction current, Fraction maxValue, Text unit) {
+        return new TranslatableText("text.astromine.tooltip.fractional_bar", fraction(current), fraction(maxValue), unit);
+    }
+    
+    public static MutableText fraction(Fraction fraction) {
+        return fraction.getDenominator() != 1 ? new TranslatableText("text.astromine.tooltip.fractional_value", fraction.getNumerator(), fraction.getDenominator())
+                : new TranslatableText("text.astromine.tooltip.fractional_value_simple", fraction.getNumerator());
     }
 }

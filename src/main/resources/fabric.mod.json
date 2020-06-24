@@ -23,7 +23,8 @@
   "entrypoints": {
     "main": ["com.github.chainmailstudios.astromine.AstromineCommon"],
     "client": ["com.github.chainmailstudios.astromine.AstromineClient"],
-    "server": ["com.github.chainmailstudios.astromine.AstromineDedicated"]
+    "server": ["com.github.chainmailstudios.astromine.AstromineDedicated"],
+    "rei_plugins": ["com.github.chainmailstudios.astromine.client.rei.AstromineREIPlugin"]
   },
   "mixins": ["astromine.mixins.json"],
   "accessWidener": "astromine.accesswidener",

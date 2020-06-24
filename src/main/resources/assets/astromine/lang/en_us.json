@@ -159,5 +159,8 @@
   "subtitles.astromine.fire_extinguisher_open": "Fire Extinguisher opens",
   "subtitles.astromine.gunshot": "Gunshot",
   "subtitles.astromine.empty_magazine": "Magazine is empty",
-  "text.astromine.manual.landing": "Your guide to the stars!"
+  "text.astromine.manual.landing": "Your guide to the stars!",
+  "category.astromine.sorting": "Sorting",
+  "category.astromine.sorting.time": "%s sec",
+  "category.astromine.sorting.energy": "%s energy"
 }

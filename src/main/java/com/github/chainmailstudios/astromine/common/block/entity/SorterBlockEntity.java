@@ -54,8 +54,8 @@ public class SorterBlockEntity extends DefaultedEnergyItemBlockEntity implements
 		if (shouldTry) {
 			if (recipe.isPresent() && recipe.get().matches(ItemInventoryFromInventoryComponent.of(inventoryComponent), world)) {
 				limit = recipe.get().getTimeTotal();
-
-				Fraction consumed = new Fraction(1, recipe.get().getEnergyTotal());
+				
+				Fraction consumed = recipe.get().getEnergyTotal().copy();
 
 				ItemStack output = recipe.get().getOutput();
 
