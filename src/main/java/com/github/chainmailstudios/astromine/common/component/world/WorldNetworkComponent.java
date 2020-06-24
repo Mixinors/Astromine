@@ -95,7 +95,7 @@ public class WorldNetworkComponent implements Component, Tickable {
 		for (String controllerKey : instanceTag.getKeys()) {
 			CompoundTag dataTag = instanceTag.getCompound(controllerKey);
 			CompoundTag nodeList = dataTag.getCompound("nodes");
-			CompoundTag memberList = dataTag.getCompound("nodes");
+			CompoundTag memberList = dataTag.getCompound("members");
 
 			NetworkType type = NetworkTypeRegistry.INSTANCE.get(new Identifier(dataTag.getString("type")));
 
@@ -106,7 +106,7 @@ public class WorldNetworkComponent implements Component, Tickable {
 			}
 
 			for (String memberKey : memberList.getKeys()) {
-				instance.addNode(NetworkNode.of(memberList.getLong(memberKey)));
+				instance.addMember(NetworkNode.of(memberList.getLong(memberKey)));
 			}
 
 			addInstance(instance);
