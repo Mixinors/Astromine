@@ -11,10 +11,10 @@ import net.minecraft.util.Identifier;
 
 import java.util.UUID;
 
-@Environment(EnvType.CLIENT)
 public class AstromineClientPackets {
 	public static final Identifier PRESSURE_UPDATE = AstromineCommon.identifier("pressure_update");
-
+	
+	@Environment(EnvType.CLIENT)
 	public static void initialize() {
 		ClientSidePacketRegistry.INSTANCE.register(PRESSURE_UPDATE, ((context, buffer) -> {
 			Identifier identifier = new Identifier(buffer.readString());
