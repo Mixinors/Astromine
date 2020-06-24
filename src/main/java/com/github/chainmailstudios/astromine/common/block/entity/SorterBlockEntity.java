@@ -39,17 +39,17 @@ public class SorterBlockEntity extends DefaultedEnergyItemBlockEntity implements
 	@Override
 	public void tick() {
 		BaseInventory inputInventory = new BaseInventory(1);
-		inputInventory.setStack(0, inventoryComponent.getStack(0));
+		inputInventory.setStack(0, inventoryComponent.getStack(1));
 
 		Optional<SortingRecipe> recipe = (Optional<SortingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) SortingRecipe.Type.INSTANCE, inputInventory, world);
 
 		if (recipe.isPresent() && recipe.get().matches(ItemInventoryFromInventoryComponent.of(inventoryComponent), world)) {
-			Fraction consumed = new Fraction(recipe.get().getEnergyTotal(), 1);
+			Fraction consumed = new Fraction(1, recipe.get().getEnergyTotal());
 
 			ItemStack output = recipe.get().getOutput();
 
 			boolean isEmpty = inventoryComponent.getStack(0).isEmpty();
-			boolean isEqual = ItemStack.areEqual(inventoryComponent.getStack(0), output);
+			boolean isEqual = ItemStack.areItemsEqual(inventoryComponent.getStack(0), output) && ItemStack.areTagsEqual(inventoryComponent.getStack(0), output);
 
 			if (energyComponent.getVolume(0).hasStored(consumed) && (isEmpty || isEqual) && inventoryComponent.getStack(0).getCount() + output.getCount() <= inventoryComponent.getStack(0).getMaxCount()) {
 				energyComponent.getVolume(0).extractVolume(consumed);

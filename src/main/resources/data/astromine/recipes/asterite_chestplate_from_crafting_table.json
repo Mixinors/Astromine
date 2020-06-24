@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["###", "###", "# #"],
+  "key": {
+    "#": {
+      "item": "astromine:asterite_ingot"
+    }
+  },
+  "result": {
+    "item": "astromine:asterite_chestplate"
+  }
+}

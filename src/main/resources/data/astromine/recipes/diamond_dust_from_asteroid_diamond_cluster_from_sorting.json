@@ -1,0 +1,15 @@
+{
+	"type": "astromine:sorting",
+	"input":
+		{
+			"item": "astromine:asteroid_diamond_cluster",
+			"count": 1
+		}
+	,
+	"output": {
+		"item": "astromine:diamond_dust",
+		"count": 2
+	},
+	"time_total": 16,
+	"energy_total": 16
+}

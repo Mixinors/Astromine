@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.recipe;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
 import com.github.chainmailstudios.astromine.common.utilities.IngredientUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
@@ -26,7 +27,7 @@ import net.minecraft.world.World;
 
 import java.util.*;
 
-public class SortingRecipe implements Recipe<ItemInventoryFromInventoryComponent> {
+public class SortingRecipe implements Recipe<Inventory> {
 	final Identifier identifier;
 	final Ingredient input;
 	final ItemStack output;
@@ -43,19 +44,20 @@ public class SortingRecipe implements Recipe<ItemInventoryFromInventoryComponent
 	}
 
 	@Override
-	public boolean matches(ItemInventoryFromInventoryComponent component, World world) {
-		return component.getComponent().getItemContents().values().stream().anyMatch(input);
+	public boolean matches(Inventory inventory, World world) {
+		return ItemInventoryComponentFromItemInventory.of(inventory).getItemContents().values().stream().anyMatch(input);
 	}
 
 	@Override
-	public ItemStack craft(ItemInventoryFromInventoryComponent component) {
-		List<ItemStack> matching = Lists.newArrayList(component.getComponent().getContentsMatching(input));
+	public ItemStack craft(Inventory inventory) {
+		ItemInventoryComponent component = ItemInventoryComponentFromItemInventory.of(inventory);
+		List<ItemStack> matching = Lists.newArrayList(component.getContentsMatching(input));
 
 		ItemStack stack = matching.isEmpty() ? ItemStack.EMPTY : matching.get(0);
 
-		for (Map.Entry<Integer, ItemStack> entry : component.getComponent().getItemContents().entrySet()) {
+		for (Map.Entry<Integer, ItemStack> entry : component.getItemContents().entrySet()) {
 			if (entry.getValue() == stack && !stack.isEmpty()) {
-				component.removeStack(entry.getKey());
+				component.getStack(entry.getKey()).decrement(1);
 
 				break;
 			}
@@ -106,7 +108,7 @@ public class SortingRecipe implements Recipe<ItemInventoryFromInventoryComponent
 	}
 
 	public static final class Serializer implements RecipeSerializer<SortingRecipe> {
-		public static final Identifier ID = AstromineCommon.identifier("sorting_recipe_serializer");
+		public static final Identifier ID = AstromineCommon.identifier("sorting");
 
 		public static final Serializer INSTANCE = new Serializer();
 
@@ -152,11 +154,21 @@ public class SortingRecipe implements Recipe<ItemInventoryFromInventoryComponent
 	}
 
 	public static final class Format {
-		JsonArray input;
+		JsonObject input;
 		JsonObject output;
 		@SerializedName("time_total")
 		JsonPrimitive timeTotal;
 		@SerializedName("energy_total")
 		JsonPrimitive energyTotal;
+
+		@Override
+		public String toString() {
+			return "Format{" +
+					"input=" + input +
+					", output=" + output +
+					", timeTotal=" + timeTotal +
+					", energyTotal=" + energyTotal +
+					'}';
+		}
 	}
 }

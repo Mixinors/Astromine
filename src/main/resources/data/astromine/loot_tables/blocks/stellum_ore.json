@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "astromine:stellum_ore"
+          "name": "astromine:asteroid_stellum_ore"
         }
       ],
       "conditions": [

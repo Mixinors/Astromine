@@ -1,18 +1,18 @@
 {
 	"name": "Galaxium",
-	"icon": "astromine:galaxium_fragment",
+	"icon": "astromine:asteroid_galaxium_cluster",
 	"category": "materials",
 	"sortnum": 3,
 	"pages": [
 		{
 			"type": "spotlight",
-			"item": "astromine:galaxium_fragment",
+			"item": "astromine:asteroid_galaxium_cluster",
 			"title": "Galaxium",
 			"text": "A rare gem with a brilliant dark shine. Extraordinarily dense, this material is said to form in large clusters at the hearts of galaxies.$(p)No true evidence of such a phenomenon has been recorded, however. It should make some neat gear though!"
 		},
 		{
 			"type": "spotlight",
-			"item": "astromine:galaxium_ore",
+			"item": "astromine:asteroid_galaxium_ore",
 			"title": "Obtaining Galaxium",
 			"text": "$(item)Galaxium Ore$() can be rarely found inside $(thing)Asteroids$() in $(thing)Space$().$(p)Mining Galaxium Ore will require an $(item)Asterite Pickaxe$() (Mining Level 5) or better, and will result in a single $(item)Galaxium Fragment$()."
 		},
