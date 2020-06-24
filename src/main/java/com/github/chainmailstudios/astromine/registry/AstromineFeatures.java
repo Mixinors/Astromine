@@ -1,9 +1,9 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.world.feature.AsteroidOreFeature;
-import com.github.chainmailstudios.astromine.world.feature.MeteorFeature;
-import com.github.chainmailstudios.astromine.world.feature.MeteorGenerator;
+import com.github.chainmailstudios.astromine.common.world.feature.AsteroidOreFeature;
+import com.github.chainmailstudios.astromine.common.world.feature.MeteorFeature;
+import com.github.chainmailstudios.astromine.common.world.feature.MeteorGenerator;
 import net.earthcomputer.libstructure.LibStructure;
 import net.minecraft.structure.StructurePieceType;
 import net.minecraft.util.registry.Registry;

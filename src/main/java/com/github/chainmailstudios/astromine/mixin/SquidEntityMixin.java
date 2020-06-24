@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 @Mixin(SquidEntity.class)
 public class SquidEntityMixin {
 	@ModifyConstant(method = "tickMovement()V", constant = @Constant(doubleValue = 0.08D))
-	double getGravityA(double original) {
+	double getGravity(double original) {
 		World world = ((Entity) (Object) this).world;
 
 		return GravityRegistry.INSTANCE.get(world.getDimensionRegistryKey());

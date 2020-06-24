@@ -71,7 +71,7 @@ public class WorldChunkMixin implements WorldChunkAccess {
 	}
 
 	@Override
-	public void astromine_yeet(int subchunk) {
+	public void astromine_removeSubchunk(int subchunk) {
 		this.sections[subchunk] = WorldChunk.EMPTY_SECTION;
 
 	}

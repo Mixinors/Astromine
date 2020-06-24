@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.common.item;
 
-import com.github.chainmailstudios.astromine.world.feature.MeteorGenerator;
+import com.github.chainmailstudios.astromine.common.world.feature.MeteorGenerator;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

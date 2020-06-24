@@ -2,7 +2,7 @@ package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.registry.SkyboxRegistry;
-import com.github.chainmailstudios.astromine.client.render.skybox.SpaceSkybox;
+import com.github.chainmailstudios.astromine.client.render.sky.skybox.SpaceSkybox;
 
 public class AstromineSkyboxes {
 	public static void initialize() {

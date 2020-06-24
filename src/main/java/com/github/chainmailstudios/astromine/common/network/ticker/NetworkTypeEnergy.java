@@ -1,12 +1,13 @@
 package com.github.chainmailstudios.astromine.common.network.ticker;
 
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
-import com.github.chainmailstudios.astromine.common.component.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkNode;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -24,9 +25,9 @@ public class NetworkTypeEnergy extends NetworkType {
 
 			if (blockEntity instanceof ComponentProvider && blockEntity instanceof NetworkMember) {
 
-				ComponentProvider provider = (ComponentProvider) blockEntity;
+				ComponentProvider provider = ComponentProvider.fromBlockEntity(blockEntity);
 
-				EnergyInventoryComponent energyComponent = provider.getComponent(null, EnergyInventoryComponent.class);
+				EnergyInventoryComponent energyComponent = provider.getSidedComponent(null, AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
 
 				NetworkMember member = (NetworkMember) blockEntity;
 

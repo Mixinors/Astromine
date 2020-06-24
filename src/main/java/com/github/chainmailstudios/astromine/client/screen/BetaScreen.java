@@ -1,10 +1,10 @@
 package com.github.chainmailstudios.astromine.client.screen;
 
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
-import com.github.chainmailstudios.astromine.common.component.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.container.BetaContainer;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.widget.WFluidVolumeFractionalVerticalBar;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.common.widget.WFluidVolumeFractionalVerticalBar;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import spinnery.client.screen.BaseContainerScreen;
@@ -33,7 +33,7 @@ public abstract class BetaScreen<T extends BaseContainer> extends BaseContainerS
 
 		ComponentProvider componentProvider = linkedContainer.blockEntity;
 
-		FluidVolume fluidVolume = componentProvider.getComponent(null, FluidInventoryComponent.class).getVolume(0);
+		FluidVolume fluidVolume = componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(0);
 
 		fluidBar.setFluidVolume(fluidVolume);
 	}

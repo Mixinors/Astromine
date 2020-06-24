@@ -15,7 +15,7 @@ public interface WorldChunkAccess {
 
 	void astromine_attachSouth(WorldChunk chunk);
 
-	void astromine_yeet(int subchunk);
+	void astromine_removeSubchunk(int subchunk);
 
 	WorldChunk astromine_east();
 

@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.common.registry.AsteroidOreRegistry;
+import com.github.chainmailstudios.astromine.client.registry.AsteroidOreRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 
 public class AstromineOres {

@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-@Mixin({FallingBlockEntity.class, ItemEntity.class, ShulkerBulletEntity.class, TntEntity.class})
+@Mixin({FallingBlockEntity.class, ShulkerBulletEntity.class, TntEntity.class})
 public class GravityEntityMixin {
 	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = -0.04D))
 	double getGravity(double original) {

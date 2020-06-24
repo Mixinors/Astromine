@@ -6,7 +6,7 @@ import com.github.chainmailstudios.astromine.common.item.SpaceSuitItem;
 import com.github.chainmailstudios.astromine.common.registry.BreathableRegistry;
 import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.component.WorldAtmosphereComponent;
+import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.BlockState;
@@ -82,7 +82,7 @@ public abstract class LivingEntityMixin {
 			}
 		}
 
-		if (!BreathableRegistry.INSTANCE.contains(((Entity) (Object) this).getType(), fluid)) {
+		if (!BreathableRegistry.INSTANCE.get(((Entity) (Object) this).getType()).contains(fluid)) {
 			if (fluid instanceof AdvancedFluid && ((AdvancedFluid) fluid).isToxic()) {
 				entity.damage(DamageSource.GENERIC, ((AdvancedFluid) fluid).getDamage());
 			}
