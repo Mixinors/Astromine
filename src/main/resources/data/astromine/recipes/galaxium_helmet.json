@@ -3,10 +3,10 @@
   "pattern": ["###", "# #", "   "],
   "key": {
     "#": {
-      "item": "astromine:asterite_ingot"
+      "item": "astromine:galaxium"
     }
   },
   "result": {
-    "item": "astromine:asterite_helmet"
+    "item": "astromine:galaxium_helmet"
   }
 }

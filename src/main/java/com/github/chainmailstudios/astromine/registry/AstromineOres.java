@@ -12,10 +12,9 @@ public class AstromineOres {
 		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 32), AstromineBlocks.ASTEROID_LAPIS_ORE);
 		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 16), AstromineBlocks.ASTEROID_DIAMOND_ORE);
 		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 16), AstromineBlocks.ASTEROID_EMERALD_ORE);
-		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 16), AstromineBlocks.ASTEROID_NETHERITE_ORE);
 
 		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 48), AstromineBlocks.ASTEROID_METITE_ORE);
-		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 48), AstromineBlocks.ASTEROID_ASTERITE_ORE);
-		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 12), AstromineBlocks.ASTEROID_STELLUM_ORE);
+		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 32), AstromineBlocks.ASTEROID_ASTERITE_ORE);
+		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 8), AstromineBlocks.ASTEROID_STELLUM_ORE);
 	}
 }

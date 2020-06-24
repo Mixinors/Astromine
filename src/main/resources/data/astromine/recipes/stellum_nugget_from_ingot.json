@@ -2,11 +2,11 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "astromine:asterite_block"
+      "item": "astromine:stellum_block"
     }
   ],
   "result": {
-    "item": "astromine:asterite_ingot",
+    "item": "astromine:stellum_nugget",
     "count": 9
   }
 }

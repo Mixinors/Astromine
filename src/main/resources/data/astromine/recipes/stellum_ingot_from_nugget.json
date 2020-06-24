@@ -3,10 +3,10 @@
   "pattern": ["###", "###", "###"],
   "key": {
     "#": {
-      "item": "astromine:asterite_ingot"
+      "item": "astromine:stellum_nugget"
     }
   },
   "result": {
-    "item": "astromine:asterite_block"
+    "item": "astromine:stellum_ingot"
   }
 }

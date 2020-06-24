@@ -50,9 +50,7 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 						return Blocks.AIR.getDefaultState();
 					}
 				},
-				state -> {
-					return Blocks.COBBLESTONE.getDefaultState();
-				}
+				state -> Blocks.COBBLESTONE.getDefaultState()
 		);
 
 		originPos = world.getTopPosition(Heightmap.Type.WORLD_SURFACE, new BlockPos(chunkPos.getStartX() + 8, 0, chunkPos.getStartZ() + 8));
