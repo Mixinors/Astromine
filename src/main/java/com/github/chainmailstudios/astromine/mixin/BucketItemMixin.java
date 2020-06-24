@@ -58,17 +58,27 @@ public abstract class BucketItemMixin implements BucketAccessor {
 
 						FluidInventoryComponent inventory = provider.getSidedComponent(result.getSide(), AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
-						if (inventory != null) {
+						if (inventory != null && this.fluid != Fluids.EMPTY) {
 							FluidVolume bucketVolume = new FluidVolume(this.fluid, Fraction.BUCKET);
 
 							if (inventory.canInsert(bucketVolume)) {
 								inventory.insert(bucketVolume);
+
 								callbackInformationReturnable.setReturnValue(TypedActionResult.success(user.isCreative() ? user.getStackInHand(hand) : new ItemStack(bucketVolume.getFluid().getBucketItem().getRecipeRemainder())));
 								callbackInformationReturnable.cancel();
 							}
 
 							if (attached instanceof BlockEntityClientSerializable && !world.isClient) {
 								((BlockEntityClientSerializable) attached).sync();
+							}
+						} else if (inventory != null) {
+							if (inventory.getVolume(0).getFluid() != Fluids.EMPTY && inventory.getVolume(0).hasStored(Fraction.BUCKET)) {
+								FluidVolume bucketVolume = inventory.getVolume(0).extractVolume(Fraction.BUCKET);
+
+								user.setStackInHand(hand, new ItemStack(bucketVolume.getFluid().getBucketItem()));
+
+								callbackInformationReturnable.setReturnValue(TypedActionResult.success(user.isCreative() ? user.getStackInHand(hand) : new ItemStack(bucketVolume.getFluid().getBucketItem().getRecipeRemainder())));
+								callbackInformationReturnable.cancel();
 							}
 						}
 					}

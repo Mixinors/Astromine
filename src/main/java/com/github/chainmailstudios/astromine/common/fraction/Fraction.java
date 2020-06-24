@@ -253,7 +253,7 @@ public class Fraction extends Number implements Comparable<Fraction> {
 
 	@Override
 	public float floatValue() {
-		return (float) this.longValue();
+		return (float) this.numerator / (float) this.denominator;
 	}
 
 	@Override

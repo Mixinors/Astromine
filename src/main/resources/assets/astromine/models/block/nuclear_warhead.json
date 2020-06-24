@@ -1,6 +1,12 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "block/cube",
   "textures": {
-    "all": "astromine:block/nuclear_warhead"
+    "particle": "astromine:block/crafting_table_front",
+    "down": "astromine:block/nuclear_warhead_bottom",
+    "up": "astromine:block/machine_top",
+    "north": "astromine:block/nuclear_warhead_front",
+    "east": "astromine:block/nuclear_warhead_front",
+    "south": "astromine:block/nuclear_warhead_front",
+    "west": "astromine:block/nuclear_warhead_front"
   }
 }

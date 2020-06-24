@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.block;
 
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedFacingBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.VentBlockEntity;
 import com.github.chainmailstudios.astromine.common.container.VentContainer;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
@@ -28,7 +29,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class VentBlock extends FacingBlock implements BlockEntityProvider, NetworkMember {
+public class VentBlock extends DefaultedFacingBlock implements BlockEntityProvider, NetworkMember {
 	public VentBlock(Settings settings) {
 		super(settings);
 	}
@@ -36,16 +37,6 @@ public class VentBlock extends FacingBlock implements BlockEntityProvider, Netwo
 	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
 		return new VentBlockEntity();
-	}
-
-	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(FACING);
-		super.appendProperties(builder);
-	}
-
-	public BlockState getPlacementState(ItemPlacementContext context) {
-		return this.getDefaultState().with(FACING, context.getPlayerLookDirection().getOpposite());
 	}
 
 	@Override

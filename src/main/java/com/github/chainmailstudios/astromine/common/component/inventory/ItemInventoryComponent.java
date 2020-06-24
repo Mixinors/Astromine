@@ -206,7 +206,7 @@ public interface ItemInventoryComponent extends Component {
 	 * Retrieves an ItemStack from a given slot.
 	 */
 	default ItemStack getStack(int slot) {
-		return this.getItemContents().get(slot);
+		return this.getItemContents().getOrDefault(slot, ItemStack.EMPTY);
 	}
 
 	/**

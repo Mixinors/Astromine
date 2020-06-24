@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.common.world.feature;
 
 import com.github.chainmailstudios.astromine.client.registry.AsteroidOreRegistry;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
 import com.terraformersmc.shapes.api.Position;
 import com.terraformersmc.shapes.api.Quaternion;
@@ -35,7 +36,7 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 		double ySize = 8 + random.nextDouble() * 48;
 		double zSize = 8 + random.nextDouble() * 48;
 
-		List<Block> ores = (List<Block>) AsteroidOreRegistry.INSTANCE.get(random.nextInt(100));
+		List<Block> ores = Lists.newArrayList(AsteroidOreRegistry.INSTANCE.get(random.nextInt(100)));
 
 		if (ores.isEmpty()) {
 			return true;

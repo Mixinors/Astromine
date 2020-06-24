@@ -1,18 +1,18 @@
 {
 	"name": "Asterite",
-	"icon": "astromine:asterite_fragment",
+	"icon": "astromine:asteroid_asterite_cluster",
 	"category": "materials",
 	"sortnum": 1,
 	"pages": [
 		{
 			"type": "spotlight",
-			"item": "astromine:asterite_fragment",
+			"item": "astromine:asteroid_asterite_cluster",
 			"title": "Asterite",
 			"text": "A fragment of a long dead star. This red material may look frail, but is in fact very strong.$(p)It should make for a useful material when crafting new equipment."
 		},
 		{
 			"type": "spotlight",
-			"item": "astromine:asterite_ore",
+			"item": "astromine:asteroid_asterite_ore",
 			"title": "Obtaining Asterite",
 			"text": "$(item)Asterite Ore$() can be found inside $(thing)Asteroids$() in $(thing)Space$().$(p)Mining Asterite Ore will require a $(item)Netherite Pickaxe$() (Mining Level 4) or better, and will result in a single $(item)Asterite Fragment$()."
 		},

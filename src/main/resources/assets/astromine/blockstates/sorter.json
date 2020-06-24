@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "astromine:block/sorter" },
+    "facing=south": { "model": "astromine:block/sorter", "y": 180 },
+    "facing=west":  { "model": "astromine:block/sorter", "y": 270 },
+    "facing=east":  { "model": "astromine:block/sorter", "y": 90 }
+  }
+}

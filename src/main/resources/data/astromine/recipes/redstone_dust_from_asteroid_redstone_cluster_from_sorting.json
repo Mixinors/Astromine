@@ -1,0 +1,15 @@
+{
+	"type": "astromine:sorting",
+	"input":
+		{
+			"item": "astromine:asteroid_redstone_cluster",
+			"count": 1
+		}
+	,
+	"output": {
+		"item": "minecraft:redstone",
+		"count": 2
+	},
+	"time_total": 16,
+	"energy_total": 16
+}

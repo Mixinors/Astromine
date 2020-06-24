@@ -1,7 +1,12 @@
 {
-  "parent": "block/orientable_vertical",
+  "parent": "block/cube",
   "textures": {
-    "front": "astromine:block/vent_front",
-    "side": "astromine:block/machine_side_blank"
+    "particle": "astromine:block/crafting_table_front",
+    "down": "astromine:block/vent_back",
+    "up": "astromine:block/vent_front",
+    "north": "astromine:block/machine_side",
+    "east": "astromine:block/machine_side",
+    "south": "astromine:block/machine_side",
+    "west": "astromine:block/machine_side"
   }
 }

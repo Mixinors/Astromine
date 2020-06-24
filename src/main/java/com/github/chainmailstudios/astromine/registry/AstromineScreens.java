@@ -1,13 +1,7 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.client.screen.FluidTankContainerScreen;
-import com.github.chainmailstudios.astromine.client.screen.FuelGeneratorContainerScreen;
-import com.github.chainmailstudios.astromine.client.screen.NuclearWarheadContainerScreen;
-import com.github.chainmailstudios.astromine.client.screen.VentContainerScreen;
-import com.github.chainmailstudios.astromine.common.container.FluidTankContainer;
-import com.github.chainmailstudios.astromine.common.container.FuelGeneratorContainer;
-import com.github.chainmailstudios.astromine.common.container.NuclearWarheadContainer;
-import com.github.chainmailstudios.astromine.common.container.VentContainer;
+import com.github.chainmailstudios.astromine.client.screen.*;
+import com.github.chainmailstudios.astromine.common.container.*;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import spinnery.client.screen.InGameHudScreen;
 import spinnery.widget.WInterface;
@@ -30,20 +24,38 @@ public class AstromineScreens {
 			FRACTION_TEXT = mainInterface.createChild(WStaticText::new, Position.of(4, 50, 0)).setScale(0.5F);
 		});
 
-		ScreenRegistry.register(AstromineContainers.FUEL_GENERATOR, (ScreenRegistry.Factory<FuelGeneratorContainer, FuelGeneratorContainerScreen>) ((handler, inventory, title) -> {
-			return new FuelGeneratorContainerScreen(title, handler, inventory.player);
+		ScreenRegistry.register(AstromineContainers.LIQUID_GENERATOR, (ScreenRegistry.Factory<LiquidGeneratorContainer, LiquidGeneratorContainerScreen>) ((handler, inventory, title) -> {
+			return new LiquidGeneratorContainerScreen(title, handler, inventory.player);
 		}));
 
 		ScreenRegistry.register(AstromineContainers.VENT, (ScreenRegistry.Factory<VentContainer, VentContainerScreen>) ((handler, inventory, title) -> {
 			return new VentContainerScreen(title, handler, inventory.player);
 		}));
 
-		ScreenRegistry.register(AstromineContainers.FLUID_TANK, (ScreenRegistry.Factory<FluidTankContainer, FluidTankContainerScreen>) ((handler, inventory, title) -> {
-			return new FluidTankContainerScreen(title, handler, inventory.player);
+		ScreenRegistry.register(AstromineContainers.TANK, (ScreenRegistry.Factory<FluidTankContainer, TankContainerScreen>) ((handler, inventory, title) -> {
+			return new TankContainerScreen(title, handler, inventory.player);
 		}));
 
 		ScreenRegistry.register(AstromineContainers.NUCLEAR_WARHEAD, (ScreenRegistry.Factory<NuclearWarheadContainer, NuclearWarheadContainerScreen>) ((handler, inventory, title) -> {
 			return new NuclearWarheadContainerScreen(title, handler, inventory.player);
 		}));
+
+		ScreenRegistry.register(AstromineContainers.CREATIVE_CAPACITOR, (ScreenRegistry.Factory<CreativeCapacitorContainer, CreativeCapacitorContainerScreen>) ((handler, inventory, title) -> {
+			return new CreativeCapacitorContainerScreen(title, handler, inventory.player);
+		}));
+
+		ScreenRegistry.register(AstromineContainers.CREATIVE_TANK, (ScreenRegistry.Factory<CreativeTankContainer, CreativeTankContainerScreen>) ((handler, inventory, title) -> {
+			return new CreativeTankContainerScreen(title, handler, inventory.player);
+		}));
+
+		ScreenRegistry.register(AstromineContainers.CREATIVE_BUFFER, (ScreenRegistry.Factory<CreativeBufferContainer, CreativeBufferContainerScreen>) ((handler, inventory, title) -> {
+			return new CreativeBufferContainerScreen(title, handler, inventory.player);
+		}));
+
+		ScreenRegistry.register(AstromineContainers.SORTER, (ScreenRegistry.Factory<SorterContainer, SorterContainerScreen>) ((handler, inventory, title) -> {
+			return new SorterContainerScreen(title, handler, inventory.player);
+		}));
+
+
 	}
 }
