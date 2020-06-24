@@ -120,7 +120,7 @@ public class SortingRecipe implements Recipe<Inventory> {
 		public SortingRecipe read(Identifier identifier, JsonObject object) {
 			SortingRecipe.Format format = new Gson().fromJson(object, SortingRecipe.Format.class);
 
-			return new SortingRecipe(ID,
+			return new SortingRecipe(identifier,
 					IngredientUtilities.fromJson(format.input),
 					StackUtilities.fromJson(format.output),
 					ParsingUtilities.fromJson(format.timeTotal, Integer.class),
