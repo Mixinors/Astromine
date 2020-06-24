@@ -1,7 +1,5 @@
 package com.github.chainmailstudios.astromine.common.registry.base;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Maps;
 
 import java.util.Collection;
@@ -9,9 +7,22 @@ import java.util.Map;
 
 public abstract class UniDirectionalRegistry<T, U> {
 	private final Map<T, U> entries = Maps.newHashMap();
+	private final U defaultValue;
+
+	public UniDirectionalRegistry(U defaultValue) {
+		this.defaultValue = defaultValue;
+	}
+
+	public UniDirectionalRegistry() {
+		this.defaultValue = null;
+	}
+
+	public U getDefault() {
+		return defaultValue;
+	}
 
 	public U get(T t) {
-		return entries.get(t);
+		return entries.getOrDefault(t, defaultValue);
 	}
 
 	public U set(T t, U u) {
