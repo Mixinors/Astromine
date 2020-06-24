@@ -30,7 +30,7 @@ public class FluidUtilities {
 	public static MutableText fraction(Fraction current, Fraction maxValue, Text unit) {
         TranslatableText currentText = current.getDenominator() != 1 ? new TranslatableText("text.astromine.tooltip.fractional_value", current.getNumerator(), current.getDenominator())
                 : new TranslatableText("text.astromine.tooltip.fractional_value_simple", current.getNumerator());
-        TranslatableText maxText = current.getDenominator() != 1 ? new TranslatableText("text.astromine.tooltip.fractional_value", maxValue.getNumerator(), maxValue.getDenominator())
+        TranslatableText maxText = maxValue.getDenominator() != 1 ? new TranslatableText("text.astromine.tooltip.fractional_value", maxValue.getNumerator(), maxValue.getDenominator())
                 : new TranslatableText("text.astromine.tooltip.fractional_value_simple", maxValue.getNumerator());
         return new TranslatableText("text.astromine.tooltip.fractional_bar", currentText, maxText, unit);
     }
