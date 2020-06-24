@@ -9,13 +9,13 @@ import spinnery.widget.WSlot;
 
 import java.util.Collection;
 
-public class DefaultedEnergyFluidContainer extends BaseContainer {
+public class DefaultedEnergyFluidContainer extends DefaultedBlockEntityContainer {
 	public final Collection<WSlot> playerSlots;
 
 	public DefaultedEnergyFluidBlockEntity blockEntity;
 
 	public DefaultedEnergyFluidContainer(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
-		super(synchronizationID, playerInventory);
+		super(synchronizationID, playerInventory, position);
 
 		WInterface mainInterface = getInterface();
 

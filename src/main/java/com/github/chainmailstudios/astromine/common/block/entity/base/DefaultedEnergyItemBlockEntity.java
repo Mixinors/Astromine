@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 
-public abstract class DefaultedEnergyItemBlockEntity extends BlockEntity implements ComponentProvider, BlockEntityClientSerializable {
+public abstract class DefaultedEnergyItemBlockEntity extends DefaultedBlockEntity implements ComponentProvider, BlockEntityClientSerializable {
 	protected SimpleEnergyInventoryComponent energyComponent = new SimpleEnergyInventoryComponent(1);
 	protected SimpleItemInventoryComponent inventoryComponent = new SimpleItemInventoryComponent(1);
 

@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.common.container.base;
 
-import net.minecraft.block.BlockState;
+import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyBlockEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.math.BlockPos;
 import spinnery.common.container.BaseContainer;
@@ -9,18 +9,18 @@ import spinnery.widget.WSlot;
 
 import java.util.Collection;
 
-public class DefaultedContainer extends BaseContainer {
+public class DefaultedEnergyContainer extends BaseContainer {
 	public final Collection<WSlot> playerSlots;
 
-	BlockState state;
+	public DefaultedEnergyBlockEntity blockEntity;
 
-	public DefaultedContainer(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
+	public DefaultedEnergyContainer(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
 		super(synchronizationID, playerInventory);
 
 		WInterface mainInterface = getInterface();
 
 		playerSlots = WSlot.addHeadlessPlayerInventory(mainInterface);
 
-		state = world.getBlockState(position);
+		blockEntity = (DefaultedEnergyBlockEntity) world.getBlockEntity(position);
 	}
 }
