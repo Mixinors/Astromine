@@ -75,7 +75,7 @@ public class WFluidVolumeFractionalVerticalBar extends WFractionalVerticalBar {
 					.overlay(OverlayTexture.DEFAULT_UV)
 					.alpha(0xff)
 					.normal(matrices.peek().getNormal(), 0, 0, 0)
-					.position(matrices.peek().getModel(), x + 1, y + 1, x + sX - 1, y + (sBGY), z)
+					.position(matrices.peek().getModel(), x + 1, y + (sY - sBGY), x + sX - 1, y + sY - 1, z)
 					.next();
 		}
 
