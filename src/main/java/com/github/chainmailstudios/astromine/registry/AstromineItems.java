@@ -67,7 +67,7 @@ public class AstromineItems {
 	// Materials - Clusters
 	public static final Item ASTEROID_METITE_CLUSTER = register("asteroid_metite_cluster", new Item(BASIC_SETTINGS));
 	public static final Item METEOR_METITE_CLUSTER = register("meteor_metite_cluster", new Item(BASIC_SETTINGS));
-	public static final Item ASTERITE_CLUSTER = register("asteroid_asterite_cluster", new Item(BASIC_SETTINGS));
+	public static final Item ASTEROID_ASTERITE_CLUSTER = register("asteroid_asterite_cluster", new Item(BASIC_SETTINGS));
 	public static final Item ASTEROID_STELLUM_CLUSTER = register("asteroid_stellum_cluster", new Item(BASIC_SETTINGS));
 	public static final Item ASTEROID_GALAXIUM_CLUSTER = register("asteroid_galaxium_cluster", new Item(BASIC_SETTINGS));
 	public static final Item ASTEROID_COAL_CLUSTER = register("asteroid_coal_cluster", new Item(BASIC_SETTINGS));
