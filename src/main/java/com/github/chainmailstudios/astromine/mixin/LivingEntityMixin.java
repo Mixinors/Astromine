@@ -8,6 +8,7 @@ import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineTags;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
@@ -61,78 +62,80 @@ public abstract class LivingEntityMixin {
 	void onTick(CallbackInfo callbackInformation) {
 		Entity entity = (Entity) (Object) this;
 
-		ComponentProvider componentProvider = ComponentProvider.fromWorld(entity.world);
+		if(!entity.getType().isIn(AstromineTags.DOES_NOT_BREATHE)) {
+			ComponentProvider componentProvider = ComponentProvider.fromWorld(entity.world);
 
-		WorldAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);
+			WorldAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);
 
-		FluidVolume atmosphere = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
+			FluidVolume atmosphere = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
 
-		Fluid fluid;
+			Fluid fluid;
 
-		boolean isBreathing = true;
+			boolean isBreathing = true;
 
-		if (!SpaceSuitItem.hasFullArmor(equippedArmor)) {
-			fluid = atmosphere.getFluid();
-		} else {
-			FluidVolume volume = SpaceSuitItem.readVolume(equippedArmor);
-			fluid = volume.getFluid();
+			if (!SpaceSuitItem.hasFullArmor(equippedArmor)) {
+				fluid = atmosphere.getFluid();
+			} else {
+				FluidVolume volume = SpaceSuitItem.readVolume(equippedArmor);
+				fluid = volume.getFluid();
 
-			if (volume.isEmpty()) {
+				if (volume.isEmpty()) {
+					isBreathing = false;
+				}
+			}
+
+			if (!BreathableRegistry.INSTANCE.get(((Entity) (Object) this).getType()).contains(fluid)) {
+				if (fluid instanceof AdvancedFluid && ((AdvancedFluid) fluid).isToxic()) {
+					entity.damage(DamageSource.GENERIC, ((AdvancedFluid) fluid).getDamage());
+				}
+
 				isBreathing = false;
 			}
-		}
 
-		if (!BreathableRegistry.INSTANCE.get(((Entity) (Object) this).getType()).contains(fluid)) {
-			if (fluid instanceof AdvancedFluid && ((AdvancedFluid) fluid).isToxic()) {
-				entity.damage(DamageSource.GENERIC, ((AdvancedFluid) fluid).getDamage());
+			BlockState state = entity.world.getBlockState(entity.getBlockPos());
+
+			if (!(state.getBlock() instanceof FluidBlock)) {
+				state = entity.world.getBlockState(entity.getBlockPos().offset(Direction.UP));
 			}
 
-			isBreathing = false;
-		}
+			if (state.getBlock() instanceof FluidBlock) {
+				FluidBlock block = (FluidBlock) state.getBlock();
 
-		BlockState state = entity.world.getBlockState(entity.getBlockPos());
+				FluidState fluidState = block.getFluidState(state);
 
-		if (!(state.getBlock() instanceof FluidBlock)) {
-			state = entity.world.getBlockState(entity.getBlockPos().offset(Direction.UP));
-		}
+				fluid = fluidState.getFluid();
 
-		if (state.getBlock() instanceof FluidBlock) {
-			FluidBlock block = (FluidBlock) state.getBlock();
+				if (fluid instanceof AdvancedFluid && ((AdvancedFluid) fluid).isToxic()) {
+					entity.damage(DamageSource.GENERIC, ((AdvancedFluid) fluid).getDamage());
+				}
 
-			FluidState fluidState = block.getFluidState(state);
-
-			fluid = fluidState.getFluid();
-
-			if (fluid instanceof AdvancedFluid && ((AdvancedFluid) fluid).isToxic()) {
-				entity.damage(DamageSource.GENERIC, ((AdvancedFluid) fluid).getDamage());
+				isBreathing = false;
 			}
 
-			isBreathing = false;
-		}
+			if (!isBreathing && !((Object) this instanceof PlayerEntity && ((PlayerEntity) (Object) this).isCreative())) {
+				LivingEntity user = (LivingEntity) (Object) this;
+				oxygen = nextOxygen(false, oxygen);
 
-		if (!isBreathing && !((Object) this instanceof PlayerEntity && ((PlayerEntity) (Object) this).isCreative())) {
-			LivingEntity user = (LivingEntity) (Object) this;
-			oxygen = nextOxygen(false, oxygen);
+				if (oxygen <= -20) {
+					oxygen = 0;
 
-			if (oxygen <= -20) {
-				oxygen = 0;
-
-				user.damage(DamageSource.DROWN, 2.0F);
-			}
-		} else {
-			oxygen = nextOxygen(true, oxygen);
-		}
-
-		long currentTime = System.currentTimeMillis();
-
-		if (currentTime - lastOxygenTick >= 300000) {
-			FluidVolume volume = SpaceSuitItem.readVolume(equippedArmor);
-
-			if (!volume.isEmpty()) {
-				volume.setFraction(Fraction.subtract(volume.getFraction(), Fraction.min(volume.getFraction(), Fraction.BOTTLE)));
+					user.damage(DamageSource.DROWN, 2.0F);
+				}
+			} else {
+				oxygen = nextOxygen(true, oxygen);
 			}
 
-			lastOxygenTick = currentTime;
+			long currentTime = System.currentTimeMillis();
+
+			if (currentTime - lastOxygenTick >= 300000) {
+				FluidVolume volume = SpaceSuitItem.readVolume(equippedArmor);
+
+				if (!volume.isEmpty()) {
+					volume.setFraction(Fraction.subtract(volume.getFraction(), Fraction.min(volume.getFraction(), Fraction.BOTTLE)));
+				}
+
+				lastOxygenTick = currentTime;
+			}
 		}
 	}
 }
