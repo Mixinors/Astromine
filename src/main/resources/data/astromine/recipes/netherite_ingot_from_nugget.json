@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["###", "###", "###"],
+  "key": {
+    "#": {
+      "item": "astromine:netherite_nugget"
+    }
+  },
+  "result": {
+    "item": "minecraft:netherite_ingot"
+  }
+}

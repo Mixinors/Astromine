@@ -6,6 +6,7 @@ import com.github.chainmailstudios.astromine.common.entity.projectile.BulletEnti
 import com.github.chainmailstudios.astromine.common.item.weapon.BaseWeapon;
 import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.github.chainmailstudios.astromine.registry.AstromineParticles;
 import com.github.chainmailstudios.astromine.registry.AstromineSounds;
@@ -27,9 +28,10 @@ import java.util.Optional;
 
 public class SuperSpaceSlimeShooterItem extends BaseWeapon {
 	public static final Identifier TEXTURE = AstromineCommon.identifier("textures/item/empty.png");
+	public static final Item.Settings SETTINGS = new Item.Settings().maxCount(1).group(AstromineItemGroups.ASTROMINE);
 
-	public SuperSpaceSlimeShooterItem(Item.Settings settings) {
-		super(settings);
+	public SuperSpaceSlimeShooterItem() {
+		super(SETTINGS);
 	}
 
 	@Override

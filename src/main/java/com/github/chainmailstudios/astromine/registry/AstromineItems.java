@@ -19,16 +19,21 @@ import net.minecraft.util.registry.Registry;
 import java.util.Iterator;
 
 public class AstromineItems {
-	public static final Item.Settings BASIC_SETTINGS = new Item.Settings().group(AstromineItemGroups.ASTROMINE).maxCount(64);
+	public static final Item.Settings BASIC_SETTINGS = new Item.Settings().group(AstromineItemGroups.ASTROMINE);
 
-	public static final UncoloredSpawnEggItem SPACE_SLIME_SPAWN_EGG = register("space_slime_spawn_egg", new UncoloredSpawnEggItem(AstromineEntityTypes.SPACE_SLIME, new Item.Settings().group(AstromineItemGroups.ASTROMINE)));
+	// Spawn eggs
+	public static final Item SPACE_SLIME_SPAWN_EGG = register("space_slime_spawn_egg", new UncoloredSpawnEggItem(AstromineEntityTypes.SPACE_SLIME, BASIC_SETTINGS));
 
-	public static final SuperSpaceSlimeShooterItem SUPER_SPACE_SLIME_SHOOTER = register("super_space_slime_shooter", new SuperSpaceSlimeShooterItem(new Item.Settings().group(AstromineItemGroups.ASTROMINE)));
-	public static final Item SPACE_SLIME_BALL = register("space_slime_ball", new Item(new Item.Settings().group(AstromineItemGroups.ASTROMINE)));
+	// Misc materials
+	public static final Item SPACE_SLIME_BALL = register("space_slime_ball", new Item(BASIC_SETTINGS));
+	public static final Item YEAST = register("yeast", new Item(BASIC_SETTINGS));
 
 	// Realistic weaponry
 	public static final Item SCAR_H = register("scar_h", new Weaponry.ScarH());
 	public static final Item BARRET_M98B = register("barret_m98b", new Weaponry.BarretM98B());
+
+	// Fantasy weaponry
+	public static final Item SUPER_SPACE_SLIME_SHOOTER = register("super_space_slime_shooter", new SuperSpaceSlimeShooterItem());
 
 	// Realistic ammunition
 	public static final Item NATO_7_62_X_51_MM = register("nato_7_62x51mm", new Ammunition.Nato762x51mm());
@@ -38,18 +43,33 @@ public class AstromineItems {
 	public static final Item FIRE_EXTINGUISHER = register("fire_extinguisher", new FireExtinguisher());
 
 	// Materials - Fragments
-	public static final Item ASTERITE_CLUSTER = register("asteroid_asterite_cluster", new Item(BASIC_SETTINGS));
+	public static final Item LAPIS_FRAGMENT = register("lapis_fragment", new Item(BASIC_SETTINGS));
+	public static final Item DIAMOND_FRAGMENT = register("diamond_fragment", new Item(BASIC_SETTINGS));
+	public static final Item EMERALD_FRAGMENT = register("emerald_fragment", new Item(BASIC_SETTINGS));
+	public static final Item ASTERITE_FRAGMENT = register("asterite_fragment", new Item(BASIC_SETTINGS));
+	public static final Item GALAXIUM_FRAGMENT = register("galaxium_fragment", new Item(BASIC_SETTINGS));
+
+	// Materials - Gems
+	public static final Item ASTERITE = register("asterite", new Item(BASIC_SETTINGS));
+	public static final Item GALAXIUM = register("galaxium", new Item(BASIC_SETTINGS));
+
+	// Materials - Nuggets
+	public static final Item METITE_NUGGET = register("metite_nugget", new Item(BASIC_SETTINGS));
+	public static final Item STELLUM_NUGGET = register("stellum_nugget", new Item(BASIC_SETTINGS));
+	public static final Item UNIVITE_NUGGET = register("univite_nugget", new Item(BASIC_SETTINGS));
+	public static final Item NETHERITE_NUGGET = register("netherite_nugget", new Item(BASIC_SETTINGS));
 
 	// Materials - Ingots
-	public static final Item ASTERITE_INGOT = register("asterite_ingot", new Item(BASIC_SETTINGS));
 	public static final Item METITE_INGOT = register("metite_ingot", new Item(BASIC_SETTINGS));
 	public static final Item STELLUM_INGOT = register("stellum_ingot", new Item(BASIC_SETTINGS));
 	public static final Item UNIVITE_INGOT = register("univite_ingot", new Item(BASIC_SETTINGS));
-	public static final Item GALAXIUM_INGOT = register("galaxium_ingot", new Item(BASIC_SETTINGS));
 
 	// Materials - Clusters
 	public static final Item ASTEROID_METITE_CLUSTER = register("asteroid_metite_cluster", new Item(BASIC_SETTINGS));
 	public static final Item METEOR_METITE_CLUSTER = register("meteor_metite_cluster", new Item(BASIC_SETTINGS));
+	public static final Item ASTERITE_CLUSTER = register("asteroid_asterite_cluster", new Item(BASIC_SETTINGS));
+	public static final Item ASTEROID_STELLUM_CLUSTER = register("asteroid_stellum_cluster", new Item(BASIC_SETTINGS));
+	public static final Item ASTEROID_GALAXIUM_CLUSTER = register("asteroid_galaxium_cluster", new Item(BASIC_SETTINGS));
 	public static final Item ASTEROID_COAL_CLUSTER = register("asteroid_coal_cluster", new Item(BASIC_SETTINGS));
 	public static final Item ASTEROID_IRON_CLUSTER = register("asteroid_iron_cluster", new Item(BASIC_SETTINGS));
 	public static final Item ASTEROID_GOLD_CLUSTER = register("asteroid_gold_cluster", new Item(BASIC_SETTINGS));
@@ -57,34 +77,37 @@ public class AstromineItems {
 	public static final Item ASTEROID_LAPIS_CLUSTER = register("asteroid_lapis_cluster", new Item(BASIC_SETTINGS));
 	public static final Item ASTEROID_DIAMOND_CLUSTER = register("asteroid_diamond_cluster", new Item(BASIC_SETTINGS));
 	public static final Item ASTEROID_EMERALD_CLUSTER = register("asteroid_emerald_cluster", new Item(BASIC_SETTINGS));
-	public static final Item ASTEROID_STELLUM_CLUSTER = register("asteroid_stellum_cluster", new Item(BASIC_SETTINGS));
-	public static final Item ASTEROID_NETHERITE_CLUSTER = register("asteroid_netherite_cluster", new Item(BASIC_SETTINGS));
-	public static final Item ASTEROID_GALAXIUM_CLUSTER = register("asteroid_galaxium_cluster", new Item(BASIC_SETTINGS));
 
-	public static final Item ASTERITE_DUST = register("asterite_dust", new Item(BASIC_SETTINGS));
+	// Materials - Dusts
 	public static final Item METITE_DUST = register("metite_dust", new Item(BASIC_SETTINGS));
+	public static final Item ASTERITE_DUST = register("asterite_dust", new Item(BASIC_SETTINGS));
+	public static final Item STELLUM_DUST = register("stellum_dust", new Item(BASIC_SETTINGS));
+	public static final Item GALAXIUM_DUST = register("galaxium_dust", new Item(BASIC_SETTINGS));
+	public static final Item UNIVITE_DUST = register("univite_dust", new Item(BASIC_SETTINGS));
 	public static final Item IRON_DUST = register("iron_dust", new Item(BASIC_SETTINGS));
 	public static final Item GOLD_DUST = register("gold_dust", new Item(BASIC_SETTINGS));
 	public static final Item LAPIS_DUST = register("lapis_dust", new Item(BASIC_SETTINGS));
 	public static final Item DIAMOND_DUST = register("diamond_dust", new Item(BASIC_SETTINGS));
 	public static final Item EMERALD_DUST = register("emerald_dust", new Item(BASIC_SETTINGS));
 	public static final Item NETHERITE_DUST = register("netherite_dust", new Item(BASIC_SETTINGS));
-	public static final Item STELLUM_DUST = register("stellum_dust", new Item(BASIC_SETTINGS));
 
-	public static final Item ASTERITE_PLATES = register("asterite_plates", new Item(BASIC_SETTINGS));
+	// Materials - Plates
 	public static final Item METITE_PLATES = register("metite_plates", new Item(BASIC_SETTINGS));
+	public static final Item STELLUM_PLATES = register("stellum_plates", new Item(BASIC_SETTINGS));
+	public static final Item UNIVITE_PLATES = register("univite_plates", new Item(BASIC_SETTINGS));
 	public static final Item IRON_PLATES = register("iron_plates", new Item(BASIC_SETTINGS));
 	public static final Item GOLD_PLATES = register("gold_plates", new Item(BASIC_SETTINGS));
 	public static final Item NETHERITE_PLATES = register("netherite_plates", new Item(BASIC_SETTINGS));
-	public static final Item STELLUM_PLATES = register("stellum_plates", new Item(BASIC_SETTINGS));
 
-	public static final Item ASTERITE_GEAR = register("asterite_gear", new Item(BASIC_SETTINGS));
+	// Materials - Gears
 	public static final Item METITE_GEAR = register("metite_gear", new Item(BASIC_SETTINGS));
+	public static final Item STELLUM_GEAR = register("stellum_gear", new Item(BASIC_SETTINGS));
+	public static final Item UNIVITE_GEAR = register("univite_gear", new Item(BASIC_SETTINGS));
 	public static final Item IRON_GEAR = register("iron_gear", new Item(BASIC_SETTINGS));
 	public static final Item GOLD_GEAR = register("gold_gear", new Item(BASIC_SETTINGS));
 	public static final Item NETHERITE_GEAR = register("netherite_gear", new Item(BASIC_SETTINGS));
-	public static final Item STELLUM_GEAR = register("stellum_gear", new Item(BASIC_SETTINGS));
 
+	// Circuits
 	public static final Item BASIC_CIRCUIT = register("basic_circuit", new Item(BASIC_SETTINGS));
 	public static final Item ADVANCED_CIRCUIT = register("advanced_circuit", new Item(BASIC_SETTINGS));
 	public static final Item ELITE_CIRCUIT = register("elite_circuit", new Item(BASIC_SETTINGS));
@@ -152,8 +175,6 @@ public class AstromineItems {
 	public static final Item SPACE_SUIT_CHESTPLATE = register("space_suit_chestplate", new SpaceSuitItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.CHEST, BASIC_SETTINGS));
 	public static final Item SPACE_SUIT_LEGGINGS = register("space_suit_leggings", new SpaceSuitItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.LEGS, BASIC_SETTINGS));
 	public static final Item SPACE_SUIT_BOOTS = register("space_suit_boots", new SpaceSuitItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, BASIC_SETTINGS));
-
-	public static final Item YEAST = register("yeast", new Item(new Item.Settings()));
 
 	public static void initialize() {
 		Iterator var1 = UncoloredSpawnEggItem.getAll().iterator();

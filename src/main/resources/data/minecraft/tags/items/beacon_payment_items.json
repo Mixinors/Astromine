@@ -1,10 +1,10 @@
 {
   "replace": false,
   "values": [
-    "astromine:asterite_ingot",
+    "astromine:asterite",
     "astromine:metite_ingot",
     "astromine:stellum_ingot",
-    "astromine:galaxium_ingot",
+    "astromine:galaxium",
     "astromine:univite_ingot"
   ]
 }

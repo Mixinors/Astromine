@@ -3,10 +3,10 @@
   "pattern": [" # ", " # ", "   "],
   "key": {
     "#": {
-      "item": "astromine:asterite_ingot"
+      "item": "astromine:univite_ingot"
     }
   },
   "result": {
-    "item": "astromine:asterite_plates"
+    "item": "astromine:univite_plates"
   }
 }
