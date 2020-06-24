@@ -3,6 +3,8 @@ package com.github.chainmailstudios.astromine.common.fraction;
 import com.google.common.base.Objects;
 import net.minecraft.nbt.CompoundTag;
 
+import java.math.BigDecimal;
+
 public class Fraction extends Number implements Comparable<Fraction> {
 	public static final Fraction BUCKET = new Fraction(1, 1);
 	public static final Fraction BOTTLE = new Fraction(1, 3);
@@ -240,6 +242,11 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	@Override
 	public String toString() {
 		return "Fraction{" + "numerator=" + this.numerator + ", denominator=" + this.denominator + '}';
+	}
+	
+	@SuppressWarnings("BigDecimalMethodWithoutRoundingCalled")
+	public String toPrettyString() {
+		return BigDecimal.valueOf(numerator).divide(BigDecimal.valueOf(denominator)).toString();
 	}
 
 	@Override

@@ -3,6 +3,8 @@ package com.github.chainmailstudios.astromine.common.widget;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
@@ -18,6 +20,7 @@ import spinnery.widget.api.Position;
 
 import java.util.function.Supplier;
 
+@Environment(EnvType.CLIENT)
 public class WFractionalVerticalBar extends WAbstractBar {
 	private Supplier<Fraction> progressFraction = Fraction::empty;
 	private Supplier<Fraction> limitFraction = Fraction::empty;
@@ -118,6 +121,7 @@ public class WFractionalVerticalBar extends WAbstractBar {
 
 		if (isFocused()) {
 			tooltipText.setText(FluidUtilities.fraction(progressFraction.get(), limitFraction.get(), unit));
+			tooltipText.setWidth(TextRenderer.width(tooltipText.getText())); // update width dumb
 
 			tooltip.draw(matrices, provider);
 
