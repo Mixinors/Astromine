@@ -1,15 +1,16 @@
 {
 	"type": "astromine:sorting",
-	"input":
-		{
-			"item": "astromine:asteroid_lapis_cluster",
-			"count": 1
-		}
-	,
+	"input": {
+		"item": "astromine:asteroid_lapis_cluster",
+		"count": 1
+	},
 	"output": {
 		"item": "astromine:lapis_dust",
 		"count": 2
 	},
-	"time_total": 16,
-	"energy_total": 16
+	"time_total": 20,
+		"energy_total": {
+		"numerator": 1,
+		"denominator": 2
+	}
 }

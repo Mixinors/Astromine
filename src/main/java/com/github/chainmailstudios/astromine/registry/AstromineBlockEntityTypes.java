@@ -23,6 +23,7 @@ public class AstromineBlockEntityTypes {
 	public static BlockEntityType<CreativeBufferBlockEntity> CREATIVE_BUFFER = register("creative_buffer", CreativeBufferBlockEntity::new, AstromineBlocks.CREATIVE_BUFFER);
 
 	public static BlockEntityType<SorterBlockEntity> SORTER = register("sorter", SorterBlockEntity::new, AstromineBlocks.SORTER);
+	public static BlockEntityType<SmelterBlockEntity> SMELTER = register("smelter", SmelterBlockEntity::new, AstromineBlocks.SMELTER);
 
 	public static void initialize() {
 		// Unused.
