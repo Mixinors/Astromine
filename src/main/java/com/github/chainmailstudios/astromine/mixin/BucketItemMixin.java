@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.access.BucketAccessor;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
@@ -32,7 +31,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BucketItem.class)
-public abstract class BucketItemMixin implements BucketAccessor {
+public abstract class BucketItemMixin {
 	@Shadow
 	@Final
 	private Fluid fluid;
@@ -99,10 +98,5 @@ public abstract class BucketItemMixin implements BucketAccessor {
 		float n = h * j;
 		Vec3d vec3d2 = vec3d.add((double) l * 5.0D, (double) k * 5.0D, (double) n * 5.0D);
 		return world.rayTrace(new RayTraceContext(vec3d, vec3d2, RayTraceContext.ShapeType.OUTLINE, fluidHandling, player));
-	}
-
-	@Override
-	public Fluid getFluid() {
-		return fluid;
 	}
 }
