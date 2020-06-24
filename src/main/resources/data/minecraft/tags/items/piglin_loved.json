@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:asteroid_gold_cluster",
+    "astromine:gold_dust",
+    "astromine:gold_gear",
+    "astromine:gold_plates"
+  ]
+}
