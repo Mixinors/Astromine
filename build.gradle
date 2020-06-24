@@ -8,10 +8,6 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     maven {
-        name = "HalfOf2"
-        url = "https://raw.githubusercontent.com/Devan-Kerman/Devan-Repo/master/"
-    }
-    maven {
         name = "Onyx Studios"
         url = "https://maven.onyxstudios.dev"
     }
@@ -65,9 +61,6 @@ dependencies {
 
     // Spinnery
     modImplementation "com.github.vini2003:spinnery:${spinnery_version}"
-
-    // Advanced Runtime Resource Packs
-    modImplementation "net.devtech:arrp:${arrp_version}"
 	
 	// Patchouli
 	modImplementation "vazkii.patchouli:Patchouli_1.16-fabric:${patchouli_version}"
