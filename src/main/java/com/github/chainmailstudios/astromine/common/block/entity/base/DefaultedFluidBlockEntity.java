@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 
-public abstract class DefaultedFluidBlockEntity extends BlockEntity implements ComponentProvider, BlockEntityClientSerializable {
+public abstract class DefaultedFluidBlockEntity extends DefaultedBlockEntity implements ComponentProvider, BlockEntityClientSerializable {
 	protected final SimpleFluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1);
 
 	public DefaultedFluidBlockEntity(BlockEntityType<?> type) {

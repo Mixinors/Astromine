@@ -48,17 +48,6 @@ public class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlockEntity 
 			}
 		});
 		
-		for (PlayerEntity playerEntity : world.getPlayers()) {
-			if (playerEntity.currentScreenHandler instanceof LiquidGeneratorContainer) {
-				LiquidGeneratorContainer container = (LiquidGeneratorContainer) playerEntity.currentScreenHandler;
-				
-				if (container.blockEntity == this && !world.isClient) {
-					sync();
-					break;
-				}
-			}
-		}
-		
 		for (Direction direction : Direction.values()) {
 			BlockPos position = getPos().offset(direction);
 			
