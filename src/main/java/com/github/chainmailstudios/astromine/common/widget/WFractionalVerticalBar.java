@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.common.widget;
 
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -116,13 +117,7 @@ public class WFractionalVerticalBar extends WAbstractBar {
 		GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
 		if (isFocused()) {
-			long progressNumerator = progressFraction.get().getNumerator();
-			long progressDenominator = progressFraction.get().getDenominator();
-
-			long limitNumerator = limitFraction.get().getNumerator();
-			long limitDenominator = limitFraction.get().getDenominator();
-
-			tooltipText.setText(new TranslatableText("text.astromine.tooltip.fractional_bar", progressNumerator, progressDenominator, limitNumerator, limitDenominator, unit.getString()));
+			tooltipText.setText(FluidUtilities.fraction(progressFraction.get(), limitFraction.get(), unit));
 
 			tooltip.draw(matrices, provider);
 

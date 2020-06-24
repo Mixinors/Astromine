@@ -79,13 +79,7 @@ public class WFluidVolumeFractionalVerticalBar extends WFractionalVerticalBar {
 		}
 
 		if (isFocused()) {
-			long progressNumerator = getProgressFraction().get().getNumerator();
-			long progressDenominator = getProgressFraction().get().getDenominator();
-
-			long limitNumerator = getLimitFraction().get().getNumerator();
-			long limitDenominator = getLimitFraction().get().getDenominator();
-
-			getTooltipText().setText(new TranslatableText("text.astromine.tooltip.fractional_bar", progressNumerator, progressDenominator, limitNumerator, limitDenominator, getUnit().getString()));
+            getTooltipText().setText(FluidUtilities.fraction(getProgressFraction().get(), getLimitFraction().get(), getUnit()));
 
 			getTooltip().draw(matrices, provider);
 
