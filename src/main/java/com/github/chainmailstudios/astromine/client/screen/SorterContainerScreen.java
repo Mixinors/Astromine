@@ -23,13 +23,13 @@ public class SorterContainerScreen extends DefaultedEnergyItemContainerScreen<So
 		WSlot output = mainPanel.createChild(WSlot::new, Position.of(energyBar), Size.of(18, 18)).setInventoryNumber(1).setSlotNumber(1);
 
 		input.centerX();
-		input.setPosition(Position.of(input.getX() + 13.5f, input.getY() + 18.5f, input.getZ()));
+		input.setPosition(Position.of(input.getX() + 29, input.getY() + 15, input.getZ()));
 
-		WHorizontalArrow arrow = mainPanel.createChild(WHorizontalArrow::new, Position.of(input, - 9,18, 0), Size.of(22, 16))
+		WHorizontalArrow arrow = mainPanel.createChild(WHorizontalArrow::new, Position.of(input, -31, 0, 0), Size.of(22, 16))
 				.setLimitSupplier(() -> sorter.limit)
 				.setProgressSupplier(() -> sorter.progress);
 
 		output.centerX();
-		output.setPosition(Position.of(input, -27, 0, 0));
+		output.setPosition(Position.of(arrow, -27, 0, 0));
 	}
 }
