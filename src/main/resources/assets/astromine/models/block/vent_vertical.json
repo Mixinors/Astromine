@@ -1,7 +1,7 @@
 {
   "parent": "block/cube",
   "textures": {
-    "particle": "astromine:block/crafting_table_front",
+    "particle": "astromine:block/machine_bottom",
     "down": "astromine:block/vent_back",
     "up": "astromine:block/vent_front",
     "north": "astromine:block/machine_side",
