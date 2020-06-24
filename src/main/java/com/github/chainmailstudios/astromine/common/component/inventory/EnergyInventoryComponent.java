@@ -163,15 +163,13 @@ public interface EnergyInventoryComponent extends Component {
 		int maximum = range.isPresent() ? range.get().getMaximum() : source.getSize();
 
 		for (int position = minimum; position < maximum; ++position) {
-			if (source.getVolume(position) != null && !source.getVolume(position).isEmpty()) {
+			if (source.getVolume(position) != null) {
 				EnergyVolume volume = source.getVolume(position);
 
-				if (volume != null && !volume.isEmpty()) {
+				if (volume != null) {
 					CompoundTag volumeTag = source.getVolume(position).toTag(new CompoundTag());
 
-					if (volumeTag.isEmpty()) {
-						volumesTag.put(String.valueOf(position), volumeTag);
-					}
+					volumesTag.put(String.valueOf(position), volumeTag);
 				}
 			}
 		}
@@ -262,8 +260,8 @@ public interface EnergyInventoryComponent extends Component {
 
 				if (target.getSize() >= position) {
 					if (target.getVolume(position) != null) {
-						target.getVolume(position).setFraction(volume.getFraction());
 						target.getVolume(position).setSize(volume.getSize());
+						target.getVolume(position).setFraction(volume.getFraction());
 					} else {
 						target.setVolume(position, volume);
 					}

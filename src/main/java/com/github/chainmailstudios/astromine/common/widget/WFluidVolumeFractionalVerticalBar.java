@@ -14,6 +14,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
+import spinnery.client.render.TextRenderer;
 import spinnery.client.utility.ScissorArea;
 
 import java.util.function.Supplier;
@@ -80,6 +81,7 @@ public class WFluidVolumeFractionalVerticalBar extends WFractionalVerticalBar {
 
 		if (isFocused()) {
             getTooltipText().setText(FluidUtilities.fraction(getProgressFraction().get(), getLimitFraction().get(), getUnit()));
+			getTooltipText().setWidth(TextRenderer.width(getTooltipText().getText())); // update width dumb
 
 			getTooltip().draw(matrices, provider);
 

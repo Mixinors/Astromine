@@ -1,0 +1,12 @@
+{
+  "type": "astromine:liquid_generating",
+  "input": "astromine:rocket_fuel",
+  "amount": {
+    "numerator": 1,
+    "denominator": 60
+  },
+  "energy_generated": {
+    "numerator": 1,
+    "denominator": 20
+  }
+}

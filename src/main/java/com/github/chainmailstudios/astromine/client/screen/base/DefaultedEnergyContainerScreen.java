@@ -1,8 +1,7 @@
 package com.github.chainmailstudios.astromine.client.screen.base;
 
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
-import com.github.chainmailstudios.astromine.common.container.base.DeltaContainer;
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import com.github.chainmailstudios.astromine.common.container.base.DefaultedEnergyContainer;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.common.widget.WEnergyVolumeFractionalVerticalBar;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,7 +23,7 @@ public abstract class DefaultedEnergyContainerScreen<T extends BaseContainer> ex
 	public Collection<WSlot> playerSlots;
 	public WEnergyVolumeFractionalVerticalBar energyBar;
 
-	public DefaultedEnergyContainerScreen(Text name, DeltaContainer linkedContainer, PlayerEntity player) {
+	public DefaultedEnergyContainerScreen(Text name, DefaultedEnergyContainer linkedContainer, PlayerEntity player) {
 		super(name, (T) linkedContainer, player);
 
 		mainInterface = getInterface();

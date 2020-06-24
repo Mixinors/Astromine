@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 
-public abstract class DefaultedItemBlockEntity extends BlockEntity implements ComponentProvider, BlockEntityClientSerializable {
+public abstract class DefaultedItemBlockEntity extends DefaultedBlockEntity implements ComponentProvider, BlockEntityClientSerializable {
 	protected final SimpleItemInventoryComponent itemComponent = new SimpleItemInventoryComponent(1);
 
 	public DefaultedItemBlockEntity(BlockEntityType<?> type) {
