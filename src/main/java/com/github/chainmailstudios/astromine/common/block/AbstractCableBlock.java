@@ -80,7 +80,7 @@ public abstract class AbstractCableBlock extends Block implements NetworkMember 
 			if (((AbstractCableBlock) offsetBlock).acceptsType(getNetworkType())) continue;
 
 			NetworkTracer.Modeller offsetModeller = new NetworkTracer.Modeller();
-			offsetModeller.scanNeighbours(getNetworkType(), offsetPos, world);
+			offsetModeller.scanNeighbours(((AbstractCableBlock) offsetBlock).getNetworkType(), offsetPos, world);
 
 			world.setBlockState(offsetPos, offsetModeller.applyToBlockState(world.getBlockState(offsetPos)));
 		}
