@@ -43,11 +43,11 @@ public class AstromineItems {
 	public static final Item FIRE_EXTINGUISHER = register("fire_extinguisher", new FireExtinguisher());
 
 	// Materials - Fragments
+	public static final Item ASTERITE_FRAGMENT = register("asterite_fragment", new Item(BASIC_SETTINGS));
+	public static final Item GALAXIUM_FRAGMENT = register("galaxium_fragment", new Item(BASIC_SETTINGS));
 	public static final Item LAPIS_FRAGMENT = register("lapis_fragment", new Item(BASIC_SETTINGS));
 	public static final Item DIAMOND_FRAGMENT = register("diamond_fragment", new Item(BASIC_SETTINGS));
 	public static final Item EMERALD_FRAGMENT = register("emerald_fragment", new Item(BASIC_SETTINGS));
-	public static final Item ASTERITE_FRAGMENT = register("asterite_fragment", new Item(BASIC_SETTINGS));
-	public static final Item GALAXIUM_FRAGMENT = register("galaxium_fragment", new Item(BASIC_SETTINGS));
 
 	// Materials - Gems
 	public static final Item ASTERITE = register("asterite", new Item(BASIC_SETTINGS));
@@ -65,8 +65,8 @@ public class AstromineItems {
 	public static final Item UNIVITE_INGOT = register("univite_ingot", new Item(BASIC_SETTINGS));
 
 	// Materials - Clusters
-	public static final Item ASTEROID_METITE_CLUSTER = register("asteroid_metite_cluster", new Item(BASIC_SETTINGS));
 	public static final Item METEOR_METITE_CLUSTER = register("meteor_metite_cluster", new Item(BASIC_SETTINGS));
+	public static final Item ASTEROID_METITE_CLUSTER = register("asteroid_metite_cluster", new Item(BASIC_SETTINGS));
 	public static final Item ASTEROID_ASTERITE_CLUSTER = register("asteroid_asterite_cluster", new Item(BASIC_SETTINGS));
 	public static final Item ASTEROID_STELLUM_CLUSTER = register("asteroid_stellum_cluster", new Item(BASIC_SETTINGS));
 	public static final Item ASTEROID_GALAXIUM_CLUSTER = register("asteroid_galaxium_cluster", new Item(BASIC_SETTINGS));
@@ -177,10 +177,7 @@ public class AstromineItems {
 	public static final Item SPACE_SUIT_BOOTS = register("space_suit_boots", new SpaceSuitItem(AstromineArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, BASIC_SETTINGS));
 
 	public static void initialize() {
-		Iterator var1 = UncoloredSpawnEggItem.getAll().iterator();
-
-		while (var1.hasNext()) {
-			UncoloredSpawnEggItem spawnEggItem = (UncoloredSpawnEggItem) var1.next();
+		for (UncoloredSpawnEggItem spawnEggItem : UncoloredSpawnEggItem.getAll()) {
 			DispenserBlock.registerBehavior(spawnEggItem, new ItemDispenserBehavior() {
 				@Override
 				public ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
