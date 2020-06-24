@@ -49,7 +49,7 @@ public class SmelterBlockEntity extends DefaultedEnergyItemBlockEntity implement
 	}
 
 	@Override
-	public boolean isBuffer() {
+	public boolean isRequester() {
 		return true;
 	}
 

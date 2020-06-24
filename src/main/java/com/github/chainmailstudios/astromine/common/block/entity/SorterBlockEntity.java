@@ -40,7 +40,7 @@ public class SorterBlockEntity extends DefaultedEnergyItemBlockEntity implements
 	}
 
 	@Override
-	public boolean isBuffer() {
+	public boolean isRequester() {
 		return true;
 	}
 

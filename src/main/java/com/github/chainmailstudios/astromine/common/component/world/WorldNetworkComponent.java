@@ -106,7 +106,7 @@ public class WorldNetworkComponent implements Component, Tickable {
 			}
 
 			for (String memberKey : memberList.getKeys()) {
-				instance.addNode(NetworkNode.of(memberList.getLong(memberKey)));
+				instance.addMember(NetworkNode.of(memberList.getLong(memberKey)));
 			}
 
 			addInstance(instance);

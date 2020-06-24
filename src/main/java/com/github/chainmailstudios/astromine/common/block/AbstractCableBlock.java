@@ -73,14 +73,16 @@ public abstract class AbstractCableBlock extends Block implements NetworkMember 
 		world.setBlockState(position, modeller.applyToBlockState(stateA));
 
 		for (Direction direction : Direction.values()) {
-			BlockPos posA = position.offset(direction);
-			Block block = world.getBlockState(posA).getBlock();
+			BlockPos offsetPos = position.offset(direction);
+			Block offsetBlock = world.getBlockState(offsetPos).getBlock();
 
-			if (!(block instanceof AbstractCableBlock)) continue;
+			if (!(offsetBlock instanceof AbstractCableBlock)) continue;
+			if (((AbstractCableBlock) offsetBlock).acceptsType(getNetworkType())) continue;
 
-			NetworkTracer.Modeller modellerB = new NetworkTracer.Modeller();
-			modellerB.scanNeighbours(((AbstractCableBlock) block).getNetworkType(), posA, world);
-			world.setBlockState(posA, modellerB.applyToBlockState(world.getBlockState(posA)));
+			NetworkTracer.Modeller offsetModeller = new NetworkTracer.Modeller();
+			offsetModeller.scanNeighbours(getNetworkType(), offsetPos, world);
+
+			world.setBlockState(offsetPos, offsetModeller.applyToBlockState(world.getBlockState(offsetPos)));
 		}
 	}
 
@@ -97,17 +99,19 @@ public abstract class AbstractCableBlock extends Block implements NetworkMember 
 		networkComponent.removeInstance(networkComponent.getInstance(getNetworkType(), position));
 
 		for (Direction directionA : Direction.values()) {
-			BlockPos posA = position.offset(directionA);
+			BlockPos offsetPos = position.offset(directionA);
+			Block offsetBlock = world.getBlockState(offsetPos).getBlock();
+
+			if (!(offsetBlock instanceof AbstractCableBlock)) continue;
+			if (((AbstractCableBlock) offsetBlock).getNetworkType() != getNetworkType()) continue;
 
 			NetworkTracer.Tracer tracer = new NetworkTracer.Tracer();
-			tracer.trace(getNetworkType(), posA, world);
+			tracer.trace(getNetworkType(), offsetPos, world);
 
 			NetworkTracer.Modeller modeller = new NetworkTracer.Modeller();
-			modeller.scanNeighbours(getNetworkType(), posA, world);
+			modeller.scanNeighbours(getNetworkType(), offsetPos, world);
 
-			BlockState stateB = world.getBlockState(posA);
-
-			world.setBlockState(posA, modeller.applyToBlockState(stateB));
+			world.setBlockState(offsetPos, modeller.applyToBlockState(world.getBlockState(offsetPos)));
 		}
 	}
 
@@ -115,13 +119,10 @@ public abstract class AbstractCableBlock extends Block implements NetworkMember 
 	public void neighborUpdate(BlockState state, World world, BlockPos position, Block block, BlockPos neighborPosition, boolean moved) {
 		super.neighborUpdate(state, world, position, block, neighborPosition, moved);
 
-		if (world.getBlockState(neighborPosition).getBlock() == block) return;
-
 		ComponentProvider provider = ComponentProvider.fromWorld(world);
 
 		WorldNetworkComponent networkComponent = provider.getComponent(AstromineComponentTypes.WORLD_NETWORK_COMPONENT);
 
-		networkComponent.getInstance(getNetworkType(), position).removeMember(NetworkNode.of(neighborPosition));
 		networkComponent.getInstance(getNetworkType(), position).removeNode(NetworkNode.of(position));
 
 		NetworkTracer.Tracer tracer = new NetworkTracer.Tracer();
@@ -130,7 +131,7 @@ public abstract class AbstractCableBlock extends Block implements NetworkMember 
 		NetworkTracer.Modeller modeller = new NetworkTracer.Modeller();
 		modeller.scanNeighbours(getNetworkType(), position, world);
 
-		world.setBlockState(position, modeller.applyToBlockState(state));
+		world.setBlockState(position, modeller.applyToBlockState(world.getBlockState(position)));
 	}
 
 	@Override

@@ -34,7 +34,7 @@ public class SorterBlock extends DefaultedHorizontalFacingBlock implements Netwo
 	}
 
 	@Override
-	public boolean isBuffer() {
+	public boolean isRequester() {
 		return true;
 	}
 
