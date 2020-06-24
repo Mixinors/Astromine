@@ -41,11 +41,11 @@ public class AstromineItems {
 	public static final Item ASTERITE_CLUSTER = register("asteroid_asterite_cluster", new Item(BASIC_SETTINGS));
 
 	// Materials - Ingots
-	public static final Item ASTERITE_INGOT = register("asterite_ingot", new Item(BASIC_SETTINGS));
+	public static final Item ASTERITE_GEM = register("asterite_gem", new Item(BASIC_SETTINGS));
+	public static final Item GALAXIUM_GEM = register("galaxium_gem", new Item(BASIC_SETTINGS));
 	public static final Item METITE_INGOT = register("metite_ingot", new Item(BASIC_SETTINGS));
 	public static final Item STELLUM_INGOT = register("stellum_ingot", new Item(BASIC_SETTINGS));
 	public static final Item UNIVITE_INGOT = register("univite_ingot", new Item(BASIC_SETTINGS));
-	public static final Item GALAXIUM_INGOT = register("galaxium_ingot", new Item(BASIC_SETTINGS));
 
 	// Materials - Clusters
 	public static final Item ASTEROID_METITE_CLUSTER = register("asteroid_metite_cluster", new Item(BASIC_SETTINGS));
@@ -70,6 +70,15 @@ public class AstromineItems {
 	public static final Item EMERALD_DUST = register("emerald_dust", new Item(BASIC_SETTINGS));
 	public static final Item NETHERITE_DUST = register("netherite_dust", new Item(BASIC_SETTINGS));
 	public static final Item STELLUM_DUST = register("stellum_dust", new Item(BASIC_SETTINGS));
+
+	public static final Item LAPIS_FRAGMENT = register("lapis_fragment", new Item(BASIC_SETTINGS));
+	public static final Item DIAMOND_FRAGMENT = register("diamond_fragment", new Item(BASIC_SETTINGS));
+	public static final Item EMERALD_FRAGMENT = register("emerald_fragment", new Item(BASIC_SETTINGS));
+	public static final Item ASTERITE_FRAGMENT = register("asterite_fragment", new Item(BASIC_SETTINGS));
+	public static final Item GALAXIUM_FRAGMENT = register("galaxium_fragment", new Item(BASIC_SETTINGS));
+
+	public static final Item STELLUM_NUGGET = register("stellum_nugget", new Item(BASIC_SETTINGS));
+	public static final Item METITE_NUGGET = register("metite_nugget", new Item(BASIC_SETTINGS));
 
 	public static final Item ASTERITE_PLATES = register("asterite_plates", new Item(BASIC_SETTINGS));
 	public static final Item METITE_PLATES = register("metite_plates", new Item(BASIC_SETTINGS));

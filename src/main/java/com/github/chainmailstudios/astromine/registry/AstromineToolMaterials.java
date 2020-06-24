@@ -10,7 +10,7 @@ public class AstromineToolMaterials {
 	public static final AstromineToolMaterial METITE = new AstromineToolMaterial(2, 981, 14f, 5.0f, 5, () -> Ingredient.ofItems(AstromineItems.METITE_INGOT));
 	public static final AstromineToolMaterial ASTERITE = new AstromineToolMaterial(5, 2015, 10f, 5.0f, 20, () -> Ingredient.ofItems(AstromineItems.ASTERITE_CLUSTER));
 	public static final AstromineToolMaterial STELLUM = new AstromineToolMaterial(5, 2643, 8f, 6.0f, 15, () -> Ingredient.ofItems(AstromineItems.STELLUM_INGOT));
-	public static final AstromineToolMaterial GALAXIUM = new AstromineToolMaterial(6, 3072, 11f, 5.0f, 18, () -> Ingredient.ofItems(AstromineItems.GALAXIUM_INGOT));
+	public static final AstromineToolMaterial GALAXIUM = new AstromineToolMaterial(6, 3072, 11f, 5.0f, 18, () -> Ingredient.ofItems(AstromineItems.GALAXIUM_GEM));
 	public static final AstromineToolMaterial UNIVITE = new AstromineToolMaterial(7, 3918, 12f, 6.0f, 22, () -> Ingredient.ofItems(AstromineItems.UNIVITE_INGOT));
 
 	public static class AstromineToolMaterial implements ToolMaterial {
