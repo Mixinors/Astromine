@@ -7,8 +7,8 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 import spinnery.widget.WSlot;
 
-public class SmelterContainer extends DefaultedEnergyItemContainer {
-	public SmelterContainer(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
+public class ElectricalSmelterContainer extends DefaultedEnergyItemContainer {
+	public ElectricalSmelterContainer(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
 		super(synchronizationID, playerInventory, position);
 
 		getInterface().createChild(WSlot::new).setInventoryNumber(1).setSlotNumber(0);
@@ -17,6 +17,6 @@ public class SmelterContainer extends DefaultedEnergyItemContainer {
 
 	@Override
 	public ScreenHandlerType<?> getType() {
-		return AstromineContainers.SMELTER;
+		return AstromineContainers.ELECTRICAL_SMELTER;
 	}
 }

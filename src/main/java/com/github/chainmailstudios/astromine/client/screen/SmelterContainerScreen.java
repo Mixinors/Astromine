@@ -1,10 +1,8 @@
 package com.github.chainmailstudios.astromine.client.screen;
 
 import com.github.chainmailstudios.astromine.client.screen.base.DefaultedEnergyItemContainerScreen;
-import com.github.chainmailstudios.astromine.common.block.entity.SmelterBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.SorterBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.SmelterContainer;
-import com.github.chainmailstudios.astromine.common.container.SorterContainer;
+import com.github.chainmailstudios.astromine.common.block.entity.ElectricalSmelterBlockEntity;
+import com.github.chainmailstudios.astromine.common.container.ElectricalSmelterContainer;
 import com.github.chainmailstudios.astromine.common.container.base.DefaultedEnergyItemContainer;
 import com.github.chainmailstudios.astromine.common.widget.WHorizontalArrow;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,11 +11,11 @@ import spinnery.widget.WSlot;
 import spinnery.widget.api.Position;
 import spinnery.widget.api.Size;
 
-public class SmelterContainerScreen extends DefaultedEnergyItemContainerScreen<SmelterContainer> {
+public class SmelterContainerScreen extends DefaultedEnergyItemContainerScreen<ElectricalSmelterContainer> {
 	public SmelterContainerScreen(Text name, DefaultedEnergyItemContainer linkedContainer, PlayerEntity player) {
 		super(name, linkedContainer, player);
 
-		SmelterBlockEntity smelter = (SmelterBlockEntity) linkedContainer.blockEntity;
+		ElectricalSmelterBlockEntity smelter = (ElectricalSmelterBlockEntity) linkedContainer.blockEntity;
 
 		WSlot input = mainPanel.createChild(WSlot::new, Position.of(energyBar), Size.of(18, 18)).setInventoryNumber(1).setSlotNumber(0);
 		WSlot output = mainPanel.createChild(WSlot::new, Position.of(energyBar), Size.of(18, 18)).setInventoryNumber(1).setSlotNumber(1);

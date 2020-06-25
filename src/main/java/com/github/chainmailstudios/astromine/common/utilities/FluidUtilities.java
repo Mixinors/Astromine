@@ -8,10 +8,11 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.math.BlockPos;
 
 public class FluidUtilities {
 	public static int color(PlayerEntity player, Fluid fluid) {
-		return FluidRenderHandlerRegistry.INSTANCE.get(fluid).getFluidColor(player.getEntityWorld(), player.getBlockPos(), fluid.getDefaultState());
+		return FluidRenderHandlerRegistry.INSTANCE.get(fluid).getFluidColor(player.getEntityWorld(), BlockPos.ORIGIN, fluid.getDefaultState());
 	}
 
 	public static Sprite[] texture(Fluid fluid) {
@@ -26,13 +27,13 @@ public class FluidUtilities {
 		String[] units = new String[]{"B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"};
 		return String.format("%.1f%s", value / Math.pow(1000, exponent), units[exponent - 1]);
 	}
-	
-    public static MutableText rawFraction(Fraction current, Fraction maxValue, Text unit) {
-        return new TranslatableText("text.astromine.tooltip.fractional_bar", rawFraction(current), rawFraction(maxValue), unit);
-    }
-    
-    public static MutableText rawFraction(Fraction fraction) {
-        return fraction.getDenominator() != 1 ? new TranslatableText("text.astromine.tooltip.fractional_value", fraction.getNumerator(), fraction.getDenominator())
-                : new TranslatableText("text.astromine.tooltip.fractional_value_simple", fraction.getNumerator());
+
+	public static MutableText rawFraction(Fraction current, Fraction maxValue, Text unit) {
+		return new TranslatableText("text.astromine.tooltip.fractional_bar", rawFraction(current), rawFraction(maxValue), unit);
+	}
+
+	public static MutableText rawFraction(Fraction fraction) {
+		return fraction.getDenominator() != 1 ? new TranslatableText("text.astromine.tooltip.fractional_value", fraction.getNumerator(), fraction.getDenominator())
+				: new TranslatableText("text.astromine.tooltip.fractional_value_simple", fraction.getNumerator());
 	}
 }

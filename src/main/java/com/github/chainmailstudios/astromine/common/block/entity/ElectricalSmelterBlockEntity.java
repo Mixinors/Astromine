@@ -1,13 +1,11 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.block.SmelterBlock;
+import com.github.chainmailstudios.astromine.common.block.ElectricalSmelterBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
-import com.github.chainmailstudios.astromine.recipe.SortingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
@@ -21,8 +19,8 @@ import spinnery.common.inventory.BaseInventory;
 
 import java.util.Optional;
 
-public class SmelterBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
-	public SmelterBlockEntity(BlockEntityType<?> type) {
+public class ElectricalSmelterBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
+	public ElectricalSmelterBlockEntity(BlockEntityType<?> type) {
 		super(type);
 	}
 
@@ -37,8 +35,8 @@ public class SmelterBlockEntity extends DefaultedEnergyItemBlockEntity implement
 
 	Optional<SmeltingRecipe> recipe = Optional.empty();
 
-	public SmelterBlockEntity() {
-		super(AstromineBlockEntityTypes.SMELTER);
+	public ElectricalSmelterBlockEntity() {
+		super(AstromineBlockEntityTypes.ELECTRICAL_SMELTER);
 
 		energyComponent.getVolume(0).setSize(new Fraction(16, 1));
 		inventoryComponent = new SimpleItemInventoryComponent(2);
@@ -117,9 +115,9 @@ public class SmelterBlockEntity extends DefaultedEnergyItemBlockEntity implement
 		}
 
 		if (isActive && !wasActive) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(SmelterBlock.ACTIVE, true));
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(ElectricalSmelterBlock.ACTIVE, true));
 		} else if (!isActive && wasActive) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(SmelterBlock.ACTIVE, false));
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(ElectricalSmelterBlock.ACTIVE, false));
 		}
 
 		wasActive = isActive;

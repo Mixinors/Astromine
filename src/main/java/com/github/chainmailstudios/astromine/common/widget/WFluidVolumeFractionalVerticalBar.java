@@ -6,10 +6,10 @@ import com.github.chainmailstudios.astromine.client.render.SpriteRenderer;
 import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.text.TranslatableText;
@@ -62,7 +62,7 @@ public class WFluidVolumeFractionalVerticalBar extends WFractionalVerticalBar {
 
 		float sBGY = (((sY / getLimitFraction().get().floatValue()) * getProgressFraction().get().floatValue()));
 
-		BaseRenderer.drawTexturedQuad(matrices, provider, getX(), getY(), z, getWidth(), getHeight(), getBackgroundTexture());
+		BaseRenderer.drawTexturedQuad(matrices, provider, x, y, z, getWidth(), getHeight(), getBackgroundTexture());
 
 		if (getFluidVolume().getFluid() != Fluids.EMPTY) {
 			SpriteRenderer.beginPass()
@@ -74,7 +74,7 @@ public class WFluidVolumeFractionalVerticalBar extends WFractionalVerticalBar {
 					.alpha(0xff)
 					.normal(matrices.peek().getNormal(), 0, 0, 0)
 					.position(matrices.peek().getModel(), x + 1, y + 1 + Math.max(0, sY - ((int) (sBGY) + 1)), x + sX - 1, y + sY - 1, z)
-					.next();
+					.next(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
 		}
 
 		if (isFocused()) {
@@ -83,7 +83,7 @@ public class WFluidVolumeFractionalVerticalBar extends WFractionalVerticalBar {
 			getTooltipText().add(FluidUtilities.rawFraction(getProgressFraction().get(), getLimitFraction().get(), getUnit()));
 
 			getTooltipText().add(new TranslatableText("text.astromine.tooltip.fractional_value", getProgressFraction().get().toPrettyString(), getLimitFraction().get().toPrettyString()));
-			
+
 			drawTooltips(matrices, provider);
 		}
 	}

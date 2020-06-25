@@ -56,7 +56,7 @@ public class AstromineScreens {
 			return new SorterContainerScreen(title, handler, inventory.player);
 		}));
 
-		ScreenRegistry.register(AstromineContainers.SMELTER, (ScreenRegistry.Factory<SmelterContainer, SmelterContainerScreen>) ((handler, inventory, title) -> {
+		ScreenRegistry.register(AstromineContainers.ELECTRICAL_SMELTER, (ScreenRegistry.Factory<ElectricalSmelterContainer, SmelterContainerScreen>) ((handler, inventory, title) -> {
 			return new SmelterContainerScreen(title, handler, inventory.player);
 		}));
 	}
