@@ -49,7 +49,7 @@ public class ElectricalSmelterBlockEntity extends DefaultedEnergyItemBlockEntity
 	}
 
 	@Override
-	public boolean isRequester() {
+	public <T extends NetworkType> boolean isRequester(T type) {
 		return true;
 	}
 
