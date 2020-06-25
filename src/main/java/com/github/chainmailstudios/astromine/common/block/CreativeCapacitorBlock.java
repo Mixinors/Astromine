@@ -44,7 +44,7 @@ public class CreativeCapacitorBlock extends DefaultedHorizontalFacingBlockWithEn
 
 				@Override
 				public Text getDisplayName() {
-					return new TranslatableText("text.astromine.title.creative_capacitor");
+					return new TranslatableText("block.astromine.creative_capacitor");
 				}
 
 				@Override

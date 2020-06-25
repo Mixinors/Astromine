@@ -68,7 +68,7 @@ public class ElectricalSmelterBlock extends DefaultedHorizontalFacingBlockWithEn
 
 				@Override
 				public Text getDisplayName() {
-					return new TranslatableText("text.astromine.title.electrical_smelter");
+					return new TranslatableText("block.astromine.electrical_smelter");
 				}
 
 				@Override

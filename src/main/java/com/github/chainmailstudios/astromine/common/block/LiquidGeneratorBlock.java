@@ -52,7 +52,7 @@ public class LiquidGeneratorBlock extends DefaultedHorizontalFacingBlockWithEnti
 
 				@Override
 				public Text getDisplayName() {
-					return new TranslatableText("text.astromine.title.liquid_generator");
+					return new TranslatableText("block.astromine.liquid_generator");
 				}
 
 				@Override

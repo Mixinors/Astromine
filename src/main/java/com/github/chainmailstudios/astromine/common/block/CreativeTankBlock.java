@@ -44,7 +44,7 @@ public class CreativeTankBlock extends DefaultedHorizontalFacingBlockWithEntity 
 
 				@Override
 				public Text getDisplayName() {
-					return new TranslatableText("text.astromine.title.creative_tank");
+					return new TranslatableText("block.astromine.creative_tank");
 				}
 
 				@Override
