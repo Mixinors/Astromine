@@ -5,7 +5,6 @@ import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.network.ticker.NetworkTypeEnergy;
 import com.github.chainmailstudios.astromine.common.network.ticker.NetworkTypeFluid;
 import com.github.chainmailstudios.astromine.common.registry.NetworkTypeRegistry;
-import net.minecraft.util.registry.Registry;
 
 public class AstromineNetworkTypes {
 	public static final NetworkType ENERGY = register("energy_network", new NetworkTypeEnergy());

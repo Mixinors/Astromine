@@ -1,9 +1,11 @@
 package com.github.chainmailstudios.astromine.common.entity;
 
-import com.github.chainmailstudios.astromine.common.entity.ai.superspaceslime.*;
-import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineParticles;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityDimensions;
+import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.FollowTargetGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -25,6 +27,15 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeExplosionGoal;
+import com.github.chainmailstudios.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeFaceTowardTargetGoal;
+import com.github.chainmailstudios.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeMoveControl;
+import com.github.chainmailstudios.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeMoveGoal;
+import com.github.chainmailstudios.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeRandomLookGoal;
+import com.github.chainmailstudios.astromine.common.entity.ai.superspaceslime.SuperSpaceSlimeSwimmingGoal;
+import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineParticles;
 
 public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 

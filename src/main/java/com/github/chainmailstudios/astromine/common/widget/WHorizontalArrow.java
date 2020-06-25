@@ -1,17 +1,16 @@
 package com.github.chainmailstudios.astromine.common.widget;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import org.lwjgl.opengl.GL11;
 import spinnery.client.render.BaseRenderer;
 import spinnery.widget.WAbstractWidget;
-import spinnery.widget.WHorizontalBar;
 
 import java.util.function.IntSupplier;
-import java.util.function.Supplier;
 
 public class WHorizontalArrow extends WAbstractWidget {
 	private static final Identifier BACKGROUND = AstromineCommon.identifier("textures/widget/horizontal_arrow_background.png");

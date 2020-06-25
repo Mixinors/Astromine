@@ -1,12 +1,12 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import com.google.common.collect.Lists;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
+import com.mojang.datafixers.util.Pair;
 
+import com.google.common.collect.Lists;
 import java.util.Collection;
 
 

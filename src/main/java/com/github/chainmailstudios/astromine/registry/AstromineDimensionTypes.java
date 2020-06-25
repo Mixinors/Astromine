@@ -1,12 +1,13 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.source.VoronoiBiomeAccessType;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
 
 import java.util.OptionalLong;
 

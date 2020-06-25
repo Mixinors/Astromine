@@ -1,10 +1,5 @@
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.utilities.data.Range;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import nerdhub.cardinal.components.api.component.Component;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -12,9 +7,18 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.utilities.data.Range;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import org.apache.logging.log4j.Level;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 

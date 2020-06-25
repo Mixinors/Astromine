@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine.client.render.sky.skybox;
 
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
@@ -10,6 +9,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+
+import com.google.common.collect.ImmutableMap;
 
 public class SpaceSkybox extends AbstractSkybox {
 	public static final Identifier UP = new Identifier("skybox", "up");

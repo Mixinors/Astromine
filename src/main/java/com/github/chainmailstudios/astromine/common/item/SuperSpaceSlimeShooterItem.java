@@ -1,15 +1,5 @@
 package com.github.chainmailstudios.astromine.common.item;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
-import com.github.chainmailstudios.astromine.common.entity.projectile.BulletEntity;
-import com.github.chainmailstudios.astromine.common.item.weapon.BaseWeapon;
-import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
-import com.github.chainmailstudios.astromine.registry.AstromineItems;
-import com.github.chainmailstudios.astromine.registry.AstromineParticles;
-import com.github.chainmailstudios.astromine.registry.AstromineSounds;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -23,6 +13,16 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
+import com.github.chainmailstudios.astromine.common.entity.projectile.BulletEntity;
+import com.github.chainmailstudios.astromine.common.item.weapon.BaseWeapon;
+import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
+import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import com.github.chainmailstudios.astromine.registry.AstromineParticles;
+import com.github.chainmailstudios.astromine.registry.AstromineSounds;
 
 import java.util.Optional;
 

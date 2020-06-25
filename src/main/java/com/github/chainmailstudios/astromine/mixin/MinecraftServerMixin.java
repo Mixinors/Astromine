@@ -1,9 +1,12 @@
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.registry.AstromineDimensionTypes;
-import com.github.chainmailstudios.astromine.common.world.generation.AstromineBiomeSource;
-import com.github.chainmailstudios.astromine.common.world.generation.AstromineChunkGenerator;
-import com.google.common.collect.ImmutableList;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.ServerWorld;
@@ -18,13 +21,12 @@ import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.GeneratorOptions;
 import net.minecraft.world.level.UnmodifiableLevelProperties;
 import net.minecraft.world.level.storage.LevelStorage;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.github.chainmailstudios.astromine.common.world.generation.AstromineBiomeSource;
+import com.github.chainmailstudios.astromine.common.world.generation.AstromineChunkGenerator;
+import com.github.chainmailstudios.astromine.registry.AstromineDimensionTypes;
+
+import com.google.common.collect.ImmutableList;
 import java.util.Map;
 import java.util.concurrent.Executor;
 

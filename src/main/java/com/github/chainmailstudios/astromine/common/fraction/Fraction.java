@@ -1,9 +1,8 @@
 package com.github.chainmailstudios.astromine.common.fraction;
 
-import com.google.common.base.Objects;
 import net.minecraft.nbt.CompoundTag;
 
-import java.math.BigDecimal;
+import com.google.common.base.Objects;
 import java.text.DecimalFormat;
 
 public class Fraction extends Number implements Comparable<Fraction> {

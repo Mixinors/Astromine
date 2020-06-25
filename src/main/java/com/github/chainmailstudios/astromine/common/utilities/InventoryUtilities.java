@@ -2,12 +2,18 @@ package com.github.chainmailstudios.astromine.common.utilities;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
+
 import spinnery.common.inventory.BaseInventory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class InventoryUtilities extends spinnery.common.utility.InventoryUtilities {
 	@Environment(EnvType.CLIENT)

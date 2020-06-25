@@ -1,11 +1,11 @@
 package com.github.chainmailstudios.astromine.common.registry;
 
-import com.github.chainmailstudios.astromine.common.registry.base.UniDirectionalRegistry;
-import com.github.chainmailstudios.astromine.registry.AstromineTags;
-
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.tag.Tag;
+
+import com.github.chainmailstudios.astromine.common.registry.base.UniDirectionalRegistry;
+import com.github.chainmailstudios.astromine.registry.AstromineTags;
 
 public class BreathableRegistry extends UniDirectionalRegistry<EntityType<?>, Tag<Fluid>> {
 	public static final BreathableRegistry INSTANCE = new BreathableRegistry();

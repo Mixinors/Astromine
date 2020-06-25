@@ -1,10 +1,12 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
 import net.fabricmc.fabric.api.tag.TagRegistry;
+
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.tag.Tag;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
 
 public class AstromineTags {
 	public static final Tag<Fluid> NORMAL_BREATHABLE = TagRegistry.fluid(AstromineCommon.identifier("normal_breathable"));

@@ -1,15 +1,17 @@
 package com.github.chainmailstudios.astromine.common.widget;
 
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import com.mojang.blaze3d.systems.RenderSystem;
+
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
 import org.lwjgl.opengl.GL11;
 import spinnery.client.render.BaseRenderer;
 import spinnery.client.render.TextRenderer;

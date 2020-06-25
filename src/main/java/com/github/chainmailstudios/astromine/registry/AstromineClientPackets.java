@@ -1,13 +1,15 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.entity.RocketEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.Identifier;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.entity.RocketEntity;
 
 import java.util.UUID;
 

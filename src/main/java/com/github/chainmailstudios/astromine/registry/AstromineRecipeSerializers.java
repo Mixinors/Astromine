@@ -1,9 +1,10 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.recipe.LiquidGeneratingRecipe;
-import com.github.chainmailstudios.astromine.recipe.SortingRecipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.registry.Registry;
+
+import com.github.chainmailstudios.astromine.recipe.LiquidGeneratingRecipe;
+import com.github.chainmailstudios.astromine.recipe.SortingRecipe;
 
 public class AstromineRecipeSerializers {
 	public static final RecipeSerializer<SortingRecipe> SORTING = Registry.register(

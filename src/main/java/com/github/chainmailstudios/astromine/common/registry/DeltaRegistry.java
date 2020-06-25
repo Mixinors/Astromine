@@ -1,11 +1,8 @@
 package com.github.chainmailstudios.astromine.common.registry;
 
 import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
-
 import java.util.Collection;
-import java.util.Map;
 
 public class DeltaRegistry<T, U> {
 	private final Multimap<T, U> entries = HashMultimap.create();
