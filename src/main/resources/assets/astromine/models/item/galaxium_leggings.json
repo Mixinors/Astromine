@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "astromine:item/galaxium_leggings"
+    "layer0": "astromine:item/armor/galaxium_leggings"
   }
 }
