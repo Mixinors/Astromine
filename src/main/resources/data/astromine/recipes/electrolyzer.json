@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["131", "121", "131"],
+  "key": {
+    "1": {
+      "item": "astromine:iron_plates"
+    },
+    "2": {
+      "item": "astromine:bucket"
+    },
+    "3": {
+      "item": "minecraft:iron_gear"
+    }
+  },
+  "result": {
+    "item": "astromine:electrolyzer"
+  }
+}
