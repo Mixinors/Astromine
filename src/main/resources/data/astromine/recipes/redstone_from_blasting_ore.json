@@ -1,0 +1,9 @@
+{
+	"type": "minecraft:blasting",
+	"ingredient": {
+		"tag": "astromine:redstone_ores"
+	},
+	"result": "minecraft:redstone",
+	"experience": 0.1,
+	"cookingtime": 100
+}

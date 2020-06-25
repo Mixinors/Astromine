@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "astromine:asteroid_gold_ore"
+    "astromine:asteroid_gold_ore",
+    "astromine:asteroid_gold_cluster"
   ]
 }

@@ -24,7 +24,7 @@
                   }
                 }
               ],
-              "name": "astromine:asteroid_diamond_ore"
+              "name": "astromine:asteroid_emerald_ore"
             },
             {
               "type": "minecraft:item",
@@ -38,7 +38,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "astromine:asteroid_diamond_cluster"
+              "name": "astromine:asteroid_emerald_cluster"
             }
           ]
         }
