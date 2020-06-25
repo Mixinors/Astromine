@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["121", "343", "121"],
+  "key": {
+    "1": {
+      "item": "minecraft:red_dye"
+    },
+    "2": {
+      "item": "astromine:iron_plates"
+    },
+    "3": {
+      "item": "astromine:diamond_dust"
+    },
+    "4": {
+      "item": "astromine:gold_plates"
+    }
+  },
+  "result": {
+    "item": "astromine:advanced_circuit"
+  }
+}

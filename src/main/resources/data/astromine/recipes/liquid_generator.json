@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["121", "343", "121"],
+  "key": {
+    "1": {
+      "item": "astromine:gold_plates"
+    },
+    "2": {
+      "item": "astromine:netherite_gear"
+    },
+    "3": {
+      "item": "astromine:iron_gear"
+    },
+    "4": {
+      "item": "astromine:advanced_circuit"
+    }
+  },
+  "result": {
+    "item": "astromine:liquid_generator"
+  }
+}

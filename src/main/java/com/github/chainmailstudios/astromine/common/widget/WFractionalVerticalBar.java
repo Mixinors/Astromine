@@ -118,7 +118,7 @@ public class WFractionalVerticalBar extends WAbstractBar {
 		
 		if (isFocused()) {
 			tooltipText.clear();
-			tooltipText.add(FluidUtilities.fraction(progressFraction.get(), limitFraction.get(), unit));
+			tooltipText.add(FluidUtilities.rawFraction(progressFraction.get(), limitFraction.get(), unit));
 			tooltipText.add(new TranslatableText("text.astromine.tooltip.fractional_value", progressFraction.get().toPrettyString(), limitFraction.get().toPrettyString()));
 			
 			drawTooltips(matrices, provider);

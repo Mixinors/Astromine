@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["121", "343", "121"],
+  "key": {
+    "1": {
+      "item": "astromine:metite_plates"
+    },
+    "2": {
+      "item": "astromine:netherite_gear"
+    },
+    "3": {
+      "item": "minecraft:magma_cream"
+    },
+    "4": {
+      "item": "astromine:elite_circuit"
+    }
+  },
+  "result": {
+    "item": "astromine:smelter"
+  }
+}

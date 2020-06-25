@@ -5,8 +5,8 @@ import com.github.chainmailstudios.astromine.client.BaseRenderer;
 import com.github.chainmailstudios.astromine.client.render.SpriteRenderer;
 import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -14,8 +14,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-import spinnery.client.render.TextRenderer;
-import spinnery.client.utility.ScissorArea;
 
 import java.util.function.Supplier;
 
@@ -75,13 +73,15 @@ public class WFluidVolumeFractionalVerticalBar extends WFractionalVerticalBar {
 					.overlay(OverlayTexture.DEFAULT_UV)
 					.alpha(0xff)
 					.normal(matrices.peek().getNormal(), 0, 0, 0)
-					.position(matrices.peek().getModel(), x + 1, y + (sY - ((int) (sBGY) + 1)), x + sX - 1, y + sY - 1, z)
+					.position(matrices.peek().getModel(), x + 1, y + 1 + Math.max(0, sY - ((int) (sBGY) + 1)), x + sX - 1, y + sY - 1, z)
 					.next();
 		}
 
 		if (isFocused()) {
 			getTooltipText().clear();
-            getTooltipText().add(FluidUtilities.fraction(getProgressFraction().get(), getLimitFraction().get(), getUnit()));
+
+			getTooltipText().add(FluidUtilities.rawFraction(getProgressFraction().get(), getLimitFraction().get(), getUnit()));
+
 			getTooltipText().add(new TranslatableText("text.astromine.tooltip.fractional_value", getProgressFraction().get().toPrettyString(), getLimitFraction().get().toPrettyString()));
 			
 			drawTooltips(matrices, provider);
