@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.google.common.collect.Lists;
@@ -23,6 +24,7 @@ import java.util.Set;
 
 public abstract class DefaultedFluidBlockEntity extends DefaultedBlockEntity implements ComponentProvider, BlockEntityClientSerializable {
 	protected final SimpleFluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1);
+	protected final BlockEntityTransferComponent transferComponent = new BlockEntityTransferComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
 	public DefaultedFluidBlockEntity(BlockEntityType<?> type) {
 		super(type);
@@ -50,12 +52,12 @@ public abstract class DefaultedFluidBlockEntity extends DefaultedBlockEntity imp
 
 	@Override
 	public <C extends Component> C getComponent(ComponentType<C> type) {
-		return type == AstromineComponentTypes.FLUID_INVENTORY_COMPONENT ? (C) fluidComponent : null;
+		return type == AstromineComponentTypes.FLUID_INVENTORY_COMPONENT ? (C) fluidComponent : type == AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT ? (C) transferComponent : null;
 	}
 
 	@Override
 	public Set<ComponentType<?>> getComponentTypes() {
-		return Sets.newHashSet(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+		return Sets.newHashSet(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
 	}
 
 	@Override

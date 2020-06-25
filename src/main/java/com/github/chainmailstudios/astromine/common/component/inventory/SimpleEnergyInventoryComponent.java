@@ -12,6 +12,10 @@ public class SimpleEnergyInventoryComponent implements EnergyInventoryComponent 
 
 	private final int size;
 
+	public SimpleEnergyInventoryComponent() {
+		this(0);
+	}
+
 	public SimpleEnergyInventoryComponent(int size) {
 		this.size = size;
 		for (int i = 0; i < size; ++i) {

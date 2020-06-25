@@ -1,7 +1,9 @@
 package com.github.chainmailstudios.astromine.client.screen.base;
 
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.container.base.DefaultedFluidContainer;
+import com.github.chainmailstudios.astromine.common.widget.WTransferTypeSelectorPanel;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.common.widget.WFluidVolumeFractionalVerticalBar;
 import net.minecraft.client.util.math.MatrixStack;
@@ -41,6 +43,12 @@ public abstract class DefaultedFluidContainerScreen<T extends BaseContainer> ext
 		ComponentProvider componentProvider = linkedContainer.blockEntity;
 
 		fluidBar.setFluidVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(0));
+
+		BlockEntityTransferComponent transferComponent = componentProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
+
+		mainPanel.createChild(WTransferTypeSelectorPanel::new, Position.of(mainPanel, mainPanel.getWidth(), 0, 0), Size.of(96, 100))
+				.setProvider(componentProvider)
+				.setComponent(transferComponent);
 	}
 
 	@Override

@@ -4,8 +4,11 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import nerdhub.cardinal.components.api.component.Component;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.text.TranslatableText;
@@ -21,8 +24,8 @@ import java.util.stream.Collectors;
 public interface FluidInventoryComponent extends NameableComponent {
 	Map<Integer, FluidVolume> getContents();
 
-	default Identifier getSymbol() {
-		return AstromineCommon.identifier("textures/widget/fluid_symbol");
+	default Item getSymbol() {
+		return AstromineBlocks.CREATIVE_TANK.asItem();
 	}
 
 	default TranslatableText getName() {

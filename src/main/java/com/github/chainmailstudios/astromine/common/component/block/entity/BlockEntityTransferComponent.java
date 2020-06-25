@@ -8,10 +8,24 @@ import nerdhub.cardinal.components.api.component.Component;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Map;
 
 public class BlockEntityTransferComponent implements Component {
 	private final Map<ComponentType<?>, TransferEntry> components = Maps.newHashMap();
+
+	public BlockEntityTransferComponent(ComponentType<?>... types) {
+		Arrays.asList(types).forEach(type -> components.put(type, new TransferEntry()));
+	}
+
+	public TransferEntry get(ComponentType<?> type) {
+		return components.get(type);
+	}
+
+	public Map<ComponentType<?>, TransferEntry> get() {
+		return components;
+	}
 
 	@Override
 	public void fromTag(CompoundTag tag) {
@@ -37,8 +51,12 @@ public class BlockEntityTransferComponent implements Component {
 		return tag;
 	}
 
-	private static final class TransferEntry {
+	public static final class TransferEntry {
 		private final Map<Direction, TransferType> types = Maps.newHashMap();
+
+		public TransferEntry() {
+			Arrays.asList(Direction.values()).forEach(direction -> set(direction, TransferType.NONE));
+		}
 
 		public void set(Direction direction, TransferType type) {
 			types.put(direction, type);
