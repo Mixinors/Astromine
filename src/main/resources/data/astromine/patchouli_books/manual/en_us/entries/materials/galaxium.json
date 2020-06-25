@@ -14,7 +14,7 @@
 			"type": "smelting",
 			"recipe": "astromine:galaxium_from_smelting_ore",
 			"title": "Obtaining Galaxium",
-			"text": "$(item)Galaxium Ore$() can be rarely found inside $(thing)Asteroids$() in $(thing)Space$().$(p)Mining Galaxium Ore will require an $(item)Asterite Pickaxe$() (Mining Level 5) or better, and will usually result in a single $(item)Galaxium Cluster() which can then be smelted to obtain a $(item)Galaxium$() gem."
+			"text": "$(item)Galaxium Ore$() can be rarely found inside $(thing)Asteroids$() in $(thing)Space$().$(p)Mining Galaxium Ore will require an $(item)Asterite Pickaxe$() (Mining Level 5) or better, and will usually result in a single $(item)Galaxium Cluster$() which can then be smelted to obtain a $(item)Galaxium$() gem."
 		},
 		{
 			"type": "text",
