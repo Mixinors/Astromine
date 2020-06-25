@@ -1,15 +1,12 @@
 package com.github.chainmailstudios.astromine.client.screen.base;
 
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.Text;
-
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.container.base.DefaultedEnergyFluidContainer;
 import com.github.chainmailstudios.astromine.common.widget.WEnergyVolumeFractionalVerticalBar;
 import com.github.chainmailstudios.astromine.common.widget.WFluidVolumeFractionalVerticalBar;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import spinnery.client.screen.BaseContainerScreen;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.Text;
 import spinnery.common.container.BaseContainer;
 import spinnery.widget.WAbstractWidget;
 import spinnery.widget.WInterface;
@@ -20,7 +17,7 @@ import spinnery.widget.api.Size;
 
 import java.util.Collection;
 
-public abstract class DefaultedEnergyFluidContainerScreen<T extends BaseContainer> extends BaseContainerScreen<T> {
+public abstract class DefaultedEnergyFluidContainerScreen<T extends BaseContainer> extends DefaultedContainerScreen<T> {
 	public WInterface mainInterface;
 	public WPanel mainPanel;
 	public Collection<WSlot> playerSlots;
@@ -34,12 +31,13 @@ public abstract class DefaultedEnergyFluidContainerScreen<T extends BaseContaine
 
 		mainPanel = mainInterface.createChild(WPanel::new, Position.ORIGIN, Size.of(176, 160));
 
+		addTitle(mainPanel);
 		mainPanel.center();
 		mainPanel.setOnAlign(WAbstractWidget::center);
 
 		playerSlots = WSlot.addPlayerInventory(Position.of(mainPanel, 7, 77, 0), Size.of(18, 18), mainPanel);
 
-		energyBar = mainPanel.createChild(WEnergyVolumeFractionalVerticalBar::new, Position.of(mainPanel, 7, 7, 0), Size.of(24, 48));
+		energyBar = mainPanel.createChild(WEnergyVolumeFractionalVerticalBar::new, Position.of(mainPanel, 7, 20, 0), Size.of(24, 48));
 
 		fluidBar = mainPanel.createChild(WFluidVolumeFractionalVerticalBar::new, Position.of(energyBar, energyBar.getWidth() + 4, 0, 0), Size.of(energyBar));
 
@@ -48,11 +46,5 @@ public abstract class DefaultedEnergyFluidContainerScreen<T extends BaseContaine
 		energyBar.setEnergyVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).getVolume(0));
 
 		fluidBar.setFluidVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(0));
-	}
-	
-	@Override
-	public void render(MatrixStack matrices, int mouseX, int mouseY, float tickDelta) {
-		this.fillGradient(matrices, 0, 0, this.width, this.height, -1072689136, -804253680);
-		super.render(matrices, mouseX, mouseY, tickDelta);
 	}
 }

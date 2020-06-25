@@ -23,9 +23,12 @@ public class CreativeTankContainerScreen extends DefaultedFluidContainerScreen<C
 	public CreativeTankContainerScreen(Text name, DefaultedFluidContainer linkedContainer, PlayerEntity player) {
 		super(name, linkedContainer, player);
 
+		mainPanel.setSize(Size.of(mainPanel.getSize().getWidth(), mainPanel.getSize().getHeight() + getPlayerInventoryOffsetY()));
+		mainPanel.center();
 		fluidBar.centerX();
+		fluidBar.setY(fluidBar.getY() + 4);
 
-		WTextField field = mainPanel.createChild(WOptionField::new, Position.of(mainPanel, 0, 56, 0), Size.of(64, 18))
+		WTextField field = mainPanel.createChild(WOptionField::new, Position.of(mainPanel, 0, 80, 0), Size.of(64, 18))
 				.setFilter(Filter.get(String.class))
 				.setOnKeyPressed((widget, keyPressed, character, keyModifier) -> {
 					if (Identifier.isValid((widget).getText())) {
@@ -37,5 +40,10 @@ public class CreativeTankContainerScreen extends DefaultedFluidContainerScreen<C
 				});
 
 		field.centerX();;
+	}
+
+	@Override
+	protected int getPlayerInventoryOffsetY() {
+		return 24;
 	}
 }
