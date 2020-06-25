@@ -1,8 +1,8 @@
 package com.github.chainmailstudios.astromine.common.fraction;
 
+import com.google.common.base.Objects;
 import net.minecraft.nbt.CompoundTag;
 
-import com.google.common.base.Objects;
 import java.text.DecimalFormat;
 
 public class Fraction extends Number implements Comparable<Fraction> {
@@ -22,6 +22,18 @@ public class Fraction extends Number implements Comparable<Fraction> {
 		return new Fraction(0, 1);
 	}
 
+	public static Fraction ofWhole(long whole) {
+		return new Fraction(whole, 1);
+	}
+
+	public static Fraction of(long numerator, long denominator) {
+		return new Fraction(numerator, denominator);
+	}
+
+	public static Fraction of(long whole, long numerator, long denominator) {
+		return of(numerator + whole * denominator, denominator);
+	}
+
 	public static Fraction add(Fraction fractionA, Fraction fractionB) {
 		long denominator = lowestCommonDenominator(fractionA.denominator, fractionB.denominator);
 
@@ -29,9 +41,7 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	}
 
 	public void add(Fraction fraction) {
-		Fraction result = Fraction.add(this, fraction);
-		this.numerator = result.numerator;
-		this.denominator = result.denominator;
+		setFrom(Fraction.add(this, fraction));
 	}
 
 	private static long lowestCommonDenominator(long a, long b) {
@@ -84,9 +94,7 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	}
 
 	public void subtract(Fraction fraction) {
-		Fraction result = Fraction.subtract(this, fraction);
-		this.numerator = result.numerator;
-		this.denominator = result.denominator;
+		setFrom(Fraction.subtract(this, fraction));
 	}
 
 	public static Fraction divide(Fraction fractionA, Fraction fractionB) {
@@ -94,9 +102,7 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	}
 
 	public void divide(Fraction fraction) {
-		Fraction result = Fraction.divide(this, fraction);
-		this.numerator = result.numerator;
-		this.denominator = result.denominator;
+		setFrom(Fraction.divide(this, fraction));
 	}
 
 	public static Fraction multiply(Fraction fractionA, Fraction fractionB) {
@@ -104,9 +110,7 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	}
 
 	public void multiply(Fraction fraction) {
-		Fraction result = Fraction.multiply(this, fraction);
-		this.numerator = result.numerator;
-		this.denominator = result.denominator;
+		setFrom(Fraction.multiply(this, fraction));
 	}
 
 	/**
@@ -117,9 +121,7 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	}
 
 	public void inverse() {
-		Fraction result = Fraction.inverse(this);
-		this.numerator = result.numerator;
-		this.denominator = result.denominator;
+		setFrom(Fraction.inverse(this));
 	}
 
 	public static Fraction limit(Fraction source, Fraction target) {
@@ -127,9 +129,7 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	}
 
 	public void limit(Fraction fraction) {
-		Fraction result = Fraction.limit(this, fraction);
-		this.numerator = result.numerator;
-		this.denominator = result.denominator;
+		setFrom(Fraction.limit(this, fraction));
 	}
 
 	public static Fraction min(Fraction fractionA, Fraction fractionB) {
@@ -240,11 +240,19 @@ public class Fraction extends Number implements Comparable<Fraction> {
 		return new Fraction(fraction.numerator / divisor, fraction.denominator / divisor);
 	}
 
+	public void simplify() {
+		setFrom(simplify(this));
+	}
+
+	public void resetToEmpty() {
+		setFrom(Fraction.empty());
+	}
+
 	@Override
 	public String toString() {
 		return "Fraction{" + "numerator=" + this.numerator + ", denominator=" + this.denominator + '}';
 	}
-	
+
 	public String toPrettyString() {
 		return DECIMAL_FORMAT.format(floatValue());
 	}
@@ -266,10 +274,15 @@ public class Fraction extends Number implements Comparable<Fraction> {
 
 	@Override
 	public double doubleValue() {
-		return (double) this.longValue();
+		return (double) this.numerator / (double) this.denominator;
 	}
-	
+
 	public Fraction copy() {
 		return new Fraction(this.numerator, this.denominator);
+	}
+
+	public void setFrom(Fraction fraction) {
+		this.numerator = fraction.numerator;
+		this.denominator = fraction.denominator;
 	}
 }

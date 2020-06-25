@@ -53,7 +53,7 @@ public class NuclearWarheadBlock extends Block {
 
 				@Override
 				public Text getDisplayName() {
-					return new TranslatableText("text.astromine.title.nuclear_warhead");
+					return new TranslatableText("block.astromine.nuclear_warhead");
 				}
 
 				@Override

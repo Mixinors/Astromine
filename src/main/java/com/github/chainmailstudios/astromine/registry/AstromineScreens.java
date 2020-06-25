@@ -1,5 +1,9 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.client.screen.*;
+import com.github.chainmailstudios.astromine.common.container.*;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 
 import com.github.chainmailstudios.astromine.client.screen.CreativeBufferContainerScreen;
@@ -27,6 +31,7 @@ import spinnery.widget.WStaticText;
 import spinnery.widget.api.Position;
 import spinnery.widget.api.Size;
 
+@Environment(EnvType.CLIENT)
 public class AstromineScreens {
 	public static WStaticImage GAS_IMAGE;
 	public static WStaticText PRESSURE_TEXT;
@@ -40,6 +45,10 @@ public class AstromineScreens {
 			PRESSURE_TEXT = mainInterface.createChild(WStaticText::new, Position.of(4, 40, 0)).setScale(0.75F);
 			FRACTION_TEXT = mainInterface.createChild(WStaticText::new, Position.of(4, 50, 0)).setScale(0.5F);
 		});
+
+		ScreenRegistry.register(AstromineContainers.FLUID_EXTRACTOR, (ScreenRegistry.Factory<FluidExtractorContainer, FluidExtractorContainerScreen>) ((handler, inventory, title) -> {
+			return new FluidExtractorContainerScreen(title, handler, inventory.player);
+		}));
 
 		ScreenRegistry.register(AstromineContainers.LIQUID_GENERATOR, (ScreenRegistry.Factory<LiquidGeneratorContainer, LiquidGeneratorContainerScreen>) ((handler, inventory, title) -> {
 			return new LiquidGeneratorContainerScreen(title, handler, inventory.player);

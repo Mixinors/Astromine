@@ -58,7 +58,7 @@ public class SorterBlock extends DefaultedHorizontalFacingBlockWithEntity implem
 
 				@Override
 				public Text getDisplayName() {
-					return new TranslatableText("text.astromine.title.sorter");
+					return new TranslatableText("block.astromine.sorter");
 				}
 
 				@Override

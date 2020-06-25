@@ -50,7 +50,7 @@ public class CreativeBufferBlock extends BlockWithEntity {
 
 				@Override
 				public Text getDisplayName() {
-					return new TranslatableText("text.astromine.title.creative_buffer");
+					return new TranslatableText("block.astromine.creative_buffer");
 				}
 
 				@Override

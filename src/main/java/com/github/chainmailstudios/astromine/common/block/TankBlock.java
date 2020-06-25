@@ -57,7 +57,7 @@ public class TankBlock extends DefaultedHorizontalFacingBlockWithEntity implemen
 
 				@Override
 				public Text getDisplayName() {
-					return new TranslatableText("text.astromine.title.tank");
+					return new TranslatableText("block.astromine.tank");
 				}
 
 				@Override

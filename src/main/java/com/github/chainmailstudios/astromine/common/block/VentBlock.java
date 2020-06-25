@@ -57,7 +57,7 @@ public class VentBlock extends DefaultedFacingBlockWithEntity implements Network
 
 				@Override
 				public Text getDisplayName() {
-					return new TranslatableText("text.astromine.title.vent");
+					return new TranslatableText("block.astromine.vent");
 				}
 
 				@Override
