@@ -1,10 +1,8 @@
 package com.github.chainmailstudios.astromine.common.widget;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.entity.CreativeTankBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import com.github.chainmailstudios.astromine.registry.AstromineServerPackets;
+import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
 import io.netty.buffer.Unpooled;
 import nerdhub.cardinal.components.api.ComponentType;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
@@ -15,7 +13,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import spinnery.client.render.BaseRenderer;
-import spinnery.widget.WAbstractWidget;
 import spinnery.widget.WButton;
 
 public class WTransferTypeSelectorButton extends WButton {
@@ -91,7 +88,7 @@ public class WTransferTypeSelectorButton extends WButton {
 				buffer.writeEnumConstant(direction);
 				buffer.writeEnumConstant(component.get(type).get(direction));
 
-				ClientSidePacketRegistry.INSTANCE.sendToServer(AstromineServerPackets.BLOCK_ENTITY_UPDATE_PACKET, buffer);
+				ClientSidePacketRegistry.INSTANCE.sendToServer(AstromineCommonPackets.BLOCK_ENTITY_UPDATE_PACKET, buffer);
 			}
 		}
 

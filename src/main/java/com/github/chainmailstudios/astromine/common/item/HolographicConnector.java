@@ -34,7 +34,7 @@ public class HolographicConnector extends Item {
 
 			if (CACHE.getOrDefault(world, null) == null) {
 				CACHE.put(world, entity);
-				context.getPlayer().sendMessage(new TranslatableText("text.astromine.message.holographic_connector_select", entity.getPos().toShortString()).formatted(Formatting.BLUE), true);
+				context.getPlayer().sendMessage(new TranslatableText("text.astromine.message.holographic_connector_select", toShortString(entity.getPos())).formatted(Formatting.BLUE), true);
 				world.playSound(context.getPlayer(), context.getBlockPos(), AstromineSounds.HOLOGRAPHIC_CONNECTOR_CLICK, SoundCategory.PLAYERS, 0.5f, 0.33f);
 			} else {
 				HolographicBridgeProjectorBlockEntity parent = (HolographicBridgeProjectorBlockEntity) CACHE.get(world);
@@ -99,5 +99,9 @@ public class HolographicConnector extends Item {
 		}
 
 		return super.useOnBlock(context);
+	}
+
+	public String toShortString(BlockPos pos) {
+		return "" + pos.getX() + ", " + pos.getY() + ", " + pos.getZ();
 	}
 }

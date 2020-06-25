@@ -1,5 +1,7 @@
 package com.github.chainmailstudios.astromine.common.entity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 
 import net.minecraft.client.util.math.Vector3f;
@@ -170,14 +172,21 @@ public class RocketEntity extends Entity {
 
 			for (int i = 0; i < 90; ++i) {
 				speed = speed.rotateY(1);
-				world.addParticle(AstromineParticles.ROCKET_FLAME,
-						getX() + ((thrustVec.getX() - (Math.min(0.6f, random.nextFloat())) * (random.nextBoolean() ? 1 : -1))),
-						getY() + thrustVec.getY(),
-						getZ() + ((thrustVec.getZ() - (Math.min(0.6f, random.nextFloat())) * (random.nextBoolean() ? 1 : -1))),
-						speed.getX(),
-						speed.getY(),
-						speed.getZ());
+				if(world.isClient()) {
+					particleShit(thrustVec, speed);
+				}
 			}
 		}
+	}
+
+	@Environment(EnvType.CLIENT)
+	public void particleShit(Vec3d thrustVec, Vec3d speed) {
+		world.addParticle(AstromineParticles.ROCKET_FLAME,
+				getX() + ((thrustVec.getX() - (Math.min(0.6f, random.nextFloat())) * (random.nextBoolean() ? 1 : -1))),
+				getY() + thrustVec.getY(),
+				getZ() + ((thrustVec.getZ() - (Math.min(0.6f, random.nextFloat())) * (random.nextBoolean() ? 1 : -1))),
+				speed.getX(),
+				speed.getY(),
+				speed.getZ());
 	}
 }
