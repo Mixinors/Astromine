@@ -36,8 +36,8 @@ public class ElectricalSmeltingCategory extends DefaultCookingCategory {
 			widgets.add(Widgets.createLabel(new Point(bounds.x + 5, bounds.y + 5),
 					new TranslatableText("category.astromine.cooking.energy", FluidUtilities.rawFraction(((ElectricalSmeltingDisplay) display).getEnergyRequired()))).noShadow().leftAligned().color(0xFF404040, 0xFFBBBBBB));
 		widgets.add(Widgets.createLabel(new Point(bounds.x + bounds.width - 5, bounds.y + 5),
-				new TranslatableText("category.astromine.cooking.time", df.format(cookingTime / 20d))).noShadow().rightAligned().color(0xFF404040, 0xFFBBBBBB));
-		widgets.add(Widgets.createArrow(new Point(startPoint.x + 27, startPoint.y + 8)).animationDurationTicks(cookingTime));
+				new TranslatableText("category.astromine.cooking.time", df.format(cookingTime / 200d))).noShadow().rightAligned().color(0xFF404040, 0xFFBBBBBB));
+		widgets.add(Widgets.createArrow(new Point(startPoint.x + 27, startPoint.y + 8)).animationDurationTicks(cookingTime / 10));
 		widgets.add(Widgets.createSlot(new Point(startPoint.x + 4, startPoint.y + 9)).entries(display.getInputEntries().get(0)).markInput());
 		widgets.add(Widgets.createSlot(new Point(startPoint.x + 61, startPoint.y + 9)).entries(display.getOutputEntries()).disableBackground().markOutput());
 		return widgets;

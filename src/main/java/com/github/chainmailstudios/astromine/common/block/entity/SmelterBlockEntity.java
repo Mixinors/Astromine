@@ -81,7 +81,7 @@ public class SmelterBlockEntity extends DefaultedEnergyItemBlockEntity implement
 			if (recipe.isPresent() && recipe.get().matches(inputInventory, world)) {
 				limit = recipe.get().getCookTime() / 10;
 
-				Fraction consumed = new Fraction(limit / 20, 2);
+				Fraction consumed = new Fraction(recipe.get().getCookTime(), 10 * 20 * 2);
 
 				ItemStack output = recipe.get().getOutput().copy();
 
