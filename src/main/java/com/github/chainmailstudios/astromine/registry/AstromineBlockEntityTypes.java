@@ -33,7 +33,7 @@ public class AstromineBlockEntityTypes {
 	public static final BlockEntityType<CreativeBufferBlockEntity> CREATIVE_BUFFER = register("creative_buffer", CreativeBufferBlockEntity::new, AstromineBlocks.CREATIVE_BUFFER);
 
 	public static final BlockEntityType<SorterBlockEntity> SORTER = register("sorter", SorterBlockEntity::new, AstromineBlocks.SORTER);
-	public static final BlockEntityType<ElectricSmelterBlockEntity> ELECTRICAL_SMELTER = register("electrical_smelter", ElectricSmelterBlockEntity::new, AstromineBlocks.ELECTRIC_SMELTER);
+	public static final BlockEntityType<ElectricSmelterBlockEntity> ELECTRIC_SMELTER = register("electric_smelter", ElectricSmelterBlockEntity::new, AstromineBlocks.ELECTRIC_SMELTER);
 	public static final BlockEntityType<FluidExtractorBlockEntity> FLUID_EXTRACTOR = register("fluid_extractor", FluidExtractorBlockEntity::new, AstromineBlocks.FLUID_EXTRACTOR);
 
 	public static void initialize() {

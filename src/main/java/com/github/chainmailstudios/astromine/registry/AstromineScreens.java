@@ -17,7 +17,7 @@ import com.github.chainmailstudios.astromine.client.screen.VentContainerScreen;
 import com.github.chainmailstudios.astromine.common.container.CreativeBufferContainer;
 import com.github.chainmailstudios.astromine.common.container.CreativeCapacitorContainer;
 import com.github.chainmailstudios.astromine.common.container.CreativeTankContainer;
-import com.github.chainmailstudios.astromine.common.container.ElectricalSmelterContainer;
+import com.github.chainmailstudios.astromine.common.container.ElectricSmelterContainer;
 import com.github.chainmailstudios.astromine.common.container.FluidExtractorContainer;
 import com.github.chainmailstudios.astromine.common.container.FluidTankContainer;
 import com.github.chainmailstudios.astromine.common.container.LiquidGeneratorContainer;
@@ -82,7 +82,7 @@ public class AstromineScreens {
 			return new SorterContainerScreen(title, handler, inventory.player);
 		}));
 
-		ScreenRegistry.register(AstromineContainers.ELECTRICAL_SMELTER, (ScreenRegistry.Factory<ElectricalSmelterContainer, SmelterContainerScreen>) ((handler, inventory, title) -> {
+		ScreenRegistry.register(AstromineContainers.ELECTRIC_SMELTER, (ScreenRegistry.Factory<ElectricSmelterContainer, SmelterContainerScreen>) ((handler, inventory, title) -> {
 			return new SmelterContainerScreen(title, handler, inventory.player);
 		}));
 	}

@@ -8,7 +8,7 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.container.CreativeBufferContainer;
 import com.github.chainmailstudios.astromine.common.container.CreativeCapacitorContainer;
 import com.github.chainmailstudios.astromine.common.container.CreativeTankContainer;
-import com.github.chainmailstudios.astromine.common.container.ElectricalSmelterContainer;
+import com.github.chainmailstudios.astromine.common.container.ElectricSmelterContainer;
 import com.github.chainmailstudios.astromine.common.container.FluidExtractorContainer;
 import com.github.chainmailstudios.astromine.common.container.FluidTankContainer;
 import com.github.chainmailstudios.astromine.common.container.LiquidGeneratorContainer;
@@ -53,8 +53,8 @@ public class AstromineContainers {
 		return new SorterContainer(synchronizationID, inventory, buffer.readBlockPos());
 	}));
 
-	public static final ScreenHandlerType<ElectricalSmelterContainer> ELECTRICAL_SMELTER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("electrical_smelter"), ((synchronizationID, inventory, buffer) -> {
-		return new ElectricalSmelterContainer(synchronizationID, inventory, buffer.readBlockPos());
+	public static final ScreenHandlerType<ElectricSmelterContainer> ELECTRIC_SMELTER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("electric_smelter"), ((synchronizationID, inventory, buffer) -> {
+		return new ElectricSmelterContainer(synchronizationID, inventory, buffer.readBlockPos());
 	}));
 
 	public static void initialize() {
