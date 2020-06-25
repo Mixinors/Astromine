@@ -3,6 +3,12 @@ package com.github.chainmailstudios.astromine.common.world.feature;
 import com.github.chainmailstudios.astromine.common.miscellaneous.SimplexAlgorithm;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineFeatures;
+import com.terraformersmc.shapes.api.Position;
+import com.terraformersmc.shapes.api.Quaternion;
+import com.terraformersmc.shapes.api.Shape;
+import com.terraformersmc.shapes.impl.Shapes;
+import com.terraformersmc.shapes.impl.layer.transform.RotateLayer;
+import com.terraformersmc.shapes.impl.layer.transform.TranslateLayer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
@@ -19,6 +25,7 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class MeteorGenerator extends StructurePieceWithDimensions {
 
@@ -55,6 +62,18 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 
 		originPos = world.getTopPosition(Heightmap.Type.WORLD_SURFACE, new BlockPos(chunkPos.getStartX() + 8, 0, chunkPos.getStartZ() + 8));
 		buildSphere(world, originPos, 15, AstromineBlocks.METEOR_STONE.getDefaultState());
+
+		Shape vein = Shapes.ellipsoid((float) 4, (float) 4, (float) 4)
+				.applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true)))
+				.applyLayer(TranslateLayer.of(Position.of(originPos)));
+
+		for (Position streamPosition : vein.stream().collect(Collectors.toSet())) {
+			BlockPos orePosition = streamPosition.toBlockPos();
+
+			if (world.getBlockState(orePosition).getBlock() == AstromineBlocks.METEOR_STONE) {
+				world.setBlockState(orePosition, AstromineBlocks.METEOR_METITE_ORE.getDefaultState(), 0b0110100);
+			}
+		}
 
 		return true;
 	}
