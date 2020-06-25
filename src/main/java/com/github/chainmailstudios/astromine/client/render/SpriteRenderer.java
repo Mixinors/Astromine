@@ -1,15 +1,19 @@
 package com.github.chainmailstudios.astromine.client.render;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Matrix3f;
 import net.minecraft.util.math.Matrix4f;
 import spinnery.client.utility.ScissorArea;
 
+@Environment(EnvType.CLIENT)
 public class SpriteRenderer {
 	public static RenderPass beginPass() {
 		return new RenderPass();
@@ -162,6 +166,14 @@ public class SpriteRenderer {
 		}
 
 		public void next() {
+			if (this.sprite == null) {
+				throw new RuntimeException("Invalid Sprite!");
+			}
+			
+			next(sprite.getId());
+		}
+		
+		public void next(Identifier texture) {
 			if (this.consumer == null) {
 				throw new RuntimeException("Invalid VertexConsumer!");
 			}
@@ -182,7 +194,7 @@ public class SpriteRenderer {
 			float sX = sprite.getWidth();
 			float sY = sprite.getHeight();
 
-			MinecraftClient.getInstance().getTextureManager().bindTexture(sprite.getId());
+			MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
 
 			for (float y = y1; y < y2; y += Math.min(y2 - y, sY)) {
 				for (float x = x1; x < x2; x += Math.min(x2 - x, sX)) {

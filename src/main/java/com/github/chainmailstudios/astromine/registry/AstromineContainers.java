@@ -38,8 +38,8 @@ public class AstromineContainers {
 		return new SorterContainer(synchronizationID, inventory, buffer.readBlockPos());
 	}));
 
-	public static final ScreenHandlerType<SmelterContainer> SMELTER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("smelter"), ((synchronizationID, inventory, buffer) -> {
-		return new SmelterContainer(synchronizationID, inventory, buffer.readBlockPos());
+	public static final ScreenHandlerType<ElectricalSmelterContainer> ELECTRICAL_SMELTER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("electrical_smelter"), ((synchronizationID, inventory, buffer) -> {
+		return new ElectricalSmelterContainer(synchronizationID, inventory, buffer.readBlockPos());
 	}));
 
 	public static void initialize() {

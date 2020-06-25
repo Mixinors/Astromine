@@ -31,7 +31,7 @@
   "block.astromine.liquid_generator": "Liquid Generator",
   "block.astromine.vent": "Vent",
   "block.astromine.sorter": "Sorter",
-  "block.astromine.smelter": "Smelter",
+  "block.astromine.electrical_smelter": "Electrical Smelter",
   "block.astromine.nuclear_warhead": "Nuclear Warhead",
   "block.astromine.holographic_bridge_projector": "Holographic Bridge Projector",
   "block.astromine.asteroid_stone": "Asteroid Stone",
@@ -191,8 +191,10 @@
   "subtitles.astromine.gunshot": "Gunshot",
   "subtitles.astromine.empty_magazine": "Magazine is empty",
   "text.astromine.manual.landing": "Your guide to the stars!",
+  "category.astromine.liquid_generating": "Liquid Generating",
   "category.astromine.electrical_smelting": "Electrical Smelting",
   "category.astromine.sorting": "Sorting",
   "category.astromine.cooking.time": "%s sec",
-  "category.astromine.cooking.energy": "%s energy"
+  "category.astromine.cooking.energy": "%s energy",
+  "category.astromine.generating.energy": "%s energy / tick"
 }

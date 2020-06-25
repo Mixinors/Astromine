@@ -1,10 +1,8 @@
 package com.github.chainmailstudios.astromine.common.block;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlock;
-import com.github.chainmailstudios.astromine.common.block.entity.SmelterBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.SorterBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.SmelterContainer;
-import com.github.chainmailstudios.astromine.common.container.SorterContainer;
+import com.github.chainmailstudios.astromine.common.block.entity.ElectricalSmelterBlockEntity;
+import com.github.chainmailstudios.astromine.common.container.ElectricalSmelterContainer;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
@@ -16,6 +14,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BucketItem;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -25,16 +24,15 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class SmelterBlock extends DefaultedHorizontalFacingBlock implements NetworkMember, BlockEntityProvider {
+public class ElectricalSmelterBlock extends DefaultedHorizontalFacingBlock implements NetworkMember, BlockEntityProvider {
 	public static final BooleanProperty ACTIVE = BooleanProperty.of("active");
 
-	public SmelterBlock(Settings settings) {
+	public ElectricalSmelterBlock(Settings settings) {
 		super(settings);
 	}
 
@@ -50,7 +48,12 @@ public class SmelterBlock extends DefaultedHorizontalFacingBlock implements Netw
 
 	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
-		return new SmelterBlockEntity();
+		return new ElectricalSmelterBlockEntity();
+	}
+
+	@Override
+	public BlockState getPlacementState(ItemPlacementContext ctx) {
+		return super.getPlacementState(ctx).with(ACTIVE, false);
 	}
 
 	@Override
@@ -64,12 +67,12 @@ public class SmelterBlock extends DefaultedHorizontalFacingBlock implements Netw
 
 				@Override
 				public Text getDisplayName() {
-					return new TranslatableText("text.astromine.title.smelter");
+					return new TranslatableText("text.astromine.title.electrical_smelter");
 				}
 
 				@Override
 				public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-					return new SmelterContainer(syncId, playerInventory, blockPos);
+					return new ElectricalSmelterContainer(syncId, playerInventory, blockPos);
 				}
 			});
 
