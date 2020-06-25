@@ -18,17 +18,12 @@ public class ElectricalSmeltingDisplay extends DefaultCookingDisplay {
 
 	public ElectricalSmeltingDisplay(AbstractCookingRecipe recipe) {
 		super(recipe);
-		this.energyRequired = new Fraction(recipe.getCookTime() / 10 / 20, 2);
+		this.energyRequired = Fraction.simplify(new Fraction(recipe.getCookTime(), 2 * 10 * 20));
 	}
 
 	@Override
 	public Identifier getRecipeCategory() {
 		return AstromineREIPlugin.ELECTRICAL_SMELTING;
-	}
-
-	@Override
-	public double getCookingTime() {
-		return (int) (super.getCookingTime() / 10);
 	}
 
 	public Fraction getEnergyRequired() {
