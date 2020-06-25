@@ -3,7 +3,9 @@ package com.github.chainmailstudios.astromine.common.component.inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
@@ -19,7 +21,14 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public interface ItemInventoryComponent extends Component {
+public interface ItemInventoryComponent extends NameableComponent {
+	default Identifier getSymbol() {
+		return AstromineCommon.identifier("textures/widget/energy_item");
+	}
+
+	default TranslatableText getName() {
+		return new TranslatableText("text.astromine.item");
+	}
 	/**
 	 * Retrieves contents of this inventory that match a specific predicate as a collection as ItemStack copies.
 	 *

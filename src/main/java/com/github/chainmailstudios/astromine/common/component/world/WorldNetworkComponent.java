@@ -35,7 +35,7 @@ public class WorldNetworkComponent implements Component, Tickable {
 
 	public NetworkInstance getInstance(NetworkType type, BlockPos position) {
 		for (NetworkInstance controller : this.instances) {
-			if (controller.getType() == type && controller.nodes.contains(NetworkNode.of(position))) {
+			if (controller.getType() == type && controller.nodes.stream().anyMatch(node -> node.getBlockPos().equals(position))) {
 				return controller;
 			}
 		}
@@ -64,7 +64,7 @@ public class WorldNetworkComponent implements Component, Tickable {
 			int i = 0;
 
 			for (NetworkNode node : instance.nodes) {
-				nodeList.putLong(String.valueOf(++i), node.getPos());
+				nodeList.put(String.valueOf(++i), node.toTag(new CompoundTag()));
 			}
 
 			CompoundTag memberList = new CompoundTag();
@@ -72,7 +72,7 @@ public class WorldNetworkComponent implements Component, Tickable {
 			int k = 0;
 
 			for (NetworkNode member : instance.members) {
-				nodeList.putLong(String.valueOf(++k), member.getPos());
+				nodeList.put(String.valueOf(++k), member.toTag(new CompoundTag()));
 			}
 
 			CompoundTag data = new CompoundTag();
@@ -103,11 +103,13 @@ public class WorldNetworkComponent implements Component, Tickable {
 			NetworkInstance instance = new NetworkInstance(world, type);
 
 			for (String nodeKey : nodeList.getKeys()) {
-				instance.addNode(NetworkNode.of(nodeList.getLong(nodeKey)));
+				CompoundTag nodeTag = nodeList.getCompound(nodeKey);
+				instance.addNode(NetworkNode.of(nodeTag.getLong("pos"), nodeTag.getInt("dir")));
 			}
 
 			for (String memberKey : memberList.getKeys()) {
-				instance.addMember(NetworkNode.of(memberList.getLong(memberKey)));
+				CompoundTag memberTag = nodeList.getCompound(memberKey);
+				instance.addMember(NetworkNode.of(memberTag.getLong("pos"), memberTag.getInt("dir")));
 			}
 
 			addInstance(instance);

@@ -1,12 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["## ", " $ ", " $ "],
+  "pattern": ["123", "454", "321"],
   "key": {
-    "#": {
+    "1": {
       "item": "astromine:asterite"
     },
-    "$": {
-      "item": "minecraft:stick"
+    "2": {
+      "item": "astromine:netherite_gear"
+    },
+    "3": {
+      "item": "astromine:galaxium"
+    },
+    "4": {
+      "item": "astromine:stellum_plates"
+    },
+    "5": {
+      "item": "minecraft:nether_star"
     }
   },
   "result": {

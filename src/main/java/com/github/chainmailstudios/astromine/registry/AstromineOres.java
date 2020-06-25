@@ -16,5 +16,6 @@ public class AstromineOres {
 		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 48), AstromineBlocks.ASTEROID_METITE_ORE);
 		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 32), AstromineBlocks.ASTEROID_ASTERITE_ORE);
 		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 8), AstromineBlocks.ASTEROID_STELLUM_ORE);
+		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 6), AstromineBlocks.ASTEROID_GALAXIUM_ORE);
 	}
 }

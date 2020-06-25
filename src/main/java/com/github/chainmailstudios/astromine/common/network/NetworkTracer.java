@@ -90,15 +90,15 @@ public class NetworkTracer {
 
 					if (offsetObject instanceof NetworkMember) {
 						NetworkMember offsetMember = (NetworkMember) offsetObject;
-
+						
 						if ((offsetMember.isRequester(type) || offsetMember.isProvider(type) || offsetMember.isBuffer(type)) && offsetMember.acceptsType(type)) {
-							instance.addMember(NetworkNode.of(offsetPosition));
+							instance.addMember(NetworkNode.of(offsetPosition, direction.getOpposite()));
 						}
 
 						if (offsetMember.isNode(type)) {
 							if (offsetMember.acceptsType(type)) {
 								positions.addLast(offsetPosition);
-								instance.addNode(NetworkNode.of(offsetPosition));
+								instance.addNode(NetworkNode.of(offsetPosition, direction.getOpposite()));
 							}
 						}
 					}
