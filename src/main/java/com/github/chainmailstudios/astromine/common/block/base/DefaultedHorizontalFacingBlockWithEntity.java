@@ -33,10 +33,4 @@ public abstract class DefaultedHorizontalFacingBlockWithEntity extends Horizonta
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 		return blockEntity != null && blockEntity.onSyncedBlockEvent(type, data);
 	}
-	
-	@Override
-	public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
-		BlockEntity blockEntity = world.getBlockEntity(pos);
-		return blockEntity instanceof NamedScreenHandlerFactory ? (NamedScreenHandlerFactory)blockEntity : null;
-	}
 }

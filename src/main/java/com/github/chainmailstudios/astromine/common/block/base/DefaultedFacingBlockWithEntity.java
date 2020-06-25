@@ -33,10 +33,4 @@ public abstract class DefaultedFacingBlockWithEntity extends FacingBlock impleme
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 		return blockEntity != null && blockEntity.onSyncedBlockEvent(type, data);
 	}
-	
-	@Override
-	public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
-		BlockEntity blockEntity = world.getBlockEntity(pos);
-		return blockEntity instanceof NamedScreenHandlerFactory ? (NamedScreenHandlerFactory)blockEntity : null;
-	}
 }
