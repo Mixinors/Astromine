@@ -1,17 +1,11 @@
 {
   "type": "minecraft:crafting_shaped",
-<<<<<<< HEAD
   "pattern": [
     "###",
     "###"
   ],
   "key": {
     "#": {
-=======
-  "pattern": ["111", "111", "   "],
-  "key": {
-    "1": {
->>>>>>> master
       "item": "astromine:asteroid_stone"
     }
   },
@@ -19,8 +13,4 @@
     "item": "astromine:asteroid_stone_wall",
     "count": 6
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> master

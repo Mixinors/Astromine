@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-<<<<<<< HEAD
   "pattern": [
     "#  ",
     "## ",
@@ -8,11 +7,6 @@
   ],
   "key": {
     "#": {
-=======
-  "pattern": ["1  ", "11 ", "111"],
-  "key": {
-    "1": {
->>>>>>> master
       "item": "astromine:meteor_stone"
     }
   },
@@ -20,8 +14,4 @@
     "item": "astromine:meteor_stone_stairs",
     "count": 4
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> master
