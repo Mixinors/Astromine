@@ -1,23 +1,17 @@
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.entity.CreativeBufferBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.CreativeBufferContainer;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
+
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
-import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BucketItem;
-import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.state.StateManager;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
@@ -26,6 +20,9 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.block.entity.CreativeBufferBlockEntity;
+import com.github.chainmailstudios.astromine.common.container.CreativeBufferContainer;
 
 public class CreativeBufferBlock extends BlockWithEntity {
 	public CreativeBufferBlock(Settings settings) {
@@ -53,7 +50,7 @@ public class CreativeBufferBlock extends BlockWithEntity {
 
 				@Override
 				public Text getDisplayName() {
-					return new TranslatableText("text.astromine.title.creative_buffer");
+					return new TranslatableText("block.astromine.creative_buffer");
 				}
 
 				@Override

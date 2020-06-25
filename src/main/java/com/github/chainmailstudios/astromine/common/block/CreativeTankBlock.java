@@ -1,11 +1,7 @@
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.CreativeTankBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.CreativeTankContainer;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 
-import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,6 +18,10 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.CreativeTankBlockEntity;
+import com.github.chainmailstudios.astromine.common.container.CreativeTankContainer;
 
 public class CreativeTankBlock extends DefaultedHorizontalFacingBlockWithEntity {
 	public CreativeTankBlock(Settings settings) {
@@ -44,7 +44,7 @@ public class CreativeTankBlock extends DefaultedHorizontalFacingBlockWithEntity 
 
 				@Override
 				public Text getDisplayName() {
-					return new TranslatableText("text.astromine.title.creative_tank");
+					return new TranslatableText("block.astromine.creative_tank");
 				}
 
 				@Override

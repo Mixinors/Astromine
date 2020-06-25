@@ -1,7 +1,5 @@
 package com.github.chainmailstudios.astromine.common.item;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Maps;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FluidBlock;
@@ -26,6 +24,8 @@ import net.minecraft.world.MobSpawnerLogic;
 import net.minecraft.world.RayTraceContext;
 import net.minecraft.world.World;
 
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Maps;
 import java.util.Map;
 import java.util.Objects;
 

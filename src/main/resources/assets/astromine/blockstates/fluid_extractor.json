@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "astromine:block/fluid_extractor" },
+    "facing=south": { "model": "astromine:block/fluid_extractor", "y": 180 },
+    "facing=west":  { "model": "astromine:block/fluid_extractor", "y": 270 },
+    "facing=east":  { "model": "astromine:block/fluid_extractor", "y": 90 }
+  }
+}

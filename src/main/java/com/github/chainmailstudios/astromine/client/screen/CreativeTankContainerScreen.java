@@ -1,16 +1,18 @@
 package com.github.chainmailstudios.astromine.client.screen;
 
+import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
+
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
+
 import com.github.chainmailstudios.astromine.client.screen.base.DefaultedFluidContainerScreen;
 import com.github.chainmailstudios.astromine.common.block.entity.CreativeTankBlockEntity;
 import com.github.chainmailstudios.astromine.common.container.CreativeTankContainer;
 import com.github.chainmailstudios.astromine.common.container.base.DefaultedFluidContainer;
 import com.github.chainmailstudios.astromine.registry.AstromineServerPackets;
 import io.netty.buffer.Unpooled;
-import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import spinnery.client.configuration.widget.WOptionField;
 import spinnery.widget.WTextField;
 import spinnery.widget.api.Filter;
@@ -21,9 +23,12 @@ public class CreativeTankContainerScreen extends DefaultedFluidContainerScreen<C
 	public CreativeTankContainerScreen(Text name, DefaultedFluidContainer linkedContainer, PlayerEntity player) {
 		super(name, linkedContainer, player);
 
+		mainPanel.setSize(Size.of(mainPanel.getSize().getWidth(), mainPanel.getSize().getHeight()));
+		mainPanel.center();
 		fluidBar.centerX();
+		fluidBar.setY(fluidBar.getY() + 4);
 
-		WTextField field = mainPanel.createChild(WOptionField::new, Position.of(mainPanel, 0, 56, 0), Size.of(64, 18))
+		WTextField field = mainPanel.createChild(WOptionField::new, Position.of(mainPanel, 0, 80, 0), Size.of(64, 18))
 				.setFilter(Filter.get(String.class))
 				.setOnKeyPressed((widget, keyPressed, character, keyModifier) -> {
 					if (Identifier.isValid((widget).getText())) {

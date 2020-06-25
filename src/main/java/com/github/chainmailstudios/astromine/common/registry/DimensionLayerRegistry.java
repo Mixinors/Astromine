@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.common.registry;
 
 import net.fabricmc.fabric.api.dimension.v1.EntityPlacer;
+
 import net.minecraft.util.Pair;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.dimension.DimensionType;

@@ -1,8 +1,29 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.client.screen.*;
-import com.github.chainmailstudios.astromine.common.container.*;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
+
+import com.github.chainmailstudios.astromine.client.screen.CreativeBufferContainerScreen;
+import com.github.chainmailstudios.astromine.client.screen.CreativeCapacitorContainerScreen;
+import com.github.chainmailstudios.astromine.client.screen.CreativeTankContainerScreen;
+import com.github.chainmailstudios.astromine.client.screen.FluidExtractorContainerScreen;
+import com.github.chainmailstudios.astromine.client.screen.LiquidGeneratorContainerScreen;
+import com.github.chainmailstudios.astromine.client.screen.NuclearWarheadContainerScreen;
+import com.github.chainmailstudios.astromine.client.screen.SmelterContainerScreen;
+import com.github.chainmailstudios.astromine.client.screen.SorterContainerScreen;
+import com.github.chainmailstudios.astromine.client.screen.TankContainerScreen;
+import com.github.chainmailstudios.astromine.client.screen.VentContainerScreen;
+import com.github.chainmailstudios.astromine.common.container.CreativeBufferContainer;
+import com.github.chainmailstudios.astromine.common.container.CreativeCapacitorContainer;
+import com.github.chainmailstudios.astromine.common.container.CreativeTankContainer;
+import com.github.chainmailstudios.astromine.common.container.ElectricalSmelterContainer;
+import com.github.chainmailstudios.astromine.common.container.FluidExtractorContainer;
+import com.github.chainmailstudios.astromine.common.container.FluidTankContainer;
+import com.github.chainmailstudios.astromine.common.container.LiquidGeneratorContainer;
+import com.github.chainmailstudios.astromine.common.container.NuclearWarheadContainer;
+import com.github.chainmailstudios.astromine.common.container.SorterContainer;
+import com.github.chainmailstudios.astromine.common.container.VentContainer;
 import spinnery.client.screen.InGameHudScreen;
 import spinnery.widget.WInterface;
 import spinnery.widget.WStaticImage;
@@ -10,6 +31,7 @@ import spinnery.widget.WStaticText;
 import spinnery.widget.api.Position;
 import spinnery.widget.api.Size;
 
+@Environment(EnvType.CLIENT)
 public class AstromineScreens {
 	public static WStaticImage GAS_IMAGE;
 	public static WStaticText PRESSURE_TEXT;
@@ -23,6 +45,10 @@ public class AstromineScreens {
 			PRESSURE_TEXT = mainInterface.createChild(WStaticText::new, Position.of(4, 40, 0)).setScale(0.75F);
 			FRACTION_TEXT = mainInterface.createChild(WStaticText::new, Position.of(4, 50, 0)).setScale(0.5F);
 		});
+
+		ScreenRegistry.register(AstromineContainers.FLUID_EXTRACTOR, (ScreenRegistry.Factory<FluidExtractorContainer, FluidExtractorContainerScreen>) ((handler, inventory, title) -> {
+			return new FluidExtractorContainerScreen(title, handler, inventory.player);
+		}));
 
 		ScreenRegistry.register(AstromineContainers.LIQUID_GENERATOR, (ScreenRegistry.Factory<LiquidGeneratorContainer, LiquidGeneratorContainerScreen>) ((handler, inventory, title) -> {
 			return new LiquidGeneratorContainerScreen(title, handler, inventory.player);

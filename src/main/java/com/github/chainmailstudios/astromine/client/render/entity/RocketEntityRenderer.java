@@ -1,9 +1,7 @@
 package com.github.chainmailstudios.astromine.client.render.entity;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.client.model.RocketEntityModel;
-import com.github.chainmailstudios.astromine.common.entity.RocketEntity;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
+
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -12,6 +10,10 @@ import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.Identifier;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.client.model.RocketEntityModel;
+import com.github.chainmailstudios.astromine.common.entity.RocketEntity;
 
 public class RocketEntityRenderer extends EntityRenderer<RocketEntity> {
 

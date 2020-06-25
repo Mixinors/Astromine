@@ -1,5 +1,7 @@
 package com.github.chainmailstudios.astromine.common.network.ticker;
 
+import net.minecraft.block.entity.BlockEntity;
+
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
@@ -9,15 +11,9 @@ import com.github.chainmailstudios.astromine.common.network.NetworkNode;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Multimap;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.util.math.BlockPos;
 
+import com.google.common.collect.Lists;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class NetworkTypeFluid extends NetworkType {
 	@Override

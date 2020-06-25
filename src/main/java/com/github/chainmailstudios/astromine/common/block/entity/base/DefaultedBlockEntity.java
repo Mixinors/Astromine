@@ -99,10 +99,6 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 	public CompoundTag toTag(CompoundTag tag) {
 		tag.put("transfer", transferComponent.toTag(new CompoundTag()));
 
-		if (!world.isClient) {
-			System.out.println(transferComponent.toTag(new CompoundTag()));
-		}
-
 		allComponents.forEach((type, component) -> {
 			tag.put(type.getId().toString(), component.toTag(new CompoundTag()));
 		});

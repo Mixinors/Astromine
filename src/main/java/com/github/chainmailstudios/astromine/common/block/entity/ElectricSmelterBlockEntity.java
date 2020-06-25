@@ -1,13 +1,5 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.block.ElectricalSmelterBlock;
-import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.network.NetworkMember;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
@@ -15,12 +7,21 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.util.Tickable;
+
+import com.github.chainmailstudios.astromine.common.block.ElectricSmelterBlock;
+import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.network.NetworkMember;
+import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import spinnery.common.inventory.BaseInventory;
 
 import java.util.Optional;
 
-public class ElectricalSmelterBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
-	public ElectricalSmelterBlockEntity(BlockEntityType<?> type) {
+public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
+	public ElectricSmelterBlockEntity(BlockEntityType<?> type) {
 		super(type);
 	}
 
@@ -35,7 +36,7 @@ public class ElectricalSmelterBlockEntity extends DefaultedEnergyItemBlockEntity
 
 	Optional<SmeltingRecipe> recipe = Optional.empty();
 
-	public ElectricalSmelterBlockEntity() {
+	public ElectricSmelterBlockEntity() {
 		super(AstromineBlockEntityTypes.ELECTRICAL_SMELTER);
 
 		energyComponent.getVolume(0).setSize(new Fraction(32, 1));
@@ -115,9 +116,9 @@ public class ElectricalSmelterBlockEntity extends DefaultedEnergyItemBlockEntity
 		}
 
 		if (isActive && !wasActive) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(ElectricalSmelterBlock.ACTIVE, true));
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(ElectricSmelterBlock.ACTIVE, true));
 		} else if (!isActive && wasActive) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(ElectricalSmelterBlock.ACTIVE, false));
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(ElectricSmelterBlock.ACTIVE, false));
 		}
 
 		wasActive = isActive;
