@@ -29,16 +29,18 @@ public class NetworkTypeFluid extends NetworkType {
 
 				FluidInventoryComponent fluidComponent = provider.getSidedComponent(memberNode.getDirection(), AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
-				NetworkMember member = (NetworkMember) blockEntity;
+				if (fluidComponent != null) {
+					NetworkMember member = (NetworkMember) blockEntity;
 
-				if (member.isBuffer(this)) {
-					fluidComponent.getContents().forEach((key, volume) -> {
-						buffers.add(volume);
-					});
-				} else if (member.isRequester(this)) {
-					fluidComponent.getContents().forEach((key, volume) -> {
-						requesters.add(volume);
-					});
+					if (member.isBuffer(this)) {
+						fluidComponent.getContents().forEach((key, volume) -> {
+							buffers.add(volume);
+						});
+					} else if (member.isRequester(this)) {
+						fluidComponent.getContents().forEach((key, volume) -> {
+							requesters.add(volume);
+						});
+					}
 				}
 			}
 		}

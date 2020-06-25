@@ -5,14 +5,14 @@ import net.minecraft.text.Text;
 
 import com.github.chainmailstudios.astromine.client.screen.base.DefaultedEnergyItemContainerScreen;
 import com.github.chainmailstudios.astromine.common.block.entity.ElectricSmelterBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.ElectricalSmelterContainer;
+import com.github.chainmailstudios.astromine.common.container.ElectricSmelterContainer;
 import com.github.chainmailstudios.astromine.common.container.base.DefaultedEnergyItemContainer;
 import com.github.chainmailstudios.astromine.common.widget.WHorizontalArrow;
 import spinnery.widget.WSlot;
 import spinnery.widget.api.Position;
 import spinnery.widget.api.Size;
 
-public class SmelterContainerScreen extends DefaultedEnergyItemContainerScreen<ElectricalSmelterContainer> {
+public class SmelterContainerScreen extends DefaultedEnergyItemContainerScreen<ElectricSmelterContainer> {
 	public SmelterContainerScreen(Text name, DefaultedEnergyItemContainer linkedContainer, PlayerEntity player) {
 		super(name, linkedContainer, player);
 

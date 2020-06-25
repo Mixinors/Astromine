@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.ElectricSmelterBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.ElectricalSmelterContainer;
+import com.github.chainmailstudios.astromine.common.container.ElectricSmelterContainer;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
@@ -73,7 +73,7 @@ public class ElectricSmelterBlock extends DefaultedHorizontalFacingBlockWithEnti
 
 				@Override
 				public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-					return new ElectricalSmelterContainer(syncId, playerInventory, blockPos);
+					return new ElectricSmelterContainer(syncId, playerInventory, blockPos);
 				}
 			});
 

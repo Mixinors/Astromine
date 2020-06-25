@@ -21,10 +21,6 @@ import spinnery.common.inventory.BaseInventory;
 import java.util.Optional;
 
 public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
-	public ElectricSmelterBlockEntity(BlockEntityType<?> type) {
-		super(type);
-	}
-
 	public int progress = 0;
 	public int limit = 100;
 
@@ -37,7 +33,7 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 	Optional<SmeltingRecipe> recipe = Optional.empty();
 
 	public ElectricSmelterBlockEntity() {
-		super(AstromineBlockEntityTypes.ELECTRICAL_SMELTER);
+		super(AstromineBlockEntityTypes.ELECTRIC_SMELTER);
 
 		energyComponent.getVolume(0).setSize(new Fraction(32, 1));
 		itemComponent = new SimpleItemInventoryComponent(2);

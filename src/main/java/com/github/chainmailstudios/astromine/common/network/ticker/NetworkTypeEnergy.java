@@ -29,16 +29,18 @@ public class NetworkTypeEnergy extends NetworkType {
 
 				EnergyInventoryComponent energyComponent = provider.getSidedComponent(memberNode.getDirection(), AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
 
-				NetworkMember member = (NetworkMember) blockEntity;
+				if (energyComponent != null) {
+					NetworkMember member = (NetworkMember) blockEntity;
 
-				if (member.isBuffer(this)) {
-					energyComponent.getContents().forEach((key, volume) -> {
-						bufferMap.add(volume);
-					});
-				} else if (member.isRequester(this)) {
-					energyComponent.getContents().forEach((key, volume) -> {
-						requesterMap.add(volume);
-					});
+					if (member.isBuffer(this)) {
+						energyComponent.getContents().forEach((key, volume) -> {
+							bufferMap.add(volume);
+						});
+					} else if (member.isRequester(this)) {
+						energyComponent.getContents().forEach((key, volume) -> {
+							requesterMap.add(volume);
+						});
+					}
 				}
 			}
 		}
