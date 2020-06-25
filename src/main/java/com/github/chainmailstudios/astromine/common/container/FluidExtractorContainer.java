@@ -14,6 +14,6 @@ public class FluidExtractorContainer extends DefaultedEnergyFluidContainer {
 
 	@Override
 	public ScreenHandlerType<?> getType() {
-		return AstromineContainers.FLUID_EXTRACTOR;
+		return AstromineContainers.ELECTROLYZER;
 	}
 }

@@ -121,6 +121,10 @@ public class FluidVolume extends BaseVolume {
 		return (this.fluid != Fluids.EMPTY || fluid == this.fluid) && hasStored(amount);
 	}
 
+	public <T extends BaseVolume> T insertVolume(FluidVolume volume) {
+		return (T) insertVolume(volume.getFluid(), volume.getFraction());
+	}
+
 	public <T extends BaseVolume> T insertVolume(Fluid fluid, Fraction fraction) {
 		if (this.fluid != Fluids.EMPTY && fluid != this.fluid) return (T) FluidVolume.empty();
 

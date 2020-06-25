@@ -8,7 +8,7 @@ import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineREIPlugin;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.recipe.LiquidGeneratingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.LiquidGeneratingRecipe;
 import me.shedaniel.rei.api.EntryStack;
 
 import java.util.Collections;
