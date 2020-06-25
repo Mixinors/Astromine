@@ -11,16 +11,19 @@ import net.minecraft.util.Identifier;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
 public class LiquidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
 	private final Fluid fluid;
 	private final Fraction amount;
+	private final Identifier id;
 
 	public LiquidGeneratingDisplay(LiquidGeneratingRecipe recipe) {
 		super(recipe.getEnergyGenerated());
 		this.fluid = recipe.getFluid();
 		this.amount = recipe.getAmount();
+		this.id = recipe.getId();
 	}
 
 	@Override
@@ -39,5 +42,10 @@ public class LiquidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
 
 	public Fraction getAmount() {
 		return amount;
+	}
+
+	@Override
+	public Optional<Identifier> getRecipeLocation() {
+		return Optional.ofNullable(this.id);
 	}
 }

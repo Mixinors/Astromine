@@ -5,15 +5,13 @@ import com.github.chainmailstudios.astromine.client.particle.RocketFlameParticle
 import com.github.chainmailstudios.astromine.mixin.CrackParticleAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.fabricmc.fabric.impl.client.particle.ParticleFactoryRegistryImpl;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.util.registry.Registry;
 
-@Environment(EnvType.CLIENT)
 public class AstromineParticles {
-
 	public static final DefaultParticleType SPACE_SLIME = register("space_slime", false);
 	public static final DefaultParticleType ROCKET_FLAME = register("rocket_flame", true);
 
@@ -28,9 +26,10 @@ public class AstromineParticles {
 		return Registry.register(Registry.PARTICLE_TYPE, AstromineCommon.identifier(name), FabricParticleTypes.simple(alwaysShow));
 	}
 
+	@Environment(EnvType.CLIENT)
 	public static void initialize() {
-		ParticleFactoryRegistryImpl.INSTANCE.register(SPACE_SLIME, (parameters, world, x, y, z, velocityX, velocityY, velocityZ) -> CrackParticleAccessor.createCrackParticle(world, x, y, z, new ItemStack(AstromineItems.SPACE_SLIME_BALL)));
-		ParticleFactoryRegistryImpl.INSTANCE.register(ROCKET_FLAME, provider -> (parameters, world, x, y, z, velocityX, velocityY, velocityZ) -> {
+		ParticleFactoryRegistry.getInstance().register(SPACE_SLIME, (parameters, world, x, y, z, velocityX, velocityY, velocityZ) -> CrackParticleAccessor.createCrackParticle(world, x, y, z, new ItemStack(AstromineItems.SPACE_SLIME_BALL)));
+		ParticleFactoryRegistry.getInstance().register(ROCKET_FLAME, provider -> (parameters, world, x, y, z, velocityX, velocityY, velocityZ) -> {
 			RocketFlameParticle particle = new RocketFlameParticle(world, x, y, z, velocityX, velocityY, velocityZ);
 			particle.setSprite(provider);
 			return particle;
