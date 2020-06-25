@@ -21,7 +21,7 @@ public class SortingDisplay implements RecipeDisplay {
 	private final int timeRequired;
 	private final Fraction energyRequired;
 	private final Identifier recipeId;
-	
+
 	public SortingDisplay(SortingRecipe recipe) {
 		this(
 				CollectionUtils.map(recipe.getPreviewInputs(), ingredient -> CollectionUtils.map(ingredient.getMatchingStacksClient(), EntryStack::create)),
@@ -31,7 +31,7 @@ public class SortingDisplay implements RecipeDisplay {
 				recipe.getId()
 		);
 	}
-	
+
 	public SortingDisplay(List<List<EntryStack>> inputs, List<EntryStack> outputs, int timeRequired, Fraction energyRequired, Identifier recipeId) {
 		this.inputs = inputs;
 		this.outputs = outputs;
@@ -39,30 +39,30 @@ public class SortingDisplay implements RecipeDisplay {
 		this.energyRequired = energyRequired;
 		this.recipeId = recipeId;
 	}
-	
+
 	@Override
 	public List<List<EntryStack>> getInputEntries() {
 		return inputs;
 	}
-	
+
 	@Override
 	public List<EntryStack> getOutputEntries() {
 		return outputs;
 	}
-	
+
 	public int getTimeRequired() {
 		return timeRequired;
 	}
-	
+
 	public Fraction getEnergyRequired() {
 		return energyRequired;
 	}
-	
+
 	@Override
 	public Identifier getRecipeCategory() {
 		return AstromineREIPlugin.SORTING;
 	}
-	
+
 	@Override
 	public Optional<Identifier> getRecipeLocation() {
 		return Optional.ofNullable(this.recipeId);

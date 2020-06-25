@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.client.screen.base;
 
 import com.github.chainmailstudios.astromine.common.container.base.DefaultedItemContainer;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import spinnery.client.screen.BaseContainerScreen;
@@ -30,5 +31,11 @@ public abstract class DefaultedItemContainerScreen<T extends BaseContainer> exte
 		mainPanel.setOnAlign(WAbstractWidget::center);
 
 		playerSlots = WSlot.addPlayerInventory(Position.of(mainPanel, 7, 77, 0), Size.of(18, 18), mainPanel);
+	}
+
+	@Override
+	public void render(MatrixStack matrices, int mouseX, int mouseY, float tickDelta) {
+		this.fillGradient(matrices, 0, 0, this.width, this.height, -1072689136, -804253680);
+		super.render(matrices, mouseX, mouseY, tickDelta);
 	}
 }

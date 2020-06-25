@@ -181,7 +181,8 @@
   "subtitles.astromine.gunshot": "Gunshot",
   "subtitles.astromine.empty_magazine": "Magazine is empty",
   "text.astromine.manual.landing": "Your guide to the stars!",
+  "category.astromine.electrical_smelting": "Electrical Smelting",
   "category.astromine.sorting": "Sorting",
-  "category.astromine.sorting.time": "%s sec",
-  "category.astromine.sorting.energy": "%s energy"
+  "category.astromine.cooking.time": "%s sec",
+  "category.astromine.cooking.energy": "%s energy"
 }
