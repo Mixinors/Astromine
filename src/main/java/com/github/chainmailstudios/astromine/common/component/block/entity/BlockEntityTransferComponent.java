@@ -16,7 +16,7 @@ public class BlockEntityTransferComponent implements Component {
 	private final Map<ComponentType<?>, TransferEntry> components = Maps.newHashMap();
 
 	public BlockEntityTransferComponent(ComponentType<?>... types) {
-		Arrays.asList(types).forEach(type -> components.put(type, new TransferEntry()));
+		Arrays.asList(types).forEach(this::add);
 	}
 
 	public TransferEntry get(ComponentType<?> type) {
@@ -25,6 +25,10 @@ public class BlockEntityTransferComponent implements Component {
 
 	public Map<ComponentType<?>, TransferEntry> get() {
 		return components;
+	}
+
+	public void add(ComponentType<?> type) {
+		components.put(type, new TransferEntry());
 	}
 
 	@Override
@@ -68,13 +72,13 @@ public class BlockEntityTransferComponent implements Component {
 
 		public void fromTag(CompoundTag tag) {
 			for (String directionKey : tag.getKeys()) {
-				types.put(Direction.valueOf(directionKey), TransferType.valueOf(tag.getString(directionKey)));
+				types.put(Direction.byName(directionKey), TransferType.valueOf(tag.getString(directionKey)));
 			}
 		}
 
 		public CompoundTag toTag(CompoundTag tag) {
 			for (Map.Entry<Direction, TransferType> entry : types.entrySet()) {
-				tag.putString(entry.getKey().toString(), entry.getValue().toString());
+				tag.putString(entry.getKey().getName(), entry.getValue().toString());
 			}
 
 			return tag;

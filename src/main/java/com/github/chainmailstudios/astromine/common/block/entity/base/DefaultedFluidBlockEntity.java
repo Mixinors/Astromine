@@ -24,63 +24,10 @@ import java.util.Set;
 
 public abstract class DefaultedFluidBlockEntity extends DefaultedBlockEntity implements ComponentProvider, BlockEntityClientSerializable {
 	protected final SimpleFluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1);
-	protected final BlockEntityTransferComponent transferComponent = new BlockEntityTransferComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
 	public DefaultedFluidBlockEntity(BlockEntityType<?> type) {
 		super(type);
-	}
 
-	@Override
-	public <T extends Component> Collection<T> getSidedComponents(@Nullable Direction direction) {
-		if (direction == null) {
-			return (Collection<T>) Lists.newArrayList(fluidComponent);
-		} else if (getCachedState().getBlock() instanceof FacingBlock) {
-			Direction facing = getCachedState().get(FacingBlock.FACING);
-			return facing == direction ? Lists.newArrayList() : (Collection<T>) Lists.newArrayList(fluidComponent);
-		} else if (getCachedState().getBlock() instanceof HorizontalFacingBlock) {
-			Direction facing = getCachedState().get(HorizontalFacingBlock.FACING);
-			return facing == direction ? Lists.newArrayList() : (Collection<T>) Lists.newArrayList(fluidComponent);
-		} else {
-			return (Collection<T>) Lists.newArrayList(fluidComponent);
-		}
-	}
-
-	@Override
-	public boolean hasComponent(ComponentType<?> type) {
-		return type == AstromineComponentTypes.FLUID_INVENTORY_COMPONENT ? true : false;
-	}
-
-	@Override
-	public <C extends Component> C getComponent(ComponentType<C> type) {
-		return type == AstromineComponentTypes.FLUID_INVENTORY_COMPONENT ? (C) fluidComponent : type == AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT ? (C) transferComponent : null;
-	}
-
-	@Override
-	public Set<ComponentType<?>> getComponentTypes() {
-		return Sets.newHashSet(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
-	}
-
-	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		tag.put("fluid", fluidComponent.write(fluidComponent, Optional.empty(), Optional.empty()));
-
-		return super.toTag(tag);
-	}
-
-	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
-		fluidComponent.read(fluidComponent, tag.getCompound("fluid"), Optional.empty(), Optional.empty());
-
-		super.fromTag(state, tag);
-	}
-
-	@Override
-	public CompoundTag toClientTag(CompoundTag tag) {
-		return toTag(tag);
-	}
-
-	@Override
-	public void fromClientTag(CompoundTag tag) {
-		fromTag(null, tag);
+		addComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, fluidComponent);
 	}
 }

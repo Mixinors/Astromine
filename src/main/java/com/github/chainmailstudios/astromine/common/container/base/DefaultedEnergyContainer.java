@@ -9,17 +9,11 @@ import spinnery.widget.WSlot;
 
 import java.util.Collection;
 
-public class DefaultedEnergyContainer extends BaseContainer {
-	public final Collection<WSlot> playerSlots;
-
+public class DefaultedEnergyContainer extends DefaultedBlockEntityContainer {
 	public DefaultedEnergyBlockEntity blockEntity;
 
 	public DefaultedEnergyContainer(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
-		super(synchronizationID, playerInventory);
-
-		WInterface mainInterface = getInterface();
-
-		playerSlots = WSlot.addHeadlessPlayerInventory(mainInterface);
+		super(synchronizationID, playerInventory, position);
 
 		blockEntity = (DefaultedEnergyBlockEntity) world.getBlockEntity(position);
 	}

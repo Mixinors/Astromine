@@ -1,10 +1,9 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
-import com.github.chainmailstudios.astromine.common.component.packet.PacketHandlerComponent;
 import com.github.chainmailstudios.astromine.common.item.weapon.BaseWeapon;
 import com.github.chainmailstudios.astromine.common.item.weapon.Weapon;
+import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.network.PacketByteBuf;
@@ -32,12 +31,8 @@ public class AstromineServerPackets {
 			context.getTaskQueue().execute(() -> {
 				BlockEntity blockEntity = context.getPlayer().getEntityWorld().getBlockEntity(blockPos);
 
-				if (blockEntity instanceof ComponentProvider) {
-					ComponentProvider componentProvider = ComponentProvider.fromBlockEntity(blockEntity);
-
-					PacketHandlerComponent packetComponent = componentProvider.getComponent(AstromineComponentTypes.PACKET_HANDLER_COMPONENT);
-
-					packetComponent.handle(identifier, storedBuffer);
+				if (blockEntity instanceof PacketConsumer) {
+					((PacketConsumer) blockEntity).consumePacket(identifier, storedBuffer, context);
 				}
 			});
 		})));
