@@ -8,7 +8,9 @@ import nerdhub.cardinal.components.api.component.Component;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import org.apache.logging.log4j.Level;
 
@@ -16,8 +18,16 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public interface FluidInventoryComponent extends Component {
+public interface FluidInventoryComponent extends NameableComponent {
 	Map<Integer, FluidVolume> getContents();
+
+	default Identifier getSymbol() {
+		return AstromineCommon.identifier("textures/widget/fluid_symbol");
+	}
+
+	default TranslatableText getName() {
+		return new TranslatableText("text.astromine.fluid");
+	}
 
 	default Collection<FluidVolume> getContentsMatching(Predicate<FluidVolume> predicate) {
 		return this.getContents().values().stream().filter(predicate).collect(Collectors.toList());

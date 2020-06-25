@@ -8,17 +8,19 @@ import com.github.chainmailstudios.astromine.common.network.NetworkNode;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.google.common.collect.Lists;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class NetworkTypeEnergy extends NetworkType {
 	@Override
 	public void simulate(NetworkInstance controller) {
-		Map<BlockPos, EnergyVolume> bufferMap = new HashMap<>();
-		Map<BlockPos, EnergyVolume> requesterMap = new HashMap<>();
+		List<EnergyVolume> bufferMap = Lists.newArrayList();
+		List<EnergyVolume> requesterMap = Lists.newArrayList();
 
 		for (NetworkNode memberNode : controller.members) {
 			BlockEntity blockEntity = controller.getWorld().getBlockEntity(memberNode.getBlockPos());
@@ -27,27 +29,27 @@ public class NetworkTypeEnergy extends NetworkType {
 
 				ComponentProvider provider = ComponentProvider.fromBlockEntity(blockEntity);
 
-				EnergyInventoryComponent energyComponent = provider.getSidedComponent(null, AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
+				EnergyInventoryComponent energyComponent = provider.getSidedComponent(memberNode.getDirection(), AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
 
 				NetworkMember member = (NetworkMember) blockEntity;
 
 				if (member.isBuffer(this)) {
 					energyComponent.getContents().forEach((key, volume) -> {
-						bufferMap.put(blockEntity.getPos(), volume);
+						bufferMap.add(volume);
 					});
 				} else if (member.isRequester(this)) {
 					energyComponent.getContents().forEach((key, volume) -> {
-						requesterMap.put(blockEntity.getPos(), volume);
+						requesterMap.add(volume);
 					});
 				}
 			}
 		}
 
-		for (Map.Entry<BlockPos, EnergyVolume> buffer : bufferMap.entrySet()) {
-			for (Map.Entry<BlockPos, EnergyVolume> requester : requesterMap.entrySet()) {
-				if (!buffer.getValue().isEmpty() && !requester.getValue().isFull()) {
-					buffer.getValue().pushVolume(requester.getValue(), requester.getValue().getSize());
-				} else if (buffer.getValue().isEmpty()) {
+		for (EnergyVolume buffer : bufferMap) {
+			for (EnergyVolume requester : requesterMap) {
+				if (!buffer.isEmpty() && !requester.isFull()) {
+					buffer.pushVolume(requester, requester.getSize());
+				} else if (buffer.isEmpty()) {
 					break;
 				}
 			}
