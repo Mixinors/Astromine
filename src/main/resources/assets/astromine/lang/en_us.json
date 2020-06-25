@@ -196,5 +196,7 @@
   "category.astromine.sorting": "Sorting",
   "category.astromine.cooking.time": "%s sec",
   "category.astromine.cooking.energy": "%s energy",
-  "category.astromine.generating.energy": "%s energy / tick"
+  "category.astromine.generating.energy": "%s generated/tick",
+  "category.astromine.consuming.energy": "%s consumed",
+  "category.astromine.fluid.generating.consumed": "%s (%s) consumed/tick"
 }

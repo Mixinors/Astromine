@@ -38,7 +38,7 @@ public class ElectricalSmelterBlockEntity extends DefaultedEnergyItemBlockEntity
 	public ElectricalSmelterBlockEntity() {
 		super(AstromineBlockEntityTypes.ELECTRICAL_SMELTER);
 
-		energyComponent.getVolume(0).setSize(new Fraction(16, 1));
+		energyComponent.getVolume(0).setSize(new Fraction(32, 1));
 		inventoryComponent = new SimpleItemInventoryComponent(2);
 
 		inventoryComponent.addListener(() -> {
@@ -49,7 +49,7 @@ public class ElectricalSmelterBlockEntity extends DefaultedEnergyItemBlockEntity
 	}
 
 	@Override
-	public boolean isRequester() {
+	public <T extends NetworkType> boolean isRequester(T type) {
 		return true;
 	}
 
@@ -79,7 +79,7 @@ public class ElectricalSmelterBlockEntity extends DefaultedEnergyItemBlockEntity
 			if (recipe.isPresent() && recipe.get().matches(inputInventory, world)) {
 				limit = recipe.get().getCookTime() / 10;
 
-				Fraction consumed = new Fraction(recipe.get().getCookTime(), 10 * 20 * 2);
+				Fraction consumed = new Fraction(recipe.get().getCookTime(), 10 * 20 * 4);
 
 				ItemStack output = recipe.get().getOutput().copy();
 

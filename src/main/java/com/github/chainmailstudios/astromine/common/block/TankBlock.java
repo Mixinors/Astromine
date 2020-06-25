@@ -35,7 +35,7 @@ public class TankBlock extends DefaultedHorizontalFacingBlock implements BlockEn
 	}
 
 	@Override
-	public boolean isBuffer() {
+	public <T extends NetworkType> boolean isBuffer(T type) {
 		return true;
 	}
 

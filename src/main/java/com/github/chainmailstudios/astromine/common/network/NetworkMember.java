@@ -3,23 +3,23 @@ package com.github.chainmailstudios.astromine.common.network;
 public interface NetworkMember {
 	<T extends NetworkType> boolean acceptsType(T type);
 
-	default boolean isNode() {
+	default <T extends NetworkType> boolean isNode(T type) {
 		return true;
 	}
 
-	default boolean isRequester() {
+	default <T extends NetworkType> boolean isRequester(T type) {
 		return false;
 	}
 
-	default boolean isProvider() {
+	default <T extends NetworkType> boolean isProvider(T type) {
 		return false;
 	}
 
-	default boolean isBuffer() {
+	default <T extends NetworkType> boolean isBuffer(T type) {
 		return false;
 	}
 
-	default boolean isVisual() {
+	default <T extends NetworkType> boolean isVisual(T type) {
 		return false;
 	}
 }

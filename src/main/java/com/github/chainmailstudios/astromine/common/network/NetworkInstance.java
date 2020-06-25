@@ -3,6 +3,7 @@ package com.github.chainmailstudios.astromine.common.network;
 import com.google.common.collect.Sets;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
 import java.util.Iterator;
@@ -35,10 +36,6 @@ public class NetworkInstance implements Iterable<NetworkNode>, Tickable {
 
 	public void addNode(NetworkNode node) {
 		this.nodes.add(node);
-	}
-
-	public void addPos(long pos) {
-		this.nodes.add(NetworkNode.of(pos));
 	}
 
 	public void addBlockPos(BlockPos position) {

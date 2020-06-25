@@ -18,8 +18,12 @@ public class NetworkNode {
 		return new NetworkNode(pos, dir);
 	}
 
-	public NetworkNode() {
-		pos = Long.MIN_VALUE;
+	public static NetworkNode of(BlockPos blockPos) {
+		return new NetworkNode(blockPos);
+	}
+
+	public static NetworkNode of(long pos) {
+		return new NetworkNode(pos);
 	}
 
 	public NetworkNode(BlockPos blockPos, Direction direction) {
@@ -30,6 +34,16 @@ public class NetworkNode {
 	public NetworkNode(long pos, int dir) {
 		setPos(pos);
 		setDir(dir);
+	}
+
+	public NetworkNode(BlockPos blockPos) {
+		setBlockPos(blockPos);
+		setDir(-1);
+	}
+
+	public NetworkNode(long pos) {
+		setPos(pos);
+		setDir(-1);
 	}
 
 	public BlockPos getBlockPos() {
@@ -78,8 +92,14 @@ public class NetworkNode {
 	public boolean equals(Object object) {
 		if (this == object) return true;
 		if (!(object instanceof NetworkNode)) return false;
+
 		NetworkNode that = (NetworkNode) object;
-		return pos == that.pos && dir == that.dir;
+
+		if (dir == -1) {
+			return this.pos == that.pos;
+		} else {
+			return this.pos == that.pos && this.dir == that.dir;
+		}
 	}
 
 	@Override

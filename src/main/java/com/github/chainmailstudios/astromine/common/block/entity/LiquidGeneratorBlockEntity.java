@@ -26,8 +26,8 @@ public class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlockEntity 
 	public LiquidGeneratorBlockEntity() {
 		super(AstromineBlockEntityTypes.LIQUID_GENERATOR);
 		
-		energyComponent.getVolume(0).setSize(new Fraction(16, 1));
-		fluidComponent.getVolume(0).setSize(new Fraction(16, 1));
+		energyComponent.getVolume(0).setSize(new Fraction(32, 1));
+		fluidComponent.getVolume(0).setSize(new Fraction(4, 1));
 		
 		fluidComponent.addListener(() -> {
 			if (!this.world.isClient() && (!recipe.isPresent() || !recipe.get().tryCrafting(this, false)))
@@ -77,7 +77,7 @@ public class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlockEntity 
 	}
 	
 	@Override
-	public boolean isBuffer() {
+	public <T extends NetworkType> boolean isBuffer(T type) {
 		return true;
 	}
 }

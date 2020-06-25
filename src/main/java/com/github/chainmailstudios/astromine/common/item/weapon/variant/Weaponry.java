@@ -13,14 +13,12 @@ import net.minecraft.util.Identifier;
 
 public class Weaponry {
 	public static final class ScarH extends BaseWeapon {
-		public static final Item.Settings SETTINGS = new Item.Settings().fireproof().maxCount(1).group(AstromineItemGroups.ASTROMINE);
-
 		public static final Identifier TEXTURE = AstromineCommon.identifier("textures/entity/projectiles/bullet.png");
-
-		public ScarH() {
-			super(SETTINGS);
+		
+		public ScarH(Settings settings) {
+			super(settings);
 		}
-
+		
 		@Override
 		public float getZoom() {
 			return 45;
@@ -83,12 +81,10 @@ public class Weaponry {
 	}
 
 	public static final class BarretM98B extends BaseWeapon {
-		public static final Item.Settings SETTINGS = new Item.Settings().fireproof().maxCount(1).group(AstromineItemGroups.ASTROMINE);
-
 		public static final Identifier TEXTURE = AstromineCommon.identifier("textures/entity/projectiles/bullet.png");
 
-		public BarretM98B() {
-			super(SETTINGS);
+		public BarretM98B(Item.Settings settings) {
+			super(settings);
 		}
 
 		@Override

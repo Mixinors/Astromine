@@ -23,11 +23,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class FireExtinguisher extends Item {
-	public static final Item.Settings SETTINGS = new Item.Settings().maxCount(1).group(AstromineItemGroups.ASTROMINE);
 	long lastPlayed = 0;
 
-	public FireExtinguisher() {
-		super(SETTINGS);
+	public FireExtinguisher(Item.Settings settings) {
+		super(settings);
 	}
 
 	@Override

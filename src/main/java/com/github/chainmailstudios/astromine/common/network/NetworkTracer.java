@@ -46,7 +46,7 @@ public class NetworkTracer {
 
 			Block block = world.getBlockState(initialPosition).getBlock();
 
-			if (!(block instanceof NetworkMember) || !((NetworkMember) block).isNode()) {
+			if (!(block instanceof NetworkMember) || !((NetworkMember) block).isNode(type)) {
 				return;
 			}
 
@@ -89,12 +89,12 @@ public class NetworkTracer {
 
 					if (offsetObject instanceof NetworkMember) {
 						NetworkMember offsetMember = (NetworkMember) offsetObject;
-
-						if ((offsetMember.isRequester() || offsetMember.isProvider() || offsetMember.isBuffer()) && offsetMember.acceptsType(type)) {
+						
+						if ((offsetMember.isRequester(type) || offsetMember.isProvider(type) || offsetMember.isBuffer(type)) && offsetMember.acceptsType(type)) {
 							instance.addMember(NetworkNode.of(offsetPosition, direction.getOpposite()));
 						}
 
-						if (offsetMember.isNode()) {
+						if (offsetMember.isNode(type)) {
 							if (offsetMember.acceptsType(type)) {
 								positions.addLast(offsetPosition);
 								instance.addNode(NetworkNode.of(offsetPosition, direction.getOpposite()));
