@@ -31,11 +31,11 @@ public class NetworkTypeEnergy extends NetworkType {
 
 				NetworkMember member = (NetworkMember) blockEntity;
 
-				if (member.isBuffer()) {
+				if (member.isBuffer(this)) {
 					energyComponent.getContents().forEach((key, volume) -> {
 						bufferMap.put(blockEntity.getPos(), volume);
 					});
-				} else if (member.isRequester()) {
+				} else if (member.isRequester(this)) {
 					energyComponent.getContents().forEach((key, volume) -> {
 						requesterMap.put(blockEntity.getPos(), volume);
 					});

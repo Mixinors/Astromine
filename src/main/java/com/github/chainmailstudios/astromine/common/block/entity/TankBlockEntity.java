@@ -15,7 +15,7 @@ public class TankBlockEntity extends DefaultedFluidBlockEntity implements Networ
 	}
 
 	@Override
-	public boolean isBuffer() {
+	public <T extends NetworkType> boolean isBuffer(T type) {
 		return true;
 	}
 

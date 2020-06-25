@@ -77,7 +77,7 @@ public class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlockEntity 
 	}
 	
 	@Override
-	public boolean isBuffer() {
+	public <T extends NetworkType> boolean isBuffer(T type) {
 		return true;
 	}
 }

@@ -40,7 +40,7 @@ public class SorterBlockEntity extends DefaultedEnergyItemBlockEntity implements
 	}
 
 	@Override
-	public boolean isRequester() {
+	public <T extends NetworkType> boolean isRequester(T type) {
 		return true;
 	}
 

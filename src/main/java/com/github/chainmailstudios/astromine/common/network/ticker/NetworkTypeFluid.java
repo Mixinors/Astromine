@@ -32,11 +32,11 @@ public class NetworkTypeFluid extends NetworkType {
 
 				NetworkMember member = (NetworkMember) blockEntity;
 
-				if (member.isBuffer()) {
+				if (member.isBuffer(this)) {
 					fluidComponent.getContents().forEach((key, volume) -> {
 						bufferMap.put(blockEntity.getPos(), volume);
 					});
-				} else if (member.isRequester()) {
+				} else if (member.isRequester(this)) {
 					fluidComponent.getContents().forEach((key, volume) -> {
 						requesterMap.put(blockEntity.getPos(), volume);
 					});

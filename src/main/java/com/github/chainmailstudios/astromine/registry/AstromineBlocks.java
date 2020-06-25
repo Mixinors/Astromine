@@ -32,7 +32,8 @@ public class AstromineBlocks {
 
 	public static final Block SORTER = register("sorter", new SorterBlock(FabricBlockSettings.of(Material.STONE).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings());
 	public static final Block ELECTRICAL_SMELTER = register("electrical_smelter", new ElectricalSmelterBlock(FabricBlockSettings.of(Material.STONE).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings());
-	
+	public static final Block FLUID_EXTRACTOR = register("fluid_extractor", new FluidExtractorBlock(FabricBlockSettings.of(Material.STONE).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings());
+
 	public static final Block METEOR_METITE_ORE = register("meteor_metite_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());
 	public static final Block ASTEROID_METITE_ORE = register("asteroid_metite_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());
 	public static final Block ASTEROID_ASTERITE_ORE = register("asteroid_asterite_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(40, 1000).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());

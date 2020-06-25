@@ -37,7 +37,7 @@ public class ElectricalSmelterBlock extends DefaultedHorizontalFacingBlock imple
 	}
 
 	@Override
-	public boolean isRequester() {
+	public <T extends NetworkType> boolean isRequester(T type) {
 		return true;
 	}
 
