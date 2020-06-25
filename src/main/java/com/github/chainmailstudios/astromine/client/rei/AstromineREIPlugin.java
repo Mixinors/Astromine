@@ -84,7 +84,6 @@ public class AstromineREIPlugin implements REIPluginV0 {
 	}
 
 	public static List<Widget> createFluidDisplay(Rectangle bounds, EntryStack fluidStack, long speed) {
-		// TODO get this working please
 		if (fluidStack.getType() != EntryStack.Type.FLUID) return Collections.emptyList();
 		return Collections.singletonList(
 				Widgets.createDrawableWidget((helper, matrices, mouseX, mouseY, delta) -> {
