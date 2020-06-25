@@ -53,7 +53,9 @@ public class FireExtinguisher extends Item {
 
 		if (!user.isSneaking()) {
 			user.addVelocity(thrustVec.x, thrustVec.y, thrustVec.z);
-			user.getItemCooldownManager().set(this, 60);
+			user.getItemCooldownManager().set(this, 20);
+		} else {
+			user.getItemCooldownManager().set(this, 5);
 		}
 
 		BlockHitResult result = (BlockHitResult) user.rayTrace(6, 0, false);
