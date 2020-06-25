@@ -49,6 +49,8 @@ public class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlockEntity 
 		});
 		
 		for (Direction direction : Direction.values()) {
+			if (getSidedComponent(direction, AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT) == null) continue;
+
 			BlockPos position = getPos().offset(direction);
 			
 			BlockEntity attached = world.getBlockEntity(position);
