@@ -32,9 +32,9 @@ public class AstromineEntityTypes {
 					.build());
 
 	public static final EntityType<RocketEntity> ROCKET = register(
-			"rocket", FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, RocketEntity::new)
+			"rocket", FabricEntityTypeBuilder.create(SpawnGroup.MISC, RocketEntity::new)
 					.dimensions(EntityDimensions.changing(1.5f, 17f))
-					.trackable(128, 4)
+					.trackable(256, 4)
 					.build());
 
 	public static void initialize() {
