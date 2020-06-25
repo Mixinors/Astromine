@@ -17,7 +17,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.network.PacketByteBuf;
 
 import com.github.chainmailstudios.astromine.common.item.weapon.BaseWeapon;
-import com.github.chainmailstudios.astromine.registry.AstromineServerPackets;
+import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
 import io.netty.buffer.Unpooled;
 
 @Mixin(MinecraftClient.class)
@@ -49,7 +49,7 @@ public class MinecraftClientMixin {
 				if (!weapon.isWaiting(currentShot)) {
 					weapon.tryShoot(this.world, this.player);
 
-					ClientSidePacketRegistry.INSTANCE.sendToServer(AstromineServerPackets.SHOT_PACKET, new PacketByteBuf(Unpooled.buffer()));
+					ClientSidePacketRegistry.INSTANCE.sendToServer(AstromineCommonPackets.SHOT_PACKET, new PacketByteBuf(Unpooled.buffer()));
 
 					weapon.setLastShot(currentShot);
 				}

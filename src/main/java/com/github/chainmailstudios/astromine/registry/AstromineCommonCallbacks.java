@@ -33,7 +33,7 @@ public class AstromineCommonCallbacks {
 				buffer.writeString(volume.getFluidString());
 				buffer.writeString(volume.getFractionString());
 
-				ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, AstromineClientPackets.PRESSURE_UPDATE, buffer);
+				ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, AstromineCommonPackets.PRESSURE_UPDATE, buffer);
 			}
 		});
 

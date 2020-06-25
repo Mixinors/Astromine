@@ -10,9 +10,11 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
-public class AstromineServerPackets {
+public class AstromineCommonPackets {
 	public static final Identifier SHOT_PACKET = AstromineCommon.identifier("shot");
 	public static final Identifier BLOCK_ENTITY_UPDATE_PACKET = AstromineCommon.identifier("block_entity_update");
+
+	public static final Identifier PRESSURE_UPDATE = AstromineCommon.identifier("pressure_update");
 
 	public static void initialize() {
 		ServerSidePacketRegistry.INSTANCE.register(SHOT_PACKET, ((context, buffer) -> {

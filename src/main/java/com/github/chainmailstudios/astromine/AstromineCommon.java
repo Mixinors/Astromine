@@ -23,7 +23,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineOres;
 import com.github.chainmailstudios.astromine.registry.AstrominePotions;
 import com.github.chainmailstudios.astromine.registry.AstromineRecipeSerializers;
-import com.github.chainmailstudios.astromine.registry.AstromineServerPackets;
+import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -57,7 +57,7 @@ public class AstromineCommon implements ModInitializer {
 		AstromineFluids.initialize();
 		AstromineBreathables.initialize();
 		AstromineChunkGenerators.initialize();
-		AstromineServerPackets.initialize();
+		AstromineCommonPackets.initialize();
 		AstromineGravities.initialize();
 		AstromineDimensionLayers.initialize();
 		AstromineCommonCallbacks.initialize();

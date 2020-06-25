@@ -11,7 +11,7 @@ import com.github.chainmailstudios.astromine.client.screen.base.DefaultedFluidCo
 import com.github.chainmailstudios.astromine.common.block.entity.CreativeTankBlockEntity;
 import com.github.chainmailstudios.astromine.common.container.CreativeTankContainer;
 import com.github.chainmailstudios.astromine.common.container.base.DefaultedFluidContainer;
-import com.github.chainmailstudios.astromine.registry.AstromineServerPackets;
+import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
 import io.netty.buffer.Unpooled;
 import spinnery.client.configuration.widget.WOptionField;
 import spinnery.widget.WTextField;
@@ -36,7 +36,7 @@ public class CreativeTankContainerScreen extends DefaultedFluidContainerScreen<C
 						buffer.writeBlockPos(linkedContainer.blockEntity.getPos());
 						buffer.writeIdentifier(CreativeTankBlockEntity.FLUID_CHANGE_PACKET);
 						buffer.writeIdentifier(new Identifier(widget.getText()));
-						ClientSidePacketRegistry.INSTANCE.sendToServer(AstromineServerPackets.BLOCK_ENTITY_UPDATE_PACKET, buffer);					}
+						ClientSidePacketRegistry.INSTANCE.sendToServer(AstromineCommonPackets.BLOCK_ENTITY_UPDATE_PACKET, buffer);					}
 				});
 
 		field.centerX();;
