@@ -1,11 +1,14 @@
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineServerPackets;
 import com.google.common.collect.Maps;
+import nerdhub.cardinal.components.api.ComponentRegistry;
 import nerdhub.cardinal.components.api.ComponentType;
 import nerdhub.cardinal.components.api.component.Component;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
@@ -26,14 +29,27 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 public abstract class DefaultedBlockEntity extends BlockEntity implements ComponentProvider, PacketConsumer, BlockEntityClientSerializable {
-	protected final BlockEntityTransferComponent transferComponent = new BlockEntityTransferComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+	protected final BlockEntityTransferComponent transferComponent = new BlockEntityTransferComponent();
 
 	protected final Map<ComponentType<?>, Component> allComponents = Maps.newHashMap();
 
 	protected final Map<Identifier, BiConsumer<PacketByteBuf, PacketContext>> allHandlers = Maps.newHashMap();
 
+	public static final Identifier TRANSFER_UPDATE_PACKET = AstromineCommon.identifier("transfer_update_packet");
+
 	public DefaultedBlockEntity(BlockEntityType<?> type) {
 		super(type);
+
+		addConsumer(TRANSFER_UPDATE_PACKET, ((buffer, context) -> {
+			Identifier packetIdentifier = buffer.readIdentifier();
+			ComponentType<?> packetType = ComponentRegistry.INSTANCE.get(packetIdentifier);
+			Direction packetDirection = buffer.readEnumConstant(Direction.class);
+			TransferType packetTransferType = buffer.readEnumConstant(TransferType.class);
+
+			transferComponent.get(packetType).set(packetDirection, packetTransferType);
+
+			markDirty();
+		}));
 	}
 
 	public void addComponent(ComponentType<?> type, Component component) {
@@ -82,6 +98,10 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
 		tag.put("transfer", transferComponent.toTag(new CompoundTag()));
+
+		if (!world.isClient) {
+			System.out.println(transferComponent.toTag(new CompoundTag()));
+		}
 
 		allComponents.forEach((type, component) -> {
 			tag.put(type.getId().toString(), component.toTag(new CompoundTag()));

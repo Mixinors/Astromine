@@ -8,6 +8,7 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.recipe.SortingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeType;
@@ -37,6 +38,8 @@ public class SorterBlockEntity extends DefaultedEnergyItemBlockEntity implements
 			recipe = (Optional<SortingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) SortingRecipe.Type.INSTANCE, inputInventory, world);
 			shouldTry = true;
 		});
+
+		addComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, itemComponent);
 	}
 
 	@Override

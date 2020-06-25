@@ -40,6 +40,7 @@ public class DefaultedBlockEntityContainerScreen<T extends DefaultedBlockEntityC
 		BlockEntityTransferComponent transferComponent = componentProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
 
 		mainPanel.createChild(WTransferTypeSelectorPanel::new, Position.of(mainPanel, mainPanel.getWidth(), 0, 0), Size.of(76, 100))
+				.setBlockPos(linkedContainer.syncBlockEntity.getPos())
 				.setProvider(componentProvider)
 				.setComponent(transferComponent);
 	}

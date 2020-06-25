@@ -1,11 +1,18 @@
 package com.github.chainmailstudios.astromine.common.widget;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.entity.CreativeTankBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.registry.AstromineServerPackets;
+import io.netty.buffer.Unpooled;
 import nerdhub.cardinal.components.api.ComponentType;
+import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import spinnery.client.render.BaseRenderer;
 import spinnery.widget.WAbstractWidget;
@@ -17,6 +24,8 @@ public class WTransferTypeSelectorButton extends WButton {
 	private ComponentType<?> type;
 
 	private Direction direction;
+
+	private BlockPos blockPos;
 
 	private Identifier texture = null;
 
@@ -56,12 +65,34 @@ public class WTransferTypeSelectorButton extends WButton {
 		return (W) this;
 	}
 
+	public BlockPos getBlockPos() {
+		return blockPos;
+	}
+
+	public <W extends WTransferTypeSelectorButton> W setBlockPos(BlockPos blockPos) {
+		this.blockPos = blockPos;
+		return (W) this;
+	}
+
 	@Override
 	public void onMouseReleased(float mouseX, float mouseY, int mouseButton) {
 		if (isFocused()) {
 			component.get(type).set(direction, component.get(type).get(direction).next());
 
 			setTexture(component.get(type).get(direction).texture());
+
+			if (getInterface().getContainer().getWorld().isClient()) {
+				PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
+
+				buffer.writeBlockPos(getBlockPos());
+				buffer.writeIdentifier(DefaultedBlockEntity.TRANSFER_UPDATE_PACKET);
+
+				buffer.writeIdentifier(type.getId());
+				buffer.writeEnumConstant(direction);
+				buffer.writeEnumConstant(component.get(type).get(direction));
+
+				ClientSidePacketRegistry.INSTANCE.sendToServer(AstromineServerPackets.BLOCK_ENTITY_UPDATE_PACKET, buffer);
+			}
 		}
 
 		super.onMouseReleased(mouseX, mouseY, mouseButton);

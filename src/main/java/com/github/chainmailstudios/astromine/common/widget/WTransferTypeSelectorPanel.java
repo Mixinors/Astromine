@@ -9,6 +9,7 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.Item;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import spinnery.widget.WAbstractWidget;
 import spinnery.widget.WTabHolder;
@@ -25,6 +26,8 @@ public class WTransferTypeSelectorPanel extends WAbstractWidget implements WColl
 	BlockEntityTransferComponent component;
 
 	ComponentProvider provider;
+
+	BlockPos blockPos;
 
 	public WTransferTypeSelectorPanel() {
 		tabs = new WTabHolder().setParent(getParent()).setInterface(getInterface());
@@ -73,15 +76,24 @@ public class WTransferTypeSelectorPanel extends WAbstractWidget implements WColl
 		return component;
 	}
 
+	public BlockPos getBlockPos() {
+		return blockPos;
+	}
+
+	public <W extends WTransferTypeSelectorPanel> W setBlockPos(BlockPos blockPos) {
+		this.blockPos = blockPos;
+		return (W) this;
+	}
+
 	public void createTab(Item symbol, Text name, ComponentType<?> type) {
 		WTabHolder.WTab tab = tabs.addTab(symbol);
 
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 22, 31 + 22, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.NORTH));
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 22, 31 + 44, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.SOUTH));
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 22, 31 + 0, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.UP));
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 0,  31 + 44, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.DOWN));
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 0,  31 + 22, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.WEST));
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 44, 31 + 22, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.EAST));
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 22, 31 + 22, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.NORTH).setBlockPos(blockPos).setInterface(getInterface()));
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 22, 31 + 44, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.SOUTH).setBlockPos(blockPos).setInterface(getInterface()));
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 22, 31 + 0, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.UP).setBlockPos(blockPos).setInterface(getInterface()));
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 0,  31 + 44, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.DOWN).setBlockPos(blockPos).setInterface(getInterface()));
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 0,  31 + 22, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.WEST).setBlockPos(blockPos).setInterface(getInterface()));
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 44, 31 + 22, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.EAST).setBlockPos(blockPos).setInterface(getInterface()));
 	}
 
 	@Override
