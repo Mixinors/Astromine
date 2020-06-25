@@ -21,7 +21,7 @@ import com.github.chainmailstudios.astromine.common.block.AstromineOreBlock;
 import com.github.chainmailstudios.astromine.common.block.CreativeBufferBlock;
 import com.github.chainmailstudios.astromine.common.block.CreativeCapacitorBlock;
 import com.github.chainmailstudios.astromine.common.block.CreativeTankBlock;
-import com.github.chainmailstudios.astromine.common.block.ElectricalSmelterBlock;
+import com.github.chainmailstudios.astromine.common.block.ElectricSmelterBlock;
 import com.github.chainmailstudios.astromine.common.block.EnergyCableBlock;
 import com.github.chainmailstudios.astromine.common.block.FluidCableBlock;
 import com.github.chainmailstudios.astromine.common.block.FluidExtractorBlock;
@@ -46,15 +46,15 @@ public class AstromineBlocks {
 	public static final Block FLUID_CABLE = register("fluid_cable", new FluidCableBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 3).strength(2, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block ENERGY_CABLE = register("energy_cable", new EnergyCableBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 3).strength(2, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 
-	public static final Block NUCLEAR_WARHEAD = register("nuclear_warhead", new NuclearWarheadBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(80, 1300).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings());
+	public static final Block NUCLEAR_WARHEAD = register("nuclear_warhead", new NuclearWarheadBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(80, 1300).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 
-	public static final Block CREATIVE_TANK = register("creative_tank", new CreativeTankBlock(FabricBlockSettings.of(Material.STONE).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings());
-	public static final Block CREATIVE_CAPACITOR = register("creative_capacitor", new CreativeCapacitorBlock(FabricBlockSettings.of(Material.STONE).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings());
-	public static final Block CREATIVE_BUFFER = register("creative_buffer", new CreativeBufferBlock(FabricBlockSettings.of(Material.STONE).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings());
+	public static final Block CREATIVE_TANK = register("creative_tank", new CreativeTankBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
+	public static final Block CREATIVE_CAPACITOR = register("creative_capacitor", new CreativeCapacitorBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
+	public static final Block CREATIVE_BUFFER = register("creative_buffer", new CreativeBufferBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 
-	public static final Block SORTER = register("sorter", new SorterBlock(FabricBlockSettings.of(Material.STONE).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings());
-	public static final Block ELECTRICAL_SMELTER = register("electrical_smelter", new ElectricalSmelterBlock(FabricBlockSettings.of(Material.STONE).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings());
-	public static final Block FLUID_EXTRACTOR = register("fluid_extractor", new FluidExtractorBlock(FabricBlockSettings.of(Material.STONE).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings());
+	public static final Block SORTER = register("sorter", new SorterBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
+	public static final Block ELECTRIC_SMELTER = register("electric_smelter", new ElectricSmelterBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
+	public static final Block FLUID_EXTRACTOR = register("fluid_extractor", new FluidExtractorBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 
 	public static final Block METEOR_METITE_ORE = register("meteor_metite_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());
 	public static final Block ASTEROID_METITE_ORE = register("asteroid_metite_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());

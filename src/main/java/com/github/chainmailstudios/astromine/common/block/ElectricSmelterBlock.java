@@ -24,16 +24,16 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.ElectricalSmelterBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.ElectricSmelterBlockEntity;
 import com.github.chainmailstudios.astromine.common.container.ElectricalSmelterContainer;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
-public class ElectricalSmelterBlock extends DefaultedHorizontalFacingBlockWithEntity implements NetworkMember {
+public class ElectricSmelterBlock extends DefaultedHorizontalFacingBlockWithEntity implements NetworkMember {
 	public static final BooleanProperty ACTIVE = BooleanProperty.of("active");
 
-	public ElectricalSmelterBlock(Settings settings) {
+	public ElectricSmelterBlock(Settings settings) {
 		super(settings);
 	}
 
@@ -49,7 +49,7 @@ public class ElectricalSmelterBlock extends DefaultedHorizontalFacingBlockWithEn
 
 	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
-		return new ElectricalSmelterBlockEntity();
+		return new ElectricSmelterBlockEntity();
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class ElectricalSmelterBlock extends DefaultedHorizontalFacingBlockWithEn
 
 				@Override
 				public Text getDisplayName() {
-					return new TranslatableText("block.astromine.electrical_smelter");
+					return new TranslatableText("block.astromine.electric_smelter");
 				}
 
 				@Override
