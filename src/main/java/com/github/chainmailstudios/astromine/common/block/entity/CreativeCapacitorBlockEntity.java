@@ -17,7 +17,7 @@ public class CreativeCapacitorBlockEntity extends DefaultedEnergyBlockEntity imp
 
 	@Override
 	public void tick() {
-		energyComponent.getVolume(0).setSize(new Fraction(Integer.MAX_VALUE, 1));
+		energyComponent.getVolume(0).setFraction(new Fraction(Integer.MAX_VALUE, 1));
 	}
 
 	@Override

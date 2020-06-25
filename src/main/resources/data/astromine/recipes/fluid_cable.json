@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["111", "232", "111"],
+  "key": {
+    "1": {
+      "item": "astromine:iron_plates"
+    },
+    "2": {
+      "item": "minecraft:kelp"
+    },
+    "3": {
+      "item": "astromine:metite_plates"
+    }
+  },
+  "result": {
+    "item": "astromine:fluid_cable",
+    "count": 16
+  }
+}

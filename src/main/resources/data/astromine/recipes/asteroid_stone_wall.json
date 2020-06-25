@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["111", "111", "   "],
+  "key": {
+    "1": {
+      "item": "astromine:asteroid_stone"
+    }
+  },
+  "result": {
+    "item": "astromine:asteroid_stone_wall",
+    "count": 6
+  }
+}

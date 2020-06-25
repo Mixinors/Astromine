@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["121", "343", "121"],
+  "key": {
+    "1": {
+      "item": "astromine:iron_plates"
+    },
+    "2": {
+      "item": "astromine:gold_gear"
+    },
+    "3": {
+      "item": "astromine:gold_plates"
+    },
+    "4": {
+      "item": "astromine:basic_circuit"
+    }
+  },
+  "result": {
+    "item": "astromine:vent"
+  }
+}

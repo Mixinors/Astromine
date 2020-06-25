@@ -43,7 +43,7 @@ public class SortingCategory implements RecipeCategory<SortingDisplay> {
 		List<Widget> widgets = Lists.newArrayList();
 		widgets.add(Widgets.createRecipeBase(bounds));
 		widgets.add(Widgets.createLabel(new Point(bounds.x + 5, bounds.y + 5),
-				new TranslatableText("category.astromine.sorting.energy", FluidUtilities.fraction(display.getEnergyRequired()))).noShadow().leftAligned().color(0xFF404040, 0xFFBBBBBB));
+				new TranslatableText("category.astromine.sorting.energy", FluidUtilities.rawFraction(display.getEnergyRequired()))).noShadow().leftAligned().color(0xFF404040, 0xFFBBBBBB));
 		widgets.add(Widgets.createLabel(new Point(bounds.x + bounds.width - 5, bounds.y + 5),
 				new TranslatableText("category.astromine.sorting.time", df.format(display.getTimeRequired() / 20d))).noShadow().rightAligned().color(0xFF404040, 0xFFBBBBBB));
 		widgets.add(Widgets.createArrow(new Point(startPoint.x + 27, startPoint.y + 8)));
