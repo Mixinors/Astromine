@@ -28,10 +28,9 @@ import java.util.Optional;
 
 public class SuperSpaceSlimeShooterItem extends BaseWeapon {
 	public static final Identifier TEXTURE = AstromineCommon.identifier("textures/item/empty.png");
-	public static final Item.Settings SETTINGS = new Item.Settings().maxCount(1).group(AstromineItemGroups.ASTROMINE);
 
-	public SuperSpaceSlimeShooterItem() {
-		super(SETTINGS);
+	public SuperSpaceSlimeShooterItem(Item.Settings settings) {
+		super(settings.maxCount(1));
 	}
 
 	@Override

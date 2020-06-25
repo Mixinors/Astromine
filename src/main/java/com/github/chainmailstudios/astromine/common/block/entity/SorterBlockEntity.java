@@ -29,7 +29,7 @@ public class SorterBlockEntity extends DefaultedEnergyItemBlockEntity implements
 	public SorterBlockEntity() {
 		super(AstromineBlockEntityTypes.SORTER);
 
-		energyComponent.getVolume(0).setSize(new Fraction(16, 1));
+		energyComponent.getVolume(0).setSize(new Fraction(32, 1));
 		inventoryComponent = new SimpleItemInventoryComponent(2);
 
 		inventoryComponent.addListener(() -> {
