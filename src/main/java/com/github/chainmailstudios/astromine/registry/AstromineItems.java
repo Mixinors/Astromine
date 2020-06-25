@@ -33,6 +33,7 @@ import com.github.chainmailstudios.astromine.common.item.weapon.variant.Weaponry
 public class AstromineItems {
 	// Spawn eggs
 	public static final Item SPACE_SLIME_SPAWN_EGG = register("space_slime_spawn_egg", new UncoloredSpawnEggItem(AstromineEntityTypes.SPACE_SLIME, getBasicSettings()));
+	public static final Item ROCKET = register("rocket", new UncoloredSpawnEggItem(AstromineEntityTypes.ROCKET, getBasicSettings()));
 
 	// Misc materials
 	public static final Item SPACE_SLIME_BALL = register("space_slime_ball", new Item(getBasicSettings()));
