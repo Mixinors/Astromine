@@ -1,7 +1,6 @@
 package com.github.chainmailstudios.astromine.client.rei.sorting;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineREIPlugin;
-import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.google.common.collect.Lists;
 import me.shedaniel.math.Point;
@@ -38,23 +37,18 @@ public class SortingCategory implements RecipeCategory<SortingDisplay> {
 
 	@Override
 	public List<Widget> setupDisplay(SortingDisplay display, Rectangle bounds) {
-		Point startPoint = new Point(bounds.getCenterX() - 41, bounds.getY() + 10);
+		Point startPoint = new Point(bounds.getCenterX() - 41, bounds.getCenterY() - 27);
 		DecimalFormat df = new DecimalFormat("###.##");
 		List<Widget> widgets = Lists.newArrayList();
 		widgets.add(Widgets.createRecipeBase(bounds));
-		widgets.add(Widgets.createLabel(new Point(bounds.x + 5, bounds.y + 5),
-				new TranslatableText("category.astromine.cooking.energy", FluidUtilities.rawFraction(display.getEnergyRequired()))).noShadow().leftAligned().color(0xFF404040, 0xFFBBBBBB));
+		widgets.addAll(AstromineREIPlugin.createEnergyDisplay(new Rectangle(bounds.getX() + 10, bounds.getCenterY() - 23, 12, 48),
+				display.getEnergyRequired(), false, display.getTimeRequired() * 500));
 		widgets.add(Widgets.createLabel(new Point(bounds.x + bounds.width - 5, bounds.y + 5),
 				new TranslatableText("category.astromine.cooking.time", df.format(display.getTimeRequired() / 20d))).noShadow().rightAligned().color(0xFF404040, 0xFFBBBBBB));
-		widgets.add(Widgets.createArrow(new Point(startPoint.x + 27, startPoint.y + 8)));
-		widgets.add(Widgets.createResultSlotBackground(new Point(startPoint.x + 61, startPoint.y + 9)));
-		widgets.add(Widgets.createSlot(new Point(startPoint.x + 4, startPoint.y + 9)).entries(display.getInputEntries().get(0)).markInput());
-		widgets.add(Widgets.createSlot(new Point(startPoint.x + 61, startPoint.y + 9)).entries(display.getOutputEntries()).disableBackground().markOutput());
+		widgets.add(Widgets.createArrow(new Point(startPoint.x + 27, startPoint.y + 18)).animationDurationTicks(display.getTimeRequired()));
+		widgets.add(Widgets.createResultSlotBackground(new Point(startPoint.x + 61, startPoint.y + 19)));
+		widgets.add(Widgets.createSlot(new Point(startPoint.x + 4, startPoint.y + 19)).entries(display.getInputEntries().get(0)).markInput());
+		widgets.add(Widgets.createSlot(new Point(startPoint.x + 61, startPoint.y + 19)).entries(display.getOutputEntries()).disableBackground().markOutput());
 		return widgets;
-	}
-
-	@Override
-	public int getDisplayHeight() {
-		return 49;
 	}
 }
