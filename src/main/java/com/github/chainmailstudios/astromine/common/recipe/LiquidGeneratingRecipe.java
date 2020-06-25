@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.recipe;
+package com.github.chainmailstudios.astromine.common.recipe;
 
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.Inventory;

@@ -74,13 +74,17 @@ public abstract class BucketItemMixin {
 								((BlockEntityClientSerializable) attached).sync();
 							}
 						} else if (inventory != null) {
-							if (inventory.getVolume(0).getFluid() != Fluids.EMPTY && inventory.getVolume(0).hasStored(Fraction.BUCKET)) {
-								FluidVolume bucketVolume = inventory.getVolume(0).extractVolume(Fraction.BUCKET);
+							for (FluidVolume attachedVolume : inventory.getContents().values()) {
+								if (attachedVolume.getFluid() != Fluids.EMPTY && attachedVolume.hasStored(Fraction.BUCKET)) {
+									FluidVolume bucketVolume = attachedVolume.extractVolume(Fraction.BUCKET);
 
-								user.setStackInHand(hand, new ItemStack(bucketVolume.getFluid().getBucketItem()));
+									user.setStackInHand(hand, new ItemStack(bucketVolume.getFluid().getBucketItem()));
 
-								callbackInformationReturnable.setReturnValue(TypedActionResult.success(user.isCreative() ? user.getStackInHand(hand) : new ItemStack(bucketVolume.getFluid().getBucketItem().getRecipeRemainder())));
-								callbackInformationReturnable.cancel();
+									callbackInformationReturnable.setReturnValue(TypedActionResult.success(user.isCreative() ? user.getStackInHand(hand) : new ItemStack(bucketVolume.getFluid().getBucketItem().getRecipeRemainder())));
+									callbackInformationReturnable.cancel();
+
+									return;
+								}
 							}
 						}
 					}

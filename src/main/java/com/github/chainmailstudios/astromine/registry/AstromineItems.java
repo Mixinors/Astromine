@@ -63,6 +63,10 @@ public class AstromineItems {
 	public static final Item ASTERITE = register("asterite", new Item(getBasicSettings()));
 	public static final Item GALAXIUM = register("galaxium", new Item(getBasicSettings()));
 
+	public static final Item ENERGY = register("energy", new Item(getBasicSettings()));
+	public static final Item FLUID = register("fluid", new Item(getBasicSettings()));
+	public static final Item ITEM = register("item", new Item(getBasicSettings()));
+
 	// Materials - Nuggets
 	public static final Item METITE_NUGGET = register("metite_nugget", new Item(getBasicSettings()));
 	public static final Item STELLUM_NUGGET = register("stellum_nugget", new Item(getBasicSettings()));
