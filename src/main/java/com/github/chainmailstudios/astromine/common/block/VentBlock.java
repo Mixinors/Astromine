@@ -1,25 +1,22 @@
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedFacingBlock;
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.VentBlockEntity;
 import com.github.chainmailstudios.astromine.common.container.VentContainer;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-import net.minecraft.block.Block;
+
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.FacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BucketItem;
-import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.state.StateManager;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
@@ -29,7 +26,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class VentBlock extends DefaultedFacingBlock implements BlockEntityProvider, NetworkMember {
+public class VentBlock extends DefaultedFacingBlockWithEntity implements NetworkMember {
 	public VentBlock(Settings settings) {
 		super(settings);
 	}

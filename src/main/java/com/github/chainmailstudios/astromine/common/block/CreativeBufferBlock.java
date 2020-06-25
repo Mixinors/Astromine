@@ -5,7 +5,9 @@ import com.github.chainmailstudios.astromine.common.container.CreativeBufferCont
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,11 +27,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class CreativeBufferBlock extends Block implements BlockEntityProvider {
+public class CreativeBufferBlock extends BlockWithEntity {
 	public CreativeBufferBlock(Settings settings) {
 		super(settings);
 	}
-
+	
+	@Override
+	public BlockRenderType getRenderType(BlockState state) {
+		return BlockRenderType.MODEL;
+	}
+	
 	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
 		return new CreativeBufferBlockEntity();

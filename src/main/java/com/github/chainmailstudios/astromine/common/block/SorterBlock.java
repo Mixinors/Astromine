@@ -1,9 +1,7 @@
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlock;
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.SorterBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.TankBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.FluidTankContainer;
 import com.github.chainmailstudios.astromine.common.container.SorterContainer;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
@@ -28,7 +26,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class SorterBlock extends DefaultedHorizontalFacingBlock implements NetworkMember, BlockEntityProvider, Tickable {
+public class SorterBlock extends DefaultedHorizontalFacingBlockWithEntity implements NetworkMember, Tickable {
 	public SorterBlock(Settings settings) {
 		super(settings);
 	}
