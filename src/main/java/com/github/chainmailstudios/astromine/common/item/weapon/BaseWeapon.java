@@ -25,11 +25,11 @@ import java.util.Optional;
 public abstract class BaseWeapon extends Item implements Weapon {
 	private long lastShot = 0;
 	private long lastReload = 0;
-
+	
 	public BaseWeapon(Settings settings) {
 		super(settings);
 	}
-
+	
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		return TypedActionResult.pass(user.getStackInHand(hand));
