@@ -8,7 +8,7 @@ import com.github.chainmailstudios.astromine.common.container.NuclearWarheadCont
 import com.github.chainmailstudios.astromine.common.container.base.DefaultedBlockStateContainer;
 
 public class NuclearWarheadContainerScreen extends DefaultedContainerScreen<NuclearWarheadContainer> {
-	public NuclearWarheadContainerScreen(Text name, DefaultedBlockStateContainer linkedContainer, PlayerEntity player) {
+	public NuclearWarheadContainerScreen(Text name, NuclearWarheadContainer linkedContainer, PlayerEntity player) {
 		super(name, linkedContainer, player);
 	}
 }
