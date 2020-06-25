@@ -100,9 +100,11 @@ public class AstromineREIPlugin implements REIPluginV0 {
 							.overlay(OverlayTexture.DEFAULT_UV)
 							.alpha(0xff)
 							.normal(matrices.peek().getNormal(), 0, 0, 0)
-							.position(matrices.peek().getModel(), bounds.x + 1, bounds.y + height + 1,
-									bounds.width - 1,
-									bounds.height - height - 1, helper.getZOffset() + 1)
+							.position(matrices.peek().getModel(),
+									bounds.x + 1,
+									bounds.y + bounds.height - height + 1,
+									bounds.x + bounds.width - 1,
+									bounds.y + bounds.height - 1, helper.getZOffset() + 1)
 							.next(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
 					consumers.draw();
 				})
