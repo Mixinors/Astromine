@@ -5,10 +5,11 @@ import net.minecraft.block.pattern.BlockPattern;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 
 public class SpaceEntityPlacer implements EntityPlacer {
 	public static final SpaceEntityPlacer TO_PLANET = new SpaceEntityPlacer(1024);
-	public static final SpaceEntityPlacer TO_SPACE = new SpaceEntityPlacer(1);
+	public static final SpaceEntityPlacer TO_SPACE = new SpaceEntityPlacer(64);
 
 	public final int y;
 
@@ -19,6 +20,6 @@ public class SpaceEntityPlacer implements EntityPlacer {
 
 	@Override
 	public BlockPattern.TeleportTarget placeEntity(Entity entity, ServerWorld serverWorld, Direction direction, double v, double v1) {
-		return new BlockPattern.TeleportTarget(entity.getPos().add(0, y, 0), entity.getVelocity(), (int) entity.getHeadYaw());
+		return new BlockPattern.TeleportTarget(new Vec3d(entity.getX(), y, entity.getZ()), entity.getVelocity(), (int) entity.getHeadYaw());
 	}
 }
