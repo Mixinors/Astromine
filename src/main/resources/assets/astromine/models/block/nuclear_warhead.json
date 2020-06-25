@@ -1,7 +1,7 @@
 {
   "parent": "block/cube",
   "textures": {
-    "particle": "astromine:block/crafting_table_front",
+    "particle": "astromine:block/nuclear_warhead_front",
     "down": "astromine:block/nuclear_warhead_bottom",
     "up": "astromine:block/machine_top",
     "north": "astromine:block/nuclear_warhead_front",
