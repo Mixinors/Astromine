@@ -295,4 +295,6 @@ public interface FluidInventoryComponent extends Component {
 	default boolean isEmpty() {
 		return this.getContents().values().stream().allMatch(FluidVolume::isEmpty);
 	}
+	
+	<T extends FluidInventoryComponent> T copy();
 }

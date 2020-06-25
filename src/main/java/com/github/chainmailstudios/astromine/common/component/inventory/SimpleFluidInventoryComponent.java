@@ -44,4 +44,11 @@ public class SimpleFluidInventoryComponent implements FluidInventoryComponent {
 		write(this, compoundTag, Optional.empty(), Optional.empty());
 		return compoundTag;
 	}
+
+	@Override
+	public SimpleFluidInventoryComponent copy() {
+		SimpleFluidInventoryComponent component = new SimpleFluidInventoryComponent(getSize());
+		component.fromTag(toTag(new CompoundTag()));
+		return component;
+	}
 }

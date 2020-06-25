@@ -4,6 +4,7 @@ import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.container.base.DefaultedFluidContainer;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.common.widget.WFluidVolumeFractionalVerticalBar;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import spinnery.client.screen.BaseContainerScreen;
@@ -40,5 +41,11 @@ public abstract class DefaultedFluidContainerScreen<T extends BaseContainer> ext
 		ComponentProvider componentProvider = linkedContainer.blockEntity;
 
 		fluidBar.setFluidVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(0));
+	}
+
+	@Override
+	public void render(MatrixStack matrices, int mouseX, int mouseY, float tickDelta) {
+		this.fillGradient(matrices, 0, 0, this.width, this.height, -1072689136, -804253680);
+		super.render(matrices, mouseX, mouseY, tickDelta);
 	}
 }

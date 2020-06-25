@@ -39,7 +39,7 @@ public class SmelterBlock extends DefaultedHorizontalFacingBlock implements Netw
 	}
 
 	@Override
-	public boolean isBuffer() {
+	public boolean isRequester() {
 		return true;
 	}
 

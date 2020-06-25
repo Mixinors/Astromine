@@ -28,8 +28,6 @@ public class VentBlockEntity extends DefaultedEnergyFluidBlockEntity implements 
 	@Override
 	public void tick() {
 		if (energyComponent.getVolume(0).hasStored(Fraction.BOTTLE) && (fluidComponent.getVolume(0).hasStored(Fraction.BUCKET))) {
-			world.addParticle(ParticleTypes.FLAME, getPos().getX(), getPos().getY() + 1, getPos().getZ(), 0, 0.2f, 0);
-
 			BlockPos position = getPos();
 
 			Direction direction = world.getBlockState(position).get(FacingBlock.FACING);
@@ -37,15 +35,13 @@ public class VentBlockEntity extends DefaultedEnergyFluidBlockEntity implements 
 			BlockPos output = position.offset(direction);
 
 			if (world.getBlockState(output).getBlock() instanceof AirBlock) {
-				FluidVolume bucketVolume = fluidComponent.getVolume(0).extractVolume(Fraction.BUCKET);
-
 				ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
 
 				WorldAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);
 
 				FluidVolume volume = atmosphereComponent.get(output);
 
-				fluidComponent.getVolume(0).pushVolume(bucketVolume, Fraction.BUCKET);
+				fluidComponent.getVolume(0).pushVolume(volume, Fraction.BUCKET);
 				energyComponent.getVolume(0).extractVolume(Fraction.BOTTLE);
 
 				atmosphereComponent.add(output, volume);

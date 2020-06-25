@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["121", "343", "121"],
+  "key": {
+    "1": {
+      "item": "astromine:netherite_gear"
+    },
+    "2": {
+      "item": "astromine:elite_circuit"
+    },
+    "3": {
+      "item": "astromine:stellum_plates"
+    },
+    "4": {
+      "item": "minecraft:tnt"
+    }
+  },
+  "result": {
+    "item": "astromine:nuclear_warhead"
+  }
+}

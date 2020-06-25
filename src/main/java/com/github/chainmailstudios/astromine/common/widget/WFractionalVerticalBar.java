@@ -118,18 +118,21 @@ public class WFractionalVerticalBar extends WAbstractBar {
 		
 		if (isFocused()) {
 			tooltipText.clear();
-			tooltipText.add(FluidUtilities.fraction(progressFraction.get(), limitFraction.get(), unit));
+			tooltipText.add(FluidUtilities.rawFraction(progressFraction.get(), limitFraction.get(), unit));
 			tooltipText.add(new TranslatableText("text.astromine.tooltip.fractional_value", progressFraction.get().toPrettyString(), limitFraction.get().toPrettyString()));
 			
 			drawTooltips(matrices, provider);
 		}
 	}
-	
+
 	protected void drawTooltips(MatrixStack matrices, VertexConsumerProvider.Immediate provider) {
+		tooltip.setWidth(tooltipText.stream().map(TextRenderer::width).max(Integer::compareTo).orElse(0));
+		tooltip.setHeight(TextRenderer.height() * tooltipText.size());
+
 		tooltip.draw(matrices, provider);
-		
+
 		RenderSystem.translatef(0, 0, 250);
-		
+
 		Position position = Position.of(tooltip, 1, 1, 0);
 		float lineX = position.getX();
 		float lineY = position.getY();
@@ -138,7 +141,7 @@ public class WFractionalVerticalBar extends WAbstractBar {
 			TextRenderer.pass().text(text).font(TextRenderer.Font.DEFAULT).at(lineX, lineY, lineZ).scale(1.0D).maxWidth(null).render(matrices, provider);
 			lineY += TextRenderer.height();
 		}
-		
+
 		RenderSystem.translatef(0, 0, -250);
 	}
 }

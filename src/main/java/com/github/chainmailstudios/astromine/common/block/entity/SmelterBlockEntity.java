@@ -10,8 +10,10 @@ import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.recipe.SortingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.util.Tickable;
@@ -49,7 +51,7 @@ public class SmelterBlockEntity extends DefaultedEnergyItemBlockEntity implement
 	}
 
 	@Override
-	public boolean isBuffer() {
+	public boolean isRequester() {
 		return true;
 	}
 
@@ -59,7 +61,22 @@ public class SmelterBlockEntity extends DefaultedEnergyItemBlockEntity implement
 	}
 
 	@Override
+	public void fromTag(BlockState state, CompoundTag tag) {
+		super.fromTag(state, tag);
+		progress = tag.getInt("progress");
+		limit = tag.getInt("limit");
+	}
+
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		tag.putInt("progress", progress);
+		tag.putInt("limit", limit);
+		return super.toTag(tag);
+	}
+
+	@Override
 	public void tick() {
+		if (world.isClient()) return;
 		if (shouldTry) {
 			if (recipe.isPresent() && recipe.get().matches(inputInventory, world)) {
 				limit = recipe.get().getCookTime() / 10;
