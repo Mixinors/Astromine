@@ -12,6 +12,7 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.recipe.SortingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import spinnery.common.inventory.BaseInventory;
 
@@ -31,13 +32,15 @@ public class SorterBlockEntity extends DefaultedEnergyItemBlockEntity implements
 		super(AstromineBlockEntityTypes.SORTER);
 
 		energyComponent.getVolume(0).setSize(new Fraction(32, 1));
-		inventoryComponent = new SimpleItemInventoryComponent(2);
+		itemComponent = new SimpleItemInventoryComponent(2);
 
-		inventoryComponent.addListener(() -> {
-			inputInventory.setStack(0, inventoryComponent.getStack(1));
+		itemComponent.addListener(() -> {
+			inputInventory.setStack(0, itemComponent.getStack(1));
 			recipe = (Optional<SortingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) SortingRecipe.Type.INSTANCE, inputInventory, world);
 			shouldTry = true;
 		});
+
+		addComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, itemComponent);
 	}
 
 	@Override
@@ -53,26 +56,26 @@ public class SorterBlockEntity extends DefaultedEnergyItemBlockEntity implements
 	@Override
 	public void tick() {
 		if (shouldTry) {
-			if (recipe.isPresent() && recipe.get().matches(ItemInventoryFromInventoryComponent.of(inventoryComponent), world)) {
+			if (recipe.isPresent() && recipe.get().matches(ItemInventoryFromInventoryComponent.of(itemComponent), world)) {
 				limit = recipe.get().getTimeTotal();
 				
 				Fraction consumed = recipe.get().getEnergyTotal().copy();
 
 				ItemStack output = recipe.get().getOutput();
 
-				boolean isEmpty = inventoryComponent.getStack(0).isEmpty();
-				boolean isEqual = ItemStack.areItemsEqual(inventoryComponent.getStack(0), output) && ItemStack.areTagsEqual(inventoryComponent.getStack(0), output);
+				boolean isEmpty = itemComponent.getStack(0).isEmpty();
+				boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(0), output) && ItemStack.areTagsEqual(itemComponent.getStack(0), output);
 
-				if (energyComponent.getVolume(0).hasStored(consumed) && (isEmpty || isEqual) && inventoryComponent.getStack(0).getCount() + output.getCount() <= inventoryComponent.getStack(0).getMaxCount()) {
+				if (energyComponent.getVolume(0).hasStored(consumed) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
 					if (progress == recipe.get().getTimeTotal()) {
 						energyComponent.getVolume(0).extractVolume(consumed);
 
-						recipe.get().craft(ItemInventoryFromInventoryComponent.of(inventoryComponent));
+						recipe.get().craft(ItemInventoryFromInventoryComponent.of(itemComponent));
 
 						if (isEmpty) {
-							inventoryComponent.setStack(0, output);
+							itemComponent.setStack(0, output);
 						} else {
-							inventoryComponent.getStack(0).increment(output.getCount());
+							itemComponent.getStack(0).increment(output.getCount());
 						}
 
 						progress = 0;

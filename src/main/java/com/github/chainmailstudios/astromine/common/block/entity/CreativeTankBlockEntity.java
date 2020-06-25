@@ -7,7 +7,6 @@ import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedFluidBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.packet.PacketHandlerComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
@@ -21,8 +20,10 @@ import nerdhub.cardinal.components.api.component.Component;
 public class CreativeTankBlockEntity extends DefaultedFluidBlockEntity implements NetworkMember, Tickable {
 	public static final Identifier FLUID_CHANGE_PACKET = AstromineCommon.identifier("fluid_change_component");
 
-	private final PacketHandlerComponent packetComponent = ((identifier, buffer) -> {
-		if (identifier.equals(FLUID_CHANGE_PACKET)) {
+	public CreativeTankBlockEntity() {
+		super(AstromineBlockEntityTypes.CREATIVE_TANK);
+
+		addConsumer(FLUID_CHANGE_PACKET, (buffer, context) -> {
 			Identifier fluidIdentifier = buffer.readIdentifier();
 
 			Fluid fluid = Registry.FLUID.get(fluidIdentifier);
@@ -30,16 +31,7 @@ public class CreativeTankBlockEntity extends DefaultedFluidBlockEntity implement
 			fluidComponent.setVolume(0, new FluidVolume(fluid, new Fraction(Integer.MAX_VALUE, 1)));
 
 			sync();
-		}
-	});
-
-	@Override
-	public <C extends Component> C getComponent(ComponentType<C> type) {
-		return type == AstromineComponentTypes.PACKET_HANDLER_COMPONENT ? (C) packetComponent : super.getComponent(type);
-	}
-
-	public CreativeTankBlockEntity() {
-		super(AstromineBlockEntityTypes.CREATIVE_TANK);
+		});
 
 		fluidComponent.getVolume(0).setSize(new Fraction(Integer.MAX_VALUE, 1));
 	}

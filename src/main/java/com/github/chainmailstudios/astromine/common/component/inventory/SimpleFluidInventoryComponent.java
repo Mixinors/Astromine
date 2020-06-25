@@ -17,6 +17,10 @@ public class SimpleFluidInventoryComponent implements FluidInventoryComponent {
 
 	private final int size;
 
+	public SimpleFluidInventoryComponent() {
+		this(0);
+	}
+
 	public SimpleFluidInventoryComponent(int size) {
 		this.size = size;
 		for (int i = 0; i < size; ++i) {

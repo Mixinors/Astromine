@@ -23,7 +23,7 @@ public class CreativeTankContainerScreen extends DefaultedFluidContainerScreen<C
 	public CreativeTankContainerScreen(Text name, DefaultedFluidContainer linkedContainer, PlayerEntity player) {
 		super(name, linkedContainer, player);
 
-		mainPanel.setSize(Size.of(mainPanel.getSize().getWidth(), mainPanel.getSize().getHeight() + getPlayerInventoryOffsetY()));
+		mainPanel.setSize(Size.of(mainPanel.getSize().getWidth(), mainPanel.getSize().getHeight()));
 		mainPanel.center();
 		fluidBar.centerX();
 		fluidBar.setY(fluidBar.getY() + 4);
@@ -40,10 +40,5 @@ public class CreativeTankContainerScreen extends DefaultedFluidContainerScreen<C
 				});
 
 		field.centerX();;
-	}
-
-	@Override
-	protected int getPlayerInventoryOffsetY() {
-		return 24;
 	}
 }

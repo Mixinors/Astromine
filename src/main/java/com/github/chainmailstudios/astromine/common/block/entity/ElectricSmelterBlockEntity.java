@@ -40,10 +40,10 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 		super(AstromineBlockEntityTypes.ELECTRICAL_SMELTER);
 
 		energyComponent.getVolume(0).setSize(new Fraction(32, 1));
-		inventoryComponent = new SimpleItemInventoryComponent(2);
+		itemComponent = new SimpleItemInventoryComponent(2);
 
-		inventoryComponent.addListener(() -> {
-			inputInventory.setStack(0, inventoryComponent.getStack(1));
+		itemComponent.addListener(() -> {
+			inputInventory.setStack(0, itemComponent.getStack(1));
 			recipe = (Optional<SmeltingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) RecipeType.SMELTING, inputInventory, world);
 			shouldTry = true;
 		});
@@ -84,19 +84,19 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 
 				ItemStack output = recipe.get().getOutput().copy();
 
-				boolean isEmpty = inventoryComponent.getStack(0).isEmpty();
-				boolean isEqual = ItemStack.areItemsEqual(inventoryComponent.getStack(0), output) && ItemStack.areTagsEqual(inventoryComponent.getStack(0), output);
+				boolean isEmpty = itemComponent.getStack(0).isEmpty();
+				boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(0), output) && ItemStack.areTagsEqual(itemComponent.getStack(0), output);
 
-				if (energyComponent.getVolume(0).hasStored(consumed) && (isEmpty || isEqual) && inventoryComponent.getStack(0).getCount() + output.getCount() <= inventoryComponent.getStack(0).getMaxCount()) {
+				if (energyComponent.getVolume(0).hasStored(consumed) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
 					if (progress == limit) {
 						energyComponent.getVolume(0).extractVolume(consumed);
 
-						inventoryComponent.getStack(1).decrement(1);
+						itemComponent.getStack(1).decrement(1);
 
 						if (isEmpty) {
-							inventoryComponent.setStack(0, output);
+							itemComponent.setStack(0, output);
 						} else {
-							inventoryComponent.getStack(0).increment(output.getCount());
+							itemComponent.getStack(0).increment(output.getCount());
 						}
 
 						progress = 0;
