@@ -57,7 +57,7 @@ public class ElectrolyzingRecipe implements Recipe<Inventory> {
 
 		if (!inputVolume.getFluid().matchesType(inputFluid.get())) return false;
 		if (!inputVolume.hasStored(inputAmount)) return false;
-		if (!outputVolume.getFluid().matchesType(outputFluid.get()) || !outputVolume.isEmpty()) return false;
+		if (!outputVolume.getFluid().matchesType(outputFluid.get()) && !outputVolume.isEmpty()) return false;
 		if (!outputVolume.hasAvailable(outputAmount)) return false;
 
 		if (isActuallyDoing) {
