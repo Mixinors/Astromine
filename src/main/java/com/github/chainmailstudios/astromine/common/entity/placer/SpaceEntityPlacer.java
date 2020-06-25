@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.common.entity.placer;
 
 import net.fabricmc.fabric.api.dimension.v1.EntityPlacer;
+
 import net.minecraft.block.pattern.BlockPattern;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;

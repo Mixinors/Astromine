@@ -1,8 +1,9 @@
 package com.github.chainmailstudios.astromine.common.component.inventory.compatibility;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 
 import java.util.ArrayList;
 import java.util.HashMap;

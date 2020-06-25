@@ -1,13 +1,14 @@
 package com.github.chainmailstudios.astromine.client.screen.base;
 
-import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
-import com.github.chainmailstudios.astromine.common.container.base.DefaultedEnergyFluidContainer;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.github.chainmailstudios.astromine.common.widget.WEnergyVolumeFractionalVerticalBar;
-import com.github.chainmailstudios.astromine.common.widget.WFluidVolumeFractionalVerticalBar;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
+
+import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.common.container.base.DefaultedEnergyFluidContainer;
+import com.github.chainmailstudios.astromine.common.widget.WEnergyVolumeFractionalVerticalBar;
+import com.github.chainmailstudios.astromine.common.widget.WFluidVolumeFractionalVerticalBar;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import spinnery.client.screen.BaseContainerScreen;
 import spinnery.common.container.BaseContainer;
 import spinnery.widget.WAbstractWidget;

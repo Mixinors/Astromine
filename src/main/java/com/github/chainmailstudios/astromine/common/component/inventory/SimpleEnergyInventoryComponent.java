@@ -1,9 +1,14 @@
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import net.minecraft.nbt.CompoundTag;
 
-import java.util.*;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class SimpleEnergyInventoryComponent implements EnergyInventoryComponent {
 	private final Map<Integer, EnergyVolume> contents = new HashMap<>();

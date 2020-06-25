@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+
 import com.google.gson.JsonElement;
 
 public class ParsingUtilities {

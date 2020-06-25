@@ -1,10 +1,11 @@
 package com.github.chainmailstudios.astromine.common.container;
 
-import com.github.chainmailstudios.astromine.common.container.base.DefaultedBlockStateContainer;
-import com.github.chainmailstudios.astromine.registry.AstromineContainers;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
+
+import com.github.chainmailstudios.astromine.common.container.base.DefaultedBlockStateContainer;
+import com.github.chainmailstudios.astromine.registry.AstromineContainers;
 
 public class NuclearWarheadContainer extends DefaultedBlockStateContainer {
 	public NuclearWarheadContainer(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {

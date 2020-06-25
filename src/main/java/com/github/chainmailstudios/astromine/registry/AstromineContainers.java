@@ -1,9 +1,19 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.container.*;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+
 import net.minecraft.screen.ScreenHandlerType;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.container.CreativeBufferContainer;
+import com.github.chainmailstudios.astromine.common.container.CreativeCapacitorContainer;
+import com.github.chainmailstudios.astromine.common.container.CreativeTankContainer;
+import com.github.chainmailstudios.astromine.common.container.ElectricalSmelterContainer;
+import com.github.chainmailstudios.astromine.common.container.FluidTankContainer;
+import com.github.chainmailstudios.astromine.common.container.LiquidGeneratorContainer;
+import com.github.chainmailstudios.astromine.common.container.NuclearWarheadContainer;
+import com.github.chainmailstudios.astromine.common.container.SorterContainer;
+import com.github.chainmailstudios.astromine.common.container.VentContainer;
 
 public class AstromineContainers {
 	public static final ScreenHandlerType<LiquidGeneratorContainer> LIQUID_GENERATOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("liquid_generator"), ((synchronizationID, inventory, buffer) -> {

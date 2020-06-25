@@ -1,14 +1,7 @@
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedFacingBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.VentBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.VentContainer;
-import com.github.chainmailstudios.astromine.common.network.NetworkMember;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
-import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 
-import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,6 +18,13 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedFacingBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.VentBlockEntity;
+import com.github.chainmailstudios.astromine.common.container.VentContainer;
+import com.github.chainmailstudios.astromine.common.network.NetworkMember;
+import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
 public class VentBlock extends DefaultedFacingBlockWithEntity implements NetworkMember {
 	public VentBlock(Settings settings) {

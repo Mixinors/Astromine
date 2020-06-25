@@ -1,9 +1,10 @@
 package com.github.chainmailstudios.astromine.common.component.packet;
 
-import nerdhub.cardinal.components.api.component.Component;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
+
+import nerdhub.cardinal.components.api.component.Component;
 
 public interface PacketHandlerComponent extends Component {
 	@Override

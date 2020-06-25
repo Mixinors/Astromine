@@ -1,7 +1,5 @@
 package com.github.chainmailstudios.astromine.common.miscellaneous;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.access.WorldChunkAccess;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
@@ -12,7 +10,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.chunk.WorldChunk;
 
-import java.util.logging.Logger;
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.access.WorldChunkAccess;
 
 public class ExplosionAlgorithm {
 	private static final BlockState AIR = Blocks.AIR.getDefaultState();

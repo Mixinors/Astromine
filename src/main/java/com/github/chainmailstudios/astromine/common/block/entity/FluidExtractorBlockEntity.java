@@ -1,12 +1,13 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import net.minecraft.nbt.CompoundTag;
+
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
-import net.minecraft.nbt.CompoundTag;
 
 public class FluidExtractorBlockEntity extends DefaultedEnergyFluidBlockEntity implements NetworkMember {
 	private Fraction cooldown = new Fraction(0, 1);

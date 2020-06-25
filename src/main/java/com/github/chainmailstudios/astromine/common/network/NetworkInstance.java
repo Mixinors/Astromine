@@ -1,10 +1,10 @@
 package com.github.chainmailstudios.astromine.common.network;
 
-import com.google.common.collect.Sets;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import com.google.common.collect.Sets;
 import java.util.Iterator;
 import java.util.Set;
 

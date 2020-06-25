@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.render.RenderLayer;
 

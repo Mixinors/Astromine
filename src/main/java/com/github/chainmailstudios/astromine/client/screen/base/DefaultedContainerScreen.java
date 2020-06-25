@@ -1,9 +1,10 @@
 package com.github.chainmailstudios.astromine.client.screen.base;
 
-import com.github.chainmailstudios.astromine.common.container.base.DefaultedBlockStateContainer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
+
+import com.github.chainmailstudios.astromine.common.container.base.DefaultedBlockStateContainer;
 import spinnery.client.screen.BaseContainerScreen;
 import spinnery.common.container.BaseContainer;
 

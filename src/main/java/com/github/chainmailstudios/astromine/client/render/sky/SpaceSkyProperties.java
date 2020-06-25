@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.client.render.sky;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
 import net.minecraft.client.render.SkyProperties;
 import net.minecraft.util.math.Vec3d;
 

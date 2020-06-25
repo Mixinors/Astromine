@@ -1,5 +1,8 @@
 package com.github.chainmailstudios.astromine.common.network.ticker;
 
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.util.math.BlockPos;
+
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
@@ -8,8 +11,6 @@ import com.github.chainmailstudios.astromine.common.network.NetworkNode;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.util.math.BlockPos;
 
 import java.util.HashMap;
 import java.util.Map;
