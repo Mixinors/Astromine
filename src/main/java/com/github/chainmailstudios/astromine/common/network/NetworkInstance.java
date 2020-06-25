@@ -2,7 +2,6 @@ package com.github.chainmailstudios.astromine.common.network;
 
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
 import com.google.common.collect.Sets;

@@ -10,7 +10,6 @@ import net.minecraft.util.TypedActionResult;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
-import nerdhub.cardinal.components.api.component.Component;
 import org.apache.logging.log4j.Level;
 
 import java.util.Collection;
