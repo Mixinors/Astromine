@@ -53,6 +53,9 @@ public class FireExtinguisher extends Item {
 
 		if (!user.isSneaking()) {
 			user.addVelocity(thrustVec.x, thrustVec.y, thrustVec.z);
+			user.getItemCooldownManager().set(this, 20);
+		} else {
+			user.getItemCooldownManager().set(this, 5);
 		}
 
 		BlockHitResult result = (BlockHitResult) user.rayTrace(6, 0, false);
@@ -74,7 +77,7 @@ public class FireExtinguisher extends Item {
 		if (world.isClient) {
 			world.playSound(user, user.getBlockPos(), AstromineSounds.FIRE_EXTINGUISHER_OPEN, SoundCategory.PLAYERS, 1f, 1f);
 		}
-
+		
 		return super.use(world, user, hand);
 	}
 

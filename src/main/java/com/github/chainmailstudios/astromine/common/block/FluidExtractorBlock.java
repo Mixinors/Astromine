@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlock;
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.FluidExtractorBlockEntity;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
@@ -9,7 +9,7 @@ import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.world.BlockView;
 
-public class FluidExtractorBlock extends DefaultedHorizontalFacingBlock implements NetworkMember, BlockEntityProvider {
+public class FluidExtractorBlock extends DefaultedHorizontalFacingBlockWithEntity implements NetworkMember {
 	public FluidExtractorBlock(Settings settings) {
 		super(settings);
 	}

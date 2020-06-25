@@ -12,19 +12,19 @@
 		},
 		{
 			"type": "smelting",
-			"recipe": "astromine:stellum_from_smelting",
+			"recipe": "astromine:stellum_ingot_from_smelting_ore",
 			"title": "Obtaining Stellum",
-			"text": "$(item)Stellum Ore$() can be found inside $(thing)Asteroids$() in $(thing)Space$().$(p)Mining Stellum Ore will require an $(item)Asterite Pickaxe$() (Mining Level 5) or better, and canm be smelted into a single $(item)Stellum Ingot()."
+			"text": "$(item)Stellum Ore$() can be found inside $(thing)Asteroids$() in $(thing)Space$().$(p)Mining Stellum Ore will require an $(item)Asterite Pickaxe$() (Mining Level 5) or better, and will usually result in a single $(item)Stellum Cluster$() which can then be smelted to obtain a $(item)Stellum Ingot$()."
 		},
 		{
 			"type": "text",
 			"title": "Usages",
-			"text": "Stellum can be used to create $(thing)tools$() and $(thing)armor$() which are roughly equivalent to $(l:materials/asterite)Asterite$(). There are some benefits, and some drawbacks. Which you use is up to your preference.$(p)Perhaps in the future, its innate solar power could be harnessed..."
+			"text": "Stellum can be used to create $(thing)tools$() and $(thing)armor$() which are roughly equivalent to $(l:materials/asterite)Asterite$(). There are some benefits, and some drawbacks. Which you use is up to your preference. It, along with gear made from it, is fireproof.$(p)Perhaps in the future, its innate solar power could be harnessed..."
 		},
 		{
 			"type": "text",
 			"title": "Stats",
-			"text": "$(l)Tools$()$(br)Mining Level: 5$(br)Base Durability: 2643$(br)Mining Speed: 8$(br)Attack Damage: 6$(br)Enchantability: 15$(p)$(l)Armor$()$(br)Durability Multiplier: 41$(br)Total Defense: 16$(br)Toughness: 6$(br)Enchantability: 15"
+			"text": "$(l)Tools$()$(br)Mining Level: 5$(br)Base Durability: 2643$(br)Mining Speed: 8$(br)Attack Damage: 6$(br)Enchantability: 15$(br)Fireproof$(p)$(l)Armor$()$(br)Durability Multiplier: 41$(br)Total Defense: 16$(br)Toughness: 6$(br)Enchantability: 15$(br)Fireproof"
 		}
 	]
 }

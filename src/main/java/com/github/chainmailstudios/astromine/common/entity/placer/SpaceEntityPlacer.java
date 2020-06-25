@@ -8,8 +8,8 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
 public class SpaceEntityPlacer implements EntityPlacer {
-	public static final SpaceEntityPlacer TO_PLANET = new SpaceEntityPlacer(1024);
-	public static final SpaceEntityPlacer TO_SPACE = new SpaceEntityPlacer(64);
+	public static final SpaceEntityPlacer TO_PLANET = new SpaceEntityPlacer(992);
+	public static final SpaceEntityPlacer TO_SPACE = new SpaceEntityPlacer(32);
 
 	public final int y;
 

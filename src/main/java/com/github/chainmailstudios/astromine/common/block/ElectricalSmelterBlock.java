@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlock;
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.ElectricalSmelterBlockEntity;
 import com.github.chainmailstudios.astromine.common.container.ElectricalSmelterContainer;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
@@ -29,7 +29,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class ElectricalSmelterBlock extends DefaultedHorizontalFacingBlock implements NetworkMember, BlockEntityProvider {
+public class ElectricalSmelterBlock extends DefaultedHorizontalFacingBlockWithEntity implements NetworkMember {
 	public static final BooleanProperty ACTIVE = BooleanProperty.of("active");
 
 	public ElectricalSmelterBlock(Settings settings) {

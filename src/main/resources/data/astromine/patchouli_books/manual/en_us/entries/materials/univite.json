@@ -18,12 +18,12 @@
 		{
 			"type": "text",
 			"title": "Usages",
-			"text": "Univite can be used to create top tier $(thing)tools$() and $(thing)armor$()."
+			"text": "Univite can be used to create top tier $(thing)tools$() and $(thing)armor$(). It, along with gear made from it, is fireproof."
 		},
 		{
 			"type": "text",
 			"title": "Stats",
-			"text": "$(l)Tools$()$(br)Mining Level: 7$(br)Base Durability: 3918$(br)Mining Speed: 12$(br)Attack Damage: 6$(br)Enchantability: 22$(p)$(l)Armor$()$(br)Durability Multiplier: 50$(br)Total Defense: 27$(br)Toughness: 5$(br)Enchantability: 22"
+			"text": "$(l)Tools$()$(br)Mining Level: 7$(br)Base Durability: 3918$(br)Mining Speed: 12$(br)Attack Damage: 6$(br)Enchantability: 22$(br)Fireproof$(p)$(l)Armor$()$(br)Durability Multiplier: 50$(br)Total Defense: 27$(br)Toughness: 5$(br)Enchantability: 22$(br)Fireproof"
 		}
 	]
 }
