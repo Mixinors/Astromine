@@ -10,7 +10,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.compatib
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
-import com.github.chainmailstudios.astromine.recipe.SortingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.SortingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;

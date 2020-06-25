@@ -24,8 +24,8 @@ import java.util.Optional;
 import java.util.Set;
 
 public abstract class DefaultedEnergyFluidBlockEntity extends DefaultedBlockEntity implements ComponentProvider, BlockEntityClientSerializable {
-	protected final SimpleEnergyInventoryComponent energyComponent = new SimpleEnergyInventoryComponent(1);
-	protected final SimpleFluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1);
+	protected SimpleEnergyInventoryComponent energyComponent = new SimpleEnergyInventoryComponent(1);
+	protected SimpleFluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1);
 
 	public DefaultedEnergyFluidBlockEntity(BlockEntityType<?> type) {
 		super(type);

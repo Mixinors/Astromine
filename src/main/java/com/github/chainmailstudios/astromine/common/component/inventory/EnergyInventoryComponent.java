@@ -5,6 +5,7 @@ import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
@@ -23,7 +24,7 @@ public interface EnergyInventoryComponent extends NameableComponent {
 	Map<Integer, EnergyVolume> getContents();
 
 	default Item getSymbol() {
-		return AstromineBlocks.CREATIVE_CAPACITOR.asItem();
+		return AstromineItems.ENERGY;
 	}
 
 	default TranslatableText getName() {

@@ -3,6 +3,7 @@ package com.github.chainmailstudios.astromine.common.component.inventory;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import nerdhub.cardinal.components.api.component.Component;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 
 public interface ItemInventoryComponent extends NameableComponent {
 	default Item getSymbol() {
-		return AstromineBlocks.CREATIVE_BUFFER.asItem();
+		return AstromineItems.ITEM;
 	}
 
 	default TranslatableText getName() {

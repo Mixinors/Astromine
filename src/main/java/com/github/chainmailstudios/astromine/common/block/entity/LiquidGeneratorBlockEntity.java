@@ -13,7 +13,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.EnergyIn
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
-import com.github.chainmailstudios.astromine.recipe.LiquidGeneratingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.LiquidGeneratingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;

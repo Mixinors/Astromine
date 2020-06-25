@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.recipe;
+package com.github.chainmailstudios.astromine.common.recipe;
 
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
