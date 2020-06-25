@@ -1,20 +1,20 @@
 {
 	"name": "Asterite",
-	"icon": "astromine:asteroid_asterite_cluster",
+	"icon": "astromine:asterite",
 	"category": "materials",
 	"sortnum": 1,
 	"pages": [
 		{
 			"type": "spotlight",
-			"item": "astromine:asteroid_asterite_cluster",
+			"item": "astromine:asterite",
 			"title": "Asterite",
-			"text": "A fragment of a long dead star. This red material may look frail, but is in fact very strong.$(p)It should make for a useful material when crafting new equipment."
+			"text": "A fragment of a long dead star. This red gem may look frail, but is in fact very strong.$(p)It should make for a useful material when crafting new equipment."
 		},
 		{
-			"type": "spotlight",
-			"item": "astromine:asteroid_asterite_ore",
+			"type": "smelting",
+			"recipe": "astromine:asterite_from_smelting_ore",
 			"title": "Obtaining Asterite",
-			"text": "$(item)Asterite Ore$() can be found inside $(thing)Asteroids$() in $(thing)Space$().$(p)Mining Asterite Ore will require a $(item)Netherite Pickaxe$() (Mining Level 4) or better, and will result in a single $(item)Asterite Fragment$()."
+			"text": "$(item)Asterite Ore$() can be found inside $(thing)Asteroids$() in $(thing)Space$().$(p)Mining Asterite Ore will require a $(item)Netherite Pickaxe$() (Mining Level 4) or better, and will usually result in a single $(item)Asterite Cluster() which can then be smelted to obtain an $(item)Asterite() gem."
 		},
 		{
 			"type": "text",

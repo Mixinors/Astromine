@@ -12,9 +12,9 @@
 		},
 		{
 			"type": "smelting",
-			"recipe": "astromine:stellum_from_smelting",
+			"recipe": "astromine:stellum_ingot_from_smelting_ore",
 			"title": "Obtaining Stellum",
-			"text": "$(item)Stellum Ore$() can be found inside $(thing)Asteroids$() in $(thing)Space$().$(p)Mining Stellum Ore will require an $(item)Asterite Pickaxe$() (Mining Level 5) or better, and canm be smelted into a single $(item)Stellum Ingot()."
+			"text": "$(item)Stellum Ore$() can be found inside $(thing)Asteroids$() in $(thing)Space$().$(p)Mining Stellum Ore will require an $(item)Asterite Pickaxe$() (Mining Level 5) or better, and will usually result in a single $(item)Stellum Cluster() which can then be smelted to obtain a $(item)Stellum Ingot$()."
 		},
 		{
 			"type": "text",

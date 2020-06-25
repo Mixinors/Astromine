@@ -12,9 +12,9 @@
 		},
 		{
 			"type": "smelting",
-			"recipe": "astromine:metite_from_smelting_cluster",
+			"recipe": "astromine:metite_from_smelting_ore",
 			"title": "Obtaining Metite",
-			"text": "$(item)Metite Ore$() can be found within $(thing)Meteors$() that have crashed to Earth. A variant can also be found inside $(thing)Asteroids$() in $(thing)Space$().$(p)Mining Metite Ore will require a $(item)Netherite Pickaxe$() (Mining Level 4) or better, and will result in between 1 and 3 $(item)Metite Clusters$() which can then be smelted to obtain a $(item)Metite Ingot$()."
+			"text": "$(item)Metite Ore$() can be found within $(thing)Meteors$() that have crashed to Earth. A variant can also be found inside $(thing)Asteroids$() in $(thing)Space$().$(p)Mining Metite Ore will require a $(item)Netherite Pickaxe$() (Mining Level 4) or better, and will result in between 1 and 3 $(item)Metite Clusters$() which can each be smelted to obtain a $(item)Metite Ingot$()."
 		},
 		{
 			"type": "text",
