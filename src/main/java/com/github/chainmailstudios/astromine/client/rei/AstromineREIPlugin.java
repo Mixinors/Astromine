@@ -17,8 +17,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.client.rei.electricalsmelting.ElectricalSmeltingCategory;
-import com.github.chainmailstudios.astromine.client.rei.electricalsmelting.ElectricalSmeltingDisplay;
+import com.github.chainmailstudios.astromine.client.rei.electricsmelting.ElectricSmeltingCategory;
+import com.github.chainmailstudios.astromine.client.rei.electricsmelting.ElectricSmeltingDisplay;
 import com.github.chainmailstudios.astromine.client.rei.generating.LiquidGeneratingCategory;
 import com.github.chainmailstudios.astromine.client.rei.generating.LiquidGeneratingDisplay;
 import com.github.chainmailstudios.astromine.client.rei.sorting.SortingCategory;
@@ -51,7 +51,7 @@ public class AstromineREIPlugin implements REIPluginV0 {
 	private static final Identifier ENERGY_FOREGROUND = AstromineCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_foreground_thin.png");
 
 	public static final Identifier SORTING = AstromineCommon.identifier("sorting");
-	public static final Identifier ELECTRICAL_SMELTING = AstromineCommon.identifier("electrical_smelting");
+	public static final Identifier ELECTRIC_SMELTING = AstromineCommon.identifier("electric_smelting");
 	public static final Identifier LIQUID_GENERATING = AstromineCommon.identifier("liquid_generating");
 
 	@Override
@@ -62,21 +62,21 @@ public class AstromineREIPlugin implements REIPluginV0 {
 	@Override
 	public void registerPluginCategories(RecipeHelper recipeHelper) {
 		recipeHelper.registerCategory(new SortingCategory());
-		recipeHelper.registerCategory(new ElectricalSmeltingCategory());
+		recipeHelper.registerCategory(new ElectricSmeltingCategory());
 		recipeHelper.registerCategory(new LiquidGeneratingCategory());
 	}
 
 	@Override
 	public void registerRecipeDisplays(RecipeHelper recipeHelper) {
 		recipeHelper.registerRecipes(SORTING, SortingRecipe.class, SortingDisplay::new);
-		recipeHelper.registerRecipes(ELECTRICAL_SMELTING, SmeltingRecipe.class, ElectricalSmeltingDisplay::new);
+		recipeHelper.registerRecipes(ELECTRIC_SMELTING, SmeltingRecipe.class, ElectricSmeltingDisplay::new);
 		recipeHelper.registerRecipes(LIQUID_GENERATING, LiquidGeneratingRecipe.class, LiquidGeneratingDisplay::new);
 	}
 
 	@Override
 	public void registerOthers(RecipeHelper recipeHelper) {
 		recipeHelper.registerWorkingStations(SORTING, EntryStack.create(AstromineBlocks.SORTER));
-		recipeHelper.registerWorkingStations(ELECTRICAL_SMELTING, EntryStack.create(AstromineBlocks.ELECTRICAL_SMELTER));
+		recipeHelper.registerWorkingStations(ELECTRIC_SMELTING, EntryStack.create(AstromineBlocks.ELECTRIC_SMELTER));
 		recipeHelper.registerWorkingStations(LIQUID_GENERATING, EntryStack.create(AstromineBlocks.LIQUID_GENERATOR));
 		recipeHelper.registerAutoCraftButtonArea(LIQUID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 5, bounds.y + 5, 10, 10));
 	}

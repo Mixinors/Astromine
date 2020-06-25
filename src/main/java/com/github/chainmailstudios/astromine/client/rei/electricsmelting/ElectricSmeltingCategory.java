@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.client.rei.electricalsmelting;
+package com.github.chainmailstudios.astromine.client.rei.electricsmelting;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -20,9 +20,9 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class ElectricalSmeltingCategory extends DefaultCookingCategory {
-	public ElectricalSmeltingCategory() {
-		super(AstromineREIPlugin.ELECTRICAL_SMELTING, EntryStack.create(AstromineBlocks.ELECTRICAL_SMELTER), "category.astromine.electrical_smelting");
+public class ElectricSmeltingCategory extends DefaultCookingCategory {
+	public ElectricSmeltingCategory() {
+		super(AstromineREIPlugin.ELECTRIC_SMELTING, EntryStack.create(AstromineBlocks.ELECTRIC_SMELTER), "category.astromine.electric_smelting");
 	}
 
 	@Override
@@ -33,9 +33,9 @@ public class ElectricalSmeltingCategory extends DefaultCookingCategory {
 		List<Widget> widgets = Lists.newArrayList();
 		widgets.add(Widgets.createRecipeBase(bounds));
 		widgets.add(Widgets.createResultSlotBackground(new Point(startPoint.x + 61, startPoint.y + 19)));
-		if (display instanceof ElectricalSmeltingDisplay)
+		if (display instanceof ElectricSmeltingDisplay)
 			widgets.addAll(AstromineREIPlugin.createEnergyDisplay(new Rectangle(bounds.getX() + 10, bounds.getCenterY() - 23, 12, 48),
-					((ElectricalSmeltingDisplay) display).getEnergyRequired(), false, (long) (cookingTime / 10 * 500)));
+					((ElectricSmeltingDisplay) display).getEnergyRequired(), false, (long) (cookingTime / 10 * 500)));
 		widgets.add(Widgets.createLabel(new Point(bounds.x + bounds.width - 5, bounds.y + 5),
 				new TranslatableText("category.astromine.cooking.time", df.format(cookingTime / 200d))).noShadow().rightAligned().color(0xFF404040, 0xFFBBBBBB));
 		widgets.add(Widgets.createArrow(new Point(startPoint.x + 27, startPoint.y + 18)).animationDurationTicks(cookingTime / 10));

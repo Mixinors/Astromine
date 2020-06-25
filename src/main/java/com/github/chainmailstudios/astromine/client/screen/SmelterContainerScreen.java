@@ -4,7 +4,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 
 import com.github.chainmailstudios.astromine.client.screen.base.DefaultedEnergyItemContainerScreen;
-import com.github.chainmailstudios.astromine.common.block.entity.ElectricalSmelterBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.ElectricSmelterBlockEntity;
 import com.github.chainmailstudios.astromine.common.container.ElectricalSmelterContainer;
 import com.github.chainmailstudios.astromine.common.container.base.DefaultedEnergyItemContainer;
 import com.github.chainmailstudios.astromine.common.widget.WHorizontalArrow;
@@ -16,7 +16,7 @@ public class SmelterContainerScreen extends DefaultedEnergyItemContainerScreen<E
 	public SmelterContainerScreen(Text name, DefaultedEnergyItemContainer linkedContainer, PlayerEntity player) {
 		super(name, linkedContainer, player);
 
-		ElectricalSmelterBlockEntity smelter = (ElectricalSmelterBlockEntity) linkedContainer.blockEntity;
+		ElectricSmelterBlockEntity smelter = (ElectricSmelterBlockEntity) linkedContainer.blockEntity;
 
 		WSlot input = mainPanel.createChild(WSlot::new, Position.of(energyBar), Size.of(18, 18)).setInventoryNumber(1).setSlotNumber(0);
 		WSlot output = mainPanel.createChild(WSlot::new, Position.of(energyBar), Size.of(18, 18)).setInventoryNumber(1).setSlotNumber(1);
