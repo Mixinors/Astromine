@@ -1,7 +1,5 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.client.screen.*;
-import com.github.chainmailstudios.astromine.common.container.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
@@ -9,6 +7,7 @@ import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import com.github.chainmailstudios.astromine.client.screen.CreativeBufferContainerScreen;
 import com.github.chainmailstudios.astromine.client.screen.CreativeCapacitorContainerScreen;
 import com.github.chainmailstudios.astromine.client.screen.CreativeTankContainerScreen;
+import com.github.chainmailstudios.astromine.client.screen.FluidExtractorContainerScreen;
 import com.github.chainmailstudios.astromine.client.screen.LiquidGeneratorContainerScreen;
 import com.github.chainmailstudios.astromine.client.screen.NuclearWarheadContainerScreen;
 import com.github.chainmailstudios.astromine.client.screen.SmelterContainerScreen;
@@ -19,6 +18,7 @@ import com.github.chainmailstudios.astromine.common.container.CreativeBufferCont
 import com.github.chainmailstudios.astromine.common.container.CreativeCapacitorContainer;
 import com.github.chainmailstudios.astromine.common.container.CreativeTankContainer;
 import com.github.chainmailstudios.astromine.common.container.ElectricalSmelterContainer;
+import com.github.chainmailstudios.astromine.common.container.FluidExtractorContainer;
 import com.github.chainmailstudios.astromine.common.container.FluidTankContainer;
 import com.github.chainmailstudios.astromine.common.container.LiquidGeneratorContainer;
 import com.github.chainmailstudios.astromine.common.container.NuclearWarheadContainer;
