@@ -23,6 +23,7 @@
   "item.astromine.holographic_bridge_projector": "Holographic Bridge Projector",
   "itemGroup.astromine.astromine": "Astromine",
   "block.astromine.electrolyzer": "Electrolyzer",
+  "block.astromine.fuel_mixer": "Fuel Mixer",
   "block.astromine.creative_capacitor": "Creative Capacitor",
   "block.astromine.creative_tank": "Creative Tank",
   "block.astromine.creative_buffer": "Creative Buffer",

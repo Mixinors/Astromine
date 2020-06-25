@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["131", "424", "131"],
+  "key": {
+    "1": {
+      "item": "astromine:iron_plates"
+    },
+    "2": {
+      "item": "astromine:bucket"
+    },
+    "3": {
+      "item": "astromine:netherite_gear"
+    },
+    "4": {
+      "item": "astromine:advanced_circuit"
+    }
+  },
+  "result": {
+    "item": "astromine:fuel_mixer"
+  }
+}

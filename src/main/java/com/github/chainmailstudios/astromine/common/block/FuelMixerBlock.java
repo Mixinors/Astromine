@@ -1,7 +1,14 @@
 package com.github.chainmailstudios.astromine.common.block;
 
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.ElectrolyzerBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.FuelMixerBlockEntity;
+import com.github.chainmailstudios.astromine.common.container.ElectrolyzerContainer;
+import com.github.chainmailstudios.astromine.common.container.FuelMixerContainer;
+import com.github.chainmailstudios.astromine.common.network.NetworkMember;
+import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,15 +26,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.FluidExtractorBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.FluidExtractorContainer;
-import com.github.chainmailstudios.astromine.common.network.NetworkMember;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
-import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
-
-public class FluidExtractorBlock extends DefaultedHorizontalFacingBlockWithEntity implements NetworkMember {
-	public FluidExtractorBlock(Settings settings) {
+public class FuelMixerBlock extends DefaultedHorizontalFacingBlockWithEntity implements NetworkMember {
+	public FuelMixerBlock(Settings settings) {
 		super(settings);
 	}
 
@@ -38,7 +38,7 @@ public class FluidExtractorBlock extends DefaultedHorizontalFacingBlockWithEntit
 
 	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
-		return new FluidExtractorBlockEntity();
+		return new FuelMixerBlockEntity();
 	}
 
 	@Override
@@ -52,12 +52,12 @@ public class FluidExtractorBlock extends DefaultedHorizontalFacingBlockWithEntit
 
 				@Override
 				public Text getDisplayName() {
-					return new TranslatableText("block.astromine.fluid_extractor");
+					return new TranslatableText("block.astromine.fuel_mixer");
 				}
 
 				@Override
 				public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-					return new FluidExtractorContainer(syncId, playerInventory, blockPos);
+					return new FuelMixerContainer(syncId, playerInventory, blockPos);
 				}
 			});
 
