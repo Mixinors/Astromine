@@ -34,7 +34,7 @@ public class ElectrolyzerBlock extends DefaultedHorizontalFacingBlockWithEntity 
 
 	@Override
 	public <T extends NetworkType> boolean acceptsType(T type) {
-		return type == AstromineNetworkTypes.FLUID;
+		return type == AstromineNetworkTypes.FLUID || type == AstromineNetworkTypes.ENERGY;
 	}
 
 	@Override

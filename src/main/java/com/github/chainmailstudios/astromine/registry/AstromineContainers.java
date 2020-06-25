@@ -53,6 +53,10 @@ public class AstromineContainers {
 		return new ElectrolyzerContainer(synchronizationID, inventory, buffer.readBlockPos());
 	}));
 
+	public static final ScreenHandlerType<FuelMixerContainer> FUEL_MIXER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("fuel_mixer"), ((synchronizationID, inventory, buffer) -> {
+		return new FuelMixerContainer(synchronizationID, inventory, buffer.readBlockPos());
+	}));
+
 	public static void initialize() {
 		// Unused.
 	}

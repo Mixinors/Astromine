@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.common.recipe.ElectrolyzingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.FuelMixingRecipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.registry.Registry;
 
@@ -23,6 +24,10 @@ public class AstromineRecipeSerializers {
 			ElectrolyzingRecipe.Serializer.ID,
 			ElectrolyzingRecipe.Serializer.INSTANCE);
 
+	public static final RecipeSerializer<FuelMixingRecipe> FUEL_MIXER = Registry.register(
+			Registry.RECIPE_SERIALIZER,
+			FuelMixingRecipe.Serializer.ID,
+			FuelMixingRecipe.Serializer.INSTANCE);
 
 	public static void initialize() {
 		// Unused.
