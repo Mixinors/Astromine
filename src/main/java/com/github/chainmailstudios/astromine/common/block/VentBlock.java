@@ -45,7 +45,7 @@ public class VentBlock extends DefaultedFacingBlock implements BlockEntityProvid
 	}
 
 	@Override
-	public boolean isRequester() {
+	public <T extends NetworkType> boolean isRequester(T type) {
 		return true;
 	}
 

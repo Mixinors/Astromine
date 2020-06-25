@@ -34,7 +34,7 @@ public class SorterBlock extends DefaultedHorizontalFacingBlock implements Netwo
 	}
 
 	@Override
-	public boolean isRequester() {
+	public <T extends NetworkType> boolean isRequester(T type) {
 		return true;
 	}
 

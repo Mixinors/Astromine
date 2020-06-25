@@ -24,6 +24,7 @@ public class AstromineBlockEntityTypes {
 
 	public static final BlockEntityType<SorterBlockEntity> SORTER = register("sorter", SorterBlockEntity::new, AstromineBlocks.SORTER);
 	public static final BlockEntityType<ElectricalSmelterBlockEntity> ELECTRICAL_SMELTER = register("electrical_smelter", ElectricalSmelterBlockEntity::new, AstromineBlocks.ELECTRICAL_SMELTER);
+	public static final BlockEntityType<FluidExtractorBlockEntity> FLUID_EXTRACTOR = register("fluid_extractor", FluidExtractorBlockEntity::new, AstromineBlocks.FLUID_EXTRACTOR);
 
 	public static void initialize() {
 		// Unused.
