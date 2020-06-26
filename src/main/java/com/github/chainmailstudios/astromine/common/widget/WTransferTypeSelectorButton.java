@@ -6,14 +6,21 @@ import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
 import io.netty.buffer.Unpooled;
 import nerdhub.cardinal.components.api.ComponentType;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.text.StringRenderable;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3i;
+import org.apache.commons.lang3.text.WordUtils;
 import spinnery.client.render.BaseRenderer;
 import spinnery.widget.WButton;
+
+import java.util.Collections;
+import java.util.Locale;
 
 public class WTransferTypeSelectorButton extends WButton {
 	private BlockEntityTransferComponent component;
@@ -25,6 +32,8 @@ public class WTransferTypeSelectorButton extends WButton {
 	private BlockPos blockPos;
 
 	private Identifier texture = null;
+
+	private Vec3i mouse = Vec3i.ZERO;
 
 	public BlockEntityTransferComponent getComponent() {
 		return component;
@@ -96,6 +105,12 @@ public class WTransferTypeSelectorButton extends WButton {
 	}
 
 	@Override
+	public void onMouseMoved(float mouseX, float mouseY) {
+		mouse = new Vec3i(mouseX, mouseY, 0);
+		super.onMouseMoved(mouseX, mouseY);
+	}
+
+	@Override
 	public boolean isFocusedMouseListener() {
 		return true;
 	}
@@ -104,5 +119,12 @@ public class WTransferTypeSelectorButton extends WButton {
 	public void draw(MatrixStack matrices, VertexConsumerProvider.Immediate provider) {
 		if (texture == null) setTexture(component.get(type).get(direction).texture());
 		BaseRenderer.drawTexturedQuad(matrices, provider, getX(), getY(), getZ(), getWidth(), getHeight(), getTexture());
+
+		if (isFocused()) {
+			MinecraftClient.getInstance().currentScreen.renderTooltip(matrices,
+					Collections.singletonList(
+							StringRenderable.plain(WordUtils.capitalize(getDirection().asString().toLowerCase(Locale.ROOT)))
+					), mouse.getX(), mouse.getY());
+		}
 	}
 }
