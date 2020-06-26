@@ -21,4 +21,12 @@ public enum TransferType {
 	public Identifier texture() {
 		return this == INPUT ? INPUT_TEXTURE : this == OUTPUT ? OUTPUT_TEXTURE : this == INPUT_OUTPUT ? INPUT_OUTPUT_TEXTURE : this == NONE ? NONE_TEXTURE : null;
 	}
+
+	public boolean canInsert() {
+		return this == INPUT || this == INPUT_OUTPUT;
+	}
+
+	public boolean canExtract() {
+		return this == OUTPUT || this == INPUT_OUTPUT;
+	}
 }

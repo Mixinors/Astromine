@@ -6,11 +6,11 @@
 	"mixins": [
 		"AbstractMinecartEntityMixin", "BrewingRecipeRegistryMixin", "BucketItemMixin", "EntityMixin",
 		"FishingBobberEntityMixin", "FlamingAnvilCraftingMixin", "GravityEntityMixin", "HoneyBlockMixin",
-		"ItemEntityMixin", "LivingEntityMixin", "SlimeEntityMixin", "SquidEntityMixin",
+		"HopperBlockEntityMixin", "ItemEntityMixin", "LivingEntityMixin", "SlimeEntityMixin", "SquidEntityMixin",
 		"StepAndDestroyBlockGoalMixin", "ThreadExecutorMixin"
 	],
 	"client": [
-		"BossBarHudMixin", "CrackParticleAccessor", "EggEntityMixin", "CurrentDownParticleMixin", "GameRendererMixin",
+		"BossBarHudMixin", "CrackParticleAccessor", "CurrentDownParticleMixin", "EggEntityMixin", "GameRendererMixin",
 		"ItemRendererMixin", "MinecraftClientMixin", "SkyPropertiesMixin", "WorldRendererMixin"
 	],
 	"injectors": {
