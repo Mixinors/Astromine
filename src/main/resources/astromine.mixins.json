@@ -10,7 +10,7 @@
 		"StepAndDestroyBlockGoalMixin", "ThreadExecutorMixin", "WorldChunkMixin"
 	],
 	"client": [
-		"BossBarHudMixin", "CrackParticleAccessor", "CurrentDownParticleMixin", "EggEntityMixin", "GameRendererMixin",
+		"BossBarHudMixin", "CurrentDownParticleMixin", "EggEntityMixin", "GameRendererMixin",
 		"ItemRendererMixin", "MinecraftClientMixin", "SkyPropertiesMixin", "WorldRendererMixin"
 	],
 	"injectors": {

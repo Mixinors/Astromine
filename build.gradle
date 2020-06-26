@@ -6,6 +6,9 @@ plugins {
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
+archivesBaseName = project.mod_name + "-" + project.mod_version + "+" + project.version_meta
+group = project.mod_group
+
 repositories {
     maven {
         name = "Onyx Studios"
