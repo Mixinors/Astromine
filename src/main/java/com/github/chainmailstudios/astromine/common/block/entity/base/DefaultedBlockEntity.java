@@ -82,7 +82,7 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 
 	@Override
 	public boolean hasComponent(ComponentType<?> componentType) {
-		return allComponents.containsKey(componentType);
+		return allComponents.containsKey(componentType) || componentType == AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT;
 	}
 
 	@Override

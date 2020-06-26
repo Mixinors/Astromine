@@ -3,7 +3,7 @@
   "id": "astromine",
   "version": "${version}",
   "name": "Astromine",
-  "description": "Explore space; witness space; die in space.",
+  "description": "A space-themed technological modification with exploration, weapons and progression in mind.",
   "authors": [
     "vini2003",
     "Draylar",
@@ -31,6 +31,6 @@
   "depends": {
     "fabricloader": ">=0.8.7",
     "fabric": ">=0.11.8",
-    "minecraft": "^1.16-rc.2"
+    "minecraft": ">=1.16.1"
   }
 }
