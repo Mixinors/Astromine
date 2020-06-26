@@ -5,10 +5,7 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRe
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.*;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
@@ -21,6 +18,7 @@ import com.github.chainmailstudios.astromine.common.entity.SuperSpaceSlimeEntity
 import com.github.chainmailstudios.astromine.common.entity.projectile.BulletEntity;
 
 import com.google.common.collect.ImmutableSet;
+import net.minecraft.world.Heightmap;
 
 public class AstromineEntityTypes {
 
@@ -77,5 +75,9 @@ public class AstromineEntityTypes {
 
 	private static <T extends Entity> EntityType<T> register(Identifier id, EntityType<T> type) {
 		return Registry.register(Registry.ENTITY_TYPE, id, type);
+	}
+	
+	static {
+		SpawnRestriction.register(AstromineEntityTypes.SPACE_SLIME, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SpaceSlimeEntity::canSpawnInDark);
 	}
 }

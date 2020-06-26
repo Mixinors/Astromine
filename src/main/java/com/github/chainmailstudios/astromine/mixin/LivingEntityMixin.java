@@ -1,15 +1,17 @@
 package com.github.chainmailstudios.astromine.mixin;
 
+import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
+import com.github.chainmailstudios.astromine.common.entity.SpaceSlimeEntity;
+import com.github.chainmailstudios.astromine.common.fluid.AdvancedFluid;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.item.SpaceSuitItem;
+import com.github.chainmailstudios.astromine.common.registry.BreathableRegistry;
+import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineFluids;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
+import com.github.chainmailstudios.astromine.registry.AstromineTags;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.entity.Entity;
@@ -22,17 +24,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-
-import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
-import com.github.chainmailstudios.astromine.common.fluid.AdvancedFluid;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.item.SpaceSuitItem;
-import com.github.chainmailstudios.astromine.common.registry.BreathableRegistry;
-import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineTags;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
@@ -65,7 +64,7 @@ public abstract class LivingEntityMixin {
 	void onTick(CallbackInfo callbackInformation) {
 		Entity entity = (Entity) (Object) this;
 
-		if(!entity.getType().isIn(AstromineTags.DOES_NOT_BREATHE)) {
+		if (!entity.getType().isIn(AstromineTags.DOES_NOT_BREATHE)) {
 			ComponentProvider componentProvider = ComponentProvider.fromWorld(entity.world);
 
 			WorldAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);
@@ -76,7 +75,7 @@ public abstract class LivingEntityMixin {
 
 			boolean isBreathing = true;
 
-			if (!SpaceSuitItem.hasFullArmor(equippedArmor)) {
+			if (!SpaceSuitItem.hasFullArmor(equippedArmor) && !(entity instanceof SpaceSlimeEntity)) {
 				fluid = atmosphere.getFluid();
 			} else {
 				//FluidVolume volume = SpaceSuitItem.readVolume(equippedArmor);

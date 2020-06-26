@@ -160,7 +160,6 @@ public class RocketEntity extends Entity {
 
 		if (this.getDataTracker().get(IS_GO)) {
 			addVelocity(0, 0.001f, 0);
-			this.velocityDirty = true;
 			this.move(MovementType.SELF, this.getVelocity());
 
 			if (world.isClient()) {
@@ -172,6 +171,9 @@ public class RocketEntity extends Entity {
 					particleShit(thrustVec, speed);
 				}
 			}
+		} else {
+			setVelocity(Vec3d.ZERO);
+			this.velocityDirty = true;
 		}
 	}
 

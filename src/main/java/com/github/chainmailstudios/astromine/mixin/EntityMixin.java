@@ -41,11 +41,11 @@ public abstract class EntityMixin implements EntityAccess {
 		this.lastVehicle = lastVehicle;
 	}
 
-	@ModifyVariable(at = @At("HEAD"), method = "handleFallDamage(FF)Z", index = 2)
+	@ModifyVariable(at = @At("HEAD"), method = "handleFallDamage(FF)Z", index = 1)
 	float getDamageMultiplier(float damageMultiplier) {
 		World world = ((Entity) (Object) this).world;
 
-		return damageMultiplier *= GravityRegistry.INSTANCE.get(world.getDimensionRegistryKey());
+		return (float) (damageMultiplier * GravityRegistry.INSTANCE.get(world.getDimensionRegistryKey()) * GravityRegistry.INSTANCE.get(world.getDimensionRegistryKey()));
 	}
 
 	@Inject(at = @At("HEAD"), method = "tickNetherPortal()V")

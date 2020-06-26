@@ -1,15 +1,21 @@
 package com.github.chainmailstudios.astromine.common.entity;
 
+import com.github.chainmailstudios.astromine.common.entity.ai.JumpHoverGoal;
+import com.github.chainmailstudios.astromine.registry.AstromineParticles;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.SlimeEntity;
 import net.minecraft.particle.ParticleEffect;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.LightType;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 
-import com.github.chainmailstudios.astromine.common.entity.ai.JumpHoverGoal;
-import com.github.chainmailstudios.astromine.registry.AstromineParticles;
+import java.util.Random;
 
 public class SpaceSlimeEntity extends SlimeEntity {
 
@@ -81,5 +87,18 @@ public class SpaceSlimeEntity extends SlimeEntity {
 
 	public void setFloatingProgress(int progress) {
 		this.dataTracker.set(FLOATING_PROGRESS, progress);
+	}
+
+	public static boolean canSpawnInDark(EntityType<? extends SpaceSlimeEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {
+		return world.getDifficulty() != Difficulty.PEACEFUL && isSpawnDark(world, pos, random) && canMobSpawn(type, world, spawnReason, pos, random) && random.nextDouble() <= .15;
+	}
+
+	public static boolean isSpawnDark(WorldAccess world, BlockPos pos, Random random) {
+		if (world.getLightLevel(LightType.SKY, pos) > random.nextInt(32)) {
+			return false;
+		} else {
+			int i = world.getWorld().isThundering() ? world.getLightLevel(pos, 10) : world.getLightLevel(pos);
+			return i <= random.nextInt(8);
+		}
 	}
 }
