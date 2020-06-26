@@ -27,7 +27,7 @@ public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<Ho
 	public void render(HolographicBridgeProjectorBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider provider, int light, int overlay) {
 		BlockState b = entity.getWorld().getBlockState(entity.getPos());
 
-		if (entity.hasChild() && b.getBlock() instanceof HorizontalFacingBlock) {
+		if (entity.hasChild()) {
 			Vec3i pA = entity.getPos();
 
 			Direction d = b.get(HorizontalFacingBlock.FACING);

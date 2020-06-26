@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.screen.*;
 import com.github.chainmailstudios.astromine.common.container.*;
 import net.fabricmc.api.EnvType;
@@ -23,7 +24,7 @@ public class AstromineScreens {
 		InGameHudScreen.addOnInitialize(() -> {
 			WInterface mainInterface = InGameHudScreen.getInterface();
 
-			GAS_IMAGE = mainInterface.createChild(WStaticImage::new, Position.of(4, 4, 0), Size.of(32, 32));
+			GAS_IMAGE = mainInterface.createChild(WStaticImage::new, Position.of(4, 4, 0), Size.of(32, 32)).setTexture(AstromineCommon.identifier("textures/symbol/oxygen.png"));
 			PRESSURE_TEXT = mainInterface.createChild(WStaticText::new, Position.of(4, 40, 0)).setScale(0.75F);
 			FRACTION_TEXT = mainInterface.createChild(WStaticText::new, Position.of(4, 50, 0)).setScale(0.5F);
 		});
