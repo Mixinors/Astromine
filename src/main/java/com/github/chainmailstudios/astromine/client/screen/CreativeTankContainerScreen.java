@@ -26,7 +26,6 @@ public class CreativeTankContainerScreen extends DefaultedFluidContainerScreen<C
 		mainPanel.setSize(Size.of(mainPanel.getSize().getWidth(), mainPanel.getSize().getHeight()));
 		mainPanel.center();
 		fluidBar.centerX();
-		fluidBar.setY(fluidBar.getY() + 4);
 
 		WTextField field = mainPanel.createChild(WOptionField::new, Position.of(mainPanel, 0, 80, 0), Size.of(64, 18))
 				.setFilter(Filter.get(String.class))
@@ -36,9 +35,10 @@ public class CreativeTankContainerScreen extends DefaultedFluidContainerScreen<C
 						buffer.writeBlockPos(linkedContainer.blockEntity.getPos());
 						buffer.writeIdentifier(CreativeTankBlockEntity.FLUID_CHANGE_PACKET);
 						buffer.writeIdentifier(new Identifier(widget.getText()));
-						ClientSidePacketRegistry.INSTANCE.sendToServer(AstromineCommonPackets.BLOCK_ENTITY_UPDATE_PACKET, buffer);					}
+						ClientSidePacketRegistry.INSTANCE.sendToServer(AstromineCommonPackets.BLOCK_ENTITY_UPDATE_PACKET, buffer);
+					}
 				});
 
-		field.centerX();;
+		field.centerX();
 	}
 }

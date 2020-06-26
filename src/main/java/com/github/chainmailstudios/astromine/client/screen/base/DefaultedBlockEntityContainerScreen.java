@@ -18,7 +18,7 @@ import spinnery.widget.api.Size;
 
 import java.util.Collection;
 
-public class DefaultedBlockEntityContainerScreen<T extends DefaultedBlockEntityContainer> extends BaseContainerScreen<T> {
+public class DefaultedBlockEntityContainerScreen<T extends DefaultedBlockEntityContainer> extends DefaultedContainerScreen<T> {
 	public WInterface mainInterface;
 	public WPanel mainPanel;
 	public Collection<WSlot> playerSlots;
@@ -30,6 +30,7 @@ public class DefaultedBlockEntityContainerScreen<T extends DefaultedBlockEntityC
 
 		mainPanel = mainInterface.createChild(WPanel::new, Position.ORIGIN, Size.of(176, 160));
 
+		addTitle(mainPanel);
 		mainPanel.center();
 		mainPanel.setOnAlign(WAbstractWidget::center);
 

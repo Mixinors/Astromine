@@ -201,9 +201,12 @@
   "category.astromine.liquid_generating": "Liquid Generating",
   "category.astromine.electric_smelting": "Electric Smelting",
   "category.astromine.sorting": "Sorting",
+  "category.astromine.fuel_mixing": "Fuel Mixing",
+  "category.astromine.electrolyzing": "Electrolyzing",
   "category.astromine.cooking.time": "%s sec",
   "category.astromine.cooking.energy": "%s energy",
   "category.astromine.generating.energy": "%s generated/tick",
   "category.astromine.consuming.energy": "%s consumed",
-  "category.astromine.fluid.generating.consumed": "%s (%s) consumed/tick"
+  "category.astromine.fluid.generating.consumed": "%s (%s) consumed/tick",
+  "category.astromine.fluid.generating.generated": "%s (%s) generated/tick"
 }

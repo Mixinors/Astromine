@@ -27,7 +27,7 @@ public abstract class DefaultedEnergyFluidContainerScreen<T extends DefaultedBlo
 	public DefaultedEnergyFluidContainerScreen(Text name, DefaultedEnergyFluidContainer linkedContainer, PlayerEntity player) {
 		super(name, (T) linkedContainer, player);
 
-		energyBar = mainPanel.createChild(WEnergyVolumeFractionalVerticalBar::new, Position.of(mainPanel, 7, 7, 0), Size.of(24, 48));
+		energyBar = mainPanel.createChild(WEnergyVolumeFractionalVerticalBar::new, Position.of(mainPanel, 7, 20, 0), Size.of(24, 48));
 
 		fluidBar = mainPanel.createChild(WFluidVolumeFractionalVerticalBar::new, Position.of(energyBar, energyBar.getWidth() + 4, 0, 0), Size.of(energyBar));
 
@@ -36,11 +36,5 @@ public abstract class DefaultedEnergyFluidContainerScreen<T extends DefaultedBlo
 		energyBar.setEnergyVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).getVolume(0));
 
 		fluidBar.setFluidVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(0));
-	}
-	
-	@Override
-	public void render(MatrixStack matrices, int mouseX, int mouseY, float tickDelta) {
-		this.fillGradient(matrices, 0, 0, this.width, this.height, -1072689136, -804253680);
-		super.render(matrices, mouseX, mouseY, tickDelta);
 	}
 }

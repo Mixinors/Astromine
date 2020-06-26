@@ -1,8 +1,35 @@
 package com.github.chainmailstudios.astromine.client.rei;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.client.rei.electricsmelting.ElectricSmeltingCategory;
+import com.github.chainmailstudios.astromine.client.rei.electricsmelting.ElectricSmeltingDisplay;
+import com.github.chainmailstudios.astromine.client.rei.fluidmixing.ElectrolyzingDisplay;
+import com.github.chainmailstudios.astromine.client.rei.fluidmixing.FluidMixingCategory;
+import com.github.chainmailstudios.astromine.client.rei.fluidmixing.FuelMixingDisplay;
+import com.github.chainmailstudios.astromine.client.rei.generating.LiquidGeneratingCategory;
+import com.github.chainmailstudios.astromine.client.rei.generating.LiquidGeneratingDisplay;
+import com.github.chainmailstudios.astromine.client.rei.sorting.SortingCategory;
+import com.github.chainmailstudios.astromine.client.rei.sorting.SortingDisplay;
+import com.github.chainmailstudios.astromine.client.render.SpriteRenderer;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.recipe.ElectrolyzingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.FuelMixingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.LiquidGeneratingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.SortingRecipe;
+import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import me.shedaniel.math.Point;
+import me.shedaniel.math.Rectangle;
+import me.shedaniel.rei.api.ClientHelper;
+import me.shedaniel.rei.api.EntryStack;
+import me.shedaniel.rei.api.RecipeHelper;
+import me.shedaniel.rei.api.plugins.REIPluginV0;
+import me.shedaniel.rei.api.widgets.Tooltip;
+import me.shedaniel.rei.gui.widget.EntryWidget;
+import me.shedaniel.rei.gui.widget.Widget;
+import me.shedaniel.rei.impl.RenderingEntry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.OverlayTexture;
@@ -15,30 +42,6 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.client.rei.electricsmelting.ElectricSmeltingCategory;
-import com.github.chainmailstudios.astromine.client.rei.electricsmelting.ElectricSmeltingDisplay;
-import com.github.chainmailstudios.astromine.client.rei.generating.LiquidGeneratingCategory;
-import com.github.chainmailstudios.astromine.client.rei.generating.LiquidGeneratingDisplay;
-import com.github.chainmailstudios.astromine.client.rei.sorting.SortingCategory;
-import com.github.chainmailstudios.astromine.client.rei.sorting.SortingDisplay;
-import com.github.chainmailstudios.astromine.client.render.SpriteRenderer;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
-import com.github.chainmailstudios.astromine.common.recipe.LiquidGeneratingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.SortingRecipe;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
-import me.shedaniel.math.Point;
-import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.ClientHelper;
-import me.shedaniel.rei.api.EntryStack;
-import me.shedaniel.rei.api.RecipeHelper;
-import me.shedaniel.rei.api.plugins.REIPluginV0;
-import me.shedaniel.rei.api.widgets.Tooltip;
-import me.shedaniel.rei.gui.widget.EntryWidget;
-import me.shedaniel.rei.gui.widget.Widget;
-import me.shedaniel.rei.impl.RenderingEntry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -53,6 +56,8 @@ public class AstromineREIPlugin implements REIPluginV0 {
 	public static final Identifier SORTING = AstromineCommon.identifier("sorting");
 	public static final Identifier ELECTRIC_SMELTING = AstromineCommon.identifier("electric_smelting");
 	public static final Identifier LIQUID_GENERATING = AstromineCommon.identifier("liquid_generating");
+	public static final Identifier FUEL_MIXING = AstromineCommon.identifier("fuel_mixing");
+	public static final Identifier ELECTROLYZING = AstromineCommon.identifier("electrolyzing");
 
 	@Override
 	public Identifier getPluginIdentifier() {
@@ -64,6 +69,8 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		recipeHelper.registerCategory(new SortingCategory());
 		recipeHelper.registerCategory(new ElectricSmeltingCategory());
 		recipeHelper.registerCategory(new LiquidGeneratingCategory());
+		recipeHelper.registerCategory(new FluidMixingCategory(FUEL_MIXING, "category.astromine.fuel_mixing", EntryStack.create(AstromineBlocks.FUEL_MIXER)));
+		recipeHelper.registerCategory(new FluidMixingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AstromineBlocks.ELECTROLYZER)));
 	}
 
 	@Override
@@ -71,6 +78,8 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		recipeHelper.registerRecipes(SORTING, SortingRecipe.class, SortingDisplay::new);
 		recipeHelper.registerRecipes(ELECTRIC_SMELTING, SmeltingRecipe.class, ElectricSmeltingDisplay::new);
 		recipeHelper.registerRecipes(LIQUID_GENERATING, LiquidGeneratingRecipe.class, LiquidGeneratingDisplay::new);
+		recipeHelper.registerRecipes(FUEL_MIXING, FuelMixingRecipe.class, FuelMixingDisplay::new);
+		recipeHelper.registerRecipes(ELECTROLYZING, ElectrolyzingRecipe.class, ElectrolyzingDisplay::new);
 	}
 
 	@Override
@@ -78,7 +87,11 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		recipeHelper.registerWorkingStations(SORTING, EntryStack.create(AstromineBlocks.SORTER));
 		recipeHelper.registerWorkingStations(ELECTRIC_SMELTING, EntryStack.create(AstromineBlocks.ELECTRIC_SMELTER));
 		recipeHelper.registerWorkingStations(LIQUID_GENERATING, EntryStack.create(AstromineBlocks.LIQUID_GENERATOR));
+		recipeHelper.registerWorkingStations(FUEL_MIXING, EntryStack.create(AstromineBlocks.FUEL_MIXER));
+		recipeHelper.registerWorkingStations(ELECTROLYZING, EntryStack.create(AstromineBlocks.ELECTROLYZER));
 		recipeHelper.registerAutoCraftButtonArea(LIQUID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 5, bounds.y + 5, 10, 10));
+		recipeHelper.registerAutoCraftButtonArea(FUEL_MIXING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
+		recipeHelper.registerAutoCraftButtonArea(ELECTROLYZING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
 	}
 
 	public static List<Widget> createEnergyDisplay(Rectangle bounds, Fraction energy, boolean generating, long speed) {
@@ -112,8 +125,11 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		);
 	}
 
-	public static List<Widget> createFluidDisplay(Rectangle bounds, EntryStack fluidStack, Fraction consumedPerTick, long speed) {
-		return Collections.singletonList(new FluidEntryWidget(bounds, speed).setConsumedPerTick(consumedPerTick).markInput().entry(fluidStack.copy()));
+	public static List<Widget> createFluidDisplay(Rectangle bounds, EntryStack fluidStack, Fraction consumedPerTick, boolean generating, long speed) {
+		EntryWidget entry = new FluidEntryWidget(bounds, speed, generating).setConsumedPerTick(consumedPerTick).entry(fluidStack.copy());
+		if (generating) entry.markOutput();
+		else entry.markInput();
+		return Collections.singletonList(entry);
 	}
 
 	private static class EnergyEntryWidget extends EntryWidget {
@@ -150,11 +166,13 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		private long speed;
 		@Nullable
 		private Fraction consumedPerTick;
+		private boolean generating;
 
-		protected FluidEntryWidget(Rectangle rectangle, long speed) {
+		protected FluidEntryWidget(Rectangle rectangle, long speed, boolean generating) {
 			super(rectangle.x, rectangle.y);
 			this.getBounds().setBounds(rectangle);
 			this.speed = speed;
+			this.generating = generating;
 		}
 
 		public FluidEntryWidget setConsumedPerTick(Fraction consumedPerTick) {
@@ -176,7 +194,10 @@ public class AstromineREIPlugin implements REIPluginV0 {
 			return Optional.ofNullable(super.getCurrentTooltip(point)).map(tooltip -> {
 				if (consumedPerTick != null) {
 					tooltip.getText().add(new LiteralText(""));
-					tooltip.getText().add(new TranslatableText("category.astromine.fluid.generating.consumed", FluidUtilities.rawFraction(consumedPerTick), consumedPerTick.toPrettyString()));
+					if (generating)
+						tooltip.getText().add(new TranslatableText("category.astromine.fluid.generating.generated", FluidUtilities.rawFraction(consumedPerTick), consumedPerTick.toPrettyString()));
+					else
+						tooltip.getText().add(new TranslatableText("category.astromine.fluid.generating.consumed", FluidUtilities.rawFraction(consumedPerTick), consumedPerTick.toPrettyString()));
 				}
 				return tooltip;
 			}).orElse(null);
@@ -187,7 +208,9 @@ public class AstromineREIPlugin implements REIPluginV0 {
 			EntryStack entry = getCurrentEntry();
 			if (entry.getType() == EntryStack.Type.FLUID) {
 				Rectangle bounds = getBounds();
-				int height = bounds.height - MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
+				int height;
+				if (!generating) height = bounds.height - MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
+				else height = MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
 				VertexConsumerProvider.Immediate consumers = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
 				SpriteRenderer.beginPass()
 						.setup(consumers, RenderLayer.getSolid())
