@@ -1,13 +1,21 @@
 package com.github.chainmailstudios.astromine.common.entity;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.registry.AstromineParticles;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
-
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MovementType;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -21,36 +29,25 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.registry.AstromineParticles;
-import io.netty.buffer.Unpooled;
-
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import java.util.Optional;
 
 public class RocketEntity extends Entity {
+	private static final TrackedData<Boolean> IS_GO = DataTracker.registerData(RocketEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	private final FluidInventoryComponent fluidInventory = new SimpleFluidInventoryComponent(1);
 
 	public static final Identifier ROCKET_SPAWN = AstromineCommon.identifier("rocket_spawn");
 
 	private final BiMap<Integer, Entity> passengers = HashBiMap.create();
 
-	private boolean isGo = false;
-
-	private double goY = 0;
-
 	public RocketEntity(EntityType<?> type, World world) {
 		super(type, world);
 		fluidInventory.getContents().forEach((k, v) -> v.setSize(new Fraction(16, 1)));
+		this.getDataTracker().set(IS_GO, false);
 	}
 
 	@Override
 	protected void initDataTracker() {
-
+		this.getDataTracker().startTracking(IS_GO, false);
 	}
 
 	@Override
@@ -76,20 +73,19 @@ public class RocketEntity extends Entity {
 	}
 
 	@Override
-	public ActionResult interact(PlayerEntity player, Hand hand) {
-		ItemStack stack = player.getStackInHand(hand);
-
-		if (stack.getItem() == Items.FLINT_AND_STEEL) {
-			isGo = true;
-			goY = getY();
-		}
-
-		return super.interact(player, hand);
-	}
-
-	@Override
 	public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
-		if (player.getStackInHand(hand) != ItemStack.EMPTY) return ActionResult.PASS;
+		if (player.world.isClient) {
+			return ActionResult.CONSUME;
+		}
+		
+		ItemStack stack = player.getStackInHand(hand);
+		
+		if (stack.getItem() == Items.FLINT_AND_STEEL) {
+			this.getDataTracker().set(IS_GO, true);
+			return ActionResult.SUCCESS;
+		}
+		
+		if (!stack.isEmpty()) return ActionResult.CONSUME;
 
 		passengers.inverse().remove(player);
 
@@ -160,26 +156,25 @@ public class RocketEntity extends Entity {
 	public void tick() {
 		super.tick();
 
-		getPassengerList().forEach(Entity::tickRiding);
+//		getPassengerList().forEach(Entity::tickRiding);
 
-		if (isGo) {
+		if (this.getDataTracker().get(IS_GO)) {
 			addVelocity(0, 0.001f, 0);
-
+			this.velocityDirty = true;
 			this.move(MovementType.SELF, this.getVelocity());
 
-			Vec3d thrustVec = new Vec3d(0.035, -1, 0.035);
-			Vec3d speed = new Vec3d(0.02, -0.2f, 0.02);
+			if (world.isClient()) {
+				Vec3d thrustVec = new Vec3d(0.035, -1, 0.035);
+				Vec3d speed = new Vec3d(0.02, -0.2f, 0.02);
 
-			for (int i = 0; i < 90; ++i) {
-				speed = speed.rotateY(1);
-				if(world.isClient()) {
+				for (int i = 0; i < 90; ++i) {
+					speed = speed.rotateY(1);
 					particleShit(thrustVec, speed);
 				}
 			}
 		}
 	}
 
-	@Environment(EnvType.CLIENT)
 	public void particleShit(Vec3d thrustVec, Vec3d speed) {
 		world.addParticle(AstromineParticles.ROCKET_FLAME,
 				getX() + ((thrustVec.getX() - (Math.min(0.6f, random.nextFloat())) * (random.nextBoolean() ? 1 : -1))),
