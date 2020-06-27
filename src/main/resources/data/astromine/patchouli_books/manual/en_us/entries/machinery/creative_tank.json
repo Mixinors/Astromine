@@ -8,7 +8,7 @@
 			"type": "spotlight",
 			"item": "astromine:creative_tank",
 			"title": "Creative Tank",
-			"text": "A machine which produces a specified fluid infinitely."
+			"text": "A machine which produces a specified $(thing)fluid$() infinitely."
 		}
 	]
 }

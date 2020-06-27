@@ -8,7 +8,7 @@
 			"type": "spotlight",
 			"item": "astromine:vent",
 			"title": "Vent",
-			"text": "A machine which accepts energy and fluids, consumes energy, and ventilates the fluid into the atmosphere."
+			"text": "A machine which consumes energy to ventilate fluids into the atmosphere."
 		},
 		{
 			"type": "crafting",

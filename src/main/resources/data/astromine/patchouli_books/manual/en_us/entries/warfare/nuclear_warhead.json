@@ -1,14 +1,14 @@
 {
 	"name": "Nuclear Warhead",
 	"icon": "astromine:nuclear_warhead",
-	"category": "machinery",
+	"category": "warfare",
 	"sortnum": 1,
 	"pages": [
 		{
 			"type": "spotlight",
 			"item": "astromine:nuclear_warhead",
 			"title": "Nuclear Warhead",
-			"text": "A machine which destroys a massive area in its surroundings, terminating all life-forms in the process."
+			"text": "A bomb capable of devastating destruction, terminating all life-forms in the process."
 		},
 		{
 			"type": "crafting",

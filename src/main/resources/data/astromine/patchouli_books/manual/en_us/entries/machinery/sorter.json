@@ -8,7 +8,7 @@
 			"type": "spotlight",
 			"item": "astromine:sorter",
 			"title": "Sorter",
-			"text": "A machine which accepts energy and items, consumes energy and items, and sorts the items into useful materials."
+			"text": "A machine which consumes $(thing)energy$() to sort $(thing)items$() into useful materials."
 		},
 		{
 			"type": "crafting",

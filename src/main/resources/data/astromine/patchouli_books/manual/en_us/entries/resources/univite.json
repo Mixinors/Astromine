@@ -1,14 +1,14 @@
 {
 	"name": "Univite",
 	"icon": "astromine:univite_ingot",
-	"category": "materials",
+	"category": "resources",
 	"sortnum": 4,
 	"pages": [
 		{
 			"type": "spotlight",
 			"item": "astromine:univite_ingot",
 			"title": "Univite",
-			"text": "A material so highly coveted it has sparked inumerous interstellar wars; only a limited amount of it exists within this realm, thought to have originated at the heart of the universe, before any of us even dared the thought of existence. It is unknown whether any material conveys higher power than Univite."
+			"text": "A material so highly coveted it has sparked numerous interstellar wars; only a limited amount of it exists within this realm, thought to have originated at the heart of the universe, before any of us even dared the thought of existence. It is unknown whether any material conveys higher power than Univite."
 		},
 		{
 			"type": "text",

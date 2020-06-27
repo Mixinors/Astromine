@@ -8,7 +8,7 @@
 			"type": "spotlight",
 			"item": "astromine:fuel_mixer",
 			"title": "Fuel Mixer",
-			"text": "A machine which accepts energy and fluids, consumes energy and fluids, and mixes the fluids into useful materials."
+			"text": "A machine which consumes $(thing)energy$() to mix $(thing)fluids$() into useful materials."
 		},
 		{
 			"type": "crafting",
