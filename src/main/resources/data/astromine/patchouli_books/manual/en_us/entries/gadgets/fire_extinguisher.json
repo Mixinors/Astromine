@@ -1,0 +1,19 @@
+{
+	"name": "Fire Extinguisher",
+	"icon": "astromine:fire_extinguisher",
+	"category": "tools",
+	"sortnum": 0,
+	"pages": [
+		{
+			"type": "spotlight",
+			"item": "astromine:fire_extinguisher",
+			"title": "Fire Extinguisher",
+			"text": "An important tool in one's space journeys, it is responsible for providing maneuverable thrust. Surprisingly, it can also extinguish fire."
+		},
+		{
+			"type": "crafting",
+			"recipe": "astromine:fire_extinguisher",
+			"title": "Recipe"
+		}
+	]
+}

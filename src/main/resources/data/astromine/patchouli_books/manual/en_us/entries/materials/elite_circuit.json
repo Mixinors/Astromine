@@ -1,0 +1,19 @@
+{
+	"name": "Elite Circuit",
+	"icon": "astromine:elite_circuit",
+	"category": "materials",
+	"sortnum": 0,
+	"pages": [
+		{
+			"type": "spotlight",
+			"item": "astromine:elite_circuit",
+			"title": "Elite Circuit",
+			"text": "An elite electric circuit board, built for systems with high throughput and low latency in mind, whose architecture makes use of coveted, laboratory-made materials."
+		},
+		{
+			"type": "crafting",
+			"recipe": "astromine:elite_circuit",
+			"title": "Recipe"
+		}
+	]
+}
