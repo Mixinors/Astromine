@@ -1,11 +1,7 @@
 package com.github.chainmailstudios.astromine.common.widget;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
-import io.netty.buffer.Unpooled;
-import nerdhub.cardinal.components.api.ComponentType;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
@@ -15,6 +11,12 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
+
+import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
+import io.netty.buffer.Unpooled;
+import nerdhub.cardinal.components.api.ComponentType;
 import org.apache.commons.lang3.text.WordUtils;
 import spinnery.client.render.BaseRenderer;
 import spinnery.widget.WButton;

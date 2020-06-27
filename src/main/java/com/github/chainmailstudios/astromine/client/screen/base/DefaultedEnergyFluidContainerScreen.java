@@ -1,24 +1,16 @@
 package com.github.chainmailstudios.astromine.client.screen.base;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.Text;
+
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.container.base.DefaultedBlockEntityContainer;
 import com.github.chainmailstudios.astromine.common.container.base.DefaultedEnergyFluidContainer;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.common.widget.WEnergyVolumeFractionalVerticalBar;
 import com.github.chainmailstudios.astromine.common.widget.WFluidVolumeFractionalVerticalBar;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.Text;
-import spinnery.client.screen.BaseContainerScreen;
-import spinnery.common.container.BaseContainer;
-import spinnery.widget.WAbstractWidget;
-import spinnery.widget.WInterface;
-import spinnery.widget.WPanel;
-import spinnery.widget.WSlot;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import spinnery.widget.api.Position;
 import spinnery.widget.api.Size;
-
-import java.util.Collection;
 
 public abstract class DefaultedEnergyFluidContainerScreen<T extends DefaultedBlockEntityContainer> extends DefaultedBlockEntityContainerScreen<T> {
 	public WEnergyVolumeFractionalVerticalBar energyBar;

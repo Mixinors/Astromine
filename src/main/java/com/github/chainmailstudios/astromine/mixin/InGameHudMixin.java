@@ -1,18 +1,16 @@
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.registry.AstromineScreens;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import spinnery.client.render.layer.SpinneryLayers;
-import spinnery.client.screen.BaseContainerScreen;
-import spinnery.client.screen.InGameHudScreen;
-import spinnery.widget.WInterface;
+
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.math.MatrixStack;
+
+import com.github.chainmailstudios.astromine.registry.AstromineScreens;
 import spinnery.widget.api.Position;
 
 @Mixin(InGameHud.class)

@@ -1,23 +1,28 @@
 package com.github.chainmailstudios.astromine.common.widget;
 
-import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.NameableComponent;
-import com.google.common.collect.ImmutableSet;
-import nerdhub.cardinal.components.api.ComponentType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.Item;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+
+import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.NameableComponent;
+import nerdhub.cardinal.components.api.ComponentType;
 import spinnery.widget.WAbstractWidget;
 import spinnery.widget.WTabHolder;
-import spinnery.widget.WTexturedButton;
-import spinnery.widget.api.*;
+import spinnery.widget.api.Position;
+import spinnery.widget.api.Size;
+import spinnery.widget.api.WCollection;
+import spinnery.widget.api.WDelegatedEventListener;
+import spinnery.widget.api.WEventListener;
 
+import com.google.common.collect.ImmutableSet;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;

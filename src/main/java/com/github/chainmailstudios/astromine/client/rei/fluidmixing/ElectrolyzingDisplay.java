@@ -1,9 +1,10 @@
 package com.github.chainmailstudios.astromine.client.rei.fluidmixing;
 
+import net.minecraft.util.Identifier;
+
 import com.github.chainmailstudios.astromine.client.rei.AstromineREIPlugin;
 import com.github.chainmailstudios.astromine.common.recipe.ElectrolyzingRecipe;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import net.minecraft.util.Identifier;
 
 public class ElectrolyzingDisplay extends AbstractFluidMixingDisplay {
 	public ElectrolyzingDisplay(ElectrolyzingRecipe recipe) {

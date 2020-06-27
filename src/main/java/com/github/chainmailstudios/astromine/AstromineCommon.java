@@ -11,6 +11,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineBreathables;
 import com.github.chainmailstudios.astromine.registry.AstromineChunkGenerators;
 import com.github.chainmailstudios.astromine.registry.AstromineCommonCallbacks;
+import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineContainers;
 import com.github.chainmailstudios.astromine.registry.AstromineDimensionLayers;
@@ -23,7 +24,6 @@ import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineOres;
 import com.github.chainmailstudios.astromine.registry.AstrominePotions;
 import com.github.chainmailstudios.astromine.registry.AstromineRecipeSerializers;
-import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -1,14 +1,13 @@
 package com.github.chainmailstudios.astromine.client.screen.base;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.Text;
+
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.container.base.DefaultedBlockEntityContainer;
 import com.github.chainmailstudios.astromine.common.widget.WTransferTypeSelectorPanel;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.Text;
-import spinnery.client.screen.BaseContainerScreen;
-import spinnery.common.container.BaseContainer;
 import spinnery.widget.WAbstractWidget;
 import spinnery.widget.WInterface;
 import spinnery.widget.WPanel;

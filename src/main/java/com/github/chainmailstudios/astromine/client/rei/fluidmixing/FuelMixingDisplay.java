@@ -1,9 +1,10 @@
 package com.github.chainmailstudios.astromine.client.rei.fluidmixing;
 
+import net.minecraft.util.Identifier;
+
 import com.github.chainmailstudios.astromine.client.rei.AstromineREIPlugin;
 import com.github.chainmailstudios.astromine.common.recipe.FuelMixingRecipe;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import net.minecraft.util.Identifier;
 
 public class FuelMixingDisplay extends AbstractFluidMixingDisplay {
 	public FuelMixingDisplay(FuelMixingRecipe recipe) {

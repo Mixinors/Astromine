@@ -1,8 +1,6 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.event.server.ServerTickCallback;
-import net.fabricmc.fabric.api.event.world.WorldTickCallback;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 
 import net.minecraft.entity.player.PlayerEntity;

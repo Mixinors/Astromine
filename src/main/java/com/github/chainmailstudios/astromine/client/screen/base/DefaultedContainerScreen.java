@@ -3,6 +3,7 @@ package com.github.chainmailstudios.astromine.client.screen.base;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
+
 import spinnery.client.screen.BaseContainerScreen;
 import spinnery.common.container.BaseContainer;
 import spinnery.widget.WPanel;

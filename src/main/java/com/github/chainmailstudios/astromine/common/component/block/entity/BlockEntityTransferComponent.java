@@ -1,15 +1,15 @@
 package com.github.chainmailstudios.astromine.common.component.block.entity;
 
-import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
-import com.google.common.collect.Maps;
-import nerdhub.cardinal.components.api.ComponentRegistry;
-import nerdhub.cardinal.components.api.ComponentType;
-import nerdhub.cardinal.components.api.component.Component;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
 
+import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
+import nerdhub.cardinal.components.api.ComponentRegistry;
+import nerdhub.cardinal.components.api.ComponentType;
+import nerdhub.cardinal.components.api.component.Component;
+
+import com.google.common.collect.Maps;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Map;
 
 public class BlockEntityTransferComponent implements Component {
