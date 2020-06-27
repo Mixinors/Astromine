@@ -19,10 +19,7 @@ public class AstromineClientPackets {
 	public static void initialize() {
 		ClientSidePacketRegistry.INSTANCE.register(AstromineCommonPackets.PRESSURE_UPDATE, ((context, buffer) -> {
 			Identifier identifier = new Identifier(buffer.readString());
-			String fraction = buffer.readString();
 
-			AstromineScreens.PRESSURE_TEXT.setText(I18n.translate("gas." + identifier.getNamespace() + "." + identifier.getPath()));
-			AstromineScreens.FRACTION_TEXT.setText(fraction);
 			AstromineScreens.GAS_IMAGE.setTexture(AstromineCommon.identifier("textures/symbol/" + identifier.getPath() + ".png"));
 		}));
 

@@ -12,6 +12,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineFluids;
 import com.github.chainmailstudios.astromine.registry.AstromineTags;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.entity.Entity;
@@ -96,16 +97,14 @@ public abstract class LivingEntityMixin {
 				isBreathing = false;
 			}
 
-			BlockState state = entity.world.getBlockState(entity.getBlockPos());
+			BlockState upState = entity.world.getBlockState(entity.getBlockPos().offset(Direction.UP));
+			BlockState downState = entity.world.getBlockState(entity.getBlockPos());
 
-			if (!(state.getBlock() instanceof FluidBlock)) {
-				state = entity.world.getBlockState(entity.getBlockPos().offset(Direction.UP));
-			}
+			Block upBlock = upState.getBlock();
+			Block downBlock = downState.getBlock();
 
-			if (state.getBlock() instanceof FluidBlock) {
-				FluidBlock block = (FluidBlock) state.getBlock();
-
-				FluidState fluidState = block.getFluidState(state);
+			if (upBlock instanceof FluidBlock) {
+				FluidState fluidState = upBlock.getFluidState(upState);
 
 				fluid = fluidState.getFluid();
 
@@ -114,6 +113,16 @@ public abstract class LivingEntityMixin {
 				}
 
 				isBreathing = false;
+			}
+
+			if (downBlock instanceof FluidBlock) {
+				FluidState fluidState = downBlock.getFluidState(downState);
+
+				fluid = fluidState.getFluid();
+
+				if (fluid instanceof AdvancedFluid && ((AdvancedFluid) fluid).isToxic()) {
+					entity.damage(DamageSource.GENERIC, ((AdvancedFluid) fluid).getDamage());
+				}
 			}
 
 			if (!isBreathing && !((Object) this instanceof PlayerEntity && ((PlayerEntity) (Object) this).isCreative())) {

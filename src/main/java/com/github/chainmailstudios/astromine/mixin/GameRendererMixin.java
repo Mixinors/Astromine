@@ -30,6 +30,8 @@ public class GameRendererMixin {
 	void onGetFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> callbackInformationReturnable) {
 		double gameFov = callbackInformationReturnable.getReturnValueD();
 
+		if (MinecraftClient.getInstance().player == null) return;
+
 		if (MinecraftClient.getInstance().options.keyUse.isPressed()) {
 			Item heldItem = MinecraftClient.getInstance().player.getMainHandStack().getItem();
 

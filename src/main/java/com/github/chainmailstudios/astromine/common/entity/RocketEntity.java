@@ -57,7 +57,7 @@ public class RocketEntity extends Entity {
 
 	@Override
 	protected void writeCustomDataToTag(CompoundTag tag) {
-		fluidInventory.read(fluidInventory, tag, Optional.empty(), Optional.empty());
+		fluidInventory.read(fluidInventory, tag.getCompound("fluid"), Optional.empty(), Optional.empty());
 	}
 
 	public Box getHardCollisionBox(Entity collidingEntity) {

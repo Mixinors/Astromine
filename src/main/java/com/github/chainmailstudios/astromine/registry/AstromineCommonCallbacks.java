@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.server.ServerTickCallback;
 import net.fabricmc.fabric.api.event.world.WorldTickCallback;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
@@ -21,7 +22,7 @@ import nerdhub.cardinal.components.api.event.WorldComponentCallback;
 
 public class AstromineCommonCallbacks {
 	public static void initialize() {
-		ServerTickCallback.EVENT.register((server) -> {
+		ServerTickEvents.START_SERVER_TICK.register((server) -> {
 			for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
 				ComponentProvider componentProvider = ComponentProvider.fromWorld(player.world);
 
@@ -31,13 +32,12 @@ public class AstromineCommonCallbacks {
 				FluidVolume volume = atmosphereComponent.get(player.getBlockPos().offset(Direction.UP));
 
 				buffer.writeString(volume.getFluidString());
-				buffer.writeString(volume.getFractionString());
 
 				ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, AstromineCommonPackets.PRESSURE_UPDATE, buffer);
 			}
 		});
 
-		ServerTickCallback.EVENT.register((server) -> {
+		ServerTickEvents.START_SERVER_TICK.register((server) -> {
 			for (PlayerEntity playerEntity : server.getPlayerManager().getPlayerList()) {
 				if (playerEntity.currentScreenHandler instanceof DefaultedBlockEntityContainer) {
 					DefaultedBlockEntityContainer container = (DefaultedBlockEntityContainer) playerEntity.currentScreenHandler;
@@ -54,7 +54,7 @@ public class AstromineCommonCallbacks {
 			WorldNetworkComponent component = new WorldNetworkComponent(world);
 			container.put(AstromineComponentTypes.WORLD_NETWORK_COMPONENT, component);
 
-			WorldTickCallback.EVENT.register((tickWorld -> {
+			ServerTickEvents.START_WORLD_TICK.register((tickWorld -> {
 				if (tickWorld == component.getWorld()) {
 					component.tick();
 				}
@@ -65,7 +65,7 @@ public class AstromineCommonCallbacks {
 			WorldAtmosphereComponent component = new WorldAtmosphereComponent(world);
 			container.put(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT, component);
 
-			WorldTickCallback.EVENT.register((tickWorld -> {
+			ServerTickEvents.START_WORLD_TICK.register((tickWorld -> {
 				if (tickWorld == component.getWorld()) {
 					component.tick();
 				}
