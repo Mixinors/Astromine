@@ -1,5 +1,7 @@
 package com.github.chainmailstudios.astromine.common.network.ticker;
 
+import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import net.minecraft.block.entity.BlockEntity;
 
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
@@ -18,8 +20,8 @@ import java.util.List;
 public class NetworkTypeFluid extends NetworkType {
 	@Override
 	public void simulate(NetworkInstance controller) {
-		List<FluidVolume> buffers = Lists.newArrayList();
-		List<FluidVolume> requesters = Lists.newArrayList();
+		List<FluidVolume> inputs = Lists.newArrayList();
+		List<FluidVolume> outputs = Lists.newArrayList();
 
 		for (NetworkNode memberNode : controller.members) {
 			BlockEntity blockEntity = controller.getWorld().getBlockEntity(memberNode.getBlockPos());
@@ -29,27 +31,31 @@ public class NetworkTypeFluid extends NetworkType {
 
 				FluidInventoryComponent fluidComponent = provider.getSidedComponent(memberNode.getDirection(), AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
-				if (fluidComponent != null) {
-					NetworkMember member = (NetworkMember) blockEntity;
+				BlockEntityTransferComponent transferComponent = provider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
 
-					if (member.isBuffer(this)) {
+				if (fluidComponent != null && transferComponent != null) {
+					TransferType type = transferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).get(memberNode.getDirection());
+
+					if (type.canExtract()) {
 						fluidComponent.getContents().forEach((key, volume) -> {
-							buffers.add(volume);
+							inputs.add(volume);
 						});
-					} else if (member.isRequester(this)) {
+					}
+
+					if (type.canInsert()) {
 						fluidComponent.getContents().forEach((key, volume) -> {
-							requesters.add(volume);
+							outputs.add(volume);
 						});
 					}
 				}
 			}
 		}
 
-		for (FluidVolume buffer : buffers) {
-			for (FluidVolume requester : requesters) {
-				if (!buffer.isEmpty() && !requester.isFull() && buffer.getFluid() == requester.getFluid()) {
-					requester.pullVolume(buffer, Fraction.BUCKET);
-				} else if (buffer.isEmpty()) {
+		for (FluidVolume input : inputs) {
+			for (FluidVolume output : outputs) {
+				if (!input.isEmpty() && !output.isFull() && input.getFluid() == output.getFluid()) {
+					output.pullVolume(input, Fraction.BUCKET);
+				} else if (input.isEmpty()) {
 					break;
 				}
 			}
