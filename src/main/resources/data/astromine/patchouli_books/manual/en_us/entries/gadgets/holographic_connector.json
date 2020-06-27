@@ -1,14 +1,13 @@
 {
 	"name": "Holographic Connector",
 	"icon": "astromine:holographic_connector",
-	"category": "tools",
 	"sortnum": 0,
 	"pages": [
 		{
 			"type": "spotlight",
 			"item": "astromine:holographic_connector",
 			"title": "Holographic Connector",
-			"text": "A remote controller which allows you to link together $(thing)Holographic Bridge Projectors$(). They must be facing each other in the same line, but can have different heights."
+			"text": "A remote controller which allows you to link together $(item)$(l:gadgets/holographic_bridge_projector)Holographic Bridge Projectors$(). They must be facing each other in the same line, but can have different heights."
 		},
 		{
 			"type": "crafting",

@@ -1,14 +1,13 @@
 {
 	"name": "Fluid Extractor",
 	"icon": "astromine:fluid_extractor",
-	"category": "machinery",
 	"sortnum": 1,
 	"pages": [
 		{
 			"type": "spotlight",
 			"item": "astromine:fluid_extractor",
 			"title": "Fluid Extractor",
-			"text": "A machine which accepts energy, consumes energy, and picks up fluids from the world."
+			"text": "A machine which consumes $(thing)energy$() to pick up $(thing)fluids$() from the world."
 		},
 		{
 			"type": "crafting",

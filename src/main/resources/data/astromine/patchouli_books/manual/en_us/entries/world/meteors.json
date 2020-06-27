@@ -1,14 +1,13 @@
 {
 	"name": "Meteors",
 	"icon": "astromine:meteor_stone",
-	"category": "world",
 	"sortnum": 0,
 	"pages": [
 		{
 			"type": "spotlight",
 			"item": "astromine:meteor_stone",
 			"title": "Meteors",
-			"text": "Foreign bodies that, cruising through the stairs, collided with a planetary body; said to contain $(thing)Metite Ore$()."
+			"text": "Foreign bodies that, cruising through the stairs, collided with a planetary body; said to contain $(thing)$(l:world/meteor_ores)extraterrestrial ores$()."
 		}
 	]
 }

@@ -1,0 +1,19 @@
+{
+	"name": "Plates",
+	"icon": "astromine:iron_plates",
+	"sortnum": 0,
+	"pages": [
+		{
+			"type": "spotlight",
+			"item": "astromine:iron_plates",
+			"title": "Plates",
+			"text": "Thin sheets of metal, plates are useful for constructing $(thing)housing$() for $(thing)machinery$()."
+		},
+		{
+			"type": "crafting",
+			"recipe": "astromine:iron_plates",
+			"title": "Recipe",
+			"text": "While the recipe shown is clearly for $(item)Iron Plates$(), simply substituting the $(item)Iron Ingots$() with any other $(thing)Ingots() will create plates of that type."
+		}
+	]
+}

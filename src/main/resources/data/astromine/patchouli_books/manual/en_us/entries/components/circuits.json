@@ -1,0 +1,40 @@
+{
+	"name": "Circuits",
+	"icon": "astromine:basic_circuit",
+	"sortnum": 0,
+	"pages": [
+		{
+			"type": "spotlight",
+			"item": "astromine:basic_circuit",
+			"title": "Basic Circuit",
+			"text": "A basic electric circuit board, built for general systems with no special requirements, whose architecture is based on graphene."
+		},
+		{
+			"type": "crafting",
+			"recipe": "astromine:basic_circuit",
+			"title": "Basic Circuit Recipe"
+		},
+		{
+			"type": "spotlight",
+			"item": "astromine:advanced_circuit",
+			"title": "Advanced Circuit",
+			"text": "A more advanced electric circuit board, built for systems with low latency in mind, whose architecture is based on graphene."
+		},
+		{
+			"type": "crafting",
+			"recipe": "astromine:advanced_circuit",
+			"title": "Advanced Circuit Recipe"
+		},
+		{
+			"type": "spotlight",
+			"item": "astromine:elite_circuit",
+			"title": "Elite Circuit",
+			"text": "An elite electric circuit board, built for systems with high throughput and low latency in mind, whose architecture makes use of coveted, laboratory-made materials."
+		},
+		{
+			"type": "crafting",
+			"recipe": "astromine:elite_circuit",
+			"title": "Elite Circuit Recipe"
+		}
+	]
+}

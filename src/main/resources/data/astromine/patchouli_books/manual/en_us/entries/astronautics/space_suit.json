@@ -1,30 +1,23 @@
 {
 	"name": "Space Suit",
 	"icon": "astromine:space_suit_helmet",
-	"category": "astronautics",
 	"sortnum": 0,
 	"pages": [
 		{
 			"type": "spotlight",
 			"item": "astromine:space_suit_helmet",
 			"title": "Space Suit",
-			"text": "Vital to survival in hostile environments, the space suit is the most important equipment one may carry. $(p)With internal tanks which may be pressurized in certain machines, it may be filled with (un-)breathable gases fit for whoever is wearing it."
+			"text": "Vital for survival in hostile environments, a Space Suit is the most important thing one may carry. $(p)With internal tanks which may be pressurized in certain machines, it may be filled with (un-)breathable gases fit for whoever is wearing it."
 		},
 		{
 			"type": "crafting",
-			"recipe": "astromine:space_suit_helmet"
+			"recipe": "astromine:space_suit_helmet",
+			"recipe2": "astromine:space_suit_chestplate"
 		},
 		{
 			"type": "crafting",
-			"recipe": "astromine:space_suit_chestplate"
-		},
-		{
-			"type": "crafting",
-			"recipe": "astromine:space_suit_leggings"
-		},
-		{
-			"type": "crafting",
-			"recipe": "astromine:space_suit_boots"
+			"recipe": "astromine:space_suit_leggings",
+			"recipe2": "astromine:space_suit_boots"
 		}
 	]
 }

@@ -1,14 +1,13 @@
 {
 	"name": "Creative Tank",
 	"icon": "astromine:creative_tank",
-	"category": "machinery",
 	"sortnum": 1,
 	"pages": [
 		{
 			"type": "spotlight",
 			"item": "astromine:creative_tank",
 			"title": "Creative Tank",
-			"text": "A machine which produces a specified fluid infinitely."
+			"text": "A machine which produces a specified $(thing)fluid$() infinitely."
 		}
 	]
 }

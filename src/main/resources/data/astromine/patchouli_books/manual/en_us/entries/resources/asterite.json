@@ -1,20 +1,19 @@
 {
 	"name": "Asterite",
 	"icon": "astromine:asterite",
-	"category": "materials",
 	"sortnum": 1,
 	"pages": [
 		{
 			"type": "spotlight",
 			"item": "astromine:asterite",
 			"title": "Asterite",
-			"text": "A fragment of a long dead star, this red gem may look frail to an untrained obsever - one who does not know its signficant strehgths. $(p)Its properties allow for qualified craftsmen to create powerful tooling."
+			"text": "A fragment of a long dead star, this red gem may look frail to an untrained observer - one who does not know its significant strengths. $(p)Its properties allow for qualified craftsmen to create powerful tooling."
 		},
 		{
 			"type": "smelting",
 			"recipe": "astromine:asterite_from_smelting_ore",
 			"title": "Obtaining Asterite",
-			"text": "$(item)Asterite Ore$() can be found inside $(thing)Asteroids$() in $(thing)Space$().$(p)Asterite Ore minig requires a $(item)Netherite Pickaxe$() (Mining Level 4) or better, usually resulting in a single $(item)Asterite Cluster$() which can forged into an $(item)Asterite$() gem."
+			"text": "$(item)Asterite Ore$() can be found inside $(thing)$(l:world/asteroids)Asteroids$() in $(thing)Space$().$(p)Mining requires a $(item)Netherite Pickaxe$() (Mining Level 4) or better, usually resulting in a single $(item)Asterite Cluster$() which can forged into an $(item)Asterite$() gem."
 		},
 		{
 			"type": "text",
