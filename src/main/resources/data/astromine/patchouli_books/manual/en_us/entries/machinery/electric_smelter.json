@@ -1,0 +1,19 @@
+{
+	"name": "Electric Smelter",
+	"icon": "astromine:electric_smelter",
+	"category": "machinery",
+	"sortnum": 1,
+	"pages": [
+		{
+			"type": "spotlight",
+			"item": "astromine:electric_smelter",
+			"title": "Electric Smelter",
+			"text": "A machine which accepts energy and items, consumes energy and items, and smelts the items into useful materials."
+		},
+		{
+			"type": "crafting",
+			"recipe": "astromine:electric_smelter",
+			"title": "Recipe"
+		}
+	]
+}

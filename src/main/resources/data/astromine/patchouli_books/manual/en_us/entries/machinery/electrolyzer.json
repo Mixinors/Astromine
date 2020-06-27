@@ -1,0 +1,19 @@
+{
+	"name": "Electrolyzer",
+	"icon": "astromine:electrolyzer",
+	"category": "machinery",
+	"sortnum": 1,
+	"pages": [
+		{
+			"type": "spotlight",
+			"item": "astromine:electrolyzer",
+			"title": "Electrolyzer",
+			"text": "A machine which accepts energy and fluids, consumes energy and fluids, and electrolyzes the fluids into useful materials."
+		},
+		{
+			"type": "crafting",
+			"recipe": "astromine:electrolyzer",
+			"title": "Recipe"
+		}
+	]
+}
