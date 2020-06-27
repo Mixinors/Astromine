@@ -7,6 +7,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 
+import net.minecraft.client.MinecraftClient;
 import spinnery.client.screen.InGameHudScreen;
 import spinnery.widget.WInterface;
 import spinnery.widget.WStaticImage;
@@ -17,16 +18,12 @@ import spinnery.widget.api.Size;
 @Environment(EnvType.CLIENT)
 public class AstromineScreens {
 	public static WStaticImage GAS_IMAGE;
-	public static WStaticText PRESSURE_TEXT;
-	public static WStaticText FRACTION_TEXT;
 
 	public static void initialize() {
 		InGameHudScreen.addOnInitialize(() -> {
 			WInterface mainInterface = InGameHudScreen.getInterface();
 
-			GAS_IMAGE = mainInterface.createChild(WStaticImage::new, Position.of(4, 4, 0), Size.of(32, 32)).setTexture(AstromineCommon.identifier("textures/symbol/oxygen.png"));
-			PRESSURE_TEXT = mainInterface.createChild(WStaticText::new, Position.of(4, 40, 0)).setScale(0.75F);
-			FRACTION_TEXT = mainInterface.createChild(WStaticText::new, Position.of(4, 50, 0)).setScale(0.5F);
+			GAS_IMAGE = mainInterface.createChild(WStaticImage::new, Position.of(0, 4, 0), Size.of(16, 16)).setTexture(AstromineCommon.identifier("textures/symbol/oxygen.png"));
 		});
 
 		ScreenRegistry.register(AstromineContainers.FLUID_EXTRACTOR, (ScreenRegistry.Factory<FluidExtractorContainer, FluidExtractorContainerScreen>) ((handler, inventory, title) -> {

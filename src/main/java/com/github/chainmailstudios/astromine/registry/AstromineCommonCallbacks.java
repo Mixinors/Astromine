@@ -32,7 +32,6 @@ public class AstromineCommonCallbacks {
 				FluidVolume volume = atmosphereComponent.get(player.getBlockPos().offset(Direction.UP));
 
 				buffer.writeString(volume.getFluidString());
-				buffer.writeString(volume.getFractionString());
 
 				ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, AstromineCommonPackets.PRESSURE_UPDATE, buffer);
 			}

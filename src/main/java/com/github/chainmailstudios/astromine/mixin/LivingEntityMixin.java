@@ -96,16 +96,17 @@ public abstract class LivingEntityMixin {
 				isBreathing = false;
 			}
 
-			BlockState state = entity.world.getBlockState(entity.getBlockPos());
+			BlockState downState = entity.world.getBlockState(entity.getBlockPos());
+			BlockState upState = null;
 
-			if (!(state.getBlock() instanceof FluidBlock)) {
-				state = entity.world.getBlockState(entity.getBlockPos().offset(Direction.UP));
+			if (!(downState.getBlock() instanceof FluidBlock)) {
+				upState = entity.world.getBlockState(entity.getBlockPos().offset(Direction.UP));
 			}
 
-			if (state.getBlock() instanceof FluidBlock) {
-				FluidBlock block = (FluidBlock) state.getBlock();
+			if (downState.getBlock() instanceof FluidBlock || (upState != null && upState.getBlock() instanceof FluidBlock)) {
+				FluidBlock fluidBlock = downState.getBlock() instanceof FluidBlock ? (FluidBlock) downState.getBlock() : (FluidBlock) upState.getBlock();
 
-				FluidState fluidState = block.getFluidState(state);
+				FluidState fluidState = fluidBlock.getFluidState(downState);
 
 				fluid = fluidState.getFluid();
 
@@ -113,7 +114,9 @@ public abstract class LivingEntityMixin {
 					entity.damage(DamageSource.GENERIC, ((AdvancedFluid) fluid).getDamage());
 				}
 
-				isBreathing = false;
+				if (upState != null && upState.getBlock() instanceof FluidBlock) {
+					isBreathing = false;
+				}
 			}
 
 			if (!isBreathing && !((Object) this instanceof PlayerEntity && ((PlayerEntity) (Object) this).isCreative())) {

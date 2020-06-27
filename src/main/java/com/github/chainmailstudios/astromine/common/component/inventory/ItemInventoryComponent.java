@@ -339,14 +339,14 @@ public interface ItemInventoryComponent extends NameableComponent {
 		CompoundTag compoundTag = (CompoundTag) rawTag;
 
 		if (!compoundTag.contains("size")) {
-			AstromineCommon.LOGGER.log(Level.ERROR, "Inventory contents failed to be read: " + CompoundTag.class.getName() + " does not contain 'size' value!");
+			AstromineCommon.LOGGER.log(Level.ERROR, "Inventory contents failed to be read: " + CompoundTag.class.getName() + " does not contain 'size' value! (" + getClass().getName() + ")");
 			return;
 		}
 
 		int size = compoundTag.getInt("size");
 
 		if (size == 0) {
-			AstromineCommon.LOGGER.log(Level.WARN, "Inventory contents size successfully read, but with size of zero. This may indicate a non-integer 'size' value!");
+			AstromineCommon.LOGGER.log(Level.WARN, "Inventory contents size successfully read, but with size of zero. This may indicate a non-integer 'size' value! (" + getClass().getName() + ")");
 		}
 
 		if (!compoundTag.contains("stacks")) {
