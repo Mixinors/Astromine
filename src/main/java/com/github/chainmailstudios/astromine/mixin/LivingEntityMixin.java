@@ -12,6 +12,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineFluids;
 import com.github.chainmailstudios.astromine.registry.AstromineTags;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.entity.Entity;
@@ -96,17 +97,14 @@ public abstract class LivingEntityMixin {
 				isBreathing = false;
 			}
 
+			BlockState upState = entity.world.getBlockState(entity.getBlockPos().offset(Direction.UP));
 			BlockState downState = entity.world.getBlockState(entity.getBlockPos());
-			BlockState upState = null;
 
-			if (!(downState.getBlock() instanceof FluidBlock)) {
-				upState = entity.world.getBlockState(entity.getBlockPos().offset(Direction.UP));
-			}
+			Block upBlock = upState.getBlock();
+			Block downBlock = downState.getBlock();
 
-			if (downState.getBlock() instanceof FluidBlock || (upState != null && upState.getBlock() instanceof FluidBlock)) {
-				FluidBlock fluidBlock = downState.getBlock() instanceof FluidBlock ? (FluidBlock) downState.getBlock() : (FluidBlock) upState.getBlock();
-
-				FluidState fluidState = fluidBlock.getFluidState(downState);
+			if (upBlock instanceof FluidBlock) {
+				FluidState fluidState = upBlock.getFluidState(upState);
 
 				fluid = fluidState.getFluid();
 
@@ -114,8 +112,16 @@ public abstract class LivingEntityMixin {
 					entity.damage(DamageSource.GENERIC, ((AdvancedFluid) fluid).getDamage());
 				}
 
-				if (upState != null && upState.getBlock() instanceof FluidBlock) {
-					isBreathing = false;
+				isBreathing = false;
+			}
+
+			if (downBlock instanceof FluidBlock) {
+				FluidState fluidState = downBlock.getFluidState(downState);
+
+				fluid = fluidState.getFluid();
+
+				if (fluid instanceof AdvancedFluid && ((AdvancedFluid) fluid).isToxic()) {
+					entity.damage(DamageSource.GENERIC, ((AdvancedFluid) fluid).getDamage());
 				}
 			}
 
