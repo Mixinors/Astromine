@@ -1,0 +1,19 @@
+{
+	"name": "Nuclear Warhead",
+	"icon": "astromine:nuclear_warhead",
+	"category": "machinery",
+	"sortnum": 1,
+	"pages": [
+		{
+			"type": "spotlight",
+			"item": "astromine:nuclear_warhead",
+			"title": "Nuclear Warhead",
+			"text": "A machine which destroys a massive area in its surroundings, terminating all life-forms in the process."
+		},
+		{
+			"type": "crafting",
+			"recipe": "astromine:nuclear_warhead",
+			"title": "Recipe"
+		}
+	]
+}

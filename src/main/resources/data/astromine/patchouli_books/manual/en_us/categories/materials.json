@@ -1,6 +1,6 @@
 {
 	"name": "Materials",
-	"description": "The various Metals, Gems and other resources you'll find in your adventure.",
-	"icon": "astromine:stellum_ingot",
-	"sortnum": 0
+	"description": "The exquisite materials that one channels for power.",
+	"icon": "astromine:metite_ingot",
+	"sortnum": 3
 }

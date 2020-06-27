@@ -1,0 +1,19 @@
+{
+	"name": "Fuel Mixer",
+	"icon": "astromine:fuel_mixer",
+	"category": "machinery",
+	"sortnum": 1,
+	"pages": [
+		{
+			"type": "spotlight",
+			"item": "astromine:fuel_mixer",
+			"title": "Fuel Mixer",
+			"text": "A machine which accepts energy and fluids, consumes energy and fluids, and mixes the fluids into useful materials."
+		},
+		{
+			"type": "crafting",
+			"recipe": "astromine:fuel_mixer",
+			"title": "Recipe"
+		}
+	]
+}

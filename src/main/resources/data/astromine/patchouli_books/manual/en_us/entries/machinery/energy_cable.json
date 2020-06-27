@@ -1,0 +1,19 @@
+{
+	"name": "Energy Cable",
+	"icon": "astromine:energy_cable",
+	"category": "machinery",
+	"sortnum": 0,
+	"pages": [
+		{
+			"type": "spotlight",
+			"item": "astromine:energy_cable",
+			"title": "Energy Cable",
+			"text": "A cable which transporters energy; no buffering or path-finding involved."
+		},
+		{
+			"type": "crafting",
+			"recipe": "astromine:energy_cable",
+			"title": "Recipe"
+		}
+	]
+}

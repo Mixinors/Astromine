@@ -8,21 +8,21 @@
 			"type": "spotlight",
 			"item": "astromine:univite_ingot",
 			"title": "Univite",
-			"text": "The heartbeat of the universe pulsates within this ingot. An otherworldly alloy of various extraterrestrial materials.$(p)This should truly make the most powerful items known to mankind."
+			"text": "A material so highly coveted it has sparked inumerous interstellar wars; only a limited amount of it exists within this realm, thought to have originated at the heart of the universe, before any of us even dared the thought of existence. It is unknown whether any material conveys higher power than Univite."
 		},
 		{
 			"type": "text",
 			"title": "Obtaining Univite",
-			"text": "There is no currently known method of creating Univite synthetically, and it does not generate in nature.$(p)Its very existence is a mystery of the universe lost to the sands of time. Perhaps someday, it'll be rediscovered..."
+			"text": "A theorized origin and limited existence means immense difficulty in being obtained; with no way but theft available to small civilizations."
 		},
 		{
 			"type": "text",
 			"title": "Usages",
-			"text": "Univite can be used to create top tier $(thing)tools$() and $(thing)armor$(). It, along with gear made from it, is fireproof."
+			"text": "Univite can be used to create the strongest tooling and weaponry known by all discovered civilizations."
 		},
 		{
 			"type": "text",
-			"title": "Stats",
+			"title": "Statistics",
 			"text": "$(l)Tools$()$(br)Mining Level: 7$(br)Base Durability: 3918$(br)Mining Speed: 12$(br)Attack Damage: 6$(br)Enchantability: 22$(br)Fireproof$(p)$(l)Armor$()$(br)Durability Multiplier: 50$(br)Total Defense: 27$(br)Toughness: 5$(br)Enchantability: 22$(br)Fireproof"
 		}
 	]

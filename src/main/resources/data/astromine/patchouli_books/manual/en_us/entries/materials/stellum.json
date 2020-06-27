@@ -8,22 +8,22 @@
 			"type": "spotlight",
 			"item": "astromine:stellum_ingot",
 			"title": "Stellum",
-			"text": "The raw energy of the stars, compressed into a small ingot. You can feel the power coursing through every molecule.$(p)Perhaps this could serve as some sort of power source?"
+			"text": "A fragment of a living star, the raw energy contained within this material is surpassed only by few, every molecule of it vibrating with $(thing)Stellar Energy$().$(p)"
 		},
 		{
 			"type": "smelting",
 			"recipe": "astromine:stellum_ingot_from_smelting_ore",
 			"title": "Obtaining Stellum",
-			"text": "$(item)Stellum Ore$() can be found inside $(thing)Asteroids$() in $(thing)Space$().$(p)Mining Stellum Ore will require an $(item)Asterite Pickaxe$() (Mining Level 5) or better, and will usually result in a single $(item)Stellum Cluster$() which can then be smelted to obtain a $(item)Stellum Ingot$()."
+			"text": "$(item)Stellum Ore$() can be found inside $(thing)Asteroids$() in $(thing)Space$().$(p)Stellum Ore mining requires an $(item)Asterite Pickaxe$() (Mining Level 5) or better, usually resulting in a single $(item)Stellum Cluster$() which can be forged into a $(item)Stellum Ingot$()."
 		},
 		{
 			"type": "text",
 			"title": "Usages",
-			"text": "Stellum can be used to create $(thing)tools$() and $(thing)armor$() which are roughly equivalent to $(l:materials/asterite)Asterite$(). There are some benefits, and some drawbacks. Which you use is up to your preference. It, along with gear made from it, is fireproof.$(p)Perhaps in the future, its innate solar power could be harnessed..."
+			"text": "Stellum can be used to create powerful tooling roughly equivalent to $(thing)Asterite$(). Born from the heart of a living star, it is fire proof to an extent never seen before; and posses a power that, when harnessed, can power an entire civilization."
 		},
 		{
 			"type": "text",
-			"title": "Stats",
+			"title": "Statistics",
 			"text": "$(l)Tools$()$(br)Mining Level: 5$(br)Base Durability: 2643$(br)Mining Speed: 8$(br)Attack Damage: 6$(br)Enchantability: 15$(br)Fireproof$(p)$(l)Armor$()$(br)Durability Multiplier: 41$(br)Total Defense: 16$(br)Toughness: 6$(br)Enchantability: 15$(br)Fireproof"
 		}
 	]

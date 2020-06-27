@@ -208,5 +208,6 @@
 	"category.astromine.generating.energy": "%s gerado/tick",
 	"category.astromine.consuming.energy": "%s consumido",
 	"category.astromine.fluid.generating.consumed": "%s (%s) consumido/tick",
-	"category.astromine.fluid.generating.generated": "%s (%s) gerado/tick"
+	"category.astromine.fluid.generating.generated": "%s (%s) gerado/tick",
+	"entity.astromine.space_slime": "Slime Espacial"
 }

@@ -8,22 +8,22 @@
 			"type": "spotlight",
 			"item": "astromine:metite_ingot",
 			"title": "Metite",
-			"text": "Metite is a foreign metal with incredible pressure resistance. It is perfect for objects that may visit an area with high compression.$(p)It will be instrumental in beginning your interstellar travels."
+			"text": "A foreign metal, Metite withstands immense pressures; being essential in all areas of space travel.$(p)Acquiring it is considered a major stepping stone in one's interstellar journey."
 		},
 		{
 			"type": "smelting",
 			"recipe": "astromine:metite_ingot_from_smelting_ore",
 			"title": "Obtaining Metite",
-			"text": "$(item)Metite Ore$() can be found within $(thing)Meteors$() that have crashed to Earth, or inside $(thing)Asteroids$() in $(thing)Space$().$(p)Mining Metite Ore will require a $(item)Netherite Pickaxe$() (Mining Level 4) or better, and will result in between 1 and 3 $(item)Metite Clusters$() which can each be smelted to obtain a $(item)Metite Ingot$()."
+			"text": "$(item)Metite Ore$() can be found inside $(thing)Meteors$() which have impacted on $(thing)Earth$(), or in $(thing)Asteroids$() in $(thing)Space$().$(p)Metite Ore mining requires a $(item)Netherite Pickaxe$() (Mining Level 4) or better, usually resulting in between 1 and 3 $(item)Metite Clusters$() which can forged into a $(item)Metite Ingot$()."
 		},
 		{
 			"type": "text",
 			"title": "Usages",
-			"text": "Metite can be made into standard $(thing)tools$() and $(thing)armor$(), though it isn't particularly effective in these areas.$(p)Instead, you'll primarily want to use Metite to create $(thing)Rocket Parts$() and $(thing)Space Suits$()."
+			"text": "Metite can be used to create standard tooling; however, it is of much more use in creating aerospacial technology."
 		},
 		{
 			"type": "text",
-			"title": "Stats",
+			"title": "Statistics",
 			"text": "$(l)Tools$()$(br)Mining Level: 2$(br)Base Durability: 981$(br)Mining Speed: 14$(br)Attack Damage: 5$(br)Enchantability: 5$(p)$(l)Armor$()$(br)Durability Multiplier: 15$(br)Total Defense: 14$(br)Toughness: 0$(br)Enchantability: 7"
 		}
 	]

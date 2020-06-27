@@ -1,0 +1,13 @@
+{
+	"name": "Asteroid Ore Clusters",
+	"icon": "astromine:asteroid_diamond_cluster",
+	"category": "world",
+	"sortnum": 0,
+	"pages": [
+		{
+			"type": "text",
+			"title": "Asteroid Ore Clusters",
+			"text": "Clusters of ores obtained from asteroid ores, which may be processed for resources."
+		}
+	]
+}

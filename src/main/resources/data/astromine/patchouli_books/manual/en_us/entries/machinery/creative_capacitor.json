@@ -1,0 +1,14 @@
+{
+	"name": "Creative Capacitor",
+	"icon": "astromine:creative_capacitor",
+	"category": "machinery",
+	"sortnum": 1,
+	"pages": [
+		{
+			"type": "spotlight",
+			"item": "astromine:creative_capacitor",
+			"title": "Creative Capacitor",
+			"text": "A machine which produces energy infinitely."
+		}
+	]
+}

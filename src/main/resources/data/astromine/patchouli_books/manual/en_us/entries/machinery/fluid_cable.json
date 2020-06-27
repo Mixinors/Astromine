@@ -1,0 +1,19 @@
+{
+	"name": "Fluid Cable",
+	"icon": "astromine:fluid_cable",
+	"category": "machinery",
+	"sortnum": 0,
+	"pages": [
+		{
+			"type": "spotlight",
+			"item": "astromine:fluid_cable",
+			"title": "Fluid Cable",
+			"text": "A cable which transporters fluids; no buffering or path-finding involved."
+		},
+		{
+			"type": "crafting",
+			"recipe": "astromine:fluid_cable",
+			"title": "Recipe"
+		}
+	]
+}
