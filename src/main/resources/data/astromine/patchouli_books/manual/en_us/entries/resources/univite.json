@@ -1,6 +1,7 @@
 {
 	"name": "Univite",
 	"icon": "astromine:univite_ingot",
+	"category": "resources",
 	"sortnum": 4,
 	"pages": [
 		{

@@ -1,6 +1,7 @@
 {
 	"name": "Vent",
 	"icon": "astromine:vent",
+	"category": "machinery",
 	"sortnum": 1,
 	"pages": [
 		{

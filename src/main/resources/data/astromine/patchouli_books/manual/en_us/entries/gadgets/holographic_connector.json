@@ -1,6 +1,7 @@
 {
 	"name": "Holographic Connector",
 	"icon": "astromine:holographic_connector",
+	"category": "gadgets",
 	"sortnum": 0,
 	"pages": [
 		{

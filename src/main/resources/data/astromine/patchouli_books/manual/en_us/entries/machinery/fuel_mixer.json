@@ -1,6 +1,7 @@
 {
 	"name": "Fuel Mixer",
 	"icon": "astromine:fuel_mixer",
+	"category": "machinery",
 	"sortnum": 1,
 	"pages": [
 		{

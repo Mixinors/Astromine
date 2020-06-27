@@ -1,6 +1,7 @@
 {
 	"name": "Sorter",
 	"icon": "astromine:sorter",
+	"category": "machinery",
 	"sortnum": 1,
 	"pages": [
 		{

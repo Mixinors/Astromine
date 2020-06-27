@@ -1,6 +1,7 @@
 {
 	"name": "Nuclear Warhead",
 	"icon": "astromine:nuclear_warhead",
+	"category": "warfare",
 	"sortnum": 1,
 	"pages": [
 		{

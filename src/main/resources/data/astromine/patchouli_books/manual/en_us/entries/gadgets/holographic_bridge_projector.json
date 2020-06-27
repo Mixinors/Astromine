@@ -1,6 +1,7 @@
 {
 	"name": "Holographic Bridge Projector",
 	"icon": "astromine:holographic_bridge_projector",
+	"category": "gadgets",
 	"sortnum": 1,
 	"pages": [
 		{

@@ -1,6 +1,7 @@
 {
 	"name": "Gears",
 	"icon": "astromine:iron_gear",
+	"category": "components",
 	"sortnum": 0,
 	"pages": [
 		{
@@ -11,7 +12,7 @@
 		},
 		{
 			"type": "crafting",
-			"recipe": "astromine:iron_gear",
+			"recipe": "astromine:iron_gear_from_ingot",
 			"title": "Recipe",
 			"text": "While the recipe shown is clearly for an $(item)Iron Gear$(), simply substituting the $(item)Iron Ingots$() with any other $(thing)Ingots() will create a gear of that type."
 		}

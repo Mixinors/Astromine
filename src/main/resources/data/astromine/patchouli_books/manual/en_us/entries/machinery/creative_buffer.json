@@ -1,6 +1,7 @@
 {
 	"name": "Creative Buffer",
 	"icon": "astromine:creative_buffer",
+	"category": "machinery",
 	"sortnum": 1,
 	"pages": [
 		{

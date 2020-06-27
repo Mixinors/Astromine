@@ -1,6 +1,7 @@
 {
 	"name": "Ore Clusters",
 	"icon": "astromine:asteroid_diamond_cluster",
+	"category": "world",
 	"sortnum": 0,
 	"pages": [
 		{

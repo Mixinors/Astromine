@@ -1,6 +1,7 @@
 {
 	"name": "Creative Capacitor",
 	"icon": "astromine:creative_capacitor",
+	"category": "machinery",
 	"sortnum": 1,
 	"pages": [
 		{

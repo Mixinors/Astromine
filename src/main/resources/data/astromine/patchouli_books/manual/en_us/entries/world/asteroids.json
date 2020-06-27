@@ -1,6 +1,7 @@
 {
 	"name": "Asteroids",
 	"icon": "astromine:asteroid_stone",
+	"category": "world",
 	"sortnum": 0,
 	"pages": [
 		{

@@ -1,6 +1,7 @@
 {
 	"name": "Metite",
 	"icon": "astromine:metite_ingot",
+	"category": "resources",
 	"sortnum": 0,
 	"pages": [
 		{

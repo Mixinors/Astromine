@@ -1,6 +1,7 @@
 {
 	"name": "Fluid Cable",
 	"icon": "astromine:fluid_cable",
+	"category": "machinery",
 	"sortnum": 0,
 	"pages": [
 		{

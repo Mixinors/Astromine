@@ -1,6 +1,7 @@
 {
 	"name": "Energy Cable",
 	"icon": "astromine:energy_cable",
+	"category": "machinery",
 	"sortnum": 0,
 	"pages": [
 		{

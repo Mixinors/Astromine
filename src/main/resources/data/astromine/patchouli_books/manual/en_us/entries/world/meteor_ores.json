@@ -1,12 +1,13 @@
 {
 	"name": "Meteor Ores",
 	"icon": "astromine:meteor_metite_ore",
+	"category": "world",
 	"sortnum": 0,
 	"pages": [
 		{
 			"type": "text",
 			"title": "Meteor Ores",
-			"text": "Veins of ores found in %(thing)$(l:world/meteors)meteors$(), which may be harvested for resources.$(p)When mined, will drop their respective $(thing)$(l:world/ore_clusters)ore clusters$()."
+			"text": "Veins of ores found in $(thing)$(l:world/meteors)meteors$(), which may be harvested for resources.$(p)When mined, will drop their respective $(thing)$(l:world/ore_clusters)ore clusters$()."
 		}
 	]
 }

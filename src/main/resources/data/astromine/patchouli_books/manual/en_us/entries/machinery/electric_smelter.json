@@ -1,6 +1,7 @@
 {
 	"name": "Electric Smelter",
 	"icon": "astromine:electric_smelter",
+	"category": "machinery",
 	"sortnum": 1,
 	"pages": [
 		{

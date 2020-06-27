@@ -1,12 +1,13 @@
 {
 	"name": "Asteroid Ores",
 	"icon": "astromine:asteroid_diamond_ore",
+	"category": "world",
 	"sortnum": 0,
 	"pages": [
 		{
 			"type": "text",
 			"title": "Asteroid Ores",
-			"text": "Veins of ores found in %(thing)$(l:world/asteroids)asteroids$(), which may be harvested for resources.$(p)When mined, will drop their respective $(thing)$(l:world/ore_clusters)ore clusters$()."
+			"text": "Veins of ores found in $(thing)$(l:world/asteroids)asteroids$(), which may be harvested for resources.$(p)When mined, will drop their respective $(thing)$(l:world/ore_clusters)ore clusters$()."
 		}
 	]
 }

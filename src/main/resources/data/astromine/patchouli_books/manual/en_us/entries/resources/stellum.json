@@ -1,6 +1,7 @@
 {
 	"name": "Stellum",
 	"icon": "astromine:stellum_ingot",
+	"category": "resources",
 	"sortnum": 2,
 	"pages": [
 		{

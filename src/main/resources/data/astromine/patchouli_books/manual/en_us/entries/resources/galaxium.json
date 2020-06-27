@@ -1,6 +1,7 @@
 {
 	"name": "Galaxium",
 	"icon": "astromine:galaxium",
+	"category": "resources",
 	"sortnum": 3,
 	"pages": [
 		{

@@ -1,6 +1,7 @@
 {
 	"name": "Creative Tank",
 	"icon": "astromine:creative_tank",
+	"category": "machinery",
 	"sortnum": 1,
 	"pages": [
 		{

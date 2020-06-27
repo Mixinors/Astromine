@@ -1,6 +1,7 @@
 {
 	"name": "Fluid Extractor",
 	"icon": "astromine:fluid_extractor",
+	"category": "machinery",
 	"sortnum": 1,
 	"pages": [
 		{
