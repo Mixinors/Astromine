@@ -1,6 +1,8 @@
 package com.github.chainmailstudios.astromine.common.fluid;
 
+import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
 import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
@@ -225,52 +227,10 @@ public abstract class AdvancedFluid extends FlowableFluid implements Breathable 
 			this.bucket = bucket;
 
 			if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-				buildClient();
+				ClientUtilities.buildClient(name, tint, still, flowing);
 			}
 
 			return still;
-		}
-
-		private void buildClient() {
-			final Identifier stillSpriteIdentifier = new Identifier("block/water_still");
-			final Identifier flowingSpriteIdentifier = new Identifier("block/water_flow");
-			final Identifier listenerIdentifier = AstromineCommon.identifier(name + "_reload_listener");
-
-			final Sprite[] fluidSprites = {null, null};
-
-			ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEX).register((atlasTexture, registry) -> {
-				registry.register(stillSpriteIdentifier);
-				registry.register(flowingSpriteIdentifier);
-			});
-
-			ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
-				@Override
-				public Identifier getFabricId() {
-					return listenerIdentifier;
-				}
-
-				@Override
-				public void apply(ResourceManager resourceManager) {
-					final Function<Identifier, Sprite> atlas = MinecraftClient.getInstance().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
-					fluidSprites[0] = atlas.apply(stillSpriteIdentifier);
-					fluidSprites[1] = atlas.apply(flowingSpriteIdentifier);
-				}
-			});
-
-			final FluidRenderHandler handler = new FluidRenderHandler() {
-				@Override
-				public Sprite[] getFluidSprites(BlockRenderView view, BlockPos pos, FluidState state) {
-					return fluidSprites;
-				}
-
-				@Override
-				public int getFluidColor(BlockRenderView view, BlockPos pos, FluidState state) {
-					return tint;
-				}
-			};
-
-			FluidRenderHandlerRegistry.INSTANCE.register(still, handler);
-			FluidRenderHandlerRegistry.INSTANCE.register(flowing, handler);
 		}
 	}
 
