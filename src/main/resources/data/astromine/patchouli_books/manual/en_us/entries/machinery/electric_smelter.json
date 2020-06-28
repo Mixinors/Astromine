@@ -1,5 +1,5 @@
 {
-	"name": "Electric Smelter",
+	"name": "text.astromine.gadgets.electric_smelter.title",
 	"icon": "astromine:electric_smelter",
 	"category": "machinery",
 	"sortnum": 1,
@@ -7,13 +7,13 @@
 		{
 			"type": "spotlight",
 			"item": "astromine:electric_smelter",
-			"title": "Electric Smelter",
-			"text": "A machine which consumes $(thing)energy$() to smelt $(thing)items$() into useful materials."
+			"title": "text.astromine.gadgets.electric_smelter.page_one.title",
+			"text": "text.astromine.gadgets.electric_smelter.page_one.text"
 		},
 		{
 			"type": "crafting",
 			"recipe": "astromine:electric_smelter",
-			"title": "Recipe"
+			"title": "text.astromine.gadgets.electric_smelter.page_two.title"
 		}
 	]
 }

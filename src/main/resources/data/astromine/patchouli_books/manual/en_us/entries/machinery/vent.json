@@ -1,5 +1,5 @@
 {
-	"name": "Vent",
+	"name": "text.astromine.machinery.vent.title",
 	"icon": "astromine:vent",
 	"category": "machinery",
 	"sortnum": 1,
@@ -7,13 +7,13 @@
 		{
 			"type": "spotlight",
 			"item": "astromine:vent",
-			"title": "Vent",
-			"text": "A machine which consumes energy to ventilate fluids into the atmosphere."
+			"title": "text.astromine.machinery.vent.page_one.title",
+			"text": "text.astromine.machinery.vent.page_one.text"
 		},
 		{
 			"type": "crafting",
 			"recipe": "astromine:vent",
-			"title": "Recipe"
+			"title": "text.astromine.machinery.vent.page_two.title"
 		}
 	]
 }

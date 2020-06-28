@@ -1,5 +1,5 @@
 {
-	"name": "Energy Cable",
+	"name": "text.astromine.machinery.energy_cable.title",
 	"icon": "astromine:energy_cable",
 	"category": "machinery",
 	"sortnum": 0,
@@ -7,13 +7,13 @@
 		{
 			"type": "spotlight",
 			"item": "astromine:energy_cable",
-			"title": "Energy Cable",
-			"text": "A cable which transports $(thing)energy$(); no buffering or path-finding involved."
+			"title": "text.astromine.machinery.energy_cable.page_one.title",
+			"text": "text.astromine.machinery.energy_cable.page_one.text"
 		},
 		{
 			"type": "crafting",
 			"recipe": "astromine:energy_cable",
-			"title": "Recipe"
+			"title": "text.astromine.machinery.energy_cable.page_two.title"
 		}
 	]
 }

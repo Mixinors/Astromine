@@ -1,5 +1,5 @@
 {
-	"name": "Fuel Mixer",
+	"name": "text.astromine.machinery.fuel_mixer.title",
 	"icon": "astromine:fuel_mixer",
 	"category": "machinery",
 	"sortnum": 1,
@@ -7,13 +7,13 @@
 		{
 			"type": "spotlight",
 			"item": "astromine:fuel_mixer",
-			"title": "Fuel Mixer",
-			"text": "A machine which consumes $(thing)energy$() to mix $(thing)fluids$() into useful materials."
+			"title": "text.astromine.machinery.fuel_mixer.page_one.title",
+			"text": "text.astromine.machinery.fuel_mixer.page_one.text"
 		},
 		{
 			"type": "crafting",
 			"recipe": "astromine:fuel_mixer",
-			"title": "Recipe"
+			"title": "text.astromine.machinery.fuel_mixer.page_two.title"
 		}
 	]
 }
