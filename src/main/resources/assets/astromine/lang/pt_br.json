@@ -264,7 +264,7 @@
   "text.astromine.machinery.holographic_bridge_projector.page_two.title": "Receita",
   "text.astromine.gadgets.holographic_connector.title": "Conector Holográfico",
   "text.astromine.gadgets.holographic_connector.page_one.title": "Conector Holográfico",
-  "text.astromine.gadgets.holographic_connector.page_one.text": "Um controle remoto que lhe permita conectar $(item)$(l:gadgets/holographic_bridge_projector)Projetores de Ponte Holográficos$(). Eles precisam estar vendo um ao outro na mesma reta, mas podem ter alturas diferentes.",
+  "text.astromine.gadgets.holographic_connector.page_one.text": "Um controle remoto que lhe permita conectar $(item)$(l:machinery/holographic_bridge_projector)Projetores de Ponte Holográficos$(). Eles precisam estar vendo um ao outro na mesma reta, mas podem ter alturas diferentes.",
   "text.astromine.gadgets.holographic_connector.page_two.title": "Receita",
   "text.astromine.machinery.creative_buffer.title": "Buffer Criativo",
   "text.astromine.machinery.creative_buffer.page_one.title": "Buffer Criativo",
