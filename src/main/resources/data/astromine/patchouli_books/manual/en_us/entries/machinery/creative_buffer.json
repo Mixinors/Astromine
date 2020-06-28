@@ -1,5 +1,5 @@
 {
-	"name": "text.astromine.gadgets.creative_buffer.title",
+	"name": "text.astromine.machinery.creative_buffer.title",
 	"icon": "astromine:creative_buffer",
 	"category": "machinery",
 	"sortnum": 1,
@@ -7,8 +7,8 @@
 		{
 			"type": "spotlight",
 			"item": "astromine:creative_buffer",
-			"title": "text.astromine.gadgets.creative_buffer.page_one.title",
-			"text": "text.astromine.gadgets.creative_buffer.page_one.text"
+			"title": "text.astromine.machinery.creative_buffer.page_one.title",
+			"text": "text.astromine.machinery.creative_buffer.page_one.text"
 		}
 	]
 }

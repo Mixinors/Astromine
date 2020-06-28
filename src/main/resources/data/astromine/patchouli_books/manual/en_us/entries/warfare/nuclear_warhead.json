@@ -13,7 +13,7 @@
 		{
 			"type": "crafting",
 			"recipe": "astromine:nuclear_warhead",
-			"title": "text.astromine.warfare.nuclear_warhead.page_two.text"
+			"title": "text.astromine.warfare.nuclear_warhead.page_two.title"
 		}
 	]
 }
