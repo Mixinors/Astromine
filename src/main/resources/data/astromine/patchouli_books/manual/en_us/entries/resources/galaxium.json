@@ -7,24 +7,24 @@
 		{
 			"type": "spotlight",
 			"item": "astromine:galaxium",
-			"title": "Galaxium",
-			"text": "A rare gem with a deep, overwhelming dark shine. Extraordinarily dense, this material is theorized to be obtained from large clusters at the center of galaxies.$(p)There are no records of such phenomena, but one's journey holds the keys to many secrets never thought of before."
+			"title": "text.astromine.resources.galaxium.page_one.title",
+			"text": "text.astromine.resources.galaxium.page_one.text"
 		},
 		{
 			"type": "smelting",
 			"recipe": "astromine:galaxium_from_smelting_ore",
-			"title": "Obtaining Galaxium",
-			"text": "$(item)Galaxium Ore$() can be rarely found inside $(thing)$(l:world/asteroids)Asteroids$() in $(thing)Space$().$(p)Galaxium Ore mining will require an $(item)Asterite Pickaxe$() (Mining Level 5) or better, usually resulting in a single $(item)$(l:world/ore_clusters)Galaxium Cluster$() which can be forged into a $(item)Galaxium$() gem."
+			"title": "text.astromine.resources.galaxium.page_two.title",
+			"text": "text.astromine.resources.galaxium.page_two.text"
 		},
 		{
 			"type": "text",
-			"title": "Usages",
-			"text": "Galaxium can be used to create extremely resistant tooling and exquisite technology."
+			"title": "text.astromine.resources.galaxium.page_three.title",
+			"text": "text.astromine.resources.galaxium.page_three.text"
 		},
 		{
 			"type": "text",
-			"title": "Statistics",
-			"text": "$(l)Tools$()$(br)Mining Level: 6$(br)Base Durability: 3072$(br)Mining Speed: 11$(br)Attack Damage: 5$(br)Enchantability: 18$(p)$(l)Armor$()$(br)Durability Multiplier: 44$(br)Total Defense: 25$(br)Toughness: 4.5$(br)Enchantability: 18"
+			"title": "text.astromine.resources.galaxium.page_four.title",
+			"text": "text.astromine.resources.galaxium.page_four.text"
 		}
 	]
 }

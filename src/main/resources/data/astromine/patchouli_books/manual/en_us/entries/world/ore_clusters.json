@@ -1,13 +1,13 @@
 {
-	"name": "Ore Clusters",
+	"name": "text.astromine.world.ore_clusters.title",
 	"icon": "astromine:asteroid_diamond_cluster",
 	"category": "world",
 	"sortnum": 0,
 	"pages": [
 		{
 			"type": "text",
-			"title": "Ore Clusters",
-			"text": "Clusters of ores obtained from $(thing)$(l:world/asteroid_ores)asteroid ores$() or $(thing)$(l:world/meteor_ores)meteor ores$(), which may be processed for resources."
+			"title": "text.astromine.world.ore_clusters.page_one.title",
+			"text": "text.astromine.world.ore_clusters.page_one.text"
 		}
 	]
 }

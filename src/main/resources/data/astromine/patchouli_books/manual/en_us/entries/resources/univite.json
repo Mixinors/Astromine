@@ -8,22 +8,22 @@
 			"type": "spotlight",
 			"item": "astromine:univite_ingot",
 			"title": "Univite",
-			"text": "A material so highly coveted it has sparked numerous interstellar wars; only a limited amount of it exists within this realm, thought to have originated at the heart of the universe, before any of us even dared the thought of existence. It is unknown whether any material conveys higher power than Univite."
+			"text": ""
 		},
 		{
 			"type": "text",
 			"title": "Obtaining Univite",
-			"text": "A theorized origin and limited existence means immense difficulty in being obtained; with no way but theft available to small civilizations."
+			"text": ""
 		},
 		{
 			"type": "text",
 			"title": "Usages",
-			"text": "Univite can be used to create the strongest tooling and weaponry known by all discovered civilizations."
+			"text": ""
 		},
 		{
 			"type": "text",
 			"title": "Statistics",
-			"text": "$(l)Tools$()$(br)Mining Level: 7$(br)Base Durability: 3918$(br)Mining Speed: 12$(br)Attack Damage: 6$(br)Enchantability: 22$(br)Fireproof$(p)$(l)Armor$()$(br)Durability Multiplier: 50$(br)Total Defense: 27$(br)Toughness: 5$(br)Enchantability: 22$(br)Fireproof"
+			"text": ""
 		}
 	]
 }
