@@ -1,6 +1,6 @@
 {
-	"name": "Resources",
-	"description": "The exquisite materials that one channels for power.",
+	"name": "text.astromine.patchouli.warfare.title",
+	"description": "text.astromine.patchouli.warfare.description",
 	"icon": "astromine:metite_ingot",
 	"sortnum": 1
 }
