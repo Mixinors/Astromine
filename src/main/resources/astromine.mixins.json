@@ -11,7 +11,7 @@
 	],
 	"client": [
 		"BossBarHudMixin", "CurrentDownParticleMixin", "EggEntityMixin", "GameRendererMixin",
-		"ItemRendererMixin", "MinecraftClientMixin", "SkyPropertiesMixin", "WorldRendererMixin"
+		"ItemRendererMixin", "MinecraftClientMixin", "SkyPropertiesMixin", "WorldRendererMixin", "BuiltinModelItemRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
