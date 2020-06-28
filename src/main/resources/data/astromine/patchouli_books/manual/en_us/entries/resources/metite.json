@@ -1,7 +1,7 @@
 {
 	"name": "Metite",
 	"icon": "astromine:metite_ingot",
-	"category": "materials",
+	"category": "resources",
 	"sortnum": 0,
 	"pages": [
 		{
@@ -14,7 +14,7 @@
 			"type": "smelting",
 			"recipe": "astromine:metite_ingot_from_smelting_ore",
 			"title": "Obtaining Metite",
-			"text": "$(item)Metite Ore$() can be found inside $(thing)Meteors$() which have impacted on $(thing)Earth$(), or in $(thing)Asteroids$() in $(thing)Space$().$(p)Metite Ore mining requires a $(item)Netherite Pickaxe$() (Mining Level 4) or better, usually resulting in between 1 and 3 $(item)Metite Clusters$() which can forged into a $(item)Metite Ingot$()."
+			"text": "$(item)Metite Ore$() can be found inside $(thing)$(l:world/meteors)Meteors$() which have impacted on $(thing)Earth$(), or in $(thing)$(l:world/asteroids)Asteroids$() in $(thing)Space$().$(p)Mining requires a $(item)Netherite Pickaxe$() (Mining Level 4) or better, usually resulting in between 1 and 3 $(item)$(l:world/ore_clusters)Metite Clusters$() which can forged into a $(item)Metite Ingot$()."
 		},
 		{
 			"type": "text",

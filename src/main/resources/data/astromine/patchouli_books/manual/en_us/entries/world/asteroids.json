@@ -8,7 +8,7 @@
 			"type": "spotlight",
 			"item": "astromine:asteroid_stone",
 			"title": "Asteroids",
-			"text": "Foreign bodies found cruising through interstellar space, in rings, clusters and many other formations; said to contain all known ores."
+			"text": "Foreign bodies found cruising through interstellar space, in rings, clusters and many other formations; said to contain large quantites of $(thing)$(l:world/asteroid_ores)ores$()."
 		}
 	]
 }

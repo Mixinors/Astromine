@@ -1,23 +1,18 @@
 {
 	"name": "Holographic Bridge Projector",
 	"icon": "astromine:holographic_bridge_projector",
-	"category": "machinery",
+	"category": "gadgets",
 	"sortnum": 1,
 	"pages": [
 		{
 			"type": "spotlight",
 			"item": "astromine:holographic_bridge_projector",
 			"title": "Holographic Bridge Projector",
-			"text": "A machine which generates a holographic bridge between it and another one of its kind; they can be linked with a $(thing)Holographic Connector$()."
+			"text": "A block which generates a holographic bridge between it and another one of its kind; they can be linked with a $(item)$(l:gadgets/holographic_connector)Holographic Connector$()."
 		},
 		{
 			"type": "crafting",
 			"recipe": "astromine:holographic_bridge_projector",
-			"title": "Recipe"
-		},
-		{
-			"type": "crafting",
-			"recipe": "astromine:holographic_connector",
 			"title": "Recipe"
 		}
 	]

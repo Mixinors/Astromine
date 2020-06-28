@@ -8,7 +8,7 @@
 			"type": "spotlight",
 			"item": "astromine:fluid_cable",
 			"title": "Fluid Cable",
-			"text": "A cable which transporters fluids; no buffering or path-finding involved."
+			"text": "A cable which transports $(thing)fluids$(); no buffering or path-finding involved."
 		},
 		{
 			"type": "crafting",

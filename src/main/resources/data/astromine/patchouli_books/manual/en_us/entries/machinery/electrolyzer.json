@@ -8,7 +8,7 @@
 			"type": "spotlight",
 			"item": "astromine:electrolyzer",
 			"title": "Electrolyzer",
-			"text": "A machine which accepts energy and fluids, consumes energy and fluids, and electrolyzes the fluids into useful materials."
+			"text": "A machine which consumes $(thing)energy$() to electrolyze $(thing)fluids$() into useful materials."
 		},
 		{
 			"type": "crafting",

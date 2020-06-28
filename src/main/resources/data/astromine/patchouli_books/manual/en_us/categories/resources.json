@@ -1,6 +1,6 @@
 {
-	"name": "Materials",
+	"name": "Resources",
 	"description": "The exquisite materials that one channels for power.",
 	"icon": "astromine:metite_ingot",
-	"sortnum": 3
+	"sortnum": 1
 }

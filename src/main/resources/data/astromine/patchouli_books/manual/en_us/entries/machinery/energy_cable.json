@@ -8,7 +8,7 @@
 			"type": "spotlight",
 			"item": "astromine:energy_cable",
 			"title": "Energy Cable",
-			"text": "A cable which transporters energy; no buffering or path-finding involved."
+			"text": "A cable which transports $(thing)energy$(); no buffering or path-finding involved."
 		},
 		{
 			"type": "crafting",

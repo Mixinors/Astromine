@@ -8,7 +8,7 @@
 			"type": "spotlight",
 			"item": "astromine:creative_buffer",
 			"title": "Creative Buffer",
-			"text": "A machine which produces a specified item infinitely."
+			"text": "A machine which produces a specified $(thing)item$() infinitely."
 		}
 	]
 }
