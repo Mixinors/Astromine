@@ -43,20 +43,20 @@ import java.util.stream.Collectors;
 
 public final class LibBlockAttributesCompatibility {
 	public static void initialize() {
-        // LBA 0.7.1: replace these 6 method calls with "FluidAttributes.forEachInv()"
-        appendAdder(FluidAttributes.FIXED_INV_VIEW);
-        appendAdder(FluidAttributes.FIXED_INV);
-        appendAdder(FluidAttributes.GROUPED_INV_VIEW);
-        appendAdder(FluidAttributes.GROUPED_INV);
-        appendAdder(FluidAttributes.INSERTABLE);
-        appendAdder(FluidAttributes.EXTRACTABLE);
+		// LBA 0.7.1: replace these 6 method calls with "FluidAttributes.forEachInv()"
+		appendAdder(FluidAttributes.FIXED_INV_VIEW);
+		appendAdder(FluidAttributes.FIXED_INV);
+		appendAdder(FluidAttributes.GROUPED_INV_VIEW);
+		appendAdder(FluidAttributes.GROUPED_INV);
+		appendAdder(FluidAttributes.INSERTABLE);
+		appendAdder(FluidAttributes.EXTRACTABLE);
 	}
 
 	private static <T> void appendAdder(Attribute<T> attribute) {
-	    attribute.appendBlockAdder(LibBlockAttributesCompatibility::append);
+		attribute.appendBlockAdder(LibBlockAttributesCompatibility::append);
 	}
 
-    private static <T> void append(World world, BlockPos blockPos, BlockState state, AttributeList<T> list) {
+	private static <T> void append(World world, BlockPos blockPos, BlockState state, AttributeList<T> list) {
 		BlockEntity blockEntity = world.getBlockEntity(blockPos);
 
 		if (blockEntity != null) {
@@ -65,13 +65,13 @@ public final class LibBlockAttributesCompatibility {
 			// LBA 0.7.1: replace this get&opposite call with "list.getTargetSide()"
 			@Nullable Direction direction = list.getSearchDirection();
 			if (direction != null) {
-			    direction = direction.getOpposite();
+				direction = direction.getOpposite();
 			}
 
 			FluidInventoryComponent component = componentProvider.getSidedComponent(direction, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
 			if (component != null) {
-			    list.offer(new LibBlockAttributesWrapper(component));
+				list.offer(new LibBlockAttributesWrapper(component));
 			}
 		}
 	}
@@ -101,22 +101,22 @@ public final class LibBlockAttributesCompatibility {
 			this.component = component;
 		}
 
-        private void validateTankIndex(int tank) {
-            if (tank < 0 || tank >= getTankCount()) {
-                throw new IndexOutOfBoundsException("Tank (" + tank + ") was out of bounds [0, " + getTankCount() + ")");
-            }
-        }
+		private void validateTankIndex(int tank) {
+			if (tank < 0 || tank >= getTankCount()) {
+				throw new IndexOutOfBoundsException("Tank (" + tank + ") was out of bounds [0, " + getTankCount() + ")");
+			}
+		}
 
-        @Override
-        public int getTankCount() {
-            return component.getSize();
-        }
+		@Override
+		public int getTankCount() {
+			return component.getSize();
+		}
 
-        @Override
-        public alexiil.mc.lib.attributes.fluid.volume.FluidVolume getInvFluid(int tank) {
-            validateTankIndex(tank);
-            return wrapLibBlockAttributes(component.getVolume(tank));
-        }
+		@Override
+		public alexiil.mc.lib.attributes.fluid.volume.FluidVolume getInvFluid(int tank) {
+			validateTankIndex(tank);
+			return wrapLibBlockAttributes(component.getVolume(tank));
+		}
 
 		@Override
 		public boolean setInvFluid(int tank, alexiil.mc.lib.attributes.fluid.volume.FluidVolume fluidVolume, Simulation simulation) {
@@ -130,39 +130,39 @@ public final class LibBlockAttributesCompatibility {
 			FluidVolume current = component.getVolume(tank);
 
 			if (incoming.getFraction().isBiggerThan(current.getSize())) {
-                return false;
-            }
+				return false;
+			}
 
 			boolean allowed = false;
 
 			if (incoming.isEmpty()) {
-			    if (current.isEmpty()) {
-			        return true;
-			    }
-			    allowed = component.canExtract(current, tank);
+				if (current.isEmpty()) {
+					return true;
+				}
+				allowed = component.canExtract(current, tank);
 			} else if (current.isEmpty()) {
-			    allowed = component.canInsert(incoming, tank);
+				allowed = component.canInsert(incoming, tank);
 			} else if (incoming.getFluid() == current.getFluid()) {
 
-		        if (incoming.getFraction().equals(current.getFraction())) {
-		            return true;
-		        }
+				if (incoming.getFraction().equals(current.getFraction())) {
+					return true;
+				}
 
-		        if (incoming.isSmallerThan(current)) {
-		            allowed = component.canExtract(current, tank);
-		        } else {
-		            allowed = component.canInsert(incoming, tank);
-		        }
-		    } else {
-		        allowed = component.canExtract(current, tank) && component.canInsert(incoming, tank);
-		    }
+				if (incoming.isSmallerThan(current)) {
+					allowed = component.canExtract(current, tank);
+				} else {
+					allowed = component.canInsert(incoming, tank);
+				}
+			} else {
+				allowed = component.canExtract(current, tank) && component.canInsert(incoming, tank);
+			}
 
 			if (allowed && simulation.isAction()) {
 
-			    current.setFluid(incoming.getFluid());
-			    current.setFraction(incoming.getFraction());
+				current.setFluid(incoming.getFluid());
+				current.setFraction(incoming.getFraction());
 
-			    component.setVolume(tank, current);
+				component.setVolume(tank, current);
 			}
 
 			return allowed;
@@ -170,20 +170,20 @@ public final class LibBlockAttributesCompatibility {
 
 		@Override
 		public boolean isFluidValidForTank(int tank, FluidKey fluidKey) {
-            validateTankIndex(tank);
+			validateTankIndex(tank);
 			Fluid fluid = fluidKey.getRawFluid();
-            return fluid != null && component.canInsert(new FluidVolume(fluid, Fraction.BUCKET.copy()), tank);
+			return fluid != null && component.canInsert(new FluidVolume(fluid, Fraction.BUCKET.copy()), tank);
 		}
 
 		@Override
 		public FluidAmount getMaxAmount_F(int tank) {
-            validateTankIndex(tank);
-		    return wrapLibBlockAttributes(component.getVolume(tank).getSize());
+			validateTankIndex(tank);
+			return wrapLibBlockAttributes(component.getVolume(tank).getSize());
 		}
 
 		@Override
 		public ListenerToken addListener(FluidInvTankChangeListener fluidInvTankChangeListener, ListenerRemovalToken listenerRemovalToken) {
-		    // We don't support listeners
+			// We don't support listeners
 			return null;
 		}
 	}
