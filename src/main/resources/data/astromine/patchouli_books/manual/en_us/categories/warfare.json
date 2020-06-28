@@ -1,6 +1,6 @@
 {
-	"name": "Warfare",
-	"description": "What one uses to wipe away their foe.",
+	"name": "text.astromine.patchouli.warfare.title",
+	"description": "text.astromine.patchouli.warfare.description",
 	"icon": "astromine:scar_h",
 	"sortnum": 6
 }

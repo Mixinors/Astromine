@@ -1,5 +1,5 @@
 {
-	"name": "Space Suit",
+	"name": "text.astromine.astronautics.space_suit.title",
 	"icon": "astromine:space_suit_helmet",
 	"category": "astronautics",
 	"sortnum": 0,
@@ -7,8 +7,8 @@
 		{
 			"type": "spotlight",
 			"item": "astromine:space_suit_helmet",
-			"title": "Space Suit",
-			"text": "Vital for survival in hostile environments, a Space Suit is the most important thing one may carry. $(p)With internal tanks which may be pressurized in certain machines, it may be filled with (un-)breathable gases fit for whoever is wearing it."
+			"title": "text.astromine.astronautics.space_suit.page_one.title",
+			"text": "text.astromine.astronautics.space_suit.page_one.text"
 		},
 		{
 			"type": "crafting",

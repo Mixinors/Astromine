@@ -1,5 +1,5 @@
 {
-	"name": "Fluid Extractor",
+	"name": "text.astromine.machinery.fluid_extractor.title",
 	"icon": "astromine:fluid_extractor",
 	"category": "machinery",
 	"sortnum": 1,
@@ -7,13 +7,13 @@
 		{
 			"type": "spotlight",
 			"item": "astromine:fluid_extractor",
-			"title": "Fluid Extractor",
-			"text": "A machine which consumes $(thing)energy$() to pick up $(thing)fluids$() from the world."
+			"title": "text.astromine.machinery.fluid_extractor.page_one.title",
+			"text": "text.astromine.machinery.fluid_extractor.page_one.title"
 		},
 		{
 			"type": "crafting",
 			"recipe": "astromine:fluid_extractor",
-			"title": "Recipe"
+			"title": "text.astromine.machinery.fluid_extractor.page_two.title"
 		}
 	]
 }

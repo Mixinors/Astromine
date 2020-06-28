@@ -1,5 +1,5 @@
 {
-	"name": "Nuclear Warhead",
+	"name": "text.astromine.warfare.nuclear_warhead.title",
 	"icon": "astromine:nuclear_warhead",
 	"category": "warfare",
 	"sortnum": 1,
@@ -7,13 +7,13 @@
 		{
 			"type": "spotlight",
 			"item": "astromine:nuclear_warhead",
-			"title": "Nuclear Warhead",
-			"text": "A bomb capable of devastating destruction, terminating all life-forms in the process."
+			"title": "text.astromine.warfare.nuclear_warhead.page_one.title",
+			"text": "text.astromine.warfare.nuclear_warhead.page_one.text"
 		},
 		{
 			"type": "crafting",
 			"recipe": "astromine:nuclear_warhead",
-			"title": "Recipe"
+			"title": "text.astromine.warfare.nuclear_warhead.page_two.text"
 		}
 	]
 }

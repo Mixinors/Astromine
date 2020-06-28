@@ -1,5 +1,5 @@
 {
-	"name": "Sorter",
+	"name": "text.astromine.machinery.sorter.title",
 	"icon": "astromine:sorter",
 	"category": "machinery",
 	"sortnum": 1,
@@ -7,13 +7,13 @@
 		{
 			"type": "spotlight",
 			"item": "astromine:sorter",
-			"title": "Sorter",
-			"text": "A machine which consumes $(thing)energy$() to sort $(thing)items$() into useful materials."
+			"title": "text.astromine.machinery.sorter.page_one.title",
+			"text": "text.astromine.machinery.sorter.page_one.text"
 		},
 		{
 			"type": "crafting",
 			"recipe": "astromine:sorter",
-			"title": "Recipe"
+			"title": "text.astromine.machinery.sorter.page_two.title"
 		}
 	]
 }

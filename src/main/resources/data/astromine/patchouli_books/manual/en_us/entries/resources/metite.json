@@ -7,24 +7,24 @@
 		{
 			"type": "spotlight",
 			"item": "astromine:metite_ingot",
-			"title": "Metite",
-			"text": "A foreign metal, Metite withstands immense pressures; being essential in all areas of space travel.$(p)Acquiring it is considered a major stepping stone in one's interstellar journey."
+			"title": "text.astromine.resources.metite.page_one.title",
+			"text": "text.astromine.resources.metite.page_one.text"
 		},
 		{
 			"type": "smelting",
 			"recipe": "astromine:metite_ingot_from_smelting_ore",
-			"title": "Obtaining Metite",
-			"text": "$(item)Metite Ore$() can be found inside $(thing)$(l:world/meteors)Meteors$() which have impacted on $(thing)Earth$(), or in $(thing)$(l:world/asteroids)Asteroids$() in $(thing)Space$().$(p)Mining requires a $(item)Netherite Pickaxe$() (Mining Level 4) or better, usually resulting in between 1 and 3 $(item)$(l:world/ore_clusters)Metite Clusters$() which can forged into a $(item)Metite Ingot$()."
+			"title": "text.astromine.resources.metite.page_two.title",
+			"text": "text.astromine.resources.metite.page_two.text"
 		},
 		{
 			"type": "text",
-			"title": "Usages",
-			"text": "Metite can be used to create standard tooling; however, it is of much more use in creating aerospacial technology."
+			"title": "text.astromine.resources.metite.page_three.title",
+			"text": "text.astromine.resources.metite.page_three.text"
 		},
 		{
 			"type": "text",
-			"title": "Statistics",
-			"text": "$(l)Tools$()$(br)Mining Level: 2$(br)Base Durability: 981$(br)Mining Speed: 14$(br)Attack Damage: 5$(br)Enchantability: 5$(p)$(l)Armor$()$(br)Durability Multiplier: 15$(br)Total Defense: 14$(br)Toughness: 0$(br)Enchantability: 7"
+			"title": "text.astromine.resources.metite.page_four.title",
+			"text": "text.astromine.resources.metite.page_four.text"
 		}
 	]
 }

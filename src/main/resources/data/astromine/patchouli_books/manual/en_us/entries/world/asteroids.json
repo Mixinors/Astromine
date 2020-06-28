@@ -1,5 +1,5 @@
 {
-	"name": "Asteroids",
+	"name": "text.astromine.world.asteroids.title",
 	"icon": "astromine:asteroid_stone",
 	"category": "world",
 	"sortnum": 0,
@@ -7,8 +7,8 @@
 		{
 			"type": "spotlight",
 			"item": "astromine:asteroid_stone",
-			"title": "Asteroids",
-			"text": "Foreign bodies found cruising through interstellar space, in rings, clusters and many other formations; said to contain large quantites of $(thing)$(l:world/asteroid_ores)ores$()."
+			"title": "text.astromine.world.asteroids.page_one.title",
+			"text": "text.astromine.world.asteroids.page_one.text"
 		}
 	]
 }

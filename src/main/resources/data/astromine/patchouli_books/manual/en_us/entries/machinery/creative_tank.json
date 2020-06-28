@@ -1,5 +1,5 @@
 {
-	"name": "Creative Tank",
+	"name": "text.astromine.gadgets.creative_tank.title",
 	"icon": "astromine:creative_tank",
 	"category": "machinery",
 	"sortnum": 1,
@@ -7,8 +7,8 @@
 		{
 			"type": "spotlight",
 			"item": "astromine:creative_tank",
-			"title": "Creative Tank",
-			"text": "A machine which produces a specified $(thing)fluid$() infinitely."
+			"title": "text.astromine.gadgets.creative_tank.page_one.title",
+			"text": "text.astromine.gadgets.creative_tank.page_one.title,"
 		}
 	]
 }

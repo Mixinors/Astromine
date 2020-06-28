@@ -1,5 +1,5 @@
 {
-	"name": "Meteors",
+	"name": "text.astromine.world.meteors.title",
 	"icon": "astromine:meteor_stone",
 	"category": "world",
 	"sortnum": 0,
@@ -7,8 +7,8 @@
 		{
 			"type": "spotlight",
 			"item": "astromine:meteor_stone",
-			"title": "Meteors",
-			"text": "Foreign bodies that, cruising through the stairs, collided with a planetary body; said to contain $(thing)$(l:world/meteor_ores)extraterrestrial ores$()."
+			"title": "text.astromine.world.meteors.page_one.title",
+			"text": "text.astromine.world.meteors.page_one.text"
 		}
 	]
 }
