@@ -16,6 +16,7 @@ public class AstromineClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		AstromineEntityRenderers.initialize();
 		AstromineBlockEntityRenderers.initialize();
+		AstromineClientModels.initialize();
 		AstromineSounds.initialize();
 		AstromineParticleFactories.initialize();
 		AstromineSkyboxes.initialize();
