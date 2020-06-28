@@ -65,7 +65,7 @@ public class AstromineCommon implements ModInitializer {
 
 		if (FabricLoader.getInstance().isModLoaded("libblockattributes_fluids")) {
 			try {
-				Class.forName("com.github.chainmailstudios.astromine.common.lba.LBAFluidCompat").getDeclaredMethod("initialize").invoke(null);
+				Class.forName("com.github.chainmailstudios.astromine.common.lba.LibBlockAttributesCompatibility").getDeclaredMethod("initialize").invoke(null);
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}
