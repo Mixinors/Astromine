@@ -83,7 +83,7 @@ public abstract class LivingEntityMixin {
 			} else {
 				//FluidVolume volume = SpaceSuitItem.readVolume(equippedArmor);
 				//fluid = volume.getFluid();
-//
+				//
 				//if (volume.isEmpty()) {
 				//	isBreathing = false;
 				//}
@@ -112,10 +112,6 @@ public abstract class LivingEntityMixin {
 
 				if (fluid instanceof AdvancedFluid && ((AdvancedFluid) fluid).isToxic()) {
 					entity.damage(DamageSource.GENERIC, ((AdvancedFluid) fluid).getDamage());
-				}
-
-				if (!BreathableRegistry.INSTANCE.get(entity.getType()).contains(fluid)) {
-					isBreathing = false;
 				}
 			}
 
