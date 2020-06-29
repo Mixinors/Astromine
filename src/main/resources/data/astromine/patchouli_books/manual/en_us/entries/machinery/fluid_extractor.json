@@ -8,7 +8,7 @@
 			"type": "spotlight",
 			"item": "astromine:fluid_extractor",
 			"title": "text.astromine.machinery.fluid_extractor.page_one.title",
-			"text": "text.astromine.machinery.fluid_extractor.page_one.title"
+			"text": "text.astromine.machinery.fluid_extractor.page_one.text"
 		},
 		{
 			"type": "crafting",

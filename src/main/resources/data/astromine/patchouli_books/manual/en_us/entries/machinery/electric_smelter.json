@@ -1,5 +1,5 @@
 {
-	"name": "text.astromine.gadgets.electric_smelter.title",
+	"name": "text.astromine.machinery.electric_smelter.title",
 	"icon": "astromine:electric_smelter",
 	"category": "machinery",
 	"sortnum": 1,

@@ -4,14 +4,16 @@
 	"package": "com.github.chainmailstudios.astromine.mixin",
 	"compatibilityLevel": "JAVA_8",
 	"mixins": [
-		"AbstractMinecartEntityMixin", "BrewingRecipeRegistryMixin", "BucketItemMixin", "EntityMixin",
-		"FishingBobberEntityMixin", "FlamingAnvilCraftingMixin", "GravityEntityMixin", "HoneyBlockMixin",
-		"HopperBlockEntityMixin", "InGameHudMixin", "ItemEntityMixin", "LivingEntityMixin", "SlimeEntityMixin",
-		"SquidEntityMixin", "StepAndDestroyBlockGoalMixin", "ThreadExecutorMixin", "WorldChunkMixin"
+		"AbstractMinecartEntityMixin", "BrewingRecipeRegistryMixin", "BucketItemMixin",
+		"EntityMixin", "FishingBobberEntityMixin", "FlamingAnvilCraftingMixin",
+		"GravityEntityMixin", "HoneyBlockMixin", "HopperBlockEntityMixin", "ItemEntityMixin",
+		"LivingEntityMixin", "SlimeEntityMixin", "SquidEntityMixin", "StepAndDestroyBlockGoalMixin",
+		"ThreadExecutorMixin", "WorldChunkMixin"
 	],
 	"client": [
-		"BossBarHudMixin", "CurrentDownParticleMixin", "EggEntityMixin", "GameRendererMixin",
-		"ItemRendererMixin", "MinecraftClientMixin", "SkyPropertiesMixin", "WorldRendererMixin", "BuiltinModelItemRendererMixin"
+		"BossBarHudMixin", "BuiltinModelItemRendererMixin", "CurrentDownParticleMixin", "EggEntityMixin",
+		"GameRendererMixin", "ItemRendererMixin", "MinecraftClientMixin", "SkyPropertiesMixin", "WorldRendererMixin",
+		"InGameHudMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

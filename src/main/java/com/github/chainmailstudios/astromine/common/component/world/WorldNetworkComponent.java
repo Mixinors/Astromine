@@ -72,7 +72,7 @@ public class WorldNetworkComponent implements Component, Tickable {
 			int k = 0;
 
 			for (NetworkNode member : instance.members) {
-				nodeList.put(String.valueOf(++k), member.toTag(new CompoundTag()));
+				memberList.put(String.valueOf(++k), member.toTag(new CompoundTag()));
 			}
 
 			CompoundTag data = new CompoundTag();

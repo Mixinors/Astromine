@@ -1,5 +1,5 @@
 {
-	"name": "text.astromine.gadgets.electrolyzer.title",
+	"name": "text.astromine.machinery.electrolyzer.title",
 	"icon": "astromine:electrolyzer",
 	"category": "machinery",
 	"sortnum": 1,
