@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.common.lba;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.util.Pair;
 import net.minecraft.util.TypedActionResult;
@@ -9,17 +10,24 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
+import alexiil.mc.lib.attributes.Attribute;
 import alexiil.mc.lib.attributes.AttributeList;
 import alexiil.mc.lib.attributes.AttributeProvider;
+import alexiil.mc.lib.attributes.CombinableAttribute;
 import alexiil.mc.lib.attributes.ListenerRemovalToken;
 import alexiil.mc.lib.attributes.ListenerToken;
 import alexiil.mc.lib.attributes.Simulation;
 import alexiil.mc.lib.attributes.fluid.FixedFluidInv;
+import alexiil.mc.lib.attributes.fluid.FixedFluidInvView;
 import alexiil.mc.lib.attributes.fluid.FluidAttributes;
+import alexiil.mc.lib.attributes.fluid.FluidExtractable;
+import alexiil.mc.lib.attributes.fluid.FluidInsertable;
 import alexiil.mc.lib.attributes.fluid.FluidInvTankChangeListener;
 import alexiil.mc.lib.attributes.fluid.GroupedFluidInv;
+import alexiil.mc.lib.attributes.fluid.GroupedFluidInvView;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.filter.FluidFilter;
+import alexiil.mc.lib.attributes.fluid.impl.GroupedFluidInvFixedWrapper;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKey;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKeys;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
@@ -35,32 +43,37 @@ import java.util.stream.Collectors;
 
 public final class LibBlockAttributesCompatibility {
 	public static void initialize() {
-		FluidAttributes.INSERTABLE.appendBlockAdder(LibBlockAttributesCompatibility::append);
-		FluidAttributes.EXTRACTABLE.appendBlockAdder(LibBlockAttributesCompatibility::append);
+		// LBA 0.7.1: replace these 6 method calls with "FluidAttributes.forEachInv()"
+		appendAdder(FluidAttributes.FIXED_INV_VIEW);
+		appendAdder(FluidAttributes.FIXED_INV);
+		appendAdder(FluidAttributes.GROUPED_INV_VIEW);
+		appendAdder(FluidAttributes.GROUPED_INV);
+		appendAdder(FluidAttributes.INSERTABLE);
+		appendAdder(FluidAttributes.EXTRACTABLE);
 	}
 
-	private static void append(World world, BlockPos blockPos, BlockState state, AttributeList<? super LibBlockAttributesWrapper> list) {
-		if (state.getBlock() instanceof AttributeProvider) {
-			return;
-		}
+	private static <T> void appendAdder(Attribute<T> attribute) {
+		attribute.appendBlockAdder(LibBlockAttributesCompatibility::append);
+	}
 
+	private static <T> void append(World world, BlockPos blockPos, BlockState state, AttributeList<T> list) {
 		BlockEntity blockEntity = world.getBlockEntity(blockPos);
 
 		if (blockEntity != null) {
 			ComponentProvider componentProvider = ComponentProvider.fromBlockEntity(blockEntity);
 
+			// LBA 0.7.1: replace this get&opposite call with "list.getTargetSide()"
 			@Nullable Direction direction = list.getSearchDirection();
+			if (direction != null) {
+				direction = direction.getOpposite();
+			}
 
 			FluidInventoryComponent component = componentProvider.getSidedComponent(direction, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
 			if (component != null) {
-				append(component, list);
+				list.offer(new LibBlockAttributesWrapper(component));
 			}
 		}
-	}
-
-	private static void append(FluidInventoryComponent component, AttributeList<? super LibBlockAttributesWrapper> list) {
-		list.add(new LibBlockAttributesWrapper(component));
 	}
 
 	private static alexiil.mc.lib.attributes.fluid.volume.FluidVolume wrapLibBlockAttributes(FluidVolume volume) {
@@ -78,14 +91,31 @@ public final class LibBlockAttributesCompatibility {
 	}
 
 	private static Fraction wrapVolumeToAstromine(FluidAmount amount) {
-		return new Fraction(amount.numerator, amount.denominator);
+		return Fraction.of(amount.whole, amount.numerator, amount.denominator);
 	}
 
-	private static class LibBlockAttributesWrapper implements GroupedFluidInv, FixedFluidInv {
+	private static class LibBlockAttributesWrapper implements FixedFluidInv {
 		private final FluidInventoryComponent component;
 
 		public LibBlockAttributesWrapper(FluidInventoryComponent component) {
 			this.component = component;
+		}
+
+		private void validateTankIndex(int tank) {
+			if (tank < 0 || tank >= getTankCount()) {
+				throw new IndexOutOfBoundsException("Tank (" + tank + ") was out of bounds [0, " + getTankCount() + ")");
+			}
+		}
+
+		@Override
+		public int getTankCount() {
+			return component.getSize();
+		}
+
+		@Override
+		public alexiil.mc.lib.attributes.fluid.volume.FluidVolume getInvFluid(int tank) {
+			validateTankIndex(tank);
+			return wrapLibBlockAttributes(component.getVolume(tank));
 		}
 
 		@Override
@@ -96,84 +126,65 @@ public final class LibBlockAttributesCompatibility {
 
 			if (!optionalFluidVolume.isPresent()) return false;
 
-			if (simulation.isAction()) {
-				component.setVolume(tank, optionalFluidVolume.get());
+			FluidVolume incoming = optionalFluidVolume.get();
+			FluidVolume current = component.getVolume(tank);
+
+			if (incoming.getFraction().isBiggerThan(current.getSize())) {
+				return false;
 			}
 
-			return true;
-		}
+			boolean allowed = false;
 
-		@Override
-		public int getTankCount() {
-			return component.getSize();
-		}
+			if (incoming.isEmpty()) {
+				if (current.isEmpty()) {
+					return true;
+				}
+				allowed = component.canExtract(current, tank);
+			} else if (current.isEmpty()) {
+				allowed = component.canInsert(incoming, tank);
+			} else if (incoming.getFluid() == current.getFluid()) {
 
-		@Override
-		public alexiil.mc.lib.attributes.fluid.volume.FluidVolume getInvFluid(int tank) {
-			return wrapLibBlockAttributes(component.getVolume(tank));
+				if (incoming.getFraction().equals(current.getFraction())) {
+					return true;
+				}
+
+				if (incoming.isSmallerThan(current)) {
+					allowed = component.canExtract(current, tank);
+				} else {
+					allowed = component.canInsert(incoming, tank);
+				}
+			} else {
+				allowed = component.canExtract(current, tank) && component.canInsert(incoming, tank);
+			}
+
+			if (allowed && simulation.isAction()) {
+
+				current.setFluid(incoming.getFluid());
+				current.setFraction(incoming.getFraction());
+
+				component.setVolume(tank, current);
+			}
+
+			return allowed;
 		}
 
 		@Override
 		public boolean isFluidValidForTank(int tank, FluidKey fluidKey) {
-			return fluidKey.getRawFluid() != null;
+			validateTankIndex(tank);
+			Fluid fluid = fluidKey.getRawFluid();
+			return fluid != null && component.canInsert(new FluidVolume(fluid, Fraction.BUCKET.copy()), tank);
+		}
+
+		@Override
+		public FluidAmount getMaxAmount_F(int tank) {
+			validateTankIndex(tank);
+			return wrapLibBlockAttributes(component.getVolume(tank).getSize());
 		}
 
 		@Override
 		public ListenerToken addListener(FluidInvTankChangeListener fluidInvTankChangeListener, ListenerRemovalToken listenerRemovalToken) {
-			return () -> { };
-		}
-
-		@Override
-		public alexiil.mc.lib.attributes.fluid.volume.FluidVolume attemptExtraction(FluidFilter filter, FluidAmount maxAmount, Simulation simulation) {
-			Optional<FluidVolume> optionalFluidVolume = Optional.ofNullable(component
-					.getContents()
-					.values()
-					.stream()
-					.map((volume -> new Pair<>(FluidKeys.get(volume.getFluid()), volume)))
-					.filter((pair -> pair.getRight().getFluid() != Fluids.EMPTY && filter.matches(pair.getLeft()) && pair.getRight().hasStored(wrapVolumeToAstromine(maxAmount))))
-					.findFirst()
-					.orElse(new Pair<>(FluidKeys.EMPTY, FluidVolume.empty())).getRight());
-
-			if (!optionalFluidVolume.isPresent()) return wrapLibBlockAttributes(FluidVolume.empty());
-
-			if (simulation.isSimulate()) optionalFluidVolume = Optional.of(optionalFluidVolume.get().copy());
-
-			return wrapLibBlockAttributes(optionalFluidVolume.get().extractVolume(optionalFluidVolume.get().getFluid(), optionalFluidVolume.get().getFraction()));
-		}
-
-		@Override
-		public alexiil.mc.lib.attributes.fluid.volume.FluidVolume attemptInsertion(alexiil.mc.lib.attributes.fluid.volume.FluidVolume fluidVolume, Simulation simulation) {
-			Optional<FluidVolume> optionalFluidVolume = wrapVolumeToAstromine(fluidVolume);
-
-			if (!optionalFluidVolume.isPresent()) return fluidVolume;
-
-			FluidInventoryComponent component = simulation.isSimulate() ? this.component : this.component.copy();
-
-			TypedActionResult<FluidVolume> result = component.insert(optionalFluidVolume.get());
-
-			if (result.getResult().isAccepted()) return wrapLibBlockAttributes(result.getValue());
-
-			return fluidVolume;
-		}
-
-		@Override
-		public Set<FluidKey> getStoredFluids() {
-			return component.getContents().values().stream().map((volume -> FluidKeys.get(volume.getFluid()))).collect(Collectors.toSet());
-		}
-
-		@Override
-		public FluidInvStatistic getStatistics(FluidFilter fluidFilter) {
-			FluidAmount amount = FluidAmount.ZERO;
-			FluidAmount spaceAddable = FluidAmount.ZERO;
-			FluidAmount spaceTotal = FluidAmount.ZERO;
-
-			for (FluidVolume volume : component.getContents().values()) {
-				amount = amount.roundedAdd(wrapLibBlockAttributes(volume.getFraction()));
-				spaceAddable = spaceAddable.roundedAdd(wrapLibBlockAttributes(Fraction.simplify(Fraction.subtract(volume.getSize(), volume.getFraction()))));
-				spaceTotal = spaceTotal.roundedAdd(wrapLibBlockAttributes(volume.getSize()));
-			}
-
-			return new FluidInvStatistic(fluidFilter, amount, spaceAddable, spaceTotal);
+			// We don't support listeners
+			return null;
 		}
 	}
 }
