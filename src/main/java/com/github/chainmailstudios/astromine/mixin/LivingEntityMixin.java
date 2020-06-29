@@ -114,7 +114,9 @@ public abstract class LivingEntityMixin {
 					entity.damage(DamageSource.GENERIC, ((AdvancedFluid) fluid).getDamage());
 				}
 
-				isBreathing = false;
+				if (!BreathableRegistry.INSTANCE.get(entity.getType()).contains(fluid)) {
+					isBreathing = false;
+				}
 			}
 
 			if (downBlock instanceof FluidBlock) {
