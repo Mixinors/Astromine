@@ -1,6 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [" # ", " # ", "   "],
+  "pattern": ["#", "#"],
   "key": {
     "#": {
       "item": "minecraft:netherite_ingot"
