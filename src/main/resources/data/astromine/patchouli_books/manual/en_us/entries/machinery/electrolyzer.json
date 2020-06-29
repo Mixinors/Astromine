@@ -7,13 +7,13 @@
 		{
 			"type": "spotlight",
 			"item": "astromine:electrolyzer",
-			"title": "text.astromine.gadgets.electrolyzer.page_one.title",
-			"text": "text.astromine.gadgets.electrolyzer.page_one.text"
+			"title": "text.astromine.machinery.electrolyzer.page_one.title",
+			"text": "text.astromine.machinery.electrolyzer.page_one.text"
 		},
 		{
 			"type": "crafting",
 			"recipe": "astromine:electrolyzer",
-			"title": "text.astromine.gadgets.electrolyzer.page_two.title"
+			"title": "text.astromine.machinery.electrolyzer.page_two.title"
 		}
 	]
 }

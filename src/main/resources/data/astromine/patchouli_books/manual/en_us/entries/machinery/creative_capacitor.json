@@ -7,8 +7,8 @@
 		{
 			"type": "spotlight",
 			"item": "astromine:creative_capacitor",
-			"title": "text.astromine.gadgets.creative_capacitor.page_one.title",
-			"text": "text.astromine.gadgets.creative_capacitor.page_one.text."
+			"title": "text.astromine.machinery.creative_capacitor.page_one.title",
+			"text": "text.astromine.machinery.creative_capacitor.page_one.text."
 		}
 	]
 }
