@@ -7,14 +7,14 @@
 		{
 			"type": "spotlight",
 			"item": "astromine:iron_plates",
-			"title": "text.astromine.astronautics.plates.page_one.title",
-			"text": "text.astromine.astronautics.plates.page_one.text"
+			"title": "text.astromine.components.plates.page_one.title",
+			"text": "text.astromine.components.plates.page_one.text"
 		},
 		{
 			"type": "crafting",
 			"recipe": "astromine:iron_plates_from_ingot",
-			"title": "text.astromine.astronautics.plates.page_two.text",
-			"text": "text.astromine.astronautics.plates.page_two.text"
+			"title": "text.astromine.components.plates.page_two.text",
+			"text": "text.astromine.components.plates.page_two.text"
 		}
 	]
 }

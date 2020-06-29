@@ -7,8 +7,8 @@
 		{
 			"type": "spotlight",
 			"item": "astromine:creative_tank",
-			"title": "text.astromine.gadgets.creative_tank.page_one.title",
-			"text": "text.astromine.gadgets.creative_tank.page_one.title,"
+			"title": "text.astromine.machinery.creative_tank.page_one.title",
+			"text": "text.astromine.machinery.creative_tank.page_one.title,"
 		}
 	]
 }

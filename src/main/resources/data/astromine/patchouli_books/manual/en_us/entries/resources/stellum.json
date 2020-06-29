@@ -7,24 +7,24 @@
 		{
 			"type": "spotlight",
 			"item": "astromine:stellum_ingot",
-			"title": "text.astromine.resources.asterite.page_one.title",
-			"text": "text.astromine.resources.asterite.page_one.text"
+			"title": "text.astromine.resources.stellum.page_one.title",
+			"text": "text.astromine.resources.stellum.page_one.text"
 		},
 		{
 			"type": "smelting",
 			"recipe": "astromine:stellum_ingot_from_smelting_ore",
-			"title": "text.astromine.resources.asterite.page_two.title",
-			"text": "text.astromine.resources.asterite.page_two.text"
+			"title": "text.astromine.resources.stellum.page_two.title",
+			"text": "text.astromine.resources.stellum.page_two.text"
 		},
 		{
 			"type": "text",
-			"title": "text.astromine.resources.asterite.page_three.title",
-			"text": "text.astromine.resources.asterite.page_three.text"
+			"title": "text.astromine.resources.stellum.page_three.title",
+			"text": "text.astromine.resources.stellum.page_three.text"
 		},
 		{
 			"type": "text",
-			"title": "text.astromine.resources.asterite.page_four.title",
-			"text": "text.astromine.resources.asterite.page_four.text"
+			"title": "text.astromine.resources.stellum.page_four.title",
+			"text": "text.astromine.resources.stellum.page_four.text"
 		}
 	]
 }
