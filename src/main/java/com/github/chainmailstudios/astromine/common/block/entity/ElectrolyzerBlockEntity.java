@@ -1,8 +1,8 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
 import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 
@@ -18,49 +18,79 @@ import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
 import java.util.Optional;
 
-public class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockEntity implements NetworkMember, Tickable {
-	public int progress = 0;
+public class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockEntity implements NetworkMember, RecipeConsumer, Tickable {
+	public int current = 0;
 	public int limit = 100;
 
-	public boolean shouldTry = true;
 	public boolean isActive = false;
-	public boolean wasActive = false;
 
-	Optional<ElectrolyzingRecipe> recipe = Optional.empty();
+	private Optional<ElectrolyzingRecipe> recipe = Optional.empty();
+
+	private static final int INPUT_ENERGY_VOLUME = 0;
+	private static final int INPUT_FLUID_VOLUME = 0;
+	private static final int FIRST_OUTPUT_FLUID_VOLUME = 1;
+	private static final int SECOND_OUTPUT_FLUID_VOLUME = 2;
 
 	public ElectrolyzerBlockEntity() {
 		super(AstromineBlockEntityTypes.ELECTROLYZER);
 
-		fluidComponent = new SimpleFluidInventoryComponent(2);
+		fluidComponent = new SimpleFluidInventoryComponent(3);
 
-		energyComponent.getVolume(0).setSize(new Fraction(32, 1));
-		fluidComponent.getVolume(0).setSize(new Fraction(4, 1));
-		fluidComponent.getVolume(1).setSize(new Fraction(4, 1));
+		energyComponent.getVolume(INPUT_ENERGY_VOLUME).setSize(new Fraction(32, 1));
+		fluidComponent.getVolume(INPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
+		fluidComponent.getVolume(FIRST_OUTPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
+		fluidComponent.getVolume(SECOND_OUTPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
 
 		fluidComponent.addListener(() -> {
-			if (!this.world.isClient() && (!recipe.isPresent() || !recipe.get().tryCrafting(this, false)))
+			if (!this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
 				recipe = (Optional) world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream()
 						.filter(recipe -> recipe instanceof ElectrolyzingRecipe)
-						.filter(recipe -> ((ElectrolyzingRecipe) recipe).tryCrafting(this, false))
+						.filter(recipe -> ((ElectrolyzingRecipe) recipe).canCraft(this))
 						.findFirst();
-
-			shouldTry = true;
 		});
 
 		addComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, fluidComponent);
 	}
 
 	@Override
+	public int getCurrent() {
+		return current;
+	}
+
+	@Override
+	public int getLimit() {
+		return limit;
+	}
+
+	@Override
+	public void setCurrent(int current) {
+		this.current = current;
+	}
+
+	@Override
+	public void setLimit(int limit) {
+		this.limit = limit;
+	}
+
+	@Override
+	public boolean isActive() {
+		return isActive;
+	}
+
+	@Override
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	@Override
 	public void fromTag(BlockState state, CompoundTag tag) {
+		readRecipeProgress(tag);
 		super.fromTag(state, tag);
-		progress = tag.getInt("progress");
-		limit = tag.getInt("limit");
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putInt("progress", progress);
-		tag.putInt("limit", limit);
+		writeRecipeProgress(tag);
 		return super.toTag(tag);
 	}
 
@@ -68,37 +98,17 @@ public class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockEntity imp
 	public void tick() {
 		if (world.isClient()) return;
 
+		// TODO: Fix this; currently no caching happens!
 		fluidComponent.dispatchConsumers();
 
-		if (shouldTry) {
-			if (recipe.isPresent() && recipe.get().tryCrafting(this, false)) {
-				limit = recipe.get().getTime();
+		boolean wasActive = isActive;
 
-				boolean isEmpty = fluidComponent.getVolume(1).isEmpty();
-				boolean isEqual = fluidComponent.getVolume(1).getFluid() == recipe.get().getOutputFluid();
+		if (recipe.isPresent()) {
+			recipe.get().tick(this);
 
-				if ((isEmpty || isEqual) && energyComponent.getVolume(0).hasStored(recipe.get().getEnergyConsumed()) && fluidComponent.getVolume(1).hasAvailable(recipe.get().getOutputAmount())) {
-					if (progress == limit) {
-						recipe.get().tryCrafting(this, true);
-
-						recipe = Optional.empty();
-
-						progress = 0;
-					} else {
-						++progress;
-					}
-
-					isActive = true;
-				}
-			} else {
-				shouldTry = false;
-				isActive = false;
-
+			if (!recipe.get().canCraft(this)) {
 				recipe = Optional.empty();
 			}
-		} else {
-			progress = 0;
-			isActive = false;
 		}
 
 		if (isActive && !wasActive) {
@@ -106,8 +116,6 @@ public class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockEntity imp
 		} else if (!isActive && wasActive) {
 			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, false));
 		}
-
-		wasActive = isActive;
 	}
 
 	@Override

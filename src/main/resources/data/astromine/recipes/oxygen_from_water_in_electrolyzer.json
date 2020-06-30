@@ -5,8 +5,13 @@
     "numerator": 1,
     "denominator": 64
   },
-  "output": "astromine:oxygen",
-  "output_amount": {
+  "first_output": "astromine:oxygen",
+  "first_output_amount": {
+    "numerator": 1,
+    "denominator": 64
+  },
+  "second_output": "astromine:hydrogen",
+  "second_output_amount": {
     "numerator": 1,
     "denominator": 64
   },

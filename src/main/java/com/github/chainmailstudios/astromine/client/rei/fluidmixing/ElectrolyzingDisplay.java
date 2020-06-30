@@ -11,7 +11,7 @@ public class ElectrolyzingDisplay extends AbstractFluidMixingDisplay {
 		super(
 				recipe.getEnergyConsumed().copy(),
 				new FluidVolume(recipe.getInputFluid(), recipe.getInputAmount()),
-				new FluidVolume(recipe.getOutputFluid(), recipe.getOutputAmount()),
+				new FluidVolume(recipe.getFirstOutputFluid(), recipe.getFirstOutputAmount()),
 				recipe.getId()
 		);
 	}
