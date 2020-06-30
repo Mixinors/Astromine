@@ -13,5 +13,6 @@
   "energy_consumed": {
     "numerator": 1,
     "denominator": 16
-  }
+  },
+  "time": "5"
 }

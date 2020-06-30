@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -111,9 +112,9 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 		}
 
 		if (isActive && !wasActive) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(ElectricSmelterBlock.ACTIVE, true));
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, true));
 		} else if (!isActive && wasActive) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(ElectricSmelterBlock.ACTIVE, false));
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, false));
 		}
 
 		wasActive = isActive;

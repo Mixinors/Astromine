@@ -1,5 +1,7 @@
 package com.github.chainmailstudios.astromine.common.recipe;
 
+import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -39,8 +41,9 @@ public class ElectrolyzingRecipe implements Recipe<Inventory> {
 	final Lazy<Fluid> outputFluid;
 	final Fraction outputAmount;
 	final Fraction energyConsumed;
+	final int time;
 
-	public ElectrolyzingRecipe(Identifier identifier, RegistryKey<Fluid> inputFluidKey, Fraction inputAmount, RegistryKey<Fluid> outputFluidKey, Fraction outputAmount, Fraction energyConsumed) {
+	public ElectrolyzingRecipe(Identifier identifier, RegistryKey<Fluid> inputFluidKey, Fraction inputAmount, RegistryKey<Fluid> outputFluidKey, Fraction outputAmount, Fraction energyConsumed, int time) {
 		this.identifier = identifier;
 		this.inputFluidKey = inputFluidKey;
 		this.inputFluid = new Lazy<>(() -> Registry.FLUID.get(this.inputFluidKey));
@@ -49,6 +52,7 @@ public class ElectrolyzingRecipe implements Recipe<Inventory> {
 		this.outputFluid = new Lazy<>(() -> Registry.FLUID.get(this.outputFluidKey));
 		this.outputAmount = outputAmount;
 		this.energyConsumed = energyConsumed;
+		this.time = time;
 	}
 
 	public boolean tryCrafting(ElectrolyzerBlockEntity electrolyzer, boolean isActuallyDoing) {
@@ -141,6 +145,10 @@ public class ElectrolyzingRecipe implements Recipe<Inventory> {
 		return energyConsumed;
 	}
 
+	public int getTime() {
+		return time;
+	}
+
 	public static final class Serializer implements RecipeSerializer<ElectrolyzingRecipe> {
 		public static final Identifier ID = AstromineCommon.identifier("electrolyzing");
 		
@@ -159,7 +167,8 @@ public class ElectrolyzingRecipe implements Recipe<Inventory> {
 					FractionUtilities.fromJson(format.inputAmount),
 					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.output)),
 					FractionUtilities.fromJson(format.outputAmount),
-					FractionUtilities.fromJson(format.energyGenerated));
+					FractionUtilities.fromJson(format.energyGenerated),
+					ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 		
 		@Override
@@ -169,7 +178,8 @@ public class ElectrolyzingRecipe implements Recipe<Inventory> {
 					FractionUtilities.fromPacket(buffer),
 					RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()),
 					FractionUtilities.fromPacket(buffer),
-					FractionUtilities.fromPacket(buffer));
+					FractionUtilities.fromPacket(buffer),
+					PacketUtilities.fromPacket(buffer, Integer.class));
 		}
 		
 		@Override
@@ -178,7 +188,8 @@ public class ElectrolyzingRecipe implements Recipe<Inventory> {
 			FractionUtilities.toPacket(buffer, recipe.inputAmount);
 			buffer.writeIdentifier(recipe.outputFluidKey.getValue());
 			FractionUtilities.toPacket(buffer, recipe.outputAmount);
-			FractionUtilities.toPacket(buffer, recipe.getEnergyConsumed());
+			FractionUtilities.toPacket(buffer, recipe.energyConsumed);
+			buffer.writeInt(recipe.getTime());
 		}
 	}
 	
@@ -202,6 +213,8 @@ public class ElectrolyzingRecipe implements Recipe<Inventory> {
 		@SerializedName("energy_consumed")
 		JsonElement energyGenerated;
 
+		JsonElement time;
+
 		@Override
 		public String toString() {
 			return "Format{" +
@@ -210,6 +223,7 @@ public class ElectrolyzingRecipe implements Recipe<Inventory> {
 					", output='" + output + '\'' +
 					", outputAmount=" + outputAmount +
 					", energyGenerated=" + energyGenerated +
+					", time=" + time +
 					'}';
 		}
 	}

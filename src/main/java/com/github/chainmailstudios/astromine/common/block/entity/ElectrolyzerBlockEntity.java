@@ -1,5 +1,9 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
+import net.minecraft.block.BlockState;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyFluidBlockEntity;
@@ -15,6 +19,13 @@ import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import java.util.Optional;
 
 public class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockEntity implements NetworkMember, Tickable {
+	public int progress = 0;
+	public int limit = 100;
+
+	public boolean shouldTry = true;
+	public boolean isActive = false;
+	public boolean wasActive = false;
+
 	Optional<ElectrolyzingRecipe> recipe = Optional.empty();
 
 	public ElectrolyzerBlockEntity() {
@@ -32,20 +43,71 @@ public class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockEntity imp
 						.filter(recipe -> recipe instanceof ElectrolyzingRecipe)
 						.filter(recipe -> ((ElectrolyzingRecipe) recipe).tryCrafting(this, false))
 						.findFirst();
+
+			shouldTry = true;
 		});
 
 		addComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, fluidComponent);
 	}
 
 	@Override
+	public void fromTag(BlockState state, CompoundTag tag) {
+		super.fromTag(state, tag);
+		progress = tag.getInt("progress");
+		limit = tag.getInt("limit");
+	}
+
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		tag.putInt("progress", progress);
+		tag.putInt("limit", limit);
+		return super.toTag(tag);
+	}
+
+	@Override
 	public void tick() {
-		if (this.world.isClient()) return;
+		if (world.isClient()) return;
+
 		fluidComponent.dispatchConsumers();
-		this.recipe.ifPresent(recipe -> {
-			if (!recipe.tryCrafting(this, true)) {
-				this.recipe = Optional.empty();
+
+		if (shouldTry) {
+			if (recipe.isPresent() && recipe.get().tryCrafting(this, false)) {
+				limit = recipe.get().getTime();
+
+				boolean isEmpty = fluidComponent.getVolume(1).isEmpty();
+				boolean isEqual = fluidComponent.getVolume(1).getFluid() == recipe.get().getOutputFluid();
+
+				if ((isEmpty || isEqual) && energyComponent.getVolume(0).hasStored(recipe.get().getEnergyConsumed()) && fluidComponent.getVolume(1).hasAvailable(recipe.get().getOutputAmount())) {
+					if (progress == limit) {
+						recipe.get().tryCrafting(this, true);
+
+						recipe = Optional.empty();
+
+						progress = 0;
+					} else {
+						++progress;
+					}
+
+					isActive = true;
+				}
+			} else {
+				shouldTry = false;
+				isActive = false;
+
+				recipe = Optional.empty();
 			}
-		});
+		} else {
+			progress = 0;
+			isActive = false;
+		}
+
+		if (isActive && !wasActive) {
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, true));
+		} else if (!isActive && wasActive) {
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, false));
+		}
+
+		wasActive = isActive;
 	}
 
 	@Override
