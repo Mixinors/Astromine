@@ -1,11 +1,14 @@
 package com.github.chainmailstudios.astromine.common.recipe;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
+import com.github.chainmailstudios.astromine.common.recipe.base.AdvancedRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
+import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
@@ -13,10 +16,8 @@ import net.minecraft.util.Lazy;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.entity.FuelMixerBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
@@ -30,73 +31,94 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
-public class FuelMixingRecipe implements Recipe<Inventory> {
+public class FuelMixingRecipe implements AdvancedRecipe<Inventory> {
 	final Identifier identifier;
-	final RegistryKey<Fluid> inputFluidKey;
-	final Lazy<Fluid> inputFluid;
-	final Fraction inputAmount;
+	final RegistryKey<Fluid> firstInputFluidKey;
+	final Lazy<Fluid> firstInputFluid;
+	final Fraction firstInputAmount;
+	final RegistryKey<Fluid> secondInputFluidKey;
+	final Lazy<Fluid> secondInputFluid;
+	final Fraction secondInputAmount;
 	final RegistryKey<Fluid> outputFluidKey;
 	final Lazy<Fluid> outputFluid;
 	final Fraction outputAmount;
 	final Fraction energyConsumed;
+	final int time;
 
-	public FuelMixingRecipe(Identifier identifier, RegistryKey<Fluid> inputFluidKey, Fraction inputAmount, RegistryKey<Fluid> outputFluidKey, Fraction outputAmount, Fraction energyConsumed) {
+	private static final int INPUT_ENERGY_VOLUME = 0;
+	private static final int FIRST_INPUT_FLUID_VOLUME = 0;
+	private static final int SECOND_INPUT_FLUID_VOLUME = 1;
+	private static final int OUTPUT_FLUID_VOLUME = 2;
+
+	public FuelMixingRecipe(Identifier identifier, RegistryKey<Fluid> firstInputFluidKey, Fraction firstInputAmount, RegistryKey<Fluid> secondInputFluidKey, Fraction secondInputAmount, RegistryKey<Fluid> outputFluidKey, Fraction outputAmount, Fraction energyConsumed, int time) {
 		this.identifier = identifier;
-		this.inputFluidKey = inputFluidKey;
-		this.inputFluid = new Lazy<>(() -> Registry.FLUID.get(this.inputFluidKey));
-		this.inputAmount = inputAmount;
+		this.firstInputFluidKey = firstInputFluidKey;
+		this.firstInputFluid = new Lazy<>(() -> Registry.FLUID.get(this.firstInputFluidKey));
+		this.firstInputAmount = firstInputAmount;
+		this.secondInputFluidKey = secondInputFluidKey;
+		this.secondInputFluid = new Lazy<>(() -> Registry.FLUID.get(this.secondInputFluidKey));
+		this.secondInputAmount = secondInputAmount;
 		this.outputFluidKey = outputFluidKey;
 		this.outputFluid = new Lazy<>(() -> Registry.FLUID.get(this.outputFluidKey));
 		this.outputAmount = outputAmount;
 		this.energyConsumed = energyConsumed;
+		this.time = time;
 	}
 
-	public boolean tryCrafting(FuelMixerBlockEntity electrolyzer, boolean isActuallyDoing) {
-		FluidInventoryComponent fluidComponent = electrolyzer.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+	@Override
+	public <T extends DefaultedBlockEntity> boolean canCraft(T blockEntity) {
+		FluidInventoryComponent fluidComponent = blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
-		FluidVolume inputVolume = fluidComponent.getVolume(0);
-		FluidVolume outputVolume = fluidComponent.getVolume(1);
+		FluidVolume firstInputVolume = fluidComponent.getVolume(FIRST_INPUT_FLUID_VOLUME);
+		FluidVolume secondInputVolume = fluidComponent.getVolume(SECOND_INPUT_FLUID_VOLUME);
+		FluidVolume outputVolume = fluidComponent.getVolume(OUTPUT_FLUID_VOLUME);
 
-		if (!inputVolume.getFluid().matchesType(inputFluid.get())) return false;
-		if (!inputVolume.hasStored(inputAmount)) return false;
+		if (!firstInputVolume.getFluid().matchesType(firstInputFluid.get())) return false;
+		if (!firstInputVolume.hasStored(firstInputAmount)) return false;
+		if (!secondInputVolume.getFluid().matchesType(secondInputFluid.get())) return false;
+		if (!secondInputVolume.hasStored(secondInputAmount)) return false;
 		if (!outputVolume.getFluid().matchesType(outputFluid.get()) && !outputVolume.isEmpty()) return false;
 		if (!outputVolume.hasAvailable(outputAmount)) return false;
 
-		if (isActuallyDoing) {
-			EnergyInventoryComponent energyComponent = electrolyzer.getComponent(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
+		return true;
+	}
 
-			EnergyVolume energyVolume = energyComponent.getVolume(0);
+	@Override
+	public <T extends DefaultedBlockEntity> void craft(T blockEntity) {
+		if (canCraft(blockEntity)) {
+			FluidInventoryComponent fluidComponent = blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+
+			FluidVolume firstInputFluidVolume = fluidComponent.getVolume(FIRST_INPUT_FLUID_VOLUME);
+			FluidVolume secondInputFluidVolume = fluidComponent.getVolume(SECOND_INPUT_FLUID_VOLUME);
+			FluidVolume outputVolume = fluidComponent.getVolume(OUTPUT_FLUID_VOLUME);
+
+			EnergyInventoryComponent energyComponent = blockEntity.getComponent(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
+
+			EnergyVolume energyVolume = energyComponent.getVolume(INPUT_ENERGY_VOLUME);
 
 			if (energyVolume.hasStored(energyConsumed)) {
-				inputVolume.extractVolume(inputAmount);
-				energyVolume.extractVolume(energyConsumed);
-				outputVolume.insertVolume(new FluidVolume(outputFluid.get(), outputAmount));
+				firstInputFluidVolume.extractVolume(firstInputAmount);
+				secondInputFluidVolume.extractVolume(secondInputAmount);
+				outputVolume.insertVolume(new FluidVolume(outputFluid.get(), outputAmount.copy()));
 			}
 		}
+	}
 
-		return true;
-	}
-	
 	@Override
-	public boolean matches(Inventory inventory, World world) {
-		return false; // we are not dealing with items
+	public <T extends RecipeConsumer> void tick(T t) {
+		if (t.isFinished()) {
+			t.reset();
+
+			craft((DefaultedBlockEntity) t);
+		} else if (canCraft((DefaultedBlockEntity) t)) {
+			t.setLimit(getTime());
+			t.increment();
+			t.setActive(true);
+		} else {
+			t.reset();
+		}
 	}
-	
-	@Override
-	public ItemStack craft(Inventory inventory) {
-		return ItemStack.EMPTY; // we are not dealing with items
-	}
-	
-	@Override
-	public boolean fits(int width, int height) {
-		return true;
-	}
-	
-	@Override
-	public ItemStack getOutput() {
-		return ItemStack.EMPTY; // we are not dealing with items
-	}
-	
+
 	@Override
 	public Identifier getId() {
 		return identifier;
@@ -121,12 +143,12 @@ public class FuelMixingRecipe implements Recipe<Inventory> {
 		return identifier;
 	}
 
-	public Fluid getInputFluid() {
-		return inputFluid.get();
+	public Fluid getFirstInputFluid() {
+		return firstInputFluid.get();
 	}
 
-	public Fraction getInputAmount() {
-		return inputAmount;
+	public Fraction getFirstInputAmount() {
+		return firstInputAmount;
 	}
 
 	public Fluid getOutputFluid() {
@@ -141,6 +163,10 @@ public class FuelMixingRecipe implements Recipe<Inventory> {
 		return energyConsumed;
 	}
 
+	public int getTime() {
+		return time;
+	}
+
 	public static final class Serializer implements RecipeSerializer<FuelMixingRecipe> {
 		public static final Identifier ID = AstromineCommon.identifier("fuel_mixing");
 		
@@ -149,19 +175,22 @@ public class FuelMixingRecipe implements Recipe<Inventory> {
 		private Serializer() {
 			// Locked.
 		}
-		
+
 		@Override
 		public FuelMixingRecipe read(Identifier identifier, JsonObject object) {
 			FuelMixingRecipe.Format format = new Gson().fromJson(object, FuelMixingRecipe.Format.class);
-			
+
 			return new FuelMixingRecipe(identifier,
-					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.input)),
-					FractionUtilities.fromJson(format.inputAmount),
+					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.firstInput)),
+					FractionUtilities.fromJson(format.firstInputAmount),
+					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.secondInput)),
+					FractionUtilities.fromJson(format.secondInputAmount),
 					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.output)),
 					FractionUtilities.fromJson(format.outputAmount),
-					FractionUtilities.fromJson(format.energyGenerated));
+					FractionUtilities.fromJson(format.energyGenerated),
+					ParsingUtilities.fromJson(format.time, Integer.class));
 		}
-		
+
 		@Override
 		public FuelMixingRecipe read(Identifier identifier, PacketByteBuf buffer) {
 			return new FuelMixingRecipe(identifier,
@@ -169,16 +198,22 @@ public class FuelMixingRecipe implements Recipe<Inventory> {
 					FractionUtilities.fromPacket(buffer),
 					RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()),
 					FractionUtilities.fromPacket(buffer),
-					FractionUtilities.fromPacket(buffer));
+					RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()),
+					FractionUtilities.fromPacket(buffer),
+					FractionUtilities.fromPacket(buffer),
+					PacketUtilities.fromPacket(buffer, Integer.class));
 		}
-		
+
 		@Override
 		public void write(PacketByteBuf buffer, FuelMixingRecipe recipe) {
-			buffer.writeIdentifier(recipe.inputFluidKey.getValue());
-			FractionUtilities.toPacket(buffer, recipe.inputAmount);
+			buffer.writeIdentifier(recipe.firstInputFluidKey.getValue());
+			FractionUtilities.toPacket(buffer, recipe.firstInputAmount);
+			buffer.writeIdentifier(recipe.secondInputFluidKey.getValue());
+			FractionUtilities.toPacket(buffer, recipe.secondInputAmount);
 			buffer.writeIdentifier(recipe.outputFluidKey.getValue());
 			FractionUtilities.toPacket(buffer, recipe.outputAmount);
-			FractionUtilities.toPacket(buffer, recipe.getEnergyConsumed());
+			FractionUtilities.toPacket(buffer, recipe.energyConsumed);
+			buffer.writeInt(recipe.getTime());
 		}
 	}
 	
@@ -189,24 +224,37 @@ public class FuelMixingRecipe implements Recipe<Inventory> {
 			// Locked.
 		}
 	}
-	
+
 	public static final class Format {
-		String input;
-		@SerializedName("input_amount")
-		JsonElement inputAmount;
+		@SerializedName("first_input")
+		String firstInput;
+
+		@SerializedName("first_input_amount")
+		JsonElement firstInputAmount;
+
+		@SerializedName("second_input")
+		String secondInput;
+
+		@SerializedName("second_input_amount")
+		JsonElement secondInputAmount;
 
 		String output;
+
 		@SerializedName("output_amount")
 		JsonElement outputAmount;
 
 		@SerializedName("energy_consumed")
 		JsonElement energyGenerated;
 
+		JsonElement time;
+
 		@Override
 		public String toString() {
 			return "Format{" +
-					"input='" + input + '\'' +
-					", inputAmount=" + inputAmount +
+					"firstInput='" + firstInput + '\'' +
+					", firstInputAmount=" + firstInputAmount +
+					", secondInput='" + secondInput + '\'' +
+					", secondInputAmount=" + secondInputAmount +
 					", output='" + output + '\'' +
 					", outputAmount=" + outputAmount +
 					", energyGenerated=" + energyGenerated +

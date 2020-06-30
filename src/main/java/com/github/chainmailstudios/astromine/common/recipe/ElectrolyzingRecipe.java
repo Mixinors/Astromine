@@ -97,8 +97,8 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory> {
 			if (energyVolume.hasStored(energyConsumed)) {
 				inputVolume.extractVolume(inputAmount);
 				energyVolume.extractVolume(energyConsumed);
-				firstOutputVolume.insertVolume(new FluidVolume(firstOutputFluid.get(), firstOutputAmount));
-				secondOutputVolume.insertVolume(new FluidVolume(secondOutputFluid.get(), secondOutputAmount));
+				firstOutputVolume.insertVolume(new FluidVolume(firstOutputFluid.get(), firstOutputAmount.copy()));
+				secondOutputVolume.insertVolume(new FluidVolume(secondOutputFluid.get(), secondOutputAmount.copy()));
 			}
 		}
 	}

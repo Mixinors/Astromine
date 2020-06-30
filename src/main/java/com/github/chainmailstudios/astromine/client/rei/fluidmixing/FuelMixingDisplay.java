@@ -10,7 +10,7 @@ public class FuelMixingDisplay extends AbstractFluidMixingDisplay {
 	public FuelMixingDisplay(FuelMixingRecipe recipe) {
 		super(
 				recipe.getEnergyConsumed().copy(),
-				new FluidVolume(recipe.getInputFluid(), recipe.getInputAmount()),
+				new FluidVolume(recipe.getFirstInputFluid(), recipe.getFirstInputAmount()),
 				new FluidVolume(recipe.getOutputFluid(), recipe.getOutputAmount()),
 				recipe.getId()
 		);

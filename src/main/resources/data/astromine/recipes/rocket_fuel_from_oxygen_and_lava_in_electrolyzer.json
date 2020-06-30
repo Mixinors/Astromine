@@ -1,7 +1,12 @@
 {
   "type": "astromine:fuel_mixing",
-  "input": "astromine:oxygen",
-  "input_amount": {
+  "first_input": "minecraft:lava",
+  "first_input_amount": {
+    "numerator": 1,
+    "denominator": 64
+  },
+  "second_input": "astromine:oxygen",
+  "second_input_amount": {
     "numerator": 1,
     "denominator": 64
   },
@@ -13,5 +18,6 @@
   "energy_consumed": {
     "numerator": 1,
     "denominator": 16
-  }
+  },
+  "time": "5"
 }

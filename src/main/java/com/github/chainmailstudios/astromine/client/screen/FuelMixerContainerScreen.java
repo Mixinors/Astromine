@@ -1,5 +1,8 @@
 package com.github.chainmailstudios.astromine.client.screen;
 
+import com.github.chainmailstudios.astromine.common.block.entity.ElectrolyzerBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.FuelMixerBlockEntity;
+import com.github.chainmailstudios.astromine.common.widget.WHorizontalArrow;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 
@@ -16,10 +19,20 @@ public class FuelMixerContainerScreen extends DefaultedEnergyFluidContainerScree
 	public FuelMixerContainerScreen(Text name, DefaultedEnergyFluidContainer linkedContainer, PlayerEntity player) {
 		super(name, linkedContainer, player);
 
-		WFluidVolumeFractionalVerticalBar outputFluidBar = mainPanel.createChild(WFluidVolumeFractionalVerticalBar::new, Position.of(fluidBar, fluidBar.getWidth() + 4, 0, 0), Size.of(fluidBar));
+		FuelMixerBlockEntity mixer = (FuelMixerBlockEntity) linkedContainer.blockEntity;
 
 		ComponentProvider componentProvider = linkedContainer.blockEntity;
 
-		outputFluidBar.setFluidVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(1));
+		WFluidVolumeFractionalVerticalBar secondInputFluidBar = mainPanel.createChild(WFluidVolumeFractionalVerticalBar::new, Position.of(fluidBar, fluidBar.getWidth() + 4, 0, 0), Size.of(fluidBar));
+
+		secondInputFluidBar.setFluidVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(1));
+
+		WHorizontalArrow arrow = mainPanel.createChild(WHorizontalArrow::new, Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9, secondInputFluidBar.getHeight() / 2 - 8, 0), Size.of(22, 16))
+				.setLimitSupplier(() -> mixer.limit)
+				.setProgressSupplier(() -> mixer.current);
+
+		WFluidVolumeFractionalVerticalBar outputFluidBar = mainPanel.createChild(WFluidVolumeFractionalVerticalBar::new, Position.of(arrow, arrow.getWidth() + 7, -secondInputFluidBar.getHeight() / 2 + 8, 0), Size.of(fluidBar));
+
+		outputFluidBar.setFluidVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(2));
 	}
 }
