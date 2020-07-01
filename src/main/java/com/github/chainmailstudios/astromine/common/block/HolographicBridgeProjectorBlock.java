@@ -48,6 +48,7 @@ public class HolographicBridgeProjectorBlock extends DefaultedHorizontalFacingBl
 				if (!player.isCreative()) {
 					stack.decrement(1);
 				}
+				return ActionResult.SUCCESS;
 			}
 		}
 
