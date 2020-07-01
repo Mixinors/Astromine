@@ -210,6 +210,7 @@
   "category.astromine.consuming.energy": "%s consumed",
   "category.astromine.fluid.generating.consumed": "%s (%s) consumed/tick",
   "category.astromine.fluid.generating.generated": "%s (%s) generated/tick",
+  "text.astromine.selected.dimension.pos": "Selected %s (%d, %d, %d)",
   "text.astromine.patchouli.astronautics.title": "Astronautics",
   "text.astromine.patchouli.astronautics.description": "From where one dreams, to where their dreams come true.",
   "text.astromine.patchouli.components.title": "Components",
