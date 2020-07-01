@@ -1,12 +1,12 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "item": "astromine:asterite"
-    }
-  ],
-  "result": {
-    "item": "astromine:asterite_fragment",
-    "count": 9
-  }
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "astromine:asterite"
+		}
+	],
+	"result": {
+		"item": "astromine:asterite_fragment",
+		"count": 9
+	}
 }

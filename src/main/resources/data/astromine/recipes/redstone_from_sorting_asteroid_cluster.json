@@ -1,8 +1,8 @@
 {
 	"type": "astromine:sorting",
 	"input": {
-			"item": "astromine:asteroid_redstone_cluster",
-			"count": 1
+		"item": "astromine:asteroid_redstone_cluster",
+		"count": 1
 	},
 	"output": {
 		"item": "minecraft:redstone",

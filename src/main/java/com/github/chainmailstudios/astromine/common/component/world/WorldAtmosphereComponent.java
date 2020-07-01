@@ -11,6 +11,7 @@ import net.minecraft.world.dimension.DimensionType;
 
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineDimensionTypes;
 import nerdhub.cardinal.components.api.component.Component;
 
 import com.google.common.collect.Lists;
@@ -45,9 +46,9 @@ public class WorldAtmosphereComponent implements Component, Tickable {
 	public FluidVolume get(BlockPos position) {
 		RegistryKey<DimensionType> key = world.getDimensionRegistryKey();
 
-		boolean isVanilla = (key == DimensionType.OVERWORLD_REGISTRY_KEY || key == DimensionType.OVERWORLD_CAVES_REGISTRY_KEY || key == DimensionType.THE_NETHER_REGISTRY_KEY || key == DimensionType.THE_END_REGISTRY_KEY);
+		boolean isSpace = (key == AstromineDimensionTypes.SPACE_REGISTRY_KEY);
 
-		if (isVanilla && !volumes.containsKey(position)) {
+		if (!isSpace && !volumes.containsKey(position)) {
 			return FluidVolume.oxygen();
 		} else {
 			return volumes.getOrDefault(position, FluidVolume.empty());
