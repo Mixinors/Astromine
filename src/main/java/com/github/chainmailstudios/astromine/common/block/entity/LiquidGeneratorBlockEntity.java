@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 
 import net.minecraft.block.entity.BlockEntity;
@@ -47,7 +48,9 @@ public class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlockEntity 
 				this.recipe = Optional.empty();
 			}
 		});
-		
+
+		EnergyVolume energyVolume = energyComponent.getVolume(0);
+
 		for (Direction direction : Direction.values()) {
 			if (getSidedComponent(direction, AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT) == null) continue;
 
@@ -60,9 +63,11 @@ public class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlockEntity 
 				
 				EnergyInventoryComponent inventory = provider.getSidedComponent(direction, AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
 				
-				if (inventory != null && energyComponent.getVolume(0).hasStored(Fraction.BOTTLE)) {
-					if (inventory.canInsert(energyComponent.getVolume(0))) {
-						inventory.getVolume(0).pullVolume(energyComponent.getVolume(0), Fraction.BOTTLE);
+				if (inventory != null && energyVolume.hasStored(Fraction.bottle())) {
+					EnergyVolume attachedVolume = inventory.getFirstInsertableVolume(direction);
+
+					if (attachedVolume != null) {
+						attachedVolume.pullVolume(energyVolume, Fraction.bottle());
 					}
 					
 					if (attached instanceof BlockEntityClientSerializable && !world.isClient) {

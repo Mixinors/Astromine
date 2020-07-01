@@ -69,10 +69,10 @@ public class WorldAtmosphereComponent implements Component, Tickable {
 				if (world.getBlockState(offsetPosition).getBlock() instanceof AirBlock) {
 					FluidVolume offsetFluidVolume = get(offsetPosition);
 
-					if (!fluidVolume.isEmpty() && fluidVolume.getFraction().isBiggerThan(Fraction.max(TRESHHOLD, offsetFluidVolume.getFraction())) && offsetFluidVolume.canInsert(fluidVolume.getFluid(), Fraction.BUCKET)) {
+					if (!fluidVolume.isEmpty() && fluidVolume.getFluid() == offsetFluidVolume.getFluid() && fluidVolume.hasStored(Fraction.max(TRESHHOLD, offsetFluidVolume.getFraction()))) {
 						fluidVolume.pushVolume(offsetFluidVolume, Fraction.BUCKET);
 						add(offsetPosition, offsetFluidVolume);
-					} else if (!fluidVolume.isEmpty() && fluidVolume.getFraction().isBiggerThan(Fraction.max(TRESHHOLD, offsetFluidVolume.getFraction())) && offsetFluidVolume.equals(FluidVolume.oxygen())) {
+					} else if (!fluidVolume.isEmpty() && fluidVolume.hasStored(Fraction.max(TRESHHOLD, offsetFluidVolume.getFraction())) && offsetFluidVolume.equals(FluidVolume.oxygen())) {
 						FluidVolume newVolume = new FluidVolume();
 						fluidVolume.pushVolume(newVolume, Fraction.BUCKET);
 						add(offsetPosition, newVolume);

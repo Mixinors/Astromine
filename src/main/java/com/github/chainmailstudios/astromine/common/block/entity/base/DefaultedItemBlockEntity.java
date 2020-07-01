@@ -94,7 +94,7 @@ public abstract class DefaultedItemBlockEntity extends DefaultedBlockEntity impl
 	@Override
 	public boolean canInsert(int slot, ItemStack stack, Direction direction) {
 		if (transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(direction).canInsert()) {
-			return getSidedComponent(direction, AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).canInsert(stack, slot);
+			return getSidedComponent(direction, AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).canInsert(direction, stack, slot);
 		} else {
 			return false;
 		}
@@ -103,7 +103,7 @@ public abstract class DefaultedItemBlockEntity extends DefaultedBlockEntity impl
 	@Override
 	public boolean canExtract(int slot, ItemStack stack, Direction direction) {
 		if (transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(direction).canExtract()) {
-			return getSidedComponent(direction, AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).canExtract(stack, slot);
+			return getSidedComponent(direction, AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).canExtract(direction, stack, slot);
 		} else {
 			return false;
 		}

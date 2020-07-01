@@ -63,8 +63,10 @@ public abstract class BucketItemMixin {
 						if (inventory != null && this.fluid != Fluids.EMPTY) {
 							FluidVolume bucketVolume = new FluidVolume(this.fluid, Fraction.BUCKET);
 
-							if (inventory.canInsert(bucketVolume)) {
-								inventory.insert(bucketVolume);
+							FluidVolume insertableVolume = inventory.getFirstInsertableVolume(result.getSide());
+
+							if (insertableVolume != null && (user.isCreative() || insertableVolume.hasAvailable(Fraction.bucket()))) {
+								insertableVolume.pullVolume(bucketVolume, bucketVolume.getFraction());
 
 								callbackInformationReturnable.setReturnValue(TypedActionResult.success(user.isCreative() ? user.getStackInHand(hand) : new ItemStack(bucketVolume.getFluid().getBucketItem().getRecipeRemainder())));
 								callbackInformationReturnable.cancel();
@@ -74,17 +76,17 @@ public abstract class BucketItemMixin {
 								((BlockEntityClientSerializable) attached).sync();
 							}
 						} else if (inventory != null) {
-							for (FluidVolume attachedVolume : inventory.getContents().values()) {
-								if (attachedVolume.getFluid() != Fluids.EMPTY && attachedVolume.hasStored(Fraction.BUCKET)) {
-									FluidVolume bucketVolume = attachedVolume.extractVolume(Fraction.BUCKET);
+							FluidVolume extractableVolume = inventory.getFirstExtractableVolume(result.getSide());
 
-									user.setStackInHand(hand, new ItemStack(bucketVolume.getFluid().getBucketItem()));
+							if (!extractableVolume.getFluid().matchesType(Fluids.EMPTY) && extractableVolume.hasStored(Fraction.bucket())) {
+								FluidVolume bucketVolume = extractableVolume.extractVolume(Fraction.BUCKET);
 
-									callbackInformationReturnable.setReturnValue(TypedActionResult.success(user.isCreative() ? user.getStackInHand(hand) : new ItemStack(bucketVolume.getFluid().getBucketItem().getRecipeRemainder())));
-									callbackInformationReturnable.cancel();
+								user.setStackInHand(hand, new ItemStack(bucketVolume.getFluid().getBucketItem()));
 
-									return;
-								}
+								callbackInformationReturnable.setReturnValue(TypedActionResult.success(user.isCreative() ? user.getStackInHand(hand) : new ItemStack(bucketVolume.getFluid().getBucketItem().getRecipeRemainder())));
+								callbackInformationReturnable.cancel();
+
+								return;
 							}
 						}
 					}

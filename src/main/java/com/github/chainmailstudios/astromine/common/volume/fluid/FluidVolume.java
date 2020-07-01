@@ -105,22 +105,6 @@ public class FluidVolume extends BaseVolume {
 		this.fluid = fluid;
 	}
 
-	public boolean canInsert(FluidVolume volume) {
-		return canInsert(volume.getFluid(), volume.getFraction());
-	}
-	
-	public boolean canInsert(Fluid fluid, Fraction amount) {
-		return (this.fluid == Fluids.EMPTY || fluid == this.fluid) && hasAvailable(amount);
-	}
-
-	public boolean canExtract(FluidVolume volume) {
-		return canExtract(volume.getFluid(), volume.getFraction());
-	}
-
-	public boolean canExtract(Fluid fluid, Fraction amount) {
-		return (this.fluid != Fluids.EMPTY || fluid == this.fluid) && hasStored(amount);
-	}
-
 	public <T extends BaseVolume> T insertVolume(FluidVolume volume) {
 		return (T) insertVolume(volume.getFluid(), volume.getFraction());
 	}
