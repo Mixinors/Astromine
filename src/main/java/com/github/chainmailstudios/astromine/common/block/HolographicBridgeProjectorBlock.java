@@ -32,7 +32,7 @@ public class HolographicBridgeProjectorBlock extends DefaultedHorizontalFacingBl
 			HolographicBridgeProjectorBlockEntity entity = (HolographicBridgeProjectorBlockEntity) world.getBlockEntity(position);
 
 			if (entity != null) {
-				entity.color = Color.of(0x7e000000 >> 2 | dye.getColor().getSignColor());
+				entity.color = Color.of(0x7e000000 >> 2 | dye.getColor().getFireworkColor());
 
 				if (!player.isCreative()) {
 					stack.decrement(1);

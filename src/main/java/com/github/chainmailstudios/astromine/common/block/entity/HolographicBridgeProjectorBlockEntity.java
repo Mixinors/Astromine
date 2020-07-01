@@ -5,15 +5,19 @@ import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.util.math.Vector3f;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 
+import com.github.chainmailstudios.astromine.common.block.HolographicBridgeInvisibleBlock;
 import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
 import com.github.chainmailstudios.astromine.common.utilities.LineUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
@@ -104,9 +108,9 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 		}
 	}
 
-	public void buildBridge() {
+	public boolean buildBridge() {
 		if (this.child == null || this.world == null) {
-			return;
+			return false;
 		}
 
 		BlockPos bCP = this.getChild().getPos();
@@ -125,12 +129,12 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 		int distance = (int) Math.sqrt(this.getPos().getSquaredDistance(this.getChild().getPos()));
 
 		if (distance == 0) {
-			return;
+			return false;
 		}
 
 		this.segments = (ArrayList<Vector3f>) LineUtilities.getBezierSegments(new Vector3f(bOP.getX(), bOP.getY() + 1, bOP.getZ()),
-				new Vector3f(nCP.getX(), nCP.getY() + 1, nCP.getZ()),
-				new Vector3f((bOP.getX() + nCP.getX()) / 2f, (bOP.getY() + nCP.getY() + 2) / 2f, bCP.getZ()),
+				new Vector3f(nCP.getX(), nCP.getY() + 0.99f, nCP.getZ()),
+				new Vector3f((bOP.getX() + nCP.getX()) / 2f, (bOP.getY() + nCP.getY() + 2f) / 2f, bCP.getZ()),
 				distance * 16
 		);
 
@@ -139,18 +143,24 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 		for (Vector3f v : this.segments) {
 			BlockPos nP = new BlockPos(v.getX(), v.getY(), v.getZ());
 
-			if ((nP.getX() != bCP.getX() && nP.getX() != bOP.getX()) || (nP.getZ() != bCP.getZ() && nP.getZ() != bOP.getZ())) {
-				this.world.setBlockState(nP, AstromineBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
+			Material mat = this.world.getBlockState(nP).getMaterial();
+			if(mat.isReplaceable() || mat.equals(HolographicBridgeInvisibleBlock.MATERIAL)) {
+				if ((nP.getX() != bCP.getX() && nP.getX() != bOP.getX()) || (nP.getZ() != bCP.getZ() && nP.getZ() != bOP.getZ())) {
+					this.world.setBlockState(nP, AstromineBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
+					this.members.add(nP);
+				}
 
-				this.members.add(nP);
+				ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
+
+				WorldBridgeComponent bridgeComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_BRIDGE_COMPONENT);
+
+				bridgeComponent.add(nP, new Vec3i((v.getX() - (int) v.getX()) * 16f, (v.getY() - (int) v.getY()) * 16f, (v.getZ() - (int) v.getZ()) * 16f));
+			} else {
+				destroyBridge();
+				return false;
 			}
-
-			ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
-
-			WorldBridgeComponent bridgeComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_BRIDGE_COMPONENT);
-
-			bridgeComponent.add(nP, new Vec3i((v.getX() - (int) v.getX()) * 16f, (v.getY() - (int) v.getY()) * 16f, (v.getZ() - (int) v.getZ()) * 16f));
 		}
+		return true;
 	}
 
 	public HolographicBridgeProjectorBlockEntity getChild() {
@@ -208,7 +218,7 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 		}
 
 		if (this.childPosition != null) {
-			tag.putLong("parent_position", this.childPosition.asLong());
+			tag.putLong("child_position", this.childPosition.asLong());
 		}
 		if (this.parentPosition != null) {
 			tag.putLong("parent_position", this.parentPosition.asLong());
@@ -252,9 +262,13 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 
 				WorldBridgeComponent bridgeComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_BRIDGE_COMPONENT);
 
-				bridgeComponent.remove((BlockPos) vec);
+				BlockPos pos = (BlockPos) vec;
 
-				this.world.setBlockState((BlockPos) vec, Blocks.AIR.getDefaultState());
+				bridgeComponent.remove(pos);
+
+				if(this.world.getBlockState(pos).getBlock() instanceof HolographicBridgeInvisibleBlock) {
+					this.world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				}
 			}
 		}
 	}

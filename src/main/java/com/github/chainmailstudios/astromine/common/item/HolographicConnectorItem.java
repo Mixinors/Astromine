@@ -84,10 +84,11 @@ public class HolographicConnectorItem extends Item {
 				parent.buildBridge();
 
 				if (world.isClient) {
-					CACHE.put(world, null);
 					context.getPlayer().sendMessage(new TranslatableText("text.astromine.message.holographic_connection_successful", toShortString(parent.getPos()), toShortString(entity.getPos())).formatted(Formatting.GREEN), true);
 					world.playSound(context.getPlayer(), context.getBlockPos(), AstromineSounds.HOLOGRAPHIC_CONNECTOR_CLICK, SoundCategory.PLAYERS, 0.5f, 0.33f);
 				}
+
+				CACHE.put(world, null);
 			}
 		} else {
 			if (world.isClient) {

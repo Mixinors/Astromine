@@ -12,6 +12,8 @@ import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.HolographicBridgeProjectorBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
 import spinnery.client.render.layer.SpinneryLayers;
 import spinnery.widget.api.Color;
@@ -26,6 +28,11 @@ public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<Ho
 	@Override
 	public void render(HolographicBridgeProjectorBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider provider, int light, int overlay) {
 		BlockState b = entity.getWorld().getBlockState(entity.getPos());
+
+		if(!(b.getBlock() instanceof HolographicBridgeProjectorBlock))  {
+			AstromineCommon.LOGGER.warn("Holo Bridge Projector BE exists in spot where it shouldn't! "+entity.getPos());
+			return;
+		}
 
 		if (entity.hasChild()) {
 			Vec3i pA = entity.getPos();
