@@ -85,6 +85,8 @@ public class RocketEntity extends Entity {
 		if (stack.getItem() == Items.FLINT_AND_STEEL) {
 			this.getDataTracker().set(IS_GO, true);
 			return ActionResult.SUCCESS;
+		} else if (stack.getItem() == Items.STICK) {
+			this.kill();
 		}
 		
 		if (!stack.isEmpty()) return ActionResult.CONSUME;

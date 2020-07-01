@@ -78,12 +78,13 @@ public class WorldBridgeComponent implements Component {
 			if (!d && vec.getZ() < 0) d = true;
 
 			shape = VoxelShapes.union(shape, Block.createCuboidShape(
-					Math.abs(vec.getX()) - 1,
+					Math.abs(vec.getX()),
 					Math.abs(vec.getY()) - 1,
-					Math.abs(vec.getZ()) - 1,
-					b ? 16 : Math.abs(vec.getX()),
+					Math.abs(vec.getZ()),
+					b ? 16 : Math.abs(vec.getX()+1),
 					Math.abs(vec.getY()) + 1,
-					a ? 16 : Math.abs(vec.getZ())));
+					a ? 16 : Math.abs(vec.getZ()+1)
+			));
 		}
 
 		if (c || d) {
