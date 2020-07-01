@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.component.block.entity;
 
+import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
@@ -68,8 +69,8 @@ public class BlockEntityTransferComponent implements Component {
 			types.put(direction, type);
 		}
 
-		public TransferType get(Direction direction) {
-			return types.get(direction);
+		public TransferType get(Direction origin, Direction rotation) {
+			return types.get(MirrorUtilities.rotate(origin, rotation));
 		}
 
 		public void fromTag(CompoundTag tag) {

@@ -45,7 +45,7 @@ public class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlockEntity 
 		fluidComponent.getVolume(INPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
 
 		fluidComponent.addListener(() -> {
-			if (this.world != null && this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
+			if (this.world != null && !this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
 				recipe = (Optional) world.getRecipeManager().getAllOfType(LiquidGeneratingRecipe.Type.INSTANCE).values().stream()
 						.filter(recipe -> recipe instanceof LiquidGeneratingRecipe)
 						.filter(recipe -> ((LiquidGeneratingRecipe) recipe).canCraft(this))

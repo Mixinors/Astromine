@@ -85,9 +85,9 @@ public class WTransferTypeSelectorButton extends WButton {
 	@Override
 	public void onMouseReleased(float mouseX, float mouseY, int mouseButton) {
 		if (isFocused()) {
-			component.get(type).set(direction, component.get(type).get(direction).next());
+			component.get(type).set(direction, component.get(type).get(direction, Direction.NORTH).next());
 
-			setTexture(component.get(type).get(direction).texture());
+			setTexture(component.get(type).get(direction, Direction.NORTH).texture());
 
 			if (getInterface().getContainer().getWorld().isClient()) {
 				PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
@@ -97,7 +97,7 @@ public class WTransferTypeSelectorButton extends WButton {
 
 				buffer.writeIdentifier(type.getId());
 				buffer.writeEnumConstant(direction);
-				buffer.writeEnumConstant(component.get(type).get(direction));
+				buffer.writeEnumConstant(component.get(type).get(direction, Direction.NORTH));
 
 				ClientSidePacketRegistry.INSTANCE.sendToServer(AstromineCommonPackets.BLOCK_ENTITY_UPDATE_PACKET, buffer);
 			}
@@ -119,7 +119,7 @@ public class WTransferTypeSelectorButton extends WButton {
 
 	@Override
 	public void draw(MatrixStack matrices, VertexConsumerProvider.Immediate provider) {
-		if (texture == null) setTexture(component.get(type).get(direction).texture());
+		if (texture == null) setTexture(component.get(type).get(direction, Direction.NORTH).texture());
 		BaseRenderer.drawTexturedQuad(matrices, provider, getX(), getY(), getZ(), getWidth(), getHeight(), getTexture());
 
 		if (isFocused()) {

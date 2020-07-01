@@ -15,5 +15,7 @@ public abstract class DefaultedFluidBlockEntity extends DefaultedBlockEntity imp
 		super(type);
 
 		addComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, fluidComponent);
+
+		fluidComponent.dispatchConsumers();
 	}
 }

@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.PacketContext;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
@@ -78,7 +79,7 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 			return (Collection<T>) getComponentTypes()
 					.stream()
 					.map(type -> new Pair<>((ComponentType) type, (Component) getComponent(type)))
-					.filter(pair -> transferComponent.get(pair.getLeft()).get(direction) != TransferType.NONE)
+					.filter(pair -> transferComponent.get(pair.getLeft()).get(direction, getCachedState().get(HorizontalFacingBlock.FACING)) != TransferType.NONE)
 					.map(Pair::getRight)
 					.collect(Collectors.toList());
 		}

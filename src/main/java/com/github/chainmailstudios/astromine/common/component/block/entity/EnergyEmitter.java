@@ -27,10 +27,10 @@ public class EnergyEmitter {
 			if (attached instanceof ComponentProvider) {
 				ComponentProvider provider = ComponentProvider.fromBlockEntity(attached);
 
-				EnergyInventoryComponent inventory = provider.getSidedComponent(direction, AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
+				EnergyInventoryComponent inventory = provider.getSidedComponent(direction.getOpposite(), AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
 
 				if (inventory != null && energyVolume.hasStored(Fraction.bottle())) {
-					EnergyVolume attachedVolume = inventory.getFirstInsertableVolume(direction);
+					EnergyVolume attachedVolume = inventory.getFirstInsertableVolume(direction.getOpposite());
 
 					if (attachedVolume != null) {
 						attachedVolume.pullVolume(energyVolume, Fraction.bottle());

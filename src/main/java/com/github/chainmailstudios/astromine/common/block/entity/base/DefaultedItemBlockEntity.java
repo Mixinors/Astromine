@@ -1,8 +1,10 @@
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -84,7 +86,7 @@ public abstract class DefaultedItemBlockEntity extends DefaultedBlockEntity impl
 
 	@Override
 	public int[] getAvailableSlots(Direction direction) {
-		if (transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(direction) != TransferType.NONE) {
+		if (transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(direction, getCachedState().get(HorizontalFacingBlock.FACING)) != TransferType.NONE) {
 			return IntStream.rangeClosed(0, inventory.size() - 1).toArray();
 		} else {
 			return new int[0];
@@ -93,7 +95,7 @@ public abstract class DefaultedItemBlockEntity extends DefaultedBlockEntity impl
 
 	@Override
 	public boolean canInsert(int slot, ItemStack stack, Direction direction) {
-		if (transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(direction).canInsert()) {
+		if (transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(direction, getCachedState().get(HorizontalFacingBlock.FACING)).canInsert()) {
 			return getSidedComponent(direction, AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).canInsert(direction, stack, slot);
 		} else {
 			return false;
@@ -102,7 +104,7 @@ public abstract class DefaultedItemBlockEntity extends DefaultedBlockEntity impl
 
 	@Override
 	public boolean canExtract(int slot, ItemStack stack, Direction direction) {
-		if (transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(direction).canExtract()) {
+		if (transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(direction, getCachedState().get(HorizontalFacingBlock.FACING)).canExtract()) {
 			return getSidedComponent(direction, AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).canExtract(direction, stack, slot);
 		} else {
 			return false;
