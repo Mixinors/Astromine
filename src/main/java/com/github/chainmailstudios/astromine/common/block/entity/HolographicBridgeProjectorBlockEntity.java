@@ -160,6 +160,9 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 				return false;
 			}
 		}
+		if(!world.isClient()) {
+			sync();
+		}
 		return true;
 	}
 
@@ -270,6 +273,9 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 					this.world.setBlockState(pos, Blocks.AIR.getDefaultState());
 				}
 			}
+		}
+		if(!world.isClient()) {
+			sync();
 		}
 	}
 
