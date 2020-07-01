@@ -30,7 +30,7 @@ public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<Ho
 		BlockState b = entity.getWorld().getBlockState(entity.getPos());
 
 		if(!(b.getBlock() instanceof HolographicBridgeProjectorBlock))  {
-			AstromineCommon.LOGGER.warn("Holo Bridge Projector BE exists in spot where it shouldn't! "+entity.getPos());
+			AstromineCommon.LOGGER.debug("Holo Bridge Projector BE exists in spot where it shouldn't! "+entity.getPos());
 			return;
 		}
 
