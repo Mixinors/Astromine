@@ -46,6 +46,7 @@ public class AstromineCommon implements ModInitializer {
 		AstromineCommonCallbacks.initialize();
 		AstromineRecipeSerializers.initialize();
 		AstromineCommands.initialize();
+		AstromineBlockEntityTypes.initialize();
 
 		if (FabricLoader.getInstance().isModLoaded("libblockattributes_fluids")) {
 			try {
