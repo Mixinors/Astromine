@@ -1,5 +1,5 @@
 {
-  "type": "astromine:fuel_mixing",
+  "type": "astromine:fluid_mixing",
   "first_input": "minecraft:lava",
   "first_input_amount": {
     "numerator": 1,
@@ -19,5 +19,5 @@
     "numerator": 1,
     "denominator": 16
   },
-  "time": "5"
+  "time": 5
 }

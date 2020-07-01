@@ -52,7 +52,7 @@ public class FuelMixerBlock extends DefaultedHorizontalFacingBlockWithEntity imp
 
 				@Override
 				public Text getDisplayName() {
-					return new TranslatableText("block.astromine.fuel_mixer");
+					return new TranslatableText("block.astromine.fluid_mixer");
 				}
 
 				@Override

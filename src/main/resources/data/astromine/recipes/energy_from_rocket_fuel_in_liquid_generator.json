@@ -8,5 +8,6 @@
   "energy_generated": {
     "numerator": 1,
     "denominator": 16
-  }
+  },
+  "time": 5
 }

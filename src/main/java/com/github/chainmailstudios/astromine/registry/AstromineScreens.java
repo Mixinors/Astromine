@@ -68,7 +68,7 @@ public class AstromineScreens {
 			return new ElectrolyzerContainerScreen(title, handler, inventory.player);
 		}));
 
-		ScreenRegistry.register(AstromineContainers.FUEL_MIXER, (ScreenRegistry.Factory<FuelMixerContainer, FuelMixerContainerScreen>) ((handler, inventory, title) -> {
+		ScreenRegistry.register(AstromineContainers.fluid_mixer, (ScreenRegistry.Factory<FuelMixerContainer, FuelMixerContainerScreen>) ((handler, inventory, title) -> {
 			return new FuelMixerContainerScreen(title, handler, inventory.player);
 		}));
 		ScreenRegistry.register(AstromineContainers.CRAFTING_RECIPE_CREATOR, (ScreenRegistry.Factory<CraftingRecipeCreatorContainer, CraftingRecipeCreatorContainerScreen>) ((handler, inventory, title) -> {

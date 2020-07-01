@@ -4,7 +4,7 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.common.recipe.ElectrolyzingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.FuelMixingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.FluidMixingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.LiquidGeneratingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.SortingRecipe;
 
@@ -24,10 +24,10 @@ public class AstromineRecipeSerializers {
 			ElectrolyzingRecipe.Serializer.ID,
 			ElectrolyzingRecipe.Serializer.INSTANCE);
 
-	public static final RecipeSerializer<FuelMixingRecipe> FUEL_MIXER = Registry.register(
+	public static final RecipeSerializer<FluidMixingRecipe> fluid_mixer = Registry.register(
 			Registry.RECIPE_SERIALIZER,
-			FuelMixingRecipe.Serializer.ID,
-			FuelMixingRecipe.Serializer.INSTANCE);
+			FluidMixingRecipe.Serializer.ID,
+			FluidMixingRecipe.Serializer.INSTANCE);
 
 	public static void initialize() {
 		// Unused.

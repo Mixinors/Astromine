@@ -98,9 +98,6 @@ public class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockEntity imp
 	public void tick() {
 		if (world.isClient()) return;
 
-		// TODO: Fix this; currently no caching happens!
-		fluidComponent.dispatchConsumers();
-
 		boolean wasActive = isActive;
 
 		if (recipe.isPresent()) {

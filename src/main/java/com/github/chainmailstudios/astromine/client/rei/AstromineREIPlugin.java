@@ -13,7 +13,7 @@ import com.github.chainmailstudios.astromine.client.rei.sorting.SortingDisplay;
 import com.github.chainmailstudios.astromine.client.render.SpriteRenderer;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.recipe.ElectrolyzingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.FuelMixingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.FluidMixingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.LiquidGeneratingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.SortingRecipe;
 import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
@@ -58,7 +58,7 @@ public class AstromineREIPlugin implements REIPluginV0 {
 	public static final Identifier SORTING = AstromineCommon.identifier("sorting");
 	public static final Identifier ELECTRIC_SMELTING = AstromineCommon.identifier("electric_smelting");
 	public static final Identifier LIQUID_GENERATING = AstromineCommon.identifier("liquid_generating");
-	public static final Identifier FUEL_MIXING = AstromineCommon.identifier("fuel_mixing");
+	public static final Identifier fluid_mixing = AstromineCommon.identifier("fluid_mixing");
 	public static final Identifier ELECTROLYZING = AstromineCommon.identifier("electrolyzing");
 
 	@Override
@@ -76,7 +76,7 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		recipeHelper.registerCategory(new SortingCategory());
 		recipeHelper.registerCategory(new ElectricSmeltingCategory());
 		recipeHelper.registerCategory(new LiquidGeneratingCategory());
-		recipeHelper.registerCategory(new FluidMixingCategory(FUEL_MIXING, "category.astromine.fuel_mixing", EntryStack.create(AstromineBlocks.FUEL_MIXER)));
+		recipeHelper.registerCategory(new FluidMixingCategory(fluid_mixing, "category.astromine.fluid_mixing", EntryStack.create(AstromineBlocks.fluid_mixer)));
 		recipeHelper.registerCategory(new FluidMixingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AstromineBlocks.ELECTROLYZER)));
 	}
 
@@ -85,7 +85,7 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		recipeHelper.registerRecipes(SORTING, SortingRecipe.class, SortingDisplay::new);
 		recipeHelper.registerRecipes(ELECTRIC_SMELTING, SmeltingRecipe.class, ElectricSmeltingDisplay::new);
 		recipeHelper.registerRecipes(LIQUID_GENERATING, LiquidGeneratingRecipe.class, LiquidGeneratingDisplay::new);
-		recipeHelper.registerRecipes(FUEL_MIXING, FuelMixingRecipe.class, FuelMixingDisplay::new);
+		recipeHelper.registerRecipes(fluid_mixing, FluidMixingRecipe.class, FuelMixingDisplay::new);
 		recipeHelper.registerRecipes(ELECTROLYZING, ElectrolyzingRecipe.class, ElectrolyzingDisplay::new);
 	}
 
@@ -94,10 +94,10 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		recipeHelper.registerWorkingStations(SORTING, EntryStack.create(AstromineBlocks.SORTER));
 		recipeHelper.registerWorkingStations(ELECTRIC_SMELTING, EntryStack.create(AstromineBlocks.ELECTRIC_SMELTER));
 		recipeHelper.registerWorkingStations(LIQUID_GENERATING, EntryStack.create(AstromineBlocks.LIQUID_GENERATOR));
-		recipeHelper.registerWorkingStations(FUEL_MIXING, EntryStack.create(AstromineBlocks.FUEL_MIXER));
+		recipeHelper.registerWorkingStations(fluid_mixing, EntryStack.create(AstromineBlocks.fluid_mixer));
 		recipeHelper.registerWorkingStations(ELECTROLYZING, EntryStack.create(AstromineBlocks.ELECTROLYZER));
 		recipeHelper.registerAutoCraftButtonArea(LIQUID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 5, bounds.y + 5, 10, 10));
-		recipeHelper.registerAutoCraftButtonArea(FUEL_MIXING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
+		recipeHelper.registerAutoCraftButtonArea(fluid_mixing, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
 		recipeHelper.registerAutoCraftButtonArea(ELECTROLYZING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
 	}
 

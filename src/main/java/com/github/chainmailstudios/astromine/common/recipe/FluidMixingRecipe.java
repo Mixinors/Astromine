@@ -31,7 +31,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
-public class FuelMixingRecipe implements AdvancedRecipe<Inventory> {
+public class FluidMixingRecipe implements AdvancedRecipe<Inventory> {
 	final Identifier identifier;
 	final RegistryKey<Fluid> firstInputFluidKey;
 	final Lazy<Fluid> firstInputFluid;
@@ -50,7 +50,7 @@ public class FuelMixingRecipe implements AdvancedRecipe<Inventory> {
 	private static final int SECOND_INPUT_FLUID_VOLUME = 1;
 	private static final int OUTPUT_FLUID_VOLUME = 2;
 
-	public FuelMixingRecipe(Identifier identifier, RegistryKey<Fluid> firstInputFluidKey, Fraction firstInputAmount, RegistryKey<Fluid> secondInputFluidKey, Fraction secondInputAmount, RegistryKey<Fluid> outputFluidKey, Fraction outputAmount, Fraction energyConsumed, int time) {
+	public FluidMixingRecipe(Identifier identifier, RegistryKey<Fluid> firstInputFluidKey, Fraction firstInputAmount, RegistryKey<Fluid> secondInputFluidKey, Fraction secondInputAmount, RegistryKey<Fluid> outputFluidKey, Fraction outputAmount, Fraction energyConsumed, int time) {
 		this.identifier = identifier;
 		this.firstInputFluidKey = firstInputFluidKey;
 		this.firstInputFluid = new Lazy<>(() -> Registry.FLUID.get(this.firstInputFluidKey));
@@ -167,8 +167,8 @@ public class FuelMixingRecipe implements AdvancedRecipe<Inventory> {
 		return time;
 	}
 
-	public static final class Serializer implements RecipeSerializer<FuelMixingRecipe> {
-		public static final Identifier ID = AstromineCommon.identifier("fuel_mixing");
+	public static final class Serializer implements RecipeSerializer<FluidMixingRecipe> {
+		public static final Identifier ID = AstromineCommon.identifier("fluid_mixing");
 		
 		public static final Serializer INSTANCE = new Serializer();
 		
@@ -177,10 +177,10 @@ public class FuelMixingRecipe implements AdvancedRecipe<Inventory> {
 		}
 
 		@Override
-		public FuelMixingRecipe read(Identifier identifier, JsonObject object) {
-			FuelMixingRecipe.Format format = new Gson().fromJson(object, FuelMixingRecipe.Format.class);
+		public FluidMixingRecipe read(Identifier identifier, JsonObject object) {
+			FluidMixingRecipe.Format format = new Gson().fromJson(object, FluidMixingRecipe.Format.class);
 
-			return new FuelMixingRecipe(identifier,
+			return new FluidMixingRecipe(identifier,
 					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.firstInput)),
 					FractionUtilities.fromJson(format.firstInputAmount),
 					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.secondInput)),
@@ -192,8 +192,8 @@ public class FuelMixingRecipe implements AdvancedRecipe<Inventory> {
 		}
 
 		@Override
-		public FuelMixingRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new FuelMixingRecipe(identifier,
+		public FluidMixingRecipe read(Identifier identifier, PacketByteBuf buffer) {
+			return new FluidMixingRecipe(identifier,
 					RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()),
 					FractionUtilities.fromPacket(buffer),
 					RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()),
@@ -205,7 +205,7 @@ public class FuelMixingRecipe implements AdvancedRecipe<Inventory> {
 		}
 
 		@Override
-		public void write(PacketByteBuf buffer, FuelMixingRecipe recipe) {
+		public void write(PacketByteBuf buffer, FluidMixingRecipe recipe) {
 			buffer.writeIdentifier(recipe.firstInputFluidKey.getValue());
 			FractionUtilities.toPacket(buffer, recipe.firstInputAmount);
 			buffer.writeIdentifier(recipe.secondInputFluidKey.getValue());
@@ -217,7 +217,7 @@ public class FuelMixingRecipe implements AdvancedRecipe<Inventory> {
 		}
 	}
 	
-	public static final class Type implements RecipeType<FuelMixingRecipe> {
+	public static final class Type implements RecipeType<FluidMixingRecipe> {
 		public static final Type INSTANCE = new Type();
 		
 		private Type() {

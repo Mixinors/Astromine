@@ -14,6 +14,6 @@ public class FuelMixerContainer extends DefaultedEnergyFluidContainer {
 
 	@Override
 	public ScreenHandlerType<?> getType() {
-		return AstromineContainers.FUEL_MIXER;
+		return AstromineContainers.fluid_mixer;
 	}
 }

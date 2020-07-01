@@ -1,5 +1,10 @@
 package com.github.chainmailstudios.astromine.common.recipe;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
+import com.github.chainmailstudios.astromine.common.recipe.base.AdvancedRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
+import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -30,55 +35,67 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
-public class LiquidGeneratingRecipe implements Recipe<Inventory> {
+public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory> {
 	final Identifier identifier;
 	final RegistryKey<Fluid> fluidKey;
 	final Lazy<Fluid> fluid;
 	final Fraction amount;
 	final Fraction energyGenerated;
-	
-	public LiquidGeneratingRecipe(Identifier identifier, RegistryKey<Fluid> fluidKey, Fraction amount, Fraction energyGenerated) {
+	final int time;
+
+	private static final int INPUT_ENERGY_VOLUME = 0;
+	private static final int INPUT_FLUID_VOLUME = 0;
+
+	public LiquidGeneratingRecipe(Identifier identifier, RegistryKey<Fluid> fluidKey, Fraction amount, Fraction energyGenerated, int time) {
 		this.identifier = identifier;
 		this.fluidKey = fluidKey;
 		this.fluid = new Lazy<>(() -> Registry.FLUID.get(this.fluidKey));
 		this.amount = amount;
 		this.energyGenerated = energyGenerated;
+		this.time = time;
 	}
-	
-	public boolean tryCrafting(LiquidGeneratorBlockEntity generator, boolean isActuallyDoing) {
-		FluidInventoryComponent fluidComponent = generator.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+
+	@Override
+	public <T extends DefaultedBlockEntity> boolean canCraft(T blockEntity) {
+		FluidInventoryComponent fluidComponent = blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+
 		FluidVolume fluidVolume = fluidComponent.getVolume(0);
+
 		if (!fluidVolume.getFluid().matchesType(fluid.get())) return false;
-		if (!fluidVolume.getFraction().isBiggerOrEqualThan(amount)) return false;
-		if (isActuallyDoing) {
-			EnergyInventoryComponent energyComponent = generator.getComponent(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
-			EnergyVolume energyVolume = energyComponent.getVolume(0);
+		if (!fluidVolume.hasStored(amount)) return false;
+
+		return true;
+	}
+
+	@Override
+	public <T extends DefaultedBlockEntity> void craft(T blockEntity) {
+		if (canCraft(blockEntity)) {
+			EnergyInventoryComponent energyComponent = blockEntity.getComponent(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
+			FluidInventoryComponent fluidComponent = blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+
+			EnergyVolume energyVolume = energyComponent.getVolume(INPUT_ENERGY_VOLUME);
+			FluidVolume fluidVolume = fluidComponent.getVolume(INPUT_FLUID_VOLUME);
+
 			if (energyVolume.hasAvailable(energyGenerated)) {
-				fluidVolume.setFraction(Fraction.simplify(Fraction.subtract(fluidVolume.getFraction(), amount)));
-				energyVolume.setFraction(Fraction.simplify(Fraction.add(energyVolume.getFraction(), energyGenerated)));
+				fluidVolume.extractVolume(amount);
+				energyVolume.pushVolume(EnergyVolume.of(energyGenerated), energyGenerated);
 			}
 		}
-		return true;
 	}
-	
+
 	@Override
-	public boolean matches(Inventory inventory, World world) {
-		return false; // we are not dealing with items
-	}
-	
-	@Override
-	public ItemStack craft(Inventory inventory) {
-		return ItemStack.EMPTY; // we are not dealing with items
-	}
-	
-	@Override
-	public boolean fits(int width, int height) {
-		return true;
-	}
-	
-	@Override
-	public ItemStack getOutput() {
-		return ItemStack.EMPTY; // we are not dealing with items
+	public <T extends RecipeConsumer> void tick(T t) {
+		if (t.isFinished()) {
+			t.reset();
+
+			craft((DefaultedBlockEntity) t);
+		} else if (canCraft((DefaultedBlockEntity) t)) {
+			t.setLimit(getTime());
+			t.increment();
+			t.setActive(true);
+		} else {
+			t.reset();
+		}
 	}
 	
 	@Override
@@ -112,7 +129,11 @@ public class LiquidGeneratingRecipe implements Recipe<Inventory> {
 	public Fraction getEnergyGenerated() {
 		return energyGenerated;
 	}
-	
+
+	public int getTime() {
+		return time;
+	}
+
 	public static final class Serializer implements RecipeSerializer<LiquidGeneratingRecipe> {
 		public static final Identifier ID = AstromineCommon.identifier("liquid_generating");
 		
@@ -129,7 +150,8 @@ public class LiquidGeneratingRecipe implements Recipe<Inventory> {
 			return new LiquidGeneratingRecipe(identifier,
 					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.input)),
 					FractionUtilities.fromJson(format.amount),
-					FractionUtilities.fromJson(format.energyGenerated));
+					FractionUtilities.fromJson(format.energyGenerated),
+					ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 		
 		@Override
@@ -137,7 +159,8 @@ public class LiquidGeneratingRecipe implements Recipe<Inventory> {
 			return new LiquidGeneratingRecipe(identifier,
 					RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()),
 					FractionUtilities.fromPacket(buffer),
-					FractionUtilities.fromPacket(buffer));
+					FractionUtilities.fromPacket(buffer),
+					PacketUtilities.fromPacket(buffer, Integer.class));
 		}
 		
 		@Override
@@ -145,6 +168,7 @@ public class LiquidGeneratingRecipe implements Recipe<Inventory> {
 			buffer.writeIdentifier(recipe.fluidKey.getValue());
 			FractionUtilities.toPacket(buffer, recipe.amount);
 			FractionUtilities.toPacket(buffer, recipe.energyGenerated);
+			buffer.writeInt(recipe.time);
 		}
 	}
 	
@@ -158,18 +182,23 @@ public class LiquidGeneratingRecipe implements Recipe<Inventory> {
 	
 	public static final class Format {
 		String input;
+
 		@SerializedName("amount")
 		JsonElement amount;
+
 		@SerializedName("energy_generated")
 		JsonElement energyGenerated;
-		
+
+		JsonElement time;
+
 		@Override
 		public String toString() {
 			return "Format{" +
-			       "input=" + input +
-			       ", amount=" + amount +
-			       ", energyGenerated=" + energyGenerated +
-			       '}';
+					"input='" + input + '\'' +
+					", amount=" + amount +
+					", energyGenerated=" + energyGenerated +
+					", time=" + time +
+					'}';
 		}
 	}
 }

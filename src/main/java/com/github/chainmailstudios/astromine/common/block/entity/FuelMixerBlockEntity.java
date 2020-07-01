@@ -11,7 +11,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFl
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
-import com.github.chainmailstudios.astromine.common.recipe.FuelMixingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.FluidMixingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
@@ -24,7 +24,7 @@ public class FuelMixerBlockEntity extends DefaultedEnergyFluidBlockEntity implem
 
 	public boolean isActive = false;
 
-	private Optional<FuelMixingRecipe> recipe = Optional.empty();
+	private Optional<FluidMixingRecipe> recipe = Optional.empty();
 
 	private static final int INPUT_ENERGY_VOLUME = 0;
 	private static final int FIRST_INPUT_FLUID_VOLUME = 0;
@@ -32,7 +32,7 @@ public class FuelMixerBlockEntity extends DefaultedEnergyFluidBlockEntity implem
 	private static final int OUTPUT_FLUID_VOLUME = 2;
 
 	public FuelMixerBlockEntity() {
-		super(AstromineBlockEntityTypes.FUEL_MIXER);
+		super(AstromineBlockEntityTypes.fluid_mixer);
 
 		fluidComponent = new SimpleFluidInventoryComponent(3);
 
@@ -43,9 +43,9 @@ public class FuelMixerBlockEntity extends DefaultedEnergyFluidBlockEntity implem
 
 		fluidComponent.addListener(() -> {
 			if (!this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
-				recipe = (Optional) world.getRecipeManager().getAllOfType(FuelMixingRecipe.Type.INSTANCE).values().stream()
-						.filter(recipe -> recipe instanceof FuelMixingRecipe)
-						.filter(recipe -> ((FuelMixingRecipe) recipe).canCraft(this))
+				recipe = (Optional) world.getRecipeManager().getAllOfType(FluidMixingRecipe.Type.INSTANCE).values().stream()
+						.filter(recipe -> recipe instanceof FluidMixingRecipe)
+						.filter(recipe -> ((FluidMixingRecipe) recipe).canCraft(this))
 						.findFirst();
 		});
 
@@ -97,9 +97,6 @@ public class FuelMixerBlockEntity extends DefaultedEnergyFluidBlockEntity implem
 	@Override
 	public void tick() {
 		if (world.isClient()) return;
-
-		// TODO: Fix this; currently no caching happens!
-		fluidComponent.dispatchConsumers();
 
 		boolean wasActive = isActive;
 
