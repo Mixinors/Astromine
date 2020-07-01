@@ -3,13 +3,17 @@ package com.github.chainmailstudios.astromine.common.item;
 import com.github.chainmailstudios.astromine.common.block.HolographicBridgeProjectorBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
 import com.github.chainmailstudios.astromine.registry.client.AstromineSounds;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
@@ -21,9 +25,23 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class HolographicConnectorItem extends Item {
 	public HolographicConnectorItem(Settings settings) {
 		super(settings);
+	}
+
+	@Environment(EnvType.CLIENT)
+	@Override
+	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+		super.appendTooltip(stack, world, tooltip, context);
+
+		Pair<RegistryKey<World>, BlockPos> pair = readBlock(stack);
+		if (pair != null) {
+			tooltip.add(Text.method_30163(null));
+			tooltip.add(new TranslatableText("text.astromine.selected.dimension.pos", pair.getLeft().getValue(), pair.getRight().getX(), pair.getRight().getY(), pair.getRight().getZ()).formatted(Formatting.GRAY));
+		}
 	}
 
 	@Override
@@ -31,7 +49,7 @@ public class HolographicConnectorItem extends Item {
 		World world = context.getWorld();
 
 		BlockPos position = context.getBlockPos();
-		
+
 		if (context.shouldCancelInteraction()) return super.useOnBlock(context);
 
 		if (world.getBlockState(position).getBlock() instanceof HolographicBridgeProjectorBlock) {
@@ -107,14 +125,13 @@ public class HolographicConnectorItem extends Item {
 					if (parent.getParent() == entity.getParent()) {
 						parent.setParent(null);
 					}
-					
+
 					parent.direction = d;
 					parent.buildBridge();
 					parent.sync();
 					context.getPlayer().setStackInHand(context.getHand(), unselect(context.getStack()));
 				}
 			}
-			return ActionResult.SUCCESS;
 		} else {
 			if (world.isClient) {
 				context.getPlayer().sendMessage(new TranslatableText("text.astromine.message.holographic_connection_clear").formatted(Formatting.YELLOW), true);
@@ -122,8 +139,8 @@ public class HolographicConnectorItem extends Item {
 			} else {
 				context.getPlayer().setStackInHand(context.getHand(), unselect(context.getStack()));
 			}
-			return ActionResult.SUCCESS;
 		}
+		return ActionResult.SUCCESS;
 	}
 
 	private ItemStack unselect(ItemStack stack) {
