@@ -14,6 +14,7 @@ public class AstromineSkyboxes {
 				.west(AstromineCommon.identifier("textures/skybox/earth_space_west.png"))
 				.east(AstromineCommon.identifier("textures/skybox/earth_space_east.png"))
 				.planet(AstromineCommon.identifier("textures/skybox/earth.png"))
+				.cloud(AstromineCommon.identifier("textures/skybox/earth_cloud.png"))
 				.build());
 	}
 }
