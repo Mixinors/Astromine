@@ -60,7 +60,7 @@ public class FluidVolume extends BaseVolume {
 
 	public static FluidVolume oxygen() {
 		return new FluidVolume(AstromineFluids.OXYGEN, Fraction.BUCKET, (byte) 0b1);
-	}
+}
 
 	public static FluidVolume attached(SimpleFluidInventoryComponent component) {
 		return new FluidVolume(Fluids.EMPTY, Fraction.empty(), component::dispatchConsumers);

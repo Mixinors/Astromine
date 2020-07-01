@@ -7,13 +7,13 @@ import net.minecraft.util.math.BlockPos;
 import com.github.chainmailstudios.astromine.common.container.base.DefaultedEnergyFluidContainer;
 import com.github.chainmailstudios.astromine.registry.AstromineContainers;
 
-public class FuelMixerContainer extends DefaultedEnergyFluidContainer {
-	public FuelMixerContainer(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
+public class FluidMixerContainer extends DefaultedEnergyFluidContainer {
+	public FluidMixerContainer(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
 		super(synchronizationID, playerInventory, position);
 	}
 
 	@Override
 	public ScreenHandlerType<?> getType() {
-		return AstromineContainers.fluid_mixer;
+		return AstromineContainers.FLUID_MIXER;
 	}
 }

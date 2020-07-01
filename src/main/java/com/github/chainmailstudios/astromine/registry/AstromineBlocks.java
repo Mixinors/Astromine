@@ -26,7 +26,7 @@ import com.github.chainmailstudios.astromine.common.block.ElectrolyzerBlock;
 import com.github.chainmailstudios.astromine.common.block.EnergyCableBlock;
 import com.github.chainmailstudios.astromine.common.block.FluidCableBlock;
 import com.github.chainmailstudios.astromine.common.block.FluidExtractorBlock;
-import com.github.chainmailstudios.astromine.common.block.FuelMixerBlock;
+import com.github.chainmailstudios.astromine.common.block.FluidMixerBlock;
 import com.github.chainmailstudios.astromine.common.block.HolographicBridgeInvisibleBlock;
 import com.github.chainmailstudios.astromine.common.block.HolographicBridgeProjectorBlock;
 import com.github.chainmailstudios.astromine.common.block.LiquidGeneratorBlock;
@@ -58,7 +58,7 @@ public class AstromineBlocks {
 	public static final Block ELECTRIC_SMELTER = register("electric_smelter", new ElectricSmelterBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block FLUID_EXTRACTOR = register("fluid_extractor", new FluidExtractorBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block ELECTROLYZER = register("electrolyzer", new ElectrolyzerBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
-	public static final Block fluid_mixer = register("fluid_mixer", new FuelMixerBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
+	public static final Block fluid_mixer = register("fluid_mixer", new FluidMixerBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 
 	public static final Block METEOR_METITE_ORE = register("meteor_metite_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());
 	public static final Block ASTEROID_METITE_ORE = register("asteroid_metite_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());

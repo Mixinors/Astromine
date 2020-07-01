@@ -23,6 +23,9 @@ import nerdhub.cardinal.components.api.ComponentType;
 import nerdhub.cardinal.components.api.component.Component;
 
 import com.google.common.collect.Maps;
+import org.jetbrains.annotations.NotNull;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -108,7 +111,7 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 	}
 
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
 		transferComponent.fromTag(tag.getCompound("transfer"));
 
 		allComponents.forEach((type, component) -> {

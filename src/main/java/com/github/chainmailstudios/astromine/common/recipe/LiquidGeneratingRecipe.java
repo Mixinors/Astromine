@@ -78,7 +78,7 @@ public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory> {
 
 			if (energyVolume.hasAvailable(energyGenerated)) {
 				fluidVolume.extractVolume(amount);
-				energyVolume.pushVolume(EnergyVolume.of(energyGenerated), energyGenerated);
+				energyVolume.pullVolume(EnergyVolume.of(energyGenerated), energyGenerated);
 			}
 		}
 	}

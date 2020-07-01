@@ -12,7 +12,7 @@ import com.github.chainmailstudios.astromine.common.block.entity.CreativeTankBlo
 import com.github.chainmailstudios.astromine.common.block.entity.ElectricSmelterBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.ElectrolyzerBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.FluidExtractorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.FuelMixerBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.FluidMixerBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.LiquidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.SorterBlockEntity;
@@ -38,7 +38,7 @@ public class AstromineBlockEntityTypes {
 	public static final BlockEntityType<ElectricSmelterBlockEntity> ELECTRIC_SMELTER = register("electric_smelter", ElectricSmelterBlockEntity::new, AstromineBlocks.ELECTRIC_SMELTER);
 	public static final BlockEntityType<FluidExtractorBlockEntity> FLUID_EXTRACTOR = register("fluid_extractor", FluidExtractorBlockEntity::new, AstromineBlocks.FLUID_EXTRACTOR);
 	public static final BlockEntityType<ElectrolyzerBlockEntity> ELECTROLYZER = register("electrolyzer", ElectrolyzerBlockEntity::new, AstromineBlocks.ELECTROLYZER);
-	public static final BlockEntityType<FuelMixerBlockEntity> fluid_mixer = register("fluid_mixer", FuelMixerBlockEntity::new, AstromineBlocks.fluid_mixer);
+	public static final BlockEntityType<FluidMixerBlockEntity> fluid_mixer = register("fluid_mixer", FluidMixerBlockEntity::new, AstromineBlocks.fluid_mixer);
 
 	public static void initialize() {
 		// Unused.

@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.common.component.block.entity;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
@@ -36,9 +37,10 @@ public class BlockEntityTransferComponent implements Component {
 		CompoundTag dataTag = tag.getCompound("data");
 
 		for (String key : dataTag.getKeys()) {
+			Identifier keyId = new Identifier(key);
 			TransferEntry entry = new TransferEntry();
 			entry.fromTag(dataTag.getCompound(key));
-			components.put(ComponentRegistry.INSTANCE.stream().filter(component -> component.getRawId() == Integer.parseInt(key)).findFirst().get(), entry);
+			components.put(ComponentRegistry.INSTANCE.stream().filter(component -> component.getId().equals(keyId)).findFirst().get(), entry);
 		}
 	}
 
@@ -47,7 +49,7 @@ public class BlockEntityTransferComponent implements Component {
 		CompoundTag dataTag = new CompoundTag();
 
 		for (Map.Entry<ComponentType<?>, TransferEntry> entry : components.entrySet()) {
-			dataTag.put(String.valueOf(entry.getKey().getRawId()), entry.getValue().toTag(new CompoundTag()));
+			dataTag.put(entry.getKey().getId().toString(), entry.getValue().toTag(new CompoundTag()));
 		}
 
 		tag.put("data", dataTag);

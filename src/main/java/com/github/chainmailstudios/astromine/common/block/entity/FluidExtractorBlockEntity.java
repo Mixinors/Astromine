@@ -32,7 +32,7 @@ public class FluidExtractorBlockEntity extends DefaultedEnergyFluidBlockEntity i
 
 	@Override
 	public void tick() {
-		if (!this.world.isClient()) {
+		if (this.world != null && !this.world.isClient()) {
 			EnergyVolume energyVolume = energyComponent.getVolume(0);
 
 			if (!energyVolume.hasStored(Fraction.of(1, 8))) {

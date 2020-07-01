@@ -42,7 +42,7 @@ public class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockEntity imp
 		fluidComponent.getVolume(SECOND_OUTPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
 
 		fluidComponent.addListener(() -> {
-			if (!this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
+			if (this.world != null && !this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
 				recipe = (Optional) world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream()
 						.filter(recipe -> recipe instanceof ElectrolyzingRecipe)
 						.filter(recipe -> ((ElectrolyzingRecipe) recipe).canCraft(this))
@@ -103,7 +103,7 @@ public class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockEntity imp
 		if (recipe.isPresent()) {
 			recipe.get().tick(this);
 
-			if (!recipe.get().canCraft(this)) {
+			if (recipe.isPresent() && !recipe.get().canCraft(this)) {
 				recipe = Optional.empty();
 			}
 		}

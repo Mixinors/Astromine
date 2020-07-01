@@ -60,17 +60,18 @@ public class AstromineScreens {
 			return new SorterContainerScreen(title, handler, inventory.player);
 		}));
 
-		ScreenRegistry.register(AstromineContainers.ELECTRIC_SMELTER, (ScreenRegistry.Factory<ElectricSmelterContainer, SmelterContainerScreen>) ((handler, inventory, title) -> {
-			return new SmelterContainerScreen(title, handler, inventory.player);
+		ScreenRegistry.register(AstromineContainers.ELECTRIC_SMELTER, (ScreenRegistry.Factory<ElectricSmelterContainer, ElectricSmelterContainerScreen>) ((handler, inventory, title) -> {
+			return new ElectricSmelterContainerScreen(title, handler, inventory.player);
 		}));
 
 		ScreenRegistry.register(AstromineContainers.ELECTROLYZER, (ScreenRegistry.Factory<ElectrolyzerContainer, ElectrolyzerContainerScreen>) ((handler, inventory, title) -> {
 			return new ElectrolyzerContainerScreen(title, handler, inventory.player);
 		}));
 
-		ScreenRegistry.register(AstromineContainers.fluid_mixer, (ScreenRegistry.Factory<FuelMixerContainer, FuelMixerContainerScreen>) ((handler, inventory, title) -> {
-			return new FuelMixerContainerScreen(title, handler, inventory.player);
+		ScreenRegistry.register(AstromineContainers.FLUID_MIXER, (ScreenRegistry.Factory<FluidMixerContainer, FluidMixerContainerScreen>) ((handler, inventory, title) -> {
+			return new FluidMixerContainerScreen(title, handler, inventory.player);
 		}));
+
 		ScreenRegistry.register(AstromineContainers.CRAFTING_RECIPE_CREATOR, (ScreenRegistry.Factory<CraftingRecipeCreatorContainer, CraftingRecipeCreatorContainerScreen>) ((handler, inventory, title) -> {
 			return new CraftingRecipeCreatorContainerScreen(title, handler, inventory.player);
 		}));

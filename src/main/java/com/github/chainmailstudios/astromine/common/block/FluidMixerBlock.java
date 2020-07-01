@@ -20,14 +20,14 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.FuelMixerBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.FuelMixerContainer;
+import com.github.chainmailstudios.astromine.common.block.entity.FluidMixerBlockEntity;
+import com.github.chainmailstudios.astromine.common.container.FluidMixerContainer;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
-public class FuelMixerBlock extends DefaultedHorizontalFacingBlockWithEntity implements NetworkMember {
-	public FuelMixerBlock(Settings settings) {
+public class FluidMixerBlock extends DefaultedHorizontalFacingBlockWithEntity implements NetworkMember {
+	public FluidMixerBlock(Settings settings) {
 		super(settings);
 	}
 
@@ -38,7 +38,7 @@ public class FuelMixerBlock extends DefaultedHorizontalFacingBlockWithEntity imp
 
 	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
-		return new FuelMixerBlockEntity();
+		return new FluidMixerBlockEntity();
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class FuelMixerBlock extends DefaultedHorizontalFacingBlockWithEntity imp
 
 				@Override
 				public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-					return new FuelMixerContainer(syncId, playerInventory, blockPos);
+					return new FluidMixerContainer(syncId, playerInventory, blockPos);
 				}
 			});
 

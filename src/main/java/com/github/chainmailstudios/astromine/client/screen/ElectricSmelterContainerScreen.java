@@ -12,8 +12,8 @@ import spinnery.widget.WSlot;
 import spinnery.widget.api.Position;
 import spinnery.widget.api.Size;
 
-public class SmelterContainerScreen extends DefaultedEnergyItemContainerScreen<ElectricSmelterContainer> {
-	public SmelterContainerScreen(Text name, DefaultedEnergyItemContainer linkedContainer, PlayerEntity player) {
+public class ElectricSmelterContainerScreen extends DefaultedEnergyItemContainerScreen<ElectricSmelterContainer> {
+	public ElectricSmelterContainerScreen(Text name, DefaultedEnergyItemContainer linkedContainer, PlayerEntity player) {
 		super(name, linkedContainer, player);
 
 		ElectricSmelterBlockEntity smelter = (ElectricSmelterBlockEntity) linkedContainer.blockEntity;

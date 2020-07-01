@@ -18,7 +18,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
 import java.util.Optional;
 
-public class FuelMixerBlockEntity extends DefaultedEnergyFluidBlockEntity implements NetworkMember, RecipeConsumer, Tickable {
+public class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEntity implements NetworkMember, RecipeConsumer, Tickable {
 	public int current = 0;
 	public int limit = 100;
 
@@ -31,7 +31,7 @@ public class FuelMixerBlockEntity extends DefaultedEnergyFluidBlockEntity implem
 	private static final int SECOND_INPUT_FLUID_VOLUME = 1;
 	private static final int OUTPUT_FLUID_VOLUME = 2;
 
-	public FuelMixerBlockEntity() {
+	public FluidMixerBlockEntity() {
 		super(AstromineBlockEntityTypes.fluid_mixer);
 
 		fluidComponent = new SimpleFluidInventoryComponent(3);
@@ -42,7 +42,7 @@ public class FuelMixerBlockEntity extends DefaultedEnergyFluidBlockEntity implem
 		fluidComponent.getVolume(OUTPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
 
 		fluidComponent.addListener(() -> {
-			if (!this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
+			if (this.world != null && !this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
 				recipe = (Optional) world.getRecipeManager().getAllOfType(FluidMixingRecipe.Type.INSTANCE).values().stream()
 						.filter(recipe -> recipe instanceof FluidMixingRecipe)
 						.filter(recipe -> ((FluidMixingRecipe) recipe).canCraft(this))
@@ -103,7 +103,7 @@ public class FuelMixerBlockEntity extends DefaultedEnergyFluidBlockEntity implem
 		if (recipe.isPresent()) {
 			recipe.get().tick(this);
 
-			if (!recipe.get().canCraft(this)) {
+			if (recipe.isPresent() && !recipe.get().canCraft(this)) {
 				recipe = Optional.empty();
 			}
 		}
