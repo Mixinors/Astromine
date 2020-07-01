@@ -1,5 +1,5 @@
 {
-	"name": "text.astromine.astronautics.plates.title",
+	"name": "text.astromine.components.plates.title",
 	"icon": "astromine:iron_plates",
 	"category": "components",
 	"sortnum": 0,
@@ -13,7 +13,7 @@
 		{
 			"type": "crafting",
 			"recipe": "astromine:iron_plates_from_ingot",
-			"title": "text.astromine.components.plates.page_two.text",
+			"title": "text.astromine.components.plates.page_two.title",
 			"text": "text.astromine.components.plates.page_two.text"
 		}
 	]

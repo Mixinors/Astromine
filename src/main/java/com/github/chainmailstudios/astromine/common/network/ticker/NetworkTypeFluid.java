@@ -53,7 +53,7 @@ public class NetworkTypeFluid extends NetworkType {
 
 		for (FluidVolume input : inputs) {
 			for (FluidVolume output : outputs) {
-				if (!input.isEmpty() && !output.isFull() && input.getFluid() == output.getFluid()) {
+				if (!input.isEmpty() && !output.isFull() && (input.getFluid() == output.getFluid() || output.isEmpty())) {
 					output.pullVolume(input, Fraction.BUCKET);
 				} else if (input.isEmpty()) {
 					break;

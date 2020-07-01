@@ -16,10 +16,10 @@ import com.github.chainmailstudios.astromine.common.block.entity.HolographicBrid
 import com.github.chainmailstudios.astromine.registry.AstromineSounds;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 
-public class HolographicConnector extends Item {
+public class HolographicConnectorItem extends Item {
 	public static final Object2ObjectArrayMap<World, Object> CACHE = new Object2ObjectArrayMap<>();
 
-	public HolographicConnector(Settings settings) {
+	public HolographicConnectorItem(Settings settings) {
 		super(settings);
 	}
 
@@ -62,12 +62,12 @@ public class HolographicConnector extends Item {
 
 				if ((parent.getPos().getX() != entity.getPos().getX() && parent.getPos().getZ() != entity.getPos().getZ()) || oP.getSquaredDistance(nP) > 65536) {
 					CACHE.put(world, null);
-					context.getPlayer().sendMessage(new TranslatableText("text.astromine.message.holographic_connection_failed", parent.getPos().toShortString(), entity.getPos().toShortString()).formatted(Formatting.RED), true);
+					context.getPlayer().sendMessage(new TranslatableText("text.astromine.message.holographic_connection_failed", toShortString(parent.getPos()), entity.getPos().toShortString()).formatted(Formatting.RED), true);
 					world.playSound(context.getPlayer(), context.getBlockPos(), AstromineSounds.HOLOGRAPHIC_CONNECTOR_CLICK, SoundCategory.PLAYERS, 0.5f, 0.33f);
 					return ActionResult.FAIL;
 				} else if (parent.getCachedState().get(HorizontalFacingBlock.FACING).getOpposite() != entity.getCachedState().get(HorizontalFacingBlock.FACING)) {
 					CACHE.put(world, null);
-					context.getPlayer().sendMessage(new TranslatableText("text.astromine.message.holographic_connection_failed", parent.getPos().toShortString(), entity.getPos().toShortString()).formatted(Formatting.RED), true);
+					context.getPlayer().sendMessage(new TranslatableText("text.astromine.message.holographic_connection_failed", toShortString(parent.getPos()), entity.getPos().toShortString()).formatted(Formatting.RED), true);
 					world.playSound(context.getPlayer(), context.getBlockPos(), AstromineSounds.HOLOGRAPHIC_CONNECTOR_CLICK, SoundCategory.PLAYERS, 0.5f, 0.33f);
 					return ActionResult.FAIL;
 				}

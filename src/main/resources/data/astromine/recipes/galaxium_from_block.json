@@ -1,12 +1,12 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "item": "astromine:galaxium_block"
-    }
-  ],
-  "result": {
-    "item": "astromine:galaxium",
-    "count": 9
-  }
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "astromine:galaxium_block"
+		}
+	],
+	"result": {
+		"item": "astromine:galaxium",
+		"count": 9
+	}
 }

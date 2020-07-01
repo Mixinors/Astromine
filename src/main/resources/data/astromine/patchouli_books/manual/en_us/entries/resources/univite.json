@@ -1,5 +1,5 @@
 {
-	"name": "Univite",
+	"name": "text.astromine.resources.univite.title",
 	"icon": "astromine:univite_ingot",
 	"category": "resources",
 	"sortnum": 4,
@@ -18,12 +18,12 @@
 		{
 			"type": "text",
 			"title": "text.astromine.resources.univite.page_three.title",
-			"text": "text.astromine.resources.univite.page_two.text"
+			"text": "text.astromine.resources.univite.page_three.text"
 		},
 		{
 			"type": "text",
 			"title": "text.astromine.resources.univite.page_four.title",
-			"text": "text.astromine.resources.univite.page_two.text"
+			"text": "text.astromine.resources.univite.page_four.text"
 		}
 	]
 }

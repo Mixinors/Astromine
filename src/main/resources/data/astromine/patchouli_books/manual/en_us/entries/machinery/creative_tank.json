@@ -1,5 +1,5 @@
 {
-	"name": "text.astromine.gadgets.creative_tank.title",
+	"name": "text.astromine.machinery.creative_tank.title",
 	"icon": "astromine:creative_tank",
 	"category": "machinery",
 	"sortnum": 1,
@@ -8,7 +8,7 @@
 			"type": "spotlight",
 			"item": "astromine:creative_tank",
 			"title": "text.astromine.machinery.creative_tank.page_one.title",
-			"text": "text.astromine.machinery.creative_tank.page_one.title,"
+			"text": "text.astromine.machinery.creative_tank.page_one.title"
 		}
 	]
 }

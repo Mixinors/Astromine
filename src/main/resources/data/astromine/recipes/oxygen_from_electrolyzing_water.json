@@ -1,17 +1,17 @@
 {
-  "type": "astromine:electrolyzing",
-  "input": "minecraft:water",
-  "input_amount": {
-    "numerator": 1,
-    "denominator": 64
-  },
-  "output": "astromine:oxygen",
-  "output_amount": {
-    "numerator": 1,
-    "denominator": 64
-  },
-  "energy_consumed": {
-    "numerator": 1,
-    "denominator": 16
-  }
+	"type": "astromine:electrolyzing",
+	"input": "minecraft:water",
+	"input_amount": {
+		"numerator": 1,
+		"denominator": 64
+	},
+	"output": "astromine:oxygen",
+	"output_amount": {
+		"numerator": 1,
+		"denominator": 64
+	},
+	"energy_consumed": {
+		"numerator": 1,
+		"denominator": 16
+	}
 }

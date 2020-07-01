@@ -1,34 +1,12 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.client.screen.*;
+import com.github.chainmailstudios.astromine.common.container.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.client.screen.CreativeBufferContainerScreen;
-import com.github.chainmailstudios.astromine.client.screen.CreativeCapacitorContainerScreen;
-import com.github.chainmailstudios.astromine.client.screen.CreativeTankContainerScreen;
-import com.github.chainmailstudios.astromine.client.screen.ElectrolyzerContainerScreen;
-import com.github.chainmailstudios.astromine.client.screen.FluidExtractorContainerScreen;
-import com.github.chainmailstudios.astromine.client.screen.FuelMixerContainerScreen;
-import com.github.chainmailstudios.astromine.client.screen.LiquidGeneratorContainerScreen;
-import com.github.chainmailstudios.astromine.client.screen.NuclearWarheadContainerScreen;
-import com.github.chainmailstudios.astromine.client.screen.SmelterContainerScreen;
-import com.github.chainmailstudios.astromine.client.screen.SorterContainerScreen;
-import com.github.chainmailstudios.astromine.client.screen.TankContainerScreen;
-import com.github.chainmailstudios.astromine.client.screen.VentContainerScreen;
-import com.github.chainmailstudios.astromine.common.container.CreativeBufferContainer;
-import com.github.chainmailstudios.astromine.common.container.CreativeCapacitorContainer;
-import com.github.chainmailstudios.astromine.common.container.CreativeTankContainer;
-import com.github.chainmailstudios.astromine.common.container.ElectricSmelterContainer;
-import com.github.chainmailstudios.astromine.common.container.ElectrolyzerContainer;
-import com.github.chainmailstudios.astromine.common.container.FluidExtractorContainer;
-import com.github.chainmailstudios.astromine.common.container.FluidTankContainer;
-import com.github.chainmailstudios.astromine.common.container.FuelMixerContainer;
-import com.github.chainmailstudios.astromine.common.container.LiquidGeneratorContainer;
-import com.github.chainmailstudios.astromine.common.container.NuclearWarheadContainer;
-import com.github.chainmailstudios.astromine.common.container.SorterContainer;
-import com.github.chainmailstudios.astromine.common.container.VentContainer;
 import spinnery.client.screen.InGameHudScreen;
 import spinnery.widget.WInterface;
 import spinnery.widget.WStaticImage;
@@ -93,5 +71,9 @@ public class AstromineScreens {
 		ScreenRegistry.register(AstromineContainers.FUEL_MIXER, (ScreenRegistry.Factory<FuelMixerContainer, FuelMixerContainerScreen>) ((handler, inventory, title) -> {
 			return new FuelMixerContainerScreen(title, handler, inventory.player);
 		}));
+		ScreenRegistry.register(AstromineContainers.CRAFTING_RECIPE_CREATOR, (ScreenRegistry.Factory<CraftingRecipeCreatorContainer, CraftingRecipeCreatorContainerScreen>) ((handler, inventory, title) -> {
+			return new CraftingRecipeCreatorContainerScreen(title, handler, inventory.player);
+		}));
+
 	}
 }

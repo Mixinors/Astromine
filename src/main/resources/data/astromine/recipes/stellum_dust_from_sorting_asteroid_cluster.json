@@ -1,8 +1,8 @@
 {
 	"type": "astromine:sorting",
 	"input": {
-			"item": "astromine:asteroid_stellum_cluster",
-			"count": 1
+		"item": "astromine:asteroid_stellum_cluster",
+		"count": 1
 	},
 	"output": {
 		"item": "astromine:stellum_dust",

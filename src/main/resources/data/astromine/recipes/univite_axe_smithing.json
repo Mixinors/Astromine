@@ -1,12 +1,12 @@
 {
-  "type": "minecraft:smithing",
-  "base": {
-    "item": "astromine:galaxium_axe"
-  },
-  "addition": {
-    "item": "astromine:univite_ingot"
-  },
-  "result": {
-    "item": "astromine:univite_axe"
-  }
+	"type": "minecraft:smithing",
+	"base": {
+		"item": "astromine:galaxium_axe"
+	},
+	"addition": {
+		"item": "astromine:univite_ingot"
+	},
+	"result": {
+		"item": "astromine:univite_axe"
+	}
 }

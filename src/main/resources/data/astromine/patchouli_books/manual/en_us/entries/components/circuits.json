@@ -1,5 +1,5 @@
 {
-	"name": "text.astromine.astronautics.circuits.title",
+	"name": "text.astromine.components.circuits.title",
 	"icon": "astromine:basic_circuit",
 	"category": "components",
 	"sortnum": 0,
@@ -7,35 +7,35 @@
 		{
 			"type": "spotlight",
 			"item": "astromine:basic_circuit",
-			"title": "text.astromine.astronautics.circuits.page_one.title",
-			"text": "text.astromine.astronautics.circuits.page_one.text"
+			"title": "text.astromine.components.circuits.page_one.title",
+			"text": "text.astromine.components.circuits.page_one.text"
 		},
 		{
 			"type": "crafting",
 			"recipe": "astromine:basic_circuit",
-			"title": "text.astromine.astronautics.circuits.page_two.title"
+			"title": "text.astromine.components.circuits.page_two.title"
 		},
 		{
 			"type": "spotlight",
 			"item": "astromine:advanced_circuit",
-			"title": "text.astromine.astronautics.circuits.page_three.title",
-			"text": "text.astromine.astronautics.circuits.page_three.text"
+			"title": "text.astromine.components.circuits.page_three.title",
+			"text": "text.astromine.components.circuits.page_three.text"
 		},
 		{
 			"type": "crafting",
 			"recipe": "astromine:advanced_circuit",
-			"title": "text.astromine.astronautics.circuits.page_four.title"
+			"title": "text.astromine.components.circuits.page_four.title"
 		},
 		{
 			"type": "spotlight",
 			"item": "astromine:elite_circuit",
-			"title": "text.astromine.astronautics.circuits.page_five.title",
-			"text": "text.astromine.astronautics.circuits.page_five.text"
+			"title": "text.astromine.components.circuits.page_five.title",
+			"text": "text.astromine.components.circuits.page_five.text"
 		},
 		{
 			"type": "crafting",
 			"recipe": "astromine:elite_circuit",
-			"title": "text.astromine.astronautics.circuits.page_six.title"
+			"title": "text.astromine.components.circuits.page_six.title"
 		}
 	]
 }

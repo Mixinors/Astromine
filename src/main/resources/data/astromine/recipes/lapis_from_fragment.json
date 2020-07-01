@@ -1,12 +1,12 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": ["###", "###", "###"],
-  "key": {
-    "#": {
-      "item": "astromine:lapis_fragment"
-    }
-  },
-  "result": {
-    "item": "minecraft:lapis_lazuli"
-  }
+	"type": "minecraft:crafting_shaped",
+	"pattern": ["###", "###", "###"],
+	"key": {
+		"#": {
+			"item": "astromine:lapis_fragment"
+		}
+	},
+	"result": {
+		"item": "minecraft:lapis_lazuli"
+	}
 }

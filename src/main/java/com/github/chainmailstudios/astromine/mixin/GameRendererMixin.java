@@ -60,7 +60,6 @@ public class GameRendererMixin {
 		}
 
 		callbackInformationReturnable.setReturnValue(gameFov);
-		callbackInformationReturnable.cancel();
 
 		lastFov = gameFov;
 	}

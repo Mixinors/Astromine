@@ -22,10 +22,10 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.registry.AstromineSounds;
 
-public class FireExtinguisher extends Item {
+public class FireExtinguisherItem extends Item {
 	long lastPlayed = 0;
 
-	public FireExtinguisher(Item.Settings settings) {
+	public FireExtinguisherItem(Item.Settings settings) {
 		super(settings);
 	}
 
