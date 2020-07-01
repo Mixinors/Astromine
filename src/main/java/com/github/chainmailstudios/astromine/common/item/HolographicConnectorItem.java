@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.HolographicBridgeProjectorBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
-import com.github.chainmailstudios.astromine.registry.AstromineSounds;
+import com.github.chainmailstudios.astromine.registry.client.AstromineSounds;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 
 public class HolographicConnectorItem extends Item {

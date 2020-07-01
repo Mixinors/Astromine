@@ -23,6 +23,7 @@ import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.utilities.FractionUtilities;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 
 import com.google.gson.Gson;
@@ -115,6 +116,11 @@ public class FuelMixingRecipe implements Recipe<Inventory> {
 	@Override
 	public DefaultedList<Ingredient> getPreviewInputs() {
 		return DefaultedList.of(); // we are not dealing with items
+	}
+
+	@Override
+	public ItemStack getRecipeKindIcon() {
+		return new ItemStack(AstromineBlocks.FUEL_MIXER);
 	}
 
 	public Identifier getIdentifier() {

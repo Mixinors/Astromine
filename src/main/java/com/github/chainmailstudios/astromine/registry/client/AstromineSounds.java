@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.registry;
+package com.github.chainmailstudios.astromine.registry.client;
 
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.registry.Registry;

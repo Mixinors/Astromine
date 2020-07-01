@@ -370,5 +370,7 @@
   "text.astromine.world.meteors.page_one.text": "Foreign bodies that, cruising through the stairs, collided with a planetary body; said to contain $(thing)$(l:world/meteor_ores)extraterrestrial ores$().",
   "text.astromine.world.ore_clusters.title": "Ore Clusters",
   "text.astromine.world.ore_clusters.page_one.title": "Ore Clusters",
-  "text.astromine.world.ore_clusters.page_one.text": "Clusters of ores obtained from $(thing)$(l:world/asteroid_ores)asteroid ores$() or $(thing)$(l:world/meteor_ores)meteor ores$(), which may be processed for resources."
+  "text.astromine.world.ore_clusters.page_one.text": "Clusters of ores obtained from $(thing)$(l:world/asteroid_ores)asteroid ores$() or $(thing)$(l:world/meteor_ores)meteor ores$(), which may be processed for resources.",
+  "text.astromine.world.ore_clusters.page_two.title": "Processing",
+  "text.astromine.world.ore_clusters.page_two.text": "Sorting clusters will result in two of their respective $(thing)dusts$()."
 }

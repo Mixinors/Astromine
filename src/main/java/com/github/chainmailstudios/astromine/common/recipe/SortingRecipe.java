@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.recipe;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -20,6 +21,7 @@ import com.github.chainmailstudios.astromine.common.utilities.IngredientUtilitie
 import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
@@ -99,6 +101,11 @@ public class SortingRecipe implements Recipe<Inventory> {
 		DefaultedList<Ingredient> defaultedList = DefaultedList.of();
 		defaultedList.add(this.input);
 		return defaultedList;
+	}
+
+	@Override
+	public ItemStack getRecipeKindIcon() {
+		return new ItemStack(AstromineBlocks.SORTER);
 	}
 	
 	public int getTimeTotal() {

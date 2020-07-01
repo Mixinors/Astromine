@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.registry;
+package com.github.chainmailstudios.astromine.registry.client;
 
 import com.github.chainmailstudios.astromine.client.screen.*;
 import com.github.chainmailstudios.astromine.common.container.*;
@@ -7,6 +7,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.registry.AstromineContainers;
 import spinnery.client.screen.InGameHudScreen;
 import spinnery.widget.WInterface;
 import spinnery.widget.WStaticImage;

@@ -10,7 +10,7 @@ import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 
-import com.github.chainmailstudios.astromine.registry.AstromineScreens;
+import com.github.chainmailstudios.astromine.registry.client.AstromineScreens;
 import spinnery.widget.api.Position;
 
 @Mixin(InGameHud.class)

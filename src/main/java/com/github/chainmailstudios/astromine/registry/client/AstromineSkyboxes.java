@@ -1,8 +1,9 @@
-package com.github.chainmailstudios.astromine.registry;
+package com.github.chainmailstudios.astromine.registry.client;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.registry.SkyboxRegistry;
 import com.github.chainmailstudios.astromine.client.render.sky.skybox.SpaceSkybox;
+import com.github.chainmailstudios.astromine.registry.AstromineDimensionTypes;
 
 public class AstromineSkyboxes {
 	public static void initialize() {

@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.item.weapon.BaseWeapon;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
-import com.github.chainmailstudios.astromine.registry.AstromineSounds;
+import com.github.chainmailstudios.astromine.registry.client.AstromineSounds;
 
 public class Weaponry {
 	public static final class ScarH extends BaseWeapon {
