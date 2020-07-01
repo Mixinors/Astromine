@@ -1,13 +1,16 @@
 package com.github.chainmailstudios.astromine.common.registry;
 
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
-public class DeltaRegistry<T, U> {
-	private final Multimap<T, U> entries = HashMultimap.create();
+public class UniRegistry<T, U> {
+	private final Map<T, U> entries = Maps.newHashMap();
 
-	public Collection<U> get(T t) {
+	public U get(T t) {
 		return entries.get(t);
 	}
 
@@ -33,8 +36,8 @@ public class DeltaRegistry<T, U> {
 		remove(t, u);
 	}
 
-	public boolean contains(T t, U u) {
-		return containsKey(t) && get(t).contains(u);
+	public boolean contains(T t) {
+		return containsKey(t);
 	}
 
 	public boolean containsKey(T t) {

@@ -8,8 +8,8 @@
 		"item": "minecraft:redstone",
 		"count": 2
 	},
-	"time_total": 20,
-	"energy_total": {
+	"time": 20,
+	"energy_consumed": {
 		"numerator": 1,
 		"denominator": 2
 	}

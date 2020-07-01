@@ -7,6 +7,6 @@ import com.github.chainmailstudios.astromine.common.world.generation.AstromineCh
 
 public class AstromineChunkGenerators {
 	public static void initialize() {
-		Registry.register(Registry.CHUNK_GENERATOR, AstromineCommon.identifier("space"), AstromineChunkGenerator.CODEC);
+		Registry.register(Registry.CHUNK_GENERATOR, AstromineCommon.identifier("earth_space"), AstromineChunkGenerator.CODEC);
 	}
 }

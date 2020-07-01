@@ -1,8 +1,11 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
+import nerdhub.cardinal.components.api.event.EntityComponentCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -74,5 +77,9 @@ public class AstromineCommonCallbacks {
 			WorldBridgeComponent component = new WorldBridgeComponent(world);
 			container.put(AstromineComponentTypes.WORLD_BRIDGE_COMPONENT, component);
 		});
+
+		EntityComponentCallback.register(AstromineComponentTypes.ENTITY_OXYGEN_COMPONENT, LivingEntity.class, ((entity) -> {
+			return new EntityOxygenComponent(0, entity);
+		}));
 	}
 }

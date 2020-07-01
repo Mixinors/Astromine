@@ -1,11 +1,11 @@
 package com.github.chainmailstudios.astromine.client.registry;
 
+import com.github.chainmailstudios.astromine.common.registry.base.MultiRegistry;
 import net.minecraft.block.Block;
 
-import com.github.chainmailstudios.astromine.common.registry.DeltaRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 
-public class AsteroidOreRegistry extends DeltaRegistry<Integer, Block> {
+public class AsteroidOreRegistry extends MultiRegistry<Integer, Block> {
 	public static final AsteroidOreRegistry INSTANCE = new AsteroidOreRegistry();
 
 	private AsteroidOreRegistry() {

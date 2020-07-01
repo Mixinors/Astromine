@@ -1,31 +1,21 @@
 package com.github.chainmailstudios.astromine.common.registry.base;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
+
 import java.util.Collection;
 import java.util.Map;
 
-public abstract class UniDirectionalRegistry<T, U> {
-	private final Map<T, U> entries = Maps.newHashMap();
-	private final U defaultValue;
+public abstract class MultiRegistry<T, U> {
+	private final Multimap<T, U> entries = HashMultimap.create();
 
-	public UniDirectionalRegistry(U defaultValue) {
-		this.defaultValue = defaultValue;
-	}
-
-	public UniDirectionalRegistry() {
-		this.defaultValue = null;
-	}
-
-	public U getDefault() {
-		return defaultValue;
-	}
-
-	public U get(T t) {
-		return entries.getOrDefault(t, defaultValue);
+	public Collection<U> get(T t) {
+		return entries.get(t);
 	}
 
 	public U set(T t, U u) {
-		entries.putIfAbsent(t, u);
+		entries.put(t, u);
 		return u;
 	}
 
@@ -39,7 +29,7 @@ public abstract class UniDirectionalRegistry<T, U> {
 	}
 
 	public void removeKey(T t) {
-		entries.remove(t);
+		entries.removeAll(t);
 	}
 
 	public U register(T t, U u) {

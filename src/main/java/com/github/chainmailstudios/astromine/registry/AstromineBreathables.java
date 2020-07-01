@@ -29,5 +29,6 @@ public class AstromineBreathables {
 		BreathableRegistry.INSTANCE.register(EntityType.ZOMBIE_HORSE, AstromineTags.NORMAL_BREATHABLE, AstromineTags.WATER_BREATHABLE);
 		BreathableRegistry.INSTANCE.register(EntityType.ZOMBIE_VILLAGER, AstromineTags.NORMAL_BREATHABLE, AstromineTags.WATER_BREATHABLE);
 		BreathableRegistry.INSTANCE.register(EntityType.ZOMBIFIED_PIGLIN, AstromineTags.NORMAL_BREATHABLE, AstromineTags.WATER_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.PLAYER, AstromineTags.NORMAL_BREATHABLE);
 	}
 }
