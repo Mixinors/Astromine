@@ -20,7 +20,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.registry.AstromineSounds;
+import com.github.chainmailstudios.astromine.registry.client.AstromineSounds;
 
 public class FireExtinguisherItem extends Item {
 	long lastPlayed = 0;

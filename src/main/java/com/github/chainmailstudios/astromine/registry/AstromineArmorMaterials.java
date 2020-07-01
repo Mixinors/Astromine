@@ -9,6 +9,8 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Lazy;
 
+import com.github.chainmailstudios.astromine.registry.client.AstromineSounds;
+
 import java.util.function.Supplier;
 
 public class AstromineArmorMaterials {
