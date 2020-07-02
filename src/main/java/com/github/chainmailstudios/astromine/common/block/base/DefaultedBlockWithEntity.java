@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
@@ -30,6 +31,11 @@ public abstract class DefaultedBlockWithEntity extends Block implements BlockEnt
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		builder.add(ACTIVE);
 		super.appendProperties(builder);
+	}
+
+	@Override
+	public BlockState getPlacementState(ItemPlacementContext context) {
+		return super.getPlacementState(context).with(ACTIVE, false);
 	}
 
 	public static void markActive(World world, BlockPos pos) {

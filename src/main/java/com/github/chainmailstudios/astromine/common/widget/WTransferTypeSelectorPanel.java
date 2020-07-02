@@ -102,8 +102,8 @@ public class WTransferTypeSelectorPanel extends WAbstractWidget implements WColl
 		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 22, 31 + 44, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.SOUTH).setBlockPos(blockPos).setInterface(getInterface()));
 		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 22, 31 + 0, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.UP).setBlockPos(blockPos).setInterface(getInterface()));
 		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 0,  31 + 44, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.DOWN).setBlockPos(blockPos).setInterface(getInterface()));
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 0,  31 + 22, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.WEST).setBlockPos(blockPos).setInterface(getInterface()));
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 44, 31 + 22, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.EAST).setBlockPos(blockPos).setInterface(getInterface()));
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 44, 31 + 22, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.WEST).setBlockPos(blockPos).setInterface(getInterface()));
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 0,  31 + 22, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.EAST).setBlockPos(blockPos).setInterface(getInterface()));
 	}
 
 	@Override

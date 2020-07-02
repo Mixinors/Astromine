@@ -4,7 +4,7 @@
     "particle": "astromine:block/machine_bottom",
     "down": "astromine:block/machine_bottom",
     "up": "astromine:block/machine_top",
-    "north": "astromine:block/electric_smelter_front",
+    "north": "astromine:block/electric_smelter_front_inactive",
     "east": "astromine:block/machine_side",
     "south": "astromine:block/machine_side",
     "west": "astromine:block/machine_side"

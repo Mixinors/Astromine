@@ -51,8 +51,8 @@ public class ElectricSmelterBlock extends DefaultedHorizontalFacingBlockWithEnti
 	}
 
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		return super.getPlacementState(ctx).with(ACTIVE, false);
+	public BlockState getPlacementState(ItemPlacementContext context) {
+		return super.getPlacementState(context).with(ACTIVE, false);
 	}
 
 	@Override

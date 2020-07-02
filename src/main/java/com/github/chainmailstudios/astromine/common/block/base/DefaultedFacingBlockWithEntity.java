@@ -22,7 +22,7 @@ public abstract class DefaultedFacingBlockWithEntity extends DefaultedBlockWithE
 	
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
-		return this.getDefaultState().with(getDirectionProperty(), context.getPlayerLookDirection().getOpposite());
+		return super.getPlacementState(context).with(getDirectionProperty(), context.getPlayerLookDirection().getOpposite());
 	}
 	
 	@Override
