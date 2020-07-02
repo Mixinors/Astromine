@@ -73,13 +73,10 @@ public class HolographicConnector extends Item {
 				}
 
 				parent.setChild(entity);
-				entity.setParent(parent);
 
-				if (parent.getParent() == entity.getParent()) {
-					parent.setParent(null);
+				if (entity.hasChild()) {
+					entity.setChild(null);
 				}
-
-				parent.direction = d;
 
 				parent.buildBridge();
 

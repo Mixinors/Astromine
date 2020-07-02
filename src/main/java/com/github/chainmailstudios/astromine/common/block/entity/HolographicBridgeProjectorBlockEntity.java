@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.utilities.VectorUtilities;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 
 import net.minecraft.block.BlockState;
@@ -28,16 +29,14 @@ import java.util.ArrayList;
 
 public class HolographicBridgeProjectorBlockEntity extends BlockEntity implements Tickable, BlockEntityClientSerializable {
 	public ArrayList<Vector3f> segments = null;
-	public ArrayList<Vec3i> members = null;
-	public Direction direction = Direction.NORTH;
+
 	public Color color = Color.of(0x7e80cad4);
-	public long last = 0;
+
 	private HolographicBridgeProjectorBlockEntity child = null;
-	private HolographicBridgeProjectorBlockEntity parent = null;
+
 	private BlockPos childPosition = null;
-	private BlockPos parentPosition = null;
+
 	private boolean hasCheckedChild = false;
-	private boolean hasCheckedParent = false;
 
 	public HolographicBridgeProjectorBlockEntity() {
 		super(AstromineBlockEntityTypes.HOLOGRAPHIC_BRIDGE);
@@ -45,23 +44,6 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 
 	public boolean hasChild() {
 		return this.child != null;
-	}
-
-	public HolographicBridgeProjectorBlockEntity getParent() {
-		return this.parent;
-	}
-
-	public void setParent(HolographicBridgeProjectorBlockEntity parent) {
-		if (parent != null) {
-			parent.destroyBridge();
-		}
-
-		this.parent = parent;
-		this.markDirty();
-	}
-
-	public boolean hasParent() {
-		return this.parent != null;
 	}
 
 	@Override
@@ -72,35 +54,13 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 
 				if (childEntity instanceof HolographicBridgeProjectorBlockEntity) {
 					this.child = (HolographicBridgeProjectorBlockEntity) childEntity;
-					this.child.setParent(this);
-					this.buildBridge();
 					this.hasCheckedChild = true;
+
+					this.buildBridge();
 				} else if (childEntity != null) {
 					this.hasCheckedChild = true;
 				}
 			}
-		}
-
-		if (!this.hasCheckedParent && this.parentPosition != null) {
-			if (this.world != null) {
-				BlockEntity parentEntity = this.world.getBlockEntity(this.parentPosition);
-
-				if (parentEntity instanceof HolographicBridgeProjectorBlockEntity) {
-					this.parent = (HolographicBridgeProjectorBlockEntity) parentEntity;
-					this.parent.setChild(this);
-					this.parent.buildBridge();
-					this.hasCheckedParent = true;
-				} else if (parentEntity != null) {
-					this.hasCheckedParent = true;
-				}
-			}
-		}
-
-		long current = System.currentTimeMillis();
-
-		if (current - this.last >= 11187) {
-			this.world.playSound(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), AstromineSounds.HUMMING, SoundCategory.BLOCKS, 0.005f, 0.5f, true);
-			this.last = current;
 		}
 	}
 
@@ -128,21 +88,13 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 			return;
 		}
 
-		this.segments = (ArrayList<Vector3f>) LineUtilities.getBezierSegments(new Vector3f(bOP.getX(), bOP.getY() + 1, bOP.getZ()),
-				new Vector3f(nCP.getX(), nCP.getY() + 1, nCP.getZ()),
-				new Vector3f((bOP.getX() + nCP.getX()) / 2f, (bOP.getY() + nCP.getY() + 2) / 2f, bCP.getZ()),
-				distance * 16
-		);
-
-		this.members = new ArrayList<>();
+		this.segments = (ArrayList<Vector3f>) LineUtilities.getBresenhamSegments(VectorUtilities.toVector3f(bOP.offset(Direction.UP)), VectorUtilities.toVector3f(nCP.offset(Direction.UP)), 32);
 
 		for (Vector3f v : this.segments) {
 			BlockPos nP = new BlockPos(v.getX(), v.getY(), v.getZ());
 
 			if ((nP.getX() != bCP.getX() && nP.getX() != bOP.getX()) || (nP.getZ() != bCP.getZ() && nP.getZ() != bOP.getZ())) {
 				this.world.setBlockState(nP, AstromineBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
-
-				this.members.add(nP);
 			}
 
 			ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
@@ -158,12 +110,67 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 	}
 
 	public void setChild(HolographicBridgeProjectorBlockEntity child) {
-		if (child != null && child.parent != null) {
-			child.parent.destroyBridge();
+		this.child = child;
+
+		this.markDirty();
+	}
+
+	@Override
+	public double getSquaredRenderDistance() {
+		return Math.pow(2, 15);
+	}
+
+	@Override
+	public void markRemoved() {
+		if (this.child != null) {
+			this.destroyBridge();
+
+			this.setChild(null);
 		}
 
-		this.child = child;
-		this.markDirty();
+		super.markRemoved();
+	}
+
+	public void destroyBridge() {
+		if (this.segments != null && this.world != null) {
+			ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
+
+			WorldBridgeComponent bridgeComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_BRIDGE_COMPONENT);
+
+			for (Vector3f vec : this.segments) {
+				BlockPos pos = new BlockPos(vec.getX(), vec.getY(), vec.getZ());
+
+				bridgeComponent.remove(pos);
+
+				this.world.setBlockState(pos, Blocks.AIR.getDefaultState());
+			}
+		}
+	}
+
+	@Override
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+		if (tag.contains("child_position")) {
+			this.childPosition = BlockPos.fromLong(tag.getLong("child_position"));
+		}
+
+		this.color = Color.of(tag.getInt("color"));
+
+		super.fromTag(state, tag);
+	}
+
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		if (this.child != null) {
+			tag.putLong("child_position", this.child.getPos().asLong());
+		}
+
+		if (this.childPosition != null) {
+			tag.putLong("child_position", this.childPosition.asLong());
+		}
+
+		tag.putInt("color", this.color.ARGB);
+
+		return super.toTag(tag);
 	}
 
 	@Override
@@ -176,93 +183,11 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 			this.child = (HolographicBridgeProjectorBlockEntity) this.world.getBlockEntity(this.childPosition);
 		}
 
-		if (this.parentPosition != null) {
-			this.parent = (HolographicBridgeProjectorBlockEntity) this.world.getBlockEntity(this.parentPosition);
-		}
-
 		this.buildBridge();
-	}
-
-	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		if (tag.contains("child_position")) {
-			this.childPosition = BlockPos.fromLong(tag.getLong("child_position"));
-		}
-		if (tag.contains("parent_position")) {
-			this.parentPosition = BlockPos.fromLong(tag.getLong("parent_position"));
-		}
-
-		this.direction = Direction.byId(tag.getInt("direction"));
-		this.color = Color.of(tag.getInt("color"));
-
-		super.fromTag(state, tag);
-	}
-
-	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		if (this.child != null) {
-			tag.putLong("child_position", this.child.getPos().asLong());
-		}
-		if (this.parent != null) {
-			tag.putLong("parent_position", this.parent.getPos().asLong());
-		}
-
-		if (this.childPosition != null) {
-			tag.putLong("parent_position", this.childPosition.asLong());
-		}
-		if (this.parentPosition != null) {
-			tag.putLong("parent_position", this.parentPosition.asLong());
-		}
-
-
-		tag.putInt("direction", this.direction.getId());
-		tag.putInt("color", this.color.ARGB);
-
-		return super.toTag(tag);
-	}
-
-	@Override
-	public double getSquaredRenderDistance() {
-		return Math.pow(2, 15);
-	}
-
-	@Override
-	public void markRemoved() {
-		if (this.child != null) {
-			this.child.setParent(null);
-			this.destroyBridge();
-
-			this.setChild(null);
-		}
-
-		if (this.parent != null) {
-			this.parent.setChild(null);
-			this.parent.destroyBridge();
-
-			this.setParent(null);
-		}
-
-		super.markRemoved();
-	}
-
-	public void destroyBridge() {
-		if (this.segments != null && this.world != null) {
-			for (Vec3i vec : this.members) {
-				ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
-
-				WorldBridgeComponent bridgeComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_BRIDGE_COMPONENT);
-
-				bridgeComponent.remove((BlockPos) vec);
-
-				this.world.setBlockState((BlockPos) vec, Blocks.AIR.getDefaultState());
-			}
-		}
 	}
 
 	@Override
 	public CompoundTag toClientTag(CompoundTag compoundTag) {
 		return this.toTag(compoundTag);
 	}
-
-
 }

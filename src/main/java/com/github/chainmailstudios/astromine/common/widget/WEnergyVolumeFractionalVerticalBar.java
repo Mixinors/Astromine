@@ -19,9 +19,6 @@ public class WEnergyVolumeFractionalVerticalBar extends WFractionalVerticalBar {
 		super();
 
 		setUnit(new TranslatableText("text.astromine.energy"));
-
-		setBackgroundTexture(ENERGY_BACKGROUND);
-		setForegroundTexture(ENERGY_FOREGROUND);
 	}
 
 	@Override

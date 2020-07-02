@@ -27,8 +27,6 @@ public class WFluidVolumeFractionalVerticalBar extends WFractionalVerticalBar {
 		super();
 
 		setUnit(new TranslatableText("text.astromine.fluid"));
-
-		setBackgroundTexture(FLUID_BACKGROUND);
 	}
 
 	@Override

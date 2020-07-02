@@ -30,6 +30,7 @@ public class DefaultedBlockEntityContainerScreen<T extends DefaultedBlockEntityC
 		mainPanel = mainInterface.createChild(WPanel::new, Position.ORIGIN, Size.of(176, 160));
 
 		addTitle(mainPanel);
+
 		mainPanel.center();
 		mainPanel.setOnAlign(WAbstractWidget::center);
 
