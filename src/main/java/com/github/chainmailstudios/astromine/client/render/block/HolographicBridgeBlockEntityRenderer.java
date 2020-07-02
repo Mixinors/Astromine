@@ -44,7 +44,7 @@ public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<Ho
 
 			Collection<Vector3f> s = entity.segments;
 
-			if (s.size() == 0) {
+			if (s == null || s.size() == 0) {
 				return;
 			}
 
