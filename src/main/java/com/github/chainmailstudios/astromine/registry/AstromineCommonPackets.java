@@ -29,7 +29,7 @@ public class AstromineCommonPackets {
 
 		ServerSidePacketRegistry.INSTANCE.register(BLOCK_ENTITY_UPDATE_PACKET, (((context, buffer) -> {
 			BlockPos blockPos = buffer.readBlockPos();
-			Identifier identifier = new Identifier(buffer.readString());
+			Identifier identifier = buffer.readIdentifier();
 			PacketByteBuf storedBuffer = new PacketByteBuf(buffer.copy());
 
 			context.getTaskQueue().execute(() -> {

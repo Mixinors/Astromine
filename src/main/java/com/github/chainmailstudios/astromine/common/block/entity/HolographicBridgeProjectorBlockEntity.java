@@ -33,6 +33,7 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 	public Color color = Color.of(0x7e80cad4);
 
 	private HolographicBridgeProjectorBlockEntity child = null;
+	private HolographicBridgeProjectorBlockEntity parent = null;
 
 	private BlockPos childPosition = null;
 
@@ -112,6 +113,22 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 	public void setChild(HolographicBridgeProjectorBlockEntity child) {
 		this.child = child;
 
+		if (this.child != null) {
+			this.child.setParent(this);
+			this.child.setChild(null);
+		}
+
+		this.markDirty();
+	}
+
+	public HolographicBridgeProjectorBlockEntity getParent() {
+		return parent;
+	}
+
+	public void setParent(HolographicBridgeProjectorBlockEntity parent) {
+		this.parent = parent;
+		this.setChild(null);
+
 		this.markDirty();
 	}
 
@@ -123,6 +140,10 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 	@Override
 	public void markRemoved() {
 		if (this.child != null) {
+			if (this.parent != null) {
+				this.parent.destroyBridge();
+			}
+
 			this.destroyBridge();
 
 			this.setChild(null);
@@ -162,9 +183,7 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 	public CompoundTag toTag(CompoundTag tag) {
 		if (this.child != null) {
 			tag.putLong("child_position", this.child.getPos().asLong());
-		}
-
-		if (this.childPosition != null) {
+		} else if (this.childPosition != null) {
 			tag.putLong("child_position", this.childPosition.asLong());
 		}
 
