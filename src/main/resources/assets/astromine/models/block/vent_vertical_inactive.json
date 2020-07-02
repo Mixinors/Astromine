@@ -3,7 +3,7 @@
   "textures": {
     "particle": "astromine:block/machine_bottom",
     "down": "astromine:block/vent_back",
-    "up": "astromine:block/vent_front_inactive",
+    "up": "astromine:block/vent_top_inactive",
     "north": "astromine:block/machine_side",
     "east": "astromine:block/machine_side",
     "south": "astromine:block/machine_side",
