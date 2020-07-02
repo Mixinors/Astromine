@@ -9,9 +9,9 @@ public class MirrorUtilities {
 		} else if (rotation == Direction.SOUTH) {
 			return origin.getOpposite();
 		} else if (rotation == Direction.WEST) {
-			return origin == Direction.NORTH ? Direction.WEST : origin == Direction.SOUTH ? Direction.EAST : origin == Direction.WEST ? Direction.NORTH : origin == Direction.EAST ? Direction.SOUTH : origin;
+			return origin == Direction.NORTH ? Direction.EAST : origin == Direction.SOUTH ? Direction.WEST : origin == Direction.WEST ? Direction.SOUTH : origin == Direction.EAST ? Direction.NORTH : origin;
 		} else if (rotation == Direction.EAST) {
-			return origin == Direction.NORTH ? Direction.EAST : origin == Direction.SOUTH ? Direction.WEST : origin == Direction.EAST ? Direction.NORTH : origin == Direction.WEST ? Direction.SOUTH : origin;
+			return origin == Direction.NORTH ? Direction.WEST : origin == Direction.SOUTH ? Direction.EAST : origin == Direction.EAST ? Direction.NORTH : origin == Direction.WEST ? Direction.SOUTH : origin;
 		} else {
 			return origin;
 		}

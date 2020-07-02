@@ -25,6 +25,8 @@ public class HolographicConnector extends Item {
 
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
+		if (context.shouldCancelInteraction()) return super.useOnBlock(context);
+
 		World world = context.getWorld();
 
 		BlockPos position = context.getBlockPos();
@@ -41,18 +43,6 @@ public class HolographicConnector extends Item {
 
 				BlockPos nP = entity.getPos();
 				BlockPos oP = parent.getPos();
-
-				Direction d = Direction.NORTH;
-
-				if (nP.getX() > oP.getX()) {
-					d = Direction.EAST;
-				} else if (nP.getX() < oP.getX()) {
-					d = Direction.WEST;
-				} else if (nP.getZ() > oP.getZ()) {
-					d = Direction.SOUTH;
-				} else if (nP.getZ() < oP.getZ()) {
-					d = Direction.NORTH;
-				}
 
 				if (parent.getPos().getZ() < entity.getPos().getZ() || parent.getPos().getX() < entity.getPos().getX()) {
 					HolographicBridgeProjectorBlockEntity temporary = parent;

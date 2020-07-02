@@ -23,10 +23,10 @@ public class BuiltinModelItemRendererMixin {
 	private RocketEntityModel rocketEntityModel = new RocketEntityModel();
 
 	@Inject(method = "render", at = @At("HEAD"), cancellable = true)
-	private void render(ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j, CallbackInfo ci) {
+	private void render(ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i, int j, CallbackInfo ci) {
 		if (stack.getItem() == AstromineItems.ROCKET) {
 			ci.cancel();
-			AstromineClientModels.renderRocket(rocketEntityModel, stack, mode, matrixStack, vertexConsumerProvider, i, j);
+			AstromineClientModels.renderRocket(rocketEntityModel, stack, mode, matrices, vertexConsumerProvider, i, j);
 		}
 	}
 }

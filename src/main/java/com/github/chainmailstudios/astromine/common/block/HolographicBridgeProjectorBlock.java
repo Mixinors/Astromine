@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.block;
 
+import com.github.chainmailstudios.astromine.access.DyeColorAccess;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -32,7 +33,14 @@ public class HolographicBridgeProjectorBlock extends DefaultedHorizontalFacingBl
 			HolographicBridgeProjectorBlockEntity entity = (HolographicBridgeProjectorBlockEntity) world.getBlockEntity(position);
 
 			if (entity != null) {
-				entity.color = Color.of(0x7e000000 >> 2 | dye.getColor().getSignColor());
+				entity.color = Color.of(0x7e000000 >> 2 | ((DyeColorAccess) (Object) dye.getColor()).getColor());
+
+				if(!world.isClient()) entity.sync();
+
+				if(entity.hasChild()) {
+					entity.getChild().color = Color.of(0x7e000000 >> 2 | ((DyeColorAccess) (Object) dye.getColor()).getColor());
+					if(!world.isClient()) entity.getChild().sync();
+				}
 
 				if (!player.isCreative()) {
 					stack.decrement(1);

@@ -24,6 +24,8 @@ public class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEntity imple
 
 	public boolean isActive = false;
 
+	public boolean[] activity = { false, false, false, false, false };
+
 	private Optional<FluidMixingRecipe> recipe = Optional.empty();
 
 	private static final int INPUT_ENERGY_VOLUME = 0;
@@ -98,19 +100,28 @@ public class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEntity imple
 	public void tick() {
 		if (world.isClient()) return;
 
-		boolean wasActive = isActive;
-
 		if (recipe.isPresent()) {
 			recipe.get().tick(this);
 
 			if (recipe.isPresent() && !recipe.get().canCraft(this)) {
 				recipe = Optional.empty();
 			}
+
+			isActive = true;
+		} else {
+			isActive = false;
 		}
 
-		if (isActive && !wasActive) {
+
+		for (int i = 1; i < activity.length; ++i) {
+			activity[i - 1] = activity[i];
+		}
+
+		activity[4] = isActive;
+
+		if (isActive && !activity[0]) {
 			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, true));
-		} else if (!isActive && wasActive) {
+		} else if (!isActive && activity[0]) {
 			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, false));
 		}
 	}

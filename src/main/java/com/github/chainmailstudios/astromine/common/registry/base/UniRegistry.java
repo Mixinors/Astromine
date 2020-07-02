@@ -1,22 +1,21 @@
 package com.github.chainmailstudios.astromine.common.registry.base;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
-public abstract class BiDirectionalRegistry<T, U> {
-	private final BiMap<T, U> entries = HashBiMap.create();
+public class UniRegistry<T, U> {
+	private final Map<T, U> entries = Maps.newHashMap();
 
 	public U get(T t) {
 		return entries.get(t);
 	}
 
-	public T getKey(U u) {
-		return entries.inverse().get(u);
-	}
-
 	public U set(T t, U u) {
-		entries.putIfAbsent(t, u);
+		entries.put(t, u);
 		return u;
 	}
 
@@ -29,14 +28,6 @@ public abstract class BiDirectionalRegistry<T, U> {
 		return u;
 	}
 
-	public void removeKey(T t) {
-		entries.remove(t);
-	}
-
-	public void removeValue(U u) {
-		entries.inverse().remove(u);
-	}
-
 	public U register(T t, U u) {
 		return set(t, u);
 	}
@@ -45,16 +36,8 @@ public abstract class BiDirectionalRegistry<T, U> {
 		remove(t, u);
 	}
 
-	public void unregisterKey(T t) {
-		removeKey(t);
-	}
-
-	public void unregisterValue(U u) {
-		removeValue(u);
-	}
-
-	public boolean contains(T t, U u) {
-		return containsKey(t) && get(t).equals(u);
+	public boolean contains(T t) {
+		return containsKey(t);
 	}
 
 	public boolean containsKey(T t) {

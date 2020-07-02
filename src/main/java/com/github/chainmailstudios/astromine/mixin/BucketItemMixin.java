@@ -58,7 +58,7 @@ public abstract class BucketItemMixin {
 					if (attached instanceof ComponentProvider) {
 						ComponentProvider provider = ComponentProvider.fromBlockEntity(attached);
 
-						FluidInventoryComponent inventory = provider.getSidedComponent(result.getSide(), AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+						FluidInventoryComponent inventory = provider.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
 						if (inventory != null && this.fluid != Fluids.EMPTY) {
 							FluidVolume bucketVolume = new FluidVolume(this.fluid, Fraction.BUCKET);

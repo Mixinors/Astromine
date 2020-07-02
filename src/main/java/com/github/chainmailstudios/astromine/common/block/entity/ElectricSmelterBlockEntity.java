@@ -26,7 +26,8 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 
 	public boolean shouldTry = true;
 	public boolean isActive = false;
-	public boolean wasActive = false;
+
+	public boolean[] activity = { false, false, false, false, false };
 
 	BaseInventory inputInventory = new BaseInventory(1);
 
@@ -111,12 +112,16 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 			isActive = false;
 		}
 
-		if (isActive && !wasActive) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, true));
-		} else if (!isActive && wasActive) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, false));
+		for (int i = 1; i < activity.length; ++i) {
+			activity[i - 1] = activity[i];
 		}
 
-		wasActive = isActive;
+		activity[4] = isActive;
+
+		if (isActive && !activity[0]) {
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, true));
+		} else if (!isActive && activity[0]) {
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, false));
+		}
 	}
 }

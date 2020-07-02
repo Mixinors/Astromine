@@ -49,18 +49,17 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 
 	@Override
 	public void tick() {
+		if (this.world == null || this.world.isClient) return;
 		if (!this.hasCheckedChild && this.childPosition != null) {
-			if (this.world != null) {
-				BlockEntity childEntity = this.world.getBlockEntity(this.childPosition);
+			BlockEntity childEntity = this.world.getBlockEntity(this.childPosition);
 
-				if (childEntity instanceof HolographicBridgeProjectorBlockEntity) {
-					this.child = (HolographicBridgeProjectorBlockEntity) childEntity;
-					this.hasCheckedChild = true;
+			if (childEntity instanceof HolographicBridgeProjectorBlockEntity) {
+				this.child = (HolographicBridgeProjectorBlockEntity) childEntity;
+				this.hasCheckedChild = true;
 
-					this.buildBridge();
-				} else if (childEntity != null) {
-					this.hasCheckedChild = true;
-				}
+				this.buildBridge();
+			} else if (childEntity != null) {
+				this.hasCheckedChild = true;
 			}
 		}
 	}

@@ -75,13 +75,13 @@ public class BlockEntityTransferComponent implements Component {
 
 		public void fromTag(CompoundTag tag) {
 			for (String directionKey : tag.getKeys()) {
-				types.put(Direction.byName(directionKey), TransferType.valueOf(tag.getString(directionKey)));
+				types.put(Direction.byId(Integer.parseInt(directionKey)), TransferType.valueOf(tag.getString(directionKey)));
 			}
 		}
 
 		public CompoundTag toTag(CompoundTag tag) {
 			for (Map.Entry<Direction, TransferType> entry : types.entrySet()) {
-				tag.putString(entry.getKey().getName(), entry.getValue().toString());
+				tag.putString(String.valueOf(entry.getKey().getId()), entry.getValue().toString());
 			}
 
 			return tag;
