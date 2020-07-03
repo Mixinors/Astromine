@@ -4,17 +4,21 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import net.minecraft.block.AnvilBlock;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.FallingBlockEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.tag.BlockTags;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
@@ -24,6 +28,9 @@ import java.util.List;
 
 @Mixin(FallingBlockEntity.class)
 public abstract class FlamingAnvilCraftingMixin extends Entity {
+	@Shadow
+	private BlockState block;
+	
 	public FlamingAnvilCraftingMixin(EntityType<?> type, World world) {
 		super(type, world);
 	}
@@ -31,7 +38,11 @@ public abstract class FlamingAnvilCraftingMixin extends Entity {
 	@Environment(EnvType.CLIENT)
 	@Inject(method = "doesRenderOnFire", at = @At("RETURN"), cancellable = true)
 	private void ret(CallbackInfoReturnable<Boolean> cir) {
-		cir.setReturnValue(true);
+		if (this.isOnFire()) {
+			if (this.block.isIn(BlockTags.ANVIL)) {
+				cir.setReturnValue(true);
+			}
+		}
 	}
 
 	@Inject(method = "handleFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isIn(Lnet/minecraft/tag/Tag;)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
