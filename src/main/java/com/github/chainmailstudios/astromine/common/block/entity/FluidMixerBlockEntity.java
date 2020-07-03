@@ -34,7 +34,7 @@ public class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEntity imple
 	private static final int OUTPUT_FLUID_VOLUME = 2;
 
 	public FluidMixerBlockEntity() {
-		super(AstromineBlockEntityTypes.fluid_mixer);
+		super(AstromineBlockEntityTypes.FLUID_MIXER);
 
 		fluidComponent = new SimpleFluidInventoryComponent(3);
 

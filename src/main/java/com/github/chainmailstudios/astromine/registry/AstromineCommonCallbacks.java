@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
+import com.github.chainmailstudios.astromine.common.component.world.WorldMultiblockComponent;
 import nerdhub.cardinal.components.api.event.EntityComponentCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
@@ -81,5 +82,10 @@ public class AstromineCommonCallbacks {
 		EntityComponentCallback.register(AstromineComponentTypes.ENTITY_OXYGEN_COMPONENT, LivingEntity.class, ((entity) -> {
 			return new EntityOxygenComponent(0, entity);
 		}));
+
+		WorldComponentCallback.EVENT.register((world, container) -> {
+			WorldMultiblockComponent component = new WorldMultiblockComponent(world);
+			container.put(AstromineComponentTypes.WORLD_MULTIBLOCK_COMPONENT, component);
+		});
 	}
 }
