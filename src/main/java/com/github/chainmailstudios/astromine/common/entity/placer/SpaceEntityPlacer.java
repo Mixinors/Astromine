@@ -8,9 +8,11 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+
 public class SpaceEntityPlacer implements EntityPlacer {
-	public static final SpaceEntityPlacer TO_PLANET = new SpaceEntityPlacer(992);
-	public static final SpaceEntityPlacer TO_SPACE = new SpaceEntityPlacer(32);
+	public static final SpaceEntityPlacer TO_PLANET = new SpaceEntityPlacer(AstromineConfig.get().overworldSpawnYLevel);
+	public static final SpaceEntityPlacer TO_SPACE = new SpaceEntityPlacer(AstromineConfig.get().spaceSpawnYLevel);
 
 	public final int y;
 

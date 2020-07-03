@@ -219,8 +219,8 @@ public class FluidVolume extends BaseVolume {
 		return "Volume{" + "fluid=" + this.fluid + ", fraction=" + this.fraction + '}';
 	}
 
-	public String getFluidString() {
-		return Registry.FLUID.getId(fluid).toString();
+	public Identifier getFluidIdentifier() {
+		return Registry.FLUID.getId(fluid);
 	}
 
 	public String getFractionString() {

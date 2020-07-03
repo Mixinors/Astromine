@@ -19,7 +19,7 @@ public class AstromineClientPackets {
 	@Environment(EnvType.CLIENT)
 	public static void initialize() {
 		ClientSidePacketRegistry.INSTANCE.register(AstromineCommonPackets.PRESSURE_UPDATE, ((context, buffer) -> {
-			Identifier identifier = new Identifier(buffer.readString());
+			Identifier identifier = buffer.readIdentifier();
 
 			AstromineScreens.GAS_IMAGE.setTexture(AstromineCommon.identifier("textures/symbol/" + identifier.getPath() + ".png"));
 		}));
