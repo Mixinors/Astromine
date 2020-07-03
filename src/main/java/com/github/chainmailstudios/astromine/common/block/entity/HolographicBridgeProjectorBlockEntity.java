@@ -31,8 +31,8 @@ import spinnery.widget.api.Color;
 import java.util.ArrayList;
 
 public class HolographicBridgeProjectorBlockEntity extends BlockEntity implements Tickable, BlockEntityClientSerializable {
-	public ArrayList<Vector3f> segments = null;
-	public ArrayList<Vec3i> members = null;
+	public ArrayList<Vector3f> segments = new ArrayList<>();
+	public ArrayList<Vec3i> members = new ArrayList<>();
 	public Direction direction = Direction.NORTH;
 	public static final Color DEFAULT_COLOR = Color.of(0x7e80cad4);
 	public Color color = DEFAULT_COLOR;

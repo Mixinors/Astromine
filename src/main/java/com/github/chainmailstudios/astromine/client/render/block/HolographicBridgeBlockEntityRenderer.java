@@ -18,6 +18,7 @@ import com.github.chainmailstudios.astromine.common.block.entity.HolographicBrid
 import spinnery.client.render.layer.SpinneryLayers;
 import spinnery.widget.api.Color;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<HolographicBridgeProjectorBlockEntity> {
@@ -42,14 +43,12 @@ public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<Ho
 			int oX = d == Direction.NORTH ? 1 : 0;
 			int oZ = d == Direction.WEST ? 1 : 0;
 
-			Collection<Vector3f> s = entity.segments;
-
-			if (s.size() == 0) {
+			if (entity.segments == null || entity.segments.size() == 0) {
 				return;
 			}
 
-			Vector3f o = s.iterator().next();
-			Vector3f p = o;
+			Vector3f o = entity.segments.get(0);
+			Vector3f e = entity.segments.get(entity.segments.size() - 1);
 
 			matrices.push();
 
@@ -57,24 +56,19 @@ public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<Ho
 
 			Color bC = entity.color;
 
-			for (Vector3f v : s) {
-				if (v != o) {
-					float xA = v.getX() - pA.getX();
-					float xB = p.getX() - pA.getX();
+			float xA = e.getX() - pA.getX();
+			float xB = o.getX() - pA.getX();
 
-					float yA = v.getY() - pA.getY();
-					float yB = p.getY() - pA.getY();
+			float yA = e.getY() - pA.getY();
+			float yB = o.getY() - pA.getY();
 
-					float zA = v.getZ() - pA.getZ();
-					float zB = p.getZ() - pA.getZ();
+			float zA = e.getZ() - pA.getZ();
+			float zB = o.getZ() - pA.getZ();
 
-					c.vertex(matrices.peek().getModel(), xA, yA, zA).color(bC.R, bC.G, bC.B, bC.A).texture(0, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
-					c.vertex(matrices.peek().getModel(), xB, yB, zB).color(bC.R, bC.G, bC.B, bC.A).texture(0, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
-					c.vertex(matrices.peek().getModel(), xB + oX, yB, zB + oZ).color(bC.R, bC.G, bC.B, bC.A).texture(1, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
-					c.vertex(matrices.peek().getModel(), xA + oX, yA, zA + oZ).color(bC.R, bC.G, bC.B, bC.A).texture(1, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
-				}
-				p = v;
-			}
+			c.vertex(matrices.peek().getModel(), xA, yA, zA).color(bC.R, bC.G, bC.B, bC.A).texture(0, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
+			c.vertex(matrices.peek().getModel(), xB, yB, zB).color(bC.R, bC.G, bC.B, bC.A).texture(0, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
+			c.vertex(matrices.peek().getModel(), xB + oX, yB, zB + oZ).color(bC.R, bC.G, bC.B, bC.A).texture(1, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
+			c.vertex(matrices.peek().getModel(), xA + oX, yA, zA + oZ).color(bC.R, bC.G, bC.B, bC.A).texture(1, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
 
 			matrices.pop();
 		}
