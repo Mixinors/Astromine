@@ -16,6 +16,10 @@ public class AstromineContainers {
 		return new LiquidGeneratorContainer(synchronizationID, inventory, buffer.readBlockPos());
 	}));
 
+	public static final ScreenHandlerType<SolidGeneratorContainer> SOLID_GENERATOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("solid_generator"), ((synchronizationID, inventory, buffer) -> {
+		return new SolidGeneratorContainer(synchronizationID, inventory, buffer.readBlockPos());
+	}));
+
 	public static final ScreenHandlerType<VentContainer> VENT = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("vent"), ((synchronizationID, inventory, buffer) -> {
 		return new VentContainer(synchronizationID, inventory, buffer.readBlockPos());
 	}));

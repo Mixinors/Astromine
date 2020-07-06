@@ -17,7 +17,7 @@ public abstract class DefaultedEnergyItemContainerScreen<T extends DefaultedBloc
 	public DefaultedEnergyItemContainerScreen(Text name, DefaultedEnergyItemContainer linkedContainer, PlayerEntity player) {
 		super(name, (T) linkedContainer, player);
 
-		energyBar = mainPanel.createChild(WEnergyVolumeFractionalVerticalBar::new, Position.of(mainPanel, 7, 20, 0), Size.of(24, 48));
+		energyBar = mainPanel.createChild(WEnergyVolumeFractionalVerticalBar::new, Position.of(mainPanel, 7, 20, 2), Size.of(24, 48));
 
 		ComponentProvider componentProvider = linkedContainer.blockEntity;
 

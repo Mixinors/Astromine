@@ -32,6 +32,10 @@ public class AstromineScreens {
 			return new LiquidGeneratorContainerScreen(title, handler, inventory.player);
 		}));
 
+		ScreenRegistry.register(AstromineContainers.SOLID_GENERATOR, (ScreenRegistry.Factory<SolidGeneratorContainer, SolidGeneratorContainerScreen>) ((handler, inventory, title) -> {
+			return new SolidGeneratorContainerScreen(title, handler, inventory.player);
+		}));
+
 		ScreenRegistry.register(AstromineContainers.VENT, (ScreenRegistry.Factory<VentContainer, VentContainerScreen>) ((handler, inventory, title) -> {
 			return new VentContainerScreen(title, handler, inventory.player);
 		}));

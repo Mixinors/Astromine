@@ -15,6 +15,7 @@ import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
 import org.lwjgl.opengl.GL11;
 import spinnery.client.render.BaseRenderer;
 import spinnery.client.render.TextRenderer;
+import spinnery.client.utility.ScissorArea;
 import spinnery.widget.WAbstractBar;
 import spinnery.widget.WTooltip;
 import spinnery.widget.api.Position;
@@ -105,18 +106,18 @@ public class WFractionalVerticalBar extends WAbstractBar {
 		float scale = (float) MinecraftClient.getInstance().getWindow().getScaleFactor();
 		
 		float sBGY = (((sY / limitFraction.get().intValue()) * progressFraction.get().intValue()));
-		
-		GL11.glEnable(GL11.GL_SCISSOR_TEST);
-		
-		GL11.glScissor((int) (x * scale), (int) (rawHeight - ((y + sY - sBGY) * scale)), (int) (sX * scale), (int) ((sY - sBGY) * scale));
-		
+
+		ScissorArea scissorArea = new ScissorArea((int) (x * scale), (int) (rawHeight - ((y + sY - sBGY) * scale)), (int) (sX * scale), (int) ((sY - sBGY) * scale));
+
 		BaseRenderer.drawTexturedQuad(matrices, provider, getX(), getY(), z, getWidth(), getHeight(), getBackgroundTexture());
-		
-		GL11.glScissor((int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sX * scale), (int) (sBGY * scale));
+
+		scissorArea.destroy();
+
+		scissorArea = new ScissorArea((int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sX * scale), (int) (sBGY * scale));
 		
 		BaseRenderer.drawTexturedQuad(matrices, provider, getX(), getY(), z, getWidth(), getHeight(), getForegroundTexture());
 		
-		GL11.glDisable(GL11.GL_SCISSOR_TEST);
+		scissorArea.destroy();
 		
 		if (isFocused()) {
 			tooltipText.clear();
@@ -133,17 +134,16 @@ public class WFractionalVerticalBar extends WAbstractBar {
 
 		tooltip.draw(matrices, provider);
 
-		RenderSystem.translatef(0, 0, 250);
-
 		Position position = Position.of(tooltip, 1, 1, 0);
+
 		float lineX = position.getX();
 		float lineY = position.getY();
 		float lineZ = position.getZ();
+
 		for (Text text : tooltipText) {
-			TextRenderer.pass().text(text).font(TextRenderer.Font.DEFAULT).at(lineX, lineY, lineZ).scale(1.0D).maxWidth(null).render(matrices, provider);
+			TextRenderer.pass().text(text).at(lineX, lineY, lineZ).render(matrices, provider);
+
 			lineY += TextRenderer.height();
 		}
-
-		RenderSystem.translatef(0, 0, -250);
 	}
 }

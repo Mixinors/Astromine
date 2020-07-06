@@ -38,7 +38,7 @@ public class AstromineBlockEntityTypes {
 	public static final BlockEntityType<ElectricSmelterBlockEntity> ELECTRIC_SMELTER = register("electric_smelter", ElectricSmelterBlockEntity::new, AstromineBlocks.ELECTRIC_SMELTER);
 	public static final BlockEntityType<FluidExtractorBlockEntity> FLUID_EXTRACTOR = register("fluid_extractor", FluidExtractorBlockEntity::new, AstromineBlocks.FLUID_EXTRACTOR);
 	public static final BlockEntityType<ElectrolyzerBlockEntity> ELECTROLYZER = register("electrolyzer", ElectrolyzerBlockEntity::new, AstromineBlocks.ELECTROLYZER);
-	public static final BlockEntityType<FluidMixerBlockEntity> FLUID_MIXER = register("fluid_mixer", FluidMixerBlockEntity::new, AstromineBlocks.fluid_mixer);
+	public static final BlockEntityType<FluidMixerBlockEntity> FLUID_MIXER = register("fluid_mixer", FluidMixerBlockEntity::new, AstromineBlocks.FLUID_MIXER);
 
 	public static void initialize() {
 		// Unused.

@@ -38,6 +38,7 @@ repositories {
         name = "SonaType"
         url "https://oss.sonatype.org/content/repositories/snapshots/"
     }
+    mavenLocal()
 }
 
 minecraft {
