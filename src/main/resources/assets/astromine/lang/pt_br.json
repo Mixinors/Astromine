@@ -5,7 +5,7 @@
   "text.astromine.weapon.battle_rifle": "Rifle de Batalha",
   "text.astromine.weapon.sniper_rifle": "Rifle de Precisão",
   "text.astromine.weapon.fantasy": "Fantasia",
-  "text.astromine.message.holographic_connection_successful": "Sucesso ao conector projector em %s conectado com projetor em %s.",
+  "text.astromine.message.holographic_connection_successful": "Sucesso ao conectar projector em %s com projetor em %s.",
   "text.astromine.message.holographic_connection_failed": "Falha ao conectar projetor em %s com projector em %s.",
   "text.astromine.message.holographic_connection_clear": "Projetores selecionados foram limpos!",
   "text.astromine.message.holographic_connector_select": "Projector em %s selecionado!",
