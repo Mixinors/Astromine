@@ -8,7 +8,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.DyeItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -32,26 +34,38 @@ public class HolographicBridgeProjectorBlock extends DefaultedHorizontalFacingBl
 			HolographicBridgeProjectorBlockEntity entity = (HolographicBridgeProjectorBlockEntity) world.getBlockEntity(position);
 
 			if (!world.isClient() && entity != null) {
-				entity.color = Color.of(0x7e000000 | ((DyeColorAccess) (Object) dye.getColor()).getColor());
-				entity.sync();
-				
-				if (entity.hasChild()) {
-					entity.getChild().color = Color.of(0x7e000000 | ((DyeColorAccess) (Object) dye.getColor()).getColor());
-					entity.getChild().sync();
-				}
-				if (entity.hasParent()) {
-					entity.getParent().color = Color.of(0x7e000000 | ((DyeColorAccess) (Object) dye.getColor()).getColor());
-					entity.getParent().sync();
-				}
+				setColor(entity, Color.of(0x7e000000 | ((DyeColorAccess) (Object) dye.getColor()).getColor()));
 
 				if (!player.isCreative()) {
 					stack.decrement(1);
 				}
 				return ActionResult.SUCCESS;
 			}
+		} else if (stack.getItem() == Items.SPONGE) {
+			HolographicBridgeProjectorBlockEntity entity = (HolographicBridgeProjectorBlockEntity) world.getBlockEntity(position);
+
+			if (!world.isClient() && entity != null) {
+				setColor(entity, HolographicBridgeProjectorBlockEntity.DEFAULT_COLOR);
+
+				return ActionResult.SUCCESS;
+			}
 		}
 
 		return ActionResult.PASS;
+	}
+
+	public void setColor(HolographicBridgeProjectorBlockEntity entity, Color color) {
+		entity.color = color;
+		entity.sync();
+
+		if (entity.hasChild()) {
+			entity.getChild().color = color;
+			entity.getChild().sync();
+		}
+		if (entity.hasParent()) {
+			entity.getParent().color = color;
+			entity.getParent().sync();
+		}
 	}
 
 	@Override

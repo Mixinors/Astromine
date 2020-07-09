@@ -24,6 +24,7 @@ public class AstromineCommon implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		AstromineConfig.initialize();
 		AstromineItems.initialize();
 		AstromineBlocks.initialize();
 		AstromineOres.initialize();
@@ -44,7 +45,6 @@ public class AstromineCommon implements ModInitializer {
 		AstromineRecipeSerializers.initialize();
 		AstromineCommands.initialize();
 		AstromineBlockEntityTypes.initialize();
-		AstromineConfig.initialize();
 
 		if (FabricLoader.getInstance().isModLoaded("libblockattributes_fluids")) {
 			try {

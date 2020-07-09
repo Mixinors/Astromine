@@ -7,7 +7,7 @@ import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegis
 
 public class AstromineDimensionLayers {
 	public static void initialize() {
-		DimensionLayerRegistry.INSTANCE.register(DimensionLayerRegistry.Type.BOTTOM, AstromineDimensionTypes.SPACE_REGISTRY_KEY, -58, DimensionType.OVERWORLD_REGISTRY_KEY, SpaceEntityPlacer.TO_PLANET);
-		DimensionLayerRegistry.INSTANCE.register(DimensionLayerRegistry.Type.TOP, AstromineDimensionTypes.OVERWORLD_REGISTRY_KEY, 1024, AstromineDimensionTypes.SPACE_REGISTRY_KEY, SpaceEntityPlacer.TO_SPACE);
+		DimensionLayerRegistry.INSTANCE.register(DimensionLayerRegistry.Type.BOTTOM, AstromineDimensionTypes.SPACE_REGISTRY_KEY, AstromineConfig.get().overworldTravelYLevel, DimensionType.OVERWORLD_REGISTRY_KEY, SpaceEntityPlacer.TO_PLANET);
+		DimensionLayerRegistry.INSTANCE.register(DimensionLayerRegistry.Type.TOP, AstromineDimensionTypes.OVERWORLD_REGISTRY_KEY, AstromineConfig.get().spaceTravelYLevel, AstromineDimensionTypes.SPACE_REGISTRY_KEY, SpaceEntityPlacer.TO_SPACE);
 	}
 }
