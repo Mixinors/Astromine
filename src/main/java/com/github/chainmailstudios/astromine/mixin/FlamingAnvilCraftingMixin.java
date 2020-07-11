@@ -47,7 +47,7 @@ public abstract class FlamingAnvilCraftingMixin extends Entity {
 
 	@Inject(method = "handleFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;isIn(Lnet/minecraft/tag/Tag;)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
 	private void handle(float fallDistance, float damageMultiplier, CallbackInfoReturnable<Boolean> cir, int i, List<Entity> list) {
-		if (this.isOnFire()) {
+		if (this.isOnFire() && this.block.isIn(BlockTags.ANVIL)) {
 			Iterator<Entity> iterator = list.iterator();
 			while (iterator.hasNext()) {
 				Entity entity = iterator.next();

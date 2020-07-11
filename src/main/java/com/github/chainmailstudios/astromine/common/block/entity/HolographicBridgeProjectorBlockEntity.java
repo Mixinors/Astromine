@@ -145,21 +145,21 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 		for (Vector3f v : this.segments) {
 			BlockPos nP = new BlockPos(v.getX(), v.getY(), v.getZ());
 
-			Material mat = this.world.getBlockState(nP).getMaterial();
-			if(mat.isReplaceable() || mat.equals(HolographicBridgeInvisibleBlock.MATERIAL)) {
-				if ((nP.getX() != bCP.getX() && nP.getX() != bOP.getX()) || (nP.getZ() != bCP.getZ() && nP.getZ() != bOP.getZ())) {
+			if ((nP.getX() != bCP.getX() && nP.getX() != bOP.getX()) || (nP.getZ() != bCP.getZ() && nP.getZ() != bOP.getZ())) {
+				Material mat = this.world.getBlockState(nP).getMaterial();
+				if(mat.isReplaceable() || mat.equals(HolographicBridgeInvisibleBlock.MATERIAL)) {
 					this.world.setBlockState(nP, AstromineBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
 					this.members.add(nP);
+
+					ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
+
+					WorldBridgeComponent bridgeComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_BRIDGE_COMPONENT);
+
+					bridgeComponent.add(nP, new Vec3i((v.getX() - (int) v.getX()) * 16f, (v.getY() - (int) v.getY()) * 16f, (v.getZ() - (int) v.getZ()) * 16f));
+				} else {
+					destroyBridge();
+					return false;
 				}
-
-				ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
-
-				WorldBridgeComponent bridgeComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_BRIDGE_COMPONENT);
-
-				bridgeComponent.add(nP, new Vec3i((v.getX() - (int) v.getX()) * 16f, (v.getY() - (int) v.getY()) * 16f, (v.getZ() - (int) v.getZ()) * 16f));
-			} else {
-				destroyBridge();
-				return false;
 			}
 		}
 		if(!world.isClient()) {
