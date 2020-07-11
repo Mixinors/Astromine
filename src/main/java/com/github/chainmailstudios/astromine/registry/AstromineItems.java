@@ -56,7 +56,6 @@ public class AstromineItems {
 	// Materials - Fragments
 	public static final Item ASTERITE_FRAGMENT = register("asterite_fragment", new Item(getBasicSettings()));
 	public static final Item GALAXIUM_FRAGMENT = register("galaxium_fragment", new Item(getBasicSettings()));
-	public static final Item LAPIS_FRAGMENT = register("lapis_fragment", new Item(getBasicSettings()));
 	public static final Item DIAMOND_FRAGMENT = register("diamond_fragment", new Item(getBasicSettings()));
 	public static final Item EMERALD_FRAGMENT = register("emerald_fragment", new Item(getBasicSettings()));
 
