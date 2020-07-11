@@ -65,11 +65,7 @@ public class WFractionalVerticalBar extends WAbstractBar {
 		return (W) this;
 	}
 	
-	public WTooltip getTooltip() {
-		return tooltip;
-	}
-	
-	public List<Text> getTooltipText() {
+	public List<Text> getTooltip() {
 		return tooltipText;
 	}
 	
@@ -140,7 +136,7 @@ public class WFractionalVerticalBar extends WAbstractBar {
 		float lineY = position.getY();
 		float lineZ = position.getZ();
 		for (Text text : tooltipText) {
-			TextRenderer.pass().text(text).font(TextRenderer.Font.DEFAULT).at(lineX, lineY, lineZ).scale(1.0D).maxWidth(null).render(matrices, provider);
+			TextRenderer.pass().text(text).at(lineX, lineY, lineZ).scale(1.0f).render(matrices, provider);
 			lineY += TextRenderer.height();
 		}
 

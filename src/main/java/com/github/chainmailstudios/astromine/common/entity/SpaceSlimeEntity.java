@@ -7,6 +7,8 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.SlimeEntity;
 import net.minecraft.particle.ParticleEffect;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.LightType;
@@ -101,5 +103,10 @@ public class SpaceSlimeEntity extends SlimeEntity {
 			int i = world.getWorld().isThundering() ? world.getLightLevel(pos, 10) : world.getLightLevel(pos);
 			return i <= random.nextInt(8);
 		}
+	}
+
+	@Override
+	public SoundEvent getSquishSound() {
+		return SoundEvents.BLOCK_GLASS_BREAK;
 	}
 }

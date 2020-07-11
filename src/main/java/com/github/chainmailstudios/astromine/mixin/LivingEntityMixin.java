@@ -106,7 +106,7 @@ public abstract class LivingEntityMixin {
 			Block downBlock = downState.getBlock();
 
 			if (upBlock instanceof FluidBlock) {
-				FluidState fluidState = upBlock.getFluidState(upState);
+				FluidState fluidState = upState.getFluidState();
 
 				fluid = fluidState.getFluid();
 
