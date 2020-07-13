@@ -11,6 +11,9 @@ import net.minecraft.item.DyeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.PotionItem;
+import net.minecraft.potion.PotionUtil;
+import net.minecraft.potion.Potions;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -34,19 +37,22 @@ public class HolographicBridgeProjectorBlock extends DefaultedHorizontalFacingBl
 			HolographicBridgeProjectorBlockEntity entity = (HolographicBridgeProjectorBlockEntity) world.getBlockEntity(position);
 
 			if (!world.isClient() && entity != null) {
-				setColor(entity, Color.of(0x7e000000 | ((DyeColorAccess) (Object) dye.getColor()).getColor()));
+				setColor(entity, Color.of(0x7e000000 | ((DyeColorAccess) (Object) dye.getColor()).astromine_getColor()));
 
 				if (!player.isCreative()) {
 					stack.decrement(1);
 				}
 				return ActionResult.SUCCESS;
 			}
-		} else if (stack.getItem() == Items.SPONGE) {
+		} else if (stack.getItem() == Items.POTION && PotionUtil.getPotion(stack) == Potions.WATER) {
 			HolographicBridgeProjectorBlockEntity entity = (HolographicBridgeProjectorBlockEntity) world.getBlockEntity(position);
 
 			if (!world.isClient() && entity != null) {
 				setColor(entity, HolographicBridgeProjectorBlockEntity.DEFAULT_COLOR);
 
+				if (!player.isCreative()) {
+					player.setStackInHand(hand, new ItemStack(Items.GLASS_BOTTLE));
+				}
 				return ActionResult.SUCCESS;
 			}
 		}

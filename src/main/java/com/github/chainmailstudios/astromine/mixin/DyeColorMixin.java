@@ -12,7 +12,7 @@ public class DyeColorMixin implements DyeColorAccess {
     @Shadow
     int color;
 
-    public int getColor() {
+    public int astromine_getColor() {
         return color;
     }
 }
