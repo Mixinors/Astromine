@@ -26,10 +26,10 @@ repositories {
         name = "Fabric"
         url = "https://maven.fabricmc.net/"
     }
-	maven {
-		name = "Jared"
-		url = "https://maven.blamejared.com"
-	}
+    maven {
+        name = "Jared"
+        url = "https://maven.blamejared.com"
+    }
     maven {
         name = "BuildCraft"
         url = "https://mod-buildcraft.com/maven"
@@ -38,7 +38,6 @@ repositories {
         name = "SonaType"
         url "https://oss.sonatype.org/content/repositories/snapshots/"
     }
-    mavenLocal()
 }
 
 minecraft {

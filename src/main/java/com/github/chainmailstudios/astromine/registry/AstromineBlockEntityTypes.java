@@ -1,23 +1,12 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.common.block.entity.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.entity.CreativeBufferBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.CreativeCapacitorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.CreativeTankBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.ElectricSmelterBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.ElectrolyzerBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.FluidExtractorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.FluidMixerBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.LiquidGeneratorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.SorterBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.TankBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.VentBlockEntity;
 
 import java.util.function.Supplier;
 
@@ -29,6 +18,7 @@ public class AstromineBlockEntityTypes {
 	public static final BlockEntityType<TankBlockEntity> FLUID_TANK = register("tank", TankBlockEntity::new, AstromineBlocks.FLUID_TANK);
 
 	public static final BlockEntityType<LiquidGeneratorBlockEntity> LIQUID_GENERATOR = register("liquid_generator", LiquidGeneratorBlockEntity::new, AstromineBlocks.LIQUID_GENERATOR);
+	public static final BlockEntityType<SolidGeneratorBlockEntity> SOLID_GENERATOR = register("solid_generator", SolidGeneratorBlockEntity::new, AstromineBlocks.SOLID_GENERATOR);
 
 	public static final BlockEntityType<CreativeTankBlockEntity> CREATIVE_TANK = register("creative_tank", CreativeTankBlockEntity::new, AstromineBlocks.CREATIVE_TANK);
 	public static final BlockEntityType<CreativeCapacitorBlockEntity> CREATIVE_CAPACITOR = register("creative_capacitor", CreativeCapacitorBlockEntity::new, AstromineBlocks.CREATIVE_CAPACITOR);

@@ -3,11 +3,11 @@
   "input": "astromine:rocket_fuel",
   "amount": {
     "numerator": 1,
-    "denominator": 80
+    "denominator": 256
   },
   "energy_generated": {
     "numerator": 1,
-    "denominator": 16
+    "denominator": 4
   },
   "time": 1
 }

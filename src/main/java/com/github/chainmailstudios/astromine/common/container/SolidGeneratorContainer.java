@@ -6,10 +6,13 @@ import com.github.chainmailstudios.astromine.registry.AstromineContainers;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
+import spinnery.widget.WSlot;
 
 public class SolidGeneratorContainer extends DefaultedEnergyItemContainer {
 	public SolidGeneratorContainer(int synchronizationID, PlayerInventory playerInventory, BlockPos blockPos) {
 		super(synchronizationID, playerInventory, blockPos);
+
+		getInterface().createChild(WSlot::new).setInventoryNumber(1).setSlotNumber(0);
 	}
 
 	@Override

@@ -122,7 +122,7 @@ public class SolidGeneratingRecipe implements AdvancedRecipe<Inventory> {
 	}
 
 	public static final class Serializer implements RecipeSerializer<SolidGeneratingRecipe> {
-		public static final Identifier ID = AstromineCommon.identifier("liquid_generating");
+		public static final Identifier ID = AstromineCommon.identifier("solid_generating");
 		
 		public static final Serializer INSTANCE = new Serializer();
 		

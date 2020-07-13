@@ -194,7 +194,7 @@ public class SpriteRenderer {
 			float sX = sprite.getWidth();
 			float sY = sprite.getHeight();
 
-			MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
+ 			MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
 
 			for (float y = y1; y < y2; y += Math.min(y2 - y, sY)) {
 				for (float x = x1; x < x2; x += Math.min(x2 - x, sX)) {
@@ -244,10 +244,6 @@ public class SpriteRenderer {
 							.light(this.l)
 							.normal(this.normal, this.nX, this.nY, this.nZ)
 							.next();
-
-					if (this.consumers instanceof VertexConsumerProvider.Immediate) {
-						((VertexConsumerProvider.Immediate) this.consumers).draw(this.layer);
-					}
 				}
 			}
 

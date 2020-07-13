@@ -23,13 +23,13 @@ public class SolidGeneratorContainerScreen extends DefaultedEnergyItemContainerS
 
 		SolidGeneratorBlockEntity generator = (SolidGeneratorBlockEntity) linkedContainer.blockEntity;
 
-		WSlot input = mainPanel.createChild(WSlot::new, Position.of(mainPanel, 7, 8 + 20, 1), Size.of(18, 18)).setInventoryNumber(1).setSlotNumber(0);
+		WSlot input = mainPanel.createChild(WSlot::new, Position.of(mainPanel, 7, energyBar.getHeight() - 12, 0), Size.of(18, 18)).setInventoryNumber(1).setSlotNumber(0);
 
-		//WHorizontalArrow arrow = mainPanel.createChild(WHorizontalArrow::new, Position.of(input, 31, 0, 1), Size.of(22, 16))
-		//		.setLimitSupplier(() -> generator.limit)
-		//		.setProgressSupplier(() -> generator.current);
-//
-		energyBar.setPosition(Position.of(input, 29, -energyBar.getHeight() / 2 + 8, 5));
+		WHorizontalArrow arrow = mainPanel.createChild(WHorizontalArrow::new, Position.of(input, 31, 0, 1), Size.of(22, 16))
+				.setLimitSupplier(() -> generator.limit)
+				.setProgressSupplier(() -> generator.current);
+
+		energyBar.setPosition(Position.of(arrow, 29, -energyBar.getHeight() / 2 + 8, 5));
 	}
 
 	@Override

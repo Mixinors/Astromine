@@ -41,7 +41,7 @@ public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<Ho
 			Vector3f start = entity.segments.get(0);
 			Vector3f end = entity.segments.get(entity.segments.size() - 1);
 
-			VertexConsumer consumer = provider.getBuffer(SpinneryLayers.getInterface());
+			VertexConsumer consumer = provider.getBuffer(SpinneryLayers.getFlat());
 
 			matrices.push();
 

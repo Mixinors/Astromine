@@ -26,12 +26,12 @@ public class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlockEntity im
 
 	public boolean[] activity = { false, false, false, false, false };
 
-	private Optional<LiquidGeneratingRecipe> recipe = Optional.empty();
+	private Optional<SolidGeneratingRecipe> recipe = Optional.empty();
 
 	private static final int INPUT_ENERGY_VOLUME = 0;
 
 	public SolidGeneratorBlockEntity() {
-		super(AstromineBlockEntityTypes.LIQUID_GENERATOR);
+		super(AstromineBlockEntityTypes.SOLID_GENERATOR);
 		
 		energyComponent.getVolume(INPUT_ENERGY_VOLUME).setSize(new Fraction(32, 1));
 

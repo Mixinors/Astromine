@@ -52,7 +52,7 @@ public class SolidGeneratorBlock extends DefaultedHorizontalFacingBlockWithEntit
 
 				@Override
 				public Text getDisplayName() {
-					return new TranslatableText("block.astromine.liquid_generator");
+					return new TranslatableText("block.astromine.solid_generator");
 				}
 
 				@Override

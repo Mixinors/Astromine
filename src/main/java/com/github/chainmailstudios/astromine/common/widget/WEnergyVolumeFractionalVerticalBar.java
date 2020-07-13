@@ -16,8 +16,6 @@ public class WEnergyVolumeFractionalVerticalBar extends WFractionalVerticalBar {
 
 
 	public WEnergyVolumeFractionalVerticalBar() {
-		super();
-
 		setUnit(new TranslatableText("text.astromine.energy"));
 	}
 

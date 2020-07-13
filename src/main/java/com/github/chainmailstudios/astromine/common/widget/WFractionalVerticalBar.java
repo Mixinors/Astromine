@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.widget;
 
+import com.google.common.collect.Lists;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -28,17 +29,9 @@ import java.util.function.Supplier;
 public class WFractionalVerticalBar extends WAbstractBar {
 	private Supplier<Fraction> progressFraction = Fraction::empty;
 	private Supplier<Fraction> limitFraction = Fraction::empty;
-	
-	private final WTooltip tooltip = new WTooltip();
-	private final List<Text> tooltipText = new ArrayList<>();
-	
+
 	private Text unit;
-	
-	public WFractionalVerticalBar() {
-		tooltip.setParent(this);
-		tooltip.setInterface(getInterface());
-	}
-	
+
 	public Supplier<Fraction> getProgressFraction() {
 		return progressFraction;
 	}
@@ -66,31 +59,13 @@ public class WFractionalVerticalBar extends WAbstractBar {
 		return (W) this;
 	}
 	
-	public WTooltip getTooltip() {
-		return tooltip;
+	public List<Text> getTooltip() {
+		return Lists.newArrayList(FluidUtilities.rawFraction(progressFraction.get(), limitFraction.get(), unit), new TranslatableText("text.astromine.tooltip.fractional_value", progressFraction.get().toPrettyString(), limitFraction.get().toPrettyString()));
+
 	}
-	
-	public List<Text> getTooltipText() {
-		return tooltipText;
-	}
-	
+
 	@Override
-	public void onMouseMoved(float mouseX, float mouseY) {
-		tooltip.setHidden(!isFocused());
-		
-		if (!tooltip.isHidden()) {
-			tooltip.setWidth(tooltipText.stream().map(TextRenderer::width).max(Integer::compareTo).orElse(0));
-			tooltip.setHeight(TextRenderer.height() * tooltipText.size());
-			
-			tooltip.setX((int) (mouseX + 8));
-			tooltip.setY((int) (mouseY - (tooltip.getHeight() / 2f)));
-		}
-		
-		super.onMouseMoved(mouseX, mouseY);
-	}
-	
-	@Override
-	public void draw(MatrixStack matrices, VertexConsumerProvider.Immediate provider) {
+	public void draw(MatrixStack matrices, VertexConsumerProvider provider) {
 		if (isHidden()) {
 			return;
 		}
@@ -107,43 +82,18 @@ public class WFractionalVerticalBar extends WAbstractBar {
 		
 		float sBGY = (((sY / limitFraction.get().intValue()) * progressFraction.get().intValue()));
 
-		ScissorArea scissorArea = new ScissorArea((int) (x * scale), (int) (rawHeight - ((y + sY - sBGY) * scale)), (int) (sX * scale), (int) ((sY - sBGY) * scale));
+		ScissorArea scissorArea = new ScissorArea(provider, (int) (x * scale), (int) (rawHeight - ((y + sY - sBGY) * scale)), (int) (sX * scale), (int) ((sY - sBGY) * scale));
 
 		BaseRenderer.drawTexturedQuad(matrices, provider, getX(), getY(), z, getWidth(), getHeight(), getBackgroundTexture());
 
-		scissorArea.destroy();
+		scissorArea.destroy(provider);
 
-		scissorArea = new ScissorArea((int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sX * scale), (int) (sBGY * scale));
+		scissorArea = new ScissorArea(provider, (int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sX * scale), (int) (sBGY * scale));
 		
 		BaseRenderer.drawTexturedQuad(matrices, provider, getX(), getY(), z, getWidth(), getHeight(), getForegroundTexture());
 		
-		scissorArea.destroy();
-		
-		if (isFocused()) {
-			tooltipText.clear();
-			tooltipText.add(FluidUtilities.rawFraction(progressFraction.get(), limitFraction.get(), unit));
-			tooltipText.add(new TranslatableText("text.astromine.tooltip.fractional_value", progressFraction.get().toPrettyString(), limitFraction.get().toPrettyString()));
-			
-			drawTooltips(matrices, provider);
-		}
-	}
+		scissorArea.destroy(provider);
 
-	protected void drawTooltips(MatrixStack matrices, VertexConsumerProvider.Immediate provider) {
-		tooltip.setWidth(tooltipText.stream().map(TextRenderer::width).max(Integer::compareTo).orElse(0));
-		tooltip.setHeight(TextRenderer.height() * tooltipText.size());
-
-		tooltip.draw(matrices, provider);
-
-		Position position = Position.of(tooltip, 1, 1, 0);
-
-		float lineX = position.getX();
-		float lineY = position.getY();
-		float lineZ = position.getZ();
-
-		for (Text text : tooltipText) {
-			TextRenderer.pass().text(text).at(lineX, lineY, lineZ).render(matrices, provider);
-
-			lineY += TextRenderer.height();
-		}
+		super.draw(matrices, provider);
 	}
 }

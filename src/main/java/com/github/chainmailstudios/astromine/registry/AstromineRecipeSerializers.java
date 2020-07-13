@@ -1,12 +1,8 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.common.recipe.*;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.registry.Registry;
-
-import com.github.chainmailstudios.astromine.common.recipe.ElectrolyzingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.FluidMixingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.LiquidGeneratingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.SortingRecipe;
 
 public class AstromineRecipeSerializers {
 	public static final RecipeSerializer<SortingRecipe> SORTING = Registry.register(
@@ -24,10 +20,15 @@ public class AstromineRecipeSerializers {
 			ElectrolyzingRecipe.Serializer.ID,
 			ElectrolyzingRecipe.Serializer.INSTANCE);
 
-	public static final RecipeSerializer<FluidMixingRecipe> fluid_mixer = Registry.register(
+	public static final RecipeSerializer<FluidMixingRecipe> FLUID_MIXER = Registry.register(
 			Registry.RECIPE_SERIALIZER,
 			FluidMixingRecipe.Serializer.ID,
 			FluidMixingRecipe.Serializer.INSTANCE);
+
+	public static final RecipeSerializer<SolidGeneratingRecipe> SOLID_GENERATING = Registry.register(
+			Registry.RECIPE_SERIALIZER,
+			SolidGeneratingRecipe.Serializer.ID,
+			SolidGeneratingRecipe.Serializer.INSTANCE);
 
 	public static void initialize() {
 		// Unused.
