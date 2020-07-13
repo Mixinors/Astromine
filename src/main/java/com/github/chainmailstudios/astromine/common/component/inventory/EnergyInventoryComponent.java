@@ -1,5 +1,7 @@
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import nerdhub.cardinal.components.api.ComponentType;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -14,6 +16,7 @@ import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import net.minecraft.util.math.Direction;
 import org.apache.logging.log4j.Level;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -295,5 +298,10 @@ public interface EnergyInventoryComponent extends NameableComponent {
 
 	default boolean isEmpty() {
 		return this.getContents().values().stream().allMatch(EnergyVolume::isEmpty);
+	}
+
+	@Override
+	default @NotNull ComponentType<?> getComponentType() {
+		return AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT;
 	}
 }

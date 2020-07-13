@@ -1,6 +1,8 @@
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import nerdhub.cardinal.components.api.ComponentType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundTag;
@@ -16,6 +18,7 @@ import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import net.minecraft.util.math.Direction;
 import org.apache.logging.log4j.Level;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -308,4 +311,9 @@ public interface FluidInventoryComponent extends NameableComponent {
 	}
 	
 	<T extends FluidInventoryComponent> T copy();
+
+	@Override
+	default @NotNull ComponentType<?> getComponentType() {
+		return AstromineComponentTypes.FLUID_INVENTORY_COMPONENT;
+	}
 }

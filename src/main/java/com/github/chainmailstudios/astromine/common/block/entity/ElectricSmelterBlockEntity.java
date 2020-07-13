@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -37,6 +38,7 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 		super(AstromineBlockEntityTypes.ELECTRIC_SMELTER);
 
 		energyComponent.getVolume(0).setSize(new Fraction(32, 1));
+
 		itemComponent = new SimpleItemInventoryComponent(2);
 
 		itemComponent.addListener(() -> {
@@ -44,6 +46,8 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 			recipe = (Optional<SmeltingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) RecipeType.SMELTING, inputInventory, world);
 			shouldTry = true;
 		});
+
+		addComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, itemComponent);
 	}
 
 	@Override

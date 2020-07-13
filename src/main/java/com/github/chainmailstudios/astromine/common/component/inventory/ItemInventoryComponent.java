@@ -1,5 +1,7 @@
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import nerdhub.cardinal.components.api.ComponentType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -13,6 +15,7 @@ import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import net.minecraft.util.math.Direction;
 import org.apache.logging.log4j.Level;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -417,5 +420,10 @@ public interface ItemInventoryComponent extends NameableComponent {
 	 */
 	default boolean isEmpty() {
 		return this.getItemContents().values().stream().allMatch(ItemStack::isEmpty);
+	}
+
+	@Override
+	default @NotNull ComponentType<?> getComponentType() {
+		return AstromineComponentTypes.ITEM_INVENTORY_COMPONENT;
 	}
 }
