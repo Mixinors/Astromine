@@ -25,8 +25,8 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.item.FireExtinguisher;
-import com.github.chainmailstudios.astromine.common.item.HolographicConnector;
+import com.github.chainmailstudios.astromine.common.item.FireExtinguisherItem;
+import com.github.chainmailstudios.astromine.common.item.HolographicConnectorItem;
 import com.github.chainmailstudios.astromine.common.item.MeteorSpawnerDevItem;
 import com.github.chainmailstudios.astromine.common.item.SpaceSuitItem;
 import com.github.chainmailstudios.astromine.common.item.SuperSpaceSlimeShooterItem;
@@ -55,12 +55,11 @@ public class AstromineItems {
 	public static final Item LAPUA_8_6_X_70_MM = register("lapua_8_6x70mm", new AmmunitionItem(getBasicSettings().fireproof().maxCount(1).maxDamage(6)));
 
 	// Realistic tooling
-	public static final Item FIRE_EXTINGUISHER = register("fire_extinguisher", new FireExtinguisher(getBasicSettings().maxCount(1)));
+	public static final Item FIRE_EXTINGUISHER = register("fire_extinguisher", new FireExtinguisherItem(getBasicSettings().maxCount(1)));
 
 	// Materials - Fragments
 	public static final Item ASTERITE_FRAGMENT = register("asterite_fragment", new Item(getBasicSettings()));
 	public static final Item GALAXIUM_FRAGMENT = register("galaxium_fragment", new Item(getBasicSettings()));
-	public static final Item LAPIS_FRAGMENT = register("lapis_fragment", new Item(getBasicSettings()));
 	public static final Item DIAMOND_FRAGMENT = register("diamond_fragment", new Item(getBasicSettings()));
 	public static final Item EMERALD_FRAGMENT = register("emerald_fragment", new Item(getBasicSettings()));
 
@@ -142,7 +141,7 @@ public class AstromineItems {
 	//public static final Item CREATIVE_BATTERY = register("creative_battery", BaseVolumeItem.of(getBasicSettings(), Fraction.of(Integer.MAX_VALUE, 1)));
 
 	// Tools
-	public static final Item HOLOGRAPHIC_CONNECTOR = register("holographic_connector", new HolographicConnector(getBasicSettings().maxCount(1)));
+	public static final Item HOLOGRAPHIC_CONNECTOR = register("holographic_connector", new HolographicConnectorItem(getBasicSettings().maxCount(1)));
 
 	public static final Item METITE_PICKAXE = register("metite_pickaxe", new PickaxeItem(AstromineToolMaterials.METITE, 1, -2.8f, getBasicSettings()));
 	public static final Item METITE_AXE = register("metite_axe", new AxeItem(AstromineToolMaterials.METITE, 5f, -3.0f, getBasicSettings()));

@@ -1,7 +1,7 @@
 package com.github.chainmailstudios.astromine.mixin;
 
 import com.github.chainmailstudios.astromine.client.model.RocketEntityModel;
-import com.github.chainmailstudios.astromine.registry.AstromineClientModels;
+import com.github.chainmailstudios.astromine.registry.client.AstromineClientModels;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

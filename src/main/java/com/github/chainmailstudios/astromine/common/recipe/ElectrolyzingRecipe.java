@@ -7,6 +7,7 @@ import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
@@ -22,6 +23,7 @@ import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.utilities.FractionUtilities;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 
 import com.google.gson.Gson;
@@ -131,6 +133,11 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory> {
 	@Override
 	public RecipeType<?> getType() {
 		return Type.INSTANCE;
+	}
+
+	@Override
+	public ItemStack getRecipeKindIcon() {
+		return new ItemStack(AstromineBlocks.ELECTROLYZER);
 	}
 
 	public Identifier getIdentifier() {

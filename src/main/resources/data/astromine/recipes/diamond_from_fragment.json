@@ -1,12 +1,12 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": ["###", "###", "###"],
-  "key": {
-    "#": {
-      "item": "astromine:diamond_fragment"
-    }
-  },
-  "result": {
-    "item": "minecraft:diamond"
-  }
+	"type": "minecraft:crafting_shaped",
+	"pattern": ["###", "###", "###"],
+	"key": {
+		"#": {
+			"item": "astromine:diamond_fragment"
+		}
+	},
+	"result": {
+		"item": "minecraft:diamond"
+	}
 }

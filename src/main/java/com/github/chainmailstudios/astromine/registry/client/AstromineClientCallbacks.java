@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.registry;
+package com.github.chainmailstudios.astromine.registry.client;
 
 import net.fabricmc.fabric.api.event.client.ClientTickCallback;
 

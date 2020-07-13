@@ -28,7 +28,8 @@ public class GameRendererMixin {
 
 	@Inject(at = @At("RETURN"), method = "getFov(Lnet/minecraft/client/render/Camera;FZ)D", cancellable = true)
 	void onGetFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> callbackInformationReturnable) {
-		double gameFov = callbackInformationReturnable.getReturnValueD();
+		final double gameFov = callbackInformationReturnable.getReturnValueD();
+		double newFov = gameFov;
 
 		if (MinecraftClient.getInstance().player == null) return;
 
@@ -39,10 +40,10 @@ public class GameRendererMixin {
 			if (heldItem instanceof Weapon) {
 				double weaponFov = ((Weapon) heldItem).getZoom();
 
-				if (gameFov > weaponFov) {
-					gameFov = MathHelper.lerp(tickDelta / 10, lastFov, weaponFov);
+				if (newFov > weaponFov) {
+					newFov = MathHelper.lerp(tickDelta / 10, lastFov, weaponFov);
 				} else {
-					gameFov = weaponFov;
+					newFov = weaponFov;
 				}
 
 				isTransitioning = true;
@@ -51,17 +52,18 @@ public class GameRendererMixin {
 			Item heldItem = MinecraftClient.getInstance().player.getMainHandStack().getItem();
 
 			if (heldItem instanceof Weapon) {
-				if (isTransitioning && lastFov < gameFov) {
-					gameFov = MathHelper.lerp(tickDelta / 10, lastFov, gameFov);
+				if (isTransitioning && lastFov < newFov) {
+					newFov = MathHelper.lerp(tickDelta / 10, lastFov, gameFov);
 				} else {
 					isTransitioning = false;
 				}
 			}
 		}
 
-		callbackInformationReturnable.setReturnValue(gameFov);
-
-		lastFov = gameFov;
+		if(newFov != gameFov) {
+			callbackInformationReturnable.setReturnValue(newFov);
+			lastFov = newFov;
+		}
 	}
 
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/GameRenderer;bobViewWhenHurt(Lnet/minecraft/client/util/math/MatrixStack;F)V"),

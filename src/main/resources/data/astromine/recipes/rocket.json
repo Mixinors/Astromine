@@ -1,27 +1,27 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": ["121", "343", "565"],
-  "key": {
-    "1": {
-      "item": "astromine:metite_gear"
-    },
-    "2": {
-      "item": "minecraft:diamond"
-    },
-    "3": {
-      "item": "astromine:metite_plates"
-    },
-    "4": {
-      "item": "astromine:elite_circuit"
-    },
-    "5": {
-      "item": "astromine:netherite_gear"
-    },
-    "6": {
-      "item": "astromine:iron_plates"
-    }
-  },
-  "result": {
-    "item": "astromine:rocket"
-  }
+	"type": "minecraft:crafting_shaped",
+	"pattern": ["121", "343", "565"],
+	"key": {
+		"1": {
+			"item": "astromine:metite_gear"
+		},
+		"2": {
+			"item": "minecraft:diamond"
+		},
+		"3": {
+			"item": "astromine:metite_plates"
+		},
+		"4": {
+			"item": "astromine:elite_circuit"
+		},
+		"5": {
+			"item": "astromine:netherite_gear"
+		},
+		"6": {
+			"item": "astromine:iron_plates"
+		}
+	},
+	"result": {
+		"item": "astromine:rocket"
+	}
 }

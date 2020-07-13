@@ -1,8 +1,10 @@
 package com.github.chainmailstudios.astromine.common.block;
 
+import com.github.chainmailstudios.astromine.common.container.VentContainer;
+import com.github.chainmailstudios.astromine.common.miscellaneous.ExplosionAlgorithm;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -19,9 +21,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import com.github.chainmailstudios.astromine.common.container.VentContainer;
-import com.github.chainmailstudios.astromine.common.miscellaneous.ExplosionAlgorithm;
 
 public class NuclearWarheadBlock extends Block {
 	public NuclearWarheadBlock(Settings settings) {
@@ -41,6 +40,8 @@ public class NuclearWarheadBlock extends Block {
 	}
 
 	private void tryDetonate(World world, BlockPos pos) {
+		if (world.isClient()) return;
+		if (!AstromineConfig.get().nuclearWarheadEnabled) return;
 		if (world.isReceivingRedstonePower(pos)) {
 			ExplosionAlgorithm.tryExploding(world, pos.getX(), pos.getY(), pos.getZ(), 128);
 		}

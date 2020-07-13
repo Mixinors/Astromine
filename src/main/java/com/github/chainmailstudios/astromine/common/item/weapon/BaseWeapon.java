@@ -18,7 +18,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.compatib
 import com.github.chainmailstudios.astromine.common.entity.projectile.BulletEntity;
 import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineSounds;
+import com.github.chainmailstudios.astromine.registry.client.AstromineSounds;
 
 import java.util.List;
 import java.util.Optional;

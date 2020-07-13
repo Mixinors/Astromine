@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.component.world;
 
+import com.github.chainmailstudios.astromine.common.dimension.EarthSpaceDimensionType;
 import net.minecraft.block.AirBlock;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
@@ -45,9 +46,9 @@ public class WorldAtmosphereComponent implements Component, Tickable {
 	public FluidVolume get(BlockPos position) {
 		RegistryKey<DimensionType> key = world.getDimensionRegistryKey();
 
-		boolean isVanilla = (key == DimensionType.OVERWORLD_REGISTRY_KEY || key == DimensionType.OVERWORLD_CAVES_REGISTRY_KEY || key == DimensionType.THE_NETHER_REGISTRY_KEY || key == DimensionType.THE_END_REGISTRY_KEY);
+		boolean isSpace = (key == EarthSpaceDimensionType.EARTH_SPACE_REGISTRY_KEY);
 
-		if (isVanilla && !volumes.containsKey(position)) {
+		if (!isSpace && !volumes.containsKey(position)) {
 			return FluidVolume.oxygen();
 		} else {
 			return volumes.getOrDefault(position, FluidVolume.empty());

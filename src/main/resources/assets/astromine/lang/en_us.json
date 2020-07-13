@@ -134,7 +134,6 @@
   "item.astromine.metite_ingot": "Metite Ingot",
   "item.astromine.stellum_ingot": "Stellum Ingot",
   "item.astromine.galaxium_fragment": "Galaxium Fragment",
-  "item.astromine.lapis_fragment": "Lapis Fragment",
   "item.astromine.diamond_fragment": "Diamond Fragment",
   "item.astromine.emerald_fragment": "Emerald Fragment",
   "item.astromine.asterite": "Asterite",
@@ -225,6 +224,7 @@
   "category.astromine.consuming.energy": "%s consumed",
   "category.astromine.fluid.generating.consumed": "%s (%s) consumed/tick",
   "category.astromine.fluid.generating.generated": "%s (%s) generated/tick",
+  "text.astromine.selected.dimension.pos": "Selected %s (%d, %d, %d)",
   "text.astromine.patchouli.astronautics.title": "Astronautics",
   "text.astromine.patchouli.astronautics.description": "From where one dreams, to where their dreams come true.",
   "text.astromine.patchouli.components.title": "Components",
@@ -244,6 +244,11 @@
   "text.astromine.astronautics.space_suit.title": "Space Suit",
   "text.astromine.astronautics.space_suit.page_one.title": "Space Suit",
   "text.astromine.astronautics.space_suit.page_one.text": "Vital for survival in hostile environments, a Space Suit is the most important thing one may carry. $(p)With internal tanks which may be pressurized in certain machines, it may be filled with (un-)breathable gases fit for whoever is wearing it.",
+  "text.astromine.astronautics.rocket.title": "Rocket",
+  "text.astromine.astronautics.rocket.page_one.title": "Rocket",
+  "text.astromine.astronautics.rocket.page_one.text": "Your ticket to the final frontier.",
+  "text.astromine.astronautics.rocket.page_two.title": "Crafting and Notes",
+  "text.astromine.astronautics.rocket.page_two.text": "Right click with a $(item)Flint and Steel$() to launch. Right click with a $(item)Stick$() to destroy. These are both temporary measures.",
   "text.astromine.components.circuits.title": "Circuits",
   "text.astromine.components.circuits.page_one.title": "Basic Circuit",
   "text.astromine.components.circuits.page_one.text": "A basic electric circuit board, built for general systems with no special requirements, whose architecture is based on graphene.",
@@ -385,5 +390,7 @@
   "text.astromine.world.meteors.page_one.text": "Foreign bodies that, cruising through the stairs, collided with a planetary body; said to contain $(thing)$(l:world/meteor_ores)extraterrestrial ores$().",
   "text.astromine.world.ore_clusters.title": "Ore Clusters",
   "text.astromine.world.ore_clusters.page_one.title": "Ore Clusters",
-  "text.astromine.world.ore_clusters.page_one.text": "Clusters of ores obtained from $(thing)$(l:world/asteroid_ores)asteroid ores$() or $(thing)$(l:world/meteor_ores)meteor ores$(), which may be processed for resources."
+  "text.astromine.world.ore_clusters.page_one.text": "Clusters of ores obtained from $(thing)$(l:world/asteroid_ores)asteroid ores$() or $(thing)$(l:world/meteor_ores)meteor ores$(), which may be processed for resources.",
+  "text.astromine.world.ore_clusters.page_two.title": "Processing",
+  "text.astromine.world.ore_clusters.page_two.text": "Sorting clusters will result in two of their respective $(thing)dusts$()."
 }

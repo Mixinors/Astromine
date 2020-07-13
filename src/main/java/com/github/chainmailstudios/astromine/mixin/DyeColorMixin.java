@@ -9,10 +9,10 @@ import com.github.chainmailstudios.astromine.access.DyeColorAccess;
 
 @Mixin(DyeColor.class)
 public class DyeColorMixin implements DyeColorAccess {
-	@Shadow
-	int color;
+    @Shadow
+    int color;
 
-	public int getColor() {
-		return color;
-	}
+    public int astromine_getColor() {
+        return color;
+    }
 }

@@ -89,6 +89,10 @@ dependencies {
 
 	// ModMenu
     modImplementation "io.github.prospector:modmenu:${modmenu_version}"
+    
+    // AutoConfig
+    modImplementation "me.sargunvohra.mcmods:autoconfig1u:${auto_config_version}"
+    include "me.sargunvohra.mcmods:autoconfig1u:${auto_config_version}"
 
     // LBA
     modImplementation "alexiil.mc.lib:libblockattributes-core:${lba_version}"

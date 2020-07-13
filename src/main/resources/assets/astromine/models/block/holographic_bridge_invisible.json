@@ -1,2 +1,5 @@
 {
+	"textures": {
+		"particle": "minecraft:block/destroy_stage_0"
+	}
 }

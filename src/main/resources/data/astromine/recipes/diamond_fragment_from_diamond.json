@@ -1,12 +1,12 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "item": "minecraft:diamond"
-    }
-  ],
-  "result": {
-    "item": "astromine:diamond_fragment",
-    "count": 9
-  }
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:diamond"
+		}
+	],
+	"result": {
+		"item": "astromine:diamond_fragment",
+		"count": 9
+	}
 }

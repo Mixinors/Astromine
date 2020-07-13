@@ -2,6 +2,8 @@
 	"replace": false,
 	"values": [
 		"minecraft:iron_golem",
-		"minecraft:armor_stand"
+		"minecraft:armor_stand",
+		"astromine:space_slime",
+		"astromine:super_space_slime"
 	]
 }

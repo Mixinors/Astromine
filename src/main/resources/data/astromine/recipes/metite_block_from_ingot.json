@@ -1,12 +1,12 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": ["###", "###", "###"],
-  "key": {
-    "#": {
-      "item": "astromine:metite_ingot"
-    }
-  },
-  "result": {
-    "item": "astromine:metite_block"
-  }
+	"type": "minecraft:crafting_shaped",
+	"pattern": ["###", "###", "###"],
+	"key": {
+		"#": {
+			"item": "astromine:metite_ingot"
+		}
+	},
+	"result": {
+		"item": "astromine:metite_block"
+	}
 }

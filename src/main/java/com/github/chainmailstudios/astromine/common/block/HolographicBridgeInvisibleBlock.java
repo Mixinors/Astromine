@@ -7,7 +7,10 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Material;
+import net.minecraft.block.MaterialColor;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -19,6 +22,8 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 
 public class HolographicBridgeInvisibleBlock extends Block {
+	public static final Material MATERIAL = new Material.Builder(MaterialColor.CLEAR).build();
+
 	public HolographicBridgeInvisibleBlock(AbstractBlock.Settings settings) {
 		super(settings);
 	}
@@ -41,7 +46,7 @@ public class HolographicBridgeInvisibleBlock extends Block {
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos position, ShapeContext context) {
-		return getCollisionShape(state, world, position, context);
+		return context.isHolding(Items.DEBUG_STICK) ? getCollisionShape(state, world, position, context) : VoxelShapes.empty();
 	}
 
 	@Override

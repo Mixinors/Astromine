@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.registry;
+package com.github.chainmailstudios.astromine.registry.client;
 
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 

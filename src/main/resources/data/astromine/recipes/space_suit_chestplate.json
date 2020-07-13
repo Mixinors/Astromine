@@ -1,18 +1,18 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": ["1 1", "323", "111"],
-  "key": {
-    "1": {
-      "item": "minecraft:white_wool"
-    },
-    "2": {
-      "item": "astromine:diamond_dust"
-    },
-    "3": {
-      "item": "minecraft:black_wool"
-    }
-  },
-  "result": {
-    "item": "astromine:space_suit_chestplate"
-  }
+	"type": "minecraft:crafting_shaped",
+	"pattern": ["1 1", "323", "111"],
+	"key": {
+		"1": {
+			"item": "minecraft:white_wool"
+		},
+		"2": {
+			"item": "astromine:metite_dust"
+		},
+		"3": {
+			"item": "minecraft:black_wool"
+		}
+	},
+	"result": {
+		"item": "astromine:space_suit_chestplate"
+	}
 }

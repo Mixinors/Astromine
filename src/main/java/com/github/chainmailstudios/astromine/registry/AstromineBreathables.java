@@ -7,6 +7,7 @@ import com.github.chainmailstudios.astromine.common.registry.BreathableRegistry;
 public class AstromineBreathables {
 	public static void initialize() {
 		BreathableRegistry.INSTANCE.register(EntityType.COD, AstromineTags.WATER_BREATHABLE);
+		BreathableRegistry.INSTANCE.register(EntityType.DOLPHIN, AstromineTags.NORMAL_BREATHABLE, AstromineTags.WATER_BREATHABLE);
 		BreathableRegistry.INSTANCE.register(EntityType.DROWNED, AstromineTags.NORMAL_BREATHABLE, AstromineTags.WATER_BREATHABLE);
 		BreathableRegistry.INSTANCE.register(EntityType.ELDER_GUARDIAN, AstromineTags.WATER_BREATHABLE);
 		BreathableRegistry.INSTANCE.register(EntityType.GUARDIAN, AstromineTags.WATER_BREATHABLE);

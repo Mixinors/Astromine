@@ -20,12 +20,12 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.registry.AstromineSounds;
+import com.github.chainmailstudios.astromine.registry.client.AstromineSounds;
 
-public class FireExtinguisher extends Item {
+public class FireExtinguisherItem extends Item {
 	long lastPlayed = 0;
 
-	public FireExtinguisher(Item.Settings settings) {
+	public FireExtinguisherItem(Item.Settings settings) {
 		super(settings);
 	}
 
@@ -40,7 +40,7 @@ public class FireExtinguisher extends Item {
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		Vec3d placeVec = user.getCameraPosVec(0);
 
-		Vec3d thrustVec = new Vec3d(0.5, 0.5, 0.5);
+		Vec3d thrustVec = new Vec3d(0.8, 0.8, 0.8);
 
 		thrustVec = thrustVec.multiply(user.getRotationVector());
 
@@ -53,9 +53,9 @@ public class FireExtinguisher extends Item {
 
 		if (!user.isSneaking()) {
 			user.addVelocity(thrustVec.x, thrustVec.y, thrustVec.z);
-			user.getItemCooldownManager().set(this, 20);
+			user.getItemCooldownManager().set(this, 10);
 		} else {
-			user.getItemCooldownManager().set(this, 5);
+			user.getItemCooldownManager().set(this, 2);
 		}
 
 		BlockHitResult result = (BlockHitResult) user.rayTrace(6, 0, false);
@@ -63,11 +63,11 @@ public class FireExtinguisher extends Item {
 		BlockPos.Mutable.method_29715(new Box(result.getBlockPos()).expand(1)).forEach(position -> {
 			BlockState state = world.getBlockState(position);
 
-			state.getEntries().keySet().stream().filter(property -> property == FireBlock.EAST || property == FireBlock.WEST || property == FireBlock.NORTH || property == FireBlock.SOUTH || property == FireBlock.UP).forEach(property -> world.setBlockState(
-					position,
-					Blocks.AIR.getDefaultState()
-			));
-			state.getEntries().keySet().stream().filter(property -> property == CampfireBlock.LIT).forEach(property -> world.setBlockState(position, world.getBlockState(position).with(CampfireBlock.LIT, false)));
+			if(state.getBlock() instanceof FireBlock) {
+				world.setBlockState(position, Blocks.AIR.getDefaultState());
+			} else if(state.getBlock() instanceof CampfireBlock) {
+				if(state.get(CampfireBlock.LIT)) world.setBlockState(position, state.with(CampfireBlock.LIT, false));
+			}
 		});
 
 		world.getEntities(null, new Box(result.getBlockPos()).expand(1)).forEach(entity -> {

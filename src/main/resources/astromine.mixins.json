@@ -6,7 +6,7 @@
 	"mixins": [
 		"AbstractMinecartEntityMixin", "BrewingRecipeRegistryMixin", "BucketItemMixin", "DyeColorMixin", "EntityMixin",
 		"FishingBobberEntityMixin", "FlamingAnvilCraftingMixin", "GravityEntityMixin", "HoneyBlockMixin",
-		"HopperBlockEntityMixin", "ItemEntityMixin", "LivingEntityMixin", "SlimeEntityMixin", "SquidEntityMixin",
+		"HopperBlockEntityMixin", "ItemEntityMixin", "LivingEntityMixin",
 		"StepAndDestroyBlockGoalMixin", "ThreadExecutorMixin", "WorldChunkMixin"
 	],
 	"client": [

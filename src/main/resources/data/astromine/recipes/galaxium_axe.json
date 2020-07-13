@@ -1,15 +1,15 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": ["## ", "#$ ", " $ "],
-  "key": {
-    "#": {
-      "item": "astromine:galaxium"
-    },
-    "$": {
-      "item": "minecraft:stick"
-    }
-  },
-  "result": {
-    "item": "astromine:galaxium_axe"
-  }
+	"type": "minecraft:crafting_shaped",
+	"pattern": ["##", "#$", " $"],
+	"key": {
+		"#": {
+			"item": "astromine:galaxium"
+		},
+		"$": {
+			"item": "minecraft:stick"
+		}
+	},
+	"result": {
+		"item": "astromine:galaxium_axe"
+	}
 }

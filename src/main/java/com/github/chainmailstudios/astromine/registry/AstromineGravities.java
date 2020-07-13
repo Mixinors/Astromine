@@ -5,6 +5,6 @@ import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
 
 public class AstromineGravities {
 	public static void initialize() {
-		GravityRegistry.INSTANCE.register(EarthSpaceDimensionType.EARTH_SPACE_REGISTRY_KEY, 0.01D);
+		GravityRegistry.INSTANCE.register(EarthSpaceDimensionType.EARTH_SPACE_REGISTRY_KEY, AstromineConfig.get().spaceGravity);
 	}
 }
