@@ -127,6 +127,16 @@ public class AstromineItems {
 	public static final Item ADVANCED_CIRCUIT = register("advanced_circuit", new Item(getBasicSettings()));
 	public static final Item ELITE_CIRCUIT = register("elite_circuit", new Item(getBasicSettings()));
 
+	// Containers
+	public static final Item MACHINE_CHASSIS = register("machine_chassis", new Item(getBasicSettings()));
+	public static final Item GRAPHITE_SHEET = register("graphite_sheet", new Item(getBasicSettings()));
+	public static final Item GAS_CANISTER = register("gas_canister", new Item(getBasicSettings()));
+	public static final Item PRESSURIZED_GAS_CANISTER = register("pressurized_gas_canister", new Item(getBasicSettings()));
+	public static final Item BASIC_BATTERY = register("basic_battery", new Item(getBasicSettings()));
+	public static final Item ADVANCED_BATTERY = register("advanced_battery", new Item(getBasicSettings()));
+	public static final Item ELITE_BATTERY = register("elite_battery", new Item(getBasicSettings()));
+	public static final Item CREATIVE_BATTERY = register("creative_battery", new Item(getBasicSettings()));
+
 	// Tools
 	public static final Item HOLOGRAPHIC_CONNECTOR = register("holographic_connector", new HolographicConnector(getBasicSettings().maxCount(1)));
 
