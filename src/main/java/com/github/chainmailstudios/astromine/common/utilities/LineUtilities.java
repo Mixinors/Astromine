@@ -1,9 +1,11 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
+import com.google.common.collect.Lists;
 import net.minecraft.client.util.math.Vector3f;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class LineUtilities {
 	/**
@@ -59,5 +61,116 @@ public class LineUtilities {
 		}
 
 		return positions;
+	}
+
+	public static Collection<Vector3f> getBresenhamSegments(Vector3f posA, Vector3f posB, float segments) {
+
+		float x1 = posA.getX();
+		float y1 = posA.getY();
+		float z1 = posA.getZ();
+
+		float x2 = posB.getX();
+		float y2 = posB.getY();
+		float z2 = posB.getZ();
+
+		List<Vector3f> points = Lists.newArrayList();
+
+		points.add(posA);
+
+		float dx = Math.abs(x2 - x1);
+		float dy = Math.abs(y2 - y1);
+		float dz = Math.abs(z2 - z1);
+
+		float xs = 0;
+		float ys = 0;
+		float zs = 0;
+
+		if (x2 > x1) {
+			xs = 1 / segments;
+		} else {
+			xs = -1 / segments;
+		}
+
+		if (y2 > y1) {
+			ys = 1 / segments;
+		} else {
+			ys = -1 / segments;
+		}
+
+		if (z2 > z1) {
+			zs = 1 / segments;
+		} else {
+			zs = -1 / segments;
+		}
+
+		if (dx >= dy && dx >= dz) {
+			float p1 = 2 * dy - dx;
+			float p2 = 2 * dz - dx;
+
+			while (posA.getX() < posB.getX() ? x1 < x2 : x1 > x2) {
+				x1 += xs;
+
+				if (p1 >= 0) {
+					y1 += ys;
+					p1 -= 2 * dx;
+				}
+
+				if (p2 >= 0) {
+					z1 += zs;
+					p2 -= 2 * dx;
+				}
+
+				p1 += 2 * dy;
+				p2 += 2 * dz;
+
+				points.add(new Vector3f(x1, y1, z1));
+			}
+		} else if (dy >= dx && dy >= dz) {
+			float p1 = 2 * dx - dy;
+			float p2 = 2 * dz - dy;
+
+			while (posA.getY() < posB.getY() ? y1 < y2 : y1 > y2) {
+				y1 += ys;
+
+				if (p1 >= 0) {
+					x1 += xs;
+					p1 -= 2 * dy;
+				}
+
+				if (p2 >= 0) {
+					z1 += zs;
+					p2 -= 2 * dy;
+				}
+
+				p1 += 2 * dx;
+				p2 += 2 * dz;
+
+				points.add(new Vector3f(x1, y1, z1));
+			}
+		} else {
+			float p1 = 2 * dy - dz;
+			float p2 = 2 * dx - dz;
+
+			while (posA.getZ() < posB.getZ() ? z1 < z2 : z1 > z2) {
+				z1 += zs;
+
+				if (p1 >= 0) {
+					y1 += ys;
+					p1 -= 2 * dz;
+				}
+
+				if (p2 >= 0) {
+					p2 -= 2 * dz;
+					x1 += xs;
+				}
+
+				p1 += 2 * dy;
+				p2 += 2 * dx;
+
+				points.add(new Vector3f(x1, y1, z1));
+			}
+		}
+
+		return points;
 	}
 }

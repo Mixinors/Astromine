@@ -1,5 +1,9 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
+import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyFluidBlockEntity;
@@ -14,23 +18,36 @@ import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
 import java.util.Optional;
 
-public class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockEntity implements NetworkMember, Tickable {
-	Optional<ElectrolyzingRecipe> recipe = Optional.empty();
+public class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockEntity implements NetworkMember, RecipeConsumer, Tickable {
+	public int current = 0;
+	public int limit = 100;
+
+	public boolean isActive = false;
+
+	public boolean[] activity = { false, false, false, false, false };
+
+	private Optional<ElectrolyzingRecipe> recipe = Optional.empty();
+
+	private static final int INPUT_ENERGY_VOLUME = 0;
+	private static final int INPUT_FLUID_VOLUME = 0;
+	private static final int FIRST_OUTPUT_FLUID_VOLUME = 1;
+	private static final int SECOND_OUTPUT_FLUID_VOLUME = 2;
 
 	public ElectrolyzerBlockEntity() {
 		super(AstromineBlockEntityTypes.ELECTROLYZER);
 
-		fluidComponent = new SimpleFluidInventoryComponent(2);
+		fluidComponent = new SimpleFluidInventoryComponent(3);
 
-		energyComponent.getVolume(0).setSize(new Fraction(32, 1));
-		fluidComponent.getVolume(0).setSize(new Fraction(4, 1));
-		fluidComponent.getVolume(1).setSize(new Fraction(4, 1));
+		energyComponent.getVolume(INPUT_ENERGY_VOLUME).setSize(new Fraction(32, 1));
+		fluidComponent.getVolume(INPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
+		fluidComponent.getVolume(FIRST_OUTPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
+		fluidComponent.getVolume(SECOND_OUTPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
 
 		fluidComponent.addListener(() -> {
-			if (!this.world.isClient() && (!recipe.isPresent() || !recipe.get().tryCrafting(this, false)))
+			if (this.world != null && !this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
 				recipe = (Optional) world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream()
 						.filter(recipe -> recipe instanceof ElectrolyzingRecipe)
-						.filter(recipe -> ((ElectrolyzingRecipe) recipe).tryCrafting(this, false))
+						.filter(recipe -> ((ElectrolyzingRecipe) recipe).canCraft(this))
 						.findFirst();
 		});
 
@@ -38,14 +55,74 @@ public class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockEntity imp
 	}
 
 	@Override
+	public int getCurrent() {
+		return current;
+	}
+
+	@Override
+	public int getLimit() {
+		return limit;
+	}
+
+	@Override
+	public void setCurrent(int current) {
+		this.current = current;
+	}
+
+	@Override
+	public void setLimit(int limit) {
+		this.limit = limit;
+	}
+
+	@Override
+	public boolean isActive() {
+		return isActive;
+	}
+
+	@Override
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	@Override
+	public void fromTag(BlockState state, CompoundTag tag) {
+		readRecipeProgress(tag);
+		super.fromTag(state, tag);
+	}
+
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		writeRecipeProgress(tag);
+		return super.toTag(tag);
+	}
+
+	@Override
 	public void tick() {
-		if (this.world.isClient()) return;
-		fluidComponent.dispatchConsumers();
-		this.recipe.ifPresent(recipe -> {
-			if (!recipe.tryCrafting(this, true)) {
-				this.recipe = Optional.empty();
+		if (world.isClient()) return;
+
+		if (recipe.isPresent()) {
+			recipe.get().tick(this);
+
+			if (recipe.isPresent() && !recipe.get().canCraft(this)) {
+				recipe = Optional.empty();
 			}
-		});
+
+			isActive = true;
+		} else {
+			isActive = false;
+		}
+
+		for (int i = 1; i < activity.length; ++i) {
+			activity[i - 1] = activity[i];
+		}
+
+		activity[4] = isActive;
+
+		if (isActive && !activity[0]) {
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, true));
+		} else if (!isActive && activity[0]) {
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, false));
+		}
 	}
 
 	@Override

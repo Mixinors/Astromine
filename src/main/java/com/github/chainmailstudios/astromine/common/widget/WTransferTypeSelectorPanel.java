@@ -3,6 +3,8 @@ package com.github.chainmailstudios.astromine.common.widget;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
+import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.Item;
@@ -97,16 +99,17 @@ public class WTransferTypeSelectorPanel extends WAbstractWidget implements WColl
 		WTabHolder.WTab tab = tabs.addTab(symbol);
 
 		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 22, 31 + 22, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.NORTH).setBlockPos(blockPos).setInterface(getInterface()));
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 22, 31 + 44, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.SOUTH).setBlockPos(blockPos).setInterface(getInterface()));
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 0,  31 + 44, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.SOUTH).setBlockPos(blockPos).setInterface(getInterface()));
 		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 22, 31 + 0, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.UP).setBlockPos(blockPos).setInterface(getInterface()));
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 0,  31 + 44, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.DOWN).setBlockPos(blockPos).setInterface(getInterface()));
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 0,  31 + 22, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.WEST).setBlockPos(blockPos).setInterface(getInterface()));
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 44, 31 + 22, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.EAST).setBlockPos(blockPos).setInterface(getInterface()));
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 22, 31 + 44, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.DOWN).setBlockPos(blockPos).setInterface(getInterface()));
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 44, 31 + 22, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.WEST).setBlockPos(blockPos).setInterface(getInterface()));
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(this, 7 + 0,  31 + 22, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.EAST).setBlockPos(blockPos).setInterface(getInterface()));
 	}
 
 	@Override
-	public void draw(MatrixStack matrices, VertexConsumerProvider.Immediate provider) {
+	public void draw(MatrixStack matrices, VertexConsumerProvider provider) {
 		tabs.draw(matrices, provider);
+
 		super.draw(matrices, provider);
 	}
 }

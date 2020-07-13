@@ -30,10 +30,11 @@ public class DefaultedBlockEntityContainerScreen<T extends DefaultedBlockEntityC
 		mainPanel = mainInterface.createChild(WPanel::new, Position.ORIGIN, Size.of(176, 160));
 
 		addTitle(mainPanel);
+
 		mainPanel.center();
 		mainPanel.setOnAlign(WAbstractWidget::center);
 
-		playerSlots = WSlot.addPlayerInventory(Position.of(mainPanel, 7, 77, 0), Size.of(18, 18), mainPanel);
+		playerSlots = WSlot.addPlayerInventory(Position.of(mainPanel, 7, 77, 2), Size.of(18, 18), mainPanel);
 
 		ComponentProvider componentProvider = ComponentProvider.fromBlockEntity(linkedContainer.syncBlockEntity);
 

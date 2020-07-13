@@ -4,14 +4,13 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.tag.Tag;
 
-import com.github.chainmailstudios.astromine.common.registry.base.UniDirectionalRegistry;
-import com.github.chainmailstudios.astromine.registry.AstromineTags;
+import com.github.chainmailstudios.astromine.common.registry.base.MultiRegistry;
 
-public class BreathableRegistry extends UniDirectionalRegistry<EntityType<?>, Tag<Fluid>> {
+public class BreathableRegistry extends MultiRegistry<EntityType<?>, Tag<Fluid>> {
 	public static final BreathableRegistry INSTANCE = new BreathableRegistry();
 
 	private BreathableRegistry() {
-		super(AstromineTags.NORMAL_BREATHABLE);
+		super();
 	}
 
 	@SafeVarargs
@@ -19,5 +18,9 @@ public class BreathableRegistry extends UniDirectionalRegistry<EntityType<?>, Ta
 		for (Tag<Fluid> tag : tags) {
 			register(type, tag);
 		}
+	}
+
+	public boolean canBreathe(EntityType<?> type, Fluid fluid) {
+		return get(type).stream().anyMatch(tag -> tag.contains(fluid));
 	}
 }

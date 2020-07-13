@@ -22,6 +22,14 @@ public class Fraction extends Number implements Comparable<Fraction> {
 		return new Fraction(0, 1);
 	}
 
+	public static Fraction bucket() {
+		return new Fraction(1, 1);
+	}
+
+	public static Fraction bottle() {
+		return new Fraction(1, 3);
+	}
+
 	public static Fraction ofWhole(long whole) {
 		return new Fraction(whole, 1);
 	}

@@ -19,9 +19,9 @@ public abstract class DefaultedEnergyFluidContainerScreen<T extends DefaultedBlo
 	public DefaultedEnergyFluidContainerScreen(Text name, DefaultedEnergyFluidContainer linkedContainer, PlayerEntity player) {
 		super(name, (T) linkedContainer, player);
 
-		energyBar = mainPanel.createChild(WEnergyVolumeFractionalVerticalBar::new, Position.of(mainPanel, 7, 20, 0), Size.of(24, 48));
+		energyBar = mainPanel.createChild(WEnergyVolumeFractionalVerticalBar::new, Position.of(mainPanel, 7, 20, 8), Size.of(24, 48));
 
-		fluidBar = mainPanel.createChild(WFluidVolumeFractionalVerticalBar::new, Position.of(energyBar, energyBar.getWidth() + 4, 0, 0), Size.of(energyBar));
+		fluidBar = mainPanel.createChild(WFluidVolumeFractionalVerticalBar::new, Position.of(energyBar, energyBar.getWidth() + 4, 0, 8), Size.of(energyBar));
 
 		ComponentProvider componentProvider = linkedContainer.blockEntity;
 

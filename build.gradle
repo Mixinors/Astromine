@@ -26,13 +26,17 @@ repositories {
         name = "Fabric"
         url = "https://maven.fabricmc.net/"
     }
-	maven {
-		name = "Jared"
-		url = "https://maven.blamejared.com"
-	}
+    maven {
+        name = "Jared"
+        url = "https://maven.blamejared.com"
+    }
     maven {
         name = "BuildCraft"
         url = "https://mod-buildcraft.com/maven"
+    }
+    maven {
+        name = "SonaType"
+        url "https://oss.sonatype.org/content/repositories/snapshots/"
     }
 }
 
@@ -101,9 +105,13 @@ dependencies {
     modRuntime ("com.github.SuperCoder7979:databreaker:${databreaker_version}") {
         exclude (module: "fabric-loader")
     }
-    // lib structure
+
+    // LibStructure
     modImplementation 'com.github.Draylar:LibStructure:42bde13a36'
     include 'com.github.Draylar:LibStructure:42bde13a36'
+
+    // JOML
+    compile "org.joml:joml:${joml_version}"
 }
 
 processResources {

@@ -1,6 +1,12 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "block/cube",
   "textures": {
-    "all": "astromine:block/asteroid_redstone_ore"
+    "particle": "astromine:block/asteroid_redstone_ore",
+    "down": "astromine:block/asteroid_stone",
+    "up": "astromine:block/asteroid_stone",
+    "north": "astromine:block/asteroid_redstone_ore",
+    "east": "astromine:block/asteroid_redstone_ore",
+    "south": "astromine:block/asteroid_redstone_ore",
+    "west": "astromine:block/asteroid_redstone_ore"
   }
 }

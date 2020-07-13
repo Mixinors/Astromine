@@ -31,8 +31,6 @@ import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
 public class ElectricSmelterBlock extends DefaultedHorizontalFacingBlockWithEntity implements NetworkMember {
-	public static final BooleanProperty ACTIVE = BooleanProperty.of("active");
-
 	public ElectricSmelterBlock(Settings settings) {
 		super(settings);
 	}
@@ -53,8 +51,8 @@ public class ElectricSmelterBlock extends DefaultedHorizontalFacingBlockWithEnti
 	}
 
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		return super.getPlacementState(ctx).with(ACTIVE, false);
+	public BlockState getPlacementState(ItemPlacementContext context) {
+		return super.getPlacementState(context).with(ACTIVE, false);
 	}
 
 	@Override
@@ -83,11 +81,5 @@ public class ElectricSmelterBlock extends DefaultedHorizontalFacingBlockWithEnti
 		} else {
 			return ActionResult.SUCCESS;
 		}
-	}
-
-	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(ACTIVE);
-		super.appendProperties(builder);
 	}
 }

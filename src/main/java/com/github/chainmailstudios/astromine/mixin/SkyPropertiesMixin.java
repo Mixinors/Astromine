@@ -12,7 +12,7 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.dimension.DimensionType;
 
 import com.github.chainmailstudios.astromine.client.render.sky.SpaceSkyProperties;
-import com.github.chainmailstudios.astromine.registry.AstromineDimensionTypes;
+import com.github.chainmailstudios.astromine.common.dimension.EarthSpaceDimensionType;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 
 @Environment(EnvType.CLIENT)
@@ -24,6 +24,6 @@ public class SkyPropertiesMixin {
 	private static Object2ObjectMap<RegistryKey<DimensionType>, SkyProperties> BY_DIMENSION_TYPE;
 
 	static {
-		BY_DIMENSION_TYPE.put(AstromineDimensionTypes.SPACE_REGISTRY_KEY, new SpaceSkyProperties());
+		BY_DIMENSION_TYPE.put(EarthSpaceDimensionType.EARTH_SPACE_REGISTRY_KEY, new SpaceSkyProperties());
 	}
 }

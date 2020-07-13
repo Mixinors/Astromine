@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.recipe;
 
+import com.github.chainmailstudios.astromine.common.block.entity.FluidMixerBlockEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -16,7 +17,6 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.entity.FuelMixerBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
@@ -52,7 +52,7 @@ public class FuelMixingRecipe implements Recipe<Inventory> {
 		this.energyConsumed = energyConsumed;
 	}
 
-	public boolean tryCrafting(FuelMixerBlockEntity electrolyzer, boolean isActuallyDoing) {
+	public boolean tryCrafting(FluidMixerBlockEntity electrolyzer, boolean isActuallyDoing) {
 		FluidInventoryComponent fluidComponent = electrolyzer.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
 		FluidVolume inputVolume = fluidComponent.getVolume(0);
@@ -120,7 +120,7 @@ public class FuelMixingRecipe implements Recipe<Inventory> {
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.FUEL_MIXER);
+		return new ItemStack(AstromineBlocks.FLUID_MIXER);
 	}
 
 	public Identifier getIdentifier() {

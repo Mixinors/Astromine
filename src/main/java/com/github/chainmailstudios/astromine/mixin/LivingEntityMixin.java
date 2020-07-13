@@ -1,5 +1,12 @@
 package com.github.chainmailstudios.astromine.mixin;
 
+import com.github.chainmailstudios.astromine.common.atmosphere.AtmosphereRegistry;
+import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
+import com.github.chainmailstudios.astromine.common.dimension.base.AtmosphericDimensionType;
+import nerdhub.cardinal.components.api.component.Component;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -36,25 +43,13 @@ import com.github.chainmailstudios.astromine.registry.AstromineFluids;
 import com.github.chainmailstudios.astromine.registry.AstromineTags;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 
+import java.util.stream.Collectors;
+
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
 	@Shadow
 	@Final
 	private DefaultedList<ItemStack> equippedArmor;
-
-	@Shadow
-	protected abstract int getNextAirUnderwater(int air);
-
-	@Shadow
-	protected abstract int getNextAirOnLand(int air);
-
-	int oxygen = 180;
-
-	long lastOxygenTick = 0;
-
-	private static int nextOxygen(boolean b, int o) {
-		return b ? o < 180 ? o + 1 : 180 : o > -20 ? o - 1 : -20;
-	}
 
 	@ModifyConstant(method = "travel(Lnet/minecraft/util/math/Vec3d;)V", constant = @Constant(doubleValue = 0.08D))
 	double getGravity(double original) {
@@ -67,87 +62,46 @@ public abstract class LivingEntityMixin {
 	void onTick(CallbackInfo callbackInformation) {
 		Entity entity = (Entity) (Object) this;
 
-		if (!entity.getType().isIn(AstromineTags.DOES_NOT_BREATHE)) {
-			ComponentProvider componentProvider = ComponentProvider.fromWorld(entity.world);
+		if (AtmosphereRegistry.INSTANCE.containsKey(entity.world.getDimensionRegistryKey()) && !entity.getType().isIn(AstromineTags.DOES_NOT_BREATHE)) {
+			ComponentProvider worldProvider = ComponentProvider.fromWorld(entity.world);
 
-			WorldAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);
+			WorldAtmosphereComponent atmosphereComponent = worldProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);
 
-			FluidVolume atmosphere = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
+			FluidVolume atmosphereVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
 
-			Fluid fluid;
+			if (SpaceSuitItem.hasFullArmor(equippedArmor)) return;
 
-			boolean isBreathing = true;
+			boolean isSubmerged = false;
 
-			if (!SpaceSuitItem.hasFullArmor(equippedArmor) && !(entity instanceof SpaceSlimeEntity)) {
-				fluid = atmosphere.getFluid();
-			} else {
-				//FluidVolume volume = SpaceSuitItem.readVolume(equippedArmor);
-				//fluid = volume.getFluid();
-				//
-				//if (volume.isEmpty()) {
-				//	isBreathing = false;
-				//}
+			Box collisionBox = entity.getBoundingBox();
 
-				fluid = AstromineFluids.OXYGEN;
-			}
+			for (BlockPos blockPos : BlockPos.method_29715(collisionBox).collect(Collectors.toList())) {
+				BlockState blockState = entity.world.getBlockState(blockPos);
 
-			if (!BreathableRegistry.INSTANCE.get(((Entity) (Object) this).getType()).contains(fluid)) {
-				if (fluid instanceof AdvancedFluid && ((AdvancedFluid) fluid).isToxic()) {
-					entity.damage(DamageSource.GENERIC, ((AdvancedFluid) fluid).getDamage());
-				}
+				if (blockState.getBlock() instanceof FluidBlock) {
+					isSubmerged = true;
 
-				isBreathing = false;
-			}
+					FluidState fluidState = blockState.getFluidState();
+					Fluid collidingFluid = fluidState.getFluid();
 
-			BlockState upState = entity.world.getBlockState(entity.getBlockPos().offset(Direction.UP));
-			BlockState downState = entity.world.getBlockState(entity.getBlockPos());
+					if (collidingFluid instanceof AdvancedFluid) {
+						AdvancedFluid advancedFluid = (AdvancedFluid) collidingFluid;
 
-			Block upBlock = upState.getBlock();
-			Block downBlock = downState.getBlock();
+						if (advancedFluid.isToxic()) {
+							entity.damage(advancedFluid.getSource(), advancedFluid.getDamage());
 
-			if (upBlock instanceof FluidBlock) {
-				FluidState fluidState = upState.getFluidState();
-
-				fluid = fluidState.getFluid();
-
-				if (fluid instanceof AdvancedFluid && ((AdvancedFluid) fluid).isToxic()) {
-					entity.damage(DamageSource.GENERIC, ((AdvancedFluid) fluid).getDamage());
+							break;
+						}
+					}
 				}
 			}
 
-			if (downBlock instanceof FluidBlock) {
-				FluidState fluidState = downBlock.getFluidState(downState);
+			if (!isSubmerged) {
+				ComponentProvider entityProvider = ComponentProvider.fromEntity(entity);
 
-				fluid = fluidState.getFluid();
+				EntityOxygenComponent oxygenComponent = entityProvider.getComponent(AstromineComponentTypes.ENTITY_OXYGEN_COMPONENT);
 
-				if (fluid instanceof AdvancedFluid && ((AdvancedFluid) fluid).isToxic()) {
-					entity.damage(DamageSource.GENERIC, ((AdvancedFluid) fluid).getDamage());
-				}
-			}
-
-			if (!isBreathing && !((Object) this instanceof PlayerEntity && ((PlayerEntity) (Object) this).isCreative())) {
-				LivingEntity user = (LivingEntity) (Object) this;
-				oxygen = nextOxygen(false, oxygen);
-
-				if (oxygen <= -20) {
-					oxygen = 0;
-
-					user.damage(DamageSource.DROWN, 2.0F);
-				}
-			} else {
-				oxygen = nextOxygen(true, oxygen);
-			}
-
-			long currentTime = System.currentTimeMillis();
-
-			if (currentTime - lastOxygenTick >= 300000) {
-				FluidVolume volume = SpaceSuitItem.readVolume(equippedArmor);
-
-				if (!volume.isEmpty()) {
-					volume.setFraction(Fraction.subtract(volume.getFraction(), Fraction.min(volume.getFraction(), Fraction.BOTTLE)));
-				}
-
-				lastOxygenTick = currentTime;
+				oxygenComponent.simulate(atmosphereVolume);
 			}
 		}
 	}

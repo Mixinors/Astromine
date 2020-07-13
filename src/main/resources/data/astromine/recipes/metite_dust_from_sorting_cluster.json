@@ -8,8 +8,8 @@
 		"item": "astromine:metite_dust",
 		"count": 2
 	},
-	"time_total": 16,
-	"energy_total": {
+	"time": 16,
+	"energy_consumed": {
 		"numerator": 1,
 		"denominator": 2
 	}

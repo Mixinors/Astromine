@@ -36,41 +36,6 @@ public class ItemInventoryComponentFromItemInventory extends SimpleItemInventory
 	}
 
 	@Override
-	public boolean canInsert() {
-		return true;
-	}
-
-	@Override
-	public boolean canExtract() {
-		return true;
-	}
-
-	@Override
-	public boolean canInsert(int slot) {
-		return true;
-	}
-
-	@Override
-	public boolean canExtract(int slot) {
-		return true;
-	}
-
-	@Override
-	public boolean canInsert(ItemStack stack, int slot) {
-		return true;
-	}
-
-	@Override
-	public boolean canExtract(ItemStack stack, int slot) {
-		return true;
-	}
-
-	@Override
-	public boolean canInsert(ItemStack stack) {
-		return true;
-	}
-
-	@Override
 	public void setStack(int slot, ItemStack stack) {
 		this.inventory.setStack(slot, stack);
 	}
@@ -88,10 +53,5 @@ public class ItemInventoryComponentFromItemInventory extends SimpleItemInventory
 	@Override
 	public ItemStack getStack(int slot) {
 		return this.inventory.getStack(slot);
-	}
-
-	@Override
-	public boolean canExtract(ItemStack stack) {
-		return true;
 	}
 }

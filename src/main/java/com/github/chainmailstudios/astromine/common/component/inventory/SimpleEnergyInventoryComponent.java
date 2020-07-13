@@ -24,7 +24,7 @@ public class SimpleEnergyInventoryComponent implements EnergyInventoryComponent 
 	public SimpleEnergyInventoryComponent(int size) {
 		this.size = size;
 		for (int i = 0; i < size; ++i) {
-			contents.put(i, EnergyVolume.empty());
+			contents.put(i, EnergyVolume.attached(this));
 		}
 	}
 

@@ -18,5 +18,7 @@ public abstract class DefaultedEnergyItemBlockEntity extends DefaultedBlockEntit
 
 		addComponent(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, energyComponent);
 		addComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, itemComponent);
+
+		energyComponent.dispatchConsumers();
 	}
 }

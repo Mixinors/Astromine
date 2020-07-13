@@ -52,11 +52,6 @@ public class SimpleItemInventoryComponent implements ItemInventoryComponent {
 	}
 
 	@Override
-	public boolean canExtract(ItemStack stack) {
-		return true;
-	}
-
-	@Override
 	public void fromTag(CompoundTag compoundTag) {
 		read(this, compoundTag, Optional.empty(), Optional.empty());
 	}

@@ -3,7 +3,9 @@ package com.github.chainmailstudios.astromine.common.block;
 import com.github.chainmailstudios.astromine.common.container.VentContainer;
 import com.github.chainmailstudios.astromine.common.miscellaneous.ExplosionAlgorithm;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,7 +34,9 @@ public class NuclearWarheadBlock extends Block {
 
 	@Override
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
-		this.tryDetonate(world, pos);
+		if (!(!world.isClient && FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER)) {
+			this.tryDetonate(world, pos);
+		}
 	}
 
 	private void tryDetonate(World world, BlockPos pos) {

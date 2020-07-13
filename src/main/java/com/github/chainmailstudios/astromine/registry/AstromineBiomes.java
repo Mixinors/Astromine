@@ -11,7 +11,7 @@ import com.github.chainmailstudios.astromine.common.world.AsteroidBeltBiome;
 import com.github.chainmailstudios.astromine.common.world.generation.AstromineBiomeSource;
 
 public class AstromineBiomes {
-	public static final Codec<AstromineBiomeSource> SPACE = Registry.register(Registry.BIOME_SOURCE, AstromineCommon.identifier("space"), AstromineBiomeSource.CODEC);
+	public static final Codec<AstromineBiomeSource> SPACE = Registry.register(Registry.BIOME_SOURCE, AstromineCommon.identifier("earth_space"), AstromineBiomeSource.CODEC);
 	public static Biome ASTEROID_BELT;
 
 	public static void initialize() {

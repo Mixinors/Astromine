@@ -18,7 +18,7 @@ import spinnery.common.inventory.BaseInventory;
 
 import java.util.Optional;
 
-public class SorterBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
+public class    SorterBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
 	public int progress = 0;
 	public int limit = 100;
 
@@ -57,9 +57,9 @@ public class SorterBlockEntity extends DefaultedEnergyItemBlockEntity implements
 	public void tick() {
 		if (shouldTry) {
 			if (recipe.isPresent() && recipe.get().matches(ItemInventoryFromInventoryComponent.of(itemComponent), world)) {
-				limit = recipe.get().getTimeTotal();
+				limit = recipe.get().getTime();
 				
-				Fraction consumed = recipe.get().getEnergyTotal().copy();
+				Fraction consumed = recipe.get().getEnergyConsumed().copy();
 
 				ItemStack output = recipe.get().getOutput();
 
@@ -67,7 +67,7 @@ public class SorterBlockEntity extends DefaultedEnergyItemBlockEntity implements
 				boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(0), output) && ItemStack.areTagsEqual(itemComponent.getStack(0), output);
 
 				if (energyComponent.getVolume(0).hasStored(consumed) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
-					if (progress == recipe.get().getTimeTotal()) {
+					if (progress == recipe.get().getTime()) {
 						energyComponent.getVolume(0).extractVolume(consumed);
 
 						recipe.get().craft(ItemInventoryFromInventoryComponent.of(itemComponent));

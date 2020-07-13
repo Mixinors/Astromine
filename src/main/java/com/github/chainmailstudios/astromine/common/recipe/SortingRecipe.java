@@ -36,16 +36,15 @@ public class SortingRecipe implements Recipe<Inventory> {
 	final Identifier identifier;
 	final Ingredient input;
 	final ItemStack output;
+	final Fraction energyConsumed;
+	final int time;
 
-	final int timeTotal;
-	final Fraction energyTotal;
-
-	public SortingRecipe(Identifier identifier, Ingredient input, ItemStack output, int timeTotal, Fraction energyTotal) {
+	public SortingRecipe(Identifier identifier, Ingredient input, ItemStack output, Fraction energyConsumed, int time) {
 		this.identifier = identifier;
 		this.input = input;
 		this.output = output;
-		this.timeTotal = timeTotal;
-		this.energyTotal = energyTotal;
+		this.energyConsumed = energyConsumed;
+		this.time = time;
 	}
 
 	@Override
@@ -107,13 +106,13 @@ public class SortingRecipe implements Recipe<Inventory> {
 	public ItemStack getRecipeKindIcon() {
 		return new ItemStack(AstromineBlocks.SORTER);
 	}
-	
-	public int getTimeTotal() {
-		return timeTotal;
+
+	public int getTime() {
+		return time;
 	}
 
-	public Fraction getEnergyTotal() {
-		return energyTotal;
+	public Fraction getEnergyConsumed() {
+		return energyConsumed;
 	}
 
 	public static final class Serializer implements RecipeSerializer<SortingRecipe> {
@@ -132,8 +131,8 @@ public class SortingRecipe implements Recipe<Inventory> {
 			return new SortingRecipe(identifier,
 					IngredientUtilities.fromJson(format.input),
 					StackUtilities.fromJson(format.output),
-					ParsingUtilities.fromJson(format.timeTotal, Integer.class),
-					FractionUtilities.fromJson(format.energyTotal));
+					FractionUtilities.fromJson(format.energyConsumed),
+					ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 
 		@Override
@@ -141,16 +140,16 @@ public class SortingRecipe implements Recipe<Inventory> {
 			return new SortingRecipe(identifier,
 					IngredientUtilities.fromPacket(buffer),
 					StackUtilities.fromPacket(buffer),
-					PacketUtilities.fromPacket(buffer, Integer.class),
-					FractionUtilities.fromPacket(buffer));
+					FractionUtilities.fromPacket(buffer),
+					PacketUtilities.fromPacket(buffer, Integer.class));
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, SortingRecipe recipe) {
 			IngredientUtilities.toPacket(buffer, recipe.input);
 			StackUtilities.toPacket(buffer, recipe.output);
-			PacketUtilities.toPacket(buffer, recipe.timeTotal);
-			FractionUtilities.toPacket(buffer, recipe.energyTotal);
+			FractionUtilities.toPacket(buffer, recipe.energyConsumed);
+			PacketUtilities.toPacket(buffer, recipe.time);
 		}
 	}
 
@@ -165,18 +164,18 @@ public class SortingRecipe implements Recipe<Inventory> {
 	public static final class Format {
 		JsonObject input;
 		JsonObject output;
-		@SerializedName("time_total")
-		JsonPrimitive timeTotal;
-		@SerializedName("energy_total")
-		JsonElement energyTotal;
+		@SerializedName("time")
+		JsonPrimitive time;
+		@SerializedName("energy_consumed")
+		JsonElement energyConsumed;
 
 		@Override
 		public String toString() {
 			return "Format{" +
 					"input=" + input +
 					", output=" + output +
-					", timeTotal=" + timeTotal +
-					", energyTotal=" + energyTotal +
+					", time=" + time +
+					", energyConsumed=" + energyConsumed +
 					'}';
 		}
 	}

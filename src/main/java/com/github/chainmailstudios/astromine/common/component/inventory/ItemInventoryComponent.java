@@ -1,5 +1,7 @@
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import nerdhub.cardinal.components.api.ComponentType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -11,7 +13,9 @@ import net.minecraft.util.TypedActionResult;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import net.minecraft.util.math.Direction;
 import org.apache.logging.log4j.Level;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -69,15 +73,7 @@ public interface ItemInventoryComponent extends NameableComponent {
 		return true;
 	}
 
-	default boolean canInsert(int slot) {
-		return true;
-	}
-
-	default boolean canInsert(ItemStack stack) {
-		return true;
-	}
-
-	default boolean canInsert(ItemStack stack, int slot) {
+	default boolean canInsert(Direction direction, ItemStack stack, int slot) {
 		return true;
 	}
 
@@ -85,15 +81,7 @@ public interface ItemInventoryComponent extends NameableComponent {
 		return true;
 	}
 
-	default boolean canExtract(int slot) {
-		return true;
-	}
-
-	default boolean canExtract(ItemStack stack) {
-		return true;
-	}
-
-	default boolean canExtract(ItemStack stack, int slot) {
+	default boolean canExtract(Direction direction, ItemStack stack, int slot) {
 		return true;
 	}
 
@@ -103,9 +91,9 @@ public interface ItemInventoryComponent extends NameableComponent {
 	 * @param stack the specified stack.
 	 * @return SUCCESS w. empty if inserted; FAIL w. stack if not.
 	 */
-	default TypedActionResult<ItemStack> insert(ItemStack stack) {
-		if (this.canInsert(stack)) {
-			return this.insert(stack, stack.getCount());
+	default TypedActionResult<ItemStack> insert(Direction direction, ItemStack stack) {
+		if (this.canInsert()) {
+			return this.insert(direction, stack, stack.getCount());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, stack);
 		}
@@ -118,16 +106,14 @@ public interface ItemInventoryComponent extends NameableComponent {
 	 * @param count the specified count.
 	 * @return SUCCESS w. modified stack if inserted; FAIL w. unmodified stack if not.
 	 */
-	default TypedActionResult<ItemStack> insert(ItemStack stack, int count) {
+	default TypedActionResult<ItemStack> insert(Direction direction, ItemStack stack, int count) {
 		ItemStack finalStack = stack;
 		Optional<Map.Entry<Integer, ItemStack>> matchingStackOptional = this.getItemContents().entrySet().stream().filter(entry -> {
 			ItemStack storedStack = entry.getValue();
 
-			return ((storedStack.getItem() == finalStack.getItem() && storedStack.getMaxCount() - storedStack.getCount() >= count && (!storedStack.hasTag() && !finalStack.hasTag()) || (storedStack.hasTag() && finalStack.hasTag() && storedStack.getTag()
-					.equals(finalStack
-							.getTag()))) || storedStack
-					.isEmpty()) && this.canInsert(
-					finalStack);
+			return (this.canInsert(direction, finalStack, entry.getKey())) &&
+					(storedStack.getItem() == finalStack.getItem() && storedStack.getMaxCount() - storedStack.getCount() >= count && (!storedStack.hasTag() && !finalStack.hasTag()) ||
+					(storedStack.hasTag() && finalStack.hasTag() && storedStack.getTag().equals(finalStack.getTag()) || storedStack.isEmpty()));
 		}).findFirst();
 
 		if (matchingStackOptional.isPresent() && matchingStackOptional.get().getValue().getMaxCount() - stack.getCount() >= count) {
@@ -181,11 +167,11 @@ public interface ItemInventoryComponent extends NameableComponent {
 	 * @param predicate the specified predicate.
 	 * @return SUCCESS w. the retrieved collection if extracted anything; FAIL w. empty if not.
 	 */
-	default TypedActionResult<Collection<ItemStack>> extractMatching(Predicate<ItemStack> predicate) {
+	default TypedActionResult<Collection<ItemStack>> extractMatching(Direction direction, Predicate<ItemStack> predicate) {
 		HashSet<ItemStack> extractedStacks = new HashSet<>();
 		this.getItemContents().forEach((slot, stack) -> {
 			if (predicate.test(stack)) {
-				TypedActionResult<ItemStack> extractionResult = this.extract(slot);
+				TypedActionResult<ItemStack> extractionResult = this.extract(direction, slot);
 
 				if (extractionResult.getResult().isAccepted()) {
 					extractedStacks.add(extractionResult.getValue());
@@ -206,10 +192,10 @@ public interface ItemInventoryComponent extends NameableComponent {
 	 * @param slot the slot of the specified stack.
 	 * @return SUCCESS w. stack if extracted; FAIL w. empty if not.
 	 */
-	default TypedActionResult<ItemStack> extract(int slot) {
+	default TypedActionResult<ItemStack> extract(Direction direction, int slot) {
 		ItemStack matchingStack = this.getStack(slot);
 
-		if (!matchingStack.isEmpty() && this.canExtract(matchingStack)) {
+		if (this.canExtract(direction, matchingStack, slot)) {
 			return this.extract(slot, matchingStack.getCount());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, ItemStack.EMPTY);
@@ -434,5 +420,10 @@ public interface ItemInventoryComponent extends NameableComponent {
 	 */
 	default boolean isEmpty() {
 		return this.getItemContents().values().stream().allMatch(ItemStack::isEmpty);
+	}
+
+	@Override
+	default @NotNull ComponentType<?> getComponentType() {
+		return AstromineComponentTypes.ITEM_INVENTORY_COMPONENT;
 	}
 }

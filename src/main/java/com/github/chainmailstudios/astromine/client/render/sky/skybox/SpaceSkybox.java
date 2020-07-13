@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.client.render.sky.skybox;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
@@ -21,13 +22,20 @@ public class SpaceSkybox extends AbstractSkybox {
 	public static final Identifier SOUTH = new Identifier("skybox", "south");
 
 	public static final Identifier PLANET = new Identifier("skybox", "planet");
+	public static final Identifier CLOUD = new Identifier("skybox", "cloud");
+
+	public static float u0C = 0.0f;
+	public static float u1C = 1.0f;
+
+	public static float u0P = 0.0f;
+	public static float u1P = 1.0f;
 
 	public ImmutableMap<Identifier, Identifier> textures;
 
 	private SpaceSkybox(Builder builder) {
 		this.textures = builder.textures.build();
 
-		if (this.textures.size() != 7) {
+		if (this.textures.size() != 8) {
 			throw new UnsupportedOperationException("Skybox constructed without necessary information!");
 		}
 	}
@@ -126,14 +134,41 @@ public class SpaceSkybox extends AbstractSkybox {
 
 		buffer.begin(7, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
 
-		buffer.vertex(matrices.peek().getModel(), -100.0F, (float) (-64.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY() * 0.25f)), -100.0F).color(255, 255, 255, 255).texture(0.0F, 0.0F).light(vertexLight).next();
-		buffer.vertex(matrices.peek().getModel(), -100.0F, (float) (-64.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY() * 0.25f)), 100.0F).color(255, 255, 255, 255).texture(0.0F, 1.0F).light(vertexLight).next();
-		buffer.vertex(matrices.peek().getModel(), 100.0F, (float) (-64.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY() * 0.25f)), 100.0F).color(255, 255, 255, 255).texture(1.0F, 1.0F).light(vertexLight).next();
-		buffer.vertex(matrices.peek().getModel(), 100.0F, (float) (-64.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY() * 0.25f)), -100.0F).color(255, 255, 255, 255).texture(1.0F, 0.0F).light(vertexLight).next();
+		buffer.vertex(matrices.peek().getModel(), -100.0F, (float) (-64.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u0P, 0.0F).light(vertexLight).next();
+		buffer.vertex(matrices.peek().getModel(), -100.0F, (float) (-64.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u0P, 1.0F).light(vertexLight).next();
+		buffer.vertex(matrices.peek().getModel(), 100.0F, (float) (-64.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u1P, 1.0F).light(vertexLight).next();
+		buffer.vertex(matrices.peek().getModel(), 100.0F, (float) (-64.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u1P, 0.0F).light(vertexLight).next();
 
 		tessellator.draw();
 
 		matrices.pop();
+
+		textureManager.bindTexture(this.textures.get(CLOUD));
+
+		matrices.push();
+
+		buffer.begin(7, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
+
+		RenderSystem.enableBlend();
+		RenderSystem.enableDepthTest();
+
+		buffer.vertex(matrices.peek().getModel(), -100.0F, (float) (-60.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u0C, 0).light(vertexLight).next();
+		buffer.vertex(matrices.peek().getModel(), -100.0F, (float) (-60.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u0C, 1).light(vertexLight).next();
+		buffer.vertex(matrices.peek().getModel(), 100.0F, (float) (-60.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), 100.0F).color(255, 255, 255, 255).texture(u1C, 1).light(vertexLight).next();
+		buffer.vertex(matrices.peek().getModel(), 100.0F, (float) (-60.0F - (client.player.getY() < 0 ? client.player.getY() : client.player.getY())), -100.0F).color(255, 255, 255, 255).texture(u1C, 0).light(vertexLight).next();
+
+		tessellator.draw();
+
+		RenderSystem.disableBlend();
+		RenderSystem.disableDepthTest();
+
+		matrices.pop();
+
+		u0C -= 0.00001f;
+		u1C -= 0.00001f;
+
+		u0P -= 0.0000066f;
+		u1P -= 0.0000066f;
 	}
 
 	public static class Builder {
@@ -175,6 +210,11 @@ public class SpaceSkybox extends AbstractSkybox {
 
 		public Builder planet(Identifier planet) {
 			this.textures.put(PLANET, planet);
+			return this;
+		}
+
+		public Builder cloud(Identifier cloud) {
+			this.textures.put(CLOUD, cloud);
 			return this;
 		}
 
