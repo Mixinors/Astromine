@@ -10,9 +10,12 @@ import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.recipe.LiquidGeneratingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.SolidGeneratingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
+import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 
@@ -99,7 +102,36 @@ public class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlockEntity im
 
 			isActive = true;
 		} else {
-			isActive = false;
+			ItemStack burnStack = itemComponent.getStack(0);
+
+			Integer value = FuelRegistry.INSTANCE.get(burnStack.getItem());
+
+			boolean isFuel = value != null && value > 0;
+
+			if (isFuel) {
+				if (current == 0) {
+					limit = FuelRegistry.INSTANCE.get(burnStack.getItem());
+					++current;
+					burnStack.decrement(1);
+				}
+			}
+
+			if (current > 0 && current <= limit) {
+				Fraction produced = new Fraction(1, 128);
+				if (energyComponent.getVolume(0).hasAvailable(produced)) {
+					++current;
+					energyComponent.getVolume(0).pullVolume(EnergyVolume.of(produced), produced);
+				}
+			} else {
+				current = 0;
+				limit = 100;
+			}
+
+			if (!isFuel && current == 0) {
+				isActive = false;
+			} else {
+				isActive = true;
+			}
 		}
 
 		for (int i = 1; i < activity.length; ++i) {
