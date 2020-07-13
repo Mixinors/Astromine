@@ -16,6 +16,10 @@ public class AstromineContainers {
 		return new LiquidGeneratorContainer(synchronizationID, inventory, buffer.readBlockPos());
 	}));
 
+	public static final ScreenHandlerType<SolidGeneratorContainer> SOLID_GENERATOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("solid_generator"), ((synchronizationID, inventory, buffer) -> {
+		return new SolidGeneratorContainer(synchronizationID, inventory, buffer.readBlockPos());
+	}));
+
 	public static final ScreenHandlerType<VentContainer> VENT = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("vent"), ((synchronizationID, inventory, buffer) -> {
 		return new VentContainer(synchronizationID, inventory, buffer.readBlockPos());
 	}));
@@ -52,8 +56,8 @@ public class AstromineContainers {
 		return new ElectrolyzerContainer(synchronizationID, inventory, buffer.readBlockPos());
 	}));
 
-	public static final ScreenHandlerType<FuelMixerContainer> FUEL_MIXER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("fuel_mixer"), ((synchronizationID, inventory, buffer) -> {
-		return new FuelMixerContainer(synchronizationID, inventory, buffer.readBlockPos());
+	public static final ScreenHandlerType<FluidMixerContainer> FLUID_MIXER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("fluid_mixer"), ((synchronizationID, inventory, buffer) -> {
+		return new FluidMixerContainer(synchronizationID, inventory, buffer.readBlockPos());
 	}));
 
 	public static final ScreenHandlerType<CraftingRecipeCreatorContainer> CRAFTING_RECIPE_CREATOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("crafting_recipe_creator"), ((synchronizationID, inventory, buffer) -> {

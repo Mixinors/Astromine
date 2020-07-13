@@ -79,18 +79,6 @@ public class HolographicConnectorItem extends Item {
 				BlockPos nP = entity.getPos();
 				BlockPos oP = parent.getPos();
 
-				Direction d = Direction.NORTH;
-
-				if (nP.getX() > oP.getX()) {
-					d = Direction.EAST;
-				} else if (nP.getX() < oP.getX()) {
-					d = Direction.WEST;
-				} else if (nP.getZ() > oP.getZ()) {
-					d = Direction.SOUTH;
-				} else if (nP.getZ() < oP.getZ()) {
-					d = Direction.NORTH;
-				}
-
 				if (parent.getPos().getZ() < entity.getPos().getZ() || parent.getPos().getX() < entity.getPos().getX()) {
 					HolographicBridgeProjectorBlockEntity temporary = parent;
 					parent = entity;
@@ -126,7 +114,6 @@ public class HolographicConnectorItem extends Item {
 						parent.setParent(null);
 					}
 
-					parent.direction = d;
 					parent.buildBridge();
 					parent.sync();
 					context.getPlayer().setStackInHand(context.getHand(), unselect(context.getStack()));

@@ -1,5 +1,7 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +27,8 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 
 	public boolean shouldTry = true;
 	public boolean isActive = false;
-	public boolean wasActive = false;
+
+	public boolean[] activity = { false, false, false, false, false };
 
 	BaseInventory inputInventory = new BaseInventory(1);
 
@@ -35,6 +38,7 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 		super(AstromineBlockEntityTypes.ELECTRIC_SMELTER);
 
 		energyComponent.getVolume(0).setSize(new Fraction(32, 1));
+
 		itemComponent = new SimpleItemInventoryComponent(2);
 
 		itemComponent.addListener(() -> {
@@ -42,6 +46,8 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 			recipe = (Optional<SmeltingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) RecipeType.SMELTING, inputInventory, world);
 			shouldTry = true;
 		});
+
+		addComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, itemComponent);
 	}
 
 	@Override
@@ -110,12 +116,16 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 			isActive = false;
 		}
 
-		if (isActive && !wasActive) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(ElectricSmelterBlock.ACTIVE, true));
-		} else if (!isActive && wasActive) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(ElectricSmelterBlock.ACTIVE, false));
+		for (int i = 1; i < activity.length; ++i) {
+			activity[i - 1] = activity[i];
 		}
 
-		wasActive = isActive;
+		activity[4] = isActive;
+
+		if (isActive && !activity[0]) {
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, true));
+		} else if (!isActive && activity[0]) {
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, false));
+		}
 	}
 }

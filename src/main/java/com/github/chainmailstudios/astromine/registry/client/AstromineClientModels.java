@@ -67,19 +67,19 @@ public class AstromineClientModels {
 		});
 	}
 
-	public static void renderRocket(RocketEntityModel rocketEntityModel, ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
-		matrixStack.push();
+	public static void renderRocket(RocketEntityModel rocketEntityModel, ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
+		matrices.push();
 		if (mode == ModelTransformation.Mode.GUI) {
-			matrixStack.translate(0.5F, 0.1F, 0F);
+			matrices.translate(0.5F, 0.1F, 0F);
 		}
-		matrixStack.scale(1.0F, -1.0F, -1.0F);
+		matrices.scale(1.0F, -1.0F, -1.0F);
 		if (mode == ModelTransformation.Mode.GUI) {
-			matrixStack.scale(0.06F, 0.06F, 0.06F);
+			matrices.scale(0.06F, 0.06F, 0.06F);
 		} else {
-			matrixStack.scale(0.3F, 0.3F, 0.3F);
+			matrices.scale(0.3F, 0.3F, 0.3F);
 		}
 		VertexConsumer vertexConsumer2 = ItemRenderer.method_29711(vertexConsumerProvider, rocketEntityModel.getLayer(RocketEntityRenderer.identifier), false, stack.hasGlint());
-		rocketEntityModel.render(matrixStack, vertexConsumer2, i, j, 1.0F, 1.0F, 1.0F, 1.0F);
-		matrixStack.pop();
+		rocketEntityModel.render(matrices, vertexConsumer2, i, j, 1.0F, 1.0F, 1.0F, 1.0F);
+		matrices.pop();
 	}
 }

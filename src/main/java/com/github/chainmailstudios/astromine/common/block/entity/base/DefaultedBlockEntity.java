@@ -1,9 +1,13 @@
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.PacketContext;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
@@ -23,6 +27,9 @@ import nerdhub.cardinal.components.api.ComponentType;
 import nerdhub.cardinal.components.api.component.Component;
 
 import com.google.common.collect.Maps;
+import org.jetbrains.annotations.NotNull;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -75,7 +82,7 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 			return (Collection<T>) getComponentTypes()
 					.stream()
 					.map(type -> new Pair<>((ComponentType) type, (Component) getComponent(type)))
-					.filter(pair -> transferComponent.get(pair.getLeft()).get(direction) != TransferType.NONE)
+					.filter(pair -> transferComponent.get(pair.getLeft()).get(direction, getCachedState().get(HorizontalFacingBlock.FACING)) != TransferType.NONE)
 					.map(Pair::getRight)
 					.collect(Collectors.toList());
 		}
@@ -108,7 +115,7 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 	}
 
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
 		transferComponent.fromTag(tag.getCompound("transfer"));
 
 		allComponents.forEach((type, component) -> {

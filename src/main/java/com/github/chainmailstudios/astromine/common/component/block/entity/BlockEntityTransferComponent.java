@@ -1,9 +1,12 @@
 package com.github.chainmailstudios.astromine.common.component.block.entity;
 
+import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
+import com.github.chainmailstudios.astromine.common.utilities.DirectionUtilities;
 import nerdhub.cardinal.components.api.ComponentRegistry;
 import nerdhub.cardinal.components.api.ComponentType;
 import nerdhub.cardinal.components.api.component.Component;
@@ -36,9 +39,10 @@ public class BlockEntityTransferComponent implements Component {
 		CompoundTag dataTag = tag.getCompound("data");
 
 		for (String key : dataTag.getKeys()) {
+			Identifier keyId = new Identifier(key);
 			TransferEntry entry = new TransferEntry();
 			entry.fromTag(dataTag.getCompound(key));
-			components.put(ComponentRegistry.INSTANCE.stream().filter(component -> component.getRawId() == Integer.parseInt(key)).findFirst().get(), entry);
+			components.put(ComponentRegistry.INSTANCE.stream().filter(component -> component.getId().equals(keyId)).findFirst().get(), entry);
 		}
 	}
 
@@ -47,7 +51,7 @@ public class BlockEntityTransferComponent implements Component {
 		CompoundTag dataTag = new CompoundTag();
 
 		for (Map.Entry<ComponentType<?>, TransferEntry> entry : components.entrySet()) {
-			dataTag.put(String.valueOf(entry.getKey().getRawId()), entry.getValue().toTag(new CompoundTag()));
+			dataTag.put(entry.getKey().getId().toString(), entry.getValue().toTag(new CompoundTag()));
 		}
 
 		tag.put("data", dataTag);
@@ -66,19 +70,19 @@ public class BlockEntityTransferComponent implements Component {
 			types.put(direction, type);
 		}
 
-		public TransferType get(Direction direction) {
-			return types.get(direction);
+		public TransferType get(Direction origin, Direction rotation) {
+			return types.get(MirrorUtilities.rotate(origin, rotation));
 		}
 
 		public void fromTag(CompoundTag tag) {
 			for (String directionKey : tag.getKeys()) {
-				types.put(Direction.byName(directionKey), TransferType.valueOf(tag.getString(directionKey)));
+				types.put(Direction.byId(Integer.parseInt(directionKey)), TransferType.valueOf(tag.getString(directionKey)));
 			}
 		}
 
 		public CompoundTag toTag(CompoundTag tag) {
 			for (Map.Entry<Direction, TransferType> entry : types.entrySet()) {
-				tag.putString(entry.getKey().getName(), entry.getValue().toString());
+				tag.putString(String.valueOf(entry.getKey().getId()), entry.getValue().toString());
 			}
 
 			return tag;

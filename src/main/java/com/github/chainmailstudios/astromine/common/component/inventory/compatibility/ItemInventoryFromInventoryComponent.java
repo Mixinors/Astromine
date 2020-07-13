@@ -68,7 +68,7 @@ public interface ItemInventoryFromInventoryComponent extends Inventory {
 	@Override
 	default ItemStack removeStack(int slot, int count) {
 		if (this.getComponent().getStack(slot).getCount() < count) {
-			TypedActionResult<ItemStack> result = this.getComponent().extract(slot);
+			TypedActionResult<ItemStack> result = this.getComponent().extract(null, slot);
 			if (!result.getValue().isEmpty()) {
 				this.markDirty();
 			}
@@ -90,7 +90,7 @@ public interface ItemInventoryFromInventoryComponent extends Inventory {
 	 */
 	@Override
 	default ItemStack removeStack(int slot) {
-		return this.getComponent().extract(slot).getValue();
+		return this.getComponent().extract(null, slot).getValue();
 	}
 
 	/**

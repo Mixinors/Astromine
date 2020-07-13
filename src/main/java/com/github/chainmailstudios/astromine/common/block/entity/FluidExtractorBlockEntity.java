@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -31,8 +32,10 @@ public class FluidExtractorBlockEntity extends DefaultedEnergyFluidBlockEntity i
 
 	@Override
 	public void tick() {
-		if (!this.world.isClient()) {
-			if (!energyComponent.getVolume(0).hasStored(Fraction.of(1, 8))) {
+		if (this.world != null && !this.world.isClient()) {
+			EnergyVolume energyVolume = energyComponent.getVolume(0);
+
+			if (!energyVolume.hasStored(Fraction.of(1, 8))) {
 				cooldown.resetToEmpty();
 				return;
 			}
@@ -42,19 +45,18 @@ public class FluidExtractorBlockEntity extends DefaultedEnergyFluidBlockEntity i
 			if (cooldown.isBiggerOrEqualThan(Fraction.ofWhole(1))) {
 				cooldown.resetToEmpty();
 
-				FluidVolume volume = fluidComponent.getVolume(0);
+				FluidVolume fluidVolume = fluidComponent.getVolume(0);
 
 				Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
 				BlockPos targetPos = pos.offset(direction);
-				BlockState targetBlockState = world.getBlockState(targetPos);
 				FluidState targetFluidState = world.getFluidState(targetPos);
+
 				if (targetFluidState.isStill()) {
-					FluidVolume toInsert = new FluidVolume(targetFluidState.getFluid(), Fraction.ofWhole(1));
-					if (volume.canInsert(toInsert)) {
-						volume.setFluid(toInsert.getFluid());
-						volume.setFraction(Fraction.add(volume.getFraction(), toInsert.getFraction()));
-						volume.getFraction().simplify();
-						energyComponent.getVolume(0).setFraction(Fraction.simplify(Fraction.subtract(energyComponent.getVolume(0).getFraction().copy(), Fraction.of(1, 8))));
+					FluidVolume toInsert = new FluidVolume(targetFluidState.getFluid(), Fraction.bucket());
+					if (fluidVolume.hasAvailable(Fraction.bucket())) {
+						fluidVolume.pushVolume(toInsert, toInsert.getFraction());
+						energyVolume.extractVolume(Fraction.of(1 ,8));
+
 						world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
 						world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
 					}

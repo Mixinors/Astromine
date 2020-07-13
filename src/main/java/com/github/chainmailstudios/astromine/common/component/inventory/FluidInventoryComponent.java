@@ -1,5 +1,8 @@
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import nerdhub.cardinal.components.api.ComponentType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundTag;
@@ -13,7 +16,10 @@ import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import net.minecraft.util.math.Direction;
 import org.apache.logging.log4j.Level;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -50,15 +56,7 @@ public interface FluidInventoryComponent extends NameableComponent {
 		return true;
 	}
 
-	default boolean canInsert(int slot) {
-		return true;
-	}
-
-	default boolean canInsert(FluidVolume volume) {
-		return true;
-	}
-
-	default boolean canInsert(FluidVolume volume, int slot) {
+	default boolean canInsert(@Nullable Direction direction, FluidVolume fluid, int slot) {
 		return true;
 	}
 
@@ -66,29 +64,21 @@ public interface FluidInventoryComponent extends NameableComponent {
 		return true;
 	}
 
-	default boolean canExtract(int slot) {
+	default boolean canExtract(@Nullable Direction direction, FluidVolume fluid, int slot) {
 		return true;
 	}
 
-	default boolean canExtract(FluidVolume volume) {
-		return true;
-	}
-
-	default boolean canExtract(FluidVolume volume, int slot) {
-		return true;
-	}
-
-	default TypedActionResult<FluidVolume> insert(FluidVolume volume) {
-		if (this.canInsert(volume)) {
-			return this.insert(volume.getFluid(), volume.getFraction());
+	default TypedActionResult<FluidVolume> insert(Direction direction, FluidVolume volume) {
+		if (this.canInsert()) {
+			return this.insert(direction, volume.getFluid(), volume.getFraction());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, volume);
 		}
 	}
 
-	default TypedActionResult<FluidVolume> insert(Fluid fluid, Fraction fraction) {
+	default TypedActionResult<FluidVolume> insert(Direction direction, Fluid fluid, Fraction fraction) {
 		Optional<Map.Entry<Integer, FluidVolume>> matchingVolumeOptional = this.getContents().entrySet().stream().filter(entry -> {
-			return entry.getValue().canInsert(fluid, fraction);
+			return canInsert(direction, entry.getValue(), entry.getKey());
 		}).findFirst();
 
 		if (matchingVolumeOptional.isPresent()) {
@@ -114,11 +104,11 @@ public interface FluidInventoryComponent extends NameableComponent {
 
 	List<Runnable> getListeners();
 
-	default TypedActionResult<Collection<FluidVolume>> extractMatching(Predicate<FluidVolume> predicate) {
+	default TypedActionResult<Collection<FluidVolume>> extractMatching(Direction direction, Predicate<FluidVolume> predicate) {
 		HashSet<FluidVolume> extractedVolumes = new HashSet<>();
 		this.getContents().forEach((slot, volume) -> {
-			if (predicate.test(volume)) {
-				TypedActionResult<FluidVolume> extractionResult = this.extract(slot);
+			if (canExtract(direction, volume, slot) && predicate.test(volume)) {
+				TypedActionResult<FluidVolume> extractionResult = this.extract(direction, slot);
 
 				if (extractionResult.getResult().isAccepted()) {
 					extractedVolumes.add(extractionResult.getValue());
@@ -133,11 +123,11 @@ public interface FluidInventoryComponent extends NameableComponent {
 		}
 	}
 
-	default TypedActionResult<FluidVolume> extract(int slot) {
+	default TypedActionResult<FluidVolume> extract(Direction direction, int slot) {
 		FluidVolume volume = this.getVolume(slot);
 
-		if (!volume.isEmpty() && this.canExtract(volume, slot)) {
-			return this.extract(slot, volume.getFraction());
+		if (!volume.isEmpty() && this.canExtract(direction, volume, slot)) {
+			return this.extract(direction, slot, volume.getFraction());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, FluidVolume.empty());
 		}
@@ -147,12 +137,21 @@ public interface FluidInventoryComponent extends NameableComponent {
 		return this.getContents().get(slot);
 	}
 
+	default FluidVolume getFirstExtractableVolume(Direction direction) {
+		return getContents().entrySet().stream().filter((entry) -> canExtract(direction, entry.getValue(), entry.getKey())).map(Map.Entry::getValue).findFirst().orElse(null);
+	}
 
-	default TypedActionResult<FluidVolume> extract(int slot, Fraction fraction) {
+	default FluidVolume getFirstInsertableVolume(Direction direction) {
+		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, entry.getValue(), entry.getKey())).map(Map.Entry::getValue).findFirst().orElse(null);
+	}
+
+	default TypedActionResult<FluidVolume> extract(Direction direction, int slot, Fraction fraction) {
 		Optional<FluidVolume> matchingVolumeOptional = Optional.ofNullable(this.getVolume(slot));
 
 		if (matchingVolumeOptional.isPresent()) {
-			if (matchingVolumeOptional.get().canExtract(matchingVolumeOptional.get().getFluid(), fraction)) {
+			FluidVolume volume = matchingVolumeOptional.get();
+
+			if (canExtract(direction, volume, slot)) {
 				return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().extractVolume(matchingVolumeOptional.get().getFluid(), fraction));
 			} else {
 				return new TypedActionResult<>(ActionResult.FAIL, FluidVolume.empty());
@@ -312,4 +311,9 @@ public interface FluidInventoryComponent extends NameableComponent {
 	}
 	
 	<T extends FluidInventoryComponent> T copy();
+
+	@Override
+	default @NotNull ComponentType<?> getComponentType() {
+		return AstromineComponentTypes.FLUID_INVENTORY_COMPONENT;
+	}
 }

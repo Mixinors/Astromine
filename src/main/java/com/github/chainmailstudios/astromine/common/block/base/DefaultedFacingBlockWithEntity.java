@@ -9,7 +9,7 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
 
-public abstract class DefaultedFacingBlockWithEntity extends AstromineBlockWithEntity {
+public abstract class DefaultedFacingBlockWithEntity extends DefaultedBlockWithEntity {
 	public DefaultedFacingBlockWithEntity(Settings settings) {
 		super(settings);
 	}
@@ -22,7 +22,7 @@ public abstract class DefaultedFacingBlockWithEntity extends AstromineBlockWithE
 	
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
-		return this.getDefaultState().with(getDirectionProperty(), context.getPlayerLookDirection().getOpposite());
+		return super.getPlacementState(context).with(getDirectionProperty(), context.getPlayerLookDirection().getOpposite());
 	}
 	
 	@Override

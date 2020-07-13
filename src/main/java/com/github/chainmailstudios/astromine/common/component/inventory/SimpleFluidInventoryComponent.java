@@ -24,7 +24,7 @@ public class SimpleFluidInventoryComponent implements FluidInventoryComponent {
 	public SimpleFluidInventoryComponent(int size) {
 		this.size = size;
 		for (int i = 0; i < size; ++i) {
-			contents.put(i, FluidVolume.empty());
+			contents.put(i, FluidVolume.attached(this));
 		}
 	}
 

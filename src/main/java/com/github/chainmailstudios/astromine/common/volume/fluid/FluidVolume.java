@@ -1,8 +1,11 @@
 package com.github.chainmailstudios.astromine.common.volume.fluid;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -16,6 +19,8 @@ public class FluidVolume extends BaseVolume {
 	private Fluid fluid = Fluids.EMPTY;
 
 	private byte signal = 0b0;
+
+	private Runnable runnable;
 
 	/**
 	 * Instantiates a Volume with an empty fraction and fluid.
@@ -44,12 +49,32 @@ public class FluidVolume extends BaseVolume {
 		this.signal = signal;
 	}
 
+	public FluidVolume(Fluid fluid, Fraction fraction, Runnable runnable) {
+		this.fluid = fluid;
+		this.fraction = fraction;
+		this.runnable = runnable;
+	}
+
 	public static FluidVolume empty() {
 		return new FluidVolume();
 	}
 
 	public static FluidVolume oxygen() {
 		return new FluidVolume(AstromineFluids.OXYGEN, Fraction.BUCKET, (byte) 0b1);
+}
+
+	public static FluidVolume attached(SimpleFluidInventoryComponent component) {
+		return new FluidVolume(Fluids.EMPTY, Fraction.empty(), component::dispatchConsumers);
+	}
+
+	public static FluidVolume of(Fluid fluid, Fraction fraction) {
+		return new FluidVolume(fluid, fraction);
+	}
+
+	@Override
+	public void setFraction(Fraction fraction) {
+		super.setFraction(fraction);
+		if (runnable != null) runnable.run();
 	}
 
 	/**
@@ -103,22 +128,6 @@ public class FluidVolume extends BaseVolume {
 
 	public void setFluid(Fluid fluid) {
 		this.fluid = fluid;
-	}
-
-	public boolean canInsert(FluidVolume volume) {
-		return canInsert(volume.getFluid(), volume.getFraction());
-	}
-	
-	public boolean canInsert(Fluid fluid, Fraction amount) {
-		return (this.fluid == Fluids.EMPTY || fluid == this.fluid) && hasAvailable(amount);
-	}
-
-	public boolean canExtract(FluidVolume volume) {
-		return canExtract(volume.getFluid(), volume.getFraction());
-	}
-
-	public boolean canExtract(Fluid fluid, Fraction amount) {
-		return (this.fluid != Fluids.EMPTY || fluid == this.fluid) && hasStored(amount);
 	}
 
 	public <T extends BaseVolume> T insertVolume(FluidVolume volume) {

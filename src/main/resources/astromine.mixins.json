@@ -5,8 +5,8 @@
 	"compatibilityLevel": "JAVA_8",
 	"mixins": [
 		"AbstractMinecartEntityMixin", "BrewingRecipeRegistryMixin", "BucketItemMixin", "DyeColorMixin", "EntityMixin",
-		"FishingBobberEntityMixin", "FlamingAnvilCraftingMixin", "GravityEntityMixin",
-		"HopperBlockEntityMixin", "ItemEntityMixin", "LivingEntityMixin", "SlimeEntityMixin", "SquidEntityMixin",
+		"FishingBobberEntityMixin", "FlamingAnvilCraftingMixin", "GravityEntityMixin", "HoneyBlockMixin",
+		"HopperBlockEntityMixin", "ItemEntityMixin", "LivingEntityMixin",
 		"StepAndDestroyBlockGoalMixin", "ThreadExecutorMixin", "WorldChunkMixin"
 	],
 	"client": [

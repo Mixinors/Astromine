@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.common.widget;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
@@ -8,6 +9,8 @@ import net.minecraft.util.Identifier;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import org.lwjgl.opengl.GL11;
 import spinnery.client.render.BaseRenderer;
+import spinnery.client.render.layer.SpinneryLayers;
+import spinnery.client.utility.ScissorArea;
 import spinnery.widget.WAbstractWidget;
 
 import java.util.function.IntSupplier;
@@ -46,7 +49,7 @@ public class WHorizontalArrow extends WAbstractWidget {
 	}
 
 	@Override
-	public void draw(MatrixStack matrices, VertexConsumerProvider.Immediate provider) {
+	public void draw(MatrixStack matrices, VertexConsumerProvider provider) {
 		if (isHidden()) {
 			return;
 		}
@@ -63,16 +66,21 @@ public class WHorizontalArrow extends WAbstractWidget {
 
 		float sBGX = (int) (((sX / getLimit()) * getProgress()));
 
-		GL11.glEnable(GL11.GL_SCISSOR_TEST);
+		RenderLayer backgroundLayer = SpinneryLayers.get(getBackgroundTexture());
+		RenderLayer foregroundLayer = SpinneryLayers.get(getForegroundTexture());
 
-		GL11.glScissor((int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sX * scale), (int) (sY * scale));
+		ScissorArea area = new ScissorArea(provider, (int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sX * scale), (int) (sY * scale));
 
-		BaseRenderer.drawTexturedQuad(matrices, provider, getX(), getY(), z, getWidth(), getHeight(), getBackgroundTexture());
+		BaseRenderer.drawTexturedQuad(matrices, provider, backgroundLayer, getX(), getY(), z, getWidth(), getHeight(), getBackgroundTexture());
 
-		GL11.glScissor((int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sBGX * scale), (int) (sY * scale));
+		area.destroy(provider);
 
-		BaseRenderer.drawTexturedQuad(matrices, provider, getX(), getY(), z, getWidth(), getHeight(), getForegroundTexture());
+		area = new ScissorArea(provider, (int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sBGX * scale), (int) (sY * scale));
 
-		GL11.glDisable(GL11.GL_SCISSOR_TEST);
+		BaseRenderer.drawTexturedQuad(matrices, provider, foregroundLayer, getX(), getY(), z, getWidth(), getHeight(), getForegroundTexture());
+
+		area.destroy(provider);
+
+		super.draw(matrices, provider);
 	}
 }

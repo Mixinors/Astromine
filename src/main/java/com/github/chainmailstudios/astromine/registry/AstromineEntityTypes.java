@@ -38,7 +38,7 @@ public class AstromineEntityTypes {
 
 	public static final EntityType<RocketEntity> ROCKET = register(
 			"rocket", FabricEntityTypeBuilder.create(SpawnGroup.MISC, RocketEntity::new)
-					.dimensions(EntityDimensions.changing(1.5f, 17f))
+					.dimensions(EntityDimensions.changing(1.5f, 20f))
 					.trackable(256, 4)
 					.build());
 
@@ -46,7 +46,6 @@ public class AstromineEntityTypes {
 		FabricDefaultAttributeRegistry.register(SPACE_SLIME, HostileEntity.createHostileAttributes());
 		FabricDefaultAttributeRegistry.register(SUPER_SPACE_SLIME, SuperSpaceSlimeEntity.createAttributes());
 
-		// register behavior for super space slime spawning minions when hit
 		AttackEntityCallback.EVENT.register((playerEntity, world, hand, entity, entityHitResult) -> {
 			if (entity instanceof SuperSpaceSlimeEntity) {
 				if (world.random.nextInt(10) == 0) {

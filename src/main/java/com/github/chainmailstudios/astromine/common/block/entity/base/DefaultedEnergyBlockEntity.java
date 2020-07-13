@@ -13,5 +13,7 @@ public abstract class DefaultedEnergyBlockEntity extends DefaultedBlockEntity im
 		super(type);
 
 		addComponent(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, energyComponent);
+
+		energyComponent.dispatchConsumers();
 	}
 }

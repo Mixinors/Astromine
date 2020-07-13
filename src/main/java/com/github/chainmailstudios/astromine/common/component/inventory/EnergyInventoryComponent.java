@@ -1,5 +1,7 @@
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import nerdhub.cardinal.components.api.ComponentType;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -12,7 +14,9 @@ import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import net.minecraft.util.math.Direction;
 import org.apache.logging.log4j.Level;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -49,15 +53,7 @@ public interface EnergyInventoryComponent extends NameableComponent {
 		return true;
 	}
 
-	default boolean canInsert(int slot) {
-		return true;
-	}
-
-	default boolean canInsert(EnergyVolume volume) {
-		return true;
-	}
-
-	default boolean canInsert(EnergyVolume volume, int slot) {
+	default boolean canInsert(Direction direction, EnergyVolume volume, int slot) {
 		return true;
 	}
 
@@ -65,29 +61,21 @@ public interface EnergyInventoryComponent extends NameableComponent {
 		return true;
 	}
 
-	default boolean canExtract(int slot) {
+	default boolean canExtract(Direction direction, EnergyVolume volume, int slot) {
 		return true;
 	}
 
-	default boolean canExtract(EnergyVolume volume) {
-		return true;
-	}
-
-	default boolean canExtract(EnergyVolume volume, int slot) {
-		return true;
-	}
-
-	default TypedActionResult<EnergyVolume> insert(EnergyVolume volume) {
-		if (this.canInsert(volume)) {
-			return this.insert(volume.getFraction());
+	default TypedActionResult<EnergyVolume> insert(Direction direction, EnergyVolume volume) {
+		if (this.canInsert()) {
+			return this.insert(direction, volume.getFraction());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, volume);
 		}
 	}
 
-	default TypedActionResult<EnergyVolume> insert(Fraction fraction) {
+	default TypedActionResult<EnergyVolume> insert(Direction direction, Fraction fraction) {
 		Optional<Map.Entry<Integer, EnergyVolume>> matchingVolumeOptional = this.getContents().entrySet().stream().filter(entry -> {
-			return entry.getValue().hasAvailable(fraction);
+			return canInsert(direction, entry.getValue(), entry.getKey());
 		}).findFirst();
 
 		if (matchingVolumeOptional.isPresent()) {
@@ -113,11 +101,11 @@ public interface EnergyInventoryComponent extends NameableComponent {
 
 	List<Runnable> getListeners();
 
-	default TypedActionResult<Collection<EnergyVolume>> extractMatching(Predicate<EnergyVolume> predicate) {
+	default TypedActionResult<Collection<EnergyVolume>> extractMatching(Direction direction, Predicate<EnergyVolume> predicate) {
 		HashSet<EnergyVolume> extractedVolumes = new HashSet<>();
 		this.getContents().forEach((slot, volume) -> {
 			if (predicate.test(volume)) {
-				TypedActionResult<EnergyVolume> extractionResult = this.extract(slot);
+				TypedActionResult<EnergyVolume> extractionResult = this.extract(direction, slot);
 
 				if (extractionResult.getResult().isAccepted()) {
 					extractedVolumes.add(extractionResult.getValue());
@@ -132,10 +120,10 @@ public interface EnergyInventoryComponent extends NameableComponent {
 		}
 	}
 
-	default TypedActionResult<EnergyVolume> extract(int slot) {
+	default TypedActionResult<EnergyVolume> extract(Direction direction, int slot) {
 		EnergyVolume volume = this.getVolume(slot);
 
-		if (!volume.isEmpty() && this.canExtract(volume, slot)) {
+		if (this.canExtract(direction, volume, slot)) {
 			return this.extract(slot, volume.getFraction());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, EnergyVolume.empty());
@@ -146,6 +134,13 @@ public interface EnergyInventoryComponent extends NameableComponent {
 		return this.getContents().get(slot);
 	}
 
+	default EnergyVolume getFirstExtractableVolume(Direction direction) {
+		return getContents().entrySet().stream().filter((entry) -> canExtract(direction, entry.getValue(), entry.getKey())).map(Map.Entry::getValue).findFirst().orElse(null);
+	}
+
+	default EnergyVolume getFirstInsertableVolume(Direction direction) {
+		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, entry.getValue(), entry.getKey())).map(Map.Entry::getValue).findFirst().orElse(null);
+	}
 
 	default TypedActionResult<EnergyVolume> extract(int slot, Fraction fraction) {
 		Optional<EnergyVolume> matchingVolumeOptional = Optional.ofNullable(this.getVolume(slot));
@@ -303,5 +298,10 @@ public interface EnergyInventoryComponent extends NameableComponent {
 
 	default boolean isEmpty() {
 		return this.getContents().values().stream().allMatch(EnergyVolume::isEmpty);
+	}
+
+	@Override
+	default @NotNull ComponentType<?> getComponentType() {
+		return AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT;
 	}
 }

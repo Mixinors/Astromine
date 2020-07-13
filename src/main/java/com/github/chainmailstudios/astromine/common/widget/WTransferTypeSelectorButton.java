@@ -1,12 +1,16 @@
 package com.github.chainmailstudios.astromine.common.widget;
 
+import com.google.common.collect.Lists;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.StringRenderable;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -22,6 +26,7 @@ import spinnery.client.render.BaseRenderer;
 import spinnery.widget.WButton;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 public class WTransferTypeSelectorButton extends WButton {
@@ -85,9 +90,9 @@ public class WTransferTypeSelectorButton extends WButton {
 	@Override
 	public void onMouseReleased(float mouseX, float mouseY, int mouseButton) {
 		if (isFocused()) {
-			component.get(type).set(direction, component.get(type).get(direction).next());
+			component.get(type).set(direction, component.get(type).get(direction, Direction.NORTH).next());
 
-			setTexture(component.get(type).get(direction).texture());
+			setTexture(component.get(type).get(direction, Direction.NORTH).texture());
 
 			if (getInterface().getContainer().getWorld().isClient()) {
 				PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
@@ -97,7 +102,7 @@ public class WTransferTypeSelectorButton extends WButton {
 
 				buffer.writeIdentifier(type.getId());
 				buffer.writeEnumConstant(direction);
-				buffer.writeEnumConstant(component.get(type).get(direction));
+				buffer.writeEnumConstant(component.get(type).get(direction, Direction.NORTH));
 
 				ClientSidePacketRegistry.INSTANCE.sendToServer(AstromineCommonPackets.BLOCK_ENTITY_UPDATE_PACKET, buffer);
 			}
@@ -118,15 +123,19 @@ public class WTransferTypeSelectorButton extends WButton {
 	}
 
 	@Override
-	public void draw(MatrixStack matrices, VertexConsumerProvider.Immediate provider) {
-		if (texture == null) setTexture(component.get(type).get(direction).texture());
-		BaseRenderer.drawTexturedQuad(matrices, provider, getX(), getY(), getZ(), getWidth(), getHeight(), getTexture());
+	public List<Text> getTooltip() {
+		return Collections.singletonList(
+				getDirection() == Direction.NORTH ? new TranslatableText("text.astromine.front")
+						: getDirection() == Direction.SOUTH ? new TranslatableText("text.astromine.back")
+								: getDirection() == Direction.WEST ? new TranslatableText("text.astromine.right")
+										: getDirection() == Direction.EAST ? new TranslatableText("text.astromine.left")
+												: new TranslatableText("text.astromine." + getDirection().getName()));
+	}
 
-		if (isFocused()) {
-			MinecraftClient.getInstance().currentScreen.renderTooltip(matrices,
-					Collections.singletonList(
-							StringRenderable.plain(WordUtils.capitalize(getDirection().asString().toLowerCase(Locale.ROOT)))
-					), mouse.getX(), mouse.getY());
-		}
+	@Override
+	public void draw(MatrixStack matrices, VertexConsumerProvider provider) {
+		if (texture == null) setTexture(component.get(type).get(direction, Direction.NORTH).texture());
+
+		BaseRenderer.drawTexturedQuad(matrices, provider, getX(), getY(), getZ(), getWidth(), getHeight(), getTexture());
 	}
 }

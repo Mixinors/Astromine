@@ -34,18 +34,18 @@ public abstract class BossBarHudMixin extends DrawableHelper {
 	private MinecraftClient client;
 
 	@Inject(method = "renderBossBar", at = @At("HEAD"), cancellable = true)
-	private void renderCustomBossBar(MatrixStack matrixStack, int i, int j, BossBar bossBar, CallbackInfo ci) {
+	private void renderCustomBossBar(MatrixStack matrices, int i, int j, BossBar bossBar, CallbackInfo ci) {
 		if (bossBar instanceof ClientBossBar && ((TranslatableText) bossBar.getName()).getKey().contains("super_space_slim")) {
 			this.client.getTextureManager().bindTexture(CUSTOM_BAR_TEX);
 
 			// draw empty background bar
-			this.drawTexture(matrixStack, i, j, 0, 0, 185, 12);
+			this.drawTexture(matrices, i, j, 0, 0, 185, 12);
 
 			// percentage -> texture width
 			int overlayBarWidth = (int) (bossBar.getPercent() * 185.0F);
 
 			// draw overlay
-			this.drawTexture(matrixStack, i, j, 0, 12, overlayBarWidth, 12);
+			this.drawTexture(matrices, i, j, 0, 12, overlayBarWidth, 12);
 
 			ci.cancel();
 		}

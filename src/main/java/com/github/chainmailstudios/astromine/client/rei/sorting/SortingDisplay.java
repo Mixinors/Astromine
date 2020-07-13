@@ -28,8 +28,8 @@ public class SortingDisplay implements RecipeDisplay {
 		this(
 				CollectionUtils.map(recipe.getPreviewInputs(), ingredient -> CollectionUtils.map(ingredient.getMatchingStacksClient(), EntryStack::create)),
 				Collections.singletonList(EntryStack.create(recipe.getOutput())),
-				recipe.getTimeTotal(),
-				recipe.getEnergyTotal().copy(),
+				recipe.getTime(),
+				recipe.getEnergyConsumed().copy(),
 				recipe.getId()
 		);
 	}

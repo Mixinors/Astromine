@@ -23,16 +23,16 @@ public class SuperSpaceSlimeEntityRenderer extends MobEntityRenderer<SuperSpaceS
 	}
 
 	@Override
-	public void render(SuperSpaceSlimeEntity slimeEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
+	public void render(SuperSpaceSlimeEntity slimeEntity, float f, float g, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i) {
 		this.shadowRadius = 2.5f;
-		super.render(slimeEntity, f, g, matrixStack, vertexConsumerProvider, i);
+		super.render(slimeEntity, f, g, matrices, vertexConsumerProvider, i);
 	}
 
 	@Override
-	public void scale(SuperSpaceSlimeEntity slimeEntity, MatrixStack matrixStack, float f) {
+	public void scale(SuperSpaceSlimeEntity slimeEntity, MatrixStack matrices, float f) {
 		float scale = 0.999F;
-		matrixStack.scale(scale, scale, scale);
-		matrixStack.translate(0.0D, -0.525D, 0.0D);
+		matrices.scale(scale, scale, scale);
+		matrices.translate(0.0D, -0.525D, 0.0D);
 
 		// calculate stretch slime size
 		float slimeSize = 10f;
@@ -40,12 +40,12 @@ public class SuperSpaceSlimeEntityRenderer extends MobEntityRenderer<SuperSpaceS
 		float j = 1.0F / (i + 1.0F);
 
 		// scale matrix based on slime size
-		matrixStack.scale(j * slimeSize, 1.0F / j * slimeSize, j * slimeSize);
+		matrices.scale(j * slimeSize, 1.0F / j * slimeSize, j * slimeSize);
 
 		// if the slime is exploding, make it quickly scale in and out
 		if (slimeEntity.isExploding()) {
 			float sin = 1 + (float) Math.sin(slimeEntity.getExplodingProgress() / 5f) / 10;
-			matrixStack.scale(sin, sin, sin);
+			matrices.scale(sin, sin, sin);
 		}
 	}
 

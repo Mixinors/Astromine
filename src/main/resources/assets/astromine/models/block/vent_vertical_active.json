@@ -1,0 +1,12 @@
+  {
+  "parent": "block/cube",
+  "textures": {
+    "particle": "astromine:block/machine_bottom",
+    "down": "astromine:block/vent_back",
+    "up": "astromine:block/vent_top_active",
+    "north": "astromine:block/machine_side",
+    "east": "astromine:block/machine_side",
+    "south": "astromine:block/machine_side",
+    "west": "astromine:block/machine_side"
+  }
+}

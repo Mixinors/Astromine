@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.common.network.ticker;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
@@ -34,17 +35,21 @@ public class NetworkTypeEnergy extends NetworkType {
 				BlockEntityTransferComponent transferComponent = provider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
 
 				if (energyComponent != null && transferComponent != null) {
-					TransferType type = transferComponent.get(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).get(memberNode.getDirection());
+					TransferType type = transferComponent.get(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).get(memberNode.getDirection(), blockEntity.getCachedState().get(HorizontalFacingBlock.FACING));
 
 					if (type.canExtract()) {
 						energyComponent.getContents().forEach((key, volume) -> {
-							inputs.add(volume);
+							if (energyComponent.canExtract(memberNode.getDirection(), volume, key)) {
+								inputs.add(volume);
+							}
 						});
 					}
 
 					if (type.canInsert()) {
 						energyComponent.getContents().forEach((key, volume) -> {
-							requesterMap.add(volume);
+							if (energyComponent.canExtract(memberNode.getDirection(), volume, key)) {
+								requesterMap.add(volume);
+							}
 						});
 					}
 				}

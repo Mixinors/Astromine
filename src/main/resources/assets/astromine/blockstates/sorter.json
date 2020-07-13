@@ -1,8 +1,12 @@
 {
   "variants": {
-    "facing=north": { "model": "astromine:block/sorter" },
-    "facing=south": { "model": "astromine:block/sorter", "y": 180 },
-    "facing=west":  { "model": "astromine:block/sorter", "y": 270 },
-    "facing=east":  { "model": "astromine:block/sorter", "y": 90 }
+    "facing=north,active=false": { "model": "astromine:block/sorter_inactive" },
+    "facing=south,active=false": { "model": "astromine:block/sorter_inactive", "y": 180 },
+    "facing=west,active=false":  { "model": "astromine:block/sorter_inactive", "y": 270 },
+    "facing=east,active=false":  { "model": "astromine:block/sorter_inactive", "y": 90 },
+    "facing=north,active=true": { "model": "astromine:block/sorter_active" },
+    "facing=south,active=true": { "model": "astromine:block/sorter_active", "y": 180 },
+    "facing=west,active=true":  { "model": "astromine:block/sorter_active", "y": 270 },
+    "facing=east,active=true":  { "model": "astromine:block/sorter_active", "y": 90 }
   }
 }

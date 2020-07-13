@@ -139,9 +139,9 @@ public final class LibBlockAttributesCompatibility {
 				if (current.isEmpty()) {
 					return true;
 				}
-				allowed = component.canExtract(current, tank);
+				allowed = component.canExtract(null, current, tank);
 			} else if (current.isEmpty()) {
-				allowed = component.canInsert(incoming, tank);
+				allowed = component.canInsert(null, incoming, tank);
 			} else if (incoming.getFluid() == current.getFluid()) {
 
 				if (incoming.getFraction().equals(current.getFraction())) {
@@ -149,12 +149,12 @@ public final class LibBlockAttributesCompatibility {
 				}
 
 				if (incoming.isSmallerThan(current)) {
-					allowed = component.canExtract(current, tank);
+					allowed = component.canExtract(null, current, tank);
 				} else {
-					allowed = component.canInsert(incoming, tank);
+					allowed = component.canInsert(null, incoming, tank);
 				}
 			} else {
-				allowed = component.canExtract(current, tank) && component.canInsert(incoming, tank);
+				allowed = component.canExtract(null, current, tank) && component.canInsert(null, incoming, tank);
 			}
 
 			if (allowed && simulation.isAction()) {
@@ -172,7 +172,7 @@ public final class LibBlockAttributesCompatibility {
 		public boolean isFluidValidForTank(int tank, FluidKey fluidKey) {
 			validateTankIndex(tank);
 			Fluid fluid = fluidKey.getRawFluid();
-			return fluid != null && component.canInsert(new FluidVolume(fluid, Fraction.BUCKET.copy()), tank);
+			return fluid != null && component.canInsert(null, new FluidVolume(fluid, Fraction.BUCKET.copy()), tank);
 		}
 
 		@Override

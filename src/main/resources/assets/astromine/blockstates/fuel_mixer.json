@@ -1,8 +1,0 @@
-{
-  "variants": {
-    "facing=north": { "model": "astromine:block/fuel_mixer" },
-    "facing=south": { "model": "astromine:block/fuel_mixer", "y": 180 },
-    "facing=west":  { "model": "astromine:block/fuel_mixer", "y": 270 },
-    "facing=east":  { "model": "astromine:block/fuel_mixer", "y": 90 }
-  }
-}

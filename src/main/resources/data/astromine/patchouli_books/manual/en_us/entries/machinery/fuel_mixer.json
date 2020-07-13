@@ -1,19 +1,19 @@
 {
-	"name": "text.astromine.machinery.fuel_mixer.title",
-	"icon": "astromine:fuel_mixer",
+	"name": "text.astromine.machinery.fluid_mixer.title",
+	"icon": "astromine:fluid_mixer",
 	"category": "machinery",
 	"sortnum": 1,
 	"pages": [
 		{
 			"type": "spotlight",
-			"item": "astromine:fuel_mixer",
-			"title": "text.astromine.machinery.fuel_mixer.page_one.title",
-			"text": "text.astromine.machinery.fuel_mixer.page_one.text"
+			"item": "astromine:fluid_mixer",
+			"title": "text.astromine.machinery.fluid_mixer.page_one.title",
+			"text": "text.astromine.machinery.fluid_mixer.page_one.text"
 		},
 		{
 			"type": "crafting",
-			"recipe": "astromine:fuel_mixer",
-			"title": "text.astromine.machinery.fuel_mixer.page_two.title"
+			"recipe": "astromine:fluid_mixer",
+			"title": "text.astromine.machinery.fluid_mixer.page_two.title"
 		}
 	]
 }

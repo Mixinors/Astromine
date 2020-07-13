@@ -1,5 +1,9 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.item.base.BaseVolumeItem;
+import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
+import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
 import net.fabricmc.loader.api.FabricLoader;
 
 import net.minecraft.block.DispenserBlock;
@@ -56,7 +60,6 @@ public class AstromineItems {
 	// Materials - Fragments
 	public static final Item ASTERITE_FRAGMENT = register("asterite_fragment", new Item(getBasicSettings()));
 	public static final Item GALAXIUM_FRAGMENT = register("galaxium_fragment", new Item(getBasicSettings()));
-	public static final Item LAPIS_FRAGMENT = register("lapis_fragment", new Item(getBasicSettings()));
 	public static final Item DIAMOND_FRAGMENT = register("diamond_fragment", new Item(getBasicSettings()));
 	public static final Item EMERALD_FRAGMENT = register("emerald_fragment", new Item(getBasicSettings()));
 
@@ -126,6 +129,16 @@ public class AstromineItems {
 	public static final Item BASIC_CIRCUIT = register("basic_circuit", new Item(getBasicSettings()));
 	public static final Item ADVANCED_CIRCUIT = register("advanced_circuit", new Item(getBasicSettings()));
 	public static final Item ELITE_CIRCUIT = register("elite_circuit", new Item(getBasicSettings()));
+
+	// Containers
+	public static final Item MACHINE_CHASSIS = register("machine_chassis", new Item(getBasicSettings()));
+	public static final Item GRAPHITE_SHEET = register("graphite_sheet", new Item(getBasicSettings()));
+	public static final Item GAS_CANISTER = register("gas_canister", FluidVolumeItem.of(getBasicSettings(), Fraction.of(8, 1)));
+	public static final Item PRESSURIZED_GAS_CANISTER = register("pressurized_gas_canister", FluidVolumeItem.of(getBasicSettings(), Fraction.of(32, 1)));
+	//public static final Item BASIC_BATTERY = register("basic_battery", BaseVolumeItem.of(getBasicSettings(), Fraction.of(2, 1)));
+	//public static final Item ADVANCED_BATTERY = register("advanced_battery", BaseVolumeItem.of(getBasicSettings(), Fraction.of(4, 1)));
+	//public static final Item ELITE_BATTERY = register("elite_battery", BaseVolumeItem.of(getBasicSettings(), Fraction.of(8, 1)));
+	//public static final Item CREATIVE_BATTERY = register("creative_battery", BaseVolumeItem.of(getBasicSettings(), Fraction.of(Integer.MAX_VALUE, 1)));
 
 	// Tools
 	public static final Item HOLOGRAPHIC_CONNECTOR = register("holographic_connector", new HolographicConnectorItem(getBasicSettings().maxCount(1)));

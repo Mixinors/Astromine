@@ -18,5 +18,8 @@ public abstract class DefaultedEnergyFluidBlockEntity extends DefaultedBlockEnti
 
 		addComponent(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, energyComponent);
 		addComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, fluidComponent);
+
+		fluidComponent.dispatchConsumers();
+		energyComponent.dispatchConsumers();
 	}
 }

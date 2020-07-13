@@ -23,24 +23,24 @@ public class SpaceSlimeEntityRenderer extends MobEntityRenderer<SpaceSlimeEntity
 	}
 
 	@Override
-	public void render(SpaceSlimeEntity slimeEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
+	public void render(SpaceSlimeEntity slimeEntity, float f, float g, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i) {
 		this.shadowRadius = 0.25F * (float) slimeEntity.getSize();
 
 		// if the slime is floating, we rotate it around the x axis for 1 full rotation
 		// todo: random axis rotation
 		if (slimeEntity.isFloating()) {
 			float progress = slimeEntity.getFloatingProgress() / 200f;
-			matrixStack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(progress * 360));
+			matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(progress * 360));
 		}
 
-		super.render(slimeEntity, f, g, matrixStack, vertexConsumerProvider, i);
+		super.render(slimeEntity, f, g, matrices, vertexConsumerProvider, i);
 	}
 
 	@Override
-	public void scale(SpaceSlimeEntity slimeEntity, MatrixStack matrixStack, float f) {
+	public void scale(SpaceSlimeEntity slimeEntity, MatrixStack matrices, float f) {
 		float scale = 0.999F;
-		matrixStack.scale(scale, scale, scale);
-		matrixStack.translate(0.0D, -0.125D, 0.0D);
+		matrices.scale(scale, scale, scale);
+		matrices.translate(0.0D, -0.125D, 0.0D);
 
 		// calculate stretch slime size
 		float slimeSize = (float) slimeEntity.getSize();
@@ -48,7 +48,7 @@ public class SpaceSlimeEntityRenderer extends MobEntityRenderer<SpaceSlimeEntity
 		float j = 1.0F / (i + 1.0F);
 
 		// scale matrix based on slime size
-		matrixStack.scale(j * slimeSize, 1.0F / j * slimeSize, j * slimeSize);
+		matrices.scale(j * slimeSize, 1.0F / j * slimeSize, j * slimeSize);
 	}
 
 	@Override
