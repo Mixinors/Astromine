@@ -1,8 +1,5 @@
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.PacketContext;
 
@@ -25,11 +22,9 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import nerdhub.cardinal.components.api.ComponentRegistry;
 import nerdhub.cardinal.components.api.ComponentType;
 import nerdhub.cardinal.components.api.component.Component;
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.Maps;
-import org.jetbrains.annotations.NotNull;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;

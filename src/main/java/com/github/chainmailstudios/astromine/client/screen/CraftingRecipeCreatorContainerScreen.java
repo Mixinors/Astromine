@@ -1,25 +1,27 @@
 package com.github.chainmailstudios.astromine.client.screen;
 
-import com.github.chainmailstudios.astromine.common.container.CraftingRecipeCreatorContainer;
-import com.github.chainmailstudios.astromine.common.utilities.HashUtilities;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.launch.common.FabricLauncher;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.registry.Registry;
+
+import com.github.chainmailstudios.astromine.common.container.CraftingRecipeCreatorContainer;
 import spinnery.client.screen.BaseContainerScreen;
-import spinnery.widget.*;
+import spinnery.widget.WAbstractWidget;
+import spinnery.widget.WButton;
+import spinnery.widget.WInterface;
+import spinnery.widget.WPanel;
+import spinnery.widget.WSlot;
 import spinnery.widget.api.Position;
 import spinnery.widget.api.Size;
 
+import com.google.common.collect.Lists;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 

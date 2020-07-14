@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine.common.dimension;
 
-import com.github.chainmailstudios.astromine.common.dimension.base.AtmosphericDimensionType;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
@@ -9,6 +8,7 @@ import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.dimension.base.AtmosphericDimensionType;
 
 import java.util.OptionalLong;
 

@@ -1,17 +1,12 @@
 package com.github.chainmailstudios.astromine.mixin;
 
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleTextureSheet;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.world.ClientWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 import net.minecraft.client.particle.CurrentDownParticle;
-import net.minecraft.entity.Entity;
-import net.minecraft.world.World;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.world.ClientWorld;
 
 import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
 

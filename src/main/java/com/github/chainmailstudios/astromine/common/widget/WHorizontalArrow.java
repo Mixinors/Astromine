@@ -7,7 +7,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import org.lwjgl.opengl.GL11;
 import spinnery.client.render.BaseRenderer;
 import spinnery.client.render.layer.SpinneryLayers;
 import spinnery.client.utility.ScissorArea;

@@ -7,7 +7,6 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import net.minecraft.block.HoneyBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
 

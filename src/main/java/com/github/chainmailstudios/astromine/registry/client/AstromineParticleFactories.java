@@ -1,14 +1,15 @@
 package com.github.chainmailstudios.astromine.registry.client;
 
-import com.github.chainmailstudios.astromine.client.particle.RocketFlameParticle;
-import com.github.chainmailstudios.astromine.registry.AstromineItems;
-import com.github.chainmailstudios.astromine.registry.AstromineParticles;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+
 import net.minecraft.client.particle.CrackParticle;
 import net.minecraft.item.ItemStack;
+
+import com.github.chainmailstudios.astromine.client.particle.RocketFlameParticle;
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import com.github.chainmailstudios.astromine.registry.AstromineParticles;
 
 @Environment(EnvType.CLIENT)
 public class AstromineParticleFactories {

@@ -1,14 +1,12 @@
 package com.github.chainmailstudios.astromine.common.container;
 
-import com.github.chainmailstudios.astromine.registry.AstromineContainers;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ScreenHandlerType;
+
+import com.github.chainmailstudios.astromine.registry.AstromineContainers;
 import spinnery.common.container.BaseContainer;
 import spinnery.common.inventory.BaseInventory;
-import spinnery.widget.WButton;
 import spinnery.widget.WSlot;
-import spinnery.widget.api.Position;
-import spinnery.widget.api.Size;
 
 public class CraftingRecipeCreatorContainer extends BaseContainer {
 	private static final int INPUT = 1;

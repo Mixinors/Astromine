@@ -107,8 +107,8 @@ dependencies {
     }
 
     // LibStructure
-    modImplementation 'com.github.Draylar:LibStructure:42bde13a36'
-    include 'com.github.Draylar:LibStructure:42bde13a36'
+    modImplementation "com.github.Draylar:LibStructure:${libstructure_version}"
+    include "com.github.Draylar:LibStructure:${libstructure_version}"
 
     // JOML
     compile "org.joml:joml:${joml_version}"
