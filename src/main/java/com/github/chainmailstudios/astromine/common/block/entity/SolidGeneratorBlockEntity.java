@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.registry.FuelRegistry;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 
@@ -106,7 +107,7 @@ public class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlockEntity im
 
 			Integer value = FuelRegistry.INSTANCE.get(burnStack.getItem());
 
-			boolean isFuel = value != null && value > 0;
+			boolean isFuel = burnStack.getItem() != Items.LAVA_BUCKET && value != null && value > 0;
 
 			if (isFuel) {
 				if (current == 0) {

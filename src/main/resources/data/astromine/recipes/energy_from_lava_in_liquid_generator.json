@@ -1,0 +1,13 @@
+{
+  "type": "astromine:liquid_generating",
+  "input": "minecraft:lava",
+  "amount": {
+    "numerator": 1,
+    "denominator": 256
+  },
+  "energy_generated": {
+    "numerator": 1,
+    "denominator": 16
+  },
+  "time": 1
+}
