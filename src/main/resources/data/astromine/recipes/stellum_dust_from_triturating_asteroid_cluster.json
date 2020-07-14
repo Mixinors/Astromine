@@ -1,11 +1,11 @@
 {
-	"type": "astromine:sorting",
+	"type": "astromine:triturating",
 	"input": {
-		"item": "astromine:asteroid_coal_cluster",
+		"item": "astromine:asteroid_stellum_cluster",
 		"count": 1
 	},
 	"output": {
-		"item": "minecraft:coal",
+		"item": "astromine:stellum_dust",
 		"count": 2
 	},
 	"time": 20,

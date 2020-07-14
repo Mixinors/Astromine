@@ -18,7 +18,7 @@ import com.github.chainmailstudios.astromine.client.screen.FluidMixerContainerSc
 import com.github.chainmailstudios.astromine.client.screen.LiquidGeneratorContainerScreen;
 import com.github.chainmailstudios.astromine.client.screen.NuclearWarheadContainerScreen;
 import com.github.chainmailstudios.astromine.client.screen.SolidGeneratorContainerScreen;
-import com.github.chainmailstudios.astromine.client.screen.SorterContainerScreen;
+import com.github.chainmailstudios.astromine.client.screen.TrituratorContainerScreen;
 import com.github.chainmailstudios.astromine.client.screen.TankContainerScreen;
 import com.github.chainmailstudios.astromine.client.screen.VentContainerScreen;
 import com.github.chainmailstudios.astromine.common.container.CraftingRecipeCreatorContainer;
@@ -33,7 +33,7 @@ import com.github.chainmailstudios.astromine.common.container.FluidTankContainer
 import com.github.chainmailstudios.astromine.common.container.LiquidGeneratorContainer;
 import com.github.chainmailstudios.astromine.common.container.NuclearWarheadContainer;
 import com.github.chainmailstudios.astromine.common.container.SolidGeneratorContainer;
-import com.github.chainmailstudios.astromine.common.container.SorterContainer;
+import com.github.chainmailstudios.astromine.common.container.TrituratorContainer;
 import com.github.chainmailstudios.astromine.common.container.VentContainer;
 import com.github.chainmailstudios.astromine.registry.AstromineContainers;
 import spinnery.client.screen.InGameHudScreen;
@@ -89,8 +89,8 @@ public class AstromineScreens {
 			new CreativeBufferContainerScreen(title, handler, inventory.player)
 		));
 
-		ScreenRegistry.register(AstromineContainers.SORTER, (ScreenRegistry.Factory<SorterContainer, SorterContainerScreen>) ((handler, inventory, title) ->
-			new SorterContainerScreen(title, handler, inventory.player)
+		ScreenRegistry.register(AstromineContainers.TRITURATOR, (ScreenRegistry.Factory<TrituratorContainer, TrituratorContainerScreen>) ((handler, inventory, title) ->
+			new TrituratorContainerScreen(title, handler, inventory.player)
 		));
 
 		ScreenRegistry.register(AstromineContainers.ELECTRIC_SMELTER, (ScreenRegistry.Factory<ElectricSmelterContainer, ElectricSmelterContainerScreen>) ((handler, inventory, title) ->

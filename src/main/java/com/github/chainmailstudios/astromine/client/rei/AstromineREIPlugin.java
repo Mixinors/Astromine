@@ -24,14 +24,14 @@ import com.github.chainmailstudios.astromine.client.rei.fluidmixing.FluidMixingC
 import com.github.chainmailstudios.astromine.client.rei.fluidmixing.FuelMixingDisplay;
 import com.github.chainmailstudios.astromine.client.rei.generating.LiquidGeneratingCategory;
 import com.github.chainmailstudios.astromine.client.rei.generating.LiquidGeneratingDisplay;
-import com.github.chainmailstudios.astromine.client.rei.sorting.SortingCategory;
-import com.github.chainmailstudios.astromine.client.rei.sorting.SortingDisplay;
+import com.github.chainmailstudios.astromine.client.rei.triturating.TrituratingCategory;
+import com.github.chainmailstudios.astromine.client.rei.triturating.TrituratingDisplay;
 import com.github.chainmailstudios.astromine.client.render.SpriteRenderer;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.recipe.ElectrolyzingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.FluidMixingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.LiquidGeneratingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.SortingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
 import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import me.shedaniel.math.Point;
@@ -57,7 +57,7 @@ public class AstromineREIPlugin implements REIPluginV0 {
 	private static final Identifier ENERGY_BACKGROUND = AstromineCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_background_thin.png");
 	private static final Identifier ENERGY_FOREGROUND = AstromineCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_foreground_thin.png");
 
-	public static final Identifier SORTING = AstromineCommon.identifier("sorting");
+	public static final Identifier TRITURATING = AstromineCommon.identifier("triturating");
 	public static final Identifier ELECTRIC_SMELTING = AstromineCommon.identifier("electric_smelting");
 	public static final Identifier LIQUID_GENERATING = AstromineCommon.identifier("liquid_generating");
 	public static final Identifier FLUID_MIXING = AstromineCommon.identifier("fluid_mixing");
@@ -75,7 +75,7 @@ public class AstromineREIPlugin implements REIPluginV0 {
 
 	@Override
 	public void registerPluginCategories(RecipeHelper recipeHelper) {
-		recipeHelper.registerCategory(new SortingCategory());
+		recipeHelper.registerCategory(new TrituratingCategory());
 		recipeHelper.registerCategory(new ElectricSmeltingCategory());
 		recipeHelper.registerCategory(new LiquidGeneratingCategory());
 		recipeHelper.registerCategory(new FluidMixingCategory(FLUID_MIXING, "category.astromine.fluid_mixing", EntryStack.create(AstromineBlocks.FLUID_MIXER)));
@@ -84,7 +84,7 @@ public class AstromineREIPlugin implements REIPluginV0 {
 
 	@Override
 	public void registerRecipeDisplays(RecipeHelper recipeHelper) {
-		recipeHelper.registerRecipes(SORTING, SortingRecipe.class, SortingDisplay::new);
+		recipeHelper.registerRecipes(TRITURATING, TrituratingRecipe.class, TrituratingDisplay::new);
 		recipeHelper.registerRecipes(ELECTRIC_SMELTING, SmeltingRecipe.class, ElectricSmeltingDisplay::new);
 		recipeHelper.registerRecipes(LIQUID_GENERATING, LiquidGeneratingRecipe.class, LiquidGeneratingDisplay::new);
 		recipeHelper.registerRecipes(FLUID_MIXING, FluidMixingRecipe.class, FuelMixingDisplay::new);
@@ -93,7 +93,7 @@ public class AstromineREIPlugin implements REIPluginV0 {
 
 	@Override
 	public void registerOthers(RecipeHelper recipeHelper) {
-		recipeHelper.registerWorkingStations(SORTING, EntryStack.create(AstromineBlocks.SORTER));
+		recipeHelper.registerWorkingStations(TRITURATING, EntryStack.create(AstromineBlocks.TRITURATOR));
 		recipeHelper.registerWorkingStations(ELECTRIC_SMELTING, EntryStack.create(AstromineBlocks.ELECTRIC_SMELTER));
 		recipeHelper.registerWorkingStations(LIQUID_GENERATING, EntryStack.create(AstromineBlocks.LIQUID_GENERATOR));
 		recipeHelper.registerWorkingStations(FLUID_MIXING, EntryStack.create(AstromineBlocks.FLUID_MIXER));

@@ -1,0 +1,19 @@
+{
+	"name": "text.astromine.machinery.triturator.title",
+	"icon": "astromine:triturator",
+	"category": "machinery",
+	"sortnum": 1,
+	"pages": [
+		{
+			"type": "spotlight",
+			"item": "astromine:triturator",
+			"title": "text.astromine.machinery.triturator.page_one.title",
+			"text": "text.astromine.machinery.triturator.page_one.text"
+		},
+		{
+			"type": "crafting",
+			"recipe": "astromine:triturator",
+			"title": "text.astromine.machinery.triturator.page_two.title"
+		}
+	]
+}

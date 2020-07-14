@@ -7,5 +7,7 @@ public class AstromineIdentifierFixes {
 		IdentifierFixRegistry.INSTANCE.register("space", "earth_space");
 		IdentifierFixRegistry.INSTANCE.register("fuel_mixer", "fluid_mixer");
 		IdentifierFixRegistry.INSTANCE.register("fuel_mixing", "fluid_mixing");
+		IdentifierFixRegistry.INSTANCE.register("sorter", "triturator");
+		IdentifierFixRegistry.INSTANCE.register("sorting", "triturating");
 	}
 }

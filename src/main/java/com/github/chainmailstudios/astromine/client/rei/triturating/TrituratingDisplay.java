@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.client.rei.sorting;
+package com.github.chainmailstudios.astromine.client.rei.triturating;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -7,7 +7,7 @@ import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineREIPlugin;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.recipe.SortingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeDisplay;
 import me.shedaniel.rei.utils.CollectionUtils;
@@ -17,14 +17,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
-public class SortingDisplay implements RecipeDisplay {
+public class TrituratingDisplay implements RecipeDisplay {
 	private final List<List<EntryStack>> inputs;
 	private final List<EntryStack> outputs;
 	private final int timeRequired;
 	private final Fraction energyRequired;
 	private final Identifier recipeId;
 
-	public SortingDisplay(SortingRecipe recipe) {
+	public TrituratingDisplay(TrituratingRecipe recipe) {
 		this(
 				CollectionUtils.map(recipe.getPreviewInputs(), ingredient -> CollectionUtils.map(ingredient.getMatchingStacksClient(), EntryStack::create)),
 				Collections.singletonList(EntryStack.create(recipe.getOutput())),
@@ -34,7 +34,7 @@ public class SortingDisplay implements RecipeDisplay {
 		);
 	}
 
-	public SortingDisplay(List<List<EntryStack>> inputs, List<EntryStack> outputs, int timeRequired, Fraction energyRequired, Identifier recipeId) {
+	public TrituratingDisplay(List<List<EntryStack>> inputs, List<EntryStack> outputs, int timeRequired, Fraction energyRequired, Identifier recipeId) {
 		this.inputs = inputs;
 		this.outputs = outputs;
 		this.timeRequired = timeRequired;
@@ -62,7 +62,7 @@ public class SortingDisplay implements RecipeDisplay {
 
 	@Override
 	public Identifier getRecipeCategory() {
-		return AstromineREIPlugin.SORTING;
+		return AstromineREIPlugin.TRITURATING;
 	}
 
 	@Override

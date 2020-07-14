@@ -16,7 +16,7 @@ import com.github.chainmailstudios.astromine.common.block.entity.FluidMixerBlock
 import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.LiquidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.SolidGeneratorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.SorterBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.TrituratorBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.TankBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.VentBlockEntity;
 
@@ -36,7 +36,7 @@ public class AstromineBlockEntityTypes {
 	public static final BlockEntityType<CreativeCapacitorBlockEntity> CREATIVE_CAPACITOR = register("creative_capacitor", CreativeCapacitorBlockEntity::new, AstromineBlocks.CREATIVE_CAPACITOR);
 	public static final BlockEntityType<CreativeBufferBlockEntity> CREATIVE_BUFFER = register("creative_buffer", CreativeBufferBlockEntity::new, AstromineBlocks.CREATIVE_BUFFER);
 
-	public static final BlockEntityType<SorterBlockEntity> SORTER = register("sorter", SorterBlockEntity::new, AstromineBlocks.SORTER);
+	public static final BlockEntityType<TrituratorBlockEntity> TRITURATOR = register("triturator", TrituratorBlockEntity::new, AstromineBlocks.TRITURATOR);
 	public static final BlockEntityType<ElectricSmelterBlockEntity> ELECTRIC_SMELTER = register("electric_smelter", ElectricSmelterBlockEntity::new, AstromineBlocks.ELECTRIC_SMELTER);
 	public static final BlockEntityType<FluidExtractorBlockEntity> FLUID_EXTRACTOR = register("fluid_extractor", FluidExtractorBlockEntity::new, AstromineBlocks.FLUID_EXTRACTOR);
 	public static final BlockEntityType<ElectrolyzerBlockEntity> ELECTROLYZER = register("electrolyzer", ElectrolyzerBlockEntity::new, AstromineBlocks.ELECTROLYZER);

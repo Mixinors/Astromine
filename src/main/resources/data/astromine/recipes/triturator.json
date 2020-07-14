@@ -5,5 +5,5 @@
 	"4": {"item": "astromine:basic_circuit"}, "5": {"item": "astromine:iron_plates"},
 	"6": {"item": "astromine:netherite_plates"}, "7": {"item": "minecraft:grindstone"},
 	"8": {"item": "astromine:netherite_plates"}
-}, "result": {"item": "astromine:sorter", "count": 1}
+}, "result": {"item": "astromine:triturator", "count": 1}
 }

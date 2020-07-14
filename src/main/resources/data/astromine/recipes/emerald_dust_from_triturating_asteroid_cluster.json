@@ -1,11 +1,11 @@
 {
-	"type": "astromine:sorting",
+	"type": "astromine:triturating",
 	"input": {
-		"item": "astromine:asteroid_lapis_cluster",
+		"item": "astromine:asteroid_emerald_cluster",
 		"count": 1
 	},
 	"output": {
-		"item": "astromine:lapis_dust",
+		"item": "astromine:emerald_dust",
 		"count": 2
 	},
 	"time": 20,

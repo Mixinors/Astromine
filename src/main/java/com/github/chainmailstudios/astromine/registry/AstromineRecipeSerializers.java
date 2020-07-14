@@ -7,13 +7,13 @@ import com.github.chainmailstudios.astromine.common.recipe.ElectrolyzingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.FluidMixingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.LiquidGeneratingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.SolidGeneratingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.SortingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
 
 public class AstromineRecipeSerializers {
-	public static final RecipeSerializer<SortingRecipe> SORTING = Registry.register(
+	public static final RecipeSerializer<TrituratingRecipe> TRITURATING = Registry.register(
 			Registry.RECIPE_SERIALIZER,
-			SortingRecipe.Serializer.ID,
-			SortingRecipe.Serializer.INSTANCE);
+			TrituratingRecipe.Serializer.ID,
+			TrituratingRecipe.Serializer.INSTANCE);
 	
 	public static final RecipeSerializer<LiquidGeneratingRecipe> LIQUID_GENERATING = Registry.register(
 			Registry.RECIPE_SERIALIZER,
