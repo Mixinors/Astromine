@@ -10,7 +10,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.compatib
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
-import com.github.chainmailstudios.astromine.common.recipe.SortingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
@@ -18,7 +18,7 @@ import spinnery.common.inventory.BaseInventory;
 
 import java.util.Optional;
 
-public class    SorterBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
+public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
 	public int progress = 0;
 	public int limit = 100;
 
@@ -26,17 +26,17 @@ public class    SorterBlockEntity extends DefaultedEnergyItemBlockEntity impleme
 
 	BaseInventory inputInventory = new BaseInventory(1);
 
-	Optional<SortingRecipe> recipe = Optional.empty();
+	Optional<TrituratingRecipe> recipe = Optional.empty();
 
-	public SorterBlockEntity() {
-		super(AstromineBlockEntityTypes.SORTER);
+	public TrituratorBlockEntity() {
+		super(AstromineBlockEntityTypes.TRITURATOR);
 
 		energyComponent.getVolume(0).setSize(new Fraction(32, 1));
 		itemComponent = new SimpleItemInventoryComponent(2);
 
 		itemComponent.addListener(() -> {
 			inputInventory.setStack(0, itemComponent.getStack(1));
-			recipe = (Optional<SortingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) SortingRecipe.Type.INSTANCE, inputInventory, world);
+			recipe = (Optional<TrituratingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) TrituratingRecipe.Type.INSTANCE, inputInventory, world);
 			shouldTry = true;
 		});
 

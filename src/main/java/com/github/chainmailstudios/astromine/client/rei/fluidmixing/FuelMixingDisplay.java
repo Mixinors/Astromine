@@ -18,6 +18,6 @@ public class FuelMixingDisplay extends AbstractFluidMixingDisplay {
 
 	@Override
 	public Identifier getRecipeCategory() {
-		return AstromineREIPlugin.fluid_mixing;
+		return AstromineREIPlugin.FLUID_MIXING;
 	}
 }

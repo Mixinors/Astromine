@@ -8,8 +8,8 @@ import com.github.chainmailstudios.astromine.common.container.base.DefaultedEner
 import com.github.chainmailstudios.astromine.registry.AstromineContainers;
 import spinnery.widget.WSlot;
 
-public class SorterContainer extends DefaultedEnergyItemContainer {
-	public SorterContainer(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
+public class TrituratorContainer extends DefaultedEnergyItemContainer {
+	public TrituratorContainer(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
 		super(synchronizationID, playerInventory, position);
 
 		getInterface().createChild(WSlot::new).setInventoryNumber(1).setSlotNumber(0);
@@ -18,6 +18,6 @@ public class SorterContainer extends DefaultedEnergyItemContainer {
 
 	@Override
 	public ScreenHandlerType<?> getType() {
-		return AstromineContainers.SORTER;
+		return AstromineContainers.TRITURATOR;
 	}
 }

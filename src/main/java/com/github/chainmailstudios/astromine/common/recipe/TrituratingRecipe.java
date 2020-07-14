@@ -31,14 +31,14 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 import java.util.Map;
 
-public class SortingRecipe implements Recipe<Inventory> {
+public class TrituratingRecipe implements Recipe<Inventory> {
 	final Identifier identifier;
 	final Ingredient input;
 	final ItemStack output;
 	final Fraction energyConsumed;
 	final int time;
 
-	public SortingRecipe(Identifier identifier, Ingredient input, ItemStack output, Fraction energyConsumed, int time) {
+	public TrituratingRecipe(Identifier identifier, Ingredient input, ItemStack output, Fraction energyConsumed, int time) {
 		this.identifier = identifier;
 		this.input = input;
 		this.output = output;
@@ -103,7 +103,7 @@ public class SortingRecipe implements Recipe<Inventory> {
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.SORTER);
+		return new ItemStack(AstromineBlocks.TRITURATOR);
 	}
 
 	public int getTime() {
@@ -114,8 +114,8 @@ public class SortingRecipe implements Recipe<Inventory> {
 		return energyConsumed;
 	}
 
-	public static final class Serializer implements RecipeSerializer<SortingRecipe> {
-		public static final Identifier ID = AstromineCommon.identifier("sorting");
+	public static final class Serializer implements RecipeSerializer<TrituratingRecipe> {
+		public static final Identifier ID = AstromineCommon.identifier("triturating");
 
 		public static final Serializer INSTANCE = new Serializer();
 
@@ -124,10 +124,10 @@ public class SortingRecipe implements Recipe<Inventory> {
 		}
 
 		@Override
-		public SortingRecipe read(Identifier identifier, JsonObject object) {
-			SortingRecipe.Format format = new Gson().fromJson(object, SortingRecipe.Format.class);
+		public TrituratingRecipe read(Identifier identifier, JsonObject object) {
+			TrituratingRecipe.Format format = new Gson().fromJson(object, TrituratingRecipe.Format.class);
 
-			return new SortingRecipe(identifier,
+			return new TrituratingRecipe(identifier,
 					IngredientUtilities.fromJson(format.input),
 					StackUtilities.fromJson(format.output),
 					FractionUtilities.fromJson(format.energyConsumed),
@@ -135,8 +135,8 @@ public class SortingRecipe implements Recipe<Inventory> {
 		}
 
 		@Override
-		public SortingRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new SortingRecipe(identifier,
+		public TrituratingRecipe read(Identifier identifier, PacketByteBuf buffer) {
+			return new TrituratingRecipe(identifier,
 					IngredientUtilities.fromPacket(buffer),
 					StackUtilities.fromPacket(buffer),
 					FractionUtilities.fromPacket(buffer),
@@ -144,7 +144,7 @@ public class SortingRecipe implements Recipe<Inventory> {
 		}
 
 		@Override
-		public void write(PacketByteBuf buffer, SortingRecipe recipe) {
+		public void write(PacketByteBuf buffer, TrituratingRecipe recipe) {
 			IngredientUtilities.toPacket(buffer, recipe.input);
 			StackUtilities.toPacket(buffer, recipe.output);
 			FractionUtilities.toPacket(buffer, recipe.energyConsumed);
@@ -152,7 +152,7 @@ public class SortingRecipe implements Recipe<Inventory> {
 		}
 	}
 
-	public static final class Type implements RecipeType<SortingRecipe> {
+	public static final class Type implements RecipeType<TrituratingRecipe> {
 		public static final Type INSTANCE = new Type();
 
 		private Type() {

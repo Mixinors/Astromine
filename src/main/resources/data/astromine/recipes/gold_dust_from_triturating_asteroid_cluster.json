@@ -1,5 +1,5 @@
 {
-	"type": "astromine:sorting",
+	"type": "astromine:triturating",
 	"input": {
 		"item": "astromine:asteroid_gold_cluster",
 		"count": 1

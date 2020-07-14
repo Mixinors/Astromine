@@ -21,14 +21,14 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.SorterBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.SorterContainer;
+import com.github.chainmailstudios.astromine.common.block.entity.TrituratorBlockEntity;
+import com.github.chainmailstudios.astromine.common.container.TrituratorContainer;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
-public class SorterBlock extends DefaultedHorizontalFacingBlockWithEntity implements NetworkMember, Tickable {
-	public SorterBlock(Settings settings) {
+public class TrituratorBlock extends DefaultedHorizontalFacingBlockWithEntity implements NetworkMember, Tickable {
+	public TrituratorBlock(Settings settings) {
 		super(settings);
 	}
 
@@ -44,7 +44,7 @@ public class SorterBlock extends DefaultedHorizontalFacingBlockWithEntity implem
 
 	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
-		return new SorterBlockEntity();
+		return new TrituratorBlockEntity();
 	}
 
 	@Override
@@ -58,12 +58,12 @@ public class SorterBlock extends DefaultedHorizontalFacingBlockWithEntity implem
 
 				@Override
 				public Text getDisplayName() {
-					return new TranslatableText("block.astromine.sorter");
+					return new TranslatableText("block.astromine.triturator");
 				}
 
 				@Override
 				public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-					return new SorterContainer(syncId, playerInventory, blockPos);
+					return new TrituratorContainer(syncId, playerInventory, blockPos);
 				}
 			});
 

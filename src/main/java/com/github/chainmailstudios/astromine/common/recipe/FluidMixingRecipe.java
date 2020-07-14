@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.common.recipe;
 
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
@@ -24,6 +25,7 @@ import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 
 import com.google.gson.Gson;
@@ -138,7 +140,12 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory> {
 	public DefaultedList<Ingredient> getPreviewInputs() {
 		return DefaultedList.of(); // we are not dealing with items
 	}
-
+	
+	@Override
+	public ItemStack getRecipeKindIcon() {
+		return new ItemStack(AstromineBlocks.FLUID_MIXER);
+	}
+	
 	public Identifier getIdentifier() {
 		return identifier;
 	}

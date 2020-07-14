@@ -1,11 +1,11 @@
 {
-	"type": "astromine:sorting",
+	"type": "astromine:triturating",
 	"input": {
-		"item": "astromine:asteroid_redstone_cluster",
+		"item": "astromine:asteroid_diamond_cluster",
 		"count": 1
 	},
 	"output": {
-		"item": "minecraft:redstone",
+		"item": "astromine:diamond_dust",
 		"count": 2
 	},
 	"time": 20,

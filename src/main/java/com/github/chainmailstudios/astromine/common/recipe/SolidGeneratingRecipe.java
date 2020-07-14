@@ -20,6 +20,7 @@ import com.github.chainmailstudios.astromine.common.utilities.IngredientUtilitie
 import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 
 import com.google.gson.Gson;
@@ -83,6 +84,11 @@ public class SolidGeneratingRecipe implements AdvancedRecipe<Inventory> {
 		} else {
 			t.reset();
 		}
+	}
+	
+	@Override
+	public ItemStack getRecipeKindIcon() {
+		return new ItemStack(AstromineBlocks.SOLID_GENERATOR);
 	}
 	
 	@Override

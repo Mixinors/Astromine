@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.client.rei.sorting;
+package com.github.chainmailstudios.astromine.client.rei.triturating;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -21,24 +21,24 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class SortingCategory implements RecipeCategory<SortingDisplay> {
+public class TrituratingCategory implements RecipeCategory<TrituratingDisplay> {
 	@Override
 	public Identifier getIdentifier() {
-		return AstromineREIPlugin.SORTING;
+		return AstromineREIPlugin.TRITURATING;
 	}
 
 	@Override
 	public String getCategoryName() {
-		return I18n.translate("category.astromine.sorting");
+		return I18n.translate("category.astromine.triturating");
 	}
 
 	@Override
 	public EntryStack getLogo() {
-		return EntryStack.create(AstromineBlocks.SORTER);
+		return EntryStack.create(AstromineBlocks.TRITURATOR);
 	}
 
 	@Override
-	public List<Widget> setupDisplay(SortingDisplay display, Rectangle bounds) {
+	public List<Widget> setupDisplay(TrituratingDisplay display, Rectangle bounds) {
 		Point startPoint = new Point(bounds.getCenterX() - 41, bounds.getCenterY() - 27);
 		DecimalFormat df = new DecimalFormat("###.##");
 		List<Widget> widgets = Lists.newArrayList();

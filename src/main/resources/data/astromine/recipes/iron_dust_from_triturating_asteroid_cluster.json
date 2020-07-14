@@ -1,11 +1,11 @@
 {
-	"type": "astromine:sorting",
+	"type": "astromine:triturating",
 	"input": {
-		"item": "astromine:asteroid_stellum_cluster",
+		"item": "astromine:asteroid_iron_cluster",
 		"count": 1
 	},
 	"output": {
-		"item": "astromine:stellum_dust",
+		"item": "astromine:iron_dust",
 		"count": 2
 	},
 	"time": 20,

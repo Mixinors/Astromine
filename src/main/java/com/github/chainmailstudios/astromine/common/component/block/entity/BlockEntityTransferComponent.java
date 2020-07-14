@@ -5,6 +5,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
+import com.github.chainmailstudios.astromine.common.utilities.DirectionUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
 import nerdhub.cardinal.components.api.ComponentRegistry;
 import nerdhub.cardinal.components.api.ComponentType;
@@ -75,13 +76,13 @@ public class BlockEntityTransferComponent implements Component {
 
 		public void fromTag(CompoundTag tag) {
 			for (String directionKey : tag.getKeys()) {
-				types.put(Direction.byId(Integer.parseInt(directionKey)), TransferType.valueOf(tag.getString(directionKey)));
+				types.put(DirectionUtilities.byNameOrId(directionKey), TransferType.valueOf(tag.getString(directionKey)));
 			}
 		}
 
 		public CompoundTag toTag(CompoundTag tag) {
 			for (Map.Entry<Direction, TransferType> entry : types.entrySet()) {
-				tag.putString(String.valueOf(entry.getKey().getId()), entry.getValue().toString());
+				tag.putString(String.valueOf(entry.getKey().getName()), entry.getValue().toString());
 			}
 
 			return tag;
