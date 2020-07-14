@@ -1,8 +1,9 @@
 package com.github.chainmailstudios.astromine.common.atmosphere;
 
-import com.github.chainmailstudios.astromine.common.registry.base.UniRegistry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.dimension.DimensionType;
+
+import com.github.chainmailstudios.astromine.common.registry.base.UniRegistry;
 
 import java.util.Optional;
 

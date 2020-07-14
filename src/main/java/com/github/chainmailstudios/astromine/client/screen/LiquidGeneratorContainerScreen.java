@@ -1,14 +1,13 @@
 package com.github.chainmailstudios.astromine.client.screen;
 
-import com.github.chainmailstudios.astromine.common.block.entity.FluidMixerBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.LiquidGeneratorBlockEntity;
-import com.github.chainmailstudios.astromine.common.widget.WHorizontalArrow;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 
 import com.github.chainmailstudios.astromine.client.screen.base.DefaultedEnergyFluidContainerScreen;
+import com.github.chainmailstudios.astromine.common.block.entity.LiquidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.common.container.LiquidGeneratorContainer;
 import com.github.chainmailstudios.astromine.common.container.base.DefaultedEnergyFluidContainer;
+import com.github.chainmailstudios.astromine.common.widget.WHorizontalArrow;
 import spinnery.widget.api.Position;
 import spinnery.widget.api.Size;
 

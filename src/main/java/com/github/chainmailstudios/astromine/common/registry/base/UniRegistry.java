@@ -1,10 +1,7 @@
 package com.github.chainmailstudios.astromine.common.registry.base;
 
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 public class UniRegistry<T, U> {

@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine.common.widget;
 
-import com.google.common.collect.Lists;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
@@ -17,13 +16,9 @@ import com.github.chainmailstudios.astromine.client.BaseRenderer;
 import com.github.chainmailstudios.astromine.client.render.SpriteRenderer;
 import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import spinnery.client.render.TextRenderer;
 import spinnery.client.render.layer.SpinneryLayers;
-import spinnery.common.utility.MouseUtilities;
-import spinnery.widget.WAbstractWidget;
-import spinnery.widget.WKibbyImage;
-import spinnery.widget.api.Color;
 
+import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.function.Supplier;
 

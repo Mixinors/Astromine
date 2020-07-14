@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine.common.block.base;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -11,8 +10,6 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import javax.xml.ws.FaultAction;
 
 public abstract class DefaultedBlockWithEntity extends Block implements BlockEntityProvider {
 	protected DefaultedBlockWithEntity(AbstractBlock.Settings settings) {

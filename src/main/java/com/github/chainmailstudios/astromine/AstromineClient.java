@@ -1,13 +1,9 @@
 package com.github.chainmailstudios.astromine;
 
-import com.github.chainmailstudios.astromine.registry.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 
-import com.github.chainmailstudios.astromine.client.render.entity.SpaceSlimeEntityRenderer;
-import com.github.chainmailstudios.astromine.client.render.entity.SuperSpaceSlimeEntityRenderer;
 import com.github.chainmailstudios.astromine.registry.client.AstromineBlockEntityRenderers;
 import com.github.chainmailstudios.astromine.registry.client.AstromineClientCallbacks;
 import com.github.chainmailstudios.astromine.registry.client.AstromineClientModels;

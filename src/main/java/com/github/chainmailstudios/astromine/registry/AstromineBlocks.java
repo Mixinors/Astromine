@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.common.block.*;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 
@@ -18,6 +17,24 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.AstromineOreBlock;
+import com.github.chainmailstudios.astromine.common.block.CreativeBufferBlock;
+import com.github.chainmailstudios.astromine.common.block.CreativeCapacitorBlock;
+import com.github.chainmailstudios.astromine.common.block.CreativeTankBlock;
+import com.github.chainmailstudios.astromine.common.block.ElectricSmelterBlock;
+import com.github.chainmailstudios.astromine.common.block.ElectrolyzerBlock;
+import com.github.chainmailstudios.astromine.common.block.EnergyCableBlock;
+import com.github.chainmailstudios.astromine.common.block.FluidCableBlock;
+import com.github.chainmailstudios.astromine.common.block.FluidExtractorBlock;
+import com.github.chainmailstudios.astromine.common.block.FluidMixerBlock;
+import com.github.chainmailstudios.astromine.common.block.HolographicBridgeInvisibleBlock;
+import com.github.chainmailstudios.astromine.common.block.HolographicBridgeProjectorBlock;
+import com.github.chainmailstudios.astromine.common.block.LiquidGeneratorBlock;
+import com.github.chainmailstudios.astromine.common.block.NuclearWarheadBlock;
+import com.github.chainmailstudios.astromine.common.block.SolidGeneratorBlock;
+import com.github.chainmailstudios.astromine.common.block.SorterBlock;
+import com.github.chainmailstudios.astromine.common.block.TankBlock;
+import com.github.chainmailstudios.astromine.common.block.VentBlock;
 
 public class AstromineBlocks {
 	public static final Block HOLOGRAPHIC_BRIDGE_PROJECTOR = register("holographic_bridge_projector", new HolographicBridgeProjectorBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(4, 16).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
