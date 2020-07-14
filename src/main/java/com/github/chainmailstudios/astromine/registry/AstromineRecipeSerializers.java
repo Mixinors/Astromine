@@ -9,6 +9,11 @@ public class AstromineRecipeSerializers {
 			Registry.RECIPE_SERIALIZER,
 			SortingRecipe.Serializer.ID,
 			SortingRecipe.Serializer.INSTANCE);
+
+	public static final RecipeSerializer<PressingRecipe> PRESSING = Registry.register(
+			Registry.RECIPE_SERIALIZER,
+			PressingRecipe.Serializer.ID,
+			PressingRecipe.Serializer.INSTANCE);
 	
 	public static final RecipeSerializer<LiquidGeneratingRecipe> LIQUID_GENERATING = Registry.register(
 			Registry.RECIPE_SERIALIZER,

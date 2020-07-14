@@ -67,6 +67,10 @@ public class AstromineScreens {
 			new SorterContainerScreen(title, handler, inventory.player)
 		));
 
+		ScreenRegistry.register(AstromineContainers.PRESSER, (ScreenRegistry.Factory<PresserContainer, PresserContainerScreen>) ((handler, inventory, title) ->
+				new PresserContainerScreen(title, handler, inventory.player)
+		));
+
 		ScreenRegistry.register(AstromineContainers.ELECTRIC_SMELTER, (ScreenRegistry.Factory<ElectricSmelterContainer, ElectricSmelterContainerScreen>) ((handler, inventory, title) ->
 			new ElectricSmelterContainerScreen(title, handler, inventory.player)
 		));

@@ -1,0 +1,16 @@
+{
+	"type": "astromine:pressing",
+	"input": {
+		"item": "astromine:stellum_ingot",
+		"count": 1
+	},
+	"output": {
+		"item": "astromine:stellum_plates",
+		"count": 1
+	},
+	"time": 20,
+	"energy_consumed": {
+		"numerator": 1,
+		"denominator": 4
+	}
+}
