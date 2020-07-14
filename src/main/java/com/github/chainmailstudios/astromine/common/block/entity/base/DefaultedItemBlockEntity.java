@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 
 import net.minecraft.block.BlockState;

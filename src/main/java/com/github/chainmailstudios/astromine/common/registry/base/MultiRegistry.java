@@ -1,11 +1,8 @@
 package com.github.chainmailstudios.astromine.common.registry.base;
 
 import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
-
 import java.util.Collection;
-import java.util.Map;
 
 public abstract class MultiRegistry<T, U> {
 	private final Multimap<T, U> entries = HashMultimap.create();

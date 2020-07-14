@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.access.DyeColorAccess;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -14,6 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
+import com.github.chainmailstudios.astromine.access.DyeColorAccess;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
 import spinnery.widget.api.Color;

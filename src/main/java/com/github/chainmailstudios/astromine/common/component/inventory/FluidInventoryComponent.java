@@ -1,8 +1,5 @@
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import nerdhub.cardinal.components.api.ComponentType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundTag;
@@ -10,13 +7,15 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
-import net.minecraft.util.math.Direction;
+import nerdhub.cardinal.components.api.ComponentType;
 import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

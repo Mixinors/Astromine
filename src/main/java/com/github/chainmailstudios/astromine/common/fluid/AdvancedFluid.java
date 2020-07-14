@@ -1,13 +1,6 @@
 package com.github.chainmailstudios.astromine.common.fluid;
 
-import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
 import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
-import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.fabricmc.loader.api.FabricLoader;
 
 import net.minecraft.block.AbstractBlock;
@@ -16,9 +9,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.fluid.Fluid;
@@ -26,27 +16,21 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.ResourceType;
 import net.minecraft.state.StateManager;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.gas.Breathable;
+import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineFluids;
 import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import org.jetbrains.annotations.Nullable;
 import spinnery.widget.api.Color;
-
-import java.util.function.Function;
 
 public abstract class AdvancedFluid extends FlowableFluid implements Breathable {
 	final int fogColor;

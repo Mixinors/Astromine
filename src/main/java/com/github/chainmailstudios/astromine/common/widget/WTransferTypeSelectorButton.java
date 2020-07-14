@@ -1,14 +1,10 @@
 package com.github.chainmailstudios.astromine.common.widget;
 
-import com.google.common.collect.Lists;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.StringRenderable;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -21,13 +17,11 @@ import com.github.chainmailstudios.astromine.common.component.block.entity.Block
 import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
 import io.netty.buffer.Unpooled;
 import nerdhub.cardinal.components.api.ComponentType;
-import org.apache.commons.lang3.text.WordUtils;
 import spinnery.client.render.BaseRenderer;
 import spinnery.widget.WButton;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 public class WTransferTypeSelectorButton extends WButton {
 	private BlockEntityTransferComponent component;

@@ -1,18 +1,14 @@
 package com.github.chainmailstudios.astromine.client.screen;
 
-import com.github.chainmailstudios.astromine.client.screen.base.DefaultedEnergyFluidContainerScreen;
-import com.github.chainmailstudios.astromine.client.screen.base.DefaultedEnergyItemContainerScreen;
-import com.github.chainmailstudios.astromine.common.block.entity.LiquidGeneratorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.SolidGeneratorBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.LiquidGeneratorContainer;
-import com.github.chainmailstudios.astromine.common.container.SolidGeneratorContainer;
-import com.github.chainmailstudios.astromine.common.container.base.DefaultedEnergyFluidContainer;
-import com.github.chainmailstudios.astromine.common.container.base.DefaultedEnergyItemContainer;
-import com.github.chainmailstudios.astromine.common.widget.WHorizontalArrow;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
+
+import com.github.chainmailstudios.astromine.client.screen.base.DefaultedEnergyItemContainerScreen;
+import com.github.chainmailstudios.astromine.common.block.entity.SolidGeneratorBlockEntity;
+import com.github.chainmailstudios.astromine.common.container.SolidGeneratorContainer;
+import com.github.chainmailstudios.astromine.common.container.base.DefaultedEnergyItemContainer;
+import com.github.chainmailstudios.astromine.common.widget.WHorizontalArrow;
 import spinnery.widget.WSlot;
 import spinnery.widget.api.Position;
 import spinnery.widget.api.Size;

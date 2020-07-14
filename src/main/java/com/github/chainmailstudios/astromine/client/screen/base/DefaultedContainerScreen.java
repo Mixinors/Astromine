@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine.client.screen.base;
 
-import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;

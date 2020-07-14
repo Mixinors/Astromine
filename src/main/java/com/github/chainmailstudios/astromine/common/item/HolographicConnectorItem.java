@@ -1,10 +1,8 @@
 package com.github.chainmailstudios.astromine.common.item;
 
-import com.github.chainmailstudios.astromine.common.block.HolographicBridgeProjectorBlock;
-import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
-import com.github.chainmailstudios.astromine.registry.client.AstromineSounds;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.item.TooltipContext;
@@ -20,10 +18,13 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.block.HolographicBridgeProjectorBlock;
+import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
+import com.github.chainmailstudios.astromine.registry.client.AstromineSounds;
 
 import java.util.List;
 

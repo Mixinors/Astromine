@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine.common.recipe;
 
-import net.minecraft.block.Blocks;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;

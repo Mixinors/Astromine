@@ -1,11 +1,8 @@
 package com.github.chainmailstudios.astromine.common.volume.energy;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
 

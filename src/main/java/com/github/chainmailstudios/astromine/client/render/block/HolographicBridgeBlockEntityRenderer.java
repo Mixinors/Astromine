@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine.client.render.block;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumer;
@@ -12,12 +11,9 @@ import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 
+import com.github.chainmailstudios.astromine.client.render.layer.Layers;
 import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
 import spinnery.client.render.layer.SpinneryLayers;
-import spinnery.widget.api.Color;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<HolographicBridgeProjectorBlockEntity> {
 	public HolographicBridgeBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
@@ -41,7 +37,7 @@ public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<Ho
 			Vector3f start = entity.segments.get(0);
 			Vector3f end = entity.segments.get(entity.segments.size() - 1);
 
-			VertexConsumer consumer = provider.getBuffer(SpinneryLayers.getFlat());
+			VertexConsumer consumer = provider.getBuffer(Layers.getHolographicBridge());
 
 			matrices.push();
 

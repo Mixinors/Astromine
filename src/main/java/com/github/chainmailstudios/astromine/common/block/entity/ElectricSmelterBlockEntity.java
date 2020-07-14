@@ -1,7 +1,5 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -9,13 +7,14 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.util.Tickable;
 
-import com.github.chainmailstudios.astromine.common.block.ElectricSmelterBlock;
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import spinnery.common.inventory.BaseInventory;
 

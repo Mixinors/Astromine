@@ -1,14 +1,12 @@
 package com.github.chainmailstudios.astromine.common.volume.fluid;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineFluids;
