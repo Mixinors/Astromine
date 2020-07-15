@@ -64,6 +64,14 @@ public class AstromineScreens {
 				new FluidInserterContainerScreen(title, handler, inventory.player)
 		));
 
+		ScreenRegistry.register(AstromineContainers.BLOCK_BREAKER, (ScreenRegistry.Factory<BlockBreakerContainer, BlockBreakerContainerScreen>) ((handler, inventory, title) ->
+				new BlockBreakerContainerScreen(title, handler, inventory.player)
+		));
+
+		ScreenRegistry.register(AstromineContainers.BLOCK_PLACER, (ScreenRegistry.Factory<BlockPlacerContainer, BlockPlacerContainerScreen>) ((handler, inventory, title) ->
+				new BlockPlacerContainerScreen(title, handler, inventory.player)
+		));
+
 		ScreenRegistry.register(AstromineContainers.LIQUID_GENERATOR, (ScreenRegistry.Factory<LiquidGeneratorContainer, LiquidGeneratorContainerScreen>) ((handler, inventory, title) ->
 			new LiquidGeneratorContainerScreen(title, handler, inventory.player)
 		));

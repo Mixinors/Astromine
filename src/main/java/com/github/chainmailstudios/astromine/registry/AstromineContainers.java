@@ -30,6 +30,14 @@ public class AstromineContainers {
 		return new FluidInserterContainer(synchronizationID, inventory, buffer.readBlockPos());
 	}));
 
+	public static final ScreenHandlerType<BlockBreakerContainer> BLOCK_BREAKER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("block_breaker"), ((synchronizationID, inventory, buffer) -> {
+		return new BlockBreakerContainer(synchronizationID, inventory, buffer.readBlockPos());
+	}));
+
+	public static final ScreenHandlerType<BlockPlacerContainer> BLOCK_PLACER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("block_placer"), ((synchronizationID, inventory, buffer) -> {
+		return new BlockPlacerContainer(synchronizationID, inventory, buffer.readBlockPos());
+	}));
+
 	public static final ScreenHandlerType<LiquidGeneratorContainer> LIQUID_GENERATOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("liquid_generator"), ((synchronizationID, inventory, buffer) -> {
 		return new LiquidGeneratorContainer(synchronizationID, inventory, buffer.readBlockPos());
 	}));
