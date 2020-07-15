@@ -1,9 +1,11 @@
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
+import com.google.common.collect.Lists;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.PacketContext;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.FacingBlock;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -74,12 +76,23 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 		if (direction == null) {
 			return (Collection<T>) allComponents.values();
 		} else {
-			return (Collection<T>) getComponentTypes()
-					.stream()
-					.map(type -> new Pair<>((ComponentType) type, (Component) getComponent(type)))
-					.filter(pair -> transferComponent.get(pair.getLeft()).get(direction, getCachedState().get(HorizontalFacingBlock.FACING)) != TransferType.NONE)
-					.map(Pair::getRight)
-					.collect(Collectors.toList());
+			if (getCachedState().contains(HorizontalFacingBlock.FACING)) {
+				return (Collection<T>) getComponentTypes()
+						.stream()
+						.map(type -> new Pair<>((ComponentType) type, (Component) getComponent(type)))
+						.filter(pair -> transferComponent.get(pair.getLeft()).get(direction, getCachedState().get(HorizontalFacingBlock.FACING)) != TransferType.NONE)
+						.map(Pair::getRight)
+						.collect(Collectors.toList());
+			} else if (getCachedState().contains(FacingBlock.FACING)) {
+				return (Collection<T>) getComponentTypes()
+						.stream()
+						.map(type -> new Pair<>((ComponentType) type, (Component) getComponent(type)))
+						.filter(pair -> transferComponent.get(pair.getLeft()).get(direction, getCachedState().get(FacingBlock.FACING)) != TransferType.NONE)
+						.map(Pair::getRight)
+						.collect(Collectors.toList());
+			} else {
+				return Lists.newArrayList();
+			}
 		}
 	}
 
