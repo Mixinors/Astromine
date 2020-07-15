@@ -1,6 +1,15 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyFluidBlockEntity;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.network.NetworkMember;
+import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.fluid.FluidState;
@@ -11,24 +20,15 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyFluidBlockEntity;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.network.NetworkMember;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
-
-public class FluidExtractorBlockEntity extends DefaultedEnergyFluidBlockEntity implements NetworkMember, Tickable {
+public class FluidInserterBlockEntity extends DefaultedEnergyFluidBlockEntity implements NetworkMember, Tickable {
 	private Fraction cooldown = Fraction.empty();
 
 	public boolean isActive = false;
 
 	public boolean[] activity = { false, false, false, false, false };
 
-	public FluidExtractorBlockEntity() {
-		super(AstromineBlockEntityTypes.FLUID_EXTRACTOR);
+	public FluidInserterBlockEntity() {
+		super(AstromineBlockEntityTypes.FLUID_INSERTER);
 
 		fluidComponent.getVolume(0).setSize(Fraction.ofWhole(4));
 		energyComponent.getVolume(0).setSize(Fraction.ofWhole(32));
@@ -56,31 +56,27 @@ public class FluidExtractorBlockEntity extends DefaultedEnergyFluidBlockEntity i
 
 				Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
 				BlockPos targetPos = pos.offset(direction);
-				FluidState targetFluidState = world.getFluidState(targetPos);
+				BlockState targetState = world.getBlockState(targetPos);
 
-				if (targetFluidState.isStill()) {
-					FluidVolume toInsert = new FluidVolume(targetFluidState.getFluid(), Fraction.bucket());
-					if (fluidVolume.hasAvailable(Fraction.bucket())) {
-						fluidVolume.pullVolume(toInsert, toInsert.getFraction());
-						energyVolume.extractVolume(Fraction.of(1 ,8));
-
-						world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
-						world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
-					}
+				if (targetState.isAir() && fluidVolume.hasStored(Fraction.bucket())) {
+					FluidVolume toInsert = fluidVolume.extractVolume(Fraction.bucket());
+					world.setBlockState(targetPos, toInsert.getFluid().getDefaultState().getBlockState());
+					energyVolume.extractVolume(Fraction.of(1 ,8));
+					world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1, 1);
 				}
 			}
-		}
 
-		for (int i = 1; i < activity.length; ++i) {
-			activity[i - 1] = activity[i];
-		}
+			for (int i = 1; i < activity.length; ++i) {
+				activity[i - 1] = activity[i];
+			}
 
-		activity[4] = isActive;
+			activity[4] = isActive;
 
-		if (isActive && !activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, true));
-		} else if (!isActive && activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, false));
+			if (isActive && !activity[0]) {
+				world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, true));
+			} else if (!isActive && activity[0]) {
+				world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, false));
+			}
 		}
 	}
 
