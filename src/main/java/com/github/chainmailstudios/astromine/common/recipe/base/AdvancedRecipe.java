@@ -57,7 +57,5 @@ public interface AdvancedRecipe<C extends Inventory> extends Recipe<C> {
 	}
 
 	@Override
-	default ItemStack getRecipeKindIcon() {
-		return ItemStack.EMPTY;
-	}
+	ItemStack getRecipeKindIcon();
 }

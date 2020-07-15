@@ -1,12 +1,12 @@
 {
-	"type": "minecraft:smithing",
-	"base": {
-		"item": "astromine:galaxium_hoe"
-	},
-	"addition": {
-		"item": "astromine:univite_ingot"
-	},
-	"result": {
-		"item": "astromine:univite_hoe"
-	}
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "astromine:galaxium_hoe"
+  },
+  "addition": {
+    "item": "astromine:univite_ingot"
+  },
+  "result": {
+    "item": "astromine:univite_hoe"
+  }
 }

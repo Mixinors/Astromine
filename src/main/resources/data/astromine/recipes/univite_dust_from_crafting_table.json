@@ -1,9 +1,16 @@
 {
-	"type": "minecraft:crafting_shaped", "pattern": ["012", "345", "678"], "key": {
-	"0": {"item": "astromine:netherite_plates"}, "1": {"item": "astromine:gold_plates"},
-	"2": {"item": "astromine:netherite_dust"}, "3": {"item": "astromine:iron_dust"},
-	"4": {"item": "astromine:gold_gear"}, "5": {"item": "astromine:iron_gear"},
-	"6": {"item": "astromine:netherite_gear"}, "7": {"item": "astromine:iron_plates"},
-	"8": {"item": "astromine:gold_dust"}
-}, "result": {"item": "astromine:univite_dust", "count": 1}
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["012", "345", "678"],
+  "key": {
+    "0": { "item": "astromine:netherite_plates" },
+    "1": { "item": "astromine:gold_plates" },
+    "2": { "item": "astromine:netherite_dust" },
+    "3": { "item": "astromine:iron_dust" },
+    "4": { "item": "astromine:gold_gear" },
+    "5": { "item": "astromine:iron_gear" },
+    "6": { "item": "astromine:netherite_gear" },
+    "7": { "item": "astromine:iron_plates" },
+    "8": { "item": "astromine:gold_dust" }
+  },
+  "result": { "item": "astromine:univite_dust", "count": 1 }
 }

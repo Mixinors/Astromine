@@ -1,16 +1,16 @@
 {
-	"type": "astromine:pressing",
-	"input": {
-		"item": "astromine:metite_ingot",
-		"count": 1
-	},
-	"output": {
-		"item": "astromine:metite_plates",
-		"count": 1
-	},
-	"time": 20,
-	"energy_consumed": {
-		"numerator": 1,
-		"denominator": 4
-	}
+  "type": "astromine:pressing",
+  "input": {
+    "item": "astromine:metite_ingot",
+    "count": 1
+  },
+  "output": {
+    "item": "astromine:metite_plates",
+    "count": 1
+  },
+  "time": 20,
+  "energy_consumed": {
+    "numerator": 1,
+    "denominator": 4
+  }
 }

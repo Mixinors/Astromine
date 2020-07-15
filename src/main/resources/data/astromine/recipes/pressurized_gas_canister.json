@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["012", "345", "678"],
+  "key": {
+    "0": { "item": "astromine:metite_plates" },
+    "1": { "item": "astromine:iron_plates" },
+    "2": { "item": "astromine:metite_plates" },
+    "3": { "item": "astromine:iron_plates" },
+    "4": { "item": "minecraft:air" },
+    "5": { "item": "astromine:iron_plates" },
+    "6": { "item": "astromine:metite_plates" },
+    "7": { "item": "astromine:iron_plates" },
+    "8": { "item": "astromine:metite_plates" }
+  },
+  "result": { "item": "astromine:pressurized_gas_canister", "count": 1 }
+}

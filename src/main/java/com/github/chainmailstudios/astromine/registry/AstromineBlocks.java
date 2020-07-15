@@ -18,6 +18,24 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.AstromineOreBlock;
+import com.github.chainmailstudios.astromine.common.block.CreativeBufferBlock;
+import com.github.chainmailstudios.astromine.common.block.CreativeCapacitorBlock;
+import com.github.chainmailstudios.astromine.common.block.CreativeTankBlock;
+import com.github.chainmailstudios.astromine.common.block.ElectricSmelterBlock;
+import com.github.chainmailstudios.astromine.common.block.ElectrolyzerBlock;
+import com.github.chainmailstudios.astromine.common.block.EnergyCableBlock;
+import com.github.chainmailstudios.astromine.common.block.FluidCableBlock;
+import com.github.chainmailstudios.astromine.common.block.FluidExtractorBlock;
+import com.github.chainmailstudios.astromine.common.block.FluidMixerBlock;
+import com.github.chainmailstudios.astromine.common.block.HolographicBridgeInvisibleBlock;
+import com.github.chainmailstudios.astromine.common.block.HolographicBridgeProjectorBlock;
+import com.github.chainmailstudios.astromine.common.block.LiquidGeneratorBlock;
+import com.github.chainmailstudios.astromine.common.block.NuclearWarheadBlock;
+import com.github.chainmailstudios.astromine.common.block.SolidGeneratorBlock;
+import com.github.chainmailstudios.astromine.common.block.TrituratorBlock;
+import com.github.chainmailstudios.astromine.common.block.TankBlock;
+import com.github.chainmailstudios.astromine.common.block.VentBlock;
 
 public class AstromineBlocks {
 	public static final Block HOLOGRAPHIC_BRIDGE_PROJECTOR = register("holographic_bridge_projector", new HolographicBridgeProjectorBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(4, 16).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
@@ -39,8 +57,9 @@ public class AstromineBlocks {
 	public static final Block CREATIVE_CAPACITOR = register("creative_capacitor", new CreativeCapacitorBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block CREATIVE_BUFFER = register("creative_buffer", new CreativeBufferBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 
-	public static final Block SORTER = register("sorter", new SorterBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
+
 	public static final Block PRESSER = register("presser", new PresserBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
+	public static final Block TRITURATOR = register("triturator", new TrituratorBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block ELECTRIC_SMELTER = register("electric_smelter", new ElectricSmelterBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block FLUID_EXTRACTOR = register("fluid_extractor", new FluidExtractorBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block ELECTROLYZER = register("electrolyzer", new ElectrolyzerBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());

@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.util.Tickable;
@@ -16,8 +17,13 @@ import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
+import net.minecraft.world.biome.layer.type.IdentitySamplingLayer;
 
 public class VentBlockEntity extends DefaultedEnergyFluidBlockEntity implements Tickable, NetworkMember {
+	public boolean isActive = false;
+
+	public boolean[] activity = { false, false, false, false, false };
+
 	public VentBlockEntity() {
 		super(AstromineBlockEntityTypes.VENT);
 
@@ -46,7 +52,24 @@ public class VentBlockEntity extends DefaultedEnergyFluidBlockEntity implements 
 
 				atmosphereComponent.add(output, volume);
 
+				isActive = true;
+			} else {
+				isActive = false;
 			}
+		} else {
+			isActive = false;
+		}
+
+		for (int i = 1; i < activity.length; ++i) {
+			activity[i - 1] = activity[i];
+		}
+
+		activity[4] = isActive;
+
+		if (isActive && !activity[0]) {
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, true));
+		} else if (!isActive && activity[0]) {
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, false));
 		}
 	}
 

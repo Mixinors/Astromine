@@ -1,12 +1,12 @@
 {
-	"type": "minecraft:crafting_shaped",
-	"pattern": ["###", "###", "###"],
-	"key": {
-		"#": {
-			"item": "astromine:galaxium"
-		}
-	},
-	"result": {
-		"item": "astromine:galaxium_block"
-	}
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["###", "###", "###"],
+  "key": {
+    "#": {
+      "item": "astromine:galaxium"
+    }
+  },
+  "result": {
+    "item": "astromine:galaxium_block"
+  }
 }

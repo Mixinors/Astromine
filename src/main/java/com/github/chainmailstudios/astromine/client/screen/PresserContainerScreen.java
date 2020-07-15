@@ -2,9 +2,7 @@ package com.github.chainmailstudios.astromine.client.screen;
 
 import com.github.chainmailstudios.astromine.client.screen.base.DefaultedEnergyItemContainerScreen;
 import com.github.chainmailstudios.astromine.common.block.entity.PresserBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.SorterBlockEntity;
 import com.github.chainmailstudios.astromine.common.container.PresserContainer;
-import com.github.chainmailstudios.astromine.common.container.SorterContainer;
 import com.github.chainmailstudios.astromine.common.container.base.DefaultedEnergyItemContainer;
 import com.github.chainmailstudios.astromine.common.widget.WHorizontalArrow;
 import net.minecraft.entity.player.PlayerEntity;

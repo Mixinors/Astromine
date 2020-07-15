@@ -1,9 +1,16 @@
 {
-	"type": "minecraft:crafting_shaped", "pattern": ["012", "345", "678"], "key": {
-	"0": {"item": "astromine:iron_plates"}, "1": {"item": "astromine:iron_plates"},
-	"2": {"item": "astromine:metite_gear"}, "3": {"item": "astromine:netherite_plates"},
-	"4": {"item": "astromine:elite_circuit"}, "5": {"item": "astromine:diamond_dust"},
-	"6": {"item": "astromine:iron_plates"}, "7": {"item": "astromine:iron_plates"},
-	"8": {"item": "astromine:metite_gear"}
-}, "result": {"item": "astromine:holographic_bridge_projector", "count": 1}
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["012", "345", "678"],
+  "key": {
+    "0": { "item": "astromine:iron_plates" },
+    "1": { "item": "astromine:iron_plates" },
+    "2": { "item": "astromine:metite_gear" },
+    "3": { "item": "astromine:netherite_plates" },
+    "4": { "item": "astromine:elite_circuit" },
+    "5": { "item": "astromine:diamond_dust" },
+    "6": { "item": "astromine:iron_plates" },
+    "7": { "item": "astromine:iron_plates" },
+    "8": { "item": "astromine:metite_gear" }
+  },
+  "result": { "item": "astromine:holographic_bridge_projector", "count": 1 }
 }

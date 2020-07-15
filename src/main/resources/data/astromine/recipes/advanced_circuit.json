@@ -1,21 +1,16 @@
 {
-	"type": "minecraft:crafting_shaped",
-	"pattern": ["121", "343", "121"],
-	"key": {
-		"1": {
-			"item": "minecraft:red_dye"
-		},
-		"2": {
-			"item": "astromine:iron_plates"
-		},
-		"3": {
-			"item": "astromine:diamond_dust"
-		},
-		"4": {
-			"item": "astromine:gold_plates"
-		}
-	},
-	"result": {
-		"item": "astromine:advanced_circuit"
-	}
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["012", "345", "678"],
+  "key": {
+    "0": { "item": "minecraft:prismarine_slab" },
+    "1": { "item": "minecraft:prismarine_slab" },
+    "2": { "item": "minecraft:prismarine_slab" },
+    "3": { "item": "astromine:gold_plates" },
+    "4": { "item": "minecraft:lapis_lazuli" },
+    "5": { "item": "astromine:gold_plates" },
+    "6": { "item": "minecraft:prismarine_slab" },
+    "7": { "item": "minecraft:prismarine_slab" },
+    "8": { "item": "minecraft:prismarine_slab" }
+  },
+  "result": { "item": "astromine:advanced_circuit", "count": 1 }
 }

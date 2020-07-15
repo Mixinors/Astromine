@@ -31,11 +31,12 @@ public class EnergyEmitter {
 
 				EnergyInventoryComponent inventory = provider.getSidedComponent(direction.getOpposite(), AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
 
-				if (inventory != null && energyVolume.hasStored(Fraction.bottle())) {
+				if (inventory != null && !energyVolume.isEmpty()) {
+					Fraction amount = energyVolume.hasStored(Fraction.bottle()) ? Fraction.bottle() : energyVolume.getFraction();
 					EnergyVolume attachedVolume = inventory.getFirstInsertableVolume(direction.getOpposite());
 
-					if (attachedVolume != null) {
-						attachedVolume.pullVolume(energyVolume, Fraction.bottle());
+					if (attachedVolume != null && attachedVolume.hasAvailable(amount)) {
+						attachedVolume.pullVolume(energyVolume, amount);
 					}
 
 					if (attached instanceof BlockEntityClientSerializable && !attached.getWorld().isClient) {

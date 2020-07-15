@@ -1,12 +1,12 @@
 {
-	"type": "minecraft:crafting_shapeless",
-	"ingredients": [
-		{
-			"item": "minecraft:netherite_ingot"
-		}
-	],
-	"result": {
-		"item": "astromine:netherite_nugget",
-		"count": 9
-	}
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:netherite_ingot"
+    }
+  ],
+  "result": {
+    "item": "astromine:netherite_nugget",
+    "count": 9
+  }
 }

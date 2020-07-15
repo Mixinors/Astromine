@@ -1,12 +1,12 @@
 {
-	"type": "minecraft:crafting_shaped",
-	"pattern": ["#", "#"],
-	"key": {
-		"#": {
-			"item": "astromine:univite_ingot"
-		}
-	},
-	"result": {
-		"item": "astromine:univite_plates"
-	}
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["#", "#"],
+  "key": {
+    "#": {
+      "item": "astromine:univite_ingot"
+    }
+  },
+  "result": {
+    "item": "astromine:univite_plates"
+  }
 }

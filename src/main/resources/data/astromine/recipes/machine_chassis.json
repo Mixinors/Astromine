@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["012", "345", "678"],
+  "key": {
+    "0": { "item": "astromine:netherite_plates" },
+    "1": { "item": "astromine:iron_gear" },
+    "2": { "item": "astromine:netherite_plates" },
+    "3": { "item": "astromine:iron_gear" },
+    "4": { "item": "minecraft:air" },
+    "5": { "item": "astromine:iron_gear" },
+    "6": { "item": "astromine:netherite_plates" },
+    "7": { "item": "astromine:iron_gear" },
+    "8": { "item": "astromine:netherite_plates" }
+  },
+  "result": { "item": "astromine:machine_chassis", "count": 1 }
+}

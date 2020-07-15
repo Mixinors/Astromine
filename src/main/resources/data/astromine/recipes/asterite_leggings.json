@@ -1,12 +1,12 @@
 {
-	"type": "minecraft:crafting_shaped",
-	"pattern": ["###", "# #", "# #"],
-	"key": {
-		"#": {
-			"item": "astromine:asterite"
-		}
-	},
-	"result": {
-		"item": "astromine:asterite_leggings"
-	}
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["###", "# #", "# #"],
+  "key": {
+    "#": {
+      "item": "astromine:asterite"
+    }
+  },
+  "result": {
+    "item": "astromine:asterite_leggings"
+  }
 }

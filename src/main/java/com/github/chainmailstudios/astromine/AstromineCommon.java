@@ -23,6 +23,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineFeatures;
 import com.github.chainmailstudios.astromine.registry.AstromineFluids;
 import com.github.chainmailstudios.astromine.registry.AstromineGravities;
+import com.github.chainmailstudios.astromine.registry.AstromineIdentifierFixes;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineOres;
@@ -49,6 +50,7 @@ public class AstromineCommon implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		AstromineIdentifierFixes.initialize();
 		AstromineConfig.initialize();
 		AstromineItems.initialize();
 		AstromineBlocks.initialize();

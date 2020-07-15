@@ -10,8 +10,8 @@
 			"text": "text.astromine.world.ore_clusters.page_one.text"
 		},
 		{
-			"type": "astromine:sorting",
-			"recipe": "astromine:metite_dust_from_sorting_cluster",
+			"type": "astromine:triturating",
+			"recipe": "astromine:metite_dust_from_triturating_cluster",
 			"title": "text.astromine.world.ore_clusters.page_two.title",
 			"text": "text.astromine.world.ore_clusters.page_two.text"
 		}

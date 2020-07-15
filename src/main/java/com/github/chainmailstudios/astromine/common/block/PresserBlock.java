@@ -2,9 +2,7 @@ package com.github.chainmailstudios.astromine.common.block;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.PresserBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.SorterBlockEntity;
 import com.github.chainmailstudios.astromine.common.container.PresserContainer;
-import com.github.chainmailstudios.astromine.common.container.SorterContainer;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
