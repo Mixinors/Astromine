@@ -118,7 +118,7 @@ public class AstromineREIPlugin implements REIPluginV0 {
 										ClientHelper.getInstance().getFormattedModFromIdentifier(AstromineCommon.identifier("a")),
 										new LiteralText(""),
 										new TranslatableText("category.astromine.generating.energy", FluidUtilities.rawFraction(energy)),
-										new TranslatableText("category.astromine.generating.energy", energy.toPrettyString())
+										new TranslatableText("category.astromine.generating.energy", energy.toDecimalString())
 								);
 								else return Tooltip.create(
 										mouse,
@@ -126,7 +126,7 @@ public class AstromineREIPlugin implements REIPluginV0 {
 										ClientHelper.getInstance().getFormattedModFromIdentifier(AstromineCommon.identifier("a")),
 										new LiteralText(""),
 										new TranslatableText("category.astromine.consuming.energy", FluidUtilities.rawFraction(energy)),
-										new TranslatableText("category.astromine.consuming.energy", energy.toPrettyString())
+										new TranslatableText("category.astromine.consuming.energy", energy.toDecimalString())
 								);
 							}
 						}
@@ -204,9 +204,9 @@ public class AstromineREIPlugin implements REIPluginV0 {
 				if (consumedPerTick != null) {
 					tooltip.getText().add(new LiteralText(""));
 					if (generating)
-						tooltip.getText().add(new TranslatableText("category.astromine.fluid.generating.generated", FluidUtilities.rawFraction(consumedPerTick), consumedPerTick.toPrettyString()));
+						tooltip.getText().add(new TranslatableText("category.astromine.fluid.generating.generated", FluidUtilities.rawFraction(consumedPerTick), consumedPerTick.toDecimalString()));
 					else
-						tooltip.getText().add(new TranslatableText("category.astromine.fluid.generating.consumed", FluidUtilities.rawFraction(consumedPerTick), consumedPerTick.toPrettyString()));
+						tooltip.getText().add(new TranslatableText("category.astromine.fluid.generating.consumed", FluidUtilities.rawFraction(consumedPerTick), consumedPerTick.toDecimalString()));
 				}
 				return tooltip;
 			}).orElse(null);

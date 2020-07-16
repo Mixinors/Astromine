@@ -1,5 +1,8 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 
@@ -92,6 +95,13 @@ public class AstromineCommonCallbacks {
 				ItemComponentCallbackV2.register(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, item, (useless, stack) -> {
 					FluidInventoryComponent component = new SimpleFluidInventoryComponent(1);
 					component.getVolume(0).setSize(((FluidVolumeItem) item).getSize());
+					return component;
+				});
+			}
+			if (item instanceof EnergyVolumeItem) {
+				ItemComponentCallbackV2.register(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, item, (useless, stack) -> {
+					EnergyInventoryComponent component = new SimpleEnergyInventoryComponent(1);
+					component.getVolume(0).setSize(((EnergyVolumeItem) item).getSize());
 					return component;
 				});
 			}

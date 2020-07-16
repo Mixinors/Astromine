@@ -261,7 +261,11 @@ public class Fraction extends Number implements Comparable<Fraction> {
 		return "Fraction{" + "numerator=" + this.numerator + ", denominator=" + this.denominator + '}';
 	}
 
-	public String toPrettyString() {
+	public String toFractionalString() {
+		return numerator + ":" + denominator;
+	}
+
+	public String toDecimalString() {
 		return DECIMAL_FORMAT.format(floatValue());
 	}
 
