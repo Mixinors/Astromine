@@ -21,7 +21,7 @@ public class TrituratingDisplay implements RecipeDisplay {
 	private final List<List<EntryStack>> inputs;
 	private final List<EntryStack> outputs;
 	private final int timeRequired;
-	private final Fraction energyRequired;
+	private final double energyRequired;
 	private final Identifier recipeId;
 
 	public TrituratingDisplay(TrituratingRecipe recipe) {
@@ -29,12 +29,12 @@ public class TrituratingDisplay implements RecipeDisplay {
 				CollectionUtils.map(recipe.getPreviewInputs(), ingredient -> CollectionUtils.map(ingredient.getMatchingStacksClient(), EntryStack::create)),
 				Collections.singletonList(EntryStack.create(recipe.getOutput())),
 				recipe.getTime(),
-				recipe.getEnergyConsumed().copy(),
+				recipe.getEnergyConsumed(),
 				recipe.getId()
 		);
 	}
 
-	public TrituratingDisplay(List<List<EntryStack>> inputs, List<EntryStack> outputs, int timeRequired, Fraction energyRequired, Identifier recipeId) {
+	public TrituratingDisplay(List<List<EntryStack>> inputs, List<EntryStack> outputs, int timeRequired, double energyRequired, Identifier recipeId) {
 		this.inputs = inputs;
 		this.outputs = outputs;
 		this.timeRequired = timeRequired;
@@ -56,7 +56,7 @@ public class TrituratingDisplay implements RecipeDisplay {
 		return timeRequired;
 	}
 
-	public Fraction getEnergyRequired() {
+	public double getEnergyRequired() {
 		return energyRequired;
 	}
 

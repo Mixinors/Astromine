@@ -1,9 +1,5 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Tickable;
-
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
@@ -15,6 +11,9 @@ import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
+import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Tickable;
 
 import java.util.Optional;
 
@@ -24,7 +23,7 @@ public class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEntity imple
 
 	public boolean isActive = false;
 
-	public boolean[] activity = { false, false, false, false, false };
+	public boolean[] activity = {false, false, false, false, false};
 
 	private Optional<FluidMixingRecipe> recipe = Optional.empty();
 
@@ -38,7 +37,7 @@ public class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEntity imple
 
 		fluidComponent = new SimpleFluidInventoryComponent(3);
 
-		energyComponent.getVolume(INPUT_ENERGY_VOLUME).setSize(new Fraction(32, 1));
+		setMaxStoredPower(32000);
 		fluidComponent.getVolume(FIRST_INPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
 		fluidComponent.getVolume(SECOND_INPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
 		fluidComponent.getVolume(OUTPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));

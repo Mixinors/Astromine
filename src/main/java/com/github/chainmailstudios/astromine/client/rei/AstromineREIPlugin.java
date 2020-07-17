@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.client.rei;
 
+import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -103,7 +104,7 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		recipeHelper.registerAutoCraftButtonArea(ELECTROLYZING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
 	}
 
-	public static List<Widget> createEnergyDisplay(Rectangle bounds, Fraction energy, boolean generating, long speed) {
+	public static List<Widget> createEnergyDisplay(Rectangle bounds, double energy, boolean generating, long speed) {
 		return Collections.singletonList(
 				new EnergyEntryWidget(bounds, speed, generating).entry(
 						new RenderingEntry() {
@@ -117,16 +118,14 @@ public class AstromineREIPlugin implements REIPluginV0 {
 										new TranslatableText("text.astromine.energy"),
 										ClientHelper.getInstance().getFormattedModFromIdentifier(AstromineCommon.identifier("a")),
 										new LiteralText(""),
-										new TranslatableText("category.astromine.generating.energy", FluidUtilities.rawFraction(energy)),
-										new TranslatableText("category.astromine.generating.energy", energy.toDecimalString())
+										new TranslatableText("category.astromine.generating.energy", EnergyUtilities.simpleDisplay(energy))
 								);
 								else return Tooltip.create(
 										mouse,
 										new TranslatableText("text.astromine.energy"),
 										ClientHelper.getInstance().getFormattedModFromIdentifier(AstromineCommon.identifier("a")),
 										new LiteralText(""),
-										new TranslatableText("category.astromine.consuming.energy", FluidUtilities.rawFraction(energy)),
-										new TranslatableText("category.astromine.consuming.energy", energy.toDecimalString())
+										new TranslatableText("category.astromine.consuming.energy", EnergyUtilities.simpleDisplay(energy))
 								);
 							}
 						}

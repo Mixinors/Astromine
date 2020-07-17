@@ -1,18 +1,5 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
-
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.registry.Registry;
-
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
@@ -28,8 +15,17 @@ import nerdhub.cardinal.components.api.component.ComponentProvider;
 import nerdhub.cardinal.components.api.event.EntityComponentCallback;
 import nerdhub.cardinal.components.api.event.ItemComponentCallbackV2;
 import nerdhub.cardinal.components.api.event.WorldComponentCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.registry.Registry;
 
 public class AstromineCommonCallbacks {
+	@SuppressWarnings("UnstableApiUsage")
 	public static void initialize() {
 		ServerTickEvents.START_SERVER_TICK.register((server) -> {
 			for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
@@ -95,13 +91,6 @@ public class AstromineCommonCallbacks {
 				ItemComponentCallbackV2.register(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, item, (useless, stack) -> {
 					FluidInventoryComponent component = new SimpleFluidInventoryComponent(1);
 					component.getVolume(0).setSize(((FluidVolumeItem) item).getSize());
-					return component;
-				});
-			}
-			if (item instanceof EnergyVolumeItem) {
-				ItemComponentCallbackV2.register(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, item, (useless, stack) -> {
-					EnergyInventoryComponent component = new SimpleEnergyInventoryComponent(1);
-					component.getVolume(0).setSize(((EnergyVolumeItem) item).getSize());
 					return component;
 				});
 			}

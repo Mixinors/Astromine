@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.recipe;
 
+import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -32,6 +33,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+import team.reborn.energy.Energy;
+import team.reborn.energy.EnergyHandler;
 
 public class FluidMixingRecipe implements AdvancedRecipe<Inventory> {
 	final Identifier identifier;
@@ -44,7 +47,7 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory> {
 	final RegistryKey<Fluid> outputFluidKey;
 	final Lazy<Fluid> outputFluid;
 	final Fraction outputAmount;
-	final Fraction energyConsumed;
+	final double energyConsumed;
 	final int time;
 
 	private static final int INPUT_ENERGY_VOLUME = 0;
@@ -52,7 +55,7 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory> {
 	private static final int SECOND_INPUT_FLUID_VOLUME = 1;
 	private static final int OUTPUT_FLUID_VOLUME = 2;
 
-	public FluidMixingRecipe(Identifier identifier, RegistryKey<Fluid> firstInputFluidKey, Fraction firstInputAmount, RegistryKey<Fluid> secondInputFluidKey, Fraction secondInputAmount, RegistryKey<Fluid> outputFluidKey, Fraction outputAmount, Fraction energyConsumed, int time) {
+	public FluidMixingRecipe(Identifier identifier, RegistryKey<Fluid> firstInputFluidKey, Fraction firstInputAmount, RegistryKey<Fluid> secondInputFluidKey, Fraction secondInputAmount, RegistryKey<Fluid> outputFluidKey, Fraction outputAmount, double energyConsumed, int time) {
 		this.identifier = identifier;
 		this.firstInputFluidKey = firstInputFluidKey;
 		this.firstInputFluid = new Lazy<>(() -> Registry.FLUID.get(this.firstInputFluidKey));
@@ -94,11 +97,9 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory> {
 			FluidVolume secondInputFluidVolume = fluidComponent.getVolume(SECOND_INPUT_FLUID_VOLUME);
 			FluidVolume outputVolume = fluidComponent.getVolume(OUTPUT_FLUID_VOLUME);
 
-			EnergyInventoryComponent energyComponent = blockEntity.getComponent(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
+			EnergyHandler energyHandler = Energy.of(blockEntity);
 
-			EnergyVolume energyVolume = energyComponent.getVolume(INPUT_ENERGY_VOLUME);
-
-			if (energyVolume.hasStored(energyConsumed)) {
+			if (energyHandler.getEnergy() >= energyConsumed) {
 				firstInputFluidVolume.extractVolume(firstInputAmount);
 				secondInputFluidVolume.extractVolume(secondInputAmount);
 				outputVolume.insertVolume(new FluidVolume(outputFluid.get(), outputAmount.copy()));
@@ -166,7 +167,7 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory> {
 		return outputAmount;
 	}
 
-	public Fraction getEnergyConsumed() {
+	public double getEnergyConsumed() {
 		return energyConsumed;
 	}
 
@@ -194,7 +195,7 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory> {
 					FractionUtilities.fromJson(format.secondInputAmount),
 					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.output)),
 					FractionUtilities.fromJson(format.outputAmount),
-					FractionUtilities.fromJson(format.energyGenerated),
+					EnergyUtilities.fromJson(format.energyGenerated),
 					ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 
@@ -207,7 +208,7 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory> {
 					FractionUtilities.fromPacket(buffer),
 					RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()),
 					FractionUtilities.fromPacket(buffer),
-					FractionUtilities.fromPacket(buffer),
+					EnergyUtilities.fromPacket(buffer),
 					PacketUtilities.fromPacket(buffer, Integer.class));
 		}
 
@@ -219,7 +220,7 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory> {
 			FractionUtilities.toPacket(buffer, recipe.secondInputAmount);
 			buffer.writeIdentifier(recipe.outputFluidKey.getValue());
 			FractionUtilities.toPacket(buffer, recipe.outputAmount);
-			FractionUtilities.toPacket(buffer, recipe.energyConsumed);
+			EnergyUtilities.toPacket(buffer, recipe.energyConsumed);
 			buffer.writeInt(recipe.getTime());
 		}
 	}

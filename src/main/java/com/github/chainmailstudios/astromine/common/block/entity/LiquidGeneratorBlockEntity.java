@@ -33,7 +33,7 @@ public class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlockEntity 
 	public LiquidGeneratorBlockEntity() {
 		super(AstromineBlockEntityTypes.LIQUID_GENERATOR);
 		
-		energyComponent.getVolume(INPUT_ENERGY_VOLUME).setSize(new Fraction(32, 1));
+		setMaxStoredPower(32000);
 		fluidComponent.getVolume(INPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
 
 		fluidComponent.addListener(() -> {

@@ -30,10 +30,10 @@ public class PressingRecipe implements Recipe<Inventory> {
 	final Identifier identifier;
 	final Ingredient input;
 	final ItemStack output;
-	final Fraction energyConsumed;
+	final double energyConsumed;
 	final int time;
 
-	public PressingRecipe(Identifier identifier, Ingredient input, ItemStack output, Fraction energyConsumed, int time) {
+	public PressingRecipe(Identifier identifier, Ingredient input, ItemStack output, double energyConsumed, int time) {
 		this.identifier = identifier;
 		this.input = input;
 		this.output = output;
@@ -105,7 +105,7 @@ public class PressingRecipe implements Recipe<Inventory> {
 		return time;
 	}
 
-	public Fraction getEnergyConsumed() {
+	public double getEnergyConsumed() {
 		return energyConsumed;
 	}
 
@@ -125,7 +125,7 @@ public class PressingRecipe implements Recipe<Inventory> {
 			return new PressingRecipe(identifier,
 					IngredientUtilities.fromJson(format.input),
 					StackUtilities.fromJson(format.output),
-					FractionUtilities.fromJson(format.energyConsumed),
+					EnergyUtilities.fromJson(format.energyConsumed),
 					ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 
@@ -134,7 +134,7 @@ public class PressingRecipe implements Recipe<Inventory> {
 			return new PressingRecipe(identifier,
 					IngredientUtilities.fromPacket(buffer),
 					StackUtilities.fromPacket(buffer),
-					FractionUtilities.fromPacket(buffer),
+					EnergyUtilities.fromPacket(buffer),
 					PacketUtilities.fromPacket(buffer, Integer.class));
 		}
 
@@ -142,7 +142,7 @@ public class PressingRecipe implements Recipe<Inventory> {
 		public void write(PacketByteBuf buffer, PressingRecipe recipe) {
 			IngredientUtilities.toPacket(buffer, recipe.input);
 			StackUtilities.toPacket(buffer, recipe.output);
-			FractionUtilities.toPacket(buffer, recipe.energyConsumed);
+			EnergyUtilities.toPacket(buffer, recipe.energyConsumed);
 			PacketUtilities.toPacket(buffer, recipe.time);
 		}
 	}

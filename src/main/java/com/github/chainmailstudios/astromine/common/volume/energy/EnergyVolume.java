@@ -1,43 +1,52 @@
 package com.github.chainmailstudios.astromine.common.volume.energy;
 
-import net.minecraft.nbt.CompoundTag;
-
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.math.MathHelper;
 
-public class EnergyVolume extends BaseVolume {
-	private Runnable runnable;
+public class EnergyVolume {
+	public static final double OLD_NEW_RATIO = 1000;
+	private Runnable listener;
+	private double amount;
+	private double maxAmount = Double.MAX_VALUE;
 
 	public EnergyVolume() {
-		super();
+		this(0);
 	}
 
-	public EnergyVolume(Fraction fraction) {
-		this.fraction = fraction;
+	public EnergyVolume(double amount) {
+		this.amount = amount;
 	}
 
-	public EnergyVolume(Fraction fraction, Runnable runnable) {
-		super(fraction);
-		this.runnable = runnable;
-	}
-
-	public static EnergyVolume attached(SimpleEnergyInventoryComponent component) {
-		return new EnergyVolume(Fraction.empty(), component::dispatchConsumers);
+	public EnergyVolume(double amount, Runnable listener) {
+		this(amount);
+		this.listener = listener;
 	}
 
 	public static EnergyVolume empty() {
 		return new EnergyVolume();
 	}
 
-	public static EnergyVolume of(Fraction fraction) {
-		return new EnergyVolume(fraction);
+	public static EnergyVolume of(double amount) {
+		return new EnergyVolume(amount);
 	}
 
-	@Override
-	public void setFraction(Fraction fraction) {
-		super.setFraction(fraction);
-		if (runnable != null) runnable.run();
+	public void setAmount(double amount) {
+		this.amount = MathHelper.clamp(amount, 0, getMaxAmount());
+		if (listener != null) listener.run();
+	}
+
+	public double getAmount() {
+		return amount;
+	}
+
+	public void setMaxAmount(double maxAmount) {
+		this.maxAmount = maxAmount;
+		if (listener != null) listener.run();
+	}
+
+	public double getMaxAmount() {
+		return maxAmount;
 	}
 
 	/**
@@ -51,21 +60,41 @@ public class EnergyVolume extends BaseVolume {
 		EnergyVolume energyVolume = new EnergyVolume();
 
 		if (!tag.contains("fraction")) {
-			energyVolume.fraction = Fraction.empty();
+			if (tag.contains("amount"))
+				energyVolume.amount = tag.getDouble("amount");
 		} else {
-			energyVolume.fraction = Fraction.fromTag(tag.getCompound("fraction"));
+			energyVolume.amount = Fraction.fromTag(tag.getCompound("fraction")).doubleValue() * OLD_NEW_RATIO;
 		}
 
 		if (!tag.contains("size")) {
-			energyVolume.size = Fraction.BUCKET;
+			if (tag.contains("maxAmount"))
+				energyVolume.maxAmount = tag.getDouble("maxAmount");
 		} else {
-			energyVolume.size = Fraction.fromTag(tag.getCompound("size"));
+			energyVolume.maxAmount = Fraction.fromTag(tag.getCompound("size")).doubleValue() * OLD_NEW_RATIO;
 		}
 
 		return energyVolume;
 	}
 
 	public EnergyVolume copy() {
-		return new EnergyVolume(fraction);
+		return new EnergyVolume(amount);
+	}
+
+	public CompoundTag toTag(CompoundTag tag) {
+		tag.putDouble("amount", amount);
+		tag.putDouble("maxAmount", maxAmount);
+		return tag;
+	}
+
+	public boolean isEmpty() {
+		return amount <= 0.0;
+	}
+
+	public boolean isFull() {
+		return amount >= maxAmount;
+	}
+
+	public boolean hasAvailable(double produced) {
+		return maxAmount - amount >= produced;
 	}
 }

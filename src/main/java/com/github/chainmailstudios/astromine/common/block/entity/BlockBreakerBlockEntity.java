@@ -1,33 +1,23 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.context.LootContextType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.Tickable;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import spinnery.common.utility.MutablePair;
@@ -40,20 +30,19 @@ public class BlockBreakerBlockEntity extends DefaultedEnergyItemBlockEntity impl
 
 	public boolean isActive = false;
 
-	public boolean[] activity = { false, false, false, false, false };
+	public boolean[] activity = {false, false, false, false, false};
 
 	public BlockBreakerBlockEntity() {
 		super(AstromineBlockEntityTypes.BLOCK_BREAKER);
 
-		energyComponent.getVolume(0).setSize(Fraction.ofWhole(32));
+		setMaxStoredPower(32000);
 	}
 
 	@Override
 	public void tick() {
-		start: if (this.world != null && !this.world.isClient()) {
-			EnergyVolume energyVolume = energyComponent.getVolume(0);
-
-			if (!energyVolume.hasStored(Fraction.of(1, 8))) {
+		start:
+		if (this.world != null && !this.world.isClient()) {
+			if (asEnergy().getEnergy() < 250) {
 				cooldown.resetToEmpty();
 				isActive = false;
 				break start;
@@ -100,13 +89,11 @@ public class BlockBreakerBlockEntity extends DefaultedEnergyItemBlockEntity impl
 
 				world.breakBlock(targetPos, false);
 
-				energyVolume.extractVolume(Fraction.of(1 ,8));
+				asEnergy().extract(250);
 			}
 		}
 
-		for (int i = 1; i < activity.length; ++i) {
-			activity[i - 1] = activity[i];
-		}
+		if (activity.length - 1 >= 0) System.arraycopy(activity, 1, activity, 0, activity.length - 1);
 
 		activity[4] = isActive;
 
