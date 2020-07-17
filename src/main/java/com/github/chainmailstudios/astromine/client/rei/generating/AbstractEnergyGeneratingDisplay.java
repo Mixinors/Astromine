@@ -12,9 +12,9 @@ import java.util.List;
 
 @Environment(EnvType.CLIENT)
 public abstract class AbstractEnergyGeneratingDisplay implements RecipeDisplay {
-	private final Fraction energyGenerated;
+	private final double energyGenerated;
 
-	public AbstractEnergyGeneratingDisplay(Fraction energyGenerated) {
+	public AbstractEnergyGeneratingDisplay(double energyGenerated) {
 		this.energyGenerated = energyGenerated;
 	}
 
@@ -23,7 +23,7 @@ public abstract class AbstractEnergyGeneratingDisplay implements RecipeDisplay {
 		return Collections.emptyList();
 	}
 
-	public Fraction getEnergyGeneratedPerTick() {
+	public double getEnergyGeneratedPerTick() {
 		return energyGenerated;
 	}
 }

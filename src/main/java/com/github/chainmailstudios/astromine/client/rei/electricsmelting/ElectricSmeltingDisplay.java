@@ -1,18 +1,15 @@
 package com.github.chainmailstudios.astromine.client.rei.electricsmelting;
 
+import com.github.chainmailstudios.astromine.client.rei.AstromineREIPlugin;
+import me.shedaniel.rei.plugin.cooking.DefaultCookingDisplay;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
 import net.minecraft.recipe.AbstractCookingRecipe;
 import net.minecraft.util.Identifier;
 
-import com.github.chainmailstudios.astromine.client.rei.AstromineREIPlugin;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import me.shedaniel.rei.plugin.cooking.DefaultCookingDisplay;
-
 @Environment(EnvType.CLIENT)
 public class ElectricSmeltingDisplay extends DefaultCookingDisplay {
-	private final Fraction energyRequired;
+	private final double energyRequired;
 
 	static {
 		getFuel().clear();
@@ -20,7 +17,7 @@ public class ElectricSmeltingDisplay extends DefaultCookingDisplay {
 
 	public ElectricSmeltingDisplay(AbstractCookingRecipe recipe) {
 		super(recipe);
-		this.energyRequired = Fraction.simplify(new Fraction(recipe.getCookTime(), 4 * 10 * 20));
+		this.energyRequired = recipe.getCookTime() / 3 * 15;
 	}
 
 	@Override
@@ -28,7 +25,7 @@ public class ElectricSmeltingDisplay extends DefaultCookingDisplay {
 		return AstromineREIPlugin.ELECTRIC_SMELTING;
 	}
 
-	public Fraction getEnergyRequired() {
+	public double getEnergyRequired() {
 		return energyRequired;
 	}
 }

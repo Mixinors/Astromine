@@ -9,7 +9,7 @@ import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 public class FuelMixingDisplay extends AbstractFluidMixingDisplay {
 	public FuelMixingDisplay(FluidMixingRecipe recipe) {
 		super(
-				recipe.getEnergyConsumed().copy(),
+				recipe.getEnergyConsumed(),
 				new FluidVolume(recipe.getFirstInputFluid(), recipe.getFirstInputAmount()),
 				new FluidVolume(recipe.getOutputFluid(), recipe.getOutputAmount()),
 				recipe.getId()

@@ -5,14 +5,11 @@ import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedE
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -25,21 +22,20 @@ public class FluidInserterBlockEntity extends DefaultedEnergyFluidBlockEntity im
 
 	public boolean isActive = false;
 
-	public boolean[] activity = { false, false, false, false, false };
+	public boolean[] activity = {false, false, false, false, false};
 
 	public FluidInserterBlockEntity() {
 		super(AstromineBlockEntityTypes.FLUID_INSERTER);
 
 		fluidComponent.getVolume(0).setSize(Fraction.ofWhole(4));
-		energyComponent.getVolume(0).setSize(Fraction.ofWhole(32));
+		setMaxStoredPower(32000);
 	}
 
 	@Override
 	public void tick() {
-		start: if (this.world != null && !this.world.isClient()) {
-			EnergyVolume energyVolume = energyComponent.getVolume(0);
-
-			if (!energyVolume.hasStored(Fraction.of(1, 8))) {
+		start:
+		if (this.world != null && !this.world.isClient()) {
+			if (asEnergy().getEnergy() < 250) {
 				cooldown.resetToEmpty();
 				isActive = false;
 				break start;
@@ -61,14 +57,12 @@ public class FluidInserterBlockEntity extends DefaultedEnergyFluidBlockEntity im
 				if (targetState.isAir() && fluidVolume.hasStored(Fraction.bucket())) {
 					FluidVolume toInsert = fluidVolume.extractVolume(Fraction.bucket());
 					world.setBlockState(targetPos, toInsert.getFluid().getDefaultState().getBlockState());
-					energyVolume.extractVolume(Fraction.of(1 ,8));
+					asEnergy().extract(250);
 					world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1, 1);
 				}
 			}
 
-			for (int i = 1; i < activity.length; ++i) {
-				activity[i - 1] = activity[i];
-			}
+			if (activity.length - 1 >= 0) System.arraycopy(activity, 1, activity, 0, activity.length - 1);
 
 			activity[4] = isActive;
 

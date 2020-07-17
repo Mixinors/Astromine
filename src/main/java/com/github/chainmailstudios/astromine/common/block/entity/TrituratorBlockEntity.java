@@ -1,20 +1,18 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.util.Tickable;
-
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
+import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.util.Tickable;
 import spinnery.common.inventory.BaseInventory;
 
 import java.util.Optional;
@@ -27,7 +25,7 @@ public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implem
 
 	public boolean isActive = false;
 
-	public boolean[] activity = { false, false, false, false, false };
+	public boolean[] activity = {false, false, false, false, false};
 
 	BaseInventory inputInventory = new BaseInventory(1);
 
@@ -36,7 +34,7 @@ public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implem
 	public TrituratorBlockEntity() {
 		super(AstromineBlockEntityTypes.TRITURATOR);
 
-		energyComponent.getVolume(0).setSize(new Fraction(32, 1));
+		setMaxStoredPower(32000);
 		itemComponent = new SimpleItemInventoryComponent(2);
 
 		itemComponent.addListener(() -> {
@@ -63,17 +61,16 @@ public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implem
 		if (shouldTry) {
 			if (recipe.isPresent() && recipe.get().matches(ItemInventoryFromInventoryComponent.of(itemComponent), world)) {
 				limit = recipe.get().getTime();
-				
-				Fraction consumed = recipe.get().getEnergyConsumed().copy();
+
+				double consumed = recipe.get().getEnergyConsumed();
 
 				ItemStack output = recipe.get().getOutput();
 
 				boolean isEmpty = itemComponent.getStack(0).isEmpty();
 				boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(0), output) && ItemStack.areTagsEqual(itemComponent.getStack(0), output);
 
-				if (energyComponent.getVolume(0).hasStored(consumed) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
+				if (asEnergy().use(consumed) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
 					if (progress == recipe.get().getTime()) {
-						energyComponent.getVolume(0).extractVolume(consumed);
 
 						recipe.get().craft(ItemInventoryFromInventoryComponent.of(itemComponent));
 
@@ -84,11 +81,10 @@ public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implem
 						}
 
 						progress = 0;
-						isActive = true;
 					} else {
 						++progress;
-						isActive = true;
 					}
+					isActive = true;
 				} else {
 					isActive = false;
 				}

@@ -1,36 +1,45 @@
 package com.github.chainmailstudios.astromine.common.component.block.entity;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
-
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.utilities.DirectionUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
-import nerdhub.cardinal.components.api.ComponentRegistry;
+import com.google.common.collect.Maps;
 import nerdhub.cardinal.components.api.ComponentType;
 import nerdhub.cardinal.components.api.component.Component;
+import net.minecraft.item.Item;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Direction;
 
-import com.google.common.collect.Maps;
 import java.util.Arrays;
 import java.util.Map;
 
 public class BlockEntityTransferComponent implements Component {
-	private final Map<ComponentType<?>, TransferEntry> components = Maps.newHashMap();
+	public static final Map<Identifier, TransferComponentInfo> INFOS = Maps.newHashMap();
+	private final Map<Identifier, TransferEntry> components = Maps.newHashMap();
 
 	public BlockEntityTransferComponent(ComponentType<?>... types) {
 		Arrays.asList(types).forEach(this::add);
 	}
 
 	public TransferEntry get(ComponentType<?> type) {
+		return get(type.getId());
+	}
+
+	public TransferEntry get(Identifier type) {
 		return components.get(type);
 	}
 
-	public Map<ComponentType<?>, TransferEntry> get() {
+	public Map<Identifier, TransferEntry> get() {
 		return components;
 	}
 
 	public void add(ComponentType<?> type) {
+		add(type.getId());
+	}
+
+	public void add(Identifier type) {
 		components.put(type, new TransferEntry());
 	}
 
@@ -42,7 +51,7 @@ public class BlockEntityTransferComponent implements Component {
 			Identifier keyId = new Identifier(key);
 			TransferEntry entry = new TransferEntry();
 			entry.fromTag(dataTag.getCompound(key));
-			components.put(ComponentRegistry.INSTANCE.stream().filter(component -> component.getId().equals(keyId)).findFirst().get(), entry);
+			components.put(keyId, entry);
 		}
 	}
 
@@ -50,13 +59,19 @@ public class BlockEntityTransferComponent implements Component {
 	public CompoundTag toTag(CompoundTag tag) {
 		CompoundTag dataTag = new CompoundTag();
 
-		for (Map.Entry<ComponentType<?>, TransferEntry> entry : components.entrySet()) {
-			dataTag.put(entry.getKey().getId().toString(), entry.getValue().toTag(new CompoundTag()));
+		for (Map.Entry<Identifier, TransferEntry> entry : components.entrySet()) {
+			dataTag.put(entry.getKey().toString(), entry.getValue().toTag(new CompoundTag()));
 		}
 
 		tag.put("data", dataTag);
 
 		return tag;
+	}
+	
+	public interface TransferComponentInfo {
+		Item getSymbol();
+
+		TranslatableText getName();
 	}
 
 	public static final class TransferEntry {

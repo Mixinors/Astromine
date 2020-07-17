@@ -16,12 +16,12 @@ import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
 public abstract class AbstractFluidMixingDisplay implements RecipeDisplay {
-	private final Fraction energy;
+	private final double energy;
 	private final FluidVolume input;
 	private final FluidVolume output;
 	private final Identifier id;
 
-	public AbstractFluidMixingDisplay(Fraction energy, FluidVolume input, FluidVolume output, Identifier id) {
+	public AbstractFluidMixingDisplay(double energy, FluidVolume input, FluidVolume output, Identifier id) {
 		this.energy = energy;
 		this.input = input;
 		this.output = output;
@@ -45,7 +45,7 @@ public abstract class AbstractFluidMixingDisplay implements RecipeDisplay {
 		return Collections.singletonList(EntryStack.create(output.getFluid()));
 	}
 
-	public Fraction getEnergy() {
+	public double getEnergy() {
 		return energy;
 	}
 
