@@ -48,6 +48,11 @@ public class TrituratingDisplay implements RecipeDisplay {
 	}
 
 	@Override
+	public List<List<EntryStack>> getRequiredEntries() {
+		return getInputEntries();
+	}
+
+	@Override
 	public List<EntryStack> getOutputEntries() {
 		return outputs;
 	}
