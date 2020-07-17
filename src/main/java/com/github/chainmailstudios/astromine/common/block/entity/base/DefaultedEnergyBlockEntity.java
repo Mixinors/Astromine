@@ -42,7 +42,17 @@ public abstract class DefaultedEnergyBlockEntity extends DefaultedBlockEntity im
 
 	@Override
 	public EnergyTier getTier() {
-		return EnergyTier.INFINITE;
+		return EnergyTier.HIGH;
+	}
+
+	@Override
+	public double getMaxInput(EnergySide side) {
+		return 1024;
+	}
+
+	@Override
+	public double getMaxOutput(EnergySide side) {
+		return 1024;
 	}
 
 	public final EnergyVolume getEnergyVolume() {
