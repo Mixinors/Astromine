@@ -60,12 +60,20 @@ public class AstromineItems {
 	public static final Item METITE_NUGGET = register("metite_nugget", new Item(getBasicSettings()));
 	public static final Item STELLUM_NUGGET = register("stellum_nugget", new Item(getBasicSettings()));
 	public static final Item UNIVITE_NUGGET = register("univite_nugget", new Item(getBasicSettings()));
+	public static final Item STEEL_NUGGET = register("steel_nugget", new Item(getBasicSettings()));
+	public static final Item COPPER_NUGGET = register("copper_nugget", new Item(getBasicSettings()));
+	public static final Item TIN_NUGGET = register("tin_nugget", new Item(getBasicSettings()));
+	public static final Item BRONZE_NUGGET = register("bronze_nugget", new Item(getBasicSettings()));
 	public static final Item NETHERITE_NUGGET = register("netherite_nugget", new Item(getBasicSettings().fireproof()));
 
 	// Materials - Ingots
 	public static final Item METITE_INGOT = register("metite_ingot", new Item(getBasicSettings()));
 	public static final Item STELLUM_INGOT = register("stellum_ingot", new Item(getBasicSettings().fireproof()));
 	public static final Item UNIVITE_INGOT = register("univite_ingot", new Item(getBasicSettings().fireproof()));
+	public static final Item STEEL_INGOT = register("steel_ingot", new Item(getBasicSettings().fireproof()));
+	public static final Item COPPER_INGOT = register("copper_ingot", new Item(getBasicSettings().fireproof()));
+	public static final Item TIN_INGOT = register("tin_ingot", new Item(getBasicSettings().fireproof()));
+	public static final Item BRONZE_INGOT = register("bronze_ingot", new Item(getBasicSettings().fireproof()));
 
 	// Materials - Clusters
 	public static final Item METEOR_METITE_CLUSTER = register("meteor_metite_cluster", new Item(getBasicSettings()));
@@ -89,6 +97,10 @@ public class AstromineItems {
 	public static final Item UNIVITE_DUST = register("univite_dust", new Item(getBasicSettings().fireproof()));
 	public static final Item IRON_DUST = register("iron_dust", new Item(getBasicSettings()));
 	public static final Item GOLD_DUST = register("gold_dust", new Item(getBasicSettings()));
+	public static final Item STEEL_DUST = register("steel_dust", new Item(getBasicSettings()));
+	public static final Item COPPER_DUST = register("copper_dust", new Item(getBasicSettings()));
+	public static final Item TIN_DUST = register("tin_dust", new Item(getBasicSettings()));
+	public static final Item BRONZE_DUST = register("bronze_dust", new Item(getBasicSettings()));
 	public static final Item LAPIS_DUST = register("lapis_dust", new Item(getBasicSettings()));
 	public static final Item DIAMOND_DUST = register("diamond_dust", new Item(getBasicSettings()));
 	public static final Item EMERALD_DUST = register("emerald_dust", new Item(getBasicSettings()));
@@ -100,6 +112,10 @@ public class AstromineItems {
 	public static final Item UNIVITE_PLATES = register("univite_plates", new Item(getBasicSettings().fireproof()));
 	public static final Item IRON_PLATES = register("iron_plates", new Item(getBasicSettings()));
 	public static final Item GOLD_PLATES = register("gold_plates", new Item(getBasicSettings()));
+	public static final Item STEEL_PLATES = register("steel_plates", new Item(getBasicSettings()));
+	public static final Item COPPER_PLATES = register("copper_plates", new Item(getBasicSettings()));
+	public static final Item TIN_PLATES = register("tin_plates", new Item(getBasicSettings()));
+	public static final Item BRONZE__PLATES = register("bronze_plates", new Item(getBasicSettings()));
 	public static final Item NETHERITE_PLATES = register("netherite_plates", new Item(getBasicSettings().fireproof()));
 
 	// Materials - Gears
@@ -108,6 +124,10 @@ public class AstromineItems {
 	public static final Item UNIVITE_GEAR = register("univite_gear", new Item(getBasicSettings().fireproof()));
 	public static final Item IRON_GEAR = register("iron_gear", new Item(getBasicSettings()));
 	public static final Item GOLD_GEAR = register("gold_gear", new Item(getBasicSettings()));
+	public static final Item STEEL_GEAR = register("steel_gear", new Item(getBasicSettings()));
+	public static final Item COPPER_GEAR = register("copper_gear", new Item(getBasicSettings()));
+	public static final Item TIN_GEAR = register("tin_gear", new Item(getBasicSettings()));
+	public static final Item BRONZE_GEAR = register("bronze_gear", new Item(getBasicSettings()));
 	public static final Item NETHERITE_GEAR = register("netherite_gear", new Item(getBasicSettings().fireproof()));
 
 	// Circuits
