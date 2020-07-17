@@ -6,9 +6,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.world.World;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
@@ -36,7 +34,7 @@ public class EnergyVolumeItem extends Item implements EnergyHolder {
 		super.appendTooltip(stack, world, tooltip, context);
 
 		EnergyHandler energyHandler = Energy.of(stack);
-		tooltip.add(new LiteralText(EnergyUtilities.toDecimalString(energyHandler.getEnergy()) + " ").append(new TranslatableText("text.astromine.energy")));
+		tooltip.add(EnergyUtilities.compoundDisplay(energyHandler.getEnergy(), energyHandler.getMaxStored()));
 	}
 
 	@Override

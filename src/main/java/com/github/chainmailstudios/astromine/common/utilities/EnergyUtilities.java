@@ -8,12 +8,13 @@ import com.google.gson.JsonPrimitive;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import team.reborn.energy.EnergyHandler;
 
 import java.text.DecimalFormat;
 
 public class EnergyUtilities {
-	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.###");
+	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###");
 
 	public static double fromJson(JsonElement element) {
 		if (element instanceof JsonPrimitive)
@@ -39,7 +40,15 @@ public class EnergyUtilities {
 		return DECIMAL_FORMAT.format(v);
 	}
 
+	public static String toRoundingString(double v) {
+		return String.valueOf((int) v);
+	}
+
 	public static Text simpleDisplay(double energy) {
-		return new TranslatableText(toDecimalString(energy));
+		return new TranslatableText("text.astromine.tooltip.energy_value", toRoundingString(energy)).formatted(Formatting.GRAY);
+	}
+
+	public static Text compoundDisplay(double energy, double maxEnergy) {
+		return new TranslatableText("text.astromine.tooltip.compound_energy_value", toRoundingString(energy), toRoundingString(maxEnergy)).formatted(Formatting.GRAY);
 	}
 }

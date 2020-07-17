@@ -6,7 +6,6 @@ import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosph
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
@@ -32,21 +31,22 @@ public class VentBlockEntity extends DefaultedEnergyFluidBlockEntity implements 
 
 	@Override
 	public void tick() {
-		if (asEnergy().use(400) && (fluidComponent.getVolume(0).hasStored(Fraction.BUCKET))) {
+		if (world.isClient()) return;
+		if (fluidComponent.getVolume(0).hasStored(Fraction.of(1, 8))) {
 			BlockPos position = getPos();
 
 			Direction direction = world.getBlockState(position).get(FacingBlock.FACING);
 
 			BlockPos output = position.offset(direction);
 
-			if (world.getBlockState(output).getBlock() instanceof AirBlock) {
+			if (asEnergy().use(50) && world.getBlockState(output).getBlock() instanceof AirBlock) {
 				ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
 
 				WorldAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);
 
 				FluidVolume volume = atmosphereComponent.get(output);
 
-				fluidComponent.getVolume(0).pushVolume(volume, Fraction.BUCKET);
+				fluidComponent.getVolume(0).pushVolume(volume, Fraction.of(1, 8));
 
 				atmosphereComponent.add(output, volume);
 
@@ -58,9 +58,7 @@ public class VentBlockEntity extends DefaultedEnergyFluidBlockEntity implements 
 			isActive = false;
 		}
 
-		for (int i = 1; i < activity.length; ++i) {
-			activity[i - 1] = activity[i];
-		}
+		if (activity.length - 1 >= 0) System.arraycopy(activity, 1, activity, 0, activity.length - 1);
 
 		activity[4] = isActive;
 

@@ -10,7 +10,9 @@ import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Tickable;
 import spinnery.common.inventory.BaseInventory;
@@ -57,12 +59,27 @@ public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implem
 	}
 
 	@Override
+	public void fromTag(BlockState state, CompoundTag tag) {
+		super.fromTag(state, tag);
+		progress = tag.getInt("progress");
+		limit = tag.getInt("limit");
+	}
+
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		tag.putInt("progress", progress);
+		tag.putInt("limit", limit);
+		return super.toTag(tag);
+	}
+
+	@Override
 	public void tick() {
+		if (world.isClient()) return;
 		if (shouldTry) {
 			if (recipe.isPresent() && recipe.get().matches(ItemInventoryFromInventoryComponent.of(itemComponent), world)) {
 				limit = recipe.get().getTime();
 
-				double consumed = recipe.get().getEnergyConsumed();
+				double consumed = recipe.get().getEnergyConsumed() / (double) limit;
 
 				ItemStack output = recipe.get().getOutput();
 
@@ -70,8 +87,7 @@ public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implem
 				boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(0), output) && ItemStack.areTagsEqual(itemComponent.getStack(0), output);
 
 				if (asEnergy().use(consumed) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
-					if (progress == recipe.get().getTime()) {
-
+					if (progress >= limit) {
 						recipe.get().craft(ItemInventoryFromInventoryComponent.of(itemComponent));
 
 						if (isEmpty) {
@@ -97,9 +113,7 @@ public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implem
 			isActive = false;
 		}
 
-		for (int i = 1; i < activity.length; ++i) {
-			activity[i - 1] = activity[i];
-		}
+		if (activity.length - 1 >= 0) System.arraycopy(activity, 1, activity, 0, activity.length - 1);
 
 		activity[4] = isActive;
 
