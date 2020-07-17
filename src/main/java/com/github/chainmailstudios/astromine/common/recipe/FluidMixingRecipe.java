@@ -1,6 +1,22 @@
 package com.github.chainmailstudios.astromine.common.recipe;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.recipe.base.AdvancedRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.FractionUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.SerializedName;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -13,26 +29,6 @@ import net.minecraft.util.Lazy;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.recipe.base.AdvancedRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
-import com.github.chainmailstudios.astromine.common.utilities.FractionUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.annotations.SerializedName;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
@@ -126,27 +122,27 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory> {
 	public Identifier getId() {
 		return identifier;
 	}
-	
+
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return Serializer.INSTANCE;
 	}
-	
+
 	@Override
 	public RecipeType<?> getType() {
 		return Type.INSTANCE;
 	}
-	
+
 	@Override
 	public DefaultedList<Ingredient> getPreviewInputs() {
 		return DefaultedList.of(); // we are not dealing with items
 	}
-	
+
 	@Override
 	public ItemStack getRecipeKindIcon() {
 		return new ItemStack(AstromineBlocks.FLUID_MIXER);
 	}
-	
+
 	public Identifier getIdentifier() {
 		return identifier;
 	}
@@ -157,6 +153,14 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory> {
 
 	public Fraction getFirstInputAmount() {
 		return firstInputAmount;
+	}
+
+	public Fluid getSecondInputFluid() {
+		return secondInputFluid.get();
+	}
+
+	public Fraction getSecondInputAmount() {
+		return secondInputAmount;
 	}
 
 	public Fluid getOutputFluid() {
@@ -177,9 +181,9 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory> {
 
 	public static final class Serializer implements RecipeSerializer<FluidMixingRecipe> {
 		public static final Identifier ID = AstromineCommon.identifier("fluid_mixing");
-		
+
 		public static final Serializer INSTANCE = new Serializer();
-		
+
 		private Serializer() {
 			// Locked.
 		}
@@ -224,10 +228,10 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory> {
 			buffer.writeInt(recipe.getTime());
 		}
 	}
-	
-	public static final class Type implements RecipeType<FluidMixingRecipe> {
+
+	public static final class Type implements AstromineRecipeType<FluidMixingRecipe> {
 		public static final Type INSTANCE = new Type();
-		
+
 		private Type() {
 			// Locked.
 		}
@@ -259,14 +263,14 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory> {
 		@Override
 		public String toString() {
 			return "Format{" +
-					"firstInput='" + firstInput + '\'' +
-					", firstInputAmount=" + firstInputAmount +
-					", secondInput='" + secondInput + '\'' +
-					", secondInputAmount=" + secondInputAmount +
-					", output='" + output + '\'' +
-					", outputAmount=" + outputAmount +
-					", energyGenerated=" + energyGenerated +
-					'}';
+			       "firstInput='" + firstInput + '\'' +
+			       ", firstInputAmount=" + firstInputAmount +
+			       ", secondInput='" + secondInput + '\'' +
+			       ", secondInputAmount=" + secondInputAmount +
+			       ", output='" + output + '\'' +
+			       ", outputAmount=" + outputAmount +
+			       ", energyGenerated=" + energyGenerated +
+			       '}';
 		}
 	}
 }

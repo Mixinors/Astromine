@@ -16,12 +16,12 @@ import net.minecraft.util.Identifier;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class FluidMixingCategory implements RecipeCategory<AbstractFluidMixingDisplay> {
+public class FluidRecipeCategory implements RecipeCategory<AbstractFluidRecipeDisplay> {
 	private Identifier id;
 	private String translationKey;
 	private EntryStack logo;
 
-	public FluidMixingCategory(Identifier id, String translationKey, EntryStack logo) {
+	public FluidRecipeCategory(Identifier id, String translationKey, EntryStack logo) {
 		this.id = id;
 		this.translationKey = translationKey;
 		this.logo = logo;
@@ -43,14 +43,13 @@ public class FluidMixingCategory implements RecipeCategory<AbstractFluidMixingDi
 	}
 
 	@Override
-	public List<Widget> setupDisplay(AbstractFluidMixingDisplay recipeDisplay, Rectangle bounds) {
+	public List<Widget> setupDisplay(AbstractFluidRecipeDisplay recipeDisplay, Rectangle bounds) {
 		List<Widget> widgets = Lists.newArrayList();
-		Rectangle innerBounds = new Rectangle(bounds.getCenterX() - 65, bounds.y, 130, bounds.height);
+		Rectangle innerBounds = new Rectangle(bounds.getCenterX() - 55, bounds.y, 110, bounds.height);
 		widgets.add(Widgets.createRecipeBase(innerBounds));
 		widgets.addAll(AstromineREIPlugin.createEnergyDisplay(new Rectangle(innerBounds.x + 10, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getEnergy(), false, 12500));
-		widgets.addAll(AstromineREIPlugin.createFluidDisplay(new Rectangle(innerBounds.x + 24, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getInputEntries().get(0).get(0), recipeDisplay.getFirstInput().getFraction(), false, 5000));
-		widgets.addAll(AstromineREIPlugin.createFluidDisplay(new Rectangle(innerBounds.x + 38, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getInputEntries().get(1).get(0), recipeDisplay.getSecondInput().getFraction(), false, 5000));
-		widgets.add(Widgets.createArrow(new Point(innerBounds.getX() + 61, innerBounds.getY() + 26)));
+		widgets.addAll(AstromineREIPlugin.createFluidDisplay(new Rectangle(innerBounds.x + 24, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getInputEntries().get(0).get(0), recipeDisplay.getInput().getFraction(), false, 5000));
+		widgets.add(Widgets.createArrow(new Point(innerBounds.getX() + 45, innerBounds.getY() + 26)));
 		widgets.addAll(AstromineREIPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 32, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getOutputEntries().get(0), recipeDisplay.getOutput().getFraction(), true, 5000));
 		return widgets;
 	}

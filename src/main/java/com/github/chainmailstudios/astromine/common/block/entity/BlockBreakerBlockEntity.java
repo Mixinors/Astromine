@@ -2,11 +2,12 @@ package com.github.chainmailstudios.astromine.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.Block;
@@ -20,6 +21,7 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import org.jetbrains.annotations.NotNull;
 import spinnery.common.utility.MutablePair;
 
 import java.util.List;
@@ -39,10 +41,16 @@ public class BlockBreakerBlockEntity extends DefaultedEnergyItemBlockEntity impl
 	}
 
 	@Override
+	protected ItemInventoryComponent createItemComponent() {
+		return new SimpleItemInventoryComponent(1);
+	}
+
+	@Override
 	public void tick() {
+		if (world.isClient()) return;
 		start:
 		if (this.world != null && !this.world.isClient()) {
-			if (asEnergy().getEnergy() < 250) {
+			if (asEnergy().getEnergy() < 500) {
 				cooldown.resetToEmpty();
 				isActive = false;
 				break start;
@@ -89,7 +97,7 @@ public class BlockBreakerBlockEntity extends DefaultedEnergyItemBlockEntity impl
 
 				world.breakBlock(targetPos, false);
 
-				asEnergy().extract(250);
+				asEnergy().extract(500);
 			}
 		}
 
@@ -111,8 +119,9 @@ public class BlockBreakerBlockEntity extends DefaultedEnergyItemBlockEntity impl
 	}
 
 	@Override
-	public <T extends NetworkType> boolean isProvider(T type) {
-		return type == AstromineNetworkTypes.FLUID;
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+		cooldown = Fraction.fromTag(tag.getCompound("cooldown"));
+		super.fromTag(state, tag);
 	}
 
 	@Override

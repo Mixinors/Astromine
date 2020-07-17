@@ -3,6 +3,8 @@ package com.github.chainmailstudios.astromine.common.block.entity;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.block.entity.EnergyEmitter;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.recipe.SolidGeneratingRecipe;
@@ -35,9 +37,12 @@ public class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlockEntity im
 		super(AstromineBlockEntityTypes.SOLID_GENERATOR);
 
 		setMaxStoredPower(32000);
+	}
 
-		itemComponent.addListener(() -> {
-			if (this.world != null && !this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
+	@Override
+	protected ItemInventoryComponent createItemComponent() {
+		return new SimpleItemInventoryComponent(1).withListener((inv) -> {
+			if (hasWorld() && !this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
 				recipe = (Optional) world.getRecipeManager().getAllOfType(SolidGeneratingRecipe.Type.INSTANCE).values().stream()
 						.filter(recipe -> recipe instanceof SolidGeneratingRecipe)
 						.filter(recipe -> ((SolidGeneratingRecipe) recipe).canCraft(this))

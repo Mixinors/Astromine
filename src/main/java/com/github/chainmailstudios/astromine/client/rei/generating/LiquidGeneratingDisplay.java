@@ -34,6 +34,11 @@ public class LiquidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
 	}
 
 	@Override
+	public List<List<EntryStack>> getRequiredEntries() {
+		return getInputEntries();
+	}
+
+	@Override
 	public Identifier getRecipeCategory() {
 		return AstromineREIPlugin.LIQUID_GENERATING;
 	}

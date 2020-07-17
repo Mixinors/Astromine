@@ -8,9 +8,6 @@
     "item": "astromine:univite_plates",
     "count": 1
   },
-  "time": 20,
-  "energy_consumed": {
-    "numerator": 1,
-    "denominator": 4
-  }
+  "time": 60,
+  "energy_consumed": 1080
 }

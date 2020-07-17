@@ -1,38 +1,24 @@
 package com.github.chainmailstudios.astromine.client.rei;
 
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.texture.SpriteAtlasTexture;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.recipe.SmeltingRecipe;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
-
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.rei.electricsmelting.ElectricSmeltingCategory;
 import com.github.chainmailstudios.astromine.client.rei.electricsmelting.ElectricSmeltingDisplay;
 import com.github.chainmailstudios.astromine.client.rei.fluidmixing.ElectrolyzingDisplay;
 import com.github.chainmailstudios.astromine.client.rei.fluidmixing.FluidMixingCategory;
-import com.github.chainmailstudios.astromine.client.rei.fluidmixing.FuelMixingDisplay;
+import com.github.chainmailstudios.astromine.client.rei.fluidmixing.FluidMixingDisplay;
+import com.github.chainmailstudios.astromine.client.rei.fluidmixing.FluidRecipeCategory;
 import com.github.chainmailstudios.astromine.client.rei.generating.LiquidGeneratingCategory;
 import com.github.chainmailstudios.astromine.client.rei.generating.LiquidGeneratingDisplay;
+import com.github.chainmailstudios.astromine.client.rei.generating.SolidGeneratingCategory;
+import com.github.chainmailstudios.astromine.client.rei.generating.SolidGeneratingDisplay;
+import com.github.chainmailstudios.astromine.client.rei.pressing.PressingCategory;
+import com.github.chainmailstudios.astromine.client.rei.pressing.PressingDisplay;
 import com.github.chainmailstudios.astromine.client.rei.triturating.TrituratingCategory;
 import com.github.chainmailstudios.astromine.client.rei.triturating.TrituratingDisplay;
 import com.github.chainmailstudios.astromine.client.render.SpriteRenderer;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.recipe.ElectrolyzingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.FluidMixingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.LiquidGeneratingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.*;
+import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import me.shedaniel.math.Point;
@@ -46,11 +32,29 @@ import me.shedaniel.rei.api.widgets.Tooltip;
 import me.shedaniel.rei.gui.widget.EntryWidget;
 import me.shedaniel.rei.gui.widget.Widget;
 import me.shedaniel.rei.impl.RenderingEntry;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.texture.SpriteAtlasTexture;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.BucketItem;
+import net.minecraft.item.Item;
+import net.minecraft.recipe.SmeltingRecipe;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import vazkii.patchouli.api.PatchouliAPI;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
@@ -61,8 +65,10 @@ public class AstromineREIPlugin implements REIPluginV0 {
 	public static final Identifier TRITURATING = AstromineCommon.identifier("triturating");
 	public static final Identifier ELECTRIC_SMELTING = AstromineCommon.identifier("electric_smelting");
 	public static final Identifier LIQUID_GENERATING = AstromineCommon.identifier("liquid_generating");
+	public static final Identifier SOLID_GENERATING = AstromineCommon.identifier("solid_generating");
 	public static final Identifier FLUID_MIXING = AstromineCommon.identifier("fluid_mixing");
 	public static final Identifier ELECTROLYZING = AstromineCommon.identifier("electrolyzing");
+	public static final Identifier PRESSING = AstromineCommon.identifier("pressing");
 
 	@Override
 	public Identifier getPluginIdentifier() {
@@ -79,8 +85,10 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		recipeHelper.registerCategory(new TrituratingCategory());
 		recipeHelper.registerCategory(new ElectricSmeltingCategory());
 		recipeHelper.registerCategory(new LiquidGeneratingCategory());
+		recipeHelper.registerCategory(new SolidGeneratingCategory());
 		recipeHelper.registerCategory(new FluidMixingCategory(FLUID_MIXING, "category.astromine.fluid_mixing", EntryStack.create(AstromineBlocks.FLUID_MIXER)));
-		recipeHelper.registerCategory(new FluidMixingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AstromineBlocks.ELECTROLYZER)));
+		recipeHelper.registerCategory(new FluidRecipeCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AstromineBlocks.ELECTROLYZER)));
+		recipeHelper.registerCategory(new PressingCategory());
 	}
 
 	@Override
@@ -88,8 +96,16 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		recipeHelper.registerRecipes(TRITURATING, TrituratingRecipe.class, TrituratingDisplay::new);
 		recipeHelper.registerRecipes(ELECTRIC_SMELTING, SmeltingRecipe.class, ElectricSmeltingDisplay::new);
 		recipeHelper.registerRecipes(LIQUID_GENERATING, LiquidGeneratingRecipe.class, LiquidGeneratingDisplay::new);
-		recipeHelper.registerRecipes(FLUID_MIXING, FluidMixingRecipe.class, FuelMixingDisplay::new);
+		recipeHelper.registerRecipes(SOLID_GENERATING, SolidGeneratingRecipe.class, SolidGeneratingDisplay::new);
+		recipeHelper.registerRecipes(FLUID_MIXING, FluidMixingRecipe.class, FluidMixingDisplay::new);
 		recipeHelper.registerRecipes(ELECTROLYZING, ElectrolyzingRecipe.class, ElectrolyzingDisplay::new);
+		recipeHelper.registerRecipes(PRESSING, PressingRecipe.class, PressingDisplay::new);
+
+		for (Map.Entry<Item, Integer> entry : AbstractFurnaceBlockEntity.createFuelTimeMap().entrySet()) {
+			if (!(entry.getKey() instanceof BucketItem) && entry != null && entry.getValue() > 0) {
+				recipeHelper.registerDisplay(new SolidGeneratingDisplay((entry.getValue() / 2 * 5) / (entry.getValue() / 2) * 6, Collections.singletonList(EntryStack.create(entry.getKey())), null, (entry.getValue() / 2) / 6.0));
+			}
+		}
 	}
 
 	@Override
@@ -97,10 +113,13 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		recipeHelper.registerWorkingStations(TRITURATING, EntryStack.create(AstromineBlocks.TRITURATOR));
 		recipeHelper.registerWorkingStations(ELECTRIC_SMELTING, EntryStack.create(AstromineBlocks.ELECTRIC_SMELTER));
 		recipeHelper.registerWorkingStations(LIQUID_GENERATING, EntryStack.create(AstromineBlocks.LIQUID_GENERATOR));
+		recipeHelper.registerWorkingStations(SOLID_GENERATING, EntryStack.create(AstromineBlocks.SOLID_GENERATOR));
 		recipeHelper.registerWorkingStations(FLUID_MIXING, EntryStack.create(AstromineBlocks.FLUID_MIXER));
 		recipeHelper.registerWorkingStations(ELECTROLYZING, EntryStack.create(AstromineBlocks.ELECTROLYZER));
-		recipeHelper.registerAutoCraftButtonArea(LIQUID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 5, bounds.y + 5, 10, 10));
-		recipeHelper.registerAutoCraftButtonArea(FLUID_MIXING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
+		recipeHelper.registerWorkingStations(PRESSING, EntryStack.create(AstromineBlocks.PRESSER));
+		recipeHelper.registerAutoCraftButtonArea(LIQUID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
+		recipeHelper.registerAutoCraftButtonArea(SOLID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
+		recipeHelper.registerAutoCraftButtonArea(FLUID_MIXING, bounds -> new Rectangle(bounds.getCenterX() - 65 + 130 - 16, bounds.getMaxY() - 16, 10, 10));
 		recipeHelper.registerAutoCraftButtonArea(ELECTROLYZING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
 	}
 

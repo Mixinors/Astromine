@@ -154,7 +154,7 @@ public class SolidGeneratingRecipe implements AdvancedRecipe<Inventory> {
 		}
 	}
 
-	public static final class Type implements RecipeType<SolidGeneratingRecipe> {
+	public static final class Type implements AstromineRecipeType<SolidGeneratingRecipe> {
 		public static final Type INSTANCE = new Type();
 
 		private Type() {

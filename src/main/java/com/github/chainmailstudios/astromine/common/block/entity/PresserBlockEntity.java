@@ -2,15 +2,17 @@ package com.github.chainmailstudios.astromine.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.recipe.PressingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Tickable;
 import spinnery.common.inventory.BaseInventory;
@@ -27,23 +29,23 @@ public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implement
 
 	public boolean[] activity = {false, false, false, false, false};
 
-	BaseInventory inputInventory = new BaseInventory(1);
-
 	Optional<PressingRecipe> recipe = Optional.empty();
 
 	public PresserBlockEntity() {
 		super(AstromineBlockEntityTypes.PRESSER);
 
 		setMaxStoredPower(32000);
-		itemComponent = new SimpleItemInventoryComponent(2);
+	}
 
-		itemComponent.addListener(() -> {
-			inputInventory.setStack(0, itemComponent.getStack(1));
-			recipe = (Optional<PressingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) PressingRecipe.Type.INSTANCE, inputInventory, world);
-			shouldTry = true;
+	@Override
+	protected ItemInventoryComponent createItemComponent() {
+		return new SimpleItemInventoryComponent(2).withListener((inv) -> {
+			if (hasWorld() && !world.isClient) {
+				BaseInventory inputInventory = new BaseInventory(1);
+				inputInventory.setStack(0, itemComponent.getStack(1));
+				recipe = (Optional<PressingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) PressingRecipe.Type.INSTANCE, inputInventory, world);
+			}
 		});
-
-		addComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, itemComponent);
 	}
 
 	@Override
@@ -57,12 +59,29 @@ public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implement
 	}
 
 	@Override
+	public void fromTag(BlockState state, CompoundTag tag) {
+		super.fromTag(state, tag);
+		progress = tag.getInt("progress");
+		limit = tag.getInt("limit");
+		shouldTry = true;
+	}
+
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		tag.putInt("progress", progress);
+		tag.putInt("limit", limit);
+		return super.toTag(tag);
+	}
+
+	@Override
 	public void tick() {
+		if (world.isClient()) return;
 		if (shouldTry) {
+			itemComponent.dispatchConsumers();
 			if (recipe.isPresent() && recipe.get().matches(ItemInventoryFromInventoryComponent.of(itemComponent), world)) {
 				limit = recipe.get().getTime();
 
-				double consumed = recipe.get().getEnergyConsumed();
+				double consumed = recipe.get().getEnergyConsumed() / (double) limit;
 
 				ItemStack output = recipe.get().getOutput();
 
@@ -70,7 +89,7 @@ public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implement
 				boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(0), output) && ItemStack.areTagsEqual(itemComponent.getStack(0), output);
 
 				if (asEnergy().use(consumed) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
-					if (progress == recipe.get().getTime()) {
+					if (progress >= limit) {
 						recipe.get().craft(ItemInventoryFromInventoryComponent.of(itemComponent));
 
 						if (isEmpty) {
@@ -94,9 +113,7 @@ public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implement
 			isActive = false;
 		}
 
-		for (int i = 1; i < activity.length; ++i) {
-			activity[i - 1] = activity[i];
-		}
+		if (activity.length - 1 >= 0) System.arraycopy(activity, 1, activity, 0, activity.length - 1);
 
 		activity[4] = isActive;
 

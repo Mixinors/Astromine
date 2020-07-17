@@ -1,12 +1,10 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Tickable;
-
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.block.entity.EnergyEmitter;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
@@ -14,6 +12,9 @@ import com.github.chainmailstudios.astromine.common.recipe.LiquidGeneratingRecip
 import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
+import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Tickable;
 
 import java.util.Optional;
 
@@ -23,20 +24,23 @@ public class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlockEntity 
 
 	public boolean isActive = false;
 
-	public boolean[] activity = { false, false, false, false, false };
+	public boolean[] activity = {false, false, false, false, false};
 
 	private Optional<LiquidGeneratingRecipe> recipe = Optional.empty();
 
 	private static final int INPUT_ENERGY_VOLUME = 0;
 	private static final int INPUT_FLUID_VOLUME = 0;
-	
+
 	public LiquidGeneratorBlockEntity() {
 		super(AstromineBlockEntityTypes.LIQUID_GENERATOR);
-		
+
 		setMaxStoredPower(32000);
 		fluidComponent.getVolume(INPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
+	}
 
-		fluidComponent.addListener(() -> {
+	@Override
+	protected FluidInventoryComponent createFluidComponent() {
+		return new SimpleFluidInventoryComponent(1).withListener((inv) -> {
 			if (this.world != null && !this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
 				recipe = (Optional) world.getRecipeManager().getAllOfType(LiquidGeneratingRecipe.Type.INSTANCE).values().stream()
 						.filter(recipe -> recipe instanceof LiquidGeneratingRecipe)
@@ -103,9 +107,7 @@ public class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlockEntity 
 			isActive = false;
 		}
 
-		for (int i = 1; i < activity.length; ++i) {
-			activity[i - 1] = activity[i];
-		}
+		if (activity.length - 1 >= 0) System.arraycopy(activity, 1, activity, 0, activity.length - 1);
 
 		activity[4] = isActive;
 
@@ -117,12 +119,12 @@ public class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlockEntity 
 
 		EnergyEmitter.emit(this, INPUT_ENERGY_VOLUME);
 	}
-	
+
 	@Override
 	public <T extends NetworkType> boolean acceptsType(T type) {
 		return type == AstromineNetworkTypes.FLUID || type == AstromineNetworkTypes.ENERGY;
 	}
-	
+
 	@Override
 	public <T extends NetworkType> boolean isBuffer(T type) {
 		return true;

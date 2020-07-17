@@ -18,13 +18,14 @@ import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 import team.reborn.energy.EnergyStorage;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class NetworkTypeEnergy extends NetworkType {
 	@Override
 	public void simulate(NetworkInstance controller) {
 		List<EnergyHandler> inputs = Lists.newArrayList();
-		List<EnergyHandler> requesterMap = Lists.newArrayList();
+		List<EnergyHandler> requesters = Lists.newArrayList();
 
 		for (NetworkNode memberNode : controller.members) {
 			BlockEntity blockEntity = controller.getWorld().getBlockEntity(memberNode.getBlockPos());
@@ -46,15 +47,17 @@ public class NetworkTypeEnergy extends NetworkType {
 					}
 
 					if (type.canInsert()) {
-						requesterMap.add(Energy.of(blockEntity).side(memberNode.getDirection()));
+						requesters.add(Energy.of(blockEntity).side(memberNode.getDirection()));
 					}
 				}
 			}
 		}
 
+		requesters.sort(Comparator.comparingDouble(EnergyHandler::getEnergy));
 		for (EnergyHandler input : inputs) {
-			for (EnergyHandler output : requesterMap) {
-				input.into(output).move();
+			for (int i = requesters.size() - 1; i >= 0; i--) {
+				EnergyHandler output = requesters.get(i);
+				input.into(output).move(Math.max(0, Math.min(Math.min(input.getEnergy() / (i + 1), output.getMaxStored() - output.getEnergy()), Math.min(input.getMaxOutput(), output.getMaxInput()))));
 			}
 		}
 	}
