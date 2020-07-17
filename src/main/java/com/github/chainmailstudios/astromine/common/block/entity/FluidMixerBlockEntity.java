@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyFluidBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
@@ -9,7 +10,6 @@ import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.recipe.FluidMixingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundTag;
@@ -35,22 +35,21 @@ public class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEntity imple
 	public FluidMixerBlockEntity() {
 		super(AstromineBlockEntityTypes.FLUID_MIXER);
 
-		fluidComponent = new SimpleFluidInventoryComponent(3);
-
 		setMaxStoredPower(32000);
 		fluidComponent.getVolume(FIRST_INPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
 		fluidComponent.getVolume(SECOND_INPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
 		fluidComponent.getVolume(OUTPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
+	}
 
-		fluidComponent.addListener(() -> {
+	@Override
+	protected FluidInventoryComponent createFluidComponent() {
+		return new SimpleFluidInventoryComponent(3).withListener((inv) -> {
 			if (this.world != null && !this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
 				recipe = (Optional) world.getRecipeManager().getAllOfType(FluidMixingRecipe.Type.INSTANCE).values().stream()
 						.filter(recipe -> recipe instanceof FluidMixingRecipe)
 						.filter(recipe -> ((FluidMixingRecipe) recipe).canCraft(this))
 						.findFirst();
 		});
-
-		addComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, fluidComponent);
 	}
 
 	@Override

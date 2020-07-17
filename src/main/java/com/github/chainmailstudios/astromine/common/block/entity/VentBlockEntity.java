@@ -2,6 +2,8 @@ package com.github.chainmailstudios.astromine.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyFluidBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
@@ -27,6 +29,11 @@ public class VentBlockEntity extends DefaultedEnergyFluidBlockEntity implements 
 
 		setMaxStoredPower(16000);
 		fluidComponent.getVolume(0).setSize(new Fraction(16, 1));
+	}
+
+	@Override
+	protected FluidInventoryComponent createFluidComponent() {
+		return new SimpleFluidInventoryComponent(1);
 	}
 
 	@Override

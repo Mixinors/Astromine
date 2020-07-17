@@ -2,6 +2,8 @@ package com.github.chainmailstudios.astromine.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyFluidBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
@@ -28,8 +30,13 @@ public class FluidExtractorBlockEntity extends DefaultedEnergyFluidBlockEntity i
 	public FluidExtractorBlockEntity() {
 		super(AstromineBlockEntityTypes.FLUID_EXTRACTOR);
 
-		fluidComponent.getVolume(0).setSize(Fraction.ofWhole(4));
 		setMaxStoredPower(32000);
+		fluidComponent.getVolume(0).setSize(Fraction.ofWhole(4));
+	}
+
+	@Override
+	protected FluidInventoryComponent createFluidComponent() {
+		return new SimpleFluidInventoryComponent(1);
 	}
 
 	@Override
@@ -68,9 +75,7 @@ public class FluidExtractorBlockEntity extends DefaultedEnergyFluidBlockEntity i
 			}
 		}
 
-		for (int i = 1; i < activity.length; ++i) {
-			activity[i - 1] = activity[i];
-		}
+		if (activity.length - 1 >= 0) System.arraycopy(activity, 1, activity, 0, activity.length - 1);
 
 		activity[4] = isActive;
 

@@ -1,25 +1,11 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.entity.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.registry.Registry;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.entity.CreativeBufferBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.CreativeCapacitorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.CreativeTankBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.ElectricSmelterBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.ElectrolyzerBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.FluidExtractorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.FluidMixerBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.LiquidGeneratorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.SolidGeneratorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.TrituratorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.TankBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.VentBlockEntity;
 
 import java.util.function.Supplier;
 
@@ -43,7 +29,7 @@ public class AstromineBlockEntityTypes {
 	public static final BlockEntityType<FluidExtractorBlockEntity> FLUID_EXTRACTOR = register("fluid_extractor", FluidExtractorBlockEntity::new, AstromineBlocks.FLUID_EXTRACTOR);
 	public static final BlockEntityType<FluidInserterBlockEntity> FLUID_INSERTER = register("fluid_inserter", FluidInserterBlockEntity::new, AstromineBlocks.FLUID_INSERTER);
 	public static final BlockEntityType<BlockBreakerBlockEntity> BLOCK_BREAKER = register("block_breaker", BlockBreakerBlockEntity::new, AstromineBlocks.BLOCK_BREAKER);
-	public static final BlockEntityType<BlockBreakerBlockEntity> BLOCK_PLACER = register("block_placer", BlockBreakerBlockEntity::new, AstromineBlocks.BLOCK_PLACER);
+	public static final BlockEntityType<BlockPlacerBlockEntity> BLOCK_PLACER = register("block_placer", BlockPlacerBlockEntity::new, AstromineBlocks.BLOCK_PLACER);
 	public static final BlockEntityType<ElectrolyzerBlockEntity> ELECTROLYZER = register("electrolyzer", ElectrolyzerBlockEntity::new, AstromineBlocks.ELECTROLYZER);
 	public static final BlockEntityType<FluidMixerBlockEntity> FLUID_MIXER = register("fluid_mixer", FluidMixerBlockEntity::new, AstromineBlocks.FLUID_MIXER);
 

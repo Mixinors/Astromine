@@ -225,7 +225,7 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory> {
 		}
 	}
 	
-	public static final class Type implements RecipeType<FluidMixingRecipe> {
+	public static final class Type implements AstromineRecipeType<FluidMixingRecipe> {
 		public static final Type INSTANCE = new Type();
 		
 		private Type() {

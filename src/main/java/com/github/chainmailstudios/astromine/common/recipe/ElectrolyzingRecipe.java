@@ -223,7 +223,7 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory> {
 		}
 	}
 	
-	public static final class Type implements RecipeType<ElectrolyzingRecipe> {
+	public static final class Type implements AstromineRecipeType<ElectrolyzingRecipe> {
 		public static final Type INSTANCE = new Type();
 		
 		private Type() {

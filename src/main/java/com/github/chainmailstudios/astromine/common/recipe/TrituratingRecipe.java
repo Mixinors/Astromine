@@ -148,7 +148,7 @@ public class TrituratingRecipe implements Recipe<Inventory> {
 		}
 	}
 
-	public static final class Type implements RecipeType<TrituratingRecipe> {
+	public static final class Type implements AstromineRecipeType<TrituratingRecipe> {
 		public static final Type INSTANCE = new Type();
 
 		private Type() {

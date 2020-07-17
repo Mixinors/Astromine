@@ -177,7 +177,7 @@ public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory> {
 		}
 	}
 	
-	public static final class Type implements RecipeType<LiquidGeneratingRecipe> {
+	public static final class Type implements AstromineRecipeType<LiquidGeneratingRecipe> {
 		public static final Type INSTANCE = new Type();
 		
 		private Type() {

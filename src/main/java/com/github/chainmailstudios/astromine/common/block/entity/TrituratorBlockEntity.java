@@ -2,13 +2,13 @@ package com.github.chainmailstudios.astromine.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
@@ -29,23 +29,23 @@ public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implem
 
 	public boolean[] activity = {false, false, false, false, false};
 
-	BaseInventory inputInventory = new BaseInventory(1);
-
 	Optional<TrituratingRecipe> recipe = Optional.empty();
 
 	public TrituratorBlockEntity() {
 		super(AstromineBlockEntityTypes.TRITURATOR);
 
 		setMaxStoredPower(32000);
-		itemComponent = new SimpleItemInventoryComponent(2);
+	}
 
-		itemComponent.addListener(() -> {
-			inputInventory.setStack(0, itemComponent.getStack(1));
-			recipe = (Optional<TrituratingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) TrituratingRecipe.Type.INSTANCE, inputInventory, world);
-			shouldTry = true;
+	@Override
+	protected ItemInventoryComponent createItemComponent() {
+		return new SimpleItemInventoryComponent(2).withListener((inv) -> {
+			if (hasWorld() && !world.isClient) {
+				BaseInventory inputInventory = new BaseInventory(1);
+				inputInventory.setStack(0, itemComponent.getStack(1));
+				recipe = (Optional<TrituratingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) TrituratingRecipe.Type.INSTANCE, inputInventory, world);
+			}
 		});
-
-		addComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, itemComponent);
 	}
 
 	@Override
@@ -63,6 +63,7 @@ public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implem
 		super.fromTag(state, tag);
 		progress = tag.getInt("progress");
 		limit = tag.getInt("limit");
+		shouldTry = true;
 	}
 
 	@Override
@@ -76,6 +77,7 @@ public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implem
 	public void tick() {
 		if (world.isClient()) return;
 		if (shouldTry) {
+			itemComponent.dispatchConsumers();
 			if (recipe.isPresent() && recipe.get().matches(ItemInventoryFromInventoryComponent.of(itemComponent), world)) {
 				limit = recipe.get().getTime();
 

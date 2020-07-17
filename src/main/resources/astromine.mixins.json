@@ -12,7 +12,7 @@
 	"client": [
 		"BossBarHudMixin", "BuiltinModelItemRendererMixin", "CurrentDownParticleMixin", "EggEntityMixin",
 		"GameRendererMixin", "InGameHudMixin", "ItemRendererMixin", "MinecraftClientMixin", "SkyPropertiesMixin",
-		"WorldRendererMixin"
+		"WorldRendererMixin", "ClientRecipeBookMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
