@@ -229,8 +229,4 @@ public class FluidVolume extends BaseVolume {
 	public Identifier getFluidIdentifier() {
 		return Registry.FLUID.getId(fluid);
 	}
-
-	public String getFractionString() {
-		return fraction.getNumerator() + ":" + fraction.getDenominator();
-	}
 }

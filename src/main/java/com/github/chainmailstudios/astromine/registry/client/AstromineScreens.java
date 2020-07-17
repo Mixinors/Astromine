@@ -1,5 +1,7 @@
 package com.github.chainmailstudios.astromine.registry.client;
 
+import com.github.chainmailstudios.astromine.client.screen.*;
+import com.github.chainmailstudios.astromine.common.container.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
@@ -58,6 +60,18 @@ public class AstromineScreens {
 			 new FluidExtractorContainerScreen(title, handler, inventory.player)
 		));
 
+		ScreenRegistry.register(AstromineContainers.FLUID_INSERTER, (ScreenRegistry.Factory<FluidInserterContainer, FluidInserterContainerScreen>) ((handler, inventory, title) ->
+				new FluidInserterContainerScreen(title, handler, inventory.player)
+		));
+
+		ScreenRegistry.register(AstromineContainers.BLOCK_BREAKER, (ScreenRegistry.Factory<BlockBreakerContainer, BlockBreakerContainerScreen>) ((handler, inventory, title) ->
+				new BlockBreakerContainerScreen(title, handler, inventory.player)
+		));
+
+		ScreenRegistry.register(AstromineContainers.BLOCK_PLACER, (ScreenRegistry.Factory<BlockPlacerContainer, BlockPlacerContainerScreen>) ((handler, inventory, title) ->
+				new BlockPlacerContainerScreen(title, handler, inventory.player)
+		));
+
 		ScreenRegistry.register(AstromineContainers.LIQUID_GENERATOR, (ScreenRegistry.Factory<LiquidGeneratorContainer, LiquidGeneratorContainerScreen>) ((handler, inventory, title) ->
 			new LiquidGeneratorContainerScreen(title, handler, inventory.player)
 		));
@@ -91,6 +105,10 @@ public class AstromineScreens {
 
 		ScreenRegistry.register(AstromineContainers.TRITURATOR, (ScreenRegistry.Factory<TrituratorContainer, TrituratorContainerScreen>) ((handler, inventory, title) ->
 			new TrituratorContainerScreen(title, handler, inventory.player)
+		));
+
+		ScreenRegistry.register(AstromineContainers.PRESSER, (ScreenRegistry.Factory<PresserContainer, PresserContainerScreen>) ((handler, inventory, title) ->
+				new PresserContainerScreen(title, handler, inventory.player)
 		));
 
 		ScreenRegistry.register(AstromineContainers.ELECTRIC_SMELTER, (ScreenRegistry.Factory<ElectricSmelterContainer, ElectricSmelterContainerScreen>) ((handler, inventory, title) ->

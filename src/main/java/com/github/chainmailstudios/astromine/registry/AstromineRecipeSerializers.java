@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.common.recipe.*;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.registry.Registry;
 
@@ -14,7 +15,12 @@ public class AstromineRecipeSerializers {
 			Registry.RECIPE_SERIALIZER,
 			TrituratingRecipe.Serializer.ID,
 			TrituratingRecipe.Serializer.INSTANCE);
-	
+
+	public static final RecipeSerializer<PressingRecipe> PRESSING = Registry.register(
+			Registry.RECIPE_SERIALIZER,
+			PressingRecipe.Serializer.ID,
+			PressingRecipe.Serializer.INSTANCE);
+
 	public static final RecipeSerializer<LiquidGeneratingRecipe> LIQUID_GENERATING = Registry.register(
 			Registry.RECIPE_SERIALIZER,
 			LiquidGeneratingRecipe.Serializer.ID,

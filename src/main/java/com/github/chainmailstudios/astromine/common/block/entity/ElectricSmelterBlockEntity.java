@@ -1,21 +1,20 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
+import com.github.chainmailstudios.astromine.common.network.NetworkMember;
+import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.util.Tickable;
-
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.network.NetworkMember;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import spinnery.common.inventory.BaseInventory;
 
 import java.util.Optional;
@@ -27,26 +26,25 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 	public boolean shouldTry = true;
 	public boolean isActive = false;
 
-	public boolean[] activity = { false, false, false, false, false };
-
-	BaseInventory inputInventory = new BaseInventory(1);
+	public boolean[] activity = {false, false, false, false, false};
 
 	Optional<SmeltingRecipe> recipe = Optional.empty();
 
 	public ElectricSmelterBlockEntity() {
 		super(AstromineBlockEntityTypes.ELECTRIC_SMELTER);
 
-		energyComponent.getVolume(0).setSize(new Fraction(32, 1));
+		setMaxStoredPower(32000);
+	}
 
-		itemComponent = new SimpleItemInventoryComponent(2);
-
-		itemComponent.addListener(() -> {
-			inputInventory.setStack(0, itemComponent.getStack(1));
-			recipe = (Optional<SmeltingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) RecipeType.SMELTING, inputInventory, world);
-			shouldTry = true;
+	@Override
+	protected ItemInventoryComponent createItemComponent() {
+		return new SimpleItemInventoryComponent(2).withListener((inv) -> {
+			if (hasWorld() && !world.isClient) {
+				BaseInventory inputInventory = new BaseInventory(1);
+				inputInventory.setStack(0, itemComponent.getStack(1));
+				recipe = (Optional<SmeltingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) RecipeType.SMELTING, inputInventory, world);
+			}
 		});
-
-		addComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, itemComponent);
 	}
 
 	@Override
@@ -64,6 +62,7 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 		super.fromTag(state, tag);
 		progress = tag.getInt("progress");
 		limit = tag.getInt("limit");
+		shouldTry = true;
 	}
 
 	@Override
@@ -77,19 +76,19 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 	public void tick() {
 		if (world.isClient()) return;
 		if (shouldTry) {
+			itemComponent.dispatchConsumers();
+			BaseInventory inputInventory = new BaseInventory(1);
+			inputInventory.setStack(0, itemComponent.getStack(1));
 			if (recipe.isPresent() && recipe.get().matches(inputInventory, world)) {
-				limit = recipe.get().getCookTime() / 10;
-
-				Fraction consumed = new Fraction(recipe.get().getCookTime(), 10 * 20 * 4);
+				limit = recipe.get().getCookTime() / 3;
 
 				ItemStack output = recipe.get().getOutput().copy();
 
 				boolean isEmpty = itemComponent.getStack(0).isEmpty();
 				boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(0), output) && ItemStack.areTagsEqual(itemComponent.getStack(0), output);
 
-				if (energyComponent.getVolume(0).hasStored(consumed) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
+				if (asEnergy().use(15) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
 					if (progress == limit) {
-						energyComponent.getVolume(0).extractVolume(consumed);
 
 						itemComponent.getStack(1).decrement(1);
 
@@ -115,9 +114,7 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 			isActive = false;
 		}
 
-		for (int i = 1; i < activity.length; ++i) {
-			activity[i - 1] = activity[i];
-		}
+		if (activity.length - 1 >= 0) System.arraycopy(activity, 1, activity, 0, activity.length - 1);
 
 		activity[4] = isActive;
 

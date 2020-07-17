@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.recipe;
 
+import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -32,19 +33,21 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+import team.reborn.energy.Energy;
+import team.reborn.energy.EnergyHandler;
 
 public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory> {
 	final Identifier identifier;
 	final RegistryKey<Fluid> fluidKey;
 	final Lazy<Fluid> fluid;
 	final Fraction amount;
-	final Fraction energyGenerated;
+	final double energyGenerated;
 	final int time;
 
 	private static final int INPUT_ENERGY_VOLUME = 0;
 	private static final int INPUT_FLUID_VOLUME = 0;
 
-	public LiquidGeneratingRecipe(Identifier identifier, RegistryKey<Fluid> fluidKey, Fraction amount, Fraction energyGenerated, int time) {
+	public LiquidGeneratingRecipe(Identifier identifier, RegistryKey<Fluid> fluidKey, Fraction amount, double energyGenerated, int time) {
 		this.identifier = identifier;
 		this.fluidKey = fluidKey;
 		this.fluid = new Lazy<>(() -> Registry.FLUID.get(this.fluidKey));
@@ -68,15 +71,14 @@ public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory> {
 	@Override
 	public <T extends DefaultedBlockEntity> void craft(T blockEntity) {
 		if (canCraft(blockEntity)) {
-			EnergyInventoryComponent energyComponent = blockEntity.getComponent(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
+			EnergyHandler energyHandler = Energy.of(blockEntity);
 			FluidInventoryComponent fluidComponent = blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
-			EnergyVolume energyVolume = energyComponent.getVolume(INPUT_ENERGY_VOLUME);
 			FluidVolume fluidVolume = fluidComponent.getVolume(INPUT_FLUID_VOLUME);
 
-			if (energyVolume.hasAvailable(energyGenerated)) {
+			if (EnergyUtilities.hasAvailable(energyHandler, energyGenerated)) {
 				fluidVolume.extractVolume(amount);
-				energyVolume.pullVolume(EnergyVolume.of(energyGenerated), energyGenerated);
+				energyHandler.insert(energyGenerated);
 			}
 		}
 	}
@@ -129,7 +131,7 @@ public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory> {
 		return amount;
 	}
 	
-	public Fraction getEnergyGenerated() {
+	public double getEnergyGenerated() {
 		return energyGenerated;
 	}
 
@@ -153,7 +155,7 @@ public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory> {
 			return new LiquidGeneratingRecipe(identifier,
 					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.input)),
 					FractionUtilities.fromJson(format.amount),
-					FractionUtilities.fromJson(format.energyGenerated),
+					EnergyUtilities.fromJson(format.energyGenerated),
 					ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 		
@@ -162,7 +164,7 @@ public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory> {
 			return new LiquidGeneratingRecipe(identifier,
 					RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()),
 					FractionUtilities.fromPacket(buffer),
-					FractionUtilities.fromPacket(buffer),
+					EnergyUtilities.fromPacket(buffer),
 					PacketUtilities.fromPacket(buffer, Integer.class));
 		}
 		
@@ -170,12 +172,12 @@ public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory> {
 		public void write(PacketByteBuf buffer, LiquidGeneratingRecipe recipe) {
 			buffer.writeIdentifier(recipe.fluidKey.getValue());
 			FractionUtilities.toPacket(buffer, recipe.amount);
-			FractionUtilities.toPacket(buffer, recipe.energyGenerated);
+			EnergyUtilities.toPacket(buffer, recipe.energyGenerated);
 			buffer.writeInt(recipe.time);
 		}
 	}
 	
-	public static final class Type implements RecipeType<LiquidGeneratingRecipe> {
+	public static final class Type implements AstromineRecipeType<LiquidGeneratingRecipe> {
 		public static final Type INSTANCE = new Type();
 		
 		private Type() {

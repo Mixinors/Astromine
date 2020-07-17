@@ -1,9 +1,9 @@
 {
-	"type": "minecraft:smelting",
-	"ingredient": {
-		"item": "astromine:iron_dust"
-	},
-	"result": "minecraft:iron_ingot",
-	"experience": 0.1,
-	"cookingtime": 200
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "astromine:iron_dust"
+  },
+  "result": "minecraft:iron_ingot",
+  "experience": 0.1,
+  "cookingtime": 200
 }

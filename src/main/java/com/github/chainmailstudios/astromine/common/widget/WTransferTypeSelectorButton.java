@@ -1,7 +1,10 @@
 package com.github.chainmailstudios.astromine.common.widget;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
+import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
-
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.PacketByteBuf;
@@ -11,12 +14,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
-
-import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
-import io.netty.buffer.Unpooled;
-import nerdhub.cardinal.components.api.ComponentType;
 import spinnery.client.render.BaseRenderer;
 import spinnery.widget.WButton;
 
@@ -26,7 +23,7 @@ import java.util.List;
 public class WTransferTypeSelectorButton extends WButton {
 	private BlockEntityTransferComponent component;
 
-	private ComponentType<?> type;
+	private Identifier type;
 
 	private Direction direction;
 
@@ -54,11 +51,11 @@ public class WTransferTypeSelectorButton extends WButton {
 		return (W) this;
 	}
 
-	public ComponentType<?> getType() {
+	public Identifier getType() {
 		return type;
 	}
 
-	public <W extends WTransferTypeSelectorButton> W setType(ComponentType<?> type) {
+	public <W extends WTransferTypeSelectorButton> W setType(Identifier type) {
 		this.type = type;
 		return (W) this;
 	}
@@ -94,7 +91,7 @@ public class WTransferTypeSelectorButton extends WButton {
 				buffer.writeBlockPos(getBlockPos());
 				buffer.writeIdentifier(DefaultedBlockEntity.TRANSFER_UPDATE_PACKET);
 
-				buffer.writeIdentifier(type.getId());
+				buffer.writeIdentifier(type);
 				buffer.writeEnumConstant(direction);
 				buffer.writeEnumConstant(component.get(type).get(direction, Direction.NORTH));
 
@@ -121,9 +118,9 @@ public class WTransferTypeSelectorButton extends WButton {
 		return Collections.singletonList(
 				getDirection() == Direction.NORTH ? new TranslatableText("text.astromine.front")
 						: getDirection() == Direction.SOUTH ? new TranslatableText("text.astromine.back")
-								: getDirection() == Direction.WEST ? new TranslatableText("text.astromine.right")
-										: getDirection() == Direction.EAST ? new TranslatableText("text.astromine.left")
-												: new TranslatableText("text.astromine." + getDirection().getName()));
+						: getDirection() == Direction.WEST ? new TranslatableText("text.astromine.right")
+						: getDirection() == Direction.EAST ? new TranslatableText("text.astromine.left")
+						: new TranslatableText("text.astromine." + getDirection().getName()));
 	}
 
 	@Override

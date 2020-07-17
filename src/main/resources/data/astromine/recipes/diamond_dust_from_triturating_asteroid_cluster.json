@@ -1,16 +1,13 @@
 {
-	"type": "astromine:triturating",
-	"input": {
-		"item": "astromine:asteroid_diamond_cluster",
-		"count": 1
-	},
-	"output": {
-		"item": "astromine:diamond_dust",
-		"count": 2
-	},
-	"time": 20,
-	"energy_consumed": {
-		"numerator": 1,
-		"denominator": 2
-	}
+  "type": "astromine:triturating",
+  "input": {
+    "item": "astromine:asteroid_diamond_cluster",
+    "count": 1
+  },
+  "output": {
+    "item": "astromine:diamond_dust",
+    "count": 2
+  },
+  "time": 30,
+  "energy_consumed": 820
 }

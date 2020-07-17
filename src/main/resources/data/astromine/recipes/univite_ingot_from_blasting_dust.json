@@ -1,9 +1,9 @@
 {
-	"type": "minecraft:blasting",
-	"ingredient": {
-		"item": "astromine:univite_dust"
-	},
-	"result": "astromine:univite_ingot",
-	"experience": 0.1,
-	"cookingtime": 100
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "astromine:univite_dust"
+  },
+  "result": "astromine:univite_ingot",
+  "experience": 0.1,
+  "cookingtime": 100
 }

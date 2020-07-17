@@ -1,12 +1,12 @@
 {
-	"type": "minecraft:crafting_shapeless",
-	"ingredients": [
-		{
-			"item": "astromine:stellum_block"
-		}
-	],
-	"result": {
-		"item": "astromine:stellum_ingot",
-		"count": 9
-	}
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "astromine:stellum_block"
+    }
+  ],
+  "result": {
+    "item": "astromine:stellum_ingot",
+    "count": 9
+  }
 }

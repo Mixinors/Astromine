@@ -27,7 +27,8 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
-public class TrituratorBlock extends DefaultedHorizontalFacingBlockWithEntity implements NetworkMember, Tickable {
+
+public class TrituratorBlock extends DefaultedHorizontalFacingBlockWithEntity implements NetworkMember {
 	public TrituratorBlock(Settings settings) {
 		super(settings);
 	}
@@ -73,10 +74,5 @@ public class TrituratorBlock extends DefaultedHorizontalFacingBlockWithEntity im
 		} else {
 			return ActionResult.SUCCESS;
 		}
-	}
-
-	@Override
-	public void tick() {
-
 	}
 }

@@ -1,12 +1,12 @@
 {
-	"type": "minecraft:crafting_shaped",
-	"pattern": ["###", "###", "###"],
-	"key": {
-		"#": {
-			"item": "astromine:emerald_fragment"
-		}
-	},
-	"result": {
-		"item": "minecraft:emerald"
-	}
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["###", "###", "###"],
+  "key": {
+    "#": {
+      "item": "astromine:emerald_fragment"
+    }
+  },
+  "result": {
+    "item": "minecraft:emerald"
+  }
 }

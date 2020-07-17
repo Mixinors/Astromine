@@ -1,12 +1,12 @@
 {
-	"type": "minecraft:crafting_shaped",
-	"pattern": ["###", "###", "###"],
-	"key": {
-		"#": {
-			"item": "astromine:asterite_fragment"
-		}
-	},
-	"result": {
-		"item": "astromine:asterite"
-	}
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["###", "###", "###"],
+  "key": {
+    "#": {
+      "item": "astromine:asterite_fragment"
+    }
+  },
+  "result": {
+    "item": "astromine:asterite"
+  }
 }

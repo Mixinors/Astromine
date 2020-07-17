@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.recipe;
 
+import com.github.chainmailstudios.astromine.common.utilities.*;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -15,11 +16,6 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.utilities.FractionUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.IngredientUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 
 import com.google.common.collect.Lists;
@@ -35,10 +31,10 @@ public class TrituratingRecipe implements Recipe<Inventory> {
 	final Identifier identifier;
 	final Ingredient input;
 	final ItemStack output;
-	final Fraction energyConsumed;
+	final double energyConsumed;
 	final int time;
 
-	public TrituratingRecipe(Identifier identifier, Ingredient input, ItemStack output, Fraction energyConsumed, int time) {
+	public TrituratingRecipe(Identifier identifier, Ingredient input, ItemStack output, double energyConsumed, int time) {
 		this.identifier = identifier;
 		this.input = input;
 		this.output = output;
@@ -110,7 +106,7 @@ public class TrituratingRecipe implements Recipe<Inventory> {
 		return time;
 	}
 
-	public Fraction getEnergyConsumed() {
+	public double getEnergyConsumed() {
 		return energyConsumed;
 	}
 
@@ -130,7 +126,7 @@ public class TrituratingRecipe implements Recipe<Inventory> {
 			return new TrituratingRecipe(identifier,
 					IngredientUtilities.fromJson(format.input),
 					StackUtilities.fromJson(format.output),
-					FractionUtilities.fromJson(format.energyConsumed),
+					EnergyUtilities.fromJson(format.energyConsumed),
 					ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 
@@ -139,7 +135,7 @@ public class TrituratingRecipe implements Recipe<Inventory> {
 			return new TrituratingRecipe(identifier,
 					IngredientUtilities.fromPacket(buffer),
 					StackUtilities.fromPacket(buffer),
-					FractionUtilities.fromPacket(buffer),
+					EnergyUtilities.fromPacket(buffer),
 					PacketUtilities.fromPacket(buffer, Integer.class));
 		}
 
@@ -147,12 +143,12 @@ public class TrituratingRecipe implements Recipe<Inventory> {
 		public void write(PacketByteBuf buffer, TrituratingRecipe recipe) {
 			IngredientUtilities.toPacket(buffer, recipe.input);
 			StackUtilities.toPacket(buffer, recipe.output);
-			FractionUtilities.toPacket(buffer, recipe.energyConsumed);
+			EnergyUtilities.toPacket(buffer, recipe.energyConsumed);
 			PacketUtilities.toPacket(buffer, recipe.time);
 		}
 	}
 
-	public static final class Type implements RecipeType<TrituratingRecipe> {
+	public static final class Type implements AstromineRecipeType<TrituratingRecipe> {
 		public static final Type INSTANCE = new Type();
 
 		private Type() {

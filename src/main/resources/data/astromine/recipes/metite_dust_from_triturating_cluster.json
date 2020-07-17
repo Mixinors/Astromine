@@ -1,16 +1,13 @@
 {
-	"type": "astromine:triturating",
-	"input": {
-		"tag": "astromine:metite_clusters",
-		"count": 1
-	},
-	"output": {
-		"item": "astromine:metite_dust",
-		"count": 2
-	},
-	"time": 16,
-	"energy_consumed": {
-		"numerator": 1,
-		"denominator": 2
-	}
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "astromine:metite_clusters",
+    "count": 1
+  },
+  "output": {
+    "item": "astromine:metite_dust",
+    "count": 2
+  },
+  "time": 30,
+  "energy_consumed": 820
 }

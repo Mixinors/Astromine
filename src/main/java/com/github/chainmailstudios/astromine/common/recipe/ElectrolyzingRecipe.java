@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.recipe;
 
+import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -30,6 +31,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+import team.reborn.energy.Energy;
 
 public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory> {
 	final Identifier identifier;
@@ -42,7 +44,7 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory> {
 	final RegistryKey<Fluid> secondOutputFluidKey;
 	final Lazy<Fluid> secondOutputFluid;
 	final Fraction secondOutputAmount;
-	final Fraction energyConsumed;
+	final double energyConsumed;
 	final int time;
 
 	private static final int INPUT_ENERGY_VOLUME = 0;
@@ -50,7 +52,7 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory> {
 	private static final int FIRST_OUTPUT_FLUID_VOLUME = 1;
 	private static final int SECOND_OUTPUT_FLUID_VOLUME = 2;
 
-	public ElectrolyzingRecipe(Identifier identifier, RegistryKey<Fluid> inputFluidKey, Fraction inputAmount, RegistryKey<Fluid> firstOutputFluidKey, Fraction firstOutputAmount, RegistryKey<Fluid> secondOutputFluidKey, Fraction secondOutputAmount, Fraction energyConsumed, int time) {
+	public ElectrolyzingRecipe(Identifier identifier, RegistryKey<Fluid> inputFluidKey, Fraction inputAmount, RegistryKey<Fluid> firstOutputFluidKey, Fraction firstOutputAmount, RegistryKey<Fluid> secondOutputFluidKey, Fraction secondOutputAmount, double energyConsumed, int time) {
 		this.identifier = identifier;
 		this.inputFluidKey = inputFluidKey;
 		this.inputFluid = new Lazy<>(() -> Registry.FLUID.get(this.inputFluidKey));
@@ -92,13 +94,8 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory> {
 			FluidVolume firstOutputVolume = fluidComponent.getVolume(FIRST_OUTPUT_FLUID_VOLUME);
 			FluidVolume secondOutputVolume = fluidComponent.getVolume(SECOND_OUTPUT_FLUID_VOLUME);
 
-			EnergyInventoryComponent energyComponent = blockEntity.getComponent(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
-
-			EnergyVolume energyVolume = energyComponent.getVolume(INPUT_ENERGY_VOLUME);
-
-			if (energyVolume.hasStored(energyConsumed)) {
+			if (Energy.of(blockEntity).use(energyConsumed)) {
 				inputVolume.extractVolume(inputAmount);
-				energyVolume.extractVolume(energyConsumed);
 				firstOutputVolume.insertVolume(new FluidVolume(firstOutputFluid.get(), firstOutputAmount.copy()));
 				secondOutputVolume.insertVolume(new FluidVolume(secondOutputFluid.get(), secondOutputAmount.copy()));
 			}
@@ -168,7 +165,7 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory> {
 		return secondOutputAmount.copy();
 	}
 
-	public Fraction getEnergyConsumed() {
+	public double getEnergyConsumed() {
 		return energyConsumed;
 	}
 
@@ -196,7 +193,7 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory> {
 					FractionUtilities.fromJson(format.firstOutputAmount),
 					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.secondOutput)),
 					FractionUtilities.fromJson(format.secondOutputAmount),
-					FractionUtilities.fromJson(format.energyGenerated),
+					EnergyUtilities.fromJson(format.energyGenerated),
 					ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 		
@@ -209,7 +206,7 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory> {
 					FractionUtilities.fromPacket(buffer),
 					RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()),
 					FractionUtilities.fromPacket(buffer),
-					FractionUtilities.fromPacket(buffer),
+					EnergyUtilities.fromPacket(buffer),
 					PacketUtilities.fromPacket(buffer, Integer.class));
 		}
 		
@@ -221,12 +218,12 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory> {
 			FractionUtilities.toPacket(buffer, recipe.firstOutputAmount);
 			buffer.writeIdentifier(recipe.secondOutputFluidKey.getValue());
 			FractionUtilities.toPacket(buffer, recipe.secondOutputAmount);
-			FractionUtilities.toPacket(buffer, recipe.energyConsumed);
+			EnergyUtilities.toPacket(buffer, recipe.energyConsumed);
 			buffer.writeInt(recipe.getTime());
 		}
 	}
 	
-	public static final class Type implements RecipeType<ElectrolyzingRecipe> {
+	public static final class Type implements AstromineRecipeType<ElectrolyzingRecipe> {
 		public static final Type INSTANCE = new Type();
 		
 		private Type() {

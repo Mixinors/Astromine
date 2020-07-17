@@ -54,7 +54,7 @@ public class WFractionalVerticalBar extends WAbstractBar {
 	}
 	
 	public List<Text> getTooltip() {
-		return Lists.newArrayList(FluidUtilities.rawFraction(progressFraction.get(), limitFraction.get(), unit), new TranslatableText("text.astromine.tooltip.fractional_value", progressFraction.get().toPrettyString(), limitFraction.get().toPrettyString()));
+		return Lists.newArrayList(FluidUtilities.rawFraction(progressFraction.get(), limitFraction.get(), unit), new TranslatableText("text.astromine.tooltip.fractional_value", progressFraction.get().toDecimalString(), limitFraction.get().toDecimalString()));
 
 	}
 

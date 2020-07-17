@@ -50,7 +50,7 @@ public class WFluidVolumeFractionalVerticalBar extends WFractionalVerticalBar {
 
 	@Override
 	public List<Text> getTooltip() {
-		return Lists.newArrayList(FluidUtilities.rawFraction(getProgressFraction().get(), getLimitFraction().get(), getUnit()), new TranslatableText("text.astromine.tooltip.fractional_value", getProgressFraction().get().toPrettyString(), getLimitFraction().get().toPrettyString()));
+		return Lists.newArrayList(FluidUtilities.rawFraction(getProgressFraction().get(), getLimitFraction().get(), getUnit()), new TranslatableText("text.astromine.tooltip.fractional_value", getProgressFraction().get().toDecimalString(), getLimitFraction().get().toDecimalString()));
 	}
 
 	@Override

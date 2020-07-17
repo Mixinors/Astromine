@@ -1,11 +1,8 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Tickable;
-
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyFluidBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
@@ -13,8 +10,10 @@ import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.recipe.ElectrolyzingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
+import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Tickable;
 
 import java.util.Optional;
 
@@ -24,7 +23,7 @@ public class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockEntity imp
 
 	public boolean isActive = false;
 
-	public boolean[] activity = { false, false, false, false, false };
+	public boolean[] activity = {false, false, false, false, false};
 
 	private Optional<ElectrolyzingRecipe> recipe = Optional.empty();
 
@@ -36,22 +35,21 @@ public class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockEntity imp
 	public ElectrolyzerBlockEntity() {
 		super(AstromineBlockEntityTypes.ELECTROLYZER);
 
-		fluidComponent = new SimpleFluidInventoryComponent(3);
-
-		energyComponent.getVolume(INPUT_ENERGY_VOLUME).setSize(new Fraction(32, 1));
+		setMaxStoredPower(32000);
 		fluidComponent.getVolume(INPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
 		fluidComponent.getVolume(FIRST_OUTPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
 		fluidComponent.getVolume(SECOND_OUTPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
+	}
 
-		fluidComponent.addListener(() -> {
+	@Override
+	protected FluidInventoryComponent createFluidComponent() {
+		return new SimpleFluidInventoryComponent(3).withListener((inv) -> {
 			if (this.world != null && !this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
 				recipe = (Optional) world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream()
 						.filter(recipe -> recipe instanceof ElectrolyzingRecipe)
 						.filter(recipe -> ((ElectrolyzingRecipe) recipe).canCraft(this))
 						.findFirst();
 		});
-
-		addComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, fluidComponent);
 	}
 
 	@Override

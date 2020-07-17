@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.common.container.*;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 
 import net.minecraft.screen.ScreenHandlerType;
@@ -23,6 +24,18 @@ import com.github.chainmailstudios.astromine.common.container.VentContainer;
 public class AstromineContainers {
 	public static final ScreenHandlerType<FluidExtractorContainer> FLUID_EXTRACTOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("fluid_extractor"), ((synchronizationID, inventory, buffer) -> {
 		return new FluidExtractorContainer(synchronizationID, inventory, buffer.readBlockPos());
+	}));
+
+	public static final ScreenHandlerType<FluidInserterContainer> FLUID_INSERTER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("fluid_inserter"), ((synchronizationID, inventory, buffer) -> {
+		return new FluidInserterContainer(synchronizationID, inventory, buffer.readBlockPos());
+	}));
+
+	public static final ScreenHandlerType<BlockBreakerContainer> BLOCK_BREAKER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("block_breaker"), ((synchronizationID, inventory, buffer) -> {
+		return new BlockBreakerContainer(synchronizationID, inventory, buffer.readBlockPos());
+	}));
+
+	public static final ScreenHandlerType<BlockPlacerContainer> BLOCK_PLACER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("block_placer"), ((synchronizationID, inventory, buffer) -> {
+		return new BlockPlacerContainer(synchronizationID, inventory, buffer.readBlockPos());
 	}));
 
 	public static final ScreenHandlerType<LiquidGeneratorContainer> LIQUID_GENERATOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("liquid_generator"), ((synchronizationID, inventory, buffer) -> {
@@ -59,6 +72,11 @@ public class AstromineContainers {
 
 	public static final ScreenHandlerType<TrituratorContainer> TRITURATOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("triturator"), ((synchronizationID, inventory, buffer) -> {
 		return new TrituratorContainer(synchronizationID, inventory, buffer.readBlockPos());
+	}));
+
+
+	public static final ScreenHandlerType<PresserContainer> PRESSER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("presser"), ((synchronizationID, inventory, buffer) -> {
+		return new PresserContainer(synchronizationID, inventory, buffer.readBlockPos());
 	}));
 
 	public static final ScreenHandlerType<ElectricSmelterContainer> ELECTRIC_SMELTER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("electric_smelter"), ((synchronizationID, inventory, buffer) -> {

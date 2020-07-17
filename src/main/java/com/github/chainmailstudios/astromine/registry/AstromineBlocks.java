@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.common.block.*;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 
@@ -56,9 +57,14 @@ public class AstromineBlocks {
 	public static final Block CREATIVE_CAPACITOR = register("creative_capacitor", new CreativeCapacitorBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block CREATIVE_BUFFER = register("creative_buffer", new CreativeBufferBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 
+
+	public static final Block PRESSER = register("presser", new PresserBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block TRITURATOR = register("triturator", new TrituratorBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block ELECTRIC_SMELTER = register("electric_smelter", new ElectricSmelterBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block FLUID_EXTRACTOR = register("fluid_extractor", new FluidExtractorBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
+	public static final Block FLUID_INSERTER = register("fluid_inserter", new FluidInserterBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
+	public static final Block BLOCK_BREAKER = register("block_breaker", new BlockBreakerBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
+	public static final Block BLOCK_PLACER = register("block_placer", new BlockPlacerBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block ELECTROLYZER = register("electrolyzer", new ElectrolyzerBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block FLUID_MIXER = register("fluid_mixer", new FluidMixerBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 

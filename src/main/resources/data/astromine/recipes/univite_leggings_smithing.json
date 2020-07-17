@@ -1,12 +1,12 @@
 {
-	"type": "minecraft:smithing",
-	"base": {
-		"item": "astromine:galaxium_leggings"
-	},
-	"addition": {
-		"item": "astromine:univite_ingot"
-	},
-	"result": {
-		"item": "astromine:univite_leggings"
-	}
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "astromine:galaxium_leggings"
+  },
+  "addition": {
+    "item": "astromine:univite_ingot"
+  },
+  "result": {
+    "item": "astromine:univite_leggings"
+  }
 }

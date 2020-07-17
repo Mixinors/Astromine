@@ -1,36 +1,23 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.item.*;
+import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
+import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
+import com.github.chainmailstudios.astromine.common.item.weapon.AmmunitionItem;
+import com.github.chainmailstudios.astromine.common.item.weapon.variant.Weaponry;
 import net.fabricmc.loader.api.FabricLoader;
-
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.HoeItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.PickaxeItem;
-import net.minecraft.item.ShovelItem;
-import net.minecraft.item.SwordItem;
+import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.item.FireExtinguisherItem;
-import com.github.chainmailstudios.astromine.common.item.HolographicConnectorItem;
-import com.github.chainmailstudios.astromine.common.item.MeteorSpawnerDevItem;
-import com.github.chainmailstudios.astromine.common.item.SpaceSuitItem;
-import com.github.chainmailstudios.astromine.common.item.SuperSpaceSlimeShooterItem;
-import com.github.chainmailstudios.astromine.common.item.UncoloredSpawnEggItem;
-import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
-import com.github.chainmailstudios.astromine.common.item.weapon.AmmunitionItem;
-import com.github.chainmailstudios.astromine.common.item.weapon.variant.Weaponry;
 
 public class AstromineItems {
 	// Spawn eggs
@@ -133,10 +120,10 @@ public class AstromineItems {
 	public static final Item GRAPHITE_SHEET = register("graphite_sheet", new Item(getBasicSettings()));
 	public static final Item GAS_CANISTER = register("gas_canister", FluidVolumeItem.of(getBasicSettings(), Fraction.of(8, 1)));
 	public static final Item PRESSURIZED_GAS_CANISTER = register("pressurized_gas_canister", FluidVolumeItem.of(getBasicSettings(), Fraction.of(32, 1)));
-	//public static final Item BASIC_BATTERY = register("basic_battery", BaseVolumeItem.of(getBasicSettings(), Fraction.of(2, 1)));
-	//public static final Item ADVANCED_BATTERY = register("advanced_battery", BaseVolumeItem.of(getBasicSettings(), Fraction.of(4, 1)));
-	//public static final Item ELITE_BATTERY = register("elite_battery", BaseVolumeItem.of(getBasicSettings(), Fraction.of(8, 1)));
-	//public static final Item CREATIVE_BATTERY = register("creative_battery", BaseVolumeItem.of(getBasicSettings(), Fraction.of(Integer.MAX_VALUE, 1)));
+	public static final Item BASIC_BATTERY = register("basic_battery", EnergyVolumeItem.of(getBasicSettings(), 9000));
+	public static final Item ADVANCED_BATTERY = register("advanced_battery", EnergyVolumeItem.of(getBasicSettings(), 24000));
+	public static final Item ELITE_BATTERY = register("elite_battery", EnergyVolumeItem.of(getBasicSettings(), 64000));
+	public static final Item CREATIVE_BATTERY = register("creative_battery", EnergyVolumeItem.of(getBasicSettings(), 128000));
 
 	// Tools
 	public static final Item HOLOGRAPHIC_CONNECTOR = register("holographic_connector", new HolographicConnectorItem(getBasicSettings().maxCount(1)));
@@ -238,7 +225,7 @@ public class AstromineItems {
 	public static <T extends Item> T register(Identifier name, T item) {
 		return Registry.register(Registry.ITEM, name, item);
 	}
-	
+
 	public static Item.Settings getBasicSettings() {
 		return new Item.Settings().group(AstromineItemGroups.ASTROMINE);
 	}

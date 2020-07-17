@@ -1,12 +1,12 @@
 {
-	"type": "minecraft:crafting_shapeless",
-	"ingredients": [
-		{
-			"item": "minecraft:emerald"
-		}
-	],
-	"result": {
-		"item": "astromine:emerald_fragment",
-		"count": 9
-	}
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:emerald"
+    }
+  ],
+  "result": {
+    "item": "astromine:emerald_fragment",
+    "count": 9
+  }
 }

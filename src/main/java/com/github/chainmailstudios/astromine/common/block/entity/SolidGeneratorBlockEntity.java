@@ -1,25 +1,23 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import net.fabricmc.fabric.api.registry.FuelRegistry;
-
-import net.minecraft.block.BlockState;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Tickable;
-
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.block.entity.EnergyEmitter;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.recipe.SolidGeneratingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
+import net.fabricmc.fabric.api.registry.FuelRegistry;
+import net.minecraft.block.BlockState;
+import net.minecraft.item.BucketItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Tickable;
 
 import java.util.Optional;
 
@@ -29,7 +27,7 @@ public class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlockEntity im
 
 	public boolean isActive = false;
 
-	public boolean[] activity = { false, false, false, false, false };
+	public boolean[] activity = {false, false, false, false, false};
 
 	private Optional<SolidGeneratingRecipe> recipe = Optional.empty();
 
@@ -37,11 +35,14 @@ public class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlockEntity im
 
 	public SolidGeneratorBlockEntity() {
 		super(AstromineBlockEntityTypes.SOLID_GENERATOR);
-		
-		energyComponent.getVolume(INPUT_ENERGY_VOLUME).setSize(new Fraction(32, 1));
 
-		itemComponent.addListener(() -> {
-			if (this.world != null && !this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
+		setMaxStoredPower(32000);
+	}
+
+	@Override
+	protected ItemInventoryComponent createItemComponent() {
+		return new SimpleItemInventoryComponent(1).withListener((inv) -> {
+			if (hasWorld() && !this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
 				recipe = (Optional) world.getRecipeManager().getAllOfType(SolidGeneratingRecipe.Type.INSTANCE).values().stream()
 						.filter(recipe -> recipe instanceof SolidGeneratingRecipe)
 						.filter(recipe -> ((SolidGeneratingRecipe) recipe).canCraft(this))
@@ -112,33 +113,29 @@ public class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlockEntity im
 
 			if (isFuel) {
 				if (current == 0) {
-					limit = FuelRegistry.INSTANCE.get(burnStack.getItem());
-					++current;
+					limit = value / 2;
+					current++;
 					burnStack.decrement(1);
 				}
 			}
 
 			if (current > 0 && current <= limit) {
-				Fraction produced = new Fraction(1, 128);
-				if (energyComponent.getVolume(0).hasAvailable(produced)) {
-					++current;
-					energyComponent.getVolume(0).pullVolume(EnergyVolume.of(produced), produced);
+				double produced = 5;
+				for (int i = 0; i < 6; i++) {
+					if (EnergyUtilities.hasAvailable(asEnergy(), produced)) {
+						current++;
+						asEnergy().insert(produced);
+					}
 				}
 			} else {
 				current = 0;
 				limit = 100;
 			}
 
-			if (!isFuel && current == 0) {
-				isActive = false;
-			} else {
-				isActive = true;
-			}
+			isActive = isFuel || current != 0;
 		}
 
-		for (int i = 1; i < activity.length; ++i) {
-			activity[i - 1] = activity[i];
-		}
+		if (activity.length - 1 >= 0) System.arraycopy(activity, 1, activity, 0, activity.length - 1);
 
 		activity[4] = isActive;
 
@@ -150,12 +147,12 @@ public class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlockEntity im
 
 		EnergyEmitter.emit(this, INPUT_ENERGY_VOLUME);
 	}
-	
+
 	@Override
 	public <T extends NetworkType> boolean acceptsType(T type) {
 		return type == AstromineNetworkTypes.ENERGY;
 	}
-	
+
 	@Override
 	public <T extends NetworkType> boolean isBuffer(T type) {
 		return true;

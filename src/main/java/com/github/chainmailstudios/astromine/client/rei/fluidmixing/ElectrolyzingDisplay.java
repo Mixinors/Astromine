@@ -6,10 +6,10 @@ import com.github.chainmailstudios.astromine.client.rei.AstromineREIPlugin;
 import com.github.chainmailstudios.astromine.common.recipe.ElectrolyzingRecipe;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 
-public class ElectrolyzingDisplay extends AbstractFluidMixingDisplay {
+public class ElectrolyzingDisplay extends AbstractFluidRecipeDisplay {
 	public ElectrolyzingDisplay(ElectrolyzingRecipe recipe) {
 		super(
-				recipe.getEnergyConsumed().copy(),
+				recipe.getEnergyConsumed(),
 				new FluidVolume(recipe.getInputFluid(), recipe.getInputAmount()),
 				new FluidVolume(recipe.getFirstOutputFluid(), recipe.getFirstOutputAmount()),
 				recipe.getId()
