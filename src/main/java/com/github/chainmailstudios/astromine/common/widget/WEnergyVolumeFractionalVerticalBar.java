@@ -38,7 +38,7 @@ public class WEnergyVolumeFractionalVerticalBar extends WFloatingPointVerticalBa
 
 	@Override
 	public List<Text> getTooltip() {
-		return Lists.newArrayList(EnergyUtilities.compoundDisplay(getProgressFraction().get(), getLimitFraction().get()));
+		return Lists.newArrayList(EnergyUtilities.compoundDisplayColored(getProgressFraction().get(), getLimitFraction().get()));
 	}
 
 	public <W extends WFloatingPointVerticalBar> W setEnergyVolume(Supplier<EnergyVolume> volume) {

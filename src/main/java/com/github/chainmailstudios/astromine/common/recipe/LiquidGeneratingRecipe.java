@@ -76,7 +76,7 @@ public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory> {
 
 			FluidVolume fluidVolume = fluidComponent.getVolume(INPUT_FLUID_VOLUME);
 
-			if (Energy.of(blockEntity).simulate().insert(energyGenerated) == energyGenerated) {
+			if (EnergyUtilities.hasAvailable(energyHandler, energyGenerated)) {
 				fluidVolume.extractVolume(amount);
 				energyHandler.insert(energyGenerated);
 			}

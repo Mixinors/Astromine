@@ -6,7 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.text.Text;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import team.reborn.energy.EnergyHandler;
@@ -44,11 +44,19 @@ public class EnergyUtilities {
 		return String.valueOf((int) v);
 	}
 
-	public static Text simpleDisplay(double energy) {
-		return new TranslatableText("text.astromine.tooltip.energy_value", toRoundingString(energy)).formatted(Formatting.GRAY);
+	public static MutableText simpleDisplay(double energy) {
+		return new TranslatableText("text.astromine.tooltip.energy_value", toRoundingString(energy));
 	}
 
-	public static Text compoundDisplay(double energy, double maxEnergy) {
-		return new TranslatableText("text.astromine.tooltip.compound_energy_value", toRoundingString(energy), toRoundingString(maxEnergy)).formatted(Formatting.GRAY);
+	public static MutableText compoundDisplay(double energy, double maxEnergy) {
+		return new TranslatableText("text.astromine.tooltip.compound_energy_value", toRoundingString(energy), toRoundingString(maxEnergy));
+	}
+
+	public static MutableText simpleDisplayColored(double energy) {
+		return simpleDisplay(energy).formatted(Formatting.GRAY);
+	}
+
+	public static MutableText compoundDisplayColored(double energy, double maxEnergy) {
+		return compoundDisplay(energy, maxEnergy).formatted(Formatting.GRAY);
 	}
 }

@@ -103,9 +103,7 @@ public class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlockEntity 
 			isActive = false;
 		}
 
-		for (int i = 1; i < activity.length; ++i) {
-			activity[i - 1] = activity[i];
-		}
+		if (activity.length - 1 >= 0) System.arraycopy(activity, 1, activity, 0, activity.length - 1);
 
 		activity[4] = isActive;
 

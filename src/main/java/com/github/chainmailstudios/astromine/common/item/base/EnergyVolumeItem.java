@@ -34,7 +34,7 @@ public class EnergyVolumeItem extends Item implements EnergyHolder {
 		super.appendTooltip(stack, world, tooltip, context);
 
 		EnergyHandler energyHandler = Energy.of(stack);
-		tooltip.add(EnergyUtilities.compoundDisplay(energyHandler.getEnergy(), energyHandler.getMaxStored()));
+		tooltip.add(EnergyUtilities.compoundDisplayColored(energyHandler.getEnergy(), energyHandler.getMaxStored()));
 	}
 
 	@Override
