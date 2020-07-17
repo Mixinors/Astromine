@@ -33,7 +33,7 @@ public class EnergyVolumeItem extends BaseVolumeItem {
 		EnergyInventoryComponent fluidComponent = ComponentProvider.fromItemStack(stack).getComponent(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
 
 		fluidComponent.getContents().forEach((key, value) -> {
-			tooltip.add(new LiteralText("- " + value.getFraction().toDecimalString() + " | " + new TranslatableText("text.astromine.energy").getString()));
+			tooltip.add(new LiteralText("- " + value.getFraction().toDecimalString() + " | " + new TranslatableText("text.astromine.energy").getString()).formatted(Formatting.GRAY));
 		});
 	}
 }
