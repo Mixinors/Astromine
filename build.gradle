@@ -98,6 +98,10 @@ dependencies {
     modImplementation "alexiil.mc.lib:libblockattributes-core:${lba_version}"
     modImplementation "alexiil.mc.lib:libblockattributes-fluids:${lba_version}"
 
+    // Tech Reborn Energy
+    modImplementation "teamreborn:energy:${tr_energy_version}"
+    include "teamreborn:energy:${tr_energy_version}"
+
     // RoughlyEnoughItems
     modImplementation ("me.shedaniel:RoughlyEnoughItems:${rei_version}")
 
