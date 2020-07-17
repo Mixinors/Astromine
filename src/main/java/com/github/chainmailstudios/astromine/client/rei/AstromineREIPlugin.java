@@ -32,6 +32,8 @@ import me.shedaniel.rei.api.widgets.Tooltip;
 import me.shedaniel.rei.gui.widget.EntryWidget;
 import me.shedaniel.rei.gui.widget.Widget;
 import me.shedaniel.rei.impl.RenderingEntry;
+import me.shedaniel.rei.plugin.DefaultPlugin;
+import me.shedaniel.rei.plugin.information.DefaultInformationDisplay;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
@@ -77,7 +79,7 @@ public class AstromineREIPlugin implements REIPluginV0 {
 
 	@Override
 	public void registerEntries(EntryRegistry entryRegistry) {
-		entryRegistry.registerEntry(EntryStack.create(PatchouliAPI.instance.getBookStack(AstromineCommon.identifier("manual"))));
+		entryRegistry.registerEntry(EntryStack.create(PatchouliAPI.instance.getBookStack(AstromineCommon.identifier("manual"))).setting(EntryStack.Settings.CHECK_TAGS, EntryStack.Settings.TRUE));
 	}
 
 	@Override
@@ -121,6 +123,11 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		recipeHelper.registerAutoCraftButtonArea(SOLID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
 		recipeHelper.registerAutoCraftButtonArea(FLUID_MIXING, bounds -> new Rectangle(bounds.getCenterX() - 65 + 130 - 16, bounds.getMaxY() - 16, 10, 10));
 		recipeHelper.registerAutoCraftButtonArea(ELECTROLYZING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
+
+		DefaultPlugin.registerInfoDisplay(DefaultInformationDisplay.createFromEntry(
+				EntryStack.create(PatchouliAPI.instance.getBookStack(AstromineCommon.identifier("manual"))).setting(EntryStack.Settings.CHECK_TAGS, EntryStack.Settings.TRUE),
+				new TranslatableText("item.astromine.manual")
+		).line(new TranslatableText("text.astromine.manual.obtain.info")));
 	}
 
 	public static List<Widget> createEnergyDisplay(Rectangle bounds, double energy, boolean generating, long speed) {
