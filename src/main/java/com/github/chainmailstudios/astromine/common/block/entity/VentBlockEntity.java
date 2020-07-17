@@ -83,6 +83,6 @@ public class VentBlockEntity extends DefaultedEnergyFluidBlockEntity implements 
 
 	@Override
 	public <T extends NetworkType> boolean isRequester(T type) {
-		return true;
+		return type == AstromineNetworkTypes.FLUID || type == AstromineNetworkTypes.ENERGY;
 	}
 }

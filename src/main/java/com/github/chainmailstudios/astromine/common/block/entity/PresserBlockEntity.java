@@ -35,6 +35,7 @@ public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implement
 		super(AstromineBlockEntityTypes.PRESSER);
 
 		setMaxStoredPower(32000);
+		addEnergyListener(() -> shouldTry = true);
 	}
 
 	@Override
@@ -50,7 +51,7 @@ public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implement
 
 	@Override
 	public <T extends NetworkType> boolean isRequester(T type) {
-		return true;
+		return type == AstromineNetworkTypes.ENERGY;
 	}
 
 	@Override

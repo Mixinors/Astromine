@@ -11,14 +11,16 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Lazy;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import spinnery.client.render.BaseRenderer;
 import spinnery.widget.WButton;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class WTransferTypeSelectorButton extends WButton {
 	private BlockEntityTransferComponent component;
@@ -32,6 +34,13 @@ public class WTransferTypeSelectorButton extends WButton {
 	private Identifier texture = null;
 
 	private Vec3i mouse = Vec3i.ZERO;
+	private Lazy<String> sideName = lazySideName();
+
+	private Lazy<String> lazySideName() {
+		return new Lazy<>(() -> {
+			return component.get(type).get(direction, Direction.NORTH).name().toLowerCase(Locale.ROOT);
+		});
+	}
 
 	public BlockEntityTransferComponent getComponent() {
 		return component;
@@ -39,6 +48,7 @@ public class WTransferTypeSelectorButton extends WButton {
 
 	public <W extends WTransferTypeSelectorButton> W setComponent(BlockEntityTransferComponent component) {
 		this.component = component;
+		this.sideName = lazySideName();
 		return (W) this;
 	}
 
@@ -84,6 +94,7 @@ public class WTransferTypeSelectorButton extends WButton {
 			component.get(type).set(direction, component.get(type).get(direction, Direction.NORTH).next());
 
 			setTexture(component.get(type).get(direction, Direction.NORTH).texture());
+			this.sideName = lazySideName();
 
 			if (getInterface().getContainer().getWorld().isClient()) {
 				PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
@@ -115,12 +126,14 @@ public class WTransferTypeSelectorButton extends WButton {
 
 	@Override
 	public List<Text> getTooltip() {
-		return Collections.singletonList(
+		return Arrays.asList(
 				getDirection() == Direction.NORTH ? new TranslatableText("text.astromine.front")
 						: getDirection() == Direction.SOUTH ? new TranslatableText("text.astromine.back")
 						: getDirection() == Direction.WEST ? new TranslatableText("text.astromine.right")
 						: getDirection() == Direction.EAST ? new TranslatableText("text.astromine.left")
-						: new TranslatableText("text.astromine." + getDirection().getName()));
+						: new TranslatableText("text.astromine." + getDirection().getName()),
+				new TranslatableText("text.astromine.siding." + sideName.get())
+		);
 	}
 
 	@Override

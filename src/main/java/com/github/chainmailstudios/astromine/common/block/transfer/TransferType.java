@@ -1,26 +1,29 @@
 package com.github.chainmailstudios.astromine.common.block.transfer;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import net.minecraft.util.Identifier;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-
 public enum TransferType {
-	INPUT,
-	OUTPUT,
-	INPUT_OUTPUT,
-	NONE;
+	NONE(AstromineCommon.identifier("textures/widget/none.png")),
+	INPUT(AstromineCommon.identifier("textures/widget/input.png")),
+	OUTPUT(AstromineCommon.identifier("textures/widget/output.png")),
+	INPUT_OUTPUT(AstromineCommon.identifier("textures/widget/input_output.png")),
+	DISABLED(AstromineCommon.identifier("textures/widget/disabled.png"));
 
-	private static final Identifier INPUT_TEXTURE = AstromineCommon.identifier("textures/widget/input.png");
-	private static final Identifier OUTPUT_TEXTURE = AstromineCommon.identifier("textures/widget/output.png");
-	private static final Identifier INPUT_OUTPUT_TEXTURE = AstromineCommon.identifier("textures/widget/input_output.png");
-	private static final Identifier NONE_TEXTURE = AstromineCommon.identifier("textures/widget/none.png");
+	private Identifier texture;
+
+	TransferType(Identifier texture) {
+		this.texture = texture;
+	}
 
 	public TransferType next() {
-		return this == INPUT ? OUTPUT : this == OUTPUT ? INPUT_OUTPUT : this == INPUT_OUTPUT ? NONE : this == NONE ? INPUT : null;
+		if (ordinal() + 1 == values().length)
+			return values()[0];
+		return values()[ordinal() + 1];
 	}
 
 	public Identifier texture() {
-		return this == INPUT ? INPUT_TEXTURE : this == OUTPUT ? OUTPUT_TEXTURE : this == INPUT_OUTPUT ? INPUT_OUTPUT_TEXTURE : this == NONE ? NONE_TEXTURE : null;
+		return texture;
 	}
 
 	public boolean canInsert() {
@@ -29,5 +32,9 @@ public enum TransferType {
 
 	public boolean canExtract() {
 		return this == OUTPUT || this == INPUT_OUTPUT;
+	}
+
+	public boolean isDisabled() {
+		return this == NONE || this == DISABLED;
 	}
 }

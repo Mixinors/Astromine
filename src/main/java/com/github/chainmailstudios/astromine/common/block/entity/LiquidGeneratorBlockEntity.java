@@ -126,7 +126,12 @@ public class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlockEntity 
 	}
 
 	@Override
-	public <T extends NetworkType> boolean isBuffer(T type) {
-		return true;
+	public <T extends NetworkType> boolean isRequester(T type) {
+		return type == AstromineNetworkTypes.FLUID;
+	}
+
+	@Override
+	public <T extends NetworkType> boolean isProvider(T type) {
+		return type == AstromineNetworkTypes.ENERGY;
 	}
 }

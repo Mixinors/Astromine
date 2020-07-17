@@ -111,9 +111,7 @@ public class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEntity imple
 		}
 
 
-		for (int i = 1; i < activity.length; ++i) {
-			activity[i - 1] = activity[i];
-		}
+		if (activity.length - 1 >= 0) System.arraycopy(activity, 1, activity, 0, activity.length - 1);
 
 		activity[4] = isActive;
 
@@ -130,7 +128,12 @@ public class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEntity imple
 	}
 
 	@Override
-	public <T extends NetworkType> boolean isBuffer(T type) {
-		return true;
+	public <T extends NetworkType> boolean isRequester(T type) {
+		return type == AstromineNetworkTypes.ENERGY || type == AstromineNetworkTypes.FLUID;
+	}
+
+	@Override
+	public <T extends NetworkType> boolean isProvider(T type) {
+		return type == AstromineNetworkTypes.FLUID;
 	}
 }

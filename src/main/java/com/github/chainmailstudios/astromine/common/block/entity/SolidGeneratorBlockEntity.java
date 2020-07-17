@@ -154,7 +154,7 @@ public class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlockEntity im
 	}
 
 	@Override
-	public <T extends NetworkType> boolean isBuffer(T type) {
-		return true;
+	public <T extends NetworkType> boolean isProvider(T type) {
+		return type == AstromineNetworkTypes.ENERGY;
 	}
 }

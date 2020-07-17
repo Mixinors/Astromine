@@ -67,7 +67,7 @@ public class BlockEntityTransferComponent implements Component {
 
 		return tag;
 	}
-	
+
 	public interface TransferComponentInfo {
 		Item getSymbol();
 
@@ -101,6 +101,14 @@ public class BlockEntityTransferComponent implements Component {
 			}
 
 			return tag;
+		}
+
+		public boolean areAllNone() {
+			for (TransferType value : types.values()) {
+				if (value != TransferType.NONE)
+					return false;
+			}
+			return true;
 		}
 	}
 }

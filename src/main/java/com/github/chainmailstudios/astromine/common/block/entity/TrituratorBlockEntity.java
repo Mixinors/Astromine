@@ -35,6 +35,7 @@ public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implem
 		super(AstromineBlockEntityTypes.TRITURATOR);
 
 		setMaxStoredPower(32000);
+		addEnergyListener(() -> shouldTry = true);
 	}
 
 	@Override
@@ -50,7 +51,7 @@ public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implem
 
 	@Override
 	public <T extends NetworkType> boolean isRequester(T type) {
-		return true;
+		return type == AstromineNetworkTypes.ENERGY;
 	}
 
 	@Override

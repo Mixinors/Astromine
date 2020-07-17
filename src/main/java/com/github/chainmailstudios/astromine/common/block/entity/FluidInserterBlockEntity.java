@@ -88,13 +88,8 @@ public class FluidInserterBlockEntity extends DefaultedEnergyFluidBlockEntity im
 	}
 
 	@Override
-	public <T extends NetworkType> boolean isProvider(T type) {
-		return type == AstromineNetworkTypes.FLUID;
-	}
-
-	@Override
 	public <T extends NetworkType> boolean isRequester(T type) {
-		return type == AstromineNetworkTypes.ENERGY;
+		return type == AstromineNetworkTypes.FLUID || type == AstromineNetworkTypes.ENERGY;
 	}
 
 	@Override

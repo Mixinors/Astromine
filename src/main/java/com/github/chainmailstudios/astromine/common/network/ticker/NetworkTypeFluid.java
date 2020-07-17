@@ -1,9 +1,5 @@
 package com.github.chainmailstudios.astromine.common.network.ticker;
 
-import net.minecraft.block.FacingBlock;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.block.entity.BlockEntity;
-
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
@@ -15,8 +11,10 @@ import com.github.chainmailstudios.astromine.common.network.NetworkNode;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-
 import com.google.common.collect.Lists;
+import net.minecraft.block.FacingBlock;
+import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.state.property.Property;
 import net.minecraft.util.math.Direction;
 
@@ -38,27 +36,31 @@ public class NetworkTypeFluid extends NetworkType {
 
 				BlockEntityTransferComponent transferComponent = provider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
 
-				before: if (fluidComponent != null && transferComponent != null) {
+				before:
+				if (fluidComponent != null && transferComponent != null) {
 					Property<Direction> property = blockEntity.getCachedState().contains(HorizontalFacingBlock.FACING) ? HorizontalFacingBlock.FACING : blockEntity.getCachedState().contains(FacingBlock.FACING) ? FacingBlock.FACING : null;
 
 					if (!blockEntity.getCachedState().contains(property)) break before;
 
 					TransferType type = transferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).get(memberNode.getDirection(), blockEntity.getCachedState().get(property));
+					boolean areAllNone = transferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).areAllNone();
 
-					if (type.canExtract()) {
-						fluidComponent.getContents().forEach((key, volume) -> {
-							if (fluidComponent.canExtract(memberNode.getDirection(), volume, key)) {
-								inputs.add(volume);
-							}
-						});
-					}
+					if (type != TransferType.DISABLED) {
+						if (type.canExtract() || ((NetworkMember) blockEntity).isProvider(this)) {
+							fluidComponent.getContents().forEach((key, volume) -> {
+								if (fluidComponent.canExtract(memberNode.getDirection(), volume, key)) {
+									inputs.add(volume);
+								}
+							});
+						}
 
-					if (type.canInsert()) {
-						fluidComponent.getContents().forEach((key, volume) -> {
-							if (fluidComponent.canExtract(memberNode.getDirection(), volume, key)) {
-								outputs.add(volume);
-							}
-						});
+						if (type.canInsert() || ((NetworkMember) blockEntity).isRequester(this)) {
+							fluidComponent.getContents().forEach((key, volume) -> {
+								if (fluidComponent.canExtract(memberNode.getDirection(), volume, key)) {
+									outputs.add(volume);
+								}
+							});
+						}
 					}
 				}
 			}

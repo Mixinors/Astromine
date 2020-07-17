@@ -34,6 +34,7 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 		super(AstromineBlockEntityTypes.ELECTRIC_SMELTER);
 
 		setMaxStoredPower(32000);
+		addEnergyListener(() -> shouldTry = true);
 	}
 
 	@Override
@@ -49,7 +50,7 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 
 	@Override
 	public <T extends NetworkType> boolean isRequester(T type) {
-		return true;
+		return type == AstromineNetworkTypes.ENERGY;
 	}
 
 	@Override

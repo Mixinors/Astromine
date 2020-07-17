@@ -3,18 +3,30 @@ package com.github.chainmailstudios.astromine.common.block.entity.base;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.google.common.collect.Lists;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.*;
 
+import java.util.List;
+
 public abstract class DefaultedEnergyBlockEntity extends DefaultedBlockEntity implements ComponentProvider, EnergyStorage {
-	private final EnergyVolume volume = EnergyVolume.empty();
+	private List<Runnable> energyListeners = Lists.newArrayList();
+	private final EnergyVolume volume = new EnergyVolume(0, () -> {
+		for (Runnable listener : energyListeners) {
+			listener.run();
+		}
+	});
 
 	public DefaultedEnergyBlockEntity(BlockEntityType<?> type) {
 		super(type);
 		transferComponent.add(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
+	}
+
+	protected void addEnergyListener(Runnable listener) {
+		this.energyListeners.add(listener);
 	}
 
 	public EnergyHandler asEnergy() {

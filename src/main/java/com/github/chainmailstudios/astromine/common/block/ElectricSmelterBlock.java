@@ -1,7 +1,9 @@
 package com.github.chainmailstudios.astromine.common.block;
 
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.ElectricSmelterBlockEntity;
+import com.github.chainmailstudios.astromine.common.container.ElectricSmelterContainer;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,26 +22,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.ElectricSmelterBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.ElectricSmelterContainer;
-import com.github.chainmailstudios.astromine.common.network.NetworkMember;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
-import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
-
-public class ElectricSmelterBlock extends DefaultedHorizontalFacingBlockWithEntity implements NetworkMember {
+public class ElectricSmelterBlock extends DefaultedHorizontalFacingBlockWithEntity {
 	public ElectricSmelterBlock(Settings settings) {
 		super(settings);
-	}
-
-	@Override
-	public <T extends NetworkType> boolean isRequester(T type) {
-		return true;
-	}
-
-	@Override
-	public <T extends NetworkType> boolean acceptsType(T type) {
-		return type == AstromineNetworkTypes.ENERGY;
 	}
 
 	@Override
