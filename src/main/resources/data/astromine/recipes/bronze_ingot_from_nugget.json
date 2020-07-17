@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["###", "###", "###"],
+  "key": {
+    "#": {
+      "item": "astromine:bronze_nugget"
+    }
+  },
+  "result": {
+    "item": "astromine:bronze_ingot"
+  }
+}
