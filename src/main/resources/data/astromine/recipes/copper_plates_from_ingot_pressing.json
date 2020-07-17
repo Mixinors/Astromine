@@ -1,0 +1,13 @@
+{
+  "type": "astromine:pressing",
+  "input": {
+    "item": "astromine:copper_ingot",
+    "count": 1
+  },
+  "output": {
+    "item": "astromine:copper_plates",
+    "count": 1
+  },
+  "time": 60,
+  "energy_consumed": 1080
+}

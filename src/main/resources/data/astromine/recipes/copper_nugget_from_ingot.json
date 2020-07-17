@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "astromine:copper_ingot"
+    }
+  ],
+  "result": {
+    "item": "astromine:copper_nugget",
+    "count": 9
+  }
+}
