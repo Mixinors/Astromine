@@ -1,7 +1,12 @@
 package com.github.chainmailstudios.astromine.common.entity;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.registry.AstromineParticles;
+import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
-
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -21,13 +26,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.registry.AstromineParticles;
-import io.netty.buffer.Unpooled;
 
 import java.util.Optional;
 
@@ -76,16 +74,16 @@ public class RocketEntity extends Entity {
 		if (player.world.isClient) {
 			return ActionResult.CONSUME;
 		}
-		
+
 		ItemStack stack = player.getStackInHand(hand);
-		
+
 		if (stack.getItem() == Items.FLINT_AND_STEEL) {
 			this.getDataTracker().set(IS_GO, true);
 			return ActionResult.SUCCESS;
 		} else if (stack.getItem() == Items.STICK) {
 			this.kill();
 		}
-		
+
 		if (!stack.isEmpty()) return ActionResult.CONSUME;
 
 		player.startRiding(this);

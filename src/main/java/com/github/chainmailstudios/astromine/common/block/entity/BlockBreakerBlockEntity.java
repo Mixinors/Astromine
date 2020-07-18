@@ -1,5 +1,15 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.network.NetworkMember;
+import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
+import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -11,17 +21,6 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.network.NetworkMember;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
-import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import org.jetbrains.annotations.NotNull;
 import spinnery.common.utility.MutablePair;
 

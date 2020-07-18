@@ -1,15 +1,14 @@
 package com.github.chainmailstudios.astromine.client.rei.generating;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import com.github.chainmailstudios.astromine.client.rei.AstromineREIPlugin;
+import com.google.common.collect.Lists;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.RecipeCategory;
 import me.shedaniel.rei.api.widgets.Widgets;
 import me.shedaniel.rei.gui.widget.Widget;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
-import com.google.common.collect.Lists;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)

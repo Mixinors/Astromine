@@ -1,13 +1,12 @@
 package com.github.chainmailstudios.astromine.common.item;
 
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.collection.DefaultedList;
-
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 
 public class SpaceSuitItem extends ArmorItem {
 	public SpaceSuitItem(ArmorMaterial material, EquipmentSlot slot, Settings settings) {

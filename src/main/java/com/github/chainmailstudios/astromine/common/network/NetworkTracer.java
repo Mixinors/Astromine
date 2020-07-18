@@ -1,5 +1,9 @@
 package com.github.chainmailstudios.astromine.common.network;
 
+import com.github.chainmailstudios.astromine.common.block.AbstractCableBlock;
+import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -9,11 +13,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
-
-import com.github.chainmailstudios.astromine.common.block.AbstractCableBlock;
-import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 
 import java.util.ArrayDeque;
@@ -90,7 +89,7 @@ public class NetworkTracer {
 
 					if (offsetObject instanceof NetworkMember) {
 						NetworkMember offsetMember = (NetworkMember) offsetObject;
-						
+
 						if ((offsetMember.isRequester(type) || offsetMember.isProvider(type) || offsetMember.isBuffer(type)) && offsetMember.acceptsType(type)) {
 							instance.addMember(NetworkNode.of(offsetPosition, direction.getOpposite()));
 						}

@@ -1,14 +1,13 @@
 package com.github.chainmailstudios.astromine.common.multiblock;
 
+import com.github.chainmailstudios.astromine.common.utilities.MapUtilities;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
+import nerdhub.cardinal.components.api.ComponentType;
+import nerdhub.cardinal.components.api.component.Component;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.chainmailstudios.astromine.common.utilities.MapUtilities;
-import nerdhub.cardinal.components.api.ComponentType;
-import nerdhub.cardinal.components.api.component.Component;
-
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMultimap;
 import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;

@@ -1,5 +1,8 @@
 package com.github.chainmailstudios.astromine.common.block;
 
+import com.github.chainmailstudios.astromine.access.DyeColorAccess;
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -12,10 +15,6 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-
-import com.github.chainmailstudios.astromine.access.DyeColorAccess;
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
 import spinnery.widget.api.Color;
 
 public class HolographicBridgeProjectorBlock extends DefaultedHorizontalFacingBlockWithEntity {
@@ -35,11 +34,11 @@ public class HolographicBridgeProjectorBlock extends DefaultedHorizontalFacingBl
 			if (entity != null) {
 				entity.color = Color.of(0x7e000000 >> 2 | ((DyeColorAccess) (Object) dye.getColor()).astromine_getColor());
 
-				if(!world.isClient()) entity.sync();
+				if (!world.isClient()) entity.sync();
 
-				if(entity.hasChild()) {
+				if (entity.hasChild()) {
 					entity.getChild().color = Color.of(0x7e000000 >> 2 | ((DyeColorAccess) (Object) dye.getColor()).astromine_getColor());
-					if(!world.isClient()) entity.getChild().sync();
+					if (!world.isClient()) entity.getChild().sync();
 				}
 
 				if (!player.isCreative()) {

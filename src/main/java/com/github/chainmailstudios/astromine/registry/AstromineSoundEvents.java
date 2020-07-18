@@ -1,9 +1,8 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.registry.Registry;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
 
 public class AstromineSoundEvents {
 	public static final SoundEvent EMPTY = register("empty");

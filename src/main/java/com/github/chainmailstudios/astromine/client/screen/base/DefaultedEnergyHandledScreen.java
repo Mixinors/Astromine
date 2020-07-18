@@ -1,11 +1,10 @@
 package com.github.chainmailstudios.astromine.client.screen.base;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.Text;
-
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedBlockEntityScreenHandler;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyScreenHandler;
 import com.github.chainmailstudios.astromine.common.widget.WEnergyVolumeFractionalVerticalBar;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.Text;
 import spinnery.widget.api.Position;
 import spinnery.widget.api.Size;
 

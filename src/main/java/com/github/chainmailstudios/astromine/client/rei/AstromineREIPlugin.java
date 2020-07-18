@@ -1,24 +1,5 @@
 package com.github.chainmailstudios.astromine.client.rei;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
-import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.texture.SpriteAtlasTexture;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.Item;
-import net.minecraft.recipe.SmeltingRecipe;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
-
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.rei.electricsmelting.ElectricSmeltingCategory;
 import com.github.chainmailstudios.astromine.client.rei.electricsmelting.ElectricSmeltingDisplay;
@@ -36,12 +17,7 @@ import com.github.chainmailstudios.astromine.client.rei.triturating.TrituratingC
 import com.github.chainmailstudios.astromine.client.rei.triturating.TrituratingDisplay;
 import com.github.chainmailstudios.astromine.client.render.SpriteRenderer;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.recipe.ElectrolyzingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.FluidMixingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.LiquidGeneratingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.PressingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.SolidGeneratingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.*;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
@@ -58,6 +34,23 @@ import me.shedaniel.rei.gui.widget.Widget;
 import me.shedaniel.rei.impl.RenderingEntry;
 import me.shedaniel.rei.plugin.DefaultPlugin;
 import me.shedaniel.rei.plugin.information.DefaultInformationDisplay;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.texture.SpriteAtlasTexture;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.BucketItem;
+import net.minecraft.item.Item;
+import net.minecraft.recipe.SmeltingRecipe;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import vazkii.patchouli.api.PatchouliAPI;
 
@@ -142,7 +135,8 @@ public class AstromineREIPlugin implements REIPluginV0 {
 				new EnergyEntryWidget(bounds, speed, generating).entry(
 						new RenderingEntry() {
 							@Override
-							public void render(MatrixStack matrices, Rectangle bounds, int mouseX, int mouseY, float delta) {}
+							public void render(MatrixStack matrices, Rectangle bounds, int mouseX, int mouseY, float delta) {
+							}
 
 							@Override
 							public @Nullable Tooltip getTooltip(Point mouse) {
@@ -174,8 +168,8 @@ public class AstromineREIPlugin implements REIPluginV0 {
 	}
 
 	private static class EnergyEntryWidget extends EntryWidget {
-		private long speed;
-		private boolean generating;
+		private final long speed;
+		private final boolean generating;
 
 		protected EnergyEntryWidget(Rectangle rectangle, long speed, boolean generating) {
 			super(rectangle.x, rectangle.y);
@@ -192,22 +186,25 @@ public class AstromineREIPlugin implements REIPluginV0 {
 				DrawableHelper.drawTexture(matrices, bounds.x, bounds.y, 0, 0, bounds.width, bounds.height, bounds.width, bounds.height);
 				MinecraftClient.getInstance().getTextureManager().bindTexture(ENERGY_FOREGROUND);
 				int height;
-				if (generating) height = bounds.height - MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
-				else height = MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
+				if (generating)
+					height = bounds.height - MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
+				else
+					height = MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
 				DrawableHelper.drawTexture(matrices, bounds.x, bounds.y + height, 0, height, bounds.width - 1,
 						bounds.height - height - 1, bounds.width, bounds.height);
 			}
 		}
 
 		@Override
-		protected void drawCurrentEntry(MatrixStack matrices, int mouseX, int mouseY, float delta) {}
+		protected void drawCurrentEntry(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		}
 	}
 
 	private static class FluidEntryWidget extends EntryWidget {
-		private long speed;
+		private final long speed;
 		@Nullable
 		private Fraction consumedPerTick;
-		private boolean generating;
+		private final boolean generating;
 
 		protected FluidEntryWidget(Rectangle rectangle, long speed, boolean generating) {
 			super(rectangle.x, rectangle.y);
@@ -250,8 +247,10 @@ public class AstromineREIPlugin implements REIPluginV0 {
 			if (entry.getType() == EntryStack.Type.FLUID) {
 				Rectangle bounds = getBounds();
 				int height;
-				if (!generating) height = bounds.height - MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
-				else height = MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
+				if (!generating)
+					height = bounds.height - MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
+				else
+					height = MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
 				VertexConsumerProvider.Immediate consumers = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
 				SpriteRenderer.beginPass()
 						.setup(consumers, RenderLayer.getSolid())

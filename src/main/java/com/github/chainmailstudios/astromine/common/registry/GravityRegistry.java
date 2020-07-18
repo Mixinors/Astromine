@@ -1,9 +1,8 @@
 package com.github.chainmailstudios.astromine.common.registry;
 
+import com.github.chainmailstudios.astromine.common.registry.base.BiRegistry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.dimension.DimensionType;
-
-import com.github.chainmailstudios.astromine.common.registry.base.BiRegistry;
 
 import java.util.Optional;
 

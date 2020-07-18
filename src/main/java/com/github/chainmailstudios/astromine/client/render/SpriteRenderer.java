@@ -2,7 +2,6 @@ package com.github.chainmailstudios.astromine.client.render;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
@@ -169,10 +168,10 @@ public class SpriteRenderer {
 			if (this.sprite == null) {
 				throw new RuntimeException("Invalid Sprite!");
 			}
-			
+
 			next(sprite.getId());
 		}
-		
+
 		public void next(Identifier texture) {
 			if (this.consumer == null) {
 				throw new RuntimeException("Invalid VertexConsumer!");
@@ -194,7 +193,7 @@ public class SpriteRenderer {
 			float sX = sprite.getWidth();
 			float sY = sprite.getHeight();
 
- 			MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
+			MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
 
 			for (float y = y1; y < y2; y += Math.min(y2 - y, sY)) {
 				for (float x = x1; x < x2; x += Math.min(x2 - x, sX)) {
@@ -210,7 +209,7 @@ public class SpriteRenderer {
 					if (isOverX) {
 						dX = (uEnd - uStart) * (1 - (nSX / sX));
 					}
-					
+
 					if (isOverY) {
 						dY = (uEnd - uStart) * (1 - (nSY / sY));
 					}

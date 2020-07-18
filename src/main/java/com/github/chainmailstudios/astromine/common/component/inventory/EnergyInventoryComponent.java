@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
-public interface EnergyInventoryComponent {}
+public interface EnergyInventoryComponent {
+}
 //public interface EnergyInventoryComponent extends NameableComponent {
 //	Map<Integer, EnergyVolume> getContents();
 //

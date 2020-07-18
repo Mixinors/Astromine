@@ -1,16 +1,5 @@
 package com.github.chainmailstudios.astromine.common.recipe;
 
-import net.minecraft.fluid.Fluid;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Lazy;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
-
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
@@ -24,12 +13,21 @@ import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import team.reborn.energy.Energy;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.Lazy;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+import team.reborn.energy.Energy;
 
 public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory> {
 	final Identifier identifier;
@@ -75,12 +73,12 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory> {
 
 		if (!inputVolume.getFluid().matchesType(inputFluid.get())) return false;
 		if (!inputVolume.hasStored(inputAmount)) return false;
-		if (!firstOutputVolume.getFluid().matchesType(firstOutputFluid.get()) && !firstOutputVolume.isEmpty()) return false;
+		if (!firstOutputVolume.getFluid().matchesType(firstOutputFluid.get()) && !firstOutputVolume.isEmpty())
+			return false;
 		if (!firstOutputVolume.hasAvailable(firstOutputAmount)) return false;
-		if (!secondOutputVolume.getFluid().matchesType(secondOutputFluid.get()) && !secondOutputVolume.isEmpty()) return false;
-		if (!secondOutputVolume.hasAvailable(secondOutputAmount)) return false;
-
-		return true;
+		if (!secondOutputVolume.getFluid().matchesType(secondOutputFluid.get()) && !secondOutputVolume.isEmpty())
+			return false;
+		return secondOutputVolume.hasAvailable(secondOutputAmount);
 	}
 
 	@Override
@@ -119,12 +117,12 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory> {
 	public Identifier getId() {
 		return identifier;
 	}
-	
+
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return Serializer.INSTANCE;
 	}
-	
+
 	@Override
 	public RecipeType<?> getType() {
 		return Type.INSTANCE;
@@ -173,17 +171,17 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory> {
 
 	public static final class Serializer implements RecipeSerializer<ElectrolyzingRecipe> {
 		public static final Identifier ID = AstromineCommon.identifier("electrolyzing");
-		
+
 		public static final Serializer INSTANCE = new Serializer();
-		
+
 		private Serializer() {
 			// Locked.
 		}
-		
+
 		@Override
 		public ElectrolyzingRecipe read(Identifier identifier, JsonObject object) {
 			ElectrolyzingRecipe.Format format = new Gson().fromJson(object, ElectrolyzingRecipe.Format.class);
-			
+
 			return new ElectrolyzingRecipe(identifier,
 					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.input)),
 					FractionUtilities.fromJson(format.inputAmount),
@@ -194,7 +192,7 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory> {
 					EnergyUtilities.fromJson(format.energyGenerated),
 					ParsingUtilities.fromJson(format.time, Integer.class));
 		}
-		
+
 		@Override
 		public ElectrolyzingRecipe read(Identifier identifier, PacketByteBuf buffer) {
 			return new ElectrolyzingRecipe(identifier,
@@ -207,7 +205,7 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory> {
 					EnergyUtilities.fromPacket(buffer),
 					PacketUtilities.fromPacket(buffer, Integer.class));
 		}
-		
+
 		@Override
 		public void write(PacketByteBuf buffer, ElectrolyzingRecipe recipe) {
 			buffer.writeIdentifier(recipe.inputFluidKey.getValue());
@@ -220,15 +218,15 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory> {
 			buffer.writeInt(recipe.getTime());
 		}
 	}
-	
+
 	public static final class Type implements AstromineRecipeType<ElectrolyzingRecipe> {
 		public static final Type INSTANCE = new Type();
-		
+
 		private Type() {
 			// Locked.
 		}
 	}
-	
+
 	public static final class Format {
 		String input;
 		@SerializedName("input_amount")

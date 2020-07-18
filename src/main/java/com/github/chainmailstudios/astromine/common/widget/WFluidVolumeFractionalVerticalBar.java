@@ -1,5 +1,11 @@
 package com.github.chainmailstudios.astromine.common.widget;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.client.BaseRenderer;
+import com.github.chainmailstudios.astromine.client.render.SpriteRenderer;
+import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.google.common.collect.Lists;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
@@ -10,15 +16,8 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.client.BaseRenderer;
-import com.github.chainmailstudios.astromine.client.render.SpriteRenderer;
-import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import spinnery.client.render.layer.SpinneryLayers;
 
-import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.function.Supplier;
 

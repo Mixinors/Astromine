@@ -1,14 +1,13 @@
 package com.github.chainmailstudios.astromine.common.widget;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import com.google.common.collect.Lists;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-
-import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.function.Supplier;
 

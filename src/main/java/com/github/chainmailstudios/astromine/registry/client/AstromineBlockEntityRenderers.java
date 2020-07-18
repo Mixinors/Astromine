@@ -1,14 +1,12 @@
 package com.github.chainmailstudios.astromine.registry.client;
 
+import com.github.chainmailstudios.astromine.client.render.block.HolographicBridgeBlockEntityRenderer;
+import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
-
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-
-import com.github.chainmailstudios.astromine.client.render.block.HolographicBridgeBlockEntityRenderer;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 
 import java.util.function.Function;
 

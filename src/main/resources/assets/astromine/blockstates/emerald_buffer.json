@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "astromine:block/emerald_buffer" }
+  }
+}

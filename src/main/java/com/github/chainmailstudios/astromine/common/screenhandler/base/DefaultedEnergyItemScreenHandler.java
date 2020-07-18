@@ -1,11 +1,10 @@
 package com.github.chainmailstudios.astromine.common.screenhandler.base;
 
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.math.BlockPos;
-
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.util.math.BlockPos;
 import spinnery.widget.WInterface;
 import spinnery.widget.WSlot;
 

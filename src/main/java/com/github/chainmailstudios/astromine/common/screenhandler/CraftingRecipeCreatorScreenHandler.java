@@ -1,9 +1,8 @@
 package com.github.chainmailstudios.astromine.common.screenhandler;
 
+import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ScreenHandlerType;
-
-import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 import spinnery.common.handler.BaseScreenHandler;
 import spinnery.common.inventory.BaseInventory;
 import spinnery.widget.WSlot;

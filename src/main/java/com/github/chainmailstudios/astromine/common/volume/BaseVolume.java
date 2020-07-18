@@ -1,10 +1,8 @@
 package com.github.chainmailstudios.astromine.common.volume;
 
-import net.minecraft.nbt.CompoundTag;
-
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-
 import com.google.common.base.Objects;
+import net.minecraft.nbt.CompoundTag;
 
 public class BaseVolume {
 	protected Fraction fraction = Fraction.empty();

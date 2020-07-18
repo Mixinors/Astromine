@@ -1,14 +1,15 @@
 package com.github.chainmailstudios.astromine.mixin;
 
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
+import com.github.chainmailstudios.astromine.common.atmosphere.AtmosphereRegistry;
+import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
+import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
+import com.github.chainmailstudios.astromine.common.fluid.AdvancedFluid;
+import com.github.chainmailstudios.astromine.common.item.SpaceSuitItem;
+import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineTags;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.entity.Entity;
@@ -21,17 +22,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-
-import com.github.chainmailstudios.astromine.common.atmosphere.AtmosphereRegistry;
-import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
-import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
-import com.github.chainmailstudios.astromine.common.fluid.AdvancedFluid;
-import com.github.chainmailstudios.astromine.common.item.SpaceSuitItem;
-import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineTags;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.stream.Collectors;
 

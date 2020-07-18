@@ -4,11 +4,13 @@ import net.minecraft.nbt.CompoundTag;
 
 public interface RecipeConsumer {
 	int getCurrent();
+
 	int getLimit();
 
 	boolean isActive();
 
 	void setCurrent(int current);
+
 	void setLimit(int limit);
 
 	void setActive(boolean isActive);

@@ -1,10 +1,9 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import net.minecraft.world.dimension.DimensionType;
-
 import com.github.chainmailstudios.astromine.common.dimension.EarthSpaceDimensionType;
 import com.github.chainmailstudios.astromine.common.entity.placer.SpaceEntityPlacer;
 import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
+import net.minecraft.world.dimension.DimensionType;
 
 public class AstromineDimensionLayers {
 	public static void initialize() {

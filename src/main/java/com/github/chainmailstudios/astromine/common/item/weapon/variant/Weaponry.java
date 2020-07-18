@@ -1,24 +1,23 @@
 package com.github.chainmailstudios.astromine.common.item.weapon.variant;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.item.weapon.BaseWeapon;
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.Item;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.item.weapon.BaseWeapon;
-import com.github.chainmailstudios.astromine.registry.AstromineItems;
-import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
-
 public class Weaponry {
 	public static final class ScarH extends BaseWeapon {
 		public static final Identifier TEXTURE = AstromineCommon.identifier("textures/entity/projectiles/bullet.png");
-		
+
 		public ScarH(Settings settings) {
 			super(settings);
 		}
-		
+
 		@Override
 		public float getZoom() {
 			return 45;
@@ -26,7 +25,7 @@ public class Weaponry {
 
 		@Override
 		public float getDamage() {
-			return 0.5f;
+			return 0.05f;
 		}
 
 		@Override
@@ -94,7 +93,7 @@ public class Weaponry {
 
 		@Override
 		public float getDamage() {
-			return 25f;
+			return 0.25f;
 		}
 
 		@Override

@@ -1,7 +1,13 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
+import com.github.chainmailstudios.astromine.common.utilities.LineUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.VectorUtilities;
+import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -12,14 +18,6 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
-
-import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
-import com.github.chainmailstudios.astromine.common.utilities.LineUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.VectorUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
 import org.jetbrains.annotations.NotNull;
 import spinnery.widget.api.Color;
 

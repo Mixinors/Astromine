@@ -1,37 +1,23 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.item.*;
+import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
+import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
+import com.github.chainmailstudios.astromine.common.item.weapon.AmmunitionItem;
+import com.github.chainmailstudios.astromine.common.item.weapon.variant.Weaponry;
 import net.fabricmc.loader.api.FabricLoader;
-
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.HoeItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.PickaxeItem;
-import net.minecraft.item.ShovelItem;
-import net.minecraft.item.SwordItem;
+import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.item.FireExtinguisherItem;
-import com.github.chainmailstudios.astromine.common.item.HolographicConnectorItem;
-import com.github.chainmailstudios.astromine.common.item.MeteorSpawnerDevItem;
-import com.github.chainmailstudios.astromine.common.item.SpaceSuitItem;
-import com.github.chainmailstudios.astromine.common.item.SuperSpaceSlimeShooterItem;
-import com.github.chainmailstudios.astromine.common.item.UncoloredSpawnEggItem;
-import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
-import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
-import com.github.chainmailstudios.astromine.common.item.weapon.AmmunitionItem;
-import com.github.chainmailstudios.astromine.common.item.weapon.variant.Weaponry;
 
 public class AstromineItems {
 	// Spawn eggs
@@ -163,31 +149,31 @@ public class AstromineItems {
 
 	// Tools
 	public static final Item HOLOGRAPHIC_CONNECTOR = register("holographic_connector", new HolographicConnectorItem(getBasicSettings().maxCount(1)));
-	
+
 	public static final Item COPPER_PICKAXE = register("copper_pickaxe", new PickaxeItem(AstromineToolMaterials.COPPER, 1, -2.8f, getBasicSettings()));
 	public static final Item COPPER_AXE = register("copper_axe", new AxeItem(AstromineToolMaterials.COPPER, 5f, -3.0f, getBasicSettings()));
 	public static final Item COPPER_SHOVEL = register("copper_shovel", new ShovelItem(AstromineToolMaterials.COPPER, 1.5f, -3.0f, getBasicSettings()));
 	public static final Item COPPER_HOE = register("copper_hoe", new HoeItem(AstromineToolMaterials.COPPER, -5, 0f, getBasicSettings()));
 	public static final Item COPPER_SWORD = register("copper_sword", new SwordItem(AstromineToolMaterials.COPPER, 3, -2.4f, getBasicSettings()));
-	
+
 	public static final Item TIN_PICKAXE = register("tin_pickaxe", new PickaxeItem(AstromineToolMaterials.TIN, 1, -2.8f, getBasicSettings()));
 	public static final Item TIN_AXE = register("tin_axe", new AxeItem(AstromineToolMaterials.TIN, 5f, -3.0f, getBasicSettings()));
 	public static final Item TIN_SHOVEL = register("tin_shovel", new ShovelItem(AstromineToolMaterials.TIN, 1.5f, -3.0f, getBasicSettings()));
 	public static final Item TIN_HOE = register("tin_hoe", new HoeItem(AstromineToolMaterials.TIN, -5, 0f, getBasicSettings()));
 	public static final Item TIN_SWORD = register("tin_sword", new SwordItem(AstromineToolMaterials.TIN, 3, -2.4f, getBasicSettings()));
-	
+
 	public static final Item BRONZE_PICKAXE = register("bronze_pickaxe", new PickaxeItem(AstromineToolMaterials.BRONZE, 1, -2.8f, getBasicSettings().fireproof()));
 	public static final Item BRONZE_AXE = register("bronze_axe", new AxeItem(AstromineToolMaterials.BRONZE, 5f, -3.0f, getBasicSettings().fireproof()));
 	public static final Item BRONZE_SHOVEL = register("bronze_shovel", new ShovelItem(AstromineToolMaterials.BRONZE, 1.5f, -3.0f, getBasicSettings().fireproof()));
 	public static final Item BRONZE_HOE = register("bronze_hoe", new HoeItem(AstromineToolMaterials.BRONZE, -6, 0f, getBasicSettings().fireproof()));
 	public static final Item BRONZE_SWORD = register("bronze_sword", new SwordItem(AstromineToolMaterials.BRONZE, 3, -2.4f, getBasicSettings().fireproof()));
-	
+
 	public static final Item STEEL_PICKAXE = register("steel_pickaxe", new PickaxeItem(AstromineToolMaterials.STEEL, 1, -2.8f, getBasicSettings()));
 	public static final Item STEEL_AXE = register("steel_axe", new AxeItem(AstromineToolMaterials.STEEL, 5f, -3.0f, getBasicSettings()));
 	public static final Item STEEL_SHOVEL = register("steel_shovel", new ShovelItem(AstromineToolMaterials.STEEL, 1.5f, -3.0f, getBasicSettings()));
 	public static final Item STEEL_HOE = register("steel_hoe", new HoeItem(AstromineToolMaterials.STEEL, -6, 0f, getBasicSettings()));
 	public static final Item STEEL_SWORD = register("steel_sword", new SwordItem(AstromineToolMaterials.STEEL, 3, -2.4f, getBasicSettings()));
-	
+
 	public static final Item METITE_PICKAXE = register("metite_pickaxe", new PickaxeItem(AstromineToolMaterials.METITE, 1, -2.8f, getBasicSettings()));
 	public static final Item METITE_AXE = register("metite_axe", new AxeItem(AstromineToolMaterials.METITE, 5f, -3.0f, getBasicSettings()));
 	public static final Item METITE_SHOVEL = register("metite_shovel", new ShovelItem(AstromineToolMaterials.METITE, 1.5f, -3.0f, getBasicSettings()));
@@ -223,22 +209,22 @@ public class AstromineItems {
 	public static final Item COPPER_CHESTPLATE = register("copper_chestplate", new ArmorItem(AstromineArmorMaterials.COPPER, EquipmentSlot.CHEST, getBasicSettings()));
 	public static final Item COPPER_LEGGINGS = register("copper_leggings", new ArmorItem(AstromineArmorMaterials.COPPER, EquipmentSlot.LEGS, getBasicSettings()));
 	public static final Item COPPER_BOOTS = register("copper_boots", new ArmorItem(AstromineArmorMaterials.COPPER, EquipmentSlot.FEET, getBasicSettings()));
-	
+
 	public static final Item TIN_HELMET = register("tin_helmet", new ArmorItem(AstromineArmorMaterials.TIN, EquipmentSlot.HEAD, getBasicSettings()));
 	public static final Item TIN_CHESTPLATE = register("tin_chestplate", new ArmorItem(AstromineArmorMaterials.TIN, EquipmentSlot.CHEST, getBasicSettings()));
 	public static final Item TIN_LEGGINGS = register("tin_leggings", new ArmorItem(AstromineArmorMaterials.TIN, EquipmentSlot.LEGS, getBasicSettings()));
 	public static final Item TIN_BOOTS = register("tin_boots", new ArmorItem(AstromineArmorMaterials.TIN, EquipmentSlot.FEET, getBasicSettings()));
-	
+
 	public static final Item BRONZE_HELMET = register("bronze_helmet", new ArmorItem(AstromineArmorMaterials.BRONZE, EquipmentSlot.HEAD, getBasicSettings().fireproof()));
 	public static final Item BRONZE_CHESTPLATE = register("bronze_chestplate", new ArmorItem(AstromineArmorMaterials.BRONZE, EquipmentSlot.CHEST, getBasicSettings().fireproof()));
 	public static final Item BRONZE_LEGGINGS = register("bronze_leggings", new ArmorItem(AstromineArmorMaterials.BRONZE, EquipmentSlot.LEGS, getBasicSettings().fireproof()));
 	public static final Item BRONZE_BOOTS = register("bronze_boots", new ArmorItem(AstromineArmorMaterials.BRONZE, EquipmentSlot.FEET, getBasicSettings().fireproof()));
-	
+
 	public static final Item STEEL_HELMET = register("steel_helmet", new ArmorItem(AstromineArmorMaterials.STEEL, EquipmentSlot.HEAD, getBasicSettings()));
 	public static final Item STEEL_CHESTPLATE = register("steel_chestplate", new ArmorItem(AstromineArmorMaterials.STEEL, EquipmentSlot.CHEST, getBasicSettings()));
 	public static final Item STEEL_LEGGINGS = register("steel_leggings", new ArmorItem(AstromineArmorMaterials.STEEL, EquipmentSlot.LEGS, getBasicSettings()));
 	public static final Item STEEL_BOOTS = register("steel_boots", new ArmorItem(AstromineArmorMaterials.STEEL, EquipmentSlot.FEET, getBasicSettings()));
-	
+
 	public static final Item METITE_HELMET = register("metite_helmet", new ArmorItem(AstromineArmorMaterials.METITE, EquipmentSlot.HEAD, getBasicSettings()));
 	public static final Item METITE_CHESTPLATE = register("metite_chestplate", new ArmorItem(AstromineArmorMaterials.METITE, EquipmentSlot.CHEST, getBasicSettings()));
 	public static final Item METITE_LEGGINGS = register("metite_leggings", new ArmorItem(AstromineArmorMaterials.METITE, EquipmentSlot.LEGS, getBasicSettings()));

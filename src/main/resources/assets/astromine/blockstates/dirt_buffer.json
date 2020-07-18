@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "astromine:block/dirt_buffer" }
+  }
+}

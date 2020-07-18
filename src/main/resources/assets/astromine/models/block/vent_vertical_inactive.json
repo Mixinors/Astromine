@@ -1,4 +1,4 @@
-  {
+{
   "parent": "block/cube",
   "textures": {
     "particle": "astromine:block/machine_bottom",

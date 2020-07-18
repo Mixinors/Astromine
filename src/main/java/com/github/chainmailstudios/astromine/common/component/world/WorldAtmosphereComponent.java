@@ -1,5 +1,10 @@
 package com.github.chainmailstudios.astromine.common.component.world;
 
+import com.github.chainmailstudios.astromine.common.dimension.EarthSpaceDimensionType;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.google.common.collect.Lists;
+import nerdhub.cardinal.components.api.component.Component;
 import net.minecraft.block.AirBlock;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
@@ -9,12 +14,6 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 
-import com.github.chainmailstudios.astromine.common.dimension.EarthSpaceDimensionType;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import nerdhub.cardinal.components.api.component.Component;
-
-import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;

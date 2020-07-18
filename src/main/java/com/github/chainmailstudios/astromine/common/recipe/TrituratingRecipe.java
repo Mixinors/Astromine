@@ -1,5 +1,16 @@
 package com.github.chainmailstudios.astromine.common.recipe;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
+import com.github.chainmailstudios.astromine.common.utilities.*;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.annotations.SerializedName;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -11,22 +22,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.IngredientUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
-
-import com.google.common.collect.Lists;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.annotations.SerializedName;
 import java.util.List;
 import java.util.Map;
 

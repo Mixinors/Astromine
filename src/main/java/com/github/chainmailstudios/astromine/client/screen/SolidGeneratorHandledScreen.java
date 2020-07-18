@@ -1,14 +1,13 @@
 package com.github.chainmailstudios.astromine.client.screen;
 
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.Text;
-
 import com.github.chainmailstudios.astromine.client.screen.base.DefaultedEnergyItemHandledScreen;
 import com.github.chainmailstudios.astromine.common.block.entity.SolidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.SolidGeneratorScreenHandler;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyItemScreenHandler;
 import com.github.chainmailstudios.astromine.common.widget.WHorizontalArrow;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.Text;
 import spinnery.widget.WSlot;
 import spinnery.widget.api.Position;
 import spinnery.widget.api.Size;
