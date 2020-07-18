@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "astromine:emerald_ores",
+    "count": 1
+  },
+  "output": {
+    "item": "astromine:emerald_dust",
+    "count": 2
+  },
+  "time": 30,
+  "energy_consumed": 820
+}

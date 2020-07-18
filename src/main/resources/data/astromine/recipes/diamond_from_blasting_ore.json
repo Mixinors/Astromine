@@ -1,7 +1,7 @@
 {
   "type": "minecraft:blasting",
   "ingredient": {
-    "tag": "astromine:diamond_ores"
+    "tag": "astromine:mod_diamond_ores"
   },
   "result": "minecraft:diamond",
   "experience": 0.1,

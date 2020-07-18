@@ -21,9 +21,9 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.LiquidGeneratorBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.LiquidGeneratorContainer;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.github.chainmailstudios.astromine.common.screenhandler.LiquidGeneratorScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
 public class LiquidGeneratorBlock extends DefaultedHorizontalFacingBlockWithEntity implements NetworkMember {
@@ -57,7 +57,7 @@ public class LiquidGeneratorBlock extends DefaultedHorizontalFacingBlockWithEnti
 
 				@Override
 				public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-					return new LiquidGeneratorContainer(syncId, playerInventory, blockPos);
+					return new LiquidGeneratorScreenHandler(syncId, playerInventory, blockPos);
 				}
 			});
 

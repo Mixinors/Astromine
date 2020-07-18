@@ -1,5 +1,11 @@
 package com.github.chainmailstudios.astromine.common.network.ticker;
 
+import net.minecraft.block.FacingBlock;
+import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.state.property.Property;
+import net.minecraft.util.math.Direction;
+
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
@@ -8,16 +14,11 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkNode;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.google.common.collect.Lists;
-import net.minecraft.block.FacingBlock;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.state.property.Property;
-import net.minecraft.util.math.Direction;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 import team.reborn.energy.EnergyStorage;
 
+import com.google.common.collect.Lists;
 import java.util.Comparator;
 import java.util.List;
 

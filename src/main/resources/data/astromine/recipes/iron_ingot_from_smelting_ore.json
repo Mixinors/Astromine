@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smelting",
   "ingredient": {
-    "tag": "astromine:iron_ores"
+    "tag": "astromine:mod_iron_ores"
   },
   "result": "minecraft:iron_ingot",
   "experience": 0.1,

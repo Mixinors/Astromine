@@ -1,10 +1,10 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import net.minecraft.util.Tickable;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedItemBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 
 public class CreativeBufferBlockEntity extends DefaultedItemBlockEntity implements Tickable {

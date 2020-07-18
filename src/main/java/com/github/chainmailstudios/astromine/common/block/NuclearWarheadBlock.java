@@ -20,8 +20,8 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.container.VentContainer;
 import com.github.chainmailstudios.astromine.common.miscellaneous.ExplosionAlgorithm;
+import com.github.chainmailstudios.astromine.common.screenhandler.VentScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 public class NuclearWarheadBlock extends Block {
@@ -65,7 +65,7 @@ public class NuclearWarheadBlock extends Block {
 
 				@Override
 				public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-					return new VentContainer(syncId, playerInventory, blockPos);
+					return new VentScreenHandler(syncId, playerInventory, blockPos);
 				}
 			});
 

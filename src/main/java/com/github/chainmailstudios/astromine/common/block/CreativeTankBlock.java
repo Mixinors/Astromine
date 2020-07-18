@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.CreativeTankBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.CreativeTankContainer;
+import com.github.chainmailstudios.astromine.common.screenhandler.CreativeTankScreenHandler;
 
 public class CreativeTankBlock extends DefaultedHorizontalFacingBlockWithEntity {
 	public CreativeTankBlock(Settings settings) {
@@ -49,7 +49,7 @@ public class CreativeTankBlock extends DefaultedHorizontalFacingBlockWithEntity 
 
 				@Override
 				public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-					return new CreativeTankContainer(syncId, playerInventory, blockPos);
+					return new CreativeTankScreenHandler(syncId, playerInventory, blockPos);
 				}
 			});
 

@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.item.weapon.BaseWeapon;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
-import com.github.chainmailstudios.astromine.registry.client.AstromineSounds;
+import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 
 public class Weaponry {
 	public static final class ScarH extends BaseWeapon {
@@ -56,7 +56,7 @@ public class Weaponry {
 
 		@Override
 		public SoundEvent getShotSound() {
-			return AstromineSounds.SCAR_H_SHOT;
+			return AstromineSoundEvents.SCAR_H_SHOT;
 		}
 
 		@Override
@@ -124,7 +124,7 @@ public class Weaponry {
 
 		@Override
 		public SoundEvent getShotSound() {
-			return AstromineSounds.BARRET_M98B_SHOT;
+			return AstromineSoundEvents.BARRET_M98B_SHOT;
 		}
 
 		@Override

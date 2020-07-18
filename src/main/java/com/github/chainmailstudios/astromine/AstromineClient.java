@@ -14,7 +14,6 @@ import com.github.chainmailstudios.astromine.registry.client.AstrominePatchouliP
 import com.github.chainmailstudios.astromine.registry.client.AstromineRenderLayers;
 import com.github.chainmailstudios.astromine.registry.client.AstromineScreens;
 import com.github.chainmailstudios.astromine.registry.client.AstromineSkyboxes;
-import com.github.chainmailstudios.astromine.registry.client.AstromineSounds;
 
 @Environment(EnvType.CLIENT)
 public class AstromineClient implements ClientModInitializer {
@@ -24,7 +23,6 @@ public class AstromineClient implements ClientModInitializer {
 		AstromineEntityRenderers.initialize();
 		AstromineBlockEntityRenderers.initialize();
 		AstromineClientModels.initialize();
-		AstromineSounds.initialize();
 		AstromineParticleFactories.initialize();
 		AstromineSkyboxes.initialize();
 		AstromineScreens.initialize();

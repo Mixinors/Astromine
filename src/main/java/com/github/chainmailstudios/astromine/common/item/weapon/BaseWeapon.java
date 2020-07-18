@@ -18,7 +18,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.compatib
 import com.github.chainmailstudios.astromine.common.entity.projectile.BulletEntity;
 import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
-import com.github.chainmailstudios.astromine.registry.client.AstromineSounds;
+import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 
 import java.util.List;
 import java.util.Optional;
@@ -78,7 +78,7 @@ public abstract class BaseWeapon extends Item implements Weapon {
 
 				if (magazine.getDamage() >= magazine.getMaxDamage()) {
 					if (world.isClient) {
-						world.playSound(user, user.getBlockPos(), AstromineSounds.EMPTY_MAGAZINE, SoundCategory.PLAYERS, 1f, 1f);
+						world.playSound(user, user.getBlockPos(), AstromineSoundEvents.EMPTY_MAGAZINE, SoundCategory.PLAYERS, 1f, 1f);
 					}
 
 					return;
@@ -104,7 +104,7 @@ public abstract class BaseWeapon extends Item implements Weapon {
 
 				persistentProjectileEntity.setPunch(this.getPunch());
 
-				persistentProjectileEntity.setSound(AstromineSounds.EMPTY);
+				persistentProjectileEntity.setSound(AstromineSoundEvents.EMPTY);
 
 				if (world.isClient) {
 					ClientUtilities.addEntity(persistentProjectileEntity);

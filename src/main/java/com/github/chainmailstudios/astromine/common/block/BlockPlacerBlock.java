@@ -1,14 +1,7 @@
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.BlockBreakerBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.BlockPlacerBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.BlockBreakerContainer;
-import com.github.chainmailstudios.astromine.common.container.BlockPlacerContainer;
-import com.github.chainmailstudios.astromine.common.network.NetworkMember;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
-import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,6 +18,13 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.BlockPlacerBlockEntity;
+import com.github.chainmailstudios.astromine.common.network.NetworkMember;
+import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.github.chainmailstudios.astromine.common.screenhandler.BlockPlacerScreenHandler;
+import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
 public class BlockPlacerBlock extends DefaultedHorizontalFacingBlockWithEntity implements NetworkMember {
 	public BlockPlacerBlock(Settings settings) {
@@ -57,7 +57,7 @@ public class BlockPlacerBlock extends DefaultedHorizontalFacingBlockWithEntity i
 
 				@Override
 				public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-					return new BlockPlacerContainer(syncId, playerInventory, blockPos);
+					return new BlockPlacerScreenHandler(syncId, playerInventory, blockPos);
 				}
 			});
 

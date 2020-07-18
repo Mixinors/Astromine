@@ -1,5 +1,9 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import net.minecraft.item.Item;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
@@ -10,9 +14,6 @@ import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeC
 import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
 import nerdhub.cardinal.components.api.ComponentRegistry;
 import nerdhub.cardinal.components.api.ComponentType;
-import net.minecraft.item.Item;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
 
 public class AstromineComponentTypes {
 	public static final ComponentType<WorldNetworkComponent> WORLD_NETWORK_COMPONENT = ComponentRegistry.INSTANCE.registerIfAbsent(AstromineCommon.identifier("world_network_component"), WorldNetworkComponent.class);

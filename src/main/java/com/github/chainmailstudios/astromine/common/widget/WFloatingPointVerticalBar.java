@@ -1,19 +1,21 @@
 package com.github.chainmailstudios.astromine.common.widget;
 
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
-import com.google.common.collect.Lists;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+
+import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
 import spinnery.client.render.BaseRenderer;
 import spinnery.client.utility.ScissorArea;
 import spinnery.widget.WAbstractBar;
 
+import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.function.Supplier;
 

@@ -1,7 +1,7 @@
 {
   "type": "minecraft:blasting",
   "ingredient": {
-    "tag": "astromine:coal_ores"
+    "tag": "astromine:mod_coal_ores"
   },
   "result": "minecraft:coal",
   "experience": 0.1,

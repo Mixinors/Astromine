@@ -1,9 +1,7 @@
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.PresserBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.PresserContainer;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,6 +18,10 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.PresserBlockEntity;
+import com.github.chainmailstudios.astromine.common.screenhandler.PresserScreenHandler;
 
 public class PresserBlock extends DefaultedHorizontalFacingBlockWithEntity {
 	public PresserBlock(Settings settings) {
@@ -47,7 +49,7 @@ public class PresserBlock extends DefaultedHorizontalFacingBlockWithEntity {
 
 				@Override
 				public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-					return new PresserContainer(syncId, playerInventory, blockPos);
+					return new PresserScreenHandler(syncId, playerInventory, blockPos);
 				}
 			});
 

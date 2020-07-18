@@ -1,7 +1,7 @@
 {
   "type": "minecraft:blasting",
   "ingredient": {
-    "tag": "astromine:emerald_ores"
+    "tag": "astromine:mod_emerald_ores"
   },
   "result": "minecraft:emerald",
   "experience": 0.1,

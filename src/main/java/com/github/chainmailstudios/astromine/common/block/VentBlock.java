@@ -1,9 +1,7 @@
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedFacingBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.VentBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.VentContainer;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,6 +18,10 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedFacingBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.VentBlockEntity;
+import com.github.chainmailstudios.astromine.common.screenhandler.VentScreenHandler;
 
 public class VentBlock extends DefaultedFacingBlockWithEntity {
 	public VentBlock(Settings settings) {
@@ -47,7 +49,7 @@ public class VentBlock extends DefaultedFacingBlockWithEntity {
 
 				@Override
 				public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-					return new VentContainer(syncId, playerInventory, blockPos);
+					return new VentScreenHandler(syncId, playerInventory, blockPos);
 				}
 			});
 

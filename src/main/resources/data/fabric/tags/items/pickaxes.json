@@ -1,6 +1,10 @@
 {
   "replace": false,
   "values": [
+    "astromine:copper_pickaxe",
+    "astromine:tin_pickaxe",
+    "astromine:bronze_pickaxe",
+    "astromine:steel_pickaxe",
     "astromine:metite_pickaxe",
     "astromine:asterite_pickaxe",
     "astromine:stellum_pickaxe",

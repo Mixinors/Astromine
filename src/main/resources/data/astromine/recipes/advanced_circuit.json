@@ -1,1 +1,7 @@
-{"type":"minecraft:crafting_shaped","pattern":["012","345","678"],"key":{"0":{"item":"minecraft:red_nether_brick_slab"},"1":{"item":"minecraft:red_nether_brick_slab"},"2":{"item":"minecraft:red_nether_brick_slab"},"3":{"item":"astromine:gold_plates"},"4":{"item":"minecraft:redstone"},"5":{"item":"astromine:gold_plates"},"6":{"item":"minecraft:red_nether_brick_slab"},"7":{"item":"minecraft:red_nether_brick_slab"},"8":{"item":"minecraft:red_nether_brick_slab"}},"result":{"item":"astromine:advanced_circuit","count":1}}
+{
+	"type": "minecraft:crafting_shaped", "pattern": ["000", "121", "000"], "key": {
+	"0": {"item": "astromine:bronze_plates"},
+	"1": {"item": "astromine:gold_plates"},
+	"2": {"item": "astromine:basic_circuit"}
+}, "result": {"item": "astromine:advanced_circuit", "count": 1}
+}

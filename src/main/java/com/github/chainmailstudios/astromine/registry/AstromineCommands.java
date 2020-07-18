@@ -13,7 +13,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 
-import com.github.chainmailstudios.astromine.common.container.CraftingRecipeCreatorContainer;
+import com.github.chainmailstudios.astromine.common.screenhandler.CraftingRecipeCreatorScreenHandler;
 
 import static net.minecraft.server.command.CommandManager.literal;
 
@@ -38,7 +38,7 @@ public class AstromineCommands {
 
 								@Override
 								public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-									return new CraftingRecipeCreatorContainer(syncId, playerInventory);
+									return new CraftingRecipeCreatorScreenHandler(syncId, playerInventory);
 								}
 							});
 

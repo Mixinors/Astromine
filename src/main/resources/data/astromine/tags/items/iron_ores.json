@@ -1,7 +1,7 @@
 {
-  "replace": false,
-  "values": [
-    "astromine:asteroid_iron_ore",
-    "astromine:asteroid_iron_cluster"
-  ]
+	"replace": false,
+	"values": [
+		"#astromine:mod_iron_ores",
+		"minecraft:iron_ore"
+	]
 }

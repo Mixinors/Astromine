@@ -1,6 +1,10 @@
 {
   "replace": false,
   "values": [
+    "astromine:copper_block",
+    "astromine:tin_block",
+    "astromine:bronze_block",
+    "astromine:steel_block",
     "astromine:asterite_block",
     "astromine:metite_block",
     "astromine:stellum_block",

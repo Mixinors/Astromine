@@ -1,6 +1,10 @@
 {
   "replace": false,
   "values": [
+    "astromine:copper_sword",
+    "astromine:tin_sword",
+    "astromine:bronze_sword",
+    "astromine:steel_sword",
     "astromine:metite_sword",
     "astromine:asterite_sword",
     "astromine:stellum_sword",

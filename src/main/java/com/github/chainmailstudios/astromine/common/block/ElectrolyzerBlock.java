@@ -21,9 +21,9 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.ElectrolyzerBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.ElectrolyzerContainer;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.github.chainmailstudios.astromine.common.screenhandler.ElectrolyzerScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
 public class ElectrolyzerBlock extends DefaultedHorizontalFacingBlockWithEntity implements NetworkMember {
@@ -57,7 +57,7 @@ public class ElectrolyzerBlock extends DefaultedHorizontalFacingBlockWithEntity 
 
 				@Override
 				public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-					return new ElectrolyzerContainer(syncId, playerInventory, blockPos);
+					return new ElectrolyzerScreenHandler(syncId, playerInventory, blockPos);
 				}
 			});
 

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["###", "# #", "# #"],
+  "key": {
+    "#": {
+      "item": "astromine:steel_ingot"
+    }
+  },
+  "result": {
+    "item": "astromine:steel_leggings"
+  }
+}
