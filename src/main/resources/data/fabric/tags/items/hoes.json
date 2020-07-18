@@ -1,6 +1,10 @@
 {
   "replace": false,
   "values": [
+    "astromine:copper_hoe",
+    "astromine:tin_hoe",
+    "astromine:bronze_hoe",
+    "astromine:steel_hoe",
     "astromine:metite_hoe",
     "astromine:asterite_hoe",
     "astromine:stellum_hoe",

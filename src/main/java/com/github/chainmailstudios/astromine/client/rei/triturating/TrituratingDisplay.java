@@ -6,11 +6,9 @@ import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineREIPlugin;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeDisplay;
-import me.shedaniel.rei.utils.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:asteroid_redstone_ore",
+    "astromine:asteroid_redstone_cluster"
+  ]
+}

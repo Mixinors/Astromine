@@ -1,10 +1,12 @@
 package com.github.chainmailstudios.astromine.common.component.block.entity;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
+
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+
+import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyStorage;
 

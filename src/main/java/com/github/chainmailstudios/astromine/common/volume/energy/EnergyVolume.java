@@ -1,8 +1,9 @@
 package com.github.chainmailstudios.astromine.common.volume.energy;
 
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.MathHelper;
+
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 
 public class EnergyVolume {
 	public static final double OLD_NEW_RATIO = 1000;

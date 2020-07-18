@@ -21,9 +21,9 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.TankBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.FluidTankContainer;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.github.chainmailstudios.astromine.common.screenhandler.FluidTankScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
 public class TankBlock extends DefaultedHorizontalFacingBlockWithEntity implements NetworkMember {
@@ -62,7 +62,7 @@ public class TankBlock extends DefaultedHorizontalFacingBlockWithEntity implemen
 
 				@Override
 				public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-					return new FluidTankContainer(syncId, playerInventory, blockPos);
+					return new FluidTankScreenHandler(syncId, playerInventory, blockPos);
 				}
 			});
 

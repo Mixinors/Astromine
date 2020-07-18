@@ -21,9 +21,9 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.FluidMixerBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.FluidMixerContainer;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.github.chainmailstudios.astromine.common.screenhandler.FluidMixerScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
 public class FluidMixerBlock extends DefaultedHorizontalFacingBlockWithEntity implements NetworkMember {
@@ -57,7 +57,7 @@ public class FluidMixerBlock extends DefaultedHorizontalFacingBlockWithEntity im
 
 				@Override
 				public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-					return new FluidMixerContainer(syncId, playerInventory, blockPos);
+					return new FluidMixerScreenHandler(syncId, playerInventory, blockPos);
 				}
 			});
 

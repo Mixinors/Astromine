@@ -1,6 +1,10 @@
 {
   "replace": false,
   "values": [
+    "astromine:copper_axe",
+    "astromine:tin_axe",
+    "astromine:bronze_axe",
+    "astromine:steel_axe",
     "astromine:metite_axe",
     "astromine:asterite_axe",
     "astromine:stellum_axe",

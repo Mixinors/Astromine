@@ -17,7 +17,6 @@ import com.github.chainmailstudios.astromine.registry.AstromineCommonCallbacks;
 import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.github.chainmailstudios.astromine.registry.AstromineContainers;
 import com.github.chainmailstudios.astromine.registry.AstromineDimensionLayers;
 import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineFeatures;
@@ -29,6 +28,8 @@ import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineOres;
 import com.github.chainmailstudios.astromine.registry.AstrominePotions;
 import com.github.chainmailstudios.astromine.registry.AstromineRecipeSerializers;
+import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
+import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 import com.github.chainmailstudios.astromine.registry.AstromineWorlds;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -55,7 +56,7 @@ public class AstromineCommon implements ModInitializer {
 		AstromineItems.initialize();
 		AstromineBlocks.initialize();
 		AstromineOres.initialize();
-		AstromineContainers.initialize();
+		AstromineScreenHandlers.initialize();
 		AstromineEntityTypes.initialize();
 		AstromineComponentTypes.initialize();
 		AstromineNetworkTypes.initialize();
@@ -74,6 +75,7 @@ public class AstromineCommon implements ModInitializer {
 		AstromineWorlds.initialize();
 		AstromineAtmospheres.initialize();
 		AstromineBlockEntityTypes.initialize();
+		AstromineSoundEvents.initialize();
 
 		if (FabricLoader.getInstance().isModLoaded("libblockattributes_fluids")) {
 			try {

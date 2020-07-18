@@ -7,6 +7,11 @@ import net.minecraft.util.Lazy;
 import java.util.function.Supplier;
 
 public class AstromineToolMaterials {
+	public static final AstromineToolMaterial COPPER = new AstromineToolMaterial(1, 200, 4f, 1.5f, 10, () -> Ingredient.ofItems(AstromineItems.COPPER_INGOT));
+	public static final AstromineToolMaterial TIN = new AstromineToolMaterial(1, 200, 5f, 1.0f, 10, () -> Ingredient.ofItems(AstromineItems.TIN_INGOT));
+	public static final AstromineToolMaterial BRONZE = new AstromineToolMaterial(2, 539, 7f, 2.5f, 20, () -> Ingredient.ofItems(AstromineItems.BRONZE_INGOT));
+	public static final AstromineToolMaterial STEEL = new AstromineToolMaterial(2, 1043, 7.5f, 3f, 24, () -> Ingredient.ofItems(AstromineItems.STEEL_INGOT));
+	
 	public static final AstromineToolMaterial METITE = new AstromineToolMaterial(2, 981, 14f, 5.0f, 5, () -> Ingredient.ofItems(AstromineItems.METITE_INGOT));
 	public static final AstromineToolMaterial ASTERITE = new AstromineToolMaterial(5, 2015, 10f, 5.0f, 20, () -> Ingredient.ofItems(AstromineItems.ASTERITE));
 	public static final AstromineToolMaterial STELLUM = new AstromineToolMaterial(5, 2643, 8f, 6.0f, 15, () -> Ingredient.ofItems(AstromineItems.STELLUM_INGOT));

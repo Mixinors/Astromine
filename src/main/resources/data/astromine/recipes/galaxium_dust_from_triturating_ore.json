@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "astromine:galaxium_ores",
+    "count": 1
+  },
+  "output": {
+    "item": "astromine:galaxium_dust",
+    "count": 2
+  },
+  "time": 30,
+  "energy_consumed": 820
+}

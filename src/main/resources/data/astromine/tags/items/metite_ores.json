@@ -3,7 +3,6 @@
 	"values": [
 		"astromine:meteor_metite_ore",
 		"astromine:asteroid_metite_ore",
-		"astromine:meteor_metite_cluster",
-		"astromine:asteroid_metite_cluster"
+		"#astromine:metite_clusters"
 	]
 }

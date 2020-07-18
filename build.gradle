@@ -36,7 +36,11 @@ repositories {
     }
     maven {
         name = "SonaType"
-        url "https://oss.sonatype.org/content/repositories/snapshots/"
+        url = "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+	maven {
+        name = "Ladysnake Libs"
+        url = 'https://dl.bintray.com/ladysnake/libs'
     }
 }
 
@@ -58,22 +62,22 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${api_version}"
 
     // Cardinal-Components API
-    modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-base:${cardinal_components_version}"
-    modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-block:${cardinal_components_version}"
-    modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-chunk:${cardinal_components_version}"
-    modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-entity:${cardinal_components_version}"
-    modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-item:${cardinal_components_version}"
-    modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-level:${cardinal_components_version}"
-    modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-world:${cardinal_components_version}"
-    modImplementation "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-util:${cardinal_components_version}"
-    include "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-base:${cardinal_components_version}"
-    include "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-block:${cardinal_components_version}"
-    include "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-chunk:${cardinal_components_version}"
-    include "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-entity:${cardinal_components_version}"
-    include "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-item:${cardinal_components_version}"
-    include "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-level:${cardinal_components_version}"
-    include "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-world:${cardinal_components_version}"
-    include "com.github.OnyxStudios.Cardinal-Components-API:cardinal-components-util:${cardinal_components_version}"
+    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${cardinal_components_version}"
+    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-block:${cardinal_components_version}"
+    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${cardinal_components_version}"
+    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${cardinal_components_version}"
+    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-item:${cardinal_components_version}"
+    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-level:${cardinal_components_version}"
+    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-world:${cardinal_components_version}"
+    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-util:${cardinal_components_version}"
+    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${cardinal_components_version}"
+    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-block:${cardinal_components_version}"
+    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${cardinal_components_version}"
+    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${cardinal_components_version}"
+    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-item:${cardinal_components_version}"
+    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-level:${cardinal_components_version}"
+    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-world:${cardinal_components_version}"
+    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-util:${cardinal_components_version}"
 
     // Shapes
     modImplementation "com.terraformersmc:shapes:${shapes_version}"

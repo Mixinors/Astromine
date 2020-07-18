@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["###", " $ ", " $ "],
+  "key": {
+    "#": {
+      "item": "astromine:tin_ingot"
+    },
+    "$": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "astromine:tin_pickaxe"
+  }
+}

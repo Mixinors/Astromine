@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.CreativeCapacitorBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.CreativeCapacitorContainer;
+import com.github.chainmailstudios.astromine.common.screenhandler.CreativeCapacitorScreenHandler;
 
 public class CreativeCapacitorBlock extends DefaultedHorizontalFacingBlockWithEntity {
 	public CreativeCapacitorBlock(Settings settings) {
@@ -49,7 +49,7 @@ public class CreativeCapacitorBlock extends DefaultedHorizontalFacingBlockWithEn
 
 				@Override
 				public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-					return new CreativeCapacitorContainer(syncId, playerInventory, blockPos);
+					return new CreativeCapacitorScreenHandler(syncId, playerInventory, blockPos);
 				}
 			});
 

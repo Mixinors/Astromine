@@ -25,6 +25,12 @@ public class AstromineConfig implements ConfigData {
 	
 	@Comment("Gravity level in Space")
 	public double spaceGravity = 0.01d;
+	
+	@Comment("Whether generation of Copper Ore in the Overworld is enabled")
+	public boolean overworldCopperOre = true;
+	
+	@Comment("Whether generation of Tin Ore in the Overworld is enabled")
+	public boolean overworldTinOre = true;
 
 	public static AstromineConfig get() {
 		return AutoConfig.getConfigHolder(AstromineConfig.class).getConfig();

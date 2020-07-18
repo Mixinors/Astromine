@@ -1,16 +1,7 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": ["012", "345", "678"],
-  "key": {
-    "0": { "item": "minecraft:smooth_stone_slab" },
-    "1": { "item": "minecraft:smooth_stone_slab" },
-    "2": { "item": "minecraft:smooth_stone_slab" },
-    "3": { "item": "astromine:gold_plates" },
-    "4": { "item": "minecraft:green_dye" },
-    "5": { "item": "astromine:gold_plates" },
-    "6": { "item": "minecraft:smooth_stone_slab" },
-    "7": { "item": "minecraft:smooth_stone_slab" },
-    "8": { "item": "minecraft:smooth_stone_slab" }
-  },
-  "result": { "item": "astromine:basic_circuit", "count": 1 }
+  "type": "minecraft:crafting_shaped", "pattern": ["000", "121", "000"], "key": {
+  "0": {"item": "astromine:copper_plates"},
+  "1": {"item": "astromine:gold_plates"},
+  "2": {"item": "minecraft:redstone"}
+}, "result": {"item": "astromine:basic_circuit", "count": 1}
 }

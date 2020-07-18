@@ -22,7 +22,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.entity.CreativeBufferBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.CreativeBufferContainer;
+import com.github.chainmailstudios.astromine.common.screenhandler.CreativeBufferScreenHandler;
 
 public class CreativeBufferBlock extends BlockWithEntity {
 	public CreativeBufferBlock(Settings settings) {
@@ -55,7 +55,7 @@ public class CreativeBufferBlock extends BlockWithEntity {
 
 				@Override
 				public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-					return new CreativeBufferContainer(syncId, playerInventory, blockPos);
+					return new CreativeBufferScreenHandler(syncId, playerInventory, blockPos);
 				}
 			});
 

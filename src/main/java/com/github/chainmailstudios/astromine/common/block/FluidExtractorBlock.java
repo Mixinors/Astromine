@@ -21,9 +21,9 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.FluidExtractorBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.FluidExtractorContainer;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.github.chainmailstudios.astromine.common.screenhandler.FluidExtractorScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
 public class FluidExtractorBlock extends DefaultedHorizontalFacingBlockWithEntity implements NetworkMember {
@@ -57,7 +57,7 @@ public class FluidExtractorBlock extends DefaultedHorizontalFacingBlockWithEntit
 
 				@Override
 				public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-					return new FluidExtractorContainer(syncId, playerInventory, blockPos);
+					return new FluidExtractorScreenHandler(syncId, playerInventory, blockPos);
 				}
 			});
 

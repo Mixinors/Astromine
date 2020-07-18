@@ -20,7 +20,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.registry.client.AstromineSounds;
+import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 
 public class FireExtinguisherItem extends Item {
 	long lastPlayed = 0;
@@ -75,7 +75,7 @@ public class FireExtinguisherItem extends Item {
 		});
 
 		if (world.isClient) {
-			world.playSound(user, user.getBlockPos(), AstromineSounds.FIRE_EXTINGUISHER_OPEN, SoundCategory.PLAYERS, 1f, 1f);
+			world.playSound(user, user.getBlockPos(), AstromineSoundEvents.FIRE_EXTINGUISHER_OPEN, SoundCategory.PLAYERS, 1f, 1f);
 		}
 		
 		return super.use(world, user, hand);

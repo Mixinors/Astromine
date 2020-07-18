@@ -21,9 +21,9 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.SolidGeneratorBlockEntity;
-import com.github.chainmailstudios.astromine.common.container.SolidGeneratorContainer;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.github.chainmailstudios.astromine.common.screenhandler.SolidGeneratorScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
 public class SolidGeneratorBlock extends DefaultedHorizontalFacingBlockWithEntity implements NetworkMember {
@@ -57,7 +57,7 @@ public class SolidGeneratorBlock extends DefaultedHorizontalFacingBlockWithEntit
 
 				@Override
 				public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-					return new SolidGeneratorContainer(syncId, playerInventory, blockPos);
+					return new SolidGeneratorScreenHandler(syncId, playerInventory, blockPos);
 				}
 			});
 

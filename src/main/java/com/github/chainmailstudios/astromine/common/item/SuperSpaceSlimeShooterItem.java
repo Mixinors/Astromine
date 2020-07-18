@@ -22,7 +22,7 @@ import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.github.chainmailstudios.astromine.registry.AstromineParticles;
-import com.github.chainmailstudios.astromine.registry.client.AstromineSounds;
+import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 
 import java.util.Optional;
 
@@ -74,7 +74,7 @@ public class SuperSpaceSlimeShooterItem extends BaseWeapon {
 
 				bulletEntity.setTexture(this.getBulletTexture());
 
-				bulletEntity.setSound(AstromineSounds.EMPTY);
+				bulletEntity.setSound(AstromineSoundEvents.EMPTY);
 
 				if (world.isClient) {
 					ClientUtilities.addEntity(bulletEntity);
@@ -108,7 +108,7 @@ public class SuperSpaceSlimeShooterItem extends BaseWeapon {
 					}
 				}
 			} else {
-				world.playSound(user, user.getBlockPos(), AstromineSounds.EMPTY_MAGAZINE, SoundCategory.PLAYERS, 1f, 1f);
+				world.playSound(user, user.getBlockPos(), AstromineSoundEvents.EMPTY_MAGAZINE, SoundCategory.PLAYERS, 1f, 1f);
 			}
 		}
 	}
