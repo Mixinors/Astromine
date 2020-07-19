@@ -157,8 +157,9 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 	@Override
 	public CompoundTag toClientTag(CompoundTag compoundTag) {
 		compoundTag = toTag(compoundTag);
-		if (!skipInventory) {
+		if (skipInventory) {
 			compoundTag.remove(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT.getId().toString());
+		} else {
 			skipInventory = true;
 		}
 		return compoundTag;

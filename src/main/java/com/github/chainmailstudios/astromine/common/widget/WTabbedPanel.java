@@ -7,6 +7,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.Item;
 import net.minecraft.text.Text;
 import spinnery.widget.WAbstractWidget;
+import spinnery.widget.WInterface;
 import spinnery.widget.WTabHolder;
 import spinnery.widget.api.*;
 
@@ -59,5 +60,17 @@ public class WTabbedPanel extends WAbstractWidget implements WCollection, WDeleg
 
 	public WTabHolder.WTab addTab(Item item, Text text) {
 		return tabs.addTab(item);
+	}
+
+	@Override
+	public <W extends WAbstractWidget> W setInterface(WInterface linkedInterface) {
+		tabs.setInterface(linkedInterface);
+		return super.setInterface(linkedInterface);
+	}
+
+	@Override
+	public <W extends WAbstractWidget> W setParent(WLayoutElement parent) {
+		tabs.setParent(this);
+		return super.setParent(parent);
 	}
 }

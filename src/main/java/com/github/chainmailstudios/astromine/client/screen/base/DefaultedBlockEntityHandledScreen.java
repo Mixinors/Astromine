@@ -21,6 +21,7 @@ import spinnery.widget.api.Position;
 import spinnery.widget.api.Size;
 
 import java.util.Collection;
+import java.util.Set;
 
 public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScreenHandler> extends DefaultedHandledScreen<T> {
 	public WInterface mainInterface;
@@ -34,11 +35,13 @@ public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScr
 		mainInterface = getInterface();
 
 		mainTabbedPanel = mainInterface.createChild(WTabbedPanel::new, Position.ORIGIN, Size.of(176, 160 + 24));
-		mainPanel = mainTabbedPanel.addTab(linkedScreenHandler.getWorld().getBlockState(linkedScreenHandler.syncBlockEntity.getPos()).getBlock().asItem()).getBody();
+		WTabHolder.WTab mainTab = mainTabbedPanel.addTab(linkedScreenHandler.getWorld().getBlockState(linkedScreenHandler.syncBlockEntity.getPos()).getBlock().asItem());
+		mainPanel = mainTab.getBody();
 
 		MinecraftClient.getInstance().mouse.unlockCursor();
 		addTitle(mainPanel);
 
+		mainTab.setInterface(getInterface());
 		mainPanel.setInterface(getInterface());
 
 		mainTabbedPanel.center();
@@ -58,7 +61,6 @@ public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScr
 			if (componentType != null) {
 				NameableComponent nameableComponent = (NameableComponent) componentProvider.getComponent(componentType);
 				WTabHolder.WTab tab = mainTabbedPanel.addTab(nameableComponent.getSymbol());
-				tab.setInterface(getInterface());
 				WTransferTypeSelectorPanel.createTab(
 						tab,
 						Position.of(mainTabbedPanel, mainTabbedPanel.getWidth() / 2 - 38, 0, 0),
@@ -68,12 +70,11 @@ public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScr
 						getInterface()
 				);
 				tab.getBody().setLabel(nameableComponent.getName());
-				playerSlots.addAll(WSlot.addPlayerInventory(Position.of(mainTabbedPanel, 7, mainTabbedPanel.getHeight() - 18 - 11 - (18 * 3), 2), Size.of(18, 18), tab));
+				playerSlots.addAll(WSlot.addPlayerInventory(Position.of(mainTabbedPanel, 7, mainTabbedPanel.getHeight() - 18 - 11 - (18 * 3), 2), Size.of(18, 18), tab.getBody()));
 			} else {
 				BlockEntityTransferComponent.TransferComponentInfo info = BlockEntityTransferComponent.INFOS.get(type);
 				if (info != null) {
 					WTabHolder.WTab tab = mainTabbedPanel.addTab(info.getSymbol());
-					tab.setInterface(getInterface());
 					WTransferTypeSelectorPanel.createTab(
 							tab,
 							Position.of(mainTabbedPanel, mainTabbedPanel.getWidth() / 2 - 38, 0, 0),
@@ -83,7 +84,7 @@ public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScr
 							getInterface()
 					);
 					tab.getBody().setLabel(info.getName());
-					playerSlots.addAll(WSlot.addPlayerInventory(Position.of(mainTabbedPanel, 7, mainTabbedPanel.getHeight() - 18 - 11 - (18 * 3), 2), Size.of(18, 18), tab));
+					playerSlots.addAll(WSlot.addPlayerInventory(Position.of(mainTabbedPanel, 7, mainTabbedPanel.getHeight() - 18 - 11 - (18 * 3), 2), Size.of(18, 18), tab.getBody()));
 				}
 			}
 		});
