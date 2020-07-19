@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "astromine:copper_dust"
+    },
+    {
+      "item": "astromine:copper_dust"
+    },
+    {
+      "item": "astromine:copper_dust"
+    },
+    {
+      "item": "astromine:tin_dust"
+    }
+  ],
+  "result": {
+    "item": "astromine:bronze_dust",
+    "count": 4
+  }
+}

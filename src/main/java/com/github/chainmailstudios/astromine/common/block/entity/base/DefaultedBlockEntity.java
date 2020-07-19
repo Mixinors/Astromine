@@ -43,6 +43,8 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 
 	protected final Map<Identifier, BiConsumer<PacketByteBuf, PacketContext>> allHandlers = Maps.newHashMap();
 
+	protected boolean skipInventory = true;
+
 	public static final Identifier TRANSFER_UPDATE_PACKET = AstromineCommon.identifier("transfer_update_packet");
 
 	public DefaultedBlockEntity(BlockEntityType<?> type) {
@@ -57,6 +59,10 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 
 			markDirty();
 		}));
+	}
+
+	public void doNotSkipInventory() {
+		this.skipInventory = false;
 	}
 
 	@NotNull
@@ -151,6 +157,10 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 	@Override
 	public CompoundTag toClientTag(CompoundTag compoundTag) {
 		compoundTag = toTag(compoundTag);
+		if (!skipInventory) {
+			compoundTag.remove(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT.getId().toString());
+			skipInventory = true;
+		}
 		return compoundTag;
 	}
 
