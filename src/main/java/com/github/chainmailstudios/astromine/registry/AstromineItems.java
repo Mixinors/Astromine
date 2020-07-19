@@ -75,6 +75,12 @@ public class AstromineItems {
 	public static final Item TIN_INGOT = register("tin_ingot", new Item(getBasicSettings().fireproof()));
 	public static final Item BRONZE_INGOT = register("bronze_ingot", new Item(getBasicSettings().fireproof()));
 
+	// Materials - Wires
+	public static final Item COPPER_WIRE = register("copper_wire", new Item(getBasicSettings().fireproof()));
+	public static final Item TIN_WIRE = register("tin_wire", new Item(getBasicSettings().fireproof()));
+	public static final Item STEEL_WIRE = register("steel_wire", new Item(getBasicSettings().fireproof()));
+	public static final Item GOLD_WIRE = register("gold_wire", new Item(getBasicSettings().fireproof()));
+
 	// Materials - Clusters
 	public static final Item METEOR_METITE_CLUSTER = register("meteor_metite_cluster", new Item(getBasicSettings()));
 	public static final Item ASTEROID_METITE_CLUSTER = register("asteroid_metite_cluster", new Item(getBasicSettings()));
