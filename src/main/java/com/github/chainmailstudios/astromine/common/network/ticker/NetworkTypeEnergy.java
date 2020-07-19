@@ -23,7 +23,7 @@ import java.util.List;
 
 public class NetworkTypeEnergy extends NetworkType {
 	@Override
-	public void simulate(NetworkInstance controller) {
+	public void tick(NetworkInstance controller) {
 		List<EnergyHandler> inputs = Lists.newArrayList();
 		List<EnergyHandler> requesters = Lists.newArrayList();
 

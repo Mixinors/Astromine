@@ -2,7 +2,6 @@ package com.github.chainmailstudios.astromine.common.block.entity.base;
 
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
@@ -22,7 +21,10 @@ import java.util.Set;
 import java.util.stream.IntStream;
 
 public abstract class DefaultedItemBlockEntity extends DefaultedBlockEntity implements ComponentProvider, InventoryProvider, SidedInventory, BlockEntityClientSerializable {
-	protected final ItemInventoryComponent itemComponent = new SimpleItemInventoryComponent(1);
+	protected final ItemInventoryComponent itemComponent = createItemComponent();
+
+	protected abstract ItemInventoryComponent createItemComponent();
+
 	private final ItemInventoryFromInventoryComponent inventory = () -> itemComponent;
 
 	public DefaultedItemBlockEntity(BlockEntityType<?> type) {

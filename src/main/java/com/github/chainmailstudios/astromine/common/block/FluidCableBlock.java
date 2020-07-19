@@ -7,12 +7,7 @@ public class FluidCableBlock extends AbstractCableBlock {
 	public FluidCableBlock(Settings settings) {
 		super(settings);
 	}
-
-	@Override
-	public <T extends NetworkType> boolean acceptsType(T type) {
-		return type == AstromineNetworkTypes.FLUID;
-	}
-
+	
 	@Override
 	public <T extends NetworkType> T getNetworkType() {
 		return (T) AstromineNetworkTypes.FLUID;

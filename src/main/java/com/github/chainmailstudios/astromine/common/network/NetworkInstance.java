@@ -79,6 +79,6 @@ public class NetworkInstance implements Iterable<NetworkNode>, Tickable {
 
 	@Override
 	public void tick() {
-		this.type.simulate(this);
+		this.type.tick(this);
 	}
 }
