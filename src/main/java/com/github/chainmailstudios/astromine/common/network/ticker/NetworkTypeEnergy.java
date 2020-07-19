@@ -42,7 +42,6 @@ public class NetworkTypeEnergy extends NetworkType {
 					if (!blockEntity.getCachedState().contains(property)) break before;
 
 					TransferType type = transferComponent.get(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).get(memberNode.getDirection(), blockEntity.getCachedState().get(property));
-					boolean areAllNone = transferComponent.get(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).areAllNone();
 
 					if (type != TransferType.DISABLED) {
 						if (type.canExtract() || ((NetworkMember) blockEntity).isProvider(this)) {
