@@ -50,6 +50,6 @@ public interface NetworkMember {
 	}
 
 	default boolean isNode(NetworkType type) {
-		return true;
+		return false;
 	}
 }

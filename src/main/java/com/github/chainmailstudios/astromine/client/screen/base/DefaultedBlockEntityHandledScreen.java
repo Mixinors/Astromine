@@ -7,11 +7,11 @@ import com.github.chainmailstudios.astromine.common.screenhandler.base.Defaulted
 import com.github.chainmailstudios.astromine.common.widget.WTabbedPanel;
 import com.github.chainmailstudios.astromine.common.widget.WTransferTypeSelectorPanel;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.google.common.collect.Sets;
 import nerdhub.cardinal.components.api.ComponentRegistry;
 import nerdhub.cardinal.components.api.ComponentType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import spinnery.widget.WInterface;
 import spinnery.widget.WPanel;
@@ -26,7 +26,6 @@ public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScr
 	public WInterface mainInterface;
 	public WTabbedPanel mainTabbedPanel;
 	public WPanel mainPanel;
-	public WTransferTypeSelectorPanel transferPanel;
 	public Collection<WSlot> playerSlots;
 
 	public DefaultedBlockEntityHandledScreen(Text name, T linkedScreenHandler, PlayerEntity player) {
@@ -35,7 +34,7 @@ public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScr
 		mainInterface = getInterface();
 
 		mainTabbedPanel = mainInterface.createChild(WTabbedPanel::new, Position.ORIGIN, Size.of(176, 160 + 24));
-		mainPanel = mainTabbedPanel.addTab(Items.REDSTONE_TORCH).getBody();
+		mainPanel = mainTabbedPanel.addTab(linkedScreenHandler.getWorld().getBlockState(linkedScreenHandler.syncBlockEntity.getPos()).getBlock().asItem()).getBody();
 
 		MinecraftClient.getInstance().mouse.unlockCursor();
 		addTitle(mainPanel);
@@ -48,7 +47,7 @@ public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScr
 			widget.setY(widget.getY() - 12);
 		});
 
-		playerSlots = WSlot.addPlayerInventory(Position.of(mainPanel, 7, mainPanel.getHeight() - 18 - 11 - (18 * 3), 2), Size.of(18, 18), mainPanel);
+		playerSlots = Sets.newHashSet(WSlot.addPlayerInventory(Position.of(mainPanel, 7, mainPanel.getHeight() - 18 - 11 - (18 * 3), 2), Size.of(18, 18), mainPanel));
 
 		ComponentProvider componentProvider = ComponentProvider.fromBlockEntity(linkedScreenHandler.syncBlockEntity);
 
@@ -69,7 +68,7 @@ public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScr
 						getInterface()
 				);
 				tab.getBody().setLabel(nameableComponent.getName());
-				WSlot.addPlayerInventory(Position.of(mainTabbedPanel, 7, mainTabbedPanel.getHeight() - 18 - 11 - (18 * 3), 2), Size.of(18, 18), tab);
+				playerSlots.addAll(WSlot.addPlayerInventory(Position.of(mainTabbedPanel, 7, mainTabbedPanel.getHeight() - 18 - 11 - (18 * 3), 2), Size.of(18, 18), tab));
 			} else {
 				BlockEntityTransferComponent.TransferComponentInfo info = BlockEntityTransferComponent.INFOS.get(type);
 				if (info != null) {
@@ -84,7 +83,7 @@ public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScr
 							getInterface()
 					);
 					tab.getBody().setLabel(info.getName());
-					WSlot.addPlayerInventory(Position.of(mainTabbedPanel, 7, mainTabbedPanel.getHeight() - 18 - 11 - (18 * 3), 2), Size.of(18, 18), tab);
+					playerSlots.addAll(WSlot.addPlayerInventory(Position.of(mainTabbedPanel, 7, mainTabbedPanel.getHeight() - 18 - 11 - (18 * 3), 2), Size.of(18, 18), tab));
 				}
 			}
 		});

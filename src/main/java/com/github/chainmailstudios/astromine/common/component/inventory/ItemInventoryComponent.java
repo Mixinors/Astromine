@@ -375,10 +375,11 @@ public interface ItemInventoryComponent extends NameableComponent {
 				ItemStack stack = ItemStack.fromTag(stackTag);
 
 				if (target.getItemSize() >= position) {
-					target.setStack(position, stack);
+					target.getItemContents().put(position, stack);
 				}
 			}
 		}
+		dispatchConsumers();
 	}
 
 	/**
