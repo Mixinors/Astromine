@@ -123,7 +123,9 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 		transferComponent.fromTag(tag.getCompound("transfer"));
 
 		allComponents.forEach((type, component) -> {
-			component.fromTag(tag.getCompound(type.getId().toString()));
+			if (tag.contains(type.getId().toString())) {
+				component.fromTag(tag.getCompound(type.getId().toString()));
+			}
 		});
 
 		super.fromTag(state, tag);
@@ -131,7 +133,9 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 
 	@Override
 	public CompoundTag toClientTag(CompoundTag compoundTag) {
-		return toTag(compoundTag);
+		compoundTag = toTag(compoundTag);
+		compoundTag.remove(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT.getId().toString());
+		return compoundTag;
 	}
 
 	@Override

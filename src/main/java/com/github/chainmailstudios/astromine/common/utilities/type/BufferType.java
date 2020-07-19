@@ -1,12 +1,9 @@
 package com.github.chainmailstudios.astromine.common.utilities.type;
 
 public enum BufferType {
-	DIRT(1),
-	WOOD(3),
-	IRON(6),
-	GOLD(9),
-	DIAMOND(12),
-	EMERALD(15);
+	BASIC(6),
+	ADVANCED(12),
+	ELITE(24);
 
 	private final int height;
 
