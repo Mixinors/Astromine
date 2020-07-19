@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
+	public static final int SPEED = 3;
 	public int progress = 0;
 	public int limit = 100;
 
@@ -45,11 +46,7 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 		return new SimpleItemInventoryComponent(2).withInsertPredicate((direction, itemStack, slot) -> {
 			return slot == 1;
 		}).withListener((inv) -> {
-			if (hasWorld() && !world.isClient) {
-				BaseInventory inputInventory = new BaseInventory(1);
-				inputInventory.setStack(0, itemComponent.getStack(1));
-				recipe = (Optional<SmeltingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) RecipeType.SMELTING, inputInventory, world);
-			}
+			shouldTry = true;
 		});
 	}
 
@@ -77,34 +74,39 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 	public void tick() {
 		if (world.isClient()) return;
 		if (shouldTry) {
-			itemComponent.dispatchConsumers();
 			BaseInventory inputInventory = new BaseInventory(1);
 			inputInventory.setStack(0, itemComponent.getStack(1));
+			if (!recipe.isPresent()) {
+				if (hasWorld() && !world.isClient) {
+					recipe = (Optional<SmeltingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) RecipeType.SMELTING, inputInventory, world);
+				}
+			}
 			if (recipe.isPresent() && recipe.get().matches(inputInventory, world)) {
-				limit = recipe.get().getCookTime() / 3;
+				limit = recipe.get().getCookTime();
 
 				ItemStack output = recipe.get().getOutput().copy();
+				
+				for (int i = 0; i < SPEED; i++) {
+					boolean isEmpty = itemComponent.getStack(0).isEmpty();
+					boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(0), output) && ItemStack.areTagsEqual(itemComponent.getStack(0), output);
 
-				boolean isEmpty = itemComponent.getStack(0).isEmpty();
-				boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(0), output) && ItemStack.areTagsEqual(itemComponent.getStack(0), output);
+					if (asEnergy().use(6) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
+						if (progress == limit) {
+							itemComponent.getStack(1).decrement(1);
 
-				if (asEnergy().use(6) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
-					if (progress == limit) {
+							if (isEmpty) {
+								itemComponent.setStack(0, output);
+							} else {
+								itemComponent.getStack(0).increment(output.getCount());
+							}
 
-						itemComponent.getStack(1).decrement(1);
-
-						if (isEmpty) {
-							itemComponent.setStack(0, output);
+							progress = 0;
 						} else {
-							itemComponent.getStack(0).increment(output.getCount());
+							++progress;
 						}
 
-						progress = 0;
-					} else {
-						++progress;
+						isActive = true;
 					}
-
-					isActive = true;
 				}
 			} else {
 				shouldTry = false;
