@@ -6,10 +6,10 @@ import com.github.chainmailstudios.astromine.common.registry.NetworkTypeRegistry
 public abstract class NetworkType {
 	public static final NetworkType EMPTY = NetworkTypeRegistry.INSTANCE.register(AstromineCommon.identifier("empty_network"), new NetworkType() {
 		@Override
-		public void simulate(NetworkInstance controller) {
+		public void tick(NetworkInstance controller) {
 			// Unused.
 		}
 	});
 
-	public abstract void simulate(NetworkInstance controller);
+	public abstract void tick(NetworkInstance controller);
 }

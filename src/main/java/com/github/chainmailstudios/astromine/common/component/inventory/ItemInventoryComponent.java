@@ -15,6 +15,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Direction;
 import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -70,7 +71,7 @@ public interface ItemInventoryComponent extends NameableComponent {
 		return true;
 	}
 
-	default boolean canInsert(Direction direction, ItemStack stack, int slot) {
+	default boolean canInsert(@Nullable Direction direction, ItemStack stack, int slot) {
 		return true;
 	}
 

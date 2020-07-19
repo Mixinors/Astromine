@@ -125,6 +125,11 @@ public interface ItemInventoryFromInventoryComponent extends Inventory {
 		return true;
 	}
 
+	@Override
+	default boolean isValid(int slot, ItemStack stack) {
+		return this.getComponent().canInsert(null, stack, slot);
+	}
+
 	/**
 	 * Clears this inventory.
 	 */

@@ -3,10 +3,15 @@ package com.github.chainmailstudios.astromine.common.block.entity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.block.entity.EnergyEmitter;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
+import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.util.Tickable;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
+import java.util.Map;
 
 public class CreativeCapacitorBlockEntity extends DefaultedEnergyBlockEntity implements NetworkMember, Tickable {
 	public CreativeCapacitorBlockEntity() {
@@ -21,12 +26,7 @@ public class CreativeCapacitorBlockEntity extends DefaultedEnergyBlockEntity imp
 	}
 
 	@Override
-	public <T extends NetworkType> boolean acceptsType(T type) {
-		return type == AstromineNetworkTypes.ENERGY;
-	}
-
-	@Override
-	public <T extends NetworkType> boolean isBuffer(T type) {
-		return true;
+	protected @NotNull Map<NetworkType, Collection<NetworkMemberType>> createMemberProperties() {
+		return ofTypes(AstromineNetworkTypes.ENERGY, BUFFER);
 	}
 }

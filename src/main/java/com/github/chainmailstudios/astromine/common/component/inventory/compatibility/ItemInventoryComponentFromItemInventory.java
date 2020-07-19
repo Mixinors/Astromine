@@ -3,6 +3,8 @@ package com.github.chainmailstudios.astromine.common.component.inventory.compati
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.Direction;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,5 +54,10 @@ public class ItemInventoryComponentFromItemInventory extends SimpleItemInventory
 	@Override
 	public ItemStack getStack(int slot) {
 		return this.inventory.getStack(slot);
+	}
+
+	@Override
+	public boolean canInsert(@Nullable Direction direction, ItemStack stack, int slot) {
+		return this.inventory.isValid(slot, stack);
 	}
 }

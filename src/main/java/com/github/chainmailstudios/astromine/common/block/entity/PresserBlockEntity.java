@@ -6,6 +6,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.ItemInve
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
+import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.recipe.PressingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
@@ -15,8 +16,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Tickable;
+import org.jetbrains.annotations.NotNull;
 import spinnery.common.inventory.BaseInventory;
 
+import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
 
 public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
@@ -40,7 +44,9 @@ public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implement
 
 	@Override
 	protected ItemInventoryComponent createItemComponent() {
-		return new SimpleItemInventoryComponent(2).withListener((inv) -> {
+		return new SimpleItemInventoryComponent(2).withInsertPredicate((direction, itemStack, slot) -> {
+			return slot == 1;
+		}).withListener((inv) -> {
 			if (hasWorld() && !world.isClient) {
 				BaseInventory inputInventory = new BaseInventory(1);
 				inputInventory.setStack(0, itemComponent.getStack(1));
@@ -50,13 +56,8 @@ public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implement
 	}
 
 	@Override
-	public <T extends NetworkType> boolean isRequester(T type) {
-		return type == AstromineNetworkTypes.ENERGY;
-	}
-
-	@Override
-	public <T extends NetworkType> boolean acceptsType(T type) {
-		return type == AstromineNetworkTypes.ENERGY;
+	protected @NotNull Map<NetworkType, Collection<NetworkMemberType>> createMemberProperties() {
+		return ofTypes(AstromineNetworkTypes.ENERGY, REQUESTER);
 	}
 
 	@Override

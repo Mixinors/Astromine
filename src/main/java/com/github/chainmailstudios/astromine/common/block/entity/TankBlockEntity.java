@@ -5,9 +5,14 @@ import com.github.chainmailstudios.astromine.common.component.inventory.FluidInv
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
+import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
+import java.util.Map;
 
 public class TankBlockEntity extends DefaultedFluidBlockEntity implements NetworkMember {
 	public TankBlockEntity() {
@@ -22,12 +27,7 @@ public class TankBlockEntity extends DefaultedFluidBlockEntity implements Networ
 	}
 
 	@Override
-	public <T extends NetworkType> boolean isBuffer(T type) {
-		return true;
-	}
-
-	@Override
-	public <T extends NetworkType> boolean acceptsType(T type) {
-		return type == AstromineNetworkTypes.FLUID;
+	protected @NotNull Map<NetworkType, Collection<NetworkMemberType>> createMemberProperties() {
+		return ofTypes(AstromineNetworkTypes.FLUID, BUFFER);
 	}
 }

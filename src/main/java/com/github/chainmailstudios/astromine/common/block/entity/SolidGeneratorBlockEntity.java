@@ -6,6 +6,7 @@ import com.github.chainmailstudios.astromine.common.component.block.entity.Energ
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
+import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.recipe.SolidGeneratingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
@@ -18,7 +19,10 @@ import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
 
 public class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, RecipeConsumer, Tickable {
@@ -149,12 +153,7 @@ public class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlockEntity im
 	}
 
 	@Override
-	public <T extends NetworkType> boolean acceptsType(T type) {
-		return type == AstromineNetworkTypes.ENERGY;
-	}
-
-	@Override
-	public <T extends NetworkType> boolean isProvider(T type) {
-		return type == AstromineNetworkTypes.ENERGY;
+	protected @NotNull Map<NetworkType, Collection<NetworkMemberType>> createMemberProperties() {
+		return ofTypes(AstromineNetworkTypes.ENERGY, PROVIDER);
 	}
 }

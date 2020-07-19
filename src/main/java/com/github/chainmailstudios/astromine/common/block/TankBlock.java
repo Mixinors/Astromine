@@ -2,10 +2,7 @@ package com.github.chainmailstudios.astromine.common.block;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.TankBlockEntity;
-import com.github.chainmailstudios.astromine.common.network.NetworkMember;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.screenhandler.FluidTankScreenHandler;
-import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -25,19 +22,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class TankBlock extends DefaultedHorizontalFacingBlockWithEntity implements NetworkMember {
+public class TankBlock extends DefaultedHorizontalFacingBlockWithEntity {
 	public TankBlock(Settings settings) {
 		super(settings);
-	}
-
-	@Override
-	public <T extends NetworkType> boolean isBuffer(T type) {
-		return true;
-	}
-
-	@Override
-	public <T extends NetworkType> boolean acceptsType(T type) {
-		return type == AstromineNetworkTypes.FLUID;
 	}
 
 	@Override

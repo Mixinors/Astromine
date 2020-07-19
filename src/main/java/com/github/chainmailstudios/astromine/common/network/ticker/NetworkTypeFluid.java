@@ -22,7 +22,7 @@ import java.util.List;
 
 public class NetworkTypeFluid extends NetworkType {
 	@Override
-	public void simulate(NetworkInstance controller) {
+	public void tick(NetworkInstance controller) {
 		List<FluidVolume> inputs = Lists.newArrayList();
 		List<FluidVolume> outputs = Lists.newArrayList();
 

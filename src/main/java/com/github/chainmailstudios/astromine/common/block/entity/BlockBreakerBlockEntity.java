@@ -6,6 +6,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.ItemInve
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
+import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
@@ -24,7 +25,9 @@ import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
 import spinnery.common.utility.MutablePair;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class BlockBreakerBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
@@ -125,12 +128,7 @@ public class BlockBreakerBlockEntity extends DefaultedEnergyItemBlockEntity impl
 	}
 
 	@Override
-	public <T extends NetworkType> boolean isRequester(T type) {
-		return type == AstromineNetworkTypes.ENERGY;
-	}
-
-	@Override
-	public <T extends NetworkType> boolean acceptsType(T type) {
-		return type == AstromineNetworkTypes.ENERGY;
+	protected @NotNull Map<NetworkType, Collection<NetworkMemberType>> createMemberProperties() {
+		return ofTypes(AstromineNetworkTypes.ENERGY, REQUESTER);
 	}
 }

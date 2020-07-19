@@ -4,6 +4,9 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.common.network.NetworkMember;
+import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
+import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.google.common.collect.Lists;
@@ -20,17 +23,20 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Lazy;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-public abstract class DefaultedBlockEntity extends BlockEntity implements ComponentProvider, PacketConsumer, BlockEntityClientSerializable {
+public abstract class DefaultedBlockEntity extends BlockEntity implements ComponentProvider, PacketConsumer, BlockEntityClientSerializable, NetworkMember {
+	protected final Lazy<Map<NetworkType, Collection<NetworkMemberType>>> networkMemberType = new Lazy<>(this::createMemberProperties);
 	protected final BlockEntityTransferComponent transferComponent = new BlockEntityTransferComponent();
 
 	protected final Map<ComponentType<?>, Component> allComponents = Maps.newHashMap();
@@ -51,6 +57,17 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 
 			markDirty();
 		}));
+	}
+
+	@NotNull
+	protected Map<NetworkType, Collection<NetworkMemberType>> createMemberProperties() {
+		return Collections.emptyMap();
+	}
+
+	@Override
+	@NotNull
+	public Map<NetworkType, Collection<NetworkMemberType>> getMemberProperties() {
+		return networkMemberType.get();
 	}
 
 	public void addComponent(ComponentType<?> type, Component component) {

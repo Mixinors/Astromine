@@ -2,6 +2,9 @@ package com.github.chainmailstudios.astromine.common.component.inventory;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.math.Direction;
+import org.jetbrains.annotations.Nullable;
+import vazkii.patchouli.api.TriPredicate;
 
 import java.util.*;
 
@@ -17,6 +20,7 @@ public class SimpleItemInventoryComponent implements ItemInventoryComponent {
 	};
 
 	private final List<Runnable> listeners = new ArrayList<>();
+	private TriPredicate<@Nullable Direction, ItemStack, Integer> insertPredicate = (direction, itemStack, slot) -> true;
 
 	private int size;
 
@@ -36,6 +40,17 @@ public class SimpleItemInventoryComponent implements ItemInventoryComponent {
 		for (int i = 0; i < size; ++i) {
 			contents.putIfAbsent(i, ItemStack.EMPTY);
 		}
+	}
+
+	@Override
+	public boolean canInsert(@Nullable Direction direction, ItemStack stack, int slot) {
+		return insertPredicate.test(direction, stack, slot);
+	}
+
+	public SimpleItemInventoryComponent withInsertPredicate(TriPredicate<@Nullable Direction, ItemStack, Integer> predicate) {
+		TriPredicate<Direction, ItemStack, Integer> triPredicate = this.insertPredicate;
+		this.insertPredicate = (direction, itemStack, integer) -> triPredicate.test(direction, itemStack, integer) && predicate.test(direction, itemStack, integer);
+		return this;
 	}
 
 	@Override
