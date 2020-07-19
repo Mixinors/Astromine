@@ -88,7 +88,7 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 				boolean isEmpty = itemComponent.getStack(0).isEmpty();
 				boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(0), output) && ItemStack.areTagsEqual(itemComponent.getStack(0), output);
 
-				if (asEnergy().use(15) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
+				if (asEnergy().use(6) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
 					if (progress == limit) {
 
 						itemComponent.getStack(1).decrement(1);

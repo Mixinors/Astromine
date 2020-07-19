@@ -124,7 +124,7 @@ public class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlockEntity im
 			}
 
 			if (current > 0 && current <= limit) {
-				double produced = 16;
+				double produced = 5;
 				for (int i = 0; i < 6; i++) {
 					if (EnergyUtilities.hasAvailable(asEnergy(), produced)) {
 						current++;
