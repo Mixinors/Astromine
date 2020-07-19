@@ -109,6 +109,7 @@ public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implement
 			} else {
 				shouldTry = false;
 				isActive = false;
+				progress = 0;
 			}
 		} else {
 			progress = 0;

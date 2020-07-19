@@ -1,20 +1,27 @@
 package com.github.chainmailstudios.astromine.common.entity;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.AstromineOreBlock;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineParticles;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+import net.fabricmc.fabric.api.tag.TagRegistry;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
+import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
@@ -23,9 +30,15 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.BlockView;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraft.world.explosion.Explosion;
+import net.minecraft.world.explosion.ExplosionBehavior;
 
 import java.util.Optional;
 
@@ -117,7 +130,7 @@ public class RocketEntity extends Entity {
 		super.tick();
 
 		if (this.getDataTracker().get(IS_GO)) {
-			addVelocity(0, 0.001f, 0);
+			addVelocity(0, 0.0015f, 0);
 			this.move(MovementType.SELF, this.getVelocity());
 
 			Vec3d thrustVec = new Vec3d(0.035, -2.5f, 0.035);
@@ -130,6 +143,52 @@ public class RocketEntity extends Entity {
 		} else {
 			setVelocity(Vec3d.ZERO);
 			this.velocityDirty = true;
+		}
+
+		if (!world.isClient) {
+			if (this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
+				int j = MathHelper.floor(this.getY());
+				int n = MathHelper.floor(this.getX());
+				int o = MathHelper.floor(this.getZ());
+				boolean bl = false;
+
+				for (int p = -2; p <= 2; ++p) {
+					for (int q = -2; q <= 2; ++q) {
+						for (int r = 0; r <= 22; ++r) {
+							int s = n + p;
+							int t = j + r;
+							int u = o + q;
+							BlockPos blockPos = new BlockPos(s, t, u);
+							BlockState blockState = this.world.getBlockState(blockPos);
+							float power = 0;
+							if (blockState.getBlock() instanceof AstromineOreBlock || blockState.isIn(TagRegistry.block(AstromineCommon.identifier("rocket_explode")))) {
+								bl = true;
+								power = 3;
+							} else if (WitherEntity.canDestroy(blockState)) {
+								power = 2.1f;
+								bl = true;
+							}
+							if (power > 0) {
+								this.world.createExplosion(null, DamageSource.explosion((LivingEntity) null), new ExplosionBehavior() {
+									@Override
+									public Optional<Float> getBlastResistance(Explosion explosion, BlockView world, BlockPos pos, BlockState blockState, FluidState fluidState) {
+										return Optional.empty();
+									}
+
+									@Override
+									public boolean canDestroyBlock(Explosion explosion, BlockView world, BlockPos pos, BlockState state, float power) {
+										return true;
+									}
+								}, blockPos.getX() + .5, blockPos.getY() + .5, blockPos.getZ() + .5, power, false, Explosion.DestructionType.DESTROY);
+							}
+						}
+					}
+				}
+
+				if (bl) {
+					this.world.syncWorldEvent(null, 1022, this.getBlockPos(), 0);
+				}
+			}
 		}
 	}
 

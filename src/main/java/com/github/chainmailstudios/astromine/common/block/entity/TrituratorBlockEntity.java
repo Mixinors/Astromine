@@ -111,6 +111,7 @@ public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implem
 			} else {
 				shouldTry = false;
 				isActive = false;
+				progress = 0;
 			}
 		} else {
 			progress = 0;

@@ -25,17 +25,17 @@ public class BufferHandledScreen extends DefaultedItemHandledScreen<BufferScreen
 
 		int middlePadding = 18;
 
-		int topPadding = 6 + 18;
+		int topPadding = 6 + 12;
 		int bottomPadding = 6;
 
 		int inventoryWidth = 9 * 18;
-		int inventoryHeight = 3 * 18 + 7 + 18;
+		int inventoryHeight = 3 * 18 + 7 + 18 + 9;
 
 		int panelWidth = leftPadding + inventoryWidth + rightPadding + (9 * 2) + 8;
 		int panelHeight = topPadding + slotHeight + middlePadding + inventoryHeight + bottomPadding;
 
-		mainPanel.setSize(Size.of(panelWidth, panelHeight));
-		mainPanel.center();
+		mainTabbedPanel.setSize(Size.of(panelWidth, panelHeight));
+		mainTabbedPanel.onAlign();
 
 		WVerticalScrollableContainer scrollableContainer = mainPanel.createChild(WVerticalScrollableContainer::new, Position.of(mainPanel, leftPadding, topPadding), Size.of(slotWidth, slotHeight));
 
@@ -49,12 +49,8 @@ public class BufferHandledScreen extends DefaultedItemHandledScreen<BufferScreen
 			scrollableContainer.addRow(slots);
 		}
 
-		addTitle(mainPanel);
-
-		transferPanel.setPosition(transferPanel.getPosition().add(24, 0, 0));
-
 		for (WSlot slot : playerSlots) {
-			slot.setPosition(slot.getPosition().add(10.5f, 71, 0));
+			slot.setPosition(slot.getPosition().add(10.5f, 54, 0));
 		}
 	}
 }

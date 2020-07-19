@@ -109,6 +109,7 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 			} else {
 				shouldTry = false;
 				isActive = false;
+				progress = 0;
 			}
 		} else {
 			progress = 0;
