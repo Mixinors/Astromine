@@ -1,18 +1,5 @@
 package com.github.chainmailstudios.astromine.common.recipe;
 
-import net.minecraft.fluid.Fluid;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Lazy;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
-
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
@@ -26,13 +13,24 @@ import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import team.reborn.energy.Energy;
-import team.reborn.energy.EnergyHandler;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.Lazy;
+import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+import team.reborn.energy.Energy;
+import team.reborn.energy.EnergyHandler;
 
 public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory> {
 	final Identifier identifier;
@@ -61,9 +59,7 @@ public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory> {
 		FluidVolume fluidVolume = fluidComponent.getVolume(0);
 
 		if (!fluidVolume.getFluid().matchesType(fluid.get())) return false;
-		if (!fluidVolume.hasStored(amount)) return false;
-
-		return true;
+		return fluidVolume.hasStored(amount);
 	}
 
 	@Override
@@ -95,22 +91,22 @@ public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory> {
 			t.reset();
 		}
 	}
-	
+
 	@Override
 	public Identifier getId() {
 		return identifier;
 	}
-	
+
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return Serializer.INSTANCE;
 	}
-	
+
 	@Override
 	public RecipeType<?> getType() {
 		return Type.INSTANCE;
 	}
-	
+
 	@Override
 	public DefaultedList<Ingredient> getPreviewInputs() {
 		return DefaultedList.of(); // we are not dealing with items
@@ -124,11 +120,11 @@ public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory> {
 	public Fluid getFluid() {
 		return fluid.get();
 	}
-	
+
 	public Fraction getAmount() {
 		return amount;
 	}
-	
+
 	public double getEnergyGenerated() {
 		return energyGenerated;
 	}
@@ -139,24 +135,24 @@ public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory> {
 
 	public static final class Serializer implements RecipeSerializer<LiquidGeneratingRecipe> {
 		public static final Identifier ID = AstromineCommon.identifier("liquid_generating");
-		
+
 		public static final Serializer INSTANCE = new Serializer();
-		
+
 		private Serializer() {
 			// Locked.
 		}
-		
+
 		@Override
 		public LiquidGeneratingRecipe read(Identifier identifier, JsonObject object) {
 			LiquidGeneratingRecipe.Format format = new Gson().fromJson(object, LiquidGeneratingRecipe.Format.class);
-			
+
 			return new LiquidGeneratingRecipe(identifier,
 					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.input)),
 					FractionUtilities.fromJson(format.amount),
 					EnergyUtilities.fromJson(format.energyGenerated),
 					ParsingUtilities.fromJson(format.time, Integer.class));
 		}
-		
+
 		@Override
 		public LiquidGeneratingRecipe read(Identifier identifier, PacketByteBuf buffer) {
 			return new LiquidGeneratingRecipe(identifier,
@@ -165,7 +161,7 @@ public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory> {
 					EnergyUtilities.fromPacket(buffer),
 					PacketUtilities.fromPacket(buffer, Integer.class));
 		}
-		
+
 		@Override
 		public void write(PacketByteBuf buffer, LiquidGeneratingRecipe recipe) {
 			buffer.writeIdentifier(recipe.fluidKey.getValue());
@@ -174,15 +170,15 @@ public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory> {
 			buffer.writeInt(recipe.time);
 		}
 	}
-	
+
 	public static final class Type implements AstromineRecipeType<LiquidGeneratingRecipe> {
 		public static final Type INSTANCE = new Type();
-		
+
 		private Type() {
 			// Locked.
 		}
 	}
-	
+
 	public static final class Format {
 		String input;
 

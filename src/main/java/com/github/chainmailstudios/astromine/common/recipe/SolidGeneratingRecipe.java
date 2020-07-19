@@ -1,13 +1,5 @@
 package com.github.chainmailstudios.astromine.common.recipe;
 
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.util.Identifier;
-
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
@@ -19,13 +11,19 @@ import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import team.reborn.energy.Energy;
-import team.reborn.energy.EnergyHandler;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.util.Identifier;
+import team.reborn.energy.Energy;
+import team.reborn.energy.EnergyHandler;
 
 public class SolidGeneratingRecipe implements AdvancedRecipe<Inventory> {
 	final Identifier identifier;
@@ -180,11 +178,11 @@ public class SolidGeneratingRecipe implements AdvancedRecipe<Inventory> {
 		@Override
 		public String toString() {
 			return "Format{" +
-			       "input=" + input +
-			       ", amount=" + amount +
-			       ", energyGenerated=" + energyGenerated +
-			       ", time=" + time +
-			       '}';
+					"input=" + input +
+					", amount=" + amount +
+					", energyGenerated=" + energyGenerated +
+					", time=" + time +
+					'}';
 		}
 	}
 }

@@ -1,6 +1,6 @@
 {
 	"type": "minecraft:crafting_shaped", "pattern": ["000", "121", "000"], "key": {
-	"0": {"item": "astromine:netherite_plates"},
+	"0": {"item": "astromine:steel_plates"},
 	"1": {"item": "astromine:gold_plates"},
 	"2": {"item": "astromine:advanced_circuit"}
 }, "result": {"item": "astromine:elite_circuit", "count": 1}

@@ -1,18 +1,5 @@
 package com.github.chainmailstudios.astromine.common.recipe;
 
-import net.minecraft.fluid.Fluid;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Lazy;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
-
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
@@ -26,13 +13,24 @@ import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import team.reborn.energy.Energy;
-import team.reborn.energy.EnergyHandler;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.Lazy;
+import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+import team.reborn.energy.Energy;
+import team.reborn.energy.EnergyHandler;
 
 public class FluidMixingRecipe implements AdvancedRecipe<Inventory> {
 	final Identifier identifier;
@@ -81,9 +79,7 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory> {
 		if (!secondInputVolume.getFluid().matchesType(secondInputFluid.get())) return false;
 		if (!secondInputVolume.hasStored(secondInputAmount)) return false;
 		if (!outputVolume.getFluid().matchesType(outputFluid.get()) && !outputVolume.isEmpty()) return false;
-		if (!outputVolume.hasAvailable(outputAmount)) return false;
-
-		return true;
+		return outputVolume.hasAvailable(outputAmount);
 	}
 
 	@Override
@@ -265,14 +261,14 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory> {
 		@Override
 		public String toString() {
 			return "Format{" +
-			       "firstInput='" + firstInput + '\'' +
-			       ", firstInputAmount=" + firstInputAmount +
-			       ", secondInput='" + secondInput + '\'' +
-			       ", secondInputAmount=" + secondInputAmount +
-			       ", output='" + output + '\'' +
-			       ", outputAmount=" + outputAmount +
-			       ", energyGenerated=" + energyGenerated +
-			       '}';
+					"firstInput='" + firstInput + '\'' +
+					", firstInputAmount=" + firstInputAmount +
+					", secondInput='" + secondInput + '\'' +
+					", secondInputAmount=" + secondInputAmount +
+					", output='" + output + '\'' +
+					", outputAmount=" + outputAmount +
+					", energyGenerated=" + energyGenerated +
+					'}';
 		}
 	}
 }

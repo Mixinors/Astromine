@@ -1,12 +1,11 @@
 package com.github.chainmailstudios.astromine.common.widget;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
 import spinnery.client.render.BaseRenderer;
 import spinnery.client.render.layer.SpinneryLayers;
 import spinnery.client.utility.ScissorArea;

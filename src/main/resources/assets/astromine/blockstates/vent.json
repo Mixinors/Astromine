@@ -1,16 +1,44 @@
 {
   "variants": {
-    "facing=down,active=false":  { "model": "astromine:block/vent_vertical_inactive", "x": 180 },
-    "facing=up,active=false":    { "model": "astromine:block/vent_vertical_inactive" },
+    "facing=down,active=false": {
+      "model": "astromine:block/vent_vertical_inactive",
+      "x": 180
+    },
+    "facing=up,active=false": {
+      "model": "astromine:block/vent_vertical_inactive"
+    },
     "facing=north,active=false": { "model": "astromine:block/vent_inactive" },
-    "facing=south,active=false": { "model": "astromine:block/vent_inactive", "y": 180 },
-    "facing=west,active=false":  { "model": "astromine:block/vent_inactive", "y": 270 },
-    "facing=east,active=false":  { "model": "astromine:block/vent_inactive", "y": 90 },
-    "facing=down,active=true":  { "model": "astromine:block/vent_vertical_active", "x": 180 },
-    "facing=up,active=true":    { "model": "astromine:block/vent_vertical_active" },
+    "facing=south,active=false": {
+      "model": "astromine:block/vent_inactive",
+      "y": 180
+    },
+    "facing=west,active=false": {
+      "model": "astromine:block/vent_inactive",
+      "y": 270
+    },
+    "facing=east,active=false": {
+      "model": "astromine:block/vent_inactive",
+      "y": 90
+    },
+    "facing=down,active=true": {
+      "model": "astromine:block/vent_vertical_active",
+      "x": 180
+    },
+    "facing=up,active=true": {
+      "model": "astromine:block/vent_vertical_active"
+    },
     "facing=north,active=true": { "model": "astromine:block/vent_active" },
-    "facing=south,active=true": { "model": "astromine:block/vent_active", "y": 180 },
-    "facing=west,active=true":  { "model": "astromine:block/vent_active", "y": 270 },
-    "facing=east,active=true":  { "model": "astromine:block/vent_active", "y": 90 }
+    "facing=south,active=true": {
+      "model": "astromine:block/vent_active",
+      "y": 180
+    },
+    "facing=west,active=true": {
+      "model": "astromine:block/vent_active",
+      "y": 270
+    },
+    "facing=east,active=true": {
+      "model": "astromine:block/vent_active",
+      "y": 90
+    }
   }
 }

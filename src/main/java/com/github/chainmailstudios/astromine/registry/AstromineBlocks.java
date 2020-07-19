@@ -1,44 +1,16 @@
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.*;
+import com.github.chainmailstudios.astromine.common.utilities.type.BufferType;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.MagmaBlock;
-import net.minecraft.block.Material;
-import net.minecraft.block.MaterialColor;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.WallBlock;
+import net.minecraft.block.*;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.AstromineOreBlock;
-import com.github.chainmailstudios.astromine.common.block.BlockBreakerBlock;
-import com.github.chainmailstudios.astromine.common.block.BlockPlacerBlock;
-import com.github.chainmailstudios.astromine.common.block.CreativeBufferBlock;
-import com.github.chainmailstudios.astromine.common.block.CreativeCapacitorBlock;
-import com.github.chainmailstudios.astromine.common.block.CreativeTankBlock;
-import com.github.chainmailstudios.astromine.common.block.ElectricSmelterBlock;
-import com.github.chainmailstudios.astromine.common.block.ElectrolyzerBlock;
-import com.github.chainmailstudios.astromine.common.block.EnergyCableBlock;
-import com.github.chainmailstudios.astromine.common.block.FluidCableBlock;
-import com.github.chainmailstudios.astromine.common.block.FluidExtractorBlock;
-import com.github.chainmailstudios.astromine.common.block.FluidInserterBlock;
-import com.github.chainmailstudios.astromine.common.block.FluidMixerBlock;
-import com.github.chainmailstudios.astromine.common.block.HolographicBridgeInvisibleBlock;
-import com.github.chainmailstudios.astromine.common.block.HolographicBridgeProjectorBlock;
-import com.github.chainmailstudios.astromine.common.block.LiquidGeneratorBlock;
-import com.github.chainmailstudios.astromine.common.block.NuclearWarheadBlock;
-import com.github.chainmailstudios.astromine.common.block.PresserBlock;
-import com.github.chainmailstudios.astromine.common.block.SolidGeneratorBlock;
-import com.github.chainmailstudios.astromine.common.block.TankBlock;
-import com.github.chainmailstudios.astromine.common.block.TrituratorBlock;
-import com.github.chainmailstudios.astromine.common.block.VentBlock;
 
 public class AstromineBlocks {
 	public static final Block HOLOGRAPHIC_BRIDGE_PROJECTOR = register("holographic_bridge_projector", new HolographicBridgeProjectorBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(4, 16).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
@@ -60,6 +32,10 @@ public class AstromineBlocks {
 	public static final Block CREATIVE_CAPACITOR = register("creative_capacitor", new CreativeCapacitorBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block CREATIVE_BUFFER = register("creative_buffer", new CreativeBufferBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 
+	public static final Block BASIC_BUFFER = register("basic_buffer", new BufferBlock(BufferType.BASIC, FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
+	public static final Block ADVANCED_BUFFER = register("advanced_buffer", new BufferBlock(BufferType.ADVANCED, FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
+	public static final Block ELITE_BUFFER = register("elite_buffer", new BufferBlock(BufferType.ELITE, FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
+
 	public static final Block PRESSER = register("presser", new PresserBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block TRITURATOR = register("triturator", new TrituratorBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block ELECTRIC_SMELTER = register("electric_smelter", new ElectricSmelterBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
@@ -69,19 +45,19 @@ public class AstromineBlocks {
 	public static final Block BLOCK_PLACER = register("block_placer", new BlockPlacerBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block ELECTROLYZER = register("electrolyzer", new ElectrolyzerBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block FLUID_MIXER = register("fluid_mixer", new FluidMixerBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
-	
+
 	public static final Block COPPER_ORE = register("copper_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(3, 3).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());
 	public static final Block TIN_ORE = register("tin_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(3, 3).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());
-	
+
 	public static final Block METEOR_METITE_ORE = register("meteor_metite_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());
 	public static final Block ASTEROID_METITE_ORE = register("asteroid_metite_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());
 	public static final Block ASTEROID_ASTERITE_ORE = register("asteroid_asterite_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(40, 1000).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());
 	public static final Block ASTEROID_STELLUM_ORE = register("asteroid_stellum_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(25, 80).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());
 	public static final Block ASTEROID_GALAXIUM_ORE = register("asteroid_galaxium_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(80, 1300).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());
-	
+
 	public static final Block ASTEROID_COPPER_ORE = register("asteroid_copper_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());
 	public static final Block ASTEROID_TIN_ORE = register("asteroid_tin_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());
-	
+
 	public static final Block ASTEROID_COAL_ORE = register("asteroid_coal_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());
 	public static final Block ASTEROID_IRON_ORE = register("asteroid_iron_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());
 	public static final Block ASTEROID_GOLD_ORE = register("asteroid_gold_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());
@@ -89,18 +65,18 @@ public class AstromineBlocks {
 	public static final Block ASTEROID_LAPIS_ORE = register("asteroid_lapis_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());
 	public static final Block ASTEROID_DIAMOND_ORE = register("asteroid_diamond_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());
 	public static final Block ASTEROID_EMERALD_ORE = register("asteroid_emerald_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());
-	
+
 	public static final Block METITE_BLOCK = register("metite_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.BLUE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(8, 100).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block ASTERITE_BLOCK = register("asterite_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.RED).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(25, 1000).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block STELLUM_BLOCK = register("stellum_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.YELLOW).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(10, 80).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings().fireproof());
 	public static final Block GALAXIUM_BLOCK = register("galaxium_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.LIME).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(50, 1300).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block UNIVITE_BLOCK = register("univite_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.PURPLE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 6).strength(80, 2000).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings().fireproof());
-	
+
 	public static final Block COPPER_BLOCK = register("copper_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.ORANGE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(4, 6).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block TIN_BLOCK = register("tin_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.LIGHT_GRAY).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(4, 6).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block STEEL_BLOCK = register("steel_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.GRAY).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(6, 6).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block BRONZE_BLOCK = register("bronze_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.ORANGE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(6, 6).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
-	
+
 	public static final Block METEOR_STONE = register("meteor_stone", new Block(FabricBlockSettings.of(Material.STONE, MaterialColor.BLACK).requiresTool().breakByTool(FabricToolTags.PICKAXES, 3).strength(30, 1500)), AstromineItems.getBasicSettings().fireproof());
 	public static final Block ASTEROID_STONE = register("asteroid_stone", new Block(FabricBlockSettings.of(Material.STONE, MaterialColor.GRAY).requiresTool().breakByTool(FabricToolTags.PICKAXES, 3).strength(50, 1500)), AstromineItems.getBasicSettings().fireproof());
 	public static final Block BLAZING_ASTEROID_STONE = register("blazing_asteroid_stone", new MagmaBlock(FabricBlockSettings.of(Material.STONE, MaterialColor.GRAY).requiresTool().breakByTool(FabricToolTags.PICKAXES, 3).strength(50, 1500).lightLevel((state) -> 3).ticksRandomly().allowsSpawning((state, world, pos, entityType) -> entityType.isFireImmune()).postProcess((state, world, pos) -> true).emissiveLighting((state, world, pos) -> true)), AstromineItems.getBasicSettings().fireproof());

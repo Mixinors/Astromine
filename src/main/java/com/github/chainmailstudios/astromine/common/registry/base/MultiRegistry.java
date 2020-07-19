@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.common.registry.base;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+
 import java.util.Collection;
 
 public abstract class MultiRegistry<T, U> {

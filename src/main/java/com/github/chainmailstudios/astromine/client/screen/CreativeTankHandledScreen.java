@@ -1,18 +1,16 @@
 package com.github.chainmailstudios.astromine.client.screen;
 
-import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
-
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-
 import com.github.chainmailstudios.astromine.client.screen.base.DefaultedFluidHandledScreen;
 import com.github.chainmailstudios.astromine.common.block.entity.CreativeTankBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.CreativeTankScreenHandler;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedFluidScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
 import io.netty.buffer.Unpooled;
+import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import spinnery.client.configuration.widget.WOptionField;
 import spinnery.widget.WTextField;
 import spinnery.widget.api.Filter;

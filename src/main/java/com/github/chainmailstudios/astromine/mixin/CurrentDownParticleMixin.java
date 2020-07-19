@@ -1,14 +1,12 @@
 package com.github.chainmailstudios.astromine.mixin;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
-
+import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
 import net.minecraft.client.particle.CurrentDownParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.world.ClientWorld;
-
-import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(CurrentDownParticle.class)
 public abstract class CurrentDownParticleMixin extends Particle {

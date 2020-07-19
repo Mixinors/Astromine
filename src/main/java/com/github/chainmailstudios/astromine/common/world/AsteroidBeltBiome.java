@@ -1,5 +1,7 @@
 package com.github.chainmailstudios.astromine.common.world;
 
+import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineFeatures;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.world.biome.Biome;
@@ -9,9 +11,6 @@ import net.minecraft.world.gen.decorator.ChanceDecoratorConfig;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
-
-import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineFeatures;
 
 public class AsteroidBeltBiome extends Biome {
 	public AsteroidBeltBiome() {

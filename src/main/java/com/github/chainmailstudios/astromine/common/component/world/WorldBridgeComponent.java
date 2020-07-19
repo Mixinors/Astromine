@@ -1,5 +1,9 @@
 package com.github.chainmailstudios.astromine.common.component.world;
 
+import com.github.chainmailstudios.astromine.common.utilities.VoxelShapeUtilities;
+import com.google.common.collect.Sets;
+import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
+import nerdhub.cardinal.components.api.component.Component;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
@@ -9,11 +13,6 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.utilities.VoxelShapeUtilities;
-import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
-import nerdhub.cardinal.components.api.component.Component;
-
-import com.google.common.collect.Sets;
 import java.util.Map;
 import java.util.Set;
 
@@ -81,9 +80,9 @@ public class WorldBridgeComponent implements Component {
 					Math.abs(vec.getX()),
 					Math.abs(vec.getY()) - 1,
 					Math.abs(vec.getZ()),
-					b ? 16 : Math.abs(vec.getX()+1),
+					b ? 16 : Math.abs(vec.getX() + 1),
 					Math.abs(vec.getY()) + 1,
-					a ? 16 : Math.abs(vec.getZ()+1)
+					a ? 16 : Math.abs(vec.getZ() + 1)
 			));
 		}
 

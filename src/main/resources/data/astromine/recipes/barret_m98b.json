@@ -3,11 +3,11 @@
   "pattern": ["012", "345", "678"],
   "key": {
     "0": { "item": "minecraft:air" },
-    "1": { "item": "astromine:netherite_gear" },
+    "1": { "item": "astromine:steel_gear" },
     "2": { "item": "minecraft:air" },
-    "3": { "item": "astromine:netherite_gear" },
-    "4": { "item": "astromine:netherite_plates" },
-    "5": { "item": "astromine:netherite_plates" },
+    "3": { "item": "astromine:steel_gear" },
+    "4": { "item": "astromine:steel_plates" },
+    "5": { "item": "astromine:steel_plates" },
     "6": { "item": "astromine:iron_plates" },
     "7": { "item": "astromine:iron_plates" },
     "8": { "item": "minecraft:air" }

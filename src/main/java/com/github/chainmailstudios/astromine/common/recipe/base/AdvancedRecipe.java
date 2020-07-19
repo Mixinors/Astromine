@@ -1,13 +1,12 @@
 package com.github.chainmailstudios.astromine.common.recipe.base;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
-
-import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
 
 public interface AdvancedRecipe<C extends Inventory> extends Recipe<C> {
 	<T extends DefaultedBlockEntity> boolean canCraft(T t);

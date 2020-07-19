@@ -1,16 +1,14 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
-
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.item.weapon.BaseWeapon;
 import com.github.chainmailstudios.astromine.common.item.weapon.Weapon;
 import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
+import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 
 public class AstromineCommonPackets {
 	public static final Identifier SHOT_PACKET = AstromineCommon.identifier("shot");

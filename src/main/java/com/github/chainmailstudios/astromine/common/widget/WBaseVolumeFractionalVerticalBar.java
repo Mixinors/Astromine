@@ -1,8 +1,7 @@
 package com.github.chainmailstudios.astromine.common.widget;
 
-import net.minecraft.text.TranslatableText;
-
 import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
+import net.minecraft.text.TranslatableText;
 
 import java.util.function.Supplier;
 

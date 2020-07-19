@@ -1,9 +1,8 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
+import com.google.gson.JsonElement;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
-
-import com.google.gson.JsonElement;
 
 public class IngredientUtilities {
 	public static Ingredient fromJson(JsonElement jsonElement) {

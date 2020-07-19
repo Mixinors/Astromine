@@ -1,8 +1,17 @@
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
+import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import nerdhub.cardinal.components.api.ComponentType;
+import nerdhub.cardinal.components.api.component.Component;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.PacketContext;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -13,19 +22,8 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.Direction;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
-import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import nerdhub.cardinal.components.api.ComponentType;
-import nerdhub.cardinal.components.api.component.Component;
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -125,7 +123,9 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 		transferComponent.fromTag(tag.getCompound("transfer"));
 
 		allComponents.forEach((type, component) -> {
-			component.fromTag(tag.getCompound(type.getId().toString()));
+			if (tag.contains(type.getId().toString())) {
+				component.fromTag(tag.getCompound(type.getId().toString()));
+			}
 		});
 
 		super.fromTag(state, tag);
@@ -133,7 +133,9 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 
 	@Override
 	public CompoundTag toClientTag(CompoundTag compoundTag) {
-		return toTag(compoundTag);
+		compoundTag = toTag(compoundTag);
+		compoundTag.remove(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT.getId().toString());
+		return compoundTag;
 	}
 
 	@Override

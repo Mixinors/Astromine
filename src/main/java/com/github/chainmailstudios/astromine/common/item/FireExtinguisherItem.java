@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.item;
 
+import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
@@ -19,8 +20,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
-import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 
 public class FireExtinguisherItem extends Item {
 	long lastPlayed = 0;
@@ -63,10 +62,10 @@ public class FireExtinguisherItem extends Item {
 		BlockPos.Mutable.method_29715(new Box(result.getBlockPos()).expand(1)).forEach(position -> {
 			BlockState state = world.getBlockState(position);
 
-			if(state.getBlock() instanceof FireBlock) {
+			if (state.getBlock() instanceof FireBlock) {
 				world.setBlockState(position, Blocks.AIR.getDefaultState());
-			} else if(state.getBlock() instanceof CampfireBlock) {
-				if(state.get(CampfireBlock.LIT)) world.setBlockState(position, state.with(CampfireBlock.LIT, false));
+			} else if (state.getBlock() instanceof CampfireBlock) {
+				if (state.get(CampfireBlock.LIT)) world.setBlockState(position, state.with(CampfireBlock.LIT, false));
 			}
 		});
 
@@ -77,7 +76,7 @@ public class FireExtinguisherItem extends Item {
 		if (world.isClient) {
 			world.playSound(user, user.getBlockPos(), AstromineSoundEvents.FIRE_EXTINGUISHER_OPEN, SoundCategory.PLAYERS, 1f, 1f);
 		}
-		
+
 		return super.use(world, user, hand);
 	}
 

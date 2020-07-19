@@ -1,28 +1,10 @@
 package com.github.chainmailstudios.astromine.registry;
 
-import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
-
-import net.minecraft.screen.ScreenHandlerType;
-
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.screenhandler.BlockBreakerScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.BlockPlacerScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.CraftingRecipeCreatorScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.CreativeBufferScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.CreativeCapacitorScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.CreativeTankScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.ElectricSmelterScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.ElectrolyzerScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.FluidExtractorScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.FluidInserterScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.FluidMixerScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.FluidTankScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.LiquidGeneratorScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.NuclearWarheadScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.PresserScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.SolidGeneratorScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.TrituratorScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.VentScreenHandler;
+import com.github.chainmailstudios.astromine.common.screenhandler.*;
+import com.github.chainmailstudios.astromine.common.utilities.type.BufferType;
+import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+import net.minecraft.screen.ScreenHandlerType;
 
 public class AstromineScreenHandlers {
 	public static final ScreenHandlerType<FluidExtractorScreenHandler> FLUID_EXTRACTOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("fluid_extractor"), ((synchronizationID, inventory, buffer) -> {
@@ -71,6 +53,10 @@ public class AstromineScreenHandlers {
 
 	public static final ScreenHandlerType<CreativeBufferScreenHandler> CREATIVE_BUFFER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("creative_buffer"), ((synchronizationID, inventory, buffer) -> {
 		return new CreativeBufferScreenHandler(synchronizationID, inventory, buffer.readBlockPos());
+	}));
+
+	public static final ScreenHandlerType<BufferScreenHandler> BUFFER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("buffer"), ((synchronizationID, inventory, buffer) -> {
+		return new BufferScreenHandler(synchronizationID, inventory, buffer.readBlockPos(), buffer.readEnumConstant(BufferType.class));
 	}));
 
 	public static final ScreenHandlerType<TrituratorScreenHandler> TRITURATOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("triturator"), ((synchronizationID, inventory, buffer) -> {

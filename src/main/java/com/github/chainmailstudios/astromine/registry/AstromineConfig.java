@@ -10,25 +10,25 @@ import me.sargunvohra.mcmods.autoconfig1u.shadowed.blue.endless.jankson.Comment;
 public class AstromineConfig implements ConfigData {
 	@Comment("Whether nuclear warheads are enabled.")
 	public boolean nuclearWarheadEnabled = true;
-	
+
 	@Comment("Y level in the Overworld to get to Space.")
 	public int spaceTravelYLevel = 1024;
-	
+
 	@Comment("Y level to spawn at when travelling to Space.")
 	public int spaceSpawnYLevel = 32;
-	
+
 	@Comment("Y level in Space to get back to the Overworld.")
 	public int overworldTravelYLevel = -58;
-	
+
 	@Comment("Y level to spawn at when returning to the Overworld")
 	public int overworldSpawnYLevel = 992;
-	
+
 	@Comment("Gravity level in Space")
 	public double spaceGravity = 0.01d;
-	
+
 	@Comment("Whether generation of Copper Ore in the Overworld is enabled")
 	public boolean overworldCopperOre = true;
-	
+
 	@Comment("Whether generation of Tin Ore in the Overworld is enabled")
 	public boolean overworldTinOre = true;
 

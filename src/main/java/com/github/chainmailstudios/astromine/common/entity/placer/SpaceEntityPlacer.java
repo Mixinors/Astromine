@@ -1,14 +1,12 @@
 package com.github.chainmailstudios.astromine.common.entity.placer;
 
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.fabricmc.fabric.api.dimension.v1.EntityPlacer;
-
 import net.minecraft.block.pattern.BlockPattern;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 public class SpaceEntityPlacer implements EntityPlacer {
 	public static final SpaceEntityPlacer TO_PLANET = new SpaceEntityPlacer(AstromineConfig.get().overworldSpawnYLevel);

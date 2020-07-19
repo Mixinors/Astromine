@@ -3,11 +3,7 @@ package com.github.chainmailstudios.astromine.common.component.inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Simple implementation of an InventoryComponent for usage anywhere one is required. Size is immutable and therefore defined on instantiation.
@@ -22,8 +18,7 @@ public class SimpleItemInventoryComponent implements ItemInventoryComponent {
 
 	private final List<Runnable> listeners = new ArrayList<>();
 
-	private final int size;
-
+	private int size;
 
 	public SimpleItemInventoryComponent() {
 		this(0);
@@ -33,6 +28,13 @@ public class SimpleItemInventoryComponent implements ItemInventoryComponent {
 		this.size = size;
 		for (int i = 0; i < size; ++i) {
 			contents.put(i, ItemStack.EMPTY);
+		}
+	}
+
+	public void resize(int size) {
+		this.size = size;
+		for (int i = 0; i < size; ++i) {
+			contents.putIfAbsent(i, ItemStack.EMPTY);
 		}
 	}
 

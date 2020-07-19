@@ -1,13 +1,19 @@
 package com.github.chainmailstudios.astromine.common.block.base;
 
+import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -41,5 +47,20 @@ public abstract class DefaultedBlockWithEntity extends Block implements BlockEnt
 
 	public static void markInactive(World world, BlockPos pos) {
 		world.setBlockState(pos, world.getBlockState(pos).with(ACTIVE, false));
+	}
+
+	@Override
+	public void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack stack) {
+		super.afterBreak(world, player, pos, state, blockEntity, stack);
+
+		ComponentProvider componentProvider = ComponentProvider.fromBlockEntity(blockEntity);
+
+		if (componentProvider.hasComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)) {
+			ItemInventoryComponent component = componentProvider.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
+
+			component.getItemContents().forEach((key, value) -> {
+				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), value);
+			});
+		}
 	}
 }

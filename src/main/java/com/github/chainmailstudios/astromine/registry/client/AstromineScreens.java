@@ -1,49 +1,13 @@
 package com.github.chainmailstudios.astromine.registry.client;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.client.screen.*;
+import com.github.chainmailstudios.astromine.common.screenhandler.*;
+import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
-
 import net.minecraft.client.MinecraftClient;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.client.screen.BlockBreakerHandledScreen;
-import com.github.chainmailstudios.astromine.client.screen.BlockPlacerHandledScreen;
-import com.github.chainmailstudios.astromine.client.screen.CraftingRecipeCreatorHandledScreen;
-import com.github.chainmailstudios.astromine.client.screen.CreativeBufferHandledScreen;
-import com.github.chainmailstudios.astromine.client.screen.CreativeCapacitorHandledScreen;
-import com.github.chainmailstudios.astromine.client.screen.CreativeTankHandledScreen;
-import com.github.chainmailstudios.astromine.client.screen.ElectricSmelterHandledScreen;
-import com.github.chainmailstudios.astromine.client.screen.ElectrolyzerHandledScreen;
-import com.github.chainmailstudios.astromine.client.screen.FluidExtractorHandledScreen;
-import com.github.chainmailstudios.astromine.client.screen.FluidInserterHandledScreen;
-import com.github.chainmailstudios.astromine.client.screen.FluidMixerHandledScreen;
-import com.github.chainmailstudios.astromine.client.screen.LiquidGeneratorHandledScreen;
-import com.github.chainmailstudios.astromine.client.screen.NuclearWarheadHandledScreen;
-import com.github.chainmailstudios.astromine.client.screen.PresserHandledScreen;
-import com.github.chainmailstudios.astromine.client.screen.SolidGeneratorHandledScreen;
-import com.github.chainmailstudios.astromine.client.screen.TankHandledScreen;
-import com.github.chainmailstudios.astromine.client.screen.TrituratorHandledScreen;
-import com.github.chainmailstudios.astromine.client.screen.VentHandledScreen;
-import com.github.chainmailstudios.astromine.common.screenhandler.BlockBreakerScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.BlockPlacerScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.CraftingRecipeCreatorScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.CreativeBufferScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.CreativeCapacitorScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.CreativeTankScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.ElectricSmelterScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.ElectrolyzerScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.FluidExtractorScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.FluidInserterScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.FluidMixerScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.FluidTankScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.LiquidGeneratorScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.NuclearWarheadScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.PresserScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.SolidGeneratorScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.TrituratorScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.VentScreenHandler;
-import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 import spinnery.client.screen.InGameHudScreen;
 import spinnery.widget.WInterface;
 import spinnery.widget.WStaticImage;
@@ -63,7 +27,7 @@ public class AstromineScreens {
 		});
 
 		ScreenRegistry.register(AstromineScreenHandlers.FLUID_EXTRACTOR, (ScreenRegistry.Factory<FluidExtractorScreenHandler, FluidExtractorHandledScreen>) ((handler, inventory, title) ->
-			 new FluidExtractorHandledScreen(title, handler, inventory.player)
+				new FluidExtractorHandledScreen(title, handler, inventory.player)
 		));
 
 		ScreenRegistry.register(AstromineScreenHandlers.FLUID_INSERTER, (ScreenRegistry.Factory<FluidInserterScreenHandler, FluidInserterHandledScreen>) ((handler, inventory, title) ->
@@ -79,7 +43,7 @@ public class AstromineScreens {
 		));
 
 		ScreenRegistry.register(AstromineScreenHandlers.LIQUID_GENERATOR, (ScreenRegistry.Factory<LiquidGeneratorScreenHandler, LiquidGeneratorHandledScreen>) ((handler, inventory, title) ->
-			new LiquidGeneratorHandledScreen(title, handler, inventory.player)
+				new LiquidGeneratorHandledScreen(title, handler, inventory.player)
 		));
 
 		ScreenRegistry.register(AstromineScreenHandlers.SOLID_GENERATOR, (ScreenRegistry.Factory<SolidGeneratorScreenHandler, SolidGeneratorHandledScreen>) ((handler, inventory, title) -> {
@@ -90,27 +54,31 @@ public class AstromineScreens {
 			return new VentHandledScreen(title, handler, inventory.player);
 		}));
 		ScreenRegistry.register(AstromineScreenHandlers.TANK, (ScreenRegistry.Factory<FluidTankScreenHandler, TankHandledScreen>) ((handler, inventory, title) ->
-			new TankHandledScreen(title, handler, inventory.player)
+				new TankHandledScreen(title, handler, inventory.player)
 		));
 
 		ScreenRegistry.register(AstromineScreenHandlers.NUCLEAR_WARHEAD, (ScreenRegistry.Factory<NuclearWarheadScreenHandler, NuclearWarheadHandledScreen>) ((handler, inventory, title) ->
-			new NuclearWarheadHandledScreen(title, handler, inventory.player)
+				new NuclearWarheadHandledScreen(title, handler, inventory.player)
 		));
 
 		ScreenRegistry.register(AstromineScreenHandlers.CREATIVE_CAPACITOR, (ScreenRegistry.Factory<CreativeCapacitorScreenHandler, CreativeCapacitorHandledScreen>) ((handler, inventory, title) ->
-			new CreativeCapacitorHandledScreen(title, handler, inventory.player)
+				new CreativeCapacitorHandledScreen(title, handler, inventory.player)
 		));
 
 		ScreenRegistry.register(AstromineScreenHandlers.CREATIVE_TANK, (ScreenRegistry.Factory<CreativeTankScreenHandler, CreativeTankHandledScreen>) ((handler, inventory, title) ->
-			new CreativeTankHandledScreen(title, handler, inventory.player)
+				new CreativeTankHandledScreen(title, handler, inventory.player)
 		));
 
 		ScreenRegistry.register(AstromineScreenHandlers.CREATIVE_BUFFER, (ScreenRegistry.Factory<CreativeBufferScreenHandler, CreativeBufferHandledScreen>) ((handler, inventory, title) ->
-			new CreativeBufferHandledScreen(title, handler, inventory.player)
+				new CreativeBufferHandledScreen(title, handler, inventory.player)
+		));
+
+		ScreenRegistry.register(AstromineScreenHandlers.BUFFER, (ScreenRegistry.Factory<BufferScreenHandler, BufferHandledScreen>) ((handler, inventory, title) ->
+				new BufferHandledScreen(title, handler, inventory.player)
 		));
 
 		ScreenRegistry.register(AstromineScreenHandlers.TRITURATOR, (ScreenRegistry.Factory<TrituratorScreenHandler, TrituratorHandledScreen>) ((handler, inventory, title) ->
-			new TrituratorHandledScreen(title, handler, inventory.player)
+				new TrituratorHandledScreen(title, handler, inventory.player)
 		));
 
 		ScreenRegistry.register(AstromineScreenHandlers.PRESSER, (ScreenRegistry.Factory<PresserScreenHandler, PresserHandledScreen>) ((handler, inventory, title) ->
@@ -118,11 +86,11 @@ public class AstromineScreens {
 		));
 
 		ScreenRegistry.register(AstromineScreenHandlers.ELECTRIC_SMELTER, (ScreenRegistry.Factory<ElectricSmelterScreenHandler, ElectricSmelterHandledScreen>) ((handler, inventory, title) ->
-			new ElectricSmelterHandledScreen(title, handler, inventory.player)
+				new ElectricSmelterHandledScreen(title, handler, inventory.player)
 		));
 
 		ScreenRegistry.register(AstromineScreenHandlers.ELECTROLYZER, (ScreenRegistry.Factory<ElectrolyzerScreenHandler, ElectrolyzerHandledScreen>) ((handler, inventory, title) ->
-			new ElectrolyzerHandledScreen(title, handler, inventory.player)
+				new ElectrolyzerHandledScreen(title, handler, inventory.player)
 		));
 
 		ScreenRegistry.register(AstromineScreenHandlers.FLUID_MIXER, (ScreenRegistry.Factory<FluidMixerScreenHandler, FluidMixerHandledScreen>) ((handler, inventory, title) -> {
