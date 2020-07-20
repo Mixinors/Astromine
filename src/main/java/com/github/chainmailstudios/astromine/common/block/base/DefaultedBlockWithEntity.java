@@ -5,14 +5,21 @@ import com.github.chainmailstudios.astromine.common.component.inventory.ItemInve
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.context.LootContext;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public abstract class DefaultedBlockWithEntity extends Block implements BlockEntityProvider {
 	protected DefaultedBlockWithEntity(AbstractBlock.Settings settings) {
@@ -47,17 +54,38 @@ public abstract class DefaultedBlockWithEntity extends Block implements BlockEnt
 	}
 
 	@Override
+	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
+		super.onPlaced(world, pos, state, placer, itemStack);
+
+		CompoundTag tag = itemStack.getOrCreateTag();
+
+		if (tag.contains("tracker")) {
+			BlockEntity blockEntity = world.getBlockEntity(pos);
+			BlockPos oldPos = blockEntity.getPos();
+			blockEntity.fromTag(state, itemStack.getOrCreateTag());
+			blockEntity.setPos(oldPos);
+		}
+	}
+
+	@Override
 	public void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack stack) {
-		ComponentProvider componentProvider = ComponentProvider.fromBlockEntity(blockEntity);
+		player.incrementStat(Stats.MINED.getOrCreateStat(this));
+		player.addExhaustion(0.005F);
 
-		if (componentProvider.hasComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)) {
-			ItemInventoryComponent component = componentProvider.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
+		boolean isTagged = false;
 
-			component.getItemContents().forEach((key, value) -> {
-				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), value);
-			});
+		if (world instanceof ServerWorld) {
+			for (ItemStack drop : getDroppedStacks(state, (ServerWorld) world, pos, blockEntity, player, stack)) {
+				if (!isTagged && drop.getItem() == asItem()) {
+					drop.setTag(blockEntity.toTag(drop.getOrCreateTag()));
+					drop.getTag().putByte("tracker", (byte) 0);
+					isTagged = true;
+				}
+
+				dropStack(world, pos, drop);
+			}
 		}
 
-		super.afterBreak(world, player, pos, state, blockEntity, stack);
+		state.onStacksDropped(world, pos, stack);
 	}
 }
