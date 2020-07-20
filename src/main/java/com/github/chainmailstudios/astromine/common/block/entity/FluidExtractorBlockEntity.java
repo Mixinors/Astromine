@@ -46,6 +46,8 @@ public class FluidExtractorBlockEntity extends DefaultedEnergyFluidBlockEntity i
 
 	@Override
 	public void tick() {
+		super.tick();
+
 		start:
 		if (this.world != null && !this.world.isClient()) {
 			if (asEnergy().getEnergy() < 250) {

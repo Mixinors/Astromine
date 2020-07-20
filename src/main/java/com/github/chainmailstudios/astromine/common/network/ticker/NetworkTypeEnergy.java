@@ -35,13 +35,8 @@ public class NetworkTypeEnergy extends NetworkType {
 				ComponentProvider provider = ComponentProvider.fromBlockEntity(blockEntity);
 				BlockEntityTransferComponent transferComponent = provider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
 
-				before:
 				if (transferComponent != null) {
-					Property<Direction> property = blockEntity.getCachedState().contains(HorizontalFacingBlock.FACING) ? HorizontalFacingBlock.FACING : blockEntity.getCachedState().contains(FacingBlock.FACING) ? FacingBlock.FACING : null;
-
-					if (!blockEntity.getCachedState().contains(property)) break before;
-
-					TransferType type = transferComponent.get(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).get(memberNode.getDirection(), blockEntity.getCachedState().get(property));
+					TransferType type = transferComponent.get(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).get(memberNode.getDirection());
 
 					if (type != TransferType.DISABLED) {
 						if (type.canExtract() || ((NetworkMember) blockEntity).isProvider(this)) {

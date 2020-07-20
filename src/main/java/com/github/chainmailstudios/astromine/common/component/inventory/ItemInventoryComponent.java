@@ -114,7 +114,7 @@ public interface ItemInventoryComponent extends NameableComponent {
 							(storedStack.hasTag() && finalStack.hasTag() && storedStack.getTag().equals(finalStack.getTag()) || storedStack.isEmpty()));
 		}).findFirst();
 
-		if (matchingStackOptional.isPresent() && matchingStackOptional.get().getValue().getMaxCount() - stack.getCount() >= count) {
+		if (matchingStackOptional.isPresent()) {
 			ItemStack matchingStack = matchingStackOptional.get().getValue();
 			if (matchingStack.isEmpty()) {
 				matchingStack = stack.copy();

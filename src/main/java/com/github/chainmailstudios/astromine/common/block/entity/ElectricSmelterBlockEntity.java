@@ -72,6 +72,8 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 
 	@Override
 	public void tick() {
+		super.tick();
+
 		if (world.isClient()) return;
 		if (shouldTry) {
 			BaseInventory inputInventory = new BaseInventory(1);

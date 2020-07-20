@@ -92,13 +92,20 @@ public class WTransferTypeSelectorPanel extends WAbstractWidget implements WColl
 		return (W) this;
 	}
 
-	public static void createTab(WTabHolder.WTab tab, WPositioned anchor, BlockEntityTransferComponent component, BlockPos blockPos, Identifier type, WInterface wInterface) {
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(anchor, 7 + 22, 31 + 22, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.NORTH).setBlockPos(blockPos).setInterface(wInterface));
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(anchor, 7 + 0, 31 + 44, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.SOUTH).setBlockPos(blockPos).setInterface(wInterface));
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(anchor, 7 + 22, 31 + 0, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.UP).setBlockPos(blockPos).setInterface(wInterface));
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(anchor, 7 + 22, 31 + 44, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.DOWN).setBlockPos(blockPos).setInterface(wInterface));
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(anchor, 7 + 44, 31 + 22, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.WEST).setBlockPos(blockPos).setInterface(wInterface));
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, Position.of(anchor, 7 + 0, 31 + 22, 0), Size.of(18, 18)).setComponent(component).setType(type).setDirection(Direction.EAST).setBlockPos(blockPos).setInterface(wInterface));
+	public static void createTab(WTabHolder.WTab tab, WPositioned anchor, Direction rotation, BlockEntityTransferComponent component, BlockPos blockPos, Identifier type, WInterface wInterface) {
+		final Position finalNorth = Position.of(anchor, 7 + 22, 31 + 22, 0);
+		final Position finalSouth = Position.of(anchor, 7 + 0, 31 + 44, 0);
+		final Position finalUp = Position.of(anchor, 7 + 22, 31 + 0, 0);
+		final Position finalDown = Position.of(anchor, 7 + 22, 31 + 44, 0);
+		final Position finalWest = Position.of(anchor, 7 + 44, 31 + 22, 0);
+		final Position finalEast = Position.of(anchor, 7 + 0, 31 + 22, 0);
+
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, rotation == Direction.SOUTH ? finalSouth : finalNorth, Size.of(18, 18)).setComponent(component).setType(type).setRotation(rotation).setDirection(Direction.NORTH).setBlockPos(blockPos).setInterface(wInterface));
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, rotation == Direction.SOUTH ? finalNorth : finalSouth, Size.of(18, 18)).setComponent(component).setType(type).setRotation(rotation).setDirection(Direction.SOUTH).setBlockPos(blockPos).setInterface(wInterface));
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, finalUp, Size.of(18, 18)).setComponent(component).setType(type).setRotation(rotation).setDirection(Direction.UP).setBlockPos(blockPos).setInterface(wInterface));
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, finalDown, Size.of(18, 18)).setComponent(component).setType(type).setRotation(rotation).setDirection(Direction.DOWN).setBlockPos(blockPos).setInterface(wInterface));
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, rotation == Direction.SOUTH ? finalEast : finalWest, Size.of(18, 18)).setComponent(component).setType(type).setRotation(rotation).setDirection(Direction.WEST).setBlockPos(blockPos).setInterface(wInterface));
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, rotation == Direction.SOUTH ? finalWest : finalEast, Size.of(18, 18)).setComponent(component).setType(type).setRotation(rotation).setDirection(Direction.EAST).setBlockPos(blockPos).setInterface(wInterface));
 	}
 
 	@Override

@@ -98,6 +98,8 @@ public class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlockEntity im
 
 	@Override
 	public void tick() {
+		super.tick();
+
 		if (world.isClient()) return;
 
 		if (recipe.isPresent()) {

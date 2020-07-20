@@ -72,6 +72,8 @@ public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implement
 
 	@Override
 	public void tick() {
+		super.tick();
+
 		if (world.isClient()) return;
 		if (shouldTry) {
 			if (!recipe.isPresent()) {

@@ -42,8 +42,7 @@ public class NetworkTypeFluid extends NetworkType {
 
 					if (!blockEntity.getCachedState().contains(property)) break before;
 
-					TransferType type = transferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).get(memberNode.getDirection(), blockEntity.getCachedState().get(property));
-					boolean areAllNone = transferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).areAllNone();
+					TransferType type = transferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).get(memberNode.getDirection());
 
 					if (type != TransferType.DISABLED) {
 						if (type.canExtract() || ((NetworkMember) blockEntity).isProvider(this)) {

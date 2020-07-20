@@ -85,8 +85,8 @@ public class BlockEntityTransferComponent implements Component {
 			types.put(direction, type);
 		}
 
-		public TransferType get(Direction origin, Direction rotation) {
-			return types.get(MirrorUtilities.rotate(origin, rotation));
+		public TransferType get(Direction origin) {
+			return types.get(origin);
 		}
 
 		public void fromTag(CompoundTag tag) {

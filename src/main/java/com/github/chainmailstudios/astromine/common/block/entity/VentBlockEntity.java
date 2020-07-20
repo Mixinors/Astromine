@@ -43,6 +43,8 @@ public class VentBlockEntity extends DefaultedEnergyFluidBlockEntity implements 
 
 	@Override
 	public void tick() {
+		super.tick();
+
 		if (world.isClient()) return;
 		if (fluidComponent.getVolume(0).hasStored(Fraction.of(1, 8))) {
 			BlockPos position = getPos();

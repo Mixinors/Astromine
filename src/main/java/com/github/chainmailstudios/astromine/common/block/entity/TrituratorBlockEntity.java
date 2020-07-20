@@ -72,6 +72,8 @@ public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implem
 
 	@Override
 	public void tick() {
+		super.tick();
+
 		if (world.isClient()) return;
 		if (shouldTry) {
 			if (!recipe.isPresent()) {

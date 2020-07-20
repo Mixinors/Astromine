@@ -100,6 +100,8 @@ public class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEntity imple
 
 	@Override
 	public void tick() {
+		super.tick();
+
 		if (world.isClient()) return;
 
 		if (recipe.isPresent()) {

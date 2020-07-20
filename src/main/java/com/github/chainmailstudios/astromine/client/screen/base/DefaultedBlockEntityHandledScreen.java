@@ -1,5 +1,7 @@
 package com.github.chainmailstudios.astromine.client.screen.base;
 
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedFacingBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.NameableComponent;
@@ -10,9 +12,13 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.google.common.collect.Sets;
 import nerdhub.cardinal.components.api.ComponentRegistry;
 import nerdhub.cardinal.components.api.ComponentType;
+import net.minecraft.block.Block;
+import net.minecraft.block.FacingBlock;
+import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.Direction;
 import spinnery.widget.WInterface;
 import spinnery.widget.WPanel;
 import spinnery.widget.WSlot;
@@ -29,13 +35,13 @@ public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScr
 	public WPanel mainPanel;
 	public Collection<WSlot> playerSlots;
 
-	public DefaultedBlockEntityHandledScreen(Text name, T linkedScreenHandler, PlayerEntity player) {
-		super(name, linkedScreenHandler, player);
+	public DefaultedBlockEntityHandledScreen(Text name, T handler, PlayerEntity player) {
+		super(name, handler, player);
 
 		mainInterface = getInterface();
 
 		mainTabbedPanel = mainInterface.createChild(WTabbedPanel::new, Position.ORIGIN, Size.of(176, 160 + 24));
-		WTabHolder.WTab mainTab = mainTabbedPanel.addTab(linkedScreenHandler.getWorld().getBlockState(linkedScreenHandler.syncBlockEntity.getPos()).getBlock().asItem());
+		WTabHolder.WTab mainTab = mainTabbedPanel.addTab(handler.getWorld().getBlockState(handler.syncBlockEntity.getPos()).getBlock().asItem());
 		mainPanel = mainTab.getBody();
 
 		MinecraftClient.getInstance().mouse.unlockCursor();
@@ -52,7 +58,18 @@ public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScr
 
 		playerSlots = Sets.newHashSet(WSlot.addPlayerInventory(Position.of(mainPanel, 7, mainPanel.getHeight() - 18 - 11 - (18 * 3), 2), Size.of(18, 18), mainPanel));
 
-		ComponentProvider componentProvider = ComponentProvider.fromBlockEntity(linkedScreenHandler.syncBlockEntity);
+		ComponentProvider componentProvider = ComponentProvider.fromBlockEntity(handler.syncBlockEntity);
+
+		Direction rotation = Direction.NORTH;
+		Block block = handler.syncBlockEntity.getCachedState().getBlock();
+
+		if (block instanceof DefaultedHorizontalFacingBlockWithEntity) {
+			rotation = handler.syncBlockEntity.getCachedState().get(HorizontalFacingBlock.FACING);
+		} else if (block instanceof DefaultedFacingBlockWithEntity) {
+			rotation = handler.syncBlockEntity.getCachedState().get(FacingBlock.FACING);
+		}
+
+		final Direction finalRotation = rotation;
 
 		BlockEntityTransferComponent transferComponent = componentProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
 
@@ -64,8 +81,9 @@ public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScr
 				WTransferTypeSelectorPanel.createTab(
 						tab,
 						Position.of(mainTabbedPanel, mainTabbedPanel.getWidth() / 2 - 38, 0, 0),
+						finalRotation,
 						transferComponent,
-						linkedScreenHandler.syncBlockEntity.getPos(),
+						handler.syncBlockEntity.getPos(),
 						type,
 						getInterface()
 				);
@@ -78,8 +96,9 @@ public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScr
 					WTransferTypeSelectorPanel.createTab(
 							tab,
 							Position.of(mainTabbedPanel, mainTabbedPanel.getWidth() / 2 - 38, 0, 0),
+							finalRotation,
 							transferComponent,
-							linkedScreenHandler.syncBlockEntity.getPos(),
+							handler.syncBlockEntity.getPos(),
 							type,
 							getInterface()
 					);

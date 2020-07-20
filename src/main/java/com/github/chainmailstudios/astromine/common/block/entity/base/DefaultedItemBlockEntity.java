@@ -85,7 +85,7 @@ public abstract class DefaultedItemBlockEntity extends DefaultedBlockEntity impl
 
 	@Override
 	public int[] getAvailableSlots(Direction direction) {
-		if (!transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(direction, getCachedState().get(HorizontalFacingBlock.FACING)).isDisabled()) {
+		if (!transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(direction).isDisabled()) {
 			return IntStream.rangeClosed(0, inventory.size() - 1).toArray();
 		} else {
 			return new int[0];
@@ -94,7 +94,7 @@ public abstract class DefaultedItemBlockEntity extends DefaultedBlockEntity impl
 
 	@Override
 	public boolean canInsert(int slot, ItemStack stack, Direction direction) {
-		if (transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(direction, getCachedState().get(HorizontalFacingBlock.FACING)).canInsert()) {
+		if (transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(direction).canInsert()) {
 			return getSidedComponent(direction, AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).canInsert(direction, stack, slot);
 		} else {
 			return false;
@@ -103,7 +103,7 @@ public abstract class DefaultedItemBlockEntity extends DefaultedBlockEntity impl
 
 	@Override
 	public boolean canExtract(int slot, ItemStack stack, Direction direction) {
-		if (transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(direction, getCachedState().get(HorizontalFacingBlock.FACING)).canExtract()) {
+		if (transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(direction).canExtract()) {
 			return getSidedComponent(direction, AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).canExtract(direction, stack, slot);
 		} else {
 			return false;

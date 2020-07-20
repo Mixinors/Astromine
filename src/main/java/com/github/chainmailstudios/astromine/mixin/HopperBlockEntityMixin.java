@@ -40,7 +40,7 @@ public abstract class HopperBlockEntityMixin {
 				if (componentProvider.hasComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT)) {
 					BlockEntityTransferComponent transferComponent = componentProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
 
-					if (transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(Direction.DOWN, Direction.NORTH).canExtract()) {
+					if (transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(Direction.DOWN).canExtract()) {
 						callbackInformationReturnable.setReturnValue(ItemInventoryFromInventoryComponent.of(componentProvider.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)));
 						callbackInformationReturnable.cancel();
 					}
@@ -67,7 +67,7 @@ public abstract class HopperBlockEntityMixin {
 				if (componentProvider.hasComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT)) {
 					BlockEntityTransferComponent transferComponent = componentProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
 
-					if (transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(Direction.UP, Direction.NORTH).canInsert()) {
+					if (transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(Direction.UP).canInsert()) {
 						callbackInformationReturnable.setReturnValue(ItemInventoryFromInventoryComponent.of(componentProvider.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)));
 						callbackInformationReturnable.cancel();
 					}
