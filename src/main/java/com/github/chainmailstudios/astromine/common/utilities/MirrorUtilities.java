@@ -2,18 +2,44 @@ package com.github.chainmailstudios.astromine.common.utilities;
 
 import net.minecraft.util.math.Direction;
 
+import static net.minecraft.util.math.Direction.*;
+
 public class MirrorUtilities {
 	public static Direction rotate(Direction origin, Direction rotation) {
-		if (rotation == Direction.NORTH) {
-			return origin;
-		} else if (rotation == Direction.SOUTH) {
-			return origin.getOpposite();
-		} else if (rotation == Direction.WEST) {
-			return origin == Direction.NORTH ? Direction.EAST : origin == Direction.SOUTH ? Direction.WEST : origin == Direction.WEST ? Direction.SOUTH : origin == Direction.EAST ? Direction.NORTH : origin;
-		} else if (rotation == Direction.EAST) {
-			return origin == Direction.NORTH ? Direction.WEST : origin == Direction.SOUTH ? Direction.EAST : origin == Direction.EAST ? Direction.NORTH : origin == Direction.WEST ? Direction.SOUTH : origin;
+		if (rotation == NORTH) {
+			switch (origin) {
+				case NORTH: return NORTH;
+				case SOUTH: return SOUTH;
+				case WEST: return WEST;
+				case EAST: return EAST;
+				default: return origin;
+			}
+		} else if (rotation == SOUTH) {
+			switch (origin) {
+				case NORTH: return SOUTH;
+				case SOUTH: return NORTH;
+				case WEST: return EAST;
+				case EAST: return WEST;
+				default: return origin;
+			}
+		} else if (rotation == WEST) {
+			switch (origin) {
+				case NORTH: return WEST;
+				case SOUTH: return EAST;
+				case EAST: return SOUTH;
+				case WEST: return NORTH;
+				default: return origin;
+			}
+		} else if (rotation == EAST) {
+			switch (origin) {
+				case NORTH: return EAST;
+				case SOUTH: return WEST;
+				case EAST: return NORTH;
+				case WEST: return SOUTH;
+				default: return origin;
+			}
 		} else {
-			return origin;
+			return origin; // TODO - UP && DOWN
 		}
 	}
 }

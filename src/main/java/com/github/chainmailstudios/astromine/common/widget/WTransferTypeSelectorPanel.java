@@ -2,6 +2,8 @@ package com.github.chainmailstudios.astromine.common.widget;
 
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -100,12 +102,20 @@ public class WTransferTypeSelectorPanel extends WAbstractWidget implements WColl
 		final Position finalWest = Position.of(anchor, 7 + 44, 31 + 22, 0);
 		final Position finalEast = Position.of(anchor, 7 + 0, 31 + 22, 0);
 
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, rotation == Direction.SOUTH ? finalSouth : finalNorth, Size.of(18, 18)).setComponent(component).setType(type).setRotation(rotation).setDirection(Direction.NORTH).setBlockPos(blockPos).setInterface(wInterface));
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, rotation == Direction.SOUTH ? finalNorth : finalSouth, Size.of(18, 18)).setComponent(component).setType(type).setRotation(rotation).setDirection(Direction.SOUTH).setBlockPos(blockPos).setInterface(wInterface));
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, finalUp, Size.of(18, 18)).setComponent(component).setType(type).setRotation(rotation).setDirection(Direction.UP).setBlockPos(blockPos).setInterface(wInterface));
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, finalDown, Size.of(18, 18)).setComponent(component).setType(type).setRotation(rotation).setDirection(Direction.DOWN).setBlockPos(blockPos).setInterface(wInterface));
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, rotation == Direction.SOUTH ? finalEast : finalWest, Size.of(18, 18)).setComponent(component).setType(type).setRotation(rotation).setDirection(Direction.WEST).setBlockPos(blockPos).setInterface(wInterface));
-		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, rotation == Direction.SOUTH ? finalWest : finalEast, Size.of(18, 18)).setComponent(component).setType(type).setRotation(rotation).setDirection(Direction.EAST).setBlockPos(blockPos).setInterface(wInterface));
+		final ImmutableMap<Direction, Position> positons = ImmutableMap.<Direction, Position>builder()
+				.put(Direction.NORTH, finalNorth)
+				.put(Direction.SOUTH, finalSouth)
+				.put(Direction.WEST, finalWest)
+				.put(Direction.EAST, finalEast)
+				.put(Direction.UP, finalUp)
+				.put(Direction.DOWN, finalDown).build();
+
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, positons.get(MirrorUtilities.rotate(Direction.NORTH, rotation)), Size.of(18, 18)).setComponent(component).setType(type).setRotation(rotation).setDirection(Direction.NORTH).setBlockPos(blockPos).setInterface(wInterface));
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, positons.get(MirrorUtilities.rotate(Direction.SOUTH, rotation)), Size.of(18, 18)).setComponent(component).setType(type).setRotation(rotation).setDirection(Direction.SOUTH).setBlockPos(blockPos).setInterface(wInterface));
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, positons.get(MirrorUtilities.rotate(Direction.UP, rotation)), Size.of(18, 18)).setComponent(component).setType(type).setRotation(rotation).setDirection(Direction.UP).setBlockPos(blockPos).setInterface(wInterface));
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, positons.get(MirrorUtilities.rotate(Direction.DOWN, rotation)), Size.of(18, 18)).setComponent(component).setType(type).setRotation(rotation).setDirection(Direction.DOWN).setBlockPos(blockPos).setInterface(wInterface));
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, positons.get(MirrorUtilities.rotate(Direction.WEST, rotation)), Size.of(18, 18)).setComponent(component).setType(type).setRotation(rotation).setDirection(Direction.WEST).setBlockPos(blockPos).setInterface(wInterface));
+		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, positons.get(MirrorUtilities.rotate(Direction.EAST, rotation)), Size.of(18, 18)).setComponent(component).setType(type).setRotation(rotation).setDirection(Direction.EAST).setBlockPos(blockPos).setInterface(wInterface));
 	}
 
 	@Override
