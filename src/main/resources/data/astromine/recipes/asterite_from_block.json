@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "astromine:asterite_block"
+      "tag": "c:asterite_blocks"
     }
   ],
   "result": {

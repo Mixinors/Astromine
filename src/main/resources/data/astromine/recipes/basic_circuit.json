@@ -1,7 +1,10 @@
 {
-  "type": "minecraft:crafting_shaped", "pattern": ["000", "121", "000"], "key": {
-  "0": {"item": "astromine:copper_plates"},
-  "1": {"item": "astromine:gold_plates"},
-  "2": {"item": "minecraft:redstone"}
-}, "result": {"item": "astromine:basic_circuit", "count": 1}
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["000", "121", "000"],
+  "key": {
+    "0": { "tag": "c:copper_plates" },
+    "1": { "tag": "c:gold_plates" },
+    "2": { "tag": "c:redstones" }
+  },
+  "result": { "item": "astromine:basic_circuit", "count": 1 }
 }

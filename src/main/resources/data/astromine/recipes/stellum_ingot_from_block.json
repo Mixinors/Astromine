@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "astromine:stellum_block"
+      "tag": "c:stellum_blocks"
     }
   ],
   "result": {

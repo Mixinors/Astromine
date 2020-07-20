@@ -1,1 +1,16 @@
-{"type":"minecraft:crafting_shaped","pattern":["012","345","678"],"key":{"0":{"item":"minecraft:air"},"1":{"item":"astromine:bronze_plates"},"2":{"item":"minecraft:air"},"3":{"item":"astromine:iron_plates"},"4":{"item":"astromine:emerald_dust"},"5":{"item":"astromine:iron_plates"},"6":{"item":"astromine:iron_plates"},"7":{"item":"astromine:emerald_dust"},"8":{"item":"astromine:iron_plates"}},"result":{"item":"astromine:advanced_battery","count":1}}
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["012", "345", "678"],
+  "key": {
+    "0": { "item": "minecraft:air" },
+    "1": { "tag": "c:bronze_plates" },
+    "2": { "item": "minecraft:air" },
+    "3": { "tag": "c:iron_plates" },
+    "4": { "tag": "c:emerald_dusts" },
+    "5": { "tag": "c:iron_plates" },
+    "6": { "tag": "c:iron_plates" },
+    "7": { "tag": "c:emerald_dusts" },
+    "8": { "tag": "c:iron_plates" }
+  },
+  "result": { "item": "astromine:advanced_battery", "count": 1 }
+}

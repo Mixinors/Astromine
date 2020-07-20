@@ -1,7 +1,7 @@
 {
   "type": "astromine:pressing",
   "input": {
-    "item": "astromine:steel_ingot",
+    "tag": "c:steel_ingots",
     "count": 1
   },
   "output": {

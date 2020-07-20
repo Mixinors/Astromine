@@ -1,7 +1,7 @@
 {
   "type": "minecraft:blasting",
   "ingredient": {
-    "tag": "astromine:mod_redstone_ores"
+    "tag": "c:redstone_ores"
   },
   "result": "minecraft:redstone",
   "experience": 0.1,

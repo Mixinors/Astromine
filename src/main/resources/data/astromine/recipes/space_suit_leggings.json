@@ -6,7 +6,7 @@
       "item": "minecraft:white_wool"
     },
     "2": {
-      "item": "astromine:metite_dust"
+      "tag": "c:metite_dusts"
     },
     "3": {
       "item": "minecraft:black_wool"

@@ -3,7 +3,7 @@
   "pattern": ["###", "###", "###"],
   "key": {
     "#": {
-      "item": "astromine:univite_ingot"
+      "tag": "c:univite_ingots"
     }
   },
   "result": {

@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smelting",
   "ingredient": {
-    "item": "astromine:emerald_dust"
+    "tag": "c:emerald_dusts"
   },
   "result": "minecraft:emerald",
   "experience": 0.1,

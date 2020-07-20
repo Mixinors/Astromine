@@ -1,7 +1,7 @@
 {
   "type": "minecraft:blasting",
   "ingredient": {
-    "item": "astromine:univite_dust"
+    "tag": "c:univite_dusts"
   },
   "result": "astromine:univite_ingot",
   "experience": 0.1,

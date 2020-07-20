@@ -3,7 +3,7 @@
   "pattern": ["###", "###", "###"],
   "key": {
     "#": {
-      "item": "astromine:metite_nugget"
+      "tag": "c:metite_nuggets"
     }
   },
   "result": {

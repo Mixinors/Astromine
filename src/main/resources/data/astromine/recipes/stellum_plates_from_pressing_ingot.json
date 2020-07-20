@@ -1,7 +1,7 @@
 {
   "type": "astromine:pressing",
   "input": {
-    "item": "astromine:stellum_ingot",
+    "tag": "c:stellum_ingots",
     "count": 1
   },
   "output": {

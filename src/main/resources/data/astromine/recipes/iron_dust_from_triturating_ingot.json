@@ -1,7 +1,7 @@
 {
   "type": "astromine:triturating",
   "input": {
-    "item": "minecraft:iron_ingot",
+    "tag": "c:iron_ingots",
     "count": 1
   },
   "output": {

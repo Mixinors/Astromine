@@ -1,7 +1,7 @@
 {
   "type": "minecraft:blasting",
   "ingredient": {
-    "item": "minecraft:iron_ingot"
+    "tag": "c:iron_ingots"
   },
   "result": "astromine:steel_ingot",
   "experience": 0.5,

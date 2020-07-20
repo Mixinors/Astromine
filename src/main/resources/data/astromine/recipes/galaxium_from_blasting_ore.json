@@ -1,7 +1,7 @@
 {
   "type": "minecraft:blasting",
   "ingredient": {
-    "tag": "astromine:galaxium_ores"
+    "tag": "c:galaxium_ores"
   },
   "result": "astromine:galaxium",
   "experience": 0.1,

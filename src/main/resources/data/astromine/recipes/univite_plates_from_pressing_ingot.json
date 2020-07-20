@@ -1,7 +1,7 @@
 {
   "type": "astromine:pressing",
   "input": {
-    "item": "astromine:univite_ingot",
+    "tag": "c:univite_ingots",
     "count": 1
   },
   "output": {

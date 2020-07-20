@@ -1,7 +1,7 @@
 {
   "type": "astromine:triturating",
   "input": {
-    "tag": "astromine:iron_ores",
+    "tag": "c:iron_ores",
     "count": 1
   },
   "output": {

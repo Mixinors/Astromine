@@ -3,7 +3,7 @@
   "pattern": ["###", "###", "###"],
   "key": {
     "#": {
-      "item": "astromine:asterite_fragment"
+      "tag": "c:asterite_dusts"
     }
   },
   "result": {

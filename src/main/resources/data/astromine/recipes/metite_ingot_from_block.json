@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "astromine:metite_block"
+      "tag": "c:metite_blocks"
     }
   ],
   "result": {

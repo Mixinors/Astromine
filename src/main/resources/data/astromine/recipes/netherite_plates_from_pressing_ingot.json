@@ -1,7 +1,7 @@
 {
   "type": "astromine:pressing",
   "input": {
-    "item": "minecraft:netherite_ingot",
+    "tag": "c:netherite_ingots",
     "count": 1
   },
   "output": {

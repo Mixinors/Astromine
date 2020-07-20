@@ -1,7 +1,7 @@
 {
   "type": "astromine:triturating",
   "input": {
-    "tag": "astromine:asterite_ores",
+    "tag": "c:asterite_ores",
     "count": 1
   },
   "output": {

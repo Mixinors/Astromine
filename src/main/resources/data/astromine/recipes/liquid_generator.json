@@ -2,15 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "pattern": ["012", "345", "678"],
   "key": {
-    "0": { "item": "astromine:iron_plates" },
+    "0": { "tag": "c:iron_plates" },
     "1": { "item": "astromine:advanced_circuit" },
-    "2": { "item": "astromine:iron_plates" },
-    "3": { "item": "astromine:steel_plates" },
+    "2": { "tag": "c:iron_plates" },
+    "3": { "tag": "c:steel_plates" },
     "4": { "item": "astromine:machine_chassis" },
-    "5": { "item": "astromine:steel_plates" },
-    "6": { "item": "astromine:iron_plates" },
+    "5": { "tag": "c:steel_plates" },
+    "6": { "tag": "c:iron_plates" },
     "7": { "item": "minecraft:lava_bucket" },
-    "8": { "item": "astromine:iron_plates" }
+    "8": { "tag": "c:iron_plates" }
   },
   "result": { "item": "astromine:liquid_generator", "count": 1 }
 }

@@ -1,7 +1,7 @@
 {
   "type": "minecraft:blasting",
   "ingredient": {
-    "item": "astromine:copper_dust"
+    "tag": "c:copper_dusts"
   },
   "result": "astromine:copper_ingot",
   "experience": 0.1,

@@ -3,7 +3,7 @@
   "pattern": [" # ", "# #", " # "],
   "key": {
     "#": {
-      "item": "minecraft:iron_ingot"
+      "tag": "c:iron_ingots"
     }
   },
   "result": {

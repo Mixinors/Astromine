@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smelting",
   "ingredient": {
-    "item": "astromine:netherite_dust"
+    "tag": "c:netherite_dusts"
   },
   "result": "minecraft:netherite_ingot",
   "experience": 0.1,
