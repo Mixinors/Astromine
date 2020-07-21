@@ -4,7 +4,7 @@
     "tag": "c:iron_ingots"
   },
   "secondInput": {
-    "item": "minecraft:coal",
+    "tag": "astromine:carbon_dusts",
     "count": 2
   },
   "output": {

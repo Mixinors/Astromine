@@ -3,6 +3,7 @@ package com.github.chainmailstudios.astromine.common.recipe;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
+import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.chainmailstudios.astromine.common.utilities.*;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.google.common.collect.Lists;
@@ -15,7 +16,6 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Map;
 
-public class PressingRecipe implements Recipe<Inventory> {
+public class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 	final Identifier identifier;
 	final Ingredient input;
 	final ItemStack output;

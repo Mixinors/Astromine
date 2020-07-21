@@ -2,7 +2,7 @@
 	"name": "text.astromine.resources.asterite.title",
 	"icon": "astromine:asterite",
 	"category": "resources",
-	"sortnum": 1,
+	"sortnum": 5,
 	"pages": [
 		{
 			"type": "spotlight",
