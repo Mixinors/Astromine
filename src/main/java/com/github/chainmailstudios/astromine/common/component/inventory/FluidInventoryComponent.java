@@ -9,6 +9,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import nerdhub.cardinal.components.api.ComponentType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.text.TranslatableText;
@@ -37,6 +38,12 @@ public interface FluidInventoryComponent extends NameableComponent {
 
 	default Collection<FluidVolume> getContentsMatching(Predicate<FluidVolume> predicate) {
 		return this.getContents().values().stream().filter(predicate).collect(Collectors.toList());
+	}
+
+	default Collection<FluidVolume> getExtractableContentsMatching(Direction direction, Predicate<FluidVolume> predicate) {
+		return this.getContents().entrySet().stream().filter((entry) ->
+				canExtract(direction, entry.getValue(), entry.getKey()) && predicate.test(entry.getValue())
+		).map(Map.Entry::getValue).collect(Collectors.toList());
 	}
 
 	default Collection<FluidVolume> getContentsMatchingSimulated(Predicate<FluidVolume> predicate) {

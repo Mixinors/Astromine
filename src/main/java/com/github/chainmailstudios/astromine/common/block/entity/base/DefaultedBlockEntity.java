@@ -198,7 +198,7 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 								ItemInventoryComponent ourItemComponent = getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
 								ItemInventoryComponent neighborItemComponent = ItemInventoryComponentFromItemInventory.of((Inventory) neighborEntity);
 
-								List<ItemStack> matching = (List<ItemStack>) ourItemComponent.getContentsMatching((stack -> !stack.isEmpty()));
+								List<ItemStack> matching = (List<ItemStack>) ourItemComponent.getExtractableContentsMatching(ourDirection, (stack -> !stack.isEmpty()));
 
 								if (!matching.isEmpty()) {
 									ItemStack stack = matching.get(0);
@@ -224,7 +224,7 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 									ItemInventoryComponent ourItemComponent = getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
 									ItemInventoryComponent neighborItemComponent = neighborProvider.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
 
-									List<ItemStack> matching = (List<ItemStack>) ourItemComponent.getContentsMatching((stack -> !stack.isEmpty()));
+									List<ItemStack> matching = (List<ItemStack>) ourItemComponent.getExtractableContentsMatching(ourDirection, (stack -> !stack.isEmpty()));
 
 									if (!matching.isEmpty()) {
 										ItemStack stack = matching.get(0);
@@ -245,7 +245,7 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 									FluidInventoryComponent ourFluidComponent = getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 									FluidInventoryComponent neighborFluidComponent = neighborProvider.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
-									List<FluidVolume> matching = (List<FluidVolume>) ourFluidComponent.getContentsMatching((volume -> !volume.isEmpty()));
+									List<FluidVolume> matching = (List<FluidVolume>) ourFluidComponent.getExtractableContentsMatching(ourDirection, (volume -> !volume.isEmpty()));
 
 									if (!matching.isEmpty()) {
 										neighborFluidComponent.insert(neighborDirection, matching.get(0));

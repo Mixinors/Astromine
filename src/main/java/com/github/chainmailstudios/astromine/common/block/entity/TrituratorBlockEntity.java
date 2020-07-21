@@ -45,7 +45,9 @@ public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implem
 	protected ItemInventoryComponent createItemComponent() {
 		return new SimpleItemInventoryComponent(2).withInsertPredicate((direction, itemStack, slot) -> {
 			return slot == 1;
-		}).withListener((inv) -> {
+		}).withExtractPredicate(((direction, stack, slot) -> {
+			return slot == 0;
+		})).withListener((inv) -> {
 			shouldTry = true;
 		});
 	}

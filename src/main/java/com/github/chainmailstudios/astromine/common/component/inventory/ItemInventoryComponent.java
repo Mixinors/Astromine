@@ -38,7 +38,13 @@ public interface ItemInventoryComponent extends NameableComponent {
 	 * @return the retrieved collection.
 	 */
 	default Collection<ItemStack> getContentsMatching(Predicate<ItemStack> predicate) {
-		return this.getItemContents().values().stream().filter(predicate).collect(Collectors.toList());
+		return this.getContents().values().stream().filter(predicate).collect(Collectors.toList());
+	}
+
+	default Collection<ItemStack> getExtractableContentsMatching(Direction direction, Predicate<ItemStack> predicate) {
+		return this.getContents().entrySet().stream().filter((entry) ->
+			canExtract(direction, entry.getValue(), entry.getKey()) && predicate.test(entry.getValue())
+		).map(Map.Entry::getValue).collect(Collectors.toList());
 	}
 
 	/**
@@ -46,7 +52,7 @@ public interface ItemInventoryComponent extends NameableComponent {
 	 *
 	 * @return the retrieved collection.
 	 */
-	Map<Integer, ItemStack> getItemContents();
+	Map<Integer, ItemStack> getContents();
 
 	/**
 	 * Retrieves contents of this inventory that match a specific predicate as a collection as ItemStack copies.
@@ -64,7 +70,7 @@ public interface ItemInventoryComponent extends NameableComponent {
 	 * @return the retrieved collection.
 	 */
 	default Collection<ItemStack> getContentsSimulated() {
-		return this.getItemContents().values().stream().map(ItemStack::copy).collect(Collectors.toList());
+		return this.getContents().values().stream().map(ItemStack::copy).collect(Collectors.toList());
 	}
 
 	default boolean canInsert() {
@@ -106,7 +112,7 @@ public interface ItemInventoryComponent extends NameableComponent {
 	 */
 	default TypedActionResult<ItemStack> insert(Direction direction, ItemStack stack, int count) {
 		ItemStack finalStack = stack;
-		Optional<Map.Entry<Integer, ItemStack>> matchingStackOptional = this.getItemContents().entrySet().stream().filter(entry -> {
+		Optional<Map.Entry<Integer, ItemStack>> matchingStackOptional = this.getContents().entrySet().stream().filter(entry -> {
 			ItemStack storedStack = entry.getValue();
 
 			return (this.canInsert(direction, finalStack, entry.getKey())) &&
@@ -135,7 +141,7 @@ public interface ItemInventoryComponent extends NameableComponent {
 	 */
 	default void setStack(int slot, ItemStack stack) {
 		if (slot <= this.getItemSize()) {
-			this.getItemContents().put(slot, stack);
+			this.getContents().put(slot, stack);
 			this.dispatchConsumers();
 		}
 	}
@@ -167,7 +173,7 @@ public interface ItemInventoryComponent extends NameableComponent {
 	 */
 	default TypedActionResult<Collection<ItemStack>> extractMatching(Direction direction, Predicate<ItemStack> predicate) {
 		HashSet<ItemStack> extractedStacks = new HashSet<>();
-		this.getItemContents().forEach((slot, stack) -> {
+		this.getContents().forEach((slot, stack) -> {
 			if (predicate.test(stack)) {
 				TypedActionResult<ItemStack> extractionResult = this.extract(direction, slot);
 
@@ -204,7 +210,7 @@ public interface ItemInventoryComponent extends NameableComponent {
 	 * Retrieves an ItemStack from a given slot.
 	 */
 	default ItemStack getStack(int slot) {
-		return this.getItemContents().getOrDefault(slot, ItemStack.EMPTY);
+		return this.getContents().getOrDefault(slot, ItemStack.EMPTY);
 	}
 
 	/**
@@ -375,7 +381,7 @@ public interface ItemInventoryComponent extends NameableComponent {
 				ItemStack stack = ItemStack.fromTag(stackTag);
 
 				if (target.getItemSize() >= position) {
-					target.getItemContents().put(position, stack);
+					target.getContents().put(position, stack);
 				}
 			}
 		}
@@ -416,14 +422,14 @@ public interface ItemInventoryComponent extends NameableComponent {
 	 * Clears this inventory.
 	 */
 	default void clear() {
-		this.getItemContents().clear();
+		this.getContents().clear();
 	}
 
 	/**
 	 * Asserts whether this inventory is empty or not.
 	 */
 	default boolean isEmpty() {
-		return this.getItemContents().values().stream().allMatch(ItemStack::isEmpty);
+		return this.getContents().values().stream().allMatch(ItemStack::isEmpty);
 	}
 
 	@Override

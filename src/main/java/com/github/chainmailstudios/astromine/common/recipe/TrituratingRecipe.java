@@ -42,7 +42,7 @@ public class TrituratingRecipe implements Recipe<Inventory> {
 
 	@Override
 	public boolean matches(Inventory inventory, World world) {
-		return ItemInventoryComponentFromItemInventory.of(inventory).getItemContents().values().stream().anyMatch(input);
+		return ItemInventoryComponentFromItemInventory.of(inventory).getContents().values().stream().anyMatch(input);
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class TrituratingRecipe implements Recipe<Inventory> {
 
 		ItemStack stack = matching.isEmpty() ? ItemStack.EMPTY : matching.get(0);
 
-		for (Map.Entry<Integer, ItemStack> entry : component.getItemContents().entrySet()) {
+		for (Map.Entry<Integer, ItemStack> entry : component.getContents().entrySet()) {
 			if (entry.getValue() == stack && !stack.isEmpty()) {
 				component.getStack(entry.getKey()).decrement(1);
 

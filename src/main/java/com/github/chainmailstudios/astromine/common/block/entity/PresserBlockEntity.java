@@ -45,6 +45,8 @@ public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implement
 	protected ItemInventoryComponent createItemComponent() {
 		return new SimpleItemInventoryComponent(2).withInsertPredicate((direction, itemStack, slot) -> {
 			return slot == 1;
+		}).withExtractPredicate((direction, stack, slot) -> {
+			return slot == 0;
 		}).withListener((inv) -> {
 			shouldTry = true;
 		});
