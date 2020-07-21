@@ -1,7 +1,7 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.AlloySmelterBlock;
+import com.github.chainmailstudios.astromine.common.block.AlloySmelterBlock;
 import com.github.chainmailstudios.astromine.common.block.*;
 import com.github.chainmailstudios.astromine.common.utilities.type.BufferType;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -14,15 +14,53 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class AstromineBlocks {
-	public static final Block HOLOGRAPHIC_BRIDGE_PROJECTOR = register("holographic_bridge_projector", new HolographicBridgeProjectorBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(1F, 4F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
+	public static final Block HOLOGRAPHIC_BRIDGE_PROJECTOR = register("holographic_bridge_projector", new HolographicBridgeProjectorBlock(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
 	public static final Block HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK = register("holographic_bridge_invisible", new HolographicBridgeInvisibleBlock(FabricBlockSettings.of(HolographicBridgeInvisibleBlock.MATERIAL).dropsNothing().strength(-1.0F, 3600000.8F).nonOpaque().lightLevel(15).allowsSpawning((a, b, c, d) -> false)));
 
-	public static final Block VENT = register("vent", new VentBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(1F, 4F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
+	public static final Block VENT = register("vent", new VentBlock(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
 
-	public static final Block FLUID_TANK = register("tank", new TankBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(1F, 4F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
+	public static final Block FLUID_TANK = register("tank", new TankBlock(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	
+	public static final Block PRIMITIVE_SOLID_GENERATOR = register("primitive_solid_generator", new SolidGeneratorBlock.Primitive(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block BASIC_SOLID_GENERATOR = register("basic_solid_generator", new SolidGeneratorBlock.Basic(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block ADVANCED_SOLID_GENERATOR = register("advanced_solid_generator", new SolidGeneratorBlock.Advanced(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block ELITE_SOLID_GENERATOR = register("elite_solid_generator", new SolidGeneratorBlock.Elite(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
 
-	public static final Block LIQUID_GENERATOR = register("liquid_generator", new LiquidGeneratorBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(1F, 4F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
-	public static final Block SOLID_GENERATOR = register("solid_generator", new SolidGeneratorBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(1F, 4F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
+	public static final Block PRIMITIVE_LIQUID_GENERATOR = register("primitive_liquid_generator", new LiquidGeneratorBlock.Primitive(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block BASIC_LIQUID_GENERATOR = register("basic_liquid_generator", new LiquidGeneratorBlock.Basic(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block ADVANCED_LIQUID_GENERATOR = register("advanced_liquid_generator", new LiquidGeneratorBlock.Advanced(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block ELITE_LIQUID_GENERATOR = register("elite_liquid_generator", new LiquidGeneratorBlock.Elite(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+
+	public static final Block PRIMITIVE_ELECTRIC_SMELTER = register("primitive_electric_smelter", new ElectricSmelterBlock.Primitive(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block BASIC_ELECTRIC_SMELTER = register("basic_electric_smelter", new ElectricSmelterBlock.Basic(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block ADVANCED_ELECTRIC_SMELTER = register("advanced_electric_smelter", new ElectricSmelterBlock.Advanced(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block ELITE_ELECTRIC_SMELTER = register("elite_electric_smelter", new ElectricSmelterBlock.Elite(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+
+	public static final Block PRIMITIVE_ALLOY_SMELTER = register("primitive_alloy_smelter", new AlloySmelterBlock.Primitive(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block BASIC_ALLOY_SMELTER = register("basic_alloy_smelter", new AlloySmelterBlock.Basic(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block ADVANCED_ALLOY_SMELTER = register("advanced_alloy_smelter", new AlloySmelterBlock.Advanced(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block ELITE_ALLOY_SMELTER = register("elite_alloy_smelter", new AlloySmelterBlock.Elite(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+
+	public static final Block PRIMITIVE_TRITURATOR = register("primitive_triturator", new TrituratorBlock.Primitive(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block BASIC_TRITURATOR = register("basic_triturator", new TrituratorBlock.Basic(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block ADVANCED_TRITURATOR = register("advanced_triturator", new TrituratorBlock.Advanced(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block ELITE_TRITURATOR = register("elite_triturator", new TrituratorBlock.Elite(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+
+	public static final Block PRIMITIVE_PRESSER = register("primitive_presser", new PresserBlock.Primitive(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block BASIC_PRESSER = register("basic_presser", new PresserBlock.Basic(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block ADVANCED_PRESSER = register("advanced_presser", new PresserBlock.Advanced(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block ELITE_PRESSER = register("elite_presser", new PresserBlock.Elite(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	
+	public static final Block PRIMITIVE_ELECTROLYZER = register("primitive_electrolyzer", new ElectrolyzerBlock.Primitive(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block BASIC_ELECTROLYZER = register("basic_electrolyzer", new ElectrolyzerBlock.Basic(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block ADVANCED_ELECTROLYZER = register("advanced_electrolyzer", new ElectrolyzerBlock.Advanced(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block ELITE_ELECTROLYZER = register("elite_electrolyzer", new ElectrolyzerBlock.Elite(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+
+	public static final Block PRIMITIVE_FLUID_MIXER = register("primitive_fluid_mixer", new FluidMixerBlock.Primitive(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block BASIC_FLUID_MIXER = register("basic_fluid_mixer", new FluidMixerBlock.Basic(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block ADVANCED_FLUID_MIXER = register("advanced_fluid_mixer", new FluidMixerBlock.Advanced(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block ELITE_FLUID_MIXER = register("elite_fluid_mixer", new FluidMixerBlock.Elite(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+
 
 	public static final Block FLUID_CABLE = register("fluid_cable", new FluidCableBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 3).strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block ENERGY_CABLE = register("energy_cable", new EnergyCableBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 3).strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
@@ -33,20 +71,14 @@ public class AstromineBlocks {
 	public static final Block CREATIVE_CAPACITOR = register("creative_capacitor", new CreativeCapacitorBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 	public static final Block CREATIVE_BUFFER = register("creative_buffer", new CreativeBufferBlock(FabricBlockSettings.of(Material.METAL).dropsNothing().strength(-1.0F, 3600000.8F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 
-	public static final Block BASIC_BUFFER = register("basic_buffer", new BufferBlock(BufferType.BASIC, FabricBlockSettings.of(Material.METAL).strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
-	public static final Block ADVANCED_BUFFER = register("advanced_buffer", new BufferBlock(BufferType.ADVANCED, FabricBlockSettings.of(Material.METAL).strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
-	public static final Block ELITE_BUFFER = register("elite_buffer", new BufferBlock(BufferType.ELITE, FabricBlockSettings.of(Material.METAL).strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
+	public static final Block BASIC_BUFFER = register("basic_buffer", new BufferBlock(BufferType.BASIC, AstromineBlocks.getBasicSettings()),AstromineItems.getBasicSettings());
+	public static final Block ADVANCED_BUFFER = register("advanced_buffer", new BufferBlock(BufferType.ADVANCED, AstromineBlocks.getBasicSettings()),AstromineItems.getBasicSettings());
+	public static final Block ELITE_BUFFER = register("elite_buffer", new BufferBlock(BufferType.ELITE, AstromineBlocks.getBasicSettings()),AstromineItems.getBasicSettings());
 
-	public static final Block PRESSER = register("presser", new PresserBlock(FabricBlockSettings.of(Material.METAL).strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
-	public static final Block TRITURATOR = register("triturator", new TrituratorBlock(FabricBlockSettings.of(Material.METAL).strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
-	public static final Block ELECTRIC_SMELTER = register("electric_smelter", new ElectricSmelterBlock(FabricBlockSettings.of(Material.METAL).strength(1, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
-	public static final Block FLUID_EXTRACTOR = register("fluid_extractor", new FluidExtractorBlock(FabricBlockSettings.of(Material.METAL).strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
-	public static final Block FLUID_INSERTER = register("fluid_inserter", new FluidInserterBlock(FabricBlockSettings.of(Material.METAL).strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
-	public static final Block BLOCK_BREAKER = register("block_breaker", new BlockBreakerBlock(FabricBlockSettings.of(Material.METAL).strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
-	public static final Block BLOCK_PLACER = register("block_placer", new BlockPlacerBlock(FabricBlockSettings.of(Material.METAL).strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
-	public static final Block ELECTROLYZER = register("electrolyzer", new ElectrolyzerBlock(FabricBlockSettings.of(Material.METAL).strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
-	public static final Block FLUID_MIXER = register("fluid_mixer", new FluidMixerBlock(FabricBlockSettings.of(Material.METAL).strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
-	public static final Block ALLOY_SMELTER = register("alloy_smelter", new AlloySmelterBlock(FabricBlockSettings.of(Material.METAL).strength(1F, 4F).breakByTool(FabricToolTags.PICKAXES, 4).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
+	public static final Block FLUID_EXTRACTOR = register("fluid_extractor", new FluidExtractorBlock(AstromineBlocks.getBasicSettings()),AstromineItems.getBasicSettings());
+	public static final Block FLUID_INSERTER = register("fluid_inserter", new FluidInserterBlock(AstromineBlocks.getBasicSettings()),AstromineItems.getBasicSettings());
+	public static final Block BLOCK_BREAKER = register("block_breaker", new BlockBreakerBlock(AstromineBlocks.getBasicSettings()),AstromineItems.getBasicSettings());
+	public static final Block BLOCK_PLACER = register("block_placer", new BlockPlacerBlock(AstromineBlocks.getBasicSettings()),AstromineItems.getBasicSettings());
 
 	public static final Block COPPER_ORE = register("copper_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(3, 3).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());
 	public static final Block TIN_ORE = register("tin_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(3, 3).sounds(BlockSoundGroup.STONE)), AstromineItems.getBasicSettings().fireproof());
@@ -136,5 +168,9 @@ public class AstromineBlocks {
 	 */
 	public static <T extends Block> T register(Identifier name, T block) {
 		return Registry.register(Registry.BLOCK, name, block);
+	}
+	
+	public static FabricBlockSettings getBasicSettings() {
+		return FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(1F, 4F).sounds(BlockSoundGroup.METAL);
 	}
 }

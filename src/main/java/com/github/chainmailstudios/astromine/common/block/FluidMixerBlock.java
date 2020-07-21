@@ -2,6 +2,8 @@ package com.github.chainmailstudios.astromine.common.block;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.FluidMixerBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.FluidMixerBlockEntity;
+import com.github.chainmailstudios.astromine.common.screenhandler.FluidMixerScreenHandler;
 import com.github.chainmailstudios.astromine.common.screenhandler.FluidMixerScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
@@ -22,45 +24,73 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class FluidMixerBlock extends DefaultedHorizontalFacingBlockWithEntity {
+public abstract class FluidMixerBlock extends DefaultedHorizontalFacingBlockWithEntity {
 	public FluidMixerBlock(Settings settings) {
 		super(settings);
 	}
 
-	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return new FluidMixerBlockEntity();
-	}
+	public abstract static class Base extends FluidMixerBlock {
+		public Base(Settings settings) {
+			super(settings);
+		}
 
-	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos blockPos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (!world.isClient && !(player.getStackInHand(hand).getItem() instanceof BucketItem)) {
-			player.openHandledScreen(state.createScreenHandlerFactory(world, blockPos));
-			return ActionResult.CONSUME;
-		} else if (player.getStackInHand(hand).getItem() instanceof BucketItem) {
-			return super.onUse(state, world, blockPos, player, hand, hit);
-		} else {
-			return ActionResult.SUCCESS;
+		@Override
+		public boolean hasScreenHandler() {
+			return true;
+		}
+
+		@Override
+		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+			return new FluidMixerScreenHandler(syncId, playerInventory, pos);
+		}
+
+		@Override
+		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
+			buffer.writeBlockPos(pos);
 		}
 	}
 
-	@Override
-	public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
-		return new ExtendedScreenHandlerFactory() {
-			@Override
-			public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buffer) {
-				buffer.writeBlockPos(pos);
-			}
+	public static class Primitive extends FluidMixerBlock.Base {
+		public Primitive(Settings settings) {
+			super(settings);
+		}
 
-			@Override
-			public Text getDisplayName() {
-				return new TranslatableText(getTranslationKey());
-			}
+		@Override
+		public BlockEntity createBlockEntity() {
+			return new FluidMixerBlockEntity.Primitive();
+		}
+	}
 
-			@Override
-			public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-				return new FluidMixerScreenHandler(syncId, playerInventory, pos);
-			}
-		};
+	public static class Basic extends FluidMixerBlock.Base {
+		public Basic(Settings settings) {
+			super(settings);
+		}
+
+		@Override
+		public BlockEntity createBlockEntity() {
+			return new FluidMixerBlockEntity.Basic();
+		}
+	}
+
+	public static class Advanced extends FluidMixerBlock.Base {
+		public Advanced(Settings settings) {
+			super(settings);
+		}
+
+		@Override
+		public BlockEntity createBlockEntity() {
+			return new FluidMixerBlockEntity.Advanced();
+		}
+	}
+
+	public static class Elite extends FluidMixerBlock.Base {
+		public Elite(Settings settings) {
+			super(settings);
+		}
+
+		@Override
+		public BlockEntity createBlockEntity() {
+			return new FluidMixerBlockEntity.Elite();
+		}
 	}
 }

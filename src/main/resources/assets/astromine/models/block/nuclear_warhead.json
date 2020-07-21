@@ -3,7 +3,7 @@
   "textures": {
     "particle": "astromine:block/nuclear_warhead_front",
     "down": "astromine:block/nuclear_warhead_bottom",
-    "up": "astromine:block/machine_top",
+    "up": "astromine:block/advanced_machine_top",
     "north": "astromine:block/nuclear_warhead_front",
     "east": "astromine:block/nuclear_warhead_front",
     "south": "astromine:block/nuclear_warhead_front",

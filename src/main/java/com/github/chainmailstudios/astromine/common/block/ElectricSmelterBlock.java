@@ -2,7 +2,9 @@ package com.github.chainmailstudios.astromine.common.block;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.ElectricSmelterBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.SolidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.ElectricSmelterScreenHandler;
+import com.github.chainmailstudios.astromine.common.screenhandler.SolidGeneratorScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -23,50 +25,73 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class ElectricSmelterBlock extends DefaultedHorizontalFacingBlockWithEntity {
+public abstract class ElectricSmelterBlock extends DefaultedHorizontalFacingBlockWithEntity {
 	public ElectricSmelterBlock(Settings settings) {
 		super(settings);
 	}
 
-	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return new ElectricSmelterBlockEntity();
-	}
+	public abstract static class Base extends ElectricSmelterBlock {
+		public Base(Settings settings) {
+			super(settings);
+		}
 
-	@Override
-	public BlockState getPlacementState(ItemPlacementContext context) {
-		return super.getPlacementState(context).with(ACTIVE, false);
-	}
+		@Override
+		public boolean hasScreenHandler() {
+			return true;
+		}
 
-	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos blockPos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (!world.isClient && !(player.getStackInHand(hand).getItem() instanceof BucketItem)) {
-			player.openHandledScreen(state.createScreenHandlerFactory(world, blockPos));
-			return ActionResult.CONSUME;
-		} else if (player.getStackInHand(hand).getItem() instanceof BucketItem) {
-			return super.onUse(state, world, blockPos, player, hand, hit);
-		} else {
-			return ActionResult.SUCCESS;
+		@Override
+		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+			return new ElectricSmelterScreenHandler(syncId, playerInventory, pos);
+		}
+
+		@Override
+		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
+			buffer.writeBlockPos(pos);
 		}
 	}
 
-	@Override
-	public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
-		return new ExtendedScreenHandlerFactory() {
-			@Override
-			public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buffer) {
-				buffer.writeBlockPos(pos);
-			}
+	public static class Primitive extends ElectricSmelterBlock.Base {
+		public Primitive(Settings settings) {
+			super(settings);
+		}
 
-			@Override
-			public Text getDisplayName() {
-				return new TranslatableText(getTranslationKey());
-			}
+		@Override
+		public BlockEntity createBlockEntity() {
+			return new ElectricSmelterBlockEntity.Primitive();
+		}
+	}
 
-			@Override
-			public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-				return new ElectricSmelterScreenHandler(syncId, playerInventory, pos);
-			}
-		};
+	public static class Basic extends ElectricSmelterBlock.Base {
+		public Basic(Settings settings) {
+			super(settings);
+		}
+
+		@Override
+		public BlockEntity createBlockEntity() {
+			return new ElectricSmelterBlockEntity.Basic();
+		}
+	}
+
+	public static class Advanced extends ElectricSmelterBlock.Base {
+		public Advanced(Settings settings) {
+			super(settings);
+		}
+
+		@Override
+		public BlockEntity createBlockEntity() {
+			return new ElectricSmelterBlockEntity.Advanced();
+		}
+	}
+
+	public static class Elite extends ElectricSmelterBlock.Base {
+		public Elite(Settings settings) {
+			super(settings);
+		}
+
+		@Override
+		public BlockEntity createBlockEntity() {
+			return new ElectricSmelterBlockEntity.Elite();
+		}
 	}
 }

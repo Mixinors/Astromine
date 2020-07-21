@@ -4,7 +4,6 @@ import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWit
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
@@ -12,6 +11,7 @@ import com.github.chainmailstudios.astromine.common.recipe.AlloySmelterRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
@@ -22,8 +22,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
-public class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
-	public static final int SPEED = 1;
+public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
 	public int progress = 0;
 	public int limit = 100;
 
@@ -34,12 +33,13 @@ public class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEntity impl
 
 	Optional<AlloySmelterRecipe> recipe = Optional.empty();
 
-	public AlloySmelterBlockEntity() {
-		super(AstromineBlockEntityTypes.ALLOY_SMELTER);
-
-		setMaxStoredPower(32000);
+	public AlloySmelterBlockEntity(BlockEntityType<?> type) {
+		super(type);
+		
 		addEnergyListener(() -> shouldTry = true);
 	}
+
+	abstract int getMachineSpeed();
 
 	@Override
 	protected ItemInventoryComponent createItemComponent() {
@@ -91,7 +91,7 @@ public class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEntity impl
 
 				ItemStack output = recipe.get().getOutput().copy();
 
-				for (int i = 0; i < SPEED; i++) {
+				for (int i = 0; i < getMachineSpeed(); i++) {
 					boolean isEmpty = itemComponent.getStack(2).isEmpty();
 					boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(2), output) && ItemStack.areTagsEqual(itemComponent.getStack(2), output);
 
@@ -139,6 +139,70 @@ public class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEntity impl
 			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, true));
 		} else if (!isActive && activity[0]) {
 			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, false));
+		}
+	}
+
+	public static class Primitive extends AlloySmelterBlockEntity {
+		public Primitive() {
+			super(AstromineBlockEntityTypes.PRIMITIVE_ALLOY_SMELTER);
+		}
+
+		@Override
+		int getMachineSpeed() {
+			return 1;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 2048;
+		}
+	}
+
+	public static class Basic extends AlloySmelterBlockEntity {
+		public Basic() {
+			super(AstromineBlockEntityTypes.BASIC_ALLOY_SMELTER);
+		}
+
+		@Override
+		public int getMachineSpeed() {
+			return 2;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 8192;
+		}
+	}
+
+	public static class Advanced extends AlloySmelterBlockEntity {
+		public Advanced() {
+			super(AstromineBlockEntityTypes.ADVANCED_ALLOY_SMELTER);
+		}
+
+		@Override
+		public int getMachineSpeed() {
+			return 4;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 32767;
+		}
+	}
+
+	public static class Elite extends AlloySmelterBlockEntity {
+		public Elite() {
+			super(AstromineBlockEntityTypes.ELITE_ALLOY_SMELTER);
+		}
+
+		@Override
+		int getMachineSpeed() {
+			return 8;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 131068;
 		}
 	}
 }

@@ -97,7 +97,7 @@ public class PressingRecipe implements Recipe<Inventory> {
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.PRESSER);
+		return new ItemStack(AstromineBlocks.ELITE_PRESSER);
 	}
 
 	public int getTime() {

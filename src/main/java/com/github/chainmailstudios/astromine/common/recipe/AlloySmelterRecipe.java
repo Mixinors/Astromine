@@ -99,7 +99,7 @@ public class AlloySmelterRecipe implements Recipe<Inventory> {
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.ALLOY_SMELTER);
+		return new ItemStack(AstromineBlocks.ELITE_ALLOY_SMELTER);
 	}
 
 	public int getTime() {

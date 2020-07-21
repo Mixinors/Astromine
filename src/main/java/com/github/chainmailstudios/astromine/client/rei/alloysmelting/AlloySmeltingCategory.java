@@ -32,7 +32,7 @@ public class AlloySmeltingCategory implements RecipeCategory<AlloySmeltingDispla
 
 	@Override
 	public EntryStack getLogo() {
-		return EntryStack.create(AstromineBlocks.ALLOY_SMELTER);
+		return EntryStack.create(AstromineBlocks.ELITE_ALLOY_SMELTER);
 	}
 
 	@Override

@@ -7,8 +7,12 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -53,5 +57,24 @@ public class HolographicBridgeProjectorBlock extends DefaultedHorizontalFacingBl
 	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
 		return new HolographicBridgeProjectorBlockEntity();
+	}
+
+	@Override
+	public boolean hasScreenHandler() {
+		return true;
+	}
+
+	@Override
+	public BlockEntity createBlockEntity() {
+		return null;
+	}
+
+	@Override
+	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+		return null;
+	}
+
+	@Override
+	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
 	}
 }

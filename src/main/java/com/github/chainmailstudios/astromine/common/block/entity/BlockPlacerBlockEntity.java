@@ -32,8 +32,11 @@ public class BlockPlacerBlockEntity extends DefaultedEnergyItemBlockEntity imple
 
 	public BlockPlacerBlockEntity() {
 		super(AstromineBlockEntityTypes.BLOCK_PLACER);
+	}
 
-		setMaxStoredPower(32000);
+	@Override
+	protected int getEnergySize() {
+		return 16384;
 	}
 
 	@Override

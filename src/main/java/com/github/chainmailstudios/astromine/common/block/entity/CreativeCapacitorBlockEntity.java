@@ -18,6 +18,11 @@ public class CreativeCapacitorBlockEntity extends DefaultedEnergyBlockEntity imp
 	}
 
 	@Override
+	protected int getEnergySize() {
+		return Integer.MAX_VALUE;
+	}
+
+	@Override
 	public void tick() {
 		super.tick();
 

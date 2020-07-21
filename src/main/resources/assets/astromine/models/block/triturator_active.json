@@ -1,9 +1,9 @@
 {
   "parent": "block/cube",
   "textures": {
-    "particle": "astromine:block/machine_bottom",
-    "down": "astromine:block/machine_bottom",
-    "up": "astromine:block/machine_top",
+    "particle": "astromine:block/advanced_machine_bottom",
+    "down": "astromine:block/advanced_machine_bottom",
+    "up": "astromine:block/advanced_machine_top",
     "north": "astromine:block/triturator_front_active",
     "east": "astromine:block/triturator_side_active",
     "south": "astromine:block/triturator_side_active",

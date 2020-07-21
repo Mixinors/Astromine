@@ -97,8 +97,8 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		recipeHelper.registerCategory(new ElectricSmeltingCategory());
 		recipeHelper.registerCategory(new LiquidGeneratingCategory());
 		recipeHelper.registerCategory(new SolidGeneratingCategory());
-		recipeHelper.registerCategory(new FluidMixingCategory(FLUID_MIXING, "category.astromine.fluid_mixing", EntryStack.create(AstromineBlocks.FLUID_MIXER)));
-		recipeHelper.registerCategory(new ElectrolyzingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AstromineBlocks.ELECTROLYZER)));
+		recipeHelper.registerCategory(new FluidMixingCategory(FLUID_MIXING, "category.astromine.fluid_mixing", EntryStack.create(AstromineBlocks.ELITE_FLUID_MIXER)));
+		recipeHelper.registerCategory(new ElectrolyzingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AstromineBlocks.ELITE_ELECTROLYZER)));
 		recipeHelper.registerCategory(new PressingCategory());
 		recipeHelper.registerCategory(new AlloySmeltingCategory());
 	}
@@ -123,14 +123,14 @@ public class AstromineREIPlugin implements REIPluginV0 {
 
 	@Override
 	public void registerOthers(RecipeHelper recipeHelper) {
-		recipeHelper.registerWorkingStations(TRITURATING, EntryStack.create(AstromineBlocks.TRITURATOR));
-		recipeHelper.registerWorkingStations(ELECTRIC_SMELTING, EntryStack.create(AstromineBlocks.ELECTRIC_SMELTER));
-		recipeHelper.registerWorkingStations(LIQUID_GENERATING, EntryStack.create(AstromineBlocks.LIQUID_GENERATOR));
-		recipeHelper.registerWorkingStations(SOLID_GENERATING, EntryStack.create(AstromineBlocks.SOLID_GENERATOR));
-		recipeHelper.registerWorkingStations(FLUID_MIXING, EntryStack.create(AstromineBlocks.FLUID_MIXER));
-		recipeHelper.registerWorkingStations(ELECTROLYZING, EntryStack.create(AstromineBlocks.ELECTROLYZER));
-		recipeHelper.registerWorkingStations(PRESSING, EntryStack.create(AstromineBlocks.PRESSER));
-		recipeHelper.registerWorkingStations(ALLOY_SMELTING, EntryStack.create(AstromineBlocks.ALLOY_SMELTER));
+		recipeHelper.registerWorkingStations(TRITURATING, EntryStack.create(AstromineBlocks.ELITE_TRITURATOR));
+		recipeHelper.registerWorkingStations(ELECTRIC_SMELTING, EntryStack.create(AstromineBlocks.ELITE_ELECTRIC_SMELTER));
+		recipeHelper.registerWorkingStations(LIQUID_GENERATING, EntryStack.create(AstromineBlocks.ELITE_LIQUID_GENERATOR));
+		recipeHelper.registerWorkingStations(SOLID_GENERATING, EntryStack.create(AstromineBlocks.ELITE_SOLID_GENERATOR));
+		recipeHelper.registerWorkingStations(FLUID_MIXING, EntryStack.create(AstromineBlocks.ELITE_FLUID_MIXER));
+		recipeHelper.registerWorkingStations(ELECTROLYZING, EntryStack.create(AstromineBlocks.ELITE_ELECTROLYZER));
+		recipeHelper.registerWorkingStations(PRESSING, EntryStack.create(AstromineBlocks.ELITE_PRESSER));
+		recipeHelper.registerWorkingStations(ALLOY_SMELTING, EntryStack.create(AstromineBlocks.ELITE_ALLOY_SMELTER));
 		recipeHelper.registerAutoCraftButtonArea(LIQUID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
 		recipeHelper.registerAutoCraftButtonArea(SOLID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
 		recipeHelper.registerAutoCraftButtonArea(FLUID_MIXING, bounds -> new Rectangle(bounds.getCenterX() - 65 + 130 - 16, bounds.getMaxY() - 16, 10, 10));

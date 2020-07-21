@@ -97,7 +97,7 @@ public class TrituratingRecipe implements Recipe<Inventory> {
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.TRITURATOR);
+		return new ItemStack(AstromineBlocks.ELITE_TRITURATOR);
 	}
 
 	public int getTime() {

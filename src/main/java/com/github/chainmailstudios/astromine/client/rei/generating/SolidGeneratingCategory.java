@@ -30,7 +30,7 @@ public class SolidGeneratingCategory extends AbstractEnergyGeneratingCategory<So
 
 	@Override
 	public EntryStack getLogo() {
-		return EntryStack.create(AstromineBlocks.SOLID_GENERATOR);
+		return EntryStack.create(AstromineBlocks.PRIMITIVE_SOLID_GENERATOR);
 	}
 
 	@Override

@@ -14,6 +14,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -24,7 +25,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
-public class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, RecipeConsumer, Tickable {
+public abstract class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, RecipeConsumer, Tickable {
 	public int current = 0;
 	public int limit = 100;
 
@@ -34,10 +35,8 @@ public class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlockEntity im
 
 	private Optional<SolidGeneratingRecipe> recipe = Optional.empty();
 
-	public SolidGeneratorBlockEntity() {
-		super(AstromineBlockEntityTypes.SOLID_GENERATOR);
-
-		setMaxStoredPower(32000);
+	public SolidGeneratorBlockEntity(BlockEntityType<?> type) {
+		super(type);
 	}
 
 	@Override
@@ -50,6 +49,9 @@ public class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlockEntity im
 						.findFirst();
 		});
 	}
+
+	// TODO: Use.
+	abstract int getMachineSpeed();
 
 	@Override
 	public int getCurrent() {
@@ -152,5 +154,69 @@ public class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlockEntity im
 	@Override
 	protected @NotNull Map<NetworkType, Collection<NetworkMemberType>> createMemberProperties() {
 		return ofTypes(AstromineNetworkTypes.ENERGY, PROVIDER);
+	}
+
+	public static class Primitive extends SolidGeneratorBlockEntity {
+		public Primitive() {
+			super(AstromineBlockEntityTypes.PRIMITIVE_SOLID_GENERATOR);
+		}
+
+		@Override
+		int getMachineSpeed() {
+			return 1;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 2048;
+		}
+	}
+
+	public static class Basic extends SolidGeneratorBlockEntity {
+		public Basic() {
+			super(AstromineBlockEntityTypes.BASIC_SOLID_GENERATOR);
+		}
+
+		@Override
+		public int getMachineSpeed() {
+			return 2;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 8192;
+		}
+	}
+
+	public static class Advanced extends SolidGeneratorBlockEntity {
+		public Advanced() {
+			super(AstromineBlockEntityTypes.ADVANCED_SOLID_GENERATOR);
+		}
+
+		@Override
+		public int getMachineSpeed() {
+			return 4;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 32767;
+		}
+	}
+
+	public static class Elite extends SolidGeneratorBlockEntity {
+		public Elite() {
+			super(AstromineBlockEntityTypes.ELITE_SOLID_GENERATOR);
+		}
+
+		@Override
+		int getMachineSpeed() {
+			return 8;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 131068;
+		}
 	}
 }

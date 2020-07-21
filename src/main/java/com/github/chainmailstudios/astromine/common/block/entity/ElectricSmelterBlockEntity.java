@@ -10,6 +10,7 @@ import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.RecipeType;
@@ -22,7 +23,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
-public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
+public abstract class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
 	public static final int SPEED = 3;
 	public int progress = 0;
 	public int limit = 100;
@@ -34,12 +35,13 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 
 	Optional<SmeltingRecipe> recipe = Optional.empty();
 
-	public ElectricSmelterBlockEntity() {
-		super(AstromineBlockEntityTypes.ELECTRIC_SMELTER);
+	public ElectricSmelterBlockEntity(BlockEntityType<?> type) {
+		super(type);
 
-		setMaxStoredPower(32000);
 		addEnergyListener(() -> shouldTry = true);
 	}
+
+	abstract int getMachineSpeed();
 
 	@Override
 	protected ItemInventoryComponent createItemComponent() {
@@ -130,6 +132,70 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, true));
 		} else if (!isActive && activity[0]) {
 			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, false));
+		}
+	}
+
+	public static class Primitive extends ElectricSmelterBlockEntity {
+		public Primitive() {
+			super(AstromineBlockEntityTypes.PRIMITIVE_ELECTRIC_SMELTER);
+		}
+
+		@Override
+		int getMachineSpeed() {
+			return 1;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 2048;
+		}
+	}
+
+	public static class Basic extends ElectricSmelterBlockEntity {
+		public Basic() {
+			super(AstromineBlockEntityTypes.BASIC_ELECTRIC_SMELTER);
+		}
+
+		@Override
+		public int getMachineSpeed() {
+			return 2;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 8192;
+		}
+	}
+
+	public static class Advanced extends ElectricSmelterBlockEntity {
+		public Advanced() {
+			super(AstromineBlockEntityTypes.ADVANCED_ELECTRIC_SMELTER);
+		}
+
+		@Override
+		public int getMachineSpeed() {
+			return 4;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 32767;
+		}
+	}
+
+	public static class Elite extends ElectricSmelterBlockEntity {
+		public Elite() {
+			super(AstromineBlockEntityTypes.ELITE_ELECTRIC_SMELTER);
+		}
+
+		@Override
+		int getMachineSpeed() {
+			return 8;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 131068;
 		}
 	}
 }

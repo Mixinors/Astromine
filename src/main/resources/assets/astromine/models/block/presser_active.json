@@ -1,12 +1,12 @@
 {
   "parent": "block/cube",
   "textures": {
-    "particle": "astromine:block/machine_bottom",
-    "down": "astromine:block/machine_bottom",
-    "up": "astromine:block/machine_top",
+    "particle": "astromine:block/advanced_machine_bottom",
+    "down": "astromine:block/advanced_machine_bottom",
+    "up": "astromine:block/advanced_machine_top",
     "north": "astromine:block/presser_front_active",
-    "east": "astromine:block/machine_side",
-    "south": "astromine:block/machine_side",
-    "west": "astromine:block/machine_side"
+    "east": "astromine:block/advanced_machine_side",
+    "south": "astromine:block/advanced_machine_side",
+    "west": "astromine:block/advanced_machine_side"
   }
 }
