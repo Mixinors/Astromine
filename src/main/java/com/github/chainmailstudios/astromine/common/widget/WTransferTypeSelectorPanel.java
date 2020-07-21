@@ -5,6 +5,7 @@ import com.github.chainmailstudios.astromine.common.component.block.entity.Block
 import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import nerdhub.cardinal.components.api.ComponentType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -94,7 +95,7 @@ public class WTransferTypeSelectorPanel extends WAbstractWidget implements WColl
 		return (W) this;
 	}
 
-	public static void createTab(WTabHolder.WTab tab, WPositioned anchor, Direction rotation, BlockEntityTransferComponent component, BlockPos blockPos, Identifier type, WInterface wInterface) {
+	public static void createTab(WTabHolder.WTab tab, WPositioned anchor, Direction rotation, BlockEntityTransferComponent component, BlockPos blockPos, ComponentType<?> type, WInterface wInterface) {
 		final Position finalNorth = Position.of(anchor, 7 + 22, 31 + 22, 0);
 		final Position finalSouth = Position.of(anchor, 7 + 0, 31 + 44, 0);
 		final Position finalUp = Position.of(anchor, 7 + 22, 31 + 0, 0);

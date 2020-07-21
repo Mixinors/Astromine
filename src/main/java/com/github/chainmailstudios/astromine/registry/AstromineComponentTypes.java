@@ -3,6 +3,7 @@ package com.github.chainmailstudios.astromine.registry;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
@@ -21,23 +22,12 @@ public class AstromineComponentTypes {
 
 	public static final ComponentType<ItemInventoryComponent> ITEM_INVENTORY_COMPONENT = ComponentRegistry.INSTANCE.registerIfAbsent(AstromineCommon.identifier("item_inventory_component"), ItemInventoryComponent.class);
 	public static final ComponentType<FluidInventoryComponent> FLUID_INVENTORY_COMPONENT = ComponentRegistry.INSTANCE.registerIfAbsent(AstromineCommon.identifier("fluid_inventory_component"), FluidInventoryComponent.class);
-	public static final Identifier ENERGY_INVENTORY_COMPONENT = AstromineCommon.identifier("energy_inventory_component");
+	public static final ComponentType<EnergyInventoryComponent> ENERGY_INVENTORY_COMPONENT = ComponentRegistry.INSTANCE.registerIfAbsent(AstromineCommon.identifier("energy_inventory_component"), EnergyInventoryComponent.class);
 
 	public static final ComponentType<BlockEntityTransferComponent> BLOCK_ENTITY_TRANSFER_COMPONENT = ComponentRegistry.INSTANCE.registerIfAbsent(AstromineCommon.identifier("block_entity_transfer_component"), BlockEntityTransferComponent.class);
 
 	public static final ComponentType<EntityOxygenComponent> ENTITY_OXYGEN_COMPONENT = ComponentRegistry.INSTANCE.registerIfAbsent(AstromineCommon.identifier("entity_oxygen_component"), EntityOxygenComponent.class);
 
 	public static void initialize() {
-		BlockEntityTransferComponent.INFOS.put(ENERGY_INVENTORY_COMPONENT, new BlockEntityTransferComponent.TransferComponentInfo() {
-			@Override
-			public Item getSymbol() {
-				return AstromineItems.ENERGY;
-			}
-
-			@Override
-			public TranslatableText getName() {
-				return new TranslatableText("text.astromine.energy");
-			}
-		});
 	}
 }

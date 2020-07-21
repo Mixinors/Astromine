@@ -74,25 +74,10 @@ public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScr
 		BlockEntityTransferComponent transferComponent = componentProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
 
 		transferComponent.get().forEach((type, entry) -> {
-			ComponentType<?> componentType = ComponentRegistry.INSTANCE.get(type);
-			if (componentType != null) {
-				NameableComponent nameableComponent = (NameableComponent) componentProvider.getComponent(componentType);
-				WTabHolder.WTab tab = mainTabbedPanel.addTab(nameableComponent.getSymbol());
-				WTransferTypeSelectorPanel.createTab(
-						tab,
-						Position.of(mainTabbedPanel, mainTabbedPanel.getWidth() / 2 - 38, 0, 0),
-						finalRotation,
-						transferComponent,
-						handler.syncBlockEntity.getPos(),
-						type,
-						getInterface()
-				);
-				tab.getBody().setLabel(nameableComponent.getName());
-				playerSlots.addAll(WSlot.addPlayerInventory(Position.of(mainTabbedPanel, 7, mainTabbedPanel.getHeight() - 18 - 11 - (18 * 3), 2), Size.of(18, 18), tab.getBody()));
-			} else {
-				BlockEntityTransferComponent.TransferComponentInfo info = BlockEntityTransferComponent.INFOS.get(type);
-				if (info != null) {
-					WTabHolder.WTab tab = mainTabbedPanel.addTab(info.getSymbol());
+			if (type != null) {
+				if (componentProvider.getComponent(type) instanceof NameableComponent) {
+					NameableComponent nameableComponent = (NameableComponent) componentProvider.getComponent(type);
+					WTabHolder.WTab tab = mainTabbedPanel.addTab(nameableComponent.getSymbol());
 					WTransferTypeSelectorPanel.createTab(
 							tab,
 							Position.of(mainTabbedPanel, mainTabbedPanel.getWidth() / 2 - 38, 0, 0),
@@ -102,7 +87,7 @@ public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScr
 							type,
 							getInterface()
 					);
-					tab.getBody().setLabel(info.getName());
+					tab.getBody().setLabel(nameableComponent.getName());
 					playerSlots.addAll(WSlot.addPlayerInventory(Position.of(mainTabbedPanel, 7, mainTabbedPanel.getHeight() - 18 - 11 - (18 * 3), 2), Size.of(18, 18), tab.getBody()));
 				}
 			}
