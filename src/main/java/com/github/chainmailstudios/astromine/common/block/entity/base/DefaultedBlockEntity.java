@@ -8,6 +8,7 @@ import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
@@ -26,6 +27,7 @@ import net.minecraft.block.FacingBlock;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
@@ -191,7 +193,26 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 
 						Direction neighborDirection = ourDirection.getOpposite();
 
-						if (neighborProvider.hasComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT)) {
+						if (neighborEntity instanceof Inventory) {
+							if (hasComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)) {
+								ItemInventoryComponent ourItemComponent = getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
+								ItemInventoryComponent neighborItemComponent = ItemInventoryComponentFromItemInventory.of((Inventory) neighborEntity);
+
+								List<ItemStack> matching = (List<ItemStack>) ourItemComponent.getContentsMatching((stack -> !stack.isEmpty()));
+
+								if (!matching.isEmpty()) {
+									ItemStack stack = matching.get(0);
+
+									TypedActionResult<ItemStack> result = neighborItemComponent.insert(neighborDirection, stack);
+
+									ItemStack resultStack = result.getValue();
+
+									stack.setCount(resultStack.getCount());
+								}
+							}
+						}
+
+						if (neighborProvider != null && neighborProvider.hasComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT)) {
 							BlockEntityTransferComponent neighborTransferComponent = neighborProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
 
 							TransferType neighborTransferType;

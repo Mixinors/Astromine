@@ -24,16 +24,16 @@ public class MirrorUtilities {
 			}
 		} else if (rotation == WEST) {
 			switch (origin) {
-				case NORTH: return WEST;
-				case SOUTH: return EAST;
+				case NORTH: return EAST;
+				case SOUTH: return WEST;
 				case EAST: return SOUTH;
 				case WEST: return NORTH;
 				default: return origin;
 			}
 		} else if (rotation == EAST) {
 			switch (origin) {
-				case NORTH: return EAST;
-				case SOUTH: return WEST;
+				case NORTH: return WEST;
+				case SOUTH: return EAST;
 				case EAST: return NORTH;
 				case WEST: return SOUTH;
 				default: return origin;
