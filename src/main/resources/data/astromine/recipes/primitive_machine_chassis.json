@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["012", "345", "678"],
+  "key": {
+    "0": { "tag": "c:copper_plates" },
+    "1": { "tag": "c:tin_plates" },
+    "2": { "tag": "c:copper_plates" },
+    "3": { "tag": "c:tin_plates" },
+    "4": { "item": "minecraft:air" },
+    "5": { "tag": "c:tin_plates" },
+    "6": { "tag": "c:copper_plates" },
+    "7": { "tag": "c:tin_plates" },
+    "8": { "tag": "c:copper_plates" }
+  },
+  "result": { "item": "astromine:primitive_machine_chassis", "count": 1 }
+}

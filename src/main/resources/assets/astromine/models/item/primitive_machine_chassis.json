@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "astromine:item/machine_chassis"
+    "layer0": "astromine:item/primitive_machine_chassis"
   }
 }

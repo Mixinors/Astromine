@@ -12,5 +12,5 @@
     "7": { "tag": "c:iron_plates" },
     "8": { "tag": "c:steel_plates" }
   },
-  "result": { "item": "astromine:machine_chassis", "count": 1 }
+  "result": { "item": "astromine:advanced_machine_chassis", "count": 1 }
 }

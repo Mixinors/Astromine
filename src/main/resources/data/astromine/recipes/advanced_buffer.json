@@ -6,7 +6,7 @@
     "1": { "tag": "c:iron_plates" },
     "2": { "tag": "c:steel_plates" },
     "3": { "item": "astromine:advanced_circuit" },
-    "4": { "item": "astromine:machine_chassis" },
+    "4": { "item": "astromine:advanced_machine_chassis" },
     "5": { "item": "astromine:advanced_circuit" },
     "6": { "tag": "c:steel_plates" },
     "7": { "tag": "c:iron_plates" },
