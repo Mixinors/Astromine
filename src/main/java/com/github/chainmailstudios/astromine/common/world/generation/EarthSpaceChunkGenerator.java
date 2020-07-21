@@ -48,6 +48,11 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public void buildSurface(ChunkRegion region, Chunk chunk) {
+		// Unused.
+	}
+
+	@Override
+	public void populateNoise(WorldAccess world, StructureAccessor accessor, Chunk chunk) {
 		int x1 = chunk.getPos().getStartX();
 		int z1 = chunk.getPos().getStartZ();
 		int y1 = 0;
@@ -59,9 +64,10 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 		for (int x = x1; x <= x2; ++x) {
 			for (int z = z1; z <= z2; ++z) {
 				for (int y = y1; y <= y2; ++y) {
-					double value = noise.eval(x * 0.01, y * 0.01, z * 0.01);
+					double noise = this.noise.eval(x * 0.01, y * 0.01, z * 0.01);
+					noise -= computeNoiseFalloff(y);
 
-					if (value > 0.65) {
+					if (noise > 0.65) {
 						chunk.setBlockState(new BlockPos(x, y, z), AstromineBlocks.ASTEROID_STONE.getDefaultState(), false);
 					}
 				}
@@ -69,9 +75,10 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 		}
 	}
 
-	@Override
-	public void populateNoise(WorldAccess world, StructureAccessor accessor, Chunk chunk) {
-		// Unused.
+	// Desmos: \frac{10}{x+1}-\frac{10}{x-257}-0.155
+	// It should actually be 10/y - 10/(y - 256) but i don't want to divide by 0 today
+	private double computeNoiseFalloff(int y) {
+		return (10.0 / (y + 1.0)) - (10.0 / (y - 257.0)) - 0.155;
 	}
 
 	@Override
