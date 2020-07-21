@@ -5,6 +5,7 @@ import com.github.chainmailstudios.astromine.common.component.block.entity.Block
 import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
 import io.netty.buffer.Unpooled;
+import nerdhub.cardinal.components.api.ComponentType;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
@@ -27,7 +28,7 @@ import java.util.Locale;
 public class WTransferTypeSelectorButton extends WButton {
 	private BlockEntityTransferComponent component;
 
-	private Identifier type;
+	private ComponentType<?> type;
 
 	private Direction direction;
 
@@ -74,11 +75,11 @@ public class WTransferTypeSelectorButton extends WButton {
 		return (W) this;
 	}
 
-	public Identifier getType() {
+	public ComponentType<?> getType() {
 		return type;
 	}
 
-	public <W extends WTransferTypeSelectorButton> W setType(Identifier type) {
+	public <W extends WTransferTypeSelectorButton> W setType(ComponentType<?> type) {
 		this.type = type;
 		return (W) this;
 	}
@@ -109,13 +110,13 @@ public class WTransferTypeSelectorButton extends WButton {
 			setTexture(component.get(type).get(direction).texture());
 			this.sideName = lazySideName();
 
-			if (getInterface().getContainer().getWorld().isClient()) {
+			if (getInterface().getHandler().getWorld().isClient()) {
 				PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
 
 				buffer.writeBlockPos(getBlockPos());
 				buffer.writeIdentifier(DefaultedBlockEntity.TRANSFER_UPDATE_PACKET);
 
-				buffer.writeIdentifier(type);
+				buffer.writeIdentifier(type.getId());
 				buffer.writeEnumConstant(direction);
 				buffer.writeEnumConstant(component.get(type).get(direction));
 
@@ -139,8 +140,9 @@ public class WTransferTypeSelectorButton extends WButton {
 
 	@Override
 	public List<Text> getTooltip() {
+		Direction offset = MirrorUtilities.rotate(direction, rotation);
 		return Arrays.asList(
-				new LiteralText(direction.toString() + " + " + rotation.toString() + " = " + MirrorUtilities.rotate(direction, rotation)),
+				new TranslatableText("text.astromine.siding." + offset.getName()),
 				new TranslatableText("text.astromine.siding." + sideName.get())
 		);
 	}

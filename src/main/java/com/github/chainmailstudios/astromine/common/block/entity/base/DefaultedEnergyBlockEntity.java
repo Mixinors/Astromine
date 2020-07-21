@@ -3,8 +3,10 @@ package com.github.chainmailstudios.astromine.common.block.entity.base;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.utilities.DirectionUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
@@ -39,6 +41,7 @@ public abstract class DefaultedEnergyBlockEntity extends DefaultedBlockEntity im
 	public DefaultedEnergyBlockEntity(BlockEntityType<?> type) {
 		super(type);
 		transferComponent.add(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
+		addComponent(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, new SimpleEnergyInventoryComponent());
 	}
 
 	protected void addEnergyListener(Runnable listener) {

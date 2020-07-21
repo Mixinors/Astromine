@@ -2,7 +2,6 @@ package com.github.chainmailstudios.astromine.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.block.entity.EnergyEmitter;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
@@ -34,8 +33,6 @@ public class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlockEntity im
 	public boolean[] activity = {false, false, false, false, false};
 
 	private Optional<SolidGeneratingRecipe> recipe = Optional.empty();
-
-	private static final int INPUT_ENERGY_VOLUME = 0;
 
 	public SolidGeneratorBlockEntity() {
 		super(AstromineBlockEntityTypes.SOLID_GENERATOR);
@@ -150,8 +147,6 @@ public class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlockEntity im
 		} else if (!isActive && activity[0]) {
 			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, false));
 		}
-
-		EnergyEmitter.emit(this, INPUT_ENERGY_VOLUME);
 	}
 
 	@Override

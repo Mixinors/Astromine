@@ -18,6 +18,7 @@ import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import nerdhub.cardinal.components.api.ComponentRegistry;
 import nerdhub.cardinal.components.api.ComponentType;
 import nerdhub.cardinal.components.api.component.Component;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
@@ -35,6 +36,9 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.Energy;
+import team.reborn.energy.EnergyHandler;
+import team.reborn.energy.EnergyStorage;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -60,7 +64,7 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 			Direction packetDirection = buffer.readEnumConstant(Direction.class);
 			TransferType packetTransferType = buffer.readEnumConstant(TransferType.class);
 
-			transferComponent.get(packetIdentifier).set(packetDirection, packetTransferType);
+			transferComponent.get(ComponentRegistry.INSTANCE.get(packetIdentifier)).set(packetDirection, packetTransferType);
 
 			markDirty();
 		}));
@@ -251,6 +255,17 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 									if (!matching.isEmpty()) {
 										neighborFluidComponent.insert(neighborDirection, matching.get(0));
 									}
+								}
+							}
+
+							if (this instanceof EnergyStorage && neighborEntity instanceof EnergyStorage) {
+								neighborTransferType = neighborTransferComponent.get(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).get(neighborDirection);
+
+								if (neighborTransferType.canInsert()) {
+									EnergyHandler ourEnergyStorage = Energy.of(this);
+									EnergyHandler neighborEnergyStorage = Energy.of(neighborEntity);
+
+									ourEnergyStorage.into(neighborEnergyStorage).move(Math.min(ourEnergyStorage.getMaxOutput(), neighborEnergyStorage.getMaxInput()));
 								}
 							}
 						}
