@@ -84,6 +84,10 @@ public class AstromineScreenHandlers {
 		return new CraftingRecipeCreatorScreenHandler(synchronizationID, inventory);
 	}));
 
+	public static final ScreenHandlerType<AlloySmelterScreenHandler> ALLOY_SMELTER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("alloy_smelter"), ((synchronizationID, inventory, buffer) -> {
+		return new AlloySmelterScreenHandler(synchronizationID, inventory, buffer.readBlockPos());
+	}));
+
 	public static void initialize() {
 		// Unused.
 	}

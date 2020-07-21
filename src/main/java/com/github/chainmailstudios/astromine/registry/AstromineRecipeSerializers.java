@@ -35,6 +35,11 @@ public class AstromineRecipeSerializers {
 			SolidGeneratingRecipe.Serializer.ID,
 			SolidGeneratingRecipe.Serializer.INSTANCE);
 
+	public static final RecipeSerializer<AlloySmelterRecipe> ALLOY_SMELTER = Registry.register(
+			Registry.RECIPE_SERIALIZER,
+			AlloySmelterRecipe.Serializer.ID,
+			AlloySmelterRecipe.Serializer.INSTANCE);
+
 	public static void initialize() {
 		// Unused.
 	}

@@ -1,0 +1,15 @@
+{
+  "type": "astromine:alloy_smelter",
+  "firstInput": {
+    "tag": "c:iron_ingots"
+  },
+  "secondInput": {
+    "item": "minecraft:coal"
+  },
+  "output": {
+    "item": "astromine:steel_ingot",
+    "count": 1
+  },
+  "time": 75,
+  "energy_consumed": 800
+}

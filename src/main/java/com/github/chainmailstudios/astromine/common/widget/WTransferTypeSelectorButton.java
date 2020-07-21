@@ -2,17 +2,14 @@ package com.github.chainmailstudios.astromine.common.widget;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import com.github.chainmailstudios.astromine.common.utilities.DirectionUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
-import com.google.common.collect.Lists;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.LiteralText;
-import net.minecraft.text.StringRenderable;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -33,7 +30,7 @@ public class WTransferTypeSelectorButton extends WButton {
 	private Identifier type;
 
 	private Direction direction;
-	
+
 	private Direction rotation;
 
 	private BlockPos blockPos;
@@ -142,16 +139,10 @@ public class WTransferTypeSelectorButton extends WButton {
 
 	@Override
 	public List<Text> getTooltip() {
-		return Lists.newArrayList(new LiteralText(direction.toString() + " + " + rotation.toString() + " = " + MirrorUtilities.rotate(direction, rotation)));
-		//Direction rotated = MirrorUtilities.rotate(direction, rotation);
-		//return Arrays.asList(
-		//		 rotated == Direction.NORTH ? new TranslatableText("text.astromine.front")
-		//	   : rotated == Direction.SOUTH ? new TranslatableText("text.astromine.back")
-		//	   : rotated == Direction.WEST ? new TranslatableText("text.astromine.left")
-		//	   : rotated == Direction.EAST ? new TranslatableText("text.astromine.right")
-		//	   : new TranslatableText("text.astromine." + rotated.getName()),
-		//		 new TranslatableText("text.astromine.siding." + sideName.get())
-		//);
+		return Arrays.asList(
+				new LiteralText(direction.toString() + " + " + rotation.toString() + " = " + MirrorUtilities.rotate(direction, rotation)),
+				new TranslatableText("text.astromine.siding." + sideName.get())
+		);
 	}
 
 	@Override
