@@ -177,6 +177,7 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 
 	@Override
 	public void tick() {
+		if (!hasWorld() || world.isClient()) return;
 		allComponents.forEach((type, component) -> {
 			BlockEntityTransferComponent.TransferEntry entry = transferComponent.get(type);
 
