@@ -140,8 +140,9 @@ public class WTransferTypeSelectorButton extends WButton {
 
 	@Override
 	public List<Text> getTooltip() {
+		Direction offset = MirrorUtilities.rotate(direction, rotation);
 		return Arrays.asList(
-				new LiteralText(direction.toString() + " + " + rotation.toString() + " = " + MirrorUtilities.rotate(direction, rotation)),
+				new TranslatableText("text.astromine.siding." + offset.getName()),
 				new TranslatableText("text.astromine.siding." + sideName.get())
 		);
 	}
