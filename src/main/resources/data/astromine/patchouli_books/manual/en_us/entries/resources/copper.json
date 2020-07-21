@@ -1,0 +1,30 @@
+{
+	"name": "text.astromine.resources.copper.title",
+	"icon": "astromine:copper_ingot",
+	"category": "resources",
+	"sortnum": 0,
+	"pages": [
+		{
+			"type": "spotlight",
+			"item": "astromine:copper_ingot",
+			"title": "text.astromine.resources.copper.page_one.title",
+			"text": "text.astromine.resources.copper.page_one.text"
+		},
+		{
+			"type": "smelting",
+			"recipe": "astromine:copper_ingot_from_smelting_ore",
+			"title": "text.astromine.resources.copper.page_two.title",
+			"text": "text.astromine.resources.copper.page_two.text"
+		},
+		{
+			"type": "text",
+			"title": "text.astromine.resources.copper.page_three.title",
+			"text": "text.astromine.resources.copper.page_three.text"
+		},
+		{
+			"type": "text",
+			"title": "text.astromine.resources.copper.page_four.title",
+			"text": "text.astromine.resources.copper.page_four.text"
+		}
+	]
+}

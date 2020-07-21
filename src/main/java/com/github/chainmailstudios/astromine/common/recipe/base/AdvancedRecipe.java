@@ -8,7 +8,7 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
-public interface AdvancedRecipe<C extends Inventory> extends Recipe<C> {
+public interface AdvancedRecipe<C extends Inventory> extends AstromineRecipe<C> {
 	<T extends DefaultedBlockEntity> boolean canCraft(T t);
 
 	<T extends DefaultedBlockEntity> void craft(T t);
@@ -54,7 +54,4 @@ public interface AdvancedRecipe<C extends Inventory> extends Recipe<C> {
 	default String getGroup() {
 		return "";
 	}
-
-	@Override
-	ItemStack getRecipeKindIcon();
 }

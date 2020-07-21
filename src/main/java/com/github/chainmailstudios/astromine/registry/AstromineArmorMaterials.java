@@ -11,10 +11,10 @@ import net.minecraft.util.Lazy;
 import java.util.function.Supplier;
 
 public class AstromineArmorMaterials {
-	public static final AstromineArmorMaterial COPPER = new AstromineArmorMaterial("copper", 12, new int[]{1, 4, 5, 2}, 15, AstromineSoundEvents.METITE_ARMOR_EQUIPPED, 0.0f, 0.0f, () -> Ingredient.ofItems(AstromineItems.COPPER_INGOT));
-	public static final AstromineArmorMaterial TIN = new AstromineArmorMaterial("tin", 12, new int[]{1, 4, 5, 2}, 15, AstromineSoundEvents.ASTERITE_ARMOR_EQUIPPED, 0.0f, 0.0f, () -> Ingredient.ofItems(AstromineItems.TIN_INGOT));
-	public static final AstromineArmorMaterial BRONZE = new AstromineArmorMaterial("bronze", 20, new int[]{2, 5, 6, 2}, 18, AstromineSoundEvents.STELLUM_ARMOR_EQUIPPED, 0.7f, 0.0f, () -> Ingredient.ofItems(AstromineItems.BRONZE_INGOT));
-	public static final AstromineArmorMaterial STEEL = new AstromineArmorMaterial("steel", 24, new int[]{2, 5, 6, 2}, 18, AstromineSoundEvents.GALAXIUM_ARMOR_EQUIPPED, 0.5f, 0.0f, () -> Ingredient.ofItems(AstromineItems.STEEL_INGOT));
+	public static final AstromineArmorMaterial COPPER = new AstromineArmorMaterial("copper", 12, new int[]{1, 4, 5, 2}, 15, AstromineSoundEvents.COPPER_ARMOR_EQUIPPED, 0.0f, 0.0f, () -> Ingredient.ofItems(AstromineItems.COPPER_INGOT));
+	public static final AstromineArmorMaterial TIN = new AstromineArmorMaterial("tin", 12, new int[]{2, 5, 4, 1}, 15, AstromineSoundEvents.TIN_ARMOR_EQUIPPED, 0.0f, 0.0f, () -> Ingredient.ofItems(AstromineItems.TIN_INGOT));
+	public static final AstromineArmorMaterial BRONZE = new AstromineArmorMaterial("bronze", 20, new int[]{2, 5, 6, 2}, 18, AstromineSoundEvents.BRONZE_ARMOR_EQUIPPED, 0.7f, 0.0f, () -> Ingredient.ofItems(AstromineItems.BRONZE_INGOT));
+	public static final AstromineArmorMaterial STEEL = new AstromineArmorMaterial("steel", 24, new int[]{3, 5, 7, 2}, 18, AstromineSoundEvents.STEEL_ARMOR_EQUIPPED, 0.5f, 0.0f, () -> Ingredient.ofItems(AstromineItems.STEEL_INGOT));
 
 	public static final AstromineArmorMaterial METITE = new AstromineArmorMaterial("metite", 15, new int[]{2, 4, 6, 2}, 7, AstromineSoundEvents.METITE_ARMOR_EQUIPPED, 0.0f, 0.0f, () -> Ingredient.ofItems(AstromineItems.METITE_INGOT));
 	public static final AstromineArmorMaterial ASTERITE = new AstromineArmorMaterial("asterite", 35, new int[]{4, 7, 8, 4}, 20, AstromineSoundEvents.ASTERITE_ARMOR_EQUIPPED, 4.0f, 0.1f, () -> Ingredient.ofItems(AstromineItems.ASTERITE));

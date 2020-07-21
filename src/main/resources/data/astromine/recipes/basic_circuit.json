@@ -4,7 +4,7 @@
   "key": {
     "0": { "tag": "c:copper_plates" },
     "1": { "tag": "c:gold_plates" },
-    "2": { "tag": "c:redstones" }
+    "2": { "tag": "c:redstone_dusts" }
   },
   "result": { "item": "astromine:basic_circuit", "count": 1 }
 }
