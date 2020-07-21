@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
-	public static final int SPEED = 3;
+	public static final int SPEED = 1;
 	public int progress = 0;
 	public int limit = 100;
 
