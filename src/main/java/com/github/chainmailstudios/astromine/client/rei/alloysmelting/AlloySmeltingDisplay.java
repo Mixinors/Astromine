@@ -2,12 +2,14 @@ package com.github.chainmailstudios.astromine.client.rei.alloysmelting;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineREIPlugin;
 import com.github.chainmailstudios.astromine.common.recipe.AlloySmelterRecipe;
+import com.google.common.collect.Lists;
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeDisplay;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +24,10 @@ public class AlloySmeltingDisplay implements RecipeDisplay {
 
 	public AlloySmeltingDisplay(AlloySmelterRecipe recipe) {
 		this(
-				EntryStack.ofIngredients(recipe.getPreviewInputs()),
+				Lists.newArrayList(
+						EntryStack.ofItemStacks(Arrays.asList(recipe.getFirstInput().getMatchingStacks())),
+						EntryStack.ofItemStacks(Arrays.asList(recipe.getSecondInput().getMatchingStacks()))
+				),
 				Collections.singletonList(EntryStack.create(recipe.getOutput())),
 				recipe.getTime(),
 				recipe.getEnergyConsumed(),

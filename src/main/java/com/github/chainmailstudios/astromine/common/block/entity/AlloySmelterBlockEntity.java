@@ -4,6 +4,7 @@ import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWit
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
@@ -96,8 +97,15 @@ public class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEntity impl
 
 					if (asEnergy().use(6) && (isEmpty || isEqual) && itemComponent.getStack(2).getCount() + output.getCount() <= itemComponent.getStack(2).getMaxCount()) {
 						if (progress == limit) {
-							itemComponent.getStack(0).decrement(1);
-							itemComponent.getStack(1).decrement(1);
+							ItemStack stack1 = itemComponent.getStack(0);
+							ItemStack stack2 = itemComponent.getStack(1);
+							if (recipe.get().getFirstInput().test(stack1) || recipe.get().getSecondInput().test(stack2)) {
+								stack1.decrement(recipe.get().getFirstInput().testMatching(stack1).getCount());
+								stack2.decrement(recipe.get().getSecondInput().testMatching(stack2).getCount());
+							} else if (recipe.get().getFirstInput().test(stack2) || recipe.get().getSecondInput().test(stack1)) {
+								stack2.decrement(recipe.get().getFirstInput().testMatching(stack2).getCount());
+								stack1.decrement(recipe.get().getSecondInput().testMatching(stack1).getCount());
+							}
 
 							if (isEmpty) {
 								itemComponent.setStack(2, output);

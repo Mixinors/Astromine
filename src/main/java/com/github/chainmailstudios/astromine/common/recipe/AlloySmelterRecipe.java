@@ -23,13 +23,13 @@ import net.minecraft.world.World;
 
 public class AlloySmelterRecipe implements Recipe<Inventory> {
 	final Identifier identifier;
-	final Ingredient firstInput;
-	final Ingredient secondInput;
+	final BetterIngredient firstInput;
+	final BetterIngredient secondInput;
 	final ItemStack output;
 	final double energyConsumed;
 	final int time;
 
-	public AlloySmelterRecipe(Identifier identifier, Ingredient firstInput, Ingredient secondInput, ItemStack output, double energyConsumed, int time) {
+	public AlloySmelterRecipe(Identifier identifier, BetterIngredient firstInput, BetterIngredient secondInput, ItemStack output, double energyConsumed, int time) {
 		this.identifier = identifier;
 		this.firstInput = firstInput;
 		this.secondInput = secondInput;
@@ -84,9 +84,17 @@ public class AlloySmelterRecipe implements Recipe<Inventory> {
 	@Override
 	public DefaultedList<Ingredient> getPreviewInputs() {
 		DefaultedList<Ingredient> defaultedList = DefaultedList.of();
-		defaultedList.add(this.firstInput);
-		defaultedList.add(this.secondInput);
+		defaultedList.add(this.firstInput.asIngredient());
+		defaultedList.add(this.secondInput.asIngredient());
 		return defaultedList;
+	}
+
+	public BetterIngredient getFirstInput() {
+		return firstInput;
+	}
+
+	public BetterIngredient getSecondInput() {
+		return secondInput;
 	}
 
 	@Override
@@ -116,8 +124,8 @@ public class AlloySmelterRecipe implements Recipe<Inventory> {
 			AlloySmelterRecipe.Format format = new Gson().fromJson(object, AlloySmelterRecipe.Format.class);
 
 			return new AlloySmelterRecipe(identifier,
-					IngredientUtilities.fromJson(format.firstInput),
-					IngredientUtilities.fromJson(format.secondInput),
+					IngredientUtilities.fromBetterJson(format.firstInput),
+					IngredientUtilities.fromBetterJson(format.secondInput),
 					StackUtilities.fromJson(format.output),
 					EnergyUtilities.fromJson(format.energyConsumed),
 					ParsingUtilities.fromJson(format.time, Integer.class));
@@ -126,8 +134,8 @@ public class AlloySmelterRecipe implements Recipe<Inventory> {
 		@Override
 		public AlloySmelterRecipe read(Identifier identifier, PacketByteBuf buffer) {
 			return new AlloySmelterRecipe(identifier,
-					IngredientUtilities.fromPacket(buffer),
-					IngredientUtilities.fromPacket(buffer),
+					IngredientUtilities.fromBetterPacket(buffer),
+					IngredientUtilities.fromBetterPacket(buffer),
 					StackUtilities.fromPacket(buffer),
 					EnergyUtilities.fromPacket(buffer),
 					PacketUtilities.fromPacket(buffer, Integer.class));
@@ -135,8 +143,8 @@ public class AlloySmelterRecipe implements Recipe<Inventory> {
 
 		@Override
 		public void write(PacketByteBuf buffer, AlloySmelterRecipe recipe) {
-			IngredientUtilities.toPacket(buffer, recipe.firstInput);
-			IngredientUtilities.toPacket(buffer, recipe.secondInput);
+			IngredientUtilities.toBetterPacket(buffer, recipe.firstInput);
+			IngredientUtilities.toBetterPacket(buffer, recipe.secondInput);
 			StackUtilities.toPacket(buffer, recipe.output);
 			EnergyUtilities.toPacket(buffer, recipe.energyConsumed);
 			PacketUtilities.toPacket(buffer, recipe.time);
