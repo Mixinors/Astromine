@@ -2,7 +2,7 @@
 	"name": "text.astromine.resources.univite.title",
 	"icon": "astromine:univite_ingot",
 	"category": "resources",
-	"sortnum": 4,
+	"sortnum": 8,
 	"pages": [
 		{
 			"type": "spotlight",
@@ -11,7 +11,8 @@
 			"text": "text.astromine.resources.univite.page_one.text"
 		},
 		{
-			"type": "text",
+			"type": "crafting",
+			"recipe": "astromine:univite_ingot",
 			"title": "text.astromine.resources.univite.page_two.title",
 			"text": "text.astromine.resources.univite.page_two.text"
 		},

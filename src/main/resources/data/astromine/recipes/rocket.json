@@ -3,22 +3,22 @@
   "pattern": ["121", "343", "565"],
   "key": {
     "1": {
-      "item": "astromine:metite_gear"
+      "tag": "c:metite_gears"
     },
     "2": {
-      "item": "minecraft:diamond"
+      "tag": "c:diamonds"
     },
     "3": {
-      "item": "astromine:metite_plates"
+      "tag": "c:metite_plates"
     },
     "4": {
       "item": "astromine:elite_circuit"
     },
     "5": {
-      "item": "astromine:steel_gear"
+      "tag": "c:steel_gears"
     },
     "6": {
-      "item": "astromine:iron_plates"
+      "tag": "c:iron_plates"
     }
   },
   "result": {

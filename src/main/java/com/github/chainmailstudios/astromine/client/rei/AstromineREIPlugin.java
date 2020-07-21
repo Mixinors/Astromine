@@ -1,12 +1,14 @@
 package com.github.chainmailstudios.astromine.client.rei;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.client.rei.alloysmelting.AlloySmeltingCategory;
+import com.github.chainmailstudios.astromine.client.rei.alloysmelting.AlloySmeltingDisplay;
 import com.github.chainmailstudios.astromine.client.rei.electricsmelting.ElectricSmeltingCategory;
 import com.github.chainmailstudios.astromine.client.rei.electricsmelting.ElectricSmeltingDisplay;
+import com.github.chainmailstudios.astromine.client.rei.fluidmixing.ElectrolyzingCategory;
 import com.github.chainmailstudios.astromine.client.rei.fluidmixing.ElectrolyzingDisplay;
 import com.github.chainmailstudios.astromine.client.rei.fluidmixing.FluidMixingCategory;
 import com.github.chainmailstudios.astromine.client.rei.fluidmixing.FluidMixingDisplay;
-import com.github.chainmailstudios.astromine.client.rei.fluidmixing.FluidRecipeCategory;
 import com.github.chainmailstudios.astromine.client.rei.generating.LiquidGeneratingCategory;
 import com.github.chainmailstudios.astromine.client.rei.generating.LiquidGeneratingDisplay;
 import com.github.chainmailstudios.astromine.client.rei.generating.SolidGeneratingCategory;
@@ -16,6 +18,7 @@ import com.github.chainmailstudios.astromine.client.rei.pressing.PressingDisplay
 import com.github.chainmailstudios.astromine.client.rei.triturating.TrituratingCategory;
 import com.github.chainmailstudios.astromine.client.rei.triturating.TrituratingDisplay;
 import com.github.chainmailstudios.astromine.client.render.SpriteRenderer;
+import com.github.chainmailstudios.astromine.client.screen.base.DefaultedHandledScreen;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.recipe.*;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
@@ -46,12 +49,17 @@ import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
+import spinnery.widget.WAbstractWidget;
+import spinnery.widget.WInterface;
+import spinnery.widget.WSlot;
 import vazkii.patchouli.api.PatchouliAPI;
 
 import java.util.Collections;
@@ -71,6 +79,7 @@ public class AstromineREIPlugin implements REIPluginV0 {
 	public static final Identifier FLUID_MIXING = AstromineCommon.identifier("fluid_mixing");
 	public static final Identifier ELECTROLYZING = AstromineCommon.identifier("electrolyzing");
 	public static final Identifier PRESSING = AstromineCommon.identifier("pressing");
+	public static final Identifier ALLOY_SMELTING = AstromineCommon.identifier("alloy_smelting");
 
 	@Override
 	public Identifier getPluginIdentifier() {
@@ -89,8 +98,9 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		recipeHelper.registerCategory(new LiquidGeneratingCategory());
 		recipeHelper.registerCategory(new SolidGeneratingCategory());
 		recipeHelper.registerCategory(new FluidMixingCategory(FLUID_MIXING, "category.astromine.fluid_mixing", EntryStack.create(AstromineBlocks.FLUID_MIXER)));
-		recipeHelper.registerCategory(new FluidRecipeCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AstromineBlocks.ELECTROLYZER)));
+		recipeHelper.registerCategory(new ElectrolyzingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AstromineBlocks.ELECTROLYZER)));
 		recipeHelper.registerCategory(new PressingCategory());
+		recipeHelper.registerCategory(new AlloySmeltingCategory());
 	}
 
 	@Override
@@ -102,6 +112,7 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		recipeHelper.registerRecipes(FLUID_MIXING, FluidMixingRecipe.class, FluidMixingDisplay::new);
 		recipeHelper.registerRecipes(ELECTROLYZING, ElectrolyzingRecipe.class, ElectrolyzingDisplay::new);
 		recipeHelper.registerRecipes(PRESSING, PressingRecipe.class, PressingDisplay::new);
+		recipeHelper.registerRecipes(ALLOY_SMELTING, AlloySmelterRecipe.class, AlloySmeltingDisplay::new);
 
 		for (Map.Entry<Item, Integer> entry : AbstractFurnaceBlockEntity.createFuelTimeMap().entrySet()) {
 			if (!(entry.getKey() instanceof BucketItem) && entry != null && entry.getValue() > 0) {
@@ -119,15 +130,30 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		recipeHelper.registerWorkingStations(FLUID_MIXING, EntryStack.create(AstromineBlocks.FLUID_MIXER));
 		recipeHelper.registerWorkingStations(ELECTROLYZING, EntryStack.create(AstromineBlocks.ELECTROLYZER));
 		recipeHelper.registerWorkingStations(PRESSING, EntryStack.create(AstromineBlocks.PRESSER));
+		recipeHelper.registerWorkingStations(ALLOY_SMELTING, EntryStack.create(AstromineBlocks.ALLOY_SMELTER));
 		recipeHelper.registerAutoCraftButtonArea(LIQUID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
 		recipeHelper.registerAutoCraftButtonArea(SOLID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
 		recipeHelper.registerAutoCraftButtonArea(FLUID_MIXING, bounds -> new Rectangle(bounds.getCenterX() - 65 + 130 - 16, bounds.getMaxY() - 16, 10, 10));
-		recipeHelper.registerAutoCraftButtonArea(ELECTROLYZING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
+		recipeHelper.registerAutoCraftButtonArea(ELECTROLYZING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16 - 29, bounds.getMaxY() - 16, 10, 10));
 
 		DefaultPlugin.registerInfoDisplay(DefaultInformationDisplay.createFromEntry(
 				EntryStack.create(PatchouliAPI.instance.getBookStack(AstromineCommon.identifier("manual"))).setting(EntryStack.Settings.CHECK_TAGS, EntryStack.Settings.TRUE),
 				new TranslatableText("item.astromine.manual")
 		).line(new TranslatableText("text.astromine.manual.obtain.info")));
+
+		recipeHelper.registerFocusedStackProvider(screen -> {
+			if (screen instanceof DefaultedHandledScreen) {
+				WInterface wInterface = ((DefaultedHandledScreen<?>) screen).getInterface();
+				for (WAbstractWidget widget : wInterface.getAllWidgets()) {
+					if (widget instanceof WSlot && widget.isFocused()) {
+						ItemStack stack = ((WSlot) widget).getStack();
+						if (stack != null && !stack.isEmpty())
+							return TypedActionResult.success(EntryStack.create(stack));
+					}
+				}
+			}
+			return TypedActionResult.pass(EntryStack.empty());
+		});
 	}
 
 	public static List<Widget> createEnergyDisplay(Rectangle bounds, double energy, boolean generating, long speed) {

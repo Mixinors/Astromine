@@ -45,6 +45,8 @@ public class FluidInserterBlockEntity extends DefaultedEnergyFluidBlockEntity im
 
 	@Override
 	public void tick() {
+		super.tick();
+
 		start:
 		if (this.world != null && !this.world.isClient()) {
 			if (asEnergy().getEnergy() < 250) {

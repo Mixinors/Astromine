@@ -3,16 +3,16 @@
   "pattern": ["123", "454", "321"],
   "key": {
     "1": {
-      "item": "astromine:asterite"
+      "tag": "c:asterites"
     },
     "2": {
-      "item": "astromine:netherite_gear"
+      "tag": "c:netherite_gears"
     },
     "3": {
-      "item": "astromine:galaxium"
+      "tag": "c:galaxiums"
     },
     "4": {
-      "item": "astromine:stellum_plates"
+      "tag": "c:stellum_plates"
     },
     "5": {
       "item": "minecraft:nether_star"

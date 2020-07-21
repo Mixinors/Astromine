@@ -43,7 +43,10 @@ public class BlockPlacerBlockEntity extends DefaultedEnergyItemBlockEntity imple
 
 	@Override
 	public void tick() {
+		super.tick();
+
 		if (world.isClient()) return;
+
 		start:
 		if (this.world != null && !this.world.isClient()) {
 			if (asEnergy().getEnergy() < 500) {

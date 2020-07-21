@@ -24,8 +24,6 @@ public class BufferBlockEntity extends DefaultedItemBlockEntity {
 		this.type = type;
 
 		((SimpleItemInventoryComponent) itemComponent).resize(9 * type.getHeight());
-
-		itemComponent.addListener(this::markDirty);
 	}
 
 	@Override

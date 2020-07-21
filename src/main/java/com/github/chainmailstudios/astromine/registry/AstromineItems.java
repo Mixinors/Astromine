@@ -47,6 +47,7 @@ public class AstromineItems {
 	public static final Item GALAXIUM_FRAGMENT = register("galaxium_fragment", new Item(getBasicSettings()));
 	public static final Item DIAMOND_FRAGMENT = register("diamond_fragment", new Item(getBasicSettings()));
 	public static final Item EMERALD_FRAGMENT = register("emerald_fragment", new Item(getBasicSettings()));
+	public static final Item QUARTZ_FRAGMENT = register("quartz_fragment", new Item(getBasicSettings()));
 
 	// Materials - Gems
 	public static final Item ASTERITE = register("asterite", new Item(getBasicSettings()));
@@ -113,6 +114,9 @@ public class AstromineItems {
 	public static final Item DIAMOND_DUST = register("diamond_dust", new Item(getBasicSettings()));
 	public static final Item EMERALD_DUST = register("emerald_dust", new Item(getBasicSettings()));
 	public static final Item NETHERITE_DUST = register("netherite_dust", new Item(getBasicSettings().fireproof()));
+	public static final Item COAL_DUST = register("coal_dust", new Item(getBasicSettings()));
+	public static final Item CHARCOAL_DUST = register("charcoal_dust", new Item(getBasicSettings()));
+	public static final Item QUARTZ_DUST = register("quartz_dust", new Item(getBasicSettings()));
 
 	// Materials - Plates
 	public static final Item METITE_PLATES = register("metite_plates", new Item(getBasicSettings()));
@@ -144,7 +148,10 @@ public class AstromineItems {
 	public static final Item ELITE_CIRCUIT = register("elite_circuit", new Item(getBasicSettings()));
 
 	// Containers
-	public static final Item MACHINE_CHASSIS = register("machine_chassis", new Item(getBasicSettings()));
+	public static final Item PRIMITIVE_MACHINE_CHASSIS = register("primitive_machine_chassis", new Item(getBasicSettings()));
+	public static final Item BASIC_MACHINE_CHASSIS = register("basic_machine_chassis", new Item(getBasicSettings()));
+	public static final Item ADVANCED_MACHINE_CHASSIS = register("advanced_machine_chassis", new Item(getBasicSettings()));
+	public static final Item ELITE_MACHINE_CHASSIS = register("elite_machine_chassis", new Item(getBasicSettings()));
 	public static final Item GRAPHITE_SHEET = register("graphite_sheet", new Item(getBasicSettings()));
 	public static final Item GAS_CANISTER = register("gas_canister", FluidVolumeItem.of(getBasicSettings(), Fraction.of(8, 1)));
 	public static final Item PRESSURIZED_GAS_CANISTER = register("pressurized_gas_canister", FluidVolumeItem.of(getBasicSettings(), Fraction.of(32, 1)));

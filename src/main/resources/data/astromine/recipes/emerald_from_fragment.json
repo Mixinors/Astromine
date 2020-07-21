@@ -3,7 +3,7 @@
   "pattern": ["###", "###", "###"],
   "key": {
     "#": {
-      "item": "astromine:emerald_fragment"
+      "tag": "c:emerald_dusts"
     }
   },
   "result": {

@@ -5,6 +5,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import spinnery.client.screen.BaseHandledScreen;
 import spinnery.common.handler.BaseScreenHandler;
+import spinnery.widget.WAbstractWidget;
 import spinnery.widget.WPanel;
 
 public abstract class DefaultedHandledScreen<T extends BaseScreenHandler> extends BaseHandledScreen<T> {
@@ -18,7 +19,7 @@ public abstract class DefaultedHandledScreen<T extends BaseScreenHandler> extend
 		super.render(matrices, mouseX, mouseY, tickDelta);
 	}
 
-	protected void addTitle(WPanel panel) {
-		panel.setLabel(this.getTitle());
+	protected void addTitle(WAbstractWidget widget) {
+		widget.setLabel(this.getTitle());
 	}
 }

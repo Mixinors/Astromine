@@ -28,7 +28,7 @@ public class ItemInventoryComponentFromItemInventory extends SimpleItemInventory
 	}
 
 	@Override
-	public Map<Integer, ItemStack> getItemContents() {
+	public Map<Integer, ItemStack> getContents() {
 		HashMap<Integer, ItemStack> contents = new HashMap<>();
 		for (int i = 0; i < this.inventory.size(); ++i) {
 			contents.put(i, this.inventory.getStack(i));

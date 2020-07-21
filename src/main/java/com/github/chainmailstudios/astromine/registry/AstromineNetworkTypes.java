@@ -12,7 +12,7 @@ public class AstromineNetworkTypes {
 	public static final NetworkType FLUID = register("fluid_network", new NetworkTypeFluid());
 	public static final NetworkType ITEM = register("item_network", new NetworkType() {
 		@Override
-		public void tick(NetworkInstance controller) {
+		public void tick(NetworkInstance instance) {
 			// TODO: item network
 		}
 	});

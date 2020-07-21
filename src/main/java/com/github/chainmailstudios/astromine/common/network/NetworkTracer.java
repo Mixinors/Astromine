@@ -3,6 +3,8 @@ package com.github.chainmailstudios.astromine.common.network;
 import com.github.chainmailstudios.astromine.common.block.AbstractCableBlock;
 import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
+import it.unimi.dsi.fastutil.longs.LongSet;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -13,12 +15,8 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
-import org.apache.commons.lang3.mutable.MutableBoolean;
 
-import java.util.ArrayDeque;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class NetworkTracer {
 	public static Object getObjectAt(World world, BlockPos position) {
@@ -37,41 +35,36 @@ public class NetworkTracer {
 	}
 
 	public static class Tracer {
+		public static final Tracer INSTANCE = new Tracer();
+
+		private Tracer() {}
+
 		public void trace(NetworkType type, BlockPos initialPosition, World world) {
 			ComponentProvider provider = ComponentProvider.fromWorld(world);
-
 			WorldNetworkComponent networkComponent = provider.getComponent(AstromineComponentTypes.WORLD_NETWORK_COMPONENT);
+			Block initialBlock = world.getBlockState(initialPosition).getBlock();
+
+			if (!(initialBlock instanceof NetworkMember) || !((NetworkMember) initialBlock).isNode(type) || networkComponent.containsInstance(type, initialPosition)) {
+				return;
+			}
+
+			LongSet tracedPositions = new LongOpenHashSet();
+			tracedPositions.add(initialPosition.asLong());
+			ArrayDeque<BlockPos> positionsToTrace = new ArrayDeque<>(Collections.singleton(initialPosition));
 
 			NetworkInstance instance = new NetworkInstance(world, type);
+			instance.addNode(NetworkNode.of(initialPosition));
 
-			Block block = world.getBlockState(initialPosition).getBlock();
-
-			if (!(block instanceof NetworkMember) || !((NetworkMember) block).isNode(type)) {
-				return;
-			}
-
-			Set<BlockPos> cache = new HashSet<>();
-			cache.add(initialPosition);
-
-			ArrayDeque<BlockPos> positions = new ArrayDeque<>();
-			positions.add(initialPosition);
-
-			if (networkComponent.containsInstance(type, initialPosition)) {
-				return;
-			} else {
-				instance.addBlockPos(initialPosition);
-			}
-
-			while (!positions.isEmpty()) {
-				BlockPos position = positions.getLast();
-				positions.removeLast();
-				MutableBoolean joined = new MutableBoolean(false);
+			while (!positionsToTrace.isEmpty()) {
+				BlockPos position = positionsToTrace.pop();
+				boolean joined = false;
 				Object initialObject = getObjectAt(world, position);
 
 				for (Direction direction : Direction.values()) {
 					BlockPos offsetPosition = position.offset(direction);
+					long offsetPositionLong = offsetPosition.asLong();
 
-					if (cache.contains(offsetPosition)) {
+					if (tracedPositions.contains(offsetPositionLong)) {
 						continue;
 					}
 
@@ -84,28 +77,28 @@ public class NetworkTracer {
 						networkComponent.removeInstance(instance);
 						networkComponent.addInstance(existingInstance);
 						instance = existingInstance;
-						joined.setTrue();
+						joined = true;
 					}
 
 					if (offsetObject instanceof NetworkMember) {
 						NetworkMember offsetMember = (NetworkMember) offsetObject;
 
-						if ((offsetMember.isRequester(type) || offsetMember.isProvider(type) || offsetMember.isBuffer(type)) && offsetMember.acceptsType(type)) {
-							instance.addMember(NetworkNode.of(offsetPosition, direction.getOpposite()));
-						}
+						if (offsetMember.acceptsType(type)) {
+							if (offsetMember.isRequester(type) || offsetMember.isProvider(type) || offsetMember.isBuffer(type)) {
+								instance.addMember(NetworkMemberNode.of(offsetPosition, direction.getOpposite()));
+							}
 
-						if (offsetMember.isNode(type)) {
-							if (offsetMember.acceptsType(type)) {
-								positions.addLast(offsetPosition);
-								instance.addNode(NetworkNode.of(offsetPosition, direction.getOpposite()));
+							if (offsetMember.isNode(type)) {
+								positionsToTrace.addLast(offsetPosition);
+								instance.addNode(NetworkNode.of(offsetPosition));
 							}
 						}
 					}
 
-					cache.add(offsetPosition);
+					tracedPositions.add(offsetPositionLong);
 				}
 
-				if (joined.isTrue()) {
+				if (joined) {
 					return;
 				}
 			}

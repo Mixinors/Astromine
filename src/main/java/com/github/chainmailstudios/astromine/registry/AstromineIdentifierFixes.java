@@ -9,5 +9,6 @@ public class AstromineIdentifierFixes {
 		IdentifierFixRegistry.INSTANCE.register("fuel_mixing", "fluid_mixing");
 		IdentifierFixRegistry.INSTANCE.register("sorter", "triturator");
 		IdentifierFixRegistry.INSTANCE.register("sorting", "triturating");
+		IdentifierFixRegistry.INSTANCE.register("machine_chassis", "advanced_machine_chassis");
 	}
 }

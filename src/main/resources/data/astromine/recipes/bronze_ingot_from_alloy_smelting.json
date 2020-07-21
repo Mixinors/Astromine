@@ -1,0 +1,16 @@
+{
+  "type": "astromine:alloy_smelter",
+  "firstInput": {
+    "tag": "c:copper_ingots",
+    "count": 3
+  },
+  "secondInput": {
+    "tag": "c:tin_ingots"
+  },
+  "output": {
+    "item": "astromine:bronze_ingot",
+    "count": 4
+  },
+  "time": 200,
+  "energy_consumed": 800
+}

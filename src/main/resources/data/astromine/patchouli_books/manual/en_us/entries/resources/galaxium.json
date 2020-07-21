@@ -2,7 +2,7 @@
 	"name": "text.astromine.resources.galaxium.title",
 	"icon": "astromine:galaxium",
 	"category": "resources",
-	"sortnum": 3,
+	"sortnum": 7,
 	"pages": [
 		{
 			"type": "spotlight",

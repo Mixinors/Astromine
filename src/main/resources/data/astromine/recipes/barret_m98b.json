@@ -3,13 +3,13 @@
   "pattern": ["012", "345", "678"],
   "key": {
     "0": { "item": "minecraft:air" },
-    "1": { "item": "astromine:steel_gear" },
+    "1": { "tag": "c:steel_gears" },
     "2": { "item": "minecraft:air" },
-    "3": { "item": "astromine:steel_gear" },
-    "4": { "item": "astromine:steel_plates" },
-    "5": { "item": "astromine:steel_plates" },
-    "6": { "item": "astromine:iron_plates" },
-    "7": { "item": "astromine:iron_plates" },
+    "3": { "tag": "c:steel_gears" },
+    "4": { "tag": "c:steel_plates" },
+    "5": { "tag": "c:steel_plates" },
+    "6": { "tag": "c:iron_plates" },
+    "7": { "tag": "c:iron_plates" },
     "8": { "item": "minecraft:air" }
   },
   "result": { "item": "astromine:barret_m98b", "count": 1 }

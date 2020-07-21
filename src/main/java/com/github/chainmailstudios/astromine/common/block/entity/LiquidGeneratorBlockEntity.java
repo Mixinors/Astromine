@@ -97,6 +97,8 @@ public class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlockEntity 
 
 	@Override
 	public void tick() {
+		super.tick();
+
 		if (world.isClient()) return;
 
 		if (recipe.isPresent()) {
@@ -120,8 +122,6 @@ public class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlockEntity 
 		} else if (!isActive && activity[0]) {
 			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, false));
 		}
-
-		EnergyEmitter.emit(this, INPUT_ENERGY_VOLUME);
 	}
 
 	@Override

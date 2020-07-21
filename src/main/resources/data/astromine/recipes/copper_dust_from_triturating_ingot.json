@@ -1,7 +1,7 @@
 {
   "type": "astromine:triturating",
   "input": {
-    "item": "astromine:copper_ingot",
+    "tag": "c:copper_ingots",
     "count": 1
   },
   "output": {

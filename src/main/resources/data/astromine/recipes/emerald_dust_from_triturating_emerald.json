@@ -1,7 +1,7 @@
 {
   "type": "astromine:triturating",
   "input": {
-    "item": "minecraft:emerald",
+    "tag": "c:emeralds",
     "count": 1
   },
   "output": {

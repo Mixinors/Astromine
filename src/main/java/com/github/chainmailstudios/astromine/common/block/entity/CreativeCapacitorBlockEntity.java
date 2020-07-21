@@ -20,6 +20,8 @@ public class CreativeCapacitorBlockEntity extends DefaultedEnergyBlockEntity imp
 
 	@Override
 	public void tick() {
+		super.tick();
+
 		setStored(Double.MAX_VALUE);
 
 		EnergyEmitter.emit(this, 0);

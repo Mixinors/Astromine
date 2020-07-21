@@ -1,7 +1,7 @@
 {
   "type": "minecraft:blasting",
   "ingredient": {
-    "tag": "astromine:mod_lapis_ores"
+    "tag": "c:lapis_ores"
   },
   "result": "minecraft:lapis_lazuli",
   "experience": 0.1,

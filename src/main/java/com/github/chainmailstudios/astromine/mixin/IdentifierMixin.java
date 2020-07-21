@@ -2,6 +2,8 @@ package com.github.chainmailstudios.astromine.mixin;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.registry.IdentifierFixRegistry;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,7 +25,7 @@ public class IdentifierMixin {
 
 	@Inject(method = "<init>([Ljava/lang/String;)V", at = @At("RETURN"))
 	private void init(String[] strings, CallbackInfo ci) {
-		if (namespace.equals(AstromineCommon.MOD_ID) && IdentifierFixRegistry.INSTANCE.containsKey(path)) {
+		if (AstromineConfig.get().compatibilityMode && namespace.equals(AstromineCommon.MOD_ID) && IdentifierFixRegistry.INSTANCE.containsKey(path)) {
 			String oldPath = path;
 			path = IdentifierFixRegistry.INSTANCE.get(path);
 			AstromineCommon.LOGGER.info("Fixed identifier path from " + oldPath + " to " + path);

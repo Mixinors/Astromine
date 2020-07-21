@@ -3,6 +3,7 @@ package com.github.chainmailstudios.astromine.common.recipe;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
+import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.chainmailstudios.astromine.common.utilities.*;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.google.common.collect.Lists;
@@ -15,7 +16,6 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Map;
 
-public class TrituratingRecipe implements Recipe<Inventory> {
+public class TrituratingRecipe implements EnergyConsumingRecipe<Inventory> {
 	final Identifier identifier;
 	final Ingredient input;
 	final ItemStack output;
@@ -42,7 +42,7 @@ public class TrituratingRecipe implements Recipe<Inventory> {
 
 	@Override
 	public boolean matches(Inventory inventory, World world) {
-		return ItemInventoryComponentFromItemInventory.of(inventory).getItemContents().values().stream().anyMatch(input);
+		return ItemInventoryComponentFromItemInventory.of(inventory).getContents().values().stream().anyMatch(input);
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class TrituratingRecipe implements Recipe<Inventory> {
 
 		ItemStack stack = matching.isEmpty() ? ItemStack.EMPTY : matching.get(0);
 
-		for (Map.Entry<Integer, ItemStack> entry : component.getItemContents().entrySet()) {
+		for (Map.Entry<Integer, ItemStack> entry : component.getContents().entrySet()) {
 			if (entry.getValue() == stack && !stack.isEmpty()) {
 				component.getStack(entry.getKey()).decrement(1);
 

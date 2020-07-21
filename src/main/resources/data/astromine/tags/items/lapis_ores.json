@@ -1,7 +1,0 @@
-{
-	"replace": false,
-	"values": [
-		"#astromine:mod_lapis_ores",
-		"minecraft:lapis_ore"
-	]
-}

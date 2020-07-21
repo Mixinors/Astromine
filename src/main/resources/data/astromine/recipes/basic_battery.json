@@ -1,1 +1,16 @@
-{"type":"minecraft:crafting_shaped","pattern":["012","345","678"],"key":{"0":{"item":"minecraft:air"},"1":{"item":"astromine:copper_plates"},"2":{"item":"minecraft:air"},"3":{"item":"astromine:tin_plates"},"4":{"item":"minecraft:redstone"},"5":{"item":"astromine:tin_plates"},"6":{"item":"astromine:tin_plates"},"7":{"item":"minecraft:redstone"},"8":{"item":"astromine:tin_plates"}},"result":{"item":"astromine:basic_battery","count":1}}
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["012", "345", "678"],
+  "key": {
+    "0": { "item": "minecraft:air" },
+    "1": { "tag": "c:copper_plates" },
+    "2": { "item": "minecraft:air" },
+    "3": { "tag": "c:tin_plates" },
+    "4": { "tag": "c:redstone_dusts" },
+    "5": { "tag": "c:tin_plates" },
+    "6": { "tag": "c:tin_plates" },
+    "7": { "tag": "c:redstone_dusts" },
+    "8": { "tag": "c:tin_plates" }
+  },
+  "result": { "item": "astromine:basic_battery", "count": 1 }
+}

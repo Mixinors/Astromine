@@ -2,12 +2,14 @@ package com.github.chainmailstudios.astromine.common.widget;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -29,6 +31,8 @@ public class WTransferTypeSelectorButton extends WButton {
 
 	private Direction direction;
 
+	private Direction rotation;
+
 	private BlockPos blockPos;
 
 	private Identifier texture = null;
@@ -38,7 +42,7 @@ public class WTransferTypeSelectorButton extends WButton {
 
 	private Lazy<String> lazySideName() {
 		return new Lazy<>(() -> {
-			return component.get(type).get(direction, Direction.NORTH).name().toLowerCase(Locale.ROOT);
+			return component.get(type).get(direction).name().toLowerCase(Locale.ROOT);
 		});
 	}
 
@@ -58,6 +62,15 @@ public class WTransferTypeSelectorButton extends WButton {
 
 	public <W extends WTransferTypeSelectorButton> W setDirection(Direction direction) {
 		this.direction = direction;
+		return (W) this;
+	}
+
+	public Direction getRotation() {
+		return rotation;
+	}
+
+	public <W extends WTransferTypeSelectorButton> W setRotation(Direction rotation) {
+		this.rotation = rotation;
 		return (W) this;
 	}
 
@@ -91,9 +104,9 @@ public class WTransferTypeSelectorButton extends WButton {
 	@Override
 	public void onMouseReleased(float mouseX, float mouseY, int mouseButton) {
 		if (isFocused()) {
-			component.get(type).set(direction, component.get(type).get(direction, Direction.NORTH).next());
+			component.get(type).set(direction, component.get(type).get(direction).next());
 
-			setTexture(component.get(type).get(direction, Direction.NORTH).texture());
+			setTexture(component.get(type).get(direction).texture());
 			this.sideName = lazySideName();
 
 			if (getInterface().getContainer().getWorld().isClient()) {
@@ -104,7 +117,7 @@ public class WTransferTypeSelectorButton extends WButton {
 
 				buffer.writeIdentifier(type);
 				buffer.writeEnumConstant(direction);
-				buffer.writeEnumConstant(component.get(type).get(direction, Direction.NORTH));
+				buffer.writeEnumConstant(component.get(type).get(direction));
 
 				ClientSidePacketRegistry.INSTANCE.sendToServer(AstromineCommonPackets.BLOCK_ENTITY_UPDATE_PACKET, buffer);
 			}
@@ -127,18 +140,14 @@ public class WTransferTypeSelectorButton extends WButton {
 	@Override
 	public List<Text> getTooltip() {
 		return Arrays.asList(
-				getDirection() == Direction.NORTH ? new TranslatableText("text.astromine.front")
-						: getDirection() == Direction.SOUTH ? new TranslatableText("text.astromine.back")
-						: getDirection() == Direction.WEST ? new TranslatableText("text.astromine.right")
-						: getDirection() == Direction.EAST ? new TranslatableText("text.astromine.left")
-						: new TranslatableText("text.astromine." + getDirection().getName()),
+				new LiteralText(direction.toString() + " + " + rotation.toString() + " = " + MirrorUtilities.rotate(direction, rotation)),
 				new TranslatableText("text.astromine.siding." + sideName.get())
 		);
 	}
 
 	@Override
 	public void draw(MatrixStack matrices, VertexConsumerProvider provider) {
-		if (texture == null) setTexture(component.get(type).get(direction, Direction.NORTH).texture());
+		if (texture == null) setTexture(component.get(type).get(direction).texture());
 
 		BaseRenderer.drawTexturedQuad(matrices, provider, getX(), getY(), getZ(), getWidth(), getHeight(), getTexture());
 	}

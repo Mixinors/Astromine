@@ -1,12 +1,17 @@
 package com.github.chainmailstudios.astromine.common.component.world;
 
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
+import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
 import com.github.chainmailstudios.astromine.common.network.NetworkNode;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkTypeRegistry;
 import com.google.common.collect.Sets;
 import nerdhub.cardinal.components.api.component.Component;
+import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.LongTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
@@ -24,22 +29,20 @@ public class WorldNetworkComponent implements Component, Tickable {
 		this.world = world;
 	}
 
-	public void addInstance(NetworkInstance controller) {
-		this.instances.add(controller);
+	public void addInstance(NetworkInstance instance) {
+		if (!instance.nodes.isEmpty())
+			this.instances.add(instance);
 	}
 
-	public void removeInstance(NetworkInstance controller) {
-		this.instances.remove(controller);
+	public void removeInstance(NetworkInstance instance) {
+		this.instances.remove(instance);
 	}
 
 	public NetworkInstance getInstance(NetworkType type, BlockPos position) {
-		for (NetworkInstance controller : this.instances) {
-			if (controller.getType() == type && controller.nodes.stream().anyMatch(node -> node.getBlockPos().equals(position))) {
-				return controller;
-			}
-		}
-
-		return NetworkInstance.EMPTY;
+		return this.instances.stream()
+				.filter(instance -> instance.getType() == type && instance.nodes.stream().anyMatch(node -> node.getBlockPos().equals(position)))
+				.findFirst()
+				.orElse(NetworkInstance.EMPTY);
 	}
 
 	public boolean containsInstance(NetworkType type, BlockPos position) {
@@ -53,62 +56,50 @@ public class WorldNetworkComponent implements Component, Tickable {
 	@Override
 	@NotNull
 	public CompoundTag toTag(CompoundTag tag) {
-		CompoundTag instanceTag = new CompoundTag();
+		ListTag instanceTags = new ListTag();
 
 		for (NetworkInstance instance : instances) {
-			int hash = instance.hashCode();
-
-			CompoundTag nodeList = new CompoundTag();
-
-			int i = 0;
-
+			ListTag nodeList = new ListTag();
 			for (NetworkNode node : instance.nodes) {
-				nodeList.put(String.valueOf(++i), node.toTag(new CompoundTag()));
+				nodeList.add(LongTag.of(node.getPos()));
 			}
 
-			CompoundTag memberList = new CompoundTag();
-
-			int k = 0;
-
-			for (NetworkNode member : instance.members) {
-				memberList.put(String.valueOf(++k), member.toTag(new CompoundTag()));
+			ListTag memberList = new ListTag();
+			for (NetworkMemberNode member : instance.members) {
+				memberList.add(member.toTag(new CompoundTag()));
 			}
 
 			CompoundTag data = new CompoundTag();
 
 			data.putString("type", NetworkTypeRegistry.INSTANCE.getKey(instance.getType()).toString());
-
 			data.put("nodes", nodeList);
 			data.put("members", memberList);
 
-			instanceTag.put(String.valueOf(hash), data);
+			instanceTags.add(data);
 		}
 
-		tag.put("instances", instanceTag);
+		tag.put("instanceTags", instanceTags);
 
 		return tag;
 	}
 
 	@Override
 	public void fromTag(CompoundTag tag) {
-		CompoundTag instanceTag = tag.getCompound("instances");
-		for (String controllerKey : instanceTag.getKeys()) {
-			CompoundTag dataTag = instanceTag.getCompound(controllerKey);
-			CompoundTag nodeList = dataTag.getCompound("nodes");
-			CompoundTag memberList = dataTag.getCompound("members");
+		ListTag instanceTags = tag.getList("instanceTags", NbtType.COMPOUND);
+		for (Tag instanceTag : instanceTags) {
+			CompoundTag dataTag = (CompoundTag) instanceTag;
+			ListTag nodeList = dataTag.getList("nodes", NbtType.LONG);
+			ListTag memberList = dataTag.getList("members", NbtType.COMPOUND);
 
 			NetworkType type = NetworkTypeRegistry.INSTANCE.get(new Identifier(dataTag.getString("type")));
-
 			NetworkInstance instance = new NetworkInstance(world, type);
 
-			for (String nodeKey : nodeList.getKeys()) {
-				CompoundTag nodeTag = nodeList.getCompound(nodeKey);
-				instance.addNode(NetworkNode.of(nodeTag.getLong("pos"), nodeTag.getInt("dir")));
+			for (Tag nodeKey : nodeList) {
+				instance.addNode(NetworkNode.of(((LongTag) nodeKey).getLong()));
 			}
 
-			for (String memberKey : memberList.getKeys()) {
-				CompoundTag memberTag = nodeList.getCompound(memberKey);
-				instance.addMember(NetworkNode.of(memberTag.getLong("pos"), memberTag.getInt("dir")));
+			for (Tag memberTag : memberList) {
+				instance.addMember(NetworkMemberNode.fromTag((CompoundTag) memberTag));
 			}
 
 			addInstance(instance);
@@ -117,6 +108,7 @@ public class WorldNetworkComponent implements Component, Tickable {
 
 	@Override
 	public void tick() {
+		this.instances.removeIf(NetworkInstance::isStupidlyEmpty);
 		this.instances.forEach(NetworkInstance::tick);
 	}
 }

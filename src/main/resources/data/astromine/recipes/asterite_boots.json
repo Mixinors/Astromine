@@ -3,7 +3,7 @@
   "pattern": ["# #", "# #"],
   "key": {
     "#": {
-      "item": "astromine:asterite"
+      "tag": "c:asterites"
     }
   },
   "result": {

@@ -12,9 +12,6 @@
     "numerator": 1,
     "denominator": 64
   },
-  "energy_consumed": {
-    "numerator": 1,
-    "denominator": 16
-  },
+  "energy_consumed": 24,
   "time": 5
 }

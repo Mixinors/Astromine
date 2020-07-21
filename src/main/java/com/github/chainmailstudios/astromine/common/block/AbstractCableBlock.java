@@ -66,11 +66,15 @@ public abstract class AbstractCableBlock extends Block implements NetworkMember 
 	}
 
 	@Override
+	public boolean isNode(NetworkType type) {
+		return true;
+	}
+
+	@Override
 	public void onPlaced(World world, BlockPos position, BlockState stateA, LivingEntity placer, ItemStack itemStack) {
 		super.onPlaced(world, position, stateA, placer, itemStack);
 
-		NetworkTracer.Tracer tracer = new NetworkTracer.Tracer();
-		tracer.trace(getNetworkType(), position, world);
+		NetworkTracer.Tracer.INSTANCE.trace(getNetworkType(), position, world);
 
 		NetworkTracer.Modeller modeller = new NetworkTracer.Modeller();
 		modeller.scanNeighbours(getNetworkType(), position, world);
@@ -110,8 +114,7 @@ public abstract class AbstractCableBlock extends Block implements NetworkMember 
 			if (!(offsetBlock instanceof AbstractCableBlock)) continue;
 			if (((AbstractCableBlock) offsetBlock).getNetworkType() != getNetworkType()) continue;
 
-			NetworkTracer.Tracer tracer = new NetworkTracer.Tracer();
-			tracer.trace(getNetworkType(), offsetPos, world);
+			NetworkTracer.Tracer.INSTANCE.trace(getNetworkType(), offsetPos, world);
 
 			NetworkTracer.Modeller modeller = new NetworkTracer.Modeller();
 			modeller.scanNeighbours(getNetworkType(), offsetPos, world);
@@ -128,10 +131,8 @@ public abstract class AbstractCableBlock extends Block implements NetworkMember 
 
 		WorldNetworkComponent networkComponent = provider.getComponent(AstromineComponentTypes.WORLD_NETWORK_COMPONENT);
 
-		networkComponent.getInstance(getNetworkType(), position).removeNode(NetworkNode.of(position));
-
-		NetworkTracer.Tracer tracer = new NetworkTracer.Tracer();
-		tracer.trace(getNetworkType(), position, world);
+		networkComponent.removeInstance(networkComponent.getInstance(getNetworkType(), position));
+		NetworkTracer.Tracer.INSTANCE.trace(getNetworkType(), position, world);
 
 		NetworkTracer.Modeller modeller = new NetworkTracer.Modeller();
 		modeller.scanNeighbours(getNetworkType(), position, world);

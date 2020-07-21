@@ -1,7 +1,7 @@
 {
   "type": "astromine:triturating",
   "input": {
-    "item": "minecraft:lapis_lazuli",
+    "tag": "c:lapis_lazulis",
     "count": 1
   },
   "output": {

@@ -3,7 +3,7 @@
   "pattern": ["###", "###", "###"],
   "key": {
     "#": {
-      "item": "astromine:steel_nugget"
+      "tag": "c:steel_nuggets"
     }
   },
   "result": {

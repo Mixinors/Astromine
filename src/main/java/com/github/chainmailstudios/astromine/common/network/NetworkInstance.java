@@ -1,5 +1,7 @@
 package com.github.chainmailstudios.astromine.common.network;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.registry.NetworkTypeRegistry;
 import com.google.common.collect.Sets;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
@@ -11,7 +13,7 @@ import java.util.Set;
 public class NetworkInstance implements Iterable<NetworkNode>, Tickable {
 	public static final NetworkInstance EMPTY = new NetworkInstance();
 
-	public final Set<NetworkNode> members = Sets.newConcurrentHashSet();
+	public final Set<NetworkMemberNode> members = Sets.newConcurrentHashSet();
 	public final Set<NetworkNode> nodes = Sets.newConcurrentHashSet();
 
 	private final World world;
@@ -41,7 +43,7 @@ public class NetworkInstance implements Iterable<NetworkNode>, Tickable {
 		this.nodes.add(NetworkNode.of(position));
 	}
 
-	public void addMember(NetworkNode member) {
+	public void addMember(NetworkMemberNode member) {
 		this.members.add(member);
 	}
 
@@ -49,7 +51,7 @@ public class NetworkInstance implements Iterable<NetworkNode>, Tickable {
 		this.nodes.remove(node);
 	}
 
-	public void removeMember(NetworkNode node) {
+	public void removeMember(NetworkMemberNode node) {
 		this.members.remove(node);
 	}
 
@@ -80,5 +82,23 @@ public class NetworkInstance implements Iterable<NetworkNode>, Tickable {
 	@Override
 	public void tick() {
 		this.type.tick(this);
+	}
+
+	@Override
+	public String toString() {
+		return "NetworkInstance{" +
+		       "type=" + NetworkTypeRegistry.INSTANCE.getKey(type) +
+		       ", world=" + world.getDimensionRegistryKey().getValue() +
+		       ", members=" + members +
+		       ", nodes=" + nodes +
+		       '}';
+	}
+
+	public boolean isStupidlyEmpty() {
+		if (this.nodes.isEmpty()) {
+			AstromineCommon.LOGGER.error("Network is empty! " + toString());
+			return true;
+		}
+		return false;
 	}
 }

@@ -3,7 +3,7 @@
   "pattern": ["###", "###", "###"],
   "key": {
     "#": {
-      "item": "astromine:netherite_nugget"
+      "tag": "c:netherite_nuggets"
     }
   },
   "result": {

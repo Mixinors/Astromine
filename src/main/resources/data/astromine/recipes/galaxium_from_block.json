@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "astromine:galaxium_block"
+      "tag": "c:galaxium_blocks"
     }
   ],
   "result": {

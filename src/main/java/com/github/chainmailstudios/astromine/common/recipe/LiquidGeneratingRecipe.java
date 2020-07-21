@@ -5,6 +5,7 @@ import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedB
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.recipe.base.AdvancedRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.base.EnergyGeneratingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.FractionUtilities;
@@ -32,7 +33,7 @@ import net.minecraft.util.registry.RegistryKey;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
-public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory> {
+public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory>, EnergyGeneratingRecipe<Inventory> {
 	final Identifier identifier;
 	final RegistryKey<Fluid> fluidKey;
 	final Lazy<Fluid> fluid;

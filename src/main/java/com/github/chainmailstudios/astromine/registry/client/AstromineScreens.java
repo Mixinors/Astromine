@@ -101,5 +101,8 @@ public class AstromineScreens {
 			return new CraftingRecipeCreatorHandledScreen(title, handler, inventory.player);
 		}));
 
+		ScreenRegistry.register(AstromineScreenHandlers.ALLOY_SMELTER, (ScreenRegistry.Factory<AlloySmelterScreenHandler, AlloySmelterHandledScreen>) ((handler, inventory, title) -> {
+			return new AlloySmelterHandledScreen(title, handler, inventory.player);
+		}));
 	}
 }

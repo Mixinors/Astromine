@@ -3,10 +3,10 @@
   "pattern": ["##", "#$", " $"],
   "key": {
     "#": {
-      "item": "astromine:galaxium"
+      "tag": "c:galaxiums"
     },
     "$": {
-      "item": "minecraft:stick"
+      "tag": "c:wood_sticks"
     }
   },
   "result": {
