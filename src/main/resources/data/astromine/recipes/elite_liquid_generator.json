@@ -5,12 +5,12 @@
     "0": { "tag": "c:iron_plates" },
     "1": { "item": "astromine:basic_circuit" },
     "2": { "tag": "c:iron_plates" },
-    "3": { "tag": "c:steel_plates" },
-    "4": { "item": "astromine:primitive_machine_chassis" },
-    "5": { "tag": "c:steel_plates" },
+    "3": { "tag": "c:bronze_plates" },
+    "4": { "item": "astromine:elite_machine_chassis" },
+    "5": { "tag": "c:bronze_plates" },
     "6": { "tag": "c:iron_plates" },
-    "7": { "item": "minecraft:furnace" },
+    "7": { "item": "minecraft:lava_bucket" },
     "8": { "tag": "c:iron_plates" }
   },
-  "result": { "item": "astromine:primitive_solid_generator", "count": 1 }
+  "result": { "item": "astromine:elite_liquid_generator", "count": 1 }
 }

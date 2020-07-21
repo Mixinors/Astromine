@@ -12,5 +12,5 @@
     "7": { "item": "minecraft:lava_bucket" },
     "8": { "tag": "c:iron_plates" }
   },
-  "result": { "item": "astromine:primitive_liquid_generator", "count": 1 }
+  "result": { "item": "astromine:advanced_liquid_generator", "count": 1 }
 }

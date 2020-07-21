@@ -1,5 +1,5 @@
 {
-  "type": "astromine:primitive_alloy_smelter",
+  "type": "astromine:alloy_smelter",
   "firstInput": {
     "tag": "c:copper_ingots",
     "count": 3
