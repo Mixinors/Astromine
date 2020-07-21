@@ -80,4 +80,23 @@ public class BufferBlock extends DefaultedBlockWithEntity {
 			}
 		};
 	}
+
+	@Override
+	public boolean hasScreenHandler() {
+		return true;
+	}
+
+	@Override
+	public BlockEntity createBlockEntity() {
+		return null;
+	}
+
+	@Override
+	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+		return null;
+	}
+
+	@Override
+	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
+	}
 }

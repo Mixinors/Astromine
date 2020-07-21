@@ -131,7 +131,7 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory>, EnergyCon
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.ELECTROLYZER);
+		return new ItemStack(AstromineBlocks.ELITE_ELECTROLYZER);
 	}
 
 	public Identifier getIdentifier() {

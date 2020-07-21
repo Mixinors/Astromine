@@ -35,8 +35,12 @@ public class FluidExtractorBlockEntity extends DefaultedEnergyFluidBlockEntity i
 	public FluidExtractorBlockEntity() {
 		super(AstromineBlockEntityTypes.FLUID_EXTRACTOR);
 
-		setMaxStoredPower(32000);
 		fluidComponent.getVolume(0).setSize(Fraction.ofWhole(4));
+	}
+
+	@Override
+	protected int getEnergySize() {
+		return 16384;
 	}
 
 	@Override

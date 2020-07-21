@@ -11,6 +11,7 @@ public abstract class DefaultedEnergyItemBlockEntity extends DefaultedEnergyBloc
 
 	protected abstract ItemInventoryComponent createItemComponent();
 
+
 	public DefaultedEnergyItemBlockEntity(BlockEntityType<?> type) {
 		super(type);
 

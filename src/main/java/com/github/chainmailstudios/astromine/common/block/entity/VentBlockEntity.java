@@ -32,8 +32,12 @@ public class VentBlockEntity extends DefaultedEnergyFluidBlockEntity implements 
 	public VentBlockEntity() {
 		super(AstromineBlockEntityTypes.VENT);
 
-		setMaxStoredPower(16000);
 		fluidComponent.getVolume(0).setSize(new Fraction(16, 1));
+	}
+
+	@Override
+	protected int getEnergySize() {
+		return 16384;
 	}
 
 	@Override

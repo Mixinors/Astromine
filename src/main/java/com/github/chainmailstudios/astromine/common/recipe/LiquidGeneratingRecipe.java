@@ -115,7 +115,7 @@ public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory>, Energy
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.LIQUID_GENERATOR);
+		return new ItemStack(AstromineBlocks.ELITE_LIQUID_GENERATOR);
 	}
 
 	public Fluid getFluid() {

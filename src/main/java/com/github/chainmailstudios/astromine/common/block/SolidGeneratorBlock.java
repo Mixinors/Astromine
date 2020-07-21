@@ -22,45 +22,73 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class SolidGeneratorBlock extends DefaultedHorizontalFacingBlockWithEntity {
+public abstract class SolidGeneratorBlock extends DefaultedHorizontalFacingBlockWithEntity {
 	public SolidGeneratorBlock(Settings settings) {
 		super(settings);
 	}
 
-	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return new SolidGeneratorBlockEntity();
-	}
+	public abstract static class Base extends SolidGeneratorBlock {
+		public Base(Settings settings) {
+			super(settings);
+		}
 
-	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos blockPos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (!world.isClient && !(player.getStackInHand(hand).getItem() instanceof BucketItem)) {
-			player.openHandledScreen(state.createScreenHandlerFactory(world, blockPos));
-			return ActionResult.CONSUME;
-		} else if (player.getStackInHand(hand).getItem() instanceof BucketItem) {
-			return super.onUse(state, world, blockPos, player, hand, hit);
-		} else {
-			return ActionResult.SUCCESS;
+		@Override
+		public boolean hasScreenHandler() {
+			return true;
+		}
+
+		@Override
+		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+			return new SolidGeneratorScreenHandler(syncId, playerInventory, pos);
+		}
+
+		@Override
+		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
+			buffer.writeBlockPos(pos);
 		}
 	}
 
-	@Override
-	public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
-		return new ExtendedScreenHandlerFactory() {
-			@Override
-			public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buffer) {
-				buffer.writeBlockPos(pos);
-			}
+	public static class Primitive extends Base {
+		public Primitive(Settings settings) {
+			super(settings);
+		}
 
-			@Override
-			public Text getDisplayName() {
-				return new TranslatableText(getTranslationKey());
-			}
+		@Override
+		public BlockEntity createBlockEntity() {
+			return new SolidGeneratorBlockEntity.Primitive();
+		}
+	}
 
-			@Override
-			public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-				return new SolidGeneratorScreenHandler(syncId, playerInventory, pos);
-			}
-		};
+	public static class Basic extends Base {
+		public Basic(Settings settings) {
+			super(settings);
+		}
+
+		@Override
+		public BlockEntity createBlockEntity() {
+			return new SolidGeneratorBlockEntity.Basic();
+		}
+	}
+
+	public static class Advanced extends Base {
+		public Advanced(Settings settings) {
+			super(settings);
+		}
+
+		@Override
+		public BlockEntity createBlockEntity() {
+			return new SolidGeneratorBlockEntity.Advanced();
+		}
+	}
+
+	public static class Elite extends Base {
+		public Elite(Settings settings) {
+			super(settings);
+		}
+
+		@Override
+		public BlockEntity createBlockEntity() {
+			return new SolidGeneratorBlockEntity.Elite();
+		}
 	}
 }

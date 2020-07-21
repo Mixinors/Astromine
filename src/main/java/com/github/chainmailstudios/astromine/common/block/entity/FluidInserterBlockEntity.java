@@ -34,8 +34,12 @@ public class FluidInserterBlockEntity extends DefaultedEnergyFluidBlockEntity im
 	public FluidInserterBlockEntity() {
 		super(AstromineBlockEntityTypes.FLUID_INSERTER);
 
-		setMaxStoredPower(32000);
 		fluidComponent.getVolume(0).setSize(Fraction.ofWhole(4));
+	}
+
+	@Override
+	protected int getEnergySize() {
+		return 16384;
 	}
 
 	@Override

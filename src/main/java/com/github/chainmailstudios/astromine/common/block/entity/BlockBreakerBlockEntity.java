@@ -39,8 +39,11 @@ public class BlockBreakerBlockEntity extends DefaultedEnergyItemBlockEntity impl
 
 	public BlockBreakerBlockEntity() {
 		super(AstromineBlockEntityTypes.BLOCK_BREAKER);
+	}
 
-		setMaxStoredPower(32000);
+	@Override
+	protected int getEnergySize() {
+		return 16384;
 	}
 
 	@Override

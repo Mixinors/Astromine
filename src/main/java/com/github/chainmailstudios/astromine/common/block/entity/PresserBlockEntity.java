@@ -12,6 +12,7 @@ import com.github.chainmailstudios.astromine.common.recipe.PressingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.RecipeType;
@@ -22,7 +23,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
-public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
+public abstract class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
 	public int progress = 0;
 	public int limit = 100;
 
@@ -34,12 +35,13 @@ public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implement
 
 	Optional<PressingRecipe> recipe = Optional.empty();
 
-	public PresserBlockEntity() {
-		super(AstromineBlockEntityTypes.PRESSER);
-
-		setMaxStoredPower(32000);
+	public PresserBlockEntity(BlockEntityType<?> type) {
+		super(type);
+		
 		addEnergyListener(() -> shouldTry = true);
 	}
+	
+	abstract int getMachineSpeed();
 
 	@Override
 	protected ItemInventoryComponent createItemComponent() {
@@ -127,6 +129,70 @@ public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implement
 			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, true));
 		} else if (!isActive && activity[0]) {
 			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, false));
+		}
+	}
+
+	public static class Primitive extends PresserBlockEntity {
+		public Primitive() {
+			super(AstromineBlockEntityTypes.PRIMITIVE_PRESSER);
+		}
+
+		@Override
+		int getMachineSpeed() {
+			return 1;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 2048;
+		}
+	}
+
+	public static class Basic extends PresserBlockEntity {
+		public Basic() {
+			super(AstromineBlockEntityTypes.BASIC_PRESSER);
+		}
+
+		@Override
+		public int getMachineSpeed() {
+			return 2;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 8192;
+		}
+	}
+
+	public static class Advanced extends PresserBlockEntity {
+		public Advanced() {
+			super(AstromineBlockEntityTypes.ADVANCED_PRESSER);
+		}
+
+		@Override
+		public int getMachineSpeed() {
+			return 4;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 32767;
+		}
+	}
+
+	public static class Elite extends PresserBlockEntity {
+		public Elite() {
+			super(AstromineBlockEntityTypes.ELITE_PRESSER);
+		}
+
+		@Override
+		int getMachineSpeed() {
+			return 8;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 131068;
 		}
 	}
 }

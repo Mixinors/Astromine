@@ -13,6 +13,7 @@ import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +22,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
-public class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockEntity implements NetworkMember, RecipeConsumer, Tickable {
+public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockEntity implements NetworkMember, RecipeConsumer, Tickable {
 	public int current = 0;
 	public int limit = 100;
 
@@ -36,14 +37,17 @@ public class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockEntity imp
 	private static final int FIRST_OUTPUT_FLUID_VOLUME = 1;
 	private static final int SECOND_OUTPUT_FLUID_VOLUME = 2;
 
-	public ElectrolyzerBlockEntity() {
-		super(AstromineBlockEntityTypes.ELECTROLYZER);
-
-		setMaxStoredPower(32000);
-		fluidComponent.getVolume(INPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
-		fluidComponent.getVolume(FIRST_OUTPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
-		fluidComponent.getVolume(SECOND_OUTPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
+	public ElectrolyzerBlockEntity(BlockEntityType<?> type) {
+		super(type);
+		
+		fluidComponent.getVolume(INPUT_FLUID_VOLUME).setSize(getTankSize());
+		fluidComponent.getVolume(FIRST_OUTPUT_FLUID_VOLUME).setSize(getTankSize());
+		fluidComponent.getVolume(SECOND_OUTPUT_FLUID_VOLUME).setSize(getTankSize());
 	}
+	
+	abstract int getMachineSpeed();
+	
+	abstract Fraction getTankSize();
 
 	@Override
 	protected FluidInventoryComponent createFluidComponent() {
@@ -130,5 +134,89 @@ public class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockEntity imp
 	@Override
 	protected @NotNull Map<NetworkType, Collection<NetworkMemberType>> createMemberProperties() {
 		return ofTypes(AstromineNetworkTypes.FLUID, REQUESTER_PROVIDER, AstromineNetworkTypes.ENERGY, REQUESTER);
+	}
+
+	public static class Primitive extends ElectrolyzerBlockEntity {
+		public Primitive() {
+			super(AstromineBlockEntityTypes.PRIMITIVE_ELECTROLYZER);
+		}
+
+		@Override
+		int getMachineSpeed() {
+			return 1;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 2048;
+		}
+
+		@Override
+		Fraction getTankSize() {
+			return Fraction.of(4, 1);
+		}
+	}
+
+	public static class Basic extends ElectrolyzerBlockEntity {
+		public Basic() {
+			super(AstromineBlockEntityTypes.BASIC_ELECTROLYZER);
+		}
+
+		@Override
+		public int getMachineSpeed() {
+			return 2;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 8192;
+		}
+
+		@Override
+		Fraction getTankSize() {
+			return Fraction.of(8, 1);
+		}
+	}
+
+	public static class Advanced extends ElectrolyzerBlockEntity {
+		public Advanced() {
+			super(AstromineBlockEntityTypes.ADVANCED_ELECTROLYZER);
+		}
+
+		@Override
+		public int getMachineSpeed() {
+			return 4;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 32767;
+		}
+
+		@Override
+		Fraction getTankSize() {
+			return Fraction.of(16, 1);
+		}
+	}
+
+	public static class Elite extends ElectrolyzerBlockEntity {
+		public Elite() {
+			super(AstromineBlockEntityTypes.ELITE_ELECTROLYZER);
+		}
+
+		@Override
+		int getMachineSpeed() {
+			return 8;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 131068;
+		}
+
+		@Override
+		Fraction getTankSize() {
+			return Fraction.of(64, 1);
+		}
 	}
 }

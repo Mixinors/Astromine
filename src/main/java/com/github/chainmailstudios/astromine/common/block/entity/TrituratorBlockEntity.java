@@ -12,6 +12,7 @@ import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.RecipeType;
@@ -22,7 +23,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
-public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
+public abstract class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
 	public int progress = 0;
 	public int limit = 100;
 
@@ -34,12 +35,13 @@ public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implem
 
 	Optional<TrituratingRecipe> recipe = Optional.empty();
 
-	public TrituratorBlockEntity() {
-		super(AstromineBlockEntityTypes.TRITURATOR);
+	public TrituratorBlockEntity(BlockEntityType<?> type) {
+		super(type);
 
-		setMaxStoredPower(32000);
 		addEnergyListener(() -> shouldTry = true);
 	}
+
+	abstract int getMachineSpeed();
 
 	@Override
 	protected ItemInventoryComponent createItemComponent() {
@@ -129,6 +131,70 @@ public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implem
 			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, true));
 		} else if (!isActive && activity[0]) {
 			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, false));
+		}
+	}
+
+	public static class Primitive extends TrituratorBlockEntity {
+		public Primitive() {
+			super(AstromineBlockEntityTypes.PRIMITIVE_TRITURATOR);
+		}
+
+		@Override
+		int getMachineSpeed() {
+			return 1;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 2048;
+		}
+	}
+
+	public static class Basic extends TrituratorBlockEntity {
+		public Basic() {
+			super(AstromineBlockEntityTypes.BASIC_TRITURATOR);
+		}
+
+		@Override
+		public int getMachineSpeed() {
+			return 2;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 8192;
+		}
+	}
+
+	public static class Advanced extends TrituratorBlockEntity {
+		public Advanced() {
+			super(AstromineBlockEntityTypes.ADVANCED_TRITURATOR);
+		}
+
+		@Override
+		public int getMachineSpeed() {
+			return 4;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 32767;
+		}
+	}
+
+	public static class Elite extends TrituratorBlockEntity {
+		public Elite() {
+			super(AstromineBlockEntityTypes.ELITE_TRITURATOR);
+		}
+
+		@Override
+		int getMachineSpeed() {
+			return 8;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 131068;
 		}
 	}
 }

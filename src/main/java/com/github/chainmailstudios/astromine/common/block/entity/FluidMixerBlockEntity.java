@@ -13,6 +13,7 @@ import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +22,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
-public class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEntity implements NetworkMember, RecipeConsumer, Tickable {
+public abstract class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEntity implements NetworkMember, RecipeConsumer, Tickable {
 	public int current = 0;
 	public int limit = 100;
 
@@ -31,19 +32,21 @@ public class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEntity imple
 
 	private Optional<FluidMixingRecipe> recipe = Optional.empty();
 
-	private static final int INPUT_ENERGY_VOLUME = 0;
 	private static final int FIRST_INPUT_FLUID_VOLUME = 0;
 	private static final int SECOND_INPUT_FLUID_VOLUME = 1;
 	private static final int OUTPUT_FLUID_VOLUME = 2;
 
-	public FluidMixerBlockEntity() {
-		super(AstromineBlockEntityTypes.FLUID_MIXER);
+	public FluidMixerBlockEntity(BlockEntityType<?> type) {
+		super(type);
 
-		setMaxStoredPower(32000);
 		fluidComponent.getVolume(FIRST_INPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
 		fluidComponent.getVolume(SECOND_INPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
 		fluidComponent.getVolume(OUTPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
 	}
+
+	abstract int getMachineSpeed();
+
+	abstract Fraction getTankSize();
 
 	@Override
 	protected FluidInventoryComponent createFluidComponent() {
@@ -131,5 +134,89 @@ public class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEntity imple
 	@Override
 	protected @NotNull Map<NetworkType, Collection<NetworkMemberType>> createMemberProperties() {
 		return ofTypes(AstromineNetworkTypes.FLUID, REQUESTER_PROVIDER, AstromineNetworkTypes.ENERGY, REQUESTER);
+	}
+
+	public static class Primitive extends FluidMixerBlockEntity {
+		public Primitive() {
+			super(AstromineBlockEntityTypes.PRIMITIVE_FLUID_MIXER);
+		}
+
+		@Override
+		int getMachineSpeed() {
+			return 1;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 2048;
+		}
+
+		@Override
+		Fraction getTankSize() {
+			return Fraction.of(4, 1);
+		}
+	}
+
+	public static class Basic extends FluidMixerBlockEntity {
+		public Basic() {
+			super(AstromineBlockEntityTypes.BASIC_FLUID_MIXER);
+		}
+
+		@Override
+		public int getMachineSpeed() {
+			return 2;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 8192;
+		}
+
+		@Override
+		Fraction getTankSize() {
+			return Fraction.of(8, 1);
+		}
+	}
+
+	public static class Advanced extends FluidMixerBlockEntity {
+		public Advanced() {
+			super(AstromineBlockEntityTypes.ADVANCED_FLUID_MIXER);
+		}
+
+		@Override
+		public int getMachineSpeed() {
+			return 4;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 32767;
+		}
+
+		@Override
+		Fraction getTankSize() {
+			return Fraction.of(16, 1);
+		}
+	}
+
+	public static class Elite extends FluidMixerBlockEntity {
+		public Elite() {
+			super(AstromineBlockEntityTypes.ELITE_FLUID_MIXER);
+		}
+
+		@Override
+		int getMachineSpeed() {
+			return 8;
+		}
+
+		@Override
+		protected int getEnergySize() {
+			return 131068;
+		}
+
+		@Override
+		Fraction getTankSize() {
+			return Fraction.of(64, 1);
+		}
 	}
 }

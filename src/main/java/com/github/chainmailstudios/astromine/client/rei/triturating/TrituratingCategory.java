@@ -32,7 +32,7 @@ public class TrituratingCategory implements RecipeCategory<TrituratingDisplay> {
 
 	@Override
 	public EntryStack getLogo() {
-		return EntryStack.create(AstromineBlocks.TRITURATOR);
+		return EntryStack.create(AstromineBlocks.ELITE_TRITURATOR);
 	}
 
 	@Override
