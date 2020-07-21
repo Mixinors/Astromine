@@ -8,6 +8,8 @@ import me.sargunvohra.mcmods.autoconfig1u.shadowed.blue.endless.jankson.Comment;
 
 @Config(name = "astromine/config")
 public class AstromineConfig implements ConfigData {
+	public static final AstromineConfig DEFAULT = new AstromineConfig();
+
 	@Comment("Whether nuclear warheads are enabled.")
 	public boolean nuclearWarheadEnabled = true;
 
@@ -20,20 +22,27 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Y level in Space to get back to the Overworld.")
 	public int overworldTravelYLevel = -58;
 
-	@Comment("Y level to spawn at when returning to the Overworld")
+	@Comment("Y level to spawn at when returning to the Overworld.")
 	public int overworldSpawnYLevel = 992;
 
 	@Comment("Gravity level in Space")
 	public double spaceGravity = 0.01d;
 
-	@Comment("Whether generation of Copper Ore in the Overworld is enabled")
+	@Comment("Whether generation of Copper Ore in the Overworld is enabled.")
 	public boolean overworldCopperOre = true;
 
-	@Comment("Whether generation of Tin Ore in the Overworld is enabled")
+	@Comment("Whether generation of Tin Ore in the Overworld is enabled.")
 	public boolean overworldTinOre = true;
 
+	@Comment("Whether the mod will attempt to update old item and block names to new ones. Probably faster when false, but old worlds may break.")
+	public boolean compatibilityMode = true;
+
 	public static AstromineConfig get() {
-		return AutoConfig.getConfigHolder(AstromineConfig.class).getConfig();
+		try {
+			return AutoConfig.getConfigHolder(AstromineConfig.class).getConfig();
+		} catch(RuntimeException e) {
+			return DEFAULT;
+		}
 	}
 
 	public static void initialize() {

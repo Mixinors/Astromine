@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "c:quartzes"
+    }
+  ],
+  "result": {
+    "item": "astromine:quartz_fragment",
+    "count": 9
+  }
+}

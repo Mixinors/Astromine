@@ -6,10 +6,10 @@
     "1": { "tag": "c:copper_plates" },
     "2": { "item": "minecraft:air" },
     "3": { "tag": "c:tin_plates" },
-    "4": { "tag": "c:redstones" },
+    "4": { "tag": "c:redstone_dusts" },
     "5": { "tag": "c:tin_plates" },
     "6": { "tag": "c:tin_plates" },
-    "7": { "tag": "c:redstones" },
+    "7": { "tag": "c:redstone_dusts" },
     "8": { "tag": "c:tin_plates" }
   },
   "result": { "item": "astromine:basic_battery", "count": 1 }

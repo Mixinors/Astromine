@@ -3,6 +3,7 @@ package com.github.chainmailstudios.astromine.common.recipe;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
+import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.chainmailstudios.astromine.common.utilities.*;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.google.gson.Gson;
@@ -14,14 +15,13 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
-public class AlloySmelterRecipe implements Recipe<Inventory> {
+public class AlloySmelterRecipe implements EnergyConsumingRecipe<Inventory> {
 	final Identifier identifier;
 	final BetterIngredient firstInput;
 	final BetterIngredient secondInput;

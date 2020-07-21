@@ -1,8 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "astromine:copper_ore",
-    "astromine:asteroid_copper_ore",
-    "astromine:asteroid_copper_cluster"
-  ]
-}

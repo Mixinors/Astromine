@@ -47,6 +47,7 @@ public class AstromineItems {
 	public static final Item GALAXIUM_FRAGMENT = register("galaxium_fragment", new Item(getBasicSettings()));
 	public static final Item DIAMOND_FRAGMENT = register("diamond_fragment", new Item(getBasicSettings()));
 	public static final Item EMERALD_FRAGMENT = register("emerald_fragment", new Item(getBasicSettings()));
+	public static final Item QUARTZ_FRAGMENT = register("quartz_fragment", new Item(getBasicSettings()));
 
 	// Materials - Gems
 	public static final Item ASTERITE = register("asterite", new Item(getBasicSettings()));
@@ -113,6 +114,9 @@ public class AstromineItems {
 	public static final Item DIAMOND_DUST = register("diamond_dust", new Item(getBasicSettings()));
 	public static final Item EMERALD_DUST = register("emerald_dust", new Item(getBasicSettings()));
 	public static final Item NETHERITE_DUST = register("netherite_dust", new Item(getBasicSettings().fireproof()));
+	public static final Item COAL_DUST = register("coal_dust", new Item(getBasicSettings()));
+	public static final Item CHARCOAL_DUST = register("charcoal_dust", new Item(getBasicSettings()));
+	public static final Item QUARTZ_DUST = register("quartz_dust", new Item(getBasicSettings()));
 
 	// Materials - Plates
 	public static final Item METITE_PLATES = register("metite_plates", new Item(getBasicSettings()));

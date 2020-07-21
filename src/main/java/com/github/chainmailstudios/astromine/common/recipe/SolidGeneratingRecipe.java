@@ -4,6 +4,7 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.recipe.base.AdvancedRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.base.EnergyGeneratingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.IngredientUtilities;
@@ -25,7 +26,7 @@ import net.minecraft.util.Identifier;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
-public class SolidGeneratingRecipe implements AdvancedRecipe<Inventory> {
+public class SolidGeneratingRecipe implements AdvancedRecipe<Inventory>, EnergyGeneratingRecipe<Inventory> {
 	final Identifier identifier;
 	final Ingredient input;
 	final int amount;
