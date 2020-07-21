@@ -3,10 +3,10 @@ package com.github.chainmailstudios.astromine.client.rei;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.rei.electricsmelting.ElectricSmeltingCategory;
 import com.github.chainmailstudios.astromine.client.rei.electricsmelting.ElectricSmeltingDisplay;
+import com.github.chainmailstudios.astromine.client.rei.fluidmixing.ElectrolyzingCategory;
 import com.github.chainmailstudios.astromine.client.rei.fluidmixing.ElectrolyzingDisplay;
 import com.github.chainmailstudios.astromine.client.rei.fluidmixing.FluidMixingCategory;
 import com.github.chainmailstudios.astromine.client.rei.fluidmixing.FluidMixingDisplay;
-import com.github.chainmailstudios.astromine.client.rei.fluidmixing.FluidRecipeCategory;
 import com.github.chainmailstudios.astromine.client.rei.generating.LiquidGeneratingCategory;
 import com.github.chainmailstudios.astromine.client.rei.generating.LiquidGeneratingDisplay;
 import com.github.chainmailstudios.astromine.client.rei.generating.SolidGeneratingCategory;
@@ -95,7 +95,7 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		recipeHelper.registerCategory(new LiquidGeneratingCategory());
 		recipeHelper.registerCategory(new SolidGeneratingCategory());
 		recipeHelper.registerCategory(new FluidMixingCategory(FLUID_MIXING, "category.astromine.fluid_mixing", EntryStack.create(AstromineBlocks.FLUID_MIXER)));
-		recipeHelper.registerCategory(new FluidRecipeCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AstromineBlocks.ELECTROLYZER)));
+		recipeHelper.registerCategory(new ElectrolyzingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AstromineBlocks.ELECTROLYZER)));
 		recipeHelper.registerCategory(new PressingCategory());
 	}
 
@@ -128,7 +128,7 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		recipeHelper.registerAutoCraftButtonArea(LIQUID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
 		recipeHelper.registerAutoCraftButtonArea(SOLID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
 		recipeHelper.registerAutoCraftButtonArea(FLUID_MIXING, bounds -> new Rectangle(bounds.getCenterX() - 65 + 130 - 16, bounds.getMaxY() - 16, 10, 10));
-		recipeHelper.registerAutoCraftButtonArea(ELECTROLYZING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
+		recipeHelper.registerAutoCraftButtonArea(ELECTROLYZING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16 - 29, bounds.getMaxY() - 16, 10, 10));
 
 		DefaultPlugin.registerInfoDisplay(DefaultInformationDisplay.createFromEntry(
 				EntryStack.create(PatchouliAPI.instance.getBookStack(AstromineCommon.identifier("manual"))).setting(EntryStack.Settings.CHECK_TAGS, EntryStack.Settings.TRUE),
