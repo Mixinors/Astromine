@@ -6,11 +6,11 @@ import com.mojang.serialization.Codec;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
 
-public class AstromineBiomeSource extends BiomeSource {
-	public static Codec<AstromineBiomeSource> CODEC = Codec.LONG.fieldOf("seed").xmap(AstromineBiomeSource::new, (source) -> source.seed).stable().codec();
+public class EarthSpaceBiomeSource extends BiomeSource {
+	public static Codec<EarthSpaceBiomeSource> CODEC = Codec.LONG.fieldOf("seed").xmap(EarthSpaceBiomeSource::new, (source) -> source.seed).stable().codec();
 	private final long seed;
 
-	public AstromineBiomeSource(long seed) {
+	public EarthSpaceBiomeSource(long seed) {
 		super(ImmutableList.of());
 		this.seed = seed;
 	}
@@ -22,7 +22,7 @@ public class AstromineBiomeSource extends BiomeSource {
 
 	@Override
 	public BiomeSource withSeed(long seed) {
-		return new AstromineBiomeSource(seed);
+		return new EarthSpaceBiomeSource(seed);
 	}
 
 	@Override

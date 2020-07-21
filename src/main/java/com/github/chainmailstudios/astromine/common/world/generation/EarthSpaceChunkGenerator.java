@@ -20,16 +20,16 @@ import net.minecraft.world.gen.chunk.VerticalBlockSample;
 
 import java.util.Arrays;
 
-public class AstromineChunkGenerator extends ChunkGenerator {
-	public static Codec<AstromineChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(BiomeSource.field_24713.fieldOf("biome_source").forGetter(gen -> gen.biomeSource), Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed))
-			.apply(instance, AstromineChunkGenerator::new));
+public class EarthSpaceChunkGenerator extends ChunkGenerator {
+	public static Codec<EarthSpaceChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(BiomeSource.field_24713.fieldOf("biome_source").forGetter(gen -> gen.biomeSource), Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed))
+			.apply(instance, EarthSpaceChunkGenerator::new));
 
 	private final BiomeSource biomeSource;
 	private final long seed;
 
 	private final OpenSimplexNoise noise;
 
-	public AstromineChunkGenerator(BiomeSource biomeSource, long seed) {
+	public EarthSpaceChunkGenerator(BiomeSource biomeSource, long seed) {
 		super(biomeSource, new StructuresConfig(false));
 		this.biomeSource = biomeSource;
 		this.seed = seed;
@@ -43,7 +43,7 @@ public class AstromineChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public ChunkGenerator withSeed(long seed) {
-		return new AstromineChunkGenerator(new AstromineBiomeSource(seed), seed);
+		return new EarthSpaceChunkGenerator(new EarthSpaceBiomeSource(seed), seed);
 	}
 
 	@Override
