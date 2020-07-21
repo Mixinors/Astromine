@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "item": "minecraft:iron_ingot"
-  },
-  "result": "astromine:steel_ingot",
-  "experience": 0.5,
-  "cookingtime": 1200
-}

@@ -17,7 +17,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Tickable;
 import org.jetbrains.annotations.NotNull;
-import spinnery.common.inventory.BaseInventory;
 
 import java.util.Collection;
 import java.util.Map;
@@ -46,12 +45,10 @@ public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implement
 	protected ItemInventoryComponent createItemComponent() {
 		return new SimpleItemInventoryComponent(2).withInsertPredicate((direction, itemStack, slot) -> {
 			return slot == 1;
+		}).withExtractPredicate((direction, stack, slot) -> {
+			return slot == 0;
 		}).withListener((inv) -> {
-			if (hasWorld() && !world.isClient) {
-				BaseInventory inputInventory = new BaseInventory(1);
-				inputInventory.setStack(0, itemComponent.getStack(1));
-				recipe = (Optional<PressingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) PressingRecipe.Type.INSTANCE, inputInventory, world);
-			}
+			shouldTry = true;
 		});
 	}
 
@@ -77,9 +74,15 @@ public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implement
 
 	@Override
 	public void tick() {
+		super.tick();
+
 		if (world.isClient()) return;
 		if (shouldTry) {
-			itemComponent.dispatchConsumers();
+			if (!recipe.isPresent()) {
+				if (hasWorld() && !world.isClient) {
+					recipe = (Optional<PressingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) PressingRecipe.Type.INSTANCE, ItemInventoryFromInventoryComponent.of(itemComponent), world);
+				}
+			}
 			if (recipe.isPresent() && recipe.get().matches(ItemInventoryFromInventoryComponent.of(itemComponent), world)) {
 				limit = recipe.get().getTime();
 
@@ -109,6 +112,7 @@ public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implement
 			} else {
 				shouldTry = false;
 				isActive = false;
+				progress = 0;
 			}
 		} else {
 			progress = 0;

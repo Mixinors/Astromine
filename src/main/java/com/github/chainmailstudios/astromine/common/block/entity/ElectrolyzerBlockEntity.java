@@ -100,6 +100,8 @@ public class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockEntity imp
 
 	@Override
 	public void tick() {
+		super.tick();
+
 		if (world.isClient()) return;
 
 		if (recipe.isPresent()) {

@@ -1,7 +1,7 @@
 {
   "type": "minecraft:blasting",
   "ingredient": {
-    "item": "astromine:diamond_dust"
+    "tag": "c:diamond_dusts"
   },
   "result": "minecraft:diamond",
   "experience": 0.1,

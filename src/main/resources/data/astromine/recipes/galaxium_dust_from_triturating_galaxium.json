@@ -1,7 +1,7 @@
 {
   "type": "astromine:triturating",
   "input": {
-    "item": "astromine:galaxium",
+    "tag": "c:galaxiums",
     "count": 1
   },
   "output": {

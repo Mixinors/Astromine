@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "astromine:univite_ingot"
+      "tag": "c:univite_ingots"
     }
   ],
   "result": {

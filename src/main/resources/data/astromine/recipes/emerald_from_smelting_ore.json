@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smelting",
   "ingredient": {
-    "tag": "astromine:mod_emerald_ores"
+    "tag": "c:emerald_ores"
   },
   "result": "minecraft:emerald",
   "experience": 0.1,

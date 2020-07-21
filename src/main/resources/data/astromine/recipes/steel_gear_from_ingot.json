@@ -3,7 +3,7 @@
   "pattern": [" # ", "# #", " # "],
   "key": {
     "#": {
-      "item": "astromine:steel_ingot"
+      "tag": "c:steel_ingots"
     }
   },
   "result": {

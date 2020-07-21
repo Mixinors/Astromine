@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "astromine:tin_block"
+      "tag": "c:tin_blocks"
     }
   ],
   "result": {

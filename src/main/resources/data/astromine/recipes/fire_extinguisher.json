@@ -6,7 +6,7 @@
       "item": "minecraft:red_dye"
     },
     "2": {
-      "item": "astromine:iron_plates"
+      "tag": "c:iron_plates"
     }
   },
   "result": {

@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smelting",
   "ingredient": {
-    "item": "astromine:tin_dust"
+    "tag": "c:tin_dusts"
   },
   "result": "astromine:tin_ingot",
   "experience": 0.1,

@@ -7,7 +7,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.FluidInv
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
-import com.github.chainmailstudios.astromine.common.network.NetworkNode;
+import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
@@ -22,12 +22,12 @@ import java.util.List;
 
 public class NetworkTypeFluid extends NetworkType {
 	@Override
-	public void tick(NetworkInstance controller) {
+	public void tick(NetworkInstance instance) {
 		List<FluidVolume> inputs = Lists.newArrayList();
 		List<FluidVolume> outputs = Lists.newArrayList();
 
-		for (NetworkNode memberNode : controller.members) {
-			BlockEntity blockEntity = controller.getWorld().getBlockEntity(memberNode.getBlockPos());
+		for (NetworkMemberNode memberNode : instance.members) {
+			BlockEntity blockEntity = instance.getWorld().getBlockEntity(memberNode.getBlockPos());
 
 			if (blockEntity instanceof ComponentProvider && blockEntity instanceof NetworkMember) {
 				ComponentProvider provider = ComponentProvider.fromBlockEntity(blockEntity);
@@ -42,8 +42,7 @@ public class NetworkTypeFluid extends NetworkType {
 
 					if (!blockEntity.getCachedState().contains(property)) break before;
 
-					TransferType type = transferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).get(memberNode.getDirection(), blockEntity.getCachedState().get(property));
-					boolean areAllNone = transferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).areAllNone();
+					TransferType type = transferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).get(memberNode.getDirection());
 
 					if (type != TransferType.DISABLED) {
 						if (type.canExtract() || ((NetworkMember) blockEntity).isProvider(this)) {

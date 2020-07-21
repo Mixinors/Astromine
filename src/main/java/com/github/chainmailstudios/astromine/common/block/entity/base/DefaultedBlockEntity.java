@@ -1,13 +1,20 @@
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedFacingBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
+import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -20,28 +27,28 @@ import net.minecraft.block.FacingBlock;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Lazy;
-import net.minecraft.util.Pair;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-public abstract class DefaultedBlockEntity extends BlockEntity implements ComponentProvider, PacketConsumer, BlockEntityClientSerializable, NetworkMember {
+public abstract class DefaultedBlockEntity extends BlockEntity implements ComponentProvider, PacketConsumer, BlockEntityClientSerializable, NetworkMember, Tickable {
 	protected final Lazy<Map<NetworkType, Collection<NetworkMemberType>>> networkMemberType = new Lazy<>(this::createMemberProperties);
 	protected final BlockEntityTransferComponent transferComponent = new BlockEntityTransferComponent();
 
 	protected final Map<ComponentType<?>, Component> allComponents = Maps.newHashMap();
 
 	protected final Map<Identifier, BiConsumer<PacketByteBuf, PacketContext>> allHandlers = Maps.newHashMap();
+
+	protected boolean skipInventory = true;
 
 	public static final Identifier TRANSFER_UPDATE_PACKET = AstromineCommon.identifier("transfer_update_packet");
 
@@ -57,6 +64,10 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 
 			markDirty();
 		}));
+	}
+
+	public void doNotSkipInventory() {
+		this.skipInventory = false;
 	}
 
 	@NotNull
@@ -93,14 +104,14 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 				return (Collection<T>) getComponentTypes()
 						.stream()
 						.map(type -> new Pair<>((ComponentType) type, (Component) getComponent(type)))
-						.filter(pair -> transferComponent.get(pair.getLeft()).get(direction, getCachedState().get(HorizontalFacingBlock.FACING)) != TransferType.NONE)
+						.filter(pair -> transferComponent.get(pair.getLeft()).get(direction) != TransferType.NONE)
 						.map(Pair::getRight)
 						.collect(Collectors.toList());
 			} else if (getCachedState().contains(FacingBlock.FACING)) {
 				return (Collection<T>) getComponentTypes()
 						.stream()
 						.map(type -> new Pair<>((ComponentType) type, (Component) getComponent(type)))
-						.filter(pair -> transferComponent.get(pair.getLeft()).get(direction, getCachedState().get(FacingBlock.FACING)) != TransferType.NONE)
+						.filter(pair -> transferComponent.get(pair.getLeft()).get(direction) != TransferType.NONE)
 						.map(Pair::getRight)
 						.collect(Collectors.toList());
 			} else {
@@ -151,12 +162,101 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 	@Override
 	public CompoundTag toClientTag(CompoundTag compoundTag) {
 		compoundTag = toTag(compoundTag);
-		compoundTag.remove(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT.getId().toString());
+		if (skipInventory) {
+			compoundTag.remove(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT.getId().toString());
+		} else {
+			skipInventory = true;
+		}
 		return compoundTag;
 	}
 
 	@Override
 	public void fromClientTag(CompoundTag compoundTag) {
 		fromTag(null, compoundTag);
+	}
+
+	@Override
+	public void tick() {
+		if (!hasWorld() || world.isClient()) return;
+		allComponents.forEach((type, component) -> {
+			BlockEntityTransferComponent.TransferEntry entry = transferComponent.get(type);
+
+			for (Direction ourDirection : Direction.values()) {
+				TransferType transferType = entry.get(ourDirection);
+				if (transferType.canExtract()) {
+					BlockPos neighborPos = getPos().offset(ourDirection);
+					BlockState neighborState = world.getBlockState(neighborPos);
+
+					if (neighborState.getBlock().hasBlockEntity()) {
+						BlockEntity neighborEntity = world.getBlockEntity(neighborPos);
+
+						ComponentProvider neighborProvider = ComponentProvider.fromBlockEntity(neighborEntity);
+
+						Direction neighborDirection = ourDirection.getOpposite();
+
+						if (neighborEntity instanceof Inventory) {
+							if (hasComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)) {
+								ItemInventoryComponent ourItemComponent = getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
+								ItemInventoryComponent neighborItemComponent = ItemInventoryComponentFromItemInventory.of((Inventory) neighborEntity);
+
+								List<ItemStack> matching = (List<ItemStack>) ourItemComponent.getExtractableContentsMatching(ourDirection, (stack -> !stack.isEmpty()));
+
+								if (!matching.isEmpty()) {
+									ItemStack stack = matching.get(0);
+
+									TypedActionResult<ItemStack> result = neighborItemComponent.insert(neighborDirection, stack);
+
+									ItemStack resultStack = result.getValue();
+
+									stack.setCount(resultStack.getCount());
+								}
+							}
+						}
+
+						if (neighborProvider != null && neighborProvider.hasComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT)) {
+							BlockEntityTransferComponent neighborTransferComponent = neighborProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
+
+							TransferType neighborTransferType;
+
+							if (hasComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT) && neighborProvider.hasComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)) {
+								neighborTransferType = neighborTransferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(neighborDirection);
+
+								if (neighborTransferType.canInsert()) {
+									ItemInventoryComponent ourItemComponent = getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
+									ItemInventoryComponent neighborItemComponent = neighborProvider.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
+
+									List<ItemStack> matching = (List<ItemStack>) ourItemComponent.getExtractableContentsMatching(ourDirection, (stack -> !stack.isEmpty()));
+
+									if (!matching.isEmpty()) {
+										ItemStack stack = matching.get(0);
+
+										TypedActionResult<ItemStack> result = neighborItemComponent.insert(neighborDirection, stack);
+
+										ItemStack resultStack = result.getValue();
+
+										stack.setCount(resultStack.getCount());
+									}
+								}
+							}
+
+							if (hasComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT) && neighborProvider.hasComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT)) {
+								neighborTransferType = neighborTransferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).get(neighborDirection);
+
+								if (neighborTransferType.canInsert()) {
+									FluidInventoryComponent ourFluidComponent = getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+									FluidInventoryComponent neighborFluidComponent = neighborProvider.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+
+									List<FluidVolume> matching = (List<FluidVolume>) ourFluidComponent.getExtractableContentsMatching(ourDirection, (volume -> !volume.isEmpty()));
+
+									if (!matching.isEmpty()) {
+										neighborFluidComponent.insert(neighborDirection, matching.get(0));
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		});
 	}
 }

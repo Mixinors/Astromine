@@ -21,6 +21,7 @@ public class SimpleItemInventoryComponent implements ItemInventoryComponent {
 
 	private final List<Runnable> listeners = new ArrayList<>();
 	private TriPredicate<@Nullable Direction, ItemStack, Integer> insertPredicate = (direction, itemStack, slot) -> true;
+	private TriPredicate<@Nullable Direction, ItemStack, Integer> extractPredicate = (direction, stack, integer) -> true;
 
 	private int size;
 
@@ -47,14 +48,25 @@ public class SimpleItemInventoryComponent implements ItemInventoryComponent {
 		return insertPredicate.test(direction, stack, slot);
 	}
 
+	@Override
+	public boolean canExtract(Direction direction, ItemStack stack, int slot) {
+		return extractPredicate.test(direction, stack, slot);
+	}
+
 	public SimpleItemInventoryComponent withInsertPredicate(TriPredicate<@Nullable Direction, ItemStack, Integer> predicate) {
 		TriPredicate<Direction, ItemStack, Integer> triPredicate = this.insertPredicate;
 		this.insertPredicate = (direction, itemStack, integer) -> triPredicate.test(direction, itemStack, integer) && predicate.test(direction, itemStack, integer);
 		return this;
 	}
 
+	public SimpleItemInventoryComponent withExtractPredicate(TriPredicate<@Nullable Direction, ItemStack, Integer> predicate) {
+		TriPredicate<Direction, ItemStack, Integer> triPredicate = this.extractPredicate;
+		this.extractPredicate = (direction, itemStack, integer) -> triPredicate.test(direction, itemStack, integer) && predicate.test(direction, itemStack, integer);
+		return this;
+	}
+
 	@Override
-	public Map<Integer, ItemStack> getItemContents() {
+	public Map<Integer, ItemStack> getContents() {
 		return this.contents;
 	}
 
