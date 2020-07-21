@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "astromine:alloy_smelter"
+          "name": "astromine:primitive_alloy_smelter"
         }
       ],
       "conditions": [

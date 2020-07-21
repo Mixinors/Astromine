@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "astromine:fluid_mixer"
+          "name": "astromine:primitive_fluid_mixer"
         }
       ],
       "conditions": [

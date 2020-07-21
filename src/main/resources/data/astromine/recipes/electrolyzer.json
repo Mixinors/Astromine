@@ -12,5 +12,5 @@
     "7": { "tag": "c:iron_gears" },
     "8": { "tag": "c:iron_plates" }
   },
-  "result": { "item": "astromine:electrolyzer", "count": 1 }
+  "result": { "item": "astromine:primitive_electrolyzer", "count": 1 }
 }

@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "astromine:triturator"
+          "name": "astromine:primitive_triturator"
         }
       ],
       "conditions": [

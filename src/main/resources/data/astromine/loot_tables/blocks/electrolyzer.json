@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "astromine:electrolyzer"
+          "name": "astromine:primitive_electrolyzer"
         }
       ],
       "conditions": [

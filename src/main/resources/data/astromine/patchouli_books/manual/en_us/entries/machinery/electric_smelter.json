@@ -1,18 +1,18 @@
 {
 	"name": "text.astromine.machinery.electric_smelter.title",
-	"icon": "astromine:electric_smelter",
+	"icon": "astromine:primitive_electric_smelter",
 	"category": "machinery",
 	"sortnum": 1,
 	"pages": [
 		{
 			"type": "spotlight",
-			"item": "astromine:electric_smelter",
+			"item": "astromine:primitive_electric_smelter",
 			"title": "text.astromine.machinery.electric_smelter.page_one.title",
 			"text": "text.astromine.machinery.electric_smelter.page_one.text"
 		},
 		{
 			"type": "crafting",
-			"recipe": "astromine:electric_smelter",
+			"recipe": "astromine:primitive_electric_smelter",
 			"title": "text.astromine.machinery.electric_smelter.page_two.title"
 		}
 	]

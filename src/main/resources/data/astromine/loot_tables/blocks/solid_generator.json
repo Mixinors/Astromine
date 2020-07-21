@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "astromine:solid_generator"
+          "name": "astromine:primitive_solid_generator"
         }
       ],
       "conditions": [

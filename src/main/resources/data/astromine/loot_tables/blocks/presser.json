@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "astromine:presser"
+          "name": "astromine:primitive_presser"
         }
       ],
       "conditions": [

@@ -12,5 +12,5 @@
     "7": { "item": "minecraft:blast_furnace" },
     "8": { "tag": "c:iron_plates" }
   },
-  "result": { "item": "astromine:electric_smelter", "count": 1 }
+  "result": { "item": "astromine:primitive_electric_smelter", "count": 1 }
 }

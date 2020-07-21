@@ -12,5 +12,5 @@
     "7": { "item": "minecraft:grindstone" },
     "8": { "tag": "c:iron_plates" }
   },
-  "result": { "item": "astromine:triturator", "count": 1 }
+  "result": { "item": "astromine:primitive_triturator", "count": 1 }
 }

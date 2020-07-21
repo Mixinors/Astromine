@@ -12,5 +12,5 @@
     "7": { "item": "minecraft:bucket" },
     "8": { "tag": "c:iron_plates" }
   },
-  "result": { "item": "astromine:fluid_mixer", "count": 1 }
+  "result": { "item": "astromine:primitive_fluid_mixer", "count": 1 }
 }

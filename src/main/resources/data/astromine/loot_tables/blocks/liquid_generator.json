@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "astromine:liquid_generator"
+          "name": "astromine:primitive_liquid_generator"
         }
       ],
       "conditions": [

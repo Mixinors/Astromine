@@ -1,5 +1,5 @@
 {
-  "type": "astromine:alloy_smelter",
+  "type": "astromine:primitive_alloy_smelter",
   "firstInput": {
     "tag": "c:iron_ingots"
   },
