@@ -1,6 +1,8 @@
 package com.github.chainmailstudios.astromine.client.rei;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.client.rei.alloysmelting.AlloySmeltingCategory;
+import com.github.chainmailstudios.astromine.client.rei.alloysmelting.AlloySmeltingDisplay;
 import com.github.chainmailstudios.astromine.client.rei.electricsmelting.ElectricSmeltingCategory;
 import com.github.chainmailstudios.astromine.client.rei.electricsmelting.ElectricSmeltingDisplay;
 import com.github.chainmailstudios.astromine.client.rei.fluidmixing.ElectrolyzingCategory;
@@ -77,6 +79,7 @@ public class AstromineREIPlugin implements REIPluginV0 {
 	public static final Identifier FLUID_MIXING = AstromineCommon.identifier("fluid_mixing");
 	public static final Identifier ELECTROLYZING = AstromineCommon.identifier("electrolyzing");
 	public static final Identifier PRESSING = AstromineCommon.identifier("pressing");
+	public static final Identifier ALLOY_SMELTING = AstromineCommon.identifier("alloy_smelting");
 
 	@Override
 	public Identifier getPluginIdentifier() {
@@ -97,6 +100,7 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		recipeHelper.registerCategory(new FluidMixingCategory(FLUID_MIXING, "category.astromine.fluid_mixing", EntryStack.create(AstromineBlocks.FLUID_MIXER)));
 		recipeHelper.registerCategory(new ElectrolyzingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AstromineBlocks.ELECTROLYZER)));
 		recipeHelper.registerCategory(new PressingCategory());
+		recipeHelper.registerCategory(new AlloySmeltingCategory());
 	}
 
 	@Override
@@ -108,6 +112,7 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		recipeHelper.registerRecipes(FLUID_MIXING, FluidMixingRecipe.class, FluidMixingDisplay::new);
 		recipeHelper.registerRecipes(ELECTROLYZING, ElectrolyzingRecipe.class, ElectrolyzingDisplay::new);
 		recipeHelper.registerRecipes(PRESSING, PressingRecipe.class, PressingDisplay::new);
+		recipeHelper.registerRecipes(ALLOY_SMELTING, AlloySmelterRecipe.class, AlloySmeltingDisplay::new);
 
 		for (Map.Entry<Item, Integer> entry : AbstractFurnaceBlockEntity.createFuelTimeMap().entrySet()) {
 			if (!(entry.getKey() instanceof BucketItem) && entry != null && entry.getValue() > 0) {
@@ -125,6 +130,7 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		recipeHelper.registerWorkingStations(FLUID_MIXING, EntryStack.create(AstromineBlocks.FLUID_MIXER));
 		recipeHelper.registerWorkingStations(ELECTROLYZING, EntryStack.create(AstromineBlocks.ELECTROLYZER));
 		recipeHelper.registerWorkingStations(PRESSING, EntryStack.create(AstromineBlocks.PRESSER));
+		recipeHelper.registerWorkingStations(ALLOY_SMELTING, EntryStack.create(AstromineBlocks.ALLOY_SMELTER));
 		recipeHelper.registerAutoCraftButtonArea(LIQUID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
 		recipeHelper.registerAutoCraftButtonArea(SOLID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
 		recipeHelper.registerAutoCraftButtonArea(FLUID_MIXING, bounds -> new Rectangle(bounds.getCenterX() - 65 + 130 - 16, bounds.getMaxY() - 16, 10, 10));
