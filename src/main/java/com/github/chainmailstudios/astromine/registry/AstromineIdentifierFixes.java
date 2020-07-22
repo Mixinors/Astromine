@@ -20,23 +20,5 @@ public class AstromineIdentifierFixes {
 		IdentifierFixRegistry.INSTANCE.register("presser", "advanced_presser");
 		IdentifierFixRegistry.INSTANCE.register("electrolyzer", "advanced_electrolyzer");
 		IdentifierFixRegistry.INSTANCE.register("fluid_mixer", "advanced_fluid_mixer");
-		IdentifierFixRegistry.INSTANCE.register("tin_haxe", "tin_mattock");
-		IdentifierFixRegistry.INSTANCE.register("copper_haxe", "copper_mattock");
-		IdentifierFixRegistry.INSTANCE.register("bronze_haxe", "bronze_mattock");
-		IdentifierFixRegistry.INSTANCE.register("steel_haxe", "steel_mattock");
-		IdentifierFixRegistry.INSTANCE.register("metite_haxe", "metite_mattock");
-		IdentifierFixRegistry.INSTANCE.register("asterite_haxe", "asterite_mattock");
-		IdentifierFixRegistry.INSTANCE.register("stellum_haxe", "stellum_mattock");
-		IdentifierFixRegistry.INSTANCE.register("galaxium_haxe", "galaxium_mattock");
-		IdentifierFixRegistry.INSTANCE.register("univite_haxe", "univite_mattock");
-		IdentifierFixRegistry.INSTANCE.register("tin_shaxe", "tin_mining_tool");
-		IdentifierFixRegistry.INSTANCE.register("copper_shaxe", "copper_mining_tool");
-		IdentifierFixRegistry.INSTANCE.register("bronze_shaxe", "bronze_mining_tool");
-		IdentifierFixRegistry.INSTANCE.register("steel_shaxe", "steel_mining_tool");
-		IdentifierFixRegistry.INSTANCE.register("metite_shaxe", "metite_mining_tool");
-		IdentifierFixRegistry.INSTANCE.register("asterite_shaxe", "asterite_mining_tool");
-		IdentifierFixRegistry.INSTANCE.register("stellum_shaxe", "stellum_mining_tool");
-		IdentifierFixRegistry.INSTANCE.register("galaxium_shaxe", "galaxium_mining_tool");
-		IdentifierFixRegistry.INSTANCE.register("univite_shaxe", "univite_mining_tool");
 	}
 }
