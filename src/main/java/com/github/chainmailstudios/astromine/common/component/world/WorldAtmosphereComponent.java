@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.common.component.world;
 
-import com.github.chainmailstudios.astromine.common.dimension.EarthSpaceDimensionType;
+import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.google.common.collect.Lists;
@@ -45,9 +45,7 @@ public class WorldAtmosphereComponent implements Component, Tickable {
 	public FluidVolume get(BlockPos position) {
 		RegistryKey<DimensionType> key = world.getDimensionRegistryKey();
 
-		boolean isSpace = (key == EarthSpaceDimensionType.EARTH_SPACE_REGISTRY_KEY);
-
-		if (!isSpace && !volumes.containsKey(position)) {
+		if (!AstromineDimensions.isAstromine(key) && !volumes.containsKey(position)) {
 			return FluidVolume.oxygen();
 		} else {
 			return volumes.getOrDefault(position, FluidVolume.empty());
