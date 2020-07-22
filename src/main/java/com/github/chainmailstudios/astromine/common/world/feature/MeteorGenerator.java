@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.common.world.feature;
 
-import com.github.chainmailstudios.astromine.common.miscellaneous.OpenSimplexNoise;
+import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineFeatures;
 import com.terraformersmc.shapes.api.Position;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 public class MeteorGenerator extends StructurePieceWithDimensions {
 
-	private static final OpenSimplexNoise noise = new OpenSimplexNoise();
+	private static OpenSimplexNoise noise;
 
 	public MeteorGenerator(Random random, int x, int z) {
 		super(AstromineFeatures.METEOR, random, x, 64, z, 16, 16, 16);
@@ -45,6 +45,7 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 	}
 
 	public boolean generate(ServerWorldAccess world, ChunkPos chunkPos, Random random, BlockPos blockPos) {
+		noise = new OpenSimplexNoise(world.getSeed());
 		BlockPos originPos = world.getTopPosition(Heightmap.Type.WORLD_SURFACE, new BlockPos(chunkPos.getStartX() + 8, 0, chunkPos.getStartZ() + 8));
 		emptySphere(
 				world,
@@ -87,7 +88,7 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 					double distance = Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2) + Math.pow(y, 2));
 
 					// place blocks within spherical radius
-					if (distance <= radius + (5 * noise.eval((originPos.getX() + x) / 10f, (originPos.getZ() + z) / 10f))) {
+					if (distance <= radius + (5 * noise.sample((originPos.getX() + x) / 10f, (originPos.getZ() + z) / 10f))) {
 						BlockPos offsetPos = originPos.add(x, y, z);
 
 						world.setBlockState(
@@ -129,7 +130,7 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 					double distance = Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2) + Math.pow(y, 2));
 
 					// place blocks within spherical radius
-					if (distance <= radius - ((radius * 1f / 3f) * noise.eval((originPos.getX() + x) / 10f, (originPos.getY() + y) / 10f, (originPos.getZ() + z) / 10f))) {
+					if (distance <= radius - ((radius * 1f / 3f) * noise.sample((originPos.getX() + x) / 10f, (originPos.getY() + y) / 10f, (originPos.getZ() + z) / 10f))) {
 						world.setBlockState(
 								originPos.add(x, y, z),
 								state,
