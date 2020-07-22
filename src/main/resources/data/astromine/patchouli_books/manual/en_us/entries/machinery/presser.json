@@ -1,18 +1,18 @@
 {
 	"name": "text.astromine.machinery.presser.title",
-	"icon": "astromine:presser",
+	"icon": "astromine:primitive_presser",
 	"category": "machinery",
 	"sortnum": 1,
 	"pages": [
 		{
 			"type": "spotlight",
-			"item": "astromine:presser",
+			"item": "astromine:primitive_presser",
 			"title": "text.astromine.machinery.presser.page_one.title",
 			"text": "text.astromine.machinery.presser.page_one.text"
 		},
 		{
 			"type": "crafting",
-			"recipe": "astromine:presser",
+			"recipe": "astromine:primitive_presser",
 			"title": "text.astromine.machinery.presser.page_two.title"
 		}
 	]

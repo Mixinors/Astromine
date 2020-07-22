@@ -87,7 +87,7 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 				}
 			}
 			if (recipe.isPresent() && recipe.get().matches(inputInventory, world)) {
-				limit = recipe.get().getTime();
+				limit = recipe.get().getTime() * 2;
 
 				ItemStack output = recipe.get().getOutput().copy();
 
@@ -95,7 +95,7 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 					boolean isEmpty = itemComponent.getStack(2).isEmpty();
 					boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(2), output) && ItemStack.areTagsEqual(itemComponent.getStack(2), output);
 
-					if (asEnergy().use(6) && (isEmpty || isEqual) && itemComponent.getStack(2).getCount() + output.getCount() <= itemComponent.getStack(2).getMaxCount()) {
+					if (asEnergy().use(getMachineSpeed() == 1 ? 8 : 6) && (isEmpty || isEqual) && itemComponent.getStack(2).getCount() + output.getCount() <= itemComponent.getStack(2).getMaxCount()) {
 						if (progress == limit) {
 							ItemStack stack1 = itemComponent.getStack(0);
 							ItemStack stack2 = itemComponent.getStack(1);

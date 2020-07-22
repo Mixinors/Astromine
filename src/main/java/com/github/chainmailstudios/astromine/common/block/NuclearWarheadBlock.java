@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.miscellaneous.ExplosionAlgorithm;
+import com.github.chainmailstudios.astromine.common.miscellaneous.Explosions;
 import com.github.chainmailstudios.astromine.common.screenhandler.VentScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.fabricmc.api.EnvType;
@@ -44,7 +44,7 @@ public class NuclearWarheadBlock extends Block {
 		if (world.isClient()) return;
 		if (!AstromineConfig.get().nuclearWarheadEnabled) return;
 		if (world.isReceivingRedstonePower(pos)) {
-			ExplosionAlgorithm.tryExploding(world, pos.getX(), pos.getY(), pos.getZ(), 128);
+			Explosions.tryExploding(world, pos.getX(), pos.getY(), pos.getZ(), 128);
 		}
 	}
 

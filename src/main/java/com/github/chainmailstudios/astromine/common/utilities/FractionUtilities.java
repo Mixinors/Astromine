@@ -21,6 +21,20 @@ public class FractionUtilities {
 		return new Fraction(numerator, denominator);
 	}
 
+	public static Fraction fromFloating(double d) {
+		String s = Fraction.DECIMAL_FORMAT.format(d);
+		int digitsDec = s.length() - 1 - s.indexOf('.');
+
+		int denom = 1;
+		for (int i = 0; i < digitsDec; i++) {
+			d *= 10;
+			denom *= 10;
+		}
+		int num = (int) Math.round(d);
+
+		return Fraction.simplify(Fraction.of(num, denom));
+	}
+
 	public static void toPacket(PacketByteBuf buf, Fraction fraction) {
 		buf.writeLong(fraction.getNumerator());
 		buf.writeLong(fraction.getDenominator());

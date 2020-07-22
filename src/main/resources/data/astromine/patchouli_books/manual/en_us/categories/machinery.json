@@ -1,6 +1,6 @@
 {
 	"name": "text.astromine.patchouli.machinery.title",
 	"description": "text.astromine.patchouli.machinery.description",
-	"icon": "astromine:liquid_generator",
+	"icon": "astromine:primitive_liquid_generator",
 	"sortnum": 3
 }

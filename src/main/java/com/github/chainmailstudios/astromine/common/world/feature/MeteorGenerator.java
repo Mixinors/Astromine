@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.common.world.feature;
 
-import com.github.chainmailstudios.astromine.common.miscellaneous.SimplexAlgorithm;
+import com.github.chainmailstudios.astromine.common.miscellaneous.OpenSimplexNoise;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineFeatures;
 import com.terraformersmc.shapes.api.Position;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 public class MeteorGenerator extends StructurePieceWithDimensions {
 
-	private static final SimplexAlgorithm noise = new SimplexAlgorithm();
+	private static final OpenSimplexNoise noise = new OpenSimplexNoise();
 
 	public MeteorGenerator(Random random, int x, int z) {
 		super(AstromineFeatures.METEOR, random, x, 64, z, 16, 16, 16);
