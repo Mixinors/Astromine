@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.common.world.feature;
 
-import com.github.chainmailstudios.astromine.common.miscellaneous.OpenSimplexNoise;
+import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineFeatures;
 import com.terraformersmc.shapes.api.Position;

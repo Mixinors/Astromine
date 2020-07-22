@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.common.world.generation;
 
-import com.github.chainmailstudios.astromine.common.miscellaneous.OpenSimplexNoise;
+import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

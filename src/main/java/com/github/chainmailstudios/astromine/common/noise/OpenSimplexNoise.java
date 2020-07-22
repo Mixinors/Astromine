@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.common.miscellaneous;
+package com.github.chainmailstudios.astromine.common.noise;
 
 /*
  * OpenSimplex Noise in Java.
@@ -16,7 +16,7 @@ package com.github.chainmailstudios.astromine.common.miscellaneous;
  *   will be the same when ported to other languages.
  */
 
-public class OpenSimplexNoise {
+public class OpenSimplexNoise extends Noise {
 
 	private static final double STRETCH_CONSTANT_2D = -0.211324865405187;    //(1/Math.sqrt(2+1)-1)/2;
 	private static final double SQUISH_CONSTANT_2D = 0.366025403784439;      //(Math.sqrt(2+1)-1)/2;
@@ -34,24 +34,11 @@ public class OpenSimplexNoise {
 	private final short[] perm;
 	private final short[] permGradIndex3D;
 
-	public OpenSimplexNoise() {
-		this(DEFAULT_SEED);
-	}
-
-	public OpenSimplexNoise(short[] perm) {
-		this.perm = perm;
-		permGradIndex3D = new short[256];
-
-		for (int i = 0; i < 256; i++) {
-			//Since 3D has 24 gradients, simple bitmask won't work, so precompute modulo array.
-			permGradIndex3D[i] = (short) ((perm[i] % (gradients3D.length / 3)) * 3);
-		}
-	}
-
 	//Initializes the class using a permutation array generated from a 64-bit seed.
 	//Generates a proper permutation (i.e. doesn't merely perform N successive pair swaps on a base array)
 	//Uses a simple 64-bit LCG.
 	public OpenSimplexNoise(long seed) {
+		super(seed);
 		perm = new short[256];
 		permGradIndex3D = new short[256];
 		short[] source = new short[256];
@@ -72,7 +59,8 @@ public class OpenSimplexNoise {
 	}
 
 	//2D OpenSimplex Noise.
-	public double eval(double x, double y) {
+	@Override
+	public double sample(double x, double y) {
 
 		//Place input coordinates onto grid.
 		double stretchOffset = (x + y) * STRETCH_CONSTANT_2D;
@@ -187,7 +175,8 @@ public class OpenSimplexNoise {
 	}
 
 	//3D OpenSimplex Noise.
-	public double eval(double x, double y, double z) {
+	@Override
+	public double sample(double x, double y, double z) {
 
 		//Place input coordinates on simplectic honeycomb.
 		double stretchOffset = (x + y + z) * STRETCH_CONSTANT_3D;
