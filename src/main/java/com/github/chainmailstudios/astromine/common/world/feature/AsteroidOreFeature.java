@@ -32,10 +32,6 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 	public boolean generate(ServerWorldAccess world, StructureAccessor accessor, ChunkGenerator generator, Random random, BlockPos featurePosition, DefaultFeatureConfig config) {
 		featurePosition = new BlockPos(featurePosition.getX(), random.nextInt(256), featurePosition.getZ());
 
-		double xSize = 8 + random.nextDouble() * 48;
-		double ySize = 8 + random.nextDouble() * 48;
-		double zSize = 8 + random.nextDouble() * 48;
-
 		List<Block> ores = Lists.newArrayList(AsteroidOreRegistry.INSTANCE.get(random.nextInt(100)));
 
 		if (ores.isEmpty()) {
@@ -45,6 +41,10 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 		Collections.shuffle(ores);
 
 		Block ore = ores.get(random.nextInt(ores.size()));
+
+		double xSize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);
+		double ySize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);
+		double zSize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);
 
 		Shape vein = Shapes.ellipsoid((float) xSize, (float) ySize, (float) zSize)
 				.applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true)))
