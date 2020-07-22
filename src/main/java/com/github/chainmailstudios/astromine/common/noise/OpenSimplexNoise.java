@@ -735,7 +735,7 @@ public class OpenSimplexNoise extends Noise {
 	}
 
 	//4D OpenSimplex Noise.
-	public double eval(double x, double y, double z, double w) {
+	public double sample(double x, double y, double z, double w) {
 
 		//Place input coordinates on simplectic honeycomb.
 		double stretchOffset = (x + y + z + w) * STRETCH_CONSTANT_4D;

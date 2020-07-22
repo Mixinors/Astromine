@@ -64,7 +64,7 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 		for (int x = x1; x <= x2; ++x) {
 			for (int z = z1; z <= z2; ++z) {
 				for (int y = y1; y <= y2; ++y) {
-					double noise = this.noise.eval(x * 0.01, y * 0.01, z * 0.01);
+					double noise = this.noise.sample(x * 0.01, y * 0.01, z * 0.01);
 					noise -= computeNoiseFalloff(y);
 
 					if (noise > 0.65) {

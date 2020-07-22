@@ -92,10 +92,10 @@ public class MoonChunkGenerator extends ChunkGenerator {
 				scale /= i;
 
 				// Noise calculation
-				double noise = (this.mainNoise1.eval(x * SCALE, z * SCALE) + this.mainNoise2.eval(x * SCALE * 2, z * SCALE * 2)) / 2;
+				double noise = (this.mainNoise1.sample(x * SCALE, z * SCALE) + this.mainNoise2.sample(x * SCALE * 2, z * SCALE * 2)) / 2;
 
-				noise += (1 - Math.abs(ridgedNoise.eval(x * SCALE * 3.24, z * SCALE * 3.24))) * 0.5;
-				noise += detailNoise.eval(x * 0.05, z * 0.05) * 0.2;
+				noise += (1 - Math.abs(ridgedNoise.sample(x * SCALE * 3.24, z * SCALE * 3.24))) * 0.5;
+				noise += detailNoise.sample(x * 0.05, z * 0.05) * 0.2;
 
 				noise /= 1.7;
 
