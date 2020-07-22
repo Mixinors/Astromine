@@ -10,6 +10,7 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -38,8 +39,8 @@ public class FluidInserterBlockEntity extends DefaultedEnergyFluidBlockEntity im
 	}
 
 	@Override
-	protected int getEnergySize() {
-		return 16384;
+	protected double getEnergySize() {
+		return AstromineConfig.get().fluidInserterEnergy;
 	}
 
 	@Override
@@ -53,7 +54,7 @@ public class FluidInserterBlockEntity extends DefaultedEnergyFluidBlockEntity im
 
 		start:
 		if (this.world != null && !this.world.isClient()) {
-			if (asEnergy().getEnergy() < 250) {
+			if (asEnergy().getEnergy() < AstromineConfig.get().fluidInserterEnergyConsumed) {
 				cooldown.resetToEmpty();
 				isActive = false;
 				break start;
@@ -61,7 +62,7 @@ public class FluidInserterBlockEntity extends DefaultedEnergyFluidBlockEntity im
 
 			isActive = true;
 
-			cooldown.add(Fraction.of(1, 40));
+			cooldown.add(Fraction.of(1, AstromineConfig.get().fluidInserterTimeConsumed));
 			cooldown.simplify();
 			if (cooldown.isBiggerOrEqualThan(Fraction.ofWhole(1))) {
 				cooldown.resetToEmpty();
@@ -75,7 +76,7 @@ public class FluidInserterBlockEntity extends DefaultedEnergyFluidBlockEntity im
 				if (targetState.isAir() && fluidVolume.hasStored(Fraction.bucket())) {
 					FluidVolume toInsert = fluidVolume.extractVolume(Fraction.bucket());
 					world.setBlockState(targetPos, toInsert.getFluid().getDefaultState().getBlockState());
-					asEnergy().extract(250);
+					asEnergy().extract(AstromineConfig.get().fluidInserterEnergyConsumed);
 					world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1, 1);
 				}
 			}

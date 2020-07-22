@@ -31,6 +31,6 @@ public class ElectrolyzerHandledScreen extends DefaultedEnergyFluidHandledScreen
 
 		mainPanel.createChild(WHorizontalArrow::new, Position.of(fluidBar, fluidBar.getWidth() + 9, fluidBar.getHeight() / 2 - 8, 0), Size.of(22, 16))
 				.setLimitSupplier(() -> electrolyzer.limit)
-				.setProgressSupplier(() -> electrolyzer.current);
+				.setProgressSupplier(() -> (int) electrolyzer.current);
 	}
 }

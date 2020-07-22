@@ -20,7 +20,7 @@ public class LiquidGeneratorHandledScreen extends DefaultedEnergyFluidHandledScr
 
 		WHorizontalArrow arrow = mainPanel.createChild(WHorizontalArrow::new, Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight() / 2 - 8, 0), Size.of(22, 16))
 				.setLimitSupplier(() -> generator.limit)
-				.setProgressSupplier(() -> generator.current);
+				.setProgressSupplier(() -> (int) generator.current);
 
 		energyBar.setPosition(Position.of(arrow, arrow.getWidth() + 7, -energyBar.getHeight() / 2 + 8, 0));
 	}

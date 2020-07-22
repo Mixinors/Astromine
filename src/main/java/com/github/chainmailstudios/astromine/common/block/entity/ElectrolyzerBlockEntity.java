@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.ElectrolyzerBlock;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
@@ -11,6 +12,7 @@ import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.recipe.ElectrolyzingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -23,7 +25,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockEntity implements NetworkMember, RecipeConsumer, Tickable {
-	public int current = 0;
+	public double current = 0;
 	public int limit = 100;
 
 	public boolean isActive = false;
@@ -32,7 +34,6 @@ public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockE
 
 	private Optional<ElectrolyzingRecipe> recipe = Optional.empty();
 
-	private static final int INPUT_ENERGY_VOLUME = 0;
 	private static final int INPUT_FLUID_VOLUME = 0;
 	private static final int FIRST_OUTPUT_FLUID_VOLUME = 1;
 	private static final int SECOND_OUTPUT_FLUID_VOLUME = 2;
@@ -44,9 +45,7 @@ public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockE
 		fluidComponent.getVolume(FIRST_OUTPUT_FLUID_VOLUME).setSize(getTankSize());
 		fluidComponent.getVolume(SECOND_OUTPUT_FLUID_VOLUME).setSize(getTankSize());
 	}
-	
-	abstract int getMachineSpeed();
-	
+
 	abstract Fraction getTankSize();
 
 	@Override
@@ -61,7 +60,7 @@ public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockE
 	}
 
 	@Override
-	public int getCurrent() {
+	public double getCurrent() {
 		return current;
 	}
 
@@ -71,7 +70,7 @@ public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockE
 	}
 
 	@Override
-	public void setCurrent(int current) {
+	public void setCurrent(double current) {
 		this.current = current;
 	}
 
@@ -88,6 +87,11 @@ public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockE
 	@Override
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+
+	@Override
+	public void increment() {
+		current += ((ElectrolyzerBlock) this.getCachedState().getBlock()).getMachineSpeed();
 	}
 
 	@Override
@@ -142,18 +146,13 @@ public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockE
 		}
 
 		@Override
-		int getMachineSpeed() {
-			return 1;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 2048;
+		protected double getEnergySize() {
+			return AstromineConfig.get().primitiveElectrolyzerEnergy;
 		}
 
 		@Override
 		Fraction getTankSize() {
-			return Fraction.of(4, 1);
+			return Fraction.of(AstromineConfig.get().primitiveElectrolyzerFluid, 1);
 		}
 	}
 
@@ -163,18 +162,13 @@ public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockE
 		}
 
 		@Override
-		public int getMachineSpeed() {
-			return 2;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 8192;
+		protected double getEnergySize() {
+			return AstromineConfig.get().basicElectrolyzerEnergy;
 		}
 
 		@Override
 		Fraction getTankSize() {
-			return Fraction.of(8, 1);
+			return Fraction.of(AstromineConfig.get().basicElectrolyzerFluid, 1);
 		}
 	}
 
@@ -184,18 +178,13 @@ public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockE
 		}
 
 		@Override
-		public int getMachineSpeed() {
-			return 4;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 32767;
+		protected double getEnergySize() {
+			return AstromineConfig.get().advancedElectrolyzerEnergy;
 		}
 
 		@Override
 		Fraction getTankSize() {
-			return Fraction.of(16, 1);
+			return Fraction.of(AstromineConfig.get().advancedElectrolyzerFluid, 1);
 		}
 	}
 
@@ -205,18 +194,13 @@ public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockE
 		}
 
 		@Override
-		int getMachineSpeed() {
-			return 8;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 131068;
+		protected double getEnergySize() {
+			return AstromineConfig.get().eliteElectrolyzerEnergy;
 		}
 
 		@Override
 		Fraction getTankSize() {
-			return Fraction.of(64, 1);
+			return Fraction.of(AstromineConfig.get().eliteElectrolyzerFluid, 1);
 		}
 	}
 }

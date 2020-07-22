@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.common.block;
 
 import com.github.chainmailstudios.astromine.common.block.entity.LiquidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.LiquidGeneratorScreenHandler;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -50,7 +51,7 @@ public abstract class LiquidGeneratorBlock extends TieredHorizontalFacingMachine
 
 		@Override
 		public double getMachineSpeed() {
-			return 0.5;
+			return AstromineConfig.get().primitiveLiquidGeneratorSpeed;
 		}
 	}
 
@@ -66,7 +67,7 @@ public abstract class LiquidGeneratorBlock extends TieredHorizontalFacingMachine
 
 		@Override
 		public double getMachineSpeed() {
-			return 1;
+			return AstromineConfig.get().basicLiquidGeneratorSpeed;
 		}
 	}
 
@@ -82,7 +83,7 @@ public abstract class LiquidGeneratorBlock extends TieredHorizontalFacingMachine
 
 		@Override
 		public double getMachineSpeed() {
-			return 2;
+			return AstromineConfig.get().advancedLiquidGeneratorSpeed;
 		}
 	}
 
@@ -98,7 +99,7 @@ public abstract class LiquidGeneratorBlock extends TieredHorizontalFacingMachine
 
 		@Override
 		public double getMachineSpeed() {
-			return 4;
+			return AstromineConfig.get().eliteLiquidGeneratorSpeed;
 		}
 	}
 }

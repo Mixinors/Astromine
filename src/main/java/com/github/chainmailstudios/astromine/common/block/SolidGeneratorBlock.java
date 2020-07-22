@@ -3,6 +3,7 @@ package com.github.chainmailstudios.astromine.common.block;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.SolidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.SolidGeneratorScreenHandler;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -60,7 +61,7 @@ public abstract class SolidGeneratorBlock extends TieredHorizontalFacingMachineB
 
 		@Override
 		public double getMachineSpeed() {
-			return 0.5;
+			return AstromineConfig.get().primitiveSolidGeneratorSpeed;
 		}
 	}
 
@@ -76,7 +77,7 @@ public abstract class SolidGeneratorBlock extends TieredHorizontalFacingMachineB
 
 		@Override
 		public double getMachineSpeed() {
-			return 1;
+			return AstromineConfig.get().basicSolidGeneratorSpeed;
 		}
 	}
 
@@ -90,9 +91,10 @@ public abstract class SolidGeneratorBlock extends TieredHorizontalFacingMachineB
 			return new SolidGeneratorBlockEntity.Advanced();
 		}
 
+
 		@Override
 		public double getMachineSpeed() {
-			return 2;
+			return AstromineConfig.get().advancedSolidGeneratorSpeed;
 		}
 	}
 
@@ -108,7 +110,7 @@ public abstract class SolidGeneratorBlock extends TieredHorizontalFacingMachineB
 
 		@Override
 		public double getMachineSpeed() {
-			return 4;
+			return AstromineConfig.get().eliteSolidGeneratorSpeed;
 		}
 	}
 }

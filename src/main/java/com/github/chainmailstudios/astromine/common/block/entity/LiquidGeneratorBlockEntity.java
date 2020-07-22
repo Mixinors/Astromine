@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.LiquidGeneratorBlock;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
@@ -11,6 +12,7 @@ import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.recipe.LiquidGeneratingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -23,7 +25,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public abstract class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlockEntity implements NetworkMember, RecipeConsumer, Tickable {
-	public int current = 0;
+	public double current = 0;
 	public int limit = 100;
 
 	public boolean isActive = false;
@@ -41,8 +43,6 @@ public abstract class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlo
 		fluidComponent.getVolume(INPUT_FLUID_VOLUME).setSize(getTankSize());
 	}
 
-	abstract int getMachineSpeed();
-
 	abstract Fraction getTankSize();
 
 	@Override
@@ -57,7 +57,7 @@ public abstract class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlo
 	}
 
 	@Override
-	public int getCurrent() {
+	public double getCurrent() {
 		return current;
 	}
 
@@ -67,7 +67,7 @@ public abstract class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlo
 	}
 
 	@Override
-	public void setCurrent(int current) {
+	public void setCurrent(double current) {
 		this.current = current;
 	}
 
@@ -84,6 +84,11 @@ public abstract class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlo
 	@Override
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+
+	@Override
+	public void increment() {
+		this.current += 1 * ((LiquidGeneratorBlock) this.getCachedState().getBlock()).getMachineSpeed();
 	}
 
 	@Override
@@ -138,18 +143,13 @@ public abstract class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlo
 		}
 
 		@Override
-		int getMachineSpeed() {
-			return 1;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 2048;
+		protected double getEnergySize() {
+			return AstromineConfig.get().primitiveLiquidGeneratorEnergy;
 		}
 
 		@Override
 		Fraction getTankSize() {
-			return Fraction.of(4, 1);
+			return Fraction.of(AstromineConfig.get().primitiveLiquidGeneratorFluid, 1);
 		}
 	}
 
@@ -159,18 +159,13 @@ public abstract class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlo
 		}
 
 		@Override
-		public int getMachineSpeed() {
-			return 2;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 8192;
+		protected double getEnergySize() {
+			return AstromineConfig.get().basicLiquidGeneratorEnergy;
 		}
 
 		@Override
 		Fraction getTankSize() {
-			return Fraction.of(8, 1);
+			return Fraction.of(AstromineConfig.get().basicLiquidGeneratorFluid, 1);
 		}
 	}
 
@@ -180,18 +175,13 @@ public abstract class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlo
 		}
 
 		@Override
-		public int getMachineSpeed() {
-			return 4;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 32767;
+		protected double getEnergySize() {
+			return AstromineConfig.get().advancedLiquidGeneratorEnergy;
 		}
 
 		@Override
 		Fraction getTankSize() {
-			return Fraction.of(16, 1);
+			return Fraction.of(AstromineConfig.get().advancedLiquidGeneratorFluid, 1);
 		}
 	}
 
@@ -201,18 +191,13 @@ public abstract class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlo
 		}
 
 		@Override
-		int getMachineSpeed() {
-			return 8;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 131068;
+		protected double getEnergySize() {
+			return AstromineConfig.get().eliteLiquidGeneratorEnergy;
 		}
 
 		@Override
 		Fraction getTankSize() {
-			return Fraction.of(64, 1);
+			return Fraction.of(AstromineConfig.get().eliteLiquidGeneratorFluid, 1);
 		}
 	}
 }

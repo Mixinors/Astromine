@@ -10,6 +10,7 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -39,8 +40,8 @@ public class FluidExtractorBlockEntity extends DefaultedEnergyFluidBlockEntity i
 	}
 
 	@Override
-	protected int getEnergySize() {
-		return 16384;
+	protected double getEnergySize() {
+		return AstromineConfig.get().fluidExtractorEnergy;
 	}
 
 	@Override
@@ -54,7 +55,7 @@ public class FluidExtractorBlockEntity extends DefaultedEnergyFluidBlockEntity i
 
 		start:
 		if (this.world != null && !this.world.isClient()) {
-			if (asEnergy().getEnergy() < 250) {
+			if (asEnergy().getEnergy() < AstromineConfig.get().fluidExtractorEnergyConsumed) {
 				cooldown.resetToEmpty();
 				isActive = false;
 				break start;
@@ -62,7 +63,7 @@ public class FluidExtractorBlockEntity extends DefaultedEnergyFluidBlockEntity i
 
 			isActive = true;
 
-			cooldown.add(Fraction.of(1, 40));
+			cooldown.add(Fraction.of(1, AstromineConfig.get().fluidExtractorTimeConsumed));
 			cooldown.simplify();
 			if (cooldown.isBiggerOrEqualThan(Fraction.ofWhole(1))) {
 				cooldown.resetToEmpty();
@@ -77,7 +78,7 @@ public class FluidExtractorBlockEntity extends DefaultedEnergyFluidBlockEntity i
 					FluidVolume toInsert = new FluidVolume(targetFluidState.getFluid(), Fraction.bucket());
 					if (fluidVolume.hasAvailable(Fraction.bucket())) {
 						fluidVolume.pullVolume(toInsert, toInsert.getFraction());
-						asEnergy().extract(250);
+						asEnergy().extract(AstromineConfig.get().fluidExtractorEnergyConsumed);
 
 						world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
 						world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);

@@ -22,7 +22,7 @@ public class SolidGeneratorHandledScreen extends DefaultedEnergyItemHandledScree
 
 		WHorizontalArrow arrow = mainPanel.createChild(WHorizontalArrow::new, Position.of(input, 31, 0, 1), Size.of(22, 16))
 				.setLimitSupplier(() -> generator.limit)
-				.setProgressSupplier(() -> generator.current);
+				.setProgressSupplier(() -> (int) generator.current);
 
 		energyBar.setPosition(Position.of(arrow, 29, -energyBar.getHeight() / 2 + 8, 5));
 	}

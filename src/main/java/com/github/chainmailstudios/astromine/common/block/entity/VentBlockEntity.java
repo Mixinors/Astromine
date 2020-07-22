@@ -12,6 +12,7 @@ import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.AirBlock;
@@ -32,12 +33,12 @@ public class VentBlockEntity extends DefaultedEnergyFluidBlockEntity implements 
 	public VentBlockEntity() {
 		super(AstromineBlockEntityTypes.VENT);
 
-		fluidComponent.getVolume(0).setSize(new Fraction(16, 1));
+		fluidComponent.getVolume(0).setSize(new Fraction(AstromineConfig.get().ventFluid, 1));
 	}
 
 	@Override
-	protected int getEnergySize() {
-		return 16384;
+	protected double getEnergySize() {
+		return AstromineConfig.get().ventEnergy;
 	}
 
 	@Override

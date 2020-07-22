@@ -3,25 +3,19 @@ package com.github.chainmailstudios.astromine.common.recipe.base;
 import net.minecraft.nbt.CompoundTag;
 
 public interface RecipeConsumer {
-	int getCurrent();
+	double getCurrent();
 
 	int getLimit();
 
 	boolean isActive();
 
-	void setCurrent(int current);
+	void setCurrent(double current);
 
 	void setLimit(int limit);
 
 	void setActive(boolean isActive);
 
-	default void increment() {
-		setCurrent(getCurrent() + 1);
-	}
-
-	default void decrement() {
-		setCurrent(getCurrent() - 1);
-	}
+	void increment();
 
 	default void reset() {
 		setCurrent(0);
@@ -34,13 +28,13 @@ public interface RecipeConsumer {
 	}
 
 	default CompoundTag writeRecipeProgress(CompoundTag tag) {
-		tag.putInt("current", getCurrent());
+		tag.putDouble("current", getCurrent());
 		tag.putInt("limit", getLimit());
 		return tag;
 	}
 
 	default void readRecipeProgress(CompoundTag tag) {
-		setCurrent(tag.getInt("current"));
+		setCurrent(tag.getDouble("current"));
 		setLimit(tag.getInt("limit"));
 	}
 }

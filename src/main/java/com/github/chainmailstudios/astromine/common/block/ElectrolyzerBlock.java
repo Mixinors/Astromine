@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.common.block;
 
 import com.github.chainmailstudios.astromine.common.block.entity.ElectrolyzerBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.ElectrolyzerScreenHandler;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -50,7 +51,7 @@ public abstract class ElectrolyzerBlock extends TieredHorizontalFacingMachineBlo
 
 		@Override
 		public double getMachineSpeed() {
-			return 0.5;
+			return AstromineConfig.get().primitiveElectrolyzerSpeed;
 		}
 	}
 
@@ -66,7 +67,7 @@ public abstract class ElectrolyzerBlock extends TieredHorizontalFacingMachineBlo
 
 		@Override
 		public double getMachineSpeed() {
-			return 1;
+			return AstromineConfig.get().basicElectrolyzerSpeed;
 		}
 	}
 
@@ -82,7 +83,7 @@ public abstract class ElectrolyzerBlock extends TieredHorizontalFacingMachineBlo
 
 		@Override
 		public double getMachineSpeed() {
-			return 2;
+			return AstromineConfig.get().advancedElectrolyzerSpeed;
 		}
 	}
 
@@ -98,7 +99,7 @@ public abstract class ElectrolyzerBlock extends TieredHorizontalFacingMachineBlo
 
 		@Override
 		public double getMachineSpeed() {
-			return 4;
+			return AstromineConfig.get().eliteElectrolyzerSpeed;
 		}
 	}
 }

@@ -25,7 +25,7 @@ public class PresserHandledScreen extends DefaultedEnergyItemHandledScreen<Press
 
 		WHorizontalArrow arrow = mainPanel.createChild(WHorizontalArrow::new, Position.of(input, -31, 0, 0), Size.of(22, 16))
 				.setLimitSupplier(() -> sorter.limit)
-				.setProgressSupplier(() -> sorter.progress);
+				.setProgressSupplier(() -> (int) sorter.progress);
 
 		output.centerX();
 		output.setPosition(Position.of(arrow, -27, 0, 0));

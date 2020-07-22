@@ -10,6 +10,7 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -42,8 +43,8 @@ public class BlockBreakerBlockEntity extends DefaultedEnergyItemBlockEntity impl
 	}
 
 	@Override
-	protected int getEnergySize() {
-		return 16384;
+	protected double getEnergySize() {
+		return AstromineConfig.get().blockBreakerEnergy;
 	}
 
 	@Override
@@ -58,7 +59,7 @@ public class BlockBreakerBlockEntity extends DefaultedEnergyItemBlockEntity impl
 		if (world.isClient()) return;
 		start:
 		if (this.world != null && !this.world.isClient()) {
-			if (asEnergy().getEnergy() < 500) {
+			if (asEnergy().getEnergy() < AstromineConfig.get().blockBreakerEnergyConsumed) {
 				cooldown.resetToEmpty();
 				isActive = false;
 				break start;
@@ -66,7 +67,7 @@ public class BlockBreakerBlockEntity extends DefaultedEnergyItemBlockEntity impl
 
 			isActive = true;
 
-			cooldown.add(Fraction.of(1, 40));
+			cooldown.add(Fraction.of(1, AstromineConfig.get().blockBreakerTimeConsumed));
 			cooldown.simplify();
 			if (cooldown.isBiggerOrEqualThan(Fraction.ofWhole(1))) {
 				cooldown.resetToEmpty();
@@ -105,7 +106,7 @@ public class BlockBreakerBlockEntity extends DefaultedEnergyItemBlockEntity impl
 
 				world.breakBlock(targetPos, false);
 
-				asEnergy().extract(500);
+				asEnergy().extract(AstromineConfig.get().blockBreakerEnergyConsumed);
 			}
 		}
 

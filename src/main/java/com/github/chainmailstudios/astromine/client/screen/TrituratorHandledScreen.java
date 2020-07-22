@@ -25,7 +25,7 @@ public class TrituratorHandledScreen extends DefaultedEnergyItemHandledScreen<Tr
 
 		WHorizontalArrow arrow = mainPanel.createChild(WHorizontalArrow::new, Position.of(input, -31, 0, 0), Size.of(22, 16))
 				.setLimitSupplier(() -> triturator.limit)
-				.setProgressSupplier(() -> triturator.progress);
+				.setProgressSupplier(() -> (int) triturator.progress);
 
 		output.centerX();
 		output.setPosition(Position.of(arrow, -27, 0, 0));

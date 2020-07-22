@@ -49,7 +49,7 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 		emptySphere(
 				world,
 				originPos,
-				30,
+				16,
 				state -> {
 					if (world.getRandom().nextInt(10) == 0) {
 						return Blocks.FIRE.getDefaultState();
@@ -61,7 +61,7 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 		);
 
 		originPos = world.getTopPosition(Heightmap.Type.WORLD_SURFACE, new BlockPos(chunkPos.getStartX() + 8, 0, chunkPos.getStartZ() + 8));
-		buildSphere(world, originPos, 15, AstromineBlocks.METEOR_STONE.getDefaultState());
+		buildSphere(world, originPos, 8, AstromineBlocks.METEOR_STONE.getDefaultState());
 
 		Shape vein = Shapes.ellipsoid((float) 4, (float) 4, (float) 4)
 				.applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true)))

@@ -18,7 +18,7 @@ public class CreativeCapacitorBlockEntity extends DefaultedEnergyBlockEntity imp
 	}
 
 	@Override
-	protected int getEnergySize() {
+	protected double getEnergySize() {
 		return Integer.MAX_VALUE;
 	}
 

@@ -36,7 +36,7 @@ public abstract class DefaultedEnergyBlockEntity extends DefaultedBlockEntity im
 		return Energy.of(this);
 	}
 
-	protected abstract int getEnergySize();
+	protected abstract double getEnergySize();
 
 	@Override
 	public double getStored(EnergySide energySide) {

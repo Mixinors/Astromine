@@ -8,6 +8,7 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,7 +19,7 @@ public class TankBlockEntity extends DefaultedFluidBlockEntity implements Networ
 	public TankBlockEntity() {
 		super(AstromineBlockEntityTypes.FLUID_TANK);
 
-		fluidComponent.getVolume(0).setSize(new Fraction(16, 1));
+		fluidComponent.getVolume(0).setSize(new Fraction(AstromineConfig.get().tankFluid, 1));
 	}
 
 	@Override

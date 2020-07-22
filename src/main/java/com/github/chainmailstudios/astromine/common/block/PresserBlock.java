@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.common.block;
 
 import com.github.chainmailstudios.astromine.common.block.entity.PresserBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.PresserScreenHandler;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -50,7 +51,7 @@ public abstract class PresserBlock extends TieredHorizontalFacingMachineBlock {
 
 		@Override
 		public double getMachineSpeed() {
-			return 0.5;
+			return AstromineConfig.get().primitivePresserSpeed;
 		}
 	}
 
@@ -66,7 +67,7 @@ public abstract class PresserBlock extends TieredHorizontalFacingMachineBlock {
 
 		@Override
 		public double getMachineSpeed() {
-			return 1;
+			return AstromineConfig.get().basicPresserSpeed;
 		}
 	}
 
@@ -82,7 +83,7 @@ public abstract class PresserBlock extends TieredHorizontalFacingMachineBlock {
 
 		@Override
 		public double getMachineSpeed() {
-			return 2;
+			return AstromineConfig.get().advancedPresserSpeed;
 		}
 	}
 
@@ -98,7 +99,7 @@ public abstract class PresserBlock extends TieredHorizontalFacingMachineBlock {
 
 		@Override
 		public double getMachineSpeed() {
-			return 4;
+			return AstromineConfig.get().elitePresserSpeed;
 		}
 	}
 }

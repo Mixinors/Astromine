@@ -25,7 +25,7 @@ public class ElectricSmelterHandledScreen extends DefaultedEnergyItemHandledScre
 
 		WHorizontalArrow arrow = mainPanel.createChild(WHorizontalArrow::new, Position.of(input, -31, 0, 0), Size.of(22, 16))
 				.setLimitSupplier(() -> smelter.limit)
-				.setProgressSupplier(() -> smelter.progress);
+				.setProgressSupplier(() -> (int) smelter.progress);
 
 		output.centerX();
 		output.setPosition(Position.of(arrow, -27, 0, 0));

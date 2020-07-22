@@ -28,8 +28,8 @@ public class AlloySmelterHandledScreen extends DefaultedEnergyItemHandledScreen<
 		output.centerX();
 		output.setPosition(Position.of(secondInput, 57, -9, 0));
 
-		WHorizontalArrow arrow = mainPanel.createChild(WHorizontalArrow::new, Position.of(output, -31, 0, 0), Size.of(22, 16))
+		mainPanel.createChild(WHorizontalArrow::new, Position.of(output, -31, 0, 0), Size.of(22, 16))
 				.setLimitSupplier(() -> smelter.limit)
-				.setProgressSupplier(() -> smelter.progress);
+				.setProgressSupplier(() -> (int) smelter.progress);
 	}
 }

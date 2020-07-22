@@ -14,6 +14,7 @@
   "text.astromine.tooltip.fractional_value_simple": "%s",
   "text.astromine.tooltip.energy_value": "%s E",
   "text.astromine.tooltip.compound_energy_value": "%s/%s E",
+  "text.astromine.tooltip.speed": "%sx speed",
   "text.astromine.fluid": "Fluid",
   "text.astromine.energy": "Energy",
   "text.astromine.item": "Item",

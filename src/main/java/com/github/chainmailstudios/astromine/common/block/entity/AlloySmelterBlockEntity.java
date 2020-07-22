@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.AlloySmelterBlock;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
@@ -9,6 +10,7 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.recipe.AlloySmeltingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -23,7 +25,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
-	public int progress = 0;
+	public double progress = 0;
 	public int limit = 100;
 
 	public boolean shouldTry = true;
@@ -38,8 +40,6 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 		
 		addEnergyListener(() -> shouldTry = true);
 	}
-
-	abstract int getMachineSpeed();
 
 	@Override
 	protected ItemInventoryComponent createItemComponent() {
@@ -60,14 +60,14 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 	@Override
 	public void fromTag(BlockState state, CompoundTag tag) {
 		super.fromTag(state, tag);
-		progress = tag.getInt("progress");
+		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
 		shouldTry = true;
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putInt("progress", progress);
+		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
 		return super.toTag(tag);
 	}
@@ -91,35 +91,33 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 
 				ItemStack output = recipe.get().getOutput().copy();
 
-				for (int i = 0; i < getMachineSpeed(); i++) {
-					boolean isEmpty = itemComponent.getStack(2).isEmpty();
-					boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(2), output) && ItemStack.areTagsEqual(itemComponent.getStack(2), output);
+				boolean isEmpty = itemComponent.getStack(2).isEmpty();
+				boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(2), output) && ItemStack.areTagsEqual(itemComponent.getStack(2), output);
 
-					if (asEnergy().use(getMachineSpeed() == 1 ? 8 : 6) && (isEmpty || isEqual) && itemComponent.getStack(2).getCount() + output.getCount() <= itemComponent.getStack(2).getMaxCount()) {
-						if (progress == limit) {
-							ItemStack stack1 = itemComponent.getStack(0);
-							ItemStack stack2 = itemComponent.getStack(1);
-							if (recipe.get().getFirstInput().test(stack1) || recipe.get().getSecondInput().test(stack2)) {
-								stack1.decrement(recipe.get().getFirstInput().testMatching(stack1).getCount());
-								stack2.decrement(recipe.get().getSecondInput().testMatching(stack2).getCount());
-							} else if (recipe.get().getFirstInput().test(stack2) || recipe.get().getSecondInput().test(stack1)) {
-								stack2.decrement(recipe.get().getFirstInput().testMatching(stack2).getCount());
-								stack1.decrement(recipe.get().getSecondInput().testMatching(stack1).getCount());
-							}
-
-							if (isEmpty) {
-								itemComponent.setStack(2, output);
-							} else {
-								itemComponent.getStack(2).increment(output.getCount());
-							}
-
-							progress = 0;
-						} else {
-							++progress;
+				if (asEnergy().use(recipe.get().getEnergyConsumed()) && (isEmpty || isEqual) && itemComponent.getStack(2).getCount() + output.getCount() <= itemComponent.getStack(2).getMaxCount()) {
+					if (progress == limit) {
+						ItemStack stack1 = itemComponent.getStack(0);
+						ItemStack stack2 = itemComponent.getStack(1);
+						if (recipe.get().getFirstInput().test(stack1) || recipe.get().getSecondInput().test(stack2)) {
+							stack1.decrement(recipe.get().getFirstInput().testMatching(stack1).getCount());
+							stack2.decrement(recipe.get().getSecondInput().testMatching(stack2).getCount());
+						} else if (recipe.get().getFirstInput().test(stack2) || recipe.get().getSecondInput().test(stack1)) {
+							stack2.decrement(recipe.get().getFirstInput().testMatching(stack2).getCount());
+							stack1.decrement(recipe.get().getSecondInput().testMatching(stack1).getCount());
 						}
 
-						isActive = true;
+						if (isEmpty) {
+							itemComponent.setStack(2, output);
+						} else {
+							itemComponent.getStack(2).increment(output.getCount());
+						}
+
+						progress = 0;
+					} else {
+						progress += 1 * ((AlloySmelterBlock) this.getCachedState().getBlock()).getMachineSpeed();
 					}
+
+					isActive = true;
 				}
 			} else {
 				shouldTry = false;
@@ -148,13 +146,8 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 		}
 
 		@Override
-		int getMachineSpeed() {
-			return 1;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 2048;
+		protected double getEnergySize() {
+			return AstromineConfig.get().primitiveAlloySmelterEnergy;
 		}
 	}
 
@@ -164,13 +157,8 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 		}
 
 		@Override
-		public int getMachineSpeed() {
-			return 2;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 8192;
+		protected double getEnergySize() {
+			return AstromineConfig.get().basicAlloySmelterEnergy;
 		}
 	}
 
@@ -180,13 +168,8 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 		}
 
 		@Override
-		public int getMachineSpeed() {
-			return 4;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 32767;
+		protected double getEnergySize() {
+			return AstromineConfig.get().advancedAlloySmelterEnergy;
 		}
 	}
 
@@ -196,13 +179,8 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 		}
 
 		@Override
-		int getMachineSpeed() {
-			return 8;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 131068;
+		protected double getEnergySize() {
+			return AstromineConfig.get().eliteAlloySmelterEnergy;
 		}
 	}
 }

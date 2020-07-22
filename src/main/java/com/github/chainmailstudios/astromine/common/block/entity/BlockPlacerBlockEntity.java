@@ -9,6 +9,7 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -35,8 +36,8 @@ public class BlockPlacerBlockEntity extends DefaultedEnergyItemBlockEntity imple
 	}
 
 	@Override
-	protected int getEnergySize() {
-		return 16384;
+	protected double getEnergySize() {
+		return AstromineConfig.get().blockPlacerEnergy;
 	}
 
 	@Override
@@ -52,7 +53,7 @@ public class BlockPlacerBlockEntity extends DefaultedEnergyItemBlockEntity imple
 
 		start:
 		if (this.world != null && !this.world.isClient()) {
-			if (asEnergy().getEnergy() < 500) {
+			if (asEnergy().getEnergy() < AstromineConfig.get().blockPlacerEnergyConsumed) {
 				cooldown.resetToEmpty();
 				isActive = false;
 				break start;
@@ -60,7 +61,7 @@ public class BlockPlacerBlockEntity extends DefaultedEnergyItemBlockEntity imple
 
 			isActive = true;
 
-			cooldown.add(Fraction.of(1, 40));
+			cooldown.add(Fraction.of(1, AstromineConfig.get().blockPlacerTimeConsumed));
 			cooldown.simplify();
 			if (cooldown.isBiggerOrEqualThan(Fraction.ofWhole(1))) {
 				cooldown.resetToEmpty();
@@ -76,7 +77,7 @@ public class BlockPlacerBlockEntity extends DefaultedEnergyItemBlockEntity imple
 					world.setBlockState(targetPos, newState);
 					stored.decrement(1);
 
-					asEnergy().extract(500);
+					asEnergy().extract(AstromineConfig.get().blockPlacerEnergyConsumed);
 				}
 			}
 		}
