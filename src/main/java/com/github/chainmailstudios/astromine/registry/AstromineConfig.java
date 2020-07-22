@@ -31,6 +31,9 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Gravity level in Moon")
 	public double moonGravity = 0.03d;
 
+	@Comment("Gravity level in Mars")
+	public double marsGravity = 0.045d;
+
 	@Comment("Whether generation of Copper Ore in the Overworld is enabled.")
 	public boolean overworldCopperOre = true;
 

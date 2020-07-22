@@ -5,6 +5,8 @@ import java.util.function.Supplier;
 
 import com.github.chainmailstudios.astromine.common.world.generation.EarthSpaceBiomeSource;
 import com.github.chainmailstudios.astromine.common.world.generation.EarthSpaceChunkGenerator;
+import com.github.chainmailstudios.astromine.common.world.generation.MarsBiomeSource;
+import com.github.chainmailstudios.astromine.common.world.generation.MarsChunkGenerator;
 import com.github.chainmailstudios.astromine.common.world.generation.MoonBiomeSource;
 import com.github.chainmailstudios.astromine.common.world.generation.MoonChunkGenerator;
 import com.mojang.datafixers.DataFixer;
@@ -37,6 +39,9 @@ public class ServerChunkManagerMixin {
 		}
 		if (chunkGenerator instanceof MoonChunkGenerator) {
 			this.chunkGenerator = new MoonChunkGenerator(new MoonBiomeSource(world.getSeed()), world.getSeed());
+		}
+		if (chunkGenerator instanceof MarsChunkGenerator) {
+			this.chunkGenerator = new MarsChunkGenerator(new MarsBiomeSource(world.getSeed()), world.getSeed());
 		}
 	}
 }
