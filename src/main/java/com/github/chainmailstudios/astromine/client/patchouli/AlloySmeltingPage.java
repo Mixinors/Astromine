@@ -3,27 +3,22 @@ package com.github.chainmailstudios.astromine.client.patchouli;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.RecipeType;
 import net.minecraft.text.TranslatableText;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import com.github.chainmailstudios.astromine.common.recipe.AlloySmelterRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.PressingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.AlloySmeltingRecipe;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import vazkii.patchouli.client.book.gui.GuiBook;
 import vazkii.patchouli.client.book.page.abstr.PageDoubleRecipeRegistry;
-import vazkii.patchouli.client.book.page.abstr.PageSimpleProcessingRecipe;
-import vazkii.patchouli.common.mixin.MixinSmithingRecipe;
 
-public class AlloySmeltingPage extends PageDoubleRecipeRegistry<AlloySmelterRecipe> {
+public class AlloySmeltingPage extends PageDoubleRecipeRegistry<AlloySmeltingRecipe> {
 	public AlloySmeltingPage() {
-		super(AlloySmelterRecipe.Type.INSTANCE);
+		super(AlloySmeltingRecipe.Type.INSTANCE);
 	}
 
 	@Override
-	public void drawRecipe(MatrixStack ms, AlloySmelterRecipe recipe, int recipeX, int recipeY, int mouseX, int mouseY, boolean second) {
+	public void drawRecipe(MatrixStack ms, AlloySmeltingRecipe recipe, int recipeX, int recipeY, int mouseX, int mouseY, boolean second) {
 		mc.getTextureManager().bindTexture(book.craftingTexture);
 		RenderSystem.enableBlend();
 		DrawableHelper.drawTexture(ms, recipeX, recipeY, 11, 135, 96, 43, 128, 256);
@@ -37,7 +32,7 @@ public class AlloySmeltingPage extends PageDoubleRecipeRegistry<AlloySmelterReci
 	}
 
 	@Override
-	protected ItemStack getRecipeOutput(AlloySmelterRecipe recipe) {
+	protected ItemStack getRecipeOutput(AlloySmeltingRecipe recipe) {
 		if (recipe == null) {
 			return ItemStack.EMPTY;
 		}

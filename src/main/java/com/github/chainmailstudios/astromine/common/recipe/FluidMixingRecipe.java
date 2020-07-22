@@ -148,7 +148,7 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory>, EnergyConsu
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.ELITE_FLUID_MIXER);
+		return new ItemStack(AstromineBlocks.ADVANCED_FLUID_MIXER);
 	}
 
 	public Identifier getIdentifier() {

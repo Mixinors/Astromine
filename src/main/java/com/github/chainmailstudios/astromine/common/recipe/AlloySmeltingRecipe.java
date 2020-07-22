@@ -21,7 +21,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
-public class AlloySmelterRecipe implements EnergyConsumingRecipe<Inventory> {
+public class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 	final Identifier identifier;
 	final BetterIngredient firstInput;
 	final BetterIngredient secondInput;
@@ -29,7 +29,7 @@ public class AlloySmelterRecipe implements EnergyConsumingRecipe<Inventory> {
 	final double energyConsumed;
 	final int time;
 
-	public AlloySmelterRecipe(Identifier identifier, BetterIngredient firstInput, BetterIngredient secondInput, ItemStack output, double energyConsumed, int time) {
+	public AlloySmeltingRecipe(Identifier identifier, BetterIngredient firstInput, BetterIngredient secondInput, ItemStack output, double energyConsumed, int time) {
 		this.identifier = identifier;
 		this.firstInput = firstInput;
 		this.secondInput = secondInput;
@@ -99,7 +99,7 @@ public class AlloySmelterRecipe implements EnergyConsumingRecipe<Inventory> {
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.ELITE_ALLOY_SMELTER);
+		return new ItemStack(AstromineBlocks.ADVANCED_ALLOY_SMELTER);
 	}
 
 	public int getTime() {
@@ -110,8 +110,8 @@ public class AlloySmelterRecipe implements EnergyConsumingRecipe<Inventory> {
 		return energyConsumed;
 	}
 
-	public static final class Serializer implements RecipeSerializer<AlloySmelterRecipe> {
-		public static final Identifier ID = AstromineCommon.identifier("alloy_smelter");
+	public static final class Serializer implements RecipeSerializer<AlloySmeltingRecipe> {
+		public static final Identifier ID = AstromineCommon.identifier("alloy_smelting");
 
 		public static final Serializer INSTANCE = new Serializer();
 
@@ -120,10 +120,10 @@ public class AlloySmelterRecipe implements EnergyConsumingRecipe<Inventory> {
 		}
 
 		@Override
-		public AlloySmelterRecipe read(Identifier identifier, JsonObject object) {
-			AlloySmelterRecipe.Format format = new Gson().fromJson(object, AlloySmelterRecipe.Format.class);
+		public AlloySmeltingRecipe read(Identifier identifier, JsonObject object) {
+			AlloySmeltingRecipe.Format format = new Gson().fromJson(object, AlloySmeltingRecipe.Format.class);
 
-			return new AlloySmelterRecipe(identifier,
+			return new AlloySmeltingRecipe(identifier,
 					IngredientUtilities.fromBetterJson(format.firstInput),
 					IngredientUtilities.fromBetterJson(format.secondInput),
 					StackUtilities.fromJson(format.output),
@@ -132,8 +132,8 @@ public class AlloySmelterRecipe implements EnergyConsumingRecipe<Inventory> {
 		}
 
 		@Override
-		public AlloySmelterRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new AlloySmelterRecipe(identifier,
+		public AlloySmeltingRecipe read(Identifier identifier, PacketByteBuf buffer) {
+			return new AlloySmeltingRecipe(identifier,
 					IngredientUtilities.fromBetterPacket(buffer),
 					IngredientUtilities.fromBetterPacket(buffer),
 					StackUtilities.fromPacket(buffer),
@@ -142,7 +142,7 @@ public class AlloySmelterRecipe implements EnergyConsumingRecipe<Inventory> {
 		}
 
 		@Override
-		public void write(PacketByteBuf buffer, AlloySmelterRecipe recipe) {
+		public void write(PacketByteBuf buffer, AlloySmeltingRecipe recipe) {
 			IngredientUtilities.toBetterPacket(buffer, recipe.firstInput);
 			IngredientUtilities.toBetterPacket(buffer, recipe.secondInput);
 			StackUtilities.toPacket(buffer, recipe.output);
@@ -151,7 +151,7 @@ public class AlloySmelterRecipe implements EnergyConsumingRecipe<Inventory> {
 		}
 	}
 
-	public static final class Type implements AstromineRecipeType<AlloySmelterRecipe> {
+	public static final class Type implements AstromineRecipeType<AlloySmeltingRecipe> {
 		public static final Type INSTANCE = new Type();
 
 		private Type() {
