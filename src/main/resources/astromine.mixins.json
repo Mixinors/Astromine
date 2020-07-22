@@ -7,7 +7,7 @@
 		"AbstractBlockMixin", "AbstractMinecartEntityMixin", "BrewingRecipeRegistryMixin",
 		"BucketItemMixin", "DyeColorMixin", "EntityMixin", "FishingBobberEntityMixin", "FlamingAnvilCraftingMixin",
 		"GravityEntityMixin", "HoneyBlockMixin", "HopperBlockEntityMixin", "IdentifierMixin", "ItemEntityMixin",
-		"LivingEntityMixin", "StepAndDestroyBlockGoalMixin", "ThreadExecutorMixin", "WorldChunkMixin"
+		"LivingEntityMixin", "StepAndDestroyBlockGoalMixin", "ThreadExecutorMixin", "WorldChunkMixin", "ServerChunkManagerMixin"
 	],
 	"client": [
 		"BossBarHudMixin", "BuiltinModelItemRendererMixin", "ClientRecipeBookMixin", "CurrentDownParticleMixin",

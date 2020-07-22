@@ -12,8 +12,8 @@ import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
 
-public class AsteroidBeltBiome extends Biome {
-	public AsteroidBeltBiome() {
+public class EarthSpaceBiome extends Biome {
+	public EarthSpaceBiome() {
 		super(new Biome.Settings().configureSurfaceBuilder(SurfaceBuilder.NOPE, SurfaceBuilder.STONE_CONFIG)
 				.precipitation(Biome.Precipitation.NONE)
 				.category(Biome.Category.NONE)

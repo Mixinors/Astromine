@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.chunk.WorldChunk;
 
-public class ExplosionAlgorithm {
+public class Explosions {
 	private static final BlockState AIR = Blocks.AIR.getDefaultState();
 
 	public static void tryExploding(World world, int x, int y, int z, int power) {
