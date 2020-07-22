@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.common.recipe;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.TieredHorizontalFacingMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.recipe.base.AdvancedRecipe;
@@ -16,6 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+import net.minecraft.block.Block;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -46,6 +48,8 @@ public class SolidGeneratingRecipe implements AdvancedRecipe<Inventory>, EnergyG
 
 	@Override
 	public <T extends DefaultedBlockEntity> boolean canCraft(T blockEntity) {
+		Block block = blockEntity.getWorld().getBlockState(blockEntity.getPos()).getBlock();
+		if (!(block instanceof TieredHorizontalFacingMachineBlock)) return false;
 		ItemInventoryComponent itemComponent = blockEntity.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
 
 		ItemStack itemStack = itemComponent.getStack(0);
@@ -58,7 +62,6 @@ public class SolidGeneratingRecipe implements AdvancedRecipe<Inventory>, EnergyG
 		if (canCraft(blockEntity)) {
 			EnergyHandler energyHandler = Energy.of(blockEntity);
 			ItemInventoryComponent itemComponent = blockEntity.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
-
 			ItemStack itemStack = itemComponent.getStack(INPUT_ITEM_SLOT);
 
 			if (EnergyUtilities.hasAvailable(energyHandler, energyGenerated)) {
@@ -179,11 +182,11 @@ public class SolidGeneratingRecipe implements AdvancedRecipe<Inventory>, EnergyG
 		@Override
 		public String toString() {
 			return "Format{" +
-					"input=" + input +
-					", amount=" + amount +
-					", energyGenerated=" + energyGenerated +
-					", time=" + time +
-					'}';
+			       "input=" + input +
+			       ", amount=" + amount +
+			       ", energyGenerated=" + energyGenerated +
+			       ", time=" + time +
+			       '}';
 		}
 	}
 }

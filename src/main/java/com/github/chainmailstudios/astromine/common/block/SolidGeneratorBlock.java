@@ -22,7 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public abstract class SolidGeneratorBlock extends DefaultedHorizontalFacingBlockWithEntity {
+public abstract class SolidGeneratorBlock extends TieredHorizontalFacingMachineBlock {
 	public SolidGeneratorBlock(Settings settings) {
 		super(settings);
 	}
@@ -57,6 +57,11 @@ public abstract class SolidGeneratorBlock extends DefaultedHorizontalFacingBlock
 		public BlockEntity createBlockEntity() {
 			return new SolidGeneratorBlockEntity.Primitive();
 		}
+
+		@Override
+		public double getMachineSpeed() {
+			return 0.5;
+		}
 	}
 
 	public static class Basic extends Base {
@@ -67,6 +72,11 @@ public abstract class SolidGeneratorBlock extends DefaultedHorizontalFacingBlock
 		@Override
 		public BlockEntity createBlockEntity() {
 			return new SolidGeneratorBlockEntity.Basic();
+		}
+
+		@Override
+		public double getMachineSpeed() {
+			return 1;
 		}
 	}
 
@@ -79,6 +89,11 @@ public abstract class SolidGeneratorBlock extends DefaultedHorizontalFacingBlock
 		public BlockEntity createBlockEntity() {
 			return new SolidGeneratorBlockEntity.Advanced();
 		}
+
+		@Override
+		public double getMachineSpeed() {
+			return 2;
+		}
 	}
 
 	public static class Elite extends Base {
@@ -89,6 +104,11 @@ public abstract class SolidGeneratorBlock extends DefaultedHorizontalFacingBlock
 		@Override
 		public BlockEntity createBlockEntity() {
 			return new SolidGeneratorBlockEntity.Elite();
+		}
+
+		@Override
+		public double getMachineSpeed() {
+			return 4;
 		}
 	}
 }

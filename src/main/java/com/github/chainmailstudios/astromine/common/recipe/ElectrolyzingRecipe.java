@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.common.recipe;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.TieredHorizontalFacingMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
@@ -18,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -66,6 +68,9 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory>, EnergyCon
 
 	@Override
 	public <T extends DefaultedBlockEntity> boolean canCraft(T blockEntity) {
+		Block block = blockEntity.getWorld().getBlockState(blockEntity.getPos()).getBlock();
+		if (!(block instanceof TieredHorizontalFacingMachineBlock)) return false;
+
 		FluidInventoryComponent fluidComponent = blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
 		FluidVolume inputVolume = fluidComponent.getVolume(INPUT_FLUID_VOLUME);
@@ -85,16 +90,20 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory>, EnergyCon
 	@Override
 	public <T extends DefaultedBlockEntity> void craft(T blockEntity) {
 		if (canCraft(blockEntity)) {
+			Block block = blockEntity.getWorld().getBlockState(blockEntity.getPos()).getBlock();
+			double machineSpeed = ((TieredHorizontalFacingMachineBlock) block).getMachineSpeed() / 2;
+			Fraction speed = FractionUtilities.fromFloating(machineSpeed);
+
 			FluidInventoryComponent fluidComponent = blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
 			FluidVolume inputVolume = fluidComponent.getVolume(INPUT_FLUID_VOLUME);
 			FluidVolume firstOutputVolume = fluidComponent.getVolume(FIRST_OUTPUT_FLUID_VOLUME);
 			FluidVolume secondOutputVolume = fluidComponent.getVolume(SECOND_OUTPUT_FLUID_VOLUME);
 
-			if (Energy.of(blockEntity).use(energyConsumed)) {
-				inputVolume.extractVolume(inputAmount);
-				firstOutputVolume.insertVolume(new FluidVolume(firstOutputFluid.get(), firstOutputAmount.copy()));
-				secondOutputVolume.insertVolume(new FluidVolume(secondOutputFluid.get(), secondOutputAmount.copy()));
+			if (Energy.of(blockEntity).use(energyConsumed * Math.max(1, machineSpeed))) {
+				inputVolume.extractVolume(Fraction.simplify(Fraction.multiply(inputAmount, speed)));
+				firstOutputVolume.insertVolume(new FluidVolume(firstOutputFluid.get(), Fraction.simplify(Fraction.multiply(firstOutputAmount, speed))));
+				secondOutputVolume.insertVolume(new FluidVolume(secondOutputFluid.get(), Fraction.simplify(Fraction.multiply(secondOutputAmount, speed))));
 			}
 		}
 	}
@@ -253,15 +262,15 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory>, EnergyCon
 		@Override
 		public String toString() {
 			return "Format{" +
-					"input='" + input + '\'' +
-					", inputAmount=" + inputAmount +
-					", firstOutput='" + firstOutput + '\'' +
-					", firstOutputAmount=" + firstOutputAmount +
-					", secondOutput='" + secondOutput + '\'' +
-					", secondOutputAmount=" + secondOutputAmount +
-					", energyGenerated=" + energyGenerated +
-					", time=" + time +
-					'}';
+			       "input='" + input + '\'' +
+			       ", inputAmount=" + inputAmount +
+			       ", firstOutput='" + firstOutput + '\'' +
+			       ", firstOutputAmount=" + firstOutputAmount +
+			       ", secondOutput='" + secondOutput + '\'' +
+			       ", secondOutputAmount=" + secondOutputAmount +
+			       ", energyGenerated=" + energyGenerated +
+			       ", time=" + time +
+			       '}';
 		}
 	}
 }

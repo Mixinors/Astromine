@@ -1,30 +1,18 @@
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.FluidMixerBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.FluidMixerBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.FluidMixerScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.FluidMixerScreenHandler;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.BucketItem;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public abstract class FluidMixerBlock extends DefaultedHorizontalFacingBlockWithEntity {
+public abstract class FluidMixerBlock extends TieredHorizontalFacingMachineBlock {
 	public FluidMixerBlock(Settings settings) {
 		super(settings);
 	}
@@ -59,6 +47,11 @@ public abstract class FluidMixerBlock extends DefaultedHorizontalFacingBlockWith
 		public BlockEntity createBlockEntity() {
 			return new FluidMixerBlockEntity.Primitive();
 		}
+
+		@Override
+		public double getMachineSpeed() {
+			return 0.5;
+		}
 	}
 
 	public static class Basic extends FluidMixerBlock.Base {
@@ -69,6 +62,11 @@ public abstract class FluidMixerBlock extends DefaultedHorizontalFacingBlockWith
 		@Override
 		public BlockEntity createBlockEntity() {
 			return new FluidMixerBlockEntity.Basic();
+		}
+
+		@Override
+		public double getMachineSpeed() {
+			return 1;
 		}
 	}
 
@@ -81,6 +79,11 @@ public abstract class FluidMixerBlock extends DefaultedHorizontalFacingBlockWith
 		public BlockEntity createBlockEntity() {
 			return new FluidMixerBlockEntity.Advanced();
 		}
+
+		@Override
+		public double getMachineSpeed() {
+			return 2;
+		}
 	}
 
 	public static class Elite extends FluidMixerBlock.Base {
@@ -91,6 +94,11 @@ public abstract class FluidMixerBlock extends DefaultedHorizontalFacingBlockWith
 		@Override
 		public BlockEntity createBlockEntity() {
 			return new FluidMixerBlockEntity.Elite();
+		}
+
+		@Override
+		public double getMachineSpeed() {
+			return 4;
 		}
 	}
 }

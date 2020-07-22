@@ -126,7 +126,7 @@ public abstract class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlock
 
 			if (current > 0 && current <= limit) {
 				double produced = 5;
-				for (int i = 0; i < 6; i++) {
+				for (int i = 0; i < 3 * getMachineSpeed(); i++) {
 					if (EnergyUtilities.hasAvailable(asEnergy(), produced)) {
 						current++;
 						asEnergy().insert(produced);

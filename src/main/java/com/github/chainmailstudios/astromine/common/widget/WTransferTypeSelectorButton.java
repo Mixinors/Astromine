@@ -10,7 +10,6 @@ import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -40,6 +39,7 @@ public class WTransferTypeSelectorButton extends WButton {
 
 	private Vec3i mouse = Vec3i.ZERO;
 	private Lazy<String> sideName = lazySideName();
+	private boolean wasClicked = false;
 
 	private Lazy<String> lazySideName() {
 		return new Lazy<>(() -> {
@@ -103,8 +103,16 @@ public class WTransferTypeSelectorButton extends WButton {
 	}
 
 	@Override
-	public void onMouseReleased(float mouseX, float mouseY, int mouseButton) {
+	public void onMouseClicked(float mouseX, float mouseY, int mouseButton) {
+		super.onMouseClicked(mouseX, mouseY, mouseButton);
 		if (isFocused()) {
+			wasClicked = true;
+		}
+	}
+
+	@Override
+	public void onMouseReleased(float mouseX, float mouseY, int mouseButton) {
+		if (isFocused() && wasClicked) {
 			component.get(type).set(direction, component.get(type).get(direction).next());
 
 			setTexture(component.get(type).get(direction).texture());
@@ -123,6 +131,7 @@ public class WTransferTypeSelectorButton extends WButton {
 				ClientSidePacketRegistry.INSTANCE.sendToServer(AstromineCommonPackets.BLOCK_ENTITY_UPDATE_PACKET, buffer);
 			}
 		}
+		wasClicked = false;
 
 		super.onMouseReleased(mouseX, mouseY, mouseButton);
 	}

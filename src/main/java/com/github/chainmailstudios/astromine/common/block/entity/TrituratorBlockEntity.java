@@ -86,32 +86,34 @@ public abstract class TrituratorBlockEntity extends DefaultedEnergyItemBlockEnti
 				}
 			}
 			if (recipe.isPresent() && recipe.get().matches(ItemInventoryFromInventoryComponent.of(itemComponent), world)) {
-				limit = recipe.get().getTime();
+				limit = recipe.get().getTime() * 2;
 
-				double consumed = recipe.get().getEnergyConsumed() / (double) limit;
+				double consumed = recipe.get().getEnergyConsumed() / (double) (limit / 2);
 
 				ItemStack output = recipe.get().getOutput();
 
-				boolean isEmpty = itemComponent.getStack(0).isEmpty();
-				boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(0), output) && ItemStack.areTagsEqual(itemComponent.getStack(0), output);
+				for (int i = 0; i < getMachineSpeed(); i++) {
+					boolean isEmpty = itemComponent.getStack(0).isEmpty();
+					boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(0), output) && ItemStack.areTagsEqual(itemComponent.getStack(0), output);
 
-				if (asEnergy().use(consumed) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
-					if (progress >= limit) {
-						recipe.get().craft(ItemInventoryFromInventoryComponent.of(itemComponent));
+					if (asEnergy().use(getMachineSpeed() == 1 ? consumed * 1.25 : consumed) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
+						if (progress >= limit) {
+							recipe.get().craft(ItemInventoryFromInventoryComponent.of(itemComponent));
 
-						if (isEmpty) {
-							itemComponent.setStack(0, output);
+							if (isEmpty) {
+								itemComponent.setStack(0, output);
+							} else {
+								itemComponent.getStack(0).increment(output.getCount());
+							}
+
+							progress = 0;
 						} else {
-							itemComponent.getStack(0).increment(output.getCount());
+							++progress;
 						}
-
-						progress = 0;
+						isActive = true;
 					} else {
-						++progress;
+						isActive = false;
 					}
-					isActive = true;
-				} else {
-					isActive = false;
 				}
 			} else {
 				shouldTry = false;

@@ -3,6 +3,7 @@ package com.github.chainmailstudios.astromine.registry;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.AlloySmelterBlock;
 import com.github.chainmailstudios.astromine.common.block.*;
+import com.github.chainmailstudios.astromine.common.item.AstromineBlockItem;
 import com.github.chainmailstudios.astromine.common.utilities.type.BufferType;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
@@ -135,7 +136,7 @@ public class AstromineBlocks {
 	 * @return Block instance registered
 	 */
 	public static <T extends Block> T register(String name, T block, Item.Settings settings) {
-		return register(name, block, new BlockItem(block, settings));
+		return register(name, block, new AstromineBlockItem(block, settings));
 	}
 
 	/**

@@ -93,14 +93,16 @@ public class AstromineREIPlugin implements REIPluginV0 {
 
 	@Override
 	public void registerPluginCategories(RecipeHelper recipeHelper) {
-		recipeHelper.registerCategory(new TrituratingCategory());
-		recipeHelper.registerCategory(new ElectricSmeltingCategory());
-		recipeHelper.registerCategory(new LiquidGeneratingCategory());
-		recipeHelper.registerCategory(new SolidGeneratingCategory());
-		recipeHelper.registerCategory(new FluidMixingCategory(FLUID_MIXING, "category.astromine.fluid_mixing", EntryStack.create(AstromineBlocks.ELITE_FLUID_MIXER)));
-		recipeHelper.registerCategory(new ElectrolyzingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AstromineBlocks.ELITE_ELECTROLYZER)));
-		recipeHelper.registerCategory(new PressingCategory());
-		recipeHelper.registerCategory(new AlloySmeltingCategory());
+		recipeHelper.registerCategories(
+				new TrituratingCategory(),
+				new ElectricSmeltingCategory(),
+				new LiquidGeneratingCategory(),
+				new SolidGeneratingCategory(),
+				new FluidMixingCategory(FLUID_MIXING, "category.astromine.fluid_mixing", EntryStack.create(AstromineBlocks.ADVANCED_FLUID_MIXER)),
+				new ElectrolyzingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AstromineBlocks.ADVANCED_ELECTROLYZER)),
+				new PressingCategory(),
+				new AlloySmeltingCategory()
+		);
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import java.text.DecimalFormat;
 
 public class Fraction extends Number implements Comparable<Fraction> {
-	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.###");
+	public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.###");
 	public static final Fraction BUCKET = new Fraction(1, 1);
 	public static final Fraction BOTTLE = new Fraction(1, 3);
 

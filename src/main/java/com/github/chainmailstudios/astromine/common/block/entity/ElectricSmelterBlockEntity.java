@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Optional;
 
 public abstract class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
-	public static final int SPEED = 3;
 	public int progress = 0;
 	public int limit = 100;
 
@@ -88,15 +87,15 @@ public abstract class ElectricSmelterBlockEntity extends DefaultedEnergyItemBloc
 				}
 			}
 			if (recipe.isPresent() && recipe.get().matches(inputInventory, world)) {
-				limit = recipe.get().getCookTime();
+				limit = recipe.get().getCookTime() * 2;
 
 				ItemStack output = recipe.get().getOutput().copy();
 				
-				for (int i = 0; i < SPEED; i++) {
+				for (int i = 0; i < getMachineSpeed(); i++) {
 					boolean isEmpty = itemComponent.getStack(0).isEmpty();
 					boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(0), output) && ItemStack.areTagsEqual(itemComponent.getStack(0), output);
 
-					if (asEnergy().use(6) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
+					if (asEnergy().use(getMachineSpeed() == 1 ? 8 : 6) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
 						if (progress == limit) {
 							itemComponent.getStack(1).decrement(1);
 
