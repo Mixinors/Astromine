@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "astromine:item/tool/tin_haxe"
+    "layer0": "astromine:item/tool/bronze_mattock"
   }
 }

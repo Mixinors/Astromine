@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "astromine:item/tool/bronze_haxe"
+    "layer0": "astromine:item/tool/univite_mining_tool"
   }
 }

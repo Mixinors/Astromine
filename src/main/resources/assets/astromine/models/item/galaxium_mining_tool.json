@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "astromine:item/tool/bronze_shaxe"
+    "layer0": "astromine:item/tool/galaxium_mining_tool"
   }
 }

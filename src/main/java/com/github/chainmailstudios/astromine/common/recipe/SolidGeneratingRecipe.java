@@ -88,7 +88,7 @@ public class SolidGeneratingRecipe implements AdvancedRecipe<Inventory>, EnergyG
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.PRIMITIVE_SOLID_GENERATOR);
+		return new ItemStack(AstromineBlocks.ADVANCED_SOLID_GENERATOR);
 	}
 
 	@Override

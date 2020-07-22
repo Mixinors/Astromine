@@ -1,7 +1,7 @@
 package com.github.chainmailstudios.astromine.client.rei.alloysmelting;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineREIPlugin;
-import com.github.chainmailstudios.astromine.common.recipe.AlloySmelterRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.AlloySmeltingRecipe;
 import com.google.common.collect.Lists;
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeDisplay;
@@ -22,7 +22,7 @@ public class AlloySmeltingDisplay implements RecipeDisplay {
 	private final double energyRequired;
 	private final Identifier recipeId;
 
-	public AlloySmeltingDisplay(AlloySmelterRecipe recipe) {
+	public AlloySmeltingDisplay(AlloySmeltingRecipe recipe) {
 		this(
 				Lists.newArrayList(
 						EntryStack.ofItemStacks(Arrays.asList(recipe.getFirstInput().getMatchingStacks())),

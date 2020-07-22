@@ -7,7 +7,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.SimpleIt
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
-import com.github.chainmailstudios.astromine.common.recipe.AlloySmelterRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.AlloySmeltingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
@@ -31,7 +31,7 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 
 	public boolean[] activity = {false, false, false, false, false};
 
-	Optional<AlloySmelterRecipe> recipe = Optional.empty();
+	Optional<AlloySmeltingRecipe> recipe = Optional.empty();
 
 	public AlloySmelterBlockEntity(BlockEntityType<?> type) {
 		super(type);
@@ -83,7 +83,7 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 			inputInventory.setStack(1, itemComponent.getStack(1));
 			if (!recipe.isPresent()) {
 				if (hasWorld() && !world.isClient) {
-					recipe = world.getRecipeManager().getFirstMatch(AlloySmelterRecipe.Type.INSTANCE, inputInventory, world);
+					recipe = world.getRecipeManager().getFirstMatch(AlloySmeltingRecipe.Type.INSTANCE, inputInventory, world);
 				}
 			}
 			if (recipe.isPresent() && recipe.get().matches(inputInventory, world)) {

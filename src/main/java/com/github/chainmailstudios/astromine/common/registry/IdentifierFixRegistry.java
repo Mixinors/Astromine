@@ -1,10 +1,11 @@
 package com.github.chainmailstudios.astromine.common.registry;
 
 import com.github.chainmailstudios.astromine.common.registry.base.BiRegistry;
+import com.github.chainmailstudios.astromine.common.registry.base.UniRegistry;
 
 import java.util.Optional;
 
-public class IdentifierFixRegistry extends BiRegistry<String, String> {
+public class IdentifierFixRegistry extends UniRegistry<String, String> {
 	public static final IdentifierFixRegistry INSTANCE = new IdentifierFixRegistry();
 
 	@Override
@@ -16,11 +17,9 @@ public class IdentifierFixRegistry extends BiRegistry<String, String> {
 
 	@Override
 	public String register(String oldPath, String newPath) {
-		if (this.contains(newPath, oldPath)) {
-			throw new IllegalArgumentException("Recursive Identifier fix attempted with paths " + oldPath + " and " + newPath);
-		}
 		if (this.containsKey(newPath)) {
-			return this.register(oldPath, this.get(newPath));
+			if(this.get(newPath).equals(oldPath)) throw new IllegalArgumentException("Recursive Identifier fix attempted with paths " + oldPath + " and " + newPath);
+			else return this.register(oldPath, this.get(newPath));
 		} else return super.register(oldPath, newPath);
 	}
 }
