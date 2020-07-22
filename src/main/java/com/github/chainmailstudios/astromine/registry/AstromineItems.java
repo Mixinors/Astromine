@@ -117,6 +117,7 @@ public class AstromineItems {
 	public static final Item COAL_DUST = register("coal_dust", new Item(getBasicSettings()));
 	public static final Item CHARCOAL_DUST = register("charcoal_dust", new Item(getBasicSettings()));
 	public static final Item QUARTZ_DUST = register("quartz_dust", new Item(getBasicSettings()));
+	public static final Item RAW_NETHERITE_DUST = register("raw_netherite_dust", new Item(getBasicSettings()));
 
 	// Materials - Plates
 	public static final Item METITE_PLATES = register("metite_plates", new Item(getBasicSettings()));
