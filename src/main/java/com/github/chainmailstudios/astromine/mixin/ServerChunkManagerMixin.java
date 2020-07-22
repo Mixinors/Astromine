@@ -5,6 +5,8 @@ import java.util.function.Supplier;
 
 import com.github.chainmailstudios.astromine.common.world.generation.EarthSpaceBiomeSource;
 import com.github.chainmailstudios.astromine.common.world.generation.EarthSpaceChunkGenerator;
+import com.github.chainmailstudios.astromine.common.world.generation.MoonBiomeSource;
+import com.github.chainmailstudios.astromine.common.world.generation.MoonChunkGenerator;
 import com.mojang.datafixers.DataFixer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -32,6 +34,9 @@ public class ServerChunkManagerMixin {
 	private void handleConstructor(ServerWorld world, LevelStorage.Session session, DataFixer dataFixer, StructureManager structureManager, Executor workerExecutor, ChunkGenerator chunkGenerator, int viewDistance, boolean bl, WorldGenerationProgressListener worldGenerationProgressListener, Supplier<PersistentStateManager> supplier, CallbackInfo ci) {
 		if (chunkGenerator instanceof EarthSpaceChunkGenerator) {
 			this.chunkGenerator = new EarthSpaceChunkGenerator(new EarthSpaceBiomeSource(world.getSeed()), world.getSeed());
+		}
+		if (chunkGenerator instanceof MoonChunkGenerator) {
+			this.chunkGenerator = new MoonChunkGenerator(new MoonBiomeSource(world.getSeed()), world.getSeed());
 		}
 	}
 }

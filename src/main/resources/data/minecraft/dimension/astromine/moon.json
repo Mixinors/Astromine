@@ -1,0 +1,11 @@
+{
+  "generator": {
+    "type": "astromine:moon",
+    "biome_source": {
+      "type": "astromine:moon",
+      "seed": -1
+    },
+    "seed": -1
+  },
+  "type": "astromine:moon"
+}
