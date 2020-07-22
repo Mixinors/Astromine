@@ -168,54 +168,72 @@ public class AstromineItems {
 	public static final Item COPPER_SHOVEL = register("copper_shovel", new ShovelItem(AstromineToolMaterials.COPPER, 1.5f, -3.0f, getBasicSettings()));
 	public static final Item COPPER_HOE = register("copper_hoe", new HoeItem(AstromineToolMaterials.COPPER, -5, 0f, getBasicSettings()));
 	public static final Item COPPER_SWORD = register("copper_sword", new SwordItem(AstromineToolMaterials.COPPER, 3, -2.4f, getBasicSettings()));
+	public static final Item COPPER_SHAXE = register("copper_shaxe", new ShaxeItem(AstromineToolMaterials.COPPER, 1, -2.8f, getBasicSettings()));
+	public static final Item COPPER_HAXE = register("copper_haxe", new HaxeItem(AstromineToolMaterials.COPPER, -5, -2.4f, getBasicSettings()));
 
 	public static final Item TIN_PICKAXE = register("tin_pickaxe", new PickaxeItem(AstromineToolMaterials.TIN, 1, -2.8f, getBasicSettings()));
 	public static final Item TIN_AXE = register("tin_axe", new AxeItem(AstromineToolMaterials.TIN, 5f, -3.0f, getBasicSettings()));
 	public static final Item TIN_SHOVEL = register("tin_shovel", new ShovelItem(AstromineToolMaterials.TIN, 1.5f, -3.0f, getBasicSettings()));
 	public static final Item TIN_HOE = register("tin_hoe", new HoeItem(AstromineToolMaterials.TIN, -5, 0f, getBasicSettings()));
 	public static final Item TIN_SWORD = register("tin_sword", new SwordItem(AstromineToolMaterials.TIN, 3, -2.4f, getBasicSettings()));
+	public static final Item TIN_SHAXE = register("tin_shaxe", new ShaxeItem(AstromineToolMaterials.TIN, 1, -2.8f, getBasicSettings()));
+	public static final Item TIN_HAXE = register("tin_haxe", new HaxeItem(AstromineToolMaterials.TIN, -5, 0f, getBasicSettings()));
 
 	public static final Item BRONZE_PICKAXE = register("bronze_pickaxe", new PickaxeItem(AstromineToolMaterials.BRONZE, 1, -2.8f, getBasicSettings().fireproof()));
 	public static final Item BRONZE_AXE = register("bronze_axe", new AxeItem(AstromineToolMaterials.BRONZE, 5f, -3.0f, getBasicSettings().fireproof()));
 	public static final Item BRONZE_SHOVEL = register("bronze_shovel", new ShovelItem(AstromineToolMaterials.BRONZE, 1.5f, -3.0f, getBasicSettings().fireproof()));
 	public static final Item BRONZE_HOE = register("bronze_hoe", new HoeItem(AstromineToolMaterials.BRONZE, -6, 0f, getBasicSettings().fireproof()));
 	public static final Item BRONZE_SWORD = register("bronze_sword", new SwordItem(AstromineToolMaterials.BRONZE, 3, -2.4f, getBasicSettings().fireproof()));
+	public static final Item BRONZE_SHAXE = register("bronze_shaxe", new ShaxeItem(AstromineToolMaterials.BRONZE, 1, -2.8f, getBasicSettings().fireproof()));
+	public static final Item BRONZE_HAXE = register("bronze_haxe", new HaxeItem(AstromineToolMaterials.BRONZE, -6, 0f, getBasicSettings().fireproof()));
 
 	public static final Item STEEL_PICKAXE = register("steel_pickaxe", new PickaxeItem(AstromineToolMaterials.STEEL, 1, -2.8f, getBasicSettings()));
 	public static final Item STEEL_AXE = register("steel_axe", new AxeItem(AstromineToolMaterials.STEEL, 5f, -3.0f, getBasicSettings()));
 	public static final Item STEEL_SHOVEL = register("steel_shovel", new ShovelItem(AstromineToolMaterials.STEEL, 1.5f, -3.0f, getBasicSettings()));
 	public static final Item STEEL_HOE = register("steel_hoe", new HoeItem(AstromineToolMaterials.STEEL, -6, 0f, getBasicSettings()));
 	public static final Item STEEL_SWORD = register("steel_sword", new SwordItem(AstromineToolMaterials.STEEL, 3, -2.4f, getBasicSettings()));
+	public static final Item STEEL_SHAXE = register("steel_shaxe", new ShaxeItem(AstromineToolMaterials.STEEL, 1, -2.8f, getBasicSettings()));
+	public static final Item STEEL_HAXE = register("steel_haxe", new HaxeItem(AstromineToolMaterials.STEEL, -6, 0f, getBasicSettings()));
 
 	public static final Item METITE_PICKAXE = register("metite_pickaxe", new PickaxeItem(AstromineToolMaterials.METITE, 1, -2.8f, getBasicSettings()));
 	public static final Item METITE_AXE = register("metite_axe", new AxeItem(AstromineToolMaterials.METITE, 5f, -3.0f, getBasicSettings()));
 	public static final Item METITE_SHOVEL = register("metite_shovel", new ShovelItem(AstromineToolMaterials.METITE, 1.5f, -3.0f, getBasicSettings()));
 	public static final Item METITE_HOE = register("metite_hoe", new HoeItem(AstromineToolMaterials.METITE, -5, 0f, getBasicSettings()));
 	public static final Item METITE_SWORD = register("metite_sword", new SwordItem(AstromineToolMaterials.METITE, 3, -2.4f, getBasicSettings()));
+	public static final Item METITE_SHAXE = register("metite_shaxe", new ShaxeItem(AstromineToolMaterials.METITE, 1, -2.8f, getBasicSettings()));
+	public static final Item METITE_HAXE = register("metite_haxe", new HaxeItem(AstromineToolMaterials.METITE, -5, 0f, getBasicSettings()));
 
 	public static final Item ASTERITE_PICKAXE = register("asterite_pickaxe", new PickaxeItem(AstromineToolMaterials.ASTERITE, 1, -2.8f, getBasicSettings()));
 	public static final Item ASTERITE_AXE = register("asterite_axe", new AxeItem(AstromineToolMaterials.ASTERITE, 5f, -3.0f, getBasicSettings()));
 	public static final Item ASTERITE_SHOVEL = register("asterite_shovel", new ShovelItem(AstromineToolMaterials.ASTERITE, 1.5f, -3.0f, getBasicSettings()));
 	public static final Item ASTERITE_HOE = register("asterite_hoe", new HoeItem(AstromineToolMaterials.ASTERITE, -5, 0f, getBasicSettings()));
 	public static final Item ASTERITE_SWORD = register("asterite_sword", new SwordItem(AstromineToolMaterials.ASTERITE, 3, -2.4f, getBasicSettings()));
+	public static final Item ASTERITE_SHAXE = register("asterite_shaxe", new ShaxeItem(AstromineToolMaterials.ASTERITE, 1, -2.8f, getBasicSettings()));
+	public static final Item ASTERITE_HAXE = register("asterite_haxe", new HaxeItem(AstromineToolMaterials.ASTERITE, -5, 0f, getBasicSettings()));
 
 	public static final Item STELLUM_PICKAXE = register("stellum_pickaxe", new PickaxeItem(AstromineToolMaterials.STELLUM, 1, -2.8f, getBasicSettings().fireproof()));
 	public static final Item STELLUM_AXE = register("stellum_axe", new AxeItem(AstromineToolMaterials.STELLUM, 5f, -3.0f, getBasicSettings().fireproof()));
 	public static final Item STELLUM_SHOVEL = register("stellum_shovel", new ShovelItem(AstromineToolMaterials.STELLUM, 1.5f, -3.0f, getBasicSettings().fireproof()));
 	public static final Item STELLUM_HOE = register("stellum_hoe", new HoeItem(AstromineToolMaterials.STELLUM, -6, 0f, getBasicSettings().fireproof()));
 	public static final Item STELLUM_SWORD = register("stellum_sword", new SwordItem(AstromineToolMaterials.STELLUM, 3, -2.4f, getBasicSettings().fireproof()));
+	public static final Item STELLUM_SHAXE = register("stellum_shaxe", new ShaxeItem(AstromineToolMaterials.STELLUM, 3, -2.4f, getBasicSettings().fireproof()));
+	public static final Item STELLUM_HAXE = register("stellum_haxe", new HaxeItem(AstromineToolMaterials.STELLUM, 3, -2.4f, getBasicSettings().fireproof()));
 
 	public static final Item GALAXIUM_PICKAXE = register("galaxium_pickaxe", new PickaxeItem(AstromineToolMaterials.GALAXIUM, 1, -2.8f, getBasicSettings()));
 	public static final Item GALAXIUM_AXE = register("galaxium_axe", new AxeItem(AstromineToolMaterials.GALAXIUM, 5f, -3.0f, getBasicSettings()));
 	public static final Item GALAXIUM_SHOVEL = register("galaxium_shovel", new ShovelItem(AstromineToolMaterials.GALAXIUM, 1.5f, -3.0f, getBasicSettings()));
 	public static final Item GALAXIUM_HOE = register("galaxium_hoe", new HoeItem(AstromineToolMaterials.GALAXIUM, -6, 0f, getBasicSettings()));
 	public static final Item GALAXIUM_SWORD = register("galaxium_sword", new SwordItem(AstromineToolMaterials.GALAXIUM, 3, -2.4f, getBasicSettings()));
+	public static final Item GALAXIUM_SHAXE = register("galaxium_shaxe", new ShaxeItem(AstromineToolMaterials.GALAXIUM, 1, -2.8f, getBasicSettings()));
+	public static final Item GALAXIUM_HAXE = register("galaxium_haxe", new HaxeItem(AstromineToolMaterials.GALAXIUM, -6, 0f, getBasicSettings()));
 
 	public static final Item UNIVITE_PICKAXE = register("univite_pickaxe", new PickaxeItem(AstromineToolMaterials.UNIVITE, 1, -2.8f, getBasicSettings().fireproof()));
 	public static final Item UNIVITE_AXE = register("univite_axe", new AxeItem(AstromineToolMaterials.UNIVITE, 5f, -3.0f, getBasicSettings().fireproof()));
 	public static final Item UNIVITE_SHOVEL = register("univite_shovel", new ShovelItem(AstromineToolMaterials.UNIVITE, 1.5f, -3.0f, getBasicSettings().fireproof()));
 	public static final Item UNIVITE_HOE = register("univite_hoe", new HoeItem(AstromineToolMaterials.UNIVITE, -6, 0f, getBasicSettings().fireproof()));
 	public static final Item UNIVITE_SWORD = register("univite_sword", new SwordItem(AstromineToolMaterials.UNIVITE, 3, -2.4f, getBasicSettings().fireproof()));
+	public static final Item UNIVITE_SHAXE = register("univite_shaxe", new ShaxeItem(AstromineToolMaterials.UNIVITE, 1, -2.8f, getBasicSettings().fireproof()));
+	public static final Item UNIVITE_HAXE = register("univite_haxe", new HaxeItem(AstromineToolMaterials.UNIVITE, -6, 0f, getBasicSettings().fireproof()));
 
 	// Armor
 	public static final Item COPPER_HELMET = register("copper_helmet", new ArmorItem(AstromineArmorMaterials.COPPER, EquipmentSlot.HEAD, getBasicSettings()));
