@@ -6,5 +6,5 @@
     "1": { "tag": "c:gold_plates" },
     "2": { "tag": "c:redstone_dusts" }
   },
-  "result": { "item": "astromine:basic_circuit", "count": 1 }
+  "result": { "item": "astromine:basic_circuit", "count": 2 }
 }
