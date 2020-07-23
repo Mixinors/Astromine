@@ -138,6 +138,7 @@ public abstract class PresserBlockEntity extends DefaultedEnergyItemBlockEntity 
 				shouldTry = false;
 				isActive = false;
 				progress = 0;
+				recipe = Optional.empty();
 			}
 		} else {
 			progress = 0;

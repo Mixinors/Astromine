@@ -140,6 +140,7 @@ public abstract class TrituratorBlockEntity extends DefaultedEnergyItemBlockEnti
 				shouldTry = false;
 				isActive = false;
 				progress = 0;
+				recipe = Optional.empty();
 			}
 		} else {
 			progress = 0;
