@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["xxx", " x ", " s "],
+  "key": {
+    "x": {
+      "tag": "c:metite_ingots"
+    },
+    "s": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "astromine:metite_mining_tool",
+    "count": 1
+  }
+}
