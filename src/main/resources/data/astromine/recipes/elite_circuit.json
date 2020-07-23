@@ -6,5 +6,5 @@
     "1": { "tag": "c:gold_plates" },
     "2": { "item": "astromine:advanced_circuit" }
   },
-  "result": { "item": "astromine:elite_circuit", "count": 1 }
+  "result": { "item": "astromine:elite_circuit", "count": 2 }
 }
