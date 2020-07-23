@@ -29,8 +29,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
 
-public class MoonBiome extends Biome {
-	public MoonBiome(float baseHeight, float variation) {
+public class DepthScaleBiome extends Biome {
+	public DepthScaleBiome(float baseHeight, float variation) {
 		super(new Settings().configureSurfaceBuilder(SurfaceBuilder.NOPE, SurfaceBuilder.STONE_CONFIG)
 				.precipitation(Precipitation.NONE)
 				.category(Category.NONE)
