@@ -1,100 +1,45 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.common.widget;
 
-import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
+import nerdhub.cardinal.components.api.ComponentType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import spinnery.widget.WAbstractWidget;
 import spinnery.widget.WInterface;
 import spinnery.widget.WTabHolder;
-import spinnery.widget.api.*;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Set;
+import spinnery.widget.api.Position;
+import spinnery.widget.api.Size;
+import spinnery.widget.api.WPositioned;
 
 @Environment(EnvType.CLIENT)
-public class WTransferTypeSelectorPanel extends WAbstractWidget implements WCollection, WDelegatedEventListener {
-	WTabHolder tabs;
-
-	BlockEntityTransferComponent component;
-
-	ComponentProvider provider;
-
-	BlockPos blockPos;
-
-	public WTransferTypeSelectorPanel() {
-		tabs = new WTabHolder().setParent(getParent()).setInterface(getInterface());
-		tabs.setMode(WTabHolder.Mode.OCCUPY_PARTIAL);
-	}
-
-	@Override
-	public Set<WAbstractWidget> getWidgets() {
-		return ImmutableSet.of(tabs);
-	}
-
-	@Override
-	public boolean contains(WAbstractWidget... widgets) {
-		return Arrays.stream(widgets).allMatch(widget -> getWidgets().contains(widget));
-	}
-
-	@Override
-	public Collection<? extends WEventListener> getEventDelegates() {
-		return getWidgets();
-	}
-
-	@Override
-	public void onLayoutChange() {
-		tabs.setPosition(Position.of(this)).setSize(Size.of(this));
-		super.onLayoutChange();
-	}
-
-	public <W extends WTransferTypeSelectorPanel> W setProvider(ComponentProvider provider) {
-		this.provider = provider;
-		return (W) this;
-	}
-
-	public <W extends WTransferTypeSelectorPanel> W setComponent(BlockEntityTransferComponent component) {
-		this.component = component;
-
-//		component.get().forEach((type, entry) -> {
-//			ComponentType<?> componentType = ComponentRegistry.INSTANCE.get(type);
-//			if (componentType != null) {
-//				NameableComponent nameableComponent = (NameableComponent) provider.getComponent(componentType);
-//				createTab(nameableComponent.getSymbol(), nameableComponent.getName(), type);
-//			} else {
-//				BlockEntityTransferComponent.TransferComponentInfo info = BlockEntityTransferComponent.INFOS.get(type);
-//				if (info != null) {
-//					createTab(info.getSymbol(), info.getName(), type);
-//				}
-//			}
-//		});
-
-		return (W) this;
-	}
-
-	public BlockEntityTransferComponent getComponent() {
-		return component;
-	}
-
-	public BlockPos getBlockPos() {
-		return blockPos;
-	}
-
-	public <W extends WTransferTypeSelectorPanel> W setBlockPos(BlockPos blockPos) {
-		this.blockPos = blockPos;
-		return (W) this;
-	}
-
-	public static void createTab(WTabHolder.WTab tab, WPositioned anchor, Direction rotation, BlockEntityTransferComponent component, BlockPos blockPos, Identifier type, WInterface wInterface) {
+public class WTransferTypeSelectorPanel {
+	public static void createTab(WTabHolder.WTab tab, WPositioned anchor, Direction rotation, BlockEntityTransferComponent component, BlockPos blockPos, ComponentType<?> type, WInterface wInterface) {
 		final Position finalNorth = Position.of(anchor, 7 + 22, 31 + 22, 0);
 		final Position finalSouth = Position.of(anchor, 7 + 0, 31 + 44, 0);
 		final Position finalUp = Position.of(anchor, 7 + 22, 31 + 0, 0);
@@ -116,12 +61,5 @@ public class WTransferTypeSelectorPanel extends WAbstractWidget implements WColl
 		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, positons.get(MirrorUtilities.rotate(Direction.DOWN, rotation)), Size.of(18, 18)).setComponent(component).setType(type).setRotation(rotation).setDirection(Direction.DOWN).setBlockPos(blockPos).setInterface(wInterface));
 		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, positons.get(MirrorUtilities.rotate(Direction.WEST, rotation)), Size.of(18, 18)).setComponent(component).setType(type).setRotation(rotation).setDirection(Direction.WEST).setBlockPos(blockPos).setInterface(wInterface));
 		tab.add(tab.getBody().createChild(WTransferTypeSelectorButton::new, positons.get(MirrorUtilities.rotate(Direction.EAST, rotation)), Size.of(18, 18)).setComponent(component).setType(type).setRotation(rotation).setDirection(Direction.EAST).setBlockPos(blockPos).setInterface(wInterface));
-	}
-
-	@Override
-	public void draw(MatrixStack matrices, VertexConsumerProvider provider) {
-		tabs.draw(matrices, provider);
-
-		super.draw(matrices, provider);
 	}
 }

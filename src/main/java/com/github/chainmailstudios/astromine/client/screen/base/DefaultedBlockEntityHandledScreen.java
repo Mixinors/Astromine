@@ -1,3 +1,26 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.client.screen.base;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedFacingBlockWithEntity;
@@ -10,8 +33,6 @@ import com.github.chainmailstudios.astromine.common.widget.WTabbedPanel;
 import com.github.chainmailstudios.astromine.common.widget.WTransferTypeSelectorPanel;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.google.common.collect.Sets;
-import nerdhub.cardinal.components.api.ComponentRegistry;
-import nerdhub.cardinal.components.api.ComponentType;
 import net.minecraft.block.Block;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -27,7 +48,6 @@ import spinnery.widget.api.Position;
 import spinnery.widget.api.Size;
 
 import java.util.Collection;
-import java.util.Set;
 
 public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScreenHandler> extends DefaultedHandledScreen<T> {
 	public WInterface mainInterface;
@@ -74,25 +94,10 @@ public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScr
 		BlockEntityTransferComponent transferComponent = componentProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
 
 		transferComponent.get().forEach((type, entry) -> {
-			ComponentType<?> componentType = ComponentRegistry.INSTANCE.get(type);
-			if (componentType != null) {
-				NameableComponent nameableComponent = (NameableComponent) componentProvider.getComponent(componentType);
-				WTabHolder.WTab tab = mainTabbedPanel.addTab(nameableComponent.getSymbol());
-				WTransferTypeSelectorPanel.createTab(
-						tab,
-						Position.of(mainTabbedPanel, mainTabbedPanel.getWidth() / 2 - 38, 0, 0),
-						finalRotation,
-						transferComponent,
-						handler.syncBlockEntity.getPos(),
-						type,
-						getInterface()
-				);
-				tab.getBody().setLabel(nameableComponent.getName());
-				playerSlots.addAll(WSlot.addPlayerInventory(Position.of(mainTabbedPanel, 7, mainTabbedPanel.getHeight() - 18 - 11 - (18 * 3), 2), Size.of(18, 18), tab.getBody()));
-			} else {
-				BlockEntityTransferComponent.TransferComponentInfo info = BlockEntityTransferComponent.INFOS.get(type);
-				if (info != null) {
-					WTabHolder.WTab tab = mainTabbedPanel.addTab(info.getSymbol());
+			if (type != null) {
+				if (componentProvider.getComponent(type) instanceof NameableComponent) {
+					NameableComponent nameableComponent = (NameableComponent) componentProvider.getComponent(type);
+					WTabHolder.WTab tab = mainTabbedPanel.addTab(nameableComponent.getSymbol());
 					WTransferTypeSelectorPanel.createTab(
 							tab,
 							Position.of(mainTabbedPanel, mainTabbedPanel.getWidth() / 2 - 38, 0, 0),
@@ -102,7 +107,7 @@ public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScr
 							type,
 							getInterface()
 					);
-					tab.getBody().setLabel(info.getName());
+					tab.getBody().setLabel(nameableComponent.getName());
 					playerSlots.addAll(WSlot.addPlayerInventory(Position.of(mainTabbedPanel, 7, mainTabbedPanel.getHeight() - 18 - 11 - (18 * 3), 2), Size.of(18, 18), tab.getBody()));
 				}
 			}

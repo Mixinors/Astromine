@@ -1,6 +1,29 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.common.component.world;
 
-import com.github.chainmailstudios.astromine.common.dimension.EarthSpaceDimensionType;
+import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.google.common.collect.Lists;
@@ -45,9 +68,7 @@ public class WorldAtmosphereComponent implements Component, Tickable {
 	public FluidVolume get(BlockPos position) {
 		RegistryKey<DimensionType> key = world.getDimensionRegistryKey();
 
-		boolean isSpace = (key == EarthSpaceDimensionType.EARTH_SPACE_REGISTRY_KEY);
-
-		if (!isSpace && !volumes.containsKey(position)) {
+		if (!AstromineDimensions.isAstromine(key) && !volumes.containsKey(position)) {
 			return FluidVolume.oxygen();
 		} else {
 			return volumes.getOrDefault(position, FluidVolume.empty());

@@ -1,5 +1,29 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.PresserBlock;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
@@ -10,8 +34,10 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.recipe.PressingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.RecipeType;
@@ -22,8 +48,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
-public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
-	public int progress = 0;
+public abstract class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
+	public double progress = 0;
 	public int limit = 100;
 
 	public boolean shouldTry = true;
@@ -34,10 +60,9 @@ public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implement
 
 	Optional<PressingRecipe> recipe = Optional.empty();
 
-	public PresserBlockEntity() {
-		super(AstromineBlockEntityTypes.PRESSER);
+	public PresserBlockEntity(BlockEntityType<?> type) {
+		super(type);
 
-		setMaxStoredPower(32000);
 		addEnergyListener(() -> shouldTry = true);
 	}
 
@@ -67,7 +92,7 @@ public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implement
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putInt("progress", progress);
+		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
 		return super.toTag(tag);
 	}
@@ -84,9 +109,9 @@ public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implement
 				}
 			}
 			if (recipe.isPresent() && recipe.get().matches(ItemInventoryFromInventoryComponent.of(itemComponent), world)) {
-				limit = recipe.get().getTime();
+				limit = recipe.get().getTime() * 2;
 
-				double consumed = recipe.get().getEnergyConsumed() / (double) limit;
+				double consumed = recipe.get().getEnergyConsumed() / (double) (limit / 2);
 
 				ItemStack output = recipe.get().getOutput();
 
@@ -105,7 +130,7 @@ public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implement
 
 						progress = 0;
 					} else {
-						++progress;
+						progress += 1 * ((PresserBlock) this.getCachedState().getBlock()).getMachineSpeed();
 					}
 					isActive = true;
 				}
@@ -127,6 +152,50 @@ public class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implement
 			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, true));
 		} else if (!isActive && activity[0]) {
 			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, false));
+		}
+	}
+
+	public static class Primitive extends PresserBlockEntity {
+		public Primitive() {
+			super(AstromineBlockEntityTypes.PRIMITIVE_PRESSER);
+		}
+
+		@Override
+		protected double getEnergySize() {
+			return AstromineConfig.get().primitivePresserEnergy;
+		}
+	}
+
+	public static class Basic extends PresserBlockEntity {
+		public Basic() {
+			super(AstromineBlockEntityTypes.BASIC_PRESSER);
+		}
+
+		@Override
+		protected double getEnergySize() {
+			return AstromineConfig.get().basicPresserEnergy;
+		}
+	}
+
+	public static class Advanced extends PresserBlockEntity {
+		public Advanced() {
+			super(AstromineBlockEntityTypes.ADVANCED_PRESSER);
+		}
+
+		@Override
+		protected double getEnergySize() {
+			return AstromineConfig.get().advancedPresserEnergy;
+		}
+	}
+
+	public static class Elite extends PresserBlockEntity {
+		public Elite() {
+			super(AstromineBlockEntityTypes.ELITE_PRESSER);
+		}
+
+		@Override
+		protected double getEnergySize() {
+			return AstromineConfig.get().elitePresserEnergy;
 		}
 	}
 }

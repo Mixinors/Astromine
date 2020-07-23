@@ -1,3 +1,26 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
@@ -10,6 +33,7 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -35,8 +59,12 @@ public class FluidExtractorBlockEntity extends DefaultedEnergyFluidBlockEntity i
 	public FluidExtractorBlockEntity() {
 		super(AstromineBlockEntityTypes.FLUID_EXTRACTOR);
 
-		setMaxStoredPower(32000);
 		fluidComponent.getVolume(0).setSize(Fraction.ofWhole(4));
+	}
+
+	@Override
+	protected double getEnergySize() {
+		return AstromineConfig.get().fluidExtractorEnergy;
 	}
 
 	@Override
@@ -50,7 +78,7 @@ public class FluidExtractorBlockEntity extends DefaultedEnergyFluidBlockEntity i
 
 		start:
 		if (this.world != null && !this.world.isClient()) {
-			if (asEnergy().getEnergy() < 250) {
+			if (asEnergy().getEnergy() < AstromineConfig.get().fluidExtractorEnergyConsumed) {
 				cooldown.resetToEmpty();
 				isActive = false;
 				break start;
@@ -58,7 +86,7 @@ public class FluidExtractorBlockEntity extends DefaultedEnergyFluidBlockEntity i
 
 			isActive = true;
 
-			cooldown.add(Fraction.of(1, 40));
+			cooldown.add(Fraction.of(1, AstromineConfig.get().fluidExtractorTimeConsumed));
 			cooldown.simplify();
 			if (cooldown.isBiggerOrEqualThan(Fraction.ofWhole(1))) {
 				cooldown.resetToEmpty();
@@ -73,7 +101,7 @@ public class FluidExtractorBlockEntity extends DefaultedEnergyFluidBlockEntity i
 					FluidVolume toInsert = new FluidVolume(targetFluidState.getFluid(), Fraction.bucket());
 					if (fluidVolume.hasAvailable(Fraction.bucket())) {
 						fluidVolume.pullVolume(toInsert, toInsert.getFraction());
-						asEnergy().extract(250);
+						asEnergy().extract(AstromineConfig.get().fluidExtractorEnergyConsumed);
 
 						world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
 						world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);

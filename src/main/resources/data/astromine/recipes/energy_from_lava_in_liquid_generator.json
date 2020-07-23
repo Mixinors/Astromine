@@ -5,9 +5,6 @@
     "numerator": 1,
     "denominator": 256
   },
-  "energy_generated": {
-    "numerator": 1,
-    "denominator": 4
-  },
+  "energy_generated": 248,
   "time": 1
 }

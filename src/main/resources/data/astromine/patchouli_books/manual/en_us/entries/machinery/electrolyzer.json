@@ -1,18 +1,18 @@
 {
 	"name": "text.astromine.machinery.electrolyzer.title",
-	"icon": "astromine:electrolyzer",
+	"icon": "astromine:primitive_electrolyzer",
 	"category": "machinery",
 	"sortnum": 1,
 	"pages": [
 		{
 			"type": "spotlight",
-			"item": "astromine:electrolyzer",
+			"item": "astromine:primitive_electrolyzer",
 			"title": "text.astromine.machinery.electrolyzer.page_one.title",
 			"text": "text.astromine.machinery.electrolyzer.page_one.text"
 		},
 		{
 			"type": "crafting",
-			"recipe": "astromine:electrolyzer",
+			"recipe": "astromine:primitive_electrolyzer",
 			"title": "text.astromine.machinery.electrolyzer.page_two.title"
 		}
 	]

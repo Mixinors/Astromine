@@ -1,3 +1,26 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.common.widget;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
@@ -5,11 +28,11 @@ import com.github.chainmailstudios.astromine.common.component.block.entity.Block
 import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
 import io.netty.buffer.Unpooled;
+import nerdhub.cardinal.components.api.ComponentType;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -27,7 +50,7 @@ import java.util.Locale;
 public class WTransferTypeSelectorButton extends WButton {
 	private BlockEntityTransferComponent component;
 
-	private Identifier type;
+	private ComponentType<?> type;
 
 	private Direction direction;
 
@@ -39,6 +62,7 @@ public class WTransferTypeSelectorButton extends WButton {
 
 	private Vec3i mouse = Vec3i.ZERO;
 	private Lazy<String> sideName = lazySideName();
+	private boolean wasClicked = false;
 
 	private Lazy<String> lazySideName() {
 		return new Lazy<>(() -> {
@@ -74,11 +98,11 @@ public class WTransferTypeSelectorButton extends WButton {
 		return (W) this;
 	}
 
-	public Identifier getType() {
+	public ComponentType<?> getType() {
 		return type;
 	}
 
-	public <W extends WTransferTypeSelectorButton> W setType(Identifier type) {
+	public <W extends WTransferTypeSelectorButton> W setType(ComponentType<?> type) {
 		this.type = type;
 		return (W) this;
 	}
@@ -102,26 +126,35 @@ public class WTransferTypeSelectorButton extends WButton {
 	}
 
 	@Override
-	public void onMouseReleased(float mouseX, float mouseY, int mouseButton) {
+	public void onMouseClicked(float mouseX, float mouseY, int mouseButton) {
+		super.onMouseClicked(mouseX, mouseY, mouseButton);
 		if (isFocused()) {
+			wasClicked = true;
+		}
+	}
+
+	@Override
+	public void onMouseReleased(float mouseX, float mouseY, int mouseButton) {
+		if (isFocused() && wasClicked) {
 			component.get(type).set(direction, component.get(type).get(direction).next());
 
 			setTexture(component.get(type).get(direction).texture());
 			this.sideName = lazySideName();
 
-			if (getInterface().getContainer().getWorld().isClient()) {
+			if (getInterface().getHandler().getWorld().isClient()) {
 				PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
 
 				buffer.writeBlockPos(getBlockPos());
 				buffer.writeIdentifier(DefaultedBlockEntity.TRANSFER_UPDATE_PACKET);
 
-				buffer.writeIdentifier(type);
+				buffer.writeIdentifier(type.getId());
 				buffer.writeEnumConstant(direction);
 				buffer.writeEnumConstant(component.get(type).get(direction));
 
 				ClientSidePacketRegistry.INSTANCE.sendToServer(AstromineCommonPackets.BLOCK_ENTITY_UPDATE_PACKET, buffer);
 			}
 		}
+		wasClicked = false;
 
 		super.onMouseReleased(mouseX, mouseY, mouseButton);
 	}
@@ -139,8 +172,9 @@ public class WTransferTypeSelectorButton extends WButton {
 
 	@Override
 	public List<Text> getTooltip() {
+		Direction offset = MirrorUtilities.rotate(direction, rotation);
 		return Arrays.asList(
-				new LiteralText(direction.toString() + " + " + rotation.toString() + " = " + MirrorUtilities.rotate(direction, rotation)),
+				new TranslatableText("text.astromine.siding." + offset.getName()),
 				new TranslatableText("text.astromine.siding." + sideName.get())
 		);
 	}

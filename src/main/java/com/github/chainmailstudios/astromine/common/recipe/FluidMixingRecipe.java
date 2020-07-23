@@ -1,6 +1,30 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.common.recipe;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.TieredHorizontalFacingMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
@@ -18,6 +42,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -69,6 +94,9 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory>, EnergyConsu
 
 	@Override
 	public <T extends DefaultedBlockEntity> boolean canCraft(T blockEntity) {
+		Block block = blockEntity.getWorld().getBlockState(blockEntity.getPos()).getBlock();
+		if (!(block instanceof TieredHorizontalFacingMachineBlock)) return false;
+
 		FluidInventoryComponent fluidComponent = blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
 		FluidVolume firstInputVolume = fluidComponent.getVolume(FIRST_INPUT_FLUID_VOLUME);
@@ -86,6 +114,10 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory>, EnergyConsu
 	@Override
 	public <T extends DefaultedBlockEntity> void craft(T blockEntity) {
 		if (canCraft(blockEntity)) {
+			Block block = blockEntity.getWorld().getBlockState(blockEntity.getPos()).getBlock();
+			double machineSpeed = ((TieredHorizontalFacingMachineBlock) block).getMachineSpeed() / 2;
+			Fraction speed = FractionUtilities.fromFloating(machineSpeed);
+
 			FluidInventoryComponent fluidComponent = blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
 			FluidVolume firstInputFluidVolume = fluidComponent.getVolume(FIRST_INPUT_FLUID_VOLUME);
@@ -94,10 +126,10 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory>, EnergyConsu
 
 			EnergyHandler energyHandler = Energy.of(blockEntity);
 
-			if (energyHandler.getEnergy() >= energyConsumed) {
-				firstInputFluidVolume.extractVolume(firstInputAmount);
-				secondInputFluidVolume.extractVolume(secondInputAmount);
-				outputVolume.insertVolume(new FluidVolume(outputFluid.get(), outputAmount.copy()));
+			if (energyHandler.getEnergy() >= energyConsumed * Math.max(1, machineSpeed)) {
+				firstInputFluidVolume.extractVolume(Fraction.simplify(Fraction.multiply(firstInputAmount, speed)));
+				secondInputFluidVolume.extractVolume(Fraction.simplify(Fraction.multiply(secondInputAmount, speed)));
+				outputVolume.insertVolume(new FluidVolume(outputFluid.get(), Fraction.simplify(Fraction.multiply(outputAmount, speed)).copy()));
 			}
 		}
 	}
@@ -139,7 +171,7 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory>, EnergyConsu
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.FLUID_MIXER);
+		return new ItemStack(AstromineBlocks.ADVANCED_FLUID_MIXER);
 	}
 
 	public Identifier getIdentifier() {
@@ -262,14 +294,14 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory>, EnergyConsu
 		@Override
 		public String toString() {
 			return "Format{" +
-					"firstInput='" + firstInput + '\'' +
-					", firstInputAmount=" + firstInputAmount +
-					", secondInput='" + secondInput + '\'' +
-					", secondInputAmount=" + secondInputAmount +
-					", output='" + output + '\'' +
-					", outputAmount=" + outputAmount +
-					", energyGenerated=" + energyGenerated +
-					'}';
+				"firstInput='" + firstInput + '\'' +
+				", firstInputAmount=" + firstInputAmount +
+				", secondInput='" + secondInput + '\'' +
+				", secondInputAmount=" + secondInputAmount +
+				", output='" + output + '\'' +
+				", outputAmount=" + outputAmount +
+				", energyGenerated=" + energyGenerated +
+				'}';
 		}
 	}
 }

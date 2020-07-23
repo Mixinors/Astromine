@@ -1,5 +1,29 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.TrituratorBlock;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
@@ -10,8 +34,10 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.RecipeType;
@@ -22,8 +48,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
-public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
-	public int progress = 0;
+public abstract class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
+	public double progress = 0;
 	public int limit = 100;
 
 	public boolean shouldTry = true;
@@ -34,10 +60,9 @@ public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implem
 
 	Optional<TrituratingRecipe> recipe = Optional.empty();
 
-	public TrituratorBlockEntity() {
-		super(AstromineBlockEntityTypes.TRITURATOR);
+	public TrituratorBlockEntity(BlockEntityType<?> type) {
+		super(type);
 
-		setMaxStoredPower(32000);
 		addEnergyListener(() -> shouldTry = true);
 	}
 
@@ -60,14 +85,14 @@ public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implem
 	@Override
 	public void fromTag(BlockState state, CompoundTag tag) {
 		super.fromTag(state, tag);
-		progress = tag.getInt("progress");
+		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
 		shouldTry = true;
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putInt("progress", progress);
+		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
 		return super.toTag(tag);
 	}
@@ -84,9 +109,9 @@ public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implem
 				}
 			}
 			if (recipe.isPresent() && recipe.get().matches(ItemInventoryFromInventoryComponent.of(itemComponent), world)) {
-				limit = recipe.get().getTime();
+				limit = recipe.get().getTime() * 2;
 
-				double consumed = recipe.get().getEnergyConsumed() / (double) limit;
+				double consumed = recipe.get().getEnergyConsumed() / (double) (limit / 2);
 
 				ItemStack output = recipe.get().getOutput();
 
@@ -105,7 +130,7 @@ public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implem
 
 						progress = 0;
 					} else {
-						++progress;
+						progress += ((TrituratorBlock) this.getCachedState().getBlock()).getMachineSpeed();
 					}
 					isActive = true;
 				} else {
@@ -129,6 +154,50 @@ public class TrituratorBlockEntity extends DefaultedEnergyItemBlockEntity implem
 			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, true));
 		} else if (!isActive && activity[0]) {
 			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, false));
+		}
+	}
+
+	public static class Primitive extends TrituratorBlockEntity {
+		public Primitive() {
+			super(AstromineBlockEntityTypes.PRIMITIVE_TRITURATOR);
+		}
+
+		@Override
+		protected double getEnergySize() {
+			return AstromineConfig.get().primitiveTrituratorEnergy;
+		}
+	}
+
+	public static class Basic extends TrituratorBlockEntity {
+		public Basic() {
+			super(AstromineBlockEntityTypes.BASIC_TRITURATOR);
+		}
+
+		@Override
+		protected double getEnergySize() {
+			return AstromineConfig.get().basicTrituratorEnergy;
+		}
+	}
+
+	public static class Advanced extends TrituratorBlockEntity {
+		public Advanced() {
+			super(AstromineBlockEntityTypes.ADVANCED_TRITURATOR);
+		}
+
+		@Override
+		protected double getEnergySize() {
+			return AstromineConfig.get().advancedTrituratorEnergy;
+		}
+	}
+
+	public static class Elite extends TrituratorBlockEntity {
+		public Elite() {
+			super(AstromineBlockEntityTypes.ELITE_TRITURATOR);
+		}
+
+		@Override
+		protected double getEnergySize() {
+			return AstromineConfig.get().eliteTrituratorEnergy;
 		}
 	}
 }

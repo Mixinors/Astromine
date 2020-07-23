@@ -1,23 +1,52 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.world.AsteroidBeltBiome;
-import com.github.chainmailstudios.astromine.common.world.generation.AstromineBiomeSource;
-import com.mojang.serialization.Codec;
-import net.minecraft.util.Identifier;
+import com.github.chainmailstudios.astromine.common.world.EarthSpaceBiome;
+import com.github.chainmailstudios.astromine.common.world.MoonBiome;
+import com.github.chainmailstudios.astromine.common.world.generation.EarthSpaceBiomeSource;
+import com.github.chainmailstudios.astromine.common.world.generation.MoonBiomeSource;
+
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.source.BiomeSource;
 
 public class AstromineBiomes {
-	public static final Codec<AstromineBiomeSource> SPACE = Registry.register(Registry.BIOME_SOURCE, AstromineCommon.identifier("earth_space"), AstromineBiomeSource.CODEC);
 	public static Biome ASTEROID_BELT;
+	public static Biome MOON_FLATS;
+	public static Biome MOON_HILLS;
+	public static Biome MOON_LOWLANDS;
 
 	public static void initialize() {
-		ASTEROID_BELT = Registry.register(Registry.BIOME, AstromineCommon.identifier("asteroid_belt"), new AsteroidBeltBiome());
-	}
+		// Biome Sources
+		Registry.register(Registry.BIOME_SOURCE, AstromineCommon.identifier("earth_space"), EarthSpaceBiomeSource.CODEC);
+		Registry.register(Registry.BIOME_SOURCE, AstromineCommon.identifier("moon"), MoonBiomeSource.CODEC);
 
-	public <T extends BiomeSource> Codec<T> register(Identifier id, Codec<BiomeSource> codec) {
-		return (Codec<T>) Registry.register(Registry.BIOME_SOURCE, id, codec);
+		// Biomes
+		ASTEROID_BELT = Registry.register(Registry.BIOME, AstromineCommon.identifier("asteroid_belt"), new EarthSpaceBiome());
+		MOON_FLATS = Registry.register(Registry.BIOME, AstromineCommon.identifier("moon_flats"), new MoonBiome(100, 20));
+		MOON_HILLS = Registry.register(Registry.BIOME, AstromineCommon.identifier("moon_hills"), new MoonBiome(105, 30));
+		MOON_LOWLANDS = Registry.register(Registry.BIOME, AstromineCommon.identifier("moon_lowlands"), new MoonBiome(93, 9));
 	}
 }

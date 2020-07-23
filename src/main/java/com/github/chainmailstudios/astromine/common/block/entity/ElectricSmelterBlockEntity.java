@@ -1,5 +1,29 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.ElectricSmelterBlock;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
@@ -8,8 +32,10 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.RecipeType;
@@ -22,9 +48,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
-public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
-	public static final int SPEED = 3;
-	public int progress = 0;
+public abstract class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
+	public double progress = 0;
 	public int limit = 100;
 
 	public boolean shouldTry = true;
@@ -34,10 +59,9 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 
 	Optional<SmeltingRecipe> recipe = Optional.empty();
 
-	public ElectricSmelterBlockEntity() {
-		super(AstromineBlockEntityTypes.ELECTRIC_SMELTER);
+	public ElectricSmelterBlockEntity(BlockEntityType<?> type) {
+		super(type);
 
-		setMaxStoredPower(32000);
 		addEnergyListener(() -> shouldTry = true);
 	}
 
@@ -60,14 +84,14 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 	@Override
 	public void fromTag(BlockState state, CompoundTag tag) {
 		super.fromTag(state, tag);
-		progress = tag.getInt("progress");
+		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
 		shouldTry = true;
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putInt("progress", progress);
+		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
 		return super.toTag(tag);
 	}
@@ -86,31 +110,29 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 				}
 			}
 			if (recipe.isPresent() && recipe.get().matches(inputInventory, world)) {
-				limit = recipe.get().getCookTime();
+				limit = recipe.get().getCookTime() * 2;
 
 				ItemStack output = recipe.get().getOutput().copy();
-				
-				for (int i = 0; i < SPEED; i++) {
-					boolean isEmpty = itemComponent.getStack(0).isEmpty();
-					boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(0), output) && ItemStack.areTagsEqual(itemComponent.getStack(0), output);
 
-					if (asEnergy().use(6) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
-						if (progress == limit) {
-							itemComponent.getStack(1).decrement(1);
+				boolean isEmpty = itemComponent.getStack(0).isEmpty();
+				boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(0), output) && ItemStack.areTagsEqual(itemComponent.getStack(0), output);
 
-							if (isEmpty) {
-								itemComponent.setStack(0, output);
-							} else {
-								itemComponent.getStack(0).increment(output.getCount());
-							}
+				if (asEnergy().use(6) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
+					if (progress == limit) {
+						itemComponent.getStack(1).decrement(1);
 
-							progress = 0;
+						if (isEmpty) {
+							itemComponent.setStack(0, output);
 						} else {
-							++progress;
+							itemComponent.getStack(0).increment(output.getCount());
 						}
 
-						isActive = true;
+							progress = 0;
+					} else {
+						progress += 1 * ((ElectricSmelterBlock) this.getCachedState().getBlock()).getMachineSpeed();
 					}
+
+					isActive = true;
 				}
 			} else {
 				shouldTry = false;
@@ -130,6 +152,50 @@ public class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity i
 			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, true));
 		} else if (!isActive && activity[0]) {
 			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, false));
+		}
+	}
+
+	public static class Primitive extends ElectricSmelterBlockEntity {
+		public Primitive() {
+			super(AstromineBlockEntityTypes.PRIMITIVE_ELECTRIC_SMELTER);
+		}
+
+		@Override
+		protected double getEnergySize() {
+			return AstromineConfig.get().primitiveElectricSmelterEnergy;
+		}
+	}
+
+	public static class Basic extends ElectricSmelterBlockEntity {
+		public Basic() {
+			super(AstromineBlockEntityTypes.BASIC_ELECTRIC_SMELTER);
+		}
+
+		@Override
+		protected double getEnergySize() {
+			return AstromineConfig.get().basicElectricSmelterEnergy;
+		}
+	}
+
+	public static class Advanced extends ElectricSmelterBlockEntity {
+		public Advanced() {
+			super(AstromineBlockEntityTypes.ADVANCED_ELECTRIC_SMELTER);
+		}
+
+		@Override
+		protected double getEnergySize() {
+			return AstromineConfig.get().advancedElectricSmelterEnergy;
+		}
+	}
+
+	public static class Elite extends ElectricSmelterBlockEntity {
+		public Elite() {
+			super(AstromineBlockEntityTypes.ELITE_ELECTRIC_SMELTER);
+		}
+
+		@Override
+		protected double getEnergySize() {
+			return AstromineConfig.get().eliteElectricSmelterEnergy;
 		}
 	}
 }

@@ -1,8 +1,29 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedFacingBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
@@ -13,11 +34,11 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
-import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import nerdhub.cardinal.components.api.ComponentRegistry;
 import nerdhub.cardinal.components.api.ComponentType;
 import nerdhub.cardinal.components.api.component.Component;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
@@ -35,6 +56,9 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
+import team.reborn.energy.Energy;
+import team.reborn.energy.EnergyHandler;
+import team.reborn.energy.EnergyStorage;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -60,7 +84,7 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 			Direction packetDirection = buffer.readEnumConstant(Direction.class);
 			TransferType packetTransferType = buffer.readEnumConstant(TransferType.class);
 
-			transferComponent.get(packetIdentifier).set(packetDirection, packetTransferType);
+			transferComponent.get(ComponentRegistry.INSTANCE.get(packetIdentifier)).set(packetDirection, packetTransferType);
 
 			markDirty();
 		}));
@@ -251,6 +275,17 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 									if (!matching.isEmpty()) {
 										neighborFluidComponent.insert(neighborDirection, matching.get(0));
 									}
+								}
+							}
+
+							if (this instanceof EnergyStorage && neighborEntity instanceof EnergyStorage) {
+								neighborTransferType = neighborTransferComponent.get(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).get(neighborDirection);
+
+								if (neighborTransferType.canInsert()) {
+									EnergyHandler ourEnergyStorage = Energy.of(this);
+									EnergyHandler neighborEnergyStorage = Energy.of(neighborEntity);
+
+									ourEnergyStorage.into(neighborEnergyStorage).move(Math.min(ourEnergyStorage.getMaxOutput(), neighborEnergyStorage.getMaxInput()));
 								}
 							}
 						}
