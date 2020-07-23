@@ -175,6 +175,6 @@ public class AstromineBlocks {
 	}
 	
 	public static FabricBlockSettings getBasicSettings() {
-		return FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(1F, 4F).sounds(BlockSoundGroup.METAL);
+		return FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(1F, 4F).sounds(BlockSoundGroup.METAL);
 	}
 }
