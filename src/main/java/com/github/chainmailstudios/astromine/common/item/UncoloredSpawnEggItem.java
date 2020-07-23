@@ -1,3 +1,26 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.common.item;
 
 import com.google.common.collect.Iterables;
@@ -30,8 +53,8 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Provides an alternative to {@link net.minecraft.item.SpawnEggItem} which doesn't force hue/color through {@link net.minecraft.client.color.item.ItemColors}.
- */
+* Provides an alternative to {@link net.minecraft.item.SpawnEggItem} which doesn't force hue/color through {@link net.minecraft.client.color.item.ItemColors}.
+*/
 public class UncoloredSpawnEggItem extends Item {
 	private static final Map<EntityType<?>, UncoloredSpawnEggItem> SPAWN_EGGS = Maps.newIdentityHashMap();
 	private final EntityType<?> type;
@@ -123,11 +146,11 @@ public class UncoloredSpawnEggItem extends Item {
 	}
 
 	/**
-	 * Returns the registered {@link EntityType} associated with the given spawn egg tag.
-	 *
-	 * @param tag tag to check
-	 * @return {@link EntityType} of tag, or this item's type field
-	 */
+	* Returns the registered {@link EntityType} associated with the given spawn egg tag.
+	*
+	* @param tag tag to check
+	* @return {@link EntityType} of tag, or this item's type field
+	*/
 	public EntityType<?> getEntityType(CompoundTag tag) {
 		if (tag != null && tag.contains("EntityTag", 10)) {
 			CompoundTag entityTag = tag.getCompound("EntityTag");

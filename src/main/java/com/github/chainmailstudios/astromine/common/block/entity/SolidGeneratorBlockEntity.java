@@ -1,5 +1,29 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.SolidGeneratorBlock;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
@@ -11,6 +35,7 @@ import com.github.chainmailstudios.astromine.common.recipe.SolidGeneratingRecipe
 import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.block.BlockState;
@@ -26,7 +51,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public abstract class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, RecipeConsumer, Tickable {
-	public int current = 0;
+	public double current = 0;
 	public int limit = 100;
 
 	public boolean isActive = false;
@@ -50,11 +75,8 @@ public abstract class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlock
 		});
 	}
 
-	// TODO: Use.
-	abstract int getMachineSpeed();
-
 	@Override
-	public int getCurrent() {
+	public double getCurrent() {
 		return current;
 	}
 
@@ -64,7 +86,7 @@ public abstract class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlock
 	}
 
 	@Override
-	public void setCurrent(int current) {
+	public void setCurrent(double current) {
 		this.current = current;
 	}
 
@@ -81,6 +103,11 @@ public abstract class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlock
 	@Override
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+
+	@Override
+	public void increment() {
+		current += 1 * ((SolidGeneratorBlock) this.getCachedState().getBlock()).getMachineSpeed();
 	}
 
 	@Override
@@ -126,7 +153,7 @@ public abstract class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlock
 
 			if (current > 0 && current <= limit) {
 				double produced = 5;
-				for (int i = 0; i < 3 * getMachineSpeed(); i++) {
+				for (int i = 0; i < 3 * ((SolidGeneratorBlock) this.getCachedState().getBlock()).getMachineSpeed(); i++) {
 					if (EnergyUtilities.hasAvailable(asEnergy(), produced)) {
 						current++;
 						asEnergy().insert(produced);
@@ -162,13 +189,8 @@ public abstract class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlock
 		}
 
 		@Override
-		int getMachineSpeed() {
-			return 1;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 2048;
+		protected double getEnergySize() {
+			return AstromineConfig.get().primitiveSolidGeneratorEnergy;
 		}
 	}
 
@@ -178,13 +200,8 @@ public abstract class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlock
 		}
 
 		@Override
-		public int getMachineSpeed() {
-			return 2;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 8192;
+		protected double getEnergySize() {
+			return AstromineConfig.get().basicSolidGeneratorEnergy;
 		}
 	}
 
@@ -194,13 +211,8 @@ public abstract class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlock
 		}
 
 		@Override
-		public int getMachineSpeed() {
-			return 4;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 32767;
+		protected double getEnergySize() {
+			return AstromineConfig.get().advancedSolidGeneratorEnergy;
 		}
 	}
 
@@ -210,13 +222,8 @@ public abstract class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlock
 		}
 
 		@Override
-		int getMachineSpeed() {
-			return 8;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 131068;
+		protected double getEnergySize() {
+			return AstromineConfig.get().eliteSolidGeneratorEnergy;
 		}
 	}
 }

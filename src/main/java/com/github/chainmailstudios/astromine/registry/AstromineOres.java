@@ -1,3 +1,26 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.client.registry.AsteroidOreRegistry;
@@ -13,20 +36,22 @@ import net.minecraft.world.gen.feature.OreFeatureConfig;
 
 public class AstromineOres {
 	public static void initialize() {
-		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 48), AstromineBlocks.ASTEROID_COAL_ORE);
-		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 48), AstromineBlocks.ASTEROID_IRON_ORE);
-		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 48), AstromineBlocks.ASTEROID_GOLD_ORE);
-		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 48), AstromineBlocks.ASTEROID_COPPER_ORE);
-		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 48), AstromineBlocks.ASTEROID_TIN_ORE);
-		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 32), AstromineBlocks.ASTEROID_REDSTONE_ORE);
-		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 32), AstromineBlocks.ASTEROID_LAPIS_ORE);
-		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 16), AstromineBlocks.ASTEROID_DIAMOND_ORE);
-		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 16), AstromineBlocks.ASTEROID_EMERALD_ORE);
+		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineConfig.get().asteroidCoalOreMinimumRange, AstromineConfig.get().asteroidCoalOreMaximumRange), AstromineConfig.get().asteroidCoalOreMinimumSize, AstromineConfig.get().asteroidCoalOreMaximumSize, AstromineBlocks.ASTEROID_COAL_ORE);
+		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineConfig.get().asteroidIronOreMinimumRange, AstromineConfig.get().asteroidIronOreMaximumRange), AstromineConfig.get().asteroidIronOreMinimumSize, AstromineConfig.get().asteroidIronOreMaximumSize, AstromineBlocks.ASTEROID_IRON_ORE);
+		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineConfig.get().asteroidGoldOreMinimumRange, AstromineConfig.get().asteroidGoldOreMaximumRange), AstromineConfig.get().asteroidGoldOreMinimumSize, AstromineConfig.get().asteroidGoldOreMaximumSize, AstromineBlocks.ASTEROID_GOLD_ORE);
+		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineConfig.get().asteroidCopperOreMinimumRange, AstromineConfig.get().asteroidCopperOreMaximumRange), AstromineConfig.get().asteroidCopperOreMinimumSize, AstromineConfig.get().asteroidCopperOreMaximumSize, AstromineBlocks.ASTEROID_COPPER_ORE);
+		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineConfig.get().asteroidTinOreMinimumRange, AstromineConfig.get().asteroidTinOreMaximumRange), AstromineConfig.get().asteroidTinOreMinimumSize, AstromineConfig.get().asteroidTinOreMaximumSize, AstromineBlocks.ASTEROID_TIN_ORE);
 
-		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 48), AstromineBlocks.ASTEROID_METITE_ORE);
-		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 32), AstromineBlocks.ASTEROID_ASTERITE_ORE);
-		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 8), AstromineBlocks.ASTEROID_STELLUM_ORE);
-		AsteroidOreRegistry.INSTANCE.register(Range.of(0, 6), AstromineBlocks.ASTEROID_GALAXIUM_ORE);
+		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineConfig.get().asteroidRedstoneOreMinimumRange, AstromineConfig.get().asteroidRedstoneOreMaximumRange), AstromineConfig.get().asteroidRedstoneOreMinimumSize, AstromineConfig.get().asteroidRedstoneOreMaximumSize, AstromineBlocks.ASTEROID_REDSTONE_ORE);
+		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineConfig.get().asteroidLapisOreMinimumRange, AstromineConfig.get().asteroidLapisOreMaximumRange), AstromineConfig.get().asteroidLapisOreMinimumSize, AstromineConfig.get().asteroidLapisOreMaximumSize, AstromineBlocks.ASTEROID_LAPIS_ORE);
+
+		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineConfig.get().asteroidDiamondOreMinimumRange, AstromineConfig.get().asteroidDiamondOreMaximumRange), AstromineConfig.get().asteroidDiamondOreMinimumSize, AstromineConfig.get().asteroidDiamondOreMaximumSize, AstromineBlocks.ASTEROID_DIAMOND_ORE);
+		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineConfig.get().asteroidEmeraldOreMinimumRange, AstromineConfig.get().asteroidEmeraldOreMaximumRange), AstromineConfig.get().asteroidEmeraldOreMinimumSize, AstromineConfig.get().asteroidEmeraldOreMaximumSize, AstromineBlocks.ASTEROID_EMERALD_ORE);
+
+		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineConfig.get().asteroidMetiteOreMinimumRange, AstromineConfig.get().asteroidMetiteOreMaximumRange), AstromineConfig.get().asteroidMetiteOreMinimumSize, AstromineConfig.get().asteroidMetiteOreMaximumSize, AstromineBlocks.ASTEROID_METITE_ORE);
+		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineConfig.get().asteroidAsteriteOreMinimumRange, AstromineConfig.get().asteroidAsteriteOreMaximumRange), AstromineConfig.get().asteroidAsteriteOreMinimumSize, AstromineConfig.get().asteroidAsteriteOreMaximumSize, AstromineBlocks.ASTEROID_ASTERITE_ORE);
+		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineConfig.get().asteroidStellumOreMinimumRange, AstromineConfig.get().asteroidStellumOreMaximumRange), AstromineConfig.get().asteroidStellumOreMinimumSize, AstromineConfig.get().asteroidStellumOreMaximumSize, AstromineBlocks.ASTEROID_STELLUM_ORE);
+		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineConfig.get().asteroidGalaxiumOreMinimumRange, AstromineConfig.get().asteroidGalaxiumOreMaximumRange), AstromineConfig.get().asteroidGalaxiumOreMinimumSize, AstromineConfig.get().asteroidGalaxiumOreMaximumSize, AstromineBlocks.ASTEROID_GALAXIUM_ORE);
 
 		for (Biome biome : Registry.BIOME) {
 			if (biome.getCategory() != Biome.Category.NETHER && biome.getCategory() != Biome.Category.THEEND && biome.getCategory() != Biome.Category.NONE) {
@@ -40,13 +65,13 @@ public class AstromineOres {
 	public static void addOresToBiome(Biome biome) {
 		if (AstromineConfig.get().overworldCopperOre) {
 			biome.addFeature(GenerationStep.Feature.UNDERGROUND_ORES, Feature.ORE.configure(
-					new OreFeatureConfig(OreFeatureConfig.Target.NATURAL_STONE, AstromineBlocks.COPPER_ORE.getDefaultState(), 14)).createDecoratedFeature(Decorator.COUNT_RANGE.configure(
-					new RangeDecoratorConfig(20, 0, 0, 64))));
+					new OreFeatureConfig(OreFeatureConfig.Target.NATURAL_STONE, AstromineBlocks.COPPER_ORE.getDefaultState(), AstromineConfig.get().overworldCopperOreMaximumBlocks)).createDecoratedFeature(Decorator.COUNT_RANGE.configure(
+					new RangeDecoratorConfig(AstromineConfig.get().overworldCopperOreMaximumVeins, AstromineConfig.get().overworldCopperOreBottomOffset, AstromineConfig.get().overworldCopperOreTopOffset, AstromineConfig.get().overworldCopperOreMaximumLayer))));
 		}
 		if (AstromineConfig.get().overworldTinOre) {
 			biome.addFeature(GenerationStep.Feature.UNDERGROUND_ORES, Feature.ORE.configure(
-					new OreFeatureConfig(OreFeatureConfig.Target.NATURAL_STONE, AstromineBlocks.TIN_ORE.getDefaultState(), 11)).createDecoratedFeature(Decorator.COUNT_RANGE.configure(
-					new RangeDecoratorConfig(10, 0, 0, 64))));
+					new OreFeatureConfig(OreFeatureConfig.Target.NATURAL_STONE, AstromineBlocks.TIN_ORE.getDefaultState(), AstromineConfig.get().overworldTinOreMaximumBlocks)).createDecoratedFeature(Decorator.COUNT_RANGE.configure(
+					new RangeDecoratorConfig(AstromineConfig.get().overworldTinOreMaximumVeins, AstromineConfig.get().overworldTinOreBottomOffset, AstromineConfig.get().overworldTinOreTopOffset, AstromineConfig.get().overworldTinOreMaximumLayer))));
 		}
 	}
 }

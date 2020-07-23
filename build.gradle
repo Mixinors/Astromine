@@ -1,6 +1,7 @@
 plugins {
     id 'fabric-loom' version '0.4-SNAPSHOT'
     id 'maven-publish'
+    id 'com.diffplug.spotless' version '5.1.0'
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -8,6 +9,17 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 archivesBaseName = project.mod_name + "-" + project.mod_version + "+" + project.version_meta
 group = project.mod_group
+
+spotless {
+    encoding 'UTF-8'
+    enforceCheck(false)
+
+    java {
+        removeUnusedImports()
+        indentWithTabs(4)
+        licenseHeaderFile(file('HEADER'))
+    }
+}
 
 repositories {
     maven {
@@ -38,7 +50,7 @@ repositories {
         name = "SonaType"
         url = "https://oss.sonatype.org/content/repositories/snapshots/"
     }
-	maven {
+    maven {
         name = "Ladysnake Libs"
         url = 'https://dl.bintray.com/ladysnake/libs'
     }
@@ -87,13 +99,13 @@ dependencies {
     modImplementation "com.github.vini2003:spinnery:${spinnery_version}"
     include "com.github.vini2003:spinnery:${spinnery_version}"
 
-	// Patchouli
+    // Patchouli
     modImplementation "vazkii.patchouli:Patchouli_1.16-fabric:${patchouli_version}"
     include "vazkii.patchouli:Patchouli_1.16-fabric:${patchouli_version}"
 
-	// ModMenu
+    // ModMenu
     modImplementation "io.github.prospector:modmenu:${modmenu_version}"
-    
+
     // AutoConfig
     modImplementation "me.sargunvohra.mcmods:autoconfig1u:${auto_config_version}"
     include "me.sargunvohra.mcmods:autoconfig1u:${auto_config_version}"
@@ -107,11 +119,11 @@ dependencies {
     include "teamreborn:energy:${tr_energy_version}"
 
     // RoughlyEnoughItems
-    modImplementation ("me.shedaniel:RoughlyEnoughItems:${rei_version}")
+    modImplementation("me.shedaniel:RoughlyEnoughItems:${rei_version}")
 
     // DataBreaker
-    modRuntime ("com.github.SuperCoder7979:databreaker:${databreaker_version}") {
-        exclude (module: "fabric-loader")
+    modRuntime("com.github.SuperCoder7979:databreaker:${databreaker_version}") {
+        exclude(module: "fabric-loader")
     }
 
     // LibStructure
@@ -148,14 +160,14 @@ jar {
     from "LICENSE"
     manifest {
         attributes([
-                "Specification-Title": "${mod_name}",
-                "Specification-Vendor": "${mod_group}",
-                "Specification-Version": "${mod_version}",
-                "Implementation-Title": "${mod_name}",
-                "Implementation-Version": "${mod_version}",
-                "Implementation-Vendor" :"${mod_group}",
+                "Specification-Title"     : "${mod_name}",
+                "Specification-Vendor"    : "${mod_group}",
+                "Specification-Version"   : "${mod_version}",
+                "Implementation-Title"    : "${mod_name}",
+                "Implementation-Version"  : "${mod_version}",
+                "Implementation-Vendor"   : "${mod_group}",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConfigs": "${mod_name}.mixins.json"
+                "MixinConfigs"            : "${mod_name}.mixins.json"
         ])
     }
 }

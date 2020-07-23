@@ -1,5 +1,29 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.PresserBlock;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
@@ -10,6 +34,7 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.recipe.PressingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -24,7 +49,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public abstract class PresserBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
-	public int progress = 0;
+	public double progress = 0;
 	public int limit = 100;
 
 	public boolean shouldTry = true;
@@ -40,8 +65,6 @@ public abstract class PresserBlockEntity extends DefaultedEnergyItemBlockEntity 
 
 		addEnergyListener(() -> shouldTry = true);
 	}
-
-	abstract int getMachineSpeed();
 
 	@Override
 	protected ItemInventoryComponent createItemComponent() {
@@ -69,7 +92,7 @@ public abstract class PresserBlockEntity extends DefaultedEnergyItemBlockEntity 
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putInt("progress", progress);
+		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
 		return super.toTag(tag);
 	}
@@ -92,31 +115,30 @@ public abstract class PresserBlockEntity extends DefaultedEnergyItemBlockEntity 
 
 				ItemStack output = recipe.get().getOutput();
 
-				for (int i = 0; i < getMachineSpeed(); i++) {
-					boolean isEmpty = itemComponent.getStack(0).isEmpty();
-					boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(0), output) && ItemStack.areTagsEqual(itemComponent.getStack(0), output);
+				boolean isEmpty = itemComponent.getStack(0).isEmpty();
+				boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(0), output) && ItemStack.areTagsEqual(itemComponent.getStack(0), output);
 
-					if (asEnergy().use(getMachineSpeed() == 1 ? consumed * 1.25 : consumed) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
-						if (progress >= limit) {
-							recipe.get().craft(ItemInventoryFromInventoryComponent.of(itemComponent));
+				if (asEnergy().use(consumed) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
+					if (progress >= limit) {
+						recipe.get().craft(ItemInventoryFromInventoryComponent.of(itemComponent));
 
-							if (isEmpty) {
-								itemComponent.setStack(0, output);
-							} else {
-								itemComponent.getStack(0).increment(output.getCount());
-							}
-
-							progress = 0;
+						if (isEmpty) {
+							itemComponent.setStack(0, output);
 						} else {
-							++progress;
+							itemComponent.getStack(0).increment(output.getCount());
 						}
-						isActive = true;
+
+						progress = 0;
+					} else {
+						progress += 1 * ((PresserBlock) this.getCachedState().getBlock()).getMachineSpeed();
 					}
+					isActive = true;
 				}
 			} else {
 				shouldTry = false;
 				isActive = false;
 				progress = 0;
+				recipe = Optional.empty();
 			}
 		} else {
 			progress = 0;
@@ -140,13 +162,8 @@ public abstract class PresserBlockEntity extends DefaultedEnergyItemBlockEntity 
 		}
 
 		@Override
-		int getMachineSpeed() {
-			return 1;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 2048;
+		protected double getEnergySize() {
+			return AstromineConfig.get().primitivePresserEnergy;
 		}
 	}
 
@@ -156,13 +173,8 @@ public abstract class PresserBlockEntity extends DefaultedEnergyItemBlockEntity 
 		}
 
 		@Override
-		public int getMachineSpeed() {
-			return 2;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 8192;
+		protected double getEnergySize() {
+			return AstromineConfig.get().basicPresserEnergy;
 		}
 	}
 
@@ -172,13 +184,8 @@ public abstract class PresserBlockEntity extends DefaultedEnergyItemBlockEntity 
 		}
 
 		@Override
-		public int getMachineSpeed() {
-			return 4;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 32767;
+		protected double getEnergySize() {
+			return AstromineConfig.get().advancedPresserEnergy;
 		}
 	}
 
@@ -188,13 +195,8 @@ public abstract class PresserBlockEntity extends DefaultedEnergyItemBlockEntity 
 		}
 
 		@Override
-		int getMachineSpeed() {
-			return 8;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 131068;
+		protected double getEnergySize() {
+			return AstromineConfig.get().elitePresserEnergy;
 		}
 	}
 }

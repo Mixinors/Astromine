@@ -1,3 +1,26 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.common.entity;
 
 import com.github.chainmailstudios.astromine.common.entity.ai.superspaceslime.*;
@@ -46,10 +69,10 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	}
 
 	/**
-	 * Creates a {@link DefaultAttributeContainer.Builder} instance used for registering this entities' default attributes.
-	 *
-	 * @return a {@link DefaultAttributeContainer.Builder} with default attribute information
-	 */
+	* Creates a {@link DefaultAttributeContainer.Builder} instance used for registering this entities' default attributes.
+	*
+	* @return a {@link DefaultAttributeContainer.Builder} with default attribute information
+	*/
 	public static DefaultAttributeContainer.Builder createAttributes() {
 		return MobEntity.createMobAttributes().add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5).add(EntityAttributes.GENERIC_MAX_HEALTH, 300);
 	}
@@ -145,11 +168,11 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	}
 
 	/**
-	 * Called at the end of {@link SuperSpaceSlimeExplosionGoal}.
-	 *
-	 * <p>Spawns a large number of Space Slime around the Super Space Slime.
-	 * Note that entity hitbox mechanics remove the need to set random velocities on the new slimes.
-	 */
+	* Called at the end of {@link SuperSpaceSlimeExplosionGoal}.
+	*
+	* <p>Spawns a large number of Space Slime around the Super Space Slime.
+	* Note that entity hitbox mechanics remove the need to set random velocities on the new slimes.
+	*/
 	public void explode() {
 		for (int i = 0; i < 50; i++) {
 			SpaceSlimeEntity spaceSlime = AstromineEntityTypes.SPACE_SLIME.create(this.world);
@@ -223,8 +246,8 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	}
 
 	/**
-	 * To prevent the Super Space Slime from dying through entity cramming during its explosion attack, its cramming functionality is disabled.
-	 */
+	* To prevent the Super Space Slime from dying through entity cramming during its explosion attack, its cramming functionality is disabled.
+	*/
 	@Override
 	protected void tickCramming() {
 

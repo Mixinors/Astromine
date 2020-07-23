@@ -1,3 +1,26 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.common.world.generation;
 
 import java.util.Arrays;
@@ -18,6 +41,7 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
@@ -70,6 +94,8 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
 		int x2 = chunk.getPos().getEndX();
 		int z2 = chunk.getPos().getEndZ();
+		ChunkRandom chunkRandom = new ChunkRandom();
+		chunkRandom.setTerrainSeed(chunk.getPos().x, chunk.getPos().z);
 
 		for (int x = x1; x <= x2; ++x) {
 			for (int z = z1; z <= z2; ++z) {
@@ -102,6 +128,12 @@ public class MoonChunkGenerator extends ChunkGenerator {
 				int height = (int) (depth + (noise * scale));
 				for (int y = 0; y <= height; ++y) {
 					chunk.setBlockState(new BlockPos(x, y, z), AstromineBlocks.MOON_STONE.getDefaultState(), false);
+					if (y <= 5) {
+						if (chunkRandom.nextInt(y + 1) == 0) {
+							chunk.setBlockState(new BlockPos(x, y, z), Blocks.BEDROCK.getDefaultState(), false);
+						}
+					}
+
 				}
 			}
 		}

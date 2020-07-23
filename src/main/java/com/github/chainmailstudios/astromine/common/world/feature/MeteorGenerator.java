@@ -1,3 +1,26 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.common.world.feature;
 
 import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
@@ -50,7 +73,7 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 		emptySphere(
 				world,
 				originPos,
-				30,
+				16,
 				state -> {
 					if (world.getRandom().nextInt(10) == 0) {
 						return Blocks.FIRE.getDefaultState();
@@ -62,7 +85,7 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 		);
 
 		originPos = world.getTopPosition(Heightmap.Type.WORLD_SURFACE, new BlockPos(chunkPos.getStartX() + 8, 0, chunkPos.getStartZ() + 8));
-		buildSphere(world, originPos, 15, AstromineBlocks.METEOR_STONE.getDefaultState());
+		buildSphere(world, originPos, 8, AstromineBlocks.METEOR_STONE.getDefaultState());
 
 		Shape vein = Shapes.ellipsoid((float) 4, (float) 4, (float) 4)
 				.applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true)))

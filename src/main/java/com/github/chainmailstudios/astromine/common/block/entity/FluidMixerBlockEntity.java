@@ -1,5 +1,29 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.FluidMixerBlock;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
@@ -11,6 +35,7 @@ import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.recipe.FluidMixingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -23,7 +48,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public abstract class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEntity implements NetworkMember, RecipeConsumer, Tickable {
-	public int current = 0;
+	public double current = 0;
 	public int limit = 100;
 
 	public boolean isActive = false;
@@ -44,8 +69,6 @@ public abstract class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEnt
 		fluidComponent.getVolume(OUTPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
 	}
 
-	abstract int getMachineSpeed();
-
 	abstract Fraction getTankSize();
 
 	@Override
@@ -60,7 +83,7 @@ public abstract class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEnt
 	}
 
 	@Override
-	public int getCurrent() {
+	public double getCurrent() {
 		return current;
 	}
 
@@ -70,7 +93,7 @@ public abstract class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEnt
 	}
 
 	@Override
-	public void setCurrent(int current) {
+	public void setCurrent(double current) {
 		this.current = current;
 	}
 
@@ -87,6 +110,11 @@ public abstract class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEnt
 	@Override
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+
+	@Override
+	public void increment() {
+		current += 1 * ((FluidMixerBlock) this.getCachedState().getBlock()).getMachineSpeed();
 	}
 
 	@Override
@@ -142,18 +170,13 @@ public abstract class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEnt
 		}
 
 		@Override
-		int getMachineSpeed() {
-			return 1;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 2048;
+		protected double getEnergySize() {
+			return AstromineConfig.get().primitiveFluidMixerEnergy;
 		}
 
 		@Override
 		Fraction getTankSize() {
-			return Fraction.of(4, 1);
+			return Fraction.of(AstromineConfig.get().primitiveFluidMixerFluid, 1);
 		}
 	}
 
@@ -163,18 +186,13 @@ public abstract class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEnt
 		}
 
 		@Override
-		public int getMachineSpeed() {
-			return 2;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 8192;
+		protected double getEnergySize() {
+			return AstromineConfig.get().basicFluidMixerEnergy;
 		}
 
 		@Override
 		Fraction getTankSize() {
-			return Fraction.of(8, 1);
+			return Fraction.of(AstromineConfig.get().basicFluidMixerFluid, 1);
 		}
 	}
 
@@ -184,18 +202,13 @@ public abstract class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEnt
 		}
 
 		@Override
-		public int getMachineSpeed() {
-			return 4;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 32767;
+		protected double getEnergySize() {
+			return AstromineConfig.get().advancedFluidMixerEnergy;
 		}
 
 		@Override
 		Fraction getTankSize() {
-			return Fraction.of(16, 1);
+			return Fraction.of(AstromineConfig.get().advancedFluidMixerFluid, 1);
 		}
 	}
 
@@ -205,18 +218,13 @@ public abstract class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEnt
 		}
 
 		@Override
-		int getMachineSpeed() {
-			return 8;
-		}
-
-		@Override
-		protected int getEnergySize() {
-			return 131068;
+		protected double getEnergySize() {
+			return AstromineConfig.get().eliteFluidMixerEnergy;
 		}
 
 		@Override
 		Fraction getTankSize() {
-			return Fraction.of(64, 1);
+			return Fraction.of(AstromineConfig.get().eliteFluidMixerFluid, 1);
 		}
 	}
 }

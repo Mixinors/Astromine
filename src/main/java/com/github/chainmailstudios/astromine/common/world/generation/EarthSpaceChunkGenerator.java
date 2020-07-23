@@ -1,5 +1,29 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.common.world.generation;
 
+import com.github.chainmailstudios.astromine.common.noise.OctaveNoiseSampler;
 import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.mojang.serialization.Codec;
@@ -19,6 +43,7 @@ import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class EarthSpaceChunkGenerator extends ChunkGenerator {
 	public static Codec<EarthSpaceChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(BiomeSource.field_24713.fieldOf("biome_source").forGetter(gen -> gen.biomeSource), Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed))
@@ -27,13 +52,13 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 	private final BiomeSource biomeSource;
 	private final long seed;
 
-	private final OpenSimplexNoise noise;
+	private final OctaveNoiseSampler<OpenSimplexNoise> noise;
 
 	public EarthSpaceChunkGenerator(BiomeSource biomeSource, long seed) {
 		super(biomeSource, new StructuresConfig(false));
 		this.biomeSource = biomeSource;
 		this.seed = seed;
-		this.noise = new OpenSimplexNoise(seed);
+		this.noise = new OctaveNoiseSampler<>(OpenSimplexNoise.class, new Random(seed), 3, 200, 1.225, 1);
 	}
 
 	@Override
@@ -64,7 +89,7 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 		for (int x = x1; x <= x2; ++x) {
 			for (int z = z1; z <= z2; ++z) {
 				for (int y = y1; y <= y2; ++y) {
-					double noise = this.noise.sample(x * 0.01, y * 0.01, z * 0.01);
+					double noise = this.noise.sample(x, y, z);
 					noise -= computeNoiseFalloff(y);
 
 					if (noise > 0.65) {
