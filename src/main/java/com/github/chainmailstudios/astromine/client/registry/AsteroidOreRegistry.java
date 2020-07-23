@@ -50,6 +50,9 @@ public class AsteroidOreRegistry extends MultiRegistry<Integer, Block> {
 		for (int chance = range.getMinimum(); chance < range.getMaximum(); ++chance) {
 			this.register(chance, block);
 		}
+
+		this.minimumDiameters.put(block, minimumDiameter);
+		this.maximumDiameters.put(block, maximumDiameter);
 	}
 
 	public int getDiameter(Random random, Block block) {
