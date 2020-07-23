@@ -1,37 +1,88 @@
 package com.github.chainmailstudios.astromine.common.item;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.item.MiningToolItem;
-import net.minecraft.item.ToolMaterial;
-import net.minecraft.util.ActionResult;
-
 import com.github.chainmailstudios.astromine.common.utilities.ToolUtilities;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
+import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.item.*;
+import net.minecraft.tag.Tag;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
-public class MultitoolItem extends MiningToolItem {
-    private final MiningToolItem first;
-    private final MiningToolItem second;
+public class MultitoolItem extends Item implements DynamicAttributeTool {
+	private final MiningToolItem first;
+	private final MiningToolItem second;
+	private final ToolMaterial material;
+	private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 
-    public MultitoolItem(MiningToolItem first, MiningToolItem second, ToolMaterial material, Settings settings) {
-        super(ToolUtilities.getAttackDamage(first, second)-material.getAttackDamage(), ToolUtilities.getAttackSpeed(first, second), material, ToolUtilities.getEffectiveBlocks(first, second), settings);
-        this.first = first;
-        this.second = second;
-    }
+	public MultitoolItem(MiningToolItem first, MiningToolItem second, ToolMaterial material, Settings settings) {
+		super(settings.maxDamageIfAbsent((int) (material.getDurability() * 1.1)));
+		this.first = first;
+		this.second = second;
+		this.material = material;
+		ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
+		builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Tool modifier", ToolUtilities.getAttackDamage(first, second), EntityAttributeModifier.Operation.ADDITION));
+		builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Tool modifier", ToolUtilities.getAttackSpeed(first, second), EntityAttributeModifier.Operation.ADDITION));
+		this.attributeModifiers = builder.build();
+	}
 
-    @Override
-    public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
-        return Math.max(first.getMiningSpeedMultiplier(stack, state), second.getMiningSpeedMultiplier(stack, state));
-    }
+	@Override
+	public int getEnchantability() {
+		return material.getEnchantability();
+	}
 
-    @Override
-    public boolean isEffectiveOn(BlockState state) {
-        return first.isEffectiveOn(state) || second.isEffectiveOn(state);
-    }
+	@Override
+	public boolean canRepair(ItemStack stack, ItemStack ingredient) {
+		return this.material.getRepairIngredient().test(ingredient) || super.canRepair(stack, ingredient);
+	}
 
-    @Override
-    public ActionResult useOnBlock(ItemUsageContext context) {
-        ActionResult result = first.useOnBlock(context);
-        return result.isAccepted() ? result : second.useOnBlock(context);
-    }
+	@Override
+	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+		stack.damage(2, attacker, (e) -> {
+			e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND);
+		});
+		return true;
+	}
+
+	@Override
+	public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
+		if (!world.isClient && state.getHardness(world, pos) != 0.0F) {
+			stack.damage(1, miner, (e) -> {
+				e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND);
+			});
+		}
+		return true;
+	}
+
+	@Override
+	public ActionResult useOnBlock(ItemUsageContext context) {
+		ActionResult result = first.useOnBlock(context);
+		return result.isAccepted() ? result : second.useOnBlock(context);
+	}
+
+	@Override
+	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
+		return slot == EquipmentSlot.MAINHAND ? this.attributeModifiers : super.getAttributeModifiers(slot);
+	}
+
+	@Override
+	public float getMiningSpeedMultiplier(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user) {
+		if (first.isIn(tag) || second.isIn(tag))
+			return material.getMiningSpeedMultiplier();
+		return 1;
+	}
+
+	@Override
+	public int getMiningLevel(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user) {
+		if (first.isIn(tag) || second.isIn(tag))
+			return material.getMiningLevel();
+		return 0;
+	}
 }
