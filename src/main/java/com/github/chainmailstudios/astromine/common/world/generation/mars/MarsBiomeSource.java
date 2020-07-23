@@ -1,19 +1,16 @@
-package com.github.chainmailstudios.astromine.common.world.generation;
+package com.github.chainmailstudios.astromine.common.world.generation.mars;
 
 import java.util.function.LongFunction;
 
-import com.github.chainmailstudios.astromine.common.world.layer.MarsBiomeLayer;
-import com.github.chainmailstudios.astromine.common.world.layer.MarsRiverLayer;
-import com.github.chainmailstudios.astromine.common.world.layer.MoonBiomeLayer;
-import com.github.chainmailstudios.astromine.common.world.layer.PlainsOnlyLayer;
-import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
+import com.github.chainmailstudios.astromine.common.world.layer.mars.MarsBiomeLayer;
+import com.github.chainmailstudios.astromine.common.world.layer.mars.MarsRiverLayer;
+import com.github.chainmailstudios.astromine.common.world.layer.util.PlainsOnlyLayer;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.layer.ScaleLayer;
 import net.minecraft.world.biome.layer.SimpleLandNoiseLayer;
-import net.minecraft.world.biome.layer.type.ParentedLayer;
 import net.minecraft.world.biome.layer.util.CachingLayerContext;
 import net.minecraft.world.biome.layer.util.LayerFactory;
 import net.minecraft.world.biome.layer.util.LayerSampleContext;

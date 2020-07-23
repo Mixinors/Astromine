@@ -26,12 +26,12 @@ package com.github.chainmailstudios.astromine.mixin;
 import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 
-import com.github.chainmailstudios.astromine.common.world.generation.EarthSpaceBiomeSource;
-import com.github.chainmailstudios.astromine.common.world.generation.EarthSpaceChunkGenerator;
-import com.github.chainmailstudios.astromine.common.world.generation.MarsBiomeSource;
-import com.github.chainmailstudios.astromine.common.world.generation.MarsChunkGenerator;
-import com.github.chainmailstudios.astromine.common.world.generation.MoonBiomeSource;
-import com.github.chainmailstudios.astromine.common.world.generation.MoonChunkGenerator;
+import com.github.chainmailstudios.astromine.common.world.generation.space.EarthSpaceBiomeSource;
+import com.github.chainmailstudios.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
+import com.github.chainmailstudios.astromine.common.world.generation.mars.MarsBiomeSource;
+import com.github.chainmailstudios.astromine.common.world.generation.mars.MarsChunkGenerator;
+import com.github.chainmailstudios.astromine.common.world.generation.moon.MoonBiomeSource;
+import com.github.chainmailstudios.astromine.common.world.generation.moon.MoonChunkGenerator;
 import com.mojang.datafixers.DataFixer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

@@ -24,11 +24,11 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.world.EarthSpaceBiome;
-import com.github.chainmailstudios.astromine.common.world.DepthScaleBiome;
-import com.github.chainmailstudios.astromine.common.world.generation.EarthSpaceBiomeSource;
-import com.github.chainmailstudios.astromine.common.world.generation.MarsBiomeSource;
-import com.github.chainmailstudios.astromine.common.world.generation.MoonBiomeSource;
+import com.github.chainmailstudios.astromine.common.world.biome.EarthSpaceBiome;
+import com.github.chainmailstudios.astromine.common.world.biome.DepthScaleBiome;
+import com.github.chainmailstudios.astromine.common.world.generation.space.EarthSpaceBiomeSource;
+import com.github.chainmailstudios.astromine.common.world.generation.mars.MarsBiomeSource;
+import com.github.chainmailstudios.astromine.common.world.generation.moon.MoonBiomeSource;
 
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;

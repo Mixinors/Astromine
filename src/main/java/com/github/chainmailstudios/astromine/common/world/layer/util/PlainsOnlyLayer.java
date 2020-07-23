@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.common.world.layer;
+package com.github.chainmailstudios.astromine.common.world.layer.util;
 
 import net.minecraft.world.biome.layer.type.InitLayer;
 import net.minecraft.world.biome.layer.util.IdentityCoordinateTransformer;

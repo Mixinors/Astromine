@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.chainmailstudios.astromine.common.world;
+package com.github.chainmailstudios.astromine.common.world.biome;
 
 import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineFeatures;

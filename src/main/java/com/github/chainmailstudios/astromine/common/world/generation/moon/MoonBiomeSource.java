@@ -21,11 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.chainmailstudios.astromine.common.world.generation;
+package com.github.chainmailstudios.astromine.common.world.generation.moon;
 
 import java.util.function.LongFunction;
 
-import com.github.chainmailstudios.astromine.common.world.layer.MoonBiomeLayer;
+import com.github.chainmailstudios.astromine.common.world.layer.moon.MoonBiomeLayer;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 

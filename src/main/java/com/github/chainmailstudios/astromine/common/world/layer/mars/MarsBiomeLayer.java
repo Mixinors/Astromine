@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.common.world.layer;
+package com.github.chainmailstudios.astromine.common.world.layer.mars;
 
 import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
 
