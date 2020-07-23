@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -127,7 +127,7 @@ public abstract class ElectricSmelterBlockEntity extends DefaultedEnergyItemBloc
 							itemComponent.getStack(0).increment(output.getCount());
 						}
 
-							progress = 0;
+						progress = 0;
 					} else {
 						progress += 1 * ((ElectricSmelterBlock) this.getCachedState().getBlock()).getMachineSpeed();
 					}
@@ -138,6 +138,7 @@ public abstract class ElectricSmelterBlockEntity extends DefaultedEnergyItemBloc
 				shouldTry = false;
 				isActive = false;
 				progress = 0;
+				recipe = Optional.empty();
 			}
 		} else {
 			progress = 0;

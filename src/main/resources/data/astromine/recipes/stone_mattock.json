@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["xxx", "xs ", " s "],
+  "key": {
+    "x": {
+      "item": "minecraft:cobblestone"
+    },
+    "s": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "astromine:stone_mattock",
+    "count": 1
+  }
+}

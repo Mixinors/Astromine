@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["xxx", "xs ", " s "],
+  "key": {
+    "x": {
+      "tag": "c:asterites"
+    },
+    "s": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "astromine:asterite_mattock",
+    "count": 1
+  }
+}
