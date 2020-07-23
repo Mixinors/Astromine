@@ -21,6 +21,7 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
@@ -35,6 +36,7 @@ public class MarsChunkGenerator extends ChunkGenerator {
 	private final OctaveNoiseSampler<OpenSimplexNoise> lowerInterpolatedNoise;
 	private final OctaveNoiseSampler<OpenSimplexNoise> upperInterpolatedNoise;
 	private final OctaveNoiseSampler<OpenSimplexNoise> interpolationNoise;
+	private final ThreadLocal<BiomeGenCache> cache;
 	public MarsChunkGenerator(BiomeSource biomeSource, long seed) {
 		super(biomeSource, new StructuresConfig(false));
 		this.biomeSource = biomeSource;
@@ -43,6 +45,7 @@ public class MarsChunkGenerator extends ChunkGenerator {
 		lowerInterpolatedNoise = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 5, 140.43, 45, 10);
 		upperInterpolatedNoise = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 5, 140.43, 45, 10);
 		interpolationNoise = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 3, 80.32, 3, 3);
+		this.cache = ThreadLocal.withInitial(() -> new BiomeGenCache(biomeSource));
 	}
 
 	@Override
@@ -68,8 +71,29 @@ public class MarsChunkGenerator extends ChunkGenerator {
 		int x2 = chunk.getPos().getEndX();
 		int z2 = chunk.getPos().getEndZ();
 
+		ChunkRandom chunkRandom = new ChunkRandom();
+		chunkRandom.setTerrainSeed(chunk.getPos().x, chunk.getPos().z);
+
 		for (int x = x1; x <= x2; ++x) {
 			for (int z = z1; z <= z2; ++z) {
+				float depth = 0;
+				float scale = 0;
+				int i = 0;
+
+				// Biome lerp
+				for (int x0 = -5; x0 <= 5; x0++) {
+					for (int z0 = -5; z0 <= 5; z0++) {
+						Biome biome = this.cache.get().getBiome((x + x0) >> 2, (z + z0) >> 2);
+
+						i++;
+						depth += biome.getDepth();
+						scale += biome.getScale();
+					}
+				}
+
+				depth /= i;
+				scale /= i;
+
 				// Noise calculation
 				double noise = interpolationNoise.sample(x, z);
 				if (noise >= 1) {
@@ -80,9 +104,14 @@ public class MarsChunkGenerator extends ChunkGenerator {
 					noise = MathHelper.clampedLerp(lowerInterpolatedNoise.sample(x, z), upperInterpolatedNoise.sample(x, z), noise);
 				}
 
-				int height = 100 + (int) noise;
+				int height = (int) (depth + (noise * scale));
 				for (int y = 0; y <= height; ++y) {
 					chunk.setBlockState(new BlockPos(x, y, z), AstromineBlocks.MARS_SOIL.getDefaultState(), false);
+					if (y <= 5) {
+						if (chunkRandom.nextInt(y + 1) == 0) {
+							chunk.setBlockState(new BlockPos(x, y, z), Blocks.BEDROCK.getDefaultState(), false);
+						}
+					}
 				}
 			}
 		}
