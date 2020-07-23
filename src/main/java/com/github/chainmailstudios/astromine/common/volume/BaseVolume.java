@@ -1,3 +1,26 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.common.volume;
 
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
@@ -10,14 +33,14 @@ public class BaseVolume {
 	protected Fraction size = new Fraction(Integer.MAX_VALUE, 1);
 
 	/**
-	 * Instantiates a Volume with an empty fraction.
-	 */
+	* Instantiates a Volume with an empty fraction.
+	*/
 	public BaseVolume() {
 	}
 
 	/**
-	 * Instantiates a Volume with a specified fraction.
-	 */
+	* Instantiates a Volume with a specified fraction.
+	*/
 	public BaseVolume(Fraction fraction) {
 		this.fraction = fraction;
 	}
@@ -39,11 +62,11 @@ public class BaseVolume {
 	}
 
 	/**
-	 * Serializes this Volume and its properties
-	 * into a tag.
-	 *
-	 * @return a tag
-	 */
+	* Serializes this Volume and its properties
+	* into a tag.
+	*
+	* @return a tag
+	*/
 	public CompoundTag toTag(CompoundTag tag) {
 		// TODO: Null checks.
 
@@ -54,8 +77,8 @@ public class BaseVolume {
 	}
 
 	/**
-	 * Takes a Volume out of this Volume.
-	 */
+	* Takes a Volume out of this Volume.
+	*/
 	public <T extends BaseVolume> T extractVolume(Fraction taken) {
 		T volume = (T) new BaseVolume();
 		pushVolume(volume, taken);
@@ -71,12 +94,12 @@ public class BaseVolume {
 	}
 
 	/**
-	 * Pull fluids from a Volume into this Volume.
-	 * If the Volume's fractional available is smaller than
-	 * pulled, ask for the minimum. If not, ask for the
-	 * minimum between requested size and available
-	 * for pulling into this.
-	 */
+	* Pull fluids from a Volume into this Volume.
+	* If the Volume's fractional available is smaller than
+	* pulled, ask for the minimum. If not, ask for the
+	* minimum between requested size and available
+	* for pulling into this.
+	*/
 	public <T extends BaseVolume> void pullVolume(T target, Fraction pulled) {
 		if (target.fraction.isSmallerOrEqualThan(Fraction.empty())) return;
 
@@ -100,12 +123,12 @@ public class BaseVolume {
 	}
 
 	/**
-	 * Push fluids from this Volume into a Volume.
-	 * If the Volume's fractional available is smaller than
-	 * pushed, ask for the minimum. If not, ask for the
-	 * minimum between requested size and available for
-	 * pushing into target.
-	 */
+	* Push fluids from this Volume into a Volume.
+	* If the Volume's fractional available is smaller than
+	* pushed, ask for the minimum. If not, ask for the
+	* minimum between requested size and available for
+	* pushing into target.
+	*/
 	public <T extends BaseVolume> void pushVolume(T target, Fraction pushed) {
 		if (fraction.isSmallerOrEqualThan(Fraction.empty())) return;
 
@@ -146,29 +169,29 @@ public class BaseVolume {
 	}
 
 	/**
-	 * Fraction comparison method.
-	 */
+	* Fraction comparison method.
+	*/
 	public <T extends BaseVolume> boolean isSmallerThan(T volume) {
 		return !this.isBiggerThan(volume);
 	}
 
 	/**
-	 * Fraction comparison method.
-	 */
+	* Fraction comparison method.
+	*/
 	public <T extends BaseVolume> boolean isBiggerThan(T volume) {
 		return fraction.isBiggerThan(volume.fraction);
 	}
 
 	/**
-	 * Fraction comparison method.
-	 */
+	* Fraction comparison method.
+	*/
 	public <T extends BaseVolume> boolean isSmallerOrEqualThan(T volume) {
 		return isSmallerThan(volume) || equals(volume);
 	}
 
 	/**
-	 * Fraction comparison method.
-	 */
+	* Fraction comparison method.
+	*/
 	public <T extends BaseVolume> boolean isBiggerOrEqualThan(T volume) {
 		return isBiggerThan(volume) || equals(volume);
 	}
