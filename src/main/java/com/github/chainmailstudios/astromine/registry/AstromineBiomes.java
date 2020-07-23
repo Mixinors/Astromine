@@ -30,6 +30,6 @@ public class AstromineBiomes {
 		MOON_HILLS = Registry.register(Registry.BIOME, AstromineCommon.identifier("moon_hills"), new DepthScaleBiome(105, 30));
 		MOON_LOWLANDS = Registry.register(Registry.BIOME, AstromineCommon.identifier("moon_lowlands"), new DepthScaleBiome(93, 9));
 		MARS = Registry.register(Registry.BIOME, AstromineCommon.identifier("mars"), new DepthScaleBiome(100, 1));
-		MARS_RIVERBED = Registry.register(Registry.BIOME, AstromineCommon.identifier("mars_riverbed"), new DepthScaleBiome(75, 0.1f));
+		MARS_RIVERBED = Registry.register(Registry.BIOME, AstromineCommon.identifier("mars_riverbed"), new DepthScaleBiome(60, 0.1f));
 	}
 }

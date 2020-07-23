@@ -54,12 +54,12 @@ public class MarsBiomeSource extends BiomeSource {
 	private static <T extends LayerSampler, C extends LayerSampleContext<T>> LayerFactory<T> build(LongFunction<C> contextProvider) {
 		LayerFactory<T> mainLayer = SimpleLandNoiseLayer.INSTANCE.create(contextProvider.apply(432L), PlainsOnlyLayer.INSTANCE.create(contextProvider.apply(543L)));
 		for (int i = 0; i < 7; i++) {
-			mainLayer = ScaleLayer.FUZZY.create(contextProvider.apply(43 + i), mainLayer);
+			mainLayer = ScaleLayer.NORMAL.create(contextProvider.apply(43 + i), mainLayer);
 		}
 
 		mainLayer = MarsRiverLayer.INSTANCE.create(contextProvider.apply(56L), mainLayer);
 		for (int i = 0; i < 2; i++) {
-			mainLayer = ScaleLayer.FUZZY.create(contextProvider.apply(473 + i), mainLayer);
+			mainLayer = ScaleLayer.NORMAL.create(contextProvider.apply(473 + i), mainLayer);
 		}
 
 		mainLayer = MarsBiomeLayer.INSTANCE.create(contextProvider.apply(721), mainLayer);
