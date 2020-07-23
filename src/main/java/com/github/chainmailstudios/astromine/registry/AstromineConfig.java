@@ -510,16 +510,16 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Energy for the Fluid Extractor actions.")
 	public double fluidExtractorEnergyConsumed = 1024D;
 
-	@Comment("Delay for the Block Placer actions.")
+	@Comment("Delay for the Block Placer actions (smaller is faster).")
 	public long blockPlacerTimeConsumed = 40L;
 
-	@Comment("Delay for the Block Breaker actions.")
+	@Comment("Delay for the Block Breaker actions (smaller is faster).")
 	public long blockBreakerTimeConsumed = 40L;
 
-	@Comment("Delay for the Fluid Inserter actions.")
+	@Comment("Delay for the Fluid Inserter actions (smaller is faster).")
 	public long fluidInserterTimeConsumed = 40L;
 
-	@Comment("Delay for the Fluid Extractor actions.")
+	@Comment("Delay for the Fluid Extractor actions (smaller is faster).")
 	public long fluidExtractorTimeConsumed = 40L;
 
 	public static AstromineConfig get() {

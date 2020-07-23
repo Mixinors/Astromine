@@ -41,6 +41,7 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
@@ -93,6 +94,8 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
 		int x2 = chunk.getPos().getEndX();
 		int z2 = chunk.getPos().getEndZ();
+		ChunkRandom chunkRandom = new ChunkRandom();
+		chunkRandom.setTerrainSeed(chunk.getPos().x, chunk.getPos().z);
 
 		for (int x = x1; x <= x2; ++x) {
 			for (int z = z1; z <= z2; ++z) {
@@ -125,6 +128,12 @@ public class MoonChunkGenerator extends ChunkGenerator {
 				int height = (int) (depth + (noise * scale));
 				for (int y = 0; y <= height; ++y) {
 					chunk.setBlockState(new BlockPos(x, y, z), AstromineBlocks.MOON_STONE.getDefaultState(), false);
+					if (y <= 5) {
+						if (chunkRandom.nextInt(y + 1) == 0) {
+							chunk.setBlockState(new BlockPos(x, y, z), Blocks.BEDROCK.getDefaultState(), false);
+						}
+					}
+
 				}
 			}
 		}

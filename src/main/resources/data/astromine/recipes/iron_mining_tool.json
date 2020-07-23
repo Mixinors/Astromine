@@ -1,16 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["012", "345", "678"],
+  "pattern": ["xxx", " x ", " s "],
   "key": {
-    "0": { "item": "minecraft:iron_pickaxe" },
-    "1": { "item": "minecraft:iron_shovel" },
-    "2": { "item": "minecraft:air" },
-    "3": { "item": "minecraft:air" },
-    "4": { "item": "minecraft:air" },
-    "5": { "item": "minecraft:air" },
-    "6": { "item": "minecraft:air" },
-    "7": { "item": "minecraft:air" },
-    "8": { "item": "minecraft:air" }
+    "x": {
+      "tag": "c:iron_ingots"
+    },
+    "s": {
+      "item": "minecraft:stick"
+    }
   },
-  "result": { "item": "astromine:iron_mining_tool", "count": 1 }
+  "result": {
+    "item": "astromine:iron_mining_tool",
+    "count": 1
+  }
 }

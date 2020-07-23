@@ -1,16 +1,12 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": ["012", "345", "678"],
-  "key": {
-    "0": { "item": "astromine:univite_pickaxe" },
-    "1": { "item": "astromine:univite_shovel" },
-    "2": { "item": "minecraft:air" },
-    "3": { "item": "minecraft:air" },
-    "4": { "item": "minecraft:air" },
-    "5": { "item": "minecraft:air" },
-    "6": { "item": "minecraft:air" },
-    "7": { "item": "minecraft:air" },
-    "8": { "item": "minecraft:air" }
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "astromine:galaxium_mining_tool"
   },
-  "result": { "item": "astromine:univite_mining_tool", "count": 1 }
+  "addition": {
+    "tag": "c:univite_ingots"
+  },
+  "result": {
+    "item": "astromine:univite_mining_tool"
+  }
 }

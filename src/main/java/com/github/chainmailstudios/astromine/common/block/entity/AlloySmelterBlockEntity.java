@@ -146,6 +146,7 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 				shouldTry = false;
 				isActive = false;
 				progress = 0;
+				recipe = Optional.empty();
 			}
 		} else {
 			progress = 0;
