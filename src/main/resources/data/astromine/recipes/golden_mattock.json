@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["xxx", "xs ", " s "],
+  "key": {
+    "x": {
+      "tag": "c:gold_ingots"
+    },
+    "s": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "astromine:golden_mattock",
+    "count": 1
+  }
+}
