@@ -50,9 +50,6 @@ public class AsteroidOreRegistry {
 		} else {
 			diameters.put(block, range);
 		}
-
-		this.minimumDiameters.put(block, minimumDiameter);
-		this.maximumDiameters.put(block, maximumDiameter);
 	}
 
 	public Set<Block> keySet() {
