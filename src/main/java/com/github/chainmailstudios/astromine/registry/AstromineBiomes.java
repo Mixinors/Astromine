@@ -26,6 +26,7 @@ package com.github.chainmailstudios.astromine.registry;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.world.biome.EarthSpaceBiome;
 import com.github.chainmailstudios.astromine.common.world.biome.DepthScaleBiome;
+import com.github.chainmailstudios.astromine.common.world.biome.MoonBiome;
 import com.github.chainmailstudios.astromine.common.world.generation.space.EarthSpaceBiomeSource;
 import com.github.chainmailstudios.astromine.common.world.generation.mars.MarsBiomeSource;
 import com.github.chainmailstudios.astromine.common.world.generation.moon.MoonBiomeSource;
@@ -49,9 +50,10 @@ public class AstromineBiomes {
 
 		// Biomes
 		ASTEROID_BELT = Registry.register(Registry.BIOME, AstromineCommon.identifier("asteroid_belt"), new EarthSpaceBiome());
-		MOON_FLATS = Registry.register(Registry.BIOME, AstromineCommon.identifier("moon_flats"), new DepthScaleBiome(100, 20));
-		MOON_HILLS = Registry.register(Registry.BIOME, AstromineCommon.identifier("moon_hills"), new DepthScaleBiome(105, 30));
-		MOON_LOWLANDS = Registry.register(Registry.BIOME, AstromineCommon.identifier("moon_lowlands"), new DepthScaleBiome(93, 9));
+		MOON_FLATS = Registry.register(Registry.BIOME, AstromineCommon.identifier("moon_flats"), new MoonBiome(100, 20));
+		MOON_HILLS = Registry.register(Registry.BIOME, AstromineCommon.identifier("moon_hills"), new MoonBiome(105, 30));
+		MOON_LOWLANDS = Registry.register(Registry.BIOME, AstromineCommon.identifier("moon_lowlands"), new MoonBiome(93, 9));
+
 		MARS = Registry.register(Registry.BIOME, AstromineCommon.identifier("mars"), new DepthScaleBiome(100, 1));
 		MARS_RIVERBED = Registry.register(Registry.BIOME, AstromineCommon.identifier("mars_riverbed"), new DepthScaleBiome(60, 0.1f));
 	}

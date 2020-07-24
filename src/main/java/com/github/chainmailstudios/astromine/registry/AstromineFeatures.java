@@ -27,6 +27,7 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.world.feature.AsteroidOreFeature;
 import com.github.chainmailstudios.astromine.common.world.feature.MeteorFeature;
 import com.github.chainmailstudios.astromine.common.world.feature.MeteorGenerator;
+import com.github.chainmailstudios.astromine.common.world.feature.MoonCraterFeature;
 import net.earthcomputer.libstructure.LibStructure;
 import net.minecraft.structure.StructurePieceType;
 import net.minecraft.util.registry.Registry;
@@ -41,12 +42,7 @@ import java.util.Locale;
 
 public class AstromineFeatures {
 	public static Feature<DefaultFeatureConfig> ASTEROID_ORES;
-
-	public static final Feature<DefaultFeatureConfig> ASTEROIDS = Registry.register(
-			Registry.FEATURE,
-			AstromineCommon.identifier("asteroids_feature"),
-			new AsteroidOreFeature(DefaultFeatureConfig.CODEC)
-	);
+	public static Feature<DefaultFeatureConfig> MOON_CRATER;
 
 	public static final StructurePieceType METEOR = register(MeteorGenerator::new, "meteor");
 
@@ -56,6 +52,7 @@ public class AstromineFeatures {
 
 	public static void initialize() {
 		ASTEROID_ORES = Registry.register(Registry.FEATURE, AstromineCommon.identifier("asteroid_ores"), new AsteroidOreFeature(DefaultFeatureConfig.CODEC));
+		MOON_CRATER = Registry.register(Registry.FEATURE, AstromineCommon.identifier("moon_crater"), new MoonCraterFeature(DefaultFeatureConfig.CODEC));
 
 		// initialize meteor structure/feature
 		MeteorFeature meteor = new MeteorFeature(DefaultFeatureConfig.CODEC);
