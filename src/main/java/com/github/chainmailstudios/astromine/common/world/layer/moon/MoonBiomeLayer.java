@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.chainmailstudios.astromine.common.world.layer;
+package com.github.chainmailstudios.astromine.common.world.layer.moon;
 
 import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
 

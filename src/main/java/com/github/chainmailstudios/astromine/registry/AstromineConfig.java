@@ -57,6 +57,9 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Gravity level in Moon")
 	public double moonGravity = 0.03d;
 
+	@Comment("Gravity level in Mars")
+	public double marsGravity = 0.045d;
+
 	@Comment("Whether generation of Copper Ore in the Overworld is enabled.")
 	public boolean overworldCopperOre = true;
 
@@ -509,6 +512,9 @@ public class AstromineConfig implements ConfigData {
 
 	@Comment("Energy for the Fluid Extractor actions.")
 	public double fluidExtractorEnergyConsumed = 1024D;
+
+	@Comment("Energy for the Vent actions.")
+	public double ventEnergyConsumed = 1024D;
 
 	@Comment("Delay for the Block Placer actions (smaller is faster).")
 	public long blockPlacerTimeConsumed = 40L;

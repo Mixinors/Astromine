@@ -81,7 +81,7 @@ public class VentBlockEntity extends DefaultedEnergyFluidBlockEntity implements 
 
 			BlockPos output = position.offset(direction);
 
-			if (asEnergy().use(50) && world.getBlockState(output).getBlock() instanceof AirBlock) {
+			if (asEnergy().use(AstromineConfig.get().ventEnergyConsumed) && world.getBlockState(output).getBlock() instanceof AirBlock) {
 				ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
 
 				WorldAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);

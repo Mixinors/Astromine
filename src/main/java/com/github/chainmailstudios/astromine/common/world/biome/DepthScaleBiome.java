@@ -21,32 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.chainmailstudios.astromine.common.world;
+package com.github.chainmailstudios.astromine.common.world.biome;
 
-import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineFeatures;
-import net.minecraft.entity.SpawnGroup;
+
 import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
-import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.decorator.ChanceDecoratorConfig;
-import net.minecraft.world.gen.decorator.Decorator;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
 
-public class EarthSpaceBiome extends Biome {
-	public EarthSpaceBiome() {
-		super(new Biome.Settings().configureSurfaceBuilder(SurfaceBuilder.NOPE, SurfaceBuilder.STONE_CONFIG)
-				.precipitation(Biome.Precipitation.NONE)
-				.category(Biome.Category.NONE)
-				.depth(0.1F)
-				.scale(0.2F)
+public class DepthScaleBiome extends Biome {
+	public DepthScaleBiome(float baseHeight, float variation) {
+		super(new Settings().configureSurfaceBuilder(SurfaceBuilder.NOPE, SurfaceBuilder.STONE_CONFIG)
+				.precipitation(Precipitation.NONE)
+				.category(Category.NONE)
+				.depth(baseHeight)
+				.scale(variation)
 				.temperature(0.5F)
 				.downfall(0.5F)
 				.effects(new BiomeEffects.Builder().waterColor(4159204).waterFogColor(329011).fogColor(12638463).moodSound(BiomeMoodSound.CAVE).build())
 				.parent(null));
-		this.addFeature(GenerationStep.Feature.RAW_GENERATION, AstromineFeatures.ASTEROID_ORES.configure(DefaultFeatureConfig.INSTANCE).createDecoratedFeature(Decorator.CHANCE_HEIGHTMAP.configure(new ChanceDecoratorConfig(16))));
-		this.addSpawn(SpawnGroup.WATER_CREATURE, new Biome.SpawnEntry(AstromineEntityTypes.SPACE_SLIME, 1, 1, 1));
 	}
 }
