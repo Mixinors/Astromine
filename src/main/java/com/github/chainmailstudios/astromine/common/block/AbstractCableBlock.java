@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,8 +23,11 @@
  */
 package com.github.chainmailstudios.astromine.common.block;
 
+import com.github.chainmailstudios.astromine.client.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
-import com.github.chainmailstudios.astromine.common.network.*;
+import com.github.chainmailstudios.astromine.common.network.NetworkMember;
+import com.github.chainmailstudios.astromine.common.network.NetworkTracer;
+import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.AbstractBlock;
@@ -40,13 +43,11 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AbstractCableBlock extends Block implements NetworkMember {
+public abstract class AbstractCableBlock extends Block {
 	public static final BooleanProperty EAST = BooleanProperty.of("east");
 	public static final BooleanProperty WEST = BooleanProperty.of("west");
 	public static final BooleanProperty NORTH = BooleanProperty.of("north");
@@ -75,23 +76,12 @@ public abstract class AbstractCableBlock extends Block implements NetworkMember 
 	protected static final Map<Integer, VoxelShape> SHAPE_CACHE = new HashMap<>();
 
 	protected static final VoxelShape CENTER_SHAPE = Block.createCuboidShape(6.0D, 6.0D, 6.0D, 10.0D, 10.0D, 10.0D);
-	private Map<NetworkType, Collection<NetworkMemberType>> properties = ofTypes(getNetworkType(), NODE);
 
 	public AbstractCableBlock(AbstractBlock.Settings settings) {
 		super(settings);
 	}
 
 	public abstract <T extends NetworkType> T getNetworkType();
-
-	@Override
-	public @NotNull Map<NetworkType, Collection<NetworkMemberType>> getMemberProperties() {
-		return properties;
-	}
-
-	@Override
-	public boolean isNode(NetworkType type) {
-		return true;
-	}
 
 	@Override
 	public void onPlaced(World world, BlockPos position, BlockState stateA, LivingEntity placer, ItemStack itemStack) {
@@ -109,7 +99,8 @@ public abstract class AbstractCableBlock extends Block implements NetworkMember 
 			Block offsetBlock = world.getBlockState(offsetPos).getBlock();
 
 			if (!(offsetBlock instanceof AbstractCableBlock)) continue;
-			if (((AbstractCableBlock) offsetBlock).acceptsType(getNetworkType())) continue;
+			NetworkMember member = NetworkMemberRegistry.get(offsetBlock);
+			if (member.acceptsType(getNetworkType())) continue;
 
 			NetworkTracer.Modeller offsetModeller = new NetworkTracer.Modeller();
 			offsetModeller.scanNeighbours(((AbstractCableBlock) offsetBlock).getNetworkType(), offsetPos, world);

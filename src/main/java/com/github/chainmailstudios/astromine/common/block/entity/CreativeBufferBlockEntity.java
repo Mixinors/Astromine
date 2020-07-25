@@ -52,9 +52,4 @@ public class CreativeBufferBlockEntity extends DefaultedItemBlockEntity implemen
 	public void tick() {
 		itemComponent.getStack(0).setCount(itemComponent.getStack(0).getMaxCount());
 	}
-
-	@Override
-	protected @NotNull Map<NetworkType, Collection<NetworkMemberType>> createMemberProperties() {
-		return ofTypes(AstromineNetworkTypes.ITEM, BUFFER);
-	}
 }

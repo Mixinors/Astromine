@@ -71,9 +71,4 @@ public class BufferBlockEntity extends DefaultedItemBlockEntity {
 		itemComponent.addListener(this::markDirty);
 		super.fromTag(state, tag);
 	}
-
-	@Override
-	protected @NotNull Map<NetworkType, Collection<NetworkMemberType>> createMemberProperties() {
-		return ofTypes(AstromineNetworkTypes.ITEM, BUFFER);
-	}
 }

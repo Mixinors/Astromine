@@ -23,6 +23,7 @@
  */
 package com.github.chainmailstudios.astromine.common.network.ticker;
 
+import com.github.chainmailstudios.astromine.client.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
@@ -51,8 +52,9 @@ public class NetworkTypeFluid extends NetworkType {
 
 		for (NetworkMemberNode memberNode : instance.members) {
 			BlockEntity blockEntity = instance.getWorld().getBlockEntity(memberNode.getBlockPos());
-
-			if (blockEntity instanceof ComponentProvider && blockEntity instanceof NetworkMember) {
+			NetworkMember networkMember = NetworkMemberRegistry.get(blockEntity);
+			
+			if (blockEntity instanceof ComponentProvider && networkMember.acceptsType(this)) {
 				ComponentProvider provider = ComponentProvider.fromBlockEntity(blockEntity);
 
 				FluidInventoryComponent fluidComponent = provider.getSidedComponent(memberNode.getDirection(), AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
@@ -68,7 +70,7 @@ public class NetworkTypeFluid extends NetworkType {
 					TransferType type = transferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).get(memberNode.getDirection());
 
 					if (type != TransferType.DISABLED) {
-						if (type.canExtract() || ((NetworkMember) blockEntity).isProvider(this)) {
+						if (type.canExtract() || networkMember.isProvider(this)) {
 							fluidComponent.getContents().forEach((key, volume) -> {
 								if (fluidComponent.canExtract(memberNode.getDirection(), volume, key)) {
 									inputs.add(volume);
@@ -76,7 +78,7 @@ public class NetworkTypeFluid extends NetworkType {
 							});
 						}
 
-						if (type.canInsert() || ((NetworkMember) blockEntity).isRequester(this)) {
+						if (type.canInsert() || networkMember.isRequester(this)) {
 							fluidComponent.getContents().forEach((key, volume) -> {
 								if (fluidComponent.canExtract(memberNode.getDirection(), volume, key)) {
 									outputs.add(volume);

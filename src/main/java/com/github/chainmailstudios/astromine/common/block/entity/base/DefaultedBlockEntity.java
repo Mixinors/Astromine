@@ -30,9 +30,6 @@ import com.github.chainmailstudios.astromine.common.component.block.entity.Block
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
-import com.github.chainmailstudios.astromine.common.network.NetworkMember;
-import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
@@ -52,7 +49,10 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.*;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.Pair;
+import net.minecraft.util.Tickable;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
@@ -60,12 +60,14 @@ import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 import team.reborn.energy.EnergyStorage;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-public abstract class DefaultedBlockEntity extends BlockEntity implements ComponentProvider, PacketConsumer, BlockEntityClientSerializable, NetworkMember, Tickable {
-	protected final Lazy<Map<NetworkType, Collection<NetworkMemberType>>> networkMemberType = new Lazy<>(this::createMemberProperties);
+public abstract class DefaultedBlockEntity extends BlockEntity implements ComponentProvider, PacketConsumer, BlockEntityClientSerializable, Tickable {
 	protected final BlockEntityTransferComponent transferComponent = new BlockEntityTransferComponent();
 
 	protected final Map<ComponentType<?>, Component> allComponents = Maps.newHashMap();
@@ -92,17 +94,6 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 
 	public void doNotSkipInventory() {
 		this.skipInventory = false;
-	}
-
-	@NotNull
-	protected Map<NetworkType, Collection<NetworkMemberType>> createMemberProperties() {
-		return Collections.emptyMap();
-	}
-
-	@Override
-	@NotNull
-	public Map<NetworkType, Collection<NetworkMemberType>> getMemberProperties() {
-		return networkMemberType.get();
 	}
 
 	public void addComponent(ComponentType<?> type, Component component) {

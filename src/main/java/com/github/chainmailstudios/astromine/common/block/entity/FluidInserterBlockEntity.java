@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -28,13 +28,9 @@ import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedE
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.network.NetworkMember;
-import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.nbt.CompoundTag;
@@ -43,12 +39,8 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.Map;
-
-public class FluidInserterBlockEntity extends DefaultedEnergyFluidBlockEntity implements NetworkMember, Tickable {
+public class FluidInserterBlockEntity extends DefaultedEnergyFluidBlockEntity implements Tickable {
 	private final Fraction cooldown = Fraction.empty();
 
 	public boolean isActive = false;
@@ -120,10 +112,5 @@ public class FluidInserterBlockEntity extends DefaultedEnergyFluidBlockEntity im
 	public CompoundTag toTag(CompoundTag tag) {
 		tag.put("cooldown", cooldown.toTag(new CompoundTag()));
 		return super.toTag(tag);
-	}
-
-	@Override
-	protected @NotNull Map<NetworkType, Collection<NetworkMemberType>> createMemberProperties() {
-		return ofTypes(AstromineNetworkTypes.FLUID, REQUESTER, AstromineNetworkTypes.ENERGY, REQUESTER);
 	}
 }
