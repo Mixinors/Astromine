@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "astromine:block/mars_soil"
+    "all": "astromine:block/martian_soil"
   }
 }

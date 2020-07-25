@@ -43,12 +43,12 @@ public class AstromineRecipeSerializers {
 			LiquidGeneratingRecipe.Serializer.ID,
 			LiquidGeneratingRecipe.Serializer.INSTANCE);
 
-	public static final RecipeSerializer<ElectrolyzingRecipe> ELECTROLYZER = Registry.register(
+	public static final RecipeSerializer<ElectrolyzingRecipe> ELECTROLYZING = Registry.register(
 			Registry.RECIPE_SERIALIZER,
 			ElectrolyzingRecipe.Serializer.ID,
 			ElectrolyzingRecipe.Serializer.INSTANCE);
 
-	public static final RecipeSerializer<FluidMixingRecipe> FLUID_MIXER = Registry.register(
+	public static final RecipeSerializer<FluidMixingRecipe> FLUID_MIXING = Registry.register(
 			Registry.RECIPE_SERIALIZER,
 			FluidMixingRecipe.Serializer.ID,
 			FluidMixingRecipe.Serializer.INSTANCE);

@@ -51,6 +51,7 @@ public class AstromineBiomes {
 
 		// Biomes
 		ASTEROID_BELT = Registry.register(Registry.BIOME, AstromineCommon.identifier("asteroid_belt"), new EarthSpaceBiome());
+
 		MOON_FLATS = Registry.register(Registry.BIOME, AstromineCommon.identifier("moon_flats"), new MoonBiome(100, 20));
 		MOON_HILLS = Registry.register(Registry.BIOME, AstromineCommon.identifier("moon_hills"), new MoonBiome(105, 30));
 		MOON_LOWLANDS = Registry.register(Registry.BIOME, AstromineCommon.identifier("moon_lowlands"), new MoonBiome(93, 9));

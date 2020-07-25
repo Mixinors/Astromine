@@ -2,7 +2,7 @@
   "variants": {
     "": [
       {
-        "model": "astromine:block/mars_soil"
+        "model": "astromine:block/martian_soil"
       }
     ]
   }
