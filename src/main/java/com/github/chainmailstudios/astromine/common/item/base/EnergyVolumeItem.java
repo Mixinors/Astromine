@@ -24,6 +24,7 @@
 package com.github.chainmailstudios.astromine.common.item.base;
 
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
@@ -43,6 +44,11 @@ public class EnergyVolumeItem extends Item implements EnergyHolder {
 
 	public EnergyVolumeItem(Settings settings) {
 		super(settings);
+	}
+
+	public EnergyVolumeItem(Settings settings, double maxAmount) {
+		super(settings);
+		this.maxAmount = maxAmount;
 	}
 
 	public static EnergyVolumeItem of(Settings settings, double maxAmount) {

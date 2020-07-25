@@ -215,6 +215,10 @@ public class AstromineItems {
 	// Tools
 	public static final Item HOLOGRAPHIC_CONNECTOR = register("holographic_connector", new HolographicConnectorItem(getBasicSettings().maxCount(1)));
 
+	public static final Item BASIC_DRILL = register("basic_drill", new DrillItem(AstromineToolMaterials.BASIC_DRILL, 1, -2.8F, 1, 90000, getBasicSettings().maxCount(1)));
+	public static final Item ADVANCED_DRILL = register("advanced_drill", new DrillItem(AstromineToolMaterials.ADVANCED_DRILL, 1, -2.8F, 1, 240000, getBasicSettings().maxCount(1)));
+	public static final Item ELITE_DRILL = register("elite_drill", new DrillItem(AstromineToolMaterials.ELITE_DRILL, 1, -2.8F, 1, 640000, getBasicSettings().maxCount(1)));
+
 	public static final Item WOODEN_MINING_TOOL = register("wooden_mining_tool", new MultitoolItem((MiningToolItem) Items.WOODEN_SHOVEL, (MiningToolItem) Items.WOODEN_PICKAXE, ToolMaterials.WOOD, getBasicSettings()));
 	public static final Item WOODEN_MATTOCK = register("wooden_mattock", new MultitoolItem((MiningToolItem) Items.WOODEN_HOE, (MiningToolItem) Items.WOODEN_AXE, ToolMaterials.WOOD, getBasicSettings()));
 

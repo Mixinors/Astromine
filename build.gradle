@@ -136,6 +136,10 @@ dependencies {
 
     // JOML
     compile "org.joml:joml:${joml_version}"
+
+    // Magna
+    modImplementation "com.github.Draylar:magna:${magna_version}"
+    include "com.github.Draylar:magna:${magna_version}"
 }
 
 processResources {
