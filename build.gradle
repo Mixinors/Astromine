@@ -118,6 +118,10 @@ dependencies {
     modImplementation "teamreborn:energy:${tr_energy_version}"
     include "teamreborn:energy:${tr_energy_version}"
 
+    // Cloth Config
+    modImplementation("me.shedaniel.cloth:config-2:${cloth_config_version}")
+    include("me.shedaniel.cloth:config-2:${cloth_config_version}")
+
     // RoughlyEnoughItems
     modImplementation("me.shedaniel:RoughlyEnoughItems:${rei_version}")
 

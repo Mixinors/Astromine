@@ -26,11 +26,13 @@ package com.github.chainmailstudios.astromine.registry;
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import me.sargunvohra.mcmods.autoconfig1u.ConfigData;
 import me.sargunvohra.mcmods.autoconfig1u.annotation.Config;
+import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry;
 import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
 import me.sargunvohra.mcmods.autoconfig1u.shadowed.blue.endless.jankson.Comment;
 
 @Config(name = "astromine/config")
 public class AstromineConfig implements ConfigData {
+	@ConfigEntry.Gui.Excluded
 	public static final AstromineConfig DEFAULT = new AstromineConfig();
 
 	@Comment("Whether Nuclear Warheads are enabled.")
