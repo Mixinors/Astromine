@@ -25,7 +25,6 @@ package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.world.biome.EarthSpaceBiome;
-import com.github.chainmailstudios.astromine.common.world.biome.DepthScaleBiome;
 import com.github.chainmailstudios.astromine.common.world.biome.MarsBiome;
 import com.github.chainmailstudios.astromine.common.world.biome.MoonBiome;
 import com.github.chainmailstudios.astromine.common.world.generation.space.EarthSpaceBiomeSource;

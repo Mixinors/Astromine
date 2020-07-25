@@ -34,23 +34,23 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.item.MultitoolItem;
 
 /**
- * for future reference, the inner class numbers of the EnchantmentTarget enum:
- * 1 = armor
- * 2 = breakable
- * 3 = bow
- * 4 = wearable
- * 5 = crossbow
- * 6 = vanishable
- * 7 = boots
- * 8 = not sure if chestplate or leggings
- * 9 = not sure if chestplate or leggings
- * 10 = helmet
- * 11 = sword
- * 12 = digger
- * 13 = fishing rod
- * 14 = trident
- * Note that these are for some reason in a different order to what they appear in the class itself...
- */
+* for future reference, the inner class numbers of the EnchantmentTarget enum:
+* 1 = armor
+* 2 = breakable
+* 3 = bow
+* 4 = wearable
+* 5 = crossbow
+* 6 = vanishable
+* 7 = boots
+* 8 = not sure if chestplate or leggings
+* 9 = not sure if chestplate or leggings
+* 10 = helmet
+* 11 = sword
+* 12 = digger
+* 13 = fishing rod
+* 14 = trident
+* Note that these are for some reason in a different order to what they appear in the class itself...
+*/
 @Mixin(targets = {"net/minecraft/enchantment/EnchantmentTarget$12"})
 public class DiggerEnchantmentTargetMixin {
 	@Inject(at = @At("HEAD"), method = "isAcceptableItem(Lnet/minecraft/item/Item;)Z", cancellable = true)

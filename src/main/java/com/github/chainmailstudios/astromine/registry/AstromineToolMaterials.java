@@ -23,7 +23,6 @@
  */
 package com.github.chainmailstudios.astromine.registry;
 
-import net.minecraft.item.Items;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Lazy;
