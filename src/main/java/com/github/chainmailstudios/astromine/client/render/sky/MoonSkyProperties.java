@@ -21,26 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.chainmailstudios.astromine.registry;
+package com.github.chainmailstudios.astromine.client.render.sky;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.minecraft.particle.DefaultParticleType;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.client.render.SkyProperties;
+import net.minecraft.util.math.Vec3d;
 
-public class AstromineParticles {
-	public static final DefaultParticleType SPACE_SLIME = register("space_slime", false);
-	public static final DefaultParticleType ROCKET_FLAME = register("rocket_flame", true);
-	public static final DefaultParticleType MARS_DUST = register("mars_dust", false);
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
-	/**
-	* Registers a new {@link DefaultParticleType} instance under the given name.
-	*
-	* @param name       Name of {@link DefaultParticleType} to register
-	* @param alwaysShow Whether or not the particle should always appear visible
-	* @return Registered {@link DefaultParticleType}
-	*/
-	public static DefaultParticleType register(String name, boolean alwaysShow) {
-		return Registry.register(Registry.PARTICLE_TYPE, AstromineCommon.identifier(name), FabricParticleTypes.simple(alwaysShow));
+@Environment(EnvType.CLIENT)
+public class MoonSkyProperties extends SkyProperties {
+	public MoonSkyProperties() {
+		super(Float.NaN, false, SkyType.NONE, true, true);
+	}
+
+	@Override
+	public Vec3d adjustSkyColor(Vec3d color, float sunHeight) {
+		return color.multiply(0.15000000596046448D);
+	}
+
+	@Override
+	public boolean useThickFog(int camX, int camY) {
+		return false;
 	}
 }

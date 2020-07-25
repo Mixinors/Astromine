@@ -21,33 +21,47 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.chainmailstudios.astromine.mixin;
+package com.github.chainmailstudios.astromine.client.render.sky;
 
-import com.github.chainmailstudios.astromine.client.render.sky.MarsSkyProperties;
-import com.github.chainmailstudios.astromine.client.render.sky.MoonSkyProperties;
-import com.github.chainmailstudios.astromine.client.render.sky.SpaceSkyProperties;
-import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import net.minecraft.client.render.SkyProperties;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.SkyProperties;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.dimension.DimensionType;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 
 @Environment(EnvType.CLIENT)
-@Mixin(SkyProperties.class)
-public class SkyPropertiesMixin {
+public class MarsSkyProperties extends SkyProperties {
+	private final float[] rgba = new float[4];
+	public MarsSkyProperties() {
+		super(Float.NaN, false, SkyType.NORMAL, true, true);
+	}
 
-	@Shadow
-	@Final
-	private static Object2ObjectMap<RegistryKey<DimensionType>, SkyProperties> BY_DIMENSION_TYPE;
+	@Override
+	public Vec3d adjustSkyColor(Vec3d color, float sunHeight) {
+		return new Vec3d(0.8, 0.5, 0.08);
+	}
 
-	static {
-		BY_DIMENSION_TYPE.put(AstromineDimensions.EARTH_SPACE_REGISTRY_KEY, new SpaceSkyProperties());
-		BY_DIMENSION_TYPE.put(AstromineDimensions.MOON_REGISTRY_KEY, new MoonSkyProperties());
-		BY_DIMENSION_TYPE.put(AstromineDimensions.MARS_REGISTRY_KEY, new MarsSkyProperties());
+	@Override
+	public boolean useThickFog(int camX, int camY) {
+		return false;
+	}
+
+	@Override
+	public float[] getSkyColor(float skyAngle, float tickDelta) {
+		// Help me, how in the world does this work
+		float g = MathHelper.cos(skyAngle * 6.2831855F) - 0.0F;
+		if (g >= -0.4F && g <= 0.4F) {
+			float i = (g - -0.0F) / 0.4F * 0.5F + 0.5F;
+			float j = 1.0F - (1.0F - MathHelper.sin(i * 3.1415927F)) * 0.99F;
+			j *= j;
+			this.rgba[0] = i * 0.1F + 1.2F;
+			this.rgba[1] = i * i * 0.7F + 0.2F;
+			this.rgba[2] = i * i * 0.0F + 0.2F;
+			this.rgba[3] = j;
+			return this.rgba;
+		} else {
+			return null;
+		}
 	}
 }
