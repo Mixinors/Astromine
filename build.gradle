@@ -141,6 +141,12 @@ dependencies {
     // Magna
     modImplementation "com.github.Draylar:magna:${magna_version}"
     include "com.github.Draylar:magna:${magna_version}"
+    
+    // Tech Reborn
+    modRuntime "TechReborn:TechReborn-1.16:${tech_reborn_version}"
+    
+    // Reborn Core
+    modRuntime "RebornCore:RebornCore-1.16:${reborn_core_version}"
 }
 
 processResources {

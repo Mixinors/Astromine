@@ -69,6 +69,9 @@ public class NetworkMemberRegistry {
 
 		void register(Identifier id, NetworkMemberType... types);
 
+		default Collection<NetworkMemberType> get(Block block) {
+			return get(Registry.BLOCK.getId(block));
+		}
 		Collection<NetworkMemberType> get(Identifier id);
 	}
 

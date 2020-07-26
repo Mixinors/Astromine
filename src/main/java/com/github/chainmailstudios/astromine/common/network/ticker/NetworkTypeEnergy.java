@@ -52,21 +52,24 @@ public class NetworkTypeEnergy extends NetworkType {
 			BlockEntity blockEntity = instance.getWorld().getBlockEntity(memberNode.getBlockPos());
 			NetworkMember networkMember = NetworkMemberRegistry.get(blockEntity);
 
-			if (blockEntity instanceof ComponentProvider && blockEntity instanceof EnergyStorage && networkMember.acceptsType(this)) {
-				ComponentProvider provider = ComponentProvider.fromBlockEntity(blockEntity);
-				BlockEntityTransferComponent transferComponent = provider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
+			if (blockEntity instanceof EnergyStorage && networkMember.acceptsType(this)) {
+				TransferType type = TransferType.NONE;
 
-				if (transferComponent != null) {
-					TransferType type = transferComponent.get(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).get(memberNode.getDirection());
+				if (blockEntity instanceof ComponentProvider) {
+					ComponentProvider provider = ComponentProvider.fromBlockEntity(blockEntity);
+					BlockEntityTransferComponent transferComponent = provider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
+					if (transferComponent != null) {
+						type = transferComponent.get(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).get(memberNode.getDirection());
+					}
+				}
 
-					if (type != TransferType.DISABLED) {
-						if (type.canExtract() || networkMember.isProvider(this)) {
-							inputs.add(Energy.of(blockEntity).side(memberNode.getDirection()));
-						}
+				if (type != TransferType.DISABLED) {
+					if (type.canExtract() || networkMember.isProvider(this)) {
+						inputs.add(Energy.of(blockEntity).side(memberNode.getDirection()));
+					}
 
-						if (type.canInsert() || networkMember.isRequester(this)) {
-							requesters.add(Energy.of(blockEntity).side(memberNode.getDirection()));
-						}
+					if (type.canInsert() || networkMember.isRequester(this)) {
+						requesters.add(Energy.of(blockEntity).side(memberNode.getDirection()));
 					}
 				}
 			}

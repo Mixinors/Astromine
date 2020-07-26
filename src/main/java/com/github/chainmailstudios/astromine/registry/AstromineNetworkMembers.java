@@ -28,9 +28,12 @@ import com.github.chainmailstudios.astromine.client.registry.NetworkMemberRegist
 import com.github.chainmailstudios.astromine.common.block.*;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.google.common.collect.Maps;
+import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
+import team.reborn.energy.EnergyStorage;
 
 import java.util.Map;
 import java.util.function.Consumer;
@@ -41,6 +44,8 @@ import static com.github.chainmailstudios.astromine.registry.AstromineBlocks.ENE
 import static com.github.chainmailstudios.astromine.registry.AstromineBlocks.FLUID_CABLE;
 
 public class AstromineNetworkMembers {
+	private static final Map<Predicate<Block>, Consumer<Block>> BLOCK_CONSUMER = Maps.newHashMap();
+
 	public static void initialize() {
 		NetworkTypeRegistry<NetworkType> energy = NetworkMemberRegistry.INSTANCE.get(AstromineNetworkTypes.ENERGY);
 		NetworkTypeRegistry<NetworkType> fluid = NetworkMemberRegistry.INSTANCE.get(AstromineNetworkTypes.FLUID);
@@ -48,65 +53,74 @@ public class AstromineNetworkMembers {
 		energy.register(ENERGY_CABLE, NODE);
 		fluid.register(FLUID_CABLE, NODE);
 
-		Map<Predicate<Block>, Consumer<Block>> blockConsumer = Maps.newHashMap();
-		blockConsumer.put(block -> block instanceof AlloySmelterBlock, block -> {
+		BLOCK_CONSUMER.put(block -> block instanceof AlloySmelterBlock, block -> {
 			energy.register(block, REQUESTER);
 		});
-		blockConsumer.put(block -> block instanceof BlockBreakerBlock || block instanceof BlockPlacerBlock, block -> {
+		BLOCK_CONSUMER.put(block -> block instanceof BlockBreakerBlock || block instanceof BlockPlacerBlock, block -> {
 			energy.register(block, REQUESTER);
 		});
-		blockConsumer.put(block -> block instanceof ElectricSmelterBlock, block -> {
+		BLOCK_CONSUMER.put(block -> block instanceof ElectricSmelterBlock, block -> {
 			energy.register(block, REQUESTER);
 		});
-		blockConsumer.put(block -> block instanceof ElectrolyzerBlock, block -> {
+		BLOCK_CONSUMER.put(block -> block instanceof ElectrolyzerBlock, block -> {
 			fluid.register(block, BUFFER);
 			energy.register(block, REQUESTER);
 		});
-		blockConsumer.put(block -> block instanceof FluidExtractorBlock, block -> {
+		BLOCK_CONSUMER.put(block -> block instanceof FluidExtractorBlock, block -> {
 			fluid.register(block, PROVIDER);
 			energy.register(block, REQUESTER);
 		});
-		blockConsumer.put(block -> block instanceof FluidInserterBlock, block -> {
+		BLOCK_CONSUMER.put(block -> block instanceof FluidInserterBlock, block -> {
 			fluid.register(block, REQUESTER);
 			energy.register(block, REQUESTER);
 		});
-		blockConsumer.put(block -> block instanceof FluidMixerBlock, block -> {
+		BLOCK_CONSUMER.put(block -> block instanceof FluidMixerBlock, block -> {
 			fluid.register(block, BUFFER);
 			energy.register(block, REQUESTER);
 		});
-		blockConsumer.put(block -> block instanceof LiquidGeneratorBlock, block -> {
+		BLOCK_CONSUMER.put(block -> block instanceof LiquidGeneratorBlock, block -> {
 			fluid.register(block, REQUESTER);
 			energy.register(block, PROVIDER);
 		});
-		blockConsumer.put(block -> block instanceof SolidGeneratorBlock, block -> {
+		BLOCK_CONSUMER.put(block -> block instanceof SolidGeneratorBlock, block -> {
 			energy.register(block, PROVIDER);
 		});
-		blockConsumer.put(block -> block instanceof TankBlock, block -> {
+		BLOCK_CONSUMER.put(block -> block instanceof TankBlock, block -> {
 			energy.register(block, BUFFER);
 		});
-		blockConsumer.put(block -> block instanceof TrituratorBlock, block -> {
+		BLOCK_CONSUMER.put(block -> block instanceof TrituratorBlock, block -> {
 			energy.register(block, REQUESTER);
 		});
-		blockConsumer.put(block -> block instanceof PresserBlock, block -> {
+		BLOCK_CONSUMER.put(block -> block instanceof PresserBlock, block -> {
 			energy.register(block, REQUESTER);
 		});
-		blockConsumer.put(block -> block instanceof VentBlock, block -> {
+		BLOCK_CONSUMER.put(block -> block instanceof VentBlock, block -> {
 			fluid.register(block, REQUESTER);
 			energy.register(block, REQUESTER);
 		});
-		blockConsumer.put(block -> block instanceof CreativeCapacitorBlock, block -> {
+		BLOCK_CONSUMER.put(block -> block instanceof CreativeCapacitorBlock, block -> {
 			energy.register(block, BUFFER);
 		});
 
-		for (Map.Entry<RegistryKey<Block>, Block> entry : Registry.BLOCK.getEntries()) {
-			if (entry.getKey().getValue().getNamespace().equals("astromine")) {
-				for (Map.Entry<Predicate<Block>, Consumer<Block>> blockConsumerEntry : blockConsumer.entrySet()) {
-					if (blockConsumerEntry.getKey().test(entry.getValue())) {
-						blockConsumerEntry.getValue().accept(entry.getValue());
-						break;
-					}
+		Registry.BLOCK.getEntries().forEach(entry -> acceptBlock(entry.getKey(), entry.getValue()));
+		RegistryEntryAddedCallback.event(Registry.BLOCK).register((index, identifier, block) -> acceptBlock(RegistryKey.of(Registry.BLOCK_KEY, identifier), block));
+	}
+
+	public static void acceptBlock(RegistryKey<Block> id, Block block) {
+		if (id.getValue().getNamespace().equals("astromine")) {
+			for (Map.Entry<Predicate<Block>, Consumer<Block>> blockConsumerEntry : BLOCK_CONSUMER.entrySet()) {
+				if (blockConsumerEntry.getKey().test(block)) {
+					blockConsumerEntry.getValue().accept(block);
+					break;
 				}
 			}
+		}
+		try {
+			NetworkTypeRegistry<NetworkType> energy = NetworkMemberRegistry.INSTANCE.get(AstromineNetworkTypes.ENERGY);
+			if (block.hasBlockEntity() && energy.get(id.getValue()).isEmpty() && ((BlockEntityProvider) block).createBlockEntity(null) instanceof EnergyStorage) {
+				energy.register(block, REQUESTER, PROVIDER);
+			}
+		} catch (Throwable ignored) {
 		}
 	}
 }

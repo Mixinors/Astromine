@@ -30,18 +30,19 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.Direction;
+import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.EnergyStorage;
 
 public class SidingUtilities {
-	public static boolean isExtractingEnergy(BlockEntity entity, BlockEntityTransferComponent transferComponent, Direction direction) {
+	public static boolean isExtractingEnergy(BlockEntity entity, @Nullable BlockEntityTransferComponent transferComponent, Direction direction) {
 		if (!(entity instanceof EnergyStorage)) return false;
-		TransferType transferType = transferComponent.get(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).get(direction);
+		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).get(direction) : TransferType.NONE;
 		return transferType.canExtract() || (transferType != TransferType.DISABLED && NetworkMemberRegistry.get(entity).isProvider(AstromineNetworkTypes.ENERGY));
 	}
 
-	public static boolean isInsertingEnergy(BlockEntity entity, BlockEntityTransferComponent transferComponent, Direction direction) {
+	public static boolean isInsertingEnergy(BlockEntity entity, @Nullable BlockEntityTransferComponent transferComponent, Direction direction) {
 		if (!(entity instanceof EnergyStorage)) return false;
-		TransferType transferType = transferComponent.get(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).get(direction);
+		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).get(direction) : TransferType.NONE;
 		return transferType.canInsert() || (transferType != TransferType.DISABLED && NetworkMemberRegistry.get(entity).isRequester(AstromineNetworkTypes.ENERGY));
 	}
 }
