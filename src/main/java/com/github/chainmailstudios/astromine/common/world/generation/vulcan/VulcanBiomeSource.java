@@ -1,18 +1,18 @@
 /*
  * MIT License
- *
+ * 
  * Copyright (c) 2020 Chainmail Studios
- *
+ * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * 
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,22 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package com.github.chainmailstudios.astromine.common.world.generation.vulcan;
 
-package com.github.chainmailstudios.astromine.registry;
+import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
+import com.google.common.collect.ImmutableList;
+import com.mojang.serialization.Codec;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
-import com.github.chainmailstudios.astromine.common.world.generation.mars.MarsChunkGenerator;
-import com.github.chainmailstudios.astromine.common.world.generation.moon.MoonChunkGenerator;
-import com.github.chainmailstudios.astromine.common.world.generation.vulcan.VulcanChunkGenerator;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.source.BiomeSource;
 
-import net.minecraft.util.registry.Registry;
+public class VulcanBiomeSource extends BiomeSource {
+	public static Codec<VulcanBiomeSource> CODEC = Codec.LONG.fieldOf("seed").xmap(VulcanBiomeSource::new, (source) -> source.seed).stable().codec();
+	private final long seed;
 
-public class AstromineChunkGenerators {
-	public static void initialize() {
-		Registry.register(Registry.CHUNK_GENERATOR, AstromineCommon.identifier("earth_space"), EarthSpaceChunkGenerator.CODEC);
-		Registry.register(Registry.CHUNK_GENERATOR, AstromineCommon.identifier("moon"), MoonChunkGenerator.CODEC);
-		Registry.register(Registry.CHUNK_GENERATOR, AstromineCommon.identifier("mars"), MarsChunkGenerator.CODEC);
-		Registry.register(Registry.CHUNK_GENERATOR, AstromineCommon.identifier("vulcan"), VulcanChunkGenerator.CODEC);
+	public VulcanBiomeSource(long seed) {
+		super(ImmutableList.of());
+		this.seed = seed;
+	}
+
+	@Override
+	protected Codec<? extends BiomeSource> method_28442() {
+		return CODEC;
+	}
+
+	@Override
+	public BiomeSource withSeed(long seed) {
+		return new VulcanBiomeSource(seed);
+	}
+
+	@Override
+	public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
+		return AstromineBiomes.VULCAN;
 	}
 }

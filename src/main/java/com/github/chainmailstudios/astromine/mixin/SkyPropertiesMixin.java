@@ -27,6 +27,7 @@ package com.github.chainmailstudios.astromine.mixin;
 import com.github.chainmailstudios.astromine.client.render.sky.MarsSkyProperties;
 import com.github.chainmailstudios.astromine.client.render.sky.MoonSkyProperties;
 import com.github.chainmailstudios.astromine.client.render.sky.SpaceSkyProperties;
+import com.github.chainmailstudios.astromine.client.render.sky.VulcanSkyProperties;
 import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import net.fabricmc.api.EnvType;
@@ -50,5 +51,6 @@ public class SkyPropertiesMixin {
 		BY_DIMENSION_TYPE.put(AstromineDimensions.EARTH_SPACE_REGISTRY_KEY, new SpaceSkyProperties());
 		BY_DIMENSION_TYPE.put(AstromineDimensions.MOON_REGISTRY_KEY, new MoonSkyProperties());
 		BY_DIMENSION_TYPE.put(AstromineDimensions.MARS_REGISTRY_KEY, new MarsSkyProperties());
+		BY_DIMENSION_TYPE.put(AstromineDimensions.VULCAN_REGISTRY_KEY, new VulcanSkyProperties());
 	}
 }
