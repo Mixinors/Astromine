@@ -278,6 +278,7 @@ public class AstromineItems {
 	public static final Item STEEL_MINING_TOOL = register("steel_mining_tool", new MultitoolItem(STEEL_SHOVEL, STEEL_PICKAXE, AstromineToolMaterials.STEEL, getBasicSettings()));
 	public static final Item STEEL_MATTOCK = register("steel_mattock", new MultitoolItem(STEEL_HOE, STEEL_AXE, AstromineToolMaterials.STEEL, getBasicSettings()));
 	public static final Item STEEL_HAMMER = register("steel_hammer", new HammerItem(AstromineToolMaterials.STEEL, 1, -2.8f, getBasicSettings()));
+	public static final Item STEEL_EXCAVATOR = register("steel_excavator", new ExcavatorItem(AstromineToolMaterials.STELLUM, 1, -2.8f, getBasicSettings()));
 
 	public static final PickaxeItem SILVER_PICKAXE = register("silver_pickaxe", new PickaxeItem(AstromineToolMaterials.SILVER, 1, -2.8f, getBasicSettings()));
 	public static final AxeItem SILVER_AXE = register("silver_axe", new AxeItem(AstromineToolMaterials.SILVER, 5f, -3.0f, getBasicSettings()));
@@ -287,7 +288,7 @@ public class AstromineItems {
 	public static final Item SILVER_MINING_TOOL = register("silver_mining_tool", new MultitoolItem(SILVER_PICKAXE, SILVER_SHOVEL, AstromineToolMaterials.SILVER, getBasicSettings()));
 	public static final Item SILVER_MATTOCK = register("silver_mattock", new MultitoolItem(SILVER_HOE, SILVER_AXE, AstromineToolMaterials.SILVER, getBasicSettings()));
 	public static final Item SILVER_HAMMER = register("silver_hammer", new HammerItem(AstromineToolMaterials.SILVER, 1, -2.8f, getBasicSettings()));
-	public static final Item STEEL_EXCAVATOR = register("steel_excavator", new ExcavatorItem(AstromineToolMaterials.SILVER, 1, -2.8f, getBasicSettings()));
+	public static final Item SILVER_EXCAVATOR = register("silver_excavator", new ExcavatorItem(AstromineToolMaterials.SILVER, 1, -2.8f, getBasicSettings()));
 
 	public static final PickaxeItem ELECTRUM_PICKAXE = register("electrum_pickaxe", new PickaxeItem(AstromineToolMaterials.ELECTRUM, 1, -2.8f, getBasicSettings()));
 	public static final AxeItem ELECTRUM_AXE = register("electrum_axe", new AxeItem(AstromineToolMaterials.ELECTRUM, 5f, -3.0f, getBasicSettings()));

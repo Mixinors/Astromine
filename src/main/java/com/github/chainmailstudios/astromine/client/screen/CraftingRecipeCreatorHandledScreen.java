@@ -42,6 +42,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class CraftingRecipeCreatorHandledScreen extends BaseHandledScreen<CraftingRecipeCreatorScreenHandler> {
 	private static final int INPUT = 1;
@@ -67,25 +69,38 @@ public class CraftingRecipeCreatorHandledScreen extends BaseHandledScreen<Crafti
 		mainPanel.createChild(WButton::new, Position.of(mainPanel, mainPanel.getWidth() - 7 - 54, mainPanel.getHeight() - 7 - 18, 0), Size.of(54, 18)).setLabel("Save").setOnMouseClicked(((widget, mouseX, mouseY, mouseButton) -> {
 			JsonObject output = new JsonObject();
 
+			String patternString = "0123456789";
+
 			JsonArray pattern = new JsonArray();
-			pattern.add("012");
-
-			pattern.add("345");
-
-			pattern.add("678");
 
 			JsonObject key = new JsonObject();
 
-			int[] i = { 0 };
+			for (WSlot slot : craftingSlots) {
+				if (!slot.getStack().isEmpty()) {
+					String item = Registry.ITEM.getId(slot.getStack().getItem()).toString();
+					JsonObject stack = new JsonObject();
+					stack.addProperty("item", item);
 
-			craftingSlots.forEach(slot -> {
-				JsonObject stack = new JsonObject();
-				stack.addProperty("item", Registry.ITEM.getId(slot.getStack().getItem()).toString());
+					boolean skip = false;
 
-				key.add(String.valueOf(i[0]), stack);
+					for (char c : "012345678".toCharArray()) {
+						if (key.has(String.valueOf(c)) && key.get(String.valueOf(c)).getAsJsonObject().get("item").getAsString().equals(item)) {
+							patternString = patternString.replace(String.valueOf(slot.getSlotNumber()), String.valueOf(c));
+							skip = true;
+						}
+					}
 
-				++i[0];
-			});
+					if (!skip) {
+						key.add(String.valueOf(slot.getSlotNumber()), stack);
+					}
+				} else {
+					patternString = patternString.replace(String.valueOf(slot.getSlotNumber()), " ");
+				}
+			}
+
+			pattern.add(patternString.substring(0, 3));
+			pattern.add(patternString.substring(3, 6));
+			pattern.add(patternString.substring(6, 9));
 
 			JsonObject result = new JsonObject();
 			result.addProperty("item", Registry.ITEM.getId(resultSlot.getStack().getItem()).toString());
