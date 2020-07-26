@@ -5,7 +5,7 @@
 		"4": "astromine:block/incinerator_top",
 		"5": "block/lava_still",
 		"6": "astromine:block/incinerator_side",
-		"particle": "astromine:block/metal_side",
+		"particle": "astromine:block/advanced_machine_side",
 		"base": "astromine:block/advanced_machine_side",
 		"bottom": "astromine:block/advanced_machine_bottom",
 		"input": "astromine:block/advanced_machine_side_input"
