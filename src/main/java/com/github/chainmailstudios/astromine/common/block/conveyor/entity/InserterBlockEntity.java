@@ -44,6 +44,7 @@ import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.entity.vehicle.ChestMinecartEntity;
 import net.minecraft.entity.vehicle.MinecartEntity;
 import net.minecraft.inventory.Inventory;
@@ -141,9 +142,9 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 					}
 				} else {
 					BlockPos offsetPos = getPos().offset(direction);
-					List<MinecartEntity> minecartEntities = getWorld().getEntities(MinecartEntity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1), EntityPredicates.EXCEPT_SPECTATOR);
+					List<AbstractMinecartEntity> minecartEntities = getWorld().getEntities(AbstractMinecartEntity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1), EntityPredicates.EXCEPT_SPECTATOR);
 					if (minecartEntities.size() >= 1) {
-						MinecartEntity minecartEntity = minecartEntities.get(0);
+						AbstractMinecartEntity minecartEntity = minecartEntities.get(0);
 						if (minecartEntity instanceof Inventory) {
 							FixedInventoryVanillaWrapper wrapper = new FixedInventoryVanillaWrapper((Inventory) minecartEntity);
 							ItemInsertable insertableMinecart = wrapper.getInsertable();
