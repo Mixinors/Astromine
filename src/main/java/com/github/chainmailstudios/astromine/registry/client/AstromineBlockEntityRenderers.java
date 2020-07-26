@@ -23,7 +23,7 @@
  */
 package com.github.chainmailstudios.astromine.registry.client;
 
-import com.github.chainmailstudios.astromine.client.render.block.HolographicBridgeBlockEntityRenderer;
+import com.github.chainmailstudios.astromine.client.render.block.*;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import net.minecraft.block.entity.BlockEntity;
@@ -36,6 +36,14 @@ import java.util.function.Function;
 public class AstromineBlockEntityRenderers {
 	public static void initialize() {
 		register(AstromineBlockEntityTypes.HOLOGRAPHIC_BRIDGE, HolographicBridgeBlockEntityRenderer::new);
+
+		register(AstromineBlockEntityTypes.ALTERNATOR, DoubleMachineEntityRenderer::new);
+		register(AstromineBlockEntityTypes.SPLITTER, DoubleMachineEntityRenderer::new);
+		register(AstromineBlockEntityTypes.INSERTER, InserterBlockEntityRenderer::new);
+
+		register(AstromineBlockEntityTypes.CONVEYOR, ConveyorBlockEntityRenderer::new);
+		register(AstromineBlockEntityTypes.VERTICAL_CONVEYOR, VerticalConveyorBlockEntityRenderer::new);
+		register(AstromineBlockEntityTypes.DOWN_VERTICAL_CONVEYOR, DownVerticalConveyorBlockEntityRenderer::new);
 	}
 
 	public static <B extends BlockEntity, C extends BlockEntityType<B>> void register(C c, Function<BlockEntityRenderDispatcher, BlockEntityRenderer<B>> b) {
