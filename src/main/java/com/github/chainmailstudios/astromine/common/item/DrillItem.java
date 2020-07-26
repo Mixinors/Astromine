@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.common.item;
 
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
+import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.ToolUtilities;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
@@ -34,6 +35,7 @@ import draylar.magna.item.HammerItem;
 import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -42,11 +44,17 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.tag.Tag;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
+
+import java.util.List;
 
 public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool, Vanishable, MagnaTool {
 	private final int radius;
@@ -136,5 +144,13 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	@Override
 	public boolean playBreakEffects() {
 		return true;
+	}
+
+	@Override
+	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+		EnergyHandler energyHandler = Energy.of(stack);
+		tooltip.add(EnergyUtilities.compoundDisplayColored(energyHandler.getEnergy(), energyHandler.getMaxStored()));
+
+		tooltip.add(new TranslatableText("text.astromine.experimental_feature_drill").formatted(Formatting.RED, Formatting.BOLD, Formatting.ITALIC));
 	}
 }

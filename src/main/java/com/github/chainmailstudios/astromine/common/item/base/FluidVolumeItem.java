@@ -59,5 +59,7 @@ public class FluidVolumeItem extends BaseVolumeItem {
 		fluidComponent.getContents().forEach((key, value) -> {
 			tooltip.add(new LiteralText("- " + value.getFraction().toFractionalString() + " | " + new TranslatableText(value.getFluid().getDefaultState().getBlockState().getBlock().getTranslationKey()).getString()).formatted(Formatting.GRAY));
 		});
+
+		tooltip.add(new TranslatableText("text.astromine.experimental_feature_canister").formatted(Formatting.RED, Formatting.BOLD, Formatting.ITALIC));
 	}
 }
