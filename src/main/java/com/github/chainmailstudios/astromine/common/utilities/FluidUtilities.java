@@ -61,7 +61,6 @@ public class FluidUtilities {
 	}
 
 	public static MutableText rawFraction(Fraction fraction) {
-		return fraction.getDenominator() != 1 ? new TranslatableText("text.astromine.tooltip.fractional_value", fraction.getNumerator(), fraction.getDenominator())
-			: new TranslatableText("text.astromine.tooltip.fractional_value_simple", fraction.getNumerator());
+		return fraction.getDenominator() != 1 ? new TranslatableText("text.astromine.tooltip.fractional_value", fraction.getNumerator(), fraction.getDenominator()) : new TranslatableText("text.astromine.tooltip.fractional_value_simple", fraction.getNumerator());
 	}
 }

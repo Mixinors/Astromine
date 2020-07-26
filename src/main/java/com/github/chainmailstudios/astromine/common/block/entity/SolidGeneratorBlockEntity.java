@@ -62,8 +62,7 @@ public abstract class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlock
 	protected ItemInventoryComponent createItemComponent() {
 		return new SimpleItemInventoryComponent(1).withListener((inv) -> {
 			if (hasWorld() && !this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
-				recipe = (Optional) world.getRecipeManager().getAllOfType(SolidGeneratingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof SolidGeneratingRecipe)
-					.filter(recipe -> ((SolidGeneratingRecipe) recipe).canCraft(this)).findFirst();
+				recipe = (Optional) world.getRecipeManager().getAllOfType(SolidGeneratingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof SolidGeneratingRecipe).filter(recipe -> ((SolidGeneratingRecipe) recipe).canCraft(this)).findFirst();
 		});
 	}
 

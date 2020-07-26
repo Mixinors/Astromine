@@ -88,8 +88,7 @@ public class GameRendererMixin {
 		}
 	}
 
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/GameRenderer;bobViewWhenHurt(Lnet/minecraft/client/util/math/MatrixStack;F)V"),
-		method = "renderHand(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/Camera;F)V")
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/GameRenderer;bobViewWhenHurt(Lnet/minecraft/client/util/math/MatrixStack;F)V"), method = "renderHand(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/Camera;F)V")
 	void onRenderWorld(MatrixStack matrices, Camera camera, float tickDelta, CallbackInfo callbackInformation) {
 		if (MinecraftClient.getInstance().options.keyUse.isPressed()) {
 			Item heldItem = MinecraftClient.getInstance().player.getMainHandStack().getItem();

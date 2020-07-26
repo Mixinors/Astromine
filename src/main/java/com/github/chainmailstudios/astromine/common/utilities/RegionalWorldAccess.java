@@ -89,8 +89,7 @@ public class RegionalWorldAccess {
 				return false;
 			} else {
 				BlockState blockState2 = this.getBlockState(x, y, z);
-				if (blockState2 != blockState &&
-					(blockState2.getOpacity(world, pos) != blockState.getOpacity(world, pos) || blockState2.getLuminance() != blockState.getLuminance() || blockState2.hasSidedTransparency() || blockState.hasSidedTransparency())) {
+				if (blockState2 != blockState && (blockState2.getOpacity(world, pos) != blockState.getOpacity(world, pos) || blockState2.getLuminance() != blockState.getLuminance() || blockState2.hasSidedTransparency() || blockState.hasSidedTransparency())) {
 					world.getChunkManager().getLightingProvider().checkBlock(pos);
 				}
 

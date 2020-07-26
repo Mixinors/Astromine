@@ -41,9 +41,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BrewingRecipeRegistry.class)
 public abstract class BrewingRecipeRegistryMixin {
-	@Redirect(method = "registerDefaults",
-		at = @At(value = "INVOKE", target = "Lnet/minecraft/recipe/BrewingRecipeRegistry;registerPotionRecipe(Lnet/minecraft/potion/Potion;Lnet/minecraft/item/Item;Lnet/minecraft/potion/Potion;)V", ordinal = 0),
-		slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/item/Items;SUGAR:Lnet/minecraft/item/Item;")))
+	@Redirect(method = "registerDefaults", at = @At(value = "INVOKE", target = "Lnet/minecraft/recipe/BrewingRecipeRegistry;registerPotionRecipe(Lnet/minecraft/potion/Potion;Lnet/minecraft/item/Item;Lnet/minecraft/potion/Potion;)V", ordinal = 0), slice = @Slice(from = @At(
+		value = "FIELD", target = "Lnet/minecraft/item/Items;SUGAR:Lnet/minecraft/item/Item;")))
 	private static void yoteMundane(Potion input, Item item, Potion output) {
 		// corb
 	}

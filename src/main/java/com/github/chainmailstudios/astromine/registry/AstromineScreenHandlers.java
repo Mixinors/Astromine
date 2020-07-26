@@ -103,10 +103,9 @@ public class AstromineScreenHandlers {
 		return new FluidMixerScreenHandler(synchronizationID, inventory, buffer.readBlockPos());
 	}));
 
-	public static final ScreenHandlerType<CraftingRecipeCreatorScreenHandler> CRAFTING_RECIPE_CREATOR =
-		ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("crafting_recipe_creator"), ((synchronizationID, inventory, buffer) -> {
-			return new CraftingRecipeCreatorScreenHandler(synchronizationID, inventory);
-		}));
+	public static final ScreenHandlerType<CraftingRecipeCreatorScreenHandler> CRAFTING_RECIPE_CREATOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("crafting_recipe_creator"), ((synchronizationID, inventory, buffer) -> {
+		return new CraftingRecipeCreatorScreenHandler(synchronizationID, inventory);
+	}));
 
 	public static final ScreenHandlerType<AlloySmelterScreenHandler> ALLOY_SMELTER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("alloy_smelter"), ((synchronizationID, inventory, buffer) -> {
 		return new AlloySmelterScreenHandler(synchronizationID, inventory, buffer.readBlockPos());

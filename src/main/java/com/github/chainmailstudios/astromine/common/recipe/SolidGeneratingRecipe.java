@@ -160,8 +160,7 @@ public class SolidGeneratingRecipe implements AdvancedRecipe<Inventory>, EnergyG
 		public SolidGeneratingRecipe read(Identifier identifier, JsonObject object) {
 			SolidGeneratingRecipe.Format format = new Gson().fromJson(object, SolidGeneratingRecipe.Format.class);
 
-			return new SolidGeneratingRecipe(identifier, IngredientUtilities.fromJson(format.input), ParsingUtilities.fromJson(format.amount, Integer.class), EnergyUtilities.fromJson(format.energyGenerated),
-				ParsingUtilities.fromJson(format.time, Integer.class));
+			return new SolidGeneratingRecipe(identifier, IngredientUtilities.fromJson(format.input), ParsingUtilities.fromJson(format.amount, Integer.class), EnergyUtilities.fromJson(format.energyGenerated), ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 
 		@Override

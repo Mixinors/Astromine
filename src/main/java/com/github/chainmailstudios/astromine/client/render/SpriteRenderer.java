@@ -240,8 +240,7 @@ public class SpriteRenderer {
 					this.consumer = consumers.getBuffer(RenderLayer.getSolid());
 
 					this.consumer.vertex(this.model, x, y + nSY, z1).color(this.r, this.g, this.b, this.a).texture(this.uStart, this.vEnd - dY).overlay(this.u, this.v).light(this.l).normal(this.normal, this.nX, this.nY, this.nZ).next();
-					this.consumer.vertex(this.model, x + nSX, y + nSY, z1).color(this.r, this.g, this.b, this.a).texture(this.uEnd - dX, this.vEnd - dY).overlay(this.u, this.v).light(this.l).normal(this.normal, this.nX, this.nY, this.nZ)
-						.next();
+					this.consumer.vertex(this.model, x + nSX, y + nSY, z1).color(this.r, this.g, this.b, this.a).texture(this.uEnd - dX, this.vEnd - dY).overlay(this.u, this.v).light(this.l).normal(this.normal, this.nX, this.nY, this.nZ).next();
 					this.consumer.vertex(this.model, x + nSX, y, z1).color(this.r, this.g, this.b, this.a).texture(this.uEnd - dX, this.vStart).overlay(this.u, this.v).light(this.l).normal(this.normal, this.nX, this.nY, this.nZ).next();
 					this.consumer.vertex(this.model, x, y, z1).color(this.r, this.g, this.b, this.a).texture(this.uStart, this.vStart).overlay(this.u, this.v).light(this.l).normal(this.normal, this.nX, this.nY, this.nZ).next();
 				}

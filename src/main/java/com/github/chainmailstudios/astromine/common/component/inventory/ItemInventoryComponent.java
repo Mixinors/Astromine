@@ -143,9 +143,8 @@ public interface ItemInventoryComponent extends NameableComponent {
 		Optional<Map.Entry<Integer, ItemStack>> matchingStackOptional = this.getContents().entrySet().stream().filter(entry -> {
 			ItemStack storedStack = entry.getValue();
 
-			return (this.canInsert(direction, finalStack, entry.getKey())) &&
-				(storedStack.getItem() == finalStack.getItem() && storedStack.getMaxCount() - storedStack.getCount() >= count && (!storedStack.hasTag() && !finalStack.hasTag()) ||
-					(storedStack.hasTag() && finalStack.hasTag() && storedStack.getTag().equals(finalStack.getTag()) || storedStack.isEmpty()));
+			return (this.canInsert(direction, finalStack, entry.getKey())) && (storedStack.getItem() == finalStack.getItem() && storedStack.getMaxCount() - storedStack.getCount() >= count && (!storedStack.hasTag() && !finalStack.hasTag()) || (storedStack.hasTag() && finalStack
+				.hasTag() && storedStack.getTag().equals(finalStack.getTag()) || storedStack.isEmpty()));
 		}).findFirst();
 
 		if (matchingStackOptional.isPresent()) {

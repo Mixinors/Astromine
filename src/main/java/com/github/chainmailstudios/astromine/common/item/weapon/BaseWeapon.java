@@ -87,8 +87,7 @@ public abstract class BaseWeapon extends Item implements Weapon {
 	}
 
 	public void tryShoot(World world, PlayerEntity user) {
-		Optional<ItemStack> optionalMagazine =
-			ItemInventoryComponentFromItemInventory.of(user.inventory).getContentsMatching(stack -> stack.getItem() == this.getAmmo()).stream().filter(stack -> stack.getDamage() < stack.getMaxDamage()).findFirst();
+		Optional<ItemStack> optionalMagazine = ItemInventoryComponentFromItemInventory.of(user.inventory).getContentsMatching(stack -> stack.getItem() == this.getAmmo()).stream().filter(stack -> stack.getDamage() < stack.getMaxDamage()).findFirst();
 
 		if (optionalMagazine.isPresent() || user.isCreative()) {
 			long currentAttempt = System.currentTimeMillis();

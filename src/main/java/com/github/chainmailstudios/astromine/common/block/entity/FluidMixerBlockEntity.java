@@ -69,8 +69,7 @@ public abstract class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEnt
 	protected FluidInventoryComponent createFluidComponent() {
 		return new SimpleFluidInventoryComponent(3).withListener((inv) -> {
 			if (this.world != null && !this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
-				recipe = (Optional) world.getRecipeManager().getAllOfType(FluidMixingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof FluidMixingRecipe).filter(recipe -> ((FluidMixingRecipe) recipe).canCraft(this))
-					.findFirst();
+				recipe = (Optional) world.getRecipeManager().getAllOfType(FluidMixingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof FluidMixingRecipe).filter(recipe -> ((FluidMixingRecipe) recipe).canCraft(this)).findFirst();
 		});
 	}
 

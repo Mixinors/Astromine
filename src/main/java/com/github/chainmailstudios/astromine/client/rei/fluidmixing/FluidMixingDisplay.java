@@ -31,8 +31,7 @@ import net.minecraft.util.Identifier;
 
 public class FluidMixingDisplay extends AbstractFluidMixingDisplay {
 	public FluidMixingDisplay(FluidMixingRecipe recipe) {
-		super(recipe.getEnergyConsumed(), new FluidVolume(recipe.getFirstInputFluid(), recipe.getFirstInputAmount()), new FluidVolume(recipe.getSecondInputFluid(), recipe.getSecondInputAmount()),
-			new FluidVolume(recipe.getOutputFluid(), recipe.getOutputAmount()), recipe.getId());
+		super(recipe.getEnergyConsumed(), new FluidVolume(recipe.getFirstInputFluid(), recipe.getFirstInputAmount()), new FluidVolume(recipe.getSecondInputFluid(), recipe.getSecondInputAmount()), new FluidVolume(recipe.getOutputFluid(), recipe.getOutputAmount()), recipe.getId());
 	}
 
 	@Override

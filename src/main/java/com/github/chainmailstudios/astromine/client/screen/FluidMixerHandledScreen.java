@@ -49,8 +49,8 @@ public class FluidMixerHandledScreen extends DefaultedEnergyFluidHandledScreen<F
 
 		secondInputFluidBar.setFluidVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(1));
 
-		WHorizontalArrow arrow = mainPanel.createChild(WHorizontalArrow::new, Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9, secondInputFluidBar.getHeight() / 2 - 8, 8), Size.of(22, 16))
-			.setLimitSupplier(() -> mixer.limit).setProgressSupplier(() -> (int) mixer.current);
+		WHorizontalArrow arrow = mainPanel.createChild(WHorizontalArrow::new, Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9, secondInputFluidBar.getHeight() / 2 - 8, 8), Size.of(22, 16)).setLimitSupplier(() -> mixer.limit).setProgressSupplier(
+			() -> (int) mixer.current);
 
 		WFluidVolumeFractionalVerticalBar outputFluidBar = mainPanel.createChild(WFluidVolumeFractionalVerticalBar::new, Position.of(arrow, arrow.getWidth() + 7, -secondInputFluidBar.getHeight() / 2 + 8, 8), Size.of(fluidBar));
 

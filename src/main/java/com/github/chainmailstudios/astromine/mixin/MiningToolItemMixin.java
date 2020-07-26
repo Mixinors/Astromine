@@ -44,8 +44,8 @@ public abstract class MiningToolItemMixin implements MiningToolItemAccess {
 
 	@Override
 	public double astromine_getAttackSpeed() {
-		Optional<EntityAttributeModifier> opt = getAttributeModifiers(EquipmentSlot.MAINHAND).get(EntityAttributes.GENERIC_ATTACK_SPEED).stream()
-			.filter((EntityAttributeModifier modifier) -> modifier.getId().equals(UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3"))).findFirst();
+		Optional<EntityAttributeModifier> opt = getAttributeModifiers(EquipmentSlot.MAINHAND).get(EntityAttributes.GENERIC_ATTACK_SPEED).stream().filter((EntityAttributeModifier modifier) -> modifier.getId().equals(UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3")))
+			.findFirst();
 		return opt.map(EntityAttributeModifier::getValue).orElse(0d);
 	}
 }

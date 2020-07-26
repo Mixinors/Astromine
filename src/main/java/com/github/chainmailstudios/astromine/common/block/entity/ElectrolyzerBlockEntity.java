@@ -69,8 +69,7 @@ public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockE
 	protected FluidInventoryComponent createFluidComponent() {
 		return new SimpleFluidInventoryComponent(3).withListener((inv) -> {
 			if (this.world != null && !this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
-				recipe = (Optional) world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof ElectrolyzingRecipe)
-					.filter(recipe -> ((ElectrolyzingRecipe) recipe).canCraft(this)).findFirst();
+				recipe = (Optional) world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof ElectrolyzingRecipe).filter(recipe -> ((ElectrolyzingRecipe) recipe).canCraft(this)).findFirst();
 		});
 	}
 

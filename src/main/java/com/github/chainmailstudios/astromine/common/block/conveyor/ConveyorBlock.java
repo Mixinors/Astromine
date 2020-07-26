@@ -143,8 +143,7 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 		BlockEntity leftDownBlockEntity = world.getBlockEntity(leftPos.down());
 		if (leftBlockEntity instanceof Conveyable && ((Conveyable) leftBlockEntity).isOutputSide(direction.rotateYClockwise(), getType()))
 			newState = newState.with(ConveyorProperties.LEFT, true);
-		else if (leftDownBlockEntity instanceof ConveyorConveyable && ((ConveyorConveyable) leftDownBlockEntity).getConveyorType() == ConveyorType.VERTICAL &&
-			((ConveyorConveyable) leftDownBlockEntity).isOutputSide(direction.rotateYClockwise(), getType()))
+		else if (leftDownBlockEntity instanceof ConveyorConveyable && ((ConveyorConveyable) leftDownBlockEntity).getConveyorType() == ConveyorType.VERTICAL && ((ConveyorConveyable) leftDownBlockEntity).isOutputSide(direction.rotateYClockwise(), getType()))
 			newState = newState.with(ConveyorProperties.LEFT, true);
 		else newState = newState.with(ConveyorProperties.LEFT, false);
 
@@ -152,8 +151,7 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 		BlockEntity rightDownBlockEntity = world.getBlockEntity(rightPos.down());
 		if (rightBlockEntity instanceof Conveyable && ((Conveyable) rightBlockEntity).isOutputSide(direction.rotateYCounterclockwise(), getType()))
 			newState = newState.with(ConveyorProperties.RIGHT, true);
-		else if (rightDownBlockEntity instanceof ConveyorConveyable && ((ConveyorConveyable) rightDownBlockEntity).getConveyorType() == ConveyorType.VERTICAL &&
-			((ConveyorConveyable) rightDownBlockEntity).isOutputSide(direction.rotateYCounterclockwise(), getType()))
+		else if (rightDownBlockEntity instanceof ConveyorConveyable && ((ConveyorConveyable) rightDownBlockEntity).getConveyorType() == ConveyorType.VERTICAL && ((ConveyorConveyable) rightDownBlockEntity).isOutputSide(direction.rotateYCounterclockwise(), getType()))
 			newState = newState.with(ConveyorProperties.RIGHT, true);
 		else newState = newState.with(ConveyorProperties.RIGHT, false);
 
@@ -178,8 +176,8 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 		else conveyorBlockEntity.setFront(false);
 
 		BlockEntity frontAcrossBlockEntity = world.getBlockEntity(blockPos.offset(direction).offset(direction));
-		if (frontBlockEntity instanceof ConveyorConveyable && ((ConveyorConveyable) frontBlockEntity).validInputSide(direction.getOpposite()) && ((ConveyorConveyable) frontBlockEntity).validInputSide(direction) &&
-			frontAcrossBlockEntity instanceof ConveyorConveyable && world.getBlockState(blockPos.offset(direction).offset(direction)).get(HorizontalFacingBlock.FACING) == direction.getOpposite())
+		if (frontBlockEntity instanceof ConveyorConveyable && ((ConveyorConveyable) frontBlockEntity).validInputSide(direction.getOpposite()) && ((ConveyorConveyable) frontBlockEntity).validInputSide(direction) && frontAcrossBlockEntity instanceof ConveyorConveyable && world
+			.getBlockState(blockPos.offset(direction).offset(direction)).get(HorizontalFacingBlock.FACING) == direction.getOpposite())
 			conveyorBlockEntity.setAcross(true);
 		else conveyorBlockEntity.setAcross(false);
 

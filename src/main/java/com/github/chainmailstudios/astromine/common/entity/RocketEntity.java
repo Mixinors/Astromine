@@ -218,7 +218,7 @@ public class RocketEntity extends Entity {
 	}
 
 	public void spawnParticles(Vec3d thrustVec, Vec3d speed) {
-		world.addParticle(AstromineParticles.ROCKET_FLAME, getX() + ((thrustVec.getX() - (Math.min(0.6f, random.nextFloat())) * (random.nextBoolean() ? 1 : -1))), getY() + thrustVec.getY(),
-			getZ() + ((thrustVec.getZ() - (Math.min(0.6f, random.nextFloat())) * (random.nextBoolean() ? 1 : -1))), speed.getX(), speed.getY(), speed.getZ());
+		world.addParticle(AstromineParticles.ROCKET_FLAME, getX() + ((thrustVec.getX() - (Math.min(0.6f, random.nextFloat())) * (random.nextBoolean() ? 1 : -1))), getY() + thrustVec.getY(), getZ() + ((thrustVec.getZ() - (Math.min(0.6f, random.nextFloat())) * (random.nextBoolean()
+			? 1 : -1))), speed.getX(), speed.getY(), speed.getZ());
 	}
 }

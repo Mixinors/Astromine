@@ -47,8 +47,8 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class EarthSpaceChunkGenerator extends ChunkGenerator {
-	public static Codec<EarthSpaceChunkGenerator> CODEC = RecordCodecBuilder
-		.create(instance -> instance.group(BiomeSource.field_24713.fieldOf("biome_source").forGetter(gen -> gen.biomeSource), Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed)).apply(instance, EarthSpaceChunkGenerator::new));
+	public static Codec<EarthSpaceChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(BiomeSource.field_24713.fieldOf("biome_source").forGetter(gen -> gen.biomeSource), Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed)).apply(instance,
+		EarthSpaceChunkGenerator::new));
 
 	private final BiomeSource biomeSource;
 	private final long seed;

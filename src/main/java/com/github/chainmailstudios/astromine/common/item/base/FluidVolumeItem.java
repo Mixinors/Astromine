@@ -57,8 +57,7 @@ public class FluidVolumeItem extends BaseVolumeItem {
 		FluidInventoryComponent fluidComponent = ComponentProvider.fromItemStack(stack).getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
 		fluidComponent.getContents().forEach((key, value) -> {
-			tooltip
-				.add(new LiteralText("- " + value.getFraction().toFractionalString() + " | " + new TranslatableText(value.getFluid().getDefaultState().getBlockState().getBlock().getTranslationKey()).getString()).formatted(Formatting.GRAY));
+			tooltip.add(new LiteralText("- " + value.getFraction().toFractionalString() + " | " + new TranslatableText(value.getFluid().getDefaultState().getBlockState().getBlock().getTranslationKey()).getString()).formatted(Formatting.GRAY));
 		});
 	}
 }

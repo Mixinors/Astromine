@@ -55,8 +55,8 @@ public class ElectrolyzingDisplay implements RecipeDisplay {
 	}
 
 	public ElectrolyzingDisplay(ElectrolyzingRecipe recipe) {
-		this(recipe.getEnergyConsumed(), new FluidVolume(recipe.getInputFluid(), recipe.getInputAmount()), new FluidVolume(recipe.getFirstOutputFluid(), recipe.getFirstOutputAmount()),
-			new FluidVolume(recipe.getSecondOutputFluid(), recipe.getSecondOutputAmount()), recipe.getId());
+		this(recipe.getEnergyConsumed(), new FluidVolume(recipe.getInputFluid(), recipe.getInputAmount()), new FluidVolume(recipe.getFirstOutputFluid(), recipe.getFirstOutputAmount()), new FluidVolume(recipe.getSecondOutputFluid(), recipe.getSecondOutputAmount()), recipe
+			.getId());
 	}
 
 	@Override

@@ -71,8 +71,7 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 		double zSize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);
 
 		if (xSize > 0 && ySize > 0 && zSize > 0) {
-			Shape vein = Shapes.ellipsoid((float) xSize, (float) ySize, (float) zSize).applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true)))
-				.applyLayer(TranslateLayer.of(Position.of(featurePosition)));
+			Shape vein = Shapes.ellipsoid((float) xSize, (float) ySize, (float) zSize).applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true))).applyLayer(TranslateLayer.of(Position.of(featurePosition)));
 
 			for (Position streamPosition : vein.stream().collect(Collectors.toSet())) {
 				BlockPos orePosition = streamPosition.toBlockPos();

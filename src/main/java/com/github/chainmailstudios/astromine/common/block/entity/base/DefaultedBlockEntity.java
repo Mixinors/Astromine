@@ -114,11 +114,9 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 			return (Collection<T>) allComponents.values();
 		} else {
 			if (getCachedState().contains(HorizontalFacingBlock.FACING)) {
-				return (Collection<T>) getComponentTypes().stream().map(type -> new Pair<>((ComponentType) type, (Component) getComponent(type))).filter(pair -> !transferComponent.get(pair.getLeft()).get(direction).isNone())
-					.map(Pair::getRight).collect(Collectors.toList());
+				return (Collection<T>) getComponentTypes().stream().map(type -> new Pair<>((ComponentType) type, (Component) getComponent(type))).filter(pair -> !transferComponent.get(pair.getLeft()).get(direction).isNone()).map(Pair::getRight).collect(Collectors.toList());
 			} else if (getCachedState().contains(FacingBlock.FACING)) {
-				return (Collection<T>) getComponentTypes().stream().map(type -> new Pair<>((ComponentType) type, (Component) getComponent(type))).filter(pair -> !transferComponent.get(pair.getLeft()).get(direction).isNone())
-					.map(Pair::getRight).collect(Collectors.toList());
+				return (Collection<T>) getComponentTypes().stream().map(type -> new Pair<>((ComponentType) type, (Component) getComponent(type))).filter(pair -> !transferComponent.get(pair.getLeft()).get(direction).isNone()).map(Pair::getRight).collect(Collectors.toList());
 			} else {
 				return Lists.newArrayList();
 			}
@@ -258,8 +256,7 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 			Pair<EnergyHandler, EnergyHandler> pair = energyTransfers.get(i);
 			EnergyHandler input = pair.getLeft();
 			EnergyHandler output = pair.getRight();
-			input.into(output)
-				.move(Math.max(0, Math.min(input.getMaxOutput() / energyTransfers.size(), Math.min(Math.min(input.getEnergy() / (i + 1), output.getMaxStored() - output.getEnergy()), Math.min(input.getMaxOutput(), output.getMaxInput())))));
+			input.into(output).move(Math.max(0, Math.min(input.getMaxOutput() / energyTransfers.size(), Math.min(Math.min(input.getEnergy() / (i + 1), output.getMaxStored() - output.getEnergy()), Math.min(input.getMaxOutput(), output.getMaxInput())))));
 		}
 	}
 }

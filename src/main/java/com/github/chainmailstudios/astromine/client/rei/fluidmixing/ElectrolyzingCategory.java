@@ -75,8 +75,7 @@ public class ElectrolyzingCategory implements RecipeCategory<ElectrolyzingDispla
 		widgets.addAll(AstromineREIPlugin.createFluidDisplay(new Rectangle(innerBounds.x + 24, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getInputEntries().get(0).get(0), recipeDisplay.getInput().getFraction(), false, 5000));
 		widgets.add(Widgets.createArrow(new Point(innerBounds.getX() + 45, innerBounds.getY() + 26)));
 		widgets.addAll(AstromineREIPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 32, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getOutputEntries().get(0), recipeDisplay.getFirstOutput().getFraction(), true, 5000));
-		widgets.addAll(
-			AstromineREIPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 32 + 14, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getOutputEntries().get(1), recipeDisplay.getSecondOutput().getFraction(), true, 5000));
+		widgets.addAll(AstromineREIPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 32 + 14, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getOutputEntries().get(1), recipeDisplay.getSecondOutput().getFraction(), true, 5000));
 		return widgets;
 	}
 }

@@ -50,20 +50,15 @@ public class AstromineScreens {
 			GAS_IMAGE.setHidden(true);
 		});
 
-		ScreenRegistry.register(AstromineScreenHandlers.FLUID_EXTRACTOR,
-			(ScreenRegistry.Factory<FluidExtractorScreenHandler, FluidExtractorHandledScreen>) ((handler, inventory, title) -> new FluidExtractorHandledScreen(title, handler, inventory.player)));
+		ScreenRegistry.register(AstromineScreenHandlers.FLUID_EXTRACTOR, (ScreenRegistry.Factory<FluidExtractorScreenHandler, FluidExtractorHandledScreen>) ((handler, inventory, title) -> new FluidExtractorHandledScreen(title, handler, inventory.player)));
 
-		ScreenRegistry.register(AstromineScreenHandlers.FLUID_INSERTER,
-			(ScreenRegistry.Factory<FluidInserterScreenHandler, FluidInserterHandledScreen>) ((handler, inventory, title) -> new FluidInserterHandledScreen(title, handler, inventory.player)));
+		ScreenRegistry.register(AstromineScreenHandlers.FLUID_INSERTER, (ScreenRegistry.Factory<FluidInserterScreenHandler, FluidInserterHandledScreen>) ((handler, inventory, title) -> new FluidInserterHandledScreen(title, handler, inventory.player)));
 
-		ScreenRegistry.register(AstromineScreenHandlers.BLOCK_BREAKER,
-			(ScreenRegistry.Factory<BlockBreakerScreenHandler, BlockBreakerHandledScreen>) ((handler, inventory, title) -> new BlockBreakerHandledScreen(title, handler, inventory.player)));
+		ScreenRegistry.register(AstromineScreenHandlers.BLOCK_BREAKER, (ScreenRegistry.Factory<BlockBreakerScreenHandler, BlockBreakerHandledScreen>) ((handler, inventory, title) -> new BlockBreakerHandledScreen(title, handler, inventory.player)));
 
-		ScreenRegistry.register(AstromineScreenHandlers.BLOCK_PLACER,
-			(ScreenRegistry.Factory<BlockPlacerScreenHandler, BlockPlacerHandledScreen>) ((handler, inventory, title) -> new BlockPlacerHandledScreen(title, handler, inventory.player)));
+		ScreenRegistry.register(AstromineScreenHandlers.BLOCK_PLACER, (ScreenRegistry.Factory<BlockPlacerScreenHandler, BlockPlacerHandledScreen>) ((handler, inventory, title) -> new BlockPlacerHandledScreen(title, handler, inventory.player)));
 
-		ScreenRegistry.register(AstromineScreenHandlers.LIQUID_GENERATOR,
-			(ScreenRegistry.Factory<LiquidGeneratorScreenHandler, LiquidGeneratorHandledScreen>) ((handler, inventory, title) -> new LiquidGeneratorHandledScreen(title, handler, inventory.player)));
+		ScreenRegistry.register(AstromineScreenHandlers.LIQUID_GENERATOR, (ScreenRegistry.Factory<LiquidGeneratorScreenHandler, LiquidGeneratorHandledScreen>) ((handler, inventory, title) -> new LiquidGeneratorHandledScreen(title, handler, inventory.player)));
 
 		ScreenRegistry.register(AstromineScreenHandlers.SOLID_GENERATOR, (ScreenRegistry.Factory<SolidGeneratorScreenHandler, SolidGeneratorHandledScreen>) ((handler, inventory, title) -> {
 			return new SolidGeneratorHandledScreen(title, handler, inventory.player);
@@ -74,17 +69,13 @@ public class AstromineScreens {
 		}));
 		ScreenRegistry.register(AstromineScreenHandlers.TANK, (ScreenRegistry.Factory<FluidTankScreenHandler, TankHandledScreen>) ((handler, inventory, title) -> new TankHandledScreen(title, handler, inventory.player)));
 
-		ScreenRegistry.register(AstromineScreenHandlers.NUCLEAR_WARHEAD,
-			(ScreenRegistry.Factory<NuclearWarheadScreenHandler, NuclearWarheadHandledScreen>) ((handler, inventory, title) -> new NuclearWarheadHandledScreen(title, handler, inventory.player)));
+		ScreenRegistry.register(AstromineScreenHandlers.NUCLEAR_WARHEAD, (ScreenRegistry.Factory<NuclearWarheadScreenHandler, NuclearWarheadHandledScreen>) ((handler, inventory, title) -> new NuclearWarheadHandledScreen(title, handler, inventory.player)));
 
-		ScreenRegistry.register(AstromineScreenHandlers.CREATIVE_CAPACITOR,
-			(ScreenRegistry.Factory<CreativeCapacitorScreenHandler, CreativeCapacitorHandledScreen>) ((handler, inventory, title) -> new CreativeCapacitorHandledScreen(title, handler, inventory.player)));
+		ScreenRegistry.register(AstromineScreenHandlers.CREATIVE_CAPACITOR, (ScreenRegistry.Factory<CreativeCapacitorScreenHandler, CreativeCapacitorHandledScreen>) ((handler, inventory, title) -> new CreativeCapacitorHandledScreen(title, handler, inventory.player)));
 
-		ScreenRegistry.register(AstromineScreenHandlers.CREATIVE_TANK,
-			(ScreenRegistry.Factory<CreativeTankScreenHandler, CreativeTankHandledScreen>) ((handler, inventory, title) -> new CreativeTankHandledScreen(title, handler, inventory.player)));
+		ScreenRegistry.register(AstromineScreenHandlers.CREATIVE_TANK, (ScreenRegistry.Factory<CreativeTankScreenHandler, CreativeTankHandledScreen>) ((handler, inventory, title) -> new CreativeTankHandledScreen(title, handler, inventory.player)));
 
-		ScreenRegistry.register(AstromineScreenHandlers.CREATIVE_BUFFER,
-			(ScreenRegistry.Factory<CreativeBufferScreenHandler, CreativeBufferHandledScreen>) ((handler, inventory, title) -> new CreativeBufferHandledScreen(title, handler, inventory.player)));
+		ScreenRegistry.register(AstromineScreenHandlers.CREATIVE_BUFFER, (ScreenRegistry.Factory<CreativeBufferScreenHandler, CreativeBufferHandledScreen>) ((handler, inventory, title) -> new CreativeBufferHandledScreen(title, handler, inventory.player)));
 
 		ScreenRegistry.register(AstromineScreenHandlers.BUFFER, (ScreenRegistry.Factory<BufferScreenHandler, BufferHandledScreen>) ((handler, inventory, title) -> new BufferHandledScreen(title, handler, inventory.player)));
 
@@ -92,11 +83,9 @@ public class AstromineScreens {
 
 		ScreenRegistry.register(AstromineScreenHandlers.PRESSER, (ScreenRegistry.Factory<PresserScreenHandler, PresserHandledScreen>) ((handler, inventory, title) -> new PresserHandledScreen(title, handler, inventory.player)));
 
-		ScreenRegistry.register(AstromineScreenHandlers.ELECTRIC_SMELTER,
-			(ScreenRegistry.Factory<ElectricSmelterScreenHandler, ElectricSmelterHandledScreen>) ((handler, inventory, title) -> new ElectricSmelterHandledScreen(title, handler, inventory.player)));
+		ScreenRegistry.register(AstromineScreenHandlers.ELECTRIC_SMELTER, (ScreenRegistry.Factory<ElectricSmelterScreenHandler, ElectricSmelterHandledScreen>) ((handler, inventory, title) -> new ElectricSmelterHandledScreen(title, handler, inventory.player)));
 
-		ScreenRegistry.register(AstromineScreenHandlers.ELECTROLYZER,
-			(ScreenRegistry.Factory<ElectrolyzerScreenHandler, ElectrolyzerHandledScreen>) ((handler, inventory, title) -> new ElectrolyzerHandledScreen(title, handler, inventory.player)));
+		ScreenRegistry.register(AstromineScreenHandlers.ELECTROLYZER, (ScreenRegistry.Factory<ElectrolyzerScreenHandler, ElectrolyzerHandledScreen>) ((handler, inventory, title) -> new ElectrolyzerHandledScreen(title, handler, inventory.player)));
 
 		ScreenRegistry.register(AstromineScreenHandlers.FLUID_MIXER, (ScreenRegistry.Factory<FluidMixerScreenHandler, FluidMixerHandledScreen>) ((handler, inventory, title) -> {
 			return new FluidMixerHandledScreen(title, handler, inventory.player);

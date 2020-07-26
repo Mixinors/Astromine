@@ -66,8 +66,7 @@ public abstract class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlo
 	protected FluidInventoryComponent createFluidComponent() {
 		return new SimpleFluidInventoryComponent(1).withListener((inv) -> {
 			if (this.world != null && !this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
-				recipe = (Optional) world.getRecipeManager().getAllOfType(LiquidGeneratingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof LiquidGeneratingRecipe)
-					.filter(recipe -> ((LiquidGeneratingRecipe) recipe).canCraft(this)).findFirst();
+				recipe = (Optional) world.getRecipeManager().getAllOfType(LiquidGeneratingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof LiquidGeneratingRecipe).filter(recipe -> ((LiquidGeneratingRecipe) recipe).canCraft(this)).findFirst();
 		});
 	}
 

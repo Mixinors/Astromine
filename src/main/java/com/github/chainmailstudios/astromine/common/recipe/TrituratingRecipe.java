@@ -145,8 +145,7 @@ public class TrituratingRecipe implements EnergyConsumingRecipe<Inventory> {
 		public TrituratingRecipe read(Identifier identifier, JsonObject object) {
 			TrituratingRecipe.Format format = new Gson().fromJson(object, TrituratingRecipe.Format.class);
 
-			return new TrituratingRecipe(identifier, IngredientUtilities.fromJson(format.input), StackUtilities.fromJson(format.output), EnergyUtilities.fromJson(format.energyConsumed),
-				ParsingUtilities.fromJson(format.time, Integer.class));
+			return new TrituratingRecipe(identifier, IngredientUtilities.fromJson(format.input), StackUtilities.fromJson(format.output), EnergyUtilities.fromJson(format.energyConsumed), ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 
 		@Override

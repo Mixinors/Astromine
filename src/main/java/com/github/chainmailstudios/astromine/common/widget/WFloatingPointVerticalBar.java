@@ -76,8 +76,8 @@ public class WFloatingPointVerticalBar extends WAbstractBar {
 	}
 
 	public List<Text> getTooltip() {
-		return Lists.newArrayList(FluidUtilities.rawFraction(progressFraction.get(), limitFraction.get(), unit),
-			new TranslatableText("text.astromine.tooltip.fractional_value", EnergyUtilities.toDecimalString(progressFraction.get()), EnergyUtilities.toDecimalString(limitFraction.get())));
+		return Lists.newArrayList(FluidUtilities.rawFraction(progressFraction.get(), limitFraction.get(), unit), new TranslatableText("text.astromine.tooltip.fractional_value", EnergyUtilities.toDecimalString(progressFraction.get()), EnergyUtilities.toDecimalString(limitFraction
+			.get())));
 	}
 
 	@Override
