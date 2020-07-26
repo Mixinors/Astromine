@@ -27,18 +27,10 @@ import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedF
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.network.NetworkMember;
-import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.Map;
-
-public class TankBlockEntity extends DefaultedFluidBlockEntity implements NetworkMember {
+public class TankBlockEntity extends DefaultedFluidBlockEntity {
 	public TankBlockEntity() {
 		super(AstromineBlockEntityTypes.FLUID_TANK);
 
@@ -48,10 +40,5 @@ public class TankBlockEntity extends DefaultedFluidBlockEntity implements Networ
 	@Override
 	protected FluidInventoryComponent createFluidComponent() {
 		return new SimpleFluidInventoryComponent(1);
-	}
-
-	@Override
-	protected @NotNull Map<NetworkType, Collection<NetworkMemberType>> createMemberProperties() {
-		return ofTypes(AstromineNetworkTypes.FLUID, BUFFER);
 	}
 }

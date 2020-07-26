@@ -23,7 +23,6 @@
  */
 package com.github.chainmailstudios.astromine.registry;
 
-import net.minecraft.item.Items;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Lazy;
@@ -46,6 +45,10 @@ public class AstromineToolMaterials {
 	public static final AstromineToolMaterial STELLUM = new AstromineToolMaterial(5, 2643, 8f, 6.0f, 15, () -> Ingredient.ofItems(AstromineItems.STELLUM_INGOT));
 	public static final AstromineToolMaterial GALAXIUM = new AstromineToolMaterial(6, 3072, 11f, 5.0f, 18, () -> Ingredient.ofItems(AstromineItems.GALAXIUM));
 	public static final AstromineToolMaterial UNIVITE = new AstromineToolMaterial(7, 3918, 12f, 6.0f, 22, () -> Ingredient.ofItems(AstromineItems.UNIVITE_INGOT));
+
+	public static final AstromineToolMaterial BASIC_DRILL = new AstromineToolMaterial(2, Integer.MAX_VALUE, 10F, 2F, 16, () -> Ingredient.ofItems(AstromineItems.BASIC_DRILL));
+	public static final AstromineToolMaterial ADVANCED_DRILL = new AstromineToolMaterial(3, Integer.MAX_VALUE, 15F, 3F, 20, () -> Ingredient.ofItems(AstromineItems.ADVANCED_DRILL));
+	public static final AstromineToolMaterial ELITE_DRILL = new AstromineToolMaterial(5, Integer.MAX_VALUE, 20F, 5F, 16, () -> Ingredient.ofItems(AstromineItems.ELITE_DRILL));
 
 	public static class AstromineToolMaterial implements ToolMaterial {
 		private final int miningLevel;

@@ -26,17 +26,12 @@ package com.github.chainmailstudios.astromine.common.block.entity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.utilities.type.BufferType;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.Map;
 
 public class BufferBlockEntity extends DefaultedItemBlockEntity {
 	private BufferType type;
@@ -70,10 +65,5 @@ public class BufferBlockEntity extends DefaultedItemBlockEntity {
 		((SimpleItemInventoryComponent) itemComponent).resize(9 * type.getHeight());
 		itemComponent.addListener(this::markDirty);
 		super.fromTag(state, tag);
-	}
-
-	@Override
-	protected @NotNull Map<NetworkType, Collection<NetworkMemberType>> createMemberProperties() {
-		return ofTypes(AstromineNetworkTypes.ITEM, BUFFER);
 	}
 }

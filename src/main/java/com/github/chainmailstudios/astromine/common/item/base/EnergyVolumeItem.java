@@ -45,6 +45,11 @@ public class EnergyVolumeItem extends Item implements EnergyHolder {
 		super(settings);
 	}
 
+	public EnergyVolumeItem(Settings settings, double maxAmount) {
+		super(settings);
+		this.maxAmount = maxAmount;
+	}
+
 	public static EnergyVolumeItem of(Settings settings, double maxAmount) {
 		EnergyVolumeItem item = new EnergyVolumeItem(settings);
 		item.maxAmount = maxAmount;

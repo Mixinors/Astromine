@@ -23,6 +23,7 @@
  */
 package com.github.chainmailstudios.astromine.common.network;
 
+import com.github.chainmailstudios.astromine.client.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.block.AbstractCableBlock;
 import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
@@ -66,8 +67,9 @@ public class NetworkTracer {
 			ComponentProvider provider = ComponentProvider.fromWorld(world);
 			WorldNetworkComponent networkComponent = provider.getComponent(AstromineComponentTypes.WORLD_NETWORK_COMPONENT);
 			Block initialBlock = world.getBlockState(initialPosition).getBlock();
+			NetworkMember initialMember = NetworkMemberRegistry.get(initialBlock);
 
-			if (!(initialBlock instanceof NetworkMember) || !((NetworkMember) initialBlock).isNode(type) || networkComponent.containsInstance(type, initialPosition)) {
+			if (!initialMember.acceptsType(type) || !initialMember.isNode(type) || networkComponent.containsInstance(type, initialPosition)) {
 				return;
 			}
 
@@ -92,6 +94,7 @@ public class NetworkTracer {
 					}
 
 					Object offsetObject = getObjectAt(world, offsetPosition);
+					NetworkMember offsetMember = NetworkMemberRegistry.get(world.getBlockState(offsetPosition).getBlock());
 
 					NetworkInstance existingInstance = networkComponent.getInstance(type, offsetPosition);
 
@@ -103,18 +106,14 @@ public class NetworkTracer {
 						joined = true;
 					}
 
-					if (offsetObject instanceof NetworkMember) {
-						NetworkMember offsetMember = (NetworkMember) offsetObject;
+					if (offsetMember.acceptsType(type)) {
+						if (offsetMember.isRequester(type) || offsetMember.isProvider(type) || offsetMember.isBuffer(type)) {
+							instance.addMember(NetworkMemberNode.of(offsetPosition, direction.getOpposite()));
+						}
 
-						if (offsetMember.acceptsType(type)) {
-							if (offsetMember.isRequester(type) || offsetMember.isProvider(type) || offsetMember.isBuffer(type)) {
-								instance.addMember(NetworkMemberNode.of(offsetPosition, direction.getOpposite()));
-							}
-
-							if (offsetMember.isNode(type)) {
-								positionsToTrace.addLast(offsetPosition);
-								instance.addNode(NetworkNode.of(offsetPosition));
-							}
+						if (offsetMember.isNode(type)) {
+							positionsToTrace.addLast(offsetPosition);
+							instance.addNode(NetworkNode.of(offsetPosition));
 						}
 					}
 
@@ -143,16 +142,16 @@ public class NetworkTracer {
 
 		public void scanNeighbours(NetworkType type, BlockPos initialPosition, World world) {
 			for (Direction direction : Direction.values()) {
-				Object offsetObject = getObjectAt(world, initialPosition.offset(direction));
+				NetworkMember offsetMember = NetworkMemberRegistry.get(world.getBlockState(initialPosition.offset(direction)).getBlock());
 
-				if (offsetObject instanceof NetworkMember && ((NetworkMember) offsetObject).acceptsType(type)) {
+				if (offsetMember.acceptsType(type)) {
 					directions.add(direction);
 				}
 			}
 		}
 
 		public BlockState applyToBlockState(BlockState state) {
-			if (!(state.getBlock() instanceof NetworkMember)) return state;
+			if (!(state.getBlock() instanceof AbstractCableBlock)) return state;
 			for (Direction direction : Direction.values()) {
 				state = state.with(AbstractCableBlock.PROPERTY_MAP.get(direction), directions.contains(direction));
 			}

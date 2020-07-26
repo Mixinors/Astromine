@@ -107,7 +107,7 @@ public abstract class DefaultedItemBlockEntity extends DefaultedBlockEntity impl
 
 	@Override
 	public int[] getAvailableSlots(Direction direction) {
-		if (!transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(direction).isDisabled()) {
+		if (!transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(direction).isNone()) {
 			return IntStream.rangeClosed(0, inventory.size() - 1).toArray();
 		} else {
 			return new int[0];

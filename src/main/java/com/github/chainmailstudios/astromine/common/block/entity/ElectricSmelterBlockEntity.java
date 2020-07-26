@@ -28,12 +28,8 @@ import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWit
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.network.NetworkMember;
-import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
@@ -41,14 +37,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.util.Tickable;
-import org.jetbrains.annotations.NotNull;
 import spinnery.common.inventory.BaseInventory;
 
-import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
-public abstract class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
+public abstract class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity implements Tickable {
 	public double progress = 0;
 	public int limit = 100;
 
@@ -74,11 +67,6 @@ public abstract class ElectricSmelterBlockEntity extends DefaultedEnergyItemBloc
 		})).withListener((inv) -> {
 			shouldTry = true;
 		});
-	}
-
-	@Override
-	protected @NotNull Map<NetworkType, Collection<NetworkMemberType>> createMemberProperties() {
-		return ofTypes(AstromineNetworkTypes.ENERGY, REQUESTER);
 	}
 
 	@Override

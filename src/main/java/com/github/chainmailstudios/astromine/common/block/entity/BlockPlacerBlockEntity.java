@@ -28,12 +28,8 @@ import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedE
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.network.NetworkMember;
-import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.item.BlockItem;
@@ -44,10 +40,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.Map;
-
-public class BlockPlacerBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
+public class BlockPlacerBlockEntity extends DefaultedEnergyItemBlockEntity implements Tickable {
 	private Fraction cooldown = Fraction.empty();
 
 	public boolean isActive = false;
@@ -126,10 +119,5 @@ public class BlockPlacerBlockEntity extends DefaultedEnergyItemBlockEntity imple
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
 		cooldown = Fraction.fromTag(tag.getCompound("cooldown"));
 		super.fromTag(state, tag);
-	}
-
-	@Override
-	protected @NotNull Map<NetworkType, Collection<NetworkMemberType>> createMemberProperties() {
-		return ofTypes(AstromineNetworkTypes.ENERGY, REQUESTER);
 	}
 }

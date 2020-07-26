@@ -36,5 +36,8 @@ public enum NetworkMemberType {
 	* Buffer is a member that stores with special handling defined by the user (e.g. siding)
 	*/
 	BUFFER,
+	/**
+	* Node is a cable-like member, that provides routing to other members but doesn't actually store and provide anything.
+	*/
 	NODE
 }

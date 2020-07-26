@@ -57,7 +57,7 @@ public enum TransferType {
 		return this == OUTPUT || this == INPUT_OUTPUT;
 	}
 
-	public boolean isDisabled() {
+	public boolean isNone() {
 		return this == NONE || this == DISABLED;
 	}
 }

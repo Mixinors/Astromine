@@ -59,6 +59,8 @@ public class AstromineSoundEvents {
 	public static final SoundEvent UNIVITE_ARMOR_EQUIPPED = register("item.armor.equip_univite");
 	public static final SoundEvent SPACE_SUIT_EQUIPPED = register("item.armor.equip_space_suit");
 
+	public static final SoundEvent MACHINE_CLICK = register("block.machine.click");
+
 	public static SoundEvent register(String id) {
 		return Registry.register(Registry.SOUND_EVENT, AstromineCommon.identifier(id), new SoundEvent(AstromineCommon.identifier(id)));
 	}
