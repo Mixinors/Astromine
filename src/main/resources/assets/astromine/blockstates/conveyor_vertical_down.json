@@ -1,0 +1,40 @@
+{
+  "multipart": [
+	{   "when": { "facing": "north" },
+		"apply": { "model": "astromine:block/conveyor_vertical_down" }
+	},
+	{   "when": { "facing": "east" },
+		"apply": { "model": "astromine:block/conveyor_vertical_down", "y": 90 }
+	},
+	{   "when": { "facing": "south" },
+		"apply": { "model": "astromine:block/conveyor_vertical_down", "y": 180 }
+	},
+	{   "when": { "facing": "west" },
+		"apply": { "model": "astromine:block/conveyor_vertical_down", "y": 270 }
+	},
+	{   "when": { "facing": "north", "front": "true" },
+		"apply": { "model": "astromine:block/conveyor_vertical_extension_down" }
+	},
+	{   "when": { "facing": "east", "front": "true" },
+		"apply": { "model": "astromine:block/conveyor_vertical_extension_down", "y": 90 }
+	},
+	{   "when": { "facing": "south", "front": "true" },
+		"apply": { "model": "astromine:block/conveyor_vertical_extension_down", "y": 180 }
+	},
+	{   "when": { "facing": "west", "front": "true" },
+		"apply": { "model": "astromine:block/conveyor_vertical_extension_down", "y": 270 }
+	},
+	{   "when": { "facing": "north", "conveyor": "true" },
+		"apply": { "model": "astromine:block/conveyor_vertical_connector_down" }
+	},
+	{   "when": { "facing": "east", "conveyor": "true" },
+		"apply": { "model": "astromine:block/conveyor_vertical_connector_down", "y": 90 }
+	},
+	{   "when": { "facing": "south", "conveyor": "true" },
+		"apply": { "model": "astromine:block/conveyor_vertical_connector_down", "y": 180 }
+	},
+	{   "when": { "facing": "west", "conveyor": "true" },
+		"apply": { "model": "astromine:block/conveyor_vertical_connector_down", "y": 270 }
+	}
+  ]
+}

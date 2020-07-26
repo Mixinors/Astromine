@@ -88,6 +88,10 @@ public class AstromineClientModels {
 			}
 			return null;
 		});
+
+		ModelLoadingRegistry.INSTANCE.registerAppender((resourceManager, consumer) -> {
+			consumer.accept(new ModelIdentifier(new Identifier(AstromineCommon.MOD_ID, "conveyor_supports"), ""));
+		});
 	}
 
 	public static void renderRocket(RocketEntityModel rocketEntityModel, ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i, int j) {

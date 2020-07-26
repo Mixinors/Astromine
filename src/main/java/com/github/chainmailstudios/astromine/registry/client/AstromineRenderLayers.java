@@ -23,13 +23,16 @@
  */
 package com.github.chainmailstudios.astromine.registry.client;
 
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.minecraft.block.Block;
 import net.minecraft.client.render.RenderLayer;
 
 public class AstromineRenderLayers {
 	public static void initialize() {
-		// Unused.
+		register(AstromineBlocks.ALTERNATOR, RenderLayer.getCutout());
+		register(AstromineBlocks.SPLITTER, RenderLayer.getCutout());
+		register(AstromineBlocks.INCINERATOR, RenderLayer.getCutout());
 	}
 
 	/**
