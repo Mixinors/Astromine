@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.item;
 
 import com.github.chainmailstudios.astromine.common.block.HolographicBridgeProjectorBlock;
@@ -72,7 +73,8 @@ public class HolographicConnectorItem extends Item {
 
 		BlockPos position = context.getBlockPos();
 
-		if (context.shouldCancelInteraction()) return super.useOnBlock(context);
+		if (context.shouldCancelInteraction())
+			return super.useOnBlock(context);
 
 		if (world.getBlockState(position).getBlock() instanceof HolographicBridgeProjectorBlock) {
 			HolographicBridgeProjectorBlockEntity entity = (HolographicBridgeProjectorBlockEntity) world.getBlockEntity(position);
@@ -169,8 +171,10 @@ public class HolographicConnectorItem extends Item {
 
 	private Pair<RegistryKey<World>, BlockPos> readBlock(ItemStack stack) {
 		CompoundTag tag = stack.getTag();
-		if (tag == null) return null;
-		if (!tag.contains("SelectedConnectorBlock")) return null;
+		if (tag == null)
+			return null;
+		if (!tag.contains("SelectedConnectorBlock"))
+			return null;
 		return readPos(tag.getCompound("SelectedConnectorBlock"));
 	}
 

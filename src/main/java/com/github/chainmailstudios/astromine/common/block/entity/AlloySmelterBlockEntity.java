@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.block.AlloySmelterBlock;
@@ -28,39 +29,32 @@ import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWit
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.network.NetworkMember;
-import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.recipe.AlloySmeltingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
-import org.jetbrains.annotations.NotNull;
 import spinnery.common.inventory.BaseInventory;
 
-import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
-public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
+public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEntity implements Tickable {
 	public double progress = 0;
 	public int limit = 100;
 
 	public boolean shouldTry = true;
 	public boolean isActive = false;
 
-	public boolean[] activity = {false, false, false, false, false};
+	public boolean[] activity = { false, false, false, false, false };
 
 	Optional<AlloySmeltingRecipe> recipe = Optional.empty();
 
 	public AlloySmelterBlockEntity(BlockEntityType<?> type) {
 		super(type);
-		
+
 		addEnergyListener(() -> shouldTry = true);
 	}
 
@@ -73,11 +67,6 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 		})).withListener((inv) -> {
 			shouldTry = true;
 		});
-	}
-
-	@Override
-	protected @NotNull Map<NetworkType, Collection<NetworkMemberType>> createMemberProperties() {
-		return ofTypes(AstromineNetworkTypes.ENERGY, REQUESTER);
 	}
 
 	@Override
@@ -99,7 +88,8 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 	public void tick() {
 		super.tick();
 
-		if (world.isClient()) return;
+		if (world.isClient())
+			return;
 		if (shouldTry) {
 			BaseInventory inputInventory = new BaseInventory(2);
 			inputInventory.setStack(0, itemComponent.getStack(0));
@@ -153,7 +143,8 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 			isActive = false;
 		}
 
-		if (activity.length - 1 >= 0) System.arraycopy(activity, 1, activity, 0, activity.length - 1);
+		if (activity.length - 1 >= 0)
+			System.arraycopy(activity, 1, activity, 0, activity.length - 1);
 
 		activity[4] = isActive;
 

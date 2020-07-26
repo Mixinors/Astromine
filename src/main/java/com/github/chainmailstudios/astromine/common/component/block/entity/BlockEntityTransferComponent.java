@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.component.block.entity;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
@@ -44,7 +45,7 @@ public class BlockEntityTransferComponent implements Component {
 	}
 
 	public TransferEntry get(ComponentType<?> type) {
-		return components.get(type);
+		return components.getOrDefault(type, ImmutableTransferEntry.INSTANCE);
 	}
 
 	public Map<ComponentType<?>, TransferEntry> get() {
@@ -80,7 +81,7 @@ public class BlockEntityTransferComponent implements Component {
 		return tag;
 	}
 
-	public static final class TransferEntry {
+	public static class TransferEntry {
 		private final Map<Direction, TransferType> types = Maps.newHashMap();
 
 		public TransferEntry() {
@@ -114,6 +115,31 @@ public class BlockEntityTransferComponent implements Component {
 				if (value != TransferType.NONE)
 					return false;
 			}
+			return true;
+		}
+	}
+
+	private static class ImmutableTransferEntry extends TransferEntry {
+		private static TransferEntry INSTANCE = new ImmutableTransferEntry();
+
+		@Override
+		public void set(Direction direction, TransferType type) {}
+
+		@Override
+		public TransferType get(Direction origin) {
+			return TransferType.NONE;
+		}
+
+		@Override
+		public void fromTag(CompoundTag tag) {}
+
+		@Override
+		public CompoundTag toTag(CompoundTag tag) {
+			return tag;
+		}
+
+		@Override
+		public boolean areAllNone() {
 			return true;
 		}
 	}

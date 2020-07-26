@@ -1,8 +1,7 @@
 {
   "credit": "Made with Blockbench",
   "textures": {
-    "0": "astromine:block/energy_cable_center",
-    "particle": "astromine:block/energy_cable_center"
+    "particle": "#0"
   },
   "elements": [
     {
