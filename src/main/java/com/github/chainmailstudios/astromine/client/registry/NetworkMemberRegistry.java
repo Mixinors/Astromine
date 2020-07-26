@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -26,14 +26,16 @@ package com.github.chainmailstudios.astromine.client.registry;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
-import com.google.common.collect.Maps;
+import com.github.chainmailstudios.astromine.common.utilities.WorldPos;
+import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import com.google.common.collect.Sets;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import team.reborn.energy.EnergyStorage;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -44,18 +46,32 @@ public class NetworkMemberRegistry {
 	public static final NetworkMemberRegistry INSTANCE = new NetworkMemberRegistry();
 
 	private Map<NetworkType, NetworkTypeRegistry<?>> registries = new Reference2ObjectOpenHashMap<>();
-	private Map<Block, NetworkMember> memberCache = new Reference2ObjectOpenHashMap<>();
 
 	private NetworkMemberRegistry() {
-		// Locked.
+		registries.put(AstromineNetworkTypes.ENERGY, new NetworkTypeRegistryImpl<NetworkType>() {
+			@Override
+			public Collection<NetworkMemberType> get(WorldPos pos) {
+				if (!this.types.containsKey(pos.getBlock())) {
+					BlockEntity blockEntity = pos.getBlockEntity();
+					if (blockEntity instanceof EnergyStorage) {
+						return NetworkMember.REQUESTER_PROVIDER;
+					}
+				}
+				return super.get(pos);
+			}
+		});
 	}
 
-	public static NetworkMember get(@Nullable Block block) {
-		return INSTANCE.memberCache.computeIfAbsent(block, b -> INSTANCE.new NetworkMemberImpl(b));
+	public static NetworkMember get(@Nullable WorldPos pos) {
+		return INSTANCE.new NetworkMemberImpl(pos);
+	}
+
+	public static NetworkMember get(@Nullable World world, @Nullable BlockPos pos) {
+		return get(world != null && pos != null ? WorldPos.of(world, pos) : null);
 	}
 
 	public static NetworkMember get(@Nullable BlockEntity blockEntity) {
-		return blockEntity != null && blockEntity.getCachedState() != null ? get(blockEntity.getCachedState().getBlock()) : get((Block) null);
+		return blockEntity != null ? get(blockEntity.getWorld(), blockEntity.getPos()) : get(null, null);
 	}
 
 	public <T extends NetworkType> NetworkTypeRegistry<T> get(T type) {
@@ -63,49 +79,43 @@ public class NetworkMemberRegistry {
 	}
 
 	public interface NetworkTypeRegistry<T extends NetworkType> {
-		default void register(Block block, NetworkMemberType... types) {
-			register(Registry.BLOCK.getId(block), types);
-		}
+		void register(Block block, NetworkMemberType... types);
 
-		void register(Identifier id, NetworkMemberType... types);
-
-		default Collection<NetworkMemberType> get(Block block) {
-			return get(Registry.BLOCK.getId(block));
-		}
-		Collection<NetworkMemberType> get(Identifier id);
+		Collection<NetworkMemberType> get(WorldPos pos);
 	}
 
 	private static class NetworkTypeRegistryImpl<T extends NetworkType> implements NetworkTypeRegistry<T> {
-		private final T type;
-		private final Map<Identifier, Collection<NetworkMemberType>> types = Maps.newHashMap();
+		protected final Map<Block, Collection<NetworkMemberType>> types = new Reference2ObjectOpenHashMap<>();
+
+		public NetworkTypeRegistryImpl() {
+		}
 
 		public NetworkTypeRegistryImpl(T type) {
-			this.type = type;
 		}
 
 		@Override
-		public void register(Identifier identifier, NetworkMemberType... types) {
-			this.types.computeIfAbsent(identifier, id -> Sets.newHashSet()).addAll(Arrays.asList(types));
+		public void register(Block block, NetworkMemberType... types) {
+			this.types.computeIfAbsent(block, id -> Sets.newHashSet()).addAll(Arrays.asList(types));
 		}
 
 		@Override
-		public Collection<NetworkMemberType> get(Identifier id) {
-			return this.types.getOrDefault(id, Collections.emptySet());
+		public Collection<NetworkMemberType> get(WorldPos pos) {
+			return this.types.getOrDefault(pos.getBlock(), Collections.emptySet());
 		}
 	}
 
 	private class NetworkMemberImpl implements NetworkMember {
 		@Nullable
-		private Block block;
+		private final WorldPos pos;
 
-		public NetworkMemberImpl(@Nullable Block block) {
-			this.block = block;
+		public NetworkMemberImpl(@Nullable WorldPos pos) {
+			this.pos = pos;
 		}
 
 		@Override
 		public Collection<NetworkMemberType> getMemberNetworkTypeProperties(NetworkType type) {
-			if (block == null) return Collections.emptySet();
-			return get(type).get(Registry.BLOCK.getId(block));
+			if (pos == null) return Collections.emptySet();
+			return get(type).get(pos);
 		}
 	}
 }

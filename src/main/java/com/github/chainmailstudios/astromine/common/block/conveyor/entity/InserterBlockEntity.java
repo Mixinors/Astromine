@@ -115,7 +115,6 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 					}
 				}
 			} else if (!isEmpty()) {
-				Inventory inventory = (Inventory) getWorld().getBlockEntity(getPos().offset(direction));
 				BlockState aheadState = getWorld().getBlockState(getPos().offset(direction));
 
 				ItemInsertable insertable = ItemAttributes.INSERTABLE.get(world, getPos().offset(direction), SearchOptions.inDirection(direction));

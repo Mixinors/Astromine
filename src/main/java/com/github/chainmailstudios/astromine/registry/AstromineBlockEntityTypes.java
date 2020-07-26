@@ -95,11 +95,11 @@ public class AstromineBlockEntityTypes {
 	public static BlockEntityType<DoubleMachineBlockEntity> ALTERNATOR = register("alternator", AlternatorBlockEntity::new, AstromineBlocks.ALTERNATOR);
 	public static BlockEntityType<DoubleMachineBlockEntity> SPLITTER = register("splitter", SplitterBlockEntity::new, AstromineBlocks.SPLITTER);
 	public static BlockEntityType<IncineratorBlockEntity> INCINERATOR = register("incinerator", IncineratorBlockEntity::new, AstromineBlocks.INCINERATOR);
-	public static BlockEntityType<InserterBlockEntity> INSERTER = register("inserter", InserterBlockEntity::new, AstromineBlocks.INSERTER, AstromineBlocks.INSERTER_FAST);
+	public static BlockEntityType<InserterBlockEntity> INSERTER = register("inserter", InserterBlockEntity::new, AstromineBlocks.INSERTER, AstromineBlocks.FAST_INSERTER);
 
 	public static BlockEntityType<ConveyorBlockEntity> CONVEYOR = register("conveyor", ConveyorBlockEntity::new, AstromineBlocks.CONVEYOR, AstromineBlocks.FAST_CONVEYOR, AstromineBlocks.EXPRESS_CONVEYOR);
 	public static BlockEntityType<VerticalConveyorBlockEntity> VERTICAL_CONVEYOR = register("vertical_conveyor", VerticalConveyorBlockEntity::new, AstromineBlocks.VERTICAL_CONVEYOR, AstromineBlocks.VERTICAL_FAST_CONVEYOR, AstromineBlocks.VERTICAL_EXPRESS_CONVEYOR);
-	public static BlockEntityType<DownVerticalConveyorBlockEntity> DOWN_VERTICAL_CONVEYOR = register("down_vertical_conveyor", DownVerticalConveyorBlockEntity::new, AstromineBlocks.DOWN_VERTICAL_CONVEYOR, AstromineBlocks.DOWN_VERTICAL_FAST_CONVEYOR, AstromineBlocks.DOWN_VERTICAL_EXPRESS_CONVEYOR);
+	public static BlockEntityType<DownVerticalConveyorBlockEntity> DOWNWARD_VERTICAL_CONVEYOR = register("downward_vertical_conveyor", DownVerticalConveyorBlockEntity::new, AstromineBlocks.DOWNWARD_VERTICAL_CONVEYOR, AstromineBlocks.DOWNWARD_VERTICAL_FAST_CONVEYOR, AstromineBlocks.DOWNWARD_VERTICAL_EXPRESS_CONVEYOR);
 
 
 	public static void initialize() {

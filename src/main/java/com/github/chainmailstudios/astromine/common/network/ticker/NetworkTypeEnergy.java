@@ -63,7 +63,7 @@ public class NetworkTypeEnergy extends NetworkType {
 					}
 				}
 
-				if (type != TransferType.DISABLED) {
+				if (!type.isDisabled()) {
 					if (type.canExtract() || networkMember.isProvider(this)) {
 						inputs.add(Energy.of(blockEntity).side(memberNode.getDirection()));
 					}

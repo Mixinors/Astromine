@@ -4,7 +4,7 @@
 	"textures": {
 		"hole": "astromine:block/hole",
 		"particle": "astromine:block/hole",
-		"conveyor": "astromine:block/conveyor_fast",
+		"conveyor": "astromine:block/express_conveyor",
 		"side": "astromine:block/conveyor_side"
 	},
 	"elements": [
@@ -21,8 +21,8 @@
 			"to": [16, 20, 4],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 24, 8]},
 			"faces": {
-				"south": {"uv": [0, 0, 16, 4], "rotation": 180, "texture": "#conveyor"},
-				"up": {"uv": [0, 4, 16, 8], "rotation": 180, "texture": "#conveyor"}
+				"south": {"uv": [0, 12, 16, 16], "texture": "#conveyor"},
+				"up": {"uv": [0, 8, 16, 12], "texture": "#conveyor"}
 			}
 		},
 		{

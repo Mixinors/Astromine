@@ -28,6 +28,7 @@ import com.github.chainmailstudios.astromine.common.component.world.WorldNetwork
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkTracer;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.github.chainmailstudios.astromine.common.utilities.WorldPos;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.AbstractBlock;
@@ -87,7 +88,7 @@ public abstract class AbstractCableBlock extends Block {
 	public void onPlaced(World world, BlockPos position, BlockState stateA, LivingEntity placer, ItemStack itemStack) {
 		super.onPlaced(world, position, stateA, placer, itemStack);
 
-		NetworkTracer.Tracer.INSTANCE.trace(getNetworkType(), position, world);
+		NetworkTracer.Tracer.INSTANCE.trace(getNetworkType(), WorldPos.of(world, position));
 
 		NetworkTracer.Modeller modeller = new NetworkTracer.Modeller();
 		modeller.scanNeighbours(getNetworkType(), position, world);
@@ -96,14 +97,14 @@ public abstract class AbstractCableBlock extends Block {
 
 		for (Direction direction : Direction.values()) {
 			BlockPos offsetPos = position.offset(direction);
-			Block offsetBlock = world.getBlockState(offsetPos).getBlock();
+			WorldPos offsetBlock = WorldPos.of(world, offsetPos);
 
-			if (!(offsetBlock instanceof AbstractCableBlock)) continue;
+			if (!(offsetBlock.getBlock() instanceof AbstractCableBlock)) continue;
 			NetworkMember member = NetworkMemberRegistry.get(offsetBlock);
 			if (member.acceptsType(getNetworkType())) continue;
 
 			NetworkTracer.Modeller offsetModeller = new NetworkTracer.Modeller();
-			offsetModeller.scanNeighbours(((AbstractCableBlock) offsetBlock).getNetworkType(), offsetPos, world);
+			offsetModeller.scanNeighbours(((AbstractCableBlock) offsetBlock.getBlock()).getNetworkType(), offsetPos, world);
 
 			world.setBlockState(offsetPos, offsetModeller.applyToBlockState(world.getBlockState(offsetPos)));
 		}
@@ -128,7 +129,7 @@ public abstract class AbstractCableBlock extends Block {
 			if (!(offsetBlock instanceof AbstractCableBlock)) continue;
 			if (((AbstractCableBlock) offsetBlock).getNetworkType() != getNetworkType()) continue;
 
-			NetworkTracer.Tracer.INSTANCE.trace(getNetworkType(), offsetPos, world);
+			NetworkTracer.Tracer.INSTANCE.trace(getNetworkType(), WorldPos.of(world, offsetPos));
 
 			NetworkTracer.Modeller modeller = new NetworkTracer.Modeller();
 			modeller.scanNeighbours(getNetworkType(), offsetPos, world);
@@ -146,7 +147,7 @@ public abstract class AbstractCableBlock extends Block {
 		WorldNetworkComponent networkComponent = provider.getComponent(AstromineComponentTypes.WORLD_NETWORK_COMPONENT);
 
 		networkComponent.removeInstance(networkComponent.getInstance(getNetworkType(), position));
-		NetworkTracer.Tracer.INSTANCE.trace(getNetworkType(), position, world);
+		NetworkTracer.Tracer.INSTANCE.trace(getNetworkType(), WorldPos.of(world, position));
 
 		NetworkTracer.Modeller modeller = new NetworkTracer.Modeller();
 		modeller.scanNeighbours(getNetworkType(), position, world);
