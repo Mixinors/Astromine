@@ -21,21 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.chainmailstudios.astromine.registry;
+package com.github.chainmailstudios.astromine.client.render.sky;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
-import com.github.chainmailstudios.astromine.common.world.generation.mars.MarsChunkGenerator;
-import com.github.chainmailstudios.astromine.common.world.generation.moon.MoonChunkGenerator;
-import com.github.chainmailstudios.astromine.common.world.generation.vulcan.VulcanChunkGenerator;
+import net.minecraft.client.render.SkyProperties;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 
-import net.minecraft.util.registry.Registry;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
-public class AstromineChunkGenerators {
-	public static void initialize() {
-		Registry.register(Registry.CHUNK_GENERATOR, AstromineCommon.identifier("earth_space"), EarthSpaceChunkGenerator.CODEC);
-		Registry.register(Registry.CHUNK_GENERATOR, AstromineCommon.identifier("moon"), MoonChunkGenerator.CODEC);
-		Registry.register(Registry.CHUNK_GENERATOR, AstromineCommon.identifier("mars"), MarsChunkGenerator.CODEC);
-		Registry.register(Registry.CHUNK_GENERATOR, AstromineCommon.identifier("vulcan"), VulcanChunkGenerator.CODEC);
+@Environment(EnvType.CLIENT)
+public class VulcanSkyProperties extends SkyProperties {
+	private final float[] rgba = new float[4];
+	public VulcanSkyProperties() {
+		super(Float.NaN, false, SkyType.NORMAL, true, true);
+	}
+
+	@Override
+	public Vec3d adjustSkyColor(Vec3d color, float sunHeight) {
+		return new Vec3d(0.4, 0.35, 0.31);
+	}
+
+	@Override
+	public boolean useThickFog(int camX, int camY) {
+		return false;
 	}
 }

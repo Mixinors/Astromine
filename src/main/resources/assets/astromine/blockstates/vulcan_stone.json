@@ -1,0 +1,9 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "astromine:block/vulcan_stone"
+      }
+    ]
+  }
+}

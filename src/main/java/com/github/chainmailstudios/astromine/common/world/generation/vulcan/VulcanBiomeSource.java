@@ -21,21 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.github.chainmailstudios.astromine.registry;
+package com.github.chainmailstudios.astromine.common.world.generation.vulcan;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
-import com.github.chainmailstudios.astromine.common.world.generation.mars.MarsChunkGenerator;
-import com.github.chainmailstudios.astromine.common.world.generation.moon.MoonChunkGenerator;
-import com.github.chainmailstudios.astromine.common.world.generation.vulcan.VulcanChunkGenerator;
+import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
+import com.google.common.collect.ImmutableList;
+import com.mojang.serialization.Codec;
 
-import net.minecraft.util.registry.Registry;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.source.BiomeSource;
 
-public class AstromineChunkGenerators {
-	public static void initialize() {
-		Registry.register(Registry.CHUNK_GENERATOR, AstromineCommon.identifier("earth_space"), EarthSpaceChunkGenerator.CODEC);
-		Registry.register(Registry.CHUNK_GENERATOR, AstromineCommon.identifier("moon"), MoonChunkGenerator.CODEC);
-		Registry.register(Registry.CHUNK_GENERATOR, AstromineCommon.identifier("mars"), MarsChunkGenerator.CODEC);
-		Registry.register(Registry.CHUNK_GENERATOR, AstromineCommon.identifier("vulcan"), VulcanChunkGenerator.CODEC);
+public class VulcanBiomeSource extends BiomeSource {
+	public static Codec<VulcanBiomeSource> CODEC = Codec.LONG.fieldOf("seed").xmap(VulcanBiomeSource::new, (source) -> source.seed).stable().codec();
+	private final long seed;
+
+	public VulcanBiomeSource(long seed) {
+		super(ImmutableList.of());
+		this.seed = seed;
+	}
+
+	@Override
+	protected Codec<? extends BiomeSource> method_28442() {
+		return CODEC;
+	}
+
+	@Override
+	public BiomeSource withSeed(long seed) {
+		return new VulcanBiomeSource(seed);
+	}
+
+	@Override
+	public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
+		return AstromineBiomes.VULCAN;
 	}
 }

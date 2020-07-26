@@ -44,6 +44,8 @@ public class AstromineDimensions {
 
 	public static final RegistryKey<DimensionType> MARS_REGISTRY_KEY = register(Registry.DIMENSION_TYPE_KEY, AstromineCommon.identifier("mars"));
 
+	public static final RegistryKey<DimensionType> VULCAN_REGISTRY_KEY = register(Registry.DIMENSION_TYPE_KEY, AstromineCommon.identifier("vulcan"));
+
 	public static <T> RegistryKey<T> register(RegistryKey<Registry<T>> registry, Identifier identifier) {
 		RegistryKey<T> key = RegistryKey.of(registry, identifier);
 		KEYS.add(key);

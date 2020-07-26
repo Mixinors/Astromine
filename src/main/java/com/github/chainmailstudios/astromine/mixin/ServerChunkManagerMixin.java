@@ -32,6 +32,8 @@ import com.github.chainmailstudios.astromine.common.world.generation.mars.MarsBi
 import com.github.chainmailstudios.astromine.common.world.generation.mars.MarsChunkGenerator;
 import com.github.chainmailstudios.astromine.common.world.generation.moon.MoonBiomeSource;
 import com.github.chainmailstudios.astromine.common.world.generation.moon.MoonChunkGenerator;
+import com.github.chainmailstudios.astromine.common.world.generation.vulcan.VulcanBiomeSource;
+import com.github.chainmailstudios.astromine.common.world.generation.vulcan.VulcanChunkGenerator;
 import com.mojang.datafixers.DataFixer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -65,6 +67,10 @@ public class ServerChunkManagerMixin {
 		}
 		if (chunkGenerator instanceof MarsChunkGenerator) {
 			this.chunkGenerator = new MarsChunkGenerator(new MarsBiomeSource(world.getSeed()), world.getSeed());
+		}
+
+		if (chunkGenerator instanceof VulcanChunkGenerator) {
+			this.chunkGenerator = new VulcanChunkGenerator(new VulcanBiomeSource(world.getSeed()), world.getSeed());
 		}
 	}
 }

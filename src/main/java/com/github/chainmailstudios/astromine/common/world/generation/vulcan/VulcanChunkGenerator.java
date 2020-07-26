@@ -1,27 +1,4 @@
-/*
- * MIT License
- * 
- * Copyright (c) 2020 Chainmail Studios
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-package com.github.chainmailstudios.astromine.common.world.generation.mars;
+package com.github.chainmailstudios.astromine.common.world.generation.vulcan;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -29,6 +6,7 @@ import java.util.Random;
 import com.github.chainmailstudios.astromine.common.miscellaneous.BiomeGenCache;
 import com.github.chainmailstudios.astromine.common.noise.OctaveNoiseSampler;
 import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
+import com.github.chainmailstudios.astromine.common.world.generation.mars.MarsChunkGenerator;
 import com.github.chainmailstudios.astromine.common.world.generation.moon.MoonBiomeSource;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.mojang.serialization.Codec;
@@ -51,24 +29,26 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
 
-public class MarsChunkGenerator extends ChunkGenerator {
-	public static Codec<MarsChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(BiomeSource.field_24713.fieldOf("biome_source").forGetter(gen -> gen.biomeSource), Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed))
-			.apply(instance, MarsChunkGenerator::new));
+public class VulcanChunkGenerator extends ChunkGenerator {
+	public static Codec<VulcanChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			BiomeSource.field_24713.fieldOf("biome_source").forGetter(gen -> gen.biomeSource),
+			Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed))
+			.apply(instance, VulcanChunkGenerator::new));
 
 	private final BiomeSource biomeSource;
 	private final long seed;
-	private final OctaveNoiseSampler<OpenSimplexNoise> lowerInterpolatedNoise;
-	private final OctaveNoiseSampler<OpenSimplexNoise> upperInterpolatedNoise;
-	private final OctaveNoiseSampler<OpenSimplexNoise> interpolationNoise;
+	private final OctaveNoiseSampler<OpenSimplexNoise> baseNoise;
+	private final OctaveNoiseSampler<OpenSimplexNoise> warpX;
+	private final OctaveNoiseSampler<OpenSimplexNoise> warpZ;
 	private final ThreadLocal<BiomeGenCache> cache;
-	public MarsChunkGenerator(BiomeSource biomeSource, long seed) {
+	public VulcanChunkGenerator(BiomeSource biomeSource, long seed) {
 		super(biomeSource, new StructuresConfig(false));
 		this.biomeSource = biomeSource;
 		this.seed = seed;
 		Random random = new Random(seed);
-		lowerInterpolatedNoise = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 5, 140.43, 45, 10);
-		upperInterpolatedNoise = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 5, 140.43, 45, 10);
-		interpolationNoise = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 3, 80.32, 3, 3);
+		baseNoise = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 5, 227.48, 45, 45);
+		warpX = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 3, 72.12, 3, 3);
+		warpZ = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 3, 72.12, 3, 3);
 		this.cache = ThreadLocal.withInitial(() -> new BiomeGenCache(biomeSource));
 	}
 
@@ -79,7 +59,7 @@ public class MarsChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public ChunkGenerator withSeed(long seed) {
-		return new MarsChunkGenerator(new MarsBiomeSource(seed), seed);
+		return new VulcanChunkGenerator(new VulcanBiomeSource(seed), seed);
 	}
 
 	@Override
@@ -119,18 +99,25 @@ public class MarsChunkGenerator extends ChunkGenerator {
 				scale /= i;
 
 				// Noise calculation
-				double noise = interpolationNoise.sample(x, z);
-				if (noise >= 1) {
-					noise = upperInterpolatedNoise.sample(x, z);
-				} else if (noise <= -1) {
-					noise = lowerInterpolatedNoise.sample(x, z);
-				} else {
-					noise = MathHelper.clampedLerp(lowerInterpolatedNoise.sample(x, z), upperInterpolatedNoise.sample(x, z), noise);
-				}
+				double noise = baseNoise.sample(x + warpX.sample(x, z), z + warpZ.sample(x, z));
 
 				int height = (int) (depth + (noise * scale));
-				for (int y = 0; y <= height; ++y) {
-					chunk.setBlockState(new BlockPos(x, y, z), AstromineBlocks.MARTIAN_SOIL.getDefaultState(), false);
+
+				int genHeight = Math.max(100, height);
+
+				for (int y = 0; y <= genHeight; ++y) {
+					// Place stone or lava
+					if (y <= height) {
+						chunk.setBlockState(new BlockPos(x, y, z), AstromineBlocks.VULCAN_STONE.getDefaultState(), false);
+
+						// Place magma blocks at high altitudes
+						if (y == genHeight && chunkRandom.nextInt(6) == 0) {
+							chunk.setBlockState(new BlockPos(x, y, z), Blocks.MAGMA_BLOCK.getDefaultState(), false);
+						}
+					} else {
+						chunk.setBlockState(new BlockPos(x, y, z), Blocks.LAVA.getDefaultState(), false);
+					}
+
 					if (y <= 5) {
 						if (chunkRandom.nextInt(y + 1) == 0) {
 							chunk.setBlockState(new BlockPos(x, y, z), Blocks.BEDROCK.getDefaultState(), false);

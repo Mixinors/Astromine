@@ -1,0 +1,11 @@
+{
+  "generator": {
+    "type": "astromine:vulcan",
+    "biome_source": {
+      "type": "astromine:vulcan",
+      "seed": -1
+    },
+    "seed": -1
+  },
+  "type": "astromine:vulcan"
+}
