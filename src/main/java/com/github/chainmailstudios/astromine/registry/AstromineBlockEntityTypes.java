@@ -24,7 +24,6 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.conveyor.SplitterBlock;
 import com.github.chainmailstudios.astromine.common.block.conveyor.entity.*;
 import com.github.chainmailstudios.astromine.common.block.entity.*;
 import net.minecraft.block.Block;

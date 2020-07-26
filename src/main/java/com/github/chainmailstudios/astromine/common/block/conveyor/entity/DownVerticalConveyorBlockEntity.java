@@ -1,3 +1,26 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.common.block.conveyor.entity;
 
 import com.github.chainmailstudios.astromine.common.block.conveyor.ConveyorProperties;
@@ -14,17 +37,17 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
-    protected boolean down = false;
-    protected int horizontalPosition;
-    protected int prevHorizontalPosition;
+	protected boolean down = false;
+	protected int horizontalPosition;
+	protected int prevHorizontalPosition;
 
-    public DownVerticalConveyorBlockEntity() {
-        super(AstromineBlockEntityTypes.DOWN_VERTICAL_CONVEYOR);
-    }
+	public DownVerticalConveyorBlockEntity() {
+		super(AstromineBlockEntityTypes.DOWN_VERTICAL_CONVEYOR);
+	}
 
-    @Override
-    public void tick() {
-        Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
+	@Override
+	public void tick() {
+		Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
 		int speed = ((Conveyor) getCachedState().getBlock()).getSpeed();
 
 		if (!isEmpty()) {
@@ -59,7 +82,7 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 		} else {
 			setPosition(0);
 		}
-    }
+	}
 
 	public void handleMovementHorizontal(Conveyable conveyable, int speed, boolean transition) {
 		if (conveyable.accepts(getStack())) {
@@ -91,63 +114,63 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	}
 
 	@Override
-    public ItemStack removeStack() {
-        horizontalPosition = 0;
-        prevHorizontalPosition = 0;
-        return super.removeStack();
-    }
+	public ItemStack removeStack() {
+		horizontalPosition = 0;
+		prevHorizontalPosition = 0;
+		return super.removeStack();
+	}
 
-    @Override
-    public boolean hasDown() {
-        return down;
-    }
+	@Override
+	public boolean hasDown() {
+		return down;
+	}
 
-    @Override
-    public void setDown(boolean down) {
-        this.down = down;
-        markDirty();
-    }
+	@Override
+	public void setDown(boolean down) {
+		this.down = down;
+		markDirty();
+	}
 
-    @Override
-    public int[] getRenderAttachmentData() {
-        return new int[] { position, prevPosition, horizontalPosition, prevHorizontalPosition };
-    }
+	@Override
+	public int[] getRenderAttachmentData() {
+		return new int[] { position, prevPosition, horizontalPosition, prevHorizontalPosition };
+	}
 
-    public int getHorizontalPosition() {
-        return horizontalPosition;
-    }
+	public int getHorizontalPosition() {
+		return horizontalPosition;
+	}
 
-    public void setHorizontalPosition(int horizontalPosition) {
-        if (horizontalPosition == 0)
-            this.prevHorizontalPosition = 0;
-        else
-            this.prevHorizontalPosition = this.horizontalPosition;
+	public void setHorizontalPosition(int horizontalPosition) {
+		if (horizontalPosition == 0)
+			this.prevHorizontalPosition = 0;
+		else
+			this.prevHorizontalPosition = this.horizontalPosition;
 
-        this.horizontalPosition = horizontalPosition;
-    }
+		this.horizontalPosition = horizontalPosition;
+	}
 
-    @Override
-    public void fromTag(BlockState state, CompoundTag compoundTag) {
-        super.fromTag(state, compoundTag);
-        down = compoundTag.getBoolean("down_vertical");
-        horizontalPosition = compoundTag.getInt("horizontalPosition");
-        prevHorizontalPosition = horizontalPosition = compoundTag.getInt("horizontalPosition");
-    }
+	@Override
+	public void fromTag(BlockState state, CompoundTag compoundTag) {
+		super.fromTag(state, compoundTag);
+		down = compoundTag.getBoolean("down_vertical");
+		horizontalPosition = compoundTag.getInt("horizontalPosition");
+		prevHorizontalPosition = horizontalPosition = compoundTag.getInt("horizontalPosition");
+	}
 
-    @Override
-    public void fromClientTag(CompoundTag compoundTag) {
-        fromTag(getCachedState(), compoundTag);
-    }
+	@Override
+	public void fromClientTag(CompoundTag compoundTag) {
+		fromTag(getCachedState(), compoundTag);
+	}
 
-    @Override
-    public CompoundTag toTag(CompoundTag compoundTag) {
-        compoundTag.putBoolean("down_vertical", down);
-        compoundTag.putInt("horizontalPosition", horizontalPosition);
-        return super.toTag(compoundTag);
-    }
+	@Override
+	public CompoundTag toTag(CompoundTag compoundTag) {
+		compoundTag.putBoolean("down_vertical", down);
+		compoundTag.putInt("horizontalPosition", horizontalPosition);
+		return super.toTag(compoundTag);
+	}
 
-    @Override
-    public CompoundTag toClientTag(CompoundTag compoundTag) {
-        return toTag(compoundTag);
-    }
+	@Override
+	public CompoundTag toClientTag(CompoundTag compoundTag) {
+		return toTag(compoundTag);
+	}
 }

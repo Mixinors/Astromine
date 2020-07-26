@@ -1,3 +1,26 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.common.block.conveyor.entity;
 
 import alexiil.mc.lib.attributes.SearchOptions;
@@ -38,20 +61,20 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 public class InserterBlockEntity extends BlockEntity implements SingularStackInventory, BlockEntityClientSerializable, RenderAttachmentBlockEntity, Tickable {
-    private DefaultedList<ItemStack> stacks = DefaultedList.ofSize(1, ItemStack.EMPTY);
-    protected int position = 0;
-    protected int prevPosition = 0;
+	private DefaultedList<ItemStack> stacks = DefaultedList.ofSize(1, ItemStack.EMPTY);
+	protected int position = 0;
+	protected int prevPosition = 0;
 
-    public InserterBlockEntity() {
-        super(AstromineBlockEntityTypes.INSERTER);
-    }
+	public InserterBlockEntity() {
+		super(AstromineBlockEntityTypes.INSERTER);
+	}
 
-    public InserterBlockEntity(BlockEntityType type) {
-        super(type);
-    }
+	public InserterBlockEntity(BlockEntityType type) {
+		super(type);
+	}
 
-    @Override
-    public void tick() {
+	@Override
+	public void tick() {
 		Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
 		boolean powered = getCachedState().get(Properties.POWERED);
 		int speed = ((InserterBlock) getCachedState().getBlock()).getSpeed();
@@ -141,7 +164,7 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 		} else if (position > 0) {
 			setPosition(getPosition() - 1);
 		}
-    }
+	}
 
 //	public boolean hasInput() {
 //		return hasInput;
@@ -251,9 +274,9 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 	}
 
 	@Override
-    public DefaultedList<ItemStack> getItems() {
-        return stacks;
-    }
+	public DefaultedList<ItemStack> getItems() {
+		return stacks;
+	}
 
 	@Override
 	public int size() {
@@ -261,77 +284,77 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 	}
 
 	@Override
-    public ItemStack removeStack() {
-        position = 15;
-        prevPosition = 15;
-        return SingularStackInventory.super.removeStack();
-    }
-
-    @Override
-    public int[] getRenderAttachmentData() {
-        return new int[] { position, prevPosition };
-    }
-
-
-    public int getPosition() {
-        return position;
-    }
-
-    public int getPrevPosition() {
-        return prevPosition;
-    }
-
-    public void setPosition(int position) {
-        if (position == 0)
-            this.prevPosition = 0;
-        else
-            this.prevPosition = this.position;
-        this.position = position;
-    }
-
-    public void sync() {
-        if (world instanceof ServerWorld) {
-            ((ServerWorld)world).getChunkManager().markForUpdate(pos);
-        }
-    }
-
-    @Override
-    public void markDirty() {
-        super.markDirty();
-        sync();
-    }
+	public ItemStack removeStack() {
+		position = 15;
+		prevPosition = 15;
+		return SingularStackInventory.super.removeStack();
+	}
 
 	@Override
-    public void fromTag(BlockState state, CompoundTag compoundTag) {
-        super.fromTag(state, compoundTag);
-        clear();
-        setStack(ItemStack.fromTag(compoundTag.getCompound("stack")));
-        position = compoundTag.getInt("position");
+	public int[] getRenderAttachmentData() {
+		return new int[] { position, prevPosition };
+	}
+
+
+	public int getPosition() {
+		return position;
+	}
+
+	public int getPrevPosition() {
+		return prevPosition;
+	}
+
+	public void setPosition(int position) {
+		if (position == 0)
+			this.prevPosition = 0;
+		else
+			this.prevPosition = this.position;
+		this.position = position;
+	}
+
+	public void sync() {
+		if (world instanceof ServerWorld) {
+			((ServerWorld)world).getChunkManager().markForUpdate(pos);
+		}
+	}
+
+	@Override
+	public void markDirty() {
+		super.markDirty();
+		sync();
+	}
+
+	@Override
+	public void fromTag(BlockState state, CompoundTag compoundTag) {
+		super.fromTag(state, compoundTag);
+		clear();
+		setStack(ItemStack.fromTag(compoundTag.getCompound("stack")));
+		position = compoundTag.getInt("position");
 //        hasInput = compoundTag.getBoolean("hasInput");
 //        hasOutput = compoundTag.getBoolean("hasOutput");
-    }
+	}
 
-    @Override
-    public void fromClientTag(CompoundTag compoundTag) {
-        fromTag(getCachedState(), compoundTag);
-    }
+	@Override
+	public void fromClientTag(CompoundTag compoundTag) {
+		fromTag(getCachedState(), compoundTag);
+	}
 
-    @Override
-    public CompoundTag toTag(CompoundTag compoundTag) {
-        compoundTag.put("stack", getStack().toTag(new CompoundTag()));
-        compoundTag.putInt("position", position);
+	@Override
+	public CompoundTag toTag(CompoundTag compoundTag) {
+		compoundTag.put("stack", getStack().toTag(new CompoundTag()));
+		compoundTag.putInt("position", position);
 //        compoundTag.putBoolean("hasInput", hasInput);
 //        compoundTag.putBoolean("hasOutput", hasOutput);
-        return super.toTag(compoundTag);
-    }
+		return super.toTag(compoundTag);
+	}
 
-    @Override
-    public CompoundTag toInitialChunkDataTag() {
-        return toTag(new CompoundTag());
-    }
+	@Override
+	public CompoundTag toInitialChunkDataTag() {
+		return toTag(new CompoundTag());
+	}
 
-    @Override
-    public CompoundTag toClientTag(CompoundTag compoundTag) {
-        return toTag(compoundTag);
-    }
+	@Override
+	public CompoundTag toClientTag(CompoundTag compoundTag) {
+		return toTag(compoundTag);
+	}
 }

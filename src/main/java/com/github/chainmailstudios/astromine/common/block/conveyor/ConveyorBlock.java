@@ -1,3 +1,26 @@
+/*
+ * MIT License
+ * 
+ * Copyright (c) 2020 Chainmail Studios
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package com.github.chainmailstudios.astromine.common.block.conveyor;
 
 import com.github.chainmailstudios.astromine.common.block.conveyor.entity.ConveyorBlockEntity;
@@ -27,68 +50,68 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
 public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityProvider, Conveyor {
-    private int speed;
+	private int speed;
 
-    public ConveyorBlock(Settings settings, int speed) {
-        super(settings);
+	public ConveyorBlock(Settings settings, int speed) {
+		super(settings);
 
-        this.speed = speed;
-        setDefaultState(getDefaultState().with(ConveyorProperties.LEFT, false).with(ConveyorProperties.RIGHT, false).with(ConveyorProperties.UP, false));
-    }
+		this.speed = speed;
+		setDefaultState(getDefaultState().with(ConveyorProperties.LEFT, false).with(ConveyorProperties.RIGHT, false).with(ConveyorProperties.UP, false));
+	}
 
-    @Override
-    public int getSpeed() {
-        return speed;
-    }
+	@Override
+	public int getSpeed() {
+		return speed;
+	}
 
-    @Override
-    public ConveyorType getType() {
-        return ConveyorType.NORMAL;
-    }
+	@Override
+	public ConveyorType getType() {
+		return ConveyorType.NORMAL;
+	}
 
-    @Override
-    public BlockEntity createBlockEntity(BlockView blockView) {
-        return new ConveyorBlockEntity();
-    }
+	@Override
+	public BlockEntity createBlockEntity(BlockView blockView) {
+		return new ConveyorBlockEntity();
+	}
 
-    @Override
-    public boolean hasComparatorOutput(BlockState blockState) {
-        return true;
-    }
+	@Override
+	public boolean hasComparatorOutput(BlockState blockState) {
+		return true;
+	}
 
-    @Override
-    public int getComparatorOutput(BlockState blockState, World world, BlockPos blockPos) {
-        return ((ConveyorBlockEntity) world.getBlockEntity(blockPos)).isEmpty() ? 0 : 15;
-    }
+	@Override
+	public int getComparatorOutput(BlockState blockState, World world, BlockPos blockPos) {
+		return ((ConveyorBlockEntity) world.getBlockEntity(blockPos)).isEmpty() ? 0 : 15;
+	}
 
-    @Override
-    public void onEntityCollision(BlockState blockState, World world, BlockPos blockPos, Entity entity) {
-    	BlockPos pos = new BlockPos(entity.getPos());
+	@Override
+	public void onEntityCollision(BlockState blockState, World world, BlockPos blockPos, Entity entity) {
+		BlockPos pos = new BlockPos(entity.getPos());
 
-    	if (!entity.isOnGround() || (entity.getY() - blockPos.getY()) != (4F / 16F))
-            return;
+		if (!entity.isOnGround() || (entity.getY() - blockPos.getY()) != (4F / 16F))
+			return;
 
-        if (entity instanceof PlayerEntity && entity.isSneaking())
-            return;
+		if (entity instanceof PlayerEntity && entity.isSneaking())
+			return;
 
-        Direction direction = blockState.get(FACING);
+		Direction direction = blockState.get(FACING);
 
-        if (entity instanceof ItemEntity && pos.equals(blockPos) && world.getBlockEntity(blockPos) instanceof ConveyorBlockEntity) {
-            ConveyorBlockEntity blockEntity = (ConveyorBlockEntity) world.getBlockEntity(blockPos);
+		if (entity instanceof ItemEntity && pos.equals(blockPos) && world.getBlockEntity(blockPos) instanceof ConveyorBlockEntity) {
+			ConveyorBlockEntity blockEntity = (ConveyorBlockEntity) world.getBlockEntity(blockPos);
 
-            if (blockEntity.isEmpty()) {
-                blockEntity.setStack(((ItemEntity) entity).getStack());
-                entity.remove();
-            }
-        } else if (!(entity instanceof ItemEntity)) {
-            MovementUtilities.pushEntity(entity, blockPos, 2.0F / getSpeed(), direction);
-        }
-    }
+			if (blockEntity.isEmpty()) {
+				blockEntity.setStack(((ItemEntity) entity).getStack());
+				entity.remove();
+			}
+		} else if (!(entity instanceof ItemEntity)) {
+			MovementUtilities.pushEntity(entity, blockPos, 2.0F / getSpeed(), direction);
+		}
+	}
 
-    @Override
-    public void onBlockAdded(BlockState blockState, World world, BlockPos blockPos, BlockState blockState2, boolean boolean_1) {
+	@Override
+	public void onBlockAdded(BlockState blockState, World world, BlockPos blockPos, BlockState blockState2, boolean boolean_1) {
 		updateDiagonals(world, this, blockPos);
-    }
+	}
 
 	@Override
 	public void onStateReplaced(BlockState blockState, World world, BlockPos blockPos, BlockState blockState2, boolean boolean_1) {
@@ -107,22 +130,22 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 	}
 
 	@Override
-    public BlockState getStateForNeighborUpdate(BlockState blockState, Direction fromDirection, BlockState fromState, WorldAccess world, BlockPos blockPos, BlockPos fromPos) {
-        BlockState newState = blockState;
-        Direction direction = newState.get(FACING);
+	public BlockState getStateForNeighborUpdate(BlockState blockState, Direction fromDirection, BlockState fromState, WorldAccess world, BlockPos blockPos, BlockPos fromPos) {
+		BlockState newState = blockState;
+		Direction direction = newState.get(FACING);
 
-        BlockPos leftPos = blockPos.offset(direction.rotateYCounterclockwise());
-        BlockPos rightPos = blockPos.offset(direction.rotateYClockwise());
-        BlockPos upPos = blockPos.up();
+		BlockPos leftPos = blockPos.offset(direction.rotateYCounterclockwise());
+		BlockPos rightPos = blockPos.offset(direction.rotateYClockwise());
+		BlockPos upPos = blockPos.up();
 
-        BlockEntity leftBlockEntity = world.getBlockEntity(leftPos);
+		BlockEntity leftBlockEntity = world.getBlockEntity(leftPos);
 		BlockEntity leftDownBlockEntity = world.getBlockEntity(leftPos.down());
-        if (leftBlockEntity instanceof Conveyable && ((Conveyable) leftBlockEntity).isOutputSide(direction.rotateYClockwise(), getType()))
-            newState = newState.with(ConveyorProperties.LEFT, true);
-        else if (leftDownBlockEntity instanceof ConveyorConveyable && ((ConveyorConveyable) leftDownBlockEntity).getConveyorType() == ConveyorType.VERTICAL && ((ConveyorConveyable) leftDownBlockEntity).isOutputSide(direction.rotateYClockwise(), getType()))
-            newState = newState.with(ConveyorProperties.LEFT, true);
-        else
-            newState = newState.with(ConveyorProperties.LEFT, false);
+		if (leftBlockEntity instanceof Conveyable && ((Conveyable) leftBlockEntity).isOutputSide(direction.rotateYClockwise(), getType()))
+			newState = newState.with(ConveyorProperties.LEFT, true);
+		else if (leftDownBlockEntity instanceof ConveyorConveyable && ((ConveyorConveyable) leftDownBlockEntity).getConveyorType() == ConveyorType.VERTICAL && ((ConveyorConveyable) leftDownBlockEntity).isOutputSide(direction.rotateYClockwise(), getType()))
+			newState = newState.with(ConveyorProperties.LEFT, true);
+		else
+			newState = newState.with(ConveyorProperties.LEFT, false);
 
 		BlockEntity rightBlockEntity = world.getBlockEntity(rightPos);
 		BlockEntity rightDownBlockEntity = world.getBlockEntity(rightPos.down());
@@ -134,26 +157,26 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 			newState = newState.with(ConveyorProperties.RIGHT, false);
 
 		BlockEntity upBlockEntity = world.getBlockEntity(upPos);
-        if (upBlockEntity instanceof ConveyorConveyable && ((ConveyorConveyable) upBlockEntity).getConveyorType() == ConveyorType.NORMAL)
-            newState = newState.with(ConveyorProperties.UP, true);
-        else
-            newState = newState.with(ConveyorProperties.UP, false);
+		if (upBlockEntity instanceof ConveyorConveyable && ((ConveyorConveyable) upBlockEntity).getConveyorType() == ConveyorType.NORMAL)
+			newState = newState.with(ConveyorProperties.UP, true);
+		else
+			newState = newState.with(ConveyorProperties.UP, false);
 
-        return newState;
-    }
+		return newState;
+	}
 
-    @Override
-    public void neighborUpdate(BlockState blockState, World world, BlockPos blockPos, Block block, BlockPos blockPos2, boolean boolean_1) {
-        Direction direction = blockState.get(FACING);
-        ConveyorBlockEntity conveyorBlockEntity = (ConveyorBlockEntity) world.getBlockEntity(blockPos);
+	@Override
+	public void neighborUpdate(BlockState blockState, World world, BlockPos blockPos, Block block, BlockPos blockPos2, boolean boolean_1) {
+		Direction direction = blockState.get(FACING);
+		ConveyorBlockEntity conveyorBlockEntity = (ConveyorBlockEntity) world.getBlockEntity(blockPos);
 
-        BlockPos frontPos = blockPos.offset(direction);
+		BlockPos frontPos = blockPos.offset(direction);
 
 		BlockEntity frontBlockEntity = world.getBlockEntity(blockPos.offset(direction));
-        if (frontBlockEntity instanceof Conveyable && ((Conveyable) frontBlockEntity).validInputSide(direction.getOpposite()))
-            conveyorBlockEntity.setFront(true);
-        else
-            conveyorBlockEntity.setFront(false);
+		if (frontBlockEntity instanceof Conveyable && ((Conveyable) frontBlockEntity).validInputSide(direction.getOpposite()))
+			conveyorBlockEntity.setFront(true);
+		else
+			conveyorBlockEntity.setFront(false);
 
 		BlockEntity frontAcrossBlockEntity = world.getBlockEntity(blockPos.offset(direction).offset(direction));
 		if (frontBlockEntity instanceof ConveyorConveyable && ((ConveyorConveyable) frontBlockEntity).validInputSide(direction.getOpposite()) && ((ConveyorConveyable) frontBlockEntity).validInputSide(direction) && frontAcrossBlockEntity instanceof ConveyorConveyable && world.getBlockState(blockPos.offset(direction).offset(direction)).get(HorizontalFacingBlock.FACING) == direction.getOpposite())
@@ -162,59 +185,59 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 			conveyorBlockEntity.setAcross(false);
 
 		BlockEntity downBlockEntity = world.getBlockEntity(blockPos.offset(direction).down());
-        if (downBlockEntity instanceof Conveyable && ((Conveyable) downBlockEntity).validInputSide(Direction.UP))
-            conveyorBlockEntity.setDown(true);
-        else
-            conveyorBlockEntity.setDown(false);
-    }
+		if (downBlockEntity instanceof Conveyable && ((Conveyable) downBlockEntity).validInputSide(Direction.UP))
+			conveyorBlockEntity.setDown(true);
+		else
+			conveyorBlockEntity.setDown(false);
+	}
 
-    @Override
-    public ActionResult onUse(BlockState blockState, World world, BlockPos blockPos, PlayerEntity playerEntity, Hand hand, BlockHitResult blockHitResult) {
-        ConveyorBlockEntity blockEntity = (ConveyorBlockEntity) world.getBlockEntity(blockPos);
+	@Override
+	public ActionResult onUse(BlockState blockState, World world, BlockPos blockPos, PlayerEntity playerEntity, Hand hand, BlockHitResult blockHitResult) {
+		ConveyorBlockEntity blockEntity = (ConveyorBlockEntity) world.getBlockEntity(blockPos);
 
-        if (!playerEntity.getStackInHand(hand).isEmpty() && Block.getBlockFromItem(playerEntity.getStackInHand(hand).getItem()) instanceof Conveyor) {
-            return ActionResult.PASS;
-        } else if (!playerEntity.getStackInHand(hand).isEmpty() && blockEntity.isEmpty()) {
-            blockEntity.setStack(playerEntity.getStackInHand(hand));
-            playerEntity.setStackInHand(hand, ItemStack.EMPTY);
+		if (!playerEntity.getStackInHand(hand).isEmpty() && Block.getBlockFromItem(playerEntity.getStackInHand(hand).getItem()) instanceof Conveyor) {
+			return ActionResult.PASS;
+		} else if (!playerEntity.getStackInHand(hand).isEmpty() && blockEntity.isEmpty()) {
+			blockEntity.setStack(playerEntity.getStackInHand(hand));
+			playerEntity.setStackInHand(hand, ItemStack.EMPTY);
 
-            return ActionResult.SUCCESS;
-        } else if (!blockEntity.isEmpty()) {
-            playerEntity.inventory.offerOrDrop(world, blockEntity.getStack());
-            blockEntity.removeStack();
+			return ActionResult.SUCCESS;
+		} else if (!blockEntity.isEmpty()) {
+			playerEntity.inventory.offerOrDrop(world, blockEntity.getStack());
+			blockEntity.removeStack();
 
-            return ActionResult.SUCCESS;
-        }
-        return ActionResult.PASS;
-    }
+			return ActionResult.SUCCESS;
+		}
+		return ActionResult.PASS;
+	}
 
-    @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> stateManagerBuilder) {
-        stateManagerBuilder.add(FACING, ConveyorProperties.LEFT, ConveyorProperties.RIGHT, ConveyorProperties.UP);
-    }
+	@Override
+	protected void appendProperties(StateManager.Builder<Block, BlockState> stateManagerBuilder) {
+		stateManagerBuilder.add(FACING, ConveyorProperties.LEFT, ConveyorProperties.RIGHT, ConveyorProperties.UP);
+	}
 
-    @Override
-    public BlockState getPlacementState(ItemPlacementContext itemPlacementContext) {
-    	World world = itemPlacementContext.getWorld();
-        BlockPos blockPos = itemPlacementContext.getBlockPos();
-    	BlockState newState = this.getDefaultState().with(FACING, itemPlacementContext.getPlayer().isSneaking() ? itemPlacementContext.getPlayerFacing().getOpposite() : itemPlacementContext.getPlayerFacing());
+	@Override
+	public BlockState getPlacementState(ItemPlacementContext itemPlacementContext) {
+		World world = itemPlacementContext.getWorld();
+		BlockPos blockPos = itemPlacementContext.getBlockPos();
+		BlockState newState = this.getDefaultState().with(FACING, itemPlacementContext.getPlayer().isSneaking() ? itemPlacementContext.getPlayerFacing().getOpposite() : itemPlacementContext.getPlayerFacing());
 
-    	newState = newState.getStateForNeighborUpdate(null, newState, world, blockPos, blockPos);
+		newState = newState.getStateForNeighborUpdate(null, newState, world, blockPos, blockPos);
 
 		return newState;
-    }
+	}
 
-    @Override
-    public boolean isTranslucent(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1) {
-        return false;
-    }
+	@Override
+	public boolean isTranslucent(BlockState blockState_1, BlockView blockView_1, BlockPos blockPos_1) {
+		return false;
+	}
 
-    @Override
-    public VoxelShape getOutlineShape(BlockState blockState, BlockView blockView, BlockPos blockPos, ShapeContext entityContext) {
-        VoxelShape conveyor = VoxelShapes.cuboid(0, 0, 0, 1, (4F / 16F), 1);
-        if (blockState.get(ConveyorProperties.UP)) {
-            return VoxelShapes.fullCube();
-        }
-        return conveyor;
-    }
+	@Override
+	public VoxelShape getOutlineShape(BlockState blockState, BlockView blockView, BlockPos blockPos, ShapeContext entityContext) {
+		VoxelShape conveyor = VoxelShapes.cuboid(0, 0, 0, 1, (4F / 16F), 1);
+		if (blockState.get(ConveyorProperties.UP)) {
+			return VoxelShapes.fullCube();
+		}
+		return conveyor;
+	}
 }

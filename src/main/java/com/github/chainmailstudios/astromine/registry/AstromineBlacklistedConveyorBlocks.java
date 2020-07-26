@@ -23,19 +23,11 @@
  */
 package com.github.chainmailstudios.astromine.registry;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Lazy;
 import net.minecraft.util.Pair;
 
 import java.util.HashMap;
-import java.util.function.Supplier;
 
 public class AstromineBlacklistedConveyorBlocks {
 	public static HashMap<Item, Pair<Float, Boolean>> blacklistedBlocks = new HashMap<>();
