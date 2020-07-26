@@ -28,15 +28,11 @@ import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWit
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.network.NetworkMember;
-import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.recipe.SolidGeneratingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -44,13 +40,10 @@ import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
-public abstract class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, RecipeConsumer, Tickable {
+public abstract class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlockEntity implements RecipeConsumer, Tickable {
 	public double current = 0;
 	public int limit = 100;
 
@@ -176,11 +169,6 @@ public abstract class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlock
 		} else if (!isActive && activity[0]) {
 			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, false));
 		}
-	}
-
-	@Override
-	protected @NotNull Map<NetworkType, Collection<NetworkMemberType>> createMemberProperties() {
-		return ofTypes(AstromineNetworkTypes.ENERGY, PROVIDER);
 	}
 
 	public static class Primitive extends SolidGeneratorBlockEntity {

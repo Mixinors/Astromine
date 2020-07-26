@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "astromine:item/tool/sterling_silver_mining_tool"
+  }
+}

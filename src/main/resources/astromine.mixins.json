@@ -1,21 +1,21 @@
 {
-	"required": true,
-	"minVersion": "0.8",
-	"package": "com.github.chainmailstudios.astromine.mixin",
-	"compatibilityLevel": "JAVA_8",
-	"mixins": [
-		"AbstractBlockMixin", "AbstractMinecartEntityMixin", "BrewingRecipeRegistryMixin", "BucketItemMixin",
-		"DyeColorMixin", "EntityMixin", "FishingBobberEntityMixin", "FlamingAnvilCraftingMixin", "GravityEntityMixin",
-		"HoneyBlockMixin", "HopperBlockEntityMixin", "IdentifierMixin", "ItemEntityMixin", "LivingEntityMixin",
-		"MiningToolItemMixin", "ServerChunkManagerMixin", "StepAndDestroyBlockGoalMixin", "ThreadExecutorMixin",
-		"WorldChunkMixin"
-	],
-	"client": [
-		"BossBarHudMixin", "BuiltinModelItemRendererMixin", "ClientRecipeBookMixin", "CurrentDownParticleMixin",
-		"EggEntityMixin", "GameRendererMixin", "InGameHudMixin", "ItemRendererMixin", "MinecraftClientMixin",
-		"SkyPropertiesMixin", "WorldRendererMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	}
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.github.chainmailstudios.astromine.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "AbstractBlockMixin", "AbstractMinecartEntityMixin", "BrewingRecipeRegistryMixin", "BucketItemMixin",
+    "DyeColorMixin", "DiggerEnchantmentTargetMixin", "EntityMixin", "FishingBobberEntityMixin", "FlamingAnvilCraftingMixin",
+    "GravityEntityMixin", "HoneyBlockMixin", "HopperBlockEntityMixin", "IdentifierMixin", "ItemEntityMixin",
+    "LivingEntityMixin", "MiningToolItemMixin", "ServerChunkManagerMixin", "StepAndDestroyBlockGoalMixin",
+    "ThreadExecutorMixin", "WorldChunkMixin"
+  ],
+  "client": [
+    "BossBarHudMixin", "BuiltinModelItemRendererMixin", "ClientRecipeBookMixin", "CurrentDownParticleMixin",
+    "EggEntityMixin", "GameRendererMixin", "InGameHudMixin", "ItemRendererMixin", "MinecraftClientMixin",
+    "SkyPropertiesMixin", "WorldRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }

@@ -26,11 +26,13 @@ package com.github.chainmailstudios.astromine.registry;
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import me.sargunvohra.mcmods.autoconfig1u.ConfigData;
 import me.sargunvohra.mcmods.autoconfig1u.annotation.Config;
+import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry;
 import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
 import me.sargunvohra.mcmods.autoconfig1u.shadowed.blue.endless.jankson.Comment;
 
 @Config(name = "astromine/config")
 public class AstromineConfig implements ConfigData {
+	@ConfigEntry.Gui.Excluded
 	public static final AstromineConfig DEFAULT = new AstromineConfig();
 
 	@Comment("Whether Nuclear Warheads are enabled.")
@@ -95,6 +97,24 @@ public class AstromineConfig implements ConfigData {
 
 	@Comment("Maximum count of Overworld Tin Ore blocks per vein.")
 	public int overworldTinOreMaximumBlocks = 11;
+
+	@Comment("Whether generation of Silver Ore in the Overworld is enabled.")
+	public boolean overworldSilverOre = true;
+
+	@Comment("Bottom offset of Overworld Silver Ore.")
+	public int overworldSilverOreBottomOffset = 0;
+
+	@Comment("Top offset of Overworld Silver Ore.")
+	public int overworldSilverOreTopOffset = 0;
+
+	@Comment("Maximum layer of Overworld Silver Ore.")
+	public int overworldSilverOreMaximumLayer = 32;
+
+	@Comment("Maximum count of Overworld Silver Ore veins per chunk.")
+	public int overworldSilverOreMaximumVeins = 3;
+
+	@Comment("Maximum count of Overworld Silver Ore blocks per vein.")
+	public int overworldSilverOreMaximumBlocks = 9;
 	
 	@Comment("Minimum range of Asteroid Coal Ore weight.")
 	public int asteroidCoalOreMinimumRange = 0;
@@ -155,6 +175,18 @@ public class AstromineConfig implements ConfigData {
 
 	@Comment("Maximum Size of Asteroid Tin Ore veins.")
 	public int asteroidTinOreMaximumSize = 48;
+
+	@Comment("Minimum range of Asteroid Silver Ore weight.")
+	public int asteroidSilverOreMinimumRange = 0;
+
+	@Comment("Maximum range of Asteroid Silver Ore weight.")
+	public int asteroidSilverOreMaximumRange = 48;
+
+	@Comment("Minimum size of Asteroid Silver Ore veins.")
+	public int asteroidSilverOreMinimumSize = 8;
+
+	@Comment("Maximum Size of Asteroid Silver Ore veins.")
+	public int asteroidSilverOreMaximumSize = 48;
 
 	@Comment("Minimum range of Asteroid Redstone Ore weight.")
 	public int asteroidRedstoneOreMinimumRange = 0;

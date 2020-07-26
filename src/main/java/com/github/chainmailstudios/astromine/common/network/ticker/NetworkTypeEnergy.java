@@ -23,6 +23,7 @@
  */
 package com.github.chainmailstudios.astromine.common.network.ticker;
 
+import com.github.chainmailstudios.astromine.client.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
@@ -49,8 +50,9 @@ public class NetworkTypeEnergy extends NetworkType {
 
 		for (NetworkMemberNode memberNode : instance.members) {
 			BlockEntity blockEntity = instance.getWorld().getBlockEntity(memberNode.getBlockPos());
+			NetworkMember networkMember = NetworkMemberRegistry.get(blockEntity);
 
-			if (blockEntity instanceof ComponentProvider && blockEntity instanceof EnergyStorage && blockEntity instanceof NetworkMember) {
+			if (blockEntity instanceof ComponentProvider && blockEntity instanceof EnergyStorage && networkMember.acceptsType(this)) {
 				ComponentProvider provider = ComponentProvider.fromBlockEntity(blockEntity);
 				BlockEntityTransferComponent transferComponent = provider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
 
@@ -58,11 +60,11 @@ public class NetworkTypeEnergy extends NetworkType {
 					TransferType type = transferComponent.get(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).get(memberNode.getDirection());
 
 					if (type != TransferType.DISABLED) {
-						if (type.canExtract() || ((NetworkMember) blockEntity).isProvider(this)) {
+						if (type.canExtract() || networkMember.isProvider(this)) {
 							inputs.add(Energy.of(blockEntity).side(memberNode.getDirection()));
 						}
 
-						if (type.canInsert() || ((NetworkMember) blockEntity).isRequester(this)) {
+						if (type.canInsert() || networkMember.isRequester(this)) {
 							requesters.add(Energy.of(blockEntity).side(memberNode.getDirection()));
 						}
 					}

@@ -23,6 +23,7 @@
  */
 package com.github.chainmailstudios.astromine.registry.client;
 
+import com.github.chainmailstudios.astromine.client.particle.MarsDustParticle;
 import com.github.chainmailstudios.astromine.client.particle.RocketFlameParticle;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.github.chainmailstudios.astromine.registry.AstromineParticles;
@@ -41,5 +42,6 @@ public class AstromineParticleFactories {
 			particle.setSprite(provider);
 			return particle;
 		});
+		ParticleFactoryRegistry.getInstance().register(AstromineParticles.MARS_DUST, MarsDustParticle.Factory::new);
 	}
 }

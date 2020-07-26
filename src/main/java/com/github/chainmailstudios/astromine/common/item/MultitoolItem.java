@@ -39,7 +39,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class MultitoolItem extends Item implements DynamicAttributeTool {
+public class MultitoolItem extends Item implements DynamicAttributeTool, Vanishable {
 	private final MiningToolItem first;
 	private final MiningToolItem second;
 	private final ToolMaterial material;

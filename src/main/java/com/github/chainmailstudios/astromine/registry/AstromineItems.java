@@ -82,28 +82,40 @@ public class AstromineItems {
 
 	// Materials - Nuggets
 	public static final Item METITE_NUGGET = register("metite_nugget", new Item(getBasicSettings()));
-	public static final Item STELLUM_NUGGET = register("stellum_nugget", new Item(getBasicSettings()));
-	public static final Item UNIVITE_NUGGET = register("univite_nugget", new Item(getBasicSettings()));
+	public static final Item STELLUM_NUGGET = register("stellum_nugget", new Item(getBasicSettings().fireproof()));
+	public static final Item UNIVITE_NUGGET = register("univite_nugget", new Item(getBasicSettings().fireproof()));
 	public static final Item STEEL_NUGGET = register("steel_nugget", new Item(getBasicSettings()));
 	public static final Item COPPER_NUGGET = register("copper_nugget", new Item(getBasicSettings()));
 	public static final Item TIN_NUGGET = register("tin_nugget", new Item(getBasicSettings()));
 	public static final Item BRONZE_NUGGET = register("bronze_nugget", new Item(getBasicSettings()));
 	public static final Item NETHERITE_NUGGET = register("netherite_nugget", new Item(getBasicSettings().fireproof()));
+	public static final Item SILVER_NUGGET = register("silver_nugget", new Item(getBasicSettings()));
+	public static final Item ELECTRUM_NUGGET = register("electrum_nugget", new Item(getBasicSettings()));
+	public static final Item ROSE_GOLD_NUGGET = register("rose_gold_nugget", new Item(getBasicSettings()));
+	public static final Item STERLING_SILVER_NUGGET = register("sterling_silver_nugget", new Item(getBasicSettings()));
+	public static final Item FOOLS_GOLD_NUGGET = register("fools_gold_nugget", new Item(getBasicSettings()));
 
 	// Materials - Ingots
 	public static final Item METITE_INGOT = register("metite_ingot", new Item(getBasicSettings()));
 	public static final Item STELLUM_INGOT = register("stellum_ingot", new Item(getBasicSettings().fireproof()));
 	public static final Item UNIVITE_INGOT = register("univite_ingot", new Item(getBasicSettings().fireproof()));
-	public static final Item STEEL_INGOT = register("steel_ingot", new Item(getBasicSettings().fireproof()));
-	public static final Item COPPER_INGOT = register("copper_ingot", new Item(getBasicSettings().fireproof()));
-	public static final Item TIN_INGOT = register("tin_ingot", new Item(getBasicSettings().fireproof()));
-	public static final Item BRONZE_INGOT = register("bronze_ingot", new Item(getBasicSettings().fireproof()));
+	public static final Item STEEL_INGOT = register("steel_ingot", new Item(getBasicSettings()));
+	public static final Item COPPER_INGOT = register("copper_ingot", new Item(getBasicSettings()));
+	public static final Item TIN_INGOT = register("tin_ingot", new Item(getBasicSettings()));
+	public static final Item BRONZE_INGOT = register("bronze_ingot", new Item(getBasicSettings()));
+	public static final Item SILVER_INGOT = register("silver_ingot", new Item(getBasicSettings()));
+	public static final Item ELECTRUM_INGOT = register("electrum_ingot", new Item(getBasicSettings()));
+	public static final Item ROSE_GOLD_INGOT = register("rose_gold_ingot", new Item(getBasicSettings()));
+	public static final Item STERLING_SILVER_INGOT = register("sterling_silver_ingot", new Item(getBasicSettings()));
+	public static final Item FOOLS_GOLD_INGOT = register("fools_gold_ingot", new Item(getBasicSettings()));
 
 	// Materials - Wires
-	public static final Item COPPER_WIRE = register("copper_wire", new Item(getBasicSettings().fireproof()));
-	public static final Item TIN_WIRE = register("tin_wire", new Item(getBasicSettings().fireproof()));
-	public static final Item STEEL_WIRE = register("steel_wire", new Item(getBasicSettings().fireproof()));
-	public static final Item GOLD_WIRE = register("gold_wire", new Item(getBasicSettings().fireproof()));
+	public static final Item COPPER_WIRE = register("copper_wire", new Item(getBasicSettings()));
+	public static final Item TIN_WIRE = register("tin_wire", new Item(getBasicSettings()));
+	public static final Item STEEL_WIRE = register("steel_wire", new Item(getBasicSettings()));
+	public static final Item GOLD_WIRE = register("gold_wire", new Item(getBasicSettings()));
+	public static final Item SILVER_WIRE = register("silver_wire", new Item(getBasicSettings()));
+	public static final Item ELECTRUM_WIRE = register("electrum_wire", new Item(getBasicSettings()));
 
 	// Materials - Clusters
 	public static final Item METEOR_METITE_CLUSTER = register("meteor_metite_cluster", new Item(getBasicSettings()));
@@ -113,6 +125,7 @@ public class AstromineItems {
 	public static final Item ASTEROID_GALAXIUM_CLUSTER = register("asteroid_galaxium_cluster", new Item(getBasicSettings()));
 	public static final Item ASTEROID_COPPER_CLUSTER = register("asteroid_copper_cluster", new Item(getBasicSettings()));
 	public static final Item ASTEROID_TIN_CLUSTER = register("asteroid_tin_cluster", new Item(getBasicSettings()));
+	public static final Item ASTEROID_SILVER_CLUSTER = register("asteroid_silver_cluster", new Item(getBasicSettings()));
 	public static final Item ASTEROID_COAL_CLUSTER = register("asteroid_coal_cluster", new Item(getBasicSettings()));
 	public static final Item ASTEROID_IRON_CLUSTER = register("asteroid_iron_cluster", new Item(getBasicSettings()));
 	public static final Item ASTEROID_GOLD_CLUSTER = register("asteroid_gold_cluster", new Item(getBasicSettings()));
@@ -133,6 +146,11 @@ public class AstromineItems {
 	public static final Item COPPER_DUST = register("copper_dust", new Item(getBasicSettings()));
 	public static final Item TIN_DUST = register("tin_dust", new Item(getBasicSettings()));
 	public static final Item BRONZE_DUST = register("bronze_dust", new Item(getBasicSettings()));
+	public static final Item SILVER_DUST = register("silver_dust", new Item(getBasicSettings()));
+	public static final Item ELECTRUM_DUST = register("electrum_dust", new Item(getBasicSettings()));
+	public static final Item ROSE_GOLD_DUST = register("rose_gold_dust", new Item(getBasicSettings()));
+	public static final Item STERLING_SILVER_DUST = register("sterling_silver_dust", new Item(getBasicSettings()));
+	public static final Item FOOLS_GOLD_DUST = register("fools_gold_dust", new Item(getBasicSettings()));
 	public static final Item LAPIS_DUST = register("lapis_dust", new Item(getBasicSettings()));
 	public static final Item DIAMOND_DUST = register("diamond_dust", new Item(getBasicSettings()));
 	public static final Item EMERALD_DUST = register("emerald_dust", new Item(getBasicSettings()));
@@ -152,6 +170,11 @@ public class AstromineItems {
 	public static final Item COPPER_PLATES = register("copper_plates", new Item(getBasicSettings()));
 	public static final Item TIN_PLATES = register("tin_plates", new Item(getBasicSettings()));
 	public static final Item BRONZE_PLATES = register("bronze_plates", new Item(getBasicSettings()));
+	public static final Item SILVER_PLATES = register("silver_plates", new Item(getBasicSettings()));
+	public static final Item ELECTRUM_PLATES = register("electrum_plates", new Item(getBasicSettings()));
+	public static final Item ROSE_GOLD_PLATES = register("rose_gold_plates", new Item(getBasicSettings()));
+	public static final Item STERLING_SILVER_PLATES = register("sterling_silver_plates", new Item(getBasicSettings()));
+	public static final Item FOOLS_GOLD_PLATES = register("fools_gold_plates", new Item(getBasicSettings()));
 	public static final Item NETHERITE_PLATES = register("netherite_plates", new Item(getBasicSettings().fireproof()));
 
 	// Materials - Gears
@@ -164,6 +187,11 @@ public class AstromineItems {
 	public static final Item COPPER_GEAR = register("copper_gear", new Item(getBasicSettings()));
 	public static final Item TIN_GEAR = register("tin_gear", new Item(getBasicSettings()));
 	public static final Item BRONZE_GEAR = register("bronze_gear", new Item(getBasicSettings()));
+	public static final Item SILVER_GEAR = register("silver_gear", new Item(getBasicSettings()));
+	public static final Item ELECTRUM_GEAR = register("electrum_gear", new Item(getBasicSettings()));
+	public static final Item ROSE_GOLD_GEAR = register("rose_gold_gear", new Item(getBasicSettings()));
+	public static final Item STERLING_SILVER_GEAR = register("sterling_silver_gear", new Item(getBasicSettings()));
+	public static final Item FOOLS_GOLD_GEAR = register("fools_gold_gear", new Item(getBasicSettings()));
 	public static final Item NETHERITE_GEAR = register("netherite_gear", new Item(getBasicSettings().fireproof()));
 
 	// Circuits
@@ -186,6 +214,28 @@ public class AstromineItems {
 
 	// Tools
 	public static final Item HOLOGRAPHIC_CONNECTOR = register("holographic_connector", new HolographicConnectorItem(getBasicSettings().maxCount(1)));
+
+	public static final Item BASIC_DRILL = register("basic_drill", new DrillItem(AstromineToolMaterials.BASIC_DRILL, 1, -2.8F, 1, 90000, getBasicSettings().maxCount(1)));
+	public static final Item ADVANCED_DRILL = register("advanced_drill", new DrillItem(AstromineToolMaterials.ADVANCED_DRILL, 1, -2.8F, 1, 240000, getBasicSettings().maxCount(1)));
+	public static final Item ELITE_DRILL = register("elite_drill", new DrillItem(AstromineToolMaterials.ELITE_DRILL, 1, -2.8F, 1, 640000, getBasicSettings().maxCount(1)));
+
+	public static final Item WOODEN_MINING_TOOL = register("wooden_mining_tool", new MultitoolItem((MiningToolItem) Items.WOODEN_SHOVEL, (MiningToolItem) Items.WOODEN_PICKAXE, ToolMaterials.WOOD, getBasicSettings()));
+	public static final Item WOODEN_MATTOCK = register("wooden_mattock", new MultitoolItem((MiningToolItem) Items.WOODEN_HOE, (MiningToolItem) Items.WOODEN_AXE, ToolMaterials.WOOD, getBasicSettings()));
+
+	public static final Item STONE_MINING_TOOL = register("stone_mining_tool", new MultitoolItem((MiningToolItem) Items.STONE_SHOVEL, (MiningToolItem) Items.STONE_PICKAXE, ToolMaterials.STONE, getBasicSettings()));
+	public static final Item STONE_MATTOCK = register("stone_mattock", new MultitoolItem((MiningToolItem) Items.STONE_HOE, (MiningToolItem) Items.STONE_AXE, ToolMaterials.STONE, getBasicSettings()));
+
+	public static final Item IRON_MINING_TOOL = register("iron_mining_tool", new MultitoolItem((MiningToolItem) Items.IRON_SHOVEL, (MiningToolItem) Items.IRON_PICKAXE, ToolMaterials.IRON, getBasicSettings()));
+	public static final Item IRON_MATTOCK = register("iron_mattock", new MultitoolItem((MiningToolItem) Items.IRON_HOE, (MiningToolItem) Items.IRON_AXE, ToolMaterials.IRON, getBasicSettings()));
+
+	public static final Item GOLDEN_MINING_TOOL = register("golden_mining_tool", new MultitoolItem((MiningToolItem) Items.GOLDEN_SHOVEL, (MiningToolItem) Items.GOLDEN_PICKAXE, ToolMaterials.GOLD, getBasicSettings()));
+	public static final Item GOLDEN_MATTOCK = register("golden_mattock", new MultitoolItem((MiningToolItem) Items.GOLDEN_HOE, (MiningToolItem) Items.GOLDEN_AXE, ToolMaterials.GOLD, getBasicSettings()));
+
+	public static final Item DIAMOND_MINING_TOOL = register("diamond_mining_tool", new MultitoolItem((MiningToolItem) Items.DIAMOND_SHOVEL, (MiningToolItem) Items.DIAMOND_PICKAXE, ToolMaterials.DIAMOND, getBasicSettings()));
+	public static final Item DIAMOND_MATTOCK = register("diamond_mattock", new MultitoolItem((MiningToolItem) Items.DIAMOND_HOE, (MiningToolItem) Items.DIAMOND_AXE, ToolMaterials.DIAMOND, getBasicSettings()));
+
+	public static final Item NETHERITE_MINING_TOOL = register("netherite_mining_tool", new MultitoolItem((MiningToolItem) Items.NETHERITE_SHOVEL, (MiningToolItem) Items.NETHERITE_PICKAXE, ToolMaterials.NETHERITE, getBasicSettings().fireproof()));
+	public static final Item NETHERITE_MATTOCK = register("netherite_mattock", new MultitoolItem((MiningToolItem) Items.NETHERITE_HOE, (MiningToolItem) Items.NETHERITE_AXE, ToolMaterials.NETHERITE, getBasicSettings().fireproof()));
 
 	public static final PickaxeItem COPPER_PICKAXE = register("copper_pickaxe", new PickaxeItem(AstromineToolMaterials.COPPER, 1, -2.8f, getBasicSettings()));
 	public static final AxeItem COPPER_AXE = register("copper_axe", new AxeItem(AstromineToolMaterials.COPPER, 5f, -3.0f, getBasicSettings()));
@@ -218,6 +268,46 @@ public class AstromineItems {
 	public static final Item STEEL_SWORD = register("steel_sword", new SwordItem(AstromineToolMaterials.STEEL, 3, -2.4f, getBasicSettings()));
 	public static final Item STEEL_MINING_TOOL = register("steel_mining_tool", new MultitoolItem(STEEL_SHOVEL, STEEL_PICKAXE, AstromineToolMaterials.STEEL, getBasicSettings()));
 	public static final Item STEEL_MATTOCK = register("steel_mattock", new MultitoolItem(STEEL_HOE, STEEL_AXE, AstromineToolMaterials.STEEL,getBasicSettings()));
+
+	public static final PickaxeItem SILVER_PICKAXE = register("silver_pickaxe", new PickaxeItem(AstromineToolMaterials.SILVER, 1, -2.8f, getBasicSettings()));
+	public static final AxeItem SILVER_AXE = register("silver_axe", new AxeItem(AstromineToolMaterials.SILVER, 5f, -3.0f, getBasicSettings()));
+	public static final ShovelItem SILVER_SHOVEL = register("silver_shovel", new ShovelItem(AstromineToolMaterials.SILVER, 1.5f, -3.0f, getBasicSettings()));
+	public static final HoeItem SILVER_HOE = register("silver_hoe", new HoeItem(AstromineToolMaterials.SILVER, -2, 0f, getBasicSettings()));
+	public static final Item SILVER_SWORD = register("silver_sword", new SwordItem(AstromineToolMaterials.SILVER, 3, -2.4f, getBasicSettings()));
+	public static final Item SILVER_MINING_TOOL = register("silver_mining_tool", new MultitoolItem(SILVER_PICKAXE, SILVER_SHOVEL, AstromineToolMaterials.SILVER, getBasicSettings()));
+	public static final Item SILVER_MATTOCK = register("silver_mattock", new MultitoolItem(SILVER_HOE, SILVER_AXE, AstromineToolMaterials.SILVER, getBasicSettings()));
+
+	public static final PickaxeItem ELECTRUM_PICKAXE = register("electrum_pickaxe", new PickaxeItem(AstromineToolMaterials.ELECTRUM, 1, -2.8f, getBasicSettings()));
+	public static final AxeItem ELECTRUM_AXE = register("electrum_axe", new AxeItem(AstromineToolMaterials.ELECTRUM, 5f, -3.0f, getBasicSettings()));
+	public static final ShovelItem ELECTRUM_SHOVEL = register("electrum_shovel", new ShovelItem(AstromineToolMaterials.ELECTRUM, 1.5f, -3.0f, getBasicSettings()));
+	public static final HoeItem ELECTRUM_HOE = register("electrum_hoe", new HoeItem(AstromineToolMaterials.ELECTRUM, -1, 0f, getBasicSettings()));
+	public static final Item ELECTRUM_SWORD = register("electrum_sword", new SwordItem(AstromineToolMaterials.ELECTRUM, 3, -2.4f, getBasicSettings()));
+	public static final Item ELECTRUM_MINING_TOOL = register("electrum_mining_tool", new MultitoolItem(ELECTRUM_SHOVEL, ELECTRUM_PICKAXE, AstromineToolMaterials.ELECTRUM, getBasicSettings()));
+	public static final Item ELECTRUM_MATTOCK = register("electrum_mattock", new MultitoolItem(ELECTRUM_HOE, ELECTRUM_AXE, AstromineToolMaterials.ELECTRUM, getBasicSettings()));
+
+	public static final PickaxeItem ROSE_GOLD_PICKAXE = register("rose_gold_pickaxe", new PickaxeItem(AstromineToolMaterials.ROSE_GOLD, 1, -2.8f, getBasicSettings()));
+	public static final AxeItem ROSE_GOLD_AXE = register("rose_gold_axe", new AxeItem(AstromineToolMaterials.ROSE_GOLD, 5f, -3.0f, getBasicSettings()));
+	public static final ShovelItem ROSE_GOLD_SHOVEL = register("rose_gold_shovel", new ShovelItem(AstromineToolMaterials.ROSE_GOLD, 1.5f, -3.0f, getBasicSettings()));
+	public static final HoeItem ROSE_GOLD_HOE = register("rose_gold_hoe", new HoeItem(AstromineToolMaterials.ROSE_GOLD, -1, 0f, getBasicSettings()));
+	public static final Item ROSE_GOLD_SWORD = register("rose_gold_sword", new SwordItem(AstromineToolMaterials.ROSE_GOLD, 3, -2.4f, getBasicSettings()));
+	public static final Item ROSE_GOLD_MINING_TOOL = register("rose_gold_mining_tool", new MultitoolItem(ROSE_GOLD_SHOVEL, ROSE_GOLD_PICKAXE, AstromineToolMaterials.ROSE_GOLD, getBasicSettings()));
+	public static final Item ROSE_GOLD_MATTOCK = register("rose_gold_mattock", new MultitoolItem(ROSE_GOLD_HOE, ROSE_GOLD_AXE, AstromineToolMaterials.ROSE_GOLD, getBasicSettings()));
+
+	public static final PickaxeItem STERLING_SILVER_PICKAXE = register("sterling_silver_pickaxe", new PickaxeItem(AstromineToolMaterials.STERLING_SILVER, 1, -2.8f, getBasicSettings()));
+	public static final AxeItem STERLING_SILVER_AXE = register("sterling_silver_axe", new AxeItem(AstromineToolMaterials.STERLING_SILVER, 5f, -3.0f, getBasicSettings()));
+	public static final ShovelItem STERLING_SILVER_SHOVEL = register("sterling_silver_shovel", new ShovelItem(AstromineToolMaterials.STERLING_SILVER, 1.5f, -3.0f, getBasicSettings()));
+	public static final HoeItem STERLING_SILVER_HOE = register("sterling_silver_hoe", new HoeItem(AstromineToolMaterials.STERLING_SILVER, -2, 0f, getBasicSettings()));
+	public static final Item STERLING_SILVER_SWORD = register("sterling_silver_sword", new SwordItem(AstromineToolMaterials.STERLING_SILVER, 3, -2.4f, getBasicSettings()));
+	public static final Item STERLING_SILVER_MINING_TOOL = register("sterling_silver_mining_tool", new MultitoolItem(STERLING_SILVER_SHOVEL, STERLING_SILVER_PICKAXE, AstromineToolMaterials.STERLING_SILVER, getBasicSettings()));
+	public static final Item STERLING_SILVER_MATTOCK = register("sterling_silver_mattock", new MultitoolItem(STERLING_SILVER_HOE, STERLING_SILVER_AXE, AstromineToolMaterials.STERLING_SILVER,getBasicSettings()));
+
+	public static final PickaxeItem FOOLS_GOLD_PICKAXE = register("fools_gold_pickaxe", new PickaxeItem(AstromineToolMaterials.FOOLS_GOLD, 1, -2.8f, getBasicSettings()));
+	public static final AxeItem FOOLS_GOLD_AXE = register("fools_gold_axe", new AxeItem(AstromineToolMaterials.FOOLS_GOLD, 5f, -3.0f, getBasicSettings()));
+	public static final ShovelItem FOOLS_GOLD_SHOVEL = register("fools_gold_shovel", new ShovelItem(AstromineToolMaterials.FOOLS_GOLD, 1.5f, -3.0f, getBasicSettings()));
+	public static final HoeItem FOOLS_GOLD_HOE = register("fools_gold_hoe", new HoeItem(AstromineToolMaterials.FOOLS_GOLD, -3, 0f, getBasicSettings()));
+	public static final Item FOOLS_GOLD_SWORD = register("fools_gold_sword", new SwordItem(AstromineToolMaterials.FOOLS_GOLD, 3, -2.4f, getBasicSettings()));
+	public static final Item FOOLS_GOLD_MINING_TOOL = register("fools_gold_mining_tool", new MultitoolItem(FOOLS_GOLD_SHOVEL, FOOLS_GOLD_PICKAXE, AstromineToolMaterials.FOOLS_GOLD, getBasicSettings()));
+	public static final Item FOOLS_GOLD_MATTOCK = register("fools_gold_mattock", new MultitoolItem(FOOLS_GOLD_HOE, FOOLS_GOLD_AXE, AstromineToolMaterials.FOOLS_GOLD, getBasicSettings()));
 
 	public static final PickaxeItem METITE_PICKAXE = register("metite_pickaxe", new PickaxeItem(AstromineToolMaterials.METITE, 1, -2.8f, getBasicSettings()));
 	public static final AxeItem METITE_AXE = register("metite_axe", new AxeItem(AstromineToolMaterials.METITE, 5f, -3.0f, getBasicSettings()));
@@ -259,24 +349,6 @@ public class AstromineItems {
 	public static final Item UNIVITE_MINING_TOOL = register("univite_mining_tool", new MultitoolItem(UNIVITE_SHOVEL, UNIVITE_PICKAXE, AstromineToolMaterials.UNIVITE, getBasicSettings().fireproof()));
 	public static final Item UNIVITE_MATTOCK = register("univite_mattock", new MultitoolItem(UNIVITE_HOE, UNIVITE_AXE, AstromineToolMaterials.UNIVITE, getBasicSettings().fireproof()));
 
-	public static final Item WOODEN_MINING_TOOL = register("wooden_mining_tool", new MultitoolItem((MiningToolItem) Items.WOODEN_SHOVEL, (MiningToolItem) Items.WOODEN_PICKAXE, ToolMaterials.WOOD, getBasicSettings()));
-	public static final Item WOODEN_MATTOCK = register("wooden_mattock", new MultitoolItem((MiningToolItem) Items.WOODEN_HOE, (MiningToolItem) Items.WOODEN_AXE, ToolMaterials.WOOD, getBasicSettings()));
-
-	public static final Item STONE_MINING_TOOL = register("stone_mining_tool", new MultitoolItem((MiningToolItem) Items.STONE_SHOVEL, (MiningToolItem) Items.STONE_PICKAXE, ToolMaterials.STONE, getBasicSettings()));
-	public static final Item STONE_MATTOCK = register("stone_mattock", new MultitoolItem((MiningToolItem) Items.STONE_HOE, (MiningToolItem) Items.STONE_AXE, ToolMaterials.STONE, getBasicSettings()));
-
-	public static final Item IRON_MINING_TOOL = register("iron_mining_tool", new MultitoolItem((MiningToolItem) Items.IRON_SHOVEL, (MiningToolItem) Items.IRON_PICKAXE, ToolMaterials.IRON, getBasicSettings()));
-	public static final Item IRON_MATTOCK = register("iron_mattock", new MultitoolItem((MiningToolItem) Items.IRON_HOE, (MiningToolItem) Items.IRON_AXE, ToolMaterials.IRON, getBasicSettings()));
-
-	public static final Item GOLDEN_MINING_TOOL = register("golden_mining_tool", new MultitoolItem((MiningToolItem) Items.GOLDEN_SHOVEL, (MiningToolItem) Items.GOLDEN_PICKAXE, ToolMaterials.GOLD, getBasicSettings()));
-	public static final Item GOLDEN_MATTOCK = register("golden_mattock", new MultitoolItem((MiningToolItem) Items.GOLDEN_HOE, (MiningToolItem) Items.GOLDEN_AXE, ToolMaterials.GOLD, getBasicSettings()));
-
-	public static final Item DIAMOND_MINING_TOOL = register("diamond_mining_tool", new MultitoolItem((MiningToolItem) Items.DIAMOND_SHOVEL, (MiningToolItem) Items.DIAMOND_PICKAXE, ToolMaterials.DIAMOND, getBasicSettings()));
-	public static final Item DIAMOND_MATTOCK = register("diamond_mattock", new MultitoolItem((MiningToolItem) Items.DIAMOND_HOE, (MiningToolItem) Items.DIAMOND_AXE, ToolMaterials.DIAMOND, getBasicSettings()));
-
-	public static final Item NETHERITE_MINING_TOOL = register("netherite_mining_tool", new MultitoolItem((MiningToolItem) Items.NETHERITE_SHOVEL, (MiningToolItem) Items.NETHERITE_PICKAXE, ToolMaterials.NETHERITE, getBasicSettings().fireproof()));
-	public static final Item NETHERITE_MATTOCK = register("netherite_mattock", new MultitoolItem((MiningToolItem) Items.NETHERITE_HOE, (MiningToolItem) Items.NETHERITE_AXE, ToolMaterials.NETHERITE, getBasicSettings().fireproof()));
-
 	// Armor
 	public static final Item COPPER_HELMET = register("copper_helmet", new ArmorItem(AstromineArmorMaterials.COPPER, EquipmentSlot.HEAD, getBasicSettings()));
 	public static final Item COPPER_CHESTPLATE = register("copper_chestplate", new ArmorItem(AstromineArmorMaterials.COPPER, EquipmentSlot.CHEST, getBasicSettings()));
@@ -298,6 +370,31 @@ public class AstromineItems {
 	public static final Item STEEL_LEGGINGS = register("steel_leggings", new ArmorItem(AstromineArmorMaterials.STEEL, EquipmentSlot.LEGS, getBasicSettings()));
 	public static final Item STEEL_BOOTS = register("steel_boots", new ArmorItem(AstromineArmorMaterials.STEEL, EquipmentSlot.FEET, getBasicSettings()));
 
+	public static final Item SILVER_HELMET = register("silver_helmet", new ArmorItem(AstromineArmorMaterials.SILVER, EquipmentSlot.HEAD, getBasicSettings()));
+	public static final Item SILVER_CHESTPLATE = register("silver_chestplate", new ArmorItem(AstromineArmorMaterials.SILVER, EquipmentSlot.CHEST, getBasicSettings()));
+	public static final Item SILVER_LEGGINGS = register("silver_leggings", new ArmorItem(AstromineArmorMaterials.SILVER, EquipmentSlot.LEGS, getBasicSettings()));
+	public static final Item SILVER_BOOTS = register("silver_boots", new ArmorItem(AstromineArmorMaterials.SILVER, EquipmentSlot.FEET, getBasicSettings()));
+
+	public static final Item ELECTRUM_HELMET = register("electrum_helmet", new ArmorItem(AstromineArmorMaterials.ELECTRUM, EquipmentSlot.HEAD, getBasicSettings()));
+	public static final Item ELECTRUM_CHESTPLATE = register("electrum_chestplate", new ArmorItem(AstromineArmorMaterials.ELECTRUM, EquipmentSlot.CHEST, getBasicSettings()));
+	public static final Item ELECTRUM_LEGGINGS = register("electrum_leggings", new ArmorItem(AstromineArmorMaterials.ELECTRUM, EquipmentSlot.LEGS, getBasicSettings()));
+	public static final Item ELECTRUM_BOOTS = register("electrum_boots", new ArmorItem(AstromineArmorMaterials.ELECTRUM, EquipmentSlot.FEET, getBasicSettings()));
+
+	public static final Item ROSE_GOLD_HELMET = register("rose_gold_helmet", new ArmorItem(AstromineArmorMaterials.ROSE_GOLD, EquipmentSlot.HEAD, getBasicSettings().fireproof()));
+	public static final Item ROSE_GOLD_CHESTPLATE = register("rose_gold_chestplate", new ArmorItem(AstromineArmorMaterials.ROSE_GOLD, EquipmentSlot.CHEST, getBasicSettings().fireproof()));
+	public static final Item ROSE_GOLD_LEGGINGS = register("rose_gold_leggings", new ArmorItem(AstromineArmorMaterials.ROSE_GOLD, EquipmentSlot.LEGS, getBasicSettings().fireproof()));
+	public static final Item ROSE_GOLD_BOOTS = register("rose_gold_boots", new ArmorItem(AstromineArmorMaterials.ROSE_GOLD, EquipmentSlot.FEET, getBasicSettings().fireproof()));
+
+	public static final Item STERLING_SILVER_HELMET = register("sterling_silver_helmet", new ArmorItem(AstromineArmorMaterials.STERLING_SILVER, EquipmentSlot.HEAD, getBasicSettings()));
+	public static final Item STERLING_SILVER_CHESTPLATE = register("sterling_silver_chestplate", new ArmorItem(AstromineArmorMaterials.STERLING_SILVER, EquipmentSlot.CHEST, getBasicSettings()));
+	public static final Item STERLING_SILVER_LEGGINGS = register("sterling_silver_leggings", new ArmorItem(AstromineArmorMaterials.STERLING_SILVER, EquipmentSlot.LEGS, getBasicSettings()));
+	public static final Item STERLING_SILVER_BOOTS = register("sterling_silver_boots", new ArmorItem(AstromineArmorMaterials.STERLING_SILVER, EquipmentSlot.FEET, getBasicSettings()));
+
+	public static final Item FOOLS_GOLD_HELMET = register("fools_gold_helmet", new ArmorItem(AstromineArmorMaterials.FOOLS_GOLD, EquipmentSlot.HEAD, getBasicSettings()));
+	public static final Item FOOLS_GOLD_CHESTPLATE = register("fools_gold_chestplate", new ArmorItem(AstromineArmorMaterials.FOOLS_GOLD, EquipmentSlot.CHEST, getBasicSettings()));
+	public static final Item FOOLS_GOLD_LEGGINGS = register("fools_gold_leggings", new ArmorItem(AstromineArmorMaterials.FOOLS_GOLD, EquipmentSlot.LEGS, getBasicSettings()));
+	public static final Item FOOLS_GOLD_BOOTS = register("fools_gold_boots", new ArmorItem(AstromineArmorMaterials.FOOLS_GOLD, EquipmentSlot.FEET, getBasicSettings()));
+	
 	public static final Item METITE_HELMET = register("metite_helmet", new ArmorItem(AstromineArmorMaterials.METITE, EquipmentSlot.HEAD, getBasicSettings()));
 	public static final Item METITE_CHESTPLATE = register("metite_chestplate", new ArmorItem(AstromineArmorMaterials.METITE, EquipmentSlot.CHEST, getBasicSettings()));
 	public static final Item METITE_LEGGINGS = register("metite_leggings", new ArmorItem(AstromineArmorMaterials.METITE, EquipmentSlot.LEGS, getBasicSettings()));
