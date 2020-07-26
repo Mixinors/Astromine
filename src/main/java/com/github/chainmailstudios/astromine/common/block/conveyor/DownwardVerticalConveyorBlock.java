@@ -36,8 +36,8 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
-public class DownVerticalConveyorBlock extends VerticalConveyorBlock {
-	public DownVerticalConveyorBlock(Settings settings, int speed) {
+public class DownwardVerticalConveyorBlock extends VerticalConveyorBlock {
+	public DownwardVerticalConveyorBlock(Settings settings, int speed) {
 		super(settings, speed);
 
 		setDefaultState(getDefaultState().with(ConveyorProperties.FRONT, false).with(ConveyorProperties.CONVEYOR, false));

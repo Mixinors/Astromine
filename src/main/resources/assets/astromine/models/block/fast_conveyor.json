@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"textures": {
-		"conveyor": "astromine:block/conveyor_fast",
-		"particle": "astromine:block/conveyor_fast",
+		"conveyor": "astromine:block/fast_conveyor",
+		"particle": "astromine:block/fast_conveyor",
 		"side": "astromine:block/conveyor_side",
 		"right": "astromine:block/roller_right",
 		"left": "astromine:block/roller_left"

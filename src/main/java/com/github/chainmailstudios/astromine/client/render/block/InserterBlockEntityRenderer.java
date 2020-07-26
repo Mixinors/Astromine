@@ -76,7 +76,7 @@ public class InserterBlockEntityRenderer extends BlockEntityRenderer<InserterBlo
 			modelInserterArm.getMiddleArm().pitch = (float) Math.toRadians(20);
 		}
 
-		modelInserterArm.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntitySolid(new Identifier(AstromineCommon.MOD_ID + ":textures/block/inserter_" + type + ".png"))), light, overlay, 1, 1, 1, 1);
+		modelInserterArm.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntitySolid(new Identifier(AstromineCommon.MOD_ID + ":textures/block/"+type+"_inserter.png"))), light, overlay, 1, 1, 1, 1);
 		matrices.pop();
 
 		if (!blockEntity.isEmpty()) {
