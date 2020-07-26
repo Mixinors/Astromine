@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.client.screen;
 
 import com.github.chainmailstudios.astromine.common.screenhandler.CraftingRecipeCreatorScreenHandler;
@@ -63,64 +64,56 @@ public class CraftingRecipeCreatorHandledScreen extends BaseHandledScreen<Crafti
 
 		WSlot resultSlot = mainPanel.createChild(WSlot::new, Position.of(mainPanel, 7 + 54 + 27, 7 + 13.5f, 0), Size.of(27, 27)).setSlotNumber(0).setInventoryNumber(OUTPUT);
 
-		mainPanel.createChild(WButton::new,
-				Position.of(
-						mainPanel,
-						mainPanel.getWidth() - 7 - 54,
-						mainPanel.getHeight() - 7 - 18,
-						0
-				), Size.of(54, 18))
-				.setLabel("Save")
-				.setOnMouseClicked(((widget, mouseX, mouseY, mouseButton) -> {
-					JsonObject output = new JsonObject();
+		mainPanel.createChild(WButton::new, Position.of(mainPanel, mainPanel.getWidth() - 7 - 54, mainPanel.getHeight() - 7 - 18, 0), Size.of(54, 18)).setLabel("Save").setOnMouseClicked(((widget, mouseX, mouseY, mouseButton) -> {
+			JsonObject output = new JsonObject();
 
-					JsonArray pattern = new JsonArray();
-					pattern.add("012");
+			JsonArray pattern = new JsonArray();
+			pattern.add("012");
 
-					pattern.add("345");
+			pattern.add("345");
 
-					pattern.add("678");
+			pattern.add("678");
 
-					JsonObject key = new JsonObject();
+			JsonObject key = new JsonObject();
 
-					int[] i = {0};
+			int[] i = { 0 };
 
-					craftingSlots.forEach(slot -> {
-						JsonObject stack = new JsonObject();
-						stack.addProperty("item", Registry.ITEM.getId(slot.getStack().getItem()).toString());
+			craftingSlots.forEach(slot -> {
+				JsonObject stack = new JsonObject();
+				stack.addProperty("item", Registry.ITEM.getId(slot.getStack().getItem()).toString());
 
-						key.add(String.valueOf(i[0]), stack);
+				key.add(String.valueOf(i[0]), stack);
 
-						++i[0];
-					});
+				++i[0];
+			});
 
-					JsonObject result = new JsonObject();
-					result.addProperty("item", Registry.ITEM.getId(resultSlot.getStack().getItem()).toString());
-					result.addProperty("count", resultSlot.getStack().getCount());
+			JsonObject result = new JsonObject();
+			result.addProperty("item", Registry.ITEM.getId(resultSlot.getStack().getItem()).toString());
+			result.addProperty("count", resultSlot.getStack().getCount());
 
-					output.addProperty("type", "minecraft:crafting_shaped");
-					output.add("pattern", pattern);
-					output.add("key", key);
-					output.add("result", result);
+			output.addProperty("type", "minecraft:crafting_shaped");
+			output.add("pattern", pattern);
+			output.add("key", key);
+			output.add("result", result);
 
-					try {
-						File rootDirectory = FabricLoader.getInstance().getGameDirectory();
+			try {
+				File rootDirectory = FabricLoader.getInstance().getGameDirectory();
 
-						File outputDirectory = new File(rootDirectory.getPath().replace("\\.", "") + "/output/");
+				File outputDirectory = new File(rootDirectory.getPath().replace("\\.", "") + "/output/");
 
-						outputDirectory.mkdirs();
+				outputDirectory.mkdirs();
 
-						File outputFile = new File(outputDirectory.getPath() + "/" + Registry.ITEM.getId(resultSlot.getStack().getItem()).getPath() + ".json");
+				File outputFile = new File(outputDirectory.getPath() + "/" + Registry.ITEM.getId(resultSlot.getStack().getItem()).getPath() + ".json");
 
-						BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
+				BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
 
-						writer.write(output.toString());
+				writer.write(output.toString());
 
-						writer.close();
-					} catch (Exception exception) {
-						exception.printStackTrace();
-					}
-				}));
+				writer.close();
+			} catch (Exception exception) {
+				exception.printStackTrace();
+			}
+		}));
 
 	}
 }

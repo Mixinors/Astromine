@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
@@ -42,21 +43,16 @@ import net.minecraft.world.Heightmap;
 
 public class AstromineEntityTypes {
 
-	public static final EntityType<BulletEntity> BULLET_ENTITY_TYPE = register("bullet", new EntityType<>(BulletEntity::new, SpawnGroup.MISC, false, true, true, true, ImmutableSet.<Block>builder().build(), EntityDimensions.fixed(0.1875f, 0.125f), 4, 20));
+	public static final EntityType<BulletEntity> BULLET_ENTITY_TYPE =
+		register("bullet", new EntityType<>(BulletEntity::new, SpawnGroup.MISC, false, true, true, true, ImmutableSet.<Block> builder().build(), EntityDimensions.fixed(0.1875f, 0.125f), 4, 20));
 
-	public static final EntityType<SpaceSlimeEntity> SPACE_SLIME = register("space_slime", FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, SpaceSlimeEntity::new).dimensions(EntityDimensions.changing(2.04F, 2.04F)).trackable(128, 4).build());
+	public static final EntityType<SpaceSlimeEntity> SPACE_SLIME =
+		register("space_slime", FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, SpaceSlimeEntity::new).dimensions(EntityDimensions.changing(2.04F, 2.04F)).trackable(128, 4).build());
 
-	public static final EntityType<SuperSpaceSlimeEntity> SUPER_SPACE_SLIME = register(
-			"super_space_slime", FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, SuperSpaceSlimeEntity::new)
-					.dimensions(EntityDimensions.changing(6.125F, 6.125F))
-					.trackable(128, 4)
-					.build());
+	public static final EntityType<SuperSpaceSlimeEntity> SUPER_SPACE_SLIME =
+		register("super_space_slime", FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, SuperSpaceSlimeEntity::new).dimensions(EntityDimensions.changing(6.125F, 6.125F)).trackable(128, 4).build());
 
-	public static final EntityType<RocketEntity> ROCKET = register(
-			"rocket", FabricEntityTypeBuilder.create(SpawnGroup.MISC, RocketEntity::new)
-					.dimensions(EntityDimensions.changing(1.5f, 20f))
-					.trackable(256, 4)
-					.build());
+	public static final EntityType<RocketEntity> ROCKET = register("rocket", FabricEntityTypeBuilder.create(SpawnGroup.MISC, RocketEntity::new).dimensions(EntityDimensions.changing(1.5f, 20f)).trackable(256, 4).build());
 
 	public static void initialize() {
 		FabricDefaultAttributeRegistry.register(SPACE_SLIME, HostileEntity.createHostileAttributes());
@@ -84,10 +80,12 @@ public class AstromineEntityTypes {
 	}
 
 	/**
-	* @param id   Name of EntityType instance to be registered
-	* @param type EntityType instance to register
-	* @return Registered EntityType
-	*/
+	 * @param id
+	 *        Name of EntityType instance to be registered
+	 * @param type
+	 *        EntityType instance to register
+	 * @return Registered EntityType
+	 */
 	private static <T extends Entity> EntityType<T> register(String id, EntityType<T> type) {
 		return register(AstromineCommon.identifier(id), type);
 	}

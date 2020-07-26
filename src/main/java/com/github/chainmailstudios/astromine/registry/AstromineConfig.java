@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.registry;
 
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
@@ -115,7 +116,7 @@ public class AstromineConfig implements ConfigData {
 
 	@Comment("Maximum count of Overworld Silver Ore blocks per vein.")
 	public int overworldSilverOreMaximumBlocks = 9;
-	
+
 	@Comment("Minimum range of Asteroid Coal Ore weight.")
 	public int asteroidCoalOreMinimumRange = 0;
 
@@ -124,7 +125,7 @@ public class AstromineConfig implements ConfigData {
 
 	@Comment("Minimum size of Asteroid Coal Ore veins.")
 	public int asteroidCoalOreMinimumSize = 8;
-	
+
 	@Comment("Maximum Size of Asteroid Coal Ore veins.")
 	public int asteroidCoalOreMaximumSize = 48;
 
@@ -487,7 +488,7 @@ public class AstromineConfig implements ConfigData {
 
 	@Comment("Energy for the Elite Electric Smelter.")
 	public double eliteElectricSmelterEnergy = 65535D;
-	
+
 	@Comment("Speed for the Primitive Alloy Smelter.")
 	public double primitiveAlloySmelterSpeed = 0.5D;
 
@@ -563,7 +564,7 @@ public class AstromineConfig implements ConfigData {
 	public static AstromineConfig get() {
 		try {
 			return AutoConfig.getConfigHolder(AstromineConfig.class).getConfig();
-		} catch(RuntimeException exception) {
+		} catch (RuntimeException exception) {
 			return DEFAULT;
 		}
 	}

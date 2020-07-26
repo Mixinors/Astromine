@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,23 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.network;
 
 public enum NetworkMemberType {
 	/**
-	* Requester is a member that requests without special handling defined by the user (e.g. siding)
-	*/
+	 * Requester is a member that requests without special handling defined by the user (e.g. siding)
+	 */
 	REQUESTER,
 	/**
-	* Provider is a member that provides without special handling defined by the user (e.g. siding)
-	*/
+	 * Provider is a member that provides without special handling defined by the user (e.g. siding)
+	 */
 	PROVIDER,
 	/**
-	* Buffer is a member that stores with special handling defined by the user (e.g. siding)
-	*/
+	 * Buffer is a member that stores with special handling defined by the user (e.g. siding)
+	 */
 	BUFFER,
 	/**
-	* Node is a cable-like member, that provides routing to other members but doesn't actually store and provide anything.
-	*/
+	 * Node is a cable-like member, that provides routing to other members but doesn't actually store and provide
+	 * anything.
+	 */
 	NODE
 }

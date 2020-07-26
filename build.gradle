@@ -15,9 +15,9 @@ spotless {
     enforceCheck(false)
 
     java {
-        removeUnusedImports()
-        indentWithTabs(4)
         licenseHeaderFile(file('HEADER'))
+        removeUnusedImports()
+        eclipse().configFile(file('spotless/formatter-settings.xml'))
     }
 }
 

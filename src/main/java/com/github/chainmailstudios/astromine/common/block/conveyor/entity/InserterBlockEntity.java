@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.block.conveyor.entity;
 
 import alexiil.mc.lib.attributes.SearchOptions;
@@ -98,7 +99,8 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 					}
 				} else {
 					BlockPos offsetPos = getPos().offset(direction.getOpposite());
-					List<ChestMinecartEntity> minecartEntities = getWorld().getEntities(ChestMinecartEntity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1), EntityPredicates.EXCEPT_SPECTATOR);
+					List<ChestMinecartEntity> minecartEntities =
+						getWorld().getEntities(ChestMinecartEntity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1), EntityPredicates.EXCEPT_SPECTATOR);
 					if (position == 0 && minecartEntities.size() >= 1) {
 						ChestMinecartEntity minecartEntity = minecartEntities.get(0);
 						FixedInventoryVanillaWrapper wrapper = new FixedInventoryVanillaWrapper(minecartEntity);
@@ -139,7 +141,8 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 					}
 				} else {
 					BlockPos offsetPos = getPos().offset(direction);
-					List<ChestMinecartEntity> minecartEntities = getWorld().getEntities(ChestMinecartEntity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1), EntityPredicates.EXCEPT_SPECTATOR);
+					List<ChestMinecartEntity> minecartEntities =
+						getWorld().getEntities(ChestMinecartEntity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1), EntityPredicates.EXCEPT_SPECTATOR);
 					if (minecartEntities.size() >= 1) {
 						ChestMinecartEntity minecartEntity = minecartEntities.get(0);
 						FixedInventoryVanillaWrapper wrapper = new FixedInventoryVanillaWrapper(minecartEntity);
@@ -165,24 +168,24 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 		}
 	}
 
-//	public boolean hasInput() {
-//		return hasInput;
-//	}
-//
-//	public boolean hasOutput() {
-//		return hasOutput;
-//	}
-//
-//	public void setHasInput(boolean hasInput) {
-//		this.hasInput = hasInput;
-//	}
-//
-//	public void setHasOutput(boolean hasOutput) {
-//		this.hasOutput = hasOutput;
-//	}
+	// public boolean hasInput() {
+	// return hasInput;
+	// }
+	//
+	// public boolean hasOutput() {
+	// return hasOutput;
+	// }
+	//
+	// public void setHasInput(boolean hasInput) {
+	// this.hasInput = hasInput;
+	// }
+	//
+	// public void setHasOutput(boolean hasOutput) {
+	// this.hasOutput = hasOutput;
+	// }
 
 	private static IntStream getAvailableSlots(Inventory inventory, Direction side) {
-		return inventory instanceof SidedInventory ? IntStream.of(((SidedInventory)inventory).getAvailableSlots(side)) : IntStream.range(0, inventory.size());
+		return inventory instanceof SidedInventory ? IntStream.of(((SidedInventory) inventory).getAvailableSlots(side)) : IntStream.range(0, inventory.size());
 	}
 
 	private boolean isInventoryFull(Inventory inv, Direction direction) {
@@ -194,16 +197,16 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 
 	public static ItemStack transfer(Inventory from, Inventory to, ItemStack stack, Direction side) {
 		if (to instanceof SidedInventory && side != null) {
-			SidedInventory sidedInventory = (SidedInventory)to;
+			SidedInventory sidedInventory = (SidedInventory) to;
 			int[] is = sidedInventory.getAvailableSlots(side);
 
-			for(int i = 0; i < is.length && !stack.isEmpty(); ++i) {
+			for (int i = 0; i < is.length && !stack.isEmpty(); ++i) {
 				stack = transfer(from, to, stack, is[i], side);
 			}
 		} else {
 			int j = to.size();
 
-			for(int k = 0; k < j && !stack.isEmpty(); ++k) {
+			for (int k = 0; k < j && !stack.isEmpty(); ++k) {
 				stack = transfer(from, to, stack, k, side);
 			}
 		}
@@ -215,7 +218,7 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 		if (!inventory.isValid(slot, stack)) {
 			return false;
 		} else {
-			return !(inventory instanceof SidedInventory) || ((SidedInventory)inventory).canInsert(slot, stack, side);
+			return !(inventory instanceof SidedInventory) || ((SidedInventory) inventory).canInsert(slot, stack, side);
 		}
 	}
 
@@ -232,14 +235,14 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 	}
 
 	private static boolean canExtract(Inventory inv, ItemStack stack, int slot, Direction facing) {
-		return !(inv instanceof SidedInventory) || ((SidedInventory)inv).canExtract(slot, stack, facing);
+		return !(inv instanceof SidedInventory) || ((SidedInventory) inv).canExtract(slot, stack, facing);
 	}
 
 	private static boolean extract(SingularStackInventory singularStackInventory, Inventory inventory, int slot, Direction side) {
 		ItemStack itemStack = inventory.getStack(slot);
 		if (!itemStack.isEmpty() && canExtract(inventory, itemStack, slot, side)) {
 			ItemStack itemStack2 = itemStack.copy();
-			ItemStack itemStack3 = transfer(inventory, singularStackInventory, inventory.removeStack(slot, inventory.getStack(slot).getCount()), (Direction)null);
+			ItemStack itemStack3 = transfer(inventory, singularStackInventory, inventory.removeStack(slot, inventory.getStack(slot).getCount()), (Direction) null);
 			if (itemStack3.isEmpty()) {
 				inventory.markDirty();
 				return true;
@@ -291,9 +294,8 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 
 	@Override
 	public int[] getRenderAttachmentData() {
-		return new int[] { position, prevPosition };
+		return new int[]{ position, prevPosition };
 	}
-
 
 	public int getPosition() {
 		return position;
@@ -306,14 +308,13 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 	public void setPosition(int position) {
 		if (position == 0)
 			this.prevPosition = 0;
-		else
-			this.prevPosition = this.position;
+		else this.prevPosition = this.position;
 		this.position = position;
 	}
 
 	public void sync() {
 		if (world instanceof ServerWorld) {
-			((ServerWorld)world).getChunkManager().markForUpdate(pos);
+			((ServerWorld) world).getChunkManager().markForUpdate(pos);
 		}
 	}
 
@@ -329,8 +330,8 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 		clear();
 		setStack(ItemStack.fromTag(compoundTag.getCompound("stack")));
 		position = compoundTag.getInt("position");
-//        hasInput = compoundTag.getBoolean("hasInput");
-//        hasOutput = compoundTag.getBoolean("hasOutput");
+		// hasInput = compoundTag.getBoolean("hasInput");
+		// hasOutput = compoundTag.getBoolean("hasOutput");
 	}
 
 	@Override
@@ -342,8 +343,8 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 	public CompoundTag toTag(CompoundTag compoundTag) {
 		compoundTag.put("stack", getStack().toTag(new CompoundTag()));
 		compoundTag.putInt("position", position);
-//        compoundTag.putBoolean("hasInput", hasInput);
-//        compoundTag.putBoolean("hasOutput", hasOutput);
+		// compoundTag.putBoolean("hasInput", hasInput);
+		// compoundTag.putBoolean("hasOutput", hasOutput);
 		return super.toTag(compoundTag);
 	}
 

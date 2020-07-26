@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.recipe;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
@@ -81,14 +82,16 @@ public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory>, Energy
 	@Override
 	public <T extends DefaultedBlockEntity> boolean canCraft(T blockEntity) {
 		Block block = blockEntity.getWorld().getBlockState(blockEntity.getPos()).getBlock();
-		if (!(block instanceof TieredHorizontalFacingMachineBlock)) return false;
+		if (!(block instanceof TieredHorizontalFacingMachineBlock))
+			return false;
 		Fraction speed = FractionUtilities.fromFloating(((TieredHorizontalFacingMachineBlock) block).getMachineSpeed() / 2);
 
 		FluidInventoryComponent fluidComponent = blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
 		FluidVolume fluidVolume = fluidComponent.getVolume(0);
 
-		if (!fluidVolume.getFluid().matchesType(fluid.get())) return false;
+		if (!fluidVolume.getFluid().matchesType(fluid.get()))
+			return false;
 		return fluidVolume.hasStored(Fraction.simplify(Fraction.multiply(amount, speed)));
 	}
 
@@ -98,7 +101,7 @@ public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory>, Energy
 			Block block = blockEntity.getWorld().getBlockState(blockEntity.getPos()).getBlock();
 			double machineSpeed = ((TieredHorizontalFacingMachineBlock) block).getMachineSpeed() / 2;
 			Fraction speed = FractionUtilities.fromFloating(machineSpeed);
-			
+
 			EnergyHandler energyHandler = Energy.of(blockEntity);
 			FluidInventoryComponent fluidComponent = blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
@@ -180,20 +183,14 @@ public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory>, Energy
 		public LiquidGeneratingRecipe read(Identifier identifier, JsonObject object) {
 			LiquidGeneratingRecipe.Format format = new Gson().fromJson(object, LiquidGeneratingRecipe.Format.class);
 
-			return new LiquidGeneratingRecipe(identifier,
-					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.input)),
-					FractionUtilities.fromJson(format.amount),
-					EnergyUtilities.fromJson(format.energyGenerated),
-					ParsingUtilities.fromJson(format.time, Integer.class));
+			return new LiquidGeneratingRecipe(identifier, RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.input)), FractionUtilities.fromJson(format.amount), EnergyUtilities.fromJson(format.energyGenerated),
+				ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 
 		@Override
 		public LiquidGeneratingRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new LiquidGeneratingRecipe(identifier,
-					RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()),
-					FractionUtilities.fromPacket(buffer),
-					EnergyUtilities.fromPacket(buffer),
-					PacketUtilities.fromPacket(buffer, Integer.class));
+			return new LiquidGeneratingRecipe(identifier, RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), EnergyUtilities.fromPacket(buffer),
+				PacketUtilities.fromPacket(buffer, Integer.class));
 		}
 
 		@Override
@@ -226,12 +223,7 @@ public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory>, Energy
 
 		@Override
 		public String toString() {
-			return "Format{" +
-				"input='" + input + '\'' +
-				", amount=" + amount +
-				", energyGenerated=" + energyGenerated +
-				", time=" + time +
-				'}';
+			return "Format{" + "input='" + input + '\'' + ", amount=" + amount + ", energyGenerated=" + energyGenerated + ", time=" + time + '}';
 		}
 	}
 }

@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.block.ElectrolyzerBlock;
@@ -46,7 +47,7 @@ public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockE
 
 	public boolean isActive = false;
 
-	public boolean[] activity = {false, false, false, false, false};
+	public boolean[] activity = { false, false, false, false, false };
 
 	private Optional<ElectrolyzingRecipe> recipe = Optional.empty();
 
@@ -68,10 +69,8 @@ public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockE
 	protected FluidInventoryComponent createFluidComponent() {
 		return new SimpleFluidInventoryComponent(3).withListener((inv) -> {
 			if (this.world != null && !this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
-				recipe = (Optional) world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream()
-						.filter(recipe -> recipe instanceof ElectrolyzingRecipe)
-						.filter(recipe -> ((ElectrolyzingRecipe) recipe).canCraft(this))
-						.findFirst();
+				recipe = (Optional) world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof ElectrolyzingRecipe)
+					.filter(recipe -> ((ElectrolyzingRecipe) recipe).canCraft(this)).findFirst();
 		});
 	}
 
@@ -126,7 +125,8 @@ public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockE
 	public void tick() {
 		super.tick();
 
-		if (world.isClient()) return;
+		if (world.isClient())
+			return;
 
 		if (recipe.isPresent()) {
 			recipe.get().tick(this);
@@ -140,7 +140,8 @@ public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockE
 			isActive = false;
 		}
 
-		if (activity.length - 1 >= 0) System.arraycopy(activity, 1, activity, 0, activity.length - 1);
+		if (activity.length - 1 >= 0)
+			System.arraycopy(activity, 1, activity, 0, activity.length - 1);
 
 		activity[4] = isActive;
 

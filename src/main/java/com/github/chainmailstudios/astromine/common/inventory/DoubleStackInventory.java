@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.inventory;
 
 import net.minecraft.entity.player.PlayerEntity;
@@ -30,44 +31,43 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
 
 /**
-* A simple {@code Inventory} implementation with only default methods + an item list getter.
-* <p>
-* Originally by Juuz
-*/
+ * A simple {@code Inventory} implementation with only default methods + an item list getter.
+ * <p>
+ * Originally by Juuz
+ */
 public interface DoubleStackInventory extends Inventory {
 	/**
-	* Gets the item list of this inventory.
-	* Must return the same instance every time it's called.
-	*/
+	 * Gets the item list of this inventory. Must return the same instance every time it's called.
+	 */
 	DefaultedList<ItemStack> getItems();
 	// Creation
 
 	/**
-	* Creates an inventory from the item list.
-	*/
+	 * Creates an inventory from the item list.
+	 */
 	static DoubleStackInventory of(DefaultedList<ItemStack> items) {
 		return () -> items;
 	}
 
 	/**
-	* Creates a new inventory with the size.
-	*/
+	 * Creates a new inventory with the size.
+	 */
 	static DoubleStackInventory ofSize(int size) {
 		return of(DefaultedList.ofSize(size, ItemStack.EMPTY));
 	}
 	// Inventory
 
 	/**
-	* Returns the inventory size.
-	*/
+	 * Returns the inventory size.
+	 */
 	@Override
 	default int size() {
 		return getItems().size();
 	}
 
 	/**
-	* @return true if this inventory has only empty stacks, false otherwise
-	*/
+	 * @return true if this inventory has only empty stacks, false otherwise
+	 */
 	default boolean isInvEmpty() {
 		for (int i = 0; i < size(); i++) {
 			ItemStack stack = getStack(i);
@@ -84,8 +84,8 @@ public interface DoubleStackInventory extends Inventory {
 	}
 
 	/**
-	* Gets the item in the slot.
-	*/
+	 * Gets the item in the slot.
+	 */
 	@Override
 	default ItemStack getStack(int slot) {
 		return getItems().get(slot);
@@ -100,10 +100,11 @@ public interface DoubleStackInventory extends Inventory {
 	}
 
 	/**
-	* Takes a stack of the size from the slot.
-	* <p>(default implementation) If there are less items in the slot than what are requested,
-	* takes all items in that slot.
-	*/
+	 * Takes a stack of the size from the slot.
+	 * <p>
+	 * (default implementation) If there are less items in the slot than what are requested, takes all items in that
+	 * slot.
+	 */
 	@Override
 	default ItemStack removeStack(int slot, int count) {
 		ItemStack result = Inventories.splitStack(getItems(), slot, count);
@@ -114,8 +115,8 @@ public interface DoubleStackInventory extends Inventory {
 	}
 
 	/**
-	* Removes the current stack in the {@code slot} and returns it.
-	*/
+	 * Removes the current stack in the {@code slot} and returns it.
+	 */
 	@Override
 	default ItemStack removeStack(int slot) {
 		ItemStack stack = Inventories.removeStack(getItems(), slot);
@@ -132,10 +133,11 @@ public interface DoubleStackInventory extends Inventory {
 	}
 
 	/**
-	* Replaces the current stack in the {@code slot} with the provided stack.
-	* <p>If the stack is too big for this inventory ({@link Inventory#getMaxCountPerStack()}),
-	* it gets resized to this inventory's maximum amount.
-	*/
+	 * Replaces the current stack in the {@code slot} with the provided stack.
+	 * <p>
+	 * If the stack is too big for this inventory ({@link Inventory#getMaxCountPerStack()}), it gets resized to this
+	 * inventory's maximum amount.
+	 */
 	@Override
 	default void setStack(int slot, ItemStack stack) {
 		getItems().set(slot, stack);
@@ -154,8 +156,8 @@ public interface DoubleStackInventory extends Inventory {
 	}
 
 	/**
-	* Clears {@linkplain #getItems() the item list}}.
-	*/
+	 * Clears {@linkplain #getItems() the item list}}.
+	 */
 	@Override
 	default void clear() {
 		getItems().clear();
@@ -172,4 +174,3 @@ public interface DoubleStackInventory extends Inventory {
 		return true;
 	}
 }
-

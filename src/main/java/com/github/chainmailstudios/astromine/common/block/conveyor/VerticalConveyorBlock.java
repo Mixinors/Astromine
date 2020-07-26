@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.block.conveyor;
 
 import com.github.chainmailstudios.astromine.common.block.conveyor.entity.ConveyorBlockEntity;
@@ -126,14 +127,12 @@ public class VerticalConveyorBlock extends HorizontalFacingBlock implements Bloc
 		BlockEntity frontBlockEntity = world.getBlockEntity(frontPos);
 		if (frontBlockEntity instanceof Conveyable && ((Conveyable) frontBlockEntity).isOutputSide(direction, getType())) {
 			newState = newState.with(ConveyorProperties.FRONT, true);
-		} else
-			newState = newState.with(ConveyorProperties.FRONT, false);
+		} else newState = newState.with(ConveyorProperties.FRONT, false);
 
 		BlockEntity conveyorBlockEntity = world.getBlockEntity(conveyorPos);
 		if (world.isAir(upPos) && conveyorBlockEntity instanceof Conveyable && !((Conveyable) conveyorBlockEntity).hasBeenRemoved() && ((Conveyable) conveyorBlockEntity).validInputSide(direction.getOpposite()))
 			newState = newState.with(ConveyorProperties.CONVEYOR, true);
-		else
-			newState = newState.with(ConveyorProperties.CONVEYOR, false);
+		else newState = newState.with(ConveyorProperties.CONVEYOR, false);
 
 		return newState;
 	}
@@ -149,8 +148,7 @@ public class VerticalConveyorBlock extends HorizontalFacingBlock implements Bloc
 		BlockEntity upBlockEntity = world.getBlockEntity(upPos);
 		if (upBlockEntity instanceof Conveyable && ((Conveyable) upBlockEntity).validInputSide(Direction.DOWN))
 			((VerticalConveyorBlockEntity) blockEntity).setUp(true);
-		else
-			((VerticalConveyorBlockEntity) blockEntity).setUp(false);
+		else((VerticalConveyorBlockEntity) blockEntity).setUp(false);
 
 		BlockEntity conveyorBlockEntity = world.getBlockEntity(conveyorPos);
 		checkForConveyor(world, blockState, conveyorBlockEntity, direction, blockPos, upPos);
@@ -161,8 +159,7 @@ public class VerticalConveyorBlock extends HorizontalFacingBlock implements Bloc
 
 		if (world.isAir(upPos) && conveyorBlockEntity instanceof Conveyable && !((Conveyable) conveyorBlockEntity).hasBeenRemoved() && ((Conveyable) conveyorBlockEntity).validInputSide(direction.getOpposite()))
 			newState = newState.with(ConveyorProperties.CONVEYOR, true);
-		else
-			newState = newState.with(ConveyorProperties.CONVEYOR, false);
+		else newState = newState.with(ConveyorProperties.CONVEYOR, false);
 
 		world.setBlockState(pos, newState, 8);
 	}

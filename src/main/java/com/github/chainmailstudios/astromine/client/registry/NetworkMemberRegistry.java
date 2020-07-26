@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.client.registry;
 
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
@@ -87,11 +88,9 @@ public class NetworkMemberRegistry {
 	private static class NetworkTypeRegistryImpl<T extends NetworkType> implements NetworkTypeRegistry<T> {
 		protected final Map<Block, Collection<NetworkMemberType>> types = new Reference2ObjectOpenHashMap<>();
 
-		public NetworkTypeRegistryImpl() {
-		}
+		public NetworkTypeRegistryImpl() {}
 
-		public NetworkTypeRegistryImpl(T type) {
-		}
+		public NetworkTypeRegistryImpl(T type) {}
 
 		@Override
 		public void register(Block block, NetworkMemberType... types) {
@@ -114,7 +113,8 @@ public class NetworkMemberRegistry {
 
 		@Override
 		public Collection<NetworkMemberType> getMemberNetworkTypeProperties(NetworkType type) {
-			if (pos == null) return Collections.emptySet();
+			if (pos == null)
+				return Collections.emptySet();
 			return get(type).get(pos);
 		}
 	}

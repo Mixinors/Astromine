@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.lba;
 
 import alexiil.mc.lib.attributes.*;
@@ -67,7 +68,8 @@ public final class LibBlockAttributesCompatibility {
 			ComponentProvider componentProvider = ComponentProvider.fromBlockEntity(blockEntity);
 
 			// LBA 0.7.1: replace this get&opposite call with "list.getTargetSide()"
-			@Nullable Direction direction = list.getSearchDirection();
+			@Nullable
+			Direction direction = list.getSearchDirection();
 			if (direction != null) {
 				direction = direction.getOpposite();
 			}
@@ -85,7 +87,8 @@ public final class LibBlockAttributesCompatibility {
 	}
 
 	private static Optional<FluidVolume> wrapVolumeToAstromine(alexiil.mc.lib.attributes.fluid.volume.FluidVolume volume) {
-		if (volume.getRawFluid() == null) return Optional.empty();
+		if (volume.getRawFluid() == null)
+			return Optional.empty();
 
 		return Optional.of(new FluidVolume(volume.getRawFluid(), wrapVolumeToAstromine(volume.amount())));
 	}
@@ -124,11 +127,13 @@ public final class LibBlockAttributesCompatibility {
 
 		@Override
 		public boolean setInvFluid(int tank, alexiil.mc.lib.attributes.fluid.volume.FluidVolume fluidVolume, Simulation simulation) {
-			if (!isFluidValidForTank(tank, fluidVolume.getFluidKey())) return false;
+			if (!isFluidValidForTank(tank, fluidVolume.getFluidKey()))
+				return false;
 
 			Optional<FluidVolume> optionalFluidVolume = wrapVolumeToAstromine(fluidVolume);
 
-			if (!optionalFluidVolume.isPresent()) return false;
+			if (!optionalFluidVolume.isPresent())
+				return false;
 
 			FluidVolume incoming = optionalFluidVolume.get();
 			FluidVolume current = component.getVolume(tank);

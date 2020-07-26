@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.block.conveyor.entity;
 
 import com.github.chainmailstudios.astromine.common.conveyor.Conveyable;
@@ -65,7 +66,7 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 		Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
 		int speed = ((Conveyor) getCachedState().getBlock()).getSpeed();
 
-//		AstromineCommon.LOGGER.info(across);
+		// AstromineCommon.LOGGER.info(across);
 
 		if (!isEmpty()) {
 			if (across) {
@@ -103,7 +104,7 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 			if (position < speed) {
 				setPosition(getPosition() + 1);
 			} else if (transition && position == speed) {
-				//prevPosition = speed;
+				// prevPosition = speed;
 				conveyable.give(getStack());
 				removeStack();
 			}
@@ -201,7 +202,7 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 
 	@Override
 	public int[] getRenderAttachmentData() {
-		return new int[] { position, prevPosition };
+		return new int[]{ position, prevPosition };
 	}
 
 	public boolean hasFront() {
@@ -243,14 +244,13 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 	public void setPosition(int position) {
 		if (position == 0)
 			this.prevPosition = 0;
-		else
-			this.prevPosition = this.position;
+		else this.prevPosition = this.position;
 		this.position = position;
 	}
 
 	public void sync() {
 		if (world instanceof ServerWorld) {
-			((ServerWorld)world).getChunkManager().markForUpdate(pos);
+			((ServerWorld) world).getChunkManager().markForUpdate(pos);
 		}
 	}
 

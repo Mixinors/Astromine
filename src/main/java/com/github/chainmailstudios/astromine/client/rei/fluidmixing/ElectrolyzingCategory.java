@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.client.rei.fluidmixing;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineREIPlugin;
@@ -74,7 +75,8 @@ public class ElectrolyzingCategory implements RecipeCategory<ElectrolyzingDispla
 		widgets.addAll(AstromineREIPlugin.createFluidDisplay(new Rectangle(innerBounds.x + 24, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getInputEntries().get(0).get(0), recipeDisplay.getInput().getFraction(), false, 5000));
 		widgets.add(Widgets.createArrow(new Point(innerBounds.getX() + 45, innerBounds.getY() + 26)));
 		widgets.addAll(AstromineREIPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 32, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getOutputEntries().get(0), recipeDisplay.getFirstOutput().getFraction(), true, 5000));
-		widgets.addAll(AstromineREIPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 32 + 14, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getOutputEntries().get(1), recipeDisplay.getSecondOutput().getFraction(), true, 5000));
+		widgets.addAll(
+			AstromineREIPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 32 + 14, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getOutputEntries().get(1), recipeDisplay.getSecondOutput().getFraction(), true, 5000));
 		return widgets;
 	}
 }

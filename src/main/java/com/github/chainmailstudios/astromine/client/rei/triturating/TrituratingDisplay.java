@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.client.rei.triturating;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineREIPlugin;
@@ -44,13 +45,7 @@ public class TrituratingDisplay implements RecipeDisplay {
 	private final Identifier recipeId;
 
 	public TrituratingDisplay(TrituratingRecipe recipe) {
-		this(
-				EntryStack.ofIngredients(recipe.getPreviewInputs()),
-				Collections.singletonList(EntryStack.create(recipe.getOutput())),
-				recipe.getTime(),
-				recipe.getEnergyConsumed(),
-				recipe.getId()
-		);
+		this(EntryStack.ofIngredients(recipe.getPreviewInputs()), Collections.singletonList(EntryStack.create(recipe.getOutput())), recipe.getTime(), recipe.getEnergyConsumed(), recipe.getId());
 	}
 
 	public TrituratingDisplay(List<List<EntryStack>> inputs, List<EntryStack> outputs, int timeRequired, double energyRequired, Identifier recipeId) {

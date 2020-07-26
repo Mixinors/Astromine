@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.noise;
 
 import java.lang.reflect.Constructor;
@@ -28,12 +29,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
 /**
-* A helper class used to generify the usage of octaves in noise generation.
-* It clamps the values between amplitudeLow and amplitudeHigh
-*
-* @param <T> The noise sampler that you are using. It must have a constructor with just a long parameter.
-* @author Valoeghese and SuperCoder79
-*/
+ * A helper class used to generify the usage of octaves in noise generation. It clamps the values between amplitudeLow
+ * and amplitudeHigh
+ *
+ * @param <T>
+ *        The noise sampler that you are using. It must have a constructor with just a long parameter.
+ * @author Valoeghese and SuperCoder79
+ */
 public class OctaveNoiseSampler<T extends Noise> extends Noise {
 	private Noise[] samplers;
 	private double clamp;
@@ -49,8 +51,8 @@ public class OctaveNoiseSampler<T extends Noise> extends Noise {
 	}
 
 	/**
-	* Reflection hackery to make the Noise objects
-	*/
+	 * Reflection hackery to make the Noise objects
+	 */
 	private T create(Constructor<T> constructor, long seed) {
 		if (constructor == null) {
 			return null;

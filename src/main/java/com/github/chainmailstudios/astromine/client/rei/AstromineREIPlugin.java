@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.client.rei;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
@@ -116,16 +117,9 @@ public class AstromineREIPlugin implements REIPluginV0 {
 
 	@Override
 	public void registerPluginCategories(RecipeHelper recipeHelper) {
-		recipeHelper.registerCategories(
-				new TrituratingCategory(),
-				new ElectricSmeltingCategory(),
-				new LiquidGeneratingCategory(),
-				new SolidGeneratingCategory(),
-				new FluidMixingCategory(FLUID_MIXING, "category.astromine.fluid_mixing", EntryStack.create(AstromineBlocks.ADVANCED_FLUID_MIXER)),
-				new ElectrolyzingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AstromineBlocks.ADVANCED_ELECTROLYZER)),
-				new PressingCategory(),
-				new AlloySmeltingCategory()
-		);
+		recipeHelper.registerCategories(new TrituratingCategory(), new ElectricSmeltingCategory(), new LiquidGeneratingCategory(), new SolidGeneratingCategory(),
+			new FluidMixingCategory(FLUID_MIXING, "category.astromine.fluid_mixing", EntryStack.create(AstromineBlocks.ADVANCED_FLUID_MIXER)),
+			new ElectrolyzingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AstromineBlocks.ADVANCED_ELECTROLYZER)), new PressingCategory(), new AlloySmeltingCategory());
 	}
 
 	@Override
@@ -148,23 +142,30 @@ public class AstromineREIPlugin implements REIPluginV0 {
 
 	@Override
 	public void registerOthers(RecipeHelper recipeHelper) {
-		recipeHelper.registerWorkingStations(TRITURATING, EntryStack.create(AstromineBlocks.PRIMITIVE_TRITURATOR), EntryStack.create(AstromineBlocks.BASIC_TRITURATOR), EntryStack.create(AstromineBlocks.ADVANCED_TRITURATOR), EntryStack.create(AstromineBlocks.ELITE_TRITURATOR));
-		recipeHelper.registerWorkingStations(ELECTRIC_SMELTING, EntryStack.create(AstromineBlocks.PRIMITIVE_ELECTRIC_SMELTER), EntryStack.create(AstromineBlocks.BASIC_ELECTRIC_SMELTER), EntryStack.create(AstromineBlocks.ADVANCED_ELECTRIC_SMELTER), EntryStack.create(AstromineBlocks.ELITE_ELECTRIC_SMELTER));
-		recipeHelper.registerWorkingStations(LIQUID_GENERATING, EntryStack.create(AstromineBlocks.PRIMITIVE_LIQUID_GENERATOR), EntryStack.create(AstromineBlocks.BASIC_LIQUID_GENERATOR), EntryStack.create(AstromineBlocks.ADVANCED_LIQUID_GENERATOR), EntryStack.create(AstromineBlocks.ELITE_LIQUID_GENERATOR));
-		recipeHelper.registerWorkingStations(SOLID_GENERATING, EntryStack.create(AstromineBlocks.PRIMITIVE_SOLID_GENERATOR), EntryStack.create(AstromineBlocks.BASIC_SOLID_GENERATOR), EntryStack.create(AstromineBlocks.ADVANCED_SOLID_GENERATOR), EntryStack.create(AstromineBlocks.ELITE_SOLID_GENERATOR));
-		recipeHelper.registerWorkingStations(FLUID_MIXING, EntryStack.create(AstromineBlocks.PRIMITIVE_FLUID_MIXER), EntryStack.create(AstromineBlocks.BASIC_FLUID_MIXER), EntryStack.create(AstromineBlocks.ADVANCED_FLUID_MIXER), EntryStack.create(AstromineBlocks.ELITE_FLUID_MIXER));
-		recipeHelper.registerWorkingStations(ELECTROLYZING, EntryStack.create(AstromineBlocks.PRIMITIVE_ELECTROLYZER), EntryStack.create(AstromineBlocks.BASIC_ELECTROLYZER), EntryStack.create(AstromineBlocks.ADVANCED_ELECTROLYZER), EntryStack.create(AstromineBlocks.ELITE_ELECTROLYZER));
-		recipeHelper.registerWorkingStations(PRESSING, EntryStack.create(AstromineBlocks.PRIMITIVE_PRESSER), EntryStack.create(AstromineBlocks.BASIC_PRESSER), EntryStack.create(AstromineBlocks.ADVANCED_PRESSER), EntryStack.create(AstromineBlocks.ELITE_PRESSER));
-		recipeHelper.registerWorkingStations(ALLOY_SMELTING, EntryStack.create(AstromineBlocks.PRIMITIVE_ALLOY_SMELTER), EntryStack.create(AstromineBlocks.BASIC_ALLOY_SMELTER), EntryStack.create(AstromineBlocks.ADVANCED_ALLOY_SMELTER), EntryStack.create(AstromineBlocks.ELITE_ALLOY_SMELTER));
+		recipeHelper.registerWorkingStations(TRITURATING, EntryStack.create(AstromineBlocks.PRIMITIVE_TRITURATOR), EntryStack.create(AstromineBlocks.BASIC_TRITURATOR), EntryStack.create(AstromineBlocks.ADVANCED_TRITURATOR),
+			EntryStack.create(AstromineBlocks.ELITE_TRITURATOR));
+		recipeHelper.registerWorkingStations(ELECTRIC_SMELTING, EntryStack.create(AstromineBlocks.PRIMITIVE_ELECTRIC_SMELTER), EntryStack.create(AstromineBlocks.BASIC_ELECTRIC_SMELTER),
+			EntryStack.create(AstromineBlocks.ADVANCED_ELECTRIC_SMELTER), EntryStack.create(AstromineBlocks.ELITE_ELECTRIC_SMELTER));
+		recipeHelper.registerWorkingStations(LIQUID_GENERATING, EntryStack.create(AstromineBlocks.PRIMITIVE_LIQUID_GENERATOR), EntryStack.create(AstromineBlocks.BASIC_LIQUID_GENERATOR),
+			EntryStack.create(AstromineBlocks.ADVANCED_LIQUID_GENERATOR), EntryStack.create(AstromineBlocks.ELITE_LIQUID_GENERATOR));
+		recipeHelper.registerWorkingStations(SOLID_GENERATING, EntryStack.create(AstromineBlocks.PRIMITIVE_SOLID_GENERATOR), EntryStack.create(AstromineBlocks.BASIC_SOLID_GENERATOR),
+			EntryStack.create(AstromineBlocks.ADVANCED_SOLID_GENERATOR), EntryStack.create(AstromineBlocks.ELITE_SOLID_GENERATOR));
+		recipeHelper.registerWorkingStations(FLUID_MIXING, EntryStack.create(AstromineBlocks.PRIMITIVE_FLUID_MIXER), EntryStack.create(AstromineBlocks.BASIC_FLUID_MIXER), EntryStack.create(AstromineBlocks.ADVANCED_FLUID_MIXER),
+			EntryStack.create(AstromineBlocks.ELITE_FLUID_MIXER));
+		recipeHelper.registerWorkingStations(ELECTROLYZING, EntryStack.create(AstromineBlocks.PRIMITIVE_ELECTROLYZER), EntryStack.create(AstromineBlocks.BASIC_ELECTROLYZER), EntryStack.create(AstromineBlocks.ADVANCED_ELECTROLYZER),
+			EntryStack.create(AstromineBlocks.ELITE_ELECTROLYZER));
+		recipeHelper.registerWorkingStations(PRESSING, EntryStack.create(AstromineBlocks.PRIMITIVE_PRESSER), EntryStack.create(AstromineBlocks.BASIC_PRESSER), EntryStack.create(AstromineBlocks.ADVANCED_PRESSER),
+			EntryStack.create(AstromineBlocks.ELITE_PRESSER));
+		recipeHelper.registerWorkingStations(ALLOY_SMELTING, EntryStack.create(AstromineBlocks.PRIMITIVE_ALLOY_SMELTER), EntryStack.create(AstromineBlocks.BASIC_ALLOY_SMELTER), EntryStack.create(AstromineBlocks.ADVANCED_ALLOY_SMELTER),
+			EntryStack.create(AstromineBlocks.ELITE_ALLOY_SMELTER));
 		recipeHelper.registerAutoCraftButtonArea(LIQUID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
 		recipeHelper.registerAutoCraftButtonArea(SOLID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
 		recipeHelper.registerAutoCraftButtonArea(FLUID_MIXING, bounds -> new Rectangle(bounds.getCenterX() - 65 + 130 - 16, bounds.getMaxY() - 16, 10, 10));
 		recipeHelper.registerAutoCraftButtonArea(ELECTROLYZING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16 - 29, bounds.getMaxY() - 16, 10, 10));
 
-		DefaultPlugin.registerInfoDisplay(DefaultInformationDisplay.createFromEntry(
-				EntryStack.create(PatchouliAPI.instance.getBookStack(AstromineCommon.identifier("manual"))).setting(EntryStack.Settings.CHECK_TAGS, EntryStack.Settings.TRUE),
-				new TranslatableText("item.astromine.manual")
-		).line(new TranslatableText("text.astromine.manual.obtain.info")));
+		DefaultPlugin.registerInfoDisplay(DefaultInformationDisplay
+			.createFromEntry(EntryStack.create(PatchouliAPI.instance.getBookStack(AstromineCommon.identifier("manual"))).setting(EntryStack.Settings.CHECK_TAGS, EntryStack.Settings.TRUE), new TranslatableText("item.astromine.manual"))
+			.line(new TranslatableText("text.astromine.manual.obtain.info")));
 
 		recipeHelper.registerFocusedStackProvider(screen -> {
 			if (screen instanceof DefaultedHandledScreen) {
@@ -182,38 +183,25 @@ public class AstromineREIPlugin implements REIPluginV0 {
 	}
 
 	public static List<Widget> createEnergyDisplay(Rectangle bounds, double energy, boolean generating, long speed) {
-		return Collections.singletonList(
-				new EnergyEntryWidget(bounds, speed, generating).entry(
-						new RenderingEntry() {
-							@Override
-							public void render(MatrixStack matrices, Rectangle bounds, int mouseX, int mouseY, float delta) {
-							}
+		return Collections.singletonList(new EnergyEntryWidget(bounds, speed, generating).entry(new RenderingEntry() {
+			@Override
+			public void render(MatrixStack matrices, Rectangle bounds, int mouseX, int mouseY, float delta) {}
 
-							@Override
-							public @Nullable Tooltip getTooltip(Point mouse) {
-								if (generating) return Tooltip.create(
-										mouse,
-										new TranslatableText("text.astromine.energy"),
-										ClientHelper.getInstance().getFormattedModFromIdentifier(AstromineCommon.identifier("a")),
-										new LiteralText(""),
-										new TranslatableText("category.astromine.generating.energy", EnergyUtilities.simpleDisplay(energy))
-								);
-								else return Tooltip.create(
-										mouse,
-										new TranslatableText("text.astromine.energy"),
-										ClientHelper.getInstance().getFormattedModFromIdentifier(AstromineCommon.identifier("a")),
-										new LiteralText(""),
-										new TranslatableText("category.astromine.consuming.energy", EnergyUtilities.simpleDisplay(energy))
-								);
-							}
-						}
-				).notFavoritesInteractable()
-		);
+			@Override
+			public @Nullable Tooltip getTooltip(Point mouse) {
+				if (generating)
+					return Tooltip.create(mouse, new TranslatableText("text.astromine.energy"), ClientHelper.getInstance().getFormattedModFromIdentifier(AstromineCommon.identifier("a")), new LiteralText(""),
+						new TranslatableText("category.astromine.generating.energy", EnergyUtilities.simpleDisplay(energy)));
+				else return Tooltip.create(mouse, new TranslatableText("text.astromine.energy"), ClientHelper.getInstance().getFormattedModFromIdentifier(AstromineCommon.identifier("a")), new LiteralText(""),
+					new TranslatableText("category.astromine.consuming.energy", EnergyUtilities.simpleDisplay(energy)));
+			}
+		}).notFavoritesInteractable());
 	}
 
 	public static List<Widget> createFluidDisplay(Rectangle bounds, EntryStack fluidStack, Fraction consumedPerTick, boolean generating, long speed) {
 		EntryWidget entry = new FluidEntryWidget(bounds, speed, generating).setConsumedPerTick(consumedPerTick).entry(fluidStack.copy());
-		if (generating) entry.markOutput();
+		if (generating)
+			entry.markOutput();
 		else entry.markInput();
 		return Collections.singletonList(entry);
 	}
@@ -239,16 +227,13 @@ public class AstromineREIPlugin implements REIPluginV0 {
 				int height;
 				if (generating)
 					height = bounds.height - MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
-				else
-					height = MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
-				DrawableHelper.drawTexture(matrices, bounds.x, bounds.y + height, 0, height, bounds.width - 1,
-						bounds.height - height - 1, bounds.width, bounds.height);
+				else height = MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
+				DrawableHelper.drawTexture(matrices, bounds.x, bounds.y + height, 0, height, bounds.width - 1, bounds.height - height - 1, bounds.width, bounds.height);
 			}
 		}
 
 		@Override
-		protected void drawCurrentEntry(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		}
+		protected void drawCurrentEntry(MatrixStack matrices, int mouseX, int mouseY, float delta) {}
 	}
 
 	private static class FluidEntryWidget extends EntryWidget {
@@ -285,8 +270,7 @@ public class AstromineREIPlugin implements REIPluginV0 {
 					tooltip.getText().add(new LiteralText(""));
 					if (generating)
 						tooltip.getText().add(new TranslatableText("category.astromine.fluid.generating.generated", FluidUtilities.rawFraction(consumedPerTick), consumedPerTick.toDecimalString()));
-					else
-						tooltip.getText().add(new TranslatableText("category.astromine.fluid.generating.consumed", FluidUtilities.rawFraction(consumedPerTick), consumedPerTick.toDecimalString()));
+					else tooltip.getText().add(new TranslatableText("category.astromine.fluid.generating.consumed", FluidUtilities.rawFraction(consumedPerTick), consumedPerTick.toDecimalString()));
 				}
 				return tooltip;
 			}).orElse(null);
@@ -300,23 +284,11 @@ public class AstromineREIPlugin implements REIPluginV0 {
 				int height;
 				if (!generating)
 					height = bounds.height - MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
-				else
-					height = MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
+				else height = MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
 				VertexConsumerProvider.Immediate consumers = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
-				SpriteRenderer.beginPass()
-						.setup(consumers, RenderLayer.getSolid())
-						.sprite(FluidUtilities.texture(entry.getFluid())[0])
-						.color(FluidUtilities.color(MinecraftClient.getInstance().player, entry.getFluid()))
-						.light(0x00f000f0)
-						.overlay(OverlayTexture.DEFAULT_UV)
-						.alpha(0xff)
-						.normal(matrices.peek().getNormal(), 0, 0, 0)
-						.position(matrices.peek().getModel(),
-								bounds.x + 1,
-								bounds.y + bounds.height - height + 1,
-								bounds.x + bounds.width - 1,
-								bounds.y + bounds.height - 1, getZOffset() + 1)
-						.next(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
+				SpriteRenderer.beginPass().setup(consumers, RenderLayer.getSolid()).sprite(FluidUtilities.texture(entry.getFluid())[0]).color(FluidUtilities.color(MinecraftClient.getInstance().player, entry.getFluid())).light(0x00f000f0)
+					.overlay(OverlayTexture.DEFAULT_UV).alpha(0xff).normal(matrices.peek().getNormal(), 0, 0, 0)
+					.position(matrices.peek().getModel(), bounds.x + 1, bounds.y + bounds.height - height + 1, bounds.x + bounds.width - 1, bounds.y + bounds.height - 1, getZOffset() + 1).next(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
 				consumers.draw();
 			}
 		}
