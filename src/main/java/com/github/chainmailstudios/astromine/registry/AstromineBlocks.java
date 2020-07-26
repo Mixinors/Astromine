@@ -196,21 +196,21 @@ public class AstromineBlocks {
 	public static final Block ASTEROID_STONE_WALL = register("asteroid_stone_wall", new WallBlock(FabricBlockSettings.copyOf(ASTEROID_STONE)), AstromineItems.getBasicSettings().fireproof());
 	public static final Block MOON_STONE_WALL = register("moon_stone_wall", new WallBlock(FabricBlockSettings.copyOf(MOON_STONE)), AstromineItems.getBasicSettings());
 
-	public static final Block ALTERNATOR = register("alternator", new AlternatorBlock(FabricBlockSettings.copyOf(Blocks.STONE)), AstromineItems.getBasicSettings());
-	public static final Block SPLITTER = register("splitter", new SplitterBlock(FabricBlockSettings.copyOf(Blocks.STONE)), AstromineItems.getBasicSettings());
-	public static final Block INCINERATOR = register("incinerator", new IncineratorBlock(FabricBlockSettings.copyOf(Blocks.STONE).ticksRandomly()), AstromineItems.getBasicSettings());
-	public static final Block INSERTER = register("inserter", new InserterBlock("normal", 16, FabricBlockSettings.copyOf(Blocks.STONE).nonOpaque()), AstromineItems.getBasicSettings());
-	public static final Block FAST_INSERTER = register("fast_inserter", new InserterBlock("fast", 8, FabricBlockSettings.copyOf(Blocks.STONE).nonOpaque()), AstromineItems.getBasicSettings());
+	public static final Block ALTERNATOR = register("alternator", new AlternatorBlock(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block SPLITTER = register("splitter", new SplitterBlock(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block INCINERATOR = register("incinerator", new IncineratorBlock(AstromineBlocks.getBasicSettings().ticksRandomly()), AstromineItems.getBasicSettings());
+	public static final Block INSERTER = register("inserter", new InserterBlock("normal", 16, AstromineBlocks.getBasicSettings().nonOpaque()), AstromineItems.getBasicSettings());
+	public static final Block FAST_INSERTER = register("fast_inserter", new InserterBlock("fast", 8, AstromineBlocks.getBasicSettings().nonOpaque()), AstromineItems.getBasicSettings());
 
-	public static final Block CONVEYOR = register("conveyor", new ConveyorBlock(FabricBlockSettings.copyOf(Blocks.STONE).sounds(BlockSoundGroup.METAL).nonOpaque(), 16), AstromineItems.getBasicSettings());
-	public static final Block VERTICAL_CONVEYOR = register("vertical_conveyor", new VerticalConveyorBlock(FabricBlockSettings.copyOf(Blocks.STONE).sounds(BlockSoundGroup.METAL).nonOpaque(), 16), AstromineItems.getBasicSettings());
-	public static final Block DOWNWARD_VERTICAL_CONVEYOR = register("downward_vertical_conveyor", new DownwardVerticalConveyorBlock(FabricBlockSettings.copyOf(Blocks.STONE).sounds(BlockSoundGroup.METAL).nonOpaque(), 16), AstromineItems.getBasicSettings());
-	public static final Block FAST_CONVEYOR = register("fast_conveyor", new ConveyorBlock(FabricBlockSettings.copyOf(Blocks.STONE).sounds(BlockSoundGroup.METAL).nonOpaque(), 8), AstromineItems.getBasicSettings());
-	public static final Block VERTICAL_FAST_CONVEYOR = register("vertical_fast_conveyor", new VerticalConveyorBlock(FabricBlockSettings.copyOf(Blocks.STONE).sounds(BlockSoundGroup.METAL).nonOpaque(), 8), AstromineItems.getBasicSettings());
-	public static final Block DOWNWARD_VERTICAL_FAST_CONVEYOR = register("downward_vertical_fast_conveyor", new DownwardVerticalConveyorBlock(FabricBlockSettings.copyOf(Blocks.STONE).sounds(BlockSoundGroup.METAL).nonOpaque(), 8), AstromineItems.getBasicSettings());
-	public static final Block EXPRESS_CONVEYOR = register("express_conveyor", new ConveyorBlock(FabricBlockSettings.copyOf(Blocks.STONE).sounds(BlockSoundGroup.METAL).nonOpaque(), 4), AstromineItems.getBasicSettings());
-	public static final Block VERTICAL_EXPRESS_CONVEYOR = register("vertical_express_conveyor", new VerticalConveyorBlock(FabricBlockSettings.copyOf(Blocks.STONE).sounds(BlockSoundGroup.METAL).nonOpaque(), 4), AstromineItems.getBasicSettings());
-	public static final Block DOWNWARD_VERTICAL_EXPRESS_CONVEYOR = register("downward_vertical_express_conveyor", new DownwardVerticalConveyorBlock(FabricBlockSettings.copyOf(Blocks.STONE).sounds(BlockSoundGroup.METAL).nonOpaque(), 4), AstromineItems.getBasicSettings());
+	public static final Block BASIC_CONVEYOR = register("basic_conveyor", new ConveyorBlock(AstromineBlocks.getBasicSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 16), AstromineItems.getBasicSettings());
+	public static final Block BASIC_VERTICAL_CONVEYOR = register("basic_vertical_conveyor", new VerticalConveyorBlock(AstromineBlocks.getBasicSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 16), AstromineItems.getBasicSettings());
+	public static final Block BASIC_DOWNWARD_VERTICAL_CONVEYOR = register("basic_downward_vertical_conveyor", new DownwardVerticalConveyorBlock(AstromineBlocks.getBasicSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 16), AstromineItems.getBasicSettings());
+	public static final Block ADVANCED_CONVEYOR = register("advanced_conveyor", new ConveyorBlock(AstromineBlocks.getAdvancedSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 8), AstromineItems.getBasicSettings());
+	public static final Block ADVANCED_VERTICAL_CONVEYOR = register("advanced_vertical_conveyor", new VerticalConveyorBlock(AstromineBlocks.getAdvancedSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 8), AstromineItems.getBasicSettings());
+	public static final Block ADVANCED_DOWNWARD_VERTICAL_CONVEYOR = register("advanced_downward_vertical_conveyor", new DownwardVerticalConveyorBlock(AstromineBlocks.getAdvancedSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 8), AstromineItems.getBasicSettings());
+	public static final Block ELITE_CONVEYOR = register("elite_conveyor", new ConveyorBlock(AstromineBlocks.getEliteSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 4), AstromineItems.getBasicSettings());
+	public static final Block ELITE_VERTICAL_CONVEYOR = register("elite_vertical_conveyor", new VerticalConveyorBlock(AstromineBlocks.getEliteSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 4), AstromineItems.getBasicSettings());
+	public static final Block ELITE_DOWNWARD_VERTICAL_CONVEYOR = register("elite_downward_vertical_conveyor", new DownwardVerticalConveyorBlock(AstromineBlocks.getEliteSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 4), AstromineItems.getBasicSettings());
 
 	public static void initialize() {
 		// Unused.

@@ -91,11 +91,9 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 				}
 			} else if (position != 0) {
 				setPosition(0);
-				prevPosition = -1;
 			}
 		} else if (position != 0) {
 			setPosition(0);
-			prevPosition = -1;
 		}
 	}
 
