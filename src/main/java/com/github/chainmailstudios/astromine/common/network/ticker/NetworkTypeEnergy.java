@@ -60,7 +60,8 @@ public class NetworkTypeEnergy extends NetworkType {
 				speedOfMovement = ((EnergyNodeSpeedProvider) nodePosition.getBlock()).getNodeSpeed();
 			}
 
-			if (speedOfMovement <= 0) continue;
+			if (speedOfMovement <= 0)
+				continue;
 
 			if (blockEntity instanceof EnergyStorage && networkMember.acceptsType(this)) {
 				TransferType type = TransferType.NONE;
@@ -93,14 +94,7 @@ public class NetworkTypeEnergy extends NetworkType {
 			for (int i = requesterKeys.size() - 1; i >= 0; i--) {
 				EnergyHandler output = requesterKeys.get(i);
 				double outputSpeed = requesters.get(output);
-				double speed = Collections.min(Arrays.asList(
-						inputSpeed / requesters.size(),
-						outputSpeed / requesters.size(),
-						input.getEnergy() / (i + 1),
-						output.getMaxStored() - output.getEnergy(),
-						input.getMaxOutput(),
-						output.getMaxInput()
-				));
+				double speed = Collections.min(Arrays.asList(inputSpeed / requesters.size(), outputSpeed / requesters.size(), input.getEnergy() / (i + 1), output.getMaxStored() - output.getEnergy(), input.getMaxOutput(), output.getMaxInput()));
 				input.into(output).move(speed);
 			}
 		}
