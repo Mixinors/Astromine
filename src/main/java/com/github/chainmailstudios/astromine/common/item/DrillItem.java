@@ -63,7 +63,7 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 		hammer.attemptBreak(world, pos, (PlayerEntity) miner, getRadius(stack), getProcessor(world, (PlayerEntity) miner, pos, stack));
 		excavator.attemptBreak(world, pos, (PlayerEntity) miner, getRadius(stack), getProcessor(world, (PlayerEntity) miner, pos, stack));
 		if (!world.isClient && state.getHardness(world, pos) != 0.0F) {
-			EnergyHandler energy = Energy.of(this);
+			EnergyHandler energy = Energy.of(stack);
 			energy.use(getEnergy());
 		}
 		return true;
