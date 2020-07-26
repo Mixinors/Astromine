@@ -2,8 +2,8 @@ package com.github.chainmailstudios.astromine.client.render.block;
 
 import com.github.chainmailstudios.astromine.common.block.conveyor.ConveyorProperties;
 import com.github.chainmailstudios.astromine.common.block.conveyor.entity.DownVerticalConveyorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.conveyor.interfaces.Conveyor;
-import com.github.chainmailstudios.astromine.common.block.conveyor.interfaces.ConveyorType;
+import com.github.chainmailstudios.astromine.common.conveyor.Conveyor;
+import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;

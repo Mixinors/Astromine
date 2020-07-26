@@ -2,9 +2,9 @@ package com.github.chainmailstudios.astromine.common.block.conveyor;
 
 import com.github.chainmailstudios.astromine.common.block.conveyor.entity.ConveyorBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.conveyor.entity.VerticalConveyorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.conveyor.interfaces.Conveyable;
-import com.github.chainmailstudios.astromine.common.block.conveyor.interfaces.Conveyor;
-import com.github.chainmailstudios.astromine.common.block.conveyor.interfaces.ConveyorType;
+import com.github.chainmailstudios.astromine.common.conveyor.Conveyable;
+import com.github.chainmailstudios.astromine.common.conveyor.Conveyor;
+import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
 import com.github.chainmailstudios.astromine.common.utilities.RotationUtilities;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;

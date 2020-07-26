@@ -1,8 +1,8 @@
 package com.github.chainmailstudios.astromine.common.block.conveyor.entity;
 
-import com.github.chainmailstudios.astromine.common.block.conveyor.interfaces.Conveyable;
-import com.github.chainmailstudios.astromine.common.block.conveyor.interfaces.ConveyorConveyable;
-import com.github.chainmailstudios.astromine.common.block.conveyor.interfaces.ConveyorType;
+import com.github.chainmailstudios.astromine.common.conveyor.Conveyable;
+import com.github.chainmailstudios.astromine.common.conveyor.ConveyorConveyable;
+import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
 import com.github.chainmailstudios.astromine.common.inventory.DoubleStackInventory;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;

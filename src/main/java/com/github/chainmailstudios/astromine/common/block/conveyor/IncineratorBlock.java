@@ -1,7 +1,7 @@
 package com.github.chainmailstudios.astromine.common.block.conveyor;
 
 import com.github.chainmailstudios.astromine.common.block.conveyor.entity.IncineratorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.conveyor.interfaces.ConveyableBlock;
+import com.github.chainmailstudios.astromine.common.conveyor.ConveyableBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;

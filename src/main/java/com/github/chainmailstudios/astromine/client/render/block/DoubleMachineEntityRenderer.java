@@ -1,7 +1,7 @@
 package com.github.chainmailstudios.astromine.client.render.block;
 
 import com.github.chainmailstudios.astromine.common.block.conveyor.entity.DoubleMachineBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.conveyor.interfaces.ConveyorType;
+import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;

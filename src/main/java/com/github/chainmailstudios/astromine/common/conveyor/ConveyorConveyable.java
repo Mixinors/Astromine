@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.common.block.conveyor.interfaces;
+package com.github.chainmailstudios.astromine.common.conveyor;
 
 public interface ConveyorConveyable extends PositionalConveyable {
 	ConveyorType getConveyorType();

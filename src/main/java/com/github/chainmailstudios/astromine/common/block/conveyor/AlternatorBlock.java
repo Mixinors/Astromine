@@ -2,8 +2,8 @@ package com.github.chainmailstudios.astromine.common.block.conveyor;
 
 import com.github.chainmailstudios.astromine.common.block.conveyor.entity.AlternatorBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.conveyor.entity.DoubleMachineBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.conveyor.interfaces.Conveyable;
-import com.github.chainmailstudios.astromine.common.block.conveyor.interfaces.ConveyableBlock;
+import com.github.chainmailstudios.astromine.common.conveyor.Conveyable;
+import com.github.chainmailstudios.astromine.common.conveyor.ConveyableBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;

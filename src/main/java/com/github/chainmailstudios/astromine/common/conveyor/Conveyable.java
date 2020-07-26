@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.common.block.conveyor.interfaces;
+package com.github.chainmailstudios.astromine.common.conveyor;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;

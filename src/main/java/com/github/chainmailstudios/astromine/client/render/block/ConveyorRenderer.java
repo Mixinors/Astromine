@@ -2,8 +2,8 @@ package com.github.chainmailstudios.astromine.client.render.block;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.conveyor.ConveyorProperties;
-import com.github.chainmailstudios.astromine.common.block.conveyor.interfaces.ConveyorType;
-import com.github.chainmailstudios.astromine.common.block.conveyor.interfaces.PositionalConveyable;
+import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
+import com.github.chainmailstudios.astromine.common.conveyor.PositionalConveyable;
 import com.github.chainmailstudios.astromine.registry.AstromineBlacklistedConveyorBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

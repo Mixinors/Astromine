@@ -1,7 +1,7 @@
 package com.github.chainmailstudios.astromine.common.block.conveyor;
 
 import com.github.chainmailstudios.astromine.common.block.conveyor.entity.InserterBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.conveyor.interfaces.ConveyableBlock;
+import com.github.chainmailstudios.astromine.common.conveyor.ConveyableBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemPlacementContext;
