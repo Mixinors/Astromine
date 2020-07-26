@@ -93,7 +93,7 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 
 				if (extractable != EmptyItemExtractable.NULL) {
 					ItemStack stack = extractable.attemptAnyExtraction(64, Simulation.SIMULATE);
-					if (position == 0 && !stack.isEmpty()) {
+					if (position == 0 && !stack.isEmpty() && !(behindState.getBlock() instanceof InserterBlock)) {
 						stack = extractable.attemptAnyExtraction(64, Simulation.ACTION);
 						setStack(stack);
 					} else if (position > 0) {
