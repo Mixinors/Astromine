@@ -29,8 +29,11 @@ import com.github.chainmailstudios.astromine.common.component.world.WorldNetwork
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkTracer;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.github.chainmailstudios.astromine.common.utilities.CableWrenchable;
+import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
 import com.github.chainmailstudios.astromine.common.utilities.WorldPos;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.zundrel.wrenchable.block.BlockWrenchable;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -49,7 +52,7 @@ import net.minecraft.world.World;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AbstractCableBlock extends Block {
+public abstract class AbstractCableBlock extends Block implements CableWrenchable {
 	public static final BooleanProperty EAST = BooleanProperty.of("east");
 	public static final BooleanProperty WEST = BooleanProperty.of("west");
 	public static final BooleanProperty NORTH = BooleanProperty.of("north");

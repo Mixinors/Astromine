@@ -27,6 +27,7 @@ package com.github.chainmailstudios.astromine.common.block;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.CreativeTankBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.CreativeTankScreenHandler;
+import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -46,7 +47,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class CreativeTankBlock extends DefaultedHorizontalFacingBlockWithEntity {
+public class CreativeTankBlock extends DefaultedHorizontalFacingBlockWithEntity implements MachineBlockWrenchable {
 	public CreativeTankBlock(Settings settings) {
 		super(settings);
 	}

@@ -25,8 +25,9 @@
 package com.github.chainmailstudios.astromine.common.block;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
 
-public abstract class TieredHorizontalFacingMachineBlock extends DefaultedHorizontalFacingBlockWithEntity {
+public abstract class TieredHorizontalFacingMachineBlock extends DefaultedHorizontalFacingBlockWithEntity implements MachineBlockWrenchable {
 	public TieredHorizontalFacingMachineBlock(Settings settings) {
 		super(settings);
 	}

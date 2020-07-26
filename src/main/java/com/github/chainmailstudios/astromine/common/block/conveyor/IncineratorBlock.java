@@ -26,6 +26,7 @@ package com.github.chainmailstudios.astromine.common.block.conveyor;
 
 import com.github.chainmailstudios.astromine.common.block.conveyor.entity.IncineratorBlockEntity;
 import com.github.chainmailstudios.astromine.common.conveyor.ConveyableBlock;
+import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -42,7 +43,7 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class IncineratorBlock extends HorizontalFacingBlock implements BlockEntityProvider, ConveyableBlock {
+public class IncineratorBlock extends HorizontalFacingBlock implements BlockEntityProvider, ConveyableBlock, MachineBlockWrenchable {
 	public IncineratorBlock(Settings settings) {
 		super(settings);
 	}

@@ -27,6 +27,7 @@ package com.github.chainmailstudios.astromine.common.block;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.BlockBreakerBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.BlockBreakerScreenHandler;
+import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -46,7 +47,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class BlockBreakerBlock extends DefaultedHorizontalFacingBlockWithEntity {
+public class BlockBreakerBlock extends DefaultedHorizontalFacingBlockWithEntity implements MachineBlockWrenchable {
 	public BlockBreakerBlock(Settings settings) {
 		super(settings);
 	}

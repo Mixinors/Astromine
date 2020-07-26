@@ -80,7 +80,7 @@ public class MarsChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public ChunkGenerator withSeed(long seed) {
-		return new MarsChunkGenerator(new MoonBiomeSource(seed), seed);
+		return new MarsChunkGenerator(new MarsBiomeSource(seed), seed);
 	}
 
 	@Override

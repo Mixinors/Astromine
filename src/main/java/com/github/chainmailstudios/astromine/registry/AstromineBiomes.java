@@ -28,9 +28,11 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.world.biome.EarthSpaceBiome;
 import com.github.chainmailstudios.astromine.common.world.biome.MarsBiome;
 import com.github.chainmailstudios.astromine.common.world.biome.MoonBiome;
+import com.github.chainmailstudios.astromine.common.world.biome.VulcanBiome;
 import com.github.chainmailstudios.astromine.common.world.generation.space.EarthSpaceBiomeSource;
 import com.github.chainmailstudios.astromine.common.world.generation.mars.MarsBiomeSource;
 import com.github.chainmailstudios.astromine.common.world.generation.moon.MoonBiomeSource;
+import com.github.chainmailstudios.astromine.common.world.generation.vulcan.VulcanBiomeSource;
 
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
@@ -42,12 +44,14 @@ public class AstromineBiomes {
 	public static Biome MOON_LOWLANDS;
 	public static Biome MARS;
 	public static Biome MARS_RIVERBED;
+	public static Biome VULCAN;
 
 	public static void initialize() {
 		// Biome Sources
 		Registry.register(Registry.BIOME_SOURCE, AstromineCommon.identifier("earth_space"), EarthSpaceBiomeSource.CODEC);
 		Registry.register(Registry.BIOME_SOURCE, AstromineCommon.identifier("moon"), MoonBiomeSource.CODEC);
 		Registry.register(Registry.BIOME_SOURCE, AstromineCommon.identifier("mars"), MarsBiomeSource.CODEC);
+		Registry.register(Registry.BIOME_SOURCE, AstromineCommon.identifier("vulcan"), VulcanBiomeSource.CODEC);
 
 		// Biomes
 		ASTEROID_BELT = Registry.register(Registry.BIOME, AstromineCommon.identifier("asteroid_belt"), new EarthSpaceBiome());
@@ -58,5 +62,7 @@ public class AstromineBiomes {
 
 		MARS = Registry.register(Registry.BIOME, AstromineCommon.identifier("mars"), new MarsBiome(100, 1));
 		MARS_RIVERBED = Registry.register(Registry.BIOME, AstromineCommon.identifier("mars_riverbed"), new MarsBiome(60, 0.1f));
+
+		VULCAN = Registry.register(Registry.BIOME, AstromineCommon.identifier("vulcan"), new VulcanBiome(100, 1));
 	}
 }

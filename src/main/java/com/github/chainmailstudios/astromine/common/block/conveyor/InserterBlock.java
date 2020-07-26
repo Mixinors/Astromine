@@ -26,6 +26,7 @@ package com.github.chainmailstudios.astromine.common.block.conveyor;
 
 import com.github.chainmailstudios.astromine.common.block.conveyor.entity.InserterBlockEntity;
 import com.github.chainmailstudios.astromine.common.conveyor.ConveyableBlock;
+import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemPlacementContext;
@@ -41,7 +42,7 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class InserterBlock extends HorizontalFacingBlock implements BlockEntityProvider, ConveyableBlock {
+public class InserterBlock extends HorizontalFacingBlock implements BlockEntityProvider, ConveyableBlock, MachineBlockWrenchable {
 	private String type;
 	private int speed;
 
