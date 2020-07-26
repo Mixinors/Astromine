@@ -45,6 +45,7 @@ import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.vehicle.ChestMinecartEntity;
+import net.minecraft.entity.vehicle.MinecartEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
@@ -140,19 +141,21 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 					}
 				} else {
 					BlockPos offsetPos = getPos().offset(direction);
-					List<ChestMinecartEntity> minecartEntities = getWorld().getEntities(ChestMinecartEntity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1), EntityPredicates.EXCEPT_SPECTATOR);
+					List<MinecartEntity> minecartEntities = getWorld().getEntities(MinecartEntity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1), EntityPredicates.EXCEPT_SPECTATOR);
 					if (minecartEntities.size() >= 1) {
-						ChestMinecartEntity minecartEntity = minecartEntities.get(0);
-						FixedInventoryVanillaWrapper wrapper = new FixedInventoryVanillaWrapper(minecartEntity);
-						ItemInsertable insertableMinecart = wrapper.getInsertable();
+						MinecartEntity minecartEntity = minecartEntities.get(0);
+						if (minecartEntity instanceof Inventory) {
+							FixedInventoryVanillaWrapper wrapper = new FixedInventoryVanillaWrapper((Inventory) minecartEntity);
+							ItemInsertable insertableMinecart = wrapper.getInsertable();
 
-						ItemStack stackMinecart = insertableMinecart.attemptInsertion(getStack(), Simulation.SIMULATE);
-						if (position < speed && (stackMinecart.isEmpty() || stackMinecart.getCount() != getStack().getCount())) {
-							setPosition(getPosition() + 1);
-						} else if (!getWorld().isClient() && (stackMinecart.isEmpty() || stackMinecart.getCount() != getStack().getCount())) {
-							stackMinecart = insertableMinecart.attemptInsertion(getStack(), Simulation.ACTION);
-							setStack(stackMinecart);
-							minecartEntity.markDirty();
+							ItemStack stackMinecart = insertableMinecart.attemptInsertion(getStack(), Simulation.SIMULATE);
+							if (position < speed && (stackMinecart.isEmpty() || stackMinecart.getCount() != getStack().getCount())) {
+								setPosition(getPosition() + 1);
+							} else if (!getWorld().isClient() && (stackMinecart.isEmpty() || stackMinecart.getCount() != getStack().getCount())) {
+								stackMinecart = insertableMinecart.attemptInsertion(getStack(), Simulation.ACTION);
+								setStack(stackMinecart);
+								((Inventory) minecartEntity).markDirty();
+							}
 						}
 					} else if (position > 0) {
 						setPosition(getPosition() - 1);
