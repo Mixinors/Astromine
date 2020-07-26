@@ -30,10 +30,8 @@ import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.google.common.collect.Maps;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
-import team.reborn.energy.EnergyStorage;
 
 import java.util.Map;
 import java.util.function.Consumer;
@@ -114,13 +112,6 @@ public class AstromineNetworkMembers {
 					break;
 				}
 			}
-		}
-		try {
-			NetworkTypeRegistry<NetworkType> energy = NetworkMemberRegistry.INSTANCE.get(AstromineNetworkTypes.ENERGY);
-			if (block.hasBlockEntity() && energy.get(id.getValue()).isEmpty() && ((BlockEntityProvider) block).createBlockEntity(null) instanceof EnergyStorage) {
-				energy.register(block, REQUESTER, PROVIDER);
-			}
-		} catch (Throwable ignored) {
 		}
 	}
 }

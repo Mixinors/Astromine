@@ -116,14 +116,14 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 				return (Collection<T>) getComponentTypes()
 						.stream()
 						.map(type -> new Pair<>((ComponentType) type, (Component) getComponent(type)))
-						.filter(pair -> transferComponent.get(pair.getLeft()).get(direction) != TransferType.NONE)
+						.filter(pair -> !transferComponent.get(pair.getLeft()).get(direction).isNone())
 						.map(Pair::getRight)
 						.collect(Collectors.toList());
 			} else if (getCachedState().contains(FacingBlock.FACING)) {
 				return (Collection<T>) getComponentTypes()
 						.stream()
 						.map(type -> new Pair<>((ComponentType) type, (Component) getComponent(type)))
-						.filter(pair -> transferComponent.get(pair.getLeft()).get(direction) != TransferType.NONE)
+						.filter(pair -> !transferComponent.get(pair.getLeft()).get(direction).isNone())
 						.map(Pair::getRight)
 						.collect(Collectors.toList());
 			} else {
