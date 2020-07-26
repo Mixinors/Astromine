@@ -29,6 +29,7 @@ import com.github.chainmailstudios.astromine.common.block.conveyor.entity.Vertic
 import com.github.chainmailstudios.astromine.common.conveyor.Conveyable;
 import com.github.chainmailstudios.astromine.common.conveyor.Conveyor;
 import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
+import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
 import com.github.chainmailstudios.astromine.common.utilities.RotationUtilities;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -49,7 +50,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
-public class VerticalConveyorBlock extends HorizontalFacingBlock implements BlockEntityProvider, Conveyor {
+public class VerticalConveyorBlock extends HorizontalFacingBlock implements BlockEntityProvider, Conveyor, MachineBlockWrenchable {
 	private int speed;
 
 	public VerticalConveyorBlock(Settings settings, int speed) {

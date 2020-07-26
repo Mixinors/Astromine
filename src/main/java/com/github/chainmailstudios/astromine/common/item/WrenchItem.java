@@ -22,15 +22,13 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block;
+package com.github.chainmailstudios.astromine.common.item;
 
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
+import com.zundrel.wrenchable.wrench.Wrench;
+import net.minecraft.item.*;
 
-public abstract class TieredHorizontalFacingMachineBlock extends DefaultedHorizontalFacingBlockWithEntity implements MachineBlockWrenchable {
-	public TieredHorizontalFacingMachineBlock(Settings settings) {
+public class WrenchItem extends Item implements Wrench {
+	public WrenchItem(Settings settings) {
 		super(settings);
 	}
-
-	public abstract double getMachineSpeed();
 }

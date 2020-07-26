@@ -27,6 +27,7 @@ package com.github.chainmailstudios.astromine.common.block;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.BufferBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.BufferScreenHandler;
+import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
 import com.github.chainmailstudios.astromine.common.utilities.type.BufferType;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockRenderType;
@@ -48,7 +49,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class BufferBlock extends DefaultedBlockWithEntity {
+public class BufferBlock extends DefaultedBlockWithEntity implements MachineBlockWrenchable {
 	private final BufferType type;
 
 	public BufferBlock(BufferType type, Settings settings) {

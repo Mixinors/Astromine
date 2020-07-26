@@ -27,6 +27,7 @@ package com.github.chainmailstudios.astromine.common.block;
 import com.github.chainmailstudios.astromine.access.DyeColorAccess;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
+import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -45,7 +46,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import spinnery.widget.api.Color;
 
-public class HolographicBridgeProjectorBlock extends DefaultedHorizontalFacingBlockWithEntity {
+public class HolographicBridgeProjectorBlock extends DefaultedHorizontalFacingBlockWithEntity implements MachineBlockWrenchable {
 	public HolographicBridgeProjectorBlock(AbstractBlock.Settings settings) {
 		super(settings);
 	}

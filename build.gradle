@@ -54,6 +54,18 @@ repositories {
         name = "Ladysnake Libs"
         url = 'https://dl.bintray.com/ladysnake/libs'
     }
+    maven {
+        name = "Wrenchable"
+        url  "https://dl.bintray.com/zundrel/wrenchable"
+    }
+    maven {
+        name = "grondag"
+        url = "https://grondag-repo.appspot.com"
+        credentials {
+            username "guest"
+            password ""
+        }
+    }
 }
 
 minecraft {
@@ -147,6 +159,10 @@ dependencies {
     
     // Reborn Core
     modRuntime "RebornCore:RebornCore-1.16:${reborn_core_version}"
+
+    // Wrenchable
+    modApi "com.zundrel:wrenchable:${wrenchable_version}"
+    include "com.zundrel:wrenchable:${wrenchable_version}"
 }
 
 processResources {
