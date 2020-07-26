@@ -60,4 +60,8 @@ public enum TransferType {
 	public boolean isNone() {
 		return this == NONE || this == DISABLED;
 	}
+
+	public boolean isDisabled() {
+		return this == DISABLED;
+	}
 }

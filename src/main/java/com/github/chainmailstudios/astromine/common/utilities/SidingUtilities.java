@@ -37,12 +37,12 @@ public class SidingUtilities {
 	public static boolean isExtractingEnergy(BlockEntity entity, @Nullable BlockEntityTransferComponent transferComponent, Direction direction) {
 		if (!(entity instanceof EnergyStorage)) return false;
 		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).get(direction) : TransferType.NONE;
-		return transferType.canExtract() || (transferType != TransferType.DISABLED && NetworkMemberRegistry.get(entity).isProvider(AstromineNetworkTypes.ENERGY));
+		return transferType.canExtract() || (!transferType.isDisabled() && NetworkMemberRegistry.get(entity).isProvider(AstromineNetworkTypes.ENERGY));
 	}
 
 	public static boolean isInsertingEnergy(BlockEntity entity, @Nullable BlockEntityTransferComponent transferComponent, Direction direction) {
 		if (!(entity instanceof EnergyStorage)) return false;
 		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).get(direction) : TransferType.NONE;
-		return transferType.canInsert() || (transferType != TransferType.DISABLED && NetworkMemberRegistry.get(entity).isRequester(AstromineNetworkTypes.ENERGY));
+		return transferType.canInsert() || (!transferType.isDisabled() && NetworkMemberRegistry.get(entity).isRequester(AstromineNetworkTypes.ENERGY));
 	}
 }

@@ -69,7 +69,7 @@ public class NetworkTypeFluid extends NetworkType {
 
 					TransferType type = transferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).get(memberNode.getDirection());
 
-					if (type != TransferType.DISABLED) {
+					if (!type.isDisabled()) {
 						if (type.canExtract() || networkMember.isProvider(this)) {
 							fluidComponent.getContents().forEach((key, volume) -> {
 								if (fluidComponent.canExtract(memberNode.getDirection(), volume, key)) {
