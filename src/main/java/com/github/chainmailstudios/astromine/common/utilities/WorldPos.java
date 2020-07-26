@@ -28,6 +28,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -48,6 +49,10 @@ public final class WorldPos {
 
 	public static WorldPos of(World world, BlockPos pos) {
 		return new WorldPos(world, pos);
+	}
+
+	public WorldPos offset(Direction direction) {
+		return of(world, getBlockPos().offset(direction));
 	}
 
 	public BlockState getBlockState() {

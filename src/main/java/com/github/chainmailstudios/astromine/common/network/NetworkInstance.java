@@ -27,6 +27,7 @@ package com.github.chainmailstudios.astromine.common.network;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.registry.NetworkTypeRegistry;
 import com.google.common.collect.Sets;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -41,8 +42,8 @@ public class NetworkInstance implements Iterable<NetworkNode>, Tickable {
 	public final Set<NetworkNode> nodes = Sets.newConcurrentHashSet();
 
 	private final World world;
-
 	public NetworkType type;
+	private CompoundTag additionalData = new CompoundTag();
 
 	private NetworkInstance() {
 		this.type = NetworkType.EMPTY;
@@ -52,6 +53,14 @@ public class NetworkInstance implements Iterable<NetworkNode>, Tickable {
 	public NetworkInstance(World world, NetworkType type) {
 		this.type = type;
 		this.world = world;
+	}
+
+	public CompoundTag getAdditionalData() {
+		return additionalData;
+	}
+
+	public void setAdditionalData(CompoundTag additionalData) {
+		this.additionalData = additionalData;
 	}
 
 	@Override
@@ -110,7 +119,7 @@ public class NetworkInstance implements Iterable<NetworkNode>, Tickable {
 
 	@Override
 	public String toString() {
-		return "NetworkInstance{" + "type=" + NetworkTypeRegistry.INSTANCE.getKey(type) + ", world=" + world.getDimensionRegistryKey().getValue() + ", members=" + members + ", nodes=" + nodes + '}';
+		return "NetworkInstance{" + "type=" + NetworkTypeRegistry.INSTANCE.getKey(type) + ", world=" + world.getDimensionRegistryKey().getValue() + ", members=" + members + ", nodes=" + nodes + ", additionalData=" + additionalData + '}';
 	}
 
 	public boolean isStupidlyEmpty() {

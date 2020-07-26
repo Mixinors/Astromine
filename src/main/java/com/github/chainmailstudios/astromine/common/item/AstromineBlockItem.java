@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.common.item;
 
 import com.github.chainmailstudios.astromine.common.block.TieredHorizontalFacingMachineBlock;
+import com.github.chainmailstudios.astromine.common.network.ticker.NetworkTypeEnergy;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
@@ -52,6 +53,9 @@ public class AstromineBlockItem extends BlockItem {
 	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
 		if (getBlock() instanceof TieredHorizontalFacingMachineBlock) {
 			tooltip.add(new TranslatableText("text.astromine.tooltip.speed", DECIMAL_FORMAT.format(((TieredHorizontalFacingMachineBlock) getBlock()).getMachineSpeed())).formatted(Formatting.GRAY));
+			tooltip.add(new LiteralText(" "));
+		} else if (getBlock() instanceof NetworkTypeEnergy.EnergyNodeSpeedProvider) {
+			tooltip.add(new TranslatableText("text.astromine.tooltip.cable.speed", ((NetworkTypeEnergy.EnergyNodeSpeedProvider) getBlock()).getNodeSpeed()).formatted(Formatting.GRAY));
 			tooltip.add(new LiteralText(" "));
 		}
 		super.appendTooltip(stack, world, tooltip, context);

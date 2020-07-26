@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "astromine:energy_cable"
+          "name": "astromine:basic_energy_cable"
         }
       ],
       "conditions": [

@@ -95,6 +95,7 @@ public class WorldNetworkComponent implements Component, Tickable {
 			data.putString("type", NetworkTypeRegistry.INSTANCE.getKey(instance.getType()).toString());
 			data.put("nodes", nodeList);
 			data.put("members", memberList);
+			data.put("additionalData", instance.getAdditionalData());
 
 			instanceTags.add(data);
 		}
@@ -121,6 +122,10 @@ public class WorldNetworkComponent implements Component, Tickable {
 
 			for (Tag memberTag : memberList) {
 				instance.addMember(NetworkMemberNode.fromTag((CompoundTag) memberTag));
+			}
+
+			if (dataTag.contains("additionalData")) {
+				instance.setAdditionalData(dataTag.getCompound("additionalData"));
 			}
 
 			addInstance(instance);

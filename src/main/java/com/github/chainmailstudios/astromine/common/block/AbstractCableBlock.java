@@ -80,7 +80,6 @@ public abstract class AbstractCableBlock extends Block {
 	};
 
 	protected static final Map<Integer, VoxelShape> SHAPE_CACHE = new HashMap<>();
-
 	protected static final VoxelShape CENTER_SHAPE = Block.createCuboidShape(6.0D, 6.0D, 6.0D, 10.0D, 10.0D, 10.0D);
 
 	public AbstractCableBlock(AbstractBlock.Settings settings) {

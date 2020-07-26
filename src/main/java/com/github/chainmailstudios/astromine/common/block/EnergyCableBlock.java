@@ -25,15 +25,24 @@
 package com.github.chainmailstudios.astromine.common.block;
 
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.github.chainmailstudios.astromine.common.network.ticker.NetworkTypeEnergy;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
-public class EnergyCableBlock extends AbstractCableBlock {
-	public EnergyCableBlock(Settings settings) {
+public class EnergyCableBlock extends AbstractCableBlock implements NetworkTypeEnergy.EnergyNodeSpeedProvider {
+	private final double cableSpeed;
+
+	public EnergyCableBlock(double cableSpeed, Settings settings) {
 		super(settings);
+		this.cableSpeed = cableSpeed;
 	}
 
 	@Override
 	public <T extends NetworkType> T getNetworkType() {
 		return (T) AstromineNetworkTypes.ENERGY;
+	}
+
+	@Override
+	public double getNodeSpeed() {
+		return cableSpeed;
 	}
 }

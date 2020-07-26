@@ -96,7 +96,7 @@ public class NetworkTracer {
 							instance.addMember(NetworkMemberNode.of(offsetPosition, direction.getOpposite()));
 						}
 
-						if (offsetMember.isNode(type)) {
+						if (offsetMember.isNode(type) && offsetObject.getBlock() == initialObject.getBlock()) {
 							positionsToTrace.addLast(offsetPosition);
 							instance.addNode(NetworkNode.of(offsetPosition));
 						}
@@ -126,10 +126,12 @@ public class NetworkTracer {
 		}
 
 		public void scanNeighbours(NetworkType type, BlockPos initialPosition, World world) {
+			WorldPos initialObject = WorldPos.of(world, initialPosition);
 			for (Direction direction : Direction.values()) {
-				NetworkMember offsetMember = NetworkMemberRegistry.get(world, initialPosition.offset(direction));
+				WorldPos pos = WorldPos.of(world, initialPosition.offset(direction));
+				NetworkMember offsetMember = NetworkMemberRegistry.get(pos);
 
-				if (offsetMember.acceptsType(type)) {
+				if (offsetMember.acceptsType(type) && (!offsetMember.isNode(type) || pos.getBlock() == initialObject.getBlock())) {
 					directions.add(direction);
 				}
 			}

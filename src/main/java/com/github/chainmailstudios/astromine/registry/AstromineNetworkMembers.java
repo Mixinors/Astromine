@@ -39,8 +39,6 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import static com.github.chainmailstudios.astromine.common.network.NetworkMemberType.*;
-import static com.github.chainmailstudios.astromine.registry.AstromineBlocks.ENERGY_CABLE;
-import static com.github.chainmailstudios.astromine.registry.AstromineBlocks.FLUID_CABLE;
 
 public class AstromineNetworkMembers {
 	private static final Map<Predicate<Block>, Consumer<Block>> BLOCK_CONSUMER = Maps.newHashMap();
@@ -49,9 +47,12 @@ public class AstromineNetworkMembers {
 		NetworkTypeRegistry<NetworkType> energy = NetworkMemberRegistry.INSTANCE.get(AstromineNetworkTypes.ENERGY);
 		NetworkTypeRegistry<NetworkType> fluid = NetworkMemberRegistry.INSTANCE.get(AstromineNetworkTypes.FLUID);
 
-		energy.register(ENERGY_CABLE, NODE);
-		fluid.register(FLUID_CABLE, NODE);
-
+		BLOCK_CONSUMER.put(block -> block instanceof EnergyCableBlock, block -> {
+			energy.register(block, NODE);
+		});
+		BLOCK_CONSUMER.put(block -> block instanceof FluidCableBlock, block -> {
+			fluid.register(block, NODE);
+		});
 		BLOCK_CONSUMER.put(block -> block instanceof AlloySmelterBlock, block -> {
 			energy.register(block, REQUESTER);
 		});
