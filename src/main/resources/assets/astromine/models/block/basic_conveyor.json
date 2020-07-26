@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"textures": {
-		"conveyor": "astromine:block/basic_conveyor",
 		"particle": "astromine:block/basic_conveyor",
+		"conveyor": "astromine:block/basic_conveyor",
 		"side": "astromine:block/conveyor_side",
 		"right": "astromine:block/roller_right",
 		"left": "astromine:block/roller_left"
@@ -135,11 +135,6 @@
 			"name": "Conveyor",
 			"origin": [8, 8, 8],
 			"children": [0, 1, 2, 3, 4, 5]
-		},
-		{
-			"name": "Railing",
-			"origin": [8, 8, 8],
-			"children": []
 		},
 		{
 			"name": "Rollers",

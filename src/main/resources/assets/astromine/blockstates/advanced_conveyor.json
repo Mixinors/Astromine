@@ -36,6 +36,30 @@
 	{   "when": { "facing": "west", "right": "false" },
 		"apply": { "model": "astromine:block/conveyor_railing", "y": 90 }
 	},
+	{   "when": { "facing": "north", "back": "false" },
+		"apply": { "model": "astromine:block/conveyor_railing_corner", "y": 270 }
+	},
+	{   "when": { "facing": "east", "back": "false" },
+		"apply": { "model": "astromine:block/conveyor_railing_corner" }
+	},
+	{   "when": { "facing": "south", "back": "false" },
+		"apply": { "model": "astromine:block/conveyor_railing_corner", "y": 90 }
+	},
+	{   "when": { "facing": "west", "back": "false" },
+		"apply": { "model": "astromine:block/conveyor_railing_corner", "y": 180 }
+	},
+	{   "when": { "facing": "north", "back": "true" },
+		"apply": { "model": "astromine:block/conveyor_railing_back", "y": 270 }
+	},
+	{   "when": { "facing": "east", "back": "true" },
+		"apply": { "model": "astromine:block/conveyor_railing_back" }
+	},
+	{   "when": { "facing": "south", "back": "true" },
+		"apply": { "model": "astromine:block/conveyor_railing_back", "y": 90 }
+	},
+	{   "when": { "facing": "west", "back": "true" },
+		"apply": { "model": "astromine:block/conveyor_railing_back", "y": 180 }
+	},
 	{   "when": { "up": "true" },
 		"apply": { "model": "astromine:block/conveyor_pillars" }
 	}
