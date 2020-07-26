@@ -43,7 +43,7 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	protected int prevHorizontalPosition;
 
 	public DownVerticalConveyorBlockEntity() {
-		super(AstromineBlockEntityTypes.DOWN_VERTICAL_CONVEYOR);
+		super(AstromineBlockEntityTypes.DOWNWARD_VERTICAL_CONVEYOR);
 	}
 
 	@Override

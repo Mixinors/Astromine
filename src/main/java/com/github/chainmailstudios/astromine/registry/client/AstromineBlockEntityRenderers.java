@@ -44,7 +44,7 @@ public class AstromineBlockEntityRenderers {
 
 		register(AstromineBlockEntityTypes.CONVEYOR, ConveyorBlockEntityRenderer::new);
 		register(AstromineBlockEntityTypes.VERTICAL_CONVEYOR, VerticalConveyorBlockEntityRenderer::new);
-		register(AstromineBlockEntityTypes.DOWN_VERTICAL_CONVEYOR, DownVerticalConveyorBlockEntityRenderer::new);
+		register(AstromineBlockEntityTypes.DOWNWARD_VERTICAL_CONVEYOR, DownwardVerticalConveyorBlockEntityRenderer::new);
 	}
 
 	public static <B extends BlockEntity, C extends BlockEntityType<B>> void register(C c, Function<BlockEntityRenderDispatcher, BlockEntityRenderer<B>> b) {
