@@ -60,11 +60,11 @@ public interface ItemInventoryComponent extends NameableComponent {
 	* @param predicate the specified predicate.
 	* @return the retrieved collection.
 	*/
-	default Collection<ItemStack> getContentsMatching(Predicate<ItemStack> predicate) {
+	default List<ItemStack> getContentsMatching(Predicate<ItemStack> predicate) {
 		return this.getContents().values().stream().filter(predicate).collect(Collectors.toList());
 	}
 
-	default Collection<ItemStack> getExtractableContentsMatching(Direction direction, Predicate<ItemStack> predicate) {
+	default List<ItemStack> getExtractableContentsMatching(Direction direction, Predicate<ItemStack> predicate) {
 		return this.getContents().entrySet().stream().filter((entry) ->
 			canExtract(direction, entry.getValue(), entry.getKey()) && predicate.test(entry.getValue())
 		).map(Map.Entry::getValue).collect(Collectors.toList());

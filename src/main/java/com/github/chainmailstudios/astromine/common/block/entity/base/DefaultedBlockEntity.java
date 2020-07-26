@@ -31,6 +31,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.FluidInv
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
 import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
+import com.github.chainmailstudios.astromine.common.utilities.SidingUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.google.common.collect.Lists;
@@ -58,12 +59,8 @@ import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
-import team.reborn.energy.EnergyStorage;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
@@ -193,96 +190,81 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 	@Override
 	public void tick() {
 		if (!hasWorld() || world.isClient()) return;
-		allComponents.forEach((type, component) -> {
-			BlockEntityTransferComponent.TransferEntry entry = transferComponent.get(type);
 
-			for (Direction ourDirection : Direction.values()) {
-				TransferType transferType = entry.get(ourDirection);
-				if (transferType.canExtract()) {
-					BlockPos neighborPos = getPos().offset(ourDirection);
-					BlockState neighborState = world.getBlockState(neighborPos);
+		ItemInventoryComponent itemComponent = getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
+		FluidInventoryComponent fluidComponent = getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
-					if (neighborState.getBlock().hasBlockEntity()) {
-						BlockEntity neighborEntity = world.getBlockEntity(neighborPos);
+		List<Pair<EnergyHandler, EnergyHandler>> energyTransfers = Lists.newArrayList();
 
-						ComponentProvider neighborProvider = ComponentProvider.fromBlockEntity(neighborEntity);
+		for (Direction offsetDirection : Direction.values()) {
+			BlockPos neighborPos = getPos().offset(offsetDirection);
+			BlockState neighborState = world.getBlockState(neighborPos);
 
-						Direction neighborDirection = ourDirection.getOpposite();
+			BlockEntity neighborBlockEntity = world.getBlockEntity(neighborPos);
+			if (neighborBlockEntity != null) {
+				ComponentProvider neighborProvider = ComponentProvider.fromBlockEntity(neighborBlockEntity);
+				Direction neighborDirection = offsetDirection.getOpposite();
+				BlockEntityTransferComponent neighborTransferComponent = neighborProvider != null ? neighborProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT) : null;
 
-						if (neighborEntity instanceof Inventory) {
-							if (hasComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)) {
-								ItemInventoryComponent ourItemComponent = getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
-								ItemInventoryComponent neighborItemComponent = ItemInventoryComponentFromItemInventory.of((Inventory) neighborEntity);
+				// Handle Item Siding
+				if (itemComponent != null && transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(offsetDirection).canExtract()) {
+					ItemInventoryComponent neighborItemComponent = null;
+					if (neighborTransferComponent != null) {
+						// Get via astromine siding
+						if (neighborTransferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(neighborDirection).canInsert())
+							neighborItemComponent = neighborProvider.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
+					} else if (neighborBlockEntity instanceof Inventory) {
+						// Get via vanilla inventory
+						neighborItemComponent = ItemInventoryComponentFromItemInventory.of((Inventory) neighborBlockEntity);
+					}
 
-								List<ItemStack> matching = (List<ItemStack>) ourItemComponent.getExtractableContentsMatching(ourDirection, (stack -> !stack.isEmpty()));
+					if (neighborItemComponent != null) {
+						List<ItemStack> matching = itemComponent.getExtractableContentsMatching(offsetDirection, (stack -> !stack.isEmpty()));
+						if (!matching.isEmpty()) {
+							ItemStack stack = matching.get(0);
 
-								if (!matching.isEmpty()) {
-									ItemStack stack = matching.get(0);
+							TypedActionResult<ItemStack> result = neighborItemComponent.insert(neighborDirection, stack);
 
-									TypedActionResult<ItemStack> result = neighborItemComponent.insert(neighborDirection, stack);
+							ItemStack resultStack = result.getValue();
 
-									ItemStack resultStack = result.getValue();
-
-									stack.setCount(resultStack.getCount());
-								}
-							}
-						}
-
-						if (neighborProvider != null && neighborProvider.hasComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT)) {
-							BlockEntityTransferComponent neighborTransferComponent = neighborProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
-
-							TransferType neighborTransferType;
-
-							if (hasComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT) && neighborProvider.hasComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)) {
-								neighborTransferType = neighborTransferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(neighborDirection);
-
-								if (neighborTransferType.canInsert()) {
-									ItemInventoryComponent ourItemComponent = getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
-									ItemInventoryComponent neighborItemComponent = neighborProvider.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
-
-									List<ItemStack> matching = (List<ItemStack>) ourItemComponent.getExtractableContentsMatching(ourDirection, (stack -> !stack.isEmpty()));
-
-									if (!matching.isEmpty()) {
-										ItemStack stack = matching.get(0);
-
-										TypedActionResult<ItemStack> result = neighborItemComponent.insert(neighborDirection, stack);
-
-										ItemStack resultStack = result.getValue();
-
-										stack.setCount(resultStack.getCount());
-									}
-								}
-							}
-
-							if (hasComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT) && neighborProvider.hasComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT)) {
-								neighborTransferType = neighborTransferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).get(neighborDirection);
-
-								if (neighborTransferType.canInsert()) {
-									FluidInventoryComponent ourFluidComponent = getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
-									FluidInventoryComponent neighborFluidComponent = neighborProvider.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
-
-									List<FluidVolume> matching = (List<FluidVolume>) ourFluidComponent.getExtractableContentsMatching(ourDirection, (volume -> !volume.isEmpty()));
-
-									if (!matching.isEmpty()) {
-										neighborFluidComponent.insert(neighborDirection, matching.get(0));
-									}
-								}
-							}
-
-							if (this instanceof EnergyStorage && neighborEntity instanceof EnergyStorage) {
-								neighborTransferType = neighborTransferComponent.get(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).get(neighborDirection);
-
-								if (neighborTransferType.canInsert()) {
-									EnergyHandler ourEnergyStorage = Energy.of(this);
-									EnergyHandler neighborEnergyStorage = Energy.of(neighborEntity);
-
-									ourEnergyStorage.into(neighborEnergyStorage).move(Math.min(ourEnergyStorage.getMaxOutput(), neighborEnergyStorage.getMaxInput()));
-								}
-							}
+							stack.setCount(resultStack.getCount());
 						}
 					}
 				}
+
+				// Handle fluid siding
+				if (fluidComponent != null && transferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).get(offsetDirection).canExtract()) {
+					FluidInventoryComponent neighborFluidComponent = null;
+					if (neighborTransferComponent != null) {
+						// Get via astromine siding
+						if (neighborTransferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).get(neighborDirection).canInsert())
+							neighborFluidComponent = neighborProvider.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+					}
+
+					if (neighborFluidComponent != null) {
+						List<FluidVolume> matching = (List<FluidVolume>) fluidComponent.getExtractableContentsMatching(offsetDirection, (volume -> !volume.isEmpty()));
+
+						if (!matching.isEmpty()) {
+							neighborFluidComponent.insert(neighborDirection, matching.get(0));
+						}
+					}
+				}
+
+				// Handle energy siding
+				if (SidingUtilities.isExtractingEnergy(this, transferComponent, offsetDirection)) {
+					if (SidingUtilities.isInsertingEnergy(neighborBlockEntity, neighborTransferComponent, neighborDirection)) {
+						energyTransfers.add(new Pair<>(Energy.of(this).side(offsetDirection), Energy.of(neighborBlockEntity).side(neighborDirection)));
+					}
+				}
 			}
-		});
+		}
+
+		energyTransfers.sort(Comparator.comparing(Pair::getRight, Comparator.comparingDouble(EnergyHandler::getEnergy)));
+		for (int i = energyTransfers.size() - 1; i >= 0; i--) {
+			Pair<EnergyHandler, EnergyHandler> pair = energyTransfers.get(i);
+			EnergyHandler input = pair.getLeft();
+			EnergyHandler output = pair.getRight();
+			input.into(output).move(Math.max(0, Math.min(input.getMaxOutput() / energyTransfers.size(), Math.min(Math.min(input.getEnergy() / (i + 1), output.getMaxStored() - output.getEnergy()), Math.min(input.getMaxOutput(), output.getMaxInput())))));
+		}
 	}
 }
