@@ -5,7 +5,7 @@
   "ambient_light": 0.0,
   "has_skylight": true,
   "has_ceiling": false,
-  "infiniburn": "astromine:infiniburn_mars",
+  "infiniburn": "astromine:infiniburn_vulcan",
   "logical_height" : 256,
   "has_raids" : false,
   "respawn_anchor_works": false,

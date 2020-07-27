@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.block.PresserBlock;
+import com.github.chainmailstudios.astromine.common.block.TieredHorizontalFacingMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
@@ -50,7 +50,7 @@ public abstract class PresserBlockEntity extends DefaultedEnergyItemBlockEntity 
 
 	public boolean isActive = false;
 
-	public boolean[] activity = { false, false, false, false, false };
+	public boolean[] activity = {false, false, false, false, false};
 
 	Optional<PressingRecipe> recipe = Optional.empty();
 
@@ -99,17 +99,18 @@ public abstract class PresserBlockEntity extends DefaultedEnergyItemBlockEntity 
 				}
 			}
 			if (recipe.isPresent() && recipe.get().matches(ItemInventoryFromInventoryComponent.of(itemComponent), world)) {
-				limit = recipe.get().getTime() * 2;
+				limit = recipe.get().getTime();
 
-				double consumed = recipe.get().getEnergyConsumed() / (double) (limit / 2);
+				double speed = Math.min(((TieredHorizontalFacingMachineBlock) this.getCachedState().getBlock()).getMachineSpeed(), limit - progress);
+				double consumed = recipe.get().getEnergyConsumed() * speed / limit;
 
 				ItemStack output = recipe.get().getOutput();
 
 				boolean isEmpty = itemComponent.getStack(0).isEmpty();
 				boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(0), output) && ItemStack.areTagsEqual(itemComponent.getStack(0), output);
 
-				if (asEnergy().use(consumed) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
-					if (progress >= limit) {
+				if ((isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount() && asEnergy().use(consumed)) {
+					if (progress + speed >= limit) {
 						recipe.get().craft(ItemInventoryFromInventoryComponent.of(itemComponent));
 
 						if (isEmpty) {
@@ -120,7 +121,7 @@ public abstract class PresserBlockEntity extends DefaultedEnergyItemBlockEntity 
 
 						progress = 0;
 					} else {
-						progress += 1 * ((PresserBlock) this.getCachedState().getBlock()).getMachineSpeed();
+						progress += speed;
 					}
 					isActive = true;
 				}

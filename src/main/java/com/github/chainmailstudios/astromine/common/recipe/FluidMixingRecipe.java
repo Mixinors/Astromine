@@ -99,30 +99,35 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory>, EnergyConsu
 		if (!(block instanceof TieredHorizontalFacingMachineBlock))
 			return false;
 
+		double machineSpeed = ((TieredHorizontalFacingMachineBlock) block).getMachineSpeed();
+		Fraction speed = FractionUtilities.fromFloating(machineSpeed);
+
 		FluidInventoryComponent fluidComponent = blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
 		FluidVolume firstInputVolume = fluidComponent.getVolume(FIRST_INPUT_FLUID_VOLUME);
 		FluidVolume secondInputVolume = fluidComponent.getVolume(SECOND_INPUT_FLUID_VOLUME);
 		FluidVolume outputVolume = fluidComponent.getVolume(OUTPUT_FLUID_VOLUME);
 
+		if (Energy.of(blockEntity).getEnergy() < energyConsumed * machineSpeed)
+			return false;
 		if (!firstInputVolume.getFluid().matchesType(firstInputFluid.get()))
 			return false;
-		if (!firstInputVolume.hasStored(firstInputAmount))
+		if (!firstInputVolume.hasStored(Fraction.simplify(Fraction.multiply(firstInputAmount, speed))))
 			return false;
 		if (!secondInputVolume.getFluid().matchesType(secondInputFluid.get()))
 			return false;
-		if (!secondInputVolume.hasStored(secondInputAmount))
+		if (!secondInputVolume.hasStored(Fraction.simplify(Fraction.multiply(secondInputAmount, speed))))
 			return false;
 		if (!outputVolume.getFluid().matchesType(outputFluid.get()) && !outputVolume.isEmpty())
 			return false;
-		return outputVolume.hasAvailable(outputAmount);
+		return outputVolume.hasAvailable(Fraction.simplify(Fraction.multiply(outputAmount, speed)));
 	}
 
 	@Override
 	public <T extends DefaultedBlockEntity> void craft(T blockEntity) {
 		if (canCraft(blockEntity)) {
 			Block block = blockEntity.getWorld().getBlockState(blockEntity.getPos()).getBlock();
-			double machineSpeed = ((TieredHorizontalFacingMachineBlock) block).getMachineSpeed() / 2;
+			double machineSpeed = ((TieredHorizontalFacingMachineBlock) block).getMachineSpeed();
 			Fraction speed = FractionUtilities.fromFloating(machineSpeed);
 
 			FluidInventoryComponent fluidComponent = blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
@@ -133,7 +138,7 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory>, EnergyConsu
 
 			EnergyHandler energyHandler = Energy.of(blockEntity);
 
-			if (energyHandler.getEnergy() >= energyConsumed * Math.max(1, machineSpeed)) {
+			if (energyHandler.getEnergy() >= energyConsumed * machineSpeed) {
 				firstInputFluidVolume.extractVolume(Fraction.simplify(Fraction.multiply(firstInputAmount, speed)));
 				secondInputFluidVolume.extractVolume(Fraction.simplify(Fraction.multiply(secondInputAmount, speed)));
 				outputVolume.insertVolume(new FluidVolume(outputFluid.get(), Fraction.simplify(Fraction.multiply(outputAmount, speed)).copy()));
@@ -231,13 +236,13 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory>, EnergyConsu
 			FluidMixingRecipe.Format format = new Gson().fromJson(object, FluidMixingRecipe.Format.class);
 
 			return new FluidMixingRecipe(identifier, RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.firstInput)), FractionUtilities.fromJson(format.firstInputAmount), RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.secondInput)), FractionUtilities.fromJson(
-				format.secondInputAmount), RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.output)), FractionUtilities.fromJson(format.outputAmount), EnergyUtilities.fromJson(format.energyGenerated), ParsingUtilities.fromJson(format.time, Integer.class));
+					format.secondInputAmount), RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.output)), FractionUtilities.fromJson(format.outputAmount), EnergyUtilities.fromJson(format.energyGenerated), ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 
 		@Override
 		public FluidMixingRecipe read(Identifier identifier, PacketByteBuf buffer) {
 			return new FluidMixingRecipe(identifier, RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), RegistryKey.of(
-				Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), EnergyUtilities.fromPacket(buffer), PacketUtilities.fromPacket(buffer, Integer.class));
+					Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), EnergyUtilities.fromPacket(buffer), PacketUtilities.fromPacket(buffer, Integer.class));
 		}
 
 		@Override
@@ -287,7 +292,7 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory>, EnergyConsu
 		@Override
 		public String toString() {
 			return "Format{" + "firstInput='" + firstInput + '\'' + ", firstInputAmount=" + firstInputAmount + ", secondInput='" + secondInput + '\'' + ", secondInputAmount=" + secondInputAmount + ", output='" + output + '\'' + ", outputAmount=" + outputAmount +
-				", energyGenerated=" + energyGenerated + '}';
+			       ", energyGenerated=" + energyGenerated + '}';
 		}
 	}
 }

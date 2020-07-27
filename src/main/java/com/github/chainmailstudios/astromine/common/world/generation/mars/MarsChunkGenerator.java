@@ -30,7 +30,6 @@ import java.util.Random;
 import com.github.chainmailstudios.astromine.common.miscellaneous.BiomeGenCache;
 import com.github.chainmailstudios.astromine.common.noise.OctaveNoiseSampler;
 import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
-import com.github.chainmailstudios.astromine.common.world.generation.moon.MoonBiomeSource;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
