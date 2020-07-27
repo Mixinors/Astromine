@@ -196,5 +196,11 @@
       "astromine:machine_click_4"
     ],
     "subtitle": "subtitle.astromine.machine.click"
+  },
+  "block.incinerator.incinerate": {
+    "sounds": [
+      "mob/ghast/fireball4"
+    ],
+    "subtitle": "subtitle.astromine.incinerator.incinerate"
   }
 }
