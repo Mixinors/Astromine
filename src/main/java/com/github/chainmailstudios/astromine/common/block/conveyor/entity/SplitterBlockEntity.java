@@ -45,17 +45,23 @@ public class SplitterBlockEntity extends DoubleMachineBlockEntity {
 		int smallHalf = size / 2;
 		int largeHalf = size - smallHalf;
 
-		ItemStack smallStack = stack.copy();
-		ItemStack largeStack = stack.copy();
+		if (isEmpty()) {
+			ItemStack smallStack = stack.copy();
+			ItemStack largeStack = stack.copy();
 
-		smallStack.setCount(smallHalf);
-		largeStack.setCount(largeHalf);
+			smallStack.setCount(smallHalf);
+			largeStack.setCount(largeHalf);
 
-		if (smallStack.getCount() > 0)
-			setLeftStack(smallStack);
+			if (smallStack.getCount() > 0)
+				setLeftStack(smallStack);
 
-		if (largeStack.getCount() > 0)
-			setRightStack(largeStack);
+			if (largeStack.getCount() > 0)
+				setRightStack(largeStack);
+		} else if (!getLeftStack().isEmpty() && getRightStack().isEmpty()) {
+			setRightStack(stack);
+		} else if (!getRightStack().isEmpty() && getLeftStack().isEmpty()) {
+			setLeftStack(stack);
+		}
 
 		world.playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AstromineSoundEvents.MACHINE_CLICK, SoundCategory.BLOCKS, 1.0F, 1.0F);
 	}

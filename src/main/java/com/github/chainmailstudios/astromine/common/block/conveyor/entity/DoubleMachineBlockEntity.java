@@ -185,7 +185,7 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 
 	@Override
 	public boolean accepts(ItemStack stack) {
-		return isEmpty();
+		return !(!getLeftStack().isEmpty() && !getRightStack().isEmpty());
 	}
 
 	@Override

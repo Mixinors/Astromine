@@ -45,12 +45,18 @@ public class AlternatorBlockEntity extends DoubleMachineBlockEntity {
 	public void give(ItemStack stack) {
 		ItemStack copyStack = stack.copy();
 
-		if (right) {
-			setRightStack(copyStack);
-		} else {
-			setLeftStack(copyStack);
+		if (isEmpty()) {
+			if (right) {
+				setRightStack(copyStack);
+			} else {
+				setLeftStack(copyStack);
+			}
+			right = !right;
+		} else if (!getLeftStack().isEmpty() && getRightStack().isEmpty()) {
+			setRightStack(stack);
+		} else if (!getRightStack().isEmpty() && getLeftStack().isEmpty()) {
+			setLeftStack(stack);
 		}
-		right = !right;
 
 		getWorld().playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AstromineSoundEvents.MACHINE_CLICK, SoundCategory.BLOCKS, 1.0F, 1.0F);
 	}
