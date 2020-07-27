@@ -50,7 +50,7 @@ public abstract class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlock
 
 	public boolean isActive = false;
 
-	public boolean[] activity = { false, false, false, false, false };
+	public boolean[] activity = {false, false, false, false, false};
 
 	private Optional<SolidGeneratingRecipe> recipe = Optional.empty();
 
@@ -143,17 +143,18 @@ public abstract class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlock
 				}
 			}
 
-			if (current > 0 && current <= limit) {
-				double produced = 5;
-				for (int i = 0; i < 3 * ((SolidGeneratorBlock) this.getCachedState().getBlock()).getMachineSpeed(); i++) {
+			double produced = 5;
+			for (int i = 0; i < 3 * ((SolidGeneratorBlock) this.getCachedState().getBlock()).getMachineSpeed(); i++) {
+				if (current > 0 && current <= limit) {
 					if (EnergyUtilities.hasAvailable(asEnergy(), produced)) {
 						current++;
 						asEnergy().insert(produced);
 					}
+				} else {
+					current = 0;
+					limit = 100;
+					break;
 				}
-			} else {
-				current = 0;
-				limit = 100;
 			}
 
 			isActive = isFuel || current != 0;
