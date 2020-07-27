@@ -41,7 +41,7 @@ import java.util.List;
 
 public abstract class DefaultedEnergyBlockEntity extends DefaultedBlockEntity implements ComponentProvider, EnergyStorage {
 	private final List<Runnable> energyListeners = Lists.newArrayList();
-	private final EnergyVolume volume = new EnergyVolume(0, () -> {
+	private final EnergyVolume energyVolume = new EnergyVolume(0, () -> {
 		for (Runnable listener : energyListeners) {
 			listener.run();
 		}
@@ -66,21 +66,21 @@ public abstract class DefaultedEnergyBlockEntity extends DefaultedBlockEntity im
 
 	@Override
 	public double getStored(EnergySide energySide) {
-		return volume.getAmount();
+		return energyVolume.getAmount();
 	}
 
 	@Override
 	public void setStored(double v) {
-		volume.setAmount(v);
+		energyVolume.setAmount(v);
 	}
 
 	@Override
 	public double getMaxStoredPower() {
-		return volume.getMaxAmount();
+		return energyVolume.getMaxAmount();
 	}
 
 	public void setMaxStoredPower(double v) {
-		volume.setMaxAmount(v);
+		energyVolume.setMaxAmount(v);
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public abstract class DefaultedEnergyBlockEntity extends DefaultedBlockEntity im
 	}
 
 	public final EnergyVolume getEnergyVolume() {
-		return volume;
+		return energyVolume;
 	}
 
 	@Override
@@ -121,10 +121,10 @@ public abstract class DefaultedEnergyBlockEntity extends DefaultedBlockEntity im
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
 		super.fromTag(state, tag);
-		volume.setAmount(0);
+		energyVolume.setAmount(0);
 		if (tag.contains("energy")) {
 			EnergyVolume energy = EnergyVolume.fromTag(tag.getCompound("energy"));
-			volume.setAmount(energy.getAmount());
+			energyVolume.setAmount(energy.getAmount());
 		}
 	}
 }

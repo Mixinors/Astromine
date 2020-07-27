@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.block.TrituratorBlock;
+import com.github.chainmailstudios.astromine.common.block.TieredHorizontalFacingMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
@@ -101,8 +101,7 @@ public abstract class TrituratorBlockEntity extends DefaultedEnergyItemBlockEnti
 			if (recipe.isPresent() && recipe.get().matches(ItemInventoryFromInventoryComponent.of(itemComponent), world)) {
 				limit = recipe.get().getTime();
 
-				double speed = Math.min(((TrituratorBlock) this.getCachedState().getBlock()).getMachineSpeed(), limit - progress);
-
+				double speed = Math.min(((TieredHorizontalFacingMachineBlock) this.getCachedState().getBlock()).getMachineSpeed(), limit - progress);
 				double consumed = recipe.get().getEnergyConsumed() * speed / limit;
 
 				ItemStack output = recipe.get().getOutput();
