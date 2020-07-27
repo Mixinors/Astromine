@@ -124,7 +124,6 @@ dependencies {
 
     // LBA
     modImplementation "alexiil.mc.lib:libblockattributes-core:${lba_version}"
-    modImplementation "alexiil.mc.lib:libblockattributes-items:${lba_version}"
     modImplementation "alexiil.mc.lib:libblockattributes-fluids:${lba_version}"
 
     // Tech Reborn Energy

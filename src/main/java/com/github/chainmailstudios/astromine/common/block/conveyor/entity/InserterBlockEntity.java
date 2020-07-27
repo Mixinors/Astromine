@@ -24,15 +24,10 @@
 
 package com.github.chainmailstudios.astromine.common.block.conveyor.entity;
 
-import alexiil.mc.lib.attributes.SearchOptions;
-import alexiil.mc.lib.attributes.Simulation;
-import alexiil.mc.lib.attributes.item.ItemAttributes;
-import alexiil.mc.lib.attributes.item.ItemExtractable;
-import alexiil.mc.lib.attributes.item.ItemInsertable;
-import alexiil.mc.lib.attributes.item.compat.FixedInventoryVanillaWrapper;
-import alexiil.mc.lib.attributes.item.impl.EmptyItemExtractable;
-import alexiil.mc.lib.attributes.item.impl.RejectingItemInsertable;
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.conveyor.InserterBlock;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
 import com.github.chainmailstudios.astromine.common.inventory.SingularStackInventory;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
@@ -53,7 +48,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Tickable;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -84,33 +81,33 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 		if (!powered) {
 			if (isEmpty()) {
 				BlockState behindState = world.getBlockState(getPos().offset(direction.getOpposite()));
-				ItemExtractable extractable = ItemAttributes.EXTRACTABLE.get(world, getPos().offset(direction.getOpposite()), SearchOptions.inDirection(direction.getOpposite()));
+				BlockEntity behindBlockEntity = world.getBlockEntity(getPos().offset(direction.getOpposite()));
 
-				if (behindState.getBlock() instanceof AbstractFurnaceBlock) {
-					extractable = ItemAttributes.EXTRACTABLE.get(world, getPos().offset(direction.getOpposite()), SearchOptions.inDirection(Direction.UP));
-				}
+				if (position == 0 && behindBlockEntity instanceof Inventory) {
+					ItemInventoryComponent component = ItemInventoryComponentFromItemInventory.of((Inventory) behindBlockEntity);
+					TypedActionResult<ItemStack> extractedStack;
 
-				if (extractable != EmptyItemExtractable.NULL) {
-					ItemStack stack = extractable.attemptAnyExtraction(64, Simulation.SIMULATE);
-					if (position == 0 && !stack.isEmpty() && !(behindState.getBlock() instanceof InserterBlock)) {
-						stack = extractable.attemptAnyExtraction(64, Simulation.ACTION);
-						setStack(stack);
-					} else if (position > 0) {
-						setPosition(getPosition() - 1);
+					if (behindState.getBlock() instanceof AbstractFurnaceBlock) {
+						extractedStack = component.extractFirstMatching(Direction.UP, itemStack -> !itemStack.isEmpty());
+					} else {
+						extractedStack = component.extractFirstMatching(direction, itemStack -> !itemStack.isEmpty());
+					}
+
+					if (position == 0 && extractedStack.getResult() == ActionResult.SUCCESS) {
+						if (!(behindState.getBlock() instanceof InserterBlock)) {
+							setStack(extractedStack.getValue());
+						}
 					}
 				} else {
 					BlockPos offsetPos = getPos().offset(direction.getOpposite());
 					List<ChestMinecartEntity> minecartEntities = getWorld().getEntities(ChestMinecartEntity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1), EntityPredicates.EXCEPT_SPECTATOR);
 					if (position == 0 && minecartEntities.size() >= 1) {
 						ChestMinecartEntity minecartEntity = minecartEntities.get(0);
-						FixedInventoryVanillaWrapper wrapper = new FixedInventoryVanillaWrapper(minecartEntity);
-						ItemExtractable extractableMinecart = wrapper.getExtractable();
+						ItemInventoryComponent component = ItemInventoryComponentFromItemInventory.of(minecartEntity);
+						TypedActionResult<ItemStack> extractedStack = component.extractFirstMatching(direction, itemStack -> !itemStack.isEmpty());;
 
-						ItemStack stackMinecart = extractableMinecart.attemptAnyExtraction(64, Simulation.SIMULATE);
-						if (position == 0 && !stackMinecart.isEmpty()) {
-							stackMinecart = extractableMinecart.attemptAnyExtraction(64, Simulation.ACTION);
-							setStack(stackMinecart);
-							minecartEntity.markDirty();
+						if (position == 0 && extractedStack.getResult() == ActionResult.SUCCESS) {
+							setStack(extractedStack.getValue());
 						}
 					} else if (position > 0) {
 						setPosition(getPosition() - 1);
@@ -118,25 +115,32 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 				}
 			} else if (!isEmpty()) {
 				BlockState aheadState = getWorld().getBlockState(getPos().offset(direction));
+				BlockEntity aheadBlockEntity = getWorld().getBlockEntity(getPos().offset(direction));
 
-				ItemInsertable insertable = ItemAttributes.INSERTABLE.get(world, getPos().offset(direction), SearchOptions.inDirection(direction));
+				if (aheadBlockEntity instanceof Inventory) {
+					if (position < speed) {
+						setPosition(getPosition() + 1);
+					} else if (position == speed) {
+						TypedActionResult<ItemStack> insertedStack;
 
-				if (aheadState.getBlock() instanceof ComposterBlock) {
-					insertable = ItemAttributes.INSERTABLE.get(world, getPos().offset(direction), SearchOptions.inDirection(Direction.DOWN));
-				} else if (aheadState.getBlock() instanceof AbstractFurnaceBlock && !AbstractFurnaceBlockEntity.canUseAsFuel(getStack())) {
-					insertable = ItemAttributes.INSERTABLE.get(world, getPos().offset(direction), SearchOptions.inDirection(Direction.DOWN));
-				}
-
-				ItemStack stack = insertable.attemptInsertion(getStack(), Simulation.SIMULATE);
-				if (insertable != RejectingItemInsertable.NULL) {
-					if (stack.isEmpty() || stack.getCount() != getStack().getCount()) {
-						if (position < speed) {
-							setPosition(getPosition() + 1);
-						} else if (!getWorld().isClient()) {
-							stack = insertable.attemptInsertion(getStack(), Simulation.ACTION);
-							setStack(stack);
+						if (aheadState.getBlock() instanceof ComposterBlock) {
+							insertedStack = ItemInventoryComponentFromItemInventory.of((Inventory) aheadBlockEntity).insert(Direction.DOWN, getStack());
+						} else if (aheadState.getBlock() instanceof AbstractFurnaceBlock && !AbstractFurnaceBlockEntity.canUseAsFuel(getStack())) {
+							insertedStack = ItemInventoryComponentFromItemInventory.of((Inventory) aheadBlockEntity).insert(Direction.DOWN, getStack());
+						} else {
+							insertedStack = ItemInventoryComponentFromItemInventory.of((Inventory) aheadBlockEntity).insert(direction.getOpposite(), getStack());
 						}
-					} else if (position > 0) {
+
+						if (insertedStack.getResult() == ActionResult.SUCCESS) {
+							if (insertedStack.getValue().isEmpty() || insertedStack.getValue().getCount() != getStack().getCount()) {
+								if (!getWorld().isClient()) {
+									setStack(insertedStack.getValue());
+								}
+							}
+						} else {
+							prevPosition = speed;
+						}
+					} else {
 						setPosition(getPosition() - 1);
 					}
 				} else {
@@ -146,20 +150,22 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 					if (minecartEntities.size() >= 1) {
 						AbstractMinecartEntity minecartEntity = minecartEntities.get(0);
 						if (minecartEntity instanceof Inventory) {
-							FixedInventoryVanillaWrapper wrapper = new FixedInventoryVanillaWrapper((Inventory) minecartEntity);
-							ItemInsertable insertableMinecart = wrapper.getInsertable();
-
-							ItemStack stackMinecart = insertableMinecart.attemptInsertion(getStack(), Simulation.SIMULATE);
-							if (position < speed && (stackMinecart.isEmpty() || stackMinecart.getCount() != getStack().getCount())) {
+							if (position < speed) {
 								setPosition(getPosition() + 1);
-							} else if (!getWorld().isClient() && (stackMinecart.isEmpty() || stackMinecart.getCount() != getStack().getCount())) {
-								stackMinecart = insertableMinecart.attemptInsertion(getStack(), Simulation.ACTION);
-								setStack(stackMinecart);
-								((Inventory) minecartEntity).markDirty();
+							} else if (position == speed) {
+								TypedActionResult<ItemStack> insertedStack = ItemInventoryComponentFromItemInventory.of((Inventory) minecartEntity).insert(direction.getOpposite(), getStack());
+
+								if (insertedStack.getResult() == ActionResult.SUCCESS) {
+									if (insertedStack.getValue().isEmpty() || insertedStack.getValue().getCount() != getStack().getCount()) {
+										if (!getWorld().isClient()) {
+											setStack(insertedStack.getValue());
+										}
+									}
+								} else {
+									prevPosition = speed;
+								}
 							}
 						}
-					} else if (position > 0) {
-						setPosition(getPosition() - 1);
 					}
 				}
 			} else if (position > 0) {
