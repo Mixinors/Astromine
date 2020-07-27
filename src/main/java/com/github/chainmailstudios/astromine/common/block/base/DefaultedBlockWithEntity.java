@@ -25,7 +25,10 @@
 package com.github.chainmailstudios.astromine.common.block.base;
 
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,13 +36,13 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.text.Text;
@@ -50,6 +53,8 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public abstract class DefaultedBlockWithEntity extends Block implements BlockEntityProvider {
 	protected DefaultedBlockWithEntity(AbstractBlock.Settings settings) {
@@ -143,24 +148,17 @@ public abstract class DefaultedBlockWithEntity extends Block implements BlockEnt
 	}
 
 	@Override
-	public void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack stack) {
-		player.incrementStat(Stats.MINED.getOrCreateStat(this));
-		player.addExhaustion(0.005F);
-
+	public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
+		List<ItemStack> stacks = super.getDroppedStacks(state, builder);
+		BlockEntity blockEntity = builder.getNullable(LootContextParameters.BLOCK_ENTITY);
 		boolean isTagged = false;
-
-		if (world instanceof ServerWorld) {
-			for (ItemStack drop : getDroppedStacks(state, (ServerWorld) world, pos, blockEntity, player, stack)) {
-				if (!isTagged && drop.getItem() == asItem()) {
-					drop.setTag(blockEntity.toTag(drop.getOrCreateTag()));
-					drop.getTag().putByte("tracker", (byte) 0);
-					isTagged = true;
-				}
-
-				dropStack(world, pos, drop);
+		for (ItemStack drop : stacks) {
+			if (!isTagged && drop.getItem() == asItem()) {
+				drop.setTag(blockEntity.toTag(drop.getOrCreateTag()));
+				drop.getTag().putByte("tracker", (byte) 0);
+				isTagged = true;
 			}
 		}
-
-		state.onStacksDropped(world, pos, stack);
+		return stacks;
 	}
 }

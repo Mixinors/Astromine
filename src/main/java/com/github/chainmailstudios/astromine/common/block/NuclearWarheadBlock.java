@@ -26,7 +26,6 @@ package com.github.chainmailstudios.astromine.common.block;
 
 import com.github.chainmailstudios.astromine.common.miscellaneous.Explosions;
 import com.github.chainmailstudios.astromine.common.screenhandler.VentScreenHandler;
-import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
