@@ -61,6 +61,8 @@ public abstract class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEnt
 		fluidComponent.getVolume(FIRST_INPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
 		fluidComponent.getVolume(SECOND_INPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
 		fluidComponent.getVolume(OUTPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
+		
+		addEnergyListener(fluidComponent::dispatchConsumers);
 	}
 
 	abstract Fraction getTankSize();

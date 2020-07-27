@@ -61,6 +61,8 @@ public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockE
 		fluidComponent.getVolume(INPUT_FLUID_VOLUME).setSize(getTankSize());
 		fluidComponent.getVolume(FIRST_OUTPUT_FLUID_VOLUME).setSize(getTankSize());
 		fluidComponent.getVolume(SECOND_OUTPUT_FLUID_VOLUME).setSize(getTankSize());
+
+		addEnergyListener(fluidComponent::dispatchConsumers);
 	}
 
 	abstract Fraction getTankSize();
