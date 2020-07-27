@@ -32,7 +32,6 @@ import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
 public class VulcanSkyProperties extends SkyProperties {
-	private final float[] rgba = new float[4];
 	public VulcanSkyProperties() {
 		super(Float.NaN, false, SkyType.NORMAL, true, true);
 	}
