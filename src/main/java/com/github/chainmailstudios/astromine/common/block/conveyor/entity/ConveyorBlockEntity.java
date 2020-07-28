@@ -38,11 +38,13 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 
 public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyable, SingularStackInventory, BlockEntityClientSerializable, RenderAttachmentBlockEntity, Tickable {
 	private DefaultedList<ItemStack> stacks = DefaultedList.ofSize(1, ItemStack.EMPTY);
@@ -67,6 +69,9 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 		int speed = ((Conveyor) getCachedState().getBlock()).getSpeed();
 
 		// AstromineCommon.LOGGER.info(across);
+
+//		if (position == 0 && !isEmpty())
+			//sync();
 
 		if (!isEmpty()) {
 			if (across) {
@@ -97,12 +102,21 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 		}
 	}
 
+	protected void sendPacket(ServerWorld w, CompoundTag tag) {
+		tag.putString("id", BlockEntityType.getId(getType()).toString());
+		sendPacket(w, new BlockEntityUpdateS2CPacket(getPos(), 127, tag));
+	}
+
+	protected void sendPacket(ServerWorld w, BlockEntityUpdateS2CPacket packet) {
+		w.getPlayers(player -> player.squaredDistanceTo(Vec3d.of(getPos())) < 24 * 24)
+				.forEach(player -> player.networkHandler.sendPacket(packet));
+	}
+
 	public void handleMovement(Conveyable conveyable, int speed, boolean transition) {
 		if (conveyable.accepts(getStack())) {
 			if (position < speed) {
 				setPosition(getPosition() + 1);
-			} else if (transition && position == speed) {
-				// prevPosition = speed;
+			} else if (transition && !world.isClient() && position == speed) {
 				conveyable.give(getStack());
 				removeStack();
 			}
@@ -130,7 +144,7 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 						prevPosition = position;
 					}
 				}
-			} else if (transition && position == speed) {
+			} else if (transition && !world.isClient() && position == speed) {
 				conveyable.give(getStack());
 				removeStack();
 			}
@@ -178,6 +192,8 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 
 	@Override
 	public void give(ItemStack stack) {
+		if (front || across || down)
+			prevPosition = -1;
 		setStack(stack);
 	}
 
@@ -255,19 +271,19 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 	@Override
 	public void markDirty() {
 		super.markDirty();
-		sync();
+		if (!world.isClient())
+			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
 	}
 
 	@Override
 	public void fromTag(BlockState state, CompoundTag compoundTag) {
 		super.fromTag(state, compoundTag);
-		clear();
 		setStack(ItemStack.fromTag(compoundTag.getCompound("stack")));
 		front = compoundTag.getBoolean("front");
 		down = compoundTag.getBoolean("down");
 		across = compoundTag.getBoolean("across");
 		position = compoundTag.getInt("position");
-		prevPosition = compoundTag.getInt("position");
+		prevPosition = compoundTag.getInt("prevPosition");
 	}
 
 	@Override
@@ -282,6 +298,7 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 		compoundTag.putBoolean("down", down);
 		compoundTag.putBoolean("across", across);
 		compoundTag.putInt("position", position);
+		compoundTag.putInt("prevPosition", prevPosition);
 		return super.toTag(compoundTag);
 	}
 
