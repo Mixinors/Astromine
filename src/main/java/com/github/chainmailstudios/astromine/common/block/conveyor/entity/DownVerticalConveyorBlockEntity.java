@@ -34,6 +34,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -130,6 +131,8 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	public void setDown(boolean down) {
 		this.down = down;
 		markDirty();
+		if (!world.isClient())
+			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
 	}
 
 	@Override
