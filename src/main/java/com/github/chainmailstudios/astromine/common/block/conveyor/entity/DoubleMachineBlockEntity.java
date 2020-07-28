@@ -205,11 +205,15 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 	public void setLeft(boolean left) {
 		this.left = left;
 		markDirty();
+		if (!world.isClient())
+			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
 	}
 
 	public void setRight(boolean right) {
 		this.right = right;
 		markDirty();
+		if (!world.isClient())
+			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
 	}
 
 	@Override
@@ -260,9 +264,9 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 		left = compoundTag.getBoolean("left");
 		right = compoundTag.getBoolean("right");
 		leftPosition = compoundTag.getInt("leftPosition");
-		prevLeftPosition = compoundTag.getInt("leftPosition");
+		prevLeftPosition = compoundTag.getInt("prevLeftPosition");
 		rightPosition = compoundTag.getInt("rightPosition");
-		prevRightPosition = compoundTag.getInt("rightPosition");
+		prevRightPosition = compoundTag.getInt("prevRightPosition");
 	}
 
 	@Override
@@ -277,7 +281,9 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 		compoundTag.putBoolean("left", left);
 		compoundTag.putBoolean("right", right);
 		compoundTag.putInt("leftPosition", leftPosition);
+		compoundTag.putInt("prevLeftPosition", prevLeftPosition);
 		compoundTag.putInt("rightPosition", rightPosition);
+		compoundTag.putInt("prevRightPosition", prevRightPosition);
 		return super.toTag(compoundTag);
 	}
 

@@ -228,6 +228,8 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 	public void setFront(boolean front) {
 		this.front = front;
 		markDirty();
+		if (!world.isClient())
+			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
 	}
 
 	public boolean hasDown() {
@@ -237,6 +239,8 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 	public void setDown(boolean down) {
 		this.down = down;
 		markDirty();
+		if (!world.isClient())
+			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
 	}
 
 	public boolean hasAcross() {
@@ -245,6 +249,9 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 
 	public void setAcross(boolean across) {
 		this.across = across;
+		markDirty();
+		if (!world.isClient())
+			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
 	}
 
 	@Override
