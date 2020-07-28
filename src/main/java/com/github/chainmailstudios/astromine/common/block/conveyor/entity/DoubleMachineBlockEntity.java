@@ -35,6 +35,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
@@ -97,9 +98,11 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 		if (conveyable.accepts(getLeftStack())) {
 			if (leftPosition < speed) {
 				setLeftPosition(getLeftPosition() + 1);
-			} else if (transition && !getWorld().isClient() && leftPosition >= speed) {
-				conveyable.give(getLeftStack());
-				removeLeftStack();
+			} else if (transition && leftPosition >= speed) {
+				if (!world.isClient())
+					conveyable.give(getLeftStack());
+				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24)
+					removeLeftStack();
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
 			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
@@ -116,9 +119,11 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 		if (conveyable.accepts(getRightStack())) {
 			if (rightPosition < speed) {
 				setRightPosition(getRightPosition() + 1);
-			} else if (transition && !getWorld().isClient() && rightPosition >= speed) {
-				conveyable.give(getRightStack());
-				removeRightStack();
+			} else if (transition && rightPosition >= speed) {
+				if (!world.isClient())
+					conveyable.give(getRightStack());
+				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24)
+					removeRightStack();
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
 			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;

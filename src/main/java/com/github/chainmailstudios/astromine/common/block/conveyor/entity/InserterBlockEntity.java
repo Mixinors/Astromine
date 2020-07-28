@@ -42,6 +42,7 @@ import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.entity.vehicle.ChestMinecartEntity;
 import net.minecraft.inventory.Inventory;
@@ -114,6 +115,8 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 									setStack(extractedStack.getValue());
 								}
 							}
+						} else if (world.isClient() && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24) {
+							removeStack();
 						}
 					} else if (!(behindState.getBlock() instanceof InserterBlock)) {
 						if (!world.isClient()) {
@@ -128,6 +131,8 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 							if (position == 0 && extractedStack.getResult() == ActionResult.SUCCESS) {
 								setStack(extractedStack.getValue());
 							}
+						} else if (world.isClient() && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24) {
+							removeStack();
 						}
 					}
 				} else {
@@ -143,6 +148,8 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 							if (position == 0 && extractedStack.getResult() == ActionResult.SUCCESS) {
 								setStack(extractedStack.getValue());
 							}
+						} else if (world.isClient() && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24) {
+							removeStack();
 						}
 					} else if (position > 0) {
 						setPosition(getPosition() - 1);
@@ -174,6 +181,8 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 							if (insertedStack.getResult() == ActionResult.SUCCESS) {
 								setStack(insertedStack.getValue());
 							}
+						} else if (world.isClient() && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24) {
+							removeStack();
 						}
 					} else if (position > 0) {
 						setPosition(getPosition() - 1);
@@ -200,6 +209,8 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 							} else {
 								prevPosition = speed;
 							}
+						}  else if (world.isClient() && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24) {
+							removeStack();
 						}
 					} else if (position > 0) {
 						setPosition(getPosition() - 1);
@@ -224,6 +235,8 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 									} else {
 										prevPosition = speed;
 									}
+								} else if (world.isClient() && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24) {
+									removeStack();
 								}
 							}
 						}
