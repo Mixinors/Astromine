@@ -100,7 +100,7 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 				setLeftPosition(getLeftPosition() + 1);
 			} else if (transition && leftPosition >= speed) {
 				conveyable.give(getLeftStack());
-				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24)
+				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 40 * 40)
 					removeLeftStack();
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
@@ -124,7 +124,7 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 				setRightPosition(getRightPosition() + 1);
 			} else if (transition && rightPosition >= speed) {
 				conveyable.give(getRightStack());
-				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24)
+				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 40 * 40)
 					removeRightStack();
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
@@ -258,7 +258,7 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 	}
 
 	protected void sendPacket(ServerWorld w, BlockEntityUpdateS2CPacket packet) {
-		w.getPlayers(player -> player.squaredDistanceTo(Vec3d.of(getPos())) < 24 * 24)
+		w.getPlayers(player -> player.squaredDistanceTo(Vec3d.of(getPos())) < 40 * 40)
 				.forEach(player -> player.networkHandler.sendPacket(packet));
 	}
 

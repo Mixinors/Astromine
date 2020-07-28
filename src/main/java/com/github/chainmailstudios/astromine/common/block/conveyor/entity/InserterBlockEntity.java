@@ -115,7 +115,7 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 									setStack(extractedStack.getValue());
 								}
 							}
-						} else if (world.isClient() && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24) {
+						} else if (world.isClient() && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 40 * 40) {
 							removeStack();
 						}
 					} else if (!(behindState.getBlock() instanceof InserterBlock)) {
@@ -131,7 +131,7 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 							if (position == 0 && extractedStack.getResult() == ActionResult.SUCCESS) {
 								setStack(extractedStack.getValue());
 							}
-						} else if (world.isClient() && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24) {
+						} else if (world.isClient() && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 40 * 40) {
 							removeStack();
 						}
 					}
@@ -148,7 +148,7 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 							if (position == 0 && extractedStack.getResult() == ActionResult.SUCCESS) {
 								setStack(extractedStack.getValue());
 							}
-						} else if (world.isClient() && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24) {
+						} else if (world.isClient() && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 40 * 40) {
 							removeStack();
 						}
 					} else if (position > 0) {
@@ -181,7 +181,7 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 							if (insertedStack.getResult() == ActionResult.SUCCESS) {
 								setStack(insertedStack.getValue());
 							}
-						} else if (world.isClient() && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24) {
+						} else if (world.isClient() && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 40 * 40) {
 							removeStack();
 						}
 					} else if (position > 0) {
@@ -209,7 +209,7 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 							} else {
 								prevPosition = speed;
 							}
-						}  else if (world.isClient() && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24) {
+						}  else if (world.isClient() && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 40 * 40) {
 							removeStack();
 						}
 					} else if (position > 0) {
@@ -235,7 +235,7 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 									} else {
 										prevPosition = speed;
 									}
-								} else if (world.isClient() && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24) {
+								} else if (world.isClient() && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 40 * 40) {
 									removeStack();
 								}
 							}
@@ -417,7 +417,7 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 	}
 
 	protected void sendPacket(ServerWorld w, BlockEntityUpdateS2CPacket packet) {
-		w.getPlayers(player -> player.squaredDistanceTo(Vec3d.of(getPos())) < 24 * 24)
+		w.getPlayers(player -> player.squaredDistanceTo(Vec3d.of(getPos())) < 40 * 40)
 				.forEach(player -> player.networkHandler.sendPacket(packet));
 	}
 
