@@ -132,6 +132,10 @@ dependencies {
     // Tech Reborn Energy
     modImplementation "teamreborn:energy:${tr_energy_version}"
     include "teamreborn:energy:${tr_energy_version}"
+    
+    // Cloth API
+    modImplementation "me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${cloth_api_version}"
+    include "me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${cloth_api_version}"
 
     // Cloth Config
     modImplementation("me.shedaniel.cloth:config-2:${cloth_config_version}")

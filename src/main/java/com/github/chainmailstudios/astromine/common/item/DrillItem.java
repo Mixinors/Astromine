@@ -111,7 +111,7 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	}
 
 	public double getEnergy() {
-		return 128D * material.getMiningSpeedMultiplier();
+		return 64D * material.getMiningSpeedMultiplier();
 	}
 
 	@Override
