@@ -113,7 +113,7 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 								}
 							}
 						}
-					} else {
+					} else if (!(behindState.getBlock() instanceof InserterBlock)) {
 						TypedActionResult<ItemStack> extractedStack;
 
 						if (behindState.getBlock() instanceof AbstractFurnaceBlock) {
@@ -123,9 +123,7 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 						}
 
 						if (position == 0 && extractedStack.getResult() == ActionResult.SUCCESS) {
-							if (!(behindState.getBlock() instanceof InserterBlock)) {
-								setStack(extractedStack.getValue());
-							}
+							setStack(extractedStack.getValue());
 						}
 					}
 				} else {
