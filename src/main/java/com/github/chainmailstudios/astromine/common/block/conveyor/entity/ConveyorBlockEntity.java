@@ -103,8 +103,7 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 			if (position < speed) {
 				setPosition(getPosition() + 1);
 			} else if (transition && position == speed) {
-				if (!world.isClient())
-					conveyable.give(getStack());
+				conveyable.give(getStack());
 				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24)
 					removeStack();
 			}
@@ -133,8 +132,7 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 					}
 				}
 			} else if (transition && position == speed) {
-				if (!world.isClient())
-					conveyable.give(getStack());
+				conveyable.give(getStack());
 				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24)
 					removeStack();
 			}
@@ -184,7 +182,9 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 	public void give(ItemStack stack) {
 		if (front || across || down)
 			prevPosition = -1;
-		setStack(stack);
+
+		if (!world.isClient())
+			setStack(stack);
 	}
 
 	@Override

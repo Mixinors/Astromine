@@ -99,8 +99,7 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 			if (leftPosition < speed) {
 				setLeftPosition(getLeftPosition() + 1);
 			} else if (transition && leftPosition >= speed) {
-				if (!world.isClient())
-					conveyable.give(getLeftStack());
+				conveyable.give(getLeftStack());
 				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24)
 					removeLeftStack();
 			}
@@ -120,8 +119,7 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 			if (rightPosition < speed) {
 				setRightPosition(getRightPosition() + 1);
 			} else if (transition && rightPosition >= speed) {
-				if (!world.isClient())
-					conveyable.give(getRightStack());
+				conveyable.give(getRightStack());
 				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24)
 					removeRightStack();
 			}

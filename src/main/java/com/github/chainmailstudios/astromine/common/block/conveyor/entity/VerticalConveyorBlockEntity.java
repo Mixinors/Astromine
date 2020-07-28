@@ -90,8 +90,7 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 			if (horizontalPosition < speed) {
 				setHorizontalPosition(getHorizontalPosition() + 2);
 			} else if (transition && horizontalPosition >= speed) {
-				if (!world.isClient())
-					conveyable.give(getStack());
+				conveyable.give(getStack());
 				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24)
 					removeStack();
 			}
