@@ -26,10 +26,13 @@ package com.github.chainmailstudios.astromine.common.block.conveyor.entity;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.conveyor.InserterBlock;
+import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
 import com.github.chainmailstudios.astromine.common.inventory.SingularStackInventory;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 import net.minecraft.block.AbstractFurnaceBlock;
@@ -84,18 +87,45 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 				BlockEntity behindBlockEntity = world.getBlockEntity(getPos().offset(direction.getOpposite()));
 
 				if (position == 0 && behindBlockEntity instanceof Inventory) {
-					ItemInventoryComponent component = ItemInventoryComponentFromItemInventory.of((Inventory) behindBlockEntity);
-					TypedActionResult<ItemStack> extractedStack;
+					if (behindBlockEntity instanceof ComponentProvider) {
+						ComponentProvider provider = ComponentProvider.fromBlockEntity(behindBlockEntity);
+						BlockEntityTransferComponent neighborTransferComponent = provider != null ? provider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT) : null;
 
-					if (behindState.getBlock() instanceof AbstractFurnaceBlock) {
-						extractedStack = component.extractFirstMatching(Direction.UP, itemStack -> !itemStack.isEmpty());
+						ItemInventoryComponent neighborItemComponent = null;
+						if (neighborTransferComponent != null) {
+							// Get via astromine siding
+							if (neighborTransferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(direction.getOpposite()).canExtract())
+								neighborItemComponent = provider.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
+						}
+
+						if (neighborItemComponent != null) {
+							TypedActionResult<ItemStack> extractedStack;
+
+							if (behindState.getBlock() instanceof AbstractFurnaceBlock) {
+								extractedStack = neighborItemComponent.extractFirstMatching(Direction.UP, itemStack -> !itemStack.isEmpty());
+							} else {
+								extractedStack = neighborItemComponent.extractFirstMatching(direction, itemStack -> !itemStack.isEmpty());
+							}
+
+							if (position == 0 && extractedStack.getResult() == ActionResult.SUCCESS) {
+								if (!(behindState.getBlock() instanceof InserterBlock)) {
+									setStack(extractedStack.getValue());
+								}
+							}
+						}
 					} else {
-						extractedStack = component.extractFirstMatching(direction, itemStack -> !itemStack.isEmpty());
-					}
+						TypedActionResult<ItemStack> extractedStack;
 
-					if (position == 0 && extractedStack.getResult() == ActionResult.SUCCESS) {
-						if (!(behindState.getBlock() instanceof InserterBlock)) {
-							setStack(extractedStack.getValue());
+						if (behindState.getBlock() instanceof AbstractFurnaceBlock) {
+							extractedStack = ItemInventoryComponentFromItemInventory.of((Inventory) behindBlockEntity).extractFirstMatching(Direction.UP, itemStack -> !itemStack.isEmpty());
+						} else {
+							extractedStack = ItemInventoryComponentFromItemInventory.of((Inventory) behindBlockEntity).extractFirstMatching(direction, itemStack -> !itemStack.isEmpty());
+						}
+
+						if (position == 0 && extractedStack.getResult() == ActionResult.SUCCESS) {
+							if (!(behindState.getBlock() instanceof InserterBlock)) {
+								setStack(extractedStack.getValue());
+							}
 						}
 					}
 				} else {
@@ -117,18 +147,42 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 				BlockState aheadState = getWorld().getBlockState(getPos().offset(direction));
 				BlockEntity aheadBlockEntity = getWorld().getBlockEntity(getPos().offset(direction));
 
-				if (aheadBlockEntity instanceof Inventory) {
-					if (position < speed) {
+				ComponentProvider provider = ComponentProvider.fromBlockEntity(aheadBlockEntity);
+				BlockEntityTransferComponent neighborTransferComponent = provider != null ? provider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT) : null;
+
+				ItemInventoryComponent neighborItemComponent = null;
+				if (neighborTransferComponent != null) {
+					// Get via astromine siding
+					if (neighborTransferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(direction.getOpposite()).canInsert())
+						neighborItemComponent = provider.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
+				} else if (aheadBlockEntity instanceof Inventory) {
+					neighborItemComponent = ItemInventoryComponentFromItemInventory.of((Inventory) aheadBlockEntity);
+				}
+
+				if (aheadBlockEntity instanceof ComponentProvider) {
+					if (position < speed && neighborItemComponent != null) {
 						setPosition(getPosition() + 1);
-					} else if (position == speed) {
+					} else if (position == speed && neighborItemComponent != null) {
+						TypedActionResult<ItemStack> insertedStack = neighborItemComponent.insert(direction.getOpposite(), getStack());
+
+						if (insertedStack.getResult() == ActionResult.SUCCESS) {
+							setStack(insertedStack.getValue());
+						}
+					} else if (position > 0) {
+						setPosition(getPosition() - 1);
+					}
+				} else if (aheadBlockEntity instanceof Inventory) {
+					if (position < speed && neighborItemComponent != null) {
+						setPosition(getPosition() + 1);
+					} else if (position == speed && neighborItemComponent != null) {
 						TypedActionResult<ItemStack> insertedStack;
 
 						if (aheadState.getBlock() instanceof ComposterBlock) {
-							insertedStack = ItemInventoryComponentFromItemInventory.of((Inventory) aheadBlockEntity).insert(Direction.DOWN, getStack());
+							insertedStack = neighborItemComponent.insert(Direction.DOWN, getStack());
 						} else if (aheadState.getBlock() instanceof AbstractFurnaceBlock && !AbstractFurnaceBlockEntity.canUseAsFuel(getStack())) {
-							insertedStack = ItemInventoryComponentFromItemInventory.of((Inventory) aheadBlockEntity).insert(Direction.DOWN, getStack());
+							insertedStack = neighborItemComponent.insert(Direction.DOWN, getStack());
 						} else {
-							insertedStack = ItemInventoryComponentFromItemInventory.of((Inventory) aheadBlockEntity).insert(direction.getOpposite(), getStack());
+							insertedStack = neighborItemComponent.insert(direction.getOpposite(), getStack());
 						}
 
 						if (insertedStack.getResult() == ActionResult.SUCCESS) {
@@ -140,7 +194,7 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 						} else {
 							prevPosition = speed;
 						}
-					} else {
+					} else if (position > 0) {
 						setPosition(getPosition() - 1);
 					}
 				} else {
