@@ -34,6 +34,7 @@
     "astromine:iron_mattock",
     "astromine:golden_mattock",
     "astromine:diamond_mattock",
-    "astromine:netherite_mattock"
+    "astromine:netherite_mattock",
+    "#astromine:drills"
   ]
 }
