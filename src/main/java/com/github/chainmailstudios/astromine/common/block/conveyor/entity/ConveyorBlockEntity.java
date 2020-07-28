@@ -97,16 +97,6 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 		}
 	}
 
-	protected void sendPacket(ServerWorld w, CompoundTag tag) {
-		tag.putString("id", BlockEntityType.getId(getType()).toString());
-		sendPacket(w, new BlockEntityUpdateS2CPacket(getPos(), 127, tag));
-	}
-
-	protected void sendPacket(ServerWorld w, BlockEntityUpdateS2CPacket packet) {
-		w.getPlayers(player -> player.squaredDistanceTo(Vec3d.of(getPos())) < 24 * 24)
-				.forEach(player -> player.networkHandler.sendPacket(packet));
-	}
-
 	public void handleMovement(Conveyable conveyable, int speed, boolean transition) {
 		if (conveyable.accepts(getStack())) {
 			if (position < speed) {
@@ -203,10 +193,27 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 	}
 
 	@Override
-	public ItemStack removeStack() {
+	public void setStack(int slot, ItemStack stack) {
+		SingularStackInventory.super.setStack(slot, stack);
+		if (!world.isClient())
+			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+	}
+
+	@Override
+	public ItemStack removeStack(int slot) {
+		ItemStack stack = SingularStackInventory.super.removeStack(slot);
 		position = 0;
 		prevPosition = 0;
-		return SingularStackInventory.super.removeStack();
+		if (!world.isClient())
+			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+		return stack;
+	}
+
+	@Override
+	public void clear() {
+		SingularStackInventory.super.clear();
+		if (!world.isClient())
+			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
 	}
 
 	@Override
@@ -257,23 +264,25 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 		this.position = position;
 	}
 
-	public void sync() {
-		if (world instanceof ServerWorld) {
-			((ServerWorld) world).getChunkManager().markForUpdate(pos);
-		}
+	protected void sendPacket(ServerWorld w, CompoundTag tag) {
+		tag.putString("id", BlockEntityType.getId(getType()).toString());
+		sendPacket(w, new BlockEntityUpdateS2CPacket(getPos(), 127, tag));
+	}
+
+	protected void sendPacket(ServerWorld w, BlockEntityUpdateS2CPacket packet) {
+		w.getPlayers(player -> player.squaredDistanceTo(Vec3d.of(getPos())) < 24 * 24)
+				.forEach(player -> player.networkHandler.sendPacket(packet));
 	}
 
 	@Override
 	public void markDirty() {
 		super.markDirty();
-		if (!world.isClient())
-			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
 	}
 
 	@Override
 	public void fromTag(BlockState state, CompoundTag compoundTag) {
 		super.fromTag(state, compoundTag);
-		setStack(ItemStack.fromTag(compoundTag.getCompound("stack")));
+		stacks.set(0, ItemStack.fromTag(compoundTag.getCompound("stack")));
 		front = compoundTag.getBoolean("front");
 		down = compoundTag.getBoolean("down");
 		across = compoundTag.getBoolean("across");

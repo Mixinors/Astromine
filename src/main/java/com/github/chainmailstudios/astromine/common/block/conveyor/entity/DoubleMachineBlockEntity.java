@@ -28,6 +28,7 @@ import com.github.chainmailstudios.astromine.common.conveyor.Conveyable;
 import com.github.chainmailstudios.astromine.common.conveyor.ConveyorConveyable;
 import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
 import com.github.chainmailstudios.astromine.common.inventory.DoubleStackInventory;
+import com.github.chainmailstudios.astromine.common.inventory.SingularStackInventory;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 import net.minecraft.block.BlockState;
@@ -36,11 +37,13 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 
 public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable, DoubleStackInventory, BlockEntityClientSerializable, RenderAttachmentBlockEntity, Tickable {
 	private DefaultedList<ItemStack> stacks = DefaultedList.ofSize(2, ItemStack.EMPTY);
@@ -133,6 +136,32 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 		return stacks;
 	}
 
+	@Override
+	public void setStack(int slot, ItemStack stack) {
+		DoubleStackInventory.super.setStack(slot, stack);
+		if (!world.isClient())
+			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+	}
+
+	@Override
+	public ItemStack removeStack(int slot) {
+		ItemStack stack = DoubleStackInventory.super.removeStack(slot);
+		leftPosition = 0;
+		rightPosition = 0;
+		prevLeftPosition = 0;
+		prevRightPosition = 0;
+		if (!world.isClient())
+			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+		return stack;
+	}
+
+	@Override
+	public void clear() {
+		DoubleStackInventory.super.clear();
+		if (!world.isClient())
+			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+	}
+
 	public int getLeftPosition() {
 		return leftPosition;
 	}
@@ -208,24 +237,26 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 		return new int[]{ leftPosition, prevLeftPosition, rightPosition, prevRightPosition };
 	}
 
-	public void sync() {
-		if (world instanceof ServerWorld) {
-			((ServerWorld) world).getChunkManager().markForUpdate(pos);
-		}
+	protected void sendPacket(ServerWorld w, CompoundTag tag) {
+		tag.putString("id", BlockEntityType.getId(getType()).toString());
+		sendPacket(w, new BlockEntityUpdateS2CPacket(getPos(), 127, tag));
+	}
+
+	protected void sendPacket(ServerWorld w, BlockEntityUpdateS2CPacket packet) {
+		w.getPlayers(player -> player.squaredDistanceTo(Vec3d.of(getPos())) < 24 * 24)
+				.forEach(player -> player.networkHandler.sendPacket(packet));
 	}
 
 	@Override
 	public void markDirty() {
 		super.markDirty();
-		sync();
 	}
 
 	@Override
 	public void fromTag(BlockState state, CompoundTag compoundTag) {
 		super.fromTag(state, compoundTag);
-		clear();
-		setLeftStack(ItemStack.fromTag(compoundTag.getCompound("leftStack")));
-		setRightStack(ItemStack.fromTag(compoundTag.getCompound("rightStack")));
+		getItems().set(0, ItemStack.fromTag(compoundTag.getCompound("leftStack")));
+		getItems().set(1, ItemStack.fromTag(compoundTag.getCompound("rightStack")));
 		left = compoundTag.getBoolean("left");
 		right = compoundTag.getBoolean("right");
 		leftPosition = compoundTag.getInt("leftPosition");
