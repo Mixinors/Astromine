@@ -103,6 +103,11 @@ public class AstromineBlocks {
 	public static final Block NUCLEAR_WARHEAD = register("nuclear_warhead", new NuclearWarheadBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(1F, 4F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 
 	public static final Block CREATIVE_TANK = register("creative_tank", new CreativeTankBlock(AstromineBlocks.getCreativeSettings()), AstromineItems.getBasicSettings());
+
+	public static final Block PRIMITIVE_CAPACITOR = register("primitive_capacitor", new CapacitorBlock.Primitive(AstromineBlocks.getPrimitiveSettings()), AstromineItems.getBasicSettings());
+	public static final Block BASIC_CAPACITOR = register("basic_capacitor", new CapacitorBlock.Basic(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
+	public static final Block ADVANCED_CAPACITOR = register("advanced_capacitor", new CapacitorBlock.Advanced(AstromineBlocks.getAdvancedSettings()), AstromineItems.getBasicSettings());
+	public static final Block ELITE_CAPACITOR = register("elite_capacitor", new CapacitorBlock.Elite(AstromineBlocks.getEliteSettings()), AstromineItems.getBasicSettings());
 	public static final Block CREATIVE_CAPACITOR = register("creative_capacitor", new CreativeCapacitorBlock(AstromineBlocks.getCreativeSettings()), AstromineItems.getBasicSettings());
 	public static final Block CREATIVE_BUFFER = register("creative_buffer", new CreativeBufferBlock(AstromineBlocks.getCreativeSettings()), AstromineItems.getBasicSettings());
 

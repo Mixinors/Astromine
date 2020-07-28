@@ -63,9 +63,7 @@ public abstract class BucketItemMixin {
 	@Shadow
 	public abstract TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand);
 
-	@Inject(at = @At("HEAD"),
-	        method = "use(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/TypedActionResult;",
-	        cancellable = true)
+	@Inject(at = @At("HEAD"), method = "use(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/TypedActionResult;", cancellable = true)
 	void onUse(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> callbackInformationReturnable) {
 		BlockHitResult result = rayTrace(world, user, fluid == Fluids.EMPTY ? RayTraceContext.FluidHandling.SOURCE_ONLY : RayTraceContext.FluidHandling.NONE);
 

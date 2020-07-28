@@ -290,8 +290,7 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 	}
 
 	protected void sendPacket(ServerWorld w, BlockEntityUpdateS2CPacket packet) {
-		w.getPlayers(player -> player.squaredDistanceTo(Vec3d.of(getPos())) < 40 * 40)
-				.forEach(player -> player.networkHandler.sendPacket(packet));
+		w.getPlayers(player -> player.squaredDistanceTo(Vec3d.of(getPos())) < 40 * 40).forEach(player -> player.networkHandler.sendPacket(packet));
 	}
 
 	@Override

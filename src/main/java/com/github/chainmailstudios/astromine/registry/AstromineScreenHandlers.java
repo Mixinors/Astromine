@@ -67,6 +67,10 @@ public class AstromineScreenHandlers {
 		return new NuclearWarheadScreenHandler(synchronizationID, inventory, buffer.readBlockPos());
 	}));
 
+	public static final ScreenHandlerType<CapacitorScreenHandler> CAPACITOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("capacitor"), ((synchronizationID, inventory, buffer) -> {
+		return new CapacitorScreenHandler(synchronizationID, inventory, buffer.readBlockPos());
+	}));
+
 	public static final ScreenHandlerType<CreativeCapacitorScreenHandler> CREATIVE_CAPACITOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("creative_capacitor"), ((synchronizationID, inventory, buffer) -> {
 		return new CreativeCapacitorScreenHandler(synchronizationID, inventory, buffer.readBlockPos());
 	}));

@@ -31,8 +31,6 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
@@ -66,8 +64,6 @@ public class EnergyVolumeItem extends Item implements EnergyHolder {
 
 		EnergyHandler energyHandler = Energy.of(stack);
 		tooltip.add(EnergyUtilities.compoundDisplayColored(energyHandler.getEnergy(), energyHandler.getMaxStored()));
-
-		tooltip.add(new TranslatableText("text.astromine.experimental_feature_battery").formatted(Formatting.RED, Formatting.BOLD, Formatting.ITALIC));
 	}
 
 	@Override

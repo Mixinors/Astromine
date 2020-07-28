@@ -534,6 +534,18 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Fluid for the Tank.")
 	public long tankFluid = 16L;
 
+	@Comment("Energy for the Primitive Capacitor.")
+	public double primitiveCapacitorEnergy = 16384D;
+
+	@Comment("Energy for the Basic Capacitor.")
+	public double basicCapacitorEnergy = 32767D;
+
+	@Comment("Energy for the Advanced Capacitor.")
+	public double advancedCapacitorEnergy = 65535D;
+
+	@Comment("Energy for the Elite Capacitor.")
+	public double eliteCapacitorEnergy = 131071D;
+
 	@Comment("Energy for the Block Placer actions.")
 	public double blockPlacerEnergyConsumed = 1024D;
 

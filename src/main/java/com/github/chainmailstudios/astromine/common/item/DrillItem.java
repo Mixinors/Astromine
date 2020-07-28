@@ -25,7 +25,6 @@
 package com.github.chainmailstudios.astromine.common.item;
 
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import draylar.magna.api.MagnaTool;
@@ -43,8 +42,6 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.Vanishable;
 import net.minecraft.tag.Tag;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import team.reborn.energy.Energy;
@@ -125,13 +122,5 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	@Override
 	public boolean playBreakEffects() {
 		return true;
-	}
-
-	@Override
-	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-		EnergyHandler energyHandler = Energy.of(stack);
-		tooltip.add(EnergyUtilities.compoundDisplayColored(energyHandler.getEnergy(), energyHandler.getMaxStored()));
-
-		tooltip.add(new TranslatableText("text.astromine.experimental_feature_drill").formatted(Formatting.RED, Formatting.BOLD, Formatting.ITALIC));
 	}
 }
