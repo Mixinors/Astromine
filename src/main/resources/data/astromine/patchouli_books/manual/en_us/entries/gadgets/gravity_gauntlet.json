@@ -1,0 +1,19 @@
+{
+  "name": "text.astromine.gadgets.gravity_gauntlet.title",
+  "icon": "astromine:gravity_gauntlet",
+  "category": "gadgets",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:gravity_gauntlet",
+      "title": "text.astromine.gadgets.gravity_gauntlet.page_one.title",
+      "text": "text.astromine.gadgets.gravity_gauntlet.page_one.text"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:gravity_gauntlet",
+      "title": "text.astromine.gadgets.gravity_gauntlet.page_two.title"
+    }
+  ]
+}
