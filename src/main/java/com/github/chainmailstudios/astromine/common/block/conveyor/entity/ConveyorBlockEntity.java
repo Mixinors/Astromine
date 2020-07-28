@@ -68,11 +68,6 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 		Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
 		int speed = ((Conveyor) getCachedState().getBlock()).getSpeed();
 
-		// AstromineCommon.LOGGER.info(across);
-
-//		if (position == 0 && !isEmpty())
-			//sync();
-
 		if (!isEmpty()) {
 			if (across) {
 				BlockPos frontPos = getPos().offset(direction);
