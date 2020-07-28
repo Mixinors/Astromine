@@ -54,6 +54,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
 
 public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttributeTool {
+	private static final Multimap<EntityAttribute, EntityAttributeModifier> EAMS = HashMultimap.create();
 
 	public GravityGauntletItem(Settings settings, double maxAmount) {
 		super(settings, maxAmount);
@@ -127,20 +128,16 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 		return stack.getOrCreateTag().getBoolean("Charged");
 	}
 
-	// TODO: dynamic once not broken
+	// TODO: dynamic once not broken so only provide when charged
 	@Override
 	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
-		Multimap<EntityAttribute, EntityAttributeModifier> eams = HashMultimap.create();
 		if (slot == EquipmentSlot.MAINHAND) {
-			eams.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "attack", 4f, EntityAttributeModifier.Operation.ADDITION));
+			return EAMS;
 		}
 		return super.getAttributeModifiers(slot);
 	}
 
-	@Environment(EnvType.CLIENT)
-	@Override
-	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-		EnergyHandler energyHandler = Energy.of(stack);
-		tooltip.add(EnergyUtilities.compoundDisplayColored(energyHandler.getEnergy(), energyHandler.getMaxStored()));
+	static {
+		EAMS.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "attack", 4f, EntityAttributeModifier.Operation.ADDITION));
 	}
 }

@@ -61,7 +61,7 @@ public class AstromineItems {
 
 	// Fantasy weaponry
 	public static final Item SUPER_SPACE_SLIME_SHOOTER = register("super_space_slime_shooter", new SuperSpaceSlimeShooterItem(getBasicSettings()));
-	public static final GravityGauntletItem GRAVITY_GAUNTLET = register("gravity_gauntlet", new GravityGauntletItem(getBasicSettings().fireproof().maxCount(1), AstromineConfig.get().gravityGauntletEnergy));
+	public static final GravityGauntletItem GRAVITY_GAUNTLET = register("gravity_gauntlet", new GravityGauntletItem(getBasicSettings().maxCount(1), AstromineConfig.get().gravityGauntletEnergy));
 
 	// Realistic ammunition
 	public static final Item NATO_7_62_X_51_MM = register("nato_7_62x51mm", new AmmunitionItem(getBasicSettings().fireproof().maxCount(1).maxDamage(32)));
