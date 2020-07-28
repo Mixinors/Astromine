@@ -25,14 +25,13 @@
 package com.github.chainmailstudios.astromine.common.item.base;
 
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
+import me.shedaniel.cloth.api.durability.bar.DurabilityBarItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
@@ -41,12 +40,8 @@ import team.reborn.energy.EnergyTier;
 
 import java.util.List;
 
-public class EnergyVolumeItem extends Item implements EnergyHolder {
+public class EnergyVolumeItem extends Item implements EnergyHolder, DurabilityBarItem {
 	private double maxAmount;
-
-	public EnergyVolumeItem(Settings settings) {
-		super(settings);
-	}
 
 	public EnergyVolumeItem(Settings settings, double maxAmount) {
 		super(settings);
@@ -54,9 +49,7 @@ public class EnergyVolumeItem extends Item implements EnergyHolder {
 	}
 
 	public static EnergyVolumeItem of(Settings settings, double maxAmount) {
-		EnergyVolumeItem item = new EnergyVolumeItem(settings);
-		item.maxAmount = maxAmount;
-		return item;
+		return new EnergyVolumeItem(settings, maxAmount);
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -66,8 +59,6 @@ public class EnergyVolumeItem extends Item implements EnergyHolder {
 
 		EnergyHandler energyHandler = Energy.of(stack);
 		tooltip.add(EnergyUtilities.compoundDisplayColored(energyHandler.getEnergy(), energyHandler.getMaxStored()));
-
-		tooltip.add(new TranslatableText("text.astromine.experimental_feature_battery").formatted(Formatting.RED, Formatting.BOLD, Formatting.ITALIC));
 	}
 
 	@Override
@@ -78,5 +69,21 @@ public class EnergyVolumeItem extends Item implements EnergyHolder {
 	@Override
 	public EnergyTier getTier() {
 		return EnergyTier.INFINITE;
+	}
+
+	@Override
+	public int getDurabilityBarColor(ItemStack stack) {
+		return 0x91261f;
+	}
+
+	@Override
+	public double getDurabilityBarProgress(ItemStack itemStack) {
+		if (!Energy.valid(itemStack) || getMaxStoredPower() == 0) return 0;
+		return Energy.of(itemStack).getEnergy() / getMaxStoredPower();
+	}
+
+	@Override
+	public boolean hasDurabilityBar(ItemStack itemStack) {
+		return true;
 	}
 }

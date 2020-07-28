@@ -50,7 +50,7 @@ public abstract class TrituratorBlockEntity extends DefaultedEnergyItemBlockEnti
 
 	public boolean isActive = false;
 
-	public boolean[] activity = {false, false, false, false, false};
+	public boolean[] activity = { false, false, false, false, false };
 
 	Optional<TrituratingRecipe> recipe = Optional.empty();
 

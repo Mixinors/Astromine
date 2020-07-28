@@ -28,7 +28,6 @@ import com.github.chainmailstudios.astromine.common.conveyor.Conveyable;
 import com.github.chainmailstudios.astromine.common.conveyor.ConveyorConveyable;
 import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
 import com.github.chainmailstudios.astromine.common.inventory.DoubleStackInventory;
-import com.github.chainmailstudios.astromine.common.inventory.SingularStackInventory;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 import net.minecraft.block.BlockState;
@@ -258,8 +257,7 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 	}
 
 	protected void sendPacket(ServerWorld w, BlockEntityUpdateS2CPacket packet) {
-		w.getPlayers(player -> player.squaredDistanceTo(Vec3d.of(getPos())) < 40 * 40)
-				.forEach(player -> player.networkHandler.sendPacket(packet));
+		w.getPlayers(player -> player.squaredDistanceTo(Vec3d.of(getPos())) < 40 * 40).forEach(player -> player.networkHandler.sendPacket(packet));
 	}
 
 	@Override

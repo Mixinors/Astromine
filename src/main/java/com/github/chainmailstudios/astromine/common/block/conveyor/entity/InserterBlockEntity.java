@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.block.conveyor.entity;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.conveyor.InserterBlock;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
@@ -209,7 +208,7 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 							} else {
 								prevPosition = speed;
 							}
-						}  else if (world.isClient() && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 40 * 40) {
+						} else if (world.isClient() && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 40 * 40) {
 							removeStack();
 						}
 					} else if (position > 0) {
@@ -417,8 +416,7 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 	}
 
 	protected void sendPacket(ServerWorld w, BlockEntityUpdateS2CPacket packet) {
-		w.getPlayers(player -> player.squaredDistanceTo(Vec3d.of(getPos())) < 40 * 40)
-				.forEach(player -> player.networkHandler.sendPacket(packet));
+		w.getPlayers(player -> player.squaredDistanceTo(Vec3d.of(getPos())) < 40 * 40).forEach(player -> player.networkHandler.sendPacket(packet));
 	}
 
 	@Override
