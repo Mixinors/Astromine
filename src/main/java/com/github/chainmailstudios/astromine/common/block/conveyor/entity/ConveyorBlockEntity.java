@@ -115,6 +115,10 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 			} else {
 				prevPosition = position;
 			}
+		} else if (position > 0) {
+			setPosition(position - 1);
+		} else if (prevPosition != position) {
+			prevPosition = position;
 		}
 	}
 
@@ -145,6 +149,10 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 			} else {
 				prevPosition = position;
 			}
+		} else if (position > 0) {
+			setPosition(position - 1);
+		} else if (prevPosition != position) {
+			prevPosition = position;
 		}
 	}
 

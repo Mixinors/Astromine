@@ -111,6 +111,10 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 			} else {
 				prevLeftPosition = leftPosition;
 			}
+		} else if (leftPosition > 0) {
+			setLeftPosition(leftPosition - 1);
+		} else if (prevLeftPosition != leftPosition) {
+			prevLeftPosition = leftPosition;
 		}
 	}
 
@@ -131,6 +135,10 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 			} else {
 				prevRightPosition = rightPosition;
 			}
+		} else if (rightPosition > 0) {
+			setRightPosition(rightPosition - 1);
+		} else if (prevRightPosition != rightPosition) {
+			prevRightPosition = rightPosition;
 		}
 	}
 
