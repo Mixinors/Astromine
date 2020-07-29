@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.block.conveyor.entity;
 
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
@@ -44,17 +45,23 @@ public class SplitterBlockEntity extends DoubleMachineBlockEntity {
 		int smallHalf = size / 2;
 		int largeHalf = size - smallHalf;
 
-		ItemStack smallStack = stack.copy();
-		ItemStack largeStack = stack.copy();
+		if (isEmpty()) {
+			ItemStack smallStack = stack.copy();
+			ItemStack largeStack = stack.copy();
 
-		smallStack.setCount(smallHalf);
-		largeStack.setCount(largeHalf);
+			smallStack.setCount(smallHalf);
+			largeStack.setCount(largeHalf);
 
-		if (smallStack.getCount() > 0)
-			setLeftStack(smallStack);
+			if (smallStack.getCount() > 0)
+				setLeftStack(smallStack);
 
-		if (largeStack.getCount() > 0)
-			setRightStack(largeStack);
+			if (largeStack.getCount() > 0)
+				setRightStack(largeStack);
+		} else if (!getLeftStack().isEmpty() && getRightStack().isEmpty()) {
+			setRightStack(stack);
+		} else if (!getRightStack().isEmpty() && getLeftStack().isEmpty()) {
+			setLeftStack(stack);
+		}
 
 		world.playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AstromineSoundEvents.MACHINE_CLICK, SoundCategory.BLOCKS, 1.0F, 1.0F);
 	}

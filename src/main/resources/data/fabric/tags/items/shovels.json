@@ -34,6 +34,7 @@
     "astromine:iron_mining_tool",
     "astromine:golden_mining_tool",
     "astromine:diamond_mining_tool",
-    "astromine:netherite_mining_tool"
+    "astromine:netherite_mining_tool",
+    "#astromine:drills"
   ]
 }

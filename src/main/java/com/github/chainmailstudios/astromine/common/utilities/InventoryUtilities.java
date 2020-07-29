@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.utilities;
 
 import net.fabricmc.api.EnvType;
@@ -35,11 +36,13 @@ import java.util.*;
 public class InventoryUtilities extends spinnery.common.utility.InventoryUtilities {
 	@Environment(EnvType.CLIENT)
 	public static List<ItemStack> toList(Ingredient ingredient) {
-		return new ArrayList<ItemStack>() {{
-			for (ItemStack stack : ingredient.getMatchingStacksClient()) {
-				this.add(stack);
+		return new ArrayList<ItemStack>() {
+			{
+				for (ItemStack stack : ingredient.getMatchingStacksClient()) {
+					this.add(stack);
+				}
 			}
-		}};
+		};
 	}
 
 	public static List<ItemStack> toList(ItemStack[] array) {
@@ -66,7 +69,7 @@ public class InventoryUtilities extends spinnery.common.utility.InventoryUtiliti
 	}
 
 	public static BaseInventory singleOf(Inventory origin, int slot) {
-		return rangedOf(origin, new int[]{slot});
+		return rangedOf(origin, new int[]{ slot });
 	}
 
 	public static BaseInventory rangedOf(Inventory origin, int[] slots) {
@@ -79,10 +82,11 @@ public class InventoryUtilities extends spinnery.common.utility.InventoryUtiliti
 	}
 
 	/**
-	* Sorts an inventory based on stack names and count.
-	*
-	* @param inventory the specified inventory.
-	*/
+	 * Sorts an inventory based on stack names and count.
+	 *
+	 * @param inventory
+	 *        the specified inventory.
+	 */
 	public static void sort(Inventory inventory) {
 		TreeMap<String, ArrayList<ItemStack>> byType = new TreeMap<>();
 

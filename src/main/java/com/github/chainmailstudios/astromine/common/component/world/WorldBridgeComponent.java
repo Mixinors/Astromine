@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.component.world;
 
 import com.github.chainmailstudios.astromine.common.utilities.VoxelShapeUtilities;
@@ -83,7 +84,8 @@ public class WorldBridgeComponent implements Component {
 
 	public VoxelShape getShape(long pos) {
 		Set<Vec3i> vecs = get(pos);
-		if (vecs == null) return VoxelShapes.fullCube();
+		if (vecs == null)
+			return VoxelShapes.fullCube();
 		else return getShape(vecs);
 	}
 
@@ -96,17 +98,12 @@ public class WorldBridgeComponent implements Component {
 		boolean d = false;
 
 		for (Vec3i vec : vecs) {
-			if (!c && vec.getX() < 0) c = true;
-			if (!d && vec.getZ() < 0) d = true;
+			if (!c && vec.getX() < 0)
+				c = true;
+			if (!d && vec.getZ() < 0)
+				d = true;
 
-			shape = VoxelShapes.union(shape, Block.createCuboidShape(
-					Math.abs(vec.getX()),
-					Math.abs(vec.getY()) - 1,
-					Math.abs(vec.getZ()),
-					b ? 16 : Math.abs(vec.getX() + 1),
-					Math.abs(vec.getY()) + 1,
-					a ? 16 : Math.abs(vec.getZ() + 1)
-			));
+			shape = VoxelShapes.union(shape, Block.createCuboidShape(Math.abs(vec.getX()), Math.abs(vec.getY()) - 1, Math.abs(vec.getZ()), b ? 16 : Math.abs(vec.getX() + 1), Math.abs(vec.getY()) + 1, a ? 16 : Math.abs(vec.getZ() + 1)));
 		}
 
 		if (c || d) {

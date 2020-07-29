@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.network;
 
 import com.github.chainmailstudios.astromine.client.registry.NetworkMemberRegistry;
@@ -95,7 +96,7 @@ public class NetworkTracer {
 							instance.addMember(NetworkMemberNode.of(offsetPosition, direction.getOpposite()));
 						}
 
-						if (offsetMember.isNode(type)) {
+						if (offsetMember.isNode(type) && offsetObject.getBlock() == initialObject.getBlock()) {
 							positionsToTrace.addLast(offsetPosition);
 							instance.addNode(NetworkNode.of(offsetPosition));
 						}
@@ -125,17 +126,20 @@ public class NetworkTracer {
 		}
 
 		public void scanNeighbours(NetworkType type, BlockPos initialPosition, World world) {
+			WorldPos initialObject = WorldPos.of(world, initialPosition);
 			for (Direction direction : Direction.values()) {
-				NetworkMember offsetMember = NetworkMemberRegistry.get(world, initialPosition.offset(direction));
+				WorldPos pos = WorldPos.of(world, initialPosition.offset(direction));
+				NetworkMember offsetMember = NetworkMemberRegistry.get(pos);
 
-				if (offsetMember.acceptsType(type)) {
+				if (offsetMember.acceptsType(type) && (!offsetMember.isNode(type) || pos.getBlock() == initialObject.getBlock())) {
 					directions.add(direction);
 				}
 			}
 		}
 
 		public BlockState applyToBlockState(BlockState state) {
-			if (!(state.getBlock() instanceof AbstractCableBlock)) return state;
+			if (!(state.getBlock() instanceof AbstractCableBlock))
+				return state;
 			for (Direction direction : Direction.values()) {
 				state = state.with(AbstractCableBlock.PROPERTY_MAP.get(direction), directions.contains(direction));
 			}

@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,9 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.block.AlloySmelterBlock;
+import com.github.chainmailstudios.astromine.common.block.TieredHorizontalFacingMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
@@ -47,7 +48,7 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 	public boolean shouldTry = true;
 	public boolean isActive = false;
 
-	public boolean[] activity = {false, false, false, false, false};
+	public boolean[] activity = { false, false, false, false, false };
 
 	Optional<AlloySmeltingRecipe> recipe = Optional.empty();
 
@@ -87,7 +88,8 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 	public void tick() {
 		super.tick();
 
-		if (world.isClient()) return;
+		if (world.isClient())
+			return;
 		if (shouldTry) {
 			BaseInventory inputInventory = new BaseInventory(2);
 			inputInventory.setStack(0, itemComponent.getStack(0));
@@ -98,15 +100,18 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 				}
 			}
 			if (recipe.isPresent() && recipe.get().matches(inputInventory, world)) {
-				limit = recipe.get().getTime() * 2;
+				limit = recipe.get().getTime();
+
+				double speed = Math.min(((TieredHorizontalFacingMachineBlock) this.getCachedState().getBlock()).getMachineSpeed(), limit - progress);
+				double consumed = recipe.get().getEnergyConsumed() * speed / limit;
 
 				ItemStack output = recipe.get().getOutput().copy();
 
 				boolean isEmpty = itemComponent.getStack(2).isEmpty();
 				boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(2), output) && ItemStack.areTagsEqual(itemComponent.getStack(2), output);
 
-				if (asEnergy().use(recipe.get().getEnergyConsumed()) && (isEmpty || isEqual) && itemComponent.getStack(2).getCount() + output.getCount() <= itemComponent.getStack(2).getMaxCount()) {
-					if (progress == limit) {
+				if ((isEmpty || isEqual) && itemComponent.getStack(2).getCount() + output.getCount() <= itemComponent.getStack(2).getMaxCount() && asEnergy().use(consumed)) {
+					if (progress + speed >= limit) {
 						ItemStack stack1 = itemComponent.getStack(0);
 						ItemStack stack2 = itemComponent.getStack(1);
 						if (recipe.get().getFirstInput().test(stack1) || recipe.get().getSecondInput().test(stack2)) {
@@ -125,7 +130,7 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 
 						progress = 0;
 					} else {
-						progress += 1 * ((AlloySmelterBlock) this.getCachedState().getBlock()).getMachineSpeed();
+						progress += speed;
 					}
 
 					isActive = true;
@@ -141,7 +146,8 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 			isActive = false;
 		}
 
-		if (activity.length - 1 >= 0) System.arraycopy(activity, 1, activity, 0, activity.length - 1);
+		if (activity.length - 1 >= 0)
+			System.arraycopy(activity, 1, activity, 0, activity.length - 1);
 
 		activity[4] = isActive;
 

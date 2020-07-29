@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,9 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.block.TrituratorBlock;
+import com.github.chainmailstudios.astromine.common.block.TieredHorizontalFacingMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
@@ -49,7 +50,7 @@ public abstract class TrituratorBlockEntity extends DefaultedEnergyItemBlockEnti
 
 	public boolean isActive = false;
 
-	public boolean[] activity = {false, false, false, false, false};
+	public boolean[] activity = { false, false, false, false, false };
 
 	Optional<TrituratingRecipe> recipe = Optional.empty();
 
@@ -89,7 +90,8 @@ public abstract class TrituratorBlockEntity extends DefaultedEnergyItemBlockEnti
 	public void tick() {
 		super.tick();
 
-		if (world.isClient()) return;
+		if (world.isClient())
+			return;
 		if (shouldTry) {
 			if (!recipe.isPresent()) {
 				if (hasWorld() && !world.isClient) {
@@ -97,17 +99,18 @@ public abstract class TrituratorBlockEntity extends DefaultedEnergyItemBlockEnti
 				}
 			}
 			if (recipe.isPresent() && recipe.get().matches(ItemInventoryFromInventoryComponent.of(itemComponent), world)) {
-				limit = recipe.get().getTime() * 2;
+				limit = recipe.get().getTime();
 
-				double consumed = recipe.get().getEnergyConsumed() / (double) (limit / 2);
+				double speed = Math.min(((TieredHorizontalFacingMachineBlock) this.getCachedState().getBlock()).getMachineSpeed(), limit - progress);
+				double consumed = recipe.get().getEnergyConsumed() * speed / limit;
 
 				ItemStack output = recipe.get().getOutput();
 
 				boolean isEmpty = itemComponent.getStack(0).isEmpty();
 				boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(0), output) && ItemStack.areTagsEqual(itemComponent.getStack(0), output);
 
-				if (asEnergy().use(consumed) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
-					if (progress >= limit) {
+				if ((isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount() && asEnergy().use(consumed)) {
+					if (progress + speed >= limit) {
 						recipe.get().craft(ItemInventoryFromInventoryComponent.of(itemComponent));
 
 						if (isEmpty) {
@@ -118,7 +121,7 @@ public abstract class TrituratorBlockEntity extends DefaultedEnergyItemBlockEnti
 
 						progress = 0;
 					} else {
-						progress += ((TrituratorBlock) this.getCachedState().getBlock()).getMachineSpeed();
+						progress += speed;
 					}
 					isActive = true;
 				} else {
@@ -135,7 +138,8 @@ public abstract class TrituratorBlockEntity extends DefaultedEnergyItemBlockEnti
 			isActive = false;
 		}
 
-		if (activity.length - 1 >= 0) System.arraycopy(activity, 1, activity, 0, activity.length - 1);
+		if (activity.length - 1 >= 0)
+			System.arraycopy(activity, 1, activity, 0, activity.length - 1);
 
 		activity[4] = isActive;
 

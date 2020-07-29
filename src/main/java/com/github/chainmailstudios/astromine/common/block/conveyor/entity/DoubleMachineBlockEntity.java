@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.block.conveyor.entity;
 
 import com.github.chainmailstudios.astromine.common.conveyor.Conveyable;
@@ -33,13 +34,16 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 
 public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable, DoubleStackInventory, BlockEntityClientSerializable, RenderAttachmentBlockEntity, Tickable {
 	private DefaultedList<ItemStack> stacks = DefaultedList.ofSize(2, ItemStack.EMPTY);
@@ -93,9 +97,10 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 		if (conveyable.accepts(getLeftStack())) {
 			if (leftPosition < speed) {
 				setLeftPosition(getLeftPosition() + 1);
-			} else if (transition && !getWorld().isClient() && leftPosition >= speed) {
+			} else if (transition && leftPosition >= speed) {
 				conveyable.give(getLeftStack());
-				removeLeftStack();
+				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 40 * 40)
+					removeLeftStack();
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
 			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
@@ -105,6 +110,10 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 			} else {
 				prevLeftPosition = leftPosition;
 			}
+		} else if (leftPosition > 0) {
+			setLeftPosition(leftPosition - 1);
+		} else if (prevLeftPosition != leftPosition) {
+			prevLeftPosition = leftPosition;
 		}
 	}
 
@@ -112,9 +121,10 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 		if (conveyable.accepts(getRightStack())) {
 			if (rightPosition < speed) {
 				setRightPosition(getRightPosition() + 1);
-			} else if (transition && !getWorld().isClient() && rightPosition >= speed) {
+			} else if (transition && rightPosition >= speed) {
 				conveyable.give(getRightStack());
-				removeRightStack();
+				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 40 * 40)
+					removeRightStack();
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
 			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
@@ -124,12 +134,42 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 			} else {
 				prevRightPosition = rightPosition;
 			}
+		} else if (rightPosition > 0) {
+			setRightPosition(rightPosition - 1);
+		} else if (prevRightPosition != rightPosition) {
+			prevRightPosition = rightPosition;
 		}
 	}
 
 	@Override
 	public DefaultedList<ItemStack> getItems() {
 		return stacks;
+	}
+
+	@Override
+	public void setStack(int slot, ItemStack stack) {
+		DoubleStackInventory.super.setStack(slot, stack);
+		if (!world.isClient())
+			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+	}
+
+	@Override
+	public ItemStack removeStack(int slot) {
+		ItemStack stack = DoubleStackInventory.super.removeStack(slot);
+		leftPosition = 0;
+		rightPosition = 0;
+		prevLeftPosition = 0;
+		prevRightPosition = 0;
+		if (!world.isClient())
+			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+		return stack;
+	}
+
+	@Override
+	public void clear() {
+		DoubleStackInventory.super.clear();
+		if (!world.isClient())
+			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
 	}
 
 	public int getLeftPosition() {
@@ -143,16 +183,14 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 	public void setLeftPosition(int leftPosition) {
 		if (leftPosition == 0)
 			this.prevLeftPosition = 0;
-		else
-			this.prevLeftPosition = this.leftPosition;
+		else this.prevLeftPosition = this.leftPosition;
 		this.leftPosition = leftPosition;
 	}
 
 	public void setRightPosition(int rightPosition) {
 		if (rightPosition == 0)
 			this.prevRightPosition = 0;
-		else
-			this.prevRightPosition = this.rightPosition;
+		else this.prevRightPosition = this.rightPosition;
 		this.rightPosition = rightPosition;
 	}
 
@@ -177,16 +215,20 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 	public void setLeft(boolean left) {
 		this.left = left;
 		markDirty();
+		if (!world.isClient())
+			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
 	}
 
 	public void setRight(boolean right) {
 		this.right = right;
 		markDirty();
+		if (!world.isClient())
+			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
 	}
 
 	@Override
 	public boolean accepts(ItemStack stack) {
-		return isEmpty();
+		return !(!getLeftStack().isEmpty() && !getRightStack().isEmpty());
 	}
 
 	@Override
@@ -206,33 +248,34 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 
 	@Override
 	public int[] getRenderAttachmentData() {
-		return new int[] { leftPosition, prevLeftPosition, rightPosition, prevRightPosition };
+		return new int[]{ leftPosition, prevLeftPosition, rightPosition, prevRightPosition };
 	}
 
-	public void sync() {
-		if (world instanceof ServerWorld) {
-			((ServerWorld)world).getChunkManager().markForUpdate(pos);
-		}
+	protected void sendPacket(ServerWorld w, CompoundTag tag) {
+		tag.putString("id", BlockEntityType.getId(getType()).toString());
+		sendPacket(w, new BlockEntityUpdateS2CPacket(getPos(), 127, tag));
+	}
+
+	protected void sendPacket(ServerWorld w, BlockEntityUpdateS2CPacket packet) {
+		w.getPlayers(player -> player.squaredDistanceTo(Vec3d.of(getPos())) < 40 * 40).forEach(player -> player.networkHandler.sendPacket(packet));
 	}
 
 	@Override
 	public void markDirty() {
 		super.markDirty();
-		sync();
 	}
 
 	@Override
 	public void fromTag(BlockState state, CompoundTag compoundTag) {
 		super.fromTag(state, compoundTag);
-		clear();
-		setLeftStack(ItemStack.fromTag(compoundTag.getCompound("leftStack")));
-		setRightStack(ItemStack.fromTag(compoundTag.getCompound("rightStack")));
+		getItems().set(0, ItemStack.fromTag(compoundTag.getCompound("leftStack")));
+		getItems().set(1, ItemStack.fromTag(compoundTag.getCompound("rightStack")));
 		left = compoundTag.getBoolean("left");
 		right = compoundTag.getBoolean("right");
 		leftPosition = compoundTag.getInt("leftPosition");
-		prevLeftPosition = compoundTag.getInt("leftPosition");
+		prevLeftPosition = compoundTag.getInt("prevLeftPosition");
 		rightPosition = compoundTag.getInt("rightPosition");
-		prevRightPosition = compoundTag.getInt("rightPosition");
+		prevRightPosition = compoundTag.getInt("prevRightPosition");
 	}
 
 	@Override
@@ -247,7 +290,9 @@ public class DoubleMachineBlockEntity extends BlockEntity implements Conveyable,
 		compoundTag.putBoolean("left", left);
 		compoundTag.putBoolean("right", right);
 		compoundTag.putInt("leftPosition", leftPosition);
+		compoundTag.putInt("prevLeftPosition", prevLeftPosition);
 		compoundTag.putInt("rightPosition", rightPosition);
+		compoundTag.putInt("prevRightPosition", prevRightPosition);
 		return super.toTag(compoundTag);
 	}
 

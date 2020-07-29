@@ -2,13 +2,13 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"textures": {
-		"3": "astromine:block/machine_splitter",
+		"3": "astromine:block/splitter_top",
 		"base": "astromine:block/advanced_machine_side",
 		"bottom": "astromine:block/advanced_machine_bottom",
 		"top": "astromine:block/advanced_machine_top",
 		"particle": "astromine:block/advanced_machine_side",
-		"input": "astromine:block/advanced_machine_side_input",
-		"output": "astromine:block/advanced_machine_side_output"
+		"input": "astromine:block/advanced_machine_input_side_large",
+		"output": "astromine:block/advanced_machine_output_side_large"
 	},
 	"elements": [
 		{

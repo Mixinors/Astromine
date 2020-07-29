@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
@@ -113,19 +114,9 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 			return (Collection<T>) allComponents.values();
 		} else {
 			if (getCachedState().contains(HorizontalFacingBlock.FACING)) {
-				return (Collection<T>) getComponentTypes()
-						.stream()
-						.map(type -> new Pair<>((ComponentType) type, (Component) getComponent(type)))
-						.filter(pair -> !transferComponent.get(pair.getLeft()).get(direction).isNone())
-						.map(Pair::getRight)
-						.collect(Collectors.toList());
+				return (Collection<T>) getComponentTypes().stream().map(type -> new Pair<>((ComponentType) type, (Component) getComponent(type))).filter(pair -> !transferComponent.get(pair.getLeft()).get(direction).isNone()).map(Pair::getRight).collect(Collectors.toList());
 			} else if (getCachedState().contains(FacingBlock.FACING)) {
-				return (Collection<T>) getComponentTypes()
-						.stream()
-						.map(type -> new Pair<>((ComponentType) type, (Component) getComponent(type)))
-						.filter(pair -> !transferComponent.get(pair.getLeft()).get(direction).isNone())
-						.map(Pair::getRight)
-						.collect(Collectors.toList());
+				return (Collection<T>) getComponentTypes().stream().map(type -> new Pair<>((ComponentType) type, (Component) getComponent(type))).filter(pair -> !transferComponent.get(pair.getLeft()).get(direction).isNone()).map(Pair::getRight).collect(Collectors.toList());
 			} else {
 				return Lists.newArrayList();
 			}
@@ -189,7 +180,8 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 
 	@Override
 	public void tick() {
-		if (!hasWorld() || world.isClient()) return;
+		if (!hasWorld() || world.isClient())
+			return;
 
 		ItemInventoryComponent itemComponent = getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
 		FluidInventoryComponent fluidComponent = getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);

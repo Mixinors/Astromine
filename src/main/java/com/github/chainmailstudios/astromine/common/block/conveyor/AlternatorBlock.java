@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,12 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.block.conveyor;
 
 import com.github.chainmailstudios.astromine.common.block.conveyor.entity.AlternatorBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.conveyor.entity.DoubleMachineBlockEntity;
 import com.github.chainmailstudios.astromine.common.conveyor.Conveyable;
 import com.github.chainmailstudios.astromine.common.conveyor.ConveyableBlock;
+import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -40,7 +42,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class AlternatorBlock extends HorizontalFacingBlock implements BlockEntityProvider, ConveyableBlock {
+public class AlternatorBlock extends HorizontalFacingBlock implements BlockEntityProvider, ConveyableBlock, MachineBlockWrenchable {
 	public AlternatorBlock(Settings settings) {
 		super(settings);
 	}
@@ -92,13 +94,11 @@ public class AlternatorBlock extends HorizontalFacingBlock implements BlockEntit
 		BlockEntity leftBlockEntity = world.getBlockEntity(leftPos);
 		if (leftBlockEntity instanceof Conveyable && ((Conveyable) leftBlockEntity).validInputSide(direction.rotateYClockwise()))
 			machineBlockEntity.setLeft(true);
-		else
-			machineBlockEntity.setLeft(false);
+		else machineBlockEntity.setLeft(false);
 
 		BlockEntity rightBlockEntity = world.getBlockEntity(rightPos);
 		if (rightBlockEntity instanceof Conveyable && ((Conveyable) rightBlockEntity).validInputSide(direction.rotateYCounterclockwise()))
 			machineBlockEntity.setRight(true);
-		else
-			machineBlockEntity.setRight(false);
+		else machineBlockEntity.setRight(false);
 	}
 }

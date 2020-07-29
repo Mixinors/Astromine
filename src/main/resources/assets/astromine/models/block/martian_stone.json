@@ -1,7 +1,7 @@
 {
   "parent": "block/cube",
   "textures": {
-    "particle": "astromine:block/martial_stone_top",
+    "particle": "astromine:block/martian_stone_top",
     "down": "astromine:block/martian_stone_bottom",
     "up": "astromine:block/martian_stone_top",
     "north": "astromine:block/martian_stone_side",

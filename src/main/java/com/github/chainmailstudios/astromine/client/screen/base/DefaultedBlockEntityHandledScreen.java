@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.client.screen.base;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedFacingBlockWithEntity;
@@ -98,15 +99,7 @@ public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScr
 				if (componentProvider.getComponent(type) instanceof NameableComponent) {
 					NameableComponent nameableComponent = (NameableComponent) componentProvider.getComponent(type);
 					WTabHolder.WTab tab = mainTabbedPanel.addTab(nameableComponent.getSymbol());
-					WTransferTypeSelectorPanel.createTab(
-							tab,
-							Position.of(mainTabbedPanel, mainTabbedPanel.getWidth() / 2 - 38, 0, 0),
-							finalRotation,
-							transferComponent,
-							handler.syncBlockEntity.getPos(),
-							type,
-							getInterface()
-					);
+					WTransferTypeSelectorPanel.createTab(tab, Position.of(mainTabbedPanel, mainTabbedPanel.getWidth() / 2 - 38, 0, 0), finalRotation, transferComponent, handler.syncBlockEntity.getPos(), type, getInterface());
 					tab.getBody().setLabel(nameableComponent.getName());
 					playerSlots.addAll(WSlot.addPlayerInventory(Position.of(mainTabbedPanel, 7, mainTabbedPanel.getHeight() - 18 - 11 - (18 * 3), 2), Size.of(18, 18), tab.getBody()));
 				}

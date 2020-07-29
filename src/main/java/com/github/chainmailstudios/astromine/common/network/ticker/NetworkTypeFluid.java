@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.network.ticker;
 
 import com.github.chainmailstudios.astromine.client.registry.NetworkMemberRegistry;
@@ -53,7 +54,7 @@ public class NetworkTypeFluid extends NetworkType {
 		for (NetworkMemberNode memberNode : instance.members) {
 			BlockEntity blockEntity = instance.getWorld().getBlockEntity(memberNode.getBlockPos());
 			NetworkMember networkMember = NetworkMemberRegistry.get(blockEntity);
-			
+
 			if (blockEntity instanceof ComponentProvider && networkMember.acceptsType(this)) {
 				ComponentProvider provider = ComponentProvider.fromBlockEntity(blockEntity);
 
@@ -65,7 +66,8 @@ public class NetworkTypeFluid extends NetworkType {
 				if (fluidComponent != null && transferComponent != null) {
 					Property<Direction> property = blockEntity.getCachedState().contains(HorizontalFacingBlock.FACING) ? HorizontalFacingBlock.FACING : blockEntity.getCachedState().contains(FacingBlock.FACING) ? FacingBlock.FACING : null;
 
-					if (!blockEntity.getCachedState().contains(property)) break before;
+					if (!blockEntity.getCachedState().contains(property))
+						break before;
 
 					TransferType type = transferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).get(memberNode.getDirection());
 

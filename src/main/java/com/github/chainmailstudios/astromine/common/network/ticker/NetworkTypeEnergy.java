@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.network.ticker;
 
 import com.github.chainmailstudios.astromine.client.registry.NetworkMemberRegistry;
@@ -31,26 +32,36 @@ import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.github.chainmailstudios.astromine.common.utilities.WorldPos;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import net.minecraft.block.entity.BlockEntity;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 import team.reborn.energy.EnergyStorage;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class NetworkTypeEnergy extends NetworkType {
 	@Override
 	public void tick(NetworkInstance instance) {
-		int speed = 1024;
-		List<EnergyHandler> inputs = Lists.newArrayList();
-		List<EnergyHandler> requesters = Lists.newArrayList();
+		Map<EnergyHandler, Double> inputs = Maps.newLinkedHashMap();
+		Map<EnergyHandler, Double> requesters = Maps.newLinkedHashMap();
 
 		for (NetworkMemberNode memberNode : instance.members) {
-			BlockEntity blockEntity = instance.getWorld().getBlockEntity(memberNode.getBlockPos());
-			NetworkMember networkMember = NetworkMemberRegistry.get(blockEntity);
+			WorldPos memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPos());
+			NetworkMember networkMember = NetworkMemberRegistry.get(memberPos);
+			BlockEntity blockEntity = memberPos.getBlockEntity();
+
+			double speedOfMovement = 0;
+			WorldPos nodePosition = memberPos.offset(memberNode.getDirection());
+			if (nodePosition.getBlock() instanceof EnergyNodeSpeedProvider) {
+				speedOfMovement = ((EnergyNodeSpeedProvider) nodePosition.getBlock()).getNodeSpeed();
+			}
+
+			if (speedOfMovement <= 0)
+				continue;
 
 			if (blockEntity instanceof EnergyStorage && networkMember.acceptsType(this)) {
 				TransferType type = TransferType.NONE;
@@ -65,22 +76,31 @@ public class NetworkTypeEnergy extends NetworkType {
 
 				if (!type.isDisabled()) {
 					if (type.canExtract() || networkMember.isProvider(this)) {
-						inputs.add(Energy.of(blockEntity).side(memberNode.getDirection()));
+						inputs.put(Energy.of(blockEntity).side(memberNode.getDirection()), speedOfMovement);
 					}
 
 					if (type.canInsert() || networkMember.isRequester(this)) {
-						requesters.add(Energy.of(blockEntity).side(memberNode.getDirection()));
+						requesters.put(Energy.of(blockEntity).side(memberNode.getDirection()), speedOfMovement);
 					}
 				}
 			}
 		}
 
-		requesters.sort(Comparator.comparingDouble(EnergyHandler::getEnergy));
-		for (EnergyHandler input : inputs) {
-			for (int i = requesters.size() - 1; i >= 0; i--) {
-				EnergyHandler output = requesters.get(i);
-				input.into(output).move(Math.max(0, Math.min(speed / requesters.size(), Math.min(Math.min(input.getEnergy() / (i + 1), output.getMaxStored() - output.getEnergy()), Math.min(input.getMaxOutput(), output.getMaxInput())))));
+		List<EnergyHandler> requesterKeys = Lists.newArrayList(requesters.keySet());
+		requesterKeys.sort(Comparator.comparingDouble(EnergyHandler::getEnergy));
+		for (Map.Entry<EnergyHandler, Double> inputEntry : inputs.entrySet()) {
+			EnergyHandler input = inputEntry.getKey();
+			double inputSpeed = inputEntry.getValue();
+			for (int i = requesterKeys.size() - 1; i >= 0; i--) {
+				EnergyHandler output = requesterKeys.get(i);
+				double outputSpeed = requesters.get(output);
+				double speed = Collections.min(Arrays.asList(inputSpeed / requesters.size(), outputSpeed / requesters.size(), input.getEnergy() / (i + 1), output.getMaxStored() - output.getEnergy(), input.getMaxOutput(), output.getMaxInput()));
+				input.into(output).move(speed);
 			}
 		}
+	}
+
+	public interface EnergyNodeSpeedProvider {
+		double getNodeSpeed();
 	}
 }

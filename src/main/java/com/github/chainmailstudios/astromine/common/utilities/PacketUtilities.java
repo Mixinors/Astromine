@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.utilities;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
@@ -35,31 +36,13 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
 public class PacketUtilities {
-	private static final ImmutableMap<Class<?>, BiConsumer<PacketByteBuf, Object>> WRITERS = ImmutableMap.<Class<?>, BiConsumer<PacketByteBuf, Object>>builder().put(Integer.class, (buffer, object) ->
-			buffer.writeInt((Integer) object)
-	).put(Float.class, (buffer, object) ->
-			buffer.writeFloat((Float) object)
-	).put(Double.class, (buffer, object) ->
-			buffer.writeDouble((Double) object)
-	).put(String.class, (buffer, object) ->
-			buffer.writeString((String) object)
-	).put(Identifier.class, (buffer, object) ->
-			buffer.writeIdentifier((Identifier) object)
-	).put(Enum.class, (buffer, object) ->
-			buffer.writeEnumConstant((Enum<?>) object)
-	).build();
+	private static final ImmutableMap<Class<?>, BiConsumer<PacketByteBuf, Object>> WRITERS = ImmutableMap.<Class<?>, BiConsumer<PacketByteBuf, Object>> builder().put(Integer.class, (buffer, object) -> buffer.writeInt((Integer) object)).put(Float.class, (buffer, object) -> buffer
+		.writeFloat((Float) object)).put(Double.class, (buffer, object) -> buffer.writeDouble((Double) object)).put(String.class, (buffer, object) -> buffer.writeString((String) object)).put(Identifier.class, (buffer, object) -> buffer.writeIdentifier((Identifier) object)).put(
+			Enum.class, (buffer, object) -> buffer.writeEnumConstant((Enum<?>) object)).build();
 
-	private static final ImmutableMap<Class<?>, BiFunction<PacketByteBuf, Class<?>, ?>> READERS = ImmutableMap.<Class<?>, BiFunction<PacketByteBuf, Class<?>, ?>>builder().put(Integer.class, (buffer, object) -> buffer.readInt()).put(Float.class, (buffer, object) ->
-			buffer.readFloat()
-	).put(Double.class, (buffer, object) ->
-			buffer.readDouble()
-	).put(String.class, (buffer, object) ->
-			buffer.readString()
-	).put(Identifier.class, (buffer, object) ->
-			buffer.readIdentifier()
-	).put(Enum.class, (buffer, object) ->
-			buffer.readEnumConstant(((Enum<?>) (object.getEnumConstants()[0])).getClass())
-	).build();
+	private static final ImmutableMap<Class<?>, BiFunction<PacketByteBuf, Class<?>, ?>> READERS = ImmutableMap.<Class<?>, BiFunction<PacketByteBuf, Class<?>, ?>> builder().put(Integer.class, (buffer, object) -> buffer.readInt()).put(Float.class, (buffer, object) -> buffer
+		.readFloat()).put(Double.class, (buffer, object) -> buffer.readDouble()).put(String.class, (buffer, object) -> buffer.readString()).put(Identifier.class, (buffer, object) -> buffer.readIdentifier()).put(Enum.class, (buffer, object) -> buffer.readEnumConstant(
+			((Enum<?>) (object.getEnumConstants()[0])).getClass())).build();
 
 	public static void toPacket(PacketByteBuf buffer, Object object) {
 		writeObject(buffer, object);

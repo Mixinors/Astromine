@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.registry;
 
 import net.minecraft.item.ToolMaterial;
@@ -46,9 +47,9 @@ public class AstromineToolMaterials {
 	public static final AstromineToolMaterial GALAXIUM = new AstromineToolMaterial(6, 3072, 11f, 5.0f, 18, () -> Ingredient.ofItems(AstromineItems.GALAXIUM));
 	public static final AstromineToolMaterial UNIVITE = new AstromineToolMaterial(7, 3918, 12f, 6.0f, 22, () -> Ingredient.ofItems(AstromineItems.UNIVITE_INGOT));
 
-	public static final AstromineToolMaterial BASIC_DRILL = new AstromineToolMaterial(2, Integer.MAX_VALUE, 10F, 2F, 16, () -> Ingredient.ofItems(AstromineItems.BASIC_DRILL));
-	public static final AstromineToolMaterial ADVANCED_DRILL = new AstromineToolMaterial(3, Integer.MAX_VALUE, 15F, 3F, 20, () -> Ingredient.ofItems(AstromineItems.ADVANCED_DRILL));
-	public static final AstromineToolMaterial ELITE_DRILL = new AstromineToolMaterial(5, Integer.MAX_VALUE, 20F, 5F, 16, () -> Ingredient.ofItems(AstromineItems.ELITE_DRILL));
+	public static final AstromineToolMaterial BASIC_DRILL = new AstromineToolMaterial(2, Integer.MAX_VALUE, 10F, 2F, 16, () -> Ingredient.EMPTY);
+	public static final AstromineToolMaterial ADVANCED_DRILL = new AstromineToolMaterial(3, Integer.MAX_VALUE, 15F, 3F, 20, () -> Ingredient.EMPTY);
+	public static final AstromineToolMaterial ELITE_DRILL = new AstromineToolMaterial(5, Integer.MAX_VALUE, 20F, 5F, 16, () -> Ingredient.EMPTY);
 
 	public static class AstromineToolMaterial implements ToolMaterial {
 		private final int miningLevel;

@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.block.conveyor.entity;
 
 import com.github.chainmailstudios.astromine.common.block.conveyor.ConveyorProperties;
@@ -31,10 +32,13 @@ import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 
 public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	protected boolean down = false;
@@ -88,9 +92,10 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 		if (conveyable.accepts(getStack())) {
 			if (horizontalPosition < speed) {
 				setHorizontalPosition(getHorizontalPosition() + 1);
-			} else if (transition && !getWorld().isClient() && horizontalPosition >= speed) {
+			} else if (transition && horizontalPosition >= speed) {
 				conveyable.give(getStack());
-				removeStack();
+				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24)
+					removeStack();
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
 			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
@@ -129,11 +134,13 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	public void setDown(boolean down) {
 		this.down = down;
 		markDirty();
+		if (!world.isClient())
+			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
 	}
 
 	@Override
 	public int[] getRenderAttachmentData() {
-		return new int[] { position, prevPosition, horizontalPosition, prevHorizontalPosition };
+		return new int[]{ position, prevPosition, horizontalPosition, prevHorizontalPosition };
 	}
 
 	public int getHorizontalPosition() {
@@ -143,8 +150,7 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	public void setHorizontalPosition(int horizontalPosition) {
 		if (horizontalPosition == 0)
 			this.prevHorizontalPosition = 0;
-		else
-			this.prevHorizontalPosition = this.horizontalPosition;
+		else this.prevHorizontalPosition = this.horizontalPosition;
 
 		this.horizontalPosition = horizontalPosition;
 	}

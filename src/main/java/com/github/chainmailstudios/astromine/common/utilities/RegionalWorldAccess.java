@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.utilities;
 
 import com.github.chainmailstudios.astromine.access.WorldChunkAccess;
@@ -37,8 +38,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.WorldChunk;
 
 /**
-* faster world access for small areas (like when u don't need to access blocks on the other side of the world) warning: not threadsafe!
-*/
+ * faster world access for small areas (like when u don't need to access blocks on the other side of the world) warning:
+ * not threadsafe!
+ */
 public class RegionalWorldAccess {
 	public final World world;
 	public final boolean isClient;
@@ -87,9 +89,7 @@ public class RegionalWorldAccess {
 				return false;
 			} else {
 				BlockState blockState2 = this.getBlockState(x, y, z);
-				if (blockState2 != blockState && (blockState2.getOpacity(world, pos) != blockState.getOpacity(world,
-						pos
-				) || blockState2.getLuminance() != blockState.getLuminance() || blockState2.hasSidedTransparency() || blockState.hasSidedTransparency())) {
+				if (blockState2 != blockState && (blockState2.getOpacity(world, pos) != blockState.getOpacity(world, pos) || blockState2.getLuminance() != blockState.getLuminance() || blockState2.hasSidedTransparency() || blockState.hasSidedTransparency())) {
 					world.getChunkManager().getLightingProvider().checkBlock(pos);
 				}
 

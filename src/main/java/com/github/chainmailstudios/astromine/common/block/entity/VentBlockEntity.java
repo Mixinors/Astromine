@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
@@ -43,7 +44,7 @@ import net.minecraft.util.math.Direction;
 public class VentBlockEntity extends DefaultedEnergyFluidBlockEntity implements Tickable {
 	public boolean isActive = false;
 
-	public boolean[] activity = {false, false, false, false, false};
+	public boolean[] activity = { false, false, false, false, false };
 
 	public VentBlockEntity() {
 		super(AstromineBlockEntityTypes.VENT);
@@ -65,7 +66,8 @@ public class VentBlockEntity extends DefaultedEnergyFluidBlockEntity implements 
 	public void tick() {
 		super.tick();
 
-		if (world.isClient()) return;
+		if (world.isClient())
+			return;
 		if (fluidComponent.getVolume(0).hasStored(Fraction.of(1, 8))) {
 			BlockPos position = getPos();
 
@@ -92,7 +94,8 @@ public class VentBlockEntity extends DefaultedEnergyFluidBlockEntity implements 
 			isActive = false;
 		}
 
-		if (activity.length - 1 >= 0) System.arraycopy(activity, 1, activity, 0, activity.length - 1);
+		if (activity.length - 1 >= 0)
+			System.arraycopy(activity, 1, activity, 0, activity.length - 1);
 
 		activity[4] = isActive;
 

@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.recipe;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
@@ -74,7 +75,8 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory>, EnergyCon
 	private static final int FIRST_OUTPUT_FLUID_VOLUME = 1;
 	private static final int SECOND_OUTPUT_FLUID_VOLUME = 2;
 
-	public ElectrolyzingRecipe(Identifier identifier, RegistryKey<Fluid> inputFluidKey, Fraction inputAmount, RegistryKey<Fluid> firstOutputFluidKey, Fraction firstOutputAmount, RegistryKey<Fluid> secondOutputFluidKey, Fraction secondOutputAmount, double energyConsumed, int time) {
+	public ElectrolyzingRecipe(Identifier identifier, RegistryKey<Fluid> inputFluidKey, Fraction inputAmount, RegistryKey<Fluid> firstOutputFluidKey, Fraction firstOutputAmount, RegistryKey<Fluid> secondOutputFluidKey, Fraction secondOutputAmount, double energyConsumed,
+		int time) {
 		this.identifier = identifier;
 		this.inputFluidKey = inputFluidKey;
 		this.inputFluid = new Lazy<>(() -> Registry.FLUID.get(this.inputFluidKey));
@@ -92,7 +94,11 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory>, EnergyCon
 	@Override
 	public <T extends DefaultedBlockEntity> boolean canCraft(T blockEntity) {
 		Block block = blockEntity.getWorld().getBlockState(blockEntity.getPos()).getBlock();
-		if (!(block instanceof TieredHorizontalFacingMachineBlock)) return false;
+		if (!(block instanceof TieredHorizontalFacingMachineBlock))
+			return false;
+
+		double machineSpeed = ((TieredHorizontalFacingMachineBlock) block).getMachineSpeed();
+		Fraction speed = FractionUtilities.fromFloating(machineSpeed);
 
 		FluidInventoryComponent fluidComponent = blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
@@ -100,21 +106,26 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory>, EnergyCon
 		FluidVolume firstOutputVolume = fluidComponent.getVolume(FIRST_OUTPUT_FLUID_VOLUME);
 		FluidVolume secondOutputVolume = fluidComponent.getVolume(SECOND_OUTPUT_FLUID_VOLUME);
 
-		if (!inputVolume.getFluid().matchesType(inputFluid.get())) return false;
-		if (!inputVolume.hasStored(inputAmount)) return false;
+		if (Energy.of(blockEntity).getEnergy() < energyConsumed * machineSpeed)
+			return false;
+		if (!inputVolume.getFluid().matchesType(inputFluid.get()))
+			return false;
+		if (!inputVolume.hasStored(Fraction.simplify(Fraction.multiply(inputAmount, speed))))
+			return false;
 		if (!firstOutputVolume.getFluid().matchesType(firstOutputFluid.get()) && !firstOutputVolume.isEmpty())
 			return false;
-		if (!firstOutputVolume.hasAvailable(firstOutputAmount)) return false;
+		if (!firstOutputVolume.hasAvailable(Fraction.simplify(Fraction.multiply(firstOutputAmount, speed))))
+			return false;
 		if (!secondOutputVolume.getFluid().matchesType(secondOutputFluid.get()) && !secondOutputVolume.isEmpty())
 			return false;
-		return secondOutputVolume.hasAvailable(secondOutputAmount);
+		return secondOutputVolume.hasAvailable(Fraction.simplify(Fraction.multiply(secondOutputAmount, speed)));
 	}
 
 	@Override
 	public <T extends DefaultedBlockEntity> void craft(T blockEntity) {
 		if (canCraft(blockEntity)) {
 			Block block = blockEntity.getWorld().getBlockState(blockEntity.getPos()).getBlock();
-			double machineSpeed = ((TieredHorizontalFacingMachineBlock) block).getMachineSpeed() / 2;
+			double machineSpeed = ((TieredHorizontalFacingMachineBlock) block).getMachineSpeed();
 			Fraction speed = FractionUtilities.fromFloating(machineSpeed);
 
 			FluidInventoryComponent fluidComponent = blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
@@ -123,7 +134,7 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory>, EnergyCon
 			FluidVolume firstOutputVolume = fluidComponent.getVolume(FIRST_OUTPUT_FLUID_VOLUME);
 			FluidVolume secondOutputVolume = fluidComponent.getVolume(SECOND_OUTPUT_FLUID_VOLUME);
 
-			if (Energy.of(blockEntity).use(energyConsumed * Math.max(1, machineSpeed))) {
+			if (Energy.of(blockEntity).use(energyConsumed * machineSpeed)) {
 				inputVolume.extractVolume(Fraction.simplify(Fraction.multiply(inputAmount, speed)));
 				firstOutputVolume.insertVolume(new FluidVolume(firstOutputFluid.get(), Fraction.simplify(Fraction.multiply(firstOutputAmount, speed))));
 				secondOutputVolume.insertVolume(new FluidVolume(secondOutputFluid.get(), Fraction.simplify(Fraction.multiply(secondOutputAmount, speed))));
@@ -215,28 +226,14 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory>, EnergyCon
 		public ElectrolyzingRecipe read(Identifier identifier, JsonObject object) {
 			ElectrolyzingRecipe.Format format = new Gson().fromJson(object, ElectrolyzingRecipe.Format.class);
 
-			return new ElectrolyzingRecipe(identifier,
-					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.input)),
-					FractionUtilities.fromJson(format.inputAmount),
-					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.firstOutput)),
-					FractionUtilities.fromJson(format.firstOutputAmount),
-					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.secondOutput)),
-					FractionUtilities.fromJson(format.secondOutputAmount),
-					EnergyUtilities.fromJson(format.energyGenerated),
-					ParsingUtilities.fromJson(format.time, Integer.class));
+			return new ElectrolyzingRecipe(identifier, RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.input)), FractionUtilities.fromJson(format.inputAmount), RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.firstOutput)), FractionUtilities.fromJson(
+				format.firstOutputAmount), RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.secondOutput)), FractionUtilities.fromJson(format.secondOutputAmount), EnergyUtilities.fromJson(format.energyGenerated), ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 
 		@Override
 		public ElectrolyzingRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new ElectrolyzingRecipe(identifier,
-					RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()),
-					FractionUtilities.fromPacket(buffer),
-					RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()),
-					FractionUtilities.fromPacket(buffer),
-					RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()),
-					FractionUtilities.fromPacket(buffer),
-					EnergyUtilities.fromPacket(buffer),
-					PacketUtilities.fromPacket(buffer, Integer.class));
+			return new ElectrolyzingRecipe(identifier, RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), RegistryKey.of(
+				Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), EnergyUtilities.fromPacket(buffer), PacketUtilities.fromPacket(buffer, Integer.class));
 		}
 
 		@Override
@@ -284,16 +281,8 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory>, EnergyCon
 
 		@Override
 		public String toString() {
-			return "Format{" +
-				"input='" + input + '\'' +
-				", inputAmount=" + inputAmount +
-				", firstOutput='" + firstOutput + '\'' +
-				", firstOutputAmount=" + firstOutputAmount +
-				", secondOutput='" + secondOutput + '\'' +
-				", secondOutputAmount=" + secondOutputAmount +
-				", energyGenerated=" + energyGenerated +
-				", time=" + time +
-				'}';
+			return "Format{" + "input='" + input + '\'' + ", inputAmount=" + inputAmount + ", firstOutput='" + firstOutput + '\'' + ", firstOutputAmount=" + firstOutputAmount + ", secondOutput='" + secondOutput + '\'' + ", secondOutputAmount=" + secondOutputAmount +
+				", energyGenerated=" + energyGenerated + ", time=" + time + '}';
 		}
 	}
 }

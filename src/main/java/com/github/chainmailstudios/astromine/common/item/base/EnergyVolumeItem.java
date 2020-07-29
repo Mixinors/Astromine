@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,9 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.item.base;
 
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
+import me.shedaniel.cloth.api.durability.bar.DurabilityBarItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
@@ -38,12 +40,8 @@ import team.reborn.energy.EnergyTier;
 
 import java.util.List;
 
-public class EnergyVolumeItem extends Item implements EnergyHolder {
+public class EnergyVolumeItem extends Item implements EnergyHolder, DurabilityBarItem {
 	private double maxAmount;
-
-	public EnergyVolumeItem(Settings settings) {
-		super(settings);
-	}
 
 	public EnergyVolumeItem(Settings settings, double maxAmount) {
 		super(settings);
@@ -51,9 +49,7 @@ public class EnergyVolumeItem extends Item implements EnergyHolder {
 	}
 
 	public static EnergyVolumeItem of(Settings settings, double maxAmount) {
-		EnergyVolumeItem item = new EnergyVolumeItem(settings);
-		item.maxAmount = maxAmount;
-		return item;
+		return new EnergyVolumeItem(settings, maxAmount);
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -73,5 +69,21 @@ public class EnergyVolumeItem extends Item implements EnergyHolder {
 	@Override
 	public EnergyTier getTier() {
 		return EnergyTier.INFINITE;
+	}
+
+	@Override
+	public int getDurabilityBarColor(ItemStack stack) {
+		return 0x91261f;
+	}
+
+	@Override
+	public double getDurabilityBarProgress(ItemStack itemStack) {
+		if (!Energy.valid(itemStack) || getMaxStoredPower() == 0) return 0;
+		return Energy.of(itemStack).getEnergy() / getMaxStoredPower();
+	}
+
+	@Override
+	public boolean hasDurabilityBar(ItemStack itemStack) {
+		return true;
 	}
 }
