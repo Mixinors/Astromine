@@ -78,7 +78,8 @@ public class EnergyVolumeItem extends Item implements EnergyHolder, DurabilityBa
 
 	@Override
 	public double getDurabilityBarProgress(ItemStack itemStack) {
-		if (!Energy.valid(itemStack) || getMaxStoredPower() == 0) return 0;
+		if (!Energy.valid(itemStack) || getMaxStoredPower() == 0)
+			return 0;
 		return Energy.of(itemStack).getEnergy() / getMaxStoredPower();
 	}
 
