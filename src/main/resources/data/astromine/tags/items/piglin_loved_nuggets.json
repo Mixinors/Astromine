@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:gold_nugget",
+    "astromine:rose_gold_nugget",
+    "astromine:fools_gold_nugget"
+  ]
+}
