@@ -71,6 +71,8 @@ public class AstromineScreens {
 
 		ScreenRegistry.register(AstromineScreenHandlers.NUCLEAR_WARHEAD, (ScreenRegistry.Factory<NuclearWarheadScreenHandler, NuclearWarheadHandledScreen>) ((handler, inventory, title) -> new NuclearWarheadHandledScreen(title, handler, inventory.player)));
 
+		ScreenRegistry.register(AstromineScreenHandlers.CAPACITOR, (ScreenRegistry.Factory<CapacitorScreenHandler, CapacitorHandledScreen>) (handler, inventory, title) -> new CapacitorHandledScreen(title, handler, inventory.player));
+
 		ScreenRegistry.register(AstromineScreenHandlers.CREATIVE_CAPACITOR, (ScreenRegistry.Factory<CreativeCapacitorScreenHandler, CreativeCapacitorHandledScreen>) ((handler, inventory, title) -> new CreativeCapacitorHandledScreen(title, handler, inventory.player)));
 
 		ScreenRegistry.register(AstromineScreenHandlers.CREATIVE_TANK, (ScreenRegistry.Factory<CreativeTankScreenHandler, CreativeTankHandledScreen>) ((handler, inventory, title) -> new CreativeTankHandledScreen(title, handler, inventory.player)));

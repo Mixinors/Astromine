@@ -25,51 +25,38 @@
 package com.github.chainmailstudios.astromine.common.item;
 
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.ToolUtilities;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import draylar.magna.api.MagnaTool;
-import draylar.magna.item.ExcavatorItem;
-import draylar.magna.item.HammerItem;
 import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ToolMaterial;
+import net.minecraft.item.Vanishable;
 import net.minecraft.tag.Tag;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
-import java.util.List;
-
 public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool, Vanishable, MagnaTool {
 	private final int radius;
-	private final HammerItem hammer;
-	private final ExcavatorItem excavator;
 	private final ToolMaterial material;
 	private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 
 	public DrillItem(ToolMaterial material, float attackDamage, float attackSpeed, int radius, double energy, Settings settings) {
 		super(settings, energy);
 		this.radius = radius;
-		this.hammer = new HammerItem(material, (int) attackDamage, attackSpeed, settings, radius);
-		this.excavator = new ExcavatorItem(material, (int) attackDamage, attackSpeed, settings, radius);
 		this.material = material;
 		ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-		builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Tool modifier", ToolUtilities.getAttackDamage(hammer, excavator), EntityAttributeModifier.Operation.ADDITION));
-		builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Tool modifier", ToolUtilities.getAttackSpeed(hammer, excavator), EntityAttributeModifier.Operation.ADDITION));
+		builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Tool modifier", attackDamage, EntityAttributeModifier.Operation.ADDITION));
+		builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Tool modifier", attackSpeed, EntityAttributeModifier.Operation.ADDITION));
 		this.attributeModifiers = builder.build();
 	}
 
@@ -79,36 +66,19 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	}
 
 	@Override
-	public boolean canRepair(ItemStack stack, ItemStack ingredient) {
-		return this.material.getRepairIngredient().test(ingredient) || super.canRepair(stack, ingredient);
-	}
-
-	@Override
 	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+		EnergyHandler energy = Energy.of(stack);
+		energy.use(getEnergy() * 2);
 		return true;
 	}
 
 	@Override
 	public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
-		hammer.attemptBreak(world, pos, (PlayerEntity) miner, getRadius(stack), getProcessor(world, (PlayerEntity) miner, pos, stack));
-		excavator.attemptBreak(world, pos, (PlayerEntity) miner, getRadius(stack), getProcessor(world, (PlayerEntity) miner, pos, stack));
 		if (!world.isClient && state.getHardness(world, pos) != 0.0F) {
 			EnergyHandler energy = Energy.of(stack);
 			energy.use(getEnergy());
 		}
 		return true;
-	}
-
-	@Override
-	public boolean isEffectiveOn(BlockState state) {
-		return hammer.isEffectiveOn(state) || excavator.isEffectiveOn(state);
-	}
-
-	@Override
-	public ActionResult useOnBlock(ItemUsageContext context) {
-		Energy.of(context.getStack()).set(3200000);
-		ActionResult result = hammer.useOnBlock(context);
-		return result.isAccepted() ? result : excavator.useOnBlock(context);
 	}
 
 	@Override
@@ -118,20 +88,26 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 
 	@Override
 	public float getMiningSpeedMultiplier(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user) {
-		if (hammer.isIn(tag) || excavator.isIn(tag))
-			return Energy.of(this).getEnergy() <= getEnergy() ? 0F : material.getMiningSpeedMultiplier();
-		return 1;
+		return material.getMiningSpeedMultiplier();
 	}
 
 	@Override
 	public int getMiningLevel(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user) {
-		if (hammer.isIn(tag) || excavator.isIn(tag))
-			return material.getMiningLevel();
-		return 0;
+		return material.getMiningLevel();
+	}
+
+	@Override
+	public float postProcessMiningSpeed(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user, float currentSpeed, boolean isEffective) {
+		return Energy.of(stack).getEnergy() <= getEnergy() ? 0F : currentSpeed;
+	}
+
+	@Override
+	public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
+		return 0F; // Disallow vanilla from overriding our #postProcessMiningSpeed
 	}
 
 	public double getEnergy() {
-		return 128D * material.getMiningSpeedMultiplier();
+		return 64D * material.getMiningSpeedMultiplier();
 	}
 
 	@Override
@@ -142,13 +118,5 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	@Override
 	public boolean playBreakEffects() {
 		return true;
-	}
-
-	@Override
-	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-		EnergyHandler energyHandler = Energy.of(stack);
-		tooltip.add(EnergyUtilities.compoundDisplayColored(energyHandler.getEnergy(), energyHandler.getMaxStored()));
-
-		tooltip.add(new TranslatableText("text.astromine.experimental_feature_drill").formatted(Formatting.RED, Formatting.BOLD, Formatting.ITALIC));
 	}
 }

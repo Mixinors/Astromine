@@ -22,42 +22,28 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block.conveyor.entity;
+package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
-import net.minecraft.block.entity.BlockEntityType;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.PiglinEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.sound.SoundCategory;
 
-public class AlternatorBlockEntity extends DoubleMachineBlockEntity {
-	public boolean right = false;
+import com.github.chainmailstudios.astromine.registry.AstromineTags;
 
-	public AlternatorBlockEntity() {
-		super(AstromineBlockEntityTypes.ALTERNATOR);
-	}
-
-	public AlternatorBlockEntity(BlockEntityType type) {
-		super(type);
-	}
-
-	@Override
-	public void give(ItemStack stack) {
-		ItemStack copyStack = stack.copy();
-
-		if (isEmpty()) {
-			if (right) {
-				setRightStack(copyStack);
-			} else {
-				setLeftStack(copyStack);
-			}
-			right = !right;
-		} else if (!getLeftStack().isEmpty() && getRightStack().isEmpty()) {
-			setRightStack(stack);
-		} else if (!getRightStack().isEmpty() && getLeftStack().isEmpty()) {
-			setLeftStack(stack);
+@Mixin(PiglinEntity.class)
+public class PiglinEntityMixin {
+	@Inject(method = "equipToOffHand(Lnet/minecraft/item/ItemStack;)V", at = @At("HEAD"), cancellable = true)
+	public void equipToOffHandInject(ItemStack stack, CallbackInfo ci) {
+		if (stack.getItem().isIn(AstromineTags.PIGLIN_BARTERING_ITEMS)) {
+			((MobEntity) (Object) this).equipStack(EquipmentSlot.OFFHAND, stack);
+			((MobEntity) (Object) this).updateDropChances(EquipmentSlot.OFFHAND);
+			ci.cancel();
 		}
-
-		getWorld().playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AstromineSoundEvents.MACHINE_CLICK, SoundCategory.BLOCKS, 1.0F, 1.0F);
 	}
 }

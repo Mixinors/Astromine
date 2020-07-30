@@ -42,6 +42,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -216,6 +217,35 @@ public interface ItemInventoryComponent extends NameableComponent {
 			return new TypedActionResult<>(ActionResult.SUCCESS, extractedStacks);
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, extractedStacks);
+		}
+	}
+
+	/**
+	 * Extracts the first stack in the inventory that matches a given predicate.
+	 *
+	 * @param predicate
+	 *        the specified predicate.
+	 * @return SUCCESS w. the retrieved collection if extracted anything; FAIL w. empty if not.
+	 */
+	default TypedActionResult<ItemStack> extractFirstMatching(Direction direction, Predicate<ItemStack> predicate) {
+		AtomicReference<ItemStack> extractedStack = new AtomicReference<>();
+		extractedStack.set(ItemStack.EMPTY);
+		for (int slot = 0; slot < this.getContents().size(); slot++) {
+			ItemStack stack = this.getContents().get(slot);
+			if (predicate.test(stack)) {
+				TypedActionResult<ItemStack> extractionResult = this.extract(direction, slot);
+
+				if (extractionResult.getResult().isAccepted()) {
+					extractedStack.set(extractionResult.getValue());
+					break;
+				}
+			}
+		}
+
+		if (!extractedStack.get().isEmpty()) {
+			return new TypedActionResult<>(ActionResult.SUCCESS, extractedStack.get());
+		} else {
+			return new TypedActionResult<>(ActionResult.FAIL, extractedStack.get());
 		}
 	}
 

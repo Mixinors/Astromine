@@ -112,8 +112,8 @@ dependencies {
     include "com.github.vini2003:spinnery:${spinnery_version}"
 
     // Patchouli
-    modImplementation "vazkii.patchouli:Patchouli_1.16-fabric:${patchouli_version}"
-    include "vazkii.patchouli:Patchouli_1.16-fabric:${patchouli_version}"
+    modImplementation "vazkii.patchouli:Patchouli:${patchouli_version}"
+    include "vazkii.patchouli:Patchouli:${patchouli_version}"
 
     // ModMenu
     modImplementation "io.github.prospector:modmenu:${modmenu_version}"
@@ -124,12 +124,18 @@ dependencies {
 
     // LBA
     modImplementation "alexiil.mc.lib:libblockattributes-core:${lba_version}"
-    modImplementation "alexiil.mc.lib:libblockattributes-items:${lba_version}"
     modImplementation "alexiil.mc.lib:libblockattributes-fluids:${lba_version}"
+    include "alexiil.mc.lib:libblockattributes-core:${lba_version}"
+    include "alexiil.mc.lib:libblockattributes-items:${lba_version}"
+    include "alexiil.mc.lib:libblockattributes-fluids:${lba_version}"
 
     // Tech Reborn Energy
     modImplementation "teamreborn:energy:${tr_energy_version}"
     include "teamreborn:energy:${tr_energy_version}"
+    
+    // Cloth API
+    modImplementation "me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${cloth_api_version}"
+    include "me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${cloth_api_version}"
 
     // Cloth Config
     modImplementation("me.shedaniel.cloth:config-2:${cloth_config_version}")

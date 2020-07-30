@@ -185,13 +185,14 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 		BlockEntity backDownBlockEntity = world.getBlockEntity(backPos.down());
 		if (backBlockEntity instanceof Conveyable && ((Conveyable) backBlockEntity).isOutputSide(direction, getType())) {
 			newState = newState.with(ConveyorProperties.BACK, false);
-		} else if (backDownBlockEntity instanceof ConveyorConveyable && !((ConveyorConveyable) backDownBlockEntity).hasBeenRemoved() && ((ConveyorConveyable) backDownBlockEntity).getConveyorType() == ConveyorType.VERTICAL && ((ConveyorConveyable) backDownBlockEntity).isOutputSide(direction, getType())) {
-			newState = newState.with(ConveyorProperties.BACK, false);
-		} else if (newState.get(ConveyorProperties.LEFT) || newState.get(ConveyorProperties.RIGHT)) {
-			newState = newState.with(ConveyorProperties.BACK, true);
-		} else {
-			newState = newState.with(ConveyorProperties.BACK, false);
-		}
+		} else if (backDownBlockEntity instanceof ConveyorConveyable && !((ConveyorConveyable) backDownBlockEntity).hasBeenRemoved() && ((ConveyorConveyable) backDownBlockEntity).getConveyorType() == ConveyorType.VERTICAL && ((ConveyorConveyable) backDownBlockEntity)
+			.isOutputSide(direction, getType())) {
+				newState = newState.with(ConveyorProperties.BACK, false);
+			} else if (newState.get(ConveyorProperties.LEFT) || newState.get(ConveyorProperties.RIGHT)) {
+				newState = newState.with(ConveyorProperties.BACK, true);
+			} else {
+				newState = newState.with(ConveyorProperties.BACK, false);
+			}
 
 		BlockEntity upBlockEntity = world.getBlockEntity(upPos);
 		if (upBlockEntity instanceof ConveyorConveyable && ((ConveyorConveyable) upBlockEntity).getConveyorType() == ConveyorType.NORMAL)

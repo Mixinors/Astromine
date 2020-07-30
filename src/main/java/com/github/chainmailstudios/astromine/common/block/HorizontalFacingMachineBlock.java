@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.block;
 
-public abstract class TieredHorizontalFacingMachineBlock extends HorizontalFacingMachineBlock {
-	public TieredHorizontalFacingMachineBlock(Settings settings) {
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
+
+public abstract class HorizontalFacingMachineBlock extends DefaultedHorizontalFacingBlockWithEntity implements MachineBlockWrenchable {
+	public HorizontalFacingMachineBlock(Settings settings) {
 		super(settings);
 	}
-
-	public abstract double getMachineSpeed();
 }

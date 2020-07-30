@@ -32,10 +32,13 @@ import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 
 public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	protected boolean down = false;
@@ -89,9 +92,10 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 		if (conveyable.accepts(getStack())) {
 			if (horizontalPosition < speed) {
 				setHorizontalPosition(getHorizontalPosition() + 1);
-			} else if (transition && !getWorld().isClient() && horizontalPosition >= speed) {
+			} else if (transition && horizontalPosition >= speed) {
 				conveyable.give(getStack());
-				removeStack();
+				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24)
+					removeStack();
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
 			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
@@ -130,6 +134,8 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	public void setDown(boolean down) {
 		this.down = down;
 		markDirty();
+		if (!world.isClient())
+			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
 	}
 
 	@Override
