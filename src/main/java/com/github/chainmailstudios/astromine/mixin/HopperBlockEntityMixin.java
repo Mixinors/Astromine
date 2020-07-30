@@ -76,7 +76,7 @@ public abstract class HopperBlockEntityMixin {
 		}
 	}
 
-	@Inject(at = @At("HEAD"), method = "Lnet/minecraft/block/entity/HopperBlockEntity;getOutputInventory()Lnet/minecraft/inventory/Inventory;", cancellable = true)
+	@Inject(at = @At("HEAD"), method = "getOutputInventory()Lnet/minecraft/inventory/Inventory;", cancellable = true)
 	void astromine_onGetOutputInventory(CallbackInfoReturnable<Inventory> callbackInformationReturnable) {
 		BlockPos hopperPos = new BlockPos(getHopperX(), getHopperY(), getHopperZ());
 

@@ -22,18 +22,21 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.mixin;
+package com.github.chainmailstudios.astromine.common.registry;
 
-import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
-import net.minecraft.entity.projectile.thrown.EggEntity;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import com.github.chainmailstudios.astromine.common.registry.base.UniRegistry;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.dimension.DimensionType;
 
-@Mixin(EggEntity.class)
-public abstract class EggEntityMixin implements GravityEntity {
-	@ModifyConstant(method = "handleStatus(B)V", constant = @Constant(doubleValue = 0.08D))
-	double getGravity(double original) {
-		return this.getGravity();
+import java.util.Optional;
+
+public class AtmosphereRegistry extends UniRegistry<RegistryKey<DimensionType>, Boolean> {
+	public static final AtmosphereRegistry INSTANCE = new AtmosphereRegistry();
+
+	private AtmosphereRegistry() {}
+
+	@Override
+	public Boolean get(RegistryKey<DimensionType> dimensionTypeRegistryKey) {
+		return Optional.ofNullable(super.get(dimensionTypeRegistryKey)).orElse(false);
 	}
 }

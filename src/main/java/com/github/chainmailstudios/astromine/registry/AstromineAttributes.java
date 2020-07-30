@@ -22,21 +22,18 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.atmosphere;
+package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.common.registry.base.UniRegistry;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.entity.attribute.ClampedEntityAttribute;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.util.registry.Registry;
 
-import java.util.Optional;
+import com.github.chainmailstudios.astromine.AstromineCommon;
 
-public class AtmosphereRegistry extends UniRegistry<RegistryKey<DimensionType>, Boolean> {
-	public static final AtmosphereRegistry INSTANCE = new AtmosphereRegistry();
+public class AstromineAttributes {
+	public static final EntityAttribute GRAVITY_MULTIPLIER = Registry.register(Registry.ATTRIBUTE, AstromineCommon.identifier("gravity_multiplier"), new ClampedEntityAttribute("attribute.name.generic.astromine.gravity_multiplier", 1d, 0.01d, 10d));
 
-	private AtmosphereRegistry() {}
+	public static void init() {
 
-	@Override
-	public Boolean get(RegistryKey<DimensionType> dimensionTypeRegistryKey) {
-		return Optional.ofNullable(super.get(dimensionTypeRegistryKey)).orElse(false);
 	}
 }
