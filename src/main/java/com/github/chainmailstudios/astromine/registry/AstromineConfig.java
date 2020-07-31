@@ -573,6 +573,12 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Delay for the Fluid Extractor actions (smaller is faster).")
 	public long fluidExtractorTimeConsumed = 40L;
 
+	@Comment("Energy for the Gravity Gauntlet.")
+	public double gravityGauntletEnergy = 16384D;
+
+	@Comment("Energy for the Gravity Gauntlet actions.")
+	public double gravityGauntletConsumed = 1024D;
+
 	public static AstromineConfig get() {
 		try {
 			return AutoConfig.getConfigHolder(AstromineConfig.class).getConfig();
