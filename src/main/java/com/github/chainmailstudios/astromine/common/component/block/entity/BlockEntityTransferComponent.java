@@ -37,6 +37,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 public class BlockEntityTransferComponent implements Component {
+	private static final TransferEntry DEFAULT = new ImmutableTransferEntry();
 	private final Map<ComponentType<?>, TransferEntry> components = Maps.newHashMap();
 
 	public BlockEntityTransferComponent(ComponentType<?>... types) {
@@ -44,7 +45,7 @@ public class BlockEntityTransferComponent implements Component {
 	}
 
 	public TransferEntry get(ComponentType<?> type) {
-		return components.get(type);
+		return components.getOrDefault(type, DEFAULT);
 	}
 
 	public Map<ComponentType<?>, TransferEntry> get() {
@@ -80,11 +81,19 @@ public class BlockEntityTransferComponent implements Component {
 		return tag;
 	}
 
-	public static final class TransferEntry {
+	public static class ImmutableTransferEntry extends TransferEntry {
+		@Override
+		public void set(Direction direction, TransferType type) {}
+	}
+
+	public static class TransferEntry {
+		public static final Direction[] DIRECTIONS = Direction.values();
 		private final Map<Direction, TransferType> types = Maps.newHashMap();
 
 		public TransferEntry() {
-			Arrays.asList(Direction.values()).forEach(direction -> set(direction, TransferType.NONE));
+			for (Direction direction : DIRECTIONS) {
+				this.set(direction, TransferType.NONE);
+			}
 		}
 
 		public void set(Direction direction, TransferType type) {
