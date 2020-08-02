@@ -22,18 +22,10 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.mixin;
+package com.github.chainmailstudios.astromine.common.entity;
 
-import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
-import net.minecraft.entity.projectile.thrown.EggEntity;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
+public interface GravityEntity {
+	double getGravityMultiplier();
 
-@Mixin(EggEntity.class)
-public abstract class EggEntityMixin implements GravityEntity {
-	@ModifyConstant(method = "handleStatus(B)V", constant = @Constant(doubleValue = 0.08D))
-	double getGravity(double original) {
-		return this.getGravity();
-	}
+	double getGravity();
 }

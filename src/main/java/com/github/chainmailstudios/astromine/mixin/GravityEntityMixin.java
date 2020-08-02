@@ -24,22 +24,23 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
-import net.minecraft.entity.Entity;
+import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
 import net.minecraft.entity.FallingBlockEntity;
 import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.projectile.ShulkerBulletEntity;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin({ FallingBlockEntity.class, ShulkerBulletEntity.class, TntEntity.class })
-public class GravityEntityMixin {
+public abstract class GravityEntityMixin implements GravityEntity {
 	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = -0.04D))
 	double getGravity(double original) {
-		World world = ((Entity) (Object) this).world;
+		return -this.getGravity();
+	}
 
-		return -GravityRegistry.INSTANCE.get(world.getDimensionRegistryKey());
+	@Override
+	public double getGravityMultiplier() {
+		return 0.5d;
 	}
 }

@@ -33,6 +33,6 @@ public class ToolUtilities {
 	}
 
 	public static float getAttackSpeed(MiningToolItem first, MiningToolItem second) {
-		return (float) (((MiningToolItemAccess) first).astromine_getAttackSpeed() + ((MiningToolItemAccess) second).astromine_getAttackSpeed()) / 2;
+		return (float) (((MiningToolItemAccess) first).astromine_getAttackSpeed() + ((MiningToolItemAccess) second).astromine_getAttackSpeed()) / 3;
 	}
 }

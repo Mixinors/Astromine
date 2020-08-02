@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.mixin;
 
 import com.github.chainmailstudios.astromine.access.EntityAccess;
+import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
 import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
 import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
 import com.google.common.collect.Lists;
@@ -46,7 +47,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(Entity.class)
-public abstract class EntityMixin implements EntityAccess {
+public abstract class EntityMixin implements EntityAccess, GravityEntity {
 	int lastY = 0;
 
 	@Shadow
@@ -70,9 +71,18 @@ public abstract class EntityMixin implements EntityAccess {
 
 	@ModifyVariable(at = @At("HEAD"), method = "handleFallDamage(FF)Z", index = 1)
 	float getDamageMultiplier(float damageMultiplier) {
-		World world = ((Entity) (Object) this).world;
+		return (float) (damageMultiplier * getGravity() * getGravity());
+	}
 
-		return (float) (damageMultiplier * GravityRegistry.INSTANCE.get(world.getDimensionRegistryKey()) * GravityRegistry.INSTANCE.get(world.getDimensionRegistryKey()));
+	@Override
+	public double getGravityMultiplier() {
+		return 1.0d;
+	}
+
+	@Override
+	public double getGravity() {
+		World world = ((Entity) (Object) this).world;
+		return GravityRegistry.INSTANCE.get(world.getDimensionRegistryKey()) * getGravityMultiplier();
 	}
 
 	@Inject(at = @At("HEAD"), method = "tickNetherPortal()V")
