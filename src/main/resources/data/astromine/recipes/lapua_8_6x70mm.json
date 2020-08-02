@@ -1,16 +1,10 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["012", "345", "678"],
+  "pattern": ["010", "313", "010"],
   "key": {
-    "0": { "tag": "c:iron_plates" },
+    "0": { "tag": "c:lead_plates" },
     "1": { "tag": "c:emerald_dusts" },
-    "2": { "tag": "c:iron_plates" },
-    "3": { "item": "minecraft:gunpowder" },
-    "4": { "tag": "c:emerald_dusts" },
-    "5": { "item": "minecraft:gunpowder" },
-    "6": { "tag": "c:iron_plates" },
-    "7": { "tag": "c:emerald_dusts" },
-    "8": { "tag": "c:iron_plates" }
+    "3": { "item": "minecraft:gunpowder" }
   },
   "result": { "item": "astromine:lapua_8_6x70mm", "count": 1 }
 }

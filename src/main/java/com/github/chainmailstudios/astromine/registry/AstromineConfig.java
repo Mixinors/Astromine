@@ -117,6 +117,24 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Maximum count of Overworld Silver Ore blocks per vein.")
 	public int overworldSilverOreMaximumBlocks = 9;
 
+	@Comment("Whether generation of Lead Ore in the Overworld is enabled.")
+	public boolean overworldLeadOre = true;
+
+	@Comment("Bottom offset of Overworld Lead Ore.")
+	public int overworldLeadOreBottomOffset = 0;
+
+	@Comment("Top offset of Overworld Lead Ore.")
+	public int overworldLeadOreTopOffset = 0;
+
+	@Comment("Maximum layer of Overworld Lead Ore.")
+	public int overworldLeadOreMaximumLayer = 32;
+
+	@Comment("Maximum count of Overworld Lead Ore veins per chunk.")
+	public int overworldLeadOreMaximumVeins = 5;
+
+	@Comment("Maximum count of Overworld Lead Ore blocks per vein.")
+	public int overworldLeadOreMaximumBlocks = 6;
+
 	@Comment("Minimum range of Asteroid Coal Ore weight.")
 	public int asteroidCoalOreMinimumRange = 0;
 
@@ -188,6 +206,18 @@ public class AstromineConfig implements ConfigData {
 
 	@Comment("Maximum Size of Asteroid Silver Ore veins.")
 	public int asteroidSilverOreMaximumSize = 48;
+
+	@Comment("Minimum range of Asteroid Lead Ore weight.")
+	public int asteroidLeadOreMinimumRange = 0;
+
+	@Comment("Maximum range of Asteroid Lead Ore weight.")
+	public int asteroidLeadOreMaximumRange = 48;
+
+	@Comment("Minimum size of Asteroid Lead Ore veins.")
+	public int asteroidLeadOreMinimumSize = 8;
+
+	@Comment("Maximum Size of Asteroid Lead Ore veins.")
+	public int asteroidLeadOreMaximumSize = 48;
 
 	@Comment("Minimum range of Asteroid Redstone Ore weight.")
 	public int asteroidRedstoneOreMinimumRange = 0;

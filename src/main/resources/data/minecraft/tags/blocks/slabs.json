@@ -3,6 +3,8 @@
   "values": [
     "astromine:meteor_stone_slab",
     "astromine:asteroid_stone_slab",
-    "astromine:moon_stone_slab"
+    "astromine:moon_stone_slab",
+    "astromine:vulcan_stone_slab",
+    "astromine:martian_stone_slab"
   ]
 }

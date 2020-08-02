@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["xxx", "xs ", " s "],
+  "key": {
+    "x": {
+      "tag": "c:lead_ingots"
+    },
+    "s": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "astromine:lead_mattock",
+    "count": 1
+  }
+}
