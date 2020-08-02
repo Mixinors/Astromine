@@ -82,10 +82,13 @@ public class BlockEntityTransferComponent implements Component {
 	}
 
 	public static class TransferEntry {
+		public static final Direction[] DIRECTIONS = Direction.values();
 		private final Map<Direction, TransferType> types = Maps.newHashMap();
 
 		public TransferEntry() {
-			Arrays.asList(Direction.values()).forEach(direction -> set(direction, TransferType.NONE));
+			for (Direction direction : DIRECTIONS) {
+				this.set(direction, TransferType.NONE);
+			}
 		}
 
 		public void set(Direction direction, TransferType type) {
