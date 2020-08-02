@@ -1,0 +1,15 @@
+{
+  "type": "astromine:alloy_smelting",
+  "firstInput": {
+    "tag": "c:gold_ingots"
+  },
+  "secondInput": {
+    "tag": "c:silver_ingots"
+  },
+  "output": {
+    "item": "astromine:electrum_ingot",
+    "count": 2
+  },
+  "time": 200,
+  "energy_consumed": 800
+}

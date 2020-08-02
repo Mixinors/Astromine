@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.client.registry.AsteroidOreRegistry;
@@ -41,6 +42,7 @@ public class AstromineOres {
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineConfig.get().asteroidGoldOreMinimumRange, AstromineConfig.get().asteroidGoldOreMaximumRange), AstromineBlocks.ASTEROID_GOLD_ORE);
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineConfig.get().asteroidCopperOreMinimumRange, AstromineConfig.get().asteroidCopperOreMaximumRange), AstromineBlocks.ASTEROID_COPPER_ORE);
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineConfig.get().asteroidTinOreMinimumRange, AstromineConfig.get().asteroidTinOreMaximumRange), AstromineBlocks.ASTEROID_TIN_ORE);
+		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineConfig.get().asteroidSilverOreMinimumRange, AstromineConfig.get().asteroidSilverOreMaximumRange), AstromineBlocks.ASTEROID_SILVER_ORE);
 
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineConfig.get().asteroidRedstoneOreMinimumRange, AstromineConfig.get().asteroidRedstoneOreMaximumRange), AstromineBlocks.ASTEROID_REDSTONE_ORE);
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineConfig.get().asteroidLapisOreMinimumRange, AstromineConfig.get().asteroidLapisOreMaximumRange), AstromineBlocks.ASTEROID_LAPIS_ORE);
@@ -64,14 +66,18 @@ public class AstromineOres {
 
 	public static void addOresToBiome(Biome biome) {
 		if (AstromineConfig.get().overworldCopperOre) {
-			biome.addFeature(GenerationStep.Feature.UNDERGROUND_ORES, Feature.ORE.configure(
-					new OreFeatureConfig(OreFeatureConfig.Target.NATURAL_STONE, AstromineBlocks.COPPER_ORE.getDefaultState(), AstromineConfig.get().overworldCopperOreMaximumBlocks)).createDecoratedFeature(Decorator.COUNT_RANGE.configure(
-					new RangeDecoratorConfig(AstromineConfig.get().overworldCopperOreMaximumVeins, AstromineConfig.get().overworldCopperOreBottomOffset, AstromineConfig.get().overworldCopperOreTopOffset, AstromineConfig.get().overworldCopperOreMaximumLayer))));
+			biome.addFeature(GenerationStep.Feature.UNDERGROUND_ORES, Feature.ORE.configure(new OreFeatureConfig(OreFeatureConfig.Target.NATURAL_STONE, AstromineBlocks.COPPER_ORE.getDefaultState(), AstromineConfig.get().overworldCopperOreMaximumBlocks)).createDecoratedFeature(
+				Decorator.COUNT_RANGE.configure(new RangeDecoratorConfig(AstromineConfig.get().overworldCopperOreMaximumVeins, AstromineConfig.get().overworldCopperOreBottomOffset, AstromineConfig.get().overworldCopperOreTopOffset, AstromineConfig
+					.get().overworldCopperOreMaximumLayer))));
 		}
 		if (AstromineConfig.get().overworldTinOre) {
-			biome.addFeature(GenerationStep.Feature.UNDERGROUND_ORES, Feature.ORE.configure(
-					new OreFeatureConfig(OreFeatureConfig.Target.NATURAL_STONE, AstromineBlocks.TIN_ORE.getDefaultState(), AstromineConfig.get().overworldTinOreMaximumBlocks)).createDecoratedFeature(Decorator.COUNT_RANGE.configure(
-					new RangeDecoratorConfig(AstromineConfig.get().overworldTinOreMaximumVeins, AstromineConfig.get().overworldTinOreBottomOffset, AstromineConfig.get().overworldTinOreTopOffset, AstromineConfig.get().overworldTinOreMaximumLayer))));
+			biome.addFeature(GenerationStep.Feature.UNDERGROUND_ORES, Feature.ORE.configure(new OreFeatureConfig(OreFeatureConfig.Target.NATURAL_STONE, AstromineBlocks.TIN_ORE.getDefaultState(), AstromineConfig.get().overworldTinOreMaximumBlocks)).createDecoratedFeature(
+				Decorator.COUNT_RANGE.configure(new RangeDecoratorConfig(AstromineConfig.get().overworldTinOreMaximumVeins, AstromineConfig.get().overworldTinOreBottomOffset, AstromineConfig.get().overworldTinOreTopOffset, AstromineConfig.get().overworldTinOreMaximumLayer))));
+		}
+		if (AstromineConfig.get().overworldSilverOre) {
+			biome.addFeature(GenerationStep.Feature.UNDERGROUND_ORES, Feature.ORE.configure(new OreFeatureConfig(OreFeatureConfig.Target.NATURAL_STONE, AstromineBlocks.SILVER_ORE.getDefaultState(), AstromineConfig.get().overworldSilverOreMaximumBlocks)).createDecoratedFeature(
+				Decorator.COUNT_RANGE.configure(new RangeDecoratorConfig(AstromineConfig.get().overworldSilverOreMaximumVeins, AstromineConfig.get().overworldSilverOreBottomOffset, AstromineConfig.get().overworldSilverOreTopOffset, AstromineConfig
+					.get().overworldSilverOreMaximumLayer))));
 		}
 	}
 }

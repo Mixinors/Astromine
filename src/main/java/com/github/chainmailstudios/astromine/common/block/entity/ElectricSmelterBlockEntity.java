@@ -21,19 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.block.ElectricSmelterBlock;
+import com.github.chainmailstudios.astromine.common.block.TieredHorizontalFacingMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.network.NetworkMember;
-import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
@@ -41,21 +38,18 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.util.Tickable;
-import org.jetbrains.annotations.NotNull;
 import spinnery.common.inventory.BaseInventory;
 
-import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
-public abstract class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity implements NetworkMember, Tickable {
+public abstract class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity implements Tickable {
 	public double progress = 0;
 	public int limit = 100;
 
 	public boolean shouldTry = true;
 	public boolean isActive = false;
 
-	public boolean[] activity = {false, false, false, false, false};
+	public boolean[] activity = { false, false, false, false, false };
 
 	Optional<SmeltingRecipe> recipe = Optional.empty();
 
@@ -77,11 +71,6 @@ public abstract class ElectricSmelterBlockEntity extends DefaultedEnergyItemBloc
 	}
 
 	@Override
-	protected @NotNull Map<NetworkType, Collection<NetworkMemberType>> createMemberProperties() {
-		return ofTypes(AstromineNetworkTypes.ENERGY, REQUESTER);
-	}
-
-	@Override
 	public void fromTag(BlockState state, CompoundTag tag) {
 		super.fromTag(state, tag);
 		progress = tag.getDouble("progress");
@@ -100,7 +89,8 @@ public abstract class ElectricSmelterBlockEntity extends DefaultedEnergyItemBloc
 	public void tick() {
 		super.tick();
 
-		if (world.isClient()) return;
+		if (world.isClient())
+			return;
 		if (shouldTry) {
 			BaseInventory inputInventory = new BaseInventory(1);
 			inputInventory.setStack(0, itemComponent.getStack(1));
@@ -110,15 +100,16 @@ public abstract class ElectricSmelterBlockEntity extends DefaultedEnergyItemBloc
 				}
 			}
 			if (recipe.isPresent() && recipe.get().matches(inputInventory, world)) {
-				limit = recipe.get().getCookTime() * 2;
+				limit = recipe.get().getCookTime();
 
+				double speed = Math.min(((TieredHorizontalFacingMachineBlock) this.getCachedState().getBlock()).getMachineSpeed() * 2, limit - progress);
 				ItemStack output = recipe.get().getOutput().copy();
 
 				boolean isEmpty = itemComponent.getStack(0).isEmpty();
 				boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(0), output) && ItemStack.areTagsEqual(itemComponent.getStack(0), output);
 
-				if (asEnergy().use(6) && (isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount()) {
-					if (progress == limit) {
+				if ((isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount() && asEnergy().use(500 / limit * speed)) {
+					if (progress + speed >= limit) {
 						itemComponent.getStack(1).decrement(1);
 
 						if (isEmpty) {
@@ -129,7 +120,7 @@ public abstract class ElectricSmelterBlockEntity extends DefaultedEnergyItemBloc
 
 						progress = 0;
 					} else {
-						progress += 1 * ((ElectricSmelterBlock) this.getCachedState().getBlock()).getMachineSpeed();
+						progress += speed;
 					}
 
 					isActive = true;
@@ -145,7 +136,8 @@ public abstract class ElectricSmelterBlockEntity extends DefaultedEnergyItemBloc
 			isActive = false;
 		}
 
-		if (activity.length - 1 >= 0) System.arraycopy(activity, 1, activity, 0, activity.length - 1);
+		if (activity.length - 1 >= 0)
+			System.arraycopy(activity, 1, activity, 0, activity.length - 1);
 
 		activity[4] = isActive;
 

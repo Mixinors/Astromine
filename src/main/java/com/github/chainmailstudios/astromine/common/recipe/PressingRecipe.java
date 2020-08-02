@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.recipe;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
@@ -144,20 +145,12 @@ public class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 		public PressingRecipe read(Identifier identifier, JsonObject object) {
 			PressingRecipe.Format format = new Gson().fromJson(object, PressingRecipe.Format.class);
 
-			return new PressingRecipe(identifier,
-					IngredientUtilities.fromJson(format.input),
-					StackUtilities.fromJson(format.output),
-					EnergyUtilities.fromJson(format.energyConsumed),
-					ParsingUtilities.fromJson(format.time, Integer.class));
+			return new PressingRecipe(identifier, IngredientUtilities.fromJson(format.input), StackUtilities.fromJson(format.output), EnergyUtilities.fromJson(format.energyConsumed), ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 
 		@Override
 		public PressingRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new PressingRecipe(identifier,
-					IngredientUtilities.fromPacket(buffer),
-					StackUtilities.fromPacket(buffer),
-					EnergyUtilities.fromPacket(buffer),
-					PacketUtilities.fromPacket(buffer, Integer.class));
+			return new PressingRecipe(identifier, IngredientUtilities.fromPacket(buffer), StackUtilities.fromPacket(buffer), EnergyUtilities.fromPacket(buffer), PacketUtilities.fromPacket(buffer, Integer.class));
 		}
 
 		@Override
@@ -187,12 +180,7 @@ public class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 
 		@Override
 		public String toString() {
-			return "Format{" +
-					"input=" + input +
-					", output=" + output +
-					", time=" + time +
-					", energyConsumed=" + energyConsumed +
-					'}';
+			return "Format{" + "input=" + input + ", output=" + output + ", time=" + time + ", energyConsumed=" + energyConsumed + '}';
 		}
 	}
 }

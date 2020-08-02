@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.client.registry;
 
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
@@ -58,7 +59,8 @@ public class AsteroidOreRegistry {
 
 	public int getDiameter(Random random, Block block) {
 		Range<Integer> range = diameters.get(block);
-		if (range == null) return 0;
+		if (range == null)
+			return 0;
 		return (int) ((range.getMaximum() - range.getMinimum()) * Objects.requireNonNull(random, "random").nextFloat() + range.getMinimum());
 	}
 }

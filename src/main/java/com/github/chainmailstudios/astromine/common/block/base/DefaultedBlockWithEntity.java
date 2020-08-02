@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,10 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.block.base;
 
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,13 +36,13 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.text.Text;
@@ -50,6 +54,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
+import java.util.List;
 
 public abstract class DefaultedBlockWithEntity extends Block implements BlockEntityProvider {
 	protected DefaultedBlockWithEntity(AbstractBlock.Settings settings) {
@@ -143,24 +148,17 @@ public abstract class DefaultedBlockWithEntity extends Block implements BlockEnt
 	}
 
 	@Override
-	public void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack stack) {
-		player.incrementStat(Stats.MINED.getOrCreateStat(this));
-		player.addExhaustion(0.005F);
-
+	public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
+		List<ItemStack> stacks = super.getDroppedStacks(state, builder);
+		BlockEntity blockEntity = builder.getNullable(LootContextParameters.BLOCK_ENTITY);
 		boolean isTagged = false;
-
-		if (world instanceof ServerWorld) {
-			for (ItemStack drop : getDroppedStacks(state, (ServerWorld) world, pos, blockEntity, player, stack)) {
-				if (!isTagged && drop.getItem() == asItem()) {
-					drop.setTag(blockEntity.toTag(drop.getOrCreateTag()));
-					drop.getTag().putByte("tracker", (byte) 0);
-					isTagged = true;
-				}
-
-				dropStack(world, pos, drop);
+		for (ItemStack drop : stacks) {
+			if (!isTagged && drop.getItem() == asItem()) {
+				drop.setTag(blockEntity.toTag(drop.getOrCreateTag()));
+				drop.getTag().putByte("tracker", (byte) 0);
+				isTagged = true;
 			}
 		}
-
-		state.onStacksDropped(world, pos, stack);
+		return stacks;
 	}
 }

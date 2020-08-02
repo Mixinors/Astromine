@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,16 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.registry;
 
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import me.sargunvohra.mcmods.autoconfig1u.ConfigData;
 import me.sargunvohra.mcmods.autoconfig1u.annotation.Config;
+import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry;
 import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
 import me.sargunvohra.mcmods.autoconfig1u.shadowed.blue.endless.jankson.Comment;
 
 @Config(name = "astromine/config")
 public class AstromineConfig implements ConfigData {
+	@ConfigEntry.Gui.Excluded
 	public static final AstromineConfig DEFAULT = new AstromineConfig();
 
 	@Comment("Whether Nuclear Warheads are enabled.")
@@ -95,7 +98,25 @@ public class AstromineConfig implements ConfigData {
 
 	@Comment("Maximum count of Overworld Tin Ore blocks per vein.")
 	public int overworldTinOreMaximumBlocks = 11;
-	
+
+	@Comment("Whether generation of Silver Ore in the Overworld is enabled.")
+	public boolean overworldSilverOre = true;
+
+	@Comment("Bottom offset of Overworld Silver Ore.")
+	public int overworldSilverOreBottomOffset = 0;
+
+	@Comment("Top offset of Overworld Silver Ore.")
+	public int overworldSilverOreTopOffset = 0;
+
+	@Comment("Maximum layer of Overworld Silver Ore.")
+	public int overworldSilverOreMaximumLayer = 32;
+
+	@Comment("Maximum count of Overworld Silver Ore veins per chunk.")
+	public int overworldSilverOreMaximumVeins = 3;
+
+	@Comment("Maximum count of Overworld Silver Ore blocks per vein.")
+	public int overworldSilverOreMaximumBlocks = 9;
+
 	@Comment("Minimum range of Asteroid Coal Ore weight.")
 	public int asteroidCoalOreMinimumRange = 0;
 
@@ -104,7 +125,7 @@ public class AstromineConfig implements ConfigData {
 
 	@Comment("Minimum size of Asteroid Coal Ore veins.")
 	public int asteroidCoalOreMinimumSize = 8;
-	
+
 	@Comment("Maximum Size of Asteroid Coal Ore veins.")
 	public int asteroidCoalOreMaximumSize = 48;
 
@@ -155,6 +176,18 @@ public class AstromineConfig implements ConfigData {
 
 	@Comment("Maximum Size of Asteroid Tin Ore veins.")
 	public int asteroidTinOreMaximumSize = 48;
+
+	@Comment("Minimum range of Asteroid Silver Ore weight.")
+	public int asteroidSilverOreMinimumRange = 0;
+
+	@Comment("Maximum range of Asteroid Silver Ore weight.")
+	public int asteroidSilverOreMaximumRange = 48;
+
+	@Comment("Minimum size of Asteroid Silver Ore veins.")
+	public int asteroidSilverOreMinimumSize = 8;
+
+	@Comment("Maximum Size of Asteroid Silver Ore veins.")
+	public int asteroidSilverOreMaximumSize = 48;
 
 	@Comment("Minimum range of Asteroid Redstone Ore weight.")
 	public int asteroidRedstoneOreMinimumRange = 0;
@@ -455,7 +488,7 @@ public class AstromineConfig implements ConfigData {
 
 	@Comment("Energy for the Elite Electric Smelter.")
 	public double eliteElectricSmelterEnergy = 65535D;
-	
+
 	@Comment("Speed for the Primitive Alloy Smelter.")
 	public double primitiveAlloySmelterSpeed = 0.5D;
 
@@ -501,6 +534,18 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Fluid for the Tank.")
 	public long tankFluid = 16L;
 
+	@Comment("Energy for the Primitive Capacitor.")
+	public double primitiveCapacitorEnergy = 16384D;
+
+	@Comment("Energy for the Basic Capacitor.")
+	public double basicCapacitorEnergy = 32767D;
+
+	@Comment("Energy for the Advanced Capacitor.")
+	public double advancedCapacitorEnergy = 65535D;
+
+	@Comment("Energy for the Elite Capacitor.")
+	public double eliteCapacitorEnergy = 131071D;
+
 	@Comment("Energy for the Block Placer actions.")
 	public double blockPlacerEnergyConsumed = 1024D;
 
@@ -528,10 +573,16 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Delay for the Fluid Extractor actions (smaller is faster).")
 	public long fluidExtractorTimeConsumed = 40L;
 
+	@Comment("Energy for the Gravity Gauntlet.")
+	public double gravityGauntletEnergy = 16384D;
+
+	@Comment("Energy for the Gravity Gauntlet actions.")
+	public double gravityGauntletConsumed = 1024D;
+
 	public static AstromineConfig get() {
 		try {
 			return AutoConfig.getConfigHolder(AstromineConfig.class).getConfig();
-		} catch(RuntimeException exception) {
+		} catch (RuntimeException exception) {
 			return DEFAULT;
 		}
 	}

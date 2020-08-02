@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.utilities;
 
 import com.google.common.collect.Lists;
@@ -32,13 +33,16 @@ import java.util.List;
 
 public class LineUtilities {
 	/**
-	* Builds a Bezier curve from two points. Current implementation needs to be reworked.
-	*
-	* @param posA     the first specified position.
-	* @param posB     the second specified position.
-	* @param segments the segments between both positions.
-	* @return the dots of the requested curve.
-	*/
+	 * Builds a Bezier curve from two points. Current implementation needs to be reworked.
+	 *
+	 * @param posA
+	 *        the first specified position.
+	 * @param posB
+	 *        the second specified position.
+	 * @param segments
+	 *        the segments between both positions.
+	 * @return the dots of the requested curve.
+	 */
 	public static Collection<Vector3f> getBezierSegments(Vector3f posA, Vector3f posB, Vector3f posC, float segments) {
 		ArrayList<Vector3f> positions = new ArrayList<>();
 

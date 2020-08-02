@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,11 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.common.block;
 
 import com.github.chainmailstudios.astromine.access.DyeColorAccess;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
+import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -44,7 +46,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import spinnery.widget.api.Color;
 
-public class HolographicBridgeProjectorBlock extends DefaultedHorizontalFacingBlockWithEntity {
+public class HolographicBridgeProjectorBlock extends DefaultedHorizontalFacingBlockWithEntity implements MachineBlockWrenchable {
 	public HolographicBridgeProjectorBlock(AbstractBlock.Settings settings) {
 		super(settings);
 	}
@@ -61,11 +63,13 @@ public class HolographicBridgeProjectorBlock extends DefaultedHorizontalFacingBl
 			if (entity != null) {
 				entity.color = Color.of(0x7e000000 >> 2 | ((DyeColorAccess) (Object) dye.getColor()).astromine_getColor());
 
-				if (!world.isClient()) entity.sync();
+				if (!world.isClient())
+					entity.sync();
 
 				if (entity.hasChild()) {
 					entity.getChild().color = Color.of(0x7e000000 >> 2 | ((DyeColorAccess) (Object) dye.getColor()).astromine_getColor());
-					if (!world.isClient()) entity.getChild().sync();
+					if (!world.isClient())
+						entity.getChild().sync();
 				}
 
 				if (!player.isCreative()) {
@@ -98,6 +102,5 @@ public class HolographicBridgeProjectorBlock extends DefaultedHorizontalFacingBl
 	}
 
 	@Override
-	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
-	}
+	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {}
 }

@@ -1,0 +1,161 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2020 Chainmail Studios
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package com.github.chainmailstudios.astromine.common.world.generation.vulcan;
+
+import java.util.Arrays;
+import java.util.Random;
+
+import com.github.chainmailstudios.astromine.common.miscellaneous.BiomeGenCache;
+import com.github.chainmailstudios.astromine.common.noise.OctaveNoiseSampler;
+import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.BlockView;
+import net.minecraft.world.ChunkRegion;
+import net.minecraft.world.Heightmap;
+import net.minecraft.world.WorldAccess;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.source.BiomeSource;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.ChunkRandom;
+import net.minecraft.world.gen.StructureAccessor;
+import net.minecraft.world.gen.chunk.ChunkGenerator;
+import net.minecraft.world.gen.chunk.StructuresConfig;
+import net.minecraft.world.gen.chunk.VerticalBlockSample;
+
+public class VulcanChunkGenerator extends ChunkGenerator {
+	public static Codec<VulcanChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(BiomeSource.field_24713.fieldOf("biome_source").forGetter(gen -> gen.biomeSource), Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed)).apply(instance,
+		VulcanChunkGenerator::new));
+
+	private final BiomeSource biomeSource;
+	private final long seed;
+	private final OctaveNoiseSampler<OpenSimplexNoise> baseNoise;
+	private final OctaveNoiseSampler<OpenSimplexNoise> warpX;
+	private final OctaveNoiseSampler<OpenSimplexNoise> warpZ;
+	private final ThreadLocal<BiomeGenCache> cache;
+	public VulcanChunkGenerator(BiomeSource biomeSource, long seed) {
+		super(biomeSource, new StructuresConfig(false));
+		this.biomeSource = biomeSource;
+		this.seed = seed;
+		Random random = new Random(seed);
+		baseNoise = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 5, 227.48, 45, 45);
+		warpX = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 3, 72.12, 3, 3);
+		warpZ = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 3, 72.12, 3, 3);
+		this.cache = ThreadLocal.withInitial(() -> new BiomeGenCache(biomeSource));
+	}
+
+	@Override
+	protected Codec<? extends ChunkGenerator> method_28506() {
+		return CODEC;
+	}
+
+	@Override
+	public ChunkGenerator withSeed(long seed) {
+		return new VulcanChunkGenerator(new VulcanBiomeSource(seed), seed);
+	}
+
+	@Override
+	public void buildSurface(ChunkRegion region, Chunk chunk) {
+		// Unused.
+	}
+
+	@Override
+	public void populateNoise(WorldAccess world, StructureAccessor accessor, Chunk chunk) {
+		int x1 = chunk.getPos().getStartX();
+		int z1 = chunk.getPos().getStartZ();
+
+		int x2 = chunk.getPos().getEndX();
+		int z2 = chunk.getPos().getEndZ();
+
+		ChunkRandom chunkRandom = new ChunkRandom();
+		chunkRandom.setTerrainSeed(chunk.getPos().x, chunk.getPos().z);
+
+		for (int x = x1; x <= x2; ++x) {
+			for (int z = z1; z <= z2; ++z) {
+				float depth = 0;
+				float scale = 0;
+				int i = 0;
+
+				// Biome lerp
+				for (int x0 = -5; x0 <= 5; x0++) {
+					for (int z0 = -5; z0 <= 5; z0++) {
+						Biome biome = this.cache.get().getBiome((x + x0) >> 2, (z + z0) >> 2);
+
+						i++;
+						depth += biome.getDepth();
+						scale += biome.getScale();
+					}
+				}
+
+				depth /= i;
+				scale /= i;
+
+				// Noise calculation
+				double noise = baseNoise.sample(x + warpX.sample(x, z), z + warpZ.sample(x, z));
+
+				int height = (int) (depth + (noise * scale));
+
+				int genHeight = Math.max(100, height);
+
+				for (int y = 0; y <= genHeight; ++y) {
+					// Place stone or lava
+					if (y <= height) {
+						chunk.setBlockState(new BlockPos(x, y, z), AstromineBlocks.VULCAN_STONE.getDefaultState(), false);
+
+						// Place magma blocks at high altitudes
+						if (y == genHeight && chunkRandom.nextInt(6) == 0) {
+							chunk.setBlockState(new BlockPos(x, y, z), Blocks.MAGMA_BLOCK.getDefaultState(), false);
+						}
+					} else {
+						chunk.setBlockState(new BlockPos(x, y, z), Blocks.LAVA.getDefaultState(), false);
+					}
+
+					if (y <= 5) {
+						if (chunkRandom.nextInt(y + 1) == 0) {
+							chunk.setBlockState(new BlockPos(x, y, z), Blocks.BEDROCK.getDefaultState(), false);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public int getHeight(int x, int z, Heightmap.Type heightmapType) {
+		return 0;
+	}
+
+	@Override
+	public BlockView getColumnSample(int x, int z) {
+		BlockState[] states = new BlockState[256];
+		Arrays.fill(states, Blocks.AIR.getDefaultState());
+		return new VerticalBlockSample(states);
+	}
+}

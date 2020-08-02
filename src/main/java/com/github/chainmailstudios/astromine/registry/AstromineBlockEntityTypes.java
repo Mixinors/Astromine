@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020 Chainmail Studios
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,9 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.conveyor.entity.*;
 import com.github.chainmailstudios.astromine.common.block.entity.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
@@ -38,7 +40,7 @@ public class AstromineBlockEntityTypes {
 	public static final BlockEntityType<VentBlockEntity> VENT = register("vent", VentBlockEntity::new, AstromineBlocks.VENT);
 
 	public static final BlockEntityType<TankBlockEntity> FLUID_TANK = register("tank", TankBlockEntity::new, AstromineBlocks.FLUID_TANK);
-	
+
 	public static final BlockEntityType<SolidGeneratorBlockEntity.Primitive> PRIMITIVE_SOLID_GENERATOR = register("primitive_solid_generator", SolidGeneratorBlockEntity.Primitive::new, AstromineBlocks.PRIMITIVE_SOLID_GENERATOR);
 	public static final BlockEntityType<SolidGeneratorBlockEntity.Basic> BASIC_SOLID_GENERATOR = register("basic_solid_generator", SolidGeneratorBlockEntity.Basic::new, AstromineBlocks.BASIC_SOLID_GENERATOR);
 	public static final BlockEntityType<SolidGeneratorBlockEntity.Advanced> ADVANCED_SOLID_GENERATOR = register("advanced_solid_generator", SolidGeneratorBlockEntity.Advanced::new, AstromineBlocks.ADVANCED_SOLID_GENERATOR);
@@ -79,6 +81,11 @@ public class AstromineBlockEntityTypes {
 	public static final BlockEntityType<FluidMixerBlockEntity.Advanced> ADVANCED_FLUID_MIXER = register("advanced_fluid_mixer", FluidMixerBlockEntity.Advanced::new, AstromineBlocks.ADVANCED_FLUID_MIXER);
 	public static final BlockEntityType<FluidMixerBlockEntity.Elite> ELITE_FLUID_MIXER = register("elite_fluid_mixer", FluidMixerBlockEntity.Elite::new, AstromineBlocks.ELITE_FLUID_MIXER);
 
+	public static final BlockEntityType<CapacitorBlockEntity.Primitive> PRIMITIVE_CAPACITOR = register("primitive_capacitor", CapacitorBlockEntity.Primitive::new, AstromineBlocks.PRIMITIVE_CAPACITOR);
+	public static final BlockEntityType<CapacitorBlockEntity.Basic> BASIC_CAPACITOR = register("basic_capacitor", CapacitorBlockEntity.Basic::new, AstromineBlocks.BASIC_CAPACITOR);
+	public static final BlockEntityType<CapacitorBlockEntity.Advanced> ADVANCED_CAPACITOR = register("advanced_capacitor", CapacitorBlockEntity.Advanced::new, AstromineBlocks.ADVANCED_CAPACITOR);
+	public static final BlockEntityType<CapacitorBlockEntity.Elite> ELITE_CAPACITOR = register("elite_capacitorr", CapacitorBlockEntity.Elite::new, AstromineBlocks.ELITE_CAPACITOR);
+
 	public static final BlockEntityType<CreativeTankBlockEntity> CREATIVE_TANK = register("creative_tank", CreativeTankBlockEntity::new, AstromineBlocks.CREATIVE_TANK);
 	public static final BlockEntityType<CreativeCapacitorBlockEntity> CREATIVE_CAPACITOR = register("creative_capacitor", CreativeCapacitorBlockEntity::new, AstromineBlocks.CREATIVE_CAPACITOR);
 	public static final BlockEntityType<CreativeBufferBlockEntity> CREATIVE_BUFFER = register("creative_buffer", CreativeBufferBlockEntity::new, AstromineBlocks.CREATIVE_BUFFER);
@@ -91,17 +98,29 @@ public class AstromineBlockEntityTypes {
 
 	public static final BlockEntityType<BufferBlockEntity> BUFFER = register("buffer", BufferBlockEntity::new, AstromineBlocks.BASIC_BUFFER, AstromineBlocks.ADVANCED_BUFFER, AstromineBlocks.ELITE_BUFFER);
 
+	public static BlockEntityType<DoubleMachineBlockEntity> ALTERNATOR = register("alternator", AlternatorBlockEntity::new, AstromineBlocks.ALTERNATOR);
+	public static BlockEntityType<DoubleMachineBlockEntity> SPLITTER = register("splitter", SplitterBlockEntity::new, AstromineBlocks.SPLITTER);
+	public static BlockEntityType<IncineratorBlockEntity> INCINERATOR = register("incinerator", IncineratorBlockEntity::new, AstromineBlocks.INCINERATOR);
+	public static BlockEntityType<InserterBlockEntity> INSERTER = register("inserter", InserterBlockEntity::new, AstromineBlocks.INSERTER, AstromineBlocks.FAST_INSERTER);
+
+	public static BlockEntityType<ConveyorBlockEntity> CONVEYOR = register("conveyor", ConveyorBlockEntity::new, AstromineBlocks.BASIC_CONVEYOR, AstromineBlocks.ADVANCED_CONVEYOR, AstromineBlocks.ELITE_CONVEYOR);
+	public static BlockEntityType<VerticalConveyorBlockEntity> VERTICAL_CONVEYOR = register("vertical_conveyor", VerticalConveyorBlockEntity::new, AstromineBlocks.BASIC_VERTICAL_CONVEYOR, AstromineBlocks.ADVANCED_VERTICAL_CONVEYOR, AstromineBlocks.ELITE_VERTICAL_CONVEYOR);
+	public static BlockEntityType<DownVerticalConveyorBlockEntity> DOWNWARD_VERTICAL_CONVEYOR = register("downward_vertical_conveyor", DownVerticalConveyorBlockEntity::new, AstromineBlocks.BASIC_DOWNWARD_VERTICAL_CONVEYOR, AstromineBlocks.ADVANCED_DOWNWARD_VERTICAL_CONVEYOR,
+		AstromineBlocks.ELITE_DOWNWARD_VERTICAL_CONVEYOR);
 
 	public static void initialize() {
 		// Unused.
 	}
 
 	/**
-	* @param name            Name of BlockEntityType instance to be registered
-	* @param supplier        Supplier of BlockEntity to use for BlockEntityType
-	* @param supportedBlocks Blocks the BlockEntity can be attached to
-	* @return Registered BlockEntityType
-	*/
+	 * @param name
+	 *        Name of BlockEntityType instance to be registered
+	 * @param supplier
+	 *        Supplier of BlockEntity to use for BlockEntityType
+	 * @param supportedBlocks
+	 *        Blocks the BlockEntity can be attached to
+	 * @return Registered BlockEntityType
+	 */
 	public static <B extends BlockEntity> BlockEntityType<B> register(String name, Supplier<B> supplier, Block... supportedBlocks) {
 		return Registry.register(Registry.BLOCK_ENTITY_TYPE, AstromineCommon.identifier(name), BlockEntityType.Builder.create(supplier, supportedBlocks).build(null));
 	}

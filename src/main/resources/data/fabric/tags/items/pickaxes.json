@@ -5,6 +5,11 @@
     "astromine:tin_pickaxe",
     "astromine:bronze_pickaxe",
     "astromine:steel_pickaxe",
+    "astromine:silver_pickaxe",
+    "astromine:electrum_pickaxe",
+    "astromine:rose_gold_pickaxe",
+    "astromine:sterling_silver_pickaxe",
+    "astromine:fools_gold_pickaxe",
     "astromine:metite_pickaxe",
     "astromine:asterite_pickaxe",
     "astromine:stellum_pickaxe",
@@ -14,6 +19,11 @@
     "astromine:tin_mining_tool",
     "astromine:bronze_mining_tool",
     "astromine:steel_mining_tool",
+    "astromine:silver_mining_tool",
+    "astromine:electrum_mining_tool",
+    "astromine:rose_gold_mining_tool",
+    "astromine:sterling_silver_mining_tool",
+    "astromine:fools_gold_mining_tool",
     "astromine:metite_mining_tool",
     "astromine:asterite_mining_tool",
     "astromine:stellum_mining_tool",
@@ -24,6 +34,7 @@
     "astromine:iron_mining_tool",
     "astromine:golden_mining_tool",
     "astromine:diamond_mining_tool",
-    "astromine:netherite_mining_tool"
+    "astromine:netherite_mining_tool",
+    "#astromine:drills"
   ]
 }
