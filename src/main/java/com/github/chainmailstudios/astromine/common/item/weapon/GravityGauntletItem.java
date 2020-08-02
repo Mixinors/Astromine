@@ -24,10 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.item.weapon;
 
-import java.util.List;
-
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.google.common.collect.HashMultimap;
@@ -35,7 +32,6 @@ import com.google.common.collect.Multimap;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -43,14 +39,11 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
 
 public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttributeTool {

@@ -3,9 +3,10 @@
   "values": [
     "astromine:copper_excavator",
     "astromine:tin_excavator",
+    "astromine:silver_excavator",
+    "astromine:lead_excavator",
     "astromine:bronze_excavator",
     "astromine:steel_excavator",
-    "astromine:silver_excavator",
     "astromine:electrum_excavator",
     "astromine:rose_gold_excavator",
     "astromine:sterling_silver_excavator",

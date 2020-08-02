@@ -3,9 +3,10 @@
   "values": [
     "astromine:copper_mining_tool",
     "astromine:tin_mining_tool",
+    "astromine:silver_mining_tool",
+    "astromine:lead_mining_tool",
     "astromine:bronze_mining_tool",
     "astromine:steel_mining_tool",
-    "astromine:silver_mining_tool",
     "astromine:electrum_mining_tool",
     "astromine:rose_gold_mining_tool",
     "astromine:sterling_silver_mining_tool",
