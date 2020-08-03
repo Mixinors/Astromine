@@ -26,6 +26,7 @@ package com.github.chainmailstudios.astromine.registry;
 
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import me.sargunvohra.mcmods.autoconfig1u.ConfigData;
+import me.sargunvohra.mcmods.autoconfig1u.ConfigManager;
 import me.sargunvohra.mcmods.autoconfig1u.annotation.Config;
 import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry;
 import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
@@ -619,5 +620,10 @@ public class AstromineConfig implements ConfigData {
 
 	public static void initialize() {
 		AutoConfig.register(AstromineConfig.class, JanksonConfigSerializer::new);
+		try {
+			((ConfigManager<AstromineConfig>) AutoConfig.getConfigHolder(AstromineConfig.class)).save();
+		} catch (Throwable throwable) {
+			throwable.printStackTrace();
+		}
 	}
 }
