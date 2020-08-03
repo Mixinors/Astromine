@@ -51,7 +51,7 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 
 	public DrillItem(ToolMaterial material, float attackDamage, float attackSpeed, int radius, double energy, Settings settings) {
-		super(settings, energy);
+		super(settings, energy, false);
 		this.radius = radius;
 		this.material = material;
 		ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();

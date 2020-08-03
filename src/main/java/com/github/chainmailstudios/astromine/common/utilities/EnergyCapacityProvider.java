@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block.base;
+package com.github.chainmailstudios.astromine.common.utilities;
 
-public interface EnergyBlock {
+public interface EnergyCapacityProvider {
 	double getEnergyCapacity();
 
 	default boolean isCreative() {

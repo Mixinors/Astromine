@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
-import com.github.chainmailstudios.astromine.common.block.base.EnergyBlock;
+import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
@@ -43,7 +43,7 @@ import team.reborn.energy.*;
 import java.util.List;
 
 public abstract class DefaultedEnergyBlockEntity extends DefaultedBlockEntity implements ComponentProvider, EnergyStorage {
-	private final EnergyBlock energyBlock;
+	private final EnergyCapacityProvider energyCapacityProvider;
 	private final List<Runnable> energyListeners = Lists.newArrayList();
 	private final EnergyVolume energyVolume = new EnergyVolume(0, () -> {
 		for (Runnable listener : energyListeners) {
@@ -53,7 +53,7 @@ public abstract class DefaultedEnergyBlockEntity extends DefaultedBlockEntity im
 
 	public DefaultedEnergyBlockEntity(Block energyBlock, BlockEntityType<?> type) {
 		super(type);
-		this.energyBlock = (EnergyBlock) energyBlock;
+		this.energyCapacityProvider = (EnergyCapacityProvider) energyBlock;
 		transferComponent.add(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
 		addComponent(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, new SimpleEnergyInventoryComponent());
 		setMaxStoredPower(getEnergyCapacity());
@@ -68,7 +68,7 @@ public abstract class DefaultedEnergyBlockEntity extends DefaultedBlockEntity im
 	}
 
 	protected final double getEnergyCapacity() {
-		return energyBlock.getEnergyCapacity();
+		return energyCapacityProvider.getEnergyCapacity();
 	}
 
 	@Override

@@ -24,7 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.block.base;
 
-public abstract class HorizontalFacingEnergyMachineBlock extends HorizontalFacingMachineBlock implements EnergyBlock {
+import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
+
+public abstract class HorizontalFacingEnergyMachineBlock extends HorizontalFacingMachineBlock implements EnergyCapacityProvider {
 	public HorizontalFacingEnergyMachineBlock(Settings settings) {
 		super(settings);
 	}

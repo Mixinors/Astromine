@@ -50,7 +50,7 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 	private static final Multimap<EntityAttribute, EntityAttributeModifier> EAMS = HashMultimap.create();
 
 	public GravityGauntletItem(Settings settings, double maxAmount) {
-		super(settings, maxAmount);
+		super(settings, maxAmount, false);
 	}
 
 	@Override

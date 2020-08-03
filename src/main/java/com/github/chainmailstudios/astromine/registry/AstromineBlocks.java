@@ -26,7 +26,7 @@ package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.*;
-import com.github.chainmailstudios.astromine.common.block.base.EnergyBlock;
+import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
 import com.github.chainmailstudios.astromine.common.block.conveyor.*;
 import com.github.chainmailstudios.astromine.common.item.AstromineBlockItem;
 import com.github.chainmailstudios.astromine.common.item.AstromineEnergyBlockItem;
@@ -250,7 +250,7 @@ public class AstromineBlocks {
 	 * @return Block instance registered
 	 */
 	public static <T extends Block> T register(String name, T block, Item.Settings settings) {
-		return register(name, block, block instanceof EnergyBlock ? AstromineEnergyBlockItem.create(block, settings) : new AstromineBlockItem(block, settings));
+		return register(name, block, block instanceof EnergyCapacityProvider ? AstromineEnergyBlockItem.create(block, settings) : new AstromineBlockItem(block, settings));
 	}
 
 	/**
