@@ -85,8 +85,8 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 			TransferType packetTransferType = buffer.readEnumConstant(TransferType.class);
 
 			transferComponent.get(ComponentRegistry.INSTANCE.get(packetIdentifier)).set(packetDirection, packetTransferType);
-
 			markDirty();
+			sync();
 		}));
 	}
 

@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
-import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
+import com.github.chainmailstudios.astromine.common.volume.energy.CreativeEnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.google.common.collect.Lists;
@@ -45,18 +46,27 @@ import java.util.List;
 public abstract class DefaultedEnergyBlockEntity extends DefaultedBlockEntity implements ComponentProvider, EnergyStorage {
 	private final EnergyCapacityProvider energyCapacityProvider;
 	private final List<Runnable> energyListeners = Lists.newArrayList();
-	private final EnergyVolume energyVolume = new EnergyVolume(0, () -> {
-		for (Runnable listener : energyListeners) {
-			listener.run();
-		}
-	});
+	private final EnergyVolume energyVolume;
 
 	public DefaultedEnergyBlockEntity(Block energyBlock, BlockEntityType<?> type) {
 		super(type);
 		this.energyCapacityProvider = (EnergyCapacityProvider) energyBlock;
 		transferComponent.add(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
 		addComponent(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, new SimpleEnergyInventoryComponent());
-		setMaxStoredPower(getEnergyCapacity());
+		if (!energyCapacityProvider.isCreative()) {
+			energyVolume = new EnergyVolume(0, () -> {
+				for (Runnable listener : energyListeners) {
+					listener.run();
+				}
+			});
+			setMaxStoredPower(getEnergyCapacity());
+		} else {
+			energyVolume = new CreativeEnergyVolume(() -> {
+				for (Runnable listener : energyListeners) {
+					listener.run();
+				}
+			});
+		}
 	}
 
 	protected void addEnergyListener(Runnable listener) {

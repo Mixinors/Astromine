@@ -33,11 +33,4 @@ public class CreativeCapacitorBlockEntity extends DefaultedEnergyBlockEntity imp
 	public CreativeCapacitorBlockEntity() {
 		super(AstromineBlocks.CREATIVE_CAPACITOR, AstromineBlockEntityTypes.CREATIVE_CAPACITOR);
 	}
-
-	@Override
-	public void tick() {
-		super.tick();
-
-		setStored(Double.MAX_VALUE);
-	}
 }

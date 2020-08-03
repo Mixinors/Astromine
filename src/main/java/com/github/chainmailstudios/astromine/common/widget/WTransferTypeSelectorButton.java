@@ -37,10 +37,8 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Lazy;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3i;
 import spinnery.client.render.BaseRenderer;
 import spinnery.widget.WButton;
 
@@ -59,16 +57,14 @@ public class WTransferTypeSelectorButton extends WButton {
 
 	private BlockPos blockPos;
 
-	private Identifier texture = null;
-
-	private Vec3i mouse = Vec3i.ZERO;
-	private Lazy<String> sideName = lazySideName();
 	private boolean wasClicked = false;
 
-	private Lazy<String> lazySideName() {
-		return new Lazy<>(() -> {
-			return component.get(type).get(direction).name().toLowerCase(Locale.ROOT);
-		});
+	private String getSideName() {
+		return component.get(type).get(direction).name().toLowerCase(Locale.ROOT);
+	}
+
+	private Identifier getTexture() {
+		return component.get(type).get(direction).texture();
 	}
 
 	public BlockEntityTransferComponent getComponent() {
@@ -77,7 +73,6 @@ public class WTransferTypeSelectorButton extends WButton {
 
 	public <W extends WTransferTypeSelectorButton> W setComponent(BlockEntityTransferComponent component) {
 		this.component = component;
-		this.sideName = lazySideName();
 		return (W) this;
 	}
 
@@ -108,15 +103,6 @@ public class WTransferTypeSelectorButton extends WButton {
 		return (W) this;
 	}
 
-	public Identifier getTexture() {
-		return texture;
-	}
-
-	public <W extends WTransferTypeSelectorButton> W setTexture(Identifier texture) {
-		this.texture = texture;
-		return (W) this;
-	}
-
 	public BlockPos getBlockPos() {
 		return blockPos;
 	}
@@ -139,9 +125,6 @@ public class WTransferTypeSelectorButton extends WButton {
 		if (isFocused() && wasClicked) {
 			component.get(type).set(direction, component.get(type).get(direction).next());
 
-			setTexture(component.get(type).get(direction).texture());
-			this.sideName = lazySideName();
-
 			if (getInterface().getHandler().getWorld().isClient()) {
 				PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
 
@@ -161,12 +144,6 @@ public class WTransferTypeSelectorButton extends WButton {
 	}
 
 	@Override
-	public void onMouseMoved(float mouseX, float mouseY) {
-		mouse = new Vec3i(mouseX, mouseY, 0);
-		super.onMouseMoved(mouseX, mouseY);
-	}
-
-	@Override
 	public boolean isFocusedMouseListener() {
 		return true;
 	}
@@ -174,14 +151,11 @@ public class WTransferTypeSelectorButton extends WButton {
 	@Override
 	public List<Text> getTooltip() {
 		Direction offset = MirrorUtilities.rotate(direction, rotation);
-		return Arrays.asList(new TranslatableText("text.astromine.siding." + offset.getName()), new TranslatableText("text.astromine.siding." + sideName.get()));
+		return Arrays.asList(new TranslatableText("text.astromine.siding." + offset.getName()), new TranslatableText("text.astromine.siding." + getSideName()));
 	}
 
 	@Override
 	public void draw(MatrixStack matrices, VertexConsumerProvider provider) {
-		if (texture == null)
-			setTexture(component.get(type).get(direction).texture());
-
 		BaseRenderer.drawTexturedQuad(matrices, provider, getX(), getY(), getZ(), getWidth(), getHeight(), getTexture());
 	}
 }
