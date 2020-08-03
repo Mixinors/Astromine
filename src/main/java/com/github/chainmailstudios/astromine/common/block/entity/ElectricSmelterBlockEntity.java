@@ -51,7 +51,7 @@ public abstract class ElectricSmelterBlockEntity extends DefaultedEnergyItemBloc
 	public boolean shouldTry = true;
 	public boolean isActive = false;
 
-	public boolean[] activity = {false, false, false, false, false};
+	public boolean[] activity = { false, false, false, false, false };
 
 	Optional<SmeltingRecipe> recipe = Optional.empty();
 

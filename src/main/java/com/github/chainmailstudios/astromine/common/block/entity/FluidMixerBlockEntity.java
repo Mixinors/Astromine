@@ -50,7 +50,7 @@ public abstract class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEnt
 
 	public boolean isActive = false;
 
-	public boolean[] activity = {false, false, false, false, false};
+	public boolean[] activity = { false, false, false, false, false };
 
 	private Optional<FluidMixingRecipe> recipe = Optional.empty();
 

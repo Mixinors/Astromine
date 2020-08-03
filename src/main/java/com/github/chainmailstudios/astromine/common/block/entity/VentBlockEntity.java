@@ -45,7 +45,7 @@ import net.minecraft.util.math.Direction;
 public class VentBlockEntity extends DefaultedEnergyFluidBlockEntity implements Tickable {
 	public boolean isActive = false;
 
-	public boolean[] activity = {false, false, false, false, false};
+	public boolean[] activity = { false, false, false, false, false };
 
 	public VentBlockEntity() {
 		super(AstromineBlocks.VENT, AstromineBlockEntityTypes.VENT);

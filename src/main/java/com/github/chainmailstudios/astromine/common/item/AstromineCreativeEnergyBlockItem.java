@@ -26,36 +26,23 @@ package com.github.chainmailstudios.astromine.common.item;
 
 import com.github.chainmailstudios.astromine.common.block.base.EnergyBlock;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
-import me.shedaniel.cloth.api.durability.bar.DurabilityBarItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
-import team.reborn.energy.Energy;
-import team.reborn.energy.EnergyHandler;
-import team.reborn.energy.EnergyHolder;
-import team.reborn.energy.EnergyTier;
+import team.reborn.energy.*;
 
 import java.util.List;
 
-public class AstromineEnergyBlockItem extends AstromineBlockItem implements EnergyHolder, DurabilityBarItem {
+public class AstromineCreativeEnergyBlockItem extends AstromineBlockItem implements EnergyStorage {
 	private final EnergyBlock energyBlock;
 
-	private AstromineEnergyBlockItem(Block block, Settings settings) {
+	AstromineCreativeEnergyBlockItem(Block block, Settings settings) {
 		super(block, settings);
 		this.energyBlock = (EnergyBlock) block;
-	}
-
-	public static BlockItem create(Block block, Settings settings) {
-		if (((EnergyBlock) block).isCreative())
-			return new AstromineCreativeEnergyBlockItem(block, settings);
-		return new AstromineEnergyBlockItem(block, settings);
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -78,29 +65,12 @@ public class AstromineEnergyBlockItem extends AstromineBlockItem implements Ener
 	}
 
 	@Override
-	public int getDurabilityBarColor(ItemStack stack) {
-		return 0x91261f;
+	public double getStored(EnergySide face) {
+		return getMaxStoredPower();
 	}
 
 	@Override
-	public double getDurabilityBarProgress(ItemStack itemStack) {
-		if (!Energy.valid(itemStack) || getMaxStoredPower() == 0)
-			return 0;
-		return 1 - Energy.of(itemStack).getEnergy() / getMaxStoredPower();
-	}
+	public void setStored(double amount) {
 
-	@Override
-	public boolean hasDurabilityBar(ItemStack itemStack) {
-		return true;
-	}
-
-	@Override
-	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
-		super.appendStacks(group, stacks);
-		if (this.isIn(group)) {
-			ItemStack itemStack = new ItemStack(this);
-			Energy.of(itemStack).set(getMaxStoredPower());
-			stacks.add(itemStack);
-		}
 	}
 }

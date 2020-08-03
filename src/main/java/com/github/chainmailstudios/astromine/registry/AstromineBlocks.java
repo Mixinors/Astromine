@@ -250,7 +250,7 @@ public class AstromineBlocks {
 	 * @return Block instance registered
 	 */
 	public static <T extends Block> T register(String name, T block, Item.Settings settings) {
-		return register(name, block, block instanceof EnergyBlock ? new AstromineEnergyBlockItem(block, settings) : new AstromineBlockItem(block, settings));
+		return register(name, block, block instanceof EnergyBlock ? AstromineEnergyBlockItem.create(block, settings) : new AstromineBlockItem(block, settings));
 	}
 
 	/**

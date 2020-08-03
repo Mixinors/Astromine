@@ -50,7 +50,7 @@ public abstract class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlo
 
 	public boolean isActive = false;
 
-	public boolean[] activity = {false, false, false, false, false};
+	public boolean[] activity = { false, false, false, false, false };
 
 	private Optional<LiquidGeneratingRecipe> recipe = Optional.empty();
 

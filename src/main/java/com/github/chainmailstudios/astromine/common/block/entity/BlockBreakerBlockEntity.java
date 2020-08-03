@@ -55,7 +55,7 @@ public class BlockBreakerBlockEntity extends DefaultedEnergyItemBlockEntity impl
 
 	public boolean isActive = false;
 
-	public boolean[] activity = {false, false, false, false, false};
+	public boolean[] activity = { false, false, false, false, false };
 
 	public BlockBreakerBlockEntity() {
 		super(AstromineBlocks.BLOCK_BREAKER, AstromineBlockEntityTypes.BLOCK_BREAKER);

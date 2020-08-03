@@ -50,7 +50,7 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 	public boolean shouldTry = true;
 	public boolean isActive = false;
 
-	public boolean[] activity = {false, false, false, false, false};
+	public boolean[] activity = { false, false, false, false, false };
 
 	Optional<AlloySmeltingRecipe> recipe = Optional.empty();
 

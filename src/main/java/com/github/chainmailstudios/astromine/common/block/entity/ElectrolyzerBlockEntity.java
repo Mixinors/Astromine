@@ -50,7 +50,7 @@ public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockE
 
 	public boolean isActive = false;
 
-	public boolean[] activity = {false, false, false, false, false};
+	public boolean[] activity = { false, false, false, false, false };
 
 	private Optional<ElectrolyzingRecipe> recipe = Optional.empty();
 

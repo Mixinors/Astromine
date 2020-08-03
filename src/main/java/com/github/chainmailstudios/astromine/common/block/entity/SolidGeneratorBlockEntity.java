@@ -52,7 +52,7 @@ public abstract class SolidGeneratorBlockEntity extends DefaultedEnergyItemBlock
 
 	public boolean isActive = false;
 
-	public boolean[] activity = {false, false, false, false, false};
+	public boolean[] activity = { false, false, false, false, false };
 
 	private Optional<SolidGeneratingRecipe> recipe = Optional.empty();
 

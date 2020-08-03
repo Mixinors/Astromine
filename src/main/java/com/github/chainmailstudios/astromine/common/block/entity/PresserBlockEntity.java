@@ -52,7 +52,7 @@ public abstract class PresserBlockEntity extends DefaultedEnergyItemBlockEntity 
 
 	public boolean isActive = false;
 
-	public boolean[] activity = {false, false, false, false, false};
+	public boolean[] activity = { false, false, false, false, false };
 
 	Optional<PressingRecipe> recipe = Optional.empty();
 

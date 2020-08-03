@@ -47,7 +47,7 @@ public class FluidInserterBlockEntity extends DefaultedEnergyFluidBlockEntity im
 
 	public boolean isActive = false;
 
-	public boolean[] activity = {false, false, false, false, false};
+	public boolean[] activity = { false, false, false, false, false };
 
 	public FluidInserterBlockEntity() {
 		super(AstromineBlocks.FLUID_INSERTER, AstromineBlockEntityTypes.FLUID_INSERTER);

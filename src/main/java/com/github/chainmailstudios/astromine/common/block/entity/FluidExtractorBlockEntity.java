@@ -48,7 +48,7 @@ public class FluidExtractorBlockEntity extends DefaultedEnergyFluidBlockEntity i
 
 	public boolean isActive = false;
 
-	public boolean[] activity = {false, false, false, false, false};
+	public boolean[] activity = { false, false, false, false, false };
 
 	public FluidExtractorBlockEntity() {
 		super(AstromineBlocks.FLUID_EXTRACTOR, AstromineBlockEntityTypes.FLUID_EXTRACTOR);
