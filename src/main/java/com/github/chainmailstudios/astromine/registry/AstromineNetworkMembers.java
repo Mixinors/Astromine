@@ -76,7 +76,7 @@ public class AstromineNetworkMembers {
 				return EnergyTier.INFINITE;
 			}
 		});
-		
+
 		NetworkTypeRegistry<NetworkType> energy = NetworkMemberRegistry.INSTANCE.get(AstromineNetworkTypes.ENERGY);
 		NetworkTypeRegistry<NetworkType> fluid = NetworkMemberRegistry.INSTANCE.get(AstromineNetworkTypes.FLUID);
 
