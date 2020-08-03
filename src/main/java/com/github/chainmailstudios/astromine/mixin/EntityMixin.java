@@ -53,9 +53,6 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 	@Shadow
 	public World world;
 
-	@Shadow
-	public double lastRenderX;
-
 	@Unique
 	Entity lastVehicle = null;
 

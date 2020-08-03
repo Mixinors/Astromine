@@ -69,7 +69,7 @@ public abstract class LivingEntityMixin implements GravityEntity {
 	@Shadow
 	public abstract double getAttributeValue(EntityAttribute attribute);
 
-	@ModifyConstant(method = "travel(Lnet/minecraft/util/math/Vec3d;)V", constant = @Constant(doubleValue = 0.08D))
+	@ModifyConstant(method = "travel(Lnet/minecraft/util/math/Vec3d;)V", constant = @Constant(doubleValue = 0.08D, ordinal = 0))
 	private double modifyGravity(double original) {
 		return getGravity();
 	}
