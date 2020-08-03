@@ -73,16 +73,12 @@ public class NetworkTypeFluid extends NetworkType {
 
 					if (!type.isDisabled()) {
 						if (type.canExtract() || networkMember.isProvider(this)) {
-							fluidComponent.getContents().forEach((key, volume) -> {
-								if (fluidComponent.canExtract(memberNode.getDirection(), volume, key)) {
-									inputs.add(volume);
-								}
-							});
+							inputs.addAll(fluidComponent.getExtractableContentsMatching(memberNode.getDirection(), (volume -> !volume.isEmpty())));
 						}
 
 						if (type.canInsert() || networkMember.isRequester(this)) {
 							fluidComponent.getContents().forEach((key, volume) -> {
-								if (fluidComponent.canExtract(memberNode.getDirection(), volume, key)) {
+								if (fluidComponent.canInsert(memberNode.getDirection(), volume, key)) {
 									outputs.add(volume);
 								}
 							});
@@ -95,7 +91,7 @@ public class NetworkTypeFluid extends NetworkType {
 		for (FluidVolume input : inputs) {
 			for (FluidVolume output : outputs) {
 				if (!input.isEmpty() && !output.isFull() && (input.getFluid() == output.getFluid() || output.isEmpty())) {
-					output.pullVolume(input, Fraction.BUCKET);
+					output.pullVolume(input, Fraction.bottle());
 				} else if (input.isEmpty()) {
 					break;
 				}

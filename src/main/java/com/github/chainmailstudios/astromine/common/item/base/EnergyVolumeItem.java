@@ -30,8 +30,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
@@ -80,11 +82,21 @@ public class EnergyVolumeItem extends Item implements EnergyHolder, DurabilityBa
 	public double getDurabilityBarProgress(ItemStack itemStack) {
 		if (!Energy.valid(itemStack) || getMaxStoredPower() == 0)
 			return 0;
-		return Energy.of(itemStack).getEnergy() / getMaxStoredPower();
+		return 1- Energy.of(itemStack).getEnergy() / getMaxStoredPower();
 	}
 
 	@Override
 	public boolean hasDurabilityBar(ItemStack itemStack) {
 		return true;
+	}
+
+	@Override
+	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
+		super.appendStacks(group, stacks);
+		if (this.isIn(group)) {
+			ItemStack itemStack = new ItemStack(this);
+			Energy.of(itemStack).set(getMaxStoredPower());
+			stacks.add(itemStack);
+		}
 	}
 }

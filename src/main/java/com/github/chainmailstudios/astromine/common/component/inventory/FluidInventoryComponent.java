@@ -161,7 +161,7 @@ public interface FluidInventoryComponent extends NameableComponent {
 	}
 
 	default FluidVolume getFirstExtractableVolume(Direction direction) {
-		return getContents().entrySet().stream().filter((entry) -> canExtract(direction, entry.getValue(), entry.getKey())).map(Map.Entry::getValue).findFirst().orElse(null);
+		return getContents().entrySet().stream().filter((entry) -> canExtract(direction, entry.getValue(), entry.getKey()) && !entry.getValue().isEmpty()).map(Map.Entry::getValue).findFirst().orElse(null);
 	}
 
 	default FluidVolume getFirstInsertableVolume(FluidVolume volume, Direction direction) {

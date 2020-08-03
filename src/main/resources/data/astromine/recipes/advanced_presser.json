@@ -9,7 +9,7 @@
     "4": { "item": "astromine:advanced_machine_chassis" },
     "5": { "tag": "c:steel_plates" },
     "6": { "tag": "c:iron_plates" },
-    "7": { "item": "minecraft:sticky_piston" },
+    "7": { "item": "minecraft:piston" },
     "8": { "tag": "c:iron_plates" }
   },
   "result": { "item": "astromine:advanced_presser", "count": 1 }
