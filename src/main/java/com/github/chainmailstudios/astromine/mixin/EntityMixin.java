@@ -72,14 +72,9 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 	}
 
 	@Override
-	public double getGravityMultiplier() {
-		return 1.0d;
-	}
-
-	@Override
 	public double getGravity() {
 		World world = ((Entity) (Object) this).world;
-		return GravityRegistry.INSTANCE.get(world.getDimensionRegistryKey()) * getGravityMultiplier();
+		return getGravity(world);
 	}
 
 	@Inject(at = @At("HEAD"), method = "tickNetherPortal()V")
