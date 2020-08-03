@@ -22,22 +22,12 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block.entity;
+package com.github.chainmailstudios.astromine.common.block.base;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyBlockEntity;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
-import net.minecraft.util.Tickable;
+public interface EnergyBlock {
+	double getEnergyCapacity();
 
-public class CreativeCapacitorBlockEntity extends DefaultedEnergyBlockEntity implements Tickable {
-	public CreativeCapacitorBlockEntity() {
-		super(AstromineBlocks.CREATIVE_CAPACITOR, AstromineBlockEntityTypes.CREATIVE_CAPACITOR);
-	}
-
-	@Override
-	public void tick() {
-		super.tick();
-
-		setStored(Double.MAX_VALUE);
+	default boolean isCreative() {
+		return false;
 	}
 }

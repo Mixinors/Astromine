@@ -24,12 +24,15 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
+import com.github.chainmailstudios.astromine.common.block.base.EnergyBlock;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.google.common.collect.Lists;
+import net.fabricmc.fabric.api.util.NbtType;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
@@ -40,6 +43,7 @@ import team.reborn.energy.*;
 import java.util.List;
 
 public abstract class DefaultedEnergyBlockEntity extends DefaultedBlockEntity implements ComponentProvider, EnergyStorage {
+	private final EnergyBlock energyBlock;
 	private final List<Runnable> energyListeners = Lists.newArrayList();
 	private final EnergyVolume energyVolume = new EnergyVolume(0, () -> {
 		for (Runnable listener : energyListeners) {
@@ -47,11 +51,12 @@ public abstract class DefaultedEnergyBlockEntity extends DefaultedBlockEntity im
 		}
 	});
 
-	public DefaultedEnergyBlockEntity(BlockEntityType<?> type) {
+	public DefaultedEnergyBlockEntity(Block energyBlock, BlockEntityType<?> type) {
 		super(type);
+		this.energyBlock = (EnergyBlock) energyBlock;
 		transferComponent.add(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
 		addComponent(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, new SimpleEnergyInventoryComponent());
-		setMaxStoredPower(getEnergySize());
+		setMaxStoredPower(getEnergyCapacity());
 	}
 
 	protected void addEnergyListener(Runnable listener) {
@@ -62,7 +67,9 @@ public abstract class DefaultedEnergyBlockEntity extends DefaultedBlockEntity im
 		return Energy.of(this);
 	}
 
-	protected abstract double getEnergySize();
+	protected final double getEnergyCapacity() {
+		return energyBlock.getEnergyCapacity();
+	}
 
 	@Override
 	public double getStored(EnergySide energySide) {
@@ -114,7 +121,7 @@ public abstract class DefaultedEnergyBlockEntity extends DefaultedBlockEntity im
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.put("energy", getEnergyVolume().toTag(new CompoundTag()));
+		tag.putDouble("energy", getEnergyVolume().getAmount());
 		return super.toTag(tag);
 	}
 
@@ -122,9 +129,12 @@ public abstract class DefaultedEnergyBlockEntity extends DefaultedBlockEntity im
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
 		super.fromTag(state, tag);
 		energyVolume.setAmount(0);
-		if (tag.contains("energy")) {
+		if (tag.contains("energy", NbtType.COMPOUND)) {
 			EnergyVolume energy = EnergyVolume.fromTag(tag.getCompound("energy"));
 			energyVolume.setAmount(energy.getAmount());
+		} else if (tag.contains("energy")) {
+			double energy = tag.getDouble("energy");
+			energyVolume.setAmount(energy);
 		}
 	}
 }

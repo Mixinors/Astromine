@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.block;
 
+import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.TrituratorBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.TrituratorScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
@@ -37,7 +38,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class TrituratorBlock extends TieredHorizontalFacingMachineBlock {
+public abstract class TrituratorBlock extends TieredHorizontalFacingEnergyMachineBlock {
 	public TrituratorBlock(Settings settings) {
 		super(settings);
 	}
@@ -77,6 +78,11 @@ public abstract class TrituratorBlock extends TieredHorizontalFacingMachineBlock
 		public double getMachineSpeed() {
 			return AstromineConfig.get().primitiveTrituratorSpeed;
 		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().primitiveTrituratorEnergy;
+		}
 	}
 
 	public static class Basic extends TrituratorBlock.Base {
@@ -92,6 +98,11 @@ public abstract class TrituratorBlock extends TieredHorizontalFacingMachineBlock
 		@Override
 		public double getMachineSpeed() {
 			return AstromineConfig.get().basicTrituratorSpeed;
+		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().basicTrituratorEnergy;
 		}
 	}
 
@@ -109,6 +120,11 @@ public abstract class TrituratorBlock extends TieredHorizontalFacingMachineBlock
 		public double getMachineSpeed() {
 			return AstromineConfig.get().advancedTrituratorSpeed;
 		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().advancedTrituratorEnergy;
+		}
 	}
 
 	public static class Elite extends TrituratorBlock.Base {
@@ -124,6 +140,11 @@ public abstract class TrituratorBlock extends TieredHorizontalFacingMachineBlock
 		@Override
 		public double getMachineSpeed() {
 			return AstromineConfig.get().eliteTrituratorSpeed;
+		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().eliteTrituratorEnergy;
 		}
 	}
 }

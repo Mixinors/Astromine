@@ -24,21 +24,23 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.block.TieredHorizontalFacingMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
 import com.github.chainmailstudios.astromine.common.recipe.PressingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Tickable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -50,12 +52,12 @@ public abstract class PresserBlockEntity extends DefaultedEnergyItemBlockEntity 
 
 	public boolean isActive = false;
 
-	public boolean[] activity = { false, false, false, false, false };
+	public boolean[] activity = {false, false, false, false, false};
 
 	Optional<PressingRecipe> recipe = Optional.empty();
 
-	public PresserBlockEntity(BlockEntityType<?> type) {
-		super(type);
+	public PresserBlockEntity(Block energyBlock, BlockEntityType<?> type) {
+		super(energyBlock, type);
 
 		addEnergyListener(() -> shouldTry = true);
 	}
@@ -72,7 +74,7 @@ public abstract class PresserBlockEntity extends DefaultedEnergyItemBlockEntity 
 	}
 
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
 		super.fromTag(state, tag);
 		progress = tag.getInt("progress");
 		limit = tag.getInt("limit");
@@ -101,7 +103,7 @@ public abstract class PresserBlockEntity extends DefaultedEnergyItemBlockEntity 
 			if (recipe.isPresent() && recipe.get().matches(ItemInventoryFromInventoryComponent.of(itemComponent), world)) {
 				limit = recipe.get().getTime();
 
-				double speed = Math.min(((TieredHorizontalFacingMachineBlock) this.getCachedState().getBlock()).getMachineSpeed(), limit - progress);
+				double speed = Math.min(((TieredHorizontalFacingEnergyMachineBlock) this.getCachedState().getBlock()).getMachineSpeed(), limit - progress);
 				double consumed = recipe.get().getEnergyConsumed() * speed / limit;
 
 				ItemStack output = recipe.get().getOutput();
@@ -150,45 +152,25 @@ public abstract class PresserBlockEntity extends DefaultedEnergyItemBlockEntity 
 
 	public static class Primitive extends PresserBlockEntity {
 		public Primitive() {
-			super(AstromineBlockEntityTypes.PRIMITIVE_PRESSER);
-		}
-
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().primitivePresserEnergy;
+			super(AstromineBlocks.PRIMITIVE_PRESSER, AstromineBlockEntityTypes.PRIMITIVE_PRESSER);
 		}
 	}
 
 	public static class Basic extends PresserBlockEntity {
 		public Basic() {
-			super(AstromineBlockEntityTypes.BASIC_PRESSER);
-		}
-
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().basicPresserEnergy;
+			super(AstromineBlocks.BASIC_PRESSER, AstromineBlockEntityTypes.BASIC_PRESSER);
 		}
 	}
 
 	public static class Advanced extends PresserBlockEntity {
 		public Advanced() {
-			super(AstromineBlockEntityTypes.ADVANCED_PRESSER);
-		}
-
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().advancedPresserEnergy;
+			super(AstromineBlocks.ADVANCED_PRESSER, AstromineBlockEntityTypes.ADVANCED_PRESSER);
 		}
 	}
 
 	public static class Elite extends PresserBlockEntity {
 		public Elite() {
-			super(AstromineBlockEntityTypes.ELITE_PRESSER);
-		}
-
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().elitePresserEnergy;
+			super(AstromineBlocks.ELITE_PRESSER, AstromineBlockEntityTypes.ELITE_PRESSER);
 		}
 	}
 }

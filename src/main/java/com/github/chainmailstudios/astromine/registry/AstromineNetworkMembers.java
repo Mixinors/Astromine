@@ -98,7 +98,7 @@ public class AstromineNetworkMembers {
 			fluid.register(block, REQUESTER);
 			energy.register(block, REQUESTER);
 		});
-		BLOCK_CONSUMER.put(block -> block instanceof CreativeCapacitorBlock, block -> {
+		BLOCK_CONSUMER.put(block -> block instanceof CapacitorBlock, block -> {
 			energy.register(block, BUFFER);
 		});
 

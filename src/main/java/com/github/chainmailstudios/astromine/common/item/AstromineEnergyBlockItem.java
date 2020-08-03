@@ -22,14 +22,15 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.item.base;
+package com.github.chainmailstudios.astromine.common.item;
 
+import com.github.chainmailstudios.astromine.common.block.base.EnergyBlock;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import me.shedaniel.cloth.api.durability.bar.DurabilityBarItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.block.Block;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -42,30 +43,26 @@ import team.reborn.energy.EnergyTier;
 
 import java.util.List;
 
-public class EnergyVolumeItem extends Item implements EnergyHolder, DurabilityBarItem {
-	private double maxAmount;
+public class AstromineEnergyBlockItem extends AstromineBlockItem implements EnergyHolder, DurabilityBarItem {
+	private final EnergyBlock energyBlock;
 
-	public EnergyVolumeItem(Settings settings, double maxAmount) {
-		super(settings);
-		this.maxAmount = maxAmount;
-	}
-
-	public static EnergyVolumeItem of(Settings settings, double maxAmount) {
-		return new EnergyVolumeItem(settings, maxAmount);
+	public AstromineEnergyBlockItem(Block block, Settings settings) {
+		super(block, settings);
+		this.energyBlock = (EnergyBlock) block;
 	}
 
 	@Environment(EnvType.CLIENT)
 	@Override
 	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-		super.appendTooltip(stack, world, tooltip, context);
-
 		EnergyHandler energyHandler = Energy.of(stack);
 		tooltip.add(EnergyUtilities.compoundDisplayColored(energyHandler.getEnergy(), energyHandler.getMaxStored()));
+		
+		super.appendTooltip(stack, world, tooltip, context);
 	}
 
 	@Override
 	public double getMaxStoredPower() {
-		return maxAmount;
+		return energyBlock.getEnergyCapacity();
 	}
 
 	@Override

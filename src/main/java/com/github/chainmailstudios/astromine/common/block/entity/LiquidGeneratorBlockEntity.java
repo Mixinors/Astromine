@@ -33,11 +33,14 @@ import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.recipe.LiquidGeneratingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -47,15 +50,15 @@ public abstract class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlo
 
 	public boolean isActive = false;
 
-	public boolean[] activity = { false, false, false, false, false };
+	public boolean[] activity = {false, false, false, false, false};
 
 	private Optional<LiquidGeneratingRecipe> recipe = Optional.empty();
 
 	private static final int INPUT_ENERGY_VOLUME = 0;
 	private static final int INPUT_FLUID_VOLUME = 0;
 
-	public LiquidGeneratorBlockEntity(BlockEntityType<?> type) {
-		super(type);
+	public LiquidGeneratorBlockEntity(Block energyBlock, BlockEntityType<?> type) {
+		super(energyBlock, type);
 
 		fluidComponent.getVolume(INPUT_FLUID_VOLUME).setSize(getTankSize());
 	}
@@ -106,7 +109,7 @@ public abstract class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlo
 	}
 
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
 		readRecipeProgress(tag);
 		super.fromTag(state, tag);
 	}
@@ -150,12 +153,7 @@ public abstract class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlo
 
 	public static class Primitive extends LiquidGeneratorBlockEntity {
 		public Primitive() {
-			super(AstromineBlockEntityTypes.PRIMITIVE_LIQUID_GENERATOR);
-		}
-
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().primitiveLiquidGeneratorEnergy;
+			super(AstromineBlocks.PRIMITIVE_LIQUID_GENERATOR, AstromineBlockEntityTypes.PRIMITIVE_LIQUID_GENERATOR);
 		}
 
 		@Override
@@ -166,12 +164,7 @@ public abstract class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlo
 
 	public static class Basic extends LiquidGeneratorBlockEntity {
 		public Basic() {
-			super(AstromineBlockEntityTypes.BASIC_LIQUID_GENERATOR);
-		}
-
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().basicLiquidGeneratorEnergy;
+			super(AstromineBlocks.BASIC_LIQUID_GENERATOR, AstromineBlockEntityTypes.BASIC_LIQUID_GENERATOR);
 		}
 
 		@Override
@@ -182,12 +175,7 @@ public abstract class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlo
 
 	public static class Advanced extends LiquidGeneratorBlockEntity {
 		public Advanced() {
-			super(AstromineBlockEntityTypes.ADVANCED_LIQUID_GENERATOR);
-		}
-
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().advancedLiquidGeneratorEnergy;
+			super(AstromineBlocks.ADVANCED_LIQUID_GENERATOR, AstromineBlockEntityTypes.ADVANCED_LIQUID_GENERATOR);
 		}
 
 		@Override
@@ -198,12 +186,7 @@ public abstract class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlo
 
 	public static class Elite extends LiquidGeneratorBlockEntity {
 		public Elite() {
-			super(AstromineBlockEntityTypes.ELITE_LIQUID_GENERATOR);
-		}
-
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().eliteLiquidGeneratorEnergy;
+			super(AstromineBlocks.ELITE_LIQUID_GENERATOR, AstromineBlockEntityTypes.ELITE_LIQUID_GENERATOR);
 		}
 
 		@Override

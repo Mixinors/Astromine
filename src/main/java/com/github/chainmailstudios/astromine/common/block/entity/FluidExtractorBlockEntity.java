@@ -31,6 +31,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFl
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -47,17 +48,12 @@ public class FluidExtractorBlockEntity extends DefaultedEnergyFluidBlockEntity i
 
 	public boolean isActive = false;
 
-	public boolean[] activity = { false, false, false, false, false };
+	public boolean[] activity = {false, false, false, false, false};
 
 	public FluidExtractorBlockEntity() {
-		super(AstromineBlockEntityTypes.FLUID_EXTRACTOR);
+		super(AstromineBlocks.FLUID_EXTRACTOR, AstromineBlockEntityTypes.FLUID_EXTRACTOR);
 
 		fluidComponent.getVolume(0).setSize(Fraction.ofWhole(4));
-	}
-
-	@Override
-	protected double getEnergySize() {
-		return AstromineConfig.get().fluidExtractorEnergy;
 	}
 
 	@Override

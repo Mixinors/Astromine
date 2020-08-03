@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.block;
 
+import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.SolidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.SolidGeneratorScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
@@ -37,7 +38,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class SolidGeneratorBlock extends TieredHorizontalFacingMachineBlock {
+public abstract class SolidGeneratorBlock extends TieredHorizontalFacingEnergyMachineBlock {
 	public SolidGeneratorBlock(Settings settings) {
 		super(settings);
 	}
@@ -77,6 +78,11 @@ public abstract class SolidGeneratorBlock extends TieredHorizontalFacingMachineB
 		public double getMachineSpeed() {
 			return AstromineConfig.get().primitiveSolidGeneratorSpeed;
 		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().primitiveSolidGeneratorEnergy;
+		}
 	}
 
 	public static class Basic extends Base {
@@ -92,6 +98,11 @@ public abstract class SolidGeneratorBlock extends TieredHorizontalFacingMachineB
 		@Override
 		public double getMachineSpeed() {
 			return AstromineConfig.get().basicSolidGeneratorSpeed;
+		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().basicSolidGeneratorEnergy;
 		}
 	}
 
@@ -109,6 +120,11 @@ public abstract class SolidGeneratorBlock extends TieredHorizontalFacingMachineB
 		public double getMachineSpeed() {
 			return AstromineConfig.get().advancedSolidGeneratorSpeed;
 		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().advancedSolidGeneratorEnergy;
+		}
 	}
 
 	public static class Elite extends Base {
@@ -124,6 +140,11 @@ public abstract class SolidGeneratorBlock extends TieredHorizontalFacingMachineB
 		@Override
 		public double getMachineSpeed() {
 			return AstromineConfig.get().eliteSolidGeneratorSpeed;
+		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().eliteSolidGeneratorEnergy;
 		}
 	}
 }

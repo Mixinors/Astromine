@@ -25,7 +25,7 @@
 package com.github.chainmailstudios.astromine.common.recipe;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.TieredHorizontalFacingMachineBlock;
+import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
@@ -82,9 +82,9 @@ public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory>, Energy
 	@Override
 	public <T extends DefaultedBlockEntity> boolean canCraft(T blockEntity) {
 		Block block = blockEntity.getWorld().getBlockState(blockEntity.getPos()).getBlock();
-		if (!(block instanceof TieredHorizontalFacingMachineBlock))
+		if (!(block instanceof TieredHorizontalFacingEnergyMachineBlock))
 			return false;
-		Fraction speed = FractionUtilities.fromFloating(((TieredHorizontalFacingMachineBlock) block).getMachineSpeed() / 2);
+		Fraction speed = FractionUtilities.fromFloating(((TieredHorizontalFacingEnergyMachineBlock) block).getMachineSpeed() / 2);
 
 		FluidInventoryComponent fluidComponent = blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
@@ -99,7 +99,7 @@ public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory>, Energy
 	public <T extends DefaultedBlockEntity> void craft(T blockEntity) {
 		if (canCraft(blockEntity)) {
 			Block block = blockEntity.getWorld().getBlockState(blockEntity.getPos()).getBlock();
-			double machineSpeed = ((TieredHorizontalFacingMachineBlock) block).getMachineSpeed() / 2;
+			double machineSpeed = ((TieredHorizontalFacingEnergyMachineBlock) block).getMachineSpeed() / 2;
 			Fraction speed = FractionUtilities.fromFloating(machineSpeed);
 
 			EnergyHandler energyHandler = Energy.of(blockEntity);

@@ -28,7 +28,8 @@ import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedE
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Tickable;
@@ -36,8 +37,8 @@ import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
 public abstract class CapacitorBlockEntity extends DefaultedEnergyItemBlockEntity implements Tickable {
-	public CapacitorBlockEntity(BlockEntityType<?> type) {
-		super(type);
+	public CapacitorBlockEntity(Block energyBlock, BlockEntityType<?> type) {
+		super(energyBlock, type);
 	}
 
 	@Override
@@ -67,45 +68,29 @@ public abstract class CapacitorBlockEntity extends DefaultedEnergyItemBlockEntit
 
 	public static class Primitive extends CapacitorBlockEntity {
 		public Primitive() {
-			super(AstromineBlockEntityTypes.PRIMITIVE_CAPACITOR);
+			super(AstromineBlocks.PRIMITIVE_CAPACITOR, AstromineBlockEntityTypes.PRIMITIVE_CAPACITOR);
 		}
 
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().primitiveCapacitorEnergy;
-		}
 	}
 
 	public static class Basic extends CapacitorBlockEntity {
 		public Basic() {
-			super(AstromineBlockEntityTypes.BASIC_CAPACITOR);
+			super(AstromineBlocks.BASIC_CAPACITOR, AstromineBlockEntityTypes.BASIC_CAPACITOR);
 		}
 
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().basicCapacitorEnergy;
-		}
 	}
 
 	public static class Advanced extends CapacitorBlockEntity {
 		public Advanced() {
-			super(AstromineBlockEntityTypes.ADVANCED_CAPACITOR);
+			super(AstromineBlocks.ADVANCED_CAPACITOR, AstromineBlockEntityTypes.ADVANCED_CAPACITOR);
 		}
 
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().advancedCapacitorEnergy;
-		}
 	}
 
 	public static class Elite extends CapacitorBlockEntity {
 		public Elite() {
-			super(AstromineBlockEntityTypes.ELITE_CAPACITOR);
+			super(AstromineBlocks.ELITE_CAPACITOR, AstromineBlockEntityTypes.ELITE_CAPACITOR);
 		}
 
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().eliteCapacitorEnergy;
-		}
 	}
 }

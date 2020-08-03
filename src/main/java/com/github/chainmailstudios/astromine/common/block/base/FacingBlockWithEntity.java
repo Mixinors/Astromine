@@ -22,22 +22,18 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block.entity;
+package com.github.chainmailstudios.astromine.common.block.base;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyBlockEntity;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
-import net.minecraft.util.Tickable;
+import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.Properties;
 
-public class CreativeCapacitorBlockEntity extends DefaultedEnergyBlockEntity implements Tickable {
-	public CreativeCapacitorBlockEntity() {
-		super(AstromineBlocks.CREATIVE_CAPACITOR, AstromineBlockEntityTypes.CREATIVE_CAPACITOR);
+public abstract class FacingBlockWithEntity extends HorizontalFacingBlockWithEntity {
+	public FacingBlockWithEntity(Settings settings) {
+		super(settings);
 	}
 
 	@Override
-	public void tick() {
-		super.tick();
-
-		setStored(Double.MAX_VALUE);
+	public DirectionProperty getDirectionProperty() {
+		return Properties.FACING;
 	}
 }

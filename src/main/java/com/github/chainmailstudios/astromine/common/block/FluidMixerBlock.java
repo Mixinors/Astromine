@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.block;
 
+import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.FluidMixerBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.FluidMixerScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
@@ -37,7 +38,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class FluidMixerBlock extends TieredHorizontalFacingMachineBlock {
+public abstract class FluidMixerBlock extends TieredHorizontalFacingEnergyMachineBlock {
 	public FluidMixerBlock(Settings settings) {
 		super(settings);
 	}
@@ -77,6 +78,11 @@ public abstract class FluidMixerBlock extends TieredHorizontalFacingMachineBlock
 		public double getMachineSpeed() {
 			return AstromineConfig.get().primitiveFluidMixerSpeed;
 		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().primitiveFluidMixerEnergy;
+		}
 	}
 
 	public static class Basic extends FluidMixerBlock.Base {
@@ -92,6 +98,11 @@ public abstract class FluidMixerBlock extends TieredHorizontalFacingMachineBlock
 		@Override
 		public double getMachineSpeed() {
 			return AstromineConfig.get().basicFluidMixerSpeed;
+		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().basicFluidMixerEnergy;
 		}
 	}
 
@@ -109,6 +120,11 @@ public abstract class FluidMixerBlock extends TieredHorizontalFacingMachineBlock
 		public double getMachineSpeed() {
 			return AstromineConfig.get().advancedFluidMixerSpeed;
 		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().advancedFluidMixerEnergy;
+		}
 	}
 
 	public static class Elite extends FluidMixerBlock.Base {
@@ -124,6 +140,11 @@ public abstract class FluidMixerBlock extends TieredHorizontalFacingMachineBlock
 		@Override
 		public double getMachineSpeed() {
 			return AstromineConfig.get().eliteFluidMixerSpeed;
+		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().eliteFluidMixerEnergy;
 		}
 	}
 }

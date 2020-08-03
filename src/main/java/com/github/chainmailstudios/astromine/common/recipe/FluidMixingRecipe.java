@@ -25,7 +25,7 @@
 package com.github.chainmailstudios.astromine.common.recipe;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.TieredHorizontalFacingMachineBlock;
+import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
@@ -96,10 +96,10 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory>, EnergyConsu
 	@Override
 	public <T extends DefaultedBlockEntity> boolean canCraft(T blockEntity) {
 		Block block = blockEntity.getWorld().getBlockState(blockEntity.getPos()).getBlock();
-		if (!(block instanceof TieredHorizontalFacingMachineBlock))
+		if (!(block instanceof TieredHorizontalFacingEnergyMachineBlock))
 			return false;
 
-		double machineSpeed = ((TieredHorizontalFacingMachineBlock) block).getMachineSpeed();
+		double machineSpeed = ((TieredHorizontalFacingEnergyMachineBlock) block).getMachineSpeed();
 		Fraction speed = FractionUtilities.fromFloating(machineSpeed);
 
 		FluidInventoryComponent fluidComponent = blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
@@ -127,7 +127,7 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory>, EnergyConsu
 	public <T extends DefaultedBlockEntity> void craft(T blockEntity) {
 		if (canCraft(blockEntity)) {
 			Block block = blockEntity.getWorld().getBlockState(blockEntity.getPos()).getBlock();
-			double machineSpeed = ((TieredHorizontalFacingMachineBlock) block).getMachineSpeed();
+			double machineSpeed = ((TieredHorizontalFacingEnergyMachineBlock) block).getMachineSpeed();
 			Fraction speed = FractionUtilities.fromFloating(machineSpeed);
 
 			FluidInventoryComponent fluidComponent = blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);

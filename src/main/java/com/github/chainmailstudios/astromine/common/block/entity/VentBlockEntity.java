@@ -32,6 +32,7 @@ import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosph
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
@@ -44,17 +45,12 @@ import net.minecraft.util.math.Direction;
 public class VentBlockEntity extends DefaultedEnergyFluidBlockEntity implements Tickable {
 	public boolean isActive = false;
 
-	public boolean[] activity = { false, false, false, false, false };
+	public boolean[] activity = {false, false, false, false, false};
 
 	public VentBlockEntity() {
-		super(AstromineBlockEntityTypes.VENT);
+		super(AstromineBlocks.VENT, AstromineBlockEntityTypes.VENT);
 
 		fluidComponent.getVolume(0).setSize(new Fraction(AstromineConfig.get().ventFluid, 1));
-	}
-
-	@Override
-	protected double getEnergySize() {
-		return AstromineConfig.get().ventEnergy;
 	}
 
 	@Override

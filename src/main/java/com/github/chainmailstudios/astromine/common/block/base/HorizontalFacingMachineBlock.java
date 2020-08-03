@@ -22,12 +22,11 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block;
+package com.github.chainmailstudios.astromine.common.block.base;
 
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
 
-public abstract class HorizontalFacingMachineBlock extends DefaultedHorizontalFacingBlockWithEntity implements MachineBlockWrenchable {
+public abstract class HorizontalFacingMachineBlock extends HorizontalFacingBlockWithEntity implements MachineBlockWrenchable {
 	public HorizontalFacingMachineBlock(Settings settings) {
 		super(settings);
 	}

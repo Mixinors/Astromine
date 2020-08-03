@@ -26,8 +26,10 @@ package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.*;
+import com.github.chainmailstudios.astromine.common.block.base.EnergyBlock;
 import com.github.chainmailstudios.astromine.common.block.conveyor.*;
 import com.github.chainmailstudios.astromine.common.item.AstromineBlockItem;
+import com.github.chainmailstudios.astromine.common.item.AstromineEnergyBlockItem;
 import com.github.chainmailstudios.astromine.common.utilities.type.BufferType;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
@@ -108,7 +110,7 @@ public class AstromineBlocks {
 	public static final Block BASIC_CAPACITOR = register("basic_capacitor", new CapacitorBlock.Basic(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
 	public static final Block ADVANCED_CAPACITOR = register("advanced_capacitor", new CapacitorBlock.Advanced(AstromineBlocks.getAdvancedSettings()), AstromineItems.getBasicSettings());
 	public static final Block ELITE_CAPACITOR = register("elite_capacitor", new CapacitorBlock.Elite(AstromineBlocks.getEliteSettings()), AstromineItems.getBasicSettings());
-	public static final Block CREATIVE_CAPACITOR = register("creative_capacitor", new CreativeCapacitorBlock(AstromineBlocks.getCreativeSettings()), AstromineItems.getBasicSettings());
+	public static final Block CREATIVE_CAPACITOR = register("creative_capacitor", new CapacitorBlock.Creative(AstromineBlocks.getCreativeSettings()), AstromineItems.getBasicSettings());
 	public static final Block CREATIVE_BUFFER = register("creative_buffer", new CreativeBufferBlock(AstromineBlocks.getCreativeSettings()), AstromineItems.getBasicSettings());
 
 	public static final Block FLUID_CABLE = register("fluid_cable", new FluidCableBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
@@ -248,7 +250,7 @@ public class AstromineBlocks {
 	 * @return Block instance registered
 	 */
 	public static <T extends Block> T register(String name, T block, Item.Settings settings) {
-		return register(name, block, new AstromineBlockItem(block, settings));
+		return register(name, block, block instanceof EnergyBlock ? new AstromineEnergyBlockItem(block, settings) : new AstromineBlockItem(block, settings));
 	}
 
 	/**
