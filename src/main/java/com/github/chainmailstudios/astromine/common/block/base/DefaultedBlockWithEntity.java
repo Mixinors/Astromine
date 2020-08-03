@@ -151,12 +151,13 @@ public abstract class DefaultedBlockWithEntity extends Block implements BlockEnt
 	public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
 		List<ItemStack> stacks = super.getDroppedStacks(state, builder);
 		BlockEntity blockEntity = builder.getNullable(LootContextParameters.BLOCK_ENTITY);
-		boolean isTagged = false;
-		for (ItemStack drop : stacks) {
-			if (!isTagged && drop.getItem() == asItem()) {
-				drop.setTag(blockEntity.toTag(drop.getOrCreateTag()));
-				drop.getTag().putByte("tracker", (byte) 0);
-				isTagged = true;
+		if (blockEntity != null) {
+			for (ItemStack drop : stacks) {
+				if (drop.getItem() == asItem()) {
+					drop.setTag(blockEntity.toTag(drop.getOrCreateTag()));
+					drop.getTag().putByte("tracker", (byte) 0);
+					break;
+				}
 			}
 		}
 		return stacks;
