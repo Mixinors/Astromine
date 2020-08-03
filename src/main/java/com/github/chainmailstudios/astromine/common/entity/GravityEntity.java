@@ -24,8 +24,18 @@
 
 package com.github.chainmailstudios.astromine.common.entity;
 
+import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
+
 public interface GravityEntity {
-	double getGravityMultiplier();
+	default double getGravityMultiplier() {
+		return 1.0d;
+	}
 
 	double getGravity();
+
+	default double getGravity(World world) {
+		return GravityRegistry.INSTANCE.get(world.getDimensionRegistryKey()) * getGravityMultiplier();
+	}
 }
