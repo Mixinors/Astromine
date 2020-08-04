@@ -1,12 +1,12 @@
 {
 	"name": "text.astromine.machinery.energy_cable.title",
-	"icon": "astromine:energy_cable",
+	"icon": "astromine:advanced_energy_cable",
 	"category": "machinery",
 	"sortnum": 0,
 	"pages": [
 		{
 			"type": "spotlight",
-			"item": "astromine:energy_cable",
+			"item": "astromine:advanced_energy_cable",
 			"title": "text.astromine.machinery.energy_cable.page_one.title",
 			"text": "text.astromine.machinery.energy_cable.page_one.text"
 		},
