@@ -60,7 +60,9 @@ public class AstromineEnergyBlockItem extends AstromineBlockItem implements Ener
 	@Override
 	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
 		EnergyHandler energyHandler = Energy.of(stack);
-		tooltip.add(EnergyUtilities.compoundDisplayColored(energyHandler.getEnergy(), energyHandler.getMaxStored()));
+		if(!isCreative() && energyHandler.getEnergy() > 0) {
+			tooltip.add(EnergyUtilities.compoundDisplayColored(energyHandler.getEnergy(), energyHandler.getMaxStored()));
+		}
 
 		super.appendTooltip(stack, world, tooltip, context);
 	}
@@ -89,7 +91,7 @@ public class AstromineEnergyBlockItem extends AstromineBlockItem implements Ener
 
 	@Override
 	public boolean hasDurabilityBar(ItemStack itemStack) {
-		return !isCreative();
+		return !isCreative() && Energy.of(itemStack).getEnergy() > 0;
 	}
 
 	@Override
