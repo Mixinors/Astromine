@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.item;
 
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -46,8 +47,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class FireExtinguisherItem extends Item {
-	long lastPlayed = 0;
-
 	public FireExtinguisherItem(Item.Settings settings) {
 		super(settings);
 	}
@@ -76,9 +75,9 @@ public class FireExtinguisherItem extends Item {
 
 		if (!user.isSneaking()) {
 			user.addVelocity(thrustVec.x, thrustVec.y, thrustVec.z);
-			user.getItemCooldownManager().set(this, 10);
+			user.getItemCooldownManager().set(this, AstromineConfig.get().fireExtinguisherStandingDelay);
 		} else {
-			user.getItemCooldownManager().set(this, 2);
+			user.getItemCooldownManager().set(this, AstromineConfig.get().fireExtinguisherSneakingDelay);
 		}
 
 		BlockHitResult result = (BlockHitResult) user.rayTrace(6, 0, false);

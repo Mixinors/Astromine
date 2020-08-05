@@ -59,8 +59,8 @@ public class AstromineScreenHandlers {
 		return new VentScreenHandler(synchronizationID, inventory, buffer.readBlockPos());
 	}));
 
-	public static final ScreenHandlerType<FluidTankScreenHandler> TANK = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("tank"), ((synchronizationID, inventory, buffer) -> {
-		return new FluidTankScreenHandler(synchronizationID, inventory, buffer.readBlockPos());
+	public static final ScreenHandlerType<TankScreenHandler> TANK = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("tank"), ((synchronizationID, inventory, buffer) -> {
+		return new TankScreenHandler(synchronizationID, inventory, buffer.readBlockPos());
 	}));
 
 	public static final ScreenHandlerType<NuclearWarheadScreenHandler> NUCLEAR_WARHEAD = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("nuclear_warhead"), ((synchronizationID, inventory, buffer) -> {

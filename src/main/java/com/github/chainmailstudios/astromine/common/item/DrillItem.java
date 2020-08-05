@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.common.item;
 
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import draylar.magna.api.MagnaTool;
@@ -68,7 +69,7 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	@Override
 	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		EnergyHandler energy = Energy.of(stack);
-		energy.use(getEnergy() * 2);
+		energy.use(getEnergy() * AstromineConfig.get().drillEntityHitMultiplier);
 		return true;
 	}
 
@@ -107,7 +108,7 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	}
 
 	public double getEnergy() {
-		return 64D * material.getMiningSpeedMultiplier();
+		return AstromineConfig.get().drillConsumed * material.getMiningSpeedMultiplier();
 	}
 
 	@Override

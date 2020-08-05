@@ -42,7 +42,7 @@ public class MoonCraterFeature extends Feature<DefaultFeatureConfig> {
 	private long seed = 0;
 	private OpenSimplexNoise noise = new OpenSimplexNoise(0);
 
-	public MoonCraterFeature(Codec<DefaultFeatureConfig> configCodec) {
+	public MoonCraterFeature(Codec<DefaultFeatureConfig> configCodec)  {
 		super(configCodec);
 	}
 

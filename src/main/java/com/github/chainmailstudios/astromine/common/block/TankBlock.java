@@ -26,7 +26,7 @@ package com.github.chainmailstudios.astromine.common.block;
 
 import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.TankBlockEntity;
-import com.github.chainmailstudios.astromine.common.screenhandler.FluidTankScreenHandler;
+import com.github.chainmailstudios.astromine.common.screenhandler.TankScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -54,7 +54,7 @@ public class TankBlock extends HorizontalFacingMachineBlock {
 
 	@Override
 	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-		return new FluidTankScreenHandler(syncId, playerInventory, pos);
+		return new TankScreenHandler(syncId, playerInventory, pos);
 	}
 
 	@Override

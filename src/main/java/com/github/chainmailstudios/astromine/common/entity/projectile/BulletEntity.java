@@ -38,6 +38,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.crash.CrashException;
 import net.minecraft.util.crash.CrashReport;
 import net.minecraft.util.crash.CrashReportSection;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
@@ -90,6 +92,24 @@ public class BulletEntity extends PersistentProjectileEntity {
 				}
 			}
 		}
+	}
+
+	@Override
+	protected void onHit(LivingEntity target) {
+		super.onHit(target);
+		this.remove();
+	}
+
+	@Override
+	protected void onBlockHit(BlockHitResult blockHitResult) {
+		super.onBlockHit(blockHitResult);
+		this.remove();
+	}
+
+	@Override
+	protected void onEntityHit(EntityHitResult entityHitResult) {
+		super.onEntityHit(entityHitResult);
+		this.remove();
 	}
 
 	@Override

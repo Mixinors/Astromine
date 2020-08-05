@@ -610,6 +610,17 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Energy for the Gravity Gauntlet actions.")
 	public double gravityGauntletConsumed = 1024D;
 
+	@Comment("Energy for the Drill actions.")
+	public double drillConsumed = 24D;
+
+	@Comment("Multiplier for the Drill entity hit actions.")
+	public double drillEntityHitMultiplier = 2D;
+
+	@Comment("Delay for the Fire Extinguisher sneaking actions.")
+	public int fireExtinguisherSneakingDelay = 2;
+	@Comment("Delay for the Fire Extinguisher standing actions.")
+	public int fireExtinguisherStandingDelay = 10;
+
 	public static AstromineConfig get() {
 		try {
 			return AutoConfig.getConfigHolder(AstromineConfig.class).getConfig();

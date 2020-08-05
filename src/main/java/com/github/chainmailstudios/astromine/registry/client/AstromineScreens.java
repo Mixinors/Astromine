@@ -67,7 +67,7 @@ public class AstromineScreens {
 		ScreenRegistry.register(AstromineScreenHandlers.VENT, (ScreenRegistry.Factory<VentScreenHandler, VentHandledScreen>) ((handler, inventory, title) -> {
 			return new VentHandledScreen(title, handler, inventory.player);
 		}));
-		ScreenRegistry.register(AstromineScreenHandlers.TANK, (ScreenRegistry.Factory<FluidTankScreenHandler, TankHandledScreen>) ((handler, inventory, title) -> new TankHandledScreen(title, handler, inventory.player)));
+		ScreenRegistry.register(AstromineScreenHandlers.TANK, (ScreenRegistry.Factory<TankScreenHandler, TankHandledScreen>) ((handler, inventory, title) -> new TankHandledScreen(title, handler, inventory.player)));
 
 		ScreenRegistry.register(AstromineScreenHandlers.NUCLEAR_WARHEAD, (ScreenRegistry.Factory<NuclearWarheadScreenHandler, NuclearWarheadHandledScreen>) ((handler, inventory, title) -> new NuclearWarheadHandledScreen(title, handler, inventory.player)));
 
