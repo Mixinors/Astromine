@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.block;
 
+import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.PresserBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.PresserScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
@@ -37,7 +38,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class PresserBlock extends TieredHorizontalFacingMachineBlock {
+public abstract class PresserBlock extends TieredHorizontalFacingEnergyMachineBlock {
 	public PresserBlock(Settings settings) {
 		super(settings);
 	}
@@ -77,6 +78,11 @@ public abstract class PresserBlock extends TieredHorizontalFacingMachineBlock {
 		public double getMachineSpeed() {
 			return AstromineConfig.get().primitivePresserSpeed;
 		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().primitivePresserEnergy;
+		}
 	}
 
 	public static class Basic extends PresserBlock.Base {
@@ -92,6 +98,11 @@ public abstract class PresserBlock extends TieredHorizontalFacingMachineBlock {
 		@Override
 		public double getMachineSpeed() {
 			return AstromineConfig.get().basicPresserSpeed;
+		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().basicPresserEnergy;
 		}
 	}
 
@@ -109,6 +120,11 @@ public abstract class PresserBlock extends TieredHorizontalFacingMachineBlock {
 		public double getMachineSpeed() {
 			return AstromineConfig.get().advancedPresserSpeed;
 		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().advancedPresserEnergy;
+		}
 	}
 
 	public static class Elite extends PresserBlock.Base {
@@ -124,6 +140,11 @@ public abstract class PresserBlock extends TieredHorizontalFacingMachineBlock {
 		@Override
 		public double getMachineSpeed() {
 			return AstromineConfig.get().elitePresserSpeed;
+		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().elitePresserEnergy;
 		}
 	}
 }

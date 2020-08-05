@@ -3,9 +3,10 @@
   "values": [
     "astromine:copper_ingot",
     "astromine:tin_ingot",
+    "astromine:silver_ingot",
+    "astromine:lead_ingot",
     "astromine:bronze_ingot",
     "astromine:steel_ingot",
-    "astromine:silver_ingot",
     "astromine:electrum_ingot",
     "astromine:rose_gold_ingot",
     "astromine:sterling_silver_ingot",

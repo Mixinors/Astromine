@@ -33,19 +33,15 @@ import nerdhub.cardinal.components.api.component.Component;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.Map;
 
 public class BlockEntityTransferComponent implements Component {
 	private final Map<ComponentType<?>, TransferEntry> components = Maps.newHashMap();
 
-	public BlockEntityTransferComponent(ComponentType<?>... types) {
-		Arrays.asList(types).forEach(this::add);
-	}
-
 	public TransferEntry get(ComponentType<?> type) {
-		return components.getOrDefault(type, ImmutableTransferEntry.INSTANCE);
+		return components.computeIfAbsent(type, t -> new TransferEntry());
 	}
 
 	public Map<ComponentType<?>, TransferEntry> get() {
@@ -69,7 +65,7 @@ public class BlockEntityTransferComponent implements Component {
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public @NotNull CompoundTag toTag(CompoundTag tag) {
 		CompoundTag dataTag = new CompoundTag();
 
 		for (Map.Entry<ComponentType<?>, TransferEntry> entry : components.entrySet()) {
@@ -82,10 +78,13 @@ public class BlockEntityTransferComponent implements Component {
 	}
 
 	public static class TransferEntry {
+		public static final Direction[] DIRECTIONS = Direction.values();
 		private final Map<Direction, TransferType> types = Maps.newHashMap();
 
 		public TransferEntry() {
-			Arrays.asList(Direction.values()).forEach(direction -> set(direction, TransferType.NONE));
+			for (Direction direction : DIRECTIONS) {
+				this.set(direction, TransferType.NONE);
+			}
 		}
 
 		public void set(Direction direction, TransferType type) {
@@ -120,7 +119,7 @@ public class BlockEntityTransferComponent implements Component {
 	}
 
 	private static class ImmutableTransferEntry extends TransferEntry {
-		private static TransferEntry INSTANCE = new ImmutableTransferEntry();
+		private static final TransferEntry INSTANCE = new ImmutableTransferEntry();
 
 		@Override
 		public void set(Direction direction, TransferType type) {}

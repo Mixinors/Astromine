@@ -30,7 +30,6 @@ import com.google.common.collect.Multimap;
 import draylar.magna.api.MagnaTool;
 import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -41,13 +40,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.Vanishable;
 import net.minecraft.tag.Tag;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
-
-import java.util.List;
 
 public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool, Vanishable, MagnaTool {
 	private final int radius;
@@ -55,7 +51,7 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 
 	public DrillItem(ToolMaterial material, float attackDamage, float attackSpeed, int radius, double energy, Settings settings) {
-		super(settings, energy);
+		super(settings, energy, false);
 		this.radius = radius;
 		this.material = material;
 		ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();

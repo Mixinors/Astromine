@@ -31,6 +31,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.SimpleIt
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -57,12 +58,7 @@ public class BlockBreakerBlockEntity extends DefaultedEnergyItemBlockEntity impl
 	public boolean[] activity = { false, false, false, false, false };
 
 	public BlockBreakerBlockEntity() {
-		super(AstromineBlockEntityTypes.BLOCK_BREAKER);
-	}
-
-	@Override
-	protected double getEnergySize() {
-		return AstromineConfig.get().blockBreakerEnergy;
+		super(AstromineBlocks.BLOCK_BREAKER, AstromineBlockEntityTypes.BLOCK_BREAKER);
 	}
 
 	@Override

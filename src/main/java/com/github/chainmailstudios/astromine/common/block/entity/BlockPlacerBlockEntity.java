@@ -30,6 +30,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.ItemInve
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -49,12 +50,7 @@ public class BlockPlacerBlockEntity extends DefaultedEnergyItemBlockEntity imple
 	public boolean[] activity = { false, false, false, false, false };
 
 	public BlockPlacerBlockEntity() {
-		super(AstromineBlockEntityTypes.BLOCK_PLACER);
-	}
-
-	@Override
-	protected double getEnergySize() {
-		return AstromineConfig.get().blockPlacerEnergy;
+		super(AstromineBlocks.BLOCK_PLACER, AstromineBlockEntityTypes.BLOCK_PLACER);
 	}
 
 	@Override

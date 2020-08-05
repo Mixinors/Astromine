@@ -3,7 +3,7 @@
   "textures": {
     "particle": "astromine:block/advanced_machine_bottom",
     "down": "astromine:block/advanced_machine_bottom",
-    "up": "astromine:block/buffer_top_creative",
+    "up": "astromine:block/creative_buffer_top",
     "north": "astromine:block/advanced_machine_side",
     "east": "astromine:block/advanced_machine_side",
     "south": "astromine:block/advanced_machine_side",

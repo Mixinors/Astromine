@@ -25,7 +25,7 @@
 package com.github.chainmailstudios.astromine.common.recipe;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.TieredHorizontalFacingMachineBlock;
+import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.recipe.base.AdvancedRecipe;
@@ -73,7 +73,7 @@ public class SolidGeneratingRecipe implements AdvancedRecipe<Inventory>, EnergyG
 	@Override
 	public <T extends DefaultedBlockEntity> boolean canCraft(T blockEntity) {
 		Block block = blockEntity.getWorld().getBlockState(blockEntity.getPos()).getBlock();
-		if (!(block instanceof TieredHorizontalFacingMachineBlock))
+		if (!(block instanceof TieredHorizontalFacingEnergyMachineBlock))
 			return false;
 		ItemInventoryComponent itemComponent = blockEntity.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
 

@@ -103,24 +103,24 @@ public class EnergyVolume {
 	}
 
 	public EnergyVolume copy() {
-		return new EnergyVolume(amount);
+		return new EnergyVolume(getMaxAmount());
 	}
 
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putDouble("amount", amount);
-		tag.putDouble("maxAmount", maxAmount);
+		tag.putDouble("amount", getAmount());
+		tag.putDouble("maxAmount", getMaxAmount());
 		return tag;
 	}
 
 	public boolean isEmpty() {
-		return amount <= 0.0;
+		return getAmount() <= 0.0;
 	}
 
 	public boolean isFull() {
-		return amount >= maxAmount;
+		return getAmount() >= getMaxAmount();
 	}
 
 	public boolean hasAvailable(double produced) {
-		return maxAmount - amount >= produced;
+		return getMaxAmount() - getAmount() >= produced;
 	}
 }

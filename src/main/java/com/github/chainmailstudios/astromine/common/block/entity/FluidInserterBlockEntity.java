@@ -31,6 +31,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFl
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -49,14 +50,9 @@ public class FluidInserterBlockEntity extends DefaultedEnergyFluidBlockEntity im
 	public boolean[] activity = { false, false, false, false, false };
 
 	public FluidInserterBlockEntity() {
-		super(AstromineBlockEntityTypes.FLUID_INSERTER);
+		super(AstromineBlocks.FLUID_INSERTER, AstromineBlockEntityTypes.FLUID_INSERTER);
 
 		fluidComponent.getVolume(0).setSize(Fraction.ofWhole(4));
-	}
-
-	@Override
-	protected double getEnergySize() {
-		return AstromineConfig.get().fluidInserterEnergy;
 	}
 
 	@Override

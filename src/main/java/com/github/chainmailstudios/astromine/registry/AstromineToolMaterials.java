@@ -33,9 +33,11 @@ import java.util.function.Supplier;
 public class AstromineToolMaterials {
 	public static final AstromineToolMaterial COPPER = new AstromineToolMaterial(1, 200, 4f, 1.5f, 10, () -> Ingredient.ofItems(AstromineItems.COPPER_INGOT));
 	public static final AstromineToolMaterial TIN = new AstromineToolMaterial(1, 200, 5f, 1.0f, 10, () -> Ingredient.ofItems(AstromineItems.TIN_INGOT));
+	public static final AstromineToolMaterial SILVER = new AstromineToolMaterial(2, 462, 6.5f, 2.0f, 20, () -> Ingredient.ofItems(AstromineItems.SILVER_INGOT));
+	public static final AstromineToolMaterial LEAD = new AstromineToolMaterial(2, 496, 4.5f, 1.5f, 5, () -> Ingredient.ofItems(AstromineItems.LEAD_INGOT));
+
 	public static final AstromineToolMaterial BRONZE = new AstromineToolMaterial(2, 539, 7f, 2.5f, 18, () -> Ingredient.ofItems(AstromineItems.BRONZE_INGOT));
 	public static final AstromineToolMaterial STEEL = new AstromineToolMaterial(3, 1043, 7.5f, 3f, 16, () -> Ingredient.ofItems(AstromineItems.STEEL_INGOT));
-	public static final AstromineToolMaterial SILVER = new AstromineToolMaterial(2, 462, 6.5f, 2.0f, 20, () -> Ingredient.ofItems(AstromineItems.SILVER_INGOT));
 	public static final AstromineToolMaterial ELECTRUM = new AstromineToolMaterial(2, 185, 11f, 1.0f, 21, () -> Ingredient.ofItems(AstromineItems.ELECTRUM_INGOT));
 	public static final AstromineToolMaterial ROSE_GOLD = new AstromineToolMaterial(1, 64, 10.0F, 0.5F, 24, () -> Ingredient.ofItems(AstromineItems.ROSE_GOLD_INGOT));
 	public static final AstromineToolMaterial STERLING_SILVER = new AstromineToolMaterial(2, 697, 7f, 2.5f, 20, () -> Ingredient.ofItems(AstromineItems.STERLING_SILVER_INGOT));

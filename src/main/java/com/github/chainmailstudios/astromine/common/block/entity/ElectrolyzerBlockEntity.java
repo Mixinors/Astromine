@@ -33,11 +33,14 @@ import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.recipe.ElectrolyzingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -55,8 +58,8 @@ public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockE
 	private static final int FIRST_OUTPUT_FLUID_VOLUME = 1;
 	private static final int SECOND_OUTPUT_FLUID_VOLUME = 2;
 
-	public ElectrolyzerBlockEntity(BlockEntityType<?> type) {
-		super(type);
+	public ElectrolyzerBlockEntity(Block energyBlock, BlockEntityType<?> type) {
+		super(energyBlock, type);
 
 		fluidComponent.getVolume(INPUT_FLUID_VOLUME).setSize(getTankSize());
 		fluidComponent.getVolume(FIRST_OUTPUT_FLUID_VOLUME).setSize(getTankSize());
@@ -111,7 +114,7 @@ public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockE
 	}
 
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
 		readRecipeProgress(tag);
 		super.fromTag(state, tag);
 	}
@@ -155,12 +158,7 @@ public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockE
 
 	public static class Primitive extends ElectrolyzerBlockEntity {
 		public Primitive() {
-			super(AstromineBlockEntityTypes.PRIMITIVE_ELECTROLYZER);
-		}
-
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().primitiveElectrolyzerEnergy;
+			super(AstromineBlocks.PRIMITIVE_ELECTROLYZER, AstromineBlockEntityTypes.PRIMITIVE_ELECTROLYZER);
 		}
 
 		@Override
@@ -171,12 +169,7 @@ public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockE
 
 	public static class Basic extends ElectrolyzerBlockEntity {
 		public Basic() {
-			super(AstromineBlockEntityTypes.BASIC_ELECTROLYZER);
-		}
-
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().basicElectrolyzerEnergy;
+			super(AstromineBlocks.BASIC_ELECTROLYZER, AstromineBlockEntityTypes.BASIC_ELECTROLYZER);
 		}
 
 		@Override
@@ -187,12 +180,7 @@ public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockE
 
 	public static class Advanced extends ElectrolyzerBlockEntity {
 		public Advanced() {
-			super(AstromineBlockEntityTypes.ADVANCED_ELECTROLYZER);
-		}
-
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().advancedElectrolyzerEnergy;
+			super(AstromineBlocks.ADVANCED_ELECTROLYZER, AstromineBlockEntityTypes.ADVANCED_ELECTROLYZER);
 		}
 
 		@Override
@@ -203,12 +191,7 @@ public abstract class ElectrolyzerBlockEntity extends DefaultedEnergyFluidBlockE
 
 	public static class Elite extends ElectrolyzerBlockEntity {
 		public Elite() {
-			super(AstromineBlockEntityTypes.ELITE_ELECTROLYZER);
-		}
-
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().eliteElectrolyzerEnergy;
+			super(AstromineBlocks.ELITE_ELECTROLYZER, AstromineBlockEntityTypes.ELITE_ELECTROLYZER);
 		}
 
 		@Override

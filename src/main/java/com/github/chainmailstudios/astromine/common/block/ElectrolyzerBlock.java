@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.block;
 
+import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.ElectrolyzerBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.ElectrolyzerScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
@@ -37,7 +38,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class ElectrolyzerBlock extends TieredHorizontalFacingMachineBlock {
+public abstract class ElectrolyzerBlock extends TieredHorizontalFacingEnergyMachineBlock {
 	public ElectrolyzerBlock(Settings settings) {
 		super(settings);
 	}
@@ -77,6 +78,11 @@ public abstract class ElectrolyzerBlock extends TieredHorizontalFacingMachineBlo
 		public double getMachineSpeed() {
 			return AstromineConfig.get().primitiveElectrolyzerSpeed;
 		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().primitiveElectrolyzerEnergy;
+		}
 	}
 
 	public static class Basic extends ElectrolyzerBlock.Base {
@@ -92,6 +98,11 @@ public abstract class ElectrolyzerBlock extends TieredHorizontalFacingMachineBlo
 		@Override
 		public double getMachineSpeed() {
 			return AstromineConfig.get().basicElectrolyzerSpeed;
+		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().basicElectrolyzerEnergy;
 		}
 	}
 
@@ -109,6 +120,11 @@ public abstract class ElectrolyzerBlock extends TieredHorizontalFacingMachineBlo
 		public double getMachineSpeed() {
 			return AstromineConfig.get().advancedElectrolyzerSpeed;
 		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().advancedElectrolyzerEnergy;
+		}
 	}
 
 	public static class Elite extends ElectrolyzerBlock.Base {
@@ -124,6 +140,11 @@ public abstract class ElectrolyzerBlock extends TieredHorizontalFacingMachineBlo
 		@Override
 		public double getMachineSpeed() {
 			return AstromineConfig.get().eliteElectrolyzerSpeed;
+		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().eliteElectrolyzerEnergy;
 		}
 	}
 }

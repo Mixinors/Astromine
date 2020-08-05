@@ -29,6 +29,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.ItemInve
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.entity.BlockEntityType;
@@ -50,8 +51,8 @@ public abstract class DefaultedEnergyItemBlockEntity extends DefaultedEnergyBloc
 
 	private final ItemInventoryFromInventoryComponent inventory = () -> itemComponent;
 
-	public DefaultedEnergyItemBlockEntity(BlockEntityType<?> type) {
-		super(type);
+	public DefaultedEnergyItemBlockEntity(Block energyBlock, BlockEntityType<?> type) {
+		super(energyBlock, type);
 
 		addComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, itemComponent);
 	}

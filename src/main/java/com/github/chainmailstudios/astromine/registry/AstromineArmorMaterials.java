@@ -37,9 +37,11 @@ import java.util.function.Supplier;
 public class AstromineArmorMaterials {
 	public static final AstromineArmorMaterial COPPER = new AstromineArmorMaterial("copper", 12, new int[]{ 1, 4, 5, 2 }, 14, AstromineSoundEvents.COPPER_ARMOR_EQUIPPED, 0.0f, 0.0f, () -> Ingredient.ofItems(AstromineItems.COPPER_INGOT));
 	public static final AstromineArmorMaterial TIN = new AstromineArmorMaterial("tin", 12, new int[]{ 1, 5, 4, 2 }, 14, AstromineSoundEvents.TIN_ARMOR_EQUIPPED, 0.0f, 0.0f, () -> Ingredient.ofItems(AstromineItems.TIN_INGOT));
+	public static final AstromineArmorMaterial SILVER = new AstromineArmorMaterial("silver", 17, new int[]{ 2, 5, 5, 2 }, 22, AstromineSoundEvents.SILVER_ARMOR_EQUIPPED, 0.0F, 0.0F, () -> Ingredient.ofItems(AstromineItems.SILVER_INGOT));
+	public static final AstromineArmorMaterial LEAD = new AstromineArmorMaterial("lead", 18, new int[]{ 3, 5, 7, 2 }, 7, AstromineSoundEvents.LEAD_ARMOR_EQUIPPED, 0.1F, 0.0F, () -> Ingredient.ofItems(AstromineItems.LEAD_INGOT));
+
 	public static final AstromineArmorMaterial BRONZE = new AstromineArmorMaterial("bronze", 20, new int[]{ 2, 5, 6, 2 }, 16, AstromineSoundEvents.BRONZE_ARMOR_EQUIPPED, 0.7f, 0.0f, () -> Ingredient.ofItems(AstromineItems.BRONZE_INGOT));
 	public static final AstromineArmorMaterial STEEL = new AstromineArmorMaterial("steel", 24, new int[]{ 3, 5, 7, 2 }, 12, AstromineSoundEvents.STEEL_ARMOR_EQUIPPED, 0.6f, 0.0f, () -> Ingredient.ofItems(AstromineItems.STEEL_INGOT));
-	public static final AstromineArmorMaterial SILVER = new AstromineArmorMaterial("silver", 17, new int[]{ 2, 5, 5, 2 }, 22, AstromineSoundEvents.SILVER_ARMOR_EQUIPPED, 0.0F, 0.0F, () -> Ingredient.ofItems(AstromineItems.SILVER_INGOT));
 	public static final AstromineArmorMaterial ELECTRUM = new AstromineArmorMaterial("electrum", 13, new int[]{ 1, 4, 5, 2 }, 25, AstromineSoundEvents.ELECTRUM_ARMOR_EQUIPPED, 0.0F, 0.0F, () -> Ingredient.ofItems(AstromineItems.ELECTRUM_INGOT));
 	public static final AstromineArmorMaterial ROSE_GOLD = new AstromineArmorMaterial("rose_gold", 9, new int[]{ 1, 3, 5, 2 }, 25, AstromineSoundEvents.ROSE_GOLD_ARMOR_EQUIPPED, 0.1F, 0.0F, () -> Ingredient.ofItems(AstromineItems.ROSE_GOLD_INGOT));
 	public static final AstromineArmorMaterial STERLING_SILVER = new AstromineArmorMaterial("sterling_silver", 18, new int[]{ 2, 5, 6, 2 }, 23, AstromineSoundEvents.STERLING_SILVER_ARMOR_EQUIPPED, 0.1F, 0.0F, () -> Ingredient.ofItems(AstromineItems.STERLING_SILVER_INGOT));

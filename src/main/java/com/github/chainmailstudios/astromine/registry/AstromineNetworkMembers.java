@@ -27,12 +27,18 @@ package com.github.chainmailstudios.astromine.registry;
 import com.github.chainmailstudios.astromine.client.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.client.registry.NetworkMemberRegistry.NetworkTypeRegistry;
 import com.github.chainmailstudios.astromine.common.block.*;
+import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.google.common.collect.Maps;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
+import team.reborn.energy.Energy;
+import team.reborn.energy.EnergySide;
+import team.reborn.energy.EnergyStorage;
+import team.reborn.energy.EnergyTier;
 
 import java.util.Map;
 import java.util.function.Consumer;
@@ -44,6 +50,33 @@ public class AstromineNetworkMembers {
 	private static final Map<Predicate<Block>, Consumer<Block>> BLOCK_CONSUMER = Maps.newHashMap();
 
 	public static void initialize() {
+		Energy.registerHolder(object -> {
+			if (object instanceof ItemStack) {
+				return !((ItemStack) object).isEmpty() && ((ItemStack) object).getItem() instanceof EnergyCapacityProvider && ((EnergyCapacityProvider) ((ItemStack) object).getItem()).isCreative();
+			}
+			return false;
+		}, object -> new EnergyStorage() {
+			@Override
+			public double getStored(EnergySide face) {
+				return Integer.MAX_VALUE;
+			}
+
+			@Override
+			public void setStored(double amount) {
+
+			}
+
+			@Override
+			public double getMaxStoredPower() {
+				return Integer.MAX_VALUE;
+			}
+
+			@Override
+			public EnergyTier getTier() {
+				return EnergyTier.INFINITE;
+			}
+		});
+
 		NetworkTypeRegistry<NetworkType> energy = NetworkMemberRegistry.INSTANCE.get(AstromineNetworkTypes.ENERGY);
 		NetworkTypeRegistry<NetworkType> fluid = NetworkMemberRegistry.INSTANCE.get(AstromineNetworkTypes.FLUID);
 
@@ -98,7 +131,7 @@ public class AstromineNetworkMembers {
 			fluid.register(block, REQUESTER);
 			energy.register(block, REQUESTER);
 		});
-		BLOCK_CONSUMER.put(block -> block instanceof CreativeCapacitorBlock, block -> {
+		BLOCK_CONSUMER.put(block -> block instanceof CapacitorBlock, block -> {
 			energy.register(block, BUFFER);
 		});
 

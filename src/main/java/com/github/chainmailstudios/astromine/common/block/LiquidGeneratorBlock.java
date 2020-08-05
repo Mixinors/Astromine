@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.block;
 
+import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.LiquidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.LiquidGeneratorScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
@@ -37,7 +38,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class LiquidGeneratorBlock extends TieredHorizontalFacingMachineBlock {
+public abstract class LiquidGeneratorBlock extends TieredHorizontalFacingEnergyMachineBlock {
 	public LiquidGeneratorBlock(Settings settings) {
 		super(settings);
 	}
@@ -77,6 +78,11 @@ public abstract class LiquidGeneratorBlock extends TieredHorizontalFacingMachine
 		public double getMachineSpeed() {
 			return AstromineConfig.get().primitiveLiquidGeneratorSpeed;
 		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().primitiveLiquidGeneratorEnergy;
+		}
 	}
 
 	public static class Basic extends LiquidGeneratorBlock.Base {
@@ -92,6 +98,11 @@ public abstract class LiquidGeneratorBlock extends TieredHorizontalFacingMachine
 		@Override
 		public double getMachineSpeed() {
 			return AstromineConfig.get().basicLiquidGeneratorSpeed;
+		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().basicLiquidGeneratorEnergy;
 		}
 	}
 
@@ -109,6 +120,11 @@ public abstract class LiquidGeneratorBlock extends TieredHorizontalFacingMachine
 		public double getMachineSpeed() {
 			return AstromineConfig.get().advancedLiquidGeneratorSpeed;
 		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().advancedLiquidGeneratorEnergy;
+		}
 	}
 
 	public static class Elite extends LiquidGeneratorBlock.Base {
@@ -124,6 +140,11 @@ public abstract class LiquidGeneratorBlock extends TieredHorizontalFacingMachine
 		@Override
 		public double getMachineSpeed() {
 			return AstromineConfig.get().eliteLiquidGeneratorSpeed;
+		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().eliteLiquidGeneratorEnergy;
 		}
 	}
 }

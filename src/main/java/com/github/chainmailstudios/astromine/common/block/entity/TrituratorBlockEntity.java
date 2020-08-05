@@ -24,21 +24,23 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.block.TieredHorizontalFacingMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
 import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Tickable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -54,8 +56,8 @@ public abstract class TrituratorBlockEntity extends DefaultedEnergyItemBlockEnti
 
 	Optional<TrituratingRecipe> recipe = Optional.empty();
 
-	public TrituratorBlockEntity(BlockEntityType<?> type) {
-		super(type);
+	public TrituratorBlockEntity(Block energyBlock, BlockEntityType<?> type) {
+		super(energyBlock, type);
 
 		addEnergyListener(() -> shouldTry = true);
 	}
@@ -72,7 +74,7 @@ public abstract class TrituratorBlockEntity extends DefaultedEnergyItemBlockEnti
 	}
 
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
 		super.fromTag(state, tag);
 		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
@@ -101,7 +103,7 @@ public abstract class TrituratorBlockEntity extends DefaultedEnergyItemBlockEnti
 			if (recipe.isPresent() && recipe.get().matches(ItemInventoryFromInventoryComponent.of(itemComponent), world)) {
 				limit = recipe.get().getTime();
 
-				double speed = Math.min(((TieredHorizontalFacingMachineBlock) this.getCachedState().getBlock()).getMachineSpeed(), limit - progress);
+				double speed = Math.min(((TieredHorizontalFacingEnergyMachineBlock) this.getCachedState().getBlock()).getMachineSpeed(), limit - progress);
 				double consumed = recipe.get().getEnergyConsumed() * speed / limit;
 
 				ItemStack output = recipe.get().getOutput();
@@ -152,45 +154,29 @@ public abstract class TrituratorBlockEntity extends DefaultedEnergyItemBlockEnti
 
 	public static class Primitive extends TrituratorBlockEntity {
 		public Primitive() {
-			super(AstromineBlockEntityTypes.PRIMITIVE_TRITURATOR);
+			super(AstromineBlocks.PRIMITIVE_TRITURATOR, AstromineBlockEntityTypes.PRIMITIVE_TRITURATOR);
 		}
 
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().primitiveTrituratorEnergy;
-		}
 	}
 
 	public static class Basic extends TrituratorBlockEntity {
 		public Basic() {
-			super(AstromineBlockEntityTypes.BASIC_TRITURATOR);
+			super(AstromineBlocks.BASIC_TRITURATOR, AstromineBlockEntityTypes.BASIC_TRITURATOR);
 		}
 
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().basicTrituratorEnergy;
-		}
 	}
 
 	public static class Advanced extends TrituratorBlockEntity {
 		public Advanced() {
-			super(AstromineBlockEntityTypes.ADVANCED_TRITURATOR);
+			super(AstromineBlocks.ADVANCED_TRITURATOR, AstromineBlockEntityTypes.ADVANCED_TRITURATOR);
 		}
 
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().advancedTrituratorEnergy;
-		}
 	}
 
 	public static class Elite extends TrituratorBlockEntity {
 		public Elite() {
-			super(AstromineBlockEntityTypes.ELITE_TRITURATOR);
+			super(AstromineBlocks.ELITE_TRITURATOR, AstromineBlockEntityTypes.ELITE_TRITURATOR);
 		}
 
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().eliteTrituratorEnergy;
-		}
 	}
 }

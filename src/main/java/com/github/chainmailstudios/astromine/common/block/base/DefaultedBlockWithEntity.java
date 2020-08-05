@@ -139,11 +139,10 @@ public abstract class DefaultedBlockWithEntity extends Block implements BlockEnt
 
 		CompoundTag tag = itemStack.getOrCreateTag();
 
-		if (tag.contains("tracker")) {
-			BlockEntity blockEntity = world.getBlockEntity(pos);
-			BlockPos oldPos = blockEntity.getPos();
+		BlockEntity blockEntity = world.getBlockEntity(pos);
+		if (blockEntity != null) {
 			blockEntity.fromTag(state, itemStack.getOrCreateTag());
-			blockEntity.setPos(oldPos);
+			blockEntity.setPos(pos);
 		}
 	}
 
@@ -151,14 +150,22 @@ public abstract class DefaultedBlockWithEntity extends Block implements BlockEnt
 	public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
 		List<ItemStack> stacks = super.getDroppedStacks(state, builder);
 		BlockEntity blockEntity = builder.getNullable(LootContextParameters.BLOCK_ENTITY);
-		boolean isTagged = false;
-		for (ItemStack drop : stacks) {
-			if (!isTagged && drop.getItem() == asItem()) {
-				drop.setTag(blockEntity.toTag(drop.getOrCreateTag()));
-				drop.getTag().putByte("tracker", (byte) 0);
-				isTagged = true;
+		if (blockEntity != null && saveTagToDroppedItem()) {
+			for (ItemStack drop : stacks) {
+				if (drop.getItem() == asItem()) {
+					CompoundTag tag = blockEntity.toTag(drop.getOrCreateTag());
+					tag.remove("x");
+					tag.remove("y");
+					tag.remove("z");
+					drop.setTag(tag);
+					break;
+				}
 			}
 		}
 		return stacks;
+	}
+
+	protected boolean saveTagToDroppedItem() {
+		return true;
 	}
 }

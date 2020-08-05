@@ -31,7 +31,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.item.Item;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.item.MultitoolItem;
 
 /**
@@ -44,7 +43,6 @@ import com.github.chainmailstudios.astromine.common.item.MultitoolItem;
 public class DiggerEnchantmentTargetMixin {
 	@Inject(at = @At("HEAD"), method = "isAcceptableItem(Lnet/minecraft/item/Item;)Z", cancellable = true)
 	public void makeMultiToolEnchantable(Item item, CallbackInfoReturnable<Boolean> cir) {
-		AstromineCommon.LOGGER.info("hi");
 		if (item instanceof MultitoolItem)
 			cir.setReturnValue(true);
 	}

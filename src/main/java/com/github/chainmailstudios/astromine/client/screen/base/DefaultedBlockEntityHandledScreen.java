@@ -24,8 +24,7 @@
 
 package com.github.chainmailstudios.astromine.client.screen.base;
 
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedFacingBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedHorizontalFacingBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.NameableComponent;
@@ -35,10 +34,8 @@ import com.github.chainmailstudios.astromine.common.widget.WTransferTypeSelector
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
-import net.minecraft.block.FacingBlock;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Direction;
 import spinnery.widget.WInterface;
@@ -62,10 +59,9 @@ public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScr
 		mainInterface = getInterface();
 
 		mainTabbedPanel = mainInterface.createChild(WTabbedPanel::new, Position.ORIGIN, Size.of(176, 160 + 24));
-		WTabHolder.WTab mainTab = mainTabbedPanel.addTab(handler.getWorld().getBlockState(handler.syncBlockEntity.getPos()).getBlock().asItem());
+		WTabHolder.WTab mainTab = mainTabbedPanel.addTab(handler.syncBlockEntity.getCachedState().getBlock().asItem());
 		mainPanel = mainTab.getBody();
 
-		MinecraftClient.getInstance().mouse.unlockCursor();
 		addTitle(mainPanel);
 
 		mainTab.setInterface(getInterface());
@@ -84,10 +80,10 @@ public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScr
 		Direction rotation = Direction.NORTH;
 		Block block = handler.syncBlockEntity.getCachedState().getBlock();
 
-		if (block instanceof DefaultedHorizontalFacingBlockWithEntity) {
-			rotation = handler.syncBlockEntity.getCachedState().get(HorizontalFacingBlock.FACING);
-		} else if (block instanceof DefaultedFacingBlockWithEntity) {
-			rotation = handler.syncBlockEntity.getCachedState().get(FacingBlock.FACING);
+		if (block instanceof HorizontalFacingBlockWithEntity) {
+			DirectionProperty property = ((HorizontalFacingBlockWithEntity) block).getDirectionProperty();
+			if (property != null)
+				rotation = handler.syncBlockEntity.getCachedState().get(property);
 		}
 
 		final Direction finalRotation = rotation;

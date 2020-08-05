@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["010", "343", "676"],
+  "key": {
+    "0": {
+      "item": "astromine:elite_circuit"
+    },
+    "1": {
+      "item": "astromine:metite_pickaxe"
+    },
+    "3": {
+      "tag": "c:electrum_gears"
+    },
+    "4": {
+      "item": "astromine:advanced_drill"
+    },
+    "6": {
+      "item": "astromine:elite_battery"
+    },
+    "7": {
+      "item": "astromine:elite_machine_chassis"
+    }
+  },
+  "result": {
+    "item": "astromine:elite_drill",
+    "count": 1
+  }
+}

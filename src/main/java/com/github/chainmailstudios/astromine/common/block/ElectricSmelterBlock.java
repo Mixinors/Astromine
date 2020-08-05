@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.block;
 
+import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.ElectricSmelterBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.ElectricSmelterScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
@@ -37,7 +38,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class ElectricSmelterBlock extends TieredHorizontalFacingMachineBlock {
+public abstract class ElectricSmelterBlock extends TieredHorizontalFacingEnergyMachineBlock {
 	public ElectricSmelterBlock(Settings settings) {
 		super(settings);
 	}
@@ -77,6 +78,11 @@ public abstract class ElectricSmelterBlock extends TieredHorizontalFacingMachine
 		public double getMachineSpeed() {
 			return AstromineConfig.get().primitiveElectricSmelterSpeed;
 		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().primitiveElectricSmelterEnergy;
+		}
 	}
 
 	public static class Basic extends ElectricSmelterBlock.Base {
@@ -92,6 +98,11 @@ public abstract class ElectricSmelterBlock extends TieredHorizontalFacingMachine
 		@Override
 		public double getMachineSpeed() {
 			return AstromineConfig.get().basicElectricSmelterSpeed;
+		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().basicElectricSmelterEnergy;
 		}
 	}
 
@@ -109,6 +120,11 @@ public abstract class ElectricSmelterBlock extends TieredHorizontalFacingMachine
 		public double getMachineSpeed() {
 			return AstromineConfig.get().advancedElectricSmelterSpeed;
 		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().advancedElectricSmelterEnergy;
+		}
 	}
 
 	public static class Elite extends ElectricSmelterBlock.Base {
@@ -124,6 +140,11 @@ public abstract class ElectricSmelterBlock extends TieredHorizontalFacingMachine
 		@Override
 		public double getMachineSpeed() {
 			return AstromineConfig.get().eliteElectricSmelterSpeed;
+		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().eliteElectricSmelterEnergy;
 		}
 	}
 }

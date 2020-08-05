@@ -24,20 +24,16 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
-import net.minecraft.entity.Entity;
+import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(FishingBobberEntity.class)
-public class FishingBobberEntityMixin {
+public abstract class FishingBobberEntityMixin implements GravityEntity {
 	@ModifyConstant(method = "use(Lnet/minecraft/item/ItemStack;)I", constant = @Constant(doubleValue = 0.08D))
 	double getGravity(double original) {
-		World world = ((Entity) (Object) this).world;
-
-		return GravityRegistry.INSTANCE.get(world.getDimensionRegistryKey());
+		return this.getGravity();
 	}
 }

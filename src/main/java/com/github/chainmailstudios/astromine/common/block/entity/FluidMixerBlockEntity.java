@@ -33,11 +33,14 @@ import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.recipe.FluidMixingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -55,8 +58,8 @@ public abstract class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEnt
 	private static final int SECOND_INPUT_FLUID_VOLUME = 1;
 	private static final int OUTPUT_FLUID_VOLUME = 2;
 
-	public FluidMixerBlockEntity(BlockEntityType<?> type) {
-		super(type);
+	public FluidMixerBlockEntity(Block energyBlock, BlockEntityType<?> type) {
+		super(energyBlock, type);
 
 		fluidComponent.getVolume(FIRST_INPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
 		fluidComponent.getVolume(SECOND_INPUT_FLUID_VOLUME).setSize(new Fraction(4, 1));
@@ -111,7 +114,7 @@ public abstract class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEnt
 	}
 
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
 		readRecipeProgress(tag);
 		super.fromTag(state, tag);
 	}
@@ -155,12 +158,7 @@ public abstract class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEnt
 
 	public static class Primitive extends FluidMixerBlockEntity {
 		public Primitive() {
-			super(AstromineBlockEntityTypes.PRIMITIVE_FLUID_MIXER);
-		}
-
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().primitiveFluidMixerEnergy;
+			super(AstromineBlocks.PRIMITIVE_FLUID_MIXER, AstromineBlockEntityTypes.PRIMITIVE_FLUID_MIXER);
 		}
 
 		@Override
@@ -171,12 +169,7 @@ public abstract class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEnt
 
 	public static class Basic extends FluidMixerBlockEntity {
 		public Basic() {
-			super(AstromineBlockEntityTypes.BASIC_FLUID_MIXER);
-		}
-
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().basicFluidMixerEnergy;
+			super(AstromineBlocks.BASIC_FLUID_MIXER, AstromineBlockEntityTypes.BASIC_FLUID_MIXER);
 		}
 
 		@Override
@@ -187,12 +180,7 @@ public abstract class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEnt
 
 	public static class Advanced extends FluidMixerBlockEntity {
 		public Advanced() {
-			super(AstromineBlockEntityTypes.ADVANCED_FLUID_MIXER);
-		}
-
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().advancedFluidMixerEnergy;
+			super(AstromineBlocks.ADVANCED_FLUID_MIXER, AstromineBlockEntityTypes.ADVANCED_FLUID_MIXER);
 		}
 
 		@Override
@@ -203,12 +191,7 @@ public abstract class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEnt
 
 	public static class Elite extends FluidMixerBlockEntity {
 		public Elite() {
-			super(AstromineBlockEntityTypes.ELITE_FLUID_MIXER);
-		}
-
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().eliteFluidMixerEnergy;
+			super(AstromineBlocks.ELITE_FLUID_MIXER, AstromineBlockEntityTypes.ELITE_FLUID_MIXER);
 		}
 
 		@Override

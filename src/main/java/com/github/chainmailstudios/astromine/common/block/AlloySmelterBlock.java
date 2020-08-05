@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.block;
 
+import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.AlloySmelterBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.AlloySmelterScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
@@ -37,7 +38,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class AlloySmelterBlock extends TieredHorizontalFacingMachineBlock {
+public abstract class AlloySmelterBlock extends TieredHorizontalFacingEnergyMachineBlock {
 	public AlloySmelterBlock(Settings settings) {
 		super(settings);
 	}
@@ -77,6 +78,11 @@ public abstract class AlloySmelterBlock extends TieredHorizontalFacingMachineBlo
 		public double getMachineSpeed() {
 			return AstromineConfig.get().primitiveAlloySmelterSpeed;
 		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().primitiveAlloySmelterEnergy;
+		}
 	}
 
 	public static class Basic extends AlloySmelterBlock.Base {
@@ -92,6 +98,11 @@ public abstract class AlloySmelterBlock extends TieredHorizontalFacingMachineBlo
 		@Override
 		public double getMachineSpeed() {
 			return AstromineConfig.get().basicAlloySmelterSpeed;
+		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().basicAlloySmelterEnergy;
 		}
 	}
 
@@ -109,6 +120,11 @@ public abstract class AlloySmelterBlock extends TieredHorizontalFacingMachineBlo
 		public double getMachineSpeed() {
 			return AstromineConfig.get().advancedAlloySmelterSpeed;
 		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().advancedAlloySmelterEnergy;
+		}
 	}
 
 	public static class Elite extends AlloySmelterBlock.Base {
@@ -124,6 +140,11 @@ public abstract class AlloySmelterBlock extends TieredHorizontalFacingMachineBlo
 		@Override
 		public double getMachineSpeed() {
 			return AstromineConfig.get().eliteAlloySmelterSpeed;
+		}
+
+		@Override
+		public double getEnergyCapacity() {
+			return AstromineConfig.get().eliteAlloySmelterEnergy;
 		}
 	}
 }

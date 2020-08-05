@@ -24,19 +24,21 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.block.TieredHorizontalFacingMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.recipe.AlloySmeltingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
+import org.jetbrains.annotations.NotNull;
 import spinnery.common.inventory.BaseInventory;
 
 import java.util.Optional;
@@ -52,8 +54,8 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 
 	Optional<AlloySmeltingRecipe> recipe = Optional.empty();
 
-	public AlloySmelterBlockEntity(BlockEntityType<?> type) {
-		super(type);
+	public AlloySmelterBlockEntity(Block energyBlock, BlockEntityType<?> type) {
+		super(energyBlock, type);
 
 		addEnergyListener(() -> shouldTry = true);
 	}
@@ -70,7 +72,7 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 	}
 
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
 		super.fromTag(state, tag);
 		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
@@ -102,7 +104,7 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 			if (recipe.isPresent() && recipe.get().matches(inputInventory, world)) {
 				limit = recipe.get().getTime();
 
-				double speed = Math.min(((TieredHorizontalFacingMachineBlock) this.getCachedState().getBlock()).getMachineSpeed(), limit - progress);
+				double speed = Math.min(((TieredHorizontalFacingEnergyMachineBlock) this.getCachedState().getBlock()).getMachineSpeed(), limit - progress);
 				double consumed = recipe.get().getEnergyConsumed() * speed / limit;
 
 				ItemStack output = recipe.get().getOutput().copy();
@@ -160,45 +162,25 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 
 	public static class Primitive extends AlloySmelterBlockEntity {
 		public Primitive() {
-			super(AstromineBlockEntityTypes.PRIMITIVE_ALLOY_SMELTER);
-		}
-
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().primitiveAlloySmelterEnergy;
+			super(AstromineBlocks.PRIMITIVE_ALLOY_SMELTER, AstromineBlockEntityTypes.PRIMITIVE_ALLOY_SMELTER);
 		}
 	}
 
 	public static class Basic extends AlloySmelterBlockEntity {
 		public Basic() {
-			super(AstromineBlockEntityTypes.BASIC_ALLOY_SMELTER);
-		}
-
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().basicAlloySmelterEnergy;
+			super(AstromineBlocks.BASIC_ALLOY_SMELTER, AstromineBlockEntityTypes.BASIC_ALLOY_SMELTER);
 		}
 	}
 
 	public static class Advanced extends AlloySmelterBlockEntity {
 		public Advanced() {
-			super(AstromineBlockEntityTypes.ADVANCED_ALLOY_SMELTER);
-		}
-
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().advancedAlloySmelterEnergy;
+			super(AstromineBlocks.ADVANCED_ALLOY_SMELTER, AstromineBlockEntityTypes.ADVANCED_ALLOY_SMELTER);
 		}
 	}
 
 	public static class Elite extends AlloySmelterBlockEntity {
 		public Elite() {
-			super(AstromineBlockEntityTypes.ELITE_ALLOY_SMELTER);
-		}
-
-		@Override
-		protected double getEnergySize() {
-			return AstromineConfig.get().eliteAlloySmelterEnergy;
+			super(AstromineBlocks.ELITE_ALLOY_SMELTER, AstromineBlockEntityTypes.ELITE_ALLOY_SMELTER);
 		}
 	}
 }

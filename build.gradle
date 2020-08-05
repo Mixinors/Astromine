@@ -112,8 +112,8 @@ dependencies {
     include "com.github.vini2003:spinnery:${spinnery_version}"
 
     // Patchouli
-    modImplementation "vazkii.patchouli:Patchouli_1.16-fabric:${patchouli_version}"
-    include "vazkii.patchouli:Patchouli_1.16-fabric:${patchouli_version}"
+    modImplementation "vazkii.patchouli:Patchouli:${patchouli_version}"
+    include "vazkii.patchouli:Patchouli:${patchouli_version}"
 
     // ModMenu
     modImplementation "io.github.prospector:modmenu:${modmenu_version}"
