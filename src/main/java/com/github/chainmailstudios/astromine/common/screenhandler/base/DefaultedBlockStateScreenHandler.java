@@ -24,27 +24,21 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base;
 
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
-import spinnery.common.handler.BaseScreenHandler;
-import spinnery.widget.WInterface;
-import spinnery.widget.WSlot;
 
 import java.util.Collection;
 
-public class DefaultedBlockStateScreenHandler extends BaseScreenHandler {
-	public final Collection<WSlot> playerSlots;
-
+public abstract class DefaultedBlockStateScreenHandler extends BaseScreenHandler {
 	BlockState state;
 
-	public DefaultedBlockStateScreenHandler(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
-		super(synchronizationID, playerInventory);
+	public DefaultedBlockStateScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
+		super(type, syncId, player);
 
-		WInterface mainInterface = getInterface();
-
-		playerSlots = WSlot.addHeadlessPlayerInventory(mainInterface);
-
-		state = world.getBlockState(position);
+		state = player.world.getBlockState(position);
 	}
 }

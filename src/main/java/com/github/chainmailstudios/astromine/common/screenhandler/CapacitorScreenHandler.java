@@ -25,22 +25,38 @@
 package com.github.chainmailstudios.astromine.common.screenhandler;
 
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyItemScreenHandler;
+import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
 import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
+import com.github.vini2003.blade.common.data.Position;
+import com.github.vini2003.blade.common.data.Positioned;
+import com.github.vini2003.blade.common.data.Size;
+import com.github.vini2003.blade.common.widget.base.SlotWidget;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
-import spinnery.widget.WSlot;
 
 public class CapacitorScreenHandler extends DefaultedEnergyItemScreenHandler {
-	public CapacitorScreenHandler(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
-		super(synchronizationID, playerInventory, position);
-
-		getInterface().createChild(WSlot::new).setInventoryNumber(1).setSlotNumber(0);
-		getInterface().createChild(WSlot::new).setInventoryNumber(1).setSlotNumber(1);
+	public CapacitorScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
+		super(type, syncId, player, position);
 	}
 
 	@Override
-	public ScreenHandlerType<?> getType() {
-		return AstromineScreenHandlers.CAPACITOR;
+	public void initialize(int width, int height) {
+		super.initialize(width, height);
+
+		energyBar.setPosition(new Position(width / 2F - energyBar.getSize().getWidth() / 2F, energyBar.getPosition().getY()));
+
+		SlotWidget input = new SlotWidget(0, blockEntity);
+		input.setPosition(new Position(mainTab.getPosition().getX() + 12, mainTab.getPosition().getY() + 36));
+		input.setSize(new Size(18, 18));
+
+		SlotWidget output = new SlotWidget(1, blockEntity);
+		output.setPosition(new Position(mainTab.getPosition().getX() + 146, mainTab.getPosition().getY() + 36));
+		output.setSize(new Size(18, 18));
+
+		addWidget(input);
+		addWidget(output);
 	}
 }

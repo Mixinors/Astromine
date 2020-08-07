@@ -25,19 +25,19 @@
 package com.github.chainmailstudios.astromine.common.widget;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.client.BaseRenderer;
+import com.github.vini2003.blade.client.utilities.Layers;
+import com.github.vini2003.blade.client.utilities.Scissors;
+import com.github.vini2003.blade.common.widget.base.AbstractWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import spinnery.client.render.BaseRenderer;
-import spinnery.client.render.layer.SpinneryLayers;
-import spinnery.client.utility.ScissorArea;
-import spinnery.widget.WAbstractWidget;
 
 import java.util.function.IntSupplier;
 
-public class WHorizontalArrow extends WAbstractWidget {
+public class HorizontalArrowWidget extends AbstractWidget {
 	private static final Identifier BACKGROUND = AstromineCommon.identifier("textures/widget/horizontal_arrow_background.png");
 	private static final Identifier FOREGROUND = AstromineCommon.identifier("textures/widget/horizontal_arrow_foreground.png");
 
@@ -60,49 +60,44 @@ public class WHorizontalArrow extends WAbstractWidget {
 		return limitSupplier.getAsInt();
 	}
 
-	public <W extends WHorizontalArrow> W setProgressSupplier(IntSupplier progressSupplier) {
+	public void setProgressSupplier(IntSupplier progressSupplier) {
 		this.progressSupplier = progressSupplier;
-		return (W) this;
 	}
 
-	public <W extends WHorizontalArrow> W setLimitSupplier(IntSupplier limitSupplier) {
+	public void setLimitSupplier(IntSupplier limitSupplier) {
 		this.limitSupplier = limitSupplier;
-		return (W) this;
 	}
 
 	@Override
-	public void draw(MatrixStack matrices, VertexConsumerProvider provider) {
-		if (isHidden()) {
+	public void drawWidget(MatrixStack matrices, VertexConsumerProvider provider) {
+		if (getHidden()) {
 			return;
 		}
 
-		float x = getX();
-		float y = getY();
-		float z = getZ();
-
-		float sX = getWidth();
-		float sY = getHeight();
+		float x = getPosition().getX();
+		float y = getPosition().getY();
+		
+		float sX = getSize().getWidth();
+		float sY = getSize().getHeight();
 
 		float rawHeight = MinecraftClient.getInstance().getWindow().getHeight();
 		float scale = (float) MinecraftClient.getInstance().getWindow().getScaleFactor();
 
 		float sBGX = (int) (((sX / getLimit()) * getProgress()));
 
-		RenderLayer backgroundLayer = SpinneryLayers.get(getBackgroundTexture());
-		RenderLayer foregroundLayer = SpinneryLayers.get(getForegroundTexture());
+		RenderLayer backgroundLayer = Layers.get(getBackgroundTexture());
+		RenderLayer foregroundLayer = Layers.get(getForegroundTexture());
 
-		ScissorArea area = new ScissorArea(provider, (int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sX * scale), (int) (sY * scale));
+		Scissors area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sX * scale), (int) (sY * scale));
 
-		BaseRenderer.drawTexturedQuad(matrices, provider, backgroundLayer, getX(), getY(), z, getWidth(), getHeight(), getBackgroundTexture());
-
-		area.destroy(provider);
-
-		area = new ScissorArea(provider, (int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sBGX * scale), (int) (sY * scale));
-
-		BaseRenderer.drawTexturedQuad(matrices, provider, foregroundLayer, getX(), getY(), z, getWidth(), getHeight(), getForegroundTexture());
+		BaseRenderer.drawTexturedQuad(matrices, provider, backgroundLayer, getPosition().getX(), getPosition().getY(), getSize().getWidth(), getSize().getHeight(), getBackgroundTexture());
 
 		area.destroy(provider);
 
-		super.draw(matrices, provider);
+		area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sBGX * scale), (int) (sY * scale));
+
+		BaseRenderer.drawTexturedQuad(matrices, provider, foregroundLayer, getPosition().getX(), getPosition().getY(), getSize().getWidth(), getSize().getHeight(), getForegroundTexture());
+
+		area.destroy(provider);
 	}
 }

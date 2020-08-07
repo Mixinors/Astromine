@@ -24,23 +24,49 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler;
 
+import com.github.chainmailstudios.astromine.common.block.entity.ElectricSmelterBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyItemScreenHandler;
+import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
 import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
+import com.github.vini2003.blade.common.data.Position;
+import com.github.vini2003.blade.common.data.Size;
+import com.github.vini2003.blade.common.widget.base.SlotWidget;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
-import spinnery.widget.WSlot;
 
 public class ElectricSmelterScreenHandler extends DefaultedEnergyItemScreenHandler {
-	public ElectricSmelterScreenHandler(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
-		super(synchronizationID, playerInventory, position);
+	private ElectricSmelterBlockEntity smelter;
 
-		getInterface().createChild(WSlot::new).setInventoryNumber(1).setSlotNumber(0);
-		getInterface().createChild(WSlot::new).setInventoryNumber(1).setSlotNumber(1);
+	public ElectricSmelterScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
+		super(type, syncId, player, position);
+
+		ElectricSmelterBlockEntity smelter = (ElectricSmelterBlockEntity) blockEntity;
 	}
 
+
 	@Override
-	public ScreenHandlerType<?> getType() {
-		return AstromineScreenHandlers.ELECTRIC_SMELTER;
+	public void initialize(int width, int height) {
+		super.initialize(width, height);
+
+		SlotWidget input = new SlotWidget(0, smelter);
+		input.setPosition(new Position(energyBar.getPosition().getX(), energyBar.getPosition().getY()));
+		input.setSize(new Size(18, 18));
+
+		SlotWidget output = new SlotWidget(1, smelter);
+		output.setPosition(new Position(energyBar.getPosition().getX(), energyBar.getPosition().getY()));
+		output.setSize(new Size(18, 18));
+
+		input.setPosition(new Position(width / 2F - input.getSize().getWidth() / 2F, input.getPosition().getY()));
+		input.setPosition(new Position(input.getPosition().getX() + 29, input.getPosition().getY() + 15));
+
+		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
+		arrow.setPosition(new Position(input.getPosition().getX() - 31, output.getPosition().getY()));
+		arrow.setSize(new Size(22, 16));
+		arrow.setLimitSupplier(() -> smelter.limit);
+		arrow.setProgressSupplier(() -> (int) smelter.progress);
+
+		output.setPosition(new Position(arrow.getPosition().getX() - 27, arrow.getPosition().getY()));
 	}
 }

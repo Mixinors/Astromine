@@ -28,7 +28,7 @@ import com.github.chainmailstudios.astromine.client.screen.base.DefaultedEnergyF
 import com.github.chainmailstudios.astromine.common.block.entity.LiquidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.LiquidGeneratorScreenHandler;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyFluidScreenHandler;
-import com.github.chainmailstudios.astromine.common.widget.WHorizontalArrow;
+import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import spinnery.widget.api.Position;
@@ -42,7 +42,7 @@ public class LiquidGeneratorHandledScreen extends DefaultedEnergyFluidHandledScr
 
 		fluidBar.setPosition(Position.of(mainPanel, 7, 20, 0));
 
-		WHorizontalArrow arrow = mainPanel.createChild(WHorizontalArrow::new, Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight() / 2 - 8, 0), Size.of(22, 16)).setLimitSupplier(() -> generator.limit).setProgressSupplier(() -> (int) generator.current);
+		HorizontalArrowWidget arrow = mainPanel.createChild(HorizontalArrowWidget::new, Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight() / 2 - 8, 0), Size.of(22, 16)).setLimitSupplier(() -> generator.limit).setProgressSupplier(() -> (int) generator.current);
 
 		energyBar.setPosition(Position.of(arrow, arrow.getWidth() + 7, -energyBar.getHeight() / 2 + 8, 0));
 	}

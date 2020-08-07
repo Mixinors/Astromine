@@ -108,8 +108,8 @@ dependencies {
     include "com.terraformersmc:shapes:${shapes_version}"
 
     // Spinnery
-    modImplementation "com.github.vini2003:spinnery:${spinnery_version}"
-    include "com.github.vini2003:spinnery:${spinnery_version}"
+    modImplementation "com.github.vini2003:Blade:fabric-1.16.1-SNAPSHOT"
+    include "com.github.vini2003:Blade:fabric-1.16.1-SNAPSHOT"
 
     // Patchouli
     modImplementation "vazkii.patchouli:Patchouli:${patchouli_version}"

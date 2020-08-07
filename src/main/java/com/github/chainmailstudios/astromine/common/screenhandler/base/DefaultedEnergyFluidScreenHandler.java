@@ -25,25 +25,42 @@
 package com.github.chainmailstudios.astromine.common.screenhandler.base;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyFluidBlockEntity;
-import net.minecraft.entity.player.PlayerInventory;
+import com.github.chainmailstudios.astromine.common.widget.EnergyVerticalBarWidget;
+import com.github.chainmailstudios.astromine.common.widget.FluidVerticalBarWidget;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.vini2003.blade.common.data.Position;
+import com.github.vini2003.blade.common.data.Size;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
-import spinnery.widget.WInterface;
-import spinnery.widget.WSlot;
-
-import java.util.Collection;
 
 public class DefaultedEnergyFluidScreenHandler extends DefaultedBlockEntityScreenHandler {
-	public final Collection<WSlot> playerSlots;
+	public EnergyVerticalBarWidget energyBar;
+	public FluidVerticalBarWidget fluidBar;
 
 	public DefaultedEnergyFluidBlockEntity blockEntity;
 
-	public DefaultedEnergyFluidScreenHandler(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
-		super(synchronizationID, playerInventory, position);
+	public DefaultedEnergyFluidScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
+		super(type, syncId, player, position);
 
-		WInterface mainInterface = getInterface();
+		blockEntity = (DefaultedEnergyFluidBlockEntity) player.world.getBlockEntity(position);
+	}
 
-		playerSlots = WSlot.addHeadlessPlayerInventory(mainInterface);
+	@Override
+	public void initialize(int width, int height) {
+		super.initialize(width, height);
 
-		blockEntity = (DefaultedEnergyFluidBlockEntity) world.getBlockEntity(position);
+		energyBar = new EnergyVerticalBarWidget();
+		energyBar.setPosition(new Position(mainTab.getPosition().getX() + 7, mainTab.getPosition().getY() + 20));
+		energyBar.setSize(new Size(24, 48));
+		energyBar.setVolume(blockEntity::getEnergyVolume);
+
+		fluidBar = new FluidVerticalBarWidget();
+		fluidBar.setPosition(new Position(energyBar.getPosition().getX() + energyBar.getSize().getWidth() + 4, energyBar.getPosition().getY()));
+		fluidBar.setSize(new Size(energyBar.getSize().getWidth(), energyBar.getSize().getHeight()));
+		fluidBar.setVolume(() -> blockEntity.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(0));
+
+		addWidget(energyBar);
+		addWidget(fluidBar);
 	}
 }

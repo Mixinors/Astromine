@@ -24,19 +24,39 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler;
 
+import com.github.chainmailstudios.astromine.common.block.entity.ElectrolyzerBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyFluidScreenHandler;
+import com.github.chainmailstudios.astromine.common.widget.FluidVerticalBarWidget;
+import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
 public class ElectrolyzerScreenHandler extends DefaultedEnergyFluidScreenHandler {
-	public ElectrolyzerScreenHandler(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
-		super(synchronizationID, playerInventory, position);
+	public ElectrolyzerScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
+		super(type, syncId, player, position);
 	}
 
 	@Override
-	public ScreenHandlerType<?> getType() {
-		return AstromineScreenHandlers.ELECTROLYZER;
+	public void initialize(int width, int height) {
+		super.initialize(width, height);
+
+		ElectrolyzerBlockEntity electrolyzer = (ElectrolyzerBlockEntity) linkedScreenHandler.blockEntity;
+
+		ComponentProvider componentProvider = linkedScreenHandler.blockEntity;
+
+		FluidVerticalBarWidget firstOutputFluidBar = mainPanel.createChild(FluidVerticalBarWidget::new, Position.of(fluidBar, fluidBar.getWidth() + 4 + 18 + 18, 0, 0), Size.of(fluidBar));
+
+		firstOutputFluidBar.setVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(1));
+
+		FluidVerticalBarWidget secondOutputFluidBar = mainPanel.createChild(FluidVerticalBarWidget::new, Position.of(firstOutputFluidBar, firstOutputFluidBar.getWidth() + 7, 0, 0), Size.of(fluidBar));
+
+		secondOutputFluidBar.setVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(2));
+
+		mainPanel.createChild(HorizontalArrowWidget::new, Position.of(fluidBar, fluidBar.getWidth() + 9, fluidBar.getHeight() / 2 - 8, 0), Size.of(22, 16)).setLimitSupplier(() -> electrolyzer.limit).setProgressSupplier(() -> (int) electrolyzer.current);
 	}
 }

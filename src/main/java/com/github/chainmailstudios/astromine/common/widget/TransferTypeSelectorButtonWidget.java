@@ -24,10 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.widget;
 
+import com.github.chainmailstudios.astromine.client.BaseRenderer;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
+import com.github.vini2003.blade.common.widget.base.AbstractWidget;
 import io.netty.buffer.Unpooled;
 import nerdhub.cardinal.components.api.ComponentType;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
@@ -39,14 +41,13 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import spinnery.client.render.BaseRenderer;
-import spinnery.widget.WButton;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-public class WTransferTypeSelectorButton extends WButton {
+public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 	private BlockEntityTransferComponent component;
 
 	private ComponentType<?> type;
@@ -71,61 +72,61 @@ public class WTransferTypeSelectorButton extends WButton {
 		return component;
 	}
 
-	public <W extends WTransferTypeSelectorButton> W setComponent(BlockEntityTransferComponent component) {
+	public void setComponent(BlockEntityTransferComponent component) {
 		this.component = component;
-		return (W) this;
+
 	}
 
 	public Direction getDirection() {
 		return direction;
 	}
 
-	public <W extends WTransferTypeSelectorButton> W setDirection(Direction direction) {
+	public void setDirection(Direction direction) {
 		this.direction = direction;
-		return (W) this;
+
 	}
 
 	public Direction getRotation() {
 		return rotation;
 	}
 
-	public <W extends WTransferTypeSelectorButton> W setRotation(Direction rotation) {
+	public void setRotation(Direction rotation) {
 		this.rotation = rotation;
-		return (W) this;
+
 	}
 
 	public ComponentType<?> getType() {
 		return type;
 	}
 
-	public <W extends WTransferTypeSelectorButton> W setType(ComponentType<?> type) {
+	public void setType(ComponentType<?> type) {
 		this.type = type;
-		return (W) this;
+
 	}
 
 	public BlockPos getBlockPos() {
 		return blockPos;
 	}
 
-	public <W extends WTransferTypeSelectorButton> W setBlockPos(BlockPos blockPos) {
+	public void setBlockPos(BlockPos blockPos) {
 		this.blockPos = blockPos;
-		return (W) this;
+
 	}
 
 	@Override
 	public void onMouseClicked(float mouseX, float mouseY, int mouseButton) {
 		super.onMouseClicked(mouseX, mouseY, mouseButton);
-		if (isFocused()) {
+		if (getFocused()) {
 			wasClicked = true;
 		}
 	}
 
 	@Override
 	public void onMouseReleased(float mouseX, float mouseY, int mouseButton) {
-		if (isFocused() && wasClicked) {
+		if (getFocused() && wasClicked) {
 			component.get(type).set(direction, component.get(type).get(direction).next());
 
-			if (getInterface().getHandler().getWorld().isClient()) {
+			if (getHandler().getClient()) {
 				PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
 
 				buffer.writeBlockPos(getBlockPos());
@@ -143,19 +144,17 @@ public class WTransferTypeSelectorButton extends WButton {
 		super.onMouseReleased(mouseX, mouseY, mouseButton);
 	}
 
-	@Override
-	public boolean isFocusedMouseListener() {
-		return true;
-	}
 
 	@Override
-	public List<Text> getTooltip() {
+	public @NotNull List<Text> getTooltip() {
 		Direction offset = MirrorUtilities.rotate(direction, rotation);
 		return Arrays.asList(new TranslatableText("text.astromine.siding." + offset.getName()), new TranslatableText("text.astromine.siding." + getSideName()));
 	}
 
 	@Override
-	public void draw(MatrixStack matrices, VertexConsumerProvider provider) {
-		BaseRenderer.drawTexturedQuad(matrices, provider, getX(), getY(), getZ(), getWidth(), getHeight(), getTexture());
+	public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider) {
+		if (getHidden()) return;
+
+		BaseRenderer.drawTexturedQuad(matrices, provider, getPosition().getX(), getPosition().getY(), getSize().getWidth(), getSize().getHeight(), getTexture());
 	}
 }

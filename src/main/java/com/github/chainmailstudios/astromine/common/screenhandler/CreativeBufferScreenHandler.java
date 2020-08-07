@@ -28,22 +28,27 @@ import com.github.chainmailstudios.astromine.common.component.inventory.compatib
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedItemScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
+import com.github.vini2003.blade.common.data.Position;
+import com.github.vini2003.blade.common.data.Size;
+import com.github.vini2003.blade.common.widget.base.SlotWidget;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
-import spinnery.widget.WSlot;
 
 public class CreativeBufferScreenHandler extends DefaultedItemScreenHandler {
-	public CreativeBufferScreenHandler(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
-		super(synchronizationID, playerInventory, position);
-
-		addInventory(1, ItemInventoryFromInventoryComponent.of(blockEntity.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)));
-
-		getInterface().createChild(WSlot::new).setSlotNumber(0).setInventoryNumber(1);
+	public CreativeBufferScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
+		super(type, syncId, player, position);
 	}
 
 	@Override
-	public ScreenHandlerType<?> getType() {
-		return AstromineScreenHandlers.CREATIVE_BUFFER;
+	public void initialize(int width, int height) {
+		super.initialize(width, height);
+
+		SlotWidget slot = new SlotWidget(0, ItemInventoryFromInventoryComponent.of(blockEntity.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)));
+		slot.setPosition(new Position(mainTab.getPosition().getX(), mainTab.getPosition().getY() + 22));
+		slot.setSize(new Size(36, 36));
+
+		addWidget(slot);
 	}
 }

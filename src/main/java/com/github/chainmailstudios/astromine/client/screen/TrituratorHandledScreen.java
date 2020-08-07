@@ -28,7 +28,7 @@ import com.github.chainmailstudios.astromine.client.screen.base.DefaultedEnergyI
 import com.github.chainmailstudios.astromine.common.block.entity.TrituratorBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.TrituratorScreenHandler;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyItemScreenHandler;
-import com.github.chainmailstudios.astromine.common.widget.WHorizontalArrow;
+import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import spinnery.widget.WSlot;
@@ -47,7 +47,7 @@ public class TrituratorHandledScreen extends DefaultedEnergyItemHandledScreen<Tr
 		input.centerX();
 		input.setPosition(Position.of(input.getX() + 29, input.getY() + 15, input.getZ()));
 
-		WHorizontalArrow arrow = mainPanel.createChild(WHorizontalArrow::new, Position.of(input, -31, 0, 0), Size.of(22, 16)).setLimitSupplier(() -> triturator.limit).setProgressSupplier(() -> (int) triturator.progress);
+		HorizontalArrowWidget arrow = mainPanel.createChild(HorizontalArrowWidget::new, Position.of(input, -31, 0, 0), Size.of(22, 16)).setLimitSupplier(() -> triturator.limit).setProgressSupplier(() -> (int) triturator.progress);
 
 		output.centerX();
 		output.setPosition(Position.of(arrow, -27, 0, 0));

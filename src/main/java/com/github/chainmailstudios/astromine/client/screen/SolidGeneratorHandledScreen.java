@@ -28,7 +28,7 @@ import com.github.chainmailstudios.astromine.client.screen.base.DefaultedEnergyI
 import com.github.chainmailstudios.astromine.common.block.entity.SolidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.SolidGeneratorScreenHandler;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyItemScreenHandler;
-import com.github.chainmailstudios.astromine.common.widget.WHorizontalArrow;
+import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
@@ -44,7 +44,7 @@ public class SolidGeneratorHandledScreen extends DefaultedEnergyItemHandledScree
 
 		WSlot input = mainPanel.createChild(WSlot::new, Position.of(mainPanel, 7, energyBar.getHeight() - 12, 0), Size.of(18, 18)).setInventoryNumber(1).setSlotNumber(0);
 
-		WHorizontalArrow arrow = mainPanel.createChild(WHorizontalArrow::new, Position.of(input, 31, 0, 1), Size.of(22, 16)).setLimitSupplier(() -> generator.limit).setProgressSupplier(() -> (int) generator.current);
+		HorizontalArrowWidget arrow = mainPanel.createChild(HorizontalArrowWidget::new, Position.of(input, 31, 0, 1), Size.of(22, 16)).setLimitSupplier(() -> generator.limit).setProgressSupplier(() -> (int) generator.current);
 
 		energyBar.setPosition(Position.of(arrow, 29, -energyBar.getHeight() / 2 + 8, 5));
 	}

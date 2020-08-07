@@ -29,8 +29,8 @@ import com.github.chainmailstudios.astromine.common.block.entity.FluidMixerBlock
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.screenhandler.FluidMixerScreenHandler;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyFluidScreenHandler;
-import com.github.chainmailstudios.astromine.common.widget.WFluidVolumeFractionalVerticalBar;
-import com.github.chainmailstudios.astromine.common.widget.WHorizontalArrow;
+import com.github.chainmailstudios.astromine.common.widget.FluidVerticalBarWidget;
+import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
@@ -45,15 +45,15 @@ public class FluidMixerHandledScreen extends DefaultedEnergyFluidHandledScreen<F
 
 		ComponentProvider componentProvider = linkedScreenHandler.blockEntity;
 
-		WFluidVolumeFractionalVerticalBar secondInputFluidBar = mainPanel.createChild(WFluidVolumeFractionalVerticalBar::new, Position.of(fluidBar, fluidBar.getWidth() + 4, 0, 8), Size.of(fluidBar));
+		FluidVerticalBarWidget secondInputFluidBar = mainPanel.createChild(FluidVerticalBarWidget::new, Position.of(fluidBar, fluidBar.getWidth() + 4, 0, 8), Size.of(fluidBar));
 
-		secondInputFluidBar.setFluidVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(1));
+		secondInputFluidBar.setVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(1));
 
-		WHorizontalArrow arrow = mainPanel.createChild(WHorizontalArrow::new, Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9, secondInputFluidBar.getHeight() / 2 - 8, 8), Size.of(22, 16)).setLimitSupplier(() -> mixer.limit).setProgressSupplier(
+		HorizontalArrowWidget arrow = mainPanel.createChild(HorizontalArrowWidget::new, Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9, secondInputFluidBar.getHeight() / 2 - 8, 8), Size.of(22, 16)).setLimitSupplier(() -> mixer.limit).setProgressSupplier(
 			() -> (int) mixer.current);
 
-		WFluidVolumeFractionalVerticalBar outputFluidBar = mainPanel.createChild(WFluidVolumeFractionalVerticalBar::new, Position.of(arrow, arrow.getWidth() + 7, -secondInputFluidBar.getHeight() / 2 + 8, 8), Size.of(fluidBar));
+		FluidVerticalBarWidget outputFluidBar = mainPanel.createChild(FluidVerticalBarWidget::new, Position.of(arrow, arrow.getWidth() + 7, -secondInputFluidBar.getHeight() / 2 + 8, 8), Size.of(fluidBar));
 
-		outputFluidBar.setFluidVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(2));
+		outputFluidBar.setVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(2));
 	}
 }

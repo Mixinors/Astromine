@@ -25,29 +25,33 @@
 package com.github.chainmailstudios.astromine.common.screenhandler.base;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import net.minecraft.entity.player.PlayerInventory;
+import com.github.chainmailstudios.astromine.common.widget.EnergyVerticalBarWidget;
+import com.github.vini2003.blade.common.data.Position;
+import com.github.vini2003.blade.common.data.Size;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
-import spinnery.widget.WInterface;
-import spinnery.widget.WSlot;
-
-import java.util.Collection;
 
 public class DefaultedEnergyItemScreenHandler extends DefaultedBlockEntityScreenHandler {
-	public final Collection<WSlot> playerSlots;
-
 	public DefaultedEnergyItemBlockEntity blockEntity;
 
-	public DefaultedEnergyItemScreenHandler(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
-		super(synchronizationID, playerInventory, position);
+	public EnergyVerticalBarWidget energyBar;
 
-		WInterface mainInterface = getInterface();
+	public DefaultedEnergyItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
+		super(type, syncId, player, position);
 
-		playerSlots = WSlot.addHeadlessPlayerInventory(mainInterface);
+		blockEntity = (DefaultedEnergyItemBlockEntity) player.world.getBlockEntity(position);
+	}
 
-		blockEntity = (DefaultedEnergyItemBlockEntity) world.getBlockEntity(position);
+	@Override
+	public void initialize(int width, int height) {
+		super.initialize(width, height);
 
-		addInventory(1, ItemInventoryFromInventoryComponent.of(blockEntity.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)));
+		energyBar = new EnergyVerticalBarWidget();
+		energyBar.setPosition(new Position(mainTab.getPosition().getX() + 7F, mainTab.getPosition().getY() + 20F));
+		energyBar.setSize(new Size(24F, 28F));
+		energyBar.setVolume(blockEntity::getEnergyVolume);
+
+		addWidget(energyBar);
 	}
 }

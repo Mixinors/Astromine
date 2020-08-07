@@ -25,15 +25,34 @@
 package com.github.chainmailstudios.astromine.common.screenhandler.base;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyBlockEntity;
+import com.github.chainmailstudios.astromine.common.widget.EnergyVerticalBarWidget;
+import com.github.vini2003.blade.common.data.Position;
+import com.github.vini2003.blade.common.data.Size;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
 public class DefaultedEnergyScreenHandler extends DefaultedBlockEntityScreenHandler {
 	public DefaultedEnergyBlockEntity blockEntity;
 
-	public DefaultedEnergyScreenHandler(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
-		super(synchronizationID, playerInventory, position);
+	public EnergyVerticalBarWidget energyBar;
 
-		blockEntity = (DefaultedEnergyBlockEntity) world.getBlockEntity(position);
+	public DefaultedEnergyScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
+		super(type, syncId, player, position);
+
+		blockEntity = (DefaultedEnergyBlockEntity) player.world.getBlockEntity(position);
+	}
+
+	@Override
+	public void initialize(int width, int height) {
+		super.initialize(width, height);
+
+		energyBar = new EnergyVerticalBarWidget();
+		energyBar.setPosition(new Position(mainTab.getPosition().getX() + 7F, mainTab.getPosition().getY() + 20F));
+		energyBar.setSize(new Size(24F, 28F));
+		energyBar.setVolume(blockEntity::getEnergyVolume);
+
+		addWidget(energyBar);
 	}
 }

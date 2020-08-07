@@ -25,50 +25,65 @@
 package com.github.chainmailstudios.astromine.common.widget;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.client.BaseRenderer;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import com.github.vini2003.blade.client.utilities.Instances;
+import com.github.vini2003.blade.client.utilities.Layers;
+import com.github.vini2003.blade.client.utilities.Scissors;
+import com.github.vini2003.blade.common.widget.base.AbstractWidget;
 import com.google.common.collect.Lists;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.function.Supplier;
 
-public class WEnergyVolumeFractionalVerticalBar extends WFloatingPointVerticalBar {
-	private Supplier<EnergyVolume> volume;
-
+public class EnergyVerticalBarWidget extends AbstractWidget {
 	private final Identifier ENERGY_BACKGROUND = AstromineCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_background.png");
 	private final Identifier ENERGY_FOREGROUND = AstromineCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_foreground.png");
 
-	public WEnergyVolumeFractionalVerticalBar() {
-		setUnit(new TranslatableText("text.astromine.energy"));
+	private Supplier<EnergyVolume> volumeSupplier;
+
+	@Override
+	public @NotNull List<Text> getTooltip() {
+		return Lists.newArrayList(EnergyUtilities.compoundDisplay(volumeSupplier.get().getAmount(), volumeSupplier.get().getMaxAmount()));
+	}
+
+	public void setVolume(Supplier<EnergyVolume> volumeSupplier) {
+		this.volumeSupplier = volumeSupplier;
 	}
 
 	@Override
-	public Identifier getBackgroundTexture() {
-		return ENERGY_BACKGROUND;
-	}
+	public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider) {
+		if (getHidden()) return;
 
-	@Override
-	public Identifier getForegroundTexture() {
-		return ENERGY_FOREGROUND;
-	}
+		float x = getPosition().getX();
+		float y = getPosition().getY();
 
-	public EnergyVolume getEnergyVolume() {
-		return volume.get();
-	}
+		float sX = getSize().getWidth();
+		float sY = getSize().getHeight();
 
-	@Override
-	public List<Text> getTooltip() {
-		return Lists.newArrayList(EnergyUtilities.compoundDisplayColored(getProgressFraction().get(), getLimitFraction().get()));
-	}
+		float rawHeight = Instances.client().getWindow().getHeight();
+		float scale = (float) Instances.client().getWindow().getScaleFactor();
 
-	public <W extends WFloatingPointVerticalBar> W setEnergyVolume(Supplier<EnergyVolume> volume) {
-		setProgressFraction(volume.get()::getAmount);
-		setLimitFraction(volume.get()::getMaxAmount);
+		EnergyVolume volume = volumeSupplier.get();
 
-		this.volume = volume;
-		return (W) this;
+		float sBGX = (float) (sX / volume.getMaxAmount() * volume.getAmount());
+
+		Scissors area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - (y + sY) * scale), (int) (sX * scale), (int) (sY * scale));
+
+		BaseRenderer.drawTexturedQuad(matrices, provider, Layers.flat(), x, y, sX, sY, ENERGY_BACKGROUND);
+
+		area.destroy(provider);
+
+		area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - (y + sY) * scale), (int) (sBGX * scale), (int) (sY * scale));
+
+		BaseRenderer.drawTexturedQuad(matrices, provider, Layers.flat(), x, y, sX, sY, ENERGY_FOREGROUND);
+
+		area.destroy(provider);
 	}
 }
