@@ -24,13 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.miscellaneous;
 
-import java.util.Arrays;
-
 import it.unimi.dsi.fastutil.HashCommon;
-
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
+
+import java.util.Arrays;
 
 public class BiomeGenCache {
 	private static final int CACHE_SIZE = 65536;

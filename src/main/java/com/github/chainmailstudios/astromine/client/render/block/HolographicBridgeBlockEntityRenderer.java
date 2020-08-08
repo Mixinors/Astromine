@@ -80,10 +80,10 @@ public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<Ho
 			float zA = end.getZ() - pA.getZ();
 			float zB = start.getZ() - pA.getZ();
 
-			consumer.vertex(matrices.peek().getModel(), xA, yA, zA).color(entity.color.R, entity.color.G, entity.color.B, entity.color.A).texture(0, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
-			consumer.vertex(matrices.peek().getModel(), xB, yB, zB).color(entity.color.R, entity.color.G, entity.color.B, entity.color.A).texture(0, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
-			consumer.vertex(matrices.peek().getModel(), xB + offsetX, yB, zB + offsetZ).color(entity.color.R, entity.color.G, entity.color.B, entity.color.A).texture(1, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
-			consumer.vertex(matrices.peek().getModel(), xA + offsetX, yA, zA + offsetZ).color(entity.color.R, entity.color.G, entity.color.B, entity.color.A).texture(1, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
+			consumer.vertex(matrices.peek().getModel(), xA, yA, zA).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(0, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
+			consumer.vertex(matrices.peek().getModel(), xB, yB, zB).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(0, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
+			consumer.vertex(matrices.peek().getModel(), xB + offsetX, yB, zB + offsetZ).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(1, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
+			consumer.vertex(matrices.peek().getModel(), xA + offsetX, yA, zA + offsetZ).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(1, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
 
 			matrices.pop();
 		}

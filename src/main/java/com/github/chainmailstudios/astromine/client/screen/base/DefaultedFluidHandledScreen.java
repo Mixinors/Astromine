@@ -24,17 +24,14 @@
 
 package com.github.chainmailstudios.astromine.client.screen.base;
 
-import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedBlockEntityScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedFluidScreenHandler;
-import com.github.chainmailstudios.astromine.common.widget.FluidVerticalBarWidget;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import net.minecraft.entity.player.PlayerEntity;
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
 
 public abstract class DefaultedFluidHandledScreen<T extends DefaultedBlockEntityScreenHandler> extends DefaultedBlockEntityHandledScreen<T> {
-	public DefaultedFluidHandledScreen(Text name, DefaultedFluidScreenHandler linkedScreenHandler, PlayerEntity player) {
-		super(name, (T) linkedScreenHandler, player);
+	public DefaultedFluidHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
+		super(handler, inventory, title);
 	}
 }

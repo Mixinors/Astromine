@@ -33,16 +33,13 @@ import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import com.github.vini2003.blade.common.widget.base.SlotListWidget;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
-import java.util.Comparator;
 
 public class BufferScreenHandler extends DefaultedItemScreenHandler {
 	public final BufferType bufferType;
 
-	public BufferScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position, BufferType bufferType) {
-		super(type, syncId, player, position);
+	public BufferScreenHandler(int syncId, PlayerEntity player, BlockPos position, BufferType bufferType) {
+		super(AstromineScreenHandlers.BUFFER, syncId, player, position);
 		this.bufferType = bufferType;
 	}
 

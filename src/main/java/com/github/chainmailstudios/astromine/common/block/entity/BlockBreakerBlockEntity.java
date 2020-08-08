@@ -41,11 +41,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ItemScatterer;
+import net.minecraft.util.Pair;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
-import spinnery.common.utility.MutablePair;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -108,10 +109,10 @@ public class BlockBreakerBlockEntity extends DefaultedEnergyItemBlockEntity impl
 
 				if (matching.isPresent()) {
 					ItemStack match = matching.get();
-					MutablePair<ItemStack, ItemStack> pair = StackUtilities.merge(match, stored, match.getMaxCount(), stored.getMaxCount());
-					itemComponent.setStack(0, pair.getSecond());
+					Pair<ItemStack, ItemStack> pair = StackUtilities.merge(match, stored, match.getMaxCount(), stored.getMaxCount());
+					itemComponent.setStack(0, pair.getRight());
 					drops.remove(match);
-					drops.add(pair.getFirst());
+					drops.add(pair.getLeft());
 				}
 
 				for (ItemStack stack : drops) {

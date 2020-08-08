@@ -55,7 +55,7 @@ public class FluidExtractorBlock extends HorizontalFacingEnergyMachineBlock {
 
 	@Override
 	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-		return new FluidExtractorScreenHandler(syncId, playerInventory, pos);
+		return new FluidExtractorScreenHandler(syncId, playerInventory.player, pos);
 	}
 
 	@Override

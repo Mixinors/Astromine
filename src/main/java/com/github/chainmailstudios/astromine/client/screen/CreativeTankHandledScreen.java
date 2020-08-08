@@ -25,19 +25,14 @@
 package com.github.chainmailstudios.astromine.client.screen;
 
 import com.github.chainmailstudios.astromine.client.screen.base.DefaultedFluidHandledScreen;
-import com.github.chainmailstudios.astromine.common.block.entity.CreativeTankBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.CreativeTankScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedFluidScreenHandler;
-import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
-import io.netty.buffer.Unpooled;
-import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketByteBuf;
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
 
 public class CreativeTankHandledScreen extends DefaultedFluidHandledScreen<CreativeTankScreenHandler> {
-	public CreativeTankHandledScreen(Text name, DefaultedFluidScreenHandler linkedScreenHandler, PlayerEntity player) {
-		super(name, linkedScreenHandler, player);
+	public CreativeTankHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
+		super(handler, inventory, title);
 	}
 }

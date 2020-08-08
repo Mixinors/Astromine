@@ -26,7 +26,6 @@ package com.github.chainmailstudios.astromine.common.world.biome;
 
 import com.github.chainmailstudios.astromine.registry.AstromineFeatures;
 import com.github.chainmailstudios.astromine.registry.AstromineParticles;
-
 import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;

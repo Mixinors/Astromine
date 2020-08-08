@@ -24,18 +24,22 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import java.util.concurrent.Executor;
-import java.util.function.Supplier;
-
-import com.github.chainmailstudios.astromine.common.world.generation.space.EarthSpaceBiomeSource;
-import com.github.chainmailstudios.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
 import com.github.chainmailstudios.astromine.common.world.generation.mars.MarsBiomeSource;
 import com.github.chainmailstudios.astromine.common.world.generation.mars.MarsChunkGenerator;
 import com.github.chainmailstudios.astromine.common.world.generation.moon.MoonBiomeSource;
 import com.github.chainmailstudios.astromine.common.world.generation.moon.MoonChunkGenerator;
+import com.github.chainmailstudios.astromine.common.world.generation.space.EarthSpaceBiomeSource;
+import com.github.chainmailstudios.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
 import com.github.chainmailstudios.astromine.common.world.generation.vulcan.VulcanBiomeSource;
 import com.github.chainmailstudios.astromine.common.world.generation.vulcan.VulcanChunkGenerator;
 import com.mojang.datafixers.DataFixer;
+import net.minecraft.server.WorldGenerationProgressListener;
+import net.minecraft.server.world.ServerChunkManager;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.structure.StructureManager;
+import net.minecraft.world.PersistentStateManager;
+import net.minecraft.world.gen.chunk.ChunkGenerator;
+import net.minecraft.world.level.storage.LevelStorage;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -44,13 +48,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.server.WorldGenerationProgressListener;
-import net.minecraft.server.world.ServerChunkManager;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.structure.StructureManager;
-import net.minecraft.world.PersistentStateManager;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
-import net.minecraft.world.level.storage.LevelStorage;
+import java.util.concurrent.Executor;
+import java.util.function.Supplier;
 
 @Mixin(ServerChunkManager.class)
 public class ServerChunkManagerMixin {

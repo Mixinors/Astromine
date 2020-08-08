@@ -25,7 +25,6 @@
 package com.github.chainmailstudios.astromine.common.item;
 
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;

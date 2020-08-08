@@ -30,13 +30,11 @@ import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
 public class BlockBreakerScreenHandler extends DefaultedEnergyItemScreenHandler {
-	public BlockBreakerScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
-		super(type, syncId, player, position);
+	public BlockBreakerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+		super(AstromineScreenHandlers.BLOCK_BREAKER, syncId, player, position);
 	}
 
 	@Override

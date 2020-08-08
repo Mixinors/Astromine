@@ -54,7 +54,7 @@ public class CreativeTankBlock extends HorizontalFacingMachineBlock {
 
 	@Override
 	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-		return new CreativeTankScreenHandler(syncId, playerInventory, pos);
+		return new CreativeTankScreenHandler(syncId, playerInventory.player, pos);
 	}
 
 	@Override

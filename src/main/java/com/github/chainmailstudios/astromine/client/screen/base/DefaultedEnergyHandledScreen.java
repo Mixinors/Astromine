@@ -25,14 +25,12 @@
 package com.github.chainmailstudios.astromine.client.screen.base;
 
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedBlockEntityScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyScreenHandler;
-import com.github.chainmailstudios.astromine.common.widget.EnergyVerticalBarWidget;
-import com.terraformersmc.shapes.api.Position;
-import net.minecraft.entity.player.PlayerEntity;
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
 public abstract class DefaultedEnergyHandledScreen<T extends DefaultedBlockEntityScreenHandler> extends DefaultedBlockEntityHandledScreen<T> {
-	public DefaultedEnergyHandledScreen(Text name, DefaultedEnergyScreenHandler linkedScreenHandler, PlayerEntity player) {
-		super(name, (T) linkedScreenHandler, player);
+	public DefaultedEnergyHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
+		super(handler, inventory, title);
 	}
 }

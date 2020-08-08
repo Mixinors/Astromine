@@ -25,35 +25,13 @@
 package com.github.chainmailstudios.astromine.client.screen;
 
 import com.github.chainmailstudios.astromine.client.screen.base.DefaultedEnergyFluidHandledScreen;
-import com.github.chainmailstudios.astromine.common.block.entity.FluidMixerBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.screenhandler.FluidMixerScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyFluidScreenHandler;
-import com.github.chainmailstudios.astromine.common.widget.FluidVerticalBarWidget;
-import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import net.minecraft.entity.player.PlayerEntity;
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
-import spinnery.widget.api.Position;
-import spinnery.widget.api.Size;
 
 public class FluidMixerHandledScreen extends DefaultedEnergyFluidHandledScreen<FluidMixerScreenHandler> {
-	public FluidMixerHandledScreen(Text name, DefaultedEnergyFluidScreenHandler linkedScreenHandler, PlayerEntity player) {
-		super(name, linkedScreenHandler, player);
-
-		FluidMixerBlockEntity mixer = (FluidMixerBlockEntity) linkedScreenHandler.blockEntity;
-
-		ComponentProvider componentProvider = linkedScreenHandler.blockEntity;
-
-		FluidVerticalBarWidget secondInputFluidBar = mainPanel.createChild(FluidVerticalBarWidget::new, Position.of(fluidBar, fluidBar.getWidth() + 4, 0, 8), Size.of(fluidBar));
-
-		secondInputFluidBar.setVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(1));
-
-		HorizontalArrowWidget arrow = mainPanel.createChild(HorizontalArrowWidget::new, Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9, secondInputFluidBar.getHeight() / 2 - 8, 8), Size.of(22, 16)).setLimitSupplier(() -> mixer.limit).setProgressSupplier(
-			() -> (int) mixer.current);
-
-		FluidVerticalBarWidget outputFluidBar = mainPanel.createChild(FluidVerticalBarWidget::new, Position.of(arrow, arrow.getWidth() + 7, -secondInputFluidBar.getHeight() / 2 + 8, 8), Size.of(fluidBar));
-
-		outputFluidBar.setVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(2));
+	public FluidMixerHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
+		super(handler, inventory, title);
 	}
 }

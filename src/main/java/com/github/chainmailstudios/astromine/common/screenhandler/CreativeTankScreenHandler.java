@@ -27,13 +27,11 @@ package com.github.chainmailstudios.astromine.common.screenhandler;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedFluidScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
 // TODO! - 07/08/2020 - 17:13:28
 public class CreativeTankScreenHandler extends DefaultedFluidScreenHandler {
-	public CreativeTankScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
-		super(type, syncId, player, position);
+	public CreativeTankScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+		super(AstromineScreenHandlers.CREATIVE_TANK, syncId, player, position);
 	}
 }

@@ -32,13 +32,11 @@ import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
 public class CreativeBufferScreenHandler extends DefaultedItemScreenHandler {
-	public CreativeBufferScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
-		super(type, syncId, player, position);
+	public CreativeBufferScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+		super(AstromineScreenHandlers.CREATIVE_BUFFER, syncId, player, position);
 	}
 
 	@Override

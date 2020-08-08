@@ -60,7 +60,7 @@ public class VentBlock extends FacingEnergyMachineBlock {
 
 	@Override
 	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-		return new VentScreenHandler(syncId, playerInventory, pos);
+		return new VentScreenHandler(syncId, playerInventory.player, pos);
 	}
 
 	@Override

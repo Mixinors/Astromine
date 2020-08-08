@@ -29,9 +29,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import team.reborn.energy.Energy;
-import team.reborn.energy.EnergyHandler;
-
+import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -43,8 +41,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
-
-import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
+import team.reborn.energy.Energy;
+import team.reborn.energy.EnergyHandler;
 
 public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttributeTool {
 	private static final Multimap<EntityAttribute, EntityAttributeModifier> EAMS = HashMultimap.create();

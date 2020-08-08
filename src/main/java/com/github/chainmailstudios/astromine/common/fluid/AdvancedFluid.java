@@ -30,6 +30,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineFluids;
 import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import com.github.vini2003.blade.common.data.Color;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.*;
@@ -48,7 +49,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
-import spinnery.widget.api.Color;
+
 
 public abstract class AdvancedFluid extends FlowableFluid implements Breathable {
 	final int fogColor;
@@ -163,8 +164,8 @@ public abstract class AdvancedFluid extends FlowableFluid implements Breathable 
 	}
 
 	public static class Builder {
-		int fog = Color.DEFAULT.ARGB;
-		int tint = Color.DEFAULT.ARGB;
+		int fog = Color.standard().toInt();
+		int tint = Color.standard().toInt();
 		int damage = 0;
 
 		boolean isInfinite = false;

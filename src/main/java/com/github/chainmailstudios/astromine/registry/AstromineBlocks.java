@@ -26,10 +26,10 @@ package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.*;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
 import com.github.chainmailstudios.astromine.common.block.conveyor.*;
 import com.github.chainmailstudios.astromine.common.item.AstromineBlockItem;
 import com.github.chainmailstudios.astromine.common.item.AstromineEnergyBlockItem;
+import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
 import com.github.chainmailstudios.astromine.common.utilities.type.BufferType;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;

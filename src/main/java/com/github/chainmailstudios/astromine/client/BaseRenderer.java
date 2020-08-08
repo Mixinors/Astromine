@@ -26,7 +26,6 @@ package com.github.chainmailstudios.astromine.client;
 
 import com.github.vini2003.blade.client.utilities.Layers;
 import com.github.vini2003.blade.common.data.Color;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.OverlayTexture;

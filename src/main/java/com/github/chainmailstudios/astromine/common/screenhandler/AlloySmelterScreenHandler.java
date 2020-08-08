@@ -30,18 +30,15 @@ import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget
 import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
-import com.github.vini2003.blade.common.widget.base.HorizontalBarWidget;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
 public class AlloySmelterScreenHandler extends DefaultedEnergyItemScreenHandler {
 	private AlloySmelterBlockEntity smelter;
 
-	public AlloySmelterScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
-		super(type, syncId, player, position);
+	public AlloySmelterScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+		super(AstromineScreenHandlers.ALLOY_SMELTER, syncId, player, position);
 
 		smelter = (AlloySmelterBlockEntity) blockEntity;
 	}

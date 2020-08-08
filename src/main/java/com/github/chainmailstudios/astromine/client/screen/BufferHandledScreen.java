@@ -26,14 +26,12 @@ package com.github.chainmailstudios.astromine.client.screen;
 
 import com.github.chainmailstudios.astromine.client.screen.base.DefaultedItemHandledScreen;
 import com.github.chainmailstudios.astromine.common.screenhandler.BufferScreenHandler;
-import net.minecraft.entity.player.PlayerEntity;
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
-
-import java.util.Comparator;
-
 public class BufferHandledScreen extends DefaultedItemHandledScreen<BufferScreenHandler> {
-	public BufferHandledScreen(Text name, BufferScreenHandler handler, PlayerEntity player) {
-		super(name, handler, player);
+	public BufferHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
+		super(handler, inventory, title);
 	}
 }

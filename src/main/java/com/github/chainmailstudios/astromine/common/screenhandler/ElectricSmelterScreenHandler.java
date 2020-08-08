@@ -32,17 +32,15 @@ import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
 public class ElectricSmelterScreenHandler extends DefaultedEnergyItemScreenHandler {
 	private ElectricSmelterBlockEntity smelter;
 
-	public ElectricSmelterScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
-		super(type, syncId, player, position);
+	public ElectricSmelterScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+		super(AstromineScreenHandlers.ELECTRIC_SMELTER, syncId, player, position);
 
-		ElectricSmelterBlockEntity smelter = (ElectricSmelterBlockEntity) blockEntity;
+		smelter = (ElectricSmelterBlockEntity) blockEntity;
 	}
 
 
@@ -68,5 +66,9 @@ public class ElectricSmelterScreenHandler extends DefaultedEnergyItemScreenHandl
 		arrow.setProgressSupplier(() -> (int) smelter.progress);
 
 		output.setPosition(new Position(arrow.getPosition().getX() - 27, arrow.getPosition().getY()));
+
+		addWidget(input);
+		addWidget(output);
+		addWidget(arrow);
 	}
 }

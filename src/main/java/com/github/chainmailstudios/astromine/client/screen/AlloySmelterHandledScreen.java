@@ -25,16 +25,14 @@
 package com.github.chainmailstudios.astromine.client.screen;
 
 import com.github.chainmailstudios.astromine.client.screen.base.DefaultedEnergyItemHandledScreen;
-import com.github.chainmailstudios.astromine.common.block.entity.AlloySmelterBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.AlloySmelterScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyItemScreenHandler;
-import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
-import net.minecraft.entity.player.PlayerEntity;
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
 
 public class AlloySmelterHandledScreen extends DefaultedEnergyItemHandledScreen<AlloySmelterScreenHandler> {
-	public AlloySmelterHandledScreen(Text name, DefaultedEnergyItemScreenHandler linkedScreenHandler, PlayerEntity player) {
-		super(name, linkedScreenHandler, player);
+	public AlloySmelterHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
+		super(handler, inventory, title);
 	}
 }

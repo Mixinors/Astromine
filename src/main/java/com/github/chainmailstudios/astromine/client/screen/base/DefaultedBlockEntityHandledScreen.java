@@ -24,23 +24,10 @@
 
 package com.github.chainmailstudios.astromine.client.screen.base;
 
-import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.NameableComponent;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedBlockEntityScreenHandler;
-import com.github.chainmailstudios.astromine.common.widget.TransferTypeSelectorPanelUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
-import com.google.common.collect.Sets;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.text.Text;
-
-
-import java.util.Collection;
 
 public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScreenHandler> extends DefaultedHandledScreen<T> {
 	public DefaultedBlockEntityHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {

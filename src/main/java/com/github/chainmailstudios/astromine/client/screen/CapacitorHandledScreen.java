@@ -26,14 +26,13 @@ package com.github.chainmailstudios.astromine.client.screen;
 
 import com.github.chainmailstudios.astromine.client.screen.base.DefaultedEnergyItemHandledScreen;
 import com.github.chainmailstudios.astromine.common.screenhandler.CapacitorScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyItemScreenHandler;
-import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
-import net.minecraft.entity.player.PlayerEntity;
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
 
 public class CapacitorHandledScreen extends DefaultedEnergyItemHandledScreen<CapacitorScreenHandler> {
-	public CapacitorHandledScreen(Text name, DefaultedEnergyItemScreenHandler linkedScreenHandler, PlayerEntity player) {
-		super(name, linkedScreenHandler, player);
+	public CapacitorHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
+		super(handler, inventory, title);
 	}
 }

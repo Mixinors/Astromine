@@ -24,14 +24,8 @@
 
 package com.github.chainmailstudios.astromine.client.screen.base;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedBlockEntityScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyFluidScreenHandler;
-import com.github.chainmailstudios.astromine.common.widget.FluidVerticalBarWidget;
-import com.github.chainmailstudios.astromine.common.widget.EnergyVerticalBarWidget;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 

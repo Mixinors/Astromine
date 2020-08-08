@@ -24,19 +24,34 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler;
 
+import com.github.chainmailstudios.astromine.common.block.entity.LiquidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyFluidScreenHandler;
+import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
 import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.screen.ScreenHandlerType;
+import com.github.vini2003.blade.common.data.Position;
+import com.github.vini2003.blade.common.data.Size;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 public class LiquidGeneratorScreenHandler extends DefaultedEnergyFluidScreenHandler {
-	public LiquidGeneratorScreenHandler(int synchronizationID, PlayerInventory playerInventory, BlockPos blockPos) {
-		super(synchronizationID, playerInventory, blockPos);
+	private LiquidGeneratorBlockEntity generator;
+
+	public LiquidGeneratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+		super(AstromineScreenHandlers.LIQUID_GENERATOR, syncId, player, position);
+
+		generator = (LiquidGeneratorBlockEntity) blockEntity;
 	}
 
 	@Override
-	public ScreenHandlerType<?> getType() {
-		return AstromineScreenHandlers.LIQUID_GENERATOR;
+	public void initialize(int width, int height) {
+		super.initialize(width, height);
+
+		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
+		arrow.setPosition(new Position(fluidBar.getPosition().getX() + fluidBar.getSize().getWidth() + 7, fluidBar.getPosition().getY() + fluidBar.getSize().getHeight() / 2F - 8));
+		arrow.setSize(new Size(22, 16));
+		arrow.setLimitSupplier(() -> generator.limit);
+		arrow.setProgressSupplier(() -> (int) generator.current);
+
+		energyBar.setPosition(new Position(arrow.getPosition().getX() + arrow.getSize().getWidth() + 7, arrow.getPosition().getY() -energyBar.getSize().getHeight() / 2F + 8));
 	}
 }

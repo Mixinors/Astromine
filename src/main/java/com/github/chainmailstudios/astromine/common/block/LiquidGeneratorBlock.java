@@ -55,7 +55,7 @@ public abstract class LiquidGeneratorBlock extends TieredHorizontalFacingEnergyM
 
 		@Override
 		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-			return new LiquidGeneratorScreenHandler(syncId, playerInventory, pos);
+			return new LiquidGeneratorScreenHandler(syncId, playerInventory.player, pos);
 		}
 
 		@Override

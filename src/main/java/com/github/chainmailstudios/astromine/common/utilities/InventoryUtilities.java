@@ -24,16 +24,17 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
+import com.github.chainmailstudios.astromine.common.inventory.BaseInventory;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
-import spinnery.common.inventory.BaseInventory;
+
 
 import java.util.*;
 
-public class InventoryUtilities extends spinnery.common.utility.InventoryUtilities {
+public class InventoryUtilities {
 	@Environment(EnvType.CLIENT)
 	public static List<ItemStack> toList(Ingredient ingredient) {
 		return new ArrayList<ItemStack>() {

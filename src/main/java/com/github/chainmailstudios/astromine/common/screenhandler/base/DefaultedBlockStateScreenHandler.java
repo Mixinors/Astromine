@@ -27,11 +27,8 @@ package com.github.chainmailstudios.astromine.common.screenhandler.base;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
-
-import java.util.Collection;
 
 public abstract class DefaultedBlockStateScreenHandler extends BaseScreenHandler {
 	BlockState state;

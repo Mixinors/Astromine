@@ -81,9 +81,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
-import spinnery.widget.WAbstractWidget;
-import spinnery.widget.WInterface;
-import spinnery.widget.WSlot;
+
+
+
 import vazkii.patchouli.api.PatchouliAPI;
 
 import java.util.Collections;
@@ -162,20 +162,6 @@ public class AstromineREIPlugin implements REIPluginV0 {
 
 		DefaultPlugin.registerInfoDisplay(DefaultInformationDisplay.createFromEntry(EntryStack.create(PatchouliAPI.instance.getBookStack(AstromineCommon.identifier("manual"))).setting(EntryStack.Settings.CHECK_TAGS, EntryStack.Settings.TRUE), new TranslatableText(
 			"item.astromine.manual")).line(new TranslatableText("text.astromine.manual.obtain.info")));
-
-		recipeHelper.registerFocusedStackProvider(screen -> {
-			if (screen instanceof DefaultedHandledScreen) {
-				WInterface wInterface = ((DefaultedHandledScreen<?>) screen).getInterface();
-				for (WAbstractWidget widget : wInterface.getAllWidgets()) {
-					if (widget instanceof WSlot && widget.isFocused()) {
-						ItemStack stack = ((WSlot) widget).getStack();
-						if (stack != null && !stack.isEmpty())
-							return TypedActionResult.success(EntryStack.create(stack));
-					}
-				}
-			}
-			return TypedActionResult.pass(EntryStack.empty());
-		});
 	}
 
 	public static List<Widget> createEnergyDisplay(Rectangle bounds, double energy, boolean generating, long speed) {

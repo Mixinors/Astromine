@@ -55,7 +55,7 @@ public abstract class AlloySmelterBlock extends TieredHorizontalFacingEnergyMach
 
 		@Override
 		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-			return new AlloySmelterScreenHandler(syncId, playerInventory, pos);
+			return new AlloySmelterScreenHandler(syncId, playerInventory.player, pos);
 		}
 
 		@Override

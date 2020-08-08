@@ -54,7 +54,7 @@ public class CreativeBufferBlock extends MachineBlock {
 
 	@Override
 	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-		return new CreativeBufferScreenHandler(syncId, playerInventory, pos);
+		return new CreativeBufferScreenHandler(syncId, playerInventory.player, pos);
 	}
 
 	@Override

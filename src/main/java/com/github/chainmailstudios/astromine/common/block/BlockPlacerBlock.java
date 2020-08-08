@@ -60,7 +60,7 @@ public class BlockPlacerBlock extends HorizontalFacingEnergyMachineBlock {
 
 	@Override
 	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-		return new BlockPlacerScreenHandler(syncId, playerInventory, pos);
+		return new BlockPlacerScreenHandler(syncId, playerInventory.player, pos);
 	}
 
 	@Override

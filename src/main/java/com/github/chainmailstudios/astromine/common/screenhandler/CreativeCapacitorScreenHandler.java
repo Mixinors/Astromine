@@ -27,17 +27,10 @@ package com.github.chainmailstudios.astromine.common.screenhandler;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
 public class CreativeCapacitorScreenHandler extends DefaultedEnergyScreenHandler {
-	public CreativeCapacitorScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
-		super(type, syncId, player, position);
-	}
-
-	@Override
-	public void initialize(int width, int height) {
-		super.initialize(width, height);
+	public CreativeCapacitorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+		super(AstromineScreenHandlers.CREATIVE_CAPACITOR, syncId, player, position);
 	}
 }

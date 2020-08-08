@@ -24,23 +24,47 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler;
 
+import com.github.chainmailstudios.astromine.common.block.entity.PresserBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyItemScreenHandler;
+import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
 import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.screen.ScreenHandlerType;
+import com.github.vini2003.blade.common.data.Position;
+import com.github.vini2003.blade.common.data.Size;
+import com.github.vini2003.blade.common.widget.base.SlotWidget;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
-import spinnery.widget.WSlot;
 
 public class PresserScreenHandler extends DefaultedEnergyItemScreenHandler {
-	public PresserScreenHandler(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
-		super(synchronizationID, playerInventory, position);
+	private PresserBlockEntity sorter;
 
-		getInterface().createChild(WSlot::new).setInventoryNumber(1).setSlotNumber(0);
-		getInterface().createChild(WSlot::new).setInventoryNumber(1).setSlotNumber(1);
+	public PresserScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+		super(AstromineScreenHandlers.PRESSER, syncId, player, position);
+
+		sorter = (PresserBlockEntity) blockEntity;
 	}
 
 	@Override
-	public ScreenHandlerType<?> getType() {
-		return AstromineScreenHandlers.PRESSER;
+	public void initialize(int width, int height) {
+		super.initialize(width, height);
+
+		SlotWidget input = new SlotWidget(0, blockEntity);
+		input.setPosition(new Position(energyBar.getPosition().getX(), energyBar.getPosition().getY()));
+		input.setSize(new Size(18, 18));
+
+		SlotWidget output = new SlotWidget(1, blockEntity);
+		input.setPosition(new Position(energyBar.getPosition().getX(), energyBar.getPosition().getY()));
+		input.setSize(new Size(18, 18));
+
+		input.setPosition(new Position(width / 2F - input.getSize().getWidth() / 2F, input.getPosition().getY()));
+		input.setPosition(new Position(input.getPosition().getX() + 29, input.getPosition().getY() + 15));
+
+		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
+		arrow.setPosition(new Position(input.getPosition().getX() - 31, input.getPosition().getY()));
+		arrow.setSize(new Size(22, 16));
+		arrow.setLimitSupplier(() -> sorter.limit);
+		arrow.setProgressSupplier(() -> (int) sorter.progress);
+
+		output.setPosition(new Position(width / 2F - output.getSize().getWidth() / 2F, output.getPosition().getY()));
+		output.setPosition(new Position(arrow.getPosition().getX() - 27, arrow.getPosition().getY()));
 	}
 }
