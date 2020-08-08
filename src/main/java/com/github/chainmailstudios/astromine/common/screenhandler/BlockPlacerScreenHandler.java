@@ -45,6 +45,6 @@ public class BlockPlacerScreenHandler extends DefaultedEnergyItemScreenHandler {
 		slot.setPosition(new Position(mainTab.getPosition().getX() + mainTab.getSize().getWidth() / 2F - 9F, mainTab.getPosition().getY() + 35));
 		slot.setSize(new Size(18, 18));
 
-		addWidget(slot);
+		mainTab.addWidget(slot);
 	}
 }

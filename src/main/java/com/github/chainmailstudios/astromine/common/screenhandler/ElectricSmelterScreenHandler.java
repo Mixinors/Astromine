@@ -67,8 +67,8 @@ public class ElectricSmelterScreenHandler extends DefaultedEnergyItemScreenHandl
 
 		output.setPosition(new Position(arrow.getPosition().getX() - 27, arrow.getPosition().getY()));
 
-		addWidget(input);
-		addWidget(output);
-		addWidget(arrow);
+		mainTab.addWidget(input);
+		mainTab.addWidget(output);
+		mainTab.addWidget(arrow);
 	}
 }

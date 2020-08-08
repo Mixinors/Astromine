@@ -58,5 +58,8 @@ public class SolidGeneratorScreenHandler extends DefaultedEnergyItemScreenHandle
 		arrow.setProgressSupplier(() -> (int) generator.current);
 
 		energyBar.setPosition(new Position(arrow.getPosition().getX() + 29, arrow.getPosition().getY() - energyBar.getSize().getHeight() / 2 + 8));
+
+		mainTab.addWidget(input);
+		mainTab.addWidget(arrow);
 	}
 }

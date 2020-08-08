@@ -75,9 +75,9 @@ public class AlloySmelterScreenHandler extends DefaultedEnergyItemScreenHandler 
 		arrow.setLimitSupplier(() -> smelter.limit);
 		arrow.setProgressSupplier(() -> (int) smelter.progress);
 
-		addWidget(firstInput);
-		addWidget(secondInput);
-		addWidget(output);
-		addWidget(arrow);
+		mainTab.addWidget(firstInput);
+		mainTab.addWidget(secondInput);
+		mainTab.addWidget(output);
+		mainTab.addWidget(arrow);
 	}
 }

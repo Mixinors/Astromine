@@ -47,6 +47,6 @@ public class CreativeBufferScreenHandler extends DefaultedItemScreenHandler {
 		slot.setPosition(new Position(mainTab.getPosition().getX(), mainTab.getPosition().getY() + 22));
 		slot.setSize(new Size(36, 36));
 
-		addWidget(slot);
+		mainTab.addWidget(slot);
 	}
 }

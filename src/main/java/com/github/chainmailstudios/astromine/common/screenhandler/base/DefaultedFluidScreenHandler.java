@@ -54,6 +54,6 @@ public class DefaultedFluidScreenHandler extends DefaultedBlockEntityScreenHandl
 		fluidBar.setSize(new Size(24F, 28F));
 		fluidBar.setVolume(() -> blockEntity.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(0));
 
-		addWidget(fluidBar);
+		mainTab.addWidget(fluidBar);
 	}
 }

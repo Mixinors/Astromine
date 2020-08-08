@@ -67,8 +67,8 @@ public class FluidMixerScreenHandler extends DefaultedEnergyFluidScreenHandler {
 		outputFluidBar.setSize(new Size(fluidBar.getSize().getWidth(), fluidBar.getSize().getHeight()));
 		outputFluidBar.setVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(2));
 
-		addWidget(secondInputFluidBar);
-		addWidget(arrow);
-		addWidget(outputFluidBar);
+		mainTab.addWidget(secondInputFluidBar);
+		mainTab.addWidget(arrow);
+		mainTab.addWidget(outputFluidBar);
 	}
 }

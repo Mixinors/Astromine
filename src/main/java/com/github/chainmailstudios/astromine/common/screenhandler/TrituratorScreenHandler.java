@@ -66,5 +66,9 @@ public class TrituratorScreenHandler extends DefaultedEnergyItemScreenHandler {
 
 		output.setPosition(new Position(width / 2F - output.getSize().getWidth() / 2F, output.getPosition().getY()));
 		output.setPosition(new Position(arrow.getPosition().getX() - 27, arrow.getPosition().getY()));
+
+		mainTab.addWidget(input);
+		mainTab.addWidget(output);
+		mainTab.addWidget(arrow);
 	}
 }

@@ -51,7 +51,7 @@ public class CapacitorScreenHandler extends DefaultedEnergyItemScreenHandler {
 		output.setPosition(new Position(mainTab.getPosition().getX() + 146, mainTab.getPosition().getY() + 36));
 		output.setSize(new Size(18, 18));
 
-		addWidget(input);
-		addWidget(output);
+		mainTab.addWidget(input);
+		mainTab.addWidget(output);
 	}
 }

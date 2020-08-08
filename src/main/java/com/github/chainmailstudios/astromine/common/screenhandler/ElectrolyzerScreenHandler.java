@@ -69,8 +69,8 @@ public class ElectrolyzerScreenHandler extends DefaultedEnergyFluidScreenHandler
 		arrow.setLimitSupplier(() -> electrolyzer.limit);
 		arrow.setProgressSupplier(() -> (int) electrolyzer.current);
 
-		addWidget(firstOutputFluidBar);
-		addWidget(secondOutputFluidBar);
-		addWidget(arrow);
+		mainTab.addWidget(firstOutputFluidBar);
+		mainTab.addWidget(secondOutputFluidBar);
+		mainTab.addWidget(arrow);
 	}
 }

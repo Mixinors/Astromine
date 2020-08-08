@@ -231,10 +231,6 @@ public class BaseRenderer {
 		consumer.vertex(matrices.peek().getModel(), x + sX, y, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(u1, v0).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrices.peek().getNormal(), 0, 0, 0).next();
 		consumer.vertex(matrices.peek().getModel(), x, y, 0).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(u0, v0).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrices.peek().getNormal(), 0, 0, 0).next();
 
-		if (provider instanceof VertexConsumerProvider.Immediate) {
-			((VertexConsumerProvider.Immediate) provider).draw();
-		}
-
 		matrices.pop();
 	}
 

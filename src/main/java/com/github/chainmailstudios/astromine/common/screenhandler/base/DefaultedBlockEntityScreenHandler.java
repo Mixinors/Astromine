@@ -75,8 +75,12 @@ public abstract class DefaultedBlockEntityScreenHandler extends BaseScreenHandle
 		addWidget(tabs);
 
 		mainTab = (com.github.vini2003.blade.common.data.widget.Collection) tabs.addTab(syncBlockEntity.getCachedState().getBlock().asItem());
+		mainTab.setPosition(new Position(tabs.getPosition().getX(), tabs.getPosition().getY() + 25F + 7F));
+		mainTab.setSize(new Size(176F, 184F));
+		mainTab.setOriginal(this);
+		mainTab.setParent(tabs);
 
-		playerSlots = Slots.addPlayerInventory(new Position(() -> tabs.getPosition().getX() + 7F, () -> tabs.getPosition().getY() + 25F + 7F + (184 / 2 - 18 - 11 - (18 * 3))), new Size(() -> 18F, () -> 18F), tabs, getPlayer().inventory);
+		playerSlots = Slots.addPlayerInventory(new Position(() -> tabs.getPosition().getX() + 7F, () -> tabs.getPosition().getY() + 25F + 7F + (184 - 18 - 18 - (18 * 3))), new Size(() -> 18F, () -> 18F), mainTab, getPlayer().inventory);
 
 		ComponentProvider componentProvider = ComponentProvider.fromBlockEntity(syncBlockEntity);
 
@@ -97,8 +101,10 @@ public abstract class DefaultedBlockEntityScreenHandler extends BaseScreenHandle
 			if (componentProvider.getComponent(type) instanceof NameableComponent) {
 				NameableComponent nameableComponent = (NameableComponent) componentProvider.getComponent(type);
 				com.github.vini2003.blade.common.data.widget.Collection current = (com.github.vini2003.blade.common.data.widget.Collection) tabs.addTab(nameableComponent.getSymbol(), () -> Lists.newArrayList(nameableComponent.getName()));
-				TransferTypeSelectorPanelUtilities.createTab(current, new Position(tabs.getPosition().getX() + tabs.getSize().getWidth() / 2 - 38, 0), finalRotation, transferComponent, syncBlockEntity.getPos(), type);
-				playerSlots.addAll(Slots.addPlayerInventory(new Position(() -> tabs.getPosition().getX() + 7F, () -> tabs.getPosition().getY() + 25F + 7F + (184 / 2 - 18 - 11 - (18 * 3))), new Size(() -> 18F, () -> 18F), current, getPlayer().inventory));
+				current.setOriginal(this);
+				current.setParent(tabs);
+				TransferTypeSelectorPanelUtilities.createTab(current, new Position(tabs.getPosition().getX() + tabs.getSize().getWidth() / 2 - 38, tabs.getPosition().getY() + 25F + 7F), finalRotation, transferComponent, syncBlockEntity.getPos(), type);
+				playerSlots.addAll(Slots.addPlayerInventory(new Position(() -> tabs.getPosition().getX() + 7F, () -> tabs.getPosition().getY() + 25F + 7F + (184 - 18 - 18 - (18 * 3))), new Size(() -> 18F, () -> 18F), current, getPlayer().inventory));
 			}
 		});
 	}

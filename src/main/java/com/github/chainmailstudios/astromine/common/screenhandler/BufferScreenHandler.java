@@ -57,6 +57,6 @@ public class BufferScreenHandler extends DefaultedItemScreenHandler {
 		slotList.setPosition(new Position(mainTab.getPosition().getX() + leftPadding, mainTab.getPosition().getY() + topPadding));
 		slotList.setSize(new Size(slotWidth, slotHeight));
 
-		addWidget(slotList);
+		mainTab.addWidget(slotList);
 	}
 }

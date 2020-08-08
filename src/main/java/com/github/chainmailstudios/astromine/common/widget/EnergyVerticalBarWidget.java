@@ -72,17 +72,17 @@ public class EnergyVerticalBarWidget extends AbstractWidget {
 
 		EnergyVolume volume = volumeSupplier.get();
 
-		float sBGX = (float) (sX / volume.getMaxAmount() * volume.getAmount());
+		float sBGY = (float) (sY / volume.getMaxAmount() * volume.getAmount());
 
 		Scissors area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - (y + sY) * scale), (int) (sX * scale), (int) (sY * scale));
 
-		BaseRenderer.drawTexturedQuad(matrices, provider, Layers.flat(), x, y, sX, sY, ENERGY_BACKGROUND);
+		BaseRenderer.drawTexturedQuad(matrices, provider, Layers.get(ENERGY_BACKGROUND), x, y, sX, sY, ENERGY_BACKGROUND);
 
 		area.destroy(provider);
 
-		area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - (y + sY) * scale), (int) (sBGX * scale), (int) (sY * scale));
+		area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - (y + sY) * scale), (int) (sBGY * scale), (int) (sY * scale));
 
-		BaseRenderer.drawTexturedQuad(matrices, provider, Layers.flat(), x, y, sX, sY, ENERGY_FOREGROUND);
+		BaseRenderer.drawTexturedQuad(matrices, provider, Layers.get(ENERGY_FOREGROUND), x, y, sX, sY, ENERGY_FOREGROUND);
 
 		area.destroy(provider);
 	}
