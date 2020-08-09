@@ -34,6 +34,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import com.github.vini2003.blade.common.data.Slots;
+import com.github.vini2003.blade.common.data.widget.TabCollection;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import com.github.vini2003.blade.common.widget.base.TabWidget;
@@ -53,7 +54,7 @@ public abstract class DefaultedBlockEntityScreenHandler extends BaseScreenHandle
 
 	public Collection<SlotWidget> playerSlots = new HashSet<>();
 
-	public com.github.vini2003.blade.common.data.widget.Collection mainTab;
+	public TabCollection mainTab;
 
 	public DefaultedBlockEntityScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player);
@@ -74,13 +75,11 @@ public abstract class DefaultedBlockEntityScreenHandler extends BaseScreenHandle
 
 		addWidget(tabs);
 
-		mainTab = (com.github.vini2003.blade.common.data.widget.Collection) tabs.addTab(syncBlockEntity.getCachedState().getBlock().asItem());
-		mainTab.setPosition(new Position(tabs.getPosition().getX(), tabs.getPosition().getY() + 25F + 7F));
+		mainTab = (TabCollection) tabs.addTab(syncBlockEntity.getCachedState().getBlock().asItem());
+		mainTab.setPosition(new Position(tabs.getX(), tabs.getY() + 25F + 7F));
 		mainTab.setSize(new Size(176F, 184F));
-		mainTab.setOriginal(this);
-		mainTab.setParent(tabs);
 
-		playerSlots = Slots.addPlayerInventory(new Position(() -> tabs.getPosition().getX() + 7F, () -> tabs.getPosition().getY() + 25F + 7F + (184 - 18 - 18 - (18 * 3))), new Size(() -> 18F, () -> 18F), mainTab, getPlayer().inventory);
+		playerSlots = Slots.addPlayerInventory(new Position(() -> tabs.getX() + 7F, () -> tabs.getY() + 25F + 7F + (184 - 18 - 18 - (18 * 3))), new Size(() -> 18F, () -> 18F), mainTab, getPlayer().inventory);
 
 		ComponentProvider componentProvider = ComponentProvider.fromBlockEntity(syncBlockEntity);
 
@@ -100,11 +99,9 @@ public abstract class DefaultedBlockEntityScreenHandler extends BaseScreenHandle
 		transferComponent.get().forEach((type, entry) -> {
 			if (componentProvider.getComponent(type) instanceof NameableComponent) {
 				NameableComponent nameableComponent = (NameableComponent) componentProvider.getComponent(type);
-				com.github.vini2003.blade.common.data.widget.Collection current = (com.github.vini2003.blade.common.data.widget.Collection) tabs.addTab(nameableComponent.getSymbol(), () -> Lists.newArrayList(nameableComponent.getName()));
-				current.setOriginal(this);
-				current.setParent(tabs);
-				TransferTypeSelectorPanelUtilities.createTab(current, new Position(tabs.getPosition().getX() + tabs.getSize().getWidth() / 2 - 38, tabs.getPosition().getY() + 25F + 7F), finalRotation, transferComponent, syncBlockEntity.getPos(), type);
-				playerSlots.addAll(Slots.addPlayerInventory(new Position(() -> tabs.getPosition().getX() + 7F, () -> tabs.getPosition().getY() + 25F + 7F + (184 - 18 - 18 - (18 * 3))), new Size(() -> 18F, () -> 18F), current, getPlayer().inventory));
+				TabCollection current = (TabCollection) tabs.addTab(nameableComponent.getSymbol(), () -> Lists.newArrayList(nameableComponent.getName()));
+				TransferTypeSelectorPanelUtilities.createTab(current, new Position(tabs.getX() + tabs.getWidth() / 2 - 38, tabs.getY() + 7F + 12F), finalRotation, transferComponent, syncBlockEntity.getPos(), type);
+				playerSlots.addAll(Slots.addPlayerInventory(new Position(() -> tabs.getX() + 7F, () -> tabs.getY() + 25F + 7F + (184 - 18 - 18 - (18 * 3))), new Size(() -> 18F, () -> 18F), current, getPlayer().inventory));
 			}
 		});
 	}

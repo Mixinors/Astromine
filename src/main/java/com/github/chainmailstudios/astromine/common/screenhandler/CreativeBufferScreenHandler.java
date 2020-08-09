@@ -44,7 +44,7 @@ public class CreativeBufferScreenHandler extends DefaultedItemScreenHandler {
 		super.initialize(width, height);
 
 		SlotWidget slot = new SlotWidget(0, ItemInventoryFromInventoryComponent.of(blockEntity.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)));
-		slot.setPosition(new Position(mainTab.getPosition().getX(), mainTab.getPosition().getY() + 22));
+		slot.setPosition(new Position(mainTab.getX(), mainTab.getY() + 22));
 		slot.setSize(new Size(36, 36));
 
 		mainTab.addWidget(slot);

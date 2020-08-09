@@ -42,7 +42,7 @@ public class BlockBreakerScreenHandler extends DefaultedEnergyItemScreenHandler 
 		super.initialize(width, height);
 
 		SlotWidget slot = new SlotWidget(0, blockEntity);
-		slot.setPosition(new Position(mainTab.getPosition().getX() + mainTab.getSize().getWidth() / 2F - 9F, mainTab.getPosition().getY() + 35));
+		slot.setPosition(new Position(mainTab.getX() + mainTab.getWidth() / 2F - 9F, mainTab.getY() + 35));
 		slot.setSize(new Size(18, 18));
 
 		mainTab.addWidget(slot);

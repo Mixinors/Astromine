@@ -48,16 +48,16 @@ public class SolidGeneratorScreenHandler extends DefaultedEnergyItemScreenHandle
 		super.initialize(width, height);
 
 		SlotWidget input = new SlotWidget(0, blockEntity);
-		input.setPosition(new Position(mainTab.getPosition().getX() + 7, mainTab.getPosition().getY() + energyBar.getSize().getHeight() / 2F - 12));
+		input.setPosition(new Position(mainTab.getX() + 7, mainTab.getY() + energyBar.getHeight() / 2F + 12));
 		input.setSize(new Size(18, 18));
 
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
-		arrow.setPosition(new Position(input.getPosition().getX() + 31, input.getPosition().getY()));
+		arrow.setPosition(new Position(input.getX() + 31, input.getY()));
 		arrow.setSize(new Size(22, 16));
 		arrow.setLimitSupplier(() -> generator.limit);
 		arrow.setProgressSupplier(() -> (int) generator.current);
 
-		energyBar.setPosition(new Position(arrow.getPosition().getX() + 29, arrow.getPosition().getY() - energyBar.getSize().getHeight() / 2 + 8));
+		energyBar.setPosition(new Position(arrow.getX() + 29, arrow.getY() - energyBar.getHeight() / 2 + 8));
 
 		mainTab.addWidget(input);
 		mainTab.addWidget(arrow);

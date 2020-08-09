@@ -48,14 +48,14 @@ public class BufferScreenHandler extends DefaultedItemScreenHandler {
 		super.initialize(width, height);
 
 		int slotWidth = 9 * 18 + (9 * 2) + 7;
-		int slotHeight = 6 * 18;
+		int slotHeight = 4 * 18;
 
-		int leftPadding = 6;
-		int topPadding = 6 + 12;
+		int leftPadding = 7;
+		int topPadding = 10;
 
 		SlotListWidget slotList = new SlotListWidget(ItemInventoryFromInventoryComponent.of(blockEntity.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)));
-		slotList.setPosition(new Position(mainTab.getPosition().getX() + leftPadding, mainTab.getPosition().getY() + topPadding));
-		slotList.setSize(new Size(slotWidth, slotHeight));
+		slotList.setPosition(new Position(mainTab.getX() + leftPadding, mainTab.getY() + topPadding));
+		slotList.setSize(new Size(slotWidth - 25, slotHeight));
 
 		mainTab.addWidget(slotList);
 	}

@@ -49,23 +49,23 @@ public class ElectricSmelterScreenHandler extends DefaultedEnergyItemScreenHandl
 		super.initialize(width, height);
 
 		SlotWidget input = new SlotWidget(0, smelter);
-		input.setPosition(new Position(energyBar.getPosition().getX(), energyBar.getPosition().getY()));
+		input.setPosition(new Position(energyBar.getX(), energyBar.getY()));
 		input.setSize(new Size(18, 18));
 
 		SlotWidget output = new SlotWidget(1, smelter);
-		output.setPosition(new Position(energyBar.getPosition().getX(), energyBar.getPosition().getY()));
+		output.setPosition(new Position(energyBar.getX(), energyBar.getY()));
 		output.setSize(new Size(18, 18));
 
-		input.setPosition(new Position(width / 2F - input.getSize().getWidth() / 2F, input.getPosition().getY()));
-		input.setPosition(new Position(input.getPosition().getX() + 29, input.getPosition().getY() + 15));
+		input.setPosition(new Position(width / 2F - input.getWidth() / 2F, input.getY()));
+		input.setPosition(new Position(input.getX() + 29, input.getY() + 15));
 
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
-		arrow.setPosition(new Position(input.getPosition().getX() - 31, output.getPosition().getY()));
+		arrow.setPosition(new Position(input.getX() - 31, output.getY() + 15));
 		arrow.setSize(new Size(22, 16));
 		arrow.setLimitSupplier(() -> smelter.limit);
 		arrow.setProgressSupplier(() -> (int) smelter.progress);
 
-		output.setPosition(new Position(arrow.getPosition().getX() - 27, arrow.getPosition().getY()));
+		output.setPosition(new Position(arrow.getX() - 27, arrow.getY()));
 
 		mainTab.addWidget(input);
 		mainTab.addWidget(output);

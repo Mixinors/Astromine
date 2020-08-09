@@ -48,29 +48,29 @@ public class AlloySmelterScreenHandler extends DefaultedEnergyItemScreenHandler 
 		super.initialize(width, height);
 
 		SlotWidget firstInput = new SlotWidget(0, smelter);
-		firstInput.setPosition(new Position(energyBar.getPosition().getX(), energyBar.getPosition().getY()));
+		firstInput.setPosition(new Position(energyBar.getX(), energyBar.getY()));
 		firstInput.setSize(new Size(18, 18));
 
 		SlotWidget secondInput = new SlotWidget(1, smelter);
-		secondInput.setPosition(new Position(energyBar.getPosition().getX(), energyBar.getPosition().getY()));
+		secondInput.setPosition(new Position(energyBar.getX(), energyBar.getY()));
 		secondInput.setSize(new Size(18, 18));
 
 		SlotWidget output = new SlotWidget(2, smelter);
-		output.setPosition(new Position(energyBar.getPosition().getX(), energyBar.getPosition().getY()));
+		output.setPosition(new Position(energyBar.getX(), energyBar.getY()));
 		output.setSize(new Size(18, 18));
 
-		firstInput.setPosition(new Position(width / 2F - firstInput.getSize().getWidth() / 2, firstInput.getPosition().getY()));
-		firstInput.setPosition(new Position(firstInput.getPosition().getX() - 22, firstInput.getPosition().getY() + 15 - 9));
+		firstInput.setPosition(new Position(width / 2F - firstInput.getWidth() / 2, firstInput.getY()));
+		firstInput.setPosition(new Position(firstInput.getX() - 22, firstInput.getY() + 15 - 9));
 
 
-		secondInput.setPosition(new Position(width / 2F - secondInput.getSize().getWidth() / 2, secondInput.getPosition().getY()));
-		secondInput.setPosition(new Position(secondInput.getPosition().getX() - 22, secondInput.getPosition().getY() + 15 + 18 - 9));
+		secondInput.setPosition(new Position(width / 2F - secondInput.getWidth() / 2, secondInput.getY()));
+		secondInput.setPosition(new Position(secondInput.getX() - 22, secondInput.getY() + 15 + 18 - 9));
 
-		output.setPosition(new Position(width / 2F - output.getSize().getWidth() / 2, output.getPosition().getY()));
-		output.setPosition(new Position(secondInput.getPosition().getX() + 57, secondInput.getPosition().getY() -9));
+		output.setPosition(new Position(width / 2F - output.getWidth() / 2, output.getY()));
+		output.setPosition(new Position(secondInput.getX() + 57, secondInput.getY() -9));
 
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
-		arrow.setPosition(new Position(output.getPosition().getX() - 31, output.getPosition().getY()));
+		arrow.setPosition(new Position(output.getX() - 31, output.getY()));
 		arrow.setSize(new Size(22, 16));
 		arrow.setLimitSupplier(() -> smelter.limit);
 		arrow.setProgressSupplier(() -> (int) smelter.progress);

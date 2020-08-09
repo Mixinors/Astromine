@@ -52,19 +52,19 @@ public class FluidMixerScreenHandler extends DefaultedEnergyFluidScreenHandler {
 		ComponentProvider componentProvider = blockEntity;
 
 		FluidVerticalBarWidget secondInputFluidBar = new FluidVerticalBarWidget();
-		secondInputFluidBar.setPosition(new Position(fluidBar.getPosition().getX() + fluidBar.getSize().getWidth() + 4, fluidBar.getPosition().getY()));
-		secondInputFluidBar.setSize(new Size(fluidBar.getSize().getWidth(), fluidBar.getSize().getHeight()));
+		secondInputFluidBar.setPosition(new Position(fluidBar.getX() + fluidBar.getWidth() + 7, fluidBar.getY()));
+		secondInputFluidBar.setSize(new Size(fluidBar.getWidth(), fluidBar.getHeight()));
 		secondInputFluidBar.setVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(1));
 
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
-		arrow.setPosition(new Position(secondInputFluidBar.getPosition().getX() + secondInputFluidBar.getSize().getWidth() + 9, secondInputFluidBar.getPosition().getY() + secondInputFluidBar.getSize().getHeight() / 2F - 8));
+		arrow.setPosition(new Position(secondInputFluidBar.getX() + secondInputFluidBar.getWidth() + 9, secondInputFluidBar.getY() + secondInputFluidBar.getHeight() / 2F - 8));
 		arrow.setSize(new Size(22, 16));
 		arrow.setLimitSupplier(() -> mixer.limit);
 		arrow.setProgressSupplier(() -> (int) mixer.current);
 
 		FluidVerticalBarWidget outputFluidBar = new FluidVerticalBarWidget();
-		outputFluidBar.setPosition(new Position(arrow.getPosition().getX() + arrow.getSize().getWidth() + 7, arrow.getPosition().getY() -secondInputFluidBar.getSize().getHeight() / 2F + 8));
-		outputFluidBar.setSize(new Size(fluidBar.getSize().getWidth(), fluidBar.getSize().getHeight()));
+		outputFluidBar.setPosition(new Position(arrow.getX() + arrow.getWidth() + 7, arrow.getY() -secondInputFluidBar.getHeight() / 2F + 8));
+		outputFluidBar.setSize(new Size(fluidBar.getWidth(), fluidBar.getHeight()));
 		outputFluidBar.setVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(2));
 
 		mainTab.addWidget(secondInputFluidBar);

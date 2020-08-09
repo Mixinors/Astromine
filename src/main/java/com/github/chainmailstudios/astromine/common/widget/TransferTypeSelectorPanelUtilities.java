@@ -28,7 +28,7 @@ import com.github.chainmailstudios.astromine.common.component.block.entity.Block
 import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
-import com.github.vini2003.blade.common.data.widget.Collection;
+import com.github.vini2003.blade.common.data.widget.TabCollection;
 import com.google.common.collect.ImmutableMap;
 import nerdhub.cardinal.components.api.ComponentType;
 import net.fabricmc.api.EnvType;
@@ -38,7 +38,7 @@ import net.minecraft.util.math.Direction;
 
 @Environment(EnvType.CLIENT)
 public class TransferTypeSelectorPanelUtilities {
-	public static void createTab(Collection tab, Position anchor, Direction rotation, BlockEntityTransferComponent component, BlockPos blockPos, ComponentType<?> type) {
+	public static void createTab(TabCollection tab, Position anchor, Direction rotation, BlockEntityTransferComponent component, BlockPos blockPos, ComponentType<?> type) {
 		final Position finalNorth = new Position(anchor.getX() + 7 + 22, anchor.getY() + 31 + 22);
 		final Position finalSouth = new Position(anchor.getX() + 7 + 0, anchor.getY() + 31 + 44);
 		final Position finalUp = new Position(anchor.getX() + 7 + 22, anchor.getY() + 31 + 0);

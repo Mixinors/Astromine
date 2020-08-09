@@ -41,14 +41,14 @@ public class CapacitorScreenHandler extends DefaultedEnergyItemScreenHandler {
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		energyBar.setPosition(new Position(width / 2F - energyBar.getSize().getWidth() / 2F, energyBar.getPosition().getY()));
+		energyBar.setPosition(new Position(width / 2F - energyBar.getWidth() / 2F, energyBar.getY()));
 
 		SlotWidget input = new SlotWidget(0, blockEntity);
-		input.setPosition(new Position(mainTab.getPosition().getX() + 12, mainTab.getPosition().getY() + 36));
+		input.setPosition(new Position(mainTab.getX() + 12, mainTab.getY() + 36));
 		input.setSize(new Size(18, 18));
 
 		SlotWidget output = new SlotWidget(1, blockEntity);
-		output.setPosition(new Position(mainTab.getPosition().getX() + 146, mainTab.getPosition().getY() + 36));
+		output.setPosition(new Position(mainTab.getX() + 146, mainTab.getY() + 36));
 		output.setSize(new Size(18, 18));
 
 		mainTab.addWidget(input);

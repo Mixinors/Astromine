@@ -48,7 +48,7 @@ public class DefaultedEnergyScreenHandler extends DefaultedBlockEntityScreenHand
 		super.initialize(width, height);
 
 		energyBar = new EnergyVerticalBarWidget();
-		energyBar.setPosition(new Position(mainTab.getPosition().getX() + 7F, mainTab.getPosition().getY() + 20F));
+		energyBar.setPosition(new Position(mainTab.getX() + 7F, mainTab.getY() + 20F));
 		energyBar.setSize(new Size(24F, 48F));
 		energyBar.setVolume(blockEntity::getEnergyVolume);
 

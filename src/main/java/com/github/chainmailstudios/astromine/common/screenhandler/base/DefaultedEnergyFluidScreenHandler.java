@@ -51,13 +51,13 @@ public class DefaultedEnergyFluidScreenHandler extends DefaultedBlockEntityScree
 		super.initialize(width, height);
 
 		energyBar = new EnergyVerticalBarWidget();
-		energyBar.setPosition(new Position(mainTab.getPosition().getX() + 7, mainTab.getPosition().getY() + 20));
+		energyBar.setPosition(new Position(mainTab.getX() + 7, mainTab.getY() + 20));
 		energyBar.setSize(new Size(24, 48));
 		energyBar.setVolume(blockEntity::getEnergyVolume);
 
 		fluidBar = new FluidVerticalBarWidget();
-		fluidBar.setPosition(new Position(energyBar.getPosition().getX() + energyBar.getSize().getWidth() + 4, energyBar.getPosition().getY()));
-		fluidBar.setSize(new Size(energyBar.getSize().getWidth(), energyBar.getSize().getHeight()));
+		fluidBar.setPosition(new Position(energyBar.getX() + energyBar.getWidth() + 7, energyBar.getY()));
+		fluidBar.setSize(new Size(energyBar.getWidth(), energyBar.getHeight()));
 		fluidBar.setVolume(() -> blockEntity.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(0));
 
 		mainTab.addWidget(energyBar);

@@ -50,8 +50,8 @@ public class DefaultedFluidScreenHandler extends DefaultedBlockEntityScreenHandl
 		super.initialize(width, height);
 
 		fluidBar = new FluidVerticalBarWidget();
-		fluidBar.setPosition(new Position(mainTab.getPosition().getX() + 7F, mainTab.getPosition().getY() + 20F));
-		fluidBar.setSize(new Size(24F, 28F));
+		fluidBar.setPosition(new Position(mainTab.getX() + 7F, mainTab.getY() + 20F));
+		fluidBar.setSize(new Size(24F, 48F));
 		fluidBar.setVolume(() -> blockEntity.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(0));
 
 		mainTab.addWidget(fluidBar);
