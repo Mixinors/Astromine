@@ -83,11 +83,11 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 		if ((int) entity.getPos().getY() != lastY && !entity.world.isClient && entity.getVehicle() == null) {
 			lastY = (int) entity.getPos().getY();
 
-			int bottomPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.BOTTOM, entity.world.getDimensionRegistryKey());
-			int topPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.TOP, entity.world.getDimensionRegistryKey());
+			int bottomPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey());
+			int topPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey());
 
 			if (lastY <= bottomPortal && bottomPortal != Integer.MIN_VALUE) {
-				RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.BOTTOM, entity.world.getDimensionRegistryKey()).getValue());
+				RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey()).getValue());
 
 				ServerWorld serverWorld = entity.world.getServer().getWorld(worldKey);
 
@@ -98,7 +98,7 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 					entries.add(entry.copy());
 				}
 
-				Entity newEntity = FabricDimensions.teleport(entity, serverWorld, DimensionLayerRegistry.INSTANCE.getPlacer(DimensionLayerRegistry.Type.BOTTOM, entity.world.getDimensionRegistryKey()));
+				Entity newEntity = FabricDimensions.teleport(entity, serverWorld, DimensionLayerRegistry.INSTANCE.getPlacer(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey()));
 
 				for (DataTracker.Entry entry : entries) {
 					newEntity.getDataTracker().set(entry.getData(), entry.get());
@@ -108,7 +108,7 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 					((EntityAccess) existingEntity).astromine_setLastVehicle(newEntity);
 				}
 			} else if (lastY >= topPortal && topPortal != Integer.MIN_VALUE) {
-				RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.TOP, entity.world.getDimensionRegistryKey()).getValue());
+				RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey()).getValue());
 
 				ServerWorld serverWorld = entity.world.getServer().getWorld(worldKey);
 
@@ -119,7 +119,7 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 					entries.add(entry.copy());
 				}
 
-				Entity newEntity = FabricDimensions.teleport(entity, serverWorld, DimensionLayerRegistry.INSTANCE.getPlacer(DimensionLayerRegistry.Type.TOP, entity.world.getDimensionRegistryKey()));
+				Entity newEntity = FabricDimensions.teleport(entity, serverWorld, DimensionLayerRegistry.INSTANCE.getPlacer(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey()));
 
 				for (DataTracker.Entry entry : entries) {
 					newEntity.getDataTracker().set(entry.getData(), entry.get());

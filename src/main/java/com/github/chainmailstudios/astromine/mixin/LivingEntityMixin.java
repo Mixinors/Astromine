@@ -82,7 +82,7 @@ public abstract class LivingEntityMixin implements GravityEntity {
 	void onTick(CallbackInfo callbackInformation) {
 		Entity entity = (Entity) (Object) this;
 
-		if (AtmosphereRegistry.INSTANCE.containsKey(entity.world.getDimensionRegistryKey()) && !entity.getType().isIn(AstromineTags.DOES_NOT_BREATHE)) {
+		if (AtmosphereRegistry.INSTANCE.containsKey(entity.world.getRegistryKey()) && !entity.getType().isIn(AstromineTags.DOES_NOT_BREATHE)) {
 			ComponentProvider worldProvider = ComponentProvider.fromWorld(entity.world);
 
 			WorldAtmosphereComponent atmosphereComponent = worldProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);

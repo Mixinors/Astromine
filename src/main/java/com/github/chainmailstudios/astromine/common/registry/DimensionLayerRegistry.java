@@ -27,6 +27,7 @@ package com.github.chainmailstudios.astromine.common.registry;
 import net.fabricmc.fabric.api.dimension.v1.EntityPlacer;
 import net.minecraft.util.Pair;
 import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 
 import java.util.HashMap;
@@ -34,44 +35,44 @@ import java.util.Map;
 
 public class DimensionLayerRegistry {
 	public static final DimensionLayerRegistry INSTANCE = new DimensionLayerRegistry();
-	private final Map<RegistryKey<DimensionType>, Pair<Integer, RegistryKey<DimensionType>>> TOP_ENTRIES = new HashMap<>();
-	private final Map<RegistryKey<DimensionType>, Pair<Integer, RegistryKey<DimensionType>>> BOTTOM_ENTRIES = new HashMap<>();
-	private final Map<RegistryKey<DimensionType>, Pair<EntityPlacer, EntityPlacer>> PLACERS = new HashMap<>();
+	private final Map<RegistryKey<World>, Pair<Integer, RegistryKey<World>>> TOP_ENTRIES = new HashMap<>();
+	private final Map<RegistryKey<World>, Pair<Integer, RegistryKey<World>>> BOTTOM_ENTRIES = new HashMap<>();
+	private final Map<RegistryKey<World>, Pair<EntityPlacer, EntityPlacer>> PLACERS = new HashMap<>();
 
 	private DimensionLayerRegistry() {
 		// Unused.
 	}
 
-	public void register(Type type, RegistryKey<DimensionType> dimension, Integer levelY, RegistryKey<DimensionType> newDimension, EntityPlacer placer) {
-		final Map<RegistryKey<DimensionType>, Pair<Integer, RegistryKey<DimensionType>>> ENTRIES = type == Type.TOP ? this.TOP_ENTRIES : this.BOTTOM_ENTRIES;
+	public void register(Type type, RegistryKey<World> world, Integer levelY, RegistryKey<World> newWorld, EntityPlacer placer) {
+		final Map<RegistryKey<World>, Pair<Integer, RegistryKey<World>>> ENTRIES = type == Type.TOP ? this.TOP_ENTRIES : this.BOTTOM_ENTRIES;
 
-		ENTRIES.put(dimension, new Pair<>(levelY, newDimension));
+		ENTRIES.put(world, new Pair<>(levelY, newWorld));
 
-		if (PLACERS.containsValue(dimension)) {
-			PLACERS.put(dimension, new Pair<>(type == Type.TOP ? placer : PLACERS.get(dimension).getLeft(), type == Type.BOTTOM ? placer : PLACERS.get(dimension).getRight()));
+		if (PLACERS.containsValue(world)) {
+			PLACERS.put(world, new Pair<>(type == Type.TOP ? placer : PLACERS.get(world).getLeft(), type == Type.BOTTOM ? placer : PLACERS.get(world).getRight()));
 		} else {
-			PLACERS.put(dimension, new Pair<>(type == Type.TOP ? placer : null, type == Type.BOTTOM ? placer : null));
+			PLACERS.put(world, new Pair<>(type == Type.TOP ? placer : null, type == Type.BOTTOM ? placer : null));
 		}
 	}
 
-	public int getLevel(Type type, RegistryKey<DimensionType> dimension) {
-		final Map<RegistryKey<DimensionType>, Pair<Integer, RegistryKey<DimensionType>>> ENTRIES = type == Type.TOP ? this.TOP_ENTRIES : this.BOTTOM_ENTRIES;
+	public int getLevel(Type type, RegistryKey<World> world) {
+		final Map<RegistryKey<World>, Pair<Integer, RegistryKey<World>>> ENTRIES = type == Type.TOP ? this.TOP_ENTRIES : this.BOTTOM_ENTRIES;
 
-		final Pair<Integer, RegistryKey<DimensionType>> pair = ENTRIES.get(dimension);
+		final Pair<Integer, RegistryKey<World>> pair = ENTRIES.get(world);
 
 		return pair == null ? Integer.MIN_VALUE : pair.getLeft();
 	}
 
-	public RegistryKey<DimensionType> getDimension(Type type, RegistryKey<DimensionType> dimension) {
-		final Map<RegistryKey<DimensionType>, Pair<Integer, RegistryKey<DimensionType>>> ENTRIES = type == Type.TOP ? this.TOP_ENTRIES : this.BOTTOM_ENTRIES;
+	public RegistryKey<World> getDimension(Type type, RegistryKey<World> world) {
+		final Map<RegistryKey<World>, Pair<Integer, RegistryKey<World>>> ENTRIES = type == Type.TOP ? this.TOP_ENTRIES : this.BOTTOM_ENTRIES;
 
-		final Pair<Integer, RegistryKey<DimensionType>> pair = ENTRIES.get(dimension);
+		final Pair<Integer, RegistryKey<World>> pair = ENTRIES.get(world);
 
 		return pair == null ? null : pair.getRight();
 	}
 
-	public EntityPlacer getPlacer(Type type, RegistryKey<DimensionType> dimensin) {
-		return type == Type.TOP ? PLACERS.get(dimensin).getLeft() : PLACERS.get(dimensin).getRight();
+	public EntityPlacer getPlacer(Type type, RegistryKey<World> world) {
+		return type == Type.TOP ? PLACERS.get(world).getLeft() : PLACERS.get(world).getRight();
 	}
 
 	public enum Type {
