@@ -106,7 +106,7 @@ public class AstromineClientModels {
 		} else {
 			matrices.scale(0.3F, 0.3F, 0.3F);
 		}
-		VertexConsumer vertexConsumer2 = ItemRenderer.method_29711(vertexConsumerProvider, rocketEntityModel.getLayer(RocketEntityRenderer.identifier), false, stack.hasGlint());
+		VertexConsumer vertexConsumer2 = ItemRenderer.getDirectGlintVertexConsumer(vertexConsumerProvider, rocketEntityModel.getLayer(RocketEntityRenderer.identifier), false, stack.hasGlint());
 		rocketEntityModel.render(matrices, vertexConsumer2, i, j, 1.0F, 1.0F, 1.0F, 1.0F);
 		matrices.pop();
 	}

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
+/*
 package com.github.chainmailstudios.astromine.common.world.layer.mars;
 
 import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
@@ -43,3 +43,4 @@ public enum MarsRiverLayer implements CrossSamplingLayer {
 		return value >= 2 ? 2 + (value & 1) : value;
 	}
 }
+*/

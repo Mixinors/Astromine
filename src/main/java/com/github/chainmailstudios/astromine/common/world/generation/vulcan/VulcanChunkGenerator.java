@@ -50,7 +50,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class VulcanChunkGenerator extends ChunkGenerator {
-	public static Codec<VulcanChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(BiomeSource.field_24713.fieldOf("biome_source").forGetter(gen -> gen.biomeSource), Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed)).apply(instance,
+	public static Codec<VulcanChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(BiomeSource.CODEC.fieldOf("biome_source").forGetter(gen -> gen.biomeSource), Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed)).apply(instance,
 		VulcanChunkGenerator::new));
 
 	private final BiomeSource biomeSource;
@@ -71,7 +71,7 @@ public class VulcanChunkGenerator extends ChunkGenerator {
 	}
 
 	@Override
-	protected Codec<? extends ChunkGenerator> method_28506() {
+	protected Codec<? extends ChunkGenerator> getCodec() {
 		return CODEC;
 	}
 

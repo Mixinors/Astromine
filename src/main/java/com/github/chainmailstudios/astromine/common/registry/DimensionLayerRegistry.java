@@ -70,8 +70,8 @@ public class DimensionLayerRegistry {
 		return pair == null ? null : pair.getRight();
 	}
 
-	public EntityPlacer getPlacer(Type type, RegistryKey<DimensionType> dimensin) {
-		return type == Type.TOP ? PLACERS.get(dimensin).getLeft() : PLACERS.get(dimensin).getRight();
+	public EntityPlacer getPlacer(Type type, RegistryKey<DimensionType> dimension) {
+		return type == Type.TOP ? PLACERS.get(dimension).getLeft() : PLACERS.get(dimension).getRight();
 	}
 
 	public enum Type {

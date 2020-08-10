@@ -49,7 +49,7 @@ public abstract class BossBarHudMixin extends DrawableHelper {
 	private static final Identifier CUSTOM_BAR_TEX = AstromineCommon.identifier("textures/gui/bars.png");
 	@Shadow
 	@Final
-	private static Identifier BAR_TEX;
+	private static Identifier BARS_TEXTURE;
 	@Shadow
 	@Final
 	private MinecraftClient client;
@@ -71,6 +71,6 @@ public abstract class BossBarHudMixin extends DrawableHelper {
 			ci.cancel();
 		}
 
-		this.client.getTextureManager().bindTexture(BAR_TEX);
+		this.client.getTextureManager().bindTexture(BARS_TEXTURE);
 	}
 }

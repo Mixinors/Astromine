@@ -60,7 +60,7 @@ public class Explosions {
 					blocks += forSubchunks(chunk, box, boz, x, y, z, radius);
 					chunk.markDirty();
 					ServerChunkManager manager = (ServerChunkManager) access.getChunkManager();
-					manager.threadedAnvilChunkStorage.getPlayersWatchingChunk(new ChunkPos(cx, cz), false).forEach(s -> s.networkHandler.sendPacket(new ChunkDataS2CPacket(chunk, 65535, false)));
+					manager.threadedAnvilChunkStorage.getPlayersWatchingChunk(new ChunkPos(cx, cz), false).forEach(s -> s.networkHandler.sendPacket(new ChunkDataS2CPacket(chunk, 65535)));
 				}
 			}
 		}
@@ -119,7 +119,7 @@ public class Explosions {
 								}
 							}
 						}
-						chunk.getLightingProvider().updateSectionStatus(ChunkSectionPos.from(bx >> 4, i, bz >> 4), false);
+						chunk.getLightingProvider().setSectionStatus(ChunkSectionPos.from(bx >> 4, i, bz >> 4), false);
 					}
 				}
 

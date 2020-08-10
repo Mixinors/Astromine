@@ -28,6 +28,6 @@ import com.github.chainmailstudios.astromine.common.registry.AtmosphereRegistry;
 
 public class AstromineAtmospheres {
 	public static void initialize() {
-		AtmosphereRegistry.INSTANCE.register(AstromineDimensions.EARTH_SPACE_REGISTRY_KEY, true);
+		AtmosphereRegistry.INSTANCE.register(AstromineDimensions.EARTH_SPACE_WORLD, true);
 	}
 }

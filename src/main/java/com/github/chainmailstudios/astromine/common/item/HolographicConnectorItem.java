@@ -62,7 +62,7 @@ public class HolographicConnectorItem extends Item {
 
 		Pair<RegistryKey<World>, BlockPos> pair = readBlock(stack);
 		if (pair != null) {
-			tooltip.add(Text.method_30163(null));
+			tooltip.add(Text.of(null));
 			tooltip.add(new TranslatableText("text.astromine.selected.dimension.pos", pair.getLeft().getValue(), pair.getRight().getX(), pair.getRight().getY(), pair.getRight().getZ()).formatted(Formatting.GRAY));
 		}
 	}

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
+/*
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
@@ -33,6 +33,8 @@ import com.github.chainmailstudios.astromine.common.world.generation.mars.MarsBi
 import com.github.chainmailstudios.astromine.common.world.generation.moon.MoonBiomeSource;
 import com.github.chainmailstudios.astromine.common.world.generation.space.EarthSpaceBiomeSource;
 import com.github.chainmailstudios.astromine.common.world.generation.vulcan.VulcanBiomeSource;
+
+import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 
@@ -53,15 +55,16 @@ public class AstromineBiomes {
 		Registry.register(Registry.BIOME_SOURCE, AstromineCommon.identifier("vulcan"), VulcanBiomeSource.CODEC);
 
 		// Biomes
-		ASTEROID_BELT = Registry.register(Registry.BIOME, AstromineCommon.identifier("asteroid_belt"), new EarthSpaceBiome());
+		ASTEROID_BELT = Registry.register(BuiltinRegistries.BIOME, AstromineCommon.identifier("asteroid_belt"), new EarthSpaceBiome());
 
-		MOON_FLATS = Registry.register(Registry.BIOME, AstromineCommon.identifier("moon_flats"), new MoonBiome(100, 20));
-		MOON_HILLS = Registry.register(Registry.BIOME, AstromineCommon.identifier("moon_hills"), new MoonBiome(105, 30));
-		MOON_LOWLANDS = Registry.register(Registry.BIOME, AstromineCommon.identifier("moon_lowlands"), new MoonBiome(93, 9));
+		MOON_FLATS = Registry.register(BuiltinRegistries.BIOME, AstromineCommon.identifier("moon_flats"), new MoonBiome(100, 20));
+		MOON_HILLS = Registry.register(BuiltinRegistries.BIOME, AstromineCommon.identifier("moon_hills"), new MoonBiome(105, 30));
+		MOON_LOWLANDS = Registry.register(BuiltinRegistries.BIOME, AstromineCommon.identifier("moon_lowlands"), new MoonBiome(93, 9));
 
-		MARS = Registry.register(Registry.BIOME, AstromineCommon.identifier("mars"), new MarsBiome(100, 1));
-		MARS_RIVERBED = Registry.register(Registry.BIOME, AstromineCommon.identifier("mars_riverbed"), new MarsBiome(60, 0.1f));
+		MARS = Registry.register(BuiltinRegistries.BIOME, AstromineCommon.identifier("mars"), new MarsBiome(100, 1));
+		MARS_RIVERBED = Registry.register(BuiltinRegistries.BIOME, AstromineCommon.identifier("mars_riverbed"), new MarsBiome(60, 0.1f));
 
-		VULCAN = Registry.register(Registry.BIOME, AstromineCommon.identifier("vulcan"), new VulcanBiome(100, 1));
+		VULCAN = Registry.register(BuiltinRegistries.BIOME, AstromineCommon.identifier("vulcan"), new VulcanBiome(100, 1));
 	}
 }
+*/

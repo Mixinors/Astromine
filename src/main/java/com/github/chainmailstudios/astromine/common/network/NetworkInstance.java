@@ -119,7 +119,7 @@ public class NetworkInstance implements Iterable<NetworkNode>, Tickable {
 
 	@Override
 	public String toString() {
-		return "NetworkInstance{" + "type=" + NetworkTypeRegistry.INSTANCE.getKey(type) + ", world=" + world.getDimensionRegistryKey().getValue() + ", members=" + members + ", nodes=" + nodes + ", additionalData=" + additionalData + '}';
+		return "NetworkInstance{" + "type=" + NetworkTypeRegistry.INSTANCE.getKey(type) + ", world=" + world.getRecipeManager().getName() + ", members=" + members + ", nodes=" + nodes + ", additionalData=" + additionalData + '}';
 	}
 
 	public boolean isStupidlyEmpty() {

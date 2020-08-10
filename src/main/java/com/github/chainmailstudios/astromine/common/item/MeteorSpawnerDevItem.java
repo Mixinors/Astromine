@@ -31,7 +31,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.ServerWorldAccess;
+import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.World;
 
 public class MeteorSpawnerDevItem extends Item {
@@ -44,7 +44,7 @@ public class MeteorSpawnerDevItem extends Item {
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		if (!world.isClient) {
 			MeteorGenerator meteorGenerator = new MeteorGenerator(world.random, user.getBlockPos().getX(), user.getBlockPos().getZ());
-			meteorGenerator.generate((ServerWorldAccess) world, new ChunkPos(user.getBlockPos()), world.random, user.getBlockPos());
+			meteorGenerator.generate((StructureWorldAccess) world, new ChunkPos(user.getBlockPos()), world.random, user.getBlockPos());
 		}
 
 		return super.use(world, user, hand);

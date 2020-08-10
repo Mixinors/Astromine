@@ -33,6 +33,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.SkyProperties;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.dimension.DimensionType;
 import org.spongepowered.asm.mixin.Final;
@@ -45,12 +46,12 @@ public class SkyPropertiesMixin {
 
 	@Shadow
 	@Final
-	private static Object2ObjectMap<RegistryKey<DimensionType>, SkyProperties> BY_DIMENSION_TYPE;
+	private static Object2ObjectMap<Identifier, SkyProperties> BY_IDENTIFIER;
 
 	static {
-		BY_DIMENSION_TYPE.put(AstromineDimensions.EARTH_SPACE_REGISTRY_KEY, new SpaceSkyProperties());
-		BY_DIMENSION_TYPE.put(AstromineDimensions.MOON_REGISTRY_KEY, new MoonSkyProperties());
-		BY_DIMENSION_TYPE.put(AstromineDimensions.MARS_REGISTRY_KEY, new MarsSkyProperties());
-		BY_DIMENSION_TYPE.put(AstromineDimensions.VULCAN_REGISTRY_KEY, new VulcanSkyProperties());
+		BY_IDENTIFIER.put(AstromineDimensions.EARTH_SPACE_ID, new SpaceSkyProperties());
+		BY_IDENTIFIER.put(AstromineDimensions.MOON_ID, new MoonSkyProperties());
+		BY_IDENTIFIER.put(AstromineDimensions.MARS_ID, new MarsSkyProperties());
+		BY_IDENTIFIER.put(AstromineDimensions.VULCAN_ID, new VulcanSkyProperties());
 	}
 }

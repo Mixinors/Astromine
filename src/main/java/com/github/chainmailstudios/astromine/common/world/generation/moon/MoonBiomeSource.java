@@ -24,17 +24,21 @@
 
 package com.github.chainmailstudios.astromine.common.world.generation.moon;
 
-import com.github.chainmailstudios.astromine.common.world.layer.moon.MoonBiomeLayer;
+//import com.github.chainmailstudios.astromine.common.world.layer.moon.MoonBiomeLayer;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
+import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.layer.ScaleLayer;
+import net.minecraft.world.biome.layer.SimpleLandNoiseLayer;
 import net.minecraft.world.biome.layer.util.CachingLayerContext;
 import net.minecraft.world.biome.layer.util.LayerFactory;
 import net.minecraft.world.biome.layer.util.LayerSampleContext;
 import net.minecraft.world.biome.layer.util.LayerSampler;
 import net.minecraft.world.biome.source.BiomeLayerSampler;
 import net.minecraft.world.biome.source.BiomeSource;
+
+import com.github.chainmailstudios.astromine.common.world.layer.util.PlainsOnlyLayer;
 
 import java.util.function.LongFunction;
 
@@ -50,7 +54,7 @@ public class MoonBiomeSource extends BiomeSource {
 	}
 
 	@Override
-	protected Codec<? extends BiomeSource> method_28442() {
+	protected Codec<? extends BiomeSource> getCodec() {
 		return CODEC;
 	}
 
@@ -61,7 +65,7 @@ public class MoonBiomeSource extends BiomeSource {
 
 	@Override
 	public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
-		return sampler.sample(biomeX, biomeZ);
+		return sampler.sample(BuiltinRegistries.BIOME, biomeX, biomeZ);
 	}
 
 	public static BiomeLayerSampler build(long seed) {
@@ -69,7 +73,8 @@ public class MoonBiomeSource extends BiomeSource {
 	}
 
 	private static <T extends LayerSampler, C extends LayerSampleContext<T>> LayerFactory<T> build(LongFunction<C> contextProvider) {
-		LayerFactory<T> mainLayer = MoonBiomeLayer.INSTANCE.create(contextProvider.apply(4L));
+		//LayerFactory<T> mainLayer = MoonBiomeLayer.INSTANCE.create(contextProvider.apply(4L));
+		LayerFactory<T> mainLayer = SimpleLandNoiseLayer.INSTANCE.create(contextProvider.apply(432L), PlainsOnlyLayer.INSTANCE.create(contextProvider.apply(543L))); //added for temp reasons
 		for (int i = 0; i < 5; i++) {
 			mainLayer = ScaleLayer.FUZZY.create(contextProvider.apply(43 + i), mainLayer);
 		}

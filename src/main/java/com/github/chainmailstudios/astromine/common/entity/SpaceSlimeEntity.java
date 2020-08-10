@@ -33,6 +33,7 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.SlimeEntity;
 import net.minecraft.particle.ParticleEffect;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -123,7 +124,7 @@ public class SpaceSlimeEntity extends SlimeEntity {
 		if (world.getLightLevel(LightType.SKY, pos) > random.nextInt(32)) {
 			return false;
 		} else {
-			int i = world.getWorld().isThundering() ? world.getLightLevel(pos, 10) : world.getLightLevel(pos);
+			int i = ((ServerWorld)world).isThundering() ? world.getLightLevel(pos, 10) : world.getLightLevel(pos);
 			return i <= random.nextInt(8);
 		}
 	}

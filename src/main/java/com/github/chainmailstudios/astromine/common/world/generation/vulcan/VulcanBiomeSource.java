@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.world.generation.vulcan;
 
-import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
+//import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.biome.source.BiomeSource;
 
 public class VulcanBiomeSource extends BiomeSource {
@@ -40,7 +41,7 @@ public class VulcanBiomeSource extends BiomeSource {
 	}
 
 	@Override
-	protected Codec<? extends BiomeSource> method_28442() {
+	protected Codec<? extends BiomeSource> getCodec() {
 		return CODEC;
 	}
 
@@ -51,6 +52,7 @@ public class VulcanBiomeSource extends BiomeSource {
 
 	@Override
 	public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
-		return AstromineBiomes.VULCAN;
+		return Biomes.PLAINS;
+		//return AstromineBiomes.VULCAN;
 	}
 }

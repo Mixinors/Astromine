@@ -136,7 +136,7 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 					}
 				} else {
 					BlockPos offsetPos = getPos().offset(direction.getOpposite());
-					List<ChestMinecartEntity> minecartEntities = getWorld().getEntities(ChestMinecartEntity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1), EntityPredicates.EXCEPT_SPECTATOR);
+					List<ChestMinecartEntity> minecartEntities = getWorld().getEntitiesByClass(ChestMinecartEntity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1), EntityPredicates.EXCEPT_SPECTATOR);
 					if (position == 0 && minecartEntities.size() >= 1) {
 						if (!world.isClient()) {
 							ChestMinecartEntity minecartEntity = minecartEntities.get(0);
@@ -216,7 +216,7 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 					}
 				} else {
 					BlockPos offsetPos = getPos().offset(direction);
-					List<AbstractMinecartEntity> minecartEntities = getWorld().getEntities(AbstractMinecartEntity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1),
+					List<AbstractMinecartEntity> minecartEntities = getWorld().getEntitiesByClass(AbstractMinecartEntity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1),
 						EntityPredicates.EXCEPT_SPECTATOR);
 					if (minecartEntities.size() >= 1) {
 						AbstractMinecartEntity minecartEntity = minecartEntities.get(0);

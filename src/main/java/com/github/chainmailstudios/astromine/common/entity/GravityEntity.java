@@ -35,6 +35,6 @@ public interface GravityEntity {
 	double getGravity();
 
 	default double getGravity(World world) {
-		return GravityRegistry.INSTANCE.get(world.getDimensionRegistryKey()) * getGravityMultiplier();
+		return GravityRegistry.INSTANCE.get(world.getRegistryKey()) * getGravityMultiplier();
 	}
 }

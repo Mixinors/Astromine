@@ -24,13 +24,14 @@
 
 package com.github.chainmailstudios.astromine.common.recipe;
 
+import com.github.chainmailstudios.astromine.common.recipe.BetterIngredient.Entry;
 import com.google.gson.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.tag.ServerTagManagerHolder;
 import net.minecraft.tag.Tag;
-import net.minecraft.tag.TagContainers;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.registry.Registry;
@@ -100,7 +101,7 @@ public class BetterIngredient implements Predicate<ItemStack> {
 				return new SimpleEntry(new ItemStack(item, count));
 			} else if (json.has("tag")) {
 				Identifier tagId = new Identifier(JsonHelper.getString(json, "tag"));
-				Tag<Item> tag = TagContainers.instance().items().get(tagId);
+				Tag<Item> tag = ServerTagManagerHolder.getTagManager().getItems().getTag(tagId);
 				if (tag == null) {
 					throw new JsonSyntaxException("Unknown item tag '" + tagId + "'");
 				} else {

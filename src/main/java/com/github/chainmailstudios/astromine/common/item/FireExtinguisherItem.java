@@ -93,7 +93,7 @@ public class FireExtinguisherItem extends Item {
 			}
 		});
 
-		world.getEntities(null, new Box(result.getBlockPos()).expand(1)).forEach(entity -> {
+		world.getOtherEntities(null, new Box(result.getBlockPos()).expand(1)).forEach(entity -> {
 			entity.setFireTicks(0);
 		});
 

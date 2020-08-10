@@ -67,7 +67,7 @@ public class WorldAtmosphereComponent implements Component, Tickable {
 	}
 
 	public FluidVolume get(BlockPos position) {
-		RegistryKey<DimensionType> key = world.getDimensionRegistryKey();
+		RegistryKey<World> key = world.getRegistryKey();
 
 		if (!AstromineDimensions.isAstromine(key) && !volumes.containsKey(position)) {
 			return FluidVolume.oxygen();

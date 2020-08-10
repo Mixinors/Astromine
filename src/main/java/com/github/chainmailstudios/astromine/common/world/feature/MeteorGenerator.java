@@ -42,7 +42,7 @@ import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.Heightmap;
-import net.minecraft.world.ServerWorldAccess;
+import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 
@@ -64,11 +64,11 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 	}
 
 	@Override
-	public boolean generate(ServerWorldAccess world, StructureAccessor structureAccessor, ChunkGenerator chunkGenerator, Random random, BlockBox boundingBox, ChunkPos chunkPos, BlockPos blockPos) {
+	public boolean generate(StructureWorldAccess world, StructureAccessor structureAccessor, ChunkGenerator chunkGenerator, Random random, BlockBox boundingBox, ChunkPos chunkPos, BlockPos blockPos) {
 		return generate(world, chunkPos, random, blockPos);
 	}
 
-	public boolean generate(ServerWorldAccess world, ChunkPos chunkPos, Random random, BlockPos blockPos) {
+	public boolean generate(StructureWorldAccess world, ChunkPos chunkPos, Random random, BlockPos blockPos) {
 		noise = new OpenSimplexNoise(world.getSeed());
 		BlockPos originPos = world.getTopPosition(Heightmap.Type.WORLD_SURFACE, new BlockPos(chunkPos.getStartX() + 8, 0, chunkPos.getStartZ() + 8));
 		emptySphere(world, originPos, 16, state -> {
@@ -95,7 +95,7 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 		return true;
 	}
 
-	private void emptySphere(ServerWorldAccess world, BlockPos originPos, int radius, GroundManipulator bottom, GroundManipulator underneath) {
+	private void emptySphere(StructureWorldAccess world, BlockPos originPos, int radius, GroundManipulator bottom, GroundManipulator underneath) {
 		List<BlockPos> placedPositions = new ArrayList<>();
 
 		for (int x = -radius; x <= radius; x++) {
@@ -135,7 +135,7 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 		}
 	}
 
-	public static void buildSphere(ServerWorldAccess world, BlockPos originPos, int radius, BlockState state) {
+	public static void buildSphere(StructureWorldAccess world, BlockPos originPos, int radius, BlockState state) {
 		for (int x = -radius; x <= radius; x++) {
 			for (int z = -radius; z <= radius; z++) {
 				for (int y = -radius; y <= radius; y++) {

@@ -106,7 +106,7 @@ public abstract class AdvancedFluid extends FlowableFluid implements Breathable 
 	@Override
 	protected void beforeBreakingBlock(WorldAccess world, BlockPos position, BlockState state) {
 		BlockEntity blockEntity = state.getBlock().hasBlockEntity() ? world.getBlockEntity(position) : null;
-		Block.dropStacks(state, world.getWorld(), position, blockEntity);
+		Block.dropStacks(state, world, position, blockEntity);
 	}
 
 	@Override

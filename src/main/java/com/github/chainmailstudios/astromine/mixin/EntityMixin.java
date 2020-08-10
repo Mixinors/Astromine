@@ -83,6 +83,7 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 		if ((int) entity.getPos().getY() != lastY && !entity.world.isClient && entity.getVehicle() == null) {
 			lastY = (int) entity.getPos().getY();
 
+			/*
 			int bottomPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.BOTTOM, entity.world.getDimensionRegistryKey());
 			int topPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.TOP, entity.world.getDimensionRegistryKey());
 
@@ -129,6 +130,7 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 					((EntityAccess) existingEntity).astromine_setLastVehicle(newEntity);
 				}
 			}
+			 */
 		}
 
 		if (entity.getVehicle() != null)

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
+/*
 package com.github.chainmailstudios.astromine.common.world.biome;
 
 import com.github.chainmailstudios.astromine.registry.AstromineFeatures;
@@ -38,9 +38,9 @@ import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
 
 public class MarsBiome extends Biome {
 	public MarsBiome(float baseHeight, float variation) {
-		super(new Settings().configureSurfaceBuilder(SurfaceBuilder.NOPE, SurfaceBuilder.STONE_CONFIG).precipitation(Precipitation.NONE).category(Category.NONE).depth(baseHeight).scale(variation).temperature(0.5F).downfall(0.5F).effects(new BiomeEffects.Builder().waterColor(
+		super(new Builder().configureSurfaceBuilder(SurfaceBuilder.NOPE, SurfaceBuilder.STONE_CONFIG).precipitation(Precipitation.NONE).category(Category.NONE).depth(baseHeight).scale(variation).temperature(0.5F).downfall(0.5F).effects(new BiomeEffects.Builder().waterColor(
 			4159204).waterFogColor(329011).fogColor(12638463).particleConfig(new BiomeParticleConfig(AstromineParticles.MARS_DUST, 0.00225F)).moodSound(BiomeMoodSound.CAVE).build()).parent(null));
-		this.addFeature(GenerationStep.Feature.RAW_GENERATION, AstromineFeatures.MOON_CRATER.configure(DefaultFeatureConfig.INSTANCE).createDecoratedFeature(Decorator.COUNT_HEIGHTMAP.configure(new CountDecoratorConfig(1))));
+		this.addFeature(GenerationStep.Feature.RAW_GENERATION, AstromineFeatures.MOON_CRATER.configure(DefaultFeatureConfig.INSTANCE).decorate(Decorator.COUNT_HEIGHTMAP.configure(new CountDecoratorConfig(1))));
 	}
 
 	@Override
@@ -48,3 +48,4 @@ public class MarsBiome extends Biome {
 		return 0xcf940c;
 	}
 }
+*/

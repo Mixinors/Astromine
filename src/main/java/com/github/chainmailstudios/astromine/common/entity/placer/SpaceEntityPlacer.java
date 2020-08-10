@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
+/*
 package com.github.chainmailstudios.astromine.common.entity.placer;
 
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
@@ -46,4 +46,6 @@ public class SpaceEntityPlacer implements EntityPlacer {
 	public BlockPattern.TeleportTarget placeEntity(Entity entity, ServerWorld serverWorld, Direction direction, double v, double v1) {
 		return new BlockPattern.TeleportTarget(new Vec3d(entity.getX(), y, entity.getZ()), entity.getVelocity(), (int) entity.getHeadYaw());
 	}
+
 }
+ */
