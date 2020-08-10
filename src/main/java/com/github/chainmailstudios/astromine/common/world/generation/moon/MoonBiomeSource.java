@@ -24,12 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.world.generation.moon;
 
-import java.util.function.LongFunction;
-
 import com.github.chainmailstudios.astromine.common.world.layer.moon.MoonBiomeLayer;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
-
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.layer.ScaleLayer;
 import net.minecraft.world.biome.layer.util.CachingLayerContext;
@@ -38,6 +35,8 @@ import net.minecraft.world.biome.layer.util.LayerSampleContext;
 import net.minecraft.world.biome.layer.util.LayerSampler;
 import net.minecraft.world.biome.source.BiomeLayerSampler;
 import net.minecraft.world.biome.source.BiomeSource;
+
+import java.util.function.LongFunction;
 
 public class MoonBiomeSource extends BiomeSource {
 	public static Codec<MoonBiomeSource> CODEC = Codec.LONG.fieldOf("seed").xmap(MoonBiomeSource::new, (source) -> source.seed).stable().codec();

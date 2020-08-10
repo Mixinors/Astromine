@@ -51,18 +51,18 @@ public class AstromineCommonCallbacks {
 	@SuppressWarnings("UnstableApiUsage")
 	public static void initialize() {
 		ServerTickEvents.START_SERVER_TICK.register((server) -> {
-			for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-				ComponentProvider componentProvider = ComponentProvider.fromWorld(player.world);
-
-				WorldAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);
-
-				PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
-				FluidVolume volume = atmosphereComponent.get(player.getBlockPos().offset(Direction.UP));
-
-				buffer.writeIdentifier(volume.getFluidIdentifier());
-
-				ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, AstromineCommonPackets.PRESSURE_UPDATE, buffer);
-			}
+			//for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+			//	ComponentProvider componentProvider = ComponentProvider.fromWorld(player.world);
+//
+			//	WorldAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);
+//
+			//	PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
+			//	FluidVolume volume = atmosphereComponent.get(player.getBlockPos().offset(Direction.UP));
+//
+			//	buffer.writeIdentifier(volume.getFluidIdentifier());
+//
+			//	ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, AstromineCommonPackets.PRESSURE_UPDATE, buffer);
+			//}
 		});
 
 		ServerTickEvents.START_SERVER_TICK.register((server) -> {

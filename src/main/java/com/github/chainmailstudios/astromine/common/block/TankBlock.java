@@ -54,7 +54,7 @@ public class TankBlock extends HorizontalFacingMachineBlock {
 
 	@Override
 	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-		return new TankScreenHandler(syncId, playerInventory, pos);
+		return new TankScreenHandler(syncId, playerInventory.player, pos);
 	}
 
 	@Override

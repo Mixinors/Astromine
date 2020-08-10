@@ -24,19 +24,51 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler;
 
+import com.github.chainmailstudios.astromine.common.block.entity.FluidMixerBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyFluidScreenHandler;
+import com.github.chainmailstudios.astromine.common.widget.FluidVerticalBarWidget;
+import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.screen.ScreenHandlerType;
+import com.github.vini2003.blade.common.data.Position;
+import com.github.vini2003.blade.common.data.Size;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 public class FluidMixerScreenHandler extends DefaultedEnergyFluidScreenHandler {
-	public FluidMixerScreenHandler(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
-		super(synchronizationID, playerInventory, position);
+	private FluidMixerBlockEntity mixer;
+
+	public FluidMixerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+		super(AstromineScreenHandlers.FLUID_MIXER, syncId, player, position);
+
+		mixer = (FluidMixerBlockEntity) blockEntity;
 	}
 
 	@Override
-	public ScreenHandlerType<?> getType() {
-		return AstromineScreenHandlers.FLUID_MIXER;
+	public void initialize(int width, int height) {
+		super.initialize(width, height);
+
+		ComponentProvider componentProvider = blockEntity;
+
+		FluidVerticalBarWidget secondInputFluidBar = new FluidVerticalBarWidget();
+		secondInputFluidBar.setPosition(new Position(fluidBar.getX() + fluidBar.getWidth() + 7, fluidBar.getY()));
+		secondInputFluidBar.setSize(new Size(fluidBar.getWidth(), fluidBar.getHeight()));
+		secondInputFluidBar.setVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(1));
+
+		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
+		arrow.setPosition(new Position(secondInputFluidBar.getX() + secondInputFluidBar.getWidth() + 9, secondInputFluidBar.getY() + secondInputFluidBar.getHeight() / 2F - 8));
+		arrow.setSize(new Size(22, 16));
+		arrow.setLimitSupplier(() -> mixer.limit);
+		arrow.setProgressSupplier(() -> (int) mixer.current);
+
+		FluidVerticalBarWidget outputFluidBar = new FluidVerticalBarWidget();
+		outputFluidBar.setPosition(new Position(arrow.getX() + arrow.getWidth() + 7, arrow.getY() -secondInputFluidBar.getHeight() / 2F + 8));
+		outputFluidBar.setSize(new Size(fluidBar.getWidth(), fluidBar.getHeight()));
+		outputFluidBar.setVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(2));
+
+		mainTab.addWidget(secondInputFluidBar);
+		mainTab.addWidget(arrow);
+		mainTab.addWidget(outputFluidBar);
 	}
 }

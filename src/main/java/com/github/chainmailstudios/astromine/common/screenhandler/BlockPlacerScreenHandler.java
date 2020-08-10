@@ -26,20 +26,25 @@ package com.github.chainmailstudios.astromine.common.screenhandler;
 
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyItemScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.screen.ScreenHandlerType;
+import com.github.vini2003.blade.common.data.Position;
+import com.github.vini2003.blade.common.data.Size;
+import com.github.vini2003.blade.common.widget.base.SlotWidget;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
-import spinnery.widget.WSlot;
 
 public class BlockPlacerScreenHandler extends DefaultedEnergyItemScreenHandler {
-	public BlockPlacerScreenHandler(int synchronizationID, PlayerInventory playerInventory, BlockPos blockPos) {
-		super(synchronizationID, playerInventory, blockPos);
-
-		getInterface().createChild(WSlot::new).setInventoryNumber(1).setSlotNumber(0);
+	public BlockPlacerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+		super(AstromineScreenHandlers.BLOCK_PLACER, syncId, player, position);
 	}
 
 	@Override
-	public ScreenHandlerType<?> getType() {
-		return AstromineScreenHandlers.BLOCK_PLACER;
+	public void initialize(int width, int height) {
+		super.initialize(width, height);
+
+		SlotWidget slot = new SlotWidget(0, blockEntity);
+		slot.setPosition(new Position(mainTab.getX() + mainTab.getWidth() / 2F - 9F, mainTab.getY() + 35));
+		slot.setSize(new Size(18, 18));
+
+		mainTab.addWidget(slot);
 	}
 }

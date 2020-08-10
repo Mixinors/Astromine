@@ -24,9 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.component.world;
 
-import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
 import com.google.common.collect.Lists;
 import nerdhub.cardinal.components.api.component.Component;
 import net.minecraft.block.AirBlock;

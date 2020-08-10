@@ -24,11 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.world.feature;
 
-import java.util.Random;
-
 import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
 import com.mojang.serialization.Codec;
-
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ServerWorldAccess;
@@ -36,6 +33,8 @@ import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
+
+import java.util.Random;
 
 public class MoonCraterFeature extends Feature<DefaultFeatureConfig> {
 	private static final double SCALE = 1 / 19.42;

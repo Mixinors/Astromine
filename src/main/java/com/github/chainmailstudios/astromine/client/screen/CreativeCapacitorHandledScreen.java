@@ -26,12 +26,12 @@ package com.github.chainmailstudios.astromine.client.screen;
 
 import com.github.chainmailstudios.astromine.client.screen.base.DefaultedEnergyHandledScreen;
 import com.github.chainmailstudios.astromine.common.screenhandler.CreativeCapacitorScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyScreenHandler;
-import net.minecraft.entity.player.PlayerEntity;
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
 public class CreativeCapacitorHandledScreen extends DefaultedEnergyHandledScreen<CreativeCapacitorScreenHandler> {
-	public CreativeCapacitorHandledScreen(Text name, DefaultedEnergyScreenHandler linkedScreenHandler, PlayerEntity player) {
-		super(name, linkedScreenHandler, player);
+	public CreativeCapacitorHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
+		super(handler, inventory, title);
 	}
 }

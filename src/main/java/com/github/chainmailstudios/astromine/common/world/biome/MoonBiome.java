@@ -25,7 +25,6 @@
 package com.github.chainmailstudios.astromine.common.world.biome;
 
 import com.github.chainmailstudios.astromine.registry.AstromineFeatures;
-
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.decorator.CountDecoratorConfig;
 import net.minecraft.world.gen.decorator.Decorator;

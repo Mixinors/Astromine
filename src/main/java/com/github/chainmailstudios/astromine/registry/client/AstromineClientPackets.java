@@ -24,15 +24,12 @@
 
 package com.github.chainmailstudios.astromine.registry.client;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.entity.RocketEntity;
-import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
 import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.Identifier;
 
 import java.util.UUID;
 
@@ -40,11 +37,12 @@ import java.util.UUID;
 public class AstromineClientPackets {
 	@Environment(EnvType.CLIENT)
 	public static void initialize() {
-		ClientSidePacketRegistry.INSTANCE.register(AstromineCommonPackets.PRESSURE_UPDATE, ((context, buffer) -> {
-			Identifier identifier = buffer.readIdentifier();
-
-			AstromineScreens.GAS_IMAGE.setTexture(AstromineCommon.identifier("textures/symbol/" + identifier.getPath() + ".png"));
-		}));
+		// TODO: 08/08/2020 - 11:00:51
+//		ClientSidePacketRegistry.INSTANCE.register(AstromineCommonPackets.PRESSURE_UPDATE, ((context, buffer) -> {
+//			Identifier identifier = buffer.readIdentifier();
+//
+//			AstromineScreens.GAS_IMAGE.setTexture(AstromineCommon.identifier("textures/symbol/" + identifier.getPath() + ".png"));
+//		}));
 
 		ClientSidePacketRegistry.INSTANCE.register(RocketEntity.ROCKET_SPAWN, (context, buffer) -> {
 			double x = buffer.readDouble();

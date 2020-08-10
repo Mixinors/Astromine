@@ -24,18 +24,13 @@
 
 package com.github.chainmailstudios.astromine.client.screen.base;
 
-import net.minecraft.entity.player.PlayerEntity;
+import com.github.vini2003.blade.client.handler.BaseHandledScreen;
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
-import spinnery.client.screen.BaseHandledScreen;
-import spinnery.common.handler.BaseScreenHandler;
-import spinnery.widget.WAbstractWidget;
 
 public abstract class DefaultedHandledScreen<T extends BaseScreenHandler> extends BaseHandledScreen<T> {
-	public DefaultedHandledScreen(Text name, T linkedScreenHandler, PlayerEntity player) {
-		super(name, linkedScreenHandler, player);
-	}
-
-	protected void addTitle(WAbstractWidget widget) {
-		widget.setLabel(this.getTitle());
+	public DefaultedHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
+		super(handler, inventory, title);
 	}
 }

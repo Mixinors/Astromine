@@ -24,11 +24,11 @@
 
 package com.github.chainmailstudios.astromine.client.particle;
 
-import java.util.Random;
-
 import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.DefaultParticleType;
+
+import java.util.Random;
 
 public class MarsDustParticle extends SpriteBillboardParticle {
 	protected MarsDustParticle(ClientWorld clientWorld, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {

@@ -29,11 +29,10 @@ import com.github.chainmailstudios.astromine.common.world.biome.EarthSpaceBiome;
 import com.github.chainmailstudios.astromine.common.world.biome.MarsBiome;
 import com.github.chainmailstudios.astromine.common.world.biome.MoonBiome;
 import com.github.chainmailstudios.astromine.common.world.biome.VulcanBiome;
-import com.github.chainmailstudios.astromine.common.world.generation.space.EarthSpaceBiomeSource;
 import com.github.chainmailstudios.astromine.common.world.generation.mars.MarsBiomeSource;
 import com.github.chainmailstudios.astromine.common.world.generation.moon.MoonBiomeSource;
+import com.github.chainmailstudios.astromine.common.world.generation.space.EarthSpaceBiomeSource;
 import com.github.chainmailstudios.astromine.common.world.generation.vulcan.VulcanBiomeSource;
-
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 

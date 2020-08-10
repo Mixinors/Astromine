@@ -24,16 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.world.generation.vulcan;
 
-import java.util.Arrays;
-import java.util.Random;
-
 import com.github.chainmailstudios.astromine.common.miscellaneous.BiomeGenCache;
 import com.github.chainmailstudios.astromine.common.noise.OctaveNoiseSampler;
 import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -49,6 +45,9 @@ import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
+
+import java.util.Arrays;
+import java.util.Random;
 
 public class VulcanChunkGenerator extends ChunkGenerator {
 	public static Codec<VulcanChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(BiomeSource.field_24713.fieldOf("biome_source").forGetter(gen -> gen.biomeSource), Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed)).apply(instance,

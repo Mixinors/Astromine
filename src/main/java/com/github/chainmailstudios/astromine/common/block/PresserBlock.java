@@ -55,7 +55,7 @@ public abstract class PresserBlock extends TieredHorizontalFacingEnergyMachineBl
 
 		@Override
 		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-			return new PresserScreenHandler(syncId, playerInventory, pos);
+			return new PresserScreenHandler(syncId, playerInventory.player, pos);
 		}
 
 		@Override

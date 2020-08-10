@@ -79,7 +79,7 @@ public class BufferBlock extends MachineBlock {
 
 	@Override
 	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-		return new BufferScreenHandler(syncId, playerInventory, pos, type);
+		return new BufferScreenHandler(syncId, playerInventory.player, pos, type);
 	}
 
 	@Override

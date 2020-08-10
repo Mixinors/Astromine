@@ -30,6 +30,7 @@ import com.github.chainmailstudios.astromine.common.utilities.VectorUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.vini2003.blade.common.data.Color;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
@@ -43,7 +44,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import org.jetbrains.annotations.NotNull;
-import spinnery.widget.api.Color;
+
 
 import java.util.ArrayList;
 
@@ -207,7 +208,7 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 			tag.putLong("child_position", this.childPosition.asLong());
 		}
 
-		tag.putInt("color", this.color.ARGB);
+		tag.putInt("color", this.color.toInt());
 
 		return super.toTag(tag);
 	}

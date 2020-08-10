@@ -209,6 +209,8 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	public static Fraction fromTag(CompoundTag tag) {
 		long[] values = tag.getLongArray("values");
 
+		if (values.length != 2) values = new long[]{ 0, 0 };
+
 		return new Fraction(values[0], values[1]);
 	}
 

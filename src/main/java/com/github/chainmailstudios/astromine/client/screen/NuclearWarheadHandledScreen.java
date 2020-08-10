@@ -26,11 +26,12 @@ package com.github.chainmailstudios.astromine.client.screen;
 
 import com.github.chainmailstudios.astromine.client.screen.base.DefaultedHandledScreen;
 import com.github.chainmailstudios.astromine.common.screenhandler.NuclearWarheadScreenHandler;
-import net.minecraft.entity.player.PlayerEntity;
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
 public class NuclearWarheadHandledScreen extends DefaultedHandledScreen<NuclearWarheadScreenHandler> {
-	public NuclearWarheadHandledScreen(Text name, NuclearWarheadScreenHandler linkedScreenHandler, PlayerEntity player) {
-		super(name, linkedScreenHandler, player);
+	public NuclearWarheadHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
+		super(handler, inventory, title);
 	}
 }

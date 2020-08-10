@@ -55,13 +55,13 @@ public class BufferBlockEntity extends DefaultedItemBlockEntity {
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.putInt("type", type.ordinal());
+		tag.putString("type", type.toName());
 		return super.toTag(tag);
 	}
 
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		type = BufferType.values()[tag.getInt("type")];
+		type = BufferType.byName(tag.getString("type"));
 		((SimpleItemInventoryComponent) itemComponent).resize(9 * type.getHeight());
 		itemComponent.addListener(this::markDirty);
 		super.fromTag(state, tag);

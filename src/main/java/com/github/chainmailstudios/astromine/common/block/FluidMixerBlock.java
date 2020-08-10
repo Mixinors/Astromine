@@ -55,7 +55,7 @@ public abstract class FluidMixerBlock extends TieredHorizontalFacingEnergyMachin
 
 		@Override
 		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-			return new FluidMixerScreenHandler(syncId, playerInventory, pos);
+			return new FluidMixerScreenHandler(syncId, playerInventory.player, pos);
 		}
 
 		@Override

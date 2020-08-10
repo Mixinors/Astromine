@@ -24,23 +24,50 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler;
 
+import com.github.chainmailstudios.astromine.common.block.entity.PresserBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyItemScreenHandler;
+import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
 import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.screen.ScreenHandlerType;
+import com.github.vini2003.blade.common.data.Position;
+import com.github.vini2003.blade.common.data.Size;
+import com.github.vini2003.blade.common.widget.base.SlotWidget;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
-import spinnery.widget.WSlot;
 
 public class PresserScreenHandler extends DefaultedEnergyItemScreenHandler {
-	public PresserScreenHandler(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
-		super(synchronizationID, playerInventory, position);
+	private PresserBlockEntity sorter;
 
-		getInterface().createChild(WSlot::new).setInventoryNumber(1).setSlotNumber(0);
-		getInterface().createChild(WSlot::new).setInventoryNumber(1).setSlotNumber(1);
+	public PresserScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+		super(AstromineScreenHandlers.PRESSER, syncId, player, position);
+
+		sorter = (PresserBlockEntity) blockEntity;
 	}
 
 	@Override
-	public ScreenHandlerType<?> getType() {
-		return AstromineScreenHandlers.PRESSER;
+	public void initialize(int width, int height) {
+		super.initialize(width, height);
+
+		SlotWidget input = new SlotWidget(0, blockEntity);
+		input.setPosition(new Position(energyBar.getX(), energyBar.getY()));
+		input.setSize(new Size(18, 18));
+
+		SlotWidget output = new SlotWidget(1, blockEntity);
+		output.setPosition(new Position(energyBar.getX(), energyBar.getY()));
+		output.setSize(new Size(18, 18));
+
+		input.setPosition(new Position(width / 2F - input.getWidth() / 2F, input.getY()));
+		input.setPosition(new Position(input.getX() + 27, input.getY() + 15));
+
+		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
+		arrow.setPosition(new Position(input.getX() - 31, input.getY()));
+		arrow.setSize(new Size(22, 16));
+		arrow.setLimitSupplier(() -> sorter.limit);
+		arrow.setProgressSupplier(() -> (int) sorter.progress);
+
+		output.setPosition(new Position(arrow.getX() - 27, arrow.getY()));
+
+		mainTab.addWidget(input);
+		mainTab.addWidget(output);
+		mainTab.addWidget(arrow);
 	}
 }

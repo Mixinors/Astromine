@@ -24,22 +24,42 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler;
 
+import com.github.chainmailstudios.astromine.common.block.entity.SolidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyItemScreenHandler;
+import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
 import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.screen.ScreenHandlerType;
+import com.github.vini2003.blade.common.data.Position;
+import com.github.vini2003.blade.common.data.Size;
+import com.github.vini2003.blade.common.widget.base.SlotWidget;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
-import spinnery.widget.WSlot;
 
 public class SolidGeneratorScreenHandler extends DefaultedEnergyItemScreenHandler {
-	public SolidGeneratorScreenHandler(int synchronizationID, PlayerInventory playerInventory, BlockPos blockPos) {
-		super(synchronizationID, playerInventory, blockPos);
+	private SolidGeneratorBlockEntity generator;
 
-		getInterface().createChild(WSlot::new).setInventoryNumber(1).setSlotNumber(0);
+	public SolidGeneratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+		super(AstromineScreenHandlers.SOLID_GENERATOR, syncId, player, position);
+
+		generator = (SolidGeneratorBlockEntity) blockEntity;
 	}
 
 	@Override
-	public ScreenHandlerType<?> getType() {
-		return AstromineScreenHandlers.SOLID_GENERATOR;
+	public void initialize(int width, int height) {
+		super.initialize(width, height);
+
+		SlotWidget input = new SlotWidget(0, blockEntity);
+		input.setPosition(new Position(mainTab.getX() + 7, mainTab.getY() + energyBar.getHeight() / 2F + 12));
+		input.setSize(new Size(18, 18));
+
+		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
+		arrow.setPosition(new Position(input.getX() + 31, input.getY()));
+		arrow.setSize(new Size(22, 16));
+		arrow.setLimitSupplier(() -> generator.limit);
+		arrow.setProgressSupplier(() -> (int) generator.current);
+
+		energyBar.setPosition(new Position(arrow.getX() + 29, arrow.getY() - energyBar.getHeight() / 2 + 8));
+
+		mainTab.addWidget(input);
+		mainTab.addWidget(arrow);
 	}
 }
