@@ -30,3 +30,6 @@ run/
 
 # where half puts :woman_mage: mods
 tpsgobrr/
+
+# just in case weird things happen
+logs/
