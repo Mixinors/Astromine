@@ -28,7 +28,7 @@ import com.github.chainmailstudios.astromine.access.EntityAccess;
 import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
 import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
 import com.google.common.collect.Lists;
-import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
+//import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.server.world.ServerWorld;

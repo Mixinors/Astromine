@@ -83,92 +83,88 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${loader_version}"
 
     // Fabric API
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${api_version}"
+    modApi "net.fabricmc.fabric-api:fabric-api:${api_version}"
 
     // Cardinal-Components API
-    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${cardinal_components_version}"
-    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-block:${cardinal_components_version}"
-    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${cardinal_components_version}"
-    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${cardinal_components_version}"
-    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-item:${cardinal_components_version}"
-    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-level:${cardinal_components_version}"
-    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-world:${cardinal_components_version}"
-    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-util:${cardinal_components_version}"
-    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${cardinal_components_version}"
-    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-block:${cardinal_components_version}"
-    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${cardinal_components_version}"
-    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${cardinal_components_version}"
-    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-item:${cardinal_components_version}"
-    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-level:${cardinal_components_version}"
-    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-world:${cardinal_components_version}"
-    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-util:${cardinal_components_version}"
+    useAsApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${cardinal_components_version}"
+    useAsApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-block:${cardinal_components_version}"
+    useAsApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${cardinal_components_version}"
+    useAsApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${cardinal_components_version}"
+    useAsApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-item:${cardinal_components_version}"
+    useAsApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-level:${cardinal_components_version}"
+    useAsApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-world:${cardinal_components_version}"
+    useAsApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-util:${cardinal_components_version}"
 
     // Shapes
-    modImplementation "com.terraformersmc:shapes:${shapes_version}"
-    include "com.terraformersmc:shapes:${shapes_version}"
+    useAsApi "com.terraformersmc:shapes:${shapes_version}"
 
     // Spinnery
-    modImplementation 'com.github.vini2003:Blade:fabric-1.16.1-SNAPSHOT'
-    include 'com.github.vini2003:Blade:fabric-1.16.1-SNAPSHOT'
+    useAsApi 'com.github.vini2003:Blade:fabric-1.16.1-SNAPSHOT'
 
     // Patchouli
-    modImplementation "vazkii.patchouli:Patchouli:${patchouli_version}"
-    include "vazkii.patchouli:Patchouli:${patchouli_version}"
+    useAsApi "vazkii.patchouli:Patchouli:${patchouli_version}"
 
     // ModMenu
-    modImplementation "io.github.prospector:modmenu:${modmenu_version}"
+    useAsApiOptionally "io.github.prospector:modmenu:${modmenu_version}"
 
     // AutoConfig
-    modImplementation "me.sargunvohra.mcmods:autoconfig1u:${auto_config_version}"
-    include "me.sargunvohra.mcmods:autoconfig1u:${auto_config_version}"
+    useAsApi "me.sargunvohra.mcmods:autoconfig1u:${auto_config_version}"
 
     // LBA
-    modImplementation "alexiil.mc.lib:libblockattributes-core:${lba_version}"
-    modImplementation "alexiil.mc.lib:libblockattributes-fluids:${lba_version}"
-    include "alexiil.mc.lib:libblockattributes-core:${lba_version}"
-    include "alexiil.mc.lib:libblockattributes-items:${lba_version}"
-    include "alexiil.mc.lib:libblockattributes-fluids:${lba_version}"
+    useAsApi "alexiil.mc.lib:libblockattributes-core:${lba_version}"
+    useAsApi "alexiil.mc.lib:libblockattributes-items:${lba_version}"
+    useAsApi "alexiil.mc.lib:libblockattributes-fluids:${lba_version}"
 
     // Tech Reborn Energy
-    modImplementation "teamreborn:energy:${tr_energy_version}"
-    include "teamreborn:energy:${tr_energy_version}"
+    useAsApi "teamreborn:energy:${tr_energy_version}"
     
     // Cloth API
-    modImplementation "me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${cloth_api_version}"
-    include "me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${cloth_api_version}"
+    useAsApi "me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${cloth_api_version}"
 
     // Cloth Config
-    modImplementation("me.shedaniel.cloth:config-2:${cloth_config_version}")
-    include("me.shedaniel.cloth:config-2:${cloth_config_version}")
+    useAsApi "me.shedaniel.cloth:config-2:${cloth_config_version}"
 
     // RoughlyEnoughItems
-    modImplementation("me.shedaniel:RoughlyEnoughItems:${rei_version}")
+    useAsApiOptionally "me.shedaniel:RoughlyEnoughItems-api:${rei_version}"
+    useAsRuntime "me.shedaniel:RoughlyEnoughItems:${rei_version}"
 
     // DataBreaker
-    modRuntime("com.github.SuperCoder7979:databreaker:${databreaker_version}") {
-        exclude(module: "fabric-loader")
-    }
+    useAsRuntime "com.github.SuperCoder7979:databreaker:${databreaker_version}"
 
     // LibStructure
-    modImplementation "com.github.Draylar:LibStructure:${libstructure_version}"
-    include "com.github.Draylar:LibStructure:${libstructure_version}"
+    useAsApi "com.github.Draylar:LibStructure:${libstructure_version}"
 
     // JOML
     compile "org.joml:joml:${joml_version}"
 
     // Magna
-    modImplementation "com.github.Draylar:magna:${magna_version}"
-    include "com.github.Draylar:magna:${magna_version}"
+    useAsApi "com.github.Draylar:magna:${magna_version}"
     
     // Tech Reborn
-    modRuntime "TechReborn:TechReborn-1.16:${tech_reborn_version}"
+//    useAsRuntime "TechReborn:TechReborn-1.16:${tech_reborn_version}"
     
     // Reborn Core
-    modRuntime "RebornCore:RebornCore-1.16:${reborn_core_version}"
+//    useAsRuntime "RebornCore:RebornCore-1.16:${reborn_core_version}"
 
     // Wrenchable
-    modApi "com.zundrel:wrenchable:${wrenchable_version}"
-    include "com.zundrel:wrenchable:${wrenchable_version}"
+    useAsApi "com.zundrel:wrenchable:${wrenchable_version}"
+}
+
+def useAsApi(dep) {
+    useAsApiOptionally(dep)
+    dependencies.include(dep)
+}
+
+def useAsApiOptionally(dep) {
+    dependencies.modApi(dep) {
+        exclude group: "net.fabricmc.fabric-api"
+    }
+}
+
+def useAsRuntime(dep) {
+    dependencies.modRuntime(dep) {
+        exclude group: "net.fabricmc.fabric-api"
+    }
 }
 
 processResources {
