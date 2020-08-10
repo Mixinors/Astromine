@@ -25,25 +25,35 @@
 package com.github.chainmailstudios.astromine.common.screenhandler.base;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedFluidBlockEntity;
-import net.minecraft.entity.player.PlayerInventory;
+import com.github.chainmailstudios.astromine.common.widget.FluidVerticalBarWidget;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.vini2003.blade.common.data.Position;
+import com.github.vini2003.blade.common.data.Size;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
-import spinnery.widget.WInterface;
-import spinnery.widget.WSlot;
 
-import java.util.Collection;
 
 public class DefaultedFluidScreenHandler extends DefaultedBlockEntityScreenHandler {
-	public final Collection<WSlot> playerSlots;
-
 	public DefaultedFluidBlockEntity blockEntity;
 
-	public DefaultedFluidScreenHandler(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
-		super(synchronizationID, playerInventory, position);
+	public FluidVerticalBarWidget fluidBar;
 
-		WInterface mainInterface = getInterface();
+	public DefaultedFluidScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
+		super(type, syncId, player, position);
+		
+		blockEntity = (DefaultedFluidBlockEntity) player.world.getBlockEntity(position);
+	}
 
-		playerSlots = WSlot.addHeadlessPlayerInventory(mainInterface);
+	@Override
+	public void initialize(int width, int height) {
+		super.initialize(width, height);
 
-		blockEntity = (DefaultedFluidBlockEntity) world.getBlockEntity(position);
+		fluidBar = new FluidVerticalBarWidget();
+		fluidBar.setPosition(new Position(mainTab.getX() + 7F, mainTab.getY() + 20F));
+		fluidBar.setSize(new Size(24F, 48F));
+		fluidBar.setVolume(() -> blockEntity.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(0));
+
+		mainTab.addWidget(fluidBar);
 	}
 }

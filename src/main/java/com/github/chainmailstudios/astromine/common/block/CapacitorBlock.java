@@ -57,7 +57,7 @@ public abstract class CapacitorBlock extends HorizontalFacingEnergyMachineBlock 
 
 		@Override
 		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-			return new CapacitorScreenHandler(syncId, playerInventory, pos);
+			return new CapacitorScreenHandler(syncId, playerInventory.player, pos);
 		}
 
 		@Override
@@ -147,7 +147,7 @@ public abstract class CapacitorBlock extends HorizontalFacingEnergyMachineBlock 
 
 		@Override
 		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-			return new CreativeCapacitorScreenHandler(syncId, playerInventory, pos);
+			return new CreativeCapacitorScreenHandler(syncId, playerInventory.player, pos);
 		}
 
 		@Override

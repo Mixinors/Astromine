@@ -55,7 +55,7 @@ public class FluidInserterBlock extends HorizontalFacingEnergyMachineBlock {
 
 	@Override
 	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-		return new FluidInserterScreenHandler(syncId, playerInventory, pos);
+		return new FluidInserterScreenHandler(syncId, playerInventory.player, pos);
 	}
 
 	@Override

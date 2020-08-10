@@ -26,24 +26,13 @@ package com.github.chainmailstudios.astromine.client.screen;
 
 import com.github.chainmailstudios.astromine.client.screen.base.DefaultedEnergyItemHandledScreen;
 import com.github.chainmailstudios.astromine.common.screenhandler.CapacitorScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyItemScreenHandler;
-import com.github.chainmailstudios.astromine.common.widget.WHorizontalArrow;
-import net.minecraft.entity.player.PlayerEntity;
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
-import spinnery.widget.WSlot;
-import spinnery.widget.api.Position;
-import spinnery.widget.api.Size;
+
 
 public class CapacitorHandledScreen extends DefaultedEnergyItemHandledScreen<CapacitorScreenHandler> {
-	public CapacitorHandledScreen(Text name, DefaultedEnergyItemScreenHandler linkedScreenHandler, PlayerEntity player) {
-		super(name, linkedScreenHandler, player);
-
-		energyBar.centerX();
-
-		WSlot input = mainPanel.createChild(WSlot::new, Position.of(mainPanel, 12, 36), Size.of(18, 18)).setInventoryNumber(1).setSlotNumber(0);
-		WSlot output = mainPanel.createChild(WSlot::new, Position.of(mainPanel, 146, 36), Size.of(18, 18)).setInventoryNumber(1).setSlotNumber(1);
-
-		mainPanel.createChild(WHorizontalArrow::new, Position.of(input, 28, 0, 0), Size.of(22, 16));
-		mainPanel.createChild(WHorizontalArrow::new, Position.of(output, -34, 0, 0), Size.of(22, 16));
+	public CapacitorHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
+		super(handler, inventory, title);
 	}
 }

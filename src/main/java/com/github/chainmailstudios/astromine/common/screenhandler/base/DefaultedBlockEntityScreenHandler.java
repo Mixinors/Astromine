@@ -24,22 +24,85 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base;
 
+import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
-import net.minecraft.entity.player.PlayerInventory;
+import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.NameableComponent;
+import com.github.chainmailstudios.astromine.common.widget.TransferTypeSelectorPanelUtilities;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.vini2003.blade.common.data.Position;
+import com.github.vini2003.blade.common.data.Size;
+import com.github.vini2003.blade.common.data.Slots;
+import com.github.vini2003.blade.common.data.widget.TabCollection;
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import com.github.vini2003.blade.common.widget.base.SlotWidget;
+import com.github.vini2003.blade.common.widget.base.TabWidget;
+import com.google.common.collect.Lists;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.util.math.BlockPos;
-import spinnery.common.handler.BaseScreenHandler;
+import net.minecraft.util.math.Direction;
+
+import java.util.Collection;
+import java.util.HashSet;
 
 public abstract class DefaultedBlockEntityScreenHandler extends BaseScreenHandler {
 	public DefaultedBlockEntity syncBlockEntity;
 
-	public DefaultedBlockEntityScreenHandler(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
-		super(synchronizationID, playerInventory);
+	public Collection<SlotWidget> playerSlots = new HashSet<>();
 
-		syncBlockEntity = (DefaultedBlockEntity) world.getBlockEntity(position);
+	public TabCollection mainTab;
 
-		if (!world.isClient) {
+	public DefaultedBlockEntityScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
+		super(type, syncId, player);
+
+		syncBlockEntity = (DefaultedBlockEntity) player.world.getBlockEntity(position);
+
+		if (!player.world.isClient) {
 			syncBlockEntity.doNotSkipInventory();
 			syncBlockEntity.sync();
 		}
+	}
+
+	@Override
+	public void initialize(int width, int height) {
+		TabWidget tabs = new TabWidget();
+		tabs.setPosition(new Position(() -> (float) (width / 2 - 176 / 2), () -> (float) (height / 2 - 184 / 2)));
+		tabs.setSize(new Size(() -> 176F, () -> 184F + 25F));
+
+		addWidget(tabs);
+
+		mainTab = (TabCollection) tabs.addTab(syncBlockEntity.getCachedState().getBlock().asItem());
+		mainTab.setPosition(new Position(tabs.getX(), tabs.getY() + 25F + 7F));
+		mainTab.setSize(new Size(176F, 184F));
+
+		playerSlots = Slots.addPlayerInventory(new Position(() -> tabs.getX() + 7F, () -> tabs.getY() + 25F + 7F + (184 - 18 - 18 - (18 * 3))), new Size(() -> 18F, () -> 18F), mainTab, getPlayer().inventory);
+
+		ComponentProvider componentProvider = ComponentProvider.fromBlockEntity(syncBlockEntity);
+
+		Direction rotation = Direction.NORTH;
+		Block block = syncBlockEntity.getCachedState().getBlock();
+
+		if (block instanceof HorizontalFacingBlockWithEntity) {
+			DirectionProperty property = ((HorizontalFacingBlockWithEntity) block).getDirectionProperty();
+			if (property != null)
+				rotation = syncBlockEntity.getCachedState().get(property);
+		}
+
+		final Direction finalRotation = rotation;
+
+		BlockEntityTransferComponent transferComponent = componentProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
+
+		transferComponent.get().forEach((type, entry) -> {
+			if (componentProvider.getComponent(type) instanceof NameableComponent) {
+				NameableComponent nameableComponent = (NameableComponent) componentProvider.getComponent(type);
+				TabCollection current = (TabCollection) tabs.addTab(nameableComponent.getSymbol(), () -> Lists.newArrayList(nameableComponent.getName()));
+				TransferTypeSelectorPanelUtilities.createTab(current, new Position(tabs.getX() + tabs.getWidth() / 2 - 38, tabs.getY() + 7F + 12F), finalRotation, transferComponent, syncBlockEntity.getPos(), type);
+				playerSlots.addAll(Slots.addPlayerInventory(new Position(() -> tabs.getX() + 7F, () -> tabs.getY() + 25F + 7F + (184 - 18 - 18 - (18 * 3))), new Size(() -> 18F, () -> 18F), current, getPlayer().inventory));
+			}
+		});
 	}
 }

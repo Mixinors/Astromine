@@ -25,11 +25,10 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
 import com.github.chainmailstudios.astromine.common.world.generation.mars.MarsChunkGenerator;
 import com.github.chainmailstudios.astromine.common.world.generation.moon.MoonChunkGenerator;
+import com.github.chainmailstudios.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
 import com.github.chainmailstudios.astromine.common.world.generation.vulcan.VulcanChunkGenerator;
-
 import net.minecraft.util.registry.Registry;
 
 public class AstromineChunkGenerators {

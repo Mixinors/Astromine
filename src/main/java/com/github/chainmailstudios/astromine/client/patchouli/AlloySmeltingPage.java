@@ -24,15 +24,13 @@
 
 package com.github.chainmailstudios.astromine.client.patchouli;
 
+import com.github.chainmailstudios.astromine.common.recipe.AlloySmeltingRecipe;
+import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.TranslatableText;
-
-import com.mojang.blaze3d.systems.RenderSystem;
-
-import com.github.chainmailstudios.astromine.common.recipe.AlloySmeltingRecipe;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import vazkii.patchouli.client.book.gui.GuiBook;
 import vazkii.patchouli.client.book.page.abstr.PageDoubleRecipeRegistry;
 

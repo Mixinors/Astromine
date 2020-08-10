@@ -55,7 +55,7 @@ public abstract class TrituratorBlock extends TieredHorizontalFacingEnergyMachin
 
 		@Override
 		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-			return new TrituratorScreenHandler(syncId, playerInventory, pos);
+			return new TrituratorScreenHandler(syncId, playerInventory.player, pos);
 		}
 
 		@Override

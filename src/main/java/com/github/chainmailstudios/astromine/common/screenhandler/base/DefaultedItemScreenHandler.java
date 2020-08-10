@@ -25,25 +25,16 @@
 package com.github.chainmailstudios.astromine.common.screenhandler.base;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedItemBlockEntity;
-import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
-import spinnery.widget.WInterface;
-import spinnery.widget.WSlot;
-
-import java.util.Collection;
 
 public class DefaultedItemScreenHandler extends DefaultedBlockEntityScreenHandler {
-	public final Collection<WSlot> playerSlots;
-
 	public DefaultedItemBlockEntity blockEntity;
 
-	public DefaultedItemScreenHandler(int synchronizationID, PlayerInventory playerInventory, BlockPos position) {
-		super(synchronizationID, playerInventory, position);
+	public DefaultedItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
+		super(type, syncId, player, position);
 
-		WInterface mainInterface = getInterface();
-
-		playerSlots = WSlot.addHeadlessPlayerInventory(mainInterface);
-
-		blockEntity = (DefaultedItemBlockEntity) world.getBlockEntity(position);
+		blockEntity = (DefaultedItemBlockEntity) player.world.getBlockEntity(position);
 	}
 }

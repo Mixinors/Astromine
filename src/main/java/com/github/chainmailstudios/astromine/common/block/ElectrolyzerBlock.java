@@ -55,7 +55,7 @@ public abstract class ElectrolyzerBlock extends TieredHorizontalFacingEnergyMach
 
 		@Override
 		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-			return new ElectrolyzerScreenHandler(syncId, playerInventory, pos);
+			return new ElectrolyzerScreenHandler(syncId, playerInventory.player, pos);
 		}
 
 		@Override

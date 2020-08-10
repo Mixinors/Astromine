@@ -29,26 +29,34 @@ import com.github.chainmailstudios.astromine.common.screenhandler.base.Defaulted
 import com.github.chainmailstudios.astromine.common.utilities.type.BufferType;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.screen.ScreenHandlerType;
+import com.github.vini2003.blade.common.data.Position;
+import com.github.vini2003.blade.common.data.Size;
+import com.github.vini2003.blade.common.widget.base.SlotListWidget;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
-import spinnery.widget.WSlot;
 
 public class BufferScreenHandler extends DefaultedItemScreenHandler {
 	public final BufferType bufferType;
 
-	public BufferScreenHandler(int synchronizationID, PlayerInventory playerInventory, BlockPos position, BufferType bufferType) {
-		super(synchronizationID, playerInventory, position);
-
-		addInventory(1, ItemInventoryFromInventoryComponent.of(blockEntity.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)));
-
-		WSlot.addHeadlessArray(getInterface(), 0, 1, 9, bufferType.getHeight());
-
+	public BufferScreenHandler(int syncId, PlayerEntity player, BlockPos position, BufferType bufferType) {
+		super(AstromineScreenHandlers.BUFFER, syncId, player, position);
 		this.bufferType = bufferType;
 	}
 
 	@Override
-	public ScreenHandlerType<?> getType() {
-		return AstromineScreenHandlers.BUFFER;
+	public void initialize(int width, int height) {
+		super.initialize(width, height);
+
+		int slotWidth = 9 * 18 + (9 * 2) + 7;
+		int slotHeight = 4 * 18;
+
+		int leftPadding = 7;
+		int topPadding = 10;
+
+		SlotListWidget slotList = new SlotListWidget(ItemInventoryFromInventoryComponent.of(blockEntity.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)));
+		slotList.setPosition(new Position(mainTab.getX() + leftPadding, mainTab.getY() + topPadding));
+		slotList.setSize(new Size(slotWidth - 25, slotHeight));
+
+		mainTab.addWidget(slotList);
 	}
 }

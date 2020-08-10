@@ -55,7 +55,7 @@ public abstract class SolidGeneratorBlock extends TieredHorizontalFacingEnergyMa
 
 		@Override
 		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-			return new SolidGeneratorScreenHandler(syncId, playerInventory, pos);
+			return new SolidGeneratorScreenHandler(syncId, playerInventory.player, pos);
 		}
 
 		@Override

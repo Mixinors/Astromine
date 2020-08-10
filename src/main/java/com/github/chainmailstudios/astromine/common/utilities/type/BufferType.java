@@ -38,4 +38,18 @@ public enum BufferType {
 	public int getHeight() {
 		return height;
 	}
+
+	public static BufferType byName(String name) {
+		if (name.equals("basic")) {
+			return BASIC;
+		} else if (name.equals("advanced")) {
+			return ADVANCED;
+		} else {
+			return ELITE;
+		}
+	}
+
+	public String toName() {
+		return this == BASIC ? "basic" : this == ADVANCED ? "advanced" : "elite";
+	}
 }

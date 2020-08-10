@@ -24,12 +24,11 @@
 
 package com.github.chainmailstudios.astromine.client.patchouli;
 
+import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
+import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.text.TranslatableText;
-
-import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import vazkii.patchouli.client.book.gui.GuiBook;
 import vazkii.patchouli.client.book.page.abstr.PageSimpleProcessingRecipe;
 

@@ -24,14 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.world.generation.mars;
 
-import java.util.function.LongFunction;
-
 import com.github.chainmailstudios.astromine.common.world.layer.mars.MarsBiomeLayer;
 import com.github.chainmailstudios.astromine.common.world.layer.mars.MarsRiverLayer;
 import com.github.chainmailstudios.astromine.common.world.layer.util.PlainsOnlyLayer;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
-
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.layer.ScaleLayer;
 import net.minecraft.world.biome.layer.SimpleLandNoiseLayer;
@@ -41,6 +38,8 @@ import net.minecraft.world.biome.layer.util.LayerSampleContext;
 import net.minecraft.world.biome.layer.util.LayerSampler;
 import net.minecraft.world.biome.source.BiomeLayerSampler;
 import net.minecraft.world.biome.source.BiomeSource;
+
+import java.util.function.LongFunction;
 
 public class MarsBiomeSource extends BiomeSource {
 	public static Codec<MarsBiomeSource> CODEC = Codec.LONG.fieldOf("seed").xmap(MarsBiomeSource::new, (source) -> source.seed).stable().codec();
