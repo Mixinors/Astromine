@@ -71,7 +71,7 @@ public abstract class DefaultedBlockEntityScreenHandler extends BaseScreenHandle
 	public void initialize(int width, int height) {
 		TabWidget tabs = new TabWidget();
 		tabs.setPosition(new Position(() -> (float) (width / 2 - 176 / 2), () -> (float) (height / 2 - 184 / 2)));
-		tabs.setSize(new Size(() -> 176F, () -> 184F));
+		tabs.setSize(new Size(() -> 176F, () -> 184F + 25F));
 
 		addWidget(tabs);
 
