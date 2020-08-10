@@ -41,6 +41,6 @@ public abstract class CurrentDownParticleMixin extends Particle {
 
 	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = 0.08D))
 	double getGravity(double original) {
-		return GravityRegistry.INSTANCE.get(world.getDimensionRegistryKey());
+		return GravityRegistry.INSTANCE.get(world.getRegistryKey());
 	}
 }
