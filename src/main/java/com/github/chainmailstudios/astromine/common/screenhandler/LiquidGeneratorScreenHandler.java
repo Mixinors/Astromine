@@ -54,6 +54,6 @@ public class LiquidGeneratorScreenHandler extends DefaultedEnergyFluidScreenHand
 
 		fluidBar.setPosition(new Position(arrow.getX() + arrow.getWidth() + 7, fluidBar.getY()));
 
-		addWidget(arrow);
+		mainTab.addWidget(arrow);
 	}
 }

@@ -62,7 +62,6 @@ public class AlloySmelterScreenHandler extends DefaultedEnergyItemScreenHandler 
 		firstInput.setPosition(new Position(width / 2F - firstInput.getWidth() / 2, firstInput.getY()));
 		firstInput.setPosition(new Position(firstInput.getX() - 22, firstInput.getY() + 15 - 9));
 
-
 		secondInput.setPosition(new Position(width / 2F - secondInput.getWidth() / 2, secondInput.getY()));
 		secondInput.setPosition(new Position(secondInput.getX() - 22, secondInput.getY() + 15 + 18 - 9));
 
