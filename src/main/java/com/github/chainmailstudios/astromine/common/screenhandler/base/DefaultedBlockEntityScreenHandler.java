@@ -79,7 +79,7 @@ public abstract class DefaultedBlockEntityScreenHandler extends BaseScreenHandle
 		mainTab.setPosition(new Position(tabs.getX(), tabs.getY() + 25F + 7F));
 		mainTab.setSize(new Size(176F, 184F));
 
-		playerSlots = Slots.addPlayerInventory(new Position(() -> tabs.getX() + 7F, () -> tabs.getY() + 25F + 7F + (184 - 18 - 18 - (18 * 3))), new Size(() -> 18F, () -> 18F), mainTab, getPlayer().inventory);
+		playerSlots = Slots.addPlayerInventory(new Position(() -> tabs.getX() + 7F, () -> tabs.getY() + 25F + 7F + (184 - 18 - 18 - (18 * 4) - 6)), new Size(() -> 18F, () -> 18F), mainTab, getPlayer().inventory);
 
 		ComponentProvider componentProvider = ComponentProvider.fromBlockEntity(syncBlockEntity);
 
@@ -100,8 +100,8 @@ public abstract class DefaultedBlockEntityScreenHandler extends BaseScreenHandle
 			if (componentProvider.getComponent(type) instanceof NameableComponent) {
 				NameableComponent nameableComponent = (NameableComponent) componentProvider.getComponent(type);
 				TabCollection current = (TabCollection) tabs.addTab(nameableComponent.getSymbol(), () -> Lists.newArrayList(nameableComponent.getName()));
-				TransferTypeSelectorPanelUtilities.createTab(current, new Position(tabs.getX() + tabs.getWidth() / 2 - 38, tabs.getY() + 7F + 12F), finalRotation, transferComponent, syncBlockEntity.getPos(), type);
-				playerSlots.addAll(Slots.addPlayerInventory(new Position(() -> tabs.getX() + 7F, () -> tabs.getY() + 25F + 7F + (184 - 18 - 18 - (18 * 3))), new Size(() -> 18F, () -> 18F), current, getPlayer().inventory));
+				TransferTypeSelectorPanelUtilities.createTab(current, new Position(tabs.getX() + tabs.getWidth() / 2 - 38, tabs.getY() + 4), finalRotation, transferComponent, syncBlockEntity.getPos(), type);
+				playerSlots.addAll(Slots.addPlayerInventory(new Position(() -> tabs.getX() + 7F, () -> tabs.getY() + 25F + 7F + (184 - 18 - 18 - (18 * 4) - 6)), new Size(() -> 18F, () -> 18F), current, getPlayer().inventory));
 			}
 		});
 	}
