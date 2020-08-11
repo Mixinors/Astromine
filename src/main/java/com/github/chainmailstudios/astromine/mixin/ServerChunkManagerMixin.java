@@ -63,17 +63,16 @@ public class ServerChunkManagerMixin {
 	private void handleConstructor(ServerWorld world, LevelStorage.Session session, DataFixer dataFixer, StructureManager structureManager, Executor workerExecutor, ChunkGenerator chunkGenerator, int viewDistance, boolean bl,
 		WorldGenerationProgressListener worldGenerationProgressListener, Supplier<PersistentStateManager> supplier, CallbackInfo ci) {
 		if (chunkGenerator instanceof EarthSpaceChunkGenerator) {
-			this.chunkGenerator = new EarthSpaceChunkGenerator(new EarthSpaceBiomeSource(world.getSeed()), world.getSeed());
+			this.chunkGenerator = chunkGenerator.withSeed(world.getSeed());
 		}
 		if (chunkGenerator instanceof MoonChunkGenerator) {
-			this.chunkGenerator = new MoonChunkGenerator(new MoonBiomeSource(world.getSeed()), world.getSeed());
+			this.chunkGenerator = chunkGenerator.withSeed(world.getSeed());
 		}
 		if (chunkGenerator instanceof MarsChunkGenerator) {
-			this.chunkGenerator = new MarsChunkGenerator(new MarsBiomeSource(world.getSeed()), world.getSeed());
+			this.chunkGenerator = chunkGenerator.withSeed(world.getSeed());
 		}
-
 		if (chunkGenerator instanceof VulcanChunkGenerator) {
-			this.chunkGenerator = new VulcanChunkGenerator(new VulcanBiomeSource(world.getSeed()), world.getSeed());
+			this.chunkGenerator = chunkGenerator.withSeed(world.getSeed());
 		}
 	}
 }

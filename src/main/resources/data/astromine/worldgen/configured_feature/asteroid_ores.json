@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "config": {},
+      "type": "astromine:asteroid_ores"
+    },
+    "decorator": {
+      "config": {
+        "chance": 16
+      },
+      "type": "minecraft:chance"
+    }
+  }
+}

@@ -27,17 +27,25 @@ package com.github.chainmailstudios.astromine.common.world.generation.space;
 // import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryLookupCodec;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.biome.source.BiomeSource;
+import net.minecraft.world.biome.source.TheEndBiomeSource;
+
+import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
 
 public class EarthSpaceBiomeSource extends BiomeSource {
-	public static Codec<EarthSpaceBiomeSource> CODEC = Codec.LONG.fieldOf("seed").xmap(EarthSpaceBiomeSource::new, (source) -> source.seed).stable().codec();
+	public static final Codec<EarthSpaceBiomeSource> CODEC = RecordCodecBuilder.create((instance) -> instance.group(RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry), Codec.LONG.fieldOf("seed").stable().forGetter((biomeSource) -> biomeSource.seed)).apply(instance, instance.stable(EarthSpaceBiomeSource::new)));
 	private final long seed;
+	private final Registry<Biome> registry;
 
-	public EarthSpaceBiomeSource(long seed) {
+	public EarthSpaceBiomeSource(Registry<Biome> registry, long seed) {
 		super(ImmutableList.of());
 		this.seed = seed;
+		this.registry = registry;
 	}
 
 	@Override
@@ -47,12 +55,11 @@ public class EarthSpaceBiomeSource extends BiomeSource {
 
 	@Override
 	public BiomeSource withSeed(long seed) {
-		return new EarthSpaceBiomeSource(seed);
+		return new EarthSpaceBiomeSource(registry, seed);
 	}
 
 	@Override
 	public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
-		return Biomes.THE_VOID;
-		// return AstromineBiomes.ASTEROID_BELT;
+		return registry.get(AstromineBiomes.ASTEROID_BELT);
 	}
 }

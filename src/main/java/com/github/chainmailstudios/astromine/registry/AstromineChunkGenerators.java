@@ -33,9 +33,9 @@ import net.minecraft.util.registry.Registry;
 
 public class AstromineChunkGenerators {
 	public static void initialize() {
-		Registry.register(Registry.CHUNK_GENERATOR, AstromineCommon.identifier("earth_space"), EarthSpaceChunkGenerator.CODEC);
-		Registry.register(Registry.CHUNK_GENERATOR, AstromineCommon.identifier("moon"), MoonChunkGenerator.CODEC);
-		Registry.register(Registry.CHUNK_GENERATOR, AstromineCommon.identifier("mars"), MarsChunkGenerator.CODEC);
-		Registry.register(Registry.CHUNK_GENERATOR, AstromineCommon.identifier("vulcan"), VulcanChunkGenerator.CODEC);
+		Registry.register(Registry.CHUNK_GENERATOR, AstromineDimensions.EARTH_SPACE_ID, EarthSpaceChunkGenerator.CODEC);
+		Registry.register(Registry.CHUNK_GENERATOR, AstromineDimensions.MOON_ID, MoonChunkGenerator.CODEC);
+		Registry.register(Registry.CHUNK_GENERATOR, AstromineDimensions.MARS_ID, MarsChunkGenerator.CODEC);
+		Registry.register(Registry.CHUNK_GENERATOR, AstromineDimensions.VULCAN_ID, VulcanChunkGenerator.CODEC);
 	}
 }

@@ -88,6 +88,7 @@ public class AstromineCommon implements ModInitializer {
 		AstromineNetworkTypes.initialize();
 		AstrominePotions.initialize();
 		AstromineFeatures.initialize();
+		AstromineBiomeSources.initialize();
 		// TODO biomes
 		// AstromineBiomes.initialize();
 		AstromineFluids.initialize();
@@ -97,6 +98,7 @@ public class AstromineCommon implements ModInitializer {
 		AstromineGravities.initialize();
 		// TODO dimension layers
 		// AstromineDimensionLayers.initialize();
+		AstromineDimensions.initialize();
 		AstromineCommonCallbacks.initialize();
 		AstromineRecipeSerializers.initialize();
 		AstromineCommands.initialize();

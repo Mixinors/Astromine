@@ -69,7 +69,7 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public ChunkGenerator withSeed(long seed) {
-		return new EarthSpaceChunkGenerator(new EarthSpaceBiomeSource(seed), seed);
+		return new EarthSpaceChunkGenerator(this.biomeSource.withSeed(seed), seed);
 	}
 
 	@Override
