@@ -106,7 +106,7 @@ public class UncoloredSpawnEggItem extends Item {
 			}
 
 			EntityType<?> entityType2 = this.getEntityType(itemStack.getTag());
-			if (entityType2.spawnFromItemStack((ServerWorld)world, itemStack, context.getPlayer(), blockPos3, SpawnReason.SPAWN_EGG, true, !Objects.equals(blockPos, blockPos3) && direction == Direction.UP) != null) {
+			if (entityType2.spawnFromItemStack((ServerWorld) world, itemStack, context.getPlayer(), blockPos3, SpawnReason.SPAWN_EGG, true, !Objects.equals(blockPos, blockPos3) && direction == Direction.UP) != null) {
 				itemStack.decrement(1);
 			}
 
@@ -132,7 +132,7 @@ public class UncoloredSpawnEggItem extends Item {
 			} else if (world.canPlayerModifyAt(user, blockPos) && user.canPlaceOn(blockPos, blockHitResult.getSide(), itemStack)) {
 				EntityType<?> entityType = this.getEntityType(itemStack.getTag());
 
-				if (entityType.spawnFromItemStack((ServerWorld)world, itemStack, user, blockPos, SpawnReason.SPAWN_EGG, false, false) == null) {
+				if (entityType.spawnFromItemStack((ServerWorld) world, itemStack, user, blockPos, SpawnReason.SPAWN_EGG, false, false) == null) {
 					return TypedActionResult.pass(itemStack);
 				} else {
 					if (!user.abilities.creativeMode) {

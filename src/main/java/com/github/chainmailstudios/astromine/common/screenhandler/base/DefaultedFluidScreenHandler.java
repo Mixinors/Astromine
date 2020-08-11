@@ -33,7 +33,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
-
 public class DefaultedFluidScreenHandler extends DefaultedBlockEntityScreenHandler {
 	public DefaultedFluidBlockEntity blockEntity;
 
@@ -41,7 +40,7 @@ public class DefaultedFluidScreenHandler extends DefaultedBlockEntityScreenHandl
 
 	public DefaultedFluidScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
-		
+
 		blockEntity = (DefaultedFluidBlockEntity) player.world.getBlockEntity(position);
 	}
 

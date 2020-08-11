@@ -76,7 +76,7 @@ public class HorizontalArrowWidget extends AbstractWidget {
 
 		float x = getPosition().getX();
 		float y = getPosition().getY();
-		
+
 		float sX = getSize().getWidth();
 		float sY = getSize().getHeight();
 

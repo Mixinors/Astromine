@@ -63,7 +63,7 @@ public class FluidMixerScreenHandler extends DefaultedEnergyFluidScreenHandler {
 		arrow.setProgressSupplier(() -> (int) mixer.current);
 
 		FluidVerticalBarWidget outputFluidBar = new FluidVerticalBarWidget();
-		outputFluidBar.setPosition(new Position(arrow.getX() + arrow.getWidth() + 7, arrow.getY() -secondInputFluidBar.getHeight() / 2F + 8));
+		outputFluidBar.setPosition(new Position(arrow.getX() + arrow.getWidth() + 7, arrow.getY() - secondInputFluidBar.getHeight() / 2F + 8));
 		outputFluidBar.setSize(new Size(fluidBar.getWidth(), fluidBar.getHeight()));
 		outputFluidBar.setVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(2));
 

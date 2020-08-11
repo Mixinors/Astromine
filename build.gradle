@@ -56,7 +56,7 @@ repositories {
     }
     maven {
         name = "Wrenchable"
-        url  "https://dl.bintray.com/zundrel/wrenchable"
+        url "https://dl.bintray.com/zundrel/wrenchable"
     }
     maven {
         name = "grondag"
@@ -117,7 +117,7 @@ dependencies {
 
     // Tech Reborn Energy
     useAsApi "teamreborn:energy:${tr_energy_version}"
-    
+
     // Cloth API
     useAsApi "me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${cloth_api_version}"
 
@@ -125,8 +125,7 @@ dependencies {
     useAsApi "me.shedaniel.cloth:config-2:${cloth_config_version}"
 
     // RoughlyEnoughItems
-    useAsApiOptionally "me.shedaniel:RoughlyEnoughItems-api:${rei_version}"
-    useAsRuntime "me.shedaniel:RoughlyEnoughItems:${rei_version}"
+    useAsApiOptionally("me.shedaniel:RoughlyEnoughItems:${rei_version}", false)
 
     // DataBreaker
     useAsRuntime "com.github.SuperCoder7979:databreaker:${databreaker_version}"
@@ -139,10 +138,10 @@ dependencies {
 
     // Magna
     useAsApi "com.github.Draylar:magna:${magna_version}"
-    
+
     // Tech Reborn
 //    useAsRuntime "TechReborn:TechReborn-1.16:${tech_reborn_version}"
-    
+
     // Reborn Core
 //    useAsRuntime "RebornCore:RebornCore-1.16:${reborn_core_version}"
 
@@ -155,15 +154,21 @@ def useAsApi(dep) {
     dependencies.include(dep)
 }
 
-def useAsApiOptionally(dep) {
+def useAsApiOptionally(dep, removeREI = true) {
     dependencies.modApi(dep) {
         exclude group: "net.fabricmc.fabric-api"
+        if (removeREI) {
+            exclude group: "me.shedaniel"
+        }
     }
 }
 
-def useAsRuntime(dep) {
+def useAsRuntime(dep, removeREI = true) {
     dependencies.modRuntime(dep) {
         exclude group: "net.fabricmc.fabric-api"
+        if (removeREI) {
+            exclude group: "me.shedaniel"
+        }
     }
 }
 

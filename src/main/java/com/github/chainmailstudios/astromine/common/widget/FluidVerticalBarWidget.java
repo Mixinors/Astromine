@@ -72,7 +72,8 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 
 	@Override
 	public List<Text> getTooltip() {
-		return Lists.newArrayList(FluidUtilities.rawFraction(progressFraction.get(), limitFraction.get(), new TranslatableText("text.astromine.fluid")), new TranslatableText("text.astromine.tooltip.fractional_value", progressFraction.get().toDecimalString(), limitFraction.get().toDecimalString()));
+		return Lists.newArrayList(FluidUtilities.rawFraction(progressFraction.get(), limitFraction.get(), new TranslatableText("text.astromine.fluid")), new TranslatableText("text.astromine.tooltip.fractional_value", progressFraction.get().toDecimalString(), limitFraction.get()
+			.toDecimalString()));
 	}
 
 	@Override

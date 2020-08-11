@@ -24,8 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.world.generation.mars;
 
-//import com.github.chainmailstudios.astromine.common.world.layer.mars.MarsBiomeLayer;
-//import com.github.chainmailstudios.astromine.common.world.layer.mars.MarsRiverLayer;
+// import com.github.chainmailstudios.astromine.common.world.layer.mars.MarsBiomeLayer;
+// import com.github.chainmailstudios.astromine.common.world.layer.mars.MarsRiverLayer;
 import com.github.chainmailstudios.astromine.common.world.layer.util.PlainsOnlyLayer;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
@@ -77,14 +77,14 @@ public class MarsBiomeSource extends BiomeSource {
 		for (int i = 0; i < 7; i++) {
 			mainLayer = ScaleLayer.NORMAL.create(contextProvider.apply(43 + i), mainLayer);
 		}
-/*
-		mainLayer = MarsRiverLayer.INSTANCE.create(contextProvider.apply(56L), mainLayer);
-		for (int i = 0; i < 2; i++) {
-			mainLayer = ScaleLayer.NORMAL.create(contextProvider.apply(473 + i), mainLayer);
-		}
-
-		mainLayer = MarsBiomeLayer.INSTANCE.create(contextProvider.apply(721), mainLayer);
-*/
+		/*
+		 * mainLayer = MarsRiverLayer.INSTANCE.create(contextProvider.apply(56L), mainLayer);
+		 * for (int i = 0; i < 2; i++) {
+		 * mainLayer = ScaleLayer.NORMAL.create(contextProvider.apply(473 + i), mainLayer);
+		 * }
+		 * 
+		 * mainLayer = MarsBiomeLayer.INSTANCE.create(contextProvider.apply(721), mainLayer);
+		 */
 		return mainLayer;
 	}
 }

@@ -179,7 +179,7 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	public void explode() {
 		for (int i = 0; i < 50; i++) {
 			SpaceSlimeEntity spaceSlime = AstromineEntityTypes.SPACE_SLIME.create(this.world);
-			spaceSlime.initialize((ServerWorldAccess)this.world, this.world.getLocalDifficulty(this.getBlockPos()), SpawnReason.NATURAL, null, null);
+			spaceSlime.initialize((ServerWorldAccess) this.world, this.world.getLocalDifficulty(this.getBlockPos()), SpawnReason.NATURAL, null, null);
 			this.world.spawnEntity(spaceSlime);
 			spaceSlime.requestTeleport(this.getX(), this.getY(), this.getZ());
 		}

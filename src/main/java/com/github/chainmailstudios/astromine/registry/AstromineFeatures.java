@@ -31,15 +31,12 @@ import com.github.chainmailstudios.astromine.common.world.feature.MeteorGenerato
 import com.github.chainmailstudios.astromine.common.world.feature.MoonCraterFeature;
 import net.earthcomputer.libstructure.LibStructure;
 import net.minecraft.structure.StructurePieceType;
-import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.chunk.StructureConfig;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.FeatureConfig;
 import net.minecraft.world.gen.feature.StructureFeature;
 
 import java.util.Locale;
@@ -65,9 +62,9 @@ public class AstromineFeatures {
 		LibStructure.registerStructure(AstromineCommon.identifier("meteor"), meteor, GenerationStep.Feature.RAW_GENERATION, new StructureConfig(32, 8, 12345), meteorStructure);
 
 		/*
-		Registry.BIOME.forEach(biome -> {
-			biome.addStructureFeature(meteorStructure);
-		});
-		*/
+		 * Registry.BIOME.forEach(biome -> {
+		 * biome.addStructureFeature(meteorStructure);
+		 * });
+		 */
 	}
 }

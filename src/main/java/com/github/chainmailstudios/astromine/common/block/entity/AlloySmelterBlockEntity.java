@@ -41,7 +41,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 import org.jetbrains.annotations.NotNull;
 
-
 import java.util.Optional;
 
 public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEntity implements Tickable {

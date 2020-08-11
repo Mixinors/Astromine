@@ -36,6 +36,5 @@ public class NuclearWarheadScreenHandler extends DefaultedBlockStateScreenHandle
 	}
 
 	@Override
-	public void initialize(int width, int height) {
-	}
+	public void initialize(int width, int height) {}
 }

@@ -100,10 +100,14 @@ public class StackUtilities {
 	/**
 	 * Support merging stacks with customized maximum count.
 	 *
-	 * @param stackA Source ItemStack
-	 * @param stackB Destination ItemStack
-	 * @param maxA   Max. count of stackA
-	 * @param maxB   Max. count of stackB
+	 * @param stackA
+	 *        Source ItemStack
+	 * @param stackB
+	 *        Destination ItemStack
+	 * @param maxA
+	 *        Max. count of stackA
+	 * @param maxB
+	 *        Max. count of stackB
 	 * @return Resulting ItemStacks
 	 */
 	public static Pair<ItemStack, ItemStack> merge(ItemStack stackA, ItemStack stackB, int maxA, int maxB) {

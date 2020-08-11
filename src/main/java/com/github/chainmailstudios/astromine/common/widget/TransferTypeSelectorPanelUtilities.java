@@ -46,14 +46,8 @@ public class TransferTypeSelectorPanelUtilities {
 		final Position finalWest = new Position(anchor.getX() + 7 + 44, anchor.getY() + 31 + 22);
 		final Position finalEast = new Position(anchor.getX() + 7 + 0, anchor.getY() + 31 + 22);
 
-		final ImmutableMap<Direction, Position> positons = ImmutableMap.<Direction, Position> builder()
-				.put(Direction.NORTH, finalNorth)
-				.put(Direction.SOUTH, finalSouth)
-				.put(Direction.WEST, finalWest)
-				.put(Direction.EAST, finalEast)
-				.put(Direction.UP, finalUp)
-				.put(Direction.DOWN, finalDown)
-				.build();
+		final ImmutableMap<Direction, Position> positons = ImmutableMap.<Direction, Position> builder().put(Direction.NORTH, finalNorth).put(Direction.SOUTH, finalSouth).put(Direction.WEST, finalWest).put(Direction.EAST, finalEast).put(Direction.UP, finalUp).put(Direction.DOWN,
+			finalDown).build();
 
 		for (Direction direction : Direction.values()) {
 			TransferTypeSelectorButtonWidget button = new TransferTypeSelectorButtonWidget();
