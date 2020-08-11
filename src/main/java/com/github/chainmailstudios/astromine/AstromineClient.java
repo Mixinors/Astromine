@@ -43,6 +43,7 @@ public class AstromineClient implements ClientModInitializer {
 		AstromineClientCallbacks.initialize();
 		AstromineClientPackets.initialize();
 		AstromineRenderLayers.initialize();
-		AstrominePatchouliPages.initialize();
+		// TODO add back when patchouli is fixed
+//		AstrominePatchouliPages.initialize();
 	}
 }

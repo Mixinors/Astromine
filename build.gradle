@@ -102,7 +102,7 @@ dependencies {
     useAsApi "com.github.vini2003:Blade:${blade_version}"
 
     // Patchouli
-    useAsApi "vazkii.patchouli:Patchouli:${patchouli_version}"
+    modCompileOnly "vazkii.patchouli:Patchouli:${patchouli_version}"
 
     // ModMenu
     useAsApiOptionally "io.github.prospector:modmenu:${modmenu_version}"

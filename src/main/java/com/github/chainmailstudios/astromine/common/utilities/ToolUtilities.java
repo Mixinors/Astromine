@@ -25,7 +25,10 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
 import com.github.chainmailstudios.astromine.access.MiningToolItemAccess;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.MiningToolItem;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 public class ToolUtilities {
 	public static float getAttackDamage(MiningToolItem first, MiningToolItem second) {
@@ -34,5 +37,11 @@ public class ToolUtilities {
 
 	public static float getAttackSpeed(MiningToolItem first, MiningToolItem second) {
 		return (float) (((MiningToolItemAccess) first).astromine_getAttackSpeed() + ((MiningToolItemAccess) second).astromine_getAttackSpeed()) / 3;
+	}
+
+	public static ItemStack getAstromineBook() {
+		ItemStack stack = new ItemStack(Registry.ITEM.get(new Identifier("patchouli:guide_book")));
+		stack.getOrCreateTag().putString("patchouli:book", "astromine:manual");
+		return stack;
 	}
 }

@@ -24,11 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
+import com.github.chainmailstudios.astromine.common.utilities.TriPredicate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
-import vazkii.patchouli.api.TriPredicate;
 
 import java.util.*;
 
