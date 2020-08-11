@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.world.generation.moon;
 
-//import com.github.chainmailstudios.astromine.common.world.layer.moon.MoonBiomeLayer;
+// import com.github.chainmailstudios.astromine.common.world.layer.moon.MoonBiomeLayer;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import net.minecraft.util.registry.BuiltinRegistries;
@@ -73,8 +73,8 @@ public class MoonBiomeSource extends BiomeSource {
 	}
 
 	private static <T extends LayerSampler, C extends LayerSampleContext<T>> LayerFactory<T> build(LongFunction<C> contextProvider) {
-		//LayerFactory<T> mainLayer = MoonBiomeLayer.INSTANCE.create(contextProvider.apply(4L));
-		LayerFactory<T> mainLayer = SimpleLandNoiseLayer.INSTANCE.create(contextProvider.apply(432L), PlainsOnlyLayer.INSTANCE.create(contextProvider.apply(543L))); //added for temp reasons
+		// LayerFactory<T> mainLayer = MoonBiomeLayer.INSTANCE.create(contextProvider.apply(4L));
+		LayerFactory<T> mainLayer = SimpleLandNoiseLayer.INSTANCE.create(contextProvider.apply(432L), PlainsOnlyLayer.INSTANCE.create(contextProvider.apply(543L))); // added for temp reasons
 		for (int i = 0; i < 5; i++) {
 			mainLayer = ScaleLayer.FUZZY.create(contextProvider.apply(43 + i), mainLayer);
 		}

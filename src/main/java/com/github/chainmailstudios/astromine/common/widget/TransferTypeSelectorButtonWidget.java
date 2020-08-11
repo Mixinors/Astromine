@@ -144,7 +144,6 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 		super.onMouseReleased(mouseX, mouseY, mouseButton);
 	}
 
-
 	@Override
 	public @NotNull List<Text> getTooltip() {
 		Direction offset = MirrorUtilities.rotate(direction, rotation);
@@ -153,7 +152,8 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 
 	@Override
 	public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider) {
-		if (getHidden()) return;
+		if (getHidden())
+			return;
 
 		BaseRenderer.drawTexturedQuad(matrices, provider, getPosition().getX(), getPosition().getY(), getSize().getWidth(), getSize().getHeight(), getTexture());
 	}

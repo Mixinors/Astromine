@@ -51,7 +51,7 @@ public class AstromineCommon implements ModInitializer {
 
 	public static Set<String> permutationFinder(String str) {
 		Set<String> perm = new HashSet<String>();
-		//Handling error scenarios
+		// Handling error scenarios
 		if (str == null) {
 			return null;
 		} else if (str.length() == 0) {
@@ -62,7 +62,7 @@ public class AstromineCommon implements ModInitializer {
 		String rem = str.substring(1); // Full string without first character
 		Set<String> words = permutationFinder(rem);
 		for (String strNew : words) {
-			for (int i = 0;i<=strNew.length();i++){
+			for (int i = 0; i <= strNew.length(); i++) {
 				perm.add(charInsert(strNew, initial, i));
 			}
 		}
@@ -88,13 +88,15 @@ public class AstromineCommon implements ModInitializer {
 		AstromineNetworkTypes.initialize();
 		AstrominePotions.initialize();
 		AstromineFeatures.initialize();
-		//AstromineBiomes.initialize();
+		// TODO biomes
+		// AstromineBiomes.initialize();
 		AstromineFluids.initialize();
 		AstromineBreathables.initialize();
 		AstromineChunkGenerators.initialize();
 		AstromineCommonPackets.initialize();
 		AstromineGravities.initialize();
-		//AstromineDimensionLayers.initialize();
+		// TODO dimension layers
+		// AstromineDimensionLayers.initialize();
 		AstromineCommonCallbacks.initialize();
 		AstromineRecipeSerializers.initialize();
 		AstromineCommands.initialize();

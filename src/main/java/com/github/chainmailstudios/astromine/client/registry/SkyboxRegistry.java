@@ -28,8 +28,6 @@ import com.github.chainmailstudios.astromine.client.render.sky.skybox.AbstractSk
 import com.github.chainmailstudios.astromine.common.registry.base.BiRegistry;
 
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.dimension.DimensionType;
 
 public class SkyboxRegistry extends BiRegistry<Identifier, AbstractSkybox> {
 	public static final SkyboxRegistry INSTANCE = new SkyboxRegistry();

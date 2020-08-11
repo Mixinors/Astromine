@@ -42,7 +42,6 @@ import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.util.Tickable;
 import org.jetbrains.annotations.NotNull;
 
-
 import java.util.Optional;
 
 public abstract class ElectricSmelterBlockEntity extends DefaultedEnergyItemBlockEntity implements Tickable {

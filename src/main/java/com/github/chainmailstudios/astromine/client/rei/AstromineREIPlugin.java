@@ -42,25 +42,20 @@ import com.github.chainmailstudios.astromine.client.rei.pressing.PressingDisplay
 import com.github.chainmailstudios.astromine.client.rei.triturating.TrituratingCategory;
 import com.github.chainmailstudios.astromine.client.rei.triturating.TrituratingDisplay;
 import com.github.chainmailstudios.astromine.client.render.SpriteRenderer;
-import com.github.chainmailstudios.astromine.client.screen.base.DefaultedHandledScreen;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.recipe.*;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.ClientHelper;
-import me.shedaniel.rei.api.EntryRegistry;
-import me.shedaniel.rei.api.EntryStack;
-import me.shedaniel.rei.api.RecipeHelper;
+import me.shedaniel.rei.api.*;
 import me.shedaniel.rei.api.plugins.REIPluginV0;
 import me.shedaniel.rei.api.widgets.Tooltip;
 import me.shedaniel.rei.gui.widget.EntryWidget;
 import me.shedaniel.rei.gui.widget.Widget;
 import me.shedaniel.rei.impl.RenderingEntry;
-import me.shedaniel.rei.plugin.DefaultPlugin;
-import me.shedaniel.rei.plugin.information.DefaultInformationDisplay;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
@@ -73,23 +68,17 @@ import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
-
-
-
 import vazkii.patchouli.api.PatchouliAPI;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
 public class AstromineREIPlugin implements REIPluginV0 {
@@ -104,6 +93,14 @@ public class AstromineREIPlugin implements REIPluginV0 {
 	public static final Identifier ELECTROLYZING = AstromineCommon.identifier("electrolyzing");
 	public static final Identifier PRESSING = AstromineCommon.identifier("pressing");
 	public static final Identifier ALLOY_SMELTING = AstromineCommon.identifier("alloy_smelting");
+
+	public static me.shedaniel.rei.api.fractions.Fraction convertA2R(Fraction fraction) {
+		return me.shedaniel.rei.api.fractions.Fraction.of(fraction.getNumerator(), fraction.getDenominator());
+	}
+
+	public static EntryStack convertA2R(FluidVolume volume) {
+		return EntryStack.create(volume.getFluid(), convertA2R(volume.getFraction()));
+	}
 
 	@Override
 	public Identifier getPluginIdentifier() {
@@ -160,8 +157,10 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		recipeHelper.registerAutoCraftButtonArea(FLUID_MIXING, bounds -> new Rectangle(bounds.getCenterX() - 65 + 130 - 16, bounds.getMaxY() - 16, 10, 10));
 		recipeHelper.registerAutoCraftButtonArea(ELECTROLYZING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16 - 29, bounds.getMaxY() - 16, 10, 10));
 
-		DefaultPlugin.registerInfoDisplay(DefaultInformationDisplay.createFromEntry(EntryStack.create(PatchouliAPI.instance.getBookStack(AstromineCommon.identifier("manual"))).setting(EntryStack.Settings.CHECK_TAGS, EntryStack.Settings.TRUE), new TranslatableText(
-			"item.astromine.manual")).line(new TranslatableText("text.astromine.manual.obtain.info")));
+		BuiltinPlugin.getInstance().registerInformation(EntryStack.create(PatchouliAPI.instance.getBookStack(AstromineCommon.identifier("manual"))).setting(EntryStack.Settings.CHECK_TAGS, EntryStack.Settings.TRUE), new TranslatableText("item.astromine.manual"), texts -> {
+			texts.add(new TranslatableText("text.astromine.manual.obtain.info"));
+			return texts;
+		});
 	}
 
 	public static List<Widget> createEnergyDisplay(Rectangle bounds, double energy, boolean generating, long speed) {
@@ -180,8 +179,8 @@ public class AstromineREIPlugin implements REIPluginV0 {
 		}).notFavoritesInteractable());
 	}
 
-	public static List<Widget> createFluidDisplay(Rectangle bounds, EntryStack fluidStack, Fraction consumedPerTick, boolean generating, long speed) {
-		EntryWidget entry = new FluidEntryWidget(bounds, speed, generating).setConsumedPerTick(consumedPerTick).entry(fluidStack.copy());
+	public static List<Widget> createFluidDisplay(Rectangle bounds, List<EntryStack> fluidStacks, boolean generating, long speed) {
+		EntryWidget entry = new FluidEntryWidget(bounds, speed, generating).entries(fluidStacks);
 		if (generating)
 			entry.markOutput();
 		else entry.markInput();
@@ -220,8 +219,6 @@ public class AstromineREIPlugin implements REIPluginV0 {
 
 	private static class FluidEntryWidget extends EntryWidget {
 		private final long speed;
-		@Nullable
-		private Fraction consumedPerTick;
 		private final boolean generating;
 
 		protected FluidEntryWidget(Rectangle rectangle, long speed, boolean generating) {
@@ -231,11 +228,6 @@ public class AstromineREIPlugin implements REIPluginV0 {
 			this.generating = generating;
 		}
 
-		public FluidEntryWidget setConsumedPerTick(Fraction consumedPerTick) {
-			this.consumedPerTick = consumedPerTick;
-			return this;
-		}
-
 		@Override
 		protected void drawBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 			if (background) {
@@ -243,19 +235,6 @@ public class AstromineREIPlugin implements REIPluginV0 {
 				MinecraftClient.getInstance().getTextureManager().bindTexture(ENERGY_BACKGROUND);
 				DrawableHelper.drawTexture(matrices, bounds.x, bounds.y, 0, 0, bounds.width, bounds.height, bounds.width, bounds.height);
 			}
-		}
-
-		@Override
-		public @Nullable Tooltip getCurrentTooltip(Point point) {
-			return Optional.ofNullable(super.getCurrentTooltip(point)).map(tooltip -> {
-				if (consumedPerTick != null) {
-					tooltip.getText().add(new LiteralText(""));
-					if (generating)
-						tooltip.getText().add(new TranslatableText("category.astromine.fluid.generating.generated", FluidUtilities.rawFraction(consumedPerTick), consumedPerTick.toDecimalString()));
-					else tooltip.getText().add(new TranslatableText("category.astromine.fluid.generating.consumed", FluidUtilities.rawFraction(consumedPerTick), consumedPerTick.toDecimalString()));
-				}
-				return tooltip;
-			}).orElse(null);
 		}
 
 		@Override

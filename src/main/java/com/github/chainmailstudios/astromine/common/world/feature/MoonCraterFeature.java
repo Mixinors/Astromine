@@ -29,7 +29,6 @@ import com.mojang.serialization.Codec;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
@@ -41,7 +40,7 @@ public class MoonCraterFeature extends Feature<DefaultFeatureConfig> {
 	private long seed = 0;
 	private OpenSimplexNoise noise = new OpenSimplexNoise(0);
 
-	public MoonCraterFeature(Codec<DefaultFeatureConfig> configCodec)  {
+	public MoonCraterFeature(Codec<DefaultFeatureConfig> configCodec) {
 		super(configCodec);
 	}
 

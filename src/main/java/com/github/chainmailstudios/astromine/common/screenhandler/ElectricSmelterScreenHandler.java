@@ -43,7 +43,6 @@ public class ElectricSmelterScreenHandler extends DefaultedEnergyItemScreenHandl
 		smelter = (ElectricSmelterBlockEntity) blockEntity;
 	}
 
-
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);

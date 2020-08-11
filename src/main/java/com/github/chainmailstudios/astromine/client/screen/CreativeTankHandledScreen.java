@@ -30,7 +30,6 @@ import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
-
 public class CreativeTankHandledScreen extends DefaultedFluidHandledScreen<CreativeTankScreenHandler> {
 	public CreativeTankHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);

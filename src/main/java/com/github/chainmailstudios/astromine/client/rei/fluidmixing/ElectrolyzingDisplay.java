@@ -66,7 +66,7 @@ public class ElectrolyzingDisplay implements RecipeDisplay {
 
 	@Override
 	public List<List<EntryStack>> getInputEntries() {
-		return Collections.singletonList(Collections.singletonList(EntryStack.create(input.getFluid())));
+		return Collections.singletonList(Collections.singletonList(AstromineREIPlugin.convertA2R(input)));
 	}
 
 	@Override
@@ -80,23 +80,11 @@ public class ElectrolyzingDisplay implements RecipeDisplay {
 	}
 
 	@Override
-	public List<EntryStack> getOutputEntries() {
-		return Arrays.asList(EntryStack.create(firstOutput.getFluid()), EntryStack.create(secondOutput.getFluid()));
+	public List<List<EntryStack>> getResultingEntries() {
+		return Arrays.asList(Collections.singletonList(AstromineREIPlugin.convertA2R(firstOutput)), Collections.singletonList(AstromineREIPlugin.convertA2R(secondOutput)));
 	}
 
 	public double getEnergy() {
 		return energy;
-	}
-
-	public FluidVolume getInput() {
-		return input;
-	}
-
-	public FluidVolume getFirstOutput() {
-		return firstOutput;
-	}
-
-	public FluidVolume getSecondOutput() {
-		return secondOutput;
 	}
 }

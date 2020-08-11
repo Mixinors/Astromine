@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.client.rei.fluidmixing;
 
+import com.github.chainmailstudios.astromine.client.rei.AstromineREIPlugin;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeDisplay;
@@ -59,7 +60,7 @@ public abstract class AbstractFluidMixingDisplay implements RecipeDisplay {
 
 	@Override
 	public List<List<EntryStack>> getInputEntries() {
-		return Arrays.asList(Collections.singletonList(EntryStack.create(firstInput.getFluid())), Collections.singletonList(EntryStack.create(secondInput.getFluid())));
+		return Arrays.asList(Collections.singletonList(AstromineREIPlugin.convertA2R(firstInput)), Collections.singletonList(AstromineREIPlugin.convertA2R(secondInput)));
 	}
 
 	@Override
@@ -68,23 +69,11 @@ public abstract class AbstractFluidMixingDisplay implements RecipeDisplay {
 	}
 
 	@Override
-	public List<EntryStack> getOutputEntries() {
-		return Collections.singletonList(EntryStack.create(output.getFluid()));
+	public List<List<EntryStack>> getResultingEntries() {
+		return Collections.singletonList(Collections.singletonList(AstromineREIPlugin.convertA2R(output)));
 	}
 
 	public double getEnergy() {
 		return energy;
-	}
-
-	public FluidVolume getFirstInput() {
-		return firstInput;
-	}
-
-	public FluidVolume getSecondInput() {
-		return secondInput;
-	}
-
-	public FluidVolume getOutput() {
-		return output;
 	}
 }

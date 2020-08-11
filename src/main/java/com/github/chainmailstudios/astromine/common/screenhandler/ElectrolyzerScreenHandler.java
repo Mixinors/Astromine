@@ -49,7 +49,6 @@ public class ElectrolyzerScreenHandler extends DefaultedEnergyFluidScreenHandler
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-
 		ComponentProvider componentProvider = blockEntity;
 
 		FluidVerticalBarWidget firstOutputFluidBar = new FluidVerticalBarWidget();
@@ -67,9 +66,8 @@ public class ElectrolyzerScreenHandler extends DefaultedEnergyFluidScreenHandler
 		arrow.setLimitSupplier(() -> electrolyzer.limit);
 		arrow.setProgressSupplier(() -> (int) electrolyzer.current);
 
-		firstOutputFluidBar.setPosition(new Position(arrow.getPosition(), 7 + fluidBar.getWidth(), -fluidBar.getHeight() / 2F + arrow.getHeight() / 2F)); //fluidBar.getX() + fluidBar.getWidth() + 4 + 18 + 18, fluidBar.getY()));
+		firstOutputFluidBar.setPosition(new Position(arrow.getPosition(), 7 + fluidBar.getWidth(), -fluidBar.getHeight() / 2F + arrow.getHeight() / 2F)); // fluidBar.getX() + fluidBar.getWidth() + 4 + 18 + 18, fluidBar.getY()));
 		secondOutputFluidBar.setPosition(new Position(arrow.getPosition(), 7 + fluidBar.getWidth() + 7 + fluidBar.getWidth(), -fluidBar.getHeight() / 2F + arrow.getHeight() / 2F));
-
 
 		mainTab.addWidget(firstOutputFluidBar);
 		mainTab.addWidget(secondOutputFluidBar);

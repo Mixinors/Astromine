@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.world.generation.space;
 
-//import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
+// import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import net.minecraft.world.biome.Biome;
@@ -53,6 +53,6 @@ public class EarthSpaceBiomeSource extends BiomeSource {
 	@Override
 	public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
 		return Biomes.THE_VOID;
-		//return AstromineBiomes.ASTEROID_BELT;
+		// return AstromineBiomes.ASTEROID_BELT;
 	}
 }

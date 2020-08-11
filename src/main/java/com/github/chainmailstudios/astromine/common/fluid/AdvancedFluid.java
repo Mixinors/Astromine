@@ -50,7 +50,6 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
-
 public abstract class AdvancedFluid extends FlowableFluid implements Breathable {
 	final int fogColor;
 	final int damage;

@@ -59,7 +59,8 @@ public class EnergyVerticalBarWidget extends AbstractWidget {
 
 	@Override
 	public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider) {
-		if (getHidden()) return;
+		if (getHidden())
+			return;
 
 		float x = getPosition().getX();
 		float y = getPosition().getY();

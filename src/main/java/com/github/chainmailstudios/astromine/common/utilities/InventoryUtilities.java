@@ -31,7 +31,6 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 
-
 import java.util.*;
 
 public class InventoryUtilities {

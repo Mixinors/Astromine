@@ -38,11 +38,11 @@ public class AstromineClientPackets {
 	@Environment(EnvType.CLIENT)
 	public static void initialize() {
 		// TODO: 08/08/2020 - 11:00:51
-//		ClientSidePacketRegistry.INSTANCE.register(AstromineCommonPackets.PRESSURE_UPDATE, ((context, buffer) -> {
-//			Identifier identifier = buffer.readIdentifier();
-//
-//			AstromineScreens.GAS_IMAGE.setTexture(AstromineCommon.identifier("textures/symbol/" + identifier.getPath() + ".png"));
-//		}));
+		// ClientSidePacketRegistry.INSTANCE.register(AstromineCommonPackets.PRESSURE_UPDATE, ((context, buffer) -> {
+		// Identifier identifier = buffer.readIdentifier();
+		//
+		// AstromineScreens.GAS_IMAGE.setTexture(AstromineCommon.identifier("textures/symbol/" + identifier.getPath() + ".png"));
+		// }));
 
 		ClientSidePacketRegistry.INSTANCE.register(RocketEntity.ROCKET_SPAWN, (context, buffer) -> {
 			double x = buffer.readDouble();
