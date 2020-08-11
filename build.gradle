@@ -98,8 +98,8 @@ dependencies {
     // Shapes
     useAsApi "com.terraformersmc:shapes:${shapes_version}"
 
-    // Spinnery
-    useAsApi 'com.github.vini2003:Blade:fabric-1.16.1-SNAPSHOT'
+    // Blade
+    useAsApi "com.github.vini2003:Blade:${blade_version}"
 
     // Patchouli
     useAsApi "vazkii.patchouli:Patchouli:${patchouli_version}"
@@ -129,7 +129,7 @@ dependencies {
     useAsRuntime "me.shedaniel:RoughlyEnoughItems:${rei_version}"
 
     // DataBreaker
-    useAsRuntime "com.github.SuperCoder7979:databreaker:${databreaker_version}"
+//    useAsRuntime "com.github.SuperCoder7979:databreaker:${databreaker_version}"
 
     // LibStructure
     useAsApi "com.github.Draylar:LibStructure:${libstructure_version}"
