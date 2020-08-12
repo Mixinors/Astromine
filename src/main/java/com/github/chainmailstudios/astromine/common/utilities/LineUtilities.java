@@ -24,9 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import com.google.common.collect.Lists;
 import net.minecraft.client.util.math.Vector3f;
 
+import com.google.common.collect.Lists;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

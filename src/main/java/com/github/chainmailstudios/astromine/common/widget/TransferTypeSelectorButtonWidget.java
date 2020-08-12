@@ -24,15 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.widget;
 
-import com.github.chainmailstudios.astromine.client.BaseRenderer;
-import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
-import com.github.vini2003.blade.common.widget.base.AbstractWidget;
-import io.netty.buffer.Unpooled;
-import nerdhub.cardinal.components.api.ComponentType;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
+
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.PacketByteBuf;
@@ -41,6 +34,15 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+
+import com.github.chainmailstudios.astromine.client.BaseRenderer;
+import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
+import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
+import com.github.vini2003.blade.common.widget.base.AbstractWidget;
+import io.netty.buffer.Unpooled;
+import nerdhub.cardinal.components.api.ComponentType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;

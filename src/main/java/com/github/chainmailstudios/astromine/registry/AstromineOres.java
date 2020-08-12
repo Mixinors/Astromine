@@ -24,12 +24,13 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.client.registry.AsteroidOreRegistry;
-import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.world.biome.Biome;
+
+import com.github.chainmailstudios.astromine.client.registry.AsteroidOreRegistry;
+import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 
 public class AstromineOres {
 	public static void initialize() {

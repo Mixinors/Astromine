@@ -24,16 +24,14 @@
 
 package com.github.chainmailstudios.astromine.common.fluid;
 
-import com.github.chainmailstudios.astromine.common.gas.Breathable;
-import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
-import com.github.chainmailstudios.astromine.registry.AstromineFluids;
-import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
-import com.github.chainmailstudios.astromine.registry.AstromineItems;
-import com.github.vini2003.blade.common.data.Color;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.block.*;
+
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FluidBlock;
+import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.fluid.FlowableFluid;
@@ -48,6 +46,14 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
+
+import com.github.chainmailstudios.astromine.common.gas.Breathable;
+import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.registry.AstromineFluids;
+import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import com.github.vini2003.blade.common.data.Color;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class AdvancedFluid extends FlowableFluid implements Breathable {

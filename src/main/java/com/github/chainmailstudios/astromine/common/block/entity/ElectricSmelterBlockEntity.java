@@ -24,14 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
-import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.inventory.BaseInventory;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -40,6 +32,15 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.util.Tickable;
+
+import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
+import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.inventory.BaseInventory;
+import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;

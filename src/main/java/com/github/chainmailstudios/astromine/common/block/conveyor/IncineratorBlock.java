@@ -24,9 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.block.conveyor;
 
-import com.github.chainmailstudios.astromine.common.block.conveyor.entity.IncineratorBlockEntity;
-import com.github.chainmailstudios.astromine.common.conveyor.ConveyableBlock;
-import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -40,6 +37,10 @@ import net.minecraft.state.StateManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.block.conveyor.entity.IncineratorBlockEntity;
+import com.github.chainmailstudios.astromine.common.conveyor.ConveyableBlock;
+import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
 
 import java.util.Random;
 

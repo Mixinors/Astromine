@@ -24,10 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.block.conveyor;
 
-import com.github.chainmailstudios.astromine.common.block.conveyor.entity.ConveyorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.conveyor.entity.DownVerticalConveyorBlockEntity;
-import com.github.chainmailstudios.astromine.common.conveyor.Conveyable;
-import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -36,6 +32,11 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+
+import com.github.chainmailstudios.astromine.common.block.conveyor.entity.ConveyorBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.conveyor.entity.DownVerticalConveyorBlockEntity;
+import com.github.chainmailstudios.astromine.common.conveyor.Conveyable;
+import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
 
 public class DownwardVerticalConveyorBlock extends VerticalConveyorBlock {
 	public DownwardVerticalConveyorBlock(Settings settings, int speed) {

@@ -24,14 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.block.conveyor;
 
-import com.github.chainmailstudios.astromine.common.block.conveyor.entity.ConveyorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.conveyor.entity.VerticalConveyorBlockEntity;
-import com.github.chainmailstudios.astromine.common.conveyor.Conveyable;
-import com.github.chainmailstudios.astromine.common.conveyor.Conveyor;
-import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
-import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
-import com.github.chainmailstudios.astromine.common.utilities.RotationUtilities;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
@@ -49,6 +46,14 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+
+import com.github.chainmailstudios.astromine.common.block.conveyor.entity.ConveyorBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.conveyor.entity.VerticalConveyorBlockEntity;
+import com.github.chainmailstudios.astromine.common.conveyor.Conveyable;
+import com.github.chainmailstudios.astromine.common.conveyor.Conveyor;
+import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
+import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
+import com.github.chainmailstudios.astromine.common.utilities.RotationUtilities;
 
 public class VerticalConveyorBlock extends HorizontalFacingBlock implements BlockEntityProvider, Conveyor, MachineBlockWrenchable {
 	private int speed;

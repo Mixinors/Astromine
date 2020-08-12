@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler;
 
-import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedBlockStateScreenHandler;
-import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
+
+import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedBlockStateScreenHandler;
+import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 
 // TODO!
 public class NuclearWarheadScreenHandler extends DefaultedBlockStateScreenHandler {

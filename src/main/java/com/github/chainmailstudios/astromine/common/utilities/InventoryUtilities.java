@@ -24,14 +24,20 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import com.github.chainmailstudios.astromine.common.inventory.BaseInventory;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 
-import java.util.*;
+import com.github.chainmailstudios.astromine.common.inventory.BaseInventory;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class InventoryUtilities {
 	@Environment(EnvType.CLIENT)

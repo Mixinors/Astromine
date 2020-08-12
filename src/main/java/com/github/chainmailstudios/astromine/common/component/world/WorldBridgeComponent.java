@@ -24,10 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.component.world;
 
-import com.github.chainmailstudios.astromine.common.utilities.VoxelShapeUtilities;
-import com.google.common.collect.Sets;
-import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
-import nerdhub.cardinal.components.api.component.Component;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
@@ -37,6 +33,11 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 
+import com.github.chainmailstudios.astromine.common.utilities.VoxelShapeUtilities;
+import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
+import nerdhub.cardinal.components.api.component.Component;
+
+import com.google.common.collect.Sets;
 import java.util.Map;
 import java.util.Set;
 

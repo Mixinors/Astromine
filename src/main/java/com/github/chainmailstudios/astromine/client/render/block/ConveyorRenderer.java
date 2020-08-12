@@ -24,13 +24,9 @@
 
 package com.github.chainmailstudios.astromine.client.render.block;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.conveyor.ConveyorProperties;
-import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
-import com.github.chainmailstudios.astromine.common.conveyor.PositionalConveyable;
-import com.github.chainmailstudios.astromine.registry.AstromineBlacklistedConveyorBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.DoubleBlockHalf;
@@ -53,6 +49,12 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.LightType;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.conveyor.ConveyorProperties;
+import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
+import com.github.chainmailstudios.astromine.common.conveyor.PositionalConveyable;
+import com.github.chainmailstudios.astromine.registry.AstromineBlacklistedConveyorBlocks;
 
 import java.util.Random;
 

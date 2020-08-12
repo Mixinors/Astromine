@@ -24,22 +24,29 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.entity.RocketEntity;
-import com.github.chainmailstudios.astromine.common.entity.SpaceSlimeEntity;
-import com.github.chainmailstudios.astromine.common.entity.SuperSpaceSlimeEntity;
-import com.github.chainmailstudios.astromine.common.entity.projectile.BulletEntity;
-import com.google.common.collect.ImmutableSet;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+
 import net.minecraft.block.Block;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityDimensions;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.SpawnRestriction;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Heightmap;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.entity.RocketEntity;
+import com.github.chainmailstudios.astromine.common.entity.SpaceSlimeEntity;
+import com.github.chainmailstudios.astromine.common.entity.SuperSpaceSlimeEntity;
+import com.github.chainmailstudios.astromine.common.entity.projectile.BulletEntity;
+
+import com.google.common.collect.ImmutableSet;
 
 public class AstromineEntityTypes {
 

@@ -24,12 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import org.apache.logging.log4j.Level;
 
+import com.google.common.collect.ImmutableMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;

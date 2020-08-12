@@ -24,9 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.block.conveyor;
 
-import com.zundrel.wrenchable.WrenchableUtilities;
-import com.zundrel.wrenchable.block.BlockWrenchable;
-import grondag.fermion.modkeys.api.ModKeys;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.EntityShapeContext;
@@ -45,6 +42,10 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+
+import com.zundrel.wrenchable.WrenchableUtilities;
+import com.zundrel.wrenchable.block.BlockWrenchable;
+import grondag.fermion.modkeys.api.ModKeys;
 
 public class CatwalkBlock extends Block implements BlockWrenchable {
 	public CatwalkBlock(Settings settings) {

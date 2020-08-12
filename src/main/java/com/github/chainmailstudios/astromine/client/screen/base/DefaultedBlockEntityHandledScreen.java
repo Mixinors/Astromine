@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.client.screen.base;
 
-import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedBlockEntityScreenHandler;
-import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
+
+import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedBlockEntityScreenHandler;
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 
 public class DefaultedBlockEntityHandledScreen<T extends DefaultedBlockEntityScreenHandler> extends DefaultedHandledScreen<T> {
 	public DefaultedBlockEntityHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {

@@ -24,11 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import com.github.chainmailstudios.astromine.access.MiningToolItemAccess;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MiningToolItem;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+
+import com.github.chainmailstudios.astromine.access.MiningToolItemAccess;
 
 public class ToolUtilities {
 	public static float getAttackDamage(MiningToolItem first, MiningToolItem second) {

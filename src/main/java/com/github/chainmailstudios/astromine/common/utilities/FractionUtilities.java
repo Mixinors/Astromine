@@ -24,11 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
+import net.minecraft.network.PacketByteBuf;
+
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import net.minecraft.network.PacketByteBuf;
 
 public class FractionUtilities {
 	public static Fraction fromJson(JsonElement element) {

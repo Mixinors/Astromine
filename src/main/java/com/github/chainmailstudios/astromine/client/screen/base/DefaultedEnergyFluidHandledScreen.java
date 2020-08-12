@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.client.screen.base;
 
-import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedBlockEntityScreenHandler;
-import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
+
+import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedBlockEntityScreenHandler;
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 
 public abstract class DefaultedEnergyFluidHandledScreen<T extends DefaultedBlockEntityScreenHandler> extends DefaultedBlockEntityHandledScreen<T> {
 	public DefaultedEnergyFluidHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {

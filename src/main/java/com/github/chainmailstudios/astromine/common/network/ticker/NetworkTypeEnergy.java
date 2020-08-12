@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.network.ticker;
 
+import net.minecraft.block.entity.BlockEntity;
+
 import com.github.chainmailstudios.astromine.client.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
@@ -34,14 +36,17 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.utilities.WorldPos;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import net.minecraft.block.entity.BlockEntity;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 import team.reborn.energy.EnergyStorage;
 
-import java.util.*;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 public class NetworkTypeEnergy extends NetworkType {
 	@Override

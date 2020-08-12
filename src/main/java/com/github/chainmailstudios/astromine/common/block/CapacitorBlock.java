@@ -24,12 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingEnergyMachineBlock;
-import com.github.chainmailstudios.astromine.common.block.entity.CapacitorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.CreativeCapacitorBlockEntity;
-import com.github.chainmailstudios.astromine.common.screenhandler.CapacitorScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.CreativeCapacitorScreenHandler;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -39,6 +33,13 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingEnergyMachineBlock;
+import com.github.chainmailstudios.astromine.common.block.entity.CapacitorBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.CreativeCapacitorBlockEntity;
+import com.github.chainmailstudios.astromine.common.screenhandler.CapacitorScreenHandler;
+import com.github.chainmailstudios.astromine.common.screenhandler.CreativeCapacitorScreenHandler;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 public abstract class CapacitorBlock extends HorizontalFacingEnergyMachineBlock {
 	public CapacitorBlock(Settings settings) {

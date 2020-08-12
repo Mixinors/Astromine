@@ -25,20 +25,21 @@
 package com.github.chainmailstudios.astromine.common.world.generation.space;
 
 // import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
-import com.google.common.collect.ImmutableList;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryLookupCodec;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.biome.source.BiomeSource;
-import net.minecraft.world.biome.source.TheEndBiomeSource;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
 
+import com.google.common.collect.ImmutableList;
+
 public class EarthSpaceBiomeSource extends BiomeSource {
-	public static final Codec<EarthSpaceBiomeSource> CODEC = RecordCodecBuilder.create((instance) -> instance.group(RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry), Codec.LONG.fieldOf("seed").stable().forGetter((biomeSource) -> biomeSource.seed)).apply(instance, instance.stable(EarthSpaceBiomeSource::new)));
+	public static final Codec<EarthSpaceBiomeSource> CODEC = RecordCodecBuilder.create((instance) -> instance.group(RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry), Codec.LONG.fieldOf("seed").stable().forGetter((
+		biomeSource) -> biomeSource.seed)).apply(instance, instance.stable(EarthSpaceBiomeSource::new)));
 	private final long seed;
 	private final Registry<Biome> registry;
 

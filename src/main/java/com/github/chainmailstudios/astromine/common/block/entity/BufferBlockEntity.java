@@ -24,13 +24,14 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundTag;
+
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.utilities.type.BufferType;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.NotNull;
 
 public class BufferBlockEntity extends DefaultedItemBlockEntity {

@@ -24,16 +24,17 @@
 
 package com.github.chainmailstudios.astromine.common.widget;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.client.BaseRenderer;
-import com.github.vini2003.blade.client.utilities.Layers;
-import com.github.vini2003.blade.client.utilities.Scissors;
-import com.github.vini2003.blade.common.widget.base.AbstractWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.client.BaseRenderer;
+import com.github.vini2003.blade.client.utilities.Layers;
+import com.github.vini2003.blade.client.utilities.Scissors;
+import com.github.vini2003.blade.common.widget.base.AbstractWidget;
 
 import java.util.function.IntSupplier;
 

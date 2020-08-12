@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.common.block.base;
 
 import net.minecraft.state.property.DirectionProperty;
+
 import org.jetbrains.annotations.Nullable;
 
 public abstract class EnergyMachineBlockWithEntity extends HorizontalFacingEnergyMachineBlock {

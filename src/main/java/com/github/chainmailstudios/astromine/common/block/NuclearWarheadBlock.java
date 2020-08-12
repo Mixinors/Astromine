@@ -24,14 +24,16 @@
 
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.miscellaneous.Explosions;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.miscellaneous.Explosions;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 public class NuclearWarheadBlock extends Block {
 	public NuclearWarheadBlock(Settings settings) {

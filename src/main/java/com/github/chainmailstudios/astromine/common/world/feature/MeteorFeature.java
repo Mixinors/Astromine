@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.world.feature;
 
-import com.mojang.serialization.Codec;
 import net.minecraft.structure.StructureManager;
 import net.minecraft.structure.StructureStart;
 import net.minecraft.util.math.BlockBox;
@@ -33,6 +32,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.StructureFeature;
+import com.mojang.serialization.Codec;
 
 public class MeteorFeature extends StructureFeature<DefaultFeatureConfig> {
 

@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.block.conveyor;
 
-import com.github.chainmailstudios.astromine.common.block.conveyor.entity.InserterBlockEntity;
-import com.github.chainmailstudios.astromine.common.conveyor.ConveyableBlock;
-import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.server.world.ServerWorld;
@@ -39,6 +40,10 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.block.conveyor.entity.InserterBlockEntity;
+import com.github.chainmailstudios.astromine.common.conveyor.ConveyableBlock;
+import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
 
 import java.util.Random;
 

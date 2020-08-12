@@ -24,10 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.base.MachineBlock;
-import com.github.chainmailstudios.astromine.common.block.entity.BufferBlockEntity;
-import com.github.chainmailstudios.astromine.common.screenhandler.BufferScreenHandler;
-import com.github.chainmailstudios.astromine.common.utilities.type.BufferType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -41,6 +37,11 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.block.base.MachineBlock;
+import com.github.chainmailstudios.astromine.common.block.entity.BufferBlockEntity;
+import com.github.chainmailstudios.astromine.common.screenhandler.BufferScreenHandler;
+import com.github.chainmailstudios.astromine.common.utilities.type.BufferType;
 
 public class BufferBlock extends MachineBlock {
 	private final BufferType type;

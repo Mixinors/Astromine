@@ -24,11 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.item.base;
 
-import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
-import me.shedaniel.cloth.api.durability.bar.DurabilityBarItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -36,6 +34,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
+import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
+import me.shedaniel.cloth.api.durability.bar.DurabilityBarItem;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 import team.reborn.energy.EnergyHolder;

@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.recipe;
 
-import com.github.chainmailstudios.astromine.common.recipe.BetterIngredient.Entry;
-import com.google.gson.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -36,6 +34,11 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.registry.Registry;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;

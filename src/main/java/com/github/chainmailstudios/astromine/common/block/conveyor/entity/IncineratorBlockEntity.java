@@ -24,16 +24,17 @@
 
 package com.github.chainmailstudios.astromine.common.block.conveyor.entity;
 
-import com.github.chainmailstudios.astromine.common.conveyor.Conveyable;
-import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.Direction;
+
+import com.github.chainmailstudios.astromine.common.conveyor.Conveyable;
+import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
+import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 
 public class IncineratorBlockEntity extends BlockEntity implements Conveyable {
 	public boolean hasBeenRemoved = false;

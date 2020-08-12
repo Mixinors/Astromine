@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import net.minecraft.util.Tickable;
+
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyBlockEntity;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
-import net.minecraft.util.Tickable;
 
 public class CreativeCapacitorBlockEntity extends DefaultedEnergyBlockEntity implements Tickable {
 	public CreativeCapacitorBlockEntity() {

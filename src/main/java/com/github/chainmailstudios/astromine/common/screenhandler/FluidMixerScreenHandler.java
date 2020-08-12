@@ -24,6 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.BlockPos;
+
 import com.github.chainmailstudios.astromine.common.block.entity.FluidMixerBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyFluidScreenHandler;
@@ -33,8 +36,6 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
 
 public class FluidMixerScreenHandler extends DefaultedEnergyFluidScreenHandler {
 	private FluidMixerBlockEntity mixer;

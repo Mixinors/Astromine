@@ -24,14 +24,16 @@
 
 package com.github.chainmailstudios.astromine.client.rei.fluidmixing;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import net.minecraft.util.Identifier;
+
 import com.github.chainmailstudios.astromine.client.rei.AstromineREIPlugin;
 import com.github.chainmailstudios.astromine.common.recipe.ElectrolyzingRecipe;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeDisplay;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.util.Identifier;
 
 import java.util.Arrays;
 import java.util.Collections;

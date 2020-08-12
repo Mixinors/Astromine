@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.miscellaneous;
 
-import it.unimi.dsi.fastutil.HashCommon;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
+
+import it.unimi.dsi.fastutil.HashCommon;
 
 import java.util.Arrays;
 

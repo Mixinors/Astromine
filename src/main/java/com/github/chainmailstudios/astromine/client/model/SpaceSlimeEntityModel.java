@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.client.model;
 
-import com.github.chainmailstudios.astromine.common.entity.SpaceSlimeEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.SlimeEntityModel;
@@ -32,6 +31,8 @@ import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+
+import com.github.chainmailstudios.astromine.common.entity.SpaceSlimeEntity;
 
 public class SpaceSlimeEntityModel extends SlimeEntityModel<SpaceSlimeEntity> {
 

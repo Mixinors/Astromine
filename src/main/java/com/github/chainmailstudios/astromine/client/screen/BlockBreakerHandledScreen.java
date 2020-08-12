@@ -24,11 +24,12 @@
 
 package com.github.chainmailstudios.astromine.client.screen;
 
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.text.Text;
+
 import com.github.chainmailstudios.astromine.client.screen.base.DefaultedEnergyItemHandledScreen;
 import com.github.chainmailstudios.astromine.common.screenhandler.BlockBreakerScreenHandler;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.text.Text;
 
 public class BlockBreakerHandledScreen extends DefaultedEnergyItemHandledScreen<BlockBreakerScreenHandler> {
 	public BlockBreakerHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {

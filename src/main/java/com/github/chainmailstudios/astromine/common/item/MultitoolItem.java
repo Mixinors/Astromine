@@ -24,21 +24,29 @@
 
 package com.github.chainmailstudios.astromine.common.item;
 
-import com.github.chainmailstudios.astromine.common.utilities.ToolUtilities;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
+import net.minecraft.item.MiningToolItem;
+import net.minecraft.item.ToolMaterial;
+import net.minecraft.item.Vanishable;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.utilities.ToolUtilities;
+
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 
 public class MultitoolItem extends Item implements DynamicAttributeTool, Vanishable {
 	private final MiningToolItem first;

@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.item;
 
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
@@ -45,6 +43,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 
 public class FireExtinguisherItem extends Item {
 	public FireExtinguisherItem(Item.Settings settings) {

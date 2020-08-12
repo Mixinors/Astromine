@@ -24,15 +24,17 @@
 
 package com.github.chainmailstudios.astromine;
 
-import blue.endless.jankson.Jankson;
-import com.github.chainmailstudios.astromine.registry.*;
-import com.google.gson.Gson;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
+
 import net.minecraft.util.Identifier;
+
+import blue.endless.jankson.Jankson;
+import com.github.chainmailstudios.astromine.registry.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.gson.Gson;
 import java.util.HashSet;
 import java.util.Set;
 

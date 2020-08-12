@@ -24,6 +24,25 @@
 
 package com.github.chainmailstudios.astromine.client.rei;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.texture.SpriteAtlasTexture;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.BucketItem;
+import net.minecraft.item.Item;
+import net.minecraft.recipe.SmeltingRecipe;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.rei.alloysmelting.AlloySmeltingCategory;
 import com.github.chainmailstudios.astromine.client.rei.alloysmelting.AlloySmeltingDisplay;
@@ -43,7 +62,13 @@ import com.github.chainmailstudios.astromine.client.rei.triturating.TrituratingC
 import com.github.chainmailstudios.astromine.client.rei.triturating.TrituratingDisplay;
 import com.github.chainmailstudios.astromine.client.render.SpriteRenderer;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.recipe.*;
+import com.github.chainmailstudios.astromine.common.recipe.AlloySmeltingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.ElectrolyzingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.FluidMixingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.LiquidGeneratingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.PressingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.SolidGeneratingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.ToolUtilities;
@@ -51,29 +76,16 @@ import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.*;
+import me.shedaniel.rei.api.BuiltinPlugin;
+import me.shedaniel.rei.api.ClientHelper;
+import me.shedaniel.rei.api.EntryRegistry;
+import me.shedaniel.rei.api.EntryStack;
+import me.shedaniel.rei.api.RecipeHelper;
 import me.shedaniel.rei.api.plugins.REIPluginV0;
 import me.shedaniel.rei.api.widgets.Tooltip;
 import me.shedaniel.rei.gui.widget.EntryWidget;
 import me.shedaniel.rei.gui.widget.Widget;
 import me.shedaniel.rei.impl.RenderingEntry;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.texture.SpriteAtlasTexture;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.Item;
-import net.minecraft.recipe.SmeltingRecipe;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -115,7 +127,7 @@ public class AstromineREIPlugin implements REIPluginV0 {
 	@Override
 	public void registerPluginCategories(RecipeHelper recipeHelper) {
 		recipeHelper.registerCategories(new TrituratingCategory(), new ElectricSmeltingCategory(), new LiquidGeneratingCategory(), new SolidGeneratingCategory(), new FluidMixingCategory(FLUID_MIXING, "category.astromine.fluid_mixing", EntryStack.create(
-				AstromineBlocks.ADVANCED_FLUID_MIXER)), new ElectrolyzingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AstromineBlocks.ADVANCED_ELECTROLYZER)), new PressingCategory(), new AlloySmeltingCategory());
+			AstromineBlocks.ADVANCED_FLUID_MIXER)), new ElectrolyzingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AstromineBlocks.ADVANCED_ELECTROLYZER)), new PressingCategory(), new AlloySmeltingCategory());
 	}
 
 	@Override
@@ -140,18 +152,18 @@ public class AstromineREIPlugin implements REIPluginV0 {
 	public void registerOthers(RecipeHelper recipeHelper) {
 		recipeHelper.registerWorkingStations(TRITURATING, EntryStack.create(AstromineBlocks.PRIMITIVE_TRITURATOR), EntryStack.create(AstromineBlocks.BASIC_TRITURATOR), EntryStack.create(AstromineBlocks.ADVANCED_TRITURATOR), EntryStack.create(AstromineBlocks.ELITE_TRITURATOR));
 		recipeHelper.registerWorkingStations(ELECTRIC_SMELTING, EntryStack.create(AstromineBlocks.PRIMITIVE_ELECTRIC_SMELTER), EntryStack.create(AstromineBlocks.BASIC_ELECTRIC_SMELTER), EntryStack.create(AstromineBlocks.ADVANCED_ELECTRIC_SMELTER), EntryStack.create(
-				AstromineBlocks.ELITE_ELECTRIC_SMELTER));
+			AstromineBlocks.ELITE_ELECTRIC_SMELTER));
 		recipeHelper.registerWorkingStations(LIQUID_GENERATING, EntryStack.create(AstromineBlocks.PRIMITIVE_LIQUID_GENERATOR), EntryStack.create(AstromineBlocks.BASIC_LIQUID_GENERATOR), EntryStack.create(AstromineBlocks.ADVANCED_LIQUID_GENERATOR), EntryStack.create(
-				AstromineBlocks.ELITE_LIQUID_GENERATOR));
+			AstromineBlocks.ELITE_LIQUID_GENERATOR));
 		recipeHelper.registerWorkingStations(SOLID_GENERATING, EntryStack.create(AstromineBlocks.PRIMITIVE_SOLID_GENERATOR), EntryStack.create(AstromineBlocks.BASIC_SOLID_GENERATOR), EntryStack.create(AstromineBlocks.ADVANCED_SOLID_GENERATOR), EntryStack.create(
-				AstromineBlocks.ELITE_SOLID_GENERATOR));
+			AstromineBlocks.ELITE_SOLID_GENERATOR));
 		recipeHelper.registerWorkingStations(FLUID_MIXING, EntryStack.create(AstromineBlocks.PRIMITIVE_FLUID_MIXER), EntryStack.create(AstromineBlocks.BASIC_FLUID_MIXER), EntryStack.create(AstromineBlocks.ADVANCED_FLUID_MIXER), EntryStack.create(
-				AstromineBlocks.ELITE_FLUID_MIXER));
+			AstromineBlocks.ELITE_FLUID_MIXER));
 		recipeHelper.registerWorkingStations(ELECTROLYZING, EntryStack.create(AstromineBlocks.PRIMITIVE_ELECTROLYZER), EntryStack.create(AstromineBlocks.BASIC_ELECTROLYZER), EntryStack.create(AstromineBlocks.ADVANCED_ELECTROLYZER), EntryStack.create(
-				AstromineBlocks.ELITE_ELECTROLYZER));
+			AstromineBlocks.ELITE_ELECTROLYZER));
 		recipeHelper.registerWorkingStations(PRESSING, EntryStack.create(AstromineBlocks.PRIMITIVE_PRESSER), EntryStack.create(AstromineBlocks.BASIC_PRESSER), EntryStack.create(AstromineBlocks.ADVANCED_PRESSER), EntryStack.create(AstromineBlocks.ELITE_PRESSER));
 		recipeHelper.registerWorkingStations(ALLOY_SMELTING, EntryStack.create(AstromineBlocks.PRIMITIVE_ALLOY_SMELTER), EntryStack.create(AstromineBlocks.BASIC_ALLOY_SMELTER), EntryStack.create(AstromineBlocks.ADVANCED_ALLOY_SMELTER), EntryStack.create(
-				AstromineBlocks.ELITE_ALLOY_SMELTER));
+			AstromineBlocks.ELITE_ALLOY_SMELTER));
 		recipeHelper.registerAutoCraftButtonArea(LIQUID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
 		recipeHelper.registerAutoCraftButtonArea(SOLID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
 		recipeHelper.registerAutoCraftButtonArea(FLUID_MIXING, bounds -> new Rectangle(bounds.getCenterX() - 65 + 130 - 16, bounds.getMaxY() - 16, 10, 10));
@@ -172,10 +184,9 @@ public class AstromineREIPlugin implements REIPluginV0 {
 			public @Nullable Tooltip getTooltip(Point mouse) {
 				if (generating)
 					return Tooltip.create(mouse, new TranslatableText("text.astromine.energy"), ClientHelper.getInstance().getFormattedModFromIdentifier(AstromineCommon.identifier("a")), new LiteralText(""), new TranslatableText("category.astromine.generating.energy",
-							EnergyUtilities.simpleDisplay(energy)));
-				else
-					return Tooltip.create(mouse, new TranslatableText("text.astromine.energy"), ClientHelper.getInstance().getFormattedModFromIdentifier(AstromineCommon.identifier("a")), new LiteralText(""), new TranslatableText("category.astromine.consuming.energy",
-							EnergyUtilities.simpleDisplay(energy)));
+						EnergyUtilities.simpleDisplay(energy)));
+				else return Tooltip.create(mouse, new TranslatableText("text.astromine.energy"), ClientHelper.getInstance().getFormattedModFromIdentifier(AstromineCommon.identifier("a")), new LiteralText(""), new TranslatableText("category.astromine.consuming.energy",
+					EnergyUtilities.simpleDisplay(energy)));
 			}
 		}).notFavoritesInteractable());
 	}
@@ -249,7 +260,7 @@ public class AstromineREIPlugin implements REIPluginV0 {
 				else height = MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
 				VertexConsumerProvider.Immediate consumers = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
 				SpriteRenderer.beginPass().setup(consumers, RenderLayer.getSolid()).sprite(FluidUtilities.texture(entry.getFluid())[0]).color(FluidUtilities.color(MinecraftClient.getInstance().player, entry.getFluid())).light(0x00f000f0).overlay(OverlayTexture.DEFAULT_UV).alpha(
-						0xff).normal(matrices.peek().getNormal(), 0, 0, 0).position(matrices.peek().getModel(), bounds.x + 1, bounds.y + bounds.height - height + 1, bounds.x + bounds.width - 1, bounds.y + bounds.height - 1, getZOffset() + 1).next(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
+					0xff).normal(matrices.peek().getNormal(), 0, 0, 0).position(matrices.peek().getModel(), bounds.x + 1, bounds.y + bounds.height - height + 1, bounds.x + bounds.width - 1, bounds.y + bounds.height - 1, getZOffset() + 1).next(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
 				consumers.draw();
 			}
 		}

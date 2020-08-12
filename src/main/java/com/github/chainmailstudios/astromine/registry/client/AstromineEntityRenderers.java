@@ -24,12 +24,13 @@
 
 package com.github.chainmailstudios.astromine.registry.client;
 
+import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
+
 import com.github.chainmailstudios.astromine.client.render.entity.BulletEntityRenderer;
 import com.github.chainmailstudios.astromine.client.render.entity.RocketEntityRenderer;
 import com.github.chainmailstudios.astromine.client.render.entity.SpaceSlimeEntityRenderer;
 import com.github.chainmailstudios.astromine.client.render.entity.SuperSpaceSlimeEntityRenderer;
 import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
-import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 
 public class AstromineEntityRenderers {
 	public static void initialize() {

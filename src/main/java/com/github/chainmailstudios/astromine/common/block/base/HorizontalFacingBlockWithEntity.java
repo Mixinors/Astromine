@@ -32,6 +32,7 @@ import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
+
 import org.jetbrains.annotations.Nullable;
 
 public abstract class HorizontalFacingBlockWithEntity extends DefaultedBlockWithEntity {

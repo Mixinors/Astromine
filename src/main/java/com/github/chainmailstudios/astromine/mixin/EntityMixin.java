@@ -24,11 +24,6 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.access.EntityAccess;
-import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
-// import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
-import net.minecraft.entity.Entity;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -36,6 +31,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.access.EntityAccess;
+import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin implements EntityAccess, GravityEntity {

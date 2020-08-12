@@ -24,21 +24,38 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.*;
-import com.github.chainmailstudios.astromine.common.block.conveyor.*;
-import com.github.chainmailstudios.astromine.common.item.AstromineBlockItem;
-import com.github.chainmailstudios.astromine.common.item.AstromineEnergyBlockItem;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
-import com.github.chainmailstudios.astromine.common.utilities.type.BufferType;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
-import net.minecraft.block.*;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.MagmaBlock;
+import net.minecraft.block.Material;
+import net.minecraft.block.MaterialColor;
+import net.minecraft.block.SlabBlock;
+import net.minecraft.block.StairsBlock;
+import net.minecraft.block.WallBlock;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.*;
+import com.github.chainmailstudios.astromine.common.block.conveyor.AlternatorBlock;
+import com.github.chainmailstudios.astromine.common.block.conveyor.CatwalkBlock;
+import com.github.chainmailstudios.astromine.common.block.conveyor.CatwalkStairsBlock;
+import com.github.chainmailstudios.astromine.common.block.conveyor.ConveyorBlock;
+import com.github.chainmailstudios.astromine.common.block.conveyor.DownwardVerticalConveyorBlock;
+import com.github.chainmailstudios.astromine.common.block.conveyor.IncineratorBlock;
+import com.github.chainmailstudios.astromine.common.block.conveyor.InserterBlock;
+import com.github.chainmailstudios.astromine.common.block.conveyor.SplitterBlock;
+import com.github.chainmailstudios.astromine.common.block.conveyor.VerticalConveyorBlock;
+import com.github.chainmailstudios.astromine.common.item.AstromineBlockItem;
+import com.github.chainmailstudios.astromine.common.item.AstromineEnergyBlockItem;
+import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
+import com.github.chainmailstudios.astromine.common.utilities.type.BufferType;
 
 public class AstromineBlocks {
 	public static final Block HOLOGRAPHIC_BRIDGE_PROJECTOR = register("holographic_bridge_projector", new HolographicBridgeProjectorBlock(AstromineBlocks.getAdvancedSettings()), AstromineItems.getBasicSettings());

@@ -24,6 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base;
 
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+
 import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
@@ -38,14 +45,8 @@ import com.github.vini2003.blade.common.data.widget.TabCollection;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import com.github.vini2003.blade.common.widget.base.TabWidget;
-import com.google.common.collect.Lists;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 
+import com.google.common.collect.Lists;
 import java.util.Collection;
 import java.util.HashSet;
 

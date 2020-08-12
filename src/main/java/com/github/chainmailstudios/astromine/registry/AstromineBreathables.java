@@ -24,8 +24,9 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.common.registry.BreathableRegistry;
 import net.minecraft.entity.EntityType;
+
+import com.github.chainmailstudios.astromine.common.registry.BreathableRegistry;
 
 public class AstromineBreathables {
 	public static void initialize() {

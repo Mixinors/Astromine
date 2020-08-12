@@ -24,10 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.access.DyeColorAccess;
-import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingMachineBlock;
-import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
-import com.github.vini2003.blade.common.data.Color;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -43,6 +39,11 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.access.DyeColorAccess;
+import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingMachineBlock;
+import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
+import com.github.vini2003.blade.common.data.Color;
 
 public class HolographicBridgeProjectorBlock extends HorizontalFacingMachineBlock {
 	public HolographicBridgeProjectorBlock(AbstractBlock.Settings settings) {

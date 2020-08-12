@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.item;
 
-import com.github.chainmailstudios.astromine.common.world.feature.MeteorGenerator;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,6 +32,8 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.world.feature.MeteorGenerator;
 
 public class MeteorSpawnerDevItem extends Item {
 

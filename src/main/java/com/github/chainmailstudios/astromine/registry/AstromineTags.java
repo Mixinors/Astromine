@@ -24,12 +24,14 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
 import net.fabricmc.fabric.api.tag.TagRegistry;
+
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.tag.Tag;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
 
 public class AstromineTags {
 	public static final Tag<Item> TRICKS_PIGLINS = TagRegistry.item(AstromineCommon.identifier("tricks_piglins"));

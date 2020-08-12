@@ -24,11 +24,12 @@
 
 package com.github.chainmailstudios.astromine.client.screen;
 
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.text.Text;
+
 import com.github.chainmailstudios.astromine.client.screen.base.DefaultedFluidHandledScreen;
 import com.github.chainmailstudios.astromine.common.screenhandler.TankScreenHandler;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.text.Text;
 
 public class TankHandledScreen extends DefaultedFluidHandledScreen<TankScreenHandler> {
 	public TankHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {

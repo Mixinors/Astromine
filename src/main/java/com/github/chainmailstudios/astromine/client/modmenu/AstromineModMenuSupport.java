@@ -24,13 +24,14 @@
 
 package com.github.chainmailstudios.astromine.client.modmenu;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import io.github.prospector.modmenu.api.ConfigScreenFactory;
 import io.github.prospector.modmenu.api.ModMenuApi;
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import me.sargunvohra.mcmods.autoconfig1u.gui.ConfigScreenProvider;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
 public class AstromineModMenuSupport implements ModMenuApi {

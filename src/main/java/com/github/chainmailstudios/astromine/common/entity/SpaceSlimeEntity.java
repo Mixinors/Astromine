@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.entity;
 
-import com.github.chainmailstudios.astromine.common.entity.ai.JumpHoverGoal;
-import com.github.chainmailstudios.astromine.registry.AstromineParticles;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.data.DataTracker;
@@ -41,6 +39,9 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+
+import com.github.chainmailstudios.astromine.common.entity.ai.JumpHoverGoal;
+import com.github.chainmailstudios.astromine.registry.AstromineParticles;
 
 import java.util.Random;
 

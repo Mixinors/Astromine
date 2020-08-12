@@ -24,9 +24,6 @@
 
 package com.github.chainmailstudios.astromine.client.render.entity;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.client.model.SpaceSlimeEntityModel;
-import com.github.chainmailstudios.astromine.common.entity.SpaceSlimeEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.MobEntityRenderer;
@@ -35,6 +32,10 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.client.model.SpaceSlimeEntityModel;
+import com.github.chainmailstudios.astromine.common.entity.SpaceSlimeEntity;
 
 public class SpaceSlimeEntityRenderer extends MobEntityRenderer<SpaceSlimeEntity, SpaceSlimeEntityModel> {
 

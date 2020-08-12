@@ -24,6 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity;
 
+import net.minecraft.block.AirBlock;
+import net.minecraft.block.FacingBlock;
+import net.minecraft.util.Tickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
@@ -36,11 +42,6 @@ import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
-import net.minecraft.block.AirBlock;
-import net.minecraft.block.FacingBlock;
-import net.minecraft.util.Tickable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 
 public class VentBlockEntity extends DefaultedEnergyFluidBlockEntity implements Tickable {
 	public boolean isActive = false;

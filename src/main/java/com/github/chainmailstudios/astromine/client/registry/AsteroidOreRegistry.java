@@ -24,11 +24,16 @@
 
 package com.github.chainmailstudios.astromine.client.registry;
 
-import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 import net.minecraft.block.Block;
+
+import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Random;
+import java.util.Set;
 
 public class AsteroidOreRegistry {
 	public static final AsteroidOreRegistry INSTANCE = new AsteroidOreRegistry();

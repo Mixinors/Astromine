@@ -24,12 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.world.generation.vulcan;
 
-import com.github.chainmailstudios.astromine.common.miscellaneous.BiomeGenCache;
-import com.github.chainmailstudios.astromine.common.noise.OctaveNoiseSampler;
-import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -45,6 +39,13 @@ import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
+import com.github.chainmailstudios.astromine.common.miscellaneous.BiomeGenCache;
+import com.github.chainmailstudios.astromine.common.noise.OctaveNoiseSampler;
+import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -77,7 +78,7 @@ public class VulcanChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public ChunkGenerator withSeed(long seed) {
-		return new VulcanChunkGenerator(new VulcanBiomeSource(seed), seed);
+		return new VulcanChunkGenerator(this.biomeSource.withSeed(seed), seed);
 	}
 
 	@Override

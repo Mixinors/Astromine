@@ -24,11 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.item.weapon;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
-import com.github.chainmailstudios.astromine.common.entity.projectile.BulletEntity;
-import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -42,6 +37,12 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
+import com.github.chainmailstudios.astromine.common.entity.projectile.BulletEntity;
+import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
+import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 
 import java.util.List;
 import java.util.Optional;

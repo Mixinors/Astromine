@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedItemBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
+
+import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedItemBlockEntity;
 
 public class DefaultedItemScreenHandler extends DefaultedBlockEntityScreenHandler {
 	public DefaultedItemBlockEntity blockEntity;

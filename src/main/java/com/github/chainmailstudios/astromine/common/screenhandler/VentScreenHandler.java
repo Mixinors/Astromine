@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler;
 
-import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyFluidScreenHandler;
-import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
+
+import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyFluidScreenHandler;
+import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 
 public class VentScreenHandler extends DefaultedEnergyFluidScreenHandler {
 	public VentScreenHandler(int syncId, PlayerEntity player, BlockPos position) {

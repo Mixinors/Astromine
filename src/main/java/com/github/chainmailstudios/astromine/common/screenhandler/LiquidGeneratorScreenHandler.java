@@ -24,14 +24,15 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.BlockPos;
+
 import com.github.chainmailstudios.astromine.common.block.entity.LiquidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyFluidScreenHandler;
 import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
 import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
 
 public class LiquidGeneratorScreenHandler extends DefaultedEnergyFluidScreenHandler {
 	private LiquidGeneratorBlockEntity generator;

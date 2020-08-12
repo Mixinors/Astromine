@@ -24,10 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.base.FacingEnergyMachineBlock;
-import com.github.chainmailstudios.astromine.common.block.entity.VentBlockEntity;
-import com.github.chainmailstudios.astromine.common.screenhandler.VentScreenHandler;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -37,6 +33,11 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.block.base.FacingEnergyMachineBlock;
+import com.github.chainmailstudios.astromine.common.block.entity.VentBlockEntity;
+import com.github.chainmailstudios.astromine.common.screenhandler.VentScreenHandler;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 public class VentBlock extends FacingEnergyMachineBlock {
 	public VentBlock(Settings settings) {

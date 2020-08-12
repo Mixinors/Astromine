@@ -24,15 +24,17 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.registry.AstromineTags;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.mob.PiglinEntity;
-import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.PiglinEntity;
+import net.minecraft.item.ItemStack;
+
+import com.github.chainmailstudios.astromine.registry.AstromineTags;
 
 @Mixin(PiglinEntity.class)
 public class PiglinEntityMixin {

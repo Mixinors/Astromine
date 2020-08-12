@@ -24,8 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.item;
 
-import com.zundrel.wrenchable.wrench.Wrench;
 import net.minecraft.item.Item;
+
+import com.zundrel.wrenchable.wrench.Wrench;
 
 public class WrenchItem extends Item implements Wrench {
 	public WrenchItem(Settings settings) {

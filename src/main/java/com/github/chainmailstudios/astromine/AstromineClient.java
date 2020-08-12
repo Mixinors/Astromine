@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine;
 
-import com.github.chainmailstudios.astromine.registry.client.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
+import com.github.chainmailstudios.astromine.registry.client.*;
 
 @Environment(EnvType.CLIENT)
 public class AstromineClient implements ClientModInitializer {
@@ -43,7 +44,6 @@ public class AstromineClient implements ClientModInitializer {
 		AstromineClientCallbacks.initialize();
 		AstromineClientPackets.initialize();
 		AstromineRenderLayers.initialize();
-		// TODO add back when patchouli is fixed
-//		AstrominePatchouliPages.initialize();
+		AstrominePatchouliPages.initialize();
 	}
 }

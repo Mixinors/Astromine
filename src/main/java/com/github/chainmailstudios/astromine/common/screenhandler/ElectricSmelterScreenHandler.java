@@ -24,6 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.BlockPos;
+
 import com.github.chainmailstudios.astromine.common.block.entity.ElectricSmelterBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyItemScreenHandler;
 import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
@@ -31,8 +34,6 @@ import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
 
 public class ElectricSmelterScreenHandler extends DefaultedEnergyItemScreenHandler {
 	private ElectricSmelterBlockEntity smelter;

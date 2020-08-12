@@ -24,8 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.entity;
 
-import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
 
 public interface GravityEntity {
 	default double getGravityMultiplier() {

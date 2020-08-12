@@ -24,11 +24,13 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+
+import net.minecraft.screen.ScreenHandlerType;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.screenhandler.*;
 import com.github.chainmailstudios.astromine.common.utilities.type.BufferType;
-import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
-import net.minecraft.screen.ScreenHandlerType;
 
 public class AstromineScreenHandlers {
 	public static final ScreenHandlerType<FluidExtractorScreenHandler> FLUID_EXTRACTOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("fluid_extractor"), ((syncId, inventory, buffer) -> {

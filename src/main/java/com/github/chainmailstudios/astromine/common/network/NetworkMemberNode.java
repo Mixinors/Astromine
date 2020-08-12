@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.network;
 
-import com.google.common.base.Objects;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+
+import com.google.common.base.Objects;
 
 public class NetworkMemberNode {
 	private long pos;

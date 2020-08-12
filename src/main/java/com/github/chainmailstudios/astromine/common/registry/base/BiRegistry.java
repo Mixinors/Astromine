@@ -26,7 +26,6 @@ package com.github.chainmailstudios.astromine.common.registry.base;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-
 import java.util.Collection;
 
 public abstract class BiRegistry<T, U> {

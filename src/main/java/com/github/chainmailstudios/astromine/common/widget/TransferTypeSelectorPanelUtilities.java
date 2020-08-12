@@ -24,17 +24,20 @@
 
 package com.github.chainmailstudios.astromine.common.widget;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import com.github.vini2003.blade.common.data.widget.TabCollection;
-import com.google.common.collect.ImmutableMap;
 import nerdhub.cardinal.components.api.ComponentType;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
+
+import com.google.common.collect.ImmutableMap;
 
 @Environment(EnvType.CLIENT)
 public class TransferTypeSelectorPanelUtilities {

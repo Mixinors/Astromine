@@ -24,12 +24,14 @@
 
 package com.github.chainmailstudios.astromine.registry.client;
 
-import com.github.chainmailstudios.astromine.common.entity.RocketEntity;
-import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
+
 import net.minecraft.client.MinecraftClient;
+
+import com.github.chainmailstudios.astromine.common.entity.RocketEntity;
+import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
 
 import java.util.UUID;
 

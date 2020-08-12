@@ -24,6 +24,14 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
+import net.fabricmc.fabric.api.util.NbtType;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.math.Direction;
+
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
@@ -31,16 +39,14 @@ import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProv
 import com.github.chainmailstudios.astromine.common.volume.energy.CreativeEnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.google.common.collect.Lists;
-import net.fabricmc.fabric.api.util.NbtType;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
-import team.reborn.energy.*;
+import team.reborn.energy.Energy;
+import team.reborn.energy.EnergyHandler;
+import team.reborn.energy.EnergySide;
+import team.reborn.energy.EnergyStorage;
+import team.reborn.energy.EnergyTier;
 
+import com.google.common.collect.Lists;
 import java.util.List;
 
 public abstract class DefaultedEnergyBlockEntity extends DefaultedBlockEntity implements ComponentProvider, EnergyStorage {

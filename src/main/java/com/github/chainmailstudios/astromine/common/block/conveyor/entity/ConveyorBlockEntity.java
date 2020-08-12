@@ -24,14 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.block.conveyor.entity;
 
-import com.github.chainmailstudios.astromine.common.conveyor.Conveyable;
-import com.github.chainmailstudios.astromine.common.conveyor.Conveyor;
-import com.github.chainmailstudios.astromine.common.conveyor.ConveyorConveyable;
-import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
-import com.github.chainmailstudios.astromine.common.inventory.SingularStackInventory;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
@@ -46,6 +41,13 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+
+import com.github.chainmailstudios.astromine.common.conveyor.Conveyable;
+import com.github.chainmailstudios.astromine.common.conveyor.Conveyor;
+import com.github.chainmailstudios.astromine.common.conveyor.ConveyorConveyable;
+import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
+import com.github.chainmailstudios.astromine.common.inventory.SingularStackInventory;
+import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 
 public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyable, SingularStackInventory, BlockEntityClientSerializable, RenderAttachmentBlockEntity, Tickable {
 	private DefaultedList<ItemStack> stacks = DefaultedList.ofSize(1, ItemStack.EMPTY);

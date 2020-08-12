@@ -24,10 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import com.github.chainmailstudios.astromine.common.recipe.BetterIngredient;
-import com.google.gson.JsonElement;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
+
+import com.github.chainmailstudios.astromine.common.recipe.BetterIngredient;
+
+import com.google.gson.JsonElement;
 
 public class IngredientUtilities {
 	public static Ingredient fromJson(JsonElement jsonElement) {

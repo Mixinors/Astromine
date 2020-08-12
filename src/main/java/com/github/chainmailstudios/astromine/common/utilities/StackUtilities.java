@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import com.google.gson.JsonObject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -34,6 +33,7 @@ import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.text.Text;
 import net.minecraft.util.Pair;
 
+import com.google.gson.JsonObject;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;

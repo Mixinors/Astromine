@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.client.render.block;
 
-import com.github.chainmailstudios.astromine.common.block.conveyor.entity.DoubleMachineBlockEntity;
-import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
@@ -33,6 +31,9 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
+
+import com.github.chainmailstudios.astromine.common.block.conveyor.entity.DoubleMachineBlockEntity;
+import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
 
 public class DoubleMachineEntityRenderer extends BlockEntityRenderer<DoubleMachineBlockEntity> implements ConveyorRenderer<DoubleMachineBlockEntity> {
 	public DoubleMachineEntityRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher) {

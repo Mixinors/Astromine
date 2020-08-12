@@ -24,20 +24,28 @@
 
 package com.github.chainmailstudios.astromine.common.world.generation.vulcan;
 
-// import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
-import com.google.common.collect.ImmutableList;
-import com.mojang.serialization.Codec;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryLookupCodec;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.biome.source.BiomeSource;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
+import com.github.chainmailstudios.astromine.common.world.generation.space.EarthSpaceBiomeSource;
+import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
+
+import com.google.common.collect.ImmutableList;
 
 public class VulcanBiomeSource extends BiomeSource {
-	public static Codec<VulcanBiomeSource> CODEC = Codec.LONG.fieldOf("seed").xmap(VulcanBiomeSource::new, (source) -> source.seed).stable().codec();
+	public static final Codec<VulcanBiomeSource> CODEC = RecordCodecBuilder.create((instance) -> instance.group(RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry), Codec.LONG.fieldOf("seed").stable().forGetter((
+		biomeSource) -> biomeSource.seed)).apply(instance, instance.stable(VulcanBiomeSource::new)));
 	private final long seed;
+	private final Registry<Biome> registry;
 
-	public VulcanBiomeSource(long seed) {
+	public VulcanBiomeSource(Registry<Biome> registry, long seed) {
 		super(ImmutableList.of());
 		this.seed = seed;
+		this.registry = registry;
 	}
 
 	@Override
@@ -47,12 +55,11 @@ public class VulcanBiomeSource extends BiomeSource {
 
 	@Override
 	public BiomeSource withSeed(long seed) {
-		return new VulcanBiomeSource(seed);
+		return new EarthSpaceBiomeSource(registry, seed);
 	}
 
 	@Override
 	public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
-		return Biomes.PLAINS;
-		// return AstromineBiomes.VULCAN;
+		return registry.get(AstromineBiomes.VULCAN_PLAINS);
 	}
 }

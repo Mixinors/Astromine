@@ -24,13 +24,21 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.conveyor.entity.*;
-import com.github.chainmailstudios.astromine.common.block.entity.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.registry.Registry;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.conveyor.entity.AlternatorBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.conveyor.entity.ConveyorBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.conveyor.entity.DoubleMachineBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.conveyor.entity.DownVerticalConveyorBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.conveyor.entity.IncineratorBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.conveyor.entity.InserterBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.conveyor.entity.SplitterBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.conveyor.entity.VerticalConveyorBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.*;
 
 import java.util.function.Supplier;
 

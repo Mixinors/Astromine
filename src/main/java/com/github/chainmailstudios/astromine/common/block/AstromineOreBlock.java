@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.block;
 
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.OreBlock;
 import net.minecraft.util.math.MathHelper;
+
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 
 import java.util.Random;
 

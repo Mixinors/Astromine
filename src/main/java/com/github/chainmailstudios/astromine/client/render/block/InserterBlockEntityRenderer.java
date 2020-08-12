@@ -24,10 +24,6 @@
 
 package com.github.chainmailstudios.astromine.client.render.block;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.client.model.InserterArmModel;
-import com.github.chainmailstudios.astromine.common.block.conveyor.InserterBlock;
-import com.github.chainmailstudios.astromine.common.block.conveyor.entity.InserterBlockEntity;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -37,6 +33,11 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.client.model.InserterArmModel;
+import com.github.chainmailstudios.astromine.common.block.conveyor.InserterBlock;
+import com.github.chainmailstudios.astromine.common.block.conveyor.entity.InserterBlockEntity;
 
 public class InserterBlockEntityRenderer extends BlockEntityRenderer<InserterBlockEntity> implements ConveyorRenderer<InserterBlockEntity> {
 	public InserterBlockEntityRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher) {

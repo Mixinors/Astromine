@@ -24,17 +24,8 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.item.*;
-import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
-import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
-import com.github.chainmailstudios.astromine.common.item.weapon.AmmunitionItem;
-import com.github.chainmailstudios.astromine.common.item.weapon.GravityGauntletItem;
-import com.github.chainmailstudios.astromine.common.item.weapon.variant.Weaponry;
-import draylar.magna.item.ExcavatorItem;
-import draylar.magna.item.HammerItem;
 import net.fabricmc.loader.api.FabricLoader;
+
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.entity.EntityType;
@@ -45,6 +36,25 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.item.DrillItem;
+import com.github.chainmailstudios.astromine.common.item.FireExtinguisherItem;
+import com.github.chainmailstudios.astromine.common.item.HolographicConnectorItem;
+import com.github.chainmailstudios.astromine.common.item.MeteorSpawnerDevItem;
+import com.github.chainmailstudios.astromine.common.item.MultitoolItem;
+import com.github.chainmailstudios.astromine.common.item.SpaceSuitItem;
+import com.github.chainmailstudios.astromine.common.item.SuperSpaceSlimeShooterItem;
+import com.github.chainmailstudios.astromine.common.item.UncoloredSpawnEggItem;
+import com.github.chainmailstudios.astromine.common.item.WrenchItem;
+import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
+import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
+import com.github.chainmailstudios.astromine.common.item.weapon.AmmunitionItem;
+import com.github.chainmailstudios.astromine.common.item.weapon.GravityGauntletItem;
+import com.github.chainmailstudios.astromine.common.item.weapon.variant.Weaponry;
+import draylar.magna.item.ExcavatorItem;
+import draylar.magna.item.HammerItem;
 
 public class AstromineItems {
 	// Things

@@ -24,11 +24,12 @@
 
 package com.github.chainmailstudios.astromine.client.screen;
 
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.text.Text;
+
 import com.github.chainmailstudios.astromine.client.screen.base.DefaultedItemHandledScreen;
 import com.github.chainmailstudios.astromine.common.screenhandler.CreativeBufferScreenHandler;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.text.Text;
 
 public class CreativeBufferHandledScreen extends DefaultedItemHandledScreen<CreativeBufferScreenHandler> {
 	public CreativeBufferHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {

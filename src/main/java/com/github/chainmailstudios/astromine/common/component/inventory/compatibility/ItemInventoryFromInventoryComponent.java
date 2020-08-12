@@ -24,11 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory.compatibility;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.TypedActionResult;
+
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 
 /**
  * Vanilla wrapper for an InventoryComponent.

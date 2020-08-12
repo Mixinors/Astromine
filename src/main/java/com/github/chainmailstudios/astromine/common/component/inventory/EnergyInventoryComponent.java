@@ -24,12 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineItems;
-import nerdhub.cardinal.components.api.ComponentType;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.text.TranslatableText;
+
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import nerdhub.cardinal.components.api.ComponentType;
 import team.reborn.energy.EnergyStorage;
 
 public interface EnergyInventoryComponent extends NameableComponent {

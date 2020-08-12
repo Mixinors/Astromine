@@ -24,11 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.block.conveyor.entity;
 
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
+
+import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 
 public class SplitterBlockEntity extends DoubleMachineBlockEntity {
 	public SplitterBlockEntity() {

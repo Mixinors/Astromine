@@ -24,10 +24,6 @@
 
 package com.github.chainmailstudios.astromine.client.render.block;
 
-import com.github.chainmailstudios.astromine.common.block.conveyor.ConveyorProperties;
-import com.github.chainmailstudios.astromine.common.block.conveyor.entity.DownVerticalConveyorBlockEntity;
-import com.github.chainmailstudios.astromine.common.conveyor.Conveyor;
-import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
@@ -35,6 +31,11 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.Direction;
+
+import com.github.chainmailstudios.astromine.common.block.conveyor.ConveyorProperties;
+import com.github.chainmailstudios.astromine.common.block.conveyor.entity.DownVerticalConveyorBlockEntity;
+import com.github.chainmailstudios.astromine.common.conveyor.Conveyor;
+import com.github.chainmailstudios.astromine.common.conveyor.ConveyorType;
 
 public class DownwardVerticalConveyorBlockEntityRenderer extends BlockEntityRenderer<DownVerticalConveyorBlockEntity> implements ConveyorRenderer<DownVerticalConveyorBlockEntity> {
 	public DownwardVerticalConveyorBlockEntityRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher) {

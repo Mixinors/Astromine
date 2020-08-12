@@ -24,11 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base;
 
-import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
+
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 
 public abstract class DefaultedBlockStateScreenHandler extends BaseScreenHandler {
 	BlockState state;

@@ -24,9 +24,16 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.BossBarHud;
@@ -35,12 +42,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.boss.BossBar;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
 
 @Environment(EnvType.CLIENT)
 @Mixin(BossBarHud.class)

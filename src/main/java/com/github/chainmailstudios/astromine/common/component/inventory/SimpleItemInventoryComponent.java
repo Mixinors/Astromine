@@ -24,13 +24,18 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
-import com.github.chainmailstudios.astromine.common.utilities.TriPredicate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
+
+import com.github.chainmailstudios.astromine.common.utilities.TriPredicate;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Simple implementation of an InventoryComponent for usage anywhere one is required. Size is immutable and therefore

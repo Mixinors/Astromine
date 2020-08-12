@@ -24,14 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.network;
 
-import com.github.chainmailstudios.astromine.client.registry.NetworkMemberRegistry;
-import com.github.chainmailstudios.astromine.common.block.AbstractCableBlock;
-import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
-import com.github.chainmailstudios.astromine.common.utilities.WorldPos;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
-import it.unimi.dsi.fastutil.longs.LongSet;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
@@ -40,7 +32,20 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 
-import java.util.*;
+import com.github.chainmailstudios.astromine.client.registry.NetworkMemberRegistry;
+import com.github.chainmailstudios.astromine.common.block.AbstractCableBlock;
+import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
+import com.github.chainmailstudios.astromine.common.utilities.WorldPos;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
+import it.unimi.dsi.fastutil.longs.LongSet;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
+
+import java.util.ArrayDeque;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class NetworkTracer {
 	public static class Tracer {

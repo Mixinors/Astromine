@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.client.rei.generating;
 
-import me.shedaniel.rei.api.EntryStack;
-import me.shedaniel.rei.api.RecipeDisplay;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
+import me.shedaniel.rei.api.EntryStack;
+import me.shedaniel.rei.api.RecipeDisplay;
 
 import java.util.Collections;
 import java.util.List;

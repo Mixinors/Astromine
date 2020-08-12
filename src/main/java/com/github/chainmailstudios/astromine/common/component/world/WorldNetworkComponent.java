@@ -24,14 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.component.world;
 
-import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
-import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
-import com.github.chainmailstudios.astromine.common.network.NetworkNode;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
-import com.github.chainmailstudios.astromine.common.registry.NetworkTypeRegistry;
-import com.google.common.collect.Sets;
-import nerdhub.cardinal.components.api.component.Component;
 import net.fabricmc.fabric.api.util.NbtType;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.LongTag;
@@ -40,8 +34,16 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
+import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
+import com.github.chainmailstudios.astromine.common.network.NetworkNode;
+import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.github.chainmailstudios.astromine.common.registry.NetworkTypeRegistry;
+import nerdhub.cardinal.components.api.component.Component;
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.Sets;
 import java.util.Set;
 
 public class WorldNetworkComponent implements Component, Tickable {

@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.client;
 
-import com.github.vini2003.blade.client.utilities.Layers;
-import com.github.vini2003.blade.common.data.Color;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.OverlayTexture;
@@ -36,6 +34,9 @@ import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+
+import com.github.vini2003.blade.client.utilities.Layers;
+import com.github.vini2003.blade.common.data.Color;
 
 public class BaseRenderer {
 	public static void drawQuad(MatrixStack matrices, VertexConsumerProvider provider, RenderLayer layer, float x, float y, float sX, float sY, Color color) {
