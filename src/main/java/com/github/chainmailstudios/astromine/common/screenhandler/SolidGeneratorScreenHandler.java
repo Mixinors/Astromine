@@ -24,9 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
-
 import com.github.chainmailstudios.astromine.common.block.entity.SolidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyItemScreenHandler;
 import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
@@ -34,6 +31,8 @@ import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.BlockPos;
 
 public class SolidGeneratorScreenHandler extends DefaultedEnergyItemScreenHandler {
 	private SolidGeneratorBlockEntity generator;
@@ -48,17 +47,17 @@ public class SolidGeneratorScreenHandler extends DefaultedEnergyItemScreenHandle
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		SlotWidget input = new SlotWidget(0, blockEntity);
-		input.setPosition(new Position(mainTab.getX() + 7, mainTab.getY() + energyBar.getHeight() / 2F + 12));
-		input.setSize(new Size(18, 18));
-
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
-		arrow.setPosition(new Position(input.getX() + 31, input.getY()));
-		arrow.setSize(new Size(22, 16));
+		arrow.setPosition(Position.of(Position.absolute(energyBar), energyBar.getWidth() + 3, energyBar.getHeight() / 2F - 8));
+		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> generator.limit);
 		arrow.setProgressSupplier(() -> (int) generator.current);
 
-		energyBar.setPosition(new Position(arrow.getX() + 29, arrow.getY() - energyBar.getHeight() / 2 + 8));
+		SlotWidget input = new SlotWidget(0, blockEntity);
+		input.setPosition(Position.of(arrow, -26, 0));
+		input.setSize(Size.of(18, 18));
+
+		energyBar.setPosition(Position.of(mainTab, 68, 11));
 
 		mainTab.addWidget(input);
 		mainTab.addWidget(arrow);

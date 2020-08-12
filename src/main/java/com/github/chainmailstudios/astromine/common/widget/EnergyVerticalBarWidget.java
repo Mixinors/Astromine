@@ -82,7 +82,7 @@ public class EnergyVerticalBarWidget extends AbstractWidget {
 
 		area.destroy(provider);
 
-		area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - (y + sY) * scale), (int) (sBGY * scale), (int) (sY * scale));
+		area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - (y + sY) * scale), (int) (sX * scale), (int) (sBGY * scale));
 
 		BaseRenderer.drawTexturedQuad(matrices, provider, Layers.get(ENERGY_FOREGROUND), x, y, sX, sY, ENERGY_FOREGROUND);
 

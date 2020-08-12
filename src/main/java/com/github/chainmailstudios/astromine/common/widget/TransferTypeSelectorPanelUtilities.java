@@ -42,12 +42,12 @@ import com.google.common.collect.ImmutableMap;
 @Environment(EnvType.CLIENT)
 public class TransferTypeSelectorPanelUtilities {
 	public static void createTab(TabCollection tab, Position anchor, Direction rotation, BlockEntityTransferComponent component, BlockPos blockPos, ComponentType<?> type) {
-		final Position finalNorth = new Position(anchor.getX() + 7 + 22, anchor.getY() + 31 + 22);
-		final Position finalSouth = new Position(anchor.getX() + 7 + 0, anchor.getY() + 31 + 44);
-		final Position finalUp = new Position(anchor.getX() + 7 + 22, anchor.getY() + 31 + 0);
-		final Position finalDown = new Position(anchor.getX() + 7 + 22, anchor.getY() + 31 + 44);
-		final Position finalWest = new Position(anchor.getX() + 7 + 44, anchor.getY() + 31 + 22);
-		final Position finalEast = new Position(anchor.getX() + 7 + 0, anchor.getY() + 31 + 22);
+		final Position finalNorth = Position.of(anchor.getX() + 7 + 22, anchor.getY() + 31 + 22);
+		final Position finalSouth = Position.of(anchor.getX() + 7 + 0, anchor.getY() + 31 + 44);
+		final Position finalUp = Position.of(anchor.getX() + 7 + 22, anchor.getY() + 31 + 0);
+		final Position finalDown = Position.of(anchor.getX() + 7 + 22, anchor.getY() + 31 + 44);
+		final Position finalWest = Position.of(anchor.getX() + 7 + 44, anchor.getY() + 31 + 22);
+		final Position finalEast = Position.of(anchor.getX() + 7 + 0, anchor.getY() + 31 + 22);
 
 		final ImmutableMap<Direction, Position> positons = ImmutableMap.<Direction, Position> builder().put(Direction.NORTH, finalNorth).put(Direction.SOUTH, finalSouth).put(Direction.WEST, finalWest).put(Direction.EAST, finalEast).put(Direction.UP, finalUp).put(Direction.DOWN,
 			finalDown).build();
@@ -55,7 +55,7 @@ public class TransferTypeSelectorPanelUtilities {
 		for (Direction direction : Direction.values()) {
 			TransferTypeSelectorButtonWidget button = new TransferTypeSelectorButtonWidget();
 			button.setPosition(positons.get(MirrorUtilities.rotate(direction, rotation)));
-			button.setSize(new Size(18, 18));
+			button.setSize(Size.of(18, 18));
 			button.setComponent(component);
 			button.setType(type);
 			button.setRotation(rotation);

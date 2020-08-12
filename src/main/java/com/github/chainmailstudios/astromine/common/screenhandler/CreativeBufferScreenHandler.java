@@ -24,9 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
-
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedItemScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
@@ -34,6 +31,8 @@ import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.BlockPos;
 
 public class CreativeBufferScreenHandler extends DefaultedItemScreenHandler {
 	public CreativeBufferScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
@@ -45,8 +44,8 @@ public class CreativeBufferScreenHandler extends DefaultedItemScreenHandler {
 		super.initialize(width, height);
 
 		SlotWidget slot = new SlotWidget(0, ItemInventoryFromInventoryComponent.of(blockEntity.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)));
-		slot.setPosition(new Position(mainTab.getX(), mainTab.getY() + 22));
-		slot.setSize(new Size(36, 36));
+		slot.setPosition(Position.of(mainTab, 70, 20));
+		slot.setSize(Size.of(36, 36));
 
 		mainTab.addWidget(slot);
 	}

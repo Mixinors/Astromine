@@ -53,19 +53,19 @@ public class FluidMixerScreenHandler extends DefaultedEnergyFluidScreenHandler {
 		ComponentProvider componentProvider = blockEntity;
 
 		FluidVerticalBarWidget secondInputFluidBar = new FluidVerticalBarWidget();
-		secondInputFluidBar.setPosition(new Position(fluidBar.getX() + fluidBar.getWidth() + 7, fluidBar.getY()));
-		secondInputFluidBar.setSize(new Size(fluidBar.getWidth(), fluidBar.getHeight()));
+		secondInputFluidBar.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7,0));
+		secondInputFluidBar.setSize(Size.absolute(fluidBar));
 		secondInputFluidBar.setVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(1));
 
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
-		arrow.setPosition(new Position(secondInputFluidBar.getX() + secondInputFluidBar.getWidth() + 9, secondInputFluidBar.getY() + secondInputFluidBar.getHeight() / 2F - 8));
-		arrow.setSize(new Size(22, 16));
+		arrow.setPosition(Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9, secondInputFluidBar.getHeight() / 2F - 8));
+		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> mixer.limit);
 		arrow.setProgressSupplier(() -> (int) mixer.current);
 
 		FluidVerticalBarWidget outputFluidBar = new FluidVerticalBarWidget();
-		outputFluidBar.setPosition(new Position(arrow.getX() + arrow.getWidth() + 7, arrow.getY() - secondInputFluidBar.getHeight() / 2F + 8));
-		outputFluidBar.setSize(new Size(fluidBar.getWidth(), fluidBar.getHeight()));
+		outputFluidBar.setPosition(Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9 + arrow.getWidth() + 7, 0));
+		outputFluidBar.setSize(Size.absolute(fluidBar));
 		outputFluidBar.setVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(2));
 
 		mainTab.addWidget(secondInputFluidBar);

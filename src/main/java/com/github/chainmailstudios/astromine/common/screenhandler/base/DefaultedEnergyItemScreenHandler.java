@@ -24,14 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.util.math.BlockPos;
-
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.widget.EnergyVerticalBarWidget;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.util.math.BlockPos;
 
 public class DefaultedEnergyItemScreenHandler extends DefaultedBlockEntityScreenHandler {
 	public DefaultedEnergyItemBlockEntity blockEntity;
@@ -49,8 +48,8 @@ public class DefaultedEnergyItemScreenHandler extends DefaultedBlockEntityScreen
 		super.initialize(width, height);
 
 		energyBar = new EnergyVerticalBarWidget();
-		energyBar.setPosition(new Position(mainTab.getX() + 7F, mainTab.getY() + 9));
-		energyBar.setSize(new Size(24F, 48F));
+		energyBar.setPosition(Position.of(mainTab, 7F, 11));
+		energyBar.setSize(Size.of(24F, 48F));
 		energyBar.setVolume(blockEntity::getEnergyVolume);
 
 		mainTab.addWidget(energyBar);

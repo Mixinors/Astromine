@@ -24,13 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-
 import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
@@ -45,17 +38,23 @@ import com.github.vini2003.blade.common.data.widget.TabCollection;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import com.github.vini2003.blade.common.widget.base.TabWidget;
+import com.github.vini2003.blade.common.widget.base.TextWidget;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 
-import com.google.common.collect.Lists;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 
 public abstract class DefaultedBlockEntityScreenHandler extends BaseScreenHandler {
 	public DefaultedBlockEntity syncBlockEntity;
-
 	public Collection<SlotWidget> playerSlots = new HashSet<>();
-
 	public TabCollection mainTab;
+	protected TabWidget tabs;
 
 	public DefaultedBlockEntityScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player);
@@ -68,19 +67,35 @@ public abstract class DefaultedBlockEntityScreenHandler extends BaseScreenHandle
 		}
 	}
 
+	public int getTabWidgetExtendedHeight() {
+		return 0;
+	}
+
 	@Override
 	public void initialize(int width, int height) {
-		TabWidget tabs = new TabWidget();
-		tabs.setPosition(new Position(() -> (float) (width / 2 - 176 / 2), () -> (float) (height / 2 - 184 / 2)));
-		tabs.setSize(new Size(() -> 176F, () -> 184F));
+		tabs = new TabWidget();
+		tabs.setSize(Size.of(176F, 188F + getTabWidgetExtendedHeight()));
+		tabs.setPosition(Position.of(width / 2 - tabs.getWidth() / 2, height / 2 - tabs.getHeight() / 2));
 
 		addWidget(tabs);
 
 		mainTab = (TabCollection) tabs.addTab(syncBlockEntity.getCachedState().getBlock().asItem());
-		mainTab.setPosition(new Position(tabs.getX(), tabs.getY() + 25F + 7F));
-		mainTab.setSize(new Size(176F, 184F));
+		mainTab.setPosition(Position.of(tabs, 0, 25F + 7F));
+		mainTab.setSize(Size.of(176F, 184F));
 
-		playerSlots = Slots.addPlayerInventory(new Position(() -> tabs.getX() + 7F, () -> tabs.getY() + 25F + 7F + (184 - 18 - 18 - (18 * 4) - 6)), new Size(() -> 18F, () -> 18F), mainTab, getPlayer().inventory);
+		TextWidget title = new TextWidget();
+		title.setPosition(Position.of(mainTab, 8, 0));
+		title.setText(syncBlockEntity.getCachedState().getBlock().asItem().getName());
+		title.setColor(4210752);
+		mainTab.addWidget(title);
+
+		Position invPos = Position.of(tabs, 7F, 25F + 7F + (184 - 18 - 18 - (18 * 4) - 3 + getTabWidgetExtendedHeight()));
+		TextWidget invTitle = new TextWidget();
+		invTitle.setPosition(Position.of(invPos, 0, -10));
+		invTitle.setText(getPlayer().inventory.getName());
+		invTitle.setColor(4210752);
+		mainTab.addWidget(invTitle);
+		playerSlots = Slots.addPlayerInventory(invPos, Size.of(18F, 18F), mainTab, getPlayer().inventory);
 
 		ComponentProvider componentProvider = ComponentProvider.fromBlockEntity(syncBlockEntity);
 
@@ -100,9 +115,20 @@ public abstract class DefaultedBlockEntityScreenHandler extends BaseScreenHandle
 		transferComponent.get().forEach((type, entry) -> {
 			if (componentProvider.getComponent(type) instanceof NameableComponent) {
 				NameableComponent nameableComponent = (NameableComponent) componentProvider.getComponent(type);
-				TabCollection current = (TabCollection) tabs.addTab(nameableComponent.getSymbol(), () -> Lists.newArrayList(nameableComponent.getName()));
-				TransferTypeSelectorPanelUtilities.createTab(current, new Position(tabs.getX() + tabs.getWidth() / 2 - 38, tabs.getY() + 4), finalRotation, transferComponent, syncBlockEntity.getPos(), type);
-				playerSlots.addAll(Slots.addPlayerInventory(new Position(() -> tabs.getX() + 7F, () -> tabs.getY() + 25F + 7F + (184 - 18 - 18 - (18 * 4) - 6)), new Size(() -> 18F, () -> 18F), current, getPlayer().inventory));
+				TabCollection current = (TabCollection) tabs.addTab(nameableComponent.getSymbol(), () -> Collections.singletonList(nameableComponent.getName()));
+				TransferTypeSelectorPanelUtilities.createTab(current, Position.of(tabs, tabs.getWidth() / 2 - 38, getTabWidgetExtendedHeight() / 2), finalRotation, transferComponent, syncBlockEntity.getPos(), type);
+				TextWidget invTabTitle = new TextWidget();
+				invTabTitle.setPosition(Position.of(invPos, 0, -10));
+				invTabTitle.setText(getPlayer().inventory.getName());
+				invTabTitle.setColor(4210752);
+				current.addWidget(invTabTitle);
+				playerSlots.addAll(Slots.addPlayerInventory(invPos, Size.of(18F, 18F), current, getPlayer().inventory));
+
+				TextWidget tabTitle = new TextWidget();
+				tabTitle.setPosition(Position.of(mainTab, 8, 0));
+				tabTitle.setText(nameableComponent.getName());
+				tabTitle.setColor(4210752);
+				current.addWidget(tabTitle);
 			}
 		});
 	}

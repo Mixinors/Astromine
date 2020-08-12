@@ -148,7 +148,7 @@ public abstract class DefaultedEnergyBlockEntity extends DefaultedBlockEntity im
 		if (tag.contains("energy", NbtType.COMPOUND)) {
 			EnergyVolume energy = EnergyVolume.fromTag(tag.getCompound("energy"));
 			energyVolume.setAmount(energy.getAmount());
-		} else if (tag.contains("energy")) {
+		} else if (tag.contains("energy", NbtType.DOUBLE)) {
 			double energy = tag.getDouble("energy");
 			energyVolume.setAmount(energy);
 		}

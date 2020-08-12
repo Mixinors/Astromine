@@ -57,13 +57,13 @@ public abstract class CapacitorBlockEntity extends DefaultedEnergyItemBlockEntit
 		ItemStack inputStack = itemComponent.getStack(0);
 		if (Energy.valid(inputStack)) {
 			EnergyHandler energyHandler = Energy.of(inputStack);
-			energyHandler.into(asEnergy()).move();
+			energyHandler.into(asEnergy()).move(2048);
 		}
 
 		ItemStack outputStack = itemComponent.getStack(1);
 		if (Energy.valid(outputStack)) {
 			EnergyHandler energyHandler = Energy.of(outputStack);
-			asEnergy().into(energyHandler).move();
+			asEnergy().into(energyHandler).move(2048);
 		}
 	}
 

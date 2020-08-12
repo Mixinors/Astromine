@@ -24,9 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
-
 import com.github.chainmailstudios.astromine.common.block.entity.ElectricSmelterBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyItemScreenHandler;
 import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
@@ -34,6 +31,8 @@ import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.BlockPos;
 
 public class ElectricSmelterScreenHandler extends DefaultedEnergyItemScreenHandler {
 	private ElectricSmelterBlockEntity smelter;
@@ -48,24 +47,21 @@ public class ElectricSmelterScreenHandler extends DefaultedEnergyItemScreenHandl
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		SlotWidget input = new SlotWidget(0, smelter);
-		input.setPosition(new Position(energyBar.getX(), energyBar.getY()));
-		input.setSize(new Size(18, 18));
+		SlotWidget output = new SlotWidget(0, smelter);
+		output.setSize(Size.of(18, 18));
 
-		SlotWidget output = new SlotWidget(1, smelter);
-		output.setPosition(new Position(energyBar.getX(), energyBar.getY()));
-		output.setSize(new Size(18, 18));
+		SlotWidget input = new SlotWidget(1, smelter);
+		input.setSize(Size.of(18, 18));
 
-		input.setPosition(new Position(width / 2F - input.getWidth() / 2F, input.getY()));
-		input.setPosition(new Position(input.getX() + 29, input.getY() + 15));
+		output.setPosition(Position.of(energyBar, 102, 15));
 
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
-		arrow.setPosition(new Position(input.getX() - 31, output.getY() + 15));
-		arrow.setSize(new Size(22, 16));
+		arrow.setPosition(Position.of(output, -31, 0));
+		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> smelter.limit);
 		arrow.setProgressSupplier(() -> (int) smelter.progress);
 
-		output.setPosition(new Position(arrow.getX() - 27, arrow.getY()));
+		input.setPosition(Position.of(arrow, -27, 0));
 
 		mainTab.addWidget(input);
 		mainTab.addWidget(output);

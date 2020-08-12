@@ -24,14 +24,21 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
-
+import com.github.chainmailstudios.astromine.common.block.entity.CapacitorBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyItemScreenHandler;
+import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
+import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
+import me.shedaniel.rei.impl.widgets.ArrowWidget;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import team.reborn.energy.Energy;
+import team.reborn.energy.EnergyHandler;
 
 public class CapacitorScreenHandler extends DefaultedEnergyItemScreenHandler {
 	public CapacitorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
@@ -42,17 +49,41 @@ public class CapacitorScreenHandler extends DefaultedEnergyItemScreenHandler {
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		energyBar.setPosition(new Position(width / 2F - energyBar.getWidth() / 2F, energyBar.getY()));
+		energyBar.setPosition(Position.of(width / 2F - energyBar.getWidth() / 2F, energyBar.getY()));
 
 		SlotWidget input = new SlotWidget(0, blockEntity);
-		input.setPosition(new Position(mainTab.getX() + 12, mainTab.getY() + 36));
-		input.setSize(new Size(18, 18));
+		input.setPosition(Position.of(mainTab, 12, 26));
+		input.setSize(Size.of(18, 18));
 
 		SlotWidget output = new SlotWidget(1, blockEntity);
-		output.setPosition(new Position(mainTab.getX() + 146, mainTab.getY() + 36));
-		output.setSize(new Size(18, 18));
+		output.setPosition(Position.of(mainTab, 146, 26));
+		output.setSize(Size.of(18, 18));
+
+		HorizontalArrowWidget leftArrow = new HorizontalArrowWidget();
+		leftArrow.setPosition(Position.of(input, 28, 0));
+		leftArrow.setSize(Size.of(22, 16));
+		leftArrow.setLimitSupplier(() -> 1);
+		leftArrow.setProgressSupplier(() -> {
+			ItemStack stack = blockEntity.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).getStack(0);
+			if (!Energy.valid(stack)) return 0;
+			EnergyHandler handler = Energy.of(stack);
+			return handler.getEnergy() > 0 && handler.getMaxOutput() > 0 ? 1 : 0;
+		});
+
+		HorizontalArrowWidget rightArrow = new HorizontalArrowWidget();
+		rightArrow.setPosition(Position.of(output, -34, 0));
+		rightArrow.setSize(Size.of(22, 16));
+		rightArrow.setLimitSupplier(() -> 1);
+		rightArrow.setProgressSupplier(() -> {
+			ItemStack stack = blockEntity.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).getStack(1);
+			if (!Energy.valid(stack)) return 0;
+			EnergyHandler handler = Energy.of(stack);
+			return handler.getEnergy() < handler.getMaxStored() && blockEntity.getEnergyVolume().getAmount() > 0 && handler.getMaxInput() > 0 ? 1 : 0;
+		});
 
 		mainTab.addWidget(input);
 		mainTab.addWidget(output);
+		mainTab.addWidget(leftArrow);
+		mainTab.addWidget(rightArrow);
 	}
 }

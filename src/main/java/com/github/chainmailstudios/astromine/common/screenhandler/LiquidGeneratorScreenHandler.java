@@ -48,13 +48,14 @@ public class LiquidGeneratorScreenHandler extends DefaultedEnergyFluidScreenHand
 		super.initialize(width, height);
 
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
-		arrow.setPosition(new Position(energyBar.getX() + energyBar.getWidth() + 7, energyBar.getY() + energyBar.getHeight() / 2F - 8));
-		arrow.setSize(new Size(22, 16));
+		arrow.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight() / 2F - 8));
+		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> generator.limit);
 		arrow.setProgressSupplier(() -> (int) generator.current);
 
-		fluidBar.setPosition(new Position(arrow.getX() + arrow.getWidth() + 7, fluidBar.getY()));
+		energyBar.setPosition(Position.of(mainTab, 68, 11));
+		fluidBar.setPosition(Position.of(mainTab, 7, 11));
 
-		addWidget(arrow);
+		mainTab.addWidget(arrow);
 	}
 }

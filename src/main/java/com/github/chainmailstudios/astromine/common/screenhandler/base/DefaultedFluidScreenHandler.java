@@ -24,15 +24,14 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.util.math.BlockPos;
-
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.widget.FluidVerticalBarWidget;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.util.math.BlockPos;
 
 public class DefaultedFluidScreenHandler extends DefaultedBlockEntityScreenHandler {
 	public DefaultedFluidBlockEntity blockEntity;
@@ -50,8 +49,8 @@ public class DefaultedFluidScreenHandler extends DefaultedBlockEntityScreenHandl
 		super.initialize(width, height);
 
 		fluidBar = new FluidVerticalBarWidget();
-		fluidBar.setPosition(new Position(mainTab.getX() + 7F, mainTab.getY() + 20F));
-		fluidBar.setSize(new Size(24F, 48F));
+		fluidBar.setPosition(Position.of(mainTab, 7, 11));
+		fluidBar.setSize(Size.of(24F, 48F));
 		fluidBar.setVolume(() -> blockEntity.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(0));
 
 		mainTab.addWidget(fluidBar);

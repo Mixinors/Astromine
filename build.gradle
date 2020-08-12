@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '0.4-SNAPSHOT'
+    id 'fabric-loom' version '0.5-SNAPSHOT'
     id 'maven-publish'
     id 'com.diffplug.spotless' version '5.1.0'
 }
@@ -27,16 +27,8 @@ repositories {
         url = "https://maven.onyxstudios.dev"
     }
     maven {
-        name = "Spinnery"
-        url = "https://dl.bintray.com/spinnery/Spinnery"
-    }
-    maven {
         name = "JitPack"
         url = "https://jitpack.io"
-    }
-    maven {
-        name = "Fabric"
-        url = "https://maven.fabricmc.net/"
     }
     maven {
         name = "Jared"
@@ -137,7 +129,7 @@ dependencies {
     compile "org.joml:joml:${joml_version}"
 
     // Magna
-    useAsApi "com.github.Draylar:magna:${magna_version}"
+    useAsApi "com.github.shedaniel:magna:${magna_version}"
 
     // Tech Reborn
 //    useAsRuntime "TechReborn:TechReborn-1.16:${tech_reborn_version}"
