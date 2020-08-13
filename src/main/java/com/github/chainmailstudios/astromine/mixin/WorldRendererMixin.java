@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

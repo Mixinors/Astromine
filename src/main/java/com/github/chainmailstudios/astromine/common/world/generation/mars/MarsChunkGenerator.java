@@ -52,7 +52,8 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class MarsChunkGenerator extends ChunkGenerator {
-	public static Codec<MarsChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed), RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)).apply(instance, MarsChunkGenerator::new));
+	public static Codec<MarsChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed), RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)).apply(instance,
+		MarsChunkGenerator::new));
 
 	private final long seed;
 	private final Registry<Biome> biomeRegistry;

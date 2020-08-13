@@ -53,7 +53,7 @@ public class FluidMixerScreenHandler extends DefaultedEnergyFluidScreenHandler {
 		ComponentProvider componentProvider = blockEntity;
 
 		FluidVerticalBarWidget secondInputFluidBar = new FluidVerticalBarWidget();
-		secondInputFluidBar.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7,0));
+		secondInputFluidBar.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, 0));
 		secondInputFluidBar.setSize(Size.absolute(fluidBar));
 		secondInputFluidBar.setVolume(() -> componentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(1));
 

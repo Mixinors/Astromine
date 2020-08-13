@@ -42,10 +42,8 @@ import net.minecraft.world.biome.source.BiomeSource;
 import java.util.function.LongFunction;
 
 public class MoonBiomeSource extends BiomeSource {
-	public static Codec<MoonBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			Codec.LONG.fieldOf("seed").stable().forGetter(source -> source.seed),
-			RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)
-	).apply(instance, instance.stable(MoonBiomeSource::new)));
+	public static Codec<MoonBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").stable().forGetter(source -> source.seed), RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)).apply(instance,
+		instance.stable(MoonBiomeSource::new)));
 	private final long seed;
 	private final Registry<Biome> biomeRegistry;
 	private final BiomeLayerSampler sampler;

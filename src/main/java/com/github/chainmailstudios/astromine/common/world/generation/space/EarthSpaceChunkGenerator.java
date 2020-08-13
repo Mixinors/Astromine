@@ -50,7 +50,7 @@ import java.util.Random;
 
 public class EarthSpaceChunkGenerator extends ChunkGenerator {
 	public static Codec<EarthSpaceChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed), RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)).apply(instance,
-			EarthSpaceChunkGenerator::new));
+		EarthSpaceChunkGenerator::new));
 
 	private final long seed;
 	private final Registry<Biome> biomeRegistry;

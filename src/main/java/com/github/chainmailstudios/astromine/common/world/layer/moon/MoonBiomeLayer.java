@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.world.layer.moon;
 
-
 import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;

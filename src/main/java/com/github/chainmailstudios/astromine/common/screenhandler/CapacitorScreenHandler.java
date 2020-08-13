@@ -24,16 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler;
 
-import com.github.chainmailstudios.astromine.common.block.entity.CapacitorBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedEnergyItemScreenHandler;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
-import me.shedaniel.rei.impl.widgets.ArrowWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -65,7 +62,8 @@ public class CapacitorScreenHandler extends DefaultedEnergyItemScreenHandler {
 		leftArrow.setLimitSupplier(() -> 1);
 		leftArrow.setProgressSupplier(() -> {
 			ItemStack stack = blockEntity.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).getStack(0);
-			if (!Energy.valid(stack)) return 0;
+			if (!Energy.valid(stack))
+				return 0;
 			EnergyHandler handler = Energy.of(stack);
 			return handler.getEnergy() > 0 && handler.getMaxOutput() > 0 ? 1 : 0;
 		});
@@ -76,7 +74,8 @@ public class CapacitorScreenHandler extends DefaultedEnergyItemScreenHandler {
 		rightArrow.setLimitSupplier(() -> 1);
 		rightArrow.setProgressSupplier(() -> {
 			ItemStack stack = blockEntity.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).getStack(1);
-			if (!Energy.valid(stack)) return 0;
+			if (!Energy.valid(stack))
+				return 0;
 			EnergyHandler handler = Energy.of(stack);
 			return handler.getEnergy() < handler.getMaxStored() && blockEntity.getEnergyVolume().getAmount() > 0 && handler.getMaxInput() > 0 ? 1 : 0;
 		});
