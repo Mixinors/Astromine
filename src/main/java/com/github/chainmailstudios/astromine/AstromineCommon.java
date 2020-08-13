@@ -24,17 +24,15 @@
 
 package com.github.chainmailstudios.astromine;
 
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.loader.api.FabricLoader;
-
-import net.minecraft.util.Identifier;
-
 import blue.endless.jankson.Jankson;
 import com.github.chainmailstudios.astromine.registry.*;
+import com.google.gson.Gson;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.gson.Gson;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -91,15 +89,13 @@ public class AstromineCommon implements ModInitializer {
 		AstrominePotions.initialize();
 		AstromineFeatures.initialize();
 		AstromineBiomeSources.initialize();
-		// TODO biomes
-		// AstromineBiomes.initialize();
+		AstromineBiomes.initialize();
 		AstromineFluids.initialize();
 		AstromineBreathables.initialize();
 		AstromineChunkGenerators.initialize();
 		AstromineCommonPackets.initialize();
 		AstromineGravities.initialize();
-		// TODO dimension layers
-		// AstromineDimensionLayers.initialize();
+		AstromineDimensionLayers.initialize();
 		AstromineDimensions.initialize();
 		AstromineCommonCallbacks.initialize();
 		AstromineRecipeSerializers.initialize();

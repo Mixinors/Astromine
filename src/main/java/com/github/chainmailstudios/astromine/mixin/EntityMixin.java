@@ -24,6 +24,17 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
+import com.github.chainmailstudios.astromine.access.EntityAccess;
+import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
+import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
+import com.google.common.collect.Lists;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.TeleportTarget;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -31,12 +42,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.world.World;
-
-import com.github.chainmailstudios.astromine.access.EntityAccess;
-import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
+import java.util.List;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin implements EntityAccess, GravityEntity {
@@ -47,6 +55,9 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 
 	@Unique
 	Entity lastVehicle = null;
+
+	@Unique
+	TeleportTarget nextTeleportTarget = null;
 
 	@Override
 	public Entity astromine_getLastVehicle() {
@@ -75,55 +86,55 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 
 		if ((int) entity.getPos().getY() != lastY && !entity.world.isClient && entity.getVehicle() == null) {
 			lastY = (int) entity.getPos().getY();
+			
+			int bottomPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey());
+			int topPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey());
 
-			/*
-			 * int bottomPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.BOTTOM, entity.world.getDimensionRegistryKey());
-			 * int topPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.TOP, entity.world.getDimensionRegistryKey());
-			 * 
-			 * if (lastY <= bottomPortal && bottomPortal != Integer.MIN_VALUE) {
-			 * RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.BOTTOM, entity.world.getDimensionRegistryKey()).getValue());
-			 * 
-			 * ServerWorld serverWorld = entity.world.getServer().getWorld(worldKey);
-			 * 
-			 * List<Entity> existingPassengers = Lists.newArrayList(entity.getPassengerList());
-			 * 
-			 * List<DataTracker.Entry<?>> entries = Lists.newArrayList();
-			 * for (DataTracker.Entry<?> entry : entity.getDataTracker().getAllEntries()) {
-			 * entries.add(entry.copy());
-			 * }
-			 * 
-			 * Entity newEntity = FabricDimensions.teleport(entity, serverWorld, DimensionLayerRegistry.INSTANCE.getPlacer(DimensionLayerRegistry.Type.BOTTOM, entity.world.getDimensionRegistryKey()));
-			 * 
-			 * for (DataTracker.Entry entry : entries) {
-			 * newEntity.getDataTracker().set(entry.getData(), entry.get());
-			 * }
-			 * 
-			 * for (Entity existingEntity : existingPassengers) {
-			 * ((EntityAccess) existingEntity).astromine_setLastVehicle(newEntity);
-			 * }
-			 * } else if (lastY >= topPortal && topPortal != Integer.MIN_VALUE) {
-			 * RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.TOP, entity.world.getDimensionRegistryKey()).getValue());
-			 * 
-			 * ServerWorld serverWorld = entity.world.getServer().getWorld(worldKey);
-			 * 
-			 * List<Entity> existingPassengers = Lists.newArrayList(entity.getPassengerList());
-			 * 
-			 * List<DataTracker.Entry<?>> entries = Lists.newArrayList();
-			 * for (DataTracker.Entry<?> entry : entity.getDataTracker().getAllEntries()) {
-			 * entries.add(entry.copy());
-			 * }
-			 * 
-			 * Entity newEntity = FabricDimensions.teleport(entity, serverWorld, DimensionLayerRegistry.INSTANCE.getPlacer(DimensionLayerRegistry.Type.TOP, entity.world.getDimensionRegistryKey()));
-			 * 
-			 * for (DataTracker.Entry entry : entries) {
-			 * newEntity.getDataTracker().set(entry.getData(), entry.get());
-			 * }
-			 * 
-			 * for (Entity existingEntity : existingPassengers) {
-			 * ((EntityAccess) existingEntity).astromine_setLastVehicle(newEntity);
-			 * }
-			 * }
-			 */
+			if (lastY <= bottomPortal && bottomPortal != Integer.MIN_VALUE) {
+				RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey()).getValue());
+
+				ServerWorld serverWorld = entity.world.getServer().getWorld(worldKey);
+
+				List<Entity> existingPassengers = Lists.newArrayList(entity.getPassengerList());
+
+				List<DataTracker.Entry<?>> entries = Lists.newArrayList();
+				for (DataTracker.Entry<?> entry : entity.getDataTracker().getAllEntries()) {
+					entries.add(entry.copy());
+				}
+
+				nextTeleportTarget = DimensionLayerRegistry.INSTANCE.getPlacer(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey()).placeEntity(entity);
+				Entity newEntity = entity.moveToWorld(serverWorld);
+
+				for (DataTracker.Entry entry : entries) {
+					newEntity.getDataTracker().set(entry.getData(), entry.get());
+				}
+
+				for (Entity existingEntity : existingPassengers) {
+					((EntityAccess) existingEntity).astromine_setLastVehicle(newEntity);
+				}
+			} else if (lastY >= topPortal && topPortal != Integer.MIN_VALUE) {
+				RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey()).getValue());
+
+				ServerWorld serverWorld = entity.world.getServer().getWorld(worldKey);
+
+				List<Entity> existingPassengers = Lists.newArrayList(entity.getPassengerList());
+
+				List<DataTracker.Entry<?>> entries = Lists.newArrayList();
+				for (DataTracker.Entry<?> entry : entity.getDataTracker().getAllEntries()) {
+					entries.add(entry.copy());
+				}
+
+				nextTeleportTarget = DimensionLayerRegistry.INSTANCE.getPlacer(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey()).placeEntity(entity);
+				Entity newEntity = entity.moveToWorld(serverWorld);
+
+				for (DataTracker.Entry entry : entries) {
+					newEntity.getDataTracker().set(entry.getData(), entry.get());
+				}
+
+				for (Entity existingEntity : existingPassengers) {
+					((EntityAccess) existingEntity).astromine_setLastVehicle(newEntity);
+				}
+			}
 		}
 
 		if (entity.getVehicle() != null)
@@ -133,6 +144,14 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 				entity.startRiding(lastVehicle);
 				lastVehicle = null;
 			}
+		}
+	}
+
+	@Inject(method = "getTeleportTarget", at = @At("HEAD"), cancellable = true)
+	protected void getTeleportTarget(ServerWorld destination, CallbackInfoReturnable<TeleportTarget> cir) {
+		if (nextTeleportTarget != null) {
+			cir.setReturnValue(nextTeleportTarget);
+			nextTeleportTarget = null;
 		}
 	}
 }
