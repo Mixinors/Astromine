@@ -48,24 +48,24 @@ public class PresserScreenHandler extends DefaultedEnergyItemScreenHandler {
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		SlotWidget input = new SlotWidget(0, blockEntity);
-		input.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
-		input.setSize(Size.of(18, 18));
-
-		SlotWidget output = new SlotWidget(1, blockEntity);
+		SlotWidget output = new SlotWidget(0, blockEntity, ResultSlot::new);
 		output.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
 		output.setSize(Size.of(18, 18));
 
-		input.setPosition(Position.of(width / 2F - input.getWidth() / 2F, input.getY()));
-		input.setPosition(Position.of(input.getX() + 27, input.getY() + 15));
+		SlotWidget input = new SlotWidget(1, blockEntity);
+		input.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
+		input.setSize(Size.of(18, 18));
+
+		output.setPosition(Position.of(width / 2F - output.getWidth() / 2F, output.getY()));
+		output.setPosition(Position.of(output.getX() + 27, output.getY() + 15));
 
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
-		arrow.setPosition(Position.of(input.getX() - 31, input.getY()));
+		arrow.setPosition(Position.of(output.getX() - 31, output.getY()));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> sorter.limit);
 		arrow.setProgressSupplier(() -> (int) sorter.progress);
 
-		output.setPosition(Position.of(arrow.getX() - 27, arrow.getY()));
+		input.setPosition(Position.of(arrow.getX() - 27, arrow.getY()));
 
 		mainTab.addWidget(input);
 		mainTab.addWidget(output);

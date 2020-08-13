@@ -56,7 +56,7 @@ public class AlloySmelterScreenHandler extends DefaultedEnergyItemScreenHandler 
 		secondInput.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
 		secondInput.setSize(Size.of(18, 18));
 
-		SlotWidget output = new SlotWidget(2, smelter);
+		SlotWidget output = new SlotWidget(2, smelter, ResultSlot::new);
 		output.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
 		output.setSize(Size.of(18, 18));
 

@@ -82,8 +82,6 @@ public class EnergyVolume {
 	 * @return a Volume
 	 */
 	public static EnergyVolume fromTag(CompoundTag tag) {
-		// TODO: Null checks.
-
 		EnergyVolume energyVolume = new EnergyVolume();
 
 		if (!tag.contains("fraction")) {

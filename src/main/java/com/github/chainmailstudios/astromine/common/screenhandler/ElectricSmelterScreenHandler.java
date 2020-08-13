@@ -32,6 +32,8 @@ import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
 
 public class ElectricSmelterScreenHandler extends DefaultedEnergyItemScreenHandler {
@@ -47,7 +49,7 @@ public class ElectricSmelterScreenHandler extends DefaultedEnergyItemScreenHandl
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		SlotWidget output = new SlotWidget(0, smelter);
+		SlotWidget output = new SlotWidget(0, smelter, ResultSlot::new);
 		output.setSize(Size.of(18, 18));
 
 		SlotWidget input = new SlotWidget(1, smelter);

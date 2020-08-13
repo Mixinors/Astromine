@@ -126,8 +126,6 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 	@Override
 	public void onMouseReleased(float mouseX, float mouseY, int mouseButton) {
 		if (getFocused() && wasClicked) {
-			component.get(type).set(direction, component.get(type).get(direction).next());
-
 			if (getHandler().getClient()) {
 				PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
 
@@ -136,7 +134,7 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 
 				buffer.writeIdentifier(type.getId());
 				buffer.writeEnumConstant(direction);
-				buffer.writeEnumConstant(component.get(type).get(direction));
+				buffer.writeEnumConstant(component.get(type).get(direction).next());
 
 				ClientSidePacketRegistry.INSTANCE.sendToServer(AstromineCommonPackets.BLOCK_ENTITY_UPDATE_PACKET, buffer);
 			}
