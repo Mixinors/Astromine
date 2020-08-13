@@ -24,46 +24,47 @@
 
 package com.github.chainmailstudios.astromine.common.world.generation.mars;
 
+import com.github.chainmailstudios.astromine.common.miscellaneous.BiomeGenCache;
+import com.github.chainmailstudios.astromine.common.noise.OctaveNoiseSampler;
+import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryLookupCodec;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-
-import com.github.chainmailstudios.astromine.common.miscellaneous.BiomeGenCache;
-import com.github.chainmailstudios.astromine.common.noise.OctaveNoiseSampler;
-import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 
 import java.util.Arrays;
 import java.util.Random;
 
 public class MarsChunkGenerator extends ChunkGenerator {
-	public static Codec<MarsChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(BiomeSource.CODEC.fieldOf("biome_source").forGetter(gen -> gen.biomeSource), Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed)).apply(instance, MarsChunkGenerator::new));
+	public static Codec<MarsChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed), RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)).apply(instance, MarsChunkGenerator::new));
 
-	private final BiomeSource biomeSource;
 	private final long seed;
+	private final Registry<Biome> biomeRegistry;
 	private final OctaveNoiseSampler<OpenSimplexNoise> lowerInterpolatedNoise;
 	private final OctaveNoiseSampler<OpenSimplexNoise> upperInterpolatedNoise;
 	private final OctaveNoiseSampler<OpenSimplexNoise> interpolationNoise;
 	private final ThreadLocal<BiomeGenCache> cache;
-	public MarsChunkGenerator(BiomeSource biomeSource, long seed) {
-		super(biomeSource, new StructuresConfig(false));
-		this.biomeSource = biomeSource;
+
+	public MarsChunkGenerator(long seed, Registry<Biome> biomeRegistry) {
+		super(new MarsBiomeSource(seed, biomeRegistry), new StructuresConfig(false));
 		this.seed = seed;
+		this.biomeRegistry = biomeRegistry;
 		Random random = new Random(seed);
 		lowerInterpolatedNoise = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 5, 140.43, 45, 10);
 		upperInterpolatedNoise = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 5, 140.43, 45, 10);
@@ -78,7 +79,7 @@ public class MarsChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public ChunkGenerator withSeed(long seed) {
-		return new MarsChunkGenerator(new MarsBiomeSource(seed), seed);
+		return new MarsChunkGenerator(seed, biomeRegistry);
 	}
 
 	@Override

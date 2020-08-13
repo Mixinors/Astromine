@@ -24,42 +24,43 @@
 
 package com.github.chainmailstudios.astromine.common.world.generation.space;
 
+import com.github.chainmailstudios.astromine.common.noise.OctaveNoiseSampler;
+import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryLookupCodec;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.WorldAccess;
-import net.minecraft.world.biome.source.BiomeSource;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-
-import com.github.chainmailstudios.astromine.common.noise.OctaveNoiseSampler;
-import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 
 import java.util.Arrays;
 import java.util.Random;
 
 public class EarthSpaceChunkGenerator extends ChunkGenerator {
-	public static Codec<EarthSpaceChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(BiomeSource.CODEC.fieldOf("biome_source").forGetter(gen -> gen.biomeSource), Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed)).apply(instance,
-		EarthSpaceChunkGenerator::new));
+	public static Codec<EarthSpaceChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed), RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)).apply(instance,
+			EarthSpaceChunkGenerator::new));
 
-	private final BiomeSource biomeSource;
 	private final long seed;
+	private final Registry<Biome> biomeRegistry;
 
 	private final OctaveNoiseSampler<OpenSimplexNoise> noise;
 
-	public EarthSpaceChunkGenerator(BiomeSource biomeSource, long seed) {
-		super(biomeSource, new StructuresConfig(false));
-		this.biomeSource = biomeSource;
+	public EarthSpaceChunkGenerator(long seed, Registry<Biome> biomeRegistry) {
+		super(new EarthSpaceBiomeSource(biomeRegistry, seed), new StructuresConfig(false));
 		this.seed = seed;
+		this.biomeRegistry = biomeRegistry;
 		this.noise = new OctaveNoiseSampler<>(OpenSimplexNoise.class, new Random(seed), 3, 200, 1.225, 1);
 	}
 
@@ -70,7 +71,7 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public ChunkGenerator withSeed(long seed) {
-		return new EarthSpaceChunkGenerator(this.biomeSource.withSeed(seed), seed);
+		return new EarthSpaceChunkGenerator(seed, biomeRegistry);
 	}
 
 	@Override

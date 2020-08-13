@@ -53,13 +53,7 @@ public class AstromineOres {
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineConfig.get().asteroidStellumOreMinimumRange, AstromineConfig.get().asteroidStellumOreMaximumRange), Range.of(AstromineConfig.get().asteroidStellumOreMinimumSize, AstromineConfig.get().asteroidStellumOreMaximumSize), AstromineBlocks.ASTEROID_STELLUM_ORE);
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineConfig.get().asteroidGalaxiumOreMinimumRange, AstromineConfig.get().asteroidGalaxiumOreMaximumRange), Range.of(AstromineConfig.get().asteroidGalaxiumOreMinimumSize, AstromineConfig.get().asteroidGalaxiumOreMaximumSize), AstromineBlocks.ASTEROID_GALAXIUM_ORE);
 
-		for (Biome biome : BuiltinRegistries.BIOME) {
-			if (biome.getCategory() != Biome.Category.NETHER && biome.getCategory() != Biome.Category.THEEND && biome.getCategory() != Biome.Category.NONE) {
-				addOresToBiome(biome);
-			}
-		}
-
-		RegistryEntryAddedCallback.event(BuiltinRegistries.BIOME).register((i, identifier, biome) -> addOresToBiome(biome));
+		// TODO register vanilla ores
 	}
 
 	public static void addOresToBiome(Biome biome) {

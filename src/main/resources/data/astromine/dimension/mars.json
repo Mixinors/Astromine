@@ -1,10 +1,6 @@
 {
   "generator": {
     "type": "astromine:mars",
-    "biome_source": {
-      "type": "astromine:mars",
-      "seed": -1
-    },
     "seed": -1
   },
   "type": "astromine:mars"

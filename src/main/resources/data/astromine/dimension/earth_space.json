@@ -1,10 +1,6 @@
 {
   "generator": {
     "type": "astromine:earth_space",
-    "biome_source": {
-      "type": "astromine:earth_space",
-      "seed": -1
-    },
     "seed": -1
   },
   "type": "astromine:earth_space"

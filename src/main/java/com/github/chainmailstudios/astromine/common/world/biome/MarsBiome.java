@@ -48,8 +48,10 @@ package com.github.chainmailstudios.astromine.common.world.biome;
  * 
  * @Override
  * public int getSkyColor() {
- * return 0xcf940c;
+ return 0xcf940c;
  * }
  * }
  */
-public class MarsBiome {}
+public class MarsBiome {
+	int a = 13603852;
+}

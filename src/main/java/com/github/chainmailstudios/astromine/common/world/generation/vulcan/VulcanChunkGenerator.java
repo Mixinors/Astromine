@@ -24,46 +24,47 @@
 
 package com.github.chainmailstudios.astromine.common.world.generation.vulcan;
 
+import com.github.chainmailstudios.astromine.common.miscellaneous.BiomeGenCache;
+import com.github.chainmailstudios.astromine.common.noise.OctaveNoiseSampler;
+import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryLookupCodec;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-
-import com.github.chainmailstudios.astromine.common.miscellaneous.BiomeGenCache;
-import com.github.chainmailstudios.astromine.common.noise.OctaveNoiseSampler;
-import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 
 import java.util.Arrays;
 import java.util.Random;
 
 public class VulcanChunkGenerator extends ChunkGenerator {
-	public static Codec<VulcanChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(BiomeSource.CODEC.fieldOf("biome_source").forGetter(gen -> gen.biomeSource), Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed)).apply(instance,
-		VulcanChunkGenerator::new));
+	public static Codec<VulcanChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed), RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)).apply(instance,
+			VulcanChunkGenerator::new));
 
-	private final BiomeSource biomeSource;
 	private final long seed;
+	private final Registry<Biome> biomeRegistry;
 	private final OctaveNoiseSampler<OpenSimplexNoise> baseNoise;
 	private final OctaveNoiseSampler<OpenSimplexNoise> warpX;
 	private final OctaveNoiseSampler<OpenSimplexNoise> warpZ;
 	private final ThreadLocal<BiomeGenCache> cache;
-	public VulcanChunkGenerator(BiomeSource biomeSource, long seed) {
-		super(biomeSource, new StructuresConfig(false));
-		this.biomeSource = biomeSource;
+
+	public VulcanChunkGenerator(long seed, Registry<Biome> biomeRegistry) {
+		super(new VulcanBiomeSource(biomeRegistry, seed), new StructuresConfig(false));
 		this.seed = seed;
+		this.biomeRegistry = biomeRegistry;
 		Random random = new Random(seed);
 		baseNoise = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 5, 227.48, 45, 45);
 		warpX = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 3, 72.12, 3, 3);
@@ -78,7 +79,7 @@ public class VulcanChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public ChunkGenerator withSeed(long seed) {
-		return new VulcanChunkGenerator(this.biomeSource.withSeed(seed), seed);
+		return new VulcanChunkGenerator(seed, biomeRegistry);
 	}
 
 	@Override

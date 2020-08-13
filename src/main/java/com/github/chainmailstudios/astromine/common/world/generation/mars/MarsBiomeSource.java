@@ -24,10 +24,14 @@
 
 package com.github.chainmailstudios.astromine.common.world.generation.mars;
 
-// import com.github.chainmailstudios.astromine.common.world.layer.mars.MarsBiomeLayer;
-// import com.github.chainmailstudios.astromine.common.world.layer.mars.MarsRiverLayer;
-
-import net.minecraft.util.registry.BuiltinRegistries;
+import com.github.chainmailstudios.astromine.common.world.layer.mars.MarsBiomeLayer;
+import com.github.chainmailstudios.astromine.common.world.layer.mars.MarsRiverLayer;
+import com.github.chainmailstudios.astromine.common.world.layer.util.PlainsOnlyLayer;
+import com.google.common.collect.ImmutableList;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryLookupCodec;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.layer.ScaleLayer;
 import net.minecraft.world.biome.layer.SimpleLandNoiseLayer;
@@ -37,21 +41,22 @@ import net.minecraft.world.biome.layer.util.LayerSampleContext;
 import net.minecraft.world.biome.layer.util.LayerSampler;
 import net.minecraft.world.biome.source.BiomeLayerSampler;
 import net.minecraft.world.biome.source.BiomeSource;
-import com.mojang.serialization.Codec;
 
-import com.github.chainmailstudios.astromine.common.world.layer.util.PlainsOnlyLayer;
-
-import com.google.common.collect.ImmutableList;
 import java.util.function.LongFunction;
 
 public class MarsBiomeSource extends BiomeSource {
-	public static Codec<MarsBiomeSource> CODEC = Codec.LONG.fieldOf("seed").xmap(MarsBiomeSource::new, (source) -> source.seed).stable().codec();
+	public static Codec<MarsBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			Codec.LONG.fieldOf("seed").stable().forGetter(source -> source.seed),
+			RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)
+	).apply(instance, instance.stable(MarsBiomeSource::new)));
 	private final long seed;
+	private final Registry<Biome> biomeRegistry;
 	private final BiomeLayerSampler sampler;
 
-	public MarsBiomeSource(long seed) {
+	public MarsBiomeSource(long seed, Registry<Biome> biomeRegistry) {
 		super(ImmutableList.of());
 		this.seed = seed;
+		this.biomeRegistry = biomeRegistry;
 		this.sampler = build(seed);
 	}
 
@@ -62,31 +67,31 @@ public class MarsBiomeSource extends BiomeSource {
 
 	@Override
 	public BiomeSource withSeed(long seed) {
-		return new MarsBiomeSource(seed);
+		return new MarsBiomeSource(seed, biomeRegistry);
 	}
 
 	@Override
 	public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
-		return sampler.sample(BuiltinRegistries.BIOME, biomeX, biomeZ);
+		return sampler.sample(biomeRegistry, biomeX, biomeZ);
 	}
 
-	public static BiomeLayerSampler build(long seed) {
+	public BiomeLayerSampler build(long seed) {
 		return new BiomeLayerSampler(build((salt) -> new CachingLayerContext(25, seed, salt)));
 	}
 
-	private static <T extends LayerSampler, C extends LayerSampleContext<T>> LayerFactory<T> build(LongFunction<C> contextProvider) {
+	private <T extends LayerSampler, C extends LayerSampleContext<T>> LayerFactory<T> build(LongFunction<C> contextProvider) {
 		LayerFactory<T> mainLayer = SimpleLandNoiseLayer.INSTANCE.create(contextProvider.apply(432L), PlainsOnlyLayer.INSTANCE.create(contextProvider.apply(543L)));
 		for (int i = 0; i < 7; i++) {
 			mainLayer = ScaleLayer.NORMAL.create(contextProvider.apply(43 + i), mainLayer);
 		}
-		/*
-		 * mainLayer = MarsRiverLayer.INSTANCE.create(contextProvider.apply(56L), mainLayer);
-		 * for (int i = 0; i < 2; i++) {
-		 * mainLayer = ScaleLayer.NORMAL.create(contextProvider.apply(473 + i), mainLayer);
-		 * }
-		 * 
-		 * mainLayer = MarsBiomeLayer.INSTANCE.create(contextProvider.apply(721), mainLayer);
-		 */
+
+		mainLayer = new MarsRiverLayer(biomeRegistry).create(contextProvider.apply(56L), mainLayer);
+		for (int i = 0; i < 2; i++) {
+			mainLayer = ScaleLayer.NORMAL.create(contextProvider.apply(473 + i), mainLayer);
+		}
+
+		mainLayer = new MarsBiomeLayer(biomeRegistry).create(contextProvider.apply(721), mainLayer);
+
 		return mainLayer;
 	}
 }

@@ -34,11 +34,11 @@ package com.github.chainmailstudios.astromine.registry;
  * import com.github.chainmailstudios.astromine.common.world.generation.moon.MoonBiomeSource;
  * import com.github.chainmailstudios.astromine.common.world.generation.space.EarthSpaceBiomeSource;
  * import com.github.chainmailstudios.astromine.common.world.generation.vulcan.VulcanBiomeSource;
- * 
+ *
  * import net.minecraft.util.registry.BuiltinRegistries;
  * import net.minecraft.util.registry.Registry;
  * import net.minecraft.world.biome.Biome;
- * 
+ *
  * public class AstromineBiomes {
  * public static Biome ASTEROID_BELT;
  * public static Biome MOON_FLATS;
@@ -47,28 +47,27 @@ package com.github.chainmailstudios.astromine.registry;
  * public static Biome MARS;
  * public static Biome MARS_RIVERBED;
  * public static Biome VULCAN;
- * 
+ *
  * public static void initialize() {
  * ASTEROID_BELT = Registry.register(BuiltinRegistries.BIOME, AstromineCommon.identifier("asteroid_belt"), new EarthSpaceBiome());
- * 
+ *
  * MOON_FLATS = Registry.register(BuiltinRegistries.BIOME, AstromineCommon.identifier("moon_flats"), new MoonBiome(100, 20));
  * MOON_HILLS = Registry.register(BuiltinRegistries.BIOME, AstromineCommon.identifier("moon_hills"), new MoonBiome(105, 30));
  * MOON_LOWLANDS = Registry.register(BuiltinRegistries.BIOME, AstromineCommon.identifier("moon_lowlands"), new MoonBiome(93, 9));
- * 
+ *
  * MARS = Registry.register(BuiltinRegistries.BIOME, AstromineCommon.identifier("mars"), new MarsBiome(100, 1));
  * MARS_RIVERBED = Registry.register(BuiltinRegistries.BIOME, AstromineCommon.identifier("mars_riverbed"), new MarsBiome(60, 0.1f));
- * 
+ *
  * VULCAN = Registry.register(BuiltinRegistries.BIOME, AstromineCommon.identifier("vulcan"), new VulcanBiome(100, 1));
  * }
  * }
  */
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -81,6 +80,17 @@ public class AstromineBiomes {
 
 	public static final Identifier VULCAN_PLAINS_ID = AstromineCommon.identifier("vulcan_plains");
 	public static final RegistryKey<Biome> VULCAN_PLAINS = register(Registry.BIOME_KEY, VULCAN_PLAINS_ID);
+
+	public static final Identifier MOON_FLATS_ID = AstromineCommon.identifier("moon_flats");
+	public static final RegistryKey<Biome> MOON_FLATS = register(Registry.BIOME_KEY, MOON_FLATS_ID);
+	public static final Identifier MOON_HILLS_ID = AstromineCommon.identifier("moon_hills");
+	public static final RegistryKey<Biome> MOON_HILLS = register(Registry.BIOME_KEY, MOON_HILLS_ID);
+	public static final Identifier MOON_LOWLANDS_ID = AstromineCommon.identifier("moon_lowlands");
+	public static final RegistryKey<Biome> MOON_LOWLANDS = register(Registry.BIOME_KEY, MOON_LOWLANDS_ID);
+	public static final Identifier MARS_ID = AstromineCommon.identifier("mars");
+	public static final RegistryKey<Biome> MARS = register(Registry.BIOME_KEY, MARS_ID);
+	public static final Identifier MARS_RIVERBED_ID = AstromineCommon.identifier("mars_riverbed");
+	public static final RegistryKey<Biome> MARS_RIVERBED = register(Registry.BIOME_KEY, MARS_RIVERBED_ID);
 
 	public static <T> RegistryKey<T> register(RegistryKey<Registry<T>> registry, Identifier identifier) {
 		RegistryKey<T> key = RegistryKey.of(registry, identifier);
