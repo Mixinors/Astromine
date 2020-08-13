@@ -71,17 +71,8 @@ public class AstromineItems {
 	public static final Item YEAST = register("yeast", new Item(getBasicSettings()));
 	public static final Item GRAPHITE_SHEET = register("graphite_sheet", new Item(getBasicSettings()));
 
-	// Realistic weaponry
-	public static final Item SCAR_H = register("scar_h", new Weaponry.ScarH(getBasicSettings().fireproof().maxCount(1)));
-	public static final Item BARRET_M98B = register("barret_m98b", new Weaponry.BarretM98B(getBasicSettings().fireproof().maxCount(1)));
-
 	// Fantasy weaponry
-	public static final Item SUPER_SPACE_SLIME_SHOOTER = register("super_space_slime_shooter", new SuperSpaceSlimeShooterItem(getBasicSettings()));
 	public static final Item GRAVITY_GAUNTLET = register("gravity_gauntlet", new GravityGauntletItem(getBasicSettings().maxCount(1), AstromineConfig.get().gravityGauntletEnergy));
-
-	// Realistic ammunition
-	public static final Item NATO_7_62_X_51_MM = register("nato_7_62x51mm", new AmmunitionItem(getBasicSettings().fireproof().maxCount(1).maxDamage(32)));
-	public static final Item LAPUA_8_6_X_70_MM = register("lapua_8_6x70mm", new AmmunitionItem(getBasicSettings().fireproof().maxCount(1).maxDamage(6)));
 
 	// Realistic tooling
 	public static final Item FIRE_EXTINGUISHER = register("fire_extinguisher", new FireExtinguisherItem(getBasicSettings().maxCount(1)));
