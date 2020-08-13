@@ -36,7 +36,7 @@ public class MarsRiverLayer implements CrossSamplingLayer {
 
 	public MarsRiverLayer(Registry<Biome> biomeRegistry) {
 		this.biomeRegistry = biomeRegistry;
-		this.riverId = biomeRegistry.getRawId(biomeRegistry.get(AstromineBiomes.MARS_RIVERBED));
+		this.riverId = biomeRegistry.getRawId(biomeRegistry.get(AstromineBiomes.MARTIAN_RIVERBED));
 	}
 
 	@Override
