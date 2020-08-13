@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-
 import com.github.chainmailstudios.astromine.common.entity.placer.SpaceEntityPlacer;
 import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
 import net.minecraft.world.World;
@@ -35,4 +34,3 @@ public class AstromineDimensionLayers {
 		DimensionLayerRegistry.INSTANCE.register(DimensionLayerRegistry.Type.TOP, World.OVERWORLD, AstromineConfig.get().spaceTravelYLevel, AstromineDimensions.EARTH_SPACE_WORLD, SpaceEntityPlacer.TO_SPACE);
 	}
 }
- 

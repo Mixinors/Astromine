@@ -48,10 +48,10 @@ public class AstromineBiomes {
 	public static final RegistryKey<Biome> MOON_HILLS = register(Registry.BIOME_KEY, MOON_HILLS_ID);
 	public static final Identifier MOON_LOWLANDS_ID = AstromineCommon.identifier("moon_lowlands");
 	public static final RegistryKey<Biome> MOON_LOWLANDS = register(Registry.BIOME_KEY, MOON_LOWLANDS_ID);
-	public static final Identifier MARS_ID = AstromineCommon.identifier("mars");
-	public static final RegistryKey<Biome> MARS = register(Registry.BIOME_KEY, MARS_ID);
-	public static final Identifier MARS_RIVERBED_ID = AstromineCommon.identifier("mars_riverbed");
-	public static final RegistryKey<Biome> MARS_RIVERBED = register(Registry.BIOME_KEY, MARS_RIVERBED_ID);
+	public static final Identifier MARTIAN_PLAINS_ID = AstromineCommon.identifier("martian_plains");
+	public static final RegistryKey<Biome> MARTIAN_PLAINS = register(Registry.BIOME_KEY, MARTIAN_PLAINS_ID);
+	public static final Identifier MARTIAN_RIVERBED_ID = AstromineCommon.identifier("martian_riverbed");
+	public static final RegistryKey<Biome> MARTIAN_RIVERBED = register(Registry.BIOME_KEY, MARTIAN_RIVERBED_ID);
 
 	public static <T> RegistryKey<T> register(RegistryKey<Registry<T>> registry, Identifier identifier) {
 		RegistryKey<T> key = RegistryKey.of(registry, identifier);

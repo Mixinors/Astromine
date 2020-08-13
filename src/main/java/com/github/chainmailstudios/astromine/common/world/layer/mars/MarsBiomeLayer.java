@@ -39,8 +39,8 @@ public class MarsBiomeLayer implements ParentedLayer, IdentityCoordinateTransfor
 
 	public MarsBiomeLayer(Registry<Biome> biomeRegistry) {
 		this.biomeRegistry = biomeRegistry;
-		this.riverId = biomeRegistry.getRawId(biomeRegistry.get(AstromineBiomes.MARS_RIVERBED));
-		this.marsId = biomeRegistry.getRawId(biomeRegistry.get(AstromineBiomes.MARS));
+		this.riverId = biomeRegistry.getRawId(biomeRegistry.get(AstromineBiomes.MARTIAN_RIVERBED));
+		this.marsId = biomeRegistry.getRawId(biomeRegistry.get(AstromineBiomes.MARTIAN_PLAINS));
 	}
 
 	@Override

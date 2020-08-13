@@ -24,8 +24,15 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.item.*;
+import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
+import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
+import com.github.chainmailstudios.astromine.common.item.weapon.GravityGauntletItem;
+import draylar.magna.item.ExcavatorItem;
+import draylar.magna.item.HammerItem;
 import net.fabricmc.loader.api.FabricLoader;
-
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.entity.EntityType;
@@ -36,25 +43,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.item.DrillItem;
-import com.github.chainmailstudios.astromine.common.item.FireExtinguisherItem;
-import com.github.chainmailstudios.astromine.common.item.HolographicConnectorItem;
-import com.github.chainmailstudios.astromine.common.item.MeteorSpawnerDevItem;
-import com.github.chainmailstudios.astromine.common.item.MultitoolItem;
-import com.github.chainmailstudios.astromine.common.item.SpaceSuitItem;
-import com.github.chainmailstudios.astromine.common.item.SuperSpaceSlimeShooterItem;
-import com.github.chainmailstudios.astromine.common.item.UncoloredSpawnEggItem;
-import com.github.chainmailstudios.astromine.common.item.WrenchItem;
-import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
-import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
-import com.github.chainmailstudios.astromine.common.item.weapon.AmmunitionItem;
-import com.github.chainmailstudios.astromine.common.item.weapon.GravityGauntletItem;
-import com.github.chainmailstudios.astromine.common.item.weapon.variant.Weaponry;
-import draylar.magna.item.ExcavatorItem;
-import draylar.magna.item.HammerItem;
 
 public class AstromineItems {
 	// Things
@@ -71,17 +59,8 @@ public class AstromineItems {
 	public static final Item YEAST = register("yeast", new Item(getBasicSettings()));
 	public static final Item GRAPHITE_SHEET = register("graphite_sheet", new Item(getBasicSettings()));
 
-	// Realistic weaponry
-	public static final Item SCAR_H = register("scar_h", new Weaponry.ScarH(getBasicSettings().fireproof().maxCount(1)));
-	public static final Item BARRET_M98B = register("barret_m98b", new Weaponry.BarretM98B(getBasicSettings().fireproof().maxCount(1)));
-
 	// Fantasy weaponry
-	public static final Item SUPER_SPACE_SLIME_SHOOTER = register("super_space_slime_shooter", new SuperSpaceSlimeShooterItem(getBasicSettings()));
 	public static final Item GRAVITY_GAUNTLET = register("gravity_gauntlet", new GravityGauntletItem(getBasicSettings().maxCount(1), AstromineConfig.get().gravityGauntletEnergy));
-
-	// Realistic ammunition
-	public static final Item NATO_7_62_X_51_MM = register("nato_7_62x51mm", new AmmunitionItem(getBasicSettings().fireproof().maxCount(1).maxDamage(32)));
-	public static final Item LAPUA_8_6_X_70_MM = register("lapua_8_6x70mm", new AmmunitionItem(getBasicSettings().fireproof().maxCount(1).maxDamage(6)));
 
 	// Realistic tooling
 	public static final Item FIRE_EXTINGUISHER = register("fire_extinguisher", new FireExtinguisherItem(getBasicSettings().maxCount(1)));
