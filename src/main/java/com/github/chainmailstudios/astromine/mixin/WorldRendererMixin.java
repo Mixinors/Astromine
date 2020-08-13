@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
+import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -46,7 +47,7 @@ public abstract class WorldRendererMixin {
 
 	@Inject(at = @At("HEAD"), method = "renderSky(Lnet/minecraft/client/util/math/MatrixStack;F)V", cancellable = true)
 	void onRenderSky(MatrixStack matrices, float tickDelta, CallbackInfo callbackInformation) {
-		AbstractSkybox skybox = SkyboxRegistry.INSTANCE.get(this.client.world.getDimension().getSkyProperties());
+		AbstractSkybox skybox = SkyboxRegistry.INSTANCE.get(this.client.world.getRegistryKey());
 
 		if (skybox != null) {
 			skybox.render(matrices, tickDelta);
