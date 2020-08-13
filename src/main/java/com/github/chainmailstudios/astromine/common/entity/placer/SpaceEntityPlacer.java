@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.entity.placer;
 
-
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.Vec3d;

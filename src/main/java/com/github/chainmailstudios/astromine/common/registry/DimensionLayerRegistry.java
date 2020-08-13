@@ -54,7 +54,6 @@ public class DimensionLayerRegistry {
 		}
 	}
 
-
 	public int getLevel(Type type, RegistryKey<World> dimension) {
 		final Map<RegistryKey<World>, Pair<Integer, RegistryKey<World>>> ENTRIES = type == Type.TOP ? this.TOP_ENTRIES : this.BOTTOM_ENTRIES;
 
