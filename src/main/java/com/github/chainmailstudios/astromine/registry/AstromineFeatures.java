@@ -24,27 +24,28 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import net.minecraft.structure.StructurePieceType;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.chunk.StructureConfig;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.FeatureConfig;
-import net.minecraft.world.gen.feature.StructureFeature;
-
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.world.feature.AsteroidOreFeature;
 import com.github.chainmailstudios.astromine.common.world.feature.MeteorFeature;
 import com.github.chainmailstudios.astromine.common.world.feature.MeteorGenerator;
 import com.github.chainmailstudios.astromine.common.world.feature.MoonCraterFeature;
+import com.github.chainmailstudios.astromine.common.world.generation.BiomeRegistryCallback;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import net.earthcomputer.libstructure.LibStructure;
+import net.minecraft.structure.StructurePieceType;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.DynamicRegistryManager;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.GenerationSettings;
+import net.minecraft.world.gen.GenerationStep;
+import net.minecraft.world.gen.chunk.StructureConfig;
+import net.minecraft.world.gen.feature.*;
 
-import java.util.Locale;
+import java.util.List;
+import java.util.function.Supplier;
 
 public class AstromineFeatures {
 	public static final Identifier ASTEROID_ORES_ID = AstromineCommon.identifier("asteroid_ores");
@@ -85,5 +86,33 @@ public class AstromineFeatures {
 		DefaultFeatureConfig config = new DefaultFeatureConfig();
 		ConfiguredStructureFeature<DefaultFeatureConfig, ? extends StructureFeature<DefaultFeatureConfig>> meteorStructure = meteor.configure(config);
 		LibStructure.registerStructure(AstromineCommon.identifier("meteor"), meteor, GenerationStep.Feature.RAW_GENERATION, new StructureConfig(32, 8, 12345), meteorStructure);
+
+		BiomeRegistryCallback.EVENT.register((manager, biome) -> {
+			registerFeature(manager, biome, GenerationStep.Feature.UNDERGROUND_ORES, COPPER_ORE_KEY);
+		});
+	}
+
+	public static void registerFeature(DynamicRegistryManager manager, Biome biome, GenerationStep.Feature generationStep, RegistryKey<ConfiguredFeature<?, ?>> configuredFeature) {
+		registerFeature(manager, biome, generationStep, () -> manager.get(Registry.CONFIGURED_FEATURE_WORLDGEN).get(configuredFeature));
+	}
+	
+	public static void registerFeature(DynamicRegistryManager manager, Biome biome, GenerationStep.Feature generationStep, Supplier<ConfiguredFeature<?, ?>> configuredFeature) {
+		GenerationSettings generationSettings = biome.getGenerationSettings();
+
+		List<List<Supplier<ConfiguredFeature<?, ?>>>> features = generationSettings.features;
+		if (features instanceof ImmutableList) {
+			features = generationSettings.features = Lists.newArrayList(features);
+		}
+
+		for (int i = features.size(); i <= generationStep.ordinal(); i++) {
+			features.add(Lists.newArrayList());
+		}
+
+		List<Supplier<ConfiguredFeature<?, ?>>> suppliers = features.get(generationStep.ordinal());
+		if (suppliers instanceof ImmutableList) {
+			features.set(generationStep.ordinal(), suppliers = Lists.newArrayList(suppliers));
+		}
+		
+		suppliers.add(configuredFeature);
 	}
 }

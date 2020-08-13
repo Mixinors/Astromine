@@ -64,8 +64,6 @@ public class AstromineOres {
 			AstromineBlocks.ASTEROID_STELLUM_ORE);
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineConfig.get().asteroidGalaxiumOreMinimumRange, AstromineConfig.get().asteroidGalaxiumOreMaximumRange), Range.of(AstromineConfig.get().asteroidGalaxiumOreMinimumSize, AstromineConfig
 			.get().asteroidGalaxiumOreMaximumSize), AstromineBlocks.ASTEROID_GALAXIUM_ORE);
-
-		// TODO register vanilla ores
 	}
 
 	public static void addOresToBiome(Biome biome) {
