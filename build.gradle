@@ -139,6 +139,8 @@ dependencies {
 
     // Wrenchable
     useAsApi "com.zundrel:wrenchable:${wrenchable_version}"
+    
+    useAsApi "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
 }
 
 def useAsApi(dep) {

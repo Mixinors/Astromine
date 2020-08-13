@@ -25,8 +25,10 @@
 package com.github.chainmailstudios.astromine;
 
 import blue.endless.jankson.Jankson;
+import com.github.chainmailstudios.astromine.common.world.generation.EarlyFish;
 import com.github.chainmailstudios.astromine.registry.*;
 import com.google.gson.Gson;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.Identifier;
@@ -36,7 +38,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AstromineCommon implements ModInitializer {
+public class AstromineCommon implements ModInitializer, EarlyFish {
 	public static final String LOG_ID = "Astromine";
 	public static final String MOD_ID = "astromine";
 
@@ -87,7 +89,8 @@ public class AstromineCommon implements ModInitializer {
 		AstromineComponentTypes.initialize();
 		AstromineNetworkTypes.initialize();
 		AstrominePotions.initialize();
-		AstromineFeatures.initialize();
+		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT)
+			registerEarlyShit();
 		AstromineBiomeSources.initialize();
 		AstromineBiomes.initialize();
 		AstromineFluids.initialize();
@@ -96,7 +99,6 @@ public class AstromineCommon implements ModInitializer {
 		AstromineCommonPackets.initialize();
 		AstromineGravities.initialize();
 		AstromineDimensionLayers.initialize();
-		AstromineDimensions.initialize();
 		AstromineCommonCallbacks.initialize();
 		AstromineRecipeSerializers.initialize();
 		AstromineCommands.initialize();
@@ -112,5 +114,16 @@ public class AstromineCommon implements ModInitializer {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public void onEarlyFish() {
+		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER)
+			registerEarlyShit();
+	}
+
+	public void registerEarlyShit() {
+		AstromineDimensions.initialize();
+		AstromineFeatures.initialize();
 	}
 }

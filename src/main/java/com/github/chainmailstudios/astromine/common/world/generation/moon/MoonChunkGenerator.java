@@ -51,7 +51,7 @@ import java.util.Arrays;
 public class MoonChunkGenerator extends ChunkGenerator {
 	private static final double SCALE = 1.0 / 126.3;
 	public static Codec<MoonChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed), RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)).apply(instance,
-		MoonChunkGenerator::new));
+			MoonChunkGenerator::new));
 
 	private final long seed;
 	private final Registry<Biome> biomeRegistry;
@@ -79,6 +79,10 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public ChunkGenerator withSeed(long seed) {
+		return withSeedCommon(seed);
+	}
+
+	public ChunkGenerator withSeedCommon(long seed) {
 		return new MoonChunkGenerator(seed, biomeRegistry);
 	}
 

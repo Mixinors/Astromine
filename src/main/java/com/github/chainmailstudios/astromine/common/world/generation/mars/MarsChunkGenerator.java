@@ -53,7 +53,7 @@ import java.util.Random;
 
 public class MarsChunkGenerator extends ChunkGenerator {
 	public static Codec<MarsChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed), RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)).apply(instance,
-		MarsChunkGenerator::new));
+			MarsChunkGenerator::new));
 
 	private final long seed;
 	private final Registry<Biome> biomeRegistry;
@@ -80,6 +80,10 @@ public class MarsChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public ChunkGenerator withSeed(long seed) {
+		return withSeedCommon(seed);
+	}
+
+	public ChunkGenerator withSeedCommon(long seed) {
 		return new MarsChunkGenerator(seed, biomeRegistry);
 	}
 
