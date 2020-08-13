@@ -44,7 +44,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class WorldAtmosphereComponent implements Component, Tickable {
-	private static final Fraction TRESHHOLD = new Fraction(2, 1);
+	private static final Fraction THRESHOLD = new Fraction(2, 1);
 
 	private final Map<BlockPos, FluidVolume> volumes = new ConcurrentHashMap<>();
 
@@ -91,10 +91,10 @@ public class WorldAtmosphereComponent implements Component, Tickable {
 				if (world.getBlockState(offsetPosition).getBlock() instanceof AirBlock) {
 					FluidVolume offsetFluidVolume = get(offsetPosition);
 
-					if (!fluidVolume.isEmpty() && fluidVolume.getFluid() == offsetFluidVolume.getFluid() && fluidVolume.hasStored(Fraction.max(TRESHHOLD, offsetFluidVolume.getFraction()))) {
+					if (!fluidVolume.isEmpty() && fluidVolume.getFluid() == offsetFluidVolume.getFluid() && fluidVolume.hasStored(Fraction.max(THRESHOLD, offsetFluidVolume.getFraction()))) {
 						fluidVolume.pushVolume(offsetFluidVolume, Fraction.BUCKET);
 						add(offsetPosition, offsetFluidVolume);
-					} else if (!fluidVolume.isEmpty() && fluidVolume.hasStored(Fraction.max(TRESHHOLD, offsetFluidVolume.getFraction())) && offsetFluidVolume.equals(FluidVolume.oxygen())) {
+					} else if (!fluidVolume.isEmpty() && fluidVolume.hasStored(Fraction.max(THRESHOLD, offsetFluidVolume.getFraction())) && offsetFluidVolume.equals(FluidVolume.oxygen())) {
 						FluidVolume newVolume = new FluidVolume();
 						fluidVolume.pushVolume(newVolume, Fraction.BUCKET);
 						add(offsetPosition, newVolume);
