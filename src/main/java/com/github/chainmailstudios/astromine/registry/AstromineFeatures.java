@@ -25,12 +25,16 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import net.minecraft.structure.StructurePieceType;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.chunk.StructureConfig;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.FeatureConfig;
 import net.minecraft.world.gen.feature.StructureFeature;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
@@ -43,19 +47,39 @@ import net.earthcomputer.libstructure.LibStructure;
 import java.util.Locale;
 
 public class AstromineFeatures {
-	public static Feature<DefaultFeatureConfig> ASTEROID_ORES;
-	public static Feature<DefaultFeatureConfig> MOON_CRATER;
+	public static final Identifier ASTEROID_ORES_ID = AstromineCommon.identifier("asteroid_ores");
+	public static final Feature<DefaultFeatureConfig> ASTEROID_ORES = register(new AsteroidOreFeature(DefaultFeatureConfig.CODEC), ASTEROID_ORES_ID);
+	public static final RegistryKey<ConfiguredFeature<?, ?>> ASTEROID_ORES_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, ASTEROID_ORES_ID);
 
-	public static final StructurePieceType METEOR = register(MeteorGenerator::new, "meteor");
+	public static final Identifier MOON_CRATER_ID = AstromineCommon.identifier("moon_crater");
+	public static final Feature<DefaultFeatureConfig> MOON_CRATER = register(new MoonCraterFeature(DefaultFeatureConfig.CODEC), MOON_CRATER_ID);
+	public static final RegistryKey<ConfiguredFeature<?, ?>> MOON_CRATER_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, MOON_CRATER_ID);
 
-	public static StructurePieceType register(StructurePieceType pieceType, String id) {
-		return Registry.register(Registry.STRUCTURE_PIECE, AstromineCommon.identifier(id.toLowerCase(Locale.ROOT)), pieceType);
+	public static final Identifier TIN_ORE_ID = AstromineCommon.identifier("tin_ore");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> TIN_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, TIN_ORE_ID);
+
+	public static final Identifier COPPER_ORE_ID = AstromineCommon.identifier("copper_ore");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> COPPER_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, COPPER_ORE_ID);
+
+	public static final Identifier SILVER_ORE_ID = AstromineCommon.identifier("silver_ore");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> SILVER_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, SILVER_ORE_ID);
+
+	public static final Identifier LEAD_ORE_ID = AstromineCommon.identifier("lead_ore");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> LEAD_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, LEAD_ORE_ID);
+
+	public static final Identifier METEOR_ID = AstromineCommon.identifier("meteor");
+	public static final StructurePieceType METEOR_STRUCTURE = register(MeteorGenerator::new, METEOR_ID);
+	public static final RegistryKey<ConfiguredStructureFeature<?, ?>> METEOR_KEY = RegistryKey.of(Registry.CONFIGURED_STRUCTURE_FEATURE_WORLDGEN, METEOR_ID);
+
+	public static <T extends FeatureConfig> Feature<T> register(Feature<T> feature, Identifier id) {
+		return Registry.register(Registry.FEATURE, id, feature);
+	}
+
+	public static StructurePieceType register(StructurePieceType pieceType, Identifier id) {
+		return Registry.register(Registry.STRUCTURE_PIECE, id, pieceType);
 	}
 
 	public static void initialize() {
-		ASTEROID_ORES = Registry.register(Registry.FEATURE, AstromineCommon.identifier("asteroid_ores"), new AsteroidOreFeature(DefaultFeatureConfig.CODEC));
-		MOON_CRATER = Registry.register(Registry.FEATURE, AstromineCommon.identifier("moon_crater"), new MoonCraterFeature(DefaultFeatureConfig.CODEC));
-
 		// initialize meteor structure/feature
 		MeteorFeature meteor = new MeteorFeature(DefaultFeatureConfig.CODEC);
 		DefaultFeatureConfig config = new DefaultFeatureConfig();

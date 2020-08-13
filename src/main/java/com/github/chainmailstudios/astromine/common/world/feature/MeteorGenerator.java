@@ -57,11 +57,11 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 	private static OpenSimplexNoise noise;
 
 	public MeteorGenerator(Random random, int x, int z) {
-		super(AstromineFeatures.METEOR, random, x, 64, z, 16, 16, 16);
+		super(AstromineFeatures.METEOR_STRUCTURE, random, x, 64, z, 16, 16, 16);
 	}
 
 	public MeteorGenerator(StructureManager manager, CompoundTag tag) {
-		super(AstromineFeatures.METEOR, tag);
+		super(AstromineFeatures.METEOR_STRUCTURE, tag);
 	}
 
 	@Override
