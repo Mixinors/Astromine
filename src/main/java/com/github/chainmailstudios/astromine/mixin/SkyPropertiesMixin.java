@@ -24,22 +24,22 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-
-import net.minecraft.client.render.SkyProperties;
-import net.minecraft.util.Identifier;
-
 import com.github.chainmailstudios.astromine.client.render.sky.MarsSkyProperties;
 import com.github.chainmailstudios.astromine.client.render.sky.MoonSkyProperties;
 import com.github.chainmailstudios.astromine.client.render.sky.SpaceSkyProperties;
 import com.github.chainmailstudios.astromine.client.render.sky.VulcanSkyProperties;
 import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.render.SkyProperties;
+import net.minecraft.util.Identifier;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Environment(EnvType.CLIENT)
 @Mixin(SkyProperties.class)
@@ -49,7 +49,8 @@ public class SkyPropertiesMixin {
 	@Final
 	private static Object2ObjectMap<Identifier, SkyProperties> BY_IDENTIFIER;
 
-	static {
+	@Inject(method = "<clinit>", at = @At("RETURN"))
+	private static void init(CallbackInfo info) {
 		BY_IDENTIFIER.put(AstromineDimensions.EARTH_SPACE_ID, new SpaceSkyProperties());
 		BY_IDENTIFIER.put(AstromineDimensions.MOON_ID, new MoonSkyProperties());
 		BY_IDENTIFIER.put(AstromineDimensions.MARS_ID, new MarsSkyProperties());
