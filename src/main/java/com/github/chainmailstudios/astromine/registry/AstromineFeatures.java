@@ -61,11 +61,5 @@ public class AstromineFeatures {
 		DefaultFeatureConfig config = new DefaultFeatureConfig();
 		ConfiguredStructureFeature<DefaultFeatureConfig, ? extends StructureFeature<DefaultFeatureConfig>> meteorStructure = meteor.configure(config);
 		LibStructure.registerStructure(AstromineCommon.identifier("meteor"), meteor, GenerationStep.Feature.RAW_GENERATION, new StructureConfig(32, 8, 12345), meteorStructure);
-
-		/*
-		 * Registry.BIOME.forEach(biome -> {
-		 * biome.addStructureFeature(meteorStructure);
-		 * });
-		 */
 	}
 }
