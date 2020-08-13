@@ -24,13 +24,13 @@
 
 package com.github.chainmailstudios.astromine.client.registry;
 
-import net.minecraft.block.Block;
-
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
+import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
+import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
+import net.minecraft.block.Block;
+import net.minecraft.util.Pair;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
@@ -38,23 +38,28 @@ import java.util.Set;
 public class AsteroidOreRegistry {
 	public static final AsteroidOreRegistry INSTANCE = new AsteroidOreRegistry();
 
-	private final Map<Block, @Nullable Range<Integer>> diameters = new HashMap<>();
+	public final Reference2ReferenceMap<Block, @Nullable Pair<Range<Integer>, Range<Integer>>> diameters = new Reference2ReferenceOpenHashMap<>();
 
 	private AsteroidOreRegistry() {
 		// Locked.
 	}
 
-	public void register(Range<Integer> range, Block block) {
-		if (range.getMinimum() > range.getMaximum()) {
-			range = Range.of(range.getMaximum(), range.getMinimum());
-		} else if (range.getMinimum().equals(range.getMaximum())) {
-			range = null;
+	public void register(Range<Integer> weightRange, Range<Integer> sizeRange, Block block) {
+		if (weightRange.getMinimum() > weightRange.getMaximum()) {
+			weightRange = Range.of(weightRange.getMaximum(), weightRange.getMinimum());
+		} else if (weightRange.getMinimum().equals(weightRange.getMaximum())) {
+			weightRange = null;
+		}
+		if (sizeRange.getMinimum() > sizeRange.getMaximum()) {
+			sizeRange = Range.of(sizeRange.getMaximum(), sizeRange.getMinimum());
+		} else if (sizeRange.getMinimum().equals(sizeRange.getMaximum())) {
+			sizeRange = null;
 		}
 
-		if (range == null) {
+		if (weightRange == null || sizeRange == null) {
 			diameters.remove(block);
 		} else {
-			diameters.put(block, range);
+			diameters.put(block, new Pair<>(weightRange, sizeRange));
 		}
 	}
 
@@ -63,9 +68,9 @@ public class AsteroidOreRegistry {
 	}
 
 	public int getDiameter(Random random, Block block) {
-		Range<Integer> range = diameters.get(block);
-		if (range == null)
+		@Nullable Pair<Range<Integer>, Range<Integer>> pair = diameters.get(block);
+		if (pair == null)
 			return 0;
-		return (int) ((range.getMaximum() - range.getMinimum()) * Objects.requireNonNull(random, "random").nextFloat() + range.getMinimum());
+		return (int) (((pair.getRight().getMaximum() - pair.getRight().getMinimum()) * Objects.requireNonNull(random, "random").nextFloat() + pair.getRight().getMinimum()) * 0.9);
 	}
 }

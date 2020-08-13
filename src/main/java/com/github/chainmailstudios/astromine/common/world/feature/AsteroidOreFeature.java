@@ -24,7 +24,10 @@
 
 package com.github.chainmailstudios.astromine.common.world.feature;
 
+import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 import net.minecraft.block.Block;
+import net.minecraft.util.Pair;
+import net.minecraft.util.collection.WeightedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
@@ -41,9 +44,11 @@ import com.terraformersmc.shapes.impl.Shapes;
 import com.terraformersmc.shapes.impl.layer.transform.RotateLayer;
 import com.terraformersmc.shapes.impl.layer.transform.TranslateLayer;
 
-import com.google.common.collect.Lists;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Collections;
-import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -56,15 +61,20 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 	public boolean generate(StructureWorldAccess world, ChunkGenerator generator, Random random, BlockPos featurePosition, DefaultFeatureConfig config) {
 		featurePosition = new BlockPos(featurePosition.getX(), random.nextInt(256), featurePosition.getZ());
 
-		List<Block> ores = Lists.newArrayList(AsteroidOreRegistry.INSTANCE.keySet());
+		WeightedList<Block> ores = new WeightedList<>();
 
-		if (ores.isEmpty()) {
+		for (Map.Entry<Block, @Nullable Pair<Range<Integer>, Range<Integer>>> entry : AsteroidOreRegistry.INSTANCE.diameters.reference2ReferenceEntrySet()) {
+			Pair<Range<Integer>, Range<Integer>> pair = entry.getValue();
+			if (pair != null) {
+				ores.add(entry.getKey(), (int) ((pair.getLeft().getMaximum() - pair.getLeft().getMinimum()) * Objects.requireNonNull(random, "random").nextFloat() + pair.getLeft().getMinimum()));
+			}
+		}
+
+		if (ores.method_28339()) {
 			return true;
 		}
 
-		Collections.shuffle(ores);
-
-		Block ore = ores.get(random.nextInt(ores.size()));
+		Block ore = ores.pickRandom(random);
 
 		double xSize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);
 		double ySize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);

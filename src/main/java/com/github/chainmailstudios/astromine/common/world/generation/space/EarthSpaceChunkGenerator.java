@@ -80,6 +80,7 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public void populateNoise(WorldAccess world, StructureAccessor accessor, Chunk chunk) {
+		BlockPos.Mutable mutable = new BlockPos.Mutable();
 		int x1 = chunk.getPos().getStartX();
 		int z1 = chunk.getPos().getStartZ();
 		int y1 = 0;
@@ -94,8 +95,8 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 					double noise = this.noise.sample(x, y, z);
 					noise -= computeNoiseFalloff(y);
 
-					if (noise > 0.65) {
-						chunk.setBlockState(new BlockPos(x, y, z), AstromineBlocks.ASTEROID_STONE.getDefaultState(), false);
+					if (noise > 0.6) {
+						chunk.setBlockState(mutable.set(x, y, z), AstromineBlocks.ASTEROID_STONE.getDefaultState(), false);
 					}
 				}
 			}
