@@ -21,16 +21,6 @@
   "license": "MIT",
   "icon": "assets/astromine/icon.png",
   "environment": "*",
-  "entrypoints": {
-    "main": ["com.github.chainmailstudios.astromine.AstromineCommon"],
-    "client": ["com.github.chainmailstudios.astromine.AstromineClient"],
-    "server": ["com.github.chainmailstudios.astromine.AstromineDedicated"],
-    "early_fish": ["com.github.chainmailstudios.astromine.AstromineCommon"],
-    "rei_plugins": ["com.github.chainmailstudios.astromine.client.rei.AstromineREIPlugin"],
-    "modmenu": ["com.github.chainmailstudios.astromine.client.modmenu.AstromineModMenuSupport"]
-  },
-  "mixins": ["astromine.mixins.json"],
-  "accessWidener": "astromine.accesswidener",
   "depends": {
     "fabricloader": ">=0.8.7",
     "fabric": ">=0.11.8",
