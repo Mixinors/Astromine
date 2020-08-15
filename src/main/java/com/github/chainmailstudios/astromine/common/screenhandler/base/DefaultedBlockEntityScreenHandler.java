@@ -43,6 +43,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -85,7 +86,7 @@ public abstract class DefaultedBlockEntityScreenHandler extends BaseScreenHandle
 
 		TextWidget title = new TextWidget();
 		title.setPosition(Position.of(mainTab, 8, 0));
-		title.setText(syncBlockEntity.getCachedState().getBlock().asItem().getName());
+		title.setText(new TranslatableText(syncBlockEntity.getCachedState().getBlock().asItem().getTranslationKey()));
 		title.setColor(4210752);
 		mainTab.addWidget(title);
 
