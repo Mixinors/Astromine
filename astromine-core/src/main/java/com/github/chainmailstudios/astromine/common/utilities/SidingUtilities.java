@@ -24,12 +24,16 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
+import alexiil.mc.lib.attributes.Simulation;
+import alexiil.mc.lib.attributes.item.ItemExtractable;
+import alexiil.mc.lib.attributes.item.ItemInsertable;
 import com.github.chainmailstudios.astromine.client.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.EnergyStorage;
@@ -61,5 +65,20 @@ public class SidingUtilities {
 			return false;
 		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(direction) : TransferType.DISABLED;
 		return transferType.canInsert() || (defaultValue && transferType.isDefault());
+	}
+
+	public static void move(ItemExtractable extractable, ItemInsertable insertable, int count) {
+		ItemStack extracted = extractable.attemptExtraction(stack -> {
+			ItemStack copy = stack.copy();
+			copy.setCount(Math.min(count, copy.getCount()));
+			return insertable.attemptInsertion(copy, Simulation.SIMULATE).isEmpty();
+		}, count, Simulation.SIMULATE);
+		if (!extracted.isEmpty() && insertable.attemptInsertion(extracted, Simulation.SIMULATE).isEmpty()) {
+			insertable.insert(extractable.extract(stack -> {
+				ItemStack copy = stack.copy();
+				copy.setCount(Math.min(count, copy.getCount()));
+				return insertable.attemptInsertion(copy, Simulation.SIMULATE).isEmpty();
+			}, count));
+		}
 	}
 }

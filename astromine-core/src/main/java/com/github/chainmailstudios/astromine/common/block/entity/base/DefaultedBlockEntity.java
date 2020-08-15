@@ -25,7 +25,6 @@
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
 import alexiil.mc.lib.attributes.SearchOptions;
-import alexiil.mc.lib.attributes.Simulation;
 import alexiil.mc.lib.attributes.item.ItemAttributes;
 import alexiil.mc.lib.attributes.item.ItemExtractable;
 import alexiil.mc.lib.attributes.item.ItemInsertable;
@@ -50,7 +49,6 @@ import net.minecraft.block.FacingBlock;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
@@ -200,12 +198,19 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 
 				// Handle Item Siding
 				if (this instanceof BlockEntityWithItemInventory) {
-					ItemExtractable self = ItemAttributes.EXTRACTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
-					ItemInsertable neighbor = ItemAttributes.INSERTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
+					if (!transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(offsetDirection).isDefault()) {
+						// input
+						ItemExtractable neighbor = ItemAttributes.EXTRACTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
+						ItemInsertable self = ItemAttributes.INSERTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
 
-					ItemStack extracted = self.attemptAnyExtraction(1, Simulation.SIMULATE);
-					if (!extracted.isEmpty() && neighbor.attemptInsertion(extracted, Simulation.SIMULATE).isEmpty()) {
-						neighbor.insert(self.extract(1));
+						SidingUtilities.move(neighbor, self, 1);
+					}
+					if (!transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(offsetDirection).isDefault()) {
+						// output
+						ItemExtractable self = ItemAttributes.EXTRACTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
+						ItemInsertable neighbor = ItemAttributes.INSERTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
+
+						SidingUtilities.move(self, neighbor, 1);
 					}
 				}
 

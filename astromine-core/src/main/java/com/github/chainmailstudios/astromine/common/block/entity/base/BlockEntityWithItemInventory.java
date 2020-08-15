@@ -19,6 +19,7 @@ import net.minecraft.world.WorldAccess;
 import java.util.stream.IntStream;
 
 public interface BlockEntityWithItemInventory extends ComponentProvider, InventoryProvider, SidedInventory, ItemInventoryFromInventoryComponent {
+	@Override
 	ItemInventoryComponent getItemComponent();
 
 	@Override
