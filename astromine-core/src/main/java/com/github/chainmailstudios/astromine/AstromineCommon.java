@@ -25,10 +25,9 @@
 package com.github.chainmailstudios.astromine;
 
 import blue.endless.jankson.Jankson;
-import com.github.chainmailstudios.astromine.common.world.generation.EarlyFish;
 import com.github.chainmailstudios.astromine.registry.*;
 import com.google.gson.Gson;
-import net.fabricmc.api.EnvType;
+import me.shedaniel.cloth.api.dynamic.registry.v1.EarlyInitializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.Identifier;
@@ -38,7 +37,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AstromineCommon implements ModInitializer, EarlyFish {
+public class AstromineCommon implements ModInitializer, EarlyInitializer {
 	public static final String LOG_ID = "Astromine";
 	public static final String MOD_ID = "astromine";
 
@@ -89,8 +88,6 @@ public class AstromineCommon implements ModInitializer, EarlyFish {
 		AstromineComponentTypes.initialize();
 		AstromineNetworkTypes.initialize();
 		AstrominePotions.initialize();
-		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT)
-			registerEarlyShit();
 		AstromineBiomeSources.initialize();
 		AstromineBiomes.initialize();
 		AstromineFluids.initialize();
@@ -117,12 +114,7 @@ public class AstromineCommon implements ModInitializer, EarlyFish {
 	}
 
 	@Override
-	public void onEarlyFish() {
-		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER)
-			registerEarlyShit();
-	}
-
-	public void registerEarlyShit() {
+	public void onEarlyInitialization() {
 		AstromineDimensions.initialize();
 		AstromineFeatures.initialize();
 	}

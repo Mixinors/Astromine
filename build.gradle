@@ -51,6 +51,10 @@ allprojects {
             url "https://dl.bintray.com/zundrel/wrenchable"
         }
         maven {
+            name = "Cloth"
+            url "https://dl.bintray.com/shedaniel/cloth"
+        }
+        maven {
             name = "grondag"
             url = "https://grondag-repo.appspot.com"
             credentials {

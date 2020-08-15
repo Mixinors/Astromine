@@ -29,9 +29,9 @@ import com.github.chainmailstudios.astromine.common.world.feature.AsteroidOreFea
 import com.github.chainmailstudios.astromine.common.world.feature.MeteorFeature;
 import com.github.chainmailstudios.astromine.common.world.feature.MeteorGenerator;
 import com.github.chainmailstudios.astromine.common.world.feature.MoonCraterFeature;
-import com.github.chainmailstudios.astromine.common.world.generation.BiomeRegistryCallback;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import me.shedaniel.cloth.api.dynamic.registry.v1.DynamicRegistryCallback;
 import net.earthcomputer.libstructure.LibStructure;
 import net.minecraft.structure.StructurePieceType;
 import net.minecraft.util.Identifier;
@@ -86,7 +86,7 @@ public class AstromineFeatures {
 		ConfiguredStructureFeature<DefaultFeatureConfig, ? extends StructureFeature<DefaultFeatureConfig>> meteorStructure = meteor.configure(new DefaultFeatureConfig());
 		LibStructure.registerStructure(METEOR_ID, meteor, GenerationStep.Feature.RAW_GENERATION, new StructureConfig(32, 8, 12345), meteorStructure);
 
-		BiomeRegistryCallback.EVENT.register((manager, key, biome) -> {
+		DynamicRegistryCallback.callback(Registry.BIOME_KEY).register((manager, key, biome) -> {
 			registerFeature(manager, biome, GenerationStep.Feature.UNDERGROUND_ORES, TIN_ORE_KEY);
 			registerFeature(manager, biome, GenerationStep.Feature.UNDERGROUND_ORES, COPPER_ORE_KEY);
 			registerFeature(manager, biome, GenerationStep.Feature.UNDERGROUND_ORES, SILVER_ORE_KEY);
