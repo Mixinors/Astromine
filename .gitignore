@@ -12,6 +12,10 @@ classes/
 # idea
 
 .idea/
+*/.idea/
+*/build/
+*/out/
+*/classes/
 *.iml
 *.ipr
 *.iws
