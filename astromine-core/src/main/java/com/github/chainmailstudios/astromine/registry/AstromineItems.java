@@ -171,7 +171,38 @@ public class AstromineItems {
 	public static final Item COAL_DUST = register("coal_dust", new Item(getBasicSettings()));
 	public static final Item CHARCOAL_DUST = register("charcoal_dust", new Item(getBasicSettings()));
 	public static final Item QUARTZ_DUST = register("quartz_dust", new Item(getBasicSettings()));
-	public static final Item RAW_NETHERITE_DUST = register("raw_netherite_dust", new Item(getBasicSettings()));
+	public static final Item RAW_NETHERITE_DUST = register("raw_netherite_dust", new Item(getBasicSettings().fireproof()));
+
+	// Materials - Tiny Dusts
+	public static final Item METITE_TINY_DUST = register("metite_tiny_dust", new Item(getBasicSettings()));
+	public static final Item ASTERITE_TINY_DUST = register("asterite_tiny_dust", new Item(getBasicSettings()));
+	public static final Item STELLUM_TINY_DUST = register("stellum_tiny_dust", new Item(getBasicSettings().fireproof()));
+	public static final Item GALAXIUM_TINY_DUST = register("galaxium_tiny_dust", new Item(getBasicSettings()));
+	public static final Item UNIVITE_TINY_DUST = register("univite_tiny_dust", new Item(getBasicSettings().fireproof()));
+
+	public static final Item COPPER_TINY_DUST = register("copper_tiny_dust", new Item(getBasicSettings()));
+	public static final Item TIN_TINY_DUST = register("tin_tiny_dust", new Item(getBasicSettings()));
+	public static final Item SILVER_TINY_DUST = register("silver_tiny_dust", new Item(getBasicSettings()));
+	public static final Item LEAD_TINY_DUST = register("lead_tiny_dust", new Item(getBasicSettings()));
+
+	public static final Item STEEL_TINY_DUST = register("steel_tiny_dust", new Item(getBasicSettings()));
+	public static final Item BRONZE_TINY_DUST = register("bronze_tiny_dust", new Item(getBasicSettings()));
+	public static final Item ELECTRUM_TINY_DUST = register("electrum_tiny_dust", new Item(getBasicSettings()));
+	public static final Item ROSE_GOLD_TINY_DUST = register("rose_gold_tiny_dust", new Item(getBasicSettings()));
+	public static final Item STERLING_SILVER_TINY_DUST = register("sterling_silver_tiny_dust", new Item(getBasicSettings()));
+	public static final Item FOOLS_GOLD_TINY_DUST = register("fools_gold_tiny_dust", new Item(getBasicSettings()));
+
+	public static final Item REDSTONE_TINY_DUST = register("redstone_tiny_dust", new Item(getBasicSettings()));
+	public static final Item IRON_TINY_DUST = register("iron_tiny_dust", new Item(getBasicSettings()));
+	public static final Item GOLD_TINY_DUST = register("gold_tiny_dust", new Item(getBasicSettings()));
+	public static final Item LAPIS_TINY_DUST = register("lapis_tiny_dust", new Item(getBasicSettings()));
+	public static final Item DIAMOND_TINY_DUST = register("diamond_tiny_dust", new Item(getBasicSettings()));
+	public static final Item EMERALD_TINY_DUST = register("emerald_tiny_dust", new Item(getBasicSettings()));
+	public static final Item NETHERITE_TINY_DUST = register("netherite_tiny_dust", new Item(getBasicSettings().fireproof()));
+	public static final Item COAL_TINY_DUST = register("coal_tiny_dust", new Item(getBasicSettings()));
+	public static final Item CHARCOAL_TINY_DUST = register("charcoal_tiny_dust", new Item(getBasicSettings()));
+	public static final Item QUARTZ_TINY_DUST = register("quartz_tiny_dust", new Item(getBasicSettings()));
+	public static final Item RAW_NETHERITE_TINY_DUST = register("raw_netherite_tiny_dust", new Item(getBasicSettings().fireproof()));
 
 	// Materials - Plates
 	public static final Item METITE_PLATES = register("metite_plates", new Item(getBasicSettings()));
