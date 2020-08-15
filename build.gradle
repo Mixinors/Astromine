@@ -129,7 +129,7 @@ dependencies {
     compile "org.joml:joml:${joml_version}"
 
     // Magna
-    useAsApi "com.github.shedaniel:magna:${magna_version}"
+    useAsApi "com.github.Draylar:magna:${magna_version}"
 
     // Tech Reborn
 //    useAsRuntime "TechReborn:TechReborn-1.16:${tech_reborn_version}"
