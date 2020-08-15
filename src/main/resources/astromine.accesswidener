@@ -14,3 +14,5 @@ accessible field net/minecraft/block/EntityShapeContext heldItem Lnet/minecraft/
 accessible class net/minecraft/util/registry/DynamicRegistryManager$Info
 accessible field net/minecraft/world/biome/GenerationSettings features Ljava/util/List;
 mutable field net/minecraft/world/biome/GenerationSettings features Ljava/util/List;
+accessible field net/minecraft/world/biome/GenerationSettings structureFeatures Ljava/util/List;
+mutable field net/minecraft/world/biome/GenerationSettings structureFeatures Ljava/util/List;

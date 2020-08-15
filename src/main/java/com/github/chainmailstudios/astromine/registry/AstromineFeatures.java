@@ -83,22 +83,22 @@ public class AstromineFeatures {
 	public static void initialize() {
 		// initialize meteor structure/feature
 		MeteorFeature meteor = new MeteorFeature(DefaultFeatureConfig.CODEC);
-		DefaultFeatureConfig config = new DefaultFeatureConfig();
-		ConfiguredStructureFeature<DefaultFeatureConfig, ? extends StructureFeature<DefaultFeatureConfig>> meteorStructure = meteor.configure(config);
-		LibStructure.registerStructure(AstromineCommon.identifier("meteor"), meteor, GenerationStep.Feature.RAW_GENERATION, new StructureConfig(32, 8, 12345), meteorStructure);
+		ConfiguredStructureFeature<DefaultFeatureConfig, ? extends StructureFeature<DefaultFeatureConfig>> meteorStructure = meteor.configure(new DefaultFeatureConfig());
+		LibStructure.registerStructure(METEOR_ID, meteor, GenerationStep.Feature.RAW_GENERATION, new StructureConfig(32, 8, 12345), meteorStructure);
 
 		BiomeRegistryCallback.EVENT.register((manager, key, biome) -> {
 			registerFeature(manager, biome, GenerationStep.Feature.UNDERGROUND_ORES, TIN_ORE_KEY);
 			registerFeature(manager, biome, GenerationStep.Feature.UNDERGROUND_ORES, COPPER_ORE_KEY);
 			registerFeature(manager, biome, GenerationStep.Feature.UNDERGROUND_ORES, SILVER_ORE_KEY);
 			registerFeature(manager, biome, GenerationStep.Feature.UNDERGROUND_ORES, LEAD_ORE_KEY);
+			registerStructure(manager, biome, () -> meteorStructure);
 		});
 	}
 
 	public static void registerFeature(DynamicRegistryManager manager, Biome biome, GenerationStep.Feature generationStep, RegistryKey<ConfiguredFeature<?, ?>> configuredFeature) {
 		registerFeature(manager, biome, generationStep, () -> manager.get(Registry.CONFIGURED_FEATURE_WORLDGEN).get(configuredFeature));
 	}
-	
+
 	public static void registerFeature(DynamicRegistryManager manager, Biome biome, GenerationStep.Feature generationStep, Supplier<ConfiguredFeature<?, ?>> configuredFeature) {
 		GenerationSettings generationSettings = biome.getGenerationSettings();
 
@@ -115,7 +115,22 @@ public class AstromineFeatures {
 		if (suppliers instanceof ImmutableList) {
 			features.set(generationStep.ordinal(), suppliers = Lists.newArrayList(suppliers));
 		}
-		
+
 		suppliers.add(configuredFeature);
+	}
+
+	public static void registerStructure(DynamicRegistryManager manager, Biome biome, RegistryKey<ConfiguredStructureFeature<?, ?>> configuredStructure) {
+		registerStructure(manager, biome, () -> manager.get(Registry.CONFIGURED_STRUCTURE_FEATURE_WORLDGEN).get(configuredStructure));
+	}
+
+	public static void registerStructure(DynamicRegistryManager manager, Biome biome, Supplier<ConfiguredStructureFeature<?, ?>> configuredStructure) {
+		GenerationSettings generationSettings = biome.getGenerationSettings();
+
+		List<Supplier<ConfiguredStructureFeature<?, ?>>> structures = generationSettings.structureFeatures;
+		if (structures instanceof ImmutableList) {
+			structures = generationSettings.structureFeatures = Lists.newArrayList(structures);
+		}
+
+		structures.add(configuredStructure);
 	}
 }

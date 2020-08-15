@@ -24,19 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.world.feature;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.structure.StructureManager;
-import net.minecraft.structure.StructurePieceWithDimensions;
-import net.minecraft.util.math.BlockBox;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.StructureAccessor;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
-
 import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineFeatures;
@@ -46,8 +33,21 @@ import com.terraformersmc.shapes.api.Shape;
 import com.terraformersmc.shapes.impl.Shapes;
 import com.terraformersmc.shapes.impl.layer.transform.RotateLayer;
 import com.terraformersmc.shapes.impl.layer.transform.TranslateLayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.structure.StructureManager;
+import net.minecraft.structure.StructurePieceWithDimensions;
+import net.minecraft.util.math.*;
+import net.minecraft.world.Heightmap;
+import net.minecraft.world.StructureWorldAccess;
+import net.minecraft.world.World;
+import net.minecraft.world.gen.StructureAccessor;
+import net.minecraft.world.gen.chunk.ChunkGenerator;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -70,17 +70,16 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 	}
 
 	public boolean generate(StructureWorldAccess world, ChunkPos chunkPos, Random random, BlockPos blockPos) {
+		if (!world.toServerWorld().getRegistryKey().equals(World.OVERWORLD)) return false;
 		noise = new OpenSimplexNoise(world.getSeed());
-		BlockPos originPos = world.getTopPosition(Heightmap.Type.WORLD_SURFACE, new BlockPos(chunkPos.getStartX() + 8, 0, chunkPos.getStartZ() + 8));
-		emptySphere(world, originPos, 16, state -> {
+		BlockPos originPos = world.getTopPosition(Heightmap.Type.OCEAN_FLOOR_WG, new BlockPos(chunkPos.getStartX() + 8, 0, chunkPos.getStartZ() + 8));
+		originPos = emptySphere(world, originPos, 16, state -> {
 			if (world.getRandom().nextInt(10) == 0) {
 				return Blocks.FIRE.getDefaultState();
 			} else {
 				return Blocks.AIR.getDefaultState();
 			}
 		}, state -> Blocks.COBBLESTONE.getDefaultState());
-
-		originPos = world.getTopPosition(Heightmap.Type.WORLD_SURFACE, new BlockPos(chunkPos.getStartX() + 8, 0, chunkPos.getStartZ() + 8));
 		buildSphere(world, originPos, 8, AstromineBlocks.METEOR_STONE.getDefaultState());
 
 		Shape vein = Shapes.ellipsoid((float) 4, (float) 4, (float) 4).applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true))).applyLayer(TranslateLayer.of(Position.of(originPos)));
@@ -96,17 +95,21 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 		return true;
 	}
 
-	private void emptySphere(StructureWorldAccess world, BlockPos originPos, int radius, GroundManipulator bottom, GroundManipulator underneath) {
+	private BlockPos emptySphere(StructureWorldAccess world, BlockPos originPos, int radius, GroundManipulator bottom, GroundManipulator underneath) {
+		boolean hasWater = false;
 		List<BlockPos> placedPositions = new ArrayList<>();
 
 		for (int x = -radius; x <= radius; x++) {
 			for (int z = -radius; z <= radius; z++) {
 				for (int y = -radius; y <= radius; y++) {
-					double distance = Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2) + Math.pow(y, 2));
+					double distance = Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2) + Math.pow(y * 1.3, 2));
 
 					// place blocks within spherical radius
 					if (distance <= radius + (5 * noise.sample((originPos.getX() + x) / 10f, (originPos.getZ() + z) / 10f))) {
 						BlockPos offsetPos = originPos.add(x, y, z);
+						if (!hasWater && world.getFluidState(offsetPos).getFluid().matchesType(Fluids.WATER)) {
+							hasWater = true;
+						}
 
 						world.setBlockState(offsetPos, Blocks.AIR.getDefaultState(), 3);
 
@@ -116,24 +119,31 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 			}
 		}
 
+		for (BlockPos placedPosition : placedPositions) {
+			world.setBlockState(placedPosition, hasWater && placedPosition.getY() < world.getSeaLevel() ? Fluids.WATER.getStill().getDefaultState().getBlockState() : Blocks.AIR.getDefaultState(), 3);
+		}
+
 		List<BlockPos> bottomPositions = new ArrayList<>();
 		List<BlockPos> underneathPositions = new ArrayList<>();
 
 		for (BlockPos pos : placedPositions) {
 			// store bottom block
-			if (world.getBlockState(pos).isAir() && !world.getBlockState(pos.down()).isAir()) {
+			if (world.getBlockState(pos).isAir() && world.getBlockState(pos.down()).isSolidBlock(world, pos)) {
 				bottomPositions.add(pos);
 				underneathPositions.add(pos.down());
 			}
 		}
 
 		for (BlockPos pos : bottomPositions) {
-			world.setBlockState(pos, bottom.manipulate(world.getBlockState(pos)), 3);
+			world.setBlockState(pos, hasWater && pos.getY() < world.getSeaLevel() ? Fluids.WATER.getStill().getDefaultState().getBlockState() :
+					world.getRandom().nextInt(10) == 0 ? Blocks.FIRE.getDefaultState() : Blocks.AIR.getDefaultState(), 3);
 		}
 
 		for (BlockPos pos : underneathPositions) {
 			world.setBlockState(pos, underneath.manipulate(world.getBlockState(pos)), 3);
 		}
+
+		return placedPositions.stream().filter(pos -> pos.getX() == originPos.getX() && pos.getZ() == originPos.getZ()).min(Comparator.comparingInt(Vec3i::getY)).orElse(originPos).offset(Direction.DOWN);
 	}
 
 	public static void buildSphere(StructureWorldAccess world, BlockPos originPos, int radius, BlockState state) {
