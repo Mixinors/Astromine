@@ -135,7 +135,7 @@ public class MarsChunkGenerator extends ChunkGenerator {
 
 				int height = (int) (depth + (noise * scale));
 				for (int y = 0; y <= height; ++y) {
-					chunk.setBlockState(new BlockPos(x, y, z), AstromineBlocks.MARTIAN_SOIL.getDefaultState(), false);
+					chunk.setBlockState(new BlockPos(x, y, z), y == height ? AstromineBlocks.MARTIAN_SOIL.getDefaultState() : AstromineBlocks.MARTIAN_STONE.getDefaultState(), false);
 					if (y <= 5) {
 						if (chunkRandom.nextInt(y + 1) == 0) {
 							chunk.setBlockState(new BlockPos(x, y, z), Blocks.BEDROCK.getDefaultState(), false);
