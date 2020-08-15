@@ -44,13 +44,13 @@ public class BiomeLayerSamplerMixin {
 	@Unique
 	private int storedLastBiomeId;
 
-	@Inject(method = "sample", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biomes;fromRawId(I)Lnet/minecraft/util/registry/RegistryKey;", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
+	@Inject(method = "sample", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/BuiltinBiomes;fromRawId(I)Lnet/minecraft/util/registry/RegistryKey;", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
 	private void storeVariables(Registry<Biome> registry, int i, int j, CallbackInfoReturnable<Biome> cir, int k) {
 		this.registry = registry;
 		storedLastBiomeId = k;
 	}
 
-	@ModifyVariable(method = "sample", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/Biomes;fromRawId(I)Lnet/minecraft/util/registry/RegistryKey;", ordinal = 0, shift = At.Shift.BY, by = 2), ordinal = 0)
+	@ModifyVariable(method = "sample", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/BuiltinBiomes;fromRawId(I)Lnet/minecraft/util/registry/RegistryKey;", ordinal = 0, shift = At.Shift.BY, by = 2), ordinal = 0)
 	private RegistryKey<Biome> modifyBiome(RegistryKey<Biome> original) {
 		if (original != null)
 			return original;
