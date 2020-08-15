@@ -87,11 +87,13 @@ public class AstromineFeatures {
 		LibStructure.registerStructure(METEOR_ID, meteor, GenerationStep.Feature.RAW_GENERATION, new StructureConfig(32, 8, 12345), meteorStructure);
 
 		BiomeRegistryCallback.EVENT.register((manager, key, biome) -> {
-			registerFeature(manager, biome, GenerationStep.Feature.UNDERGROUND_ORES, TIN_ORE_KEY);
-			registerFeature(manager, biome, GenerationStep.Feature.UNDERGROUND_ORES, COPPER_ORE_KEY);
-			registerFeature(manager, biome, GenerationStep.Feature.UNDERGROUND_ORES, SILVER_ORE_KEY);
-			registerFeature(manager, biome, GenerationStep.Feature.UNDERGROUND_ORES, LEAD_ORE_KEY);
-			registerStructure(manager, biome, () -> meteorStructure);
+			if(biome.getCategory() != Biome.Category.NETHER && biome.getCategory() != Biome.Category.THEEND) {
+				registerFeature(manager, biome, GenerationStep.Feature.UNDERGROUND_ORES, TIN_ORE_KEY);
+				registerFeature(manager, biome, GenerationStep.Feature.UNDERGROUND_ORES, COPPER_ORE_KEY);
+				registerFeature(manager, biome, GenerationStep.Feature.UNDERGROUND_ORES, SILVER_ORE_KEY);
+				registerFeature(manager, biome, GenerationStep.Feature.UNDERGROUND_ORES, LEAD_ORE_KEY);
+				registerStructure(manager, biome, () -> meteorStructure);
+			}
 		});
 	}
 
