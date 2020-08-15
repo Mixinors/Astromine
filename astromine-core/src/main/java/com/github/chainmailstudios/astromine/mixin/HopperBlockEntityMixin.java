@@ -53,55 +53,55 @@ public abstract class HopperBlockEntityMixin {
 	@Shadow
 	public abstract double getHopperZ();
 
-	@Inject(at = @At("HEAD"), method = "getInputInventory(Lnet/minecraft/block/entity/Hopper;)Lnet/minecraft/inventory/Inventory;", cancellable = true)
-	private static void astromine_onGetInputInventory(Hopper hopper, CallbackInfoReturnable<Inventory> callbackInformationReturnable) {
-		BlockPos hopperPos = new BlockPos(hopper.getHopperX(), hopper.getHopperY(), hopper.getHopperZ());
-
-		BlockEntity componentEntity = hopper.getWorld().getBlockEntity(hopperPos.offset(Direction.UP));
-
-		if (componentEntity instanceof ComponentProvider) {
-			ComponentProvider componentProvider = (ComponentProvider) componentEntity;
-
-			if (componentProvider.hasComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)) {
-				if (componentProvider.hasComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT)) {
-					BlockEntityTransferComponent transferComponent = componentProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
-
-					if (transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(Direction.DOWN).canExtract()) {
-						callbackInformationReturnable.setReturnValue(ItemInventoryFromInventoryComponent.of(componentProvider.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)));
-						callbackInformationReturnable.cancel();
-					}
-				} else {
-					callbackInformationReturnable.setReturnValue(ItemInventoryFromInventoryComponent.of(componentProvider.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)));
-					callbackInformationReturnable.cancel();
-				}
-			}
-		}
-	}
-
-	@Inject(at = @At("HEAD"), method = "getOutputInventory()Lnet/minecraft/inventory/Inventory;", cancellable = true)
-	void astromine_onGetOutputInventory(CallbackInfoReturnable<Inventory> callbackInformationReturnable) {
-		BlockPos hopperPos = new BlockPos(getHopperX(), getHopperY(), getHopperZ());
-
-		BlockEntity hopperEntity = (HopperBlockEntity) (Object) this;
-
-		BlockEntity componentEntity = hopperEntity.getWorld().getBlockEntity(hopperPos.offset(Direction.DOWN));
-
-		if (componentEntity instanceof ComponentProvider) {
-			ComponentProvider componentProvider = (ComponentProvider) componentEntity;
-
-			if (componentProvider.hasComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)) {
-				if (componentProvider.hasComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT)) {
-					BlockEntityTransferComponent transferComponent = componentProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
-
-					if (transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(Direction.UP).canInsert()) {
-						callbackInformationReturnable.setReturnValue(ItemInventoryFromInventoryComponent.of(componentProvider.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)));
-						callbackInformationReturnable.cancel();
-					}
-				} else {
-					callbackInformationReturnable.setReturnValue(ItemInventoryFromInventoryComponent.of(componentProvider.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)));
-					callbackInformationReturnable.cancel();
-				}
-			}
-		}
-	}
+//	@Inject(at = @At("HEAD"), method = "getInputInventory(Lnet/minecraft/block/entity/Hopper;)Lnet/minecraft/inventory/Inventory;", cancellable = true)
+//	private static void astromine_onGetInputInventory(Hopper hopper, CallbackInfoReturnable<Inventory> callbackInformationReturnable) {
+//		BlockPos hopperPos = new BlockPos(hopper.getHopperX(), hopper.getHopperY(), hopper.getHopperZ());
+//
+//		BlockEntity componentEntity = hopper.getWorld().getBlockEntity(hopperPos.offset(Direction.UP));
+//
+//		if (componentEntity instanceof ComponentProvider) {
+//			ComponentProvider componentProvider = (ComponentProvider) componentEntity;
+//
+//			if (componentProvider.hasComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)) {
+//				if (componentProvider.hasComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT)) {
+//					BlockEntityTransferComponent transferComponent = componentProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
+//
+//					if (transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(Direction.DOWN).canExtract()) {
+//						callbackInformationReturnable.setReturnValue(ItemInventoryFromInventoryComponent.of(componentProvider.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)));
+//						callbackInformationReturnable.cancel();
+//					}
+//				} else {
+//					callbackInformationReturnable.setReturnValue(ItemInventoryFromInventoryComponent.of(componentProvider.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)));
+//					callbackInformationReturnable.cancel();
+//				}
+//			}
+//		}
+//	}
+//
+//	@Inject(at = @At("HEAD"), method = "getOutputInventory()Lnet/minecraft/inventory/Inventory;", cancellable = true)
+//	void astromine_onGetOutputInventory(CallbackInfoReturnable<Inventory> callbackInformationReturnable) {
+//		BlockPos hopperPos = new BlockPos(getHopperX(), getHopperY(), getHopperZ());
+//
+//		BlockEntity hopperEntity = (HopperBlockEntity) (Object) this;
+//
+//		BlockEntity componentEntity = hopperEntity.getWorld().getBlockEntity(hopperPos.offset(Direction.DOWN));
+//
+//		if (componentEntity instanceof ComponentProvider) {
+//			ComponentProvider componentProvider = (ComponentProvider) componentEntity;
+//
+//			if (componentProvider.hasComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)) {
+//				if (componentProvider.hasComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT)) {
+//					BlockEntityTransferComponent transferComponent = componentProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
+//
+//					if (transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(Direction.UP).canInsert()) {
+//						callbackInformationReturnable.setReturnValue(ItemInventoryFromInventoryComponent.of(componentProvider.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)));
+//						callbackInformationReturnable.cancel();
+//					}
+//				} else {
+//					callbackInformationReturnable.setReturnValue(ItemInventoryFromInventoryComponent.of(componentProvider.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)));
+//					callbackInformationReturnable.cancel();
+//				}
+//			}
+//		}
+//	}
 }

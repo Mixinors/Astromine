@@ -24,50 +24,45 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
+import alexiil.mc.lib.attributes.SearchOptions;
+import alexiil.mc.lib.attributes.Simulation;
+import alexiil.mc.lib.attributes.item.ItemAttributes;
+import alexiil.mc.lib.attributes.item.ItemExtractable;
+import alexiil.mc.lib.attributes.item.ItemInsertable;
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
+import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
+import com.github.chainmailstudios.astromine.common.utilities.SidingUtilities;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import nerdhub.cardinal.components.api.ComponentRegistry;
+import nerdhub.cardinal.components.api.ComponentType;
+import nerdhub.cardinal.components.api.component.Component;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.PacketContext;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.Tickable;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
-import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
-import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
-import com.github.chainmailstudios.astromine.common.utilities.SidingUtilities;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import nerdhub.cardinal.components.api.ComponentRegistry;
-import nerdhub.cardinal.components.api.ComponentType;
-import nerdhub.cardinal.components.api.component.Component;
 import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
@@ -189,7 +184,6 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 		if (!hasWorld() || world.isClient())
 			return;
 
-		ItemInventoryComponent itemComponent = getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
 		FluidInventoryComponent fluidComponent = getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
 		List<Pair<EnergyHandler, EnergyHandler>> energyTransfers = Lists.newArrayList();
@@ -205,28 +199,13 @@ public abstract class DefaultedBlockEntity extends BlockEntity implements Compon
 				BlockEntityTransferComponent neighborTransferComponent = neighborProvider != null ? neighborProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT) : null;
 
 				// Handle Item Siding
-				if (itemComponent != null && transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(offsetDirection).canExtract()) {
-					ItemInventoryComponent neighborItemComponent = null;
-					if (neighborTransferComponent != null) {
-						// Get via astromine siding
-						if (neighborTransferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(neighborDirection).canInsert())
-							neighborItemComponent = neighborProvider.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
-					} else if (neighborBlockEntity instanceof Inventory) {
-						// Get via vanilla inventory
-						neighborItemComponent = ItemInventoryComponentFromItemInventory.of((Inventory) neighborBlockEntity);
-					}
+				if (this instanceof BlockEntityWithItemInventory) {
+					ItemExtractable self = ItemAttributes.EXTRACTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
+					ItemInsertable neighbor = ItemAttributes.INSERTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
 
-					if (neighborItemComponent != null) {
-						List<ItemStack> matching = itemComponent.getExtractableContentsMatching(offsetDirection, (stack -> !stack.isEmpty()));
-						if (!matching.isEmpty()) {
-							ItemStack stack = matching.get(0);
-
-							TypedActionResult<ItemStack> result = neighborItemComponent.insert(neighborDirection, stack);
-
-							ItemStack resultStack = result.getValue();
-
-							stack.setCount(resultStack.getCount());
-						}
+					ItemStack extracted = self.attemptAnyExtraction(1, Simulation.SIMULATE);
+					if (!extracted.isEmpty() && neighbor.attemptInsertion(extracted, Simulation.SIMULATE).isEmpty()) {
+						neighbor.insert(self.extract(1));
 					}
 				}
 

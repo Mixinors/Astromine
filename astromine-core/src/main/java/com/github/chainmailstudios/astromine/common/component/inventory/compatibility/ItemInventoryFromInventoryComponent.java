@@ -51,7 +51,7 @@ public interface ItemInventoryFromInventoryComponent extends Inventory {
 	 */
 	@Override
 	default int size() {
-		return this.getComponent().getItemSize();
+		return this.getItemComponent().getItemSize();
 	}
 
 	/**
@@ -59,7 +59,7 @@ public interface ItemInventoryFromInventoryComponent extends Inventory {
 	 *
 	 * @return the requested component.
 	 */
-	ItemInventoryComponent getComponent();
+	ItemInventoryComponent getItemComponent();
 
 	/**
 	 * Asserts whether inventory is empty or not.
@@ -68,7 +68,7 @@ public interface ItemInventoryFromInventoryComponent extends Inventory {
 	 */
 	@Override
 	default boolean isEmpty() {
-		return this.getComponent().isEmpty();
+		return this.getItemComponent().isEmpty();
 	}
 
 	/**
@@ -80,7 +80,7 @@ public interface ItemInventoryFromInventoryComponent extends Inventory {
 	 */
 	@Override
 	default ItemStack getStack(int slot) {
-		return this.getComponent().getStack(slot);
+		return this.getItemComponent().getStack(slot);
 	}
 
 	/**
@@ -94,14 +94,14 @@ public interface ItemInventoryFromInventoryComponent extends Inventory {
 	 */
 	@Override
 	default ItemStack removeStack(int slot, int count) {
-		if (this.getComponent().getStack(slot).getCount() < count) {
-			TypedActionResult<ItemStack> result = this.getComponent().extract(null, slot);
+		if (this.getItemComponent().getStack(slot).getCount() < count) {
+			TypedActionResult<ItemStack> result = this.getItemComponent().extract(null, slot);
 			if (!result.getValue().isEmpty()) {
 				this.markDirty();
 			}
 			return result.getValue();
 		} else {
-			TypedActionResult<ItemStack> result = this.getComponent().extract(slot, count);
+			TypedActionResult<ItemStack> result = this.getItemComponent().extract(slot, count);
 			if (!result.getValue().isEmpty()) {
 				this.markDirty();
 			}
@@ -118,7 +118,7 @@ public interface ItemInventoryFromInventoryComponent extends Inventory {
 	 */
 	@Override
 	default ItemStack removeStack(int slot) {
-		return this.getComponent().extract(null, slot).getValue();
+		return this.getItemComponent().extract(null, slot).getValue();
 	}
 
 	/**
@@ -131,10 +131,10 @@ public interface ItemInventoryFromInventoryComponent extends Inventory {
 	 */
 	@Override
 	default void setStack(int slot, ItemStack stack) {
-		if (this.getComponent().getMaximumCount(slot) < stack.getCount()) {
-			stack.setCount(this.getComponent().getMaximumCount(slot));
+		if (this.getItemComponent().getMaximumCount(slot) < stack.getCount()) {
+			stack.setCount(this.getItemComponent().getMaximumCount(slot));
 		}
-		this.getComponent().setStack(slot, stack);
+		this.getItemComponent().setStack(slot, stack);
 	}
 
 	/**
@@ -142,7 +142,7 @@ public interface ItemInventoryFromInventoryComponent extends Inventory {
 	 */
 	@Override
 	default void markDirty() {
-		this.getComponent().dispatchConsumers();
+		this.getItemComponent().dispatchConsumers();
 	}
 
 	/**
@@ -159,7 +159,7 @@ public interface ItemInventoryFromInventoryComponent extends Inventory {
 
 	@Override
 	default boolean isValid(int slot, ItemStack stack) {
-		return this.getComponent().canInsert(null, stack, slot);
+		return this.getItemComponent().canInsert(null, stack, slot);
 	}
 
 	/**
@@ -167,6 +167,6 @@ public interface ItemInventoryFromInventoryComponent extends Inventory {
 	 */
 	@Override
 	default void clear() {
-		this.getComponent().clear();
+		this.getItemComponent().clear();
 	}
 }
