@@ -4,34 +4,22 @@ plugins {
     id 'fabric-loom' version '0.5-SNAPSHOT' apply false
 }
 
-version = project.mod_version
+apply from: 'dependencies.gradle'
+
 archivesBaseName = project.mod_name + "-" + project.mod_version + "+" + project.version_meta
 
 allprojects {
     apply plugin: 'maven-publish'
     apply plugin: 'fabric-loom'
 
+    group = rootProject.mod_group
+    version = rootProject.mod_version
+
     java {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-
-    group = mod_group
-
-    dependencies {
-        minecraft group: 'com.mojang', name: 'minecraft', version: minecraft_version
-        mappings group: 'net.fabricmc', name: 'yarn', version: mappings_version, classifier: 'v2'
-        modImplementation group: 'net.fabricmc', name: 'fabric-loader', version: loader_version
-
-        modImplementation group: 'net.fabricmc.fabric-api', name: 'fabric-api', version: api_version
-
-        setDefaultApisOptionally(dependencies)
-    }
-
-    configurations {
-        dev
-    }
-
+    
     repositories {
         mavenLocal()
         maven {
@@ -72,7 +60,51 @@ allprojects {
         }
     }
 
+    dependencies {
+        dependencies.ext.useAsApiOptionally = { dep ->
+            modApi(dep) {
+                exclude group: "net.fabricmc.fabric-api"
+                if (!dep.contains("me.shedaniel")) {
+                    exclude group: "me.shedaniel"
+                }
+            }
+        }
+        dependencies.ext.useAsApi = { dep ->
+            useAsApiOptionally(dep)
+            if (project == rootProject)
+                include(dep)
+        }
+        dependencies.ext.useAsRuntime = { dep ->
+            modRuntime(dep) {
+                exclude group: "net.fabricmc.fabric-api"
+                if (!dep.contains("me.shedaniel")) {
+                    exclude group: "me.shedaniel"
+                }
+            }
+        }
+
+        minecraft group: 'com.mojang', name: 'minecraft', version: minecraft_version
+        mappings group: 'net.fabricmc', name: 'yarn', version: mappings_version, classifier: 'v2'
+        modImplementation group: 'net.fabricmc', name: 'fabric-loader', version: loader_version
+        modImplementation group: 'net.fabricmc.fabric-api', name: 'fabric-api', version: api_version
+
+        tap(rootProject.ext.setDefaultApis)
+    }
+
+    configurations {
+        dev
+    }
+
+    jar {
+        classifier = "dev"
+    }
+
     afterEvaluate {
+        remapJar {
+            input = file("${project.buildDir}/libs/$archivesBaseName-${version}-dev.jar")
+            archiveName = "${archivesBaseName}-${version}.jar"
+        }
+        
         artifacts {
             dev file: file("${project.buildDir}/libs/$archivesBaseName-${version}-dev.jar"), type: 'jar', builtBy: remapJar
         }
@@ -147,7 +179,7 @@ publishing {
                     def depNode = depsNode.appendNode("dependency")
                     depNode.appendNode("groupId", it.group)
                     depNode.appendNode("artifactId", it.name)
-                    depNode.appendNode("version", buildid != null ? "${it.version}-${buildid}":it.version)
+                    depNode.appendNode("version", buildid != null ? "${it.version}-${buildid}" : it.version)
                     depNode.appendNode("scope", "compile")
                 }
             }
@@ -158,264 +190,10 @@ publishing {
 subprojects.each { remapJar.dependsOn("${it.path}:remapJar") }
 
 dependencies {
-    setDefaultApis(dependencies)
-
     afterEvaluate {
         subprojects.each {
             compile project(path: ":${it.name}", configuration: "dev")
             include project("${it.name}:")
         }
     }
-}
-
-def useAsApi(GString dep, include = true) {
-    useAsApiOptionally(dep)
-    if (include) {
-        dependencies.include(dep)
-    }
-}
-
-def useAsApiOptionally(GString dep, removeREI = true) {
-    dependencies.modApi(dep) {
-        exclude group: "net.fabricmc.fabric-api"
-        if (removeREI) {
-            exclude group: "me.shedaniel"
-        }
-    }
-}
-
-def useAsRuntime(GString dep, removeREI = true) {
-    dependencies.modRuntime(dep) {
-        exclude group: "net.fabricmc.fabric-api"
-        if (removeREI) {
-            exclude group: "me.shedaniel"
-        }
-    }
-}
-
-def useAsApi(DependencyHandler dependencyHandler, GString dep, include = true) {
-    useAsApiOptionally(dependencyHandler, dep)
-    if (include) {
-        dependencyHandler.include(dep)
-    }
-}
-
-def useAsApiOptionally(DependencyHandler dependencyHandler, GString dep, removeREI = true) {
-    dependencyHandler.modApi(dep) {
-        exclude group: "net.fabricmc.fabric-api"
-        if (removeREI) {
-            exclude group: "me.shedaniel"
-        }
-    }
-}
-
-def include(DependencyHandler dependencyHandler, GString dep, removeREI = true) {
-    dependencyHandler.include(dep)
-}
-
-def useAsRuntime(DependencyHandler dependencyHandler, GString dep, removeREI = true) {
-    dependencyHandler.modRuntime(dep) {
-        exclude group: "net.fabricmc.fabric-api"
-        if (removeREI) {
-            exclude group: "me.shedaniel"
-        }
-    }
-}
-
-def setDefaultApis(DependencyHandler dependencyHandler) {
-    // Cardinal-Components API
-    useAsApi (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${cardinal_components_version}")
-    useAsApi (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-block:${cardinal_components_version}")
-    useAsApi (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${cardinal_components_version}")
-    useAsApi (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${cardinal_components_version}")
-    useAsApi (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-item:${cardinal_components_version}")
-    useAsApi (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-level:${cardinal_components_version}")
-    useAsApi (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-world:${cardinal_components_version}")
-    useAsApi (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-util:${cardinal_components_version}")
-
-    // Shapes
-    useAsApi (dependencyHandler, "com.terraformersmc:shapes:${shapes_version}")
-
-    // Blade
-    useAsApi (dependencyHandler, "com.github.vini2003:Blade:${blade_version}")
-
-    // Patchouli
-    useAsApi (dependencyHandler, "vazkii.patchouli:Patchouli:${patchouli_version}")
-
-    // ModMenu
-    useAsApiOptionally (dependencyHandler, "io.github.prospector:modmenu:${modmenu_version}")
-
-    // AutoConfig
-    useAsApi (dependencyHandler, "me.sargunvohra.mcmods:autoconfig1u:${auto_config_version}")
-
-    // LBA
-    useAsApi (dependencyHandler, "alexiil.mc.lib:libblockattributes-core:${lba_version}")
-    useAsApi (dependencyHandler, "alexiil.mc.lib:libblockattributes-items:${lba_version}")
-    useAsApi (dependencyHandler, "alexiil.mc.lib:libblockattributes-fluids:${lba_version}")
-
-    // Tech Reborn Energy
-    useAsApi (dependencyHandler, "teamreborn:energy:${tr_energy_version}")
-
-    // Cloth API
-    useAsApi (dependencyHandler, "me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${cloth_api_version}")
-
-    // Cloth Config
-    useAsApi (dependencyHandler, "me.shedaniel.cloth:config-2:${cloth_config_version}")
-
-    // RoughlyEnoughItems
-    useAsApiOptionally (dependencyHandler, "me.shedaniel:RoughlyEnoughItems:${rei_version}", false)
-
-    // DataBreaker
-//    useAsRuntime "com.github.SuperCoder7979:databreaker:${databreaker_version}")
-
-    // LibStructure
-    useAsApi (dependencyHandler, "com.github.Draylar:LibStructure:${libstructure_version}")
-
-    // JOML
-    dependencyHandler.compile "org.joml:joml:${joml_version}"
-
-    // Magna
-    useAsApi (dependencyHandler, "com.github.Draylar:magna:${magna_version}")
-
-    // Tech Reborn
-//    useAsRuntime "TechReborn:TechReborn-1.16:${tech_reborn_version}")
-
-    // Reborn Core
-//    useAsRuntime "RebornCore:RebornCore-1.16:${reborn_core_version}")
-
-    // Wrenchable
-    useAsApi (dependencyHandler, "com.zundrel:wrenchable:${wrenchable_version}")
-
-    useAsApi (dependencyHandler, "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}")
-}
-
-def setDefaultApisOptionally(DependencyHandler dependencyHandler) {
-    // Cardinal-Components API
-    useAsApiOptionally (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${cardinal_components_version}")
-    useAsApiOptionally (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-block:${cardinal_components_version}")
-    useAsApiOptionally (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${cardinal_components_version}")
-    useAsApiOptionally (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${cardinal_components_version}")
-    useAsApiOptionally (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-item:${cardinal_components_version}")
-    useAsApiOptionally (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-level:${cardinal_components_version}")
-    useAsApiOptionally (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-world:${cardinal_components_version}")
-    useAsApiOptionally (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-util:${cardinal_components_version}")
-
-    // Shapes
-    useAsApiOptionally (dependencyHandler, "com.terraformersmc:shapes:${shapes_version}")
-
-    // Blade
-    useAsApiOptionally (dependencyHandler, "com.github.vini2003:Blade:${blade_version}")
-
-    // Patchouli
-    useAsApiOptionally (dependencyHandler, "vazkii.patchouli:Patchouli:${patchouli_version}")
-
-    // ModMenu
-    useAsApiOptionally (dependencyHandler, "io.github.prospector:modmenu:${modmenu_version}")
-
-    // AutoConfig
-    useAsApiOptionally (dependencyHandler, "me.sargunvohra.mcmods:autoconfig1u:${auto_config_version}")
-
-    // LBA
-    useAsApiOptionally (dependencyHandler, "alexiil.mc.lib:libblockattributes-core:${lba_version}")
-    useAsApiOptionally (dependencyHandler, "alexiil.mc.lib:libblockattributes-items:${lba_version}")
-    useAsApiOptionally (dependencyHandler, "alexiil.mc.lib:libblockattributes-fluids:${lba_version}")
-
-    // Tech Reborn Energy
-    useAsApiOptionally (dependencyHandler, "teamreborn:energy:${tr_energy_version}")
-
-    // Cloth API
-    useAsApiOptionally (dependencyHandler, "me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${cloth_api_version}")
-
-    // Cloth Config
-    useAsApiOptionally (dependencyHandler, "me.shedaniel.cloth:config-2:${cloth_config_version}")
-
-    // RoughlyEnoughItems
-    useAsApiOptionally(dependencyHandler, "me.shedaniel:RoughlyEnoughItems:${rei_version}", false)
-
-    // DataBreaker
-//    useAsRuntime "com.github.SuperCoder7979:databreaker:${databreaker_version}")
-
-    // LibStructure
-    useAsApiOptionally (dependencyHandler, "com.github.Draylar:LibStructure:${libstructure_version}")
-
-    // JOML
-    dependencyHandler.compile "org.joml:joml:${joml_version}"
-
-    // Magna
-    useAsApiOptionally (dependencyHandler, "com.github.shedaniel:magna:${magna_version}")
-
-    // Tech Reborn
-//    useAsRuntime "TechReborn:TechReborn-1.16:${tech_reborn_version}")
-
-    // Reborn Core
-//    useAsRuntime "RebornCore:RebornCore-1.16:${reborn_core_version}")
-
-    // Wrenchable
-    useAsApiOptionally (dependencyHandler, "com.zundrel:wrenchable:${wrenchable_version}")
-
-    useAsApiOptionally (dependencyHandler, "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}")
-}
-
-def setDefaultApisIncludeOnly(DependencyHandler dependencyHandler) {
-    // Cardinal-Components API
-    include (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${cardinal_components_version}")
-    include (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-block:${cardinal_components_version}")
-    include (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${cardinal_components_version}")
-    include (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${cardinal_components_version}")
-    include (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-item:${cardinal_components_version}")
-    include (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-level:${cardinal_components_version}")
-    include (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-world:${cardinal_components_version}")
-    include (dependencyHandler, "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-util:${cardinal_components_version}")
-
-    // Shapes
-    include (dependencyHandler, "com.terraformersmc:shapes:${shapes_version}")
-
-    // Blade
-    include (dependencyHandler, "com.github.vini2003:Blade:${blade_version}")
-
-    // Patchouli
-    include (dependencyHandler, "vazkii.patchouli:Patchouli:${patchouli_version}")
-
-    // ModMenu
-    include (dependencyHandler, "io.github.prospector:modmenu:${modmenu_version}")
-
-    // AutoConfig
-    include (dependencyHandler, "me.sargunvohra.mcmods:autoconfig1u:${auto_config_version}")
-
-    // LBA
-    include (dependencyHandler, "alexiil.mc.lib:libblockattributes-core:${lba_version}")
-    include (dependencyHandler, "alexiil.mc.lib:libblockattributes-items:${lba_version}")
-    include (dependencyHandler, "alexiil.mc.lib:libblockattributes-fluids:${lba_version}")
-
-    // Tech Reborn Energy
-    include (dependencyHandler, "teamreborn:energy:${tr_energy_version}")
-
-    // Cloth API
-    include (dependencyHandler, "me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${cloth_api_version}")
-
-    // Cloth Config
-    include (dependencyHandler, "me.shedaniel.cloth:config-2:${cloth_config_version}")
-
-    // RoughlyEnoughItems
-    include(dependencyHandler, "me.shedaniel:RoughlyEnoughItems:${rei_version}", false)
-
-    // DataBreaker
-//    useAsRuntime "com.github.SuperCoder7979:databreaker:${databreaker_version}")
-
-    // LibStructure
-    include (dependencyHandler, "com.github.Draylar:LibStructure:${libstructure_version}")
-
-    // Magna
-    include (dependencyHandler, "com.github.shedaniel:magna:${magna_version}")
-
-    // Tech Reborn
-//    useAsRuntime "TechReborn:TechReborn-1.16:${tech_reborn_version}")
-
-    // Reborn Core
-//    useAsRuntime "RebornCore:RebornCore-1.16:${reborn_core_version}")
-
-    // Wrenchable
-    include (dependencyHandler, "com.zundrel:wrenchable:${wrenchable_version}")
-
-    include (dependencyHandler, "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}")
 }

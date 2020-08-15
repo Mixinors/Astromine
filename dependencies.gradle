@@ -1,0 +1,66 @@
+project.ext.setDefaultApis = {
+    // Cardinal-Components API
+    useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${cardinal_components_version}")
+    useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-block:${cardinal_components_version}")
+    useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${cardinal_components_version}")
+    useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${cardinal_components_version}")
+    useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-item:${cardinal_components_version}")
+    useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-level:${cardinal_components_version}")
+    useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-world:${cardinal_components_version}")
+    useAsApi("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-util:${cardinal_components_version}")
+
+    // Shapes
+    useAsApi("com.terraformersmc:shapes:${shapes_version}")
+
+    // Blade
+    useAsApi("com.github.vini2003:Blade:${blade_version}")
+
+    // Patchouli
+    useAsApi("vazkii.patchouli:Patchouli:${patchouli_version}")
+
+    // ModMenu
+    useAsApiOptionally("io.github.prospector:modmenu:${modmenu_version}")
+
+    // AutoConfig
+    useAsApi("me.sargunvohra.mcmods:autoconfig1u:${auto_config_version}")
+
+    // LBA
+    useAsApi("alexiil.mc.lib:libblockattributes-core:${lba_version}")
+    useAsApi("alexiil.mc.lib:libblockattributes-items:${lba_version}")
+    useAsApi("alexiil.mc.lib:libblockattributes-fluids:${lba_version}")
+
+    // Tech Reborn Energy
+    useAsApi("teamreborn:energy:${tr_energy_version}")
+
+    // Cloth API
+    useAsApi("me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${cloth_api_version}")
+
+    // Cloth Config
+    useAsApi("me.shedaniel.cloth:config-2:${cloth_config_version}")
+
+    // RoughlyEnoughItems
+    useAsApiOptionally("me.shedaniel:RoughlyEnoughItems:${rei_version}")
+
+    // DataBreaker
+//    useAsRuntime "com.github.SuperCoder7979:databreaker:${databreaker_version}")
+
+    // LibStructure
+    useAsApi("com.github.Draylar:LibStructure:${libstructure_version}")
+
+    // JOML
+    compile("org.joml:joml:${joml_version}")
+
+    // Magna
+    useAsApi("com.github.Draylar:magna:${magna_version}")
+
+    // Tech Reborn
+//    useAsRuntime "TechReborn:TechReborn-1.16:${tech_reborn_version}")
+
+    // Reborn Core
+//    useAsRuntime "RebornCore:RebornCore-1.16:${reborn_core_version}")
+
+    // Wrenchable
+    useAsApi("com.zundrel:wrenchable:${wrenchable_version}")
+
+    useAsApi("net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}")
+}
