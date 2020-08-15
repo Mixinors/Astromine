@@ -42,13 +42,13 @@ public class MoonBiomeLayer implements InitLayer, IdentityCoordinateTransformer 
 	public int sample(LayerRandomnessSource context, int x, int y) {
 		switch (context.nextInt(3)) {
 			case 0:
-				return biomeRegistry.getRawId(biomeRegistry.get(AstromineBiomes.MOON_FLATS));
+				return biomeRegistry.getRawId(biomeRegistry.get(AstromineBiomes.LUNAR_PLAINS));
 			case 1:
-				return biomeRegistry.getRawId(biomeRegistry.get(AstromineBiomes.MOON_HILLS));
+				return biomeRegistry.getRawId(biomeRegistry.get(AstromineBiomes.LUNAR_HILLS));
 			case 2:
-				return biomeRegistry.getRawId(biomeRegistry.get(AstromineBiomes.MOON_LOWLANDS));
+				return biomeRegistry.getRawId(biomeRegistry.get(AstromineBiomes.LUNAR_LOWLANDS));
 		}
 
-		return biomeRegistry.getRawId(biomeRegistry.get(AstromineBiomes.MOON_FLATS));
+		return biomeRegistry.getRawId(biomeRegistry.get(AstromineBiomes.LUNAR_PLAINS));
 	}
 }

@@ -86,8 +86,8 @@ public class AstromineFeatures {
 				BiomesRegistry.registerFeature(manager, biome, GenerationStep.Feature.UNDERGROUND_ORES, COPPER_ORE_KEY);
 				BiomesRegistry.registerFeature(manager, biome, GenerationStep.Feature.UNDERGROUND_ORES, SILVER_ORE_KEY);
 				BiomesRegistry.registerFeature(manager, biome, GenerationStep.Feature.UNDERGROUND_ORES, LEAD_ORE_KEY);
+				BiomesRegistry.registerStructure(manager, biome, () -> meteorStructure);
 			}
-			BiomesRegistry.registerStructure(manager, biome, () -> meteorStructure);
 		});
 	}
 }
