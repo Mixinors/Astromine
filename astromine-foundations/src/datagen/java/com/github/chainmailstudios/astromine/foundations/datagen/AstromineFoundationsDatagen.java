@@ -1,9 +1,12 @@
 package com.github.chainmailstudios.astromine.foundations.datagen;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.item.MultitoolItem;
 import com.github.chainmailstudios.astromine.foundations.common.block.AstromineOreBlock;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsItems;
+import draylar.magna.item.ExcavatorItem;
+import draylar.magna.item.HammerItem;
 import me.shedaniel.cloth.api.datagen.v1.DataGeneratorHandler;
 import me.shedaniel.cloth.api.datagen.v1.LootTableData;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
@@ -12,12 +15,9 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.OreBlock;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
 import net.minecraft.loot.UniformLootTableRange;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.ApplyBonusLootFunction;
@@ -90,6 +90,37 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 					tags.item(tagId).appendTag(builder);
 				}
 			}
+			if (key.toString().contains("gold_ingot")) {
+				tags.item(AstromineCommon.identifier("piglin_bartering_items")).append(item);
+			}
+			if (key.toString().contains("gold_nugget")) {
+				tags.item(AstromineCommon.identifier("piglin_loved_nuggets")).append(item);
+			}
+			if (key.toString().contains("fools_gold")) {
+				tags.item(AstromineCommon.identifier("tricks_piglins")).append(item);
+			}
+			if (key.toString().contains("gold")) {
+				tags.item(new Identifier("piglin_loved")).append(item);
+
+				if (item instanceof ArmorItem) {
+					tags.item(AstromineCommon.identifier("piglin_safe_armor")).append(item);
+				}
+			}
+			if (item instanceof PickaxeItem || item instanceof HammerItem || (item instanceof MultitoolItem && (((MultitoolItem) item).first instanceof PickaxeItem || ((MultitoolItem) item).second instanceof PickaxeItem))) {
+				tags.item(new Identifier("fabric:pickaxes")).append(item);
+			}
+			if (item instanceof AxeItem || (item instanceof MultitoolItem && (((MultitoolItem) item).first instanceof AxeItem || ((MultitoolItem) item).second instanceof AxeItem))) {
+				tags.item(new Identifier("fabric:axes")).append(item);
+			}
+			if (item instanceof HoeItem || (item instanceof MultitoolItem && (((MultitoolItem) item).first instanceof HoeItem || ((MultitoolItem) item).second instanceof HoeItem))) {
+				tags.item(new Identifier("fabric:hoes")).append(item);
+			}
+			if (item instanceof ShovelItem || item instanceof ExcavatorItem || (item instanceof MultitoolItem && (((MultitoolItem) item).first instanceof ShovelItem || ((MultitoolItem) item).second instanceof ShovelItem))) {
+				tags.item(new Identifier("fabric:shovels")).append(item);
+			}
+			if (item instanceof SwordItem) {
+				tags.item(new Identifier("fabric:shovels")).append(item);
+			}
 		});
 
 		tags.item(new Identifier("c:diamonds")).append(Items.DIAMOND);
@@ -102,7 +133,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 		tags.item(new Identifier("c:iron_ores")).append(Blocks.IRON_ORE);
 
 		tags.item(new Identifier("c:gold_ingots")).append(Items.GOLD_INGOT);
-		tags.item(new Identifier("c:gold_ores")).append(Blocks.GOLD_ORE, Blocks.NETHER_GOLD_ORE);
+		tags.item(new Identifier("c:gold_ores")).appendTag(new Identifier("gold_ores"));
 
 		tags.item(new Identifier("c:redstone_dusts")).append(Items.REDSTONE);
 		tags.item(new Identifier("c:redstone_ores")).append(Blocks.REDSTONE_ORE);
@@ -117,14 +148,18 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 
 		tags.item(new Identifier("c:wood_sticks")).append(Items.STICK);
 
+		tags.item(new Identifier("gold_ores")).append(Blocks.NETHER_GOLD_ORE);
+		tags.item(AstromineCommon.identifier("carbon_dusts")).appendTag(new Identifier("c:coal_dusts")).appendTag(new Identifier("c:charcoal_dusts"));
+
 		// blocks
 		tags.block(AstromineCommon.identifier("metite_ores")).append(AstromineFoundationsBlocks.METEOR_METITE_ORE, AstromineFoundationsBlocks.ASTEROID_METITE_ORE);
-		
+
 		iterate(AstromineFoundationsBlocks.class, Block.class, block -> {
 			Identifier key = Registry.BLOCK.getKey(block).get().getValue();
 			if (key.toString().endsWith("_block")) {
 				Identifier tagId = new Identifier("c", key.getPath() + "s");
 
+				tags.block(new Identifier("beacon_base_blocks")).append(block);
 				TagData.TagBuilder<Block> builder = tags.block(tagId).append(block);
 
 				if (tagId.getPath().startsWith("fools_gold")) {
@@ -139,10 +174,11 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 		tags.block(new Identifier("c:diamond_ores")).append(Blocks.DIAMOND_ORE);
 		tags.block(new Identifier("c:emerald_ores")).append(Blocks.EMERALD_ORE);
 		tags.block(new Identifier("c:iron_ores")).append(Blocks.IRON_ORE);
-		tags.block(new Identifier("c:gold_ores")).append(Blocks.GOLD_ORE, Blocks.NETHER_GOLD_ORE);
+		tags.block(new Identifier("c:gold_ores")).appendTag(new Identifier("gold_ores"));
 		tags.block(new Identifier("c:redstone_ores")).append(Blocks.REDSTONE_ORE);
 		tags.block(new Identifier("c:lapis_ores")).append(Blocks.LAPIS_ORE);
 		tags.block(new Identifier("c:quartz_ores")).append(Blocks.NETHER_QUARTZ_ORE);
+		tags.block(new Identifier("gold_ores")).append(Blocks.NETHER_GOLD_ORE);
 	}
 
 	private static <T> void iterate(Class<?> scanning, Class<T> clazz, Consumer<T> consumer) {

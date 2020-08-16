@@ -16,6 +16,7 @@ e3e89265aa9ed716629bb9e98c8d39710459ac97 data/astromine/tags/blocks/metite_ores.
 85a6f2c7fe4b5386a1ef7a6246651b4d7a21852e data/c/tags/blocks/rose_gold_blocks.json
 38f12b50831e7cc07e8a591acd360775e44e40c8 data/c/tags/blocks/sterling_silver_blocks.json
 62c882e7cfd5cd28d7640fe60c94e6817afb811e data/c/tags/blocks/gold_ores.json
+ce36c136eb3491b9027c4fad2d4f8f4de8b810a7 data/astromine/tags/items/piglin_safe_armor.json
 1f7fc8f2aa93e53adce7e4aa54a429949afe9d81 data/c/tags/items/bronze_tiny_dusts.json
 76c2352537f575d630678a9a3751007c9fb8bd1a data/c/tags/items/silver_gears.json
 ebd31587a5fe5c255a9e61c35f770e1a150b23ac data/astromine/loot_tables/blocks/asteroid_lapis_ore.json
@@ -48,6 +49,7 @@ de527248b6540efeeaa5d8a03f7ded0414f6bb5a data/c/tags/items/lead_dusts.json
 ff6dd341e6e6d51cf05428d2be127bfeaa2882ee data/c/tags/items/pyrite_gears.json
 ae97ce89744e841b0130af3dc410dbd42223ec52 data/c/tags/items/lapis_ores.json
 5c9d2cffe57794931e9ac3fb0cebdedd6461426c data/c/tags/items/tin_wires.json
+760090ede938ea79d7b37d8139da7430a3180312 data/astromine/tags/items/piglin_loved_nuggets.json
 a486d8fd5e2e72ae25019bbaead232f0442baa6d data/c/tags/items/copper_ingots.json
 6e5b9acfa9133bb33779d8a8100d7ed6a798af62 data/c/tags/items/galaxium_clusters.json
 58a8c6642c89100b6f3d0f45440814ab43c0fa10 data/c/tags/items/quartz_dusts.json
@@ -113,9 +115,11 @@ d5c03493b0e9d454eb786c254a00209e20c4100b data/c/tags/items/metite_tiny_dusts.jso
 2327d1b6b7e571df5734bcca4a9129ea01326fa1 data/astromine/loot_tables/blocks/asterite_block.json
 84f68347db21ffd7a69916a67defd69de0a50eb7 data/c/tags/items/copper_tiny_dusts.json
 fa1eeb9714b47b237cb381a238a527a75ebfa34c data/astromine/loot_tables/blocks/meteor_metite_ore.json
+af34384ec6f89142baaa02927e7a33cb26ce886d data/fabric/tags/items/pickaxes.json
 8566a4d6fb58edc3195896c57caba7f42318f403 data/c/tags/items/redstone_ores.json
 8566a4d6fb58edc3195896c57caba7f42318f403 data/c/tags/blocks/redstone_ores.json
 b26c244f69362b5a5efb46f5efd43e913fa11655 data/c/tags/items/metite_gears.json
+356252ba4ba580c7f0a38a40f661f485eb40d4b3 data/fabric/tags/items/hoes.json
 b5daf85368a43a70a05b587809e51d7e7d9413ef data/c/tags/items/pyrite_plates.json
 539046e40c45dd7c29ffe694fafe7128b4ee83b1 data/c/tags/blocks/lead_blocks.json
 d8fff0a5391ef593b2621be91ea9972ceb0fbef4 data/c/tags/items/steel_gears.json
@@ -149,6 +153,7 @@ b15f7cfa940a69508a46e22d885435499394ccce data/c/tags/items/emeralds.json
 b290f713bcbec28fc1d6d529c462808ffad29e55 data/c/tags/items/sterling_silver_ingots.json
 608af67550454f0af3ccf8f90f620e0b78ba4081 data/c/tags/items/rose_gold_gears.json
 a22a374907789c7b571c8ce8799af7a741912027 data/c/tags/items/coal_clusters.json
+99af79a15ec7218c24d057bc86da2fa0c7692e70 data/fabric/tags/items/shovels.json
 825fb5c7777eb72877f19cffaf00bb0c8600ed5b data/c/tags/items/steel_tiny_dusts.json
 75c160f8715d9a31d8e56d92db24f64448a499ab data/c/tags/items/iron_ores.json
 5e11acca5d091d54b4bf5229ec73e7b994fcd801 data/astromine/loot_tables/blocks/asteroid_silver_ore.json
@@ -157,6 +162,7 @@ f3ab3d344f6095be543511bb1d5bb61a7ef0677a data/c/tags/items/metite_clusters.json
 39d7d9376a15790e52c71570e7e7aa7fa927080b data/c/tags/items/tin_plates.json
 fc0d420a4a5af24561c2aa15442b728e58067c68 data/c/tags/items/stellum_clusters.json
 24397626c46602bf6bf5df1f68403f48dc7c22f2 data/c/tags/items/rose_gold_dusts.json
+c64270e002a221ce84ee7b7811a12c8faba52741 data/fabric/tags/items/axes.json
 fc72203eee9e5c29796675af86c58515f82a3ecc data/astromine/loot_tables/blocks/bronze_block.json
 cf668e4f93e9e7b9f684d5b9581ad71cc40de62e data/astromine/loot_tables/blocks/rose_gold_block.json
 ad3ce4b7e46abddf3a82b669672be08648c78a45 data/c/tags/items/lead_ingots.json
@@ -182,6 +188,7 @@ e0f7f1a6adb88e41fcd575f9e13fdd02b426df3a data/c/tags/items/coal_tiny_dusts.json
 1fe2f3eceb050047294c3fb764acdfb0e6c09500 data/c/tags/items/stellum_gears.json
 0ff4e1476d082f1f28481f4180f12635aeeb233f data/c/tags/items/silver_tiny_dusts.json
 074a0011d496e4c11d10a94c79c83c63d9a31c89 data/astromine/loot_tables/blocks/univite_block.json
+3235dca5c54cfaf960cff2c80750c61d490e029b data/astromine/tags/items/tricks_piglins.json
 5d1a10b446f487c7478c9e0e6626d899be446cd0 data/c/tags/items/bronze_plates.json
 93167e019043e81b964980b09ed24890c01dc814 data/c/tags/items/redstone_clusters.json
 42f41a9baeee4738e81ef04bd2e216b5461eaec3 data/c/tags/items/charcoal_dusts.json
@@ -189,6 +196,7 @@ e0f7f1a6adb88e41fcd575f9e13fdd02b426df3a data/c/tags/items/coal_tiny_dusts.json
 927354163591fa5731b73a6fbd3c33baea477266 data/c/tags/items/steel_wires.json
 31f0e5c741c102262e3871b963dd929bcc435eda data/c/tags/items/redstone_tiny_dusts.json
 e6212cdd6f4932a604163cea5adb5341c447661e data/c/tags/items/quartz_fragments.json
+7423ca9642251a61b4c96be4a681923e653b6e88 data/astromine/tags/items/piglin_bartering_items.json
 9b155b270f21dd9b1ecfbd40a238bbbee4fb6a58 data/c/tags/blocks/asterite_blocks.json
 2d9960566832b54a60d6c08002dcacf4a9f8ab5e data/c/tags/items/copper_gears.json
 0364a5e9552a3057612844e9816d4d9fb8ac40cb data/c/tags/items/lead_nuggets.json
@@ -204,6 +212,7 @@ a5f00a3b2fc30c701240ba020a6677ece4976c48 data/c/tags/items/bronze_dusts.json
 94ff722e094a3479433cad0e4a1386f68f170e7b data/c/tags/items/diamonds.json
 e98725011e389e0c7b2c3b6adeb38ac75c1780d3 data/c/tags/items/electrum_dusts.json
 3bc2450549adf674ebfbbff1a575e2aa0d85b8fe data/c/tags/items/emerald_clusters.json
+28ab9a389ada72a15ce0c2e872d09d3353c0caf7 data/astromine/tags/items/carbon_dusts.json
 1630a8fac4f001dd1cea27101843bcf2b24fc9bf data/astromine/loot_tables/blocks/stellum_block.json
 705ece933d21f9f09ef56dcbdbf1eff715ee0588 data/astromine/loot_tables/blocks/silver_block.json
 46772cb2ce226bd37e9745179e5337defd1beb5c data/c/tags/items/galaxium_fragments.json

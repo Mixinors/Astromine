@@ -49,8 +49,8 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
 public class MultitoolItem extends Item implements DynamicAttributeTool, Vanishable {
-	private final MiningToolItem first;
-	private final MiningToolItem second;
+	public final MiningToolItem first;
+	public final MiningToolItem second;
 	private final ToolMaterial material;
 	private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 
