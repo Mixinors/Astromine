@@ -124,31 +124,16 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 		});
 
 		tags.item(new Identifier("c:diamonds")).append(Items.DIAMOND);
-		tags.item(new Identifier("c:diamond_ores")).append(Blocks.DIAMOND_ORE);
-
 		tags.item(new Identifier("c:emeralds")).append(Items.EMERALD);
-		tags.item(new Identifier("c:emerald_ores")).append(Blocks.EMERALD_ORE);
-
 		tags.item(new Identifier("c:iron_ingots")).append(Items.IRON_INGOT);
-		tags.item(new Identifier("c:iron_ores")).append(Blocks.IRON_ORE);
-
 		tags.item(new Identifier("c:gold_ingots")).append(Items.GOLD_INGOT);
-		tags.item(new Identifier("c:gold_ores")).appendTag(new Identifier("gold_ores"));
-
 		tags.item(new Identifier("c:redstone_dusts")).append(Items.REDSTONE);
-		tags.item(new Identifier("c:redstone_ores")).append(Blocks.REDSTONE_ORE);
-
 		tags.item(new Identifier("c:lapis_lazulis")).append(Items.LAPIS_LAZULI);
-		tags.item(new Identifier("c:lapis_ores")).append(Blocks.LAPIS_ORE);
-
 		tags.item(new Identifier("c:netherite_ingots")).append(Items.NETHERITE_INGOT);
-
 		tags.item(new Identifier("c:quartz")).append(Items.QUARTZ);
-		tags.item(new Identifier("c:quartz_ores")).append(Blocks.NETHER_QUARTZ_ORE);
 
 		tags.item(new Identifier("c:wood_sticks")).append(Items.STICK);
 
-		tags.item(new Identifier("gold_ores")).append(Blocks.NETHER_GOLD_ORE);
 		tags.item(AstromineCommon.identifier("carbon_dusts")).appendTag(new Identifier("c:coal_dusts")).appendTag(new Identifier("c:charcoal_dusts"));
 
 		// blocks
@@ -160,11 +145,13 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 				Identifier tagId = new Identifier("c", key.getPath() + "s");
 
 				tags.block(new Identifier("beacon_base_blocks")).append(block);
-				TagData.TagBuilder<Block> builder = tags.block(tagId).append(block);
+				TagData.TagBuilder<ItemConvertible> itemBuilder = tags.item(tagId).append(block);
+				TagData.TagBuilder<Block> blockBuilder = tags.block(tagId).append(block);
 
 				if (tagId.getPath().startsWith("fools_gold")) {
 					tagId = new Identifier("c", tagId.getPath().replaceFirst("fools_gold", "pyrite"));
-					tags.block(tagId).appendTag(builder);
+					tags.item(tagId).appendTag(itemBuilder);
+					tags.block(tagId).appendTag(blockBuilder);
 				}
 			}
 			if (block instanceof AstromineOreBlock) {
@@ -179,6 +166,15 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 		tags.block(new Identifier("c:lapis_ores")).append(Blocks.LAPIS_ORE);
 		tags.block(new Identifier("c:quartz_ores")).append(Blocks.NETHER_QUARTZ_ORE);
 		tags.block(new Identifier("gold_ores")).append(Blocks.NETHER_GOLD_ORE);
+
+		tags.item(new Identifier("c:diamond_ores")).append(Blocks.DIAMOND_ORE);
+		tags.item(new Identifier("c:emerald_ores")).append(Blocks.EMERALD_ORE);
+		tags.item(new Identifier("c:iron_ores")).append(Blocks.IRON_ORE);
+		tags.item(new Identifier("c:gold_ores")).appendTag(new Identifier("gold_ores"));
+		tags.item(new Identifier("c:redstone_ores")).append(Blocks.REDSTONE_ORE);
+		tags.item(new Identifier("c:lapis_ores")).append(Blocks.LAPIS_ORE);
+		tags.item(new Identifier("c:quartz_ores")).append(Blocks.NETHER_QUARTZ_ORE);
+		tags.item(new Identifier("gold_ores")).append(Blocks.NETHER_GOLD_ORE);
 	}
 
 	private static <T> void iterate(Class<?> scanning, Class<T> clazz, Consumer<T> consumer) {
