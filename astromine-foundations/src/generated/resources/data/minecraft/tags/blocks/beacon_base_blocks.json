@@ -1,0 +1,20 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:metite_block",
+    "astromine:asterite_block",
+    "astromine:stellum_block",
+    "astromine:galaxium_block",
+    "astromine:univite_block",
+    "astromine:copper_block",
+    "astromine:tin_block",
+    "astromine:silver_block",
+    "astromine:lead_block",
+    "astromine:bronze_block",
+    "astromine:steel_block",
+    "astromine:electrum_block",
+    "astromine:rose_gold_block",
+    "astromine:sterling_silver_block",
+    "astromine:fools_gold_block"
+  ]
+}
