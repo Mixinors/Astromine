@@ -92,7 +92,7 @@ public class AstromineBlockEntityTypes {
 	public static final BlockEntityType<CapacitorBlockEntity.Primitive> PRIMITIVE_CAPACITOR = register("primitive_capacitor", CapacitorBlockEntity.Primitive::new, AstromineBlocks.PRIMITIVE_CAPACITOR);
 	public static final BlockEntityType<CapacitorBlockEntity.Basic> BASIC_CAPACITOR = register("basic_capacitor", CapacitorBlockEntity.Basic::new, AstromineBlocks.BASIC_CAPACITOR);
 	public static final BlockEntityType<CapacitorBlockEntity.Advanced> ADVANCED_CAPACITOR = register("advanced_capacitor", CapacitorBlockEntity.Advanced::new, AstromineBlocks.ADVANCED_CAPACITOR);
-	public static final BlockEntityType<CapacitorBlockEntity.Elite> ELITE_CAPACITOR = register("elite_capacitorr", CapacitorBlockEntity.Elite::new, AstromineBlocks.ELITE_CAPACITOR);
+	public static final BlockEntityType<CapacitorBlockEntity.Elite> ELITE_CAPACITOR = register("elite_capacitor", CapacitorBlockEntity.Elite::new, AstromineBlocks.ELITE_CAPACITOR);
 
 	public static final BlockEntityType<CreativeTankBlockEntity> CREATIVE_TANK = register("creative_tank", CreativeTankBlockEntity::new, AstromineBlocks.CREATIVE_TANK);
 	public static final BlockEntityType<CreativeCapacitorBlockEntity> CREATIVE_CAPACITOR = register("creative_capacitor", CreativeCapacitorBlockEntity::new, AstromineBlocks.CREATIVE_CAPACITOR);

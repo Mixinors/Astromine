@@ -118,6 +118,8 @@ public class WorldBridgeComponent implements Component {
 	public CompoundTag toTag(CompoundTag tag) {
 		CompoundTag dataTag = new CompoundTag();
 
+		int k = 0;
+
 		for (Map.Entry<Long, Set<Vec3i>> entry : entries.entrySet()) {
 			CompoundTag pointTag = new CompoundTag();
 			CompoundTag vecTag = new CompoundTag();
@@ -127,12 +129,16 @@ public class WorldBridgeComponent implements Component {
 			int i = 0;
 
 			for (Vec3i vec : entry.getValue()) {
-				vecTag.putLong(String.valueOf(++i), BlockPos.asLong(vec.getX(), vec.getY(), vec.getZ()));
+				vecTag.putLong(String.valueOf(i), BlockPos.asLong(vec.getX(), vec.getY(), vec.getZ()));
+
+				++i;
 			}
 
 			pointTag.put("vecs", vecTag);
 
-			dataTag.put("0", pointTag);
+			dataTag.put(String.valueOf(k), pointTag);
+
+			++k;
 		}
 
 		tag.put("data", dataTag);
