@@ -53,15 +53,19 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 				tables.register(block, LootTableData.dropsSlabs(block));
 			} else if (block instanceof AstromineOreBlock) {
 				Identifier key = Registry.BLOCK.getKey(block).get().getValue();
-				tables.register(block, LootTableData.dropsBlockWithSilkTouch(
-					block,
-					LootTableData.addExplosionDecayLootFunction(
+				if (key.getPath().startsWith("asteroid_") || key.getPath().startsWith("meteor_")) {
+					tables.register(block, LootTableData.dropsBlockWithSilkTouch(
 						block,
-						ItemEntry.builder(Registry.ITEM.get(AstromineCommon.identifier(key.toString().replace("_ore", "_cluster"))))
-							.apply(SetCountLootFunction.builder(UniformLootTableRange.between(1, 3)))
-							.apply(ApplyBonusLootFunction.oreDrops(Enchantments.FORTUNE))
-					)
-				));
+						LootTableData.addExplosionDecayLootFunction(
+							block,
+							ItemEntry.builder(Registry.ITEM.get(AstromineCommon.identifier(key.toString().replace("_ore", "_cluster"))))
+								.apply(SetCountLootFunction.builder(UniformLootTableRange.between(1, 3)))
+								.apply(ApplyBonusLootFunction.oreDrops(Enchantments.FORTUNE))
+						)
+					));
+				} else {
+					tables.registerBlockDropSelf(block);
+				}
 			} else {
 				tables.registerBlockDropSelf(block);
 			}
