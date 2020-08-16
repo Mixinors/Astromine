@@ -5,17 +5,22 @@ import com.github.chainmailstudios.astromine.common.item.MultitoolItem;
 import com.github.chainmailstudios.astromine.foundations.common.block.AstromineOreBlock;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsItems;
+import com.google.common.collect.ImmutableMap;
 import draylar.magna.item.ExcavatorItem;
 import draylar.magna.item.HammerItem;
 import me.shedaniel.cloth.api.datagen.v1.DataGeneratorHandler;
 import me.shedaniel.cloth.api.datagen.v1.LootTableData;
+import me.shedaniel.cloth.api.datagen.v1.RecipeData;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
+import net.minecraft.advancement.criterion.ImpossibleCriterion;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
+import net.minecraft.data.server.recipe.ShapedRecipeJsonFactory;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.*;
 import net.minecraft.loot.UniformLootTableRange;
@@ -38,6 +43,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 
 			lootTables(handler.getLootTables());
 			tags(handler.getTags());
+			recipes(handler.getRecipes());
 
 			handler.run();
 		} catch (Throwable throwable) {
@@ -87,6 +93,10 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 
 				if (tagId.getPath().startsWith("fools_gold")) {
 					tagId = new Identifier("c", tagId.getPath().replaceFirst("fools_gold", "pyrite"));
+					tags.item(tagId).appendTag(builder);
+				}
+				if (tagId.getPath().endsWith("_fragments")) {
+					tagId = new Identifier("c", tagId.getPath().replaceFirst("_fragments", "_nuggets"));
 					tags.item(tagId).appendTag(builder);
 				}
 			}
@@ -175,6 +185,151 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 		tags.item(new Identifier("c:lapis_ores")).append(Blocks.LAPIS_ORE);
 		tags.item(new Identifier("c:quartz_ores")).append(Blocks.NETHER_QUARTZ_ORE);
 		tags.item(new Identifier("gold_ores")).append(Blocks.NETHER_GOLD_ORE);
+	}
+
+	private static void recipes(RecipeData recipes) {
+		ImmutableMap<String, String> materialMap = ImmutableMap.<String, String>builder()
+			.put("copper", "c:copper_ingots")
+			.put("tin", "c:tin_ingots")
+			.put("silver", "c:tin_ingots")
+			.put("lead", "c:tin_ingots")
+			.put("bronze", "c:tin_ingots")
+			.put("steel", "c:tin_ingots")
+			.put("electrum", "c:tin_ingots")
+			.put("rose_gold", "c:tin_ingots")
+			.build();
+		iterate(AstromineFoundationsItems.class, Item.class, item -> {
+			Identifier key = Registry.ITEM.getKey(item).get().getValue();
+			String material = materialMap.get(key.getPath().substring(0, key.getPath().lastIndexOf('_')));
+			if (material != null) {
+				if (key.toString().endsWith("_axe")) {
+					axeRecipe(recipes, item, new Identifier(material));
+				} else if (key.toString().endsWith("_pickaxe")) {
+					pickaxeRecipe(recipes, item, new Identifier(material));
+				} else if (key.toString().endsWith("_hoe")) {
+					hoeRecipe(recipes, item, new Identifier(material));
+				} else if (key.toString().endsWith("_sword")) {
+					swordRecipe(recipes, item, new Identifier(material));
+				} else if (key.toString().endsWith("_shovel")) {
+					shovelRecipe(recipes, item, new Identifier(material));
+				} else if (key.toString().endsWith("_mining_tool")) {
+					miningToolRecipe(recipes, item, new Identifier(material));
+				} else if (key.toString().endsWith("_mattock")) {
+					mattockRecipe(recipes, item, new Identifier(material));
+				} else if (key.toString().endsWith("_hammer")) {
+					hammerRecipe(recipes, item, new Identifier(material));
+				} else if (key.toString().endsWith("_excavator")) {
+					excavatorRecipe(recipes, item, new Identifier(material));
+				}
+			}
+		});
+	}
+
+	private static void axeRecipe(RecipeData recipes, Item output, Identifier material) {
+		ShapedRecipeJsonFactory.create(output)
+			.criterion("impossible", new ImpossibleCriterion.Conditions())
+			.pattern("##")
+			.pattern("#$")
+			.pattern(" $")
+			.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+			.input('#', TagRegistry.item(material))
+			.offerTo(recipes);
+		ShapedRecipeJsonFactory.create(output)
+			.criterion("impossible", new ImpossibleCriterion.Conditions())
+			.pattern("##")
+			.pattern("$#")
+			.pattern("$")
+			.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+			.input('#', TagRegistry.item(material))
+			.offerTo(recipes);
+	}
+
+	private static void pickaxeRecipe(RecipeData recipes, Item output, Identifier material) {
+		ShapedRecipeJsonFactory.create(output)
+			.criterion("impossible", new ImpossibleCriterion.Conditions())
+			.pattern("###")
+			.pattern(" $ ")
+			.pattern(" $ ")
+			.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+			.input('#', TagRegistry.item(material))
+			.offerTo(recipes);
+	}
+
+	private static void hoeRecipe(RecipeData recipes, Item output, Identifier material) {
+		ShapedRecipeJsonFactory.create(output)
+			.criterion("impossible", new ImpossibleCriterion.Conditions())
+			.pattern("##")
+			.pattern(" $")
+			.pattern(" $")
+			.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+			.input('#', TagRegistry.item(material))
+			.offerTo(recipes);
+	}
+
+	private static void swordRecipe(RecipeData recipes, Item output, Identifier material) {
+		ShapedRecipeJsonFactory.create(output)
+			.criterion("impossible", new ImpossibleCriterion.Conditions())
+			.pattern("#")
+			.pattern("#")
+			.pattern("$")
+			.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+			.input('#', TagRegistry.item(material))
+			.offerTo(recipes);
+	}
+
+	private static void shovelRecipe(RecipeData recipes, Item output, Identifier material) {
+		ShapedRecipeJsonFactory.create(output)
+			.criterion("impossible", new ImpossibleCriterion.Conditions())
+			.pattern("#")
+			.pattern("$")
+			.pattern("$")
+			.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+			.input('#', TagRegistry.item(material))
+			.offerTo(recipes);
+	}
+
+	private static void miningToolRecipe(RecipeData recipes, Item output, Identifier material) {
+		ShapedRecipeJsonFactory.create(output)
+			.criterion("impossible", new ImpossibleCriterion.Conditions())
+			.pattern("###")
+			.pattern(" # ")
+			.pattern(" $ ")
+			.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+			.input('#', TagRegistry.item(material))
+			.offerTo(recipes);
+	}
+
+	private static void mattockRecipe(RecipeData recipes, Item output, Identifier material) {
+		ShapedRecipeJsonFactory.create(output)
+			.criterion("impossible", new ImpossibleCriterion.Conditions())
+			.pattern("###")
+			.pattern("#$ ")
+			.pattern(" $ ")
+			.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+			.input('#', TagRegistry.item(material))
+			.offerTo(recipes);
+	}
+
+	private static void hammerRecipe(RecipeData recipes, Item output, Identifier material) {
+		ShapedRecipeJsonFactory.create(output)
+			.criterion("impossible", new ImpossibleCriterion.Conditions())
+			.pattern("###")
+			.pattern("#$#")
+			.pattern(" $ ")
+			.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+			.input('#', TagRegistry.item(material))
+			.offerTo(recipes);
+	}
+
+	private static void excavatorRecipe(RecipeData recipes, Item output, Identifier material) {
+		ShapedRecipeJsonFactory.create(output)
+			.criterion("impossible", new ImpossibleCriterion.Conditions())
+			.pattern(" # ")
+			.pattern("#$#")
+			.pattern(" $ ")
+			.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+			.input('#', TagRegistry.item(material))
+			.offerTo(recipes);
 	}
 
 	private static <T> void iterate(Class<?> scanning, Class<T> clazz, Consumer<T> consumer) {

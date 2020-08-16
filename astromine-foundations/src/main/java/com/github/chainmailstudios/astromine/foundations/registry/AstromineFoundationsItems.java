@@ -222,24 +222,24 @@ public class AstromineFoundationsItems {
 	public static final Item ASTEROID_EMERALD_CLUSTER = register("asteroid_emerald_cluster", new Item(getBasicSettings()));
 
 	// Tools
-	public static final Item WOODEN_MINING_TOOL = register("wooden_mining_tool", new MultitoolItem((MiningToolItem) net.minecraft.item.Items.WOODEN_SHOVEL, (MiningToolItem) net.minecraft.item.Items.WOODEN_PICKAXE, ToolMaterials.WOOD, getBasicSettings()));
-	public static final Item WOODEN_MATTOCK = register("wooden_mattock", new MultitoolItem((MiningToolItem) net.minecraft.item.Items.WOODEN_HOE, (MiningToolItem) net.minecraft.item.Items.WOODEN_AXE, ToolMaterials.WOOD, getBasicSettings()));
+	public static final Item WOODEN_MINING_TOOL = register("wooden_mining_tool", new MultitoolItem((MiningToolItem) Items.WOODEN_SHOVEL, (MiningToolItem) Items.WOODEN_PICKAXE, ToolMaterials.WOOD, getBasicSettings()));
+	public static final Item WOODEN_MATTOCK = register("wooden_mattock", new MultitoolItem((MiningToolItem) Items.WOODEN_HOE, (MiningToolItem) Items.WOODEN_AXE, ToolMaterials.WOOD, getBasicSettings()));
 
-	public static final Item STONE_MINING_TOOL = register("stone_mining_tool", new MultitoolItem((MiningToolItem) net.minecraft.item.Items.STONE_SHOVEL, (MiningToolItem) net.minecraft.item.Items.STONE_PICKAXE, ToolMaterials.STONE, getBasicSettings()));
-	public static final Item STONE_MATTOCK = register("stone_mattock", new MultitoolItem((MiningToolItem) net.minecraft.item.Items.STONE_HOE, (MiningToolItem) net.minecraft.item.Items.STONE_AXE, ToolMaterials.STONE, getBasicSettings()));
+	public static final Item STONE_MINING_TOOL = register("stone_mining_tool", new MultitoolItem((MiningToolItem) Items.STONE_SHOVEL, (MiningToolItem) Items.STONE_PICKAXE, ToolMaterials.STONE, getBasicSettings()));
+	public static final Item STONE_MATTOCK = register("stone_mattock", new MultitoolItem((MiningToolItem) Items.STONE_HOE, (MiningToolItem) Items.STONE_AXE, ToolMaterials.STONE, getBasicSettings()));
 
-	public static final Item IRON_MINING_TOOL = register("iron_mining_tool", new MultitoolItem((MiningToolItem) net.minecraft.item.Items.IRON_SHOVEL, (MiningToolItem) net.minecraft.item.Items.IRON_PICKAXE, ToolMaterials.IRON, getBasicSettings()));
-	public static final Item IRON_MATTOCK = register("iron_mattock", new MultitoolItem((MiningToolItem) net.minecraft.item.Items.IRON_HOE, (MiningToolItem) net.minecraft.item.Items.IRON_AXE, ToolMaterials.IRON, getBasicSettings()));
+	public static final Item IRON_MINING_TOOL = register("iron_mining_tool", new MultitoolItem((MiningToolItem) Items.IRON_SHOVEL, (MiningToolItem) Items.IRON_PICKAXE, ToolMaterials.IRON, getBasicSettings()));
+	public static final Item IRON_MATTOCK = register("iron_mattock", new MultitoolItem((MiningToolItem) Items.IRON_HOE, (MiningToolItem) Items.IRON_AXE, ToolMaterials.IRON, getBasicSettings()));
 
-	public static final Item GOLDEN_MINING_TOOL = register("golden_mining_tool", new MultitoolItem((MiningToolItem) net.minecraft.item.Items.GOLDEN_SHOVEL, (MiningToolItem) net.minecraft.item.Items.GOLDEN_PICKAXE, ToolMaterials.GOLD, getBasicSettings()));
-	public static final Item GOLDEN_MATTOCK = register("golden_mattock", new MultitoolItem((MiningToolItem) net.minecraft.item.Items.GOLDEN_HOE, (MiningToolItem) net.minecraft.item.Items.GOLDEN_AXE, ToolMaterials.GOLD, getBasicSettings()));
+	public static final Item GOLDEN_MINING_TOOL = register("golden_mining_tool", new MultitoolItem((MiningToolItem) Items.GOLDEN_SHOVEL, (MiningToolItem) Items.GOLDEN_PICKAXE, ToolMaterials.GOLD, getBasicSettings()));
+	public static final Item GOLDEN_MATTOCK = register("golden_mattock", new MultitoolItem((MiningToolItem) Items.GOLDEN_HOE, (MiningToolItem) Items.GOLDEN_AXE, ToolMaterials.GOLD, getBasicSettings()));
 
-	public static final Item DIAMOND_MINING_TOOL = register("diamond_mining_tool", new MultitoolItem((MiningToolItem) net.minecraft.item.Items.DIAMOND_SHOVEL, (MiningToolItem) net.minecraft.item.Items.DIAMOND_PICKAXE, ToolMaterials.DIAMOND, getBasicSettings()));
-	public static final Item DIAMOND_MATTOCK = register("diamond_mattock", new MultitoolItem((MiningToolItem) net.minecraft.item.Items.DIAMOND_HOE, (MiningToolItem) net.minecraft.item.Items.DIAMOND_AXE, ToolMaterials.DIAMOND, getBasicSettings()));
+	public static final Item DIAMOND_MINING_TOOL = register("diamond_mining_tool", new MultitoolItem((MiningToolItem) Items.DIAMOND_SHOVEL, (MiningToolItem) Items.DIAMOND_PICKAXE, ToolMaterials.DIAMOND, getBasicSettings()));
+	public static final Item DIAMOND_MATTOCK = register("diamond_mattock", new MultitoolItem((MiningToolItem) Items.DIAMOND_HOE, (MiningToolItem) Items.DIAMOND_AXE, ToolMaterials.DIAMOND, getBasicSettings()));
 
-	public static final Item NETHERITE_MINING_TOOL = register("netherite_mining_tool", new MultitoolItem((MiningToolItem) net.minecraft.item.Items.NETHERITE_SHOVEL, (MiningToolItem) net.minecraft.item.Items.NETHERITE_PICKAXE, ToolMaterials.NETHERITE, getBasicSettings()
+	public static final Item NETHERITE_MINING_TOOL = register("netherite_mining_tool", new MultitoolItem((MiningToolItem) Items.NETHERITE_SHOVEL, (MiningToolItem) Items.NETHERITE_PICKAXE, ToolMaterials.NETHERITE, getBasicSettings()
 		.fireproof()));
-	public static final Item NETHERITE_MATTOCK = register("netherite_mattock", new MultitoolItem((MiningToolItem) net.minecraft.item.Items.NETHERITE_HOE, (MiningToolItem) net.minecraft.item.Items.NETHERITE_AXE, ToolMaterials.NETHERITE, getBasicSettings().fireproof()));
+	public static final Item NETHERITE_MATTOCK = register("netherite_mattock", new MultitoolItem((MiningToolItem) Items.NETHERITE_HOE, (MiningToolItem) Items.NETHERITE_AXE, ToolMaterials.NETHERITE, getBasicSettings().fireproof()));
 
 	public static final PickaxeItem COPPER_PICKAXE = register("copper_pickaxe", new PickaxeItem(AstromineToolMaterials.COPPER, 1, -2.8f, getBasicSettings()));
 	public static final AxeItem COPPER_AXE = register("copper_axe", new AxeItem(AstromineToolMaterials.COPPER, 5f, -3.0f, getBasicSettings()));
