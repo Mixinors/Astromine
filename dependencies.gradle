@@ -43,7 +43,7 @@ project.ext.setDefaultApis = {
     useAsApiOptionally("me.shedaniel:RoughlyEnoughItems:${rei_version}")
 
     // LibStructure
-    useAsApi("com.github.Draylar:LibStructure:${libstructure_version}")
+    useAsApi("net.earthcomputer:libstructure:${libstructure_version}")
 
     // JOML
     compile("org.joml:joml:${joml_version}")
@@ -65,5 +65,5 @@ project.ext.setRuntimeTestMods = {
     useAsRuntime("RebornCore:RebornCore-1.16:${reborn_core_version}")
 
     // DataBreaker
-//    useAsRuntime "com.github.SuperCoder7979:databreaker:${databreaker_version}")
+    useAsRuntime("com.github.SuperCoder7979:databreaker:${databreaker_version}")
 }
