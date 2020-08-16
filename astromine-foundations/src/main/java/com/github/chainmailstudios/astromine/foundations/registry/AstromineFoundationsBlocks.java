@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
-import com.github.chainmailstudios.astromine.foundations.AstromineFoundations;
 import com.github.chainmailstudios.astromine.foundations.common.block.AstromineOreBlock;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;

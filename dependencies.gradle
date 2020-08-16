@@ -35,6 +35,7 @@ project.ext.setDefaultApis = {
     // Cloth API
     useAsApi("me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${cloth_api_version}")
     useAsApi("me.shedaniel.cloth.api:cloth-dynamic-registry-api-v1:${cloth_api_version}")
+    useAsApi("me.shedaniel.cloth.api:cloth-datagen-api-v1:${cloth_api_version}")
 
     // Cloth Config
     useAsApi("me.shedaniel.cloth:config-2:${cloth_config_version}")

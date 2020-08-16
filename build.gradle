@@ -1,3 +1,5 @@
+import net.fabricmc.loom.task.RunClientTask
+
 plugins {
     id 'maven-publish'
     id 'com.diffplug.spotless' version '5.1.0' apply false
@@ -14,6 +16,10 @@ allprojects {
     archivesBaseName = project.mod_name + "-" + project.mod_version + "+" + project.version_meta
     group = rootProject.mod_group
     version = rootProject.mod_version
+
+    ext {
+        shouldGenerateData = false
+    }
 
     spotless {
         encoding 'UTF-8'
@@ -141,6 +147,36 @@ allprojects {
                 exclude 'fabric.mod.json'
             }
         }
+
+        if (shouldGenerateData) {
+            sourceSets {
+                main {
+                    resources {
+                        srcDir 'src/generated/resources'
+                    }
+                }
+                datagen {
+                    compileClasspath += main.compileClasspath
+                    runtimeClasspath += main.runtimeClasspath
+                }
+            }
+
+            configurations {
+                datagenCompile.extendsFrom(compileClasspath)
+            }
+
+            dependencies {
+                datagenCompile sourceSets.main.output
+            }
+            
+            task generateData(type: RunClientTask, dependsOn: downloadAssets) {
+                classpath = configurations.runtimeClasspath
+                classpath sourceSets.main.output
+                classpath sourceSets.datagen.output
+            }
+
+            build.dependsOn generateData
+        }
     }
 
     task sourcesJar(type: Jar, dependsOn: classes) {
@@ -180,6 +216,10 @@ task remapMavenJar(type: net.fabricmc.loom.task.RemapJarTask, dependsOn: jar) {
         archiveName = "${archivesBaseName}-${version}-maven.jar"
         addNestedDependencies = false
     }
+}
+
+sourceSets {
+    datagen
 }
 
 publishing {
