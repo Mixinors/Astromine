@@ -22,31 +22,37 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.registry;
-
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.registry.Registry;
+package com.github.chainmailstudios.astromine.foundations;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsConfig;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsItems;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsOres;
+import me.shedaniel.cloth.api.dynamic.registry.v1.EarlyInitializer;
+import net.fabricmc.api.ModInitializer;
+import net.minecraft.util.Identifier;
 
-public class AstromineSoundEvents {
-	public static final SoundEvent EMPTY = register("empty");
+public class AstromineFoundations implements ModInitializer, EarlyInitializer {
+	public static final String MOD_ID = "astromine-foundations";
 
-	// Tooling
-	public static final SoundEvent FIRE_EXTINGUISHER_OPEN = register("fire_extinguisher_open");
-	public static final SoundEvent HOLOGRAPHIC_CONNECTOR_CLICK = register("holographic_connector_click");
-
-	// Machinery
-	public static final SoundEvent HUMMING = register("humming");
-
-	public static final SoundEvent MACHINE_CLICK = register("block.machine.click");
-	public static final SoundEvent INCINERATE = register("block.incinerator.incinerate");
-
-	public static SoundEvent register(String id) {
-		return Registry.register(Registry.SOUND_EVENT, AstromineCommon.identifier(id), new SoundEvent(AstromineCommon.identifier(id)));
+	@Override
+	public void onInitialize() {
+		AstromineFoundationsBlocks.initialize();
+		AstromineFoundationsItems.initialize();
 	}
 
-	public static void initialize() {
-		// Unused.
+	@Override
+	public void onEarlyInitialization() {
+		AstromineFoundationsConfig.initialize();
+		AstromineFoundationsOres.initialize();
+	}
+
+	public static String appendId(String id) {
+		return MOD_ID + ":" + id;
+	}
+
+	public static Identifier identifier(String id) {
+		return AstromineCommon.identifier(appendId(id));
 	}
 }

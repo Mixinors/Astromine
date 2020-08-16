@@ -84,6 +84,18 @@ public final class WorldPos {
 		return pos;
 	}
 
+	public int getX() {
+		return pos.getX();
+	}
+
+	public int getY() {
+		return pos.getY();
+	}
+
+	public int getZ() {
+		return pos.getZ();
+	}
+
 	@Nullable
 	public BlockEntity getBlockEntity() {
 		return world.getBlockEntity(pos);

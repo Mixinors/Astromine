@@ -30,7 +30,7 @@
     "modmenu": ["com.github.chainmailstudios.astromine.client.modmenu.AstromineModMenuSupport"]
   },
   "mixins": ["astromine.mixins.json"],
-  "accessWidener": "astromine.accesswidener",
+  "accessWidener": "astromine-core.accesswidener",
   "depends": {
     "fabricloader": ">=0.8.7",
     "fabric": ">=0.11.8",

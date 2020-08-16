@@ -4,7 +4,7 @@
   "package": "com.github.chainmailstudios.astromine.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "AbstractBlockMixin", "AbstractMinecartEntityMixin", "BiomeLayerSamplerMixin", "BrewingRecipeRegistryMixin", "BucketItemMixin",
+    "AbstractMinecartEntityMixin", "BiomeLayerSamplerMixin", "BrewingRecipeRegistryMixin", "BucketItemMixin",
     "DiggerEnchantmentTargetMixin", "DyeColorMixin", "EntityMixin", "FishingBobberEntityMixin", "FlamingAnvilCraftingMixin",
     "GravityEntityMixin", "HoneyBlockMixin", "IdentifierMixin", "ItemEntityMixin", "LivingEntityMixin",
     "MiningToolItemMixin", "PiglinBrainMixin", "PiglinEntityMixin", "ServerChunkManagerMixin", "SquidEntityMixin", "StepAndDestroyBlockGoalMixin",

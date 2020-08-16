@@ -22,29 +22,14 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.registry;
+package com.github.chainmailstudios.astromine.foundations.registry;
 
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.item.ItemGroup;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
+import static com.github.chainmailstudios.astromine.registry.AstromineItemGroups.register;
 
-public class AstromineSoundEvents {
-	public static final SoundEvent EMPTY = register("empty");
-
-	// Tooling
-	public static final SoundEvent FIRE_EXTINGUISHER_OPEN = register("fire_extinguisher_open");
-	public static final SoundEvent HOLOGRAPHIC_CONNECTOR_CLICK = register("holographic_connector_click");
-
-	// Machinery
-	public static final SoundEvent HUMMING = register("humming");
-
-	public static final SoundEvent MACHINE_CLICK = register("block.machine.click");
-	public static final SoundEvent INCINERATE = register("block.incinerator.incinerate");
-
-	public static SoundEvent register(String id) {
-		return Registry.register(Registry.SOUND_EVENT, AstromineCommon.identifier(id), new SoundEvent(AstromineCommon.identifier(id)));
-	}
+public class AstromineFoundationsItemGroups {
+	public static final ItemGroup ASTROMINE_FOUNDATIONS = register("astromine_foundations", () -> AstromineFoundationsItems.UNIVITE_AXE);
 
 	public static void initialize() {
 		// Unused.

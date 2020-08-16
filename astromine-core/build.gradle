@@ -1,5 +1,5 @@
 archivesBaseName = "astromine-core"
 
 minecraft {
-    accessWidener = file("src/main/resources/astromine.accesswidener")
+    accessWidener = file("src/main/resources/astromine-core.accesswidener")
 }

@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.world.feature;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineFeatures;
@@ -33,6 +34,7 @@ import com.terraformersmc.shapes.api.Shape;
 import com.terraformersmc.shapes.impl.Shapes;
 import com.terraformersmc.shapes.impl.layer.transform.RotateLayer;
 import com.terraformersmc.shapes.impl.layer.transform.TranslateLayer;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluids;
@@ -40,6 +42,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.structure.StructureManager;
 import net.minecraft.structure.StructurePieceWithDimensions;
 import net.minecraft.util.math.*;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.World;
@@ -85,11 +88,14 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 
 		Shape vein = Shapes.ellipsoid((float) 4, (float) 4, (float) 4).applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true))).applyLayer(TranslateLayer.of(Position.of(originPos)));
 
-		for (Position streamPosition : vein.stream().collect(Collectors.toSet())) {
-			BlockPos orePosition = streamPosition.toBlockPos();
+		Block metiteOre = Registry.BLOCK.getOrEmpty(AstromineCommon.identifier("meteor_metite_ore")).orElse(null);
+		if (metiteOre != null) {
+			for (Position streamPosition : vein.stream().collect(Collectors.toSet())) {
+				BlockPos orePosition = streamPosition.toBlockPos();
 
-			if (world.getBlockState(orePosition).getBlock() == AstromineBlocks.METEOR_STONE) {
-				world.setBlockState(orePosition, AstromineBlocks.METEOR_METITE_ORE.getDefaultState(), 0b0110100);
+				if (world.getBlockState(orePosition).getBlock() == AstromineBlocks.METEOR_STONE) {
+					world.setBlockState(orePosition, metiteOre.getDefaultState(), 0b0110100);
+				}
 			}
 		}
 

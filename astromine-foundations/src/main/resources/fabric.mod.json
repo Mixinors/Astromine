@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "astromine-foundations",
+  "version": "${version}",
+  "name": "Astromine: Foundations",
+  "description": "The",
+  "authors": [
+    "vini2003",
+    "Shnupbups",
+    "Zundrel",
+    "shedaniel",
+    "MoonlitLamps",
+    "SuperCoder79",
+    "Draylar",
+    "HalfOf2",
+    "AK9"
+  ],
+  "contact": {
+    "sources": "https://github.com/Chainmail-Studios/Astromine"
+  },
+  "license": "MIT",
+  "icon": "assets/astromine-foundations/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["com.github.chainmailstudios.astromine.foundations.AstromineFoundations"],
+    "cloth-early-init": ["com.github.chainmailstudios.astromine.foundations.AstromineFoundations"]
+  },
+  "accessWidener": "astromine-foundations.accesswidener",
+  "depends": {
+    "fabricloader": ">=0.8.7",
+    "fabric": ">=0.11.8",
+    "minecraft": ">=1.16.1",
+    "astromine-core": "*"
+  },
+  "custom": {
+    "modmenu:parent": "astromine"
+  }
+}

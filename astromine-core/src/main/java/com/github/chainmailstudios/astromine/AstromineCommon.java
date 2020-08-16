@@ -47,6 +47,8 @@ public class AstromineCommon implements ModInitializer, EarlyInitializer {
 	public static final Logger LOGGER = LogManager.getLogger(LOG_ID);
 
 	public static Identifier identifier(String name) {
+		if (name.indexOf(':') >= 0)
+			return new Identifier(name);
 		return new Identifier(MOD_ID, name);
 	}
 
@@ -82,7 +84,6 @@ public class AstromineCommon implements ModInitializer, EarlyInitializer {
 		AstromineConfig.initialize();
 		AstromineItems.initialize();
 		AstromineBlocks.initialize();
-		AstromineOres.initialize();
 		AstromineScreenHandlers.initialize();
 		AstromineEntityTypes.initialize();
 		AstromineComponentTypes.initialize();
