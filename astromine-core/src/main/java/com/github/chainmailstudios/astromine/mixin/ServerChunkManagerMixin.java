@@ -57,7 +57,7 @@ public class ServerChunkManagerMixin {
 
 	@Inject(method = "<init>", at = @At("RETURN"))
 	private void handleConstructor(ServerWorld world, LevelStorage.Session session, DataFixer dataFixer, StructureManager structureManager, Executor workerExecutor, ChunkGenerator chunkGenerator, int viewDistance, boolean bl,
-			WorldGenerationProgressListener worldGenerationProgressListener, Supplier<PersistentStateManager> supplier, CallbackInfo ci) {
+		WorldGenerationProgressListener worldGenerationProgressListener, Supplier<PersistentStateManager> supplier, CallbackInfo ci) {
 		if (chunkGenerator instanceof EarthSpaceChunkGenerator) {
 			this.chunkGenerator = ((EarthSpaceChunkGenerator) chunkGenerator).withSeedCommon(world.getSeed());
 		}

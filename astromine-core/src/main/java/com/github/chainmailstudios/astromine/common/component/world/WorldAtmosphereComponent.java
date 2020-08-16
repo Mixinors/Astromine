@@ -24,7 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.component.world;
 
-import net.minecraft.block.AirBlock;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.google.common.collect.Lists;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
@@ -33,18 +34,16 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
 import nerdhub.cardinal.components.api.component.Component;
 
-import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class WorldAtmosphereComponent implements Component, Tickable {
-	private static final Fraction THRESHOLD = new Fraction(2, 1);
+	private final List<Direction> directions = Lists.newArrayList(Direction.values());
 
 	private final Map<BlockPos, FluidVolume> volumes = new ConcurrentHashMap<>();
 
@@ -78,29 +77,28 @@ public class WorldAtmosphereComponent implements Component, Tickable {
 
 	@Override
 	public void tick() {
-		List<Direction> directions = Lists.newArrayList(Direction.values());
-
 		for (Map.Entry<BlockPos, FluidVolume> pair : volumes.entrySet()) {
-			final FluidVolume fluidVolume = get(pair.getKey());
+			BlockPos centerPos = pair.getKey();
+
+			FluidVolume centerVolume = pair.getValue();
+
+			centerVolume.extractVolume(Fraction.of(1, 2048));
+
+			if (centerVolume.isEmpty()) {
+				remove(centerPos);
+			}
 
 			Collections.shuffle(directions);
 
 			for (Direction direction : directions) {
-				final BlockPos offsetPosition = pair.getKey().offset(direction);
+				BlockPos sidePos = centerPos.offset(direction);
 
-				if (world.getBlockState(offsetPosition).getBlock() instanceof AirBlock) {
-					FluidVolume offsetFluidVolume = get(offsetPosition);
+				FluidVolume sideVolume = get(sidePos);
 
-					if (!fluidVolume.isEmpty() && fluidVolume.getFluid() == offsetFluidVolume.getFluid() && fluidVolume.hasStored(Fraction.max(THRESHOLD, offsetFluidVolume.getFraction()))) {
-						fluidVolume.pushVolume(offsetFluidVolume, Fraction.BUCKET);
-						add(offsetPosition, offsetFluidVolume);
-					} else if (!fluidVolume.isEmpty() && fluidVolume.hasStored(Fraction.max(THRESHOLD, offsetFluidVolume.getFraction())) && offsetFluidVolume.equals(FluidVolume.oxygen())) {
-						FluidVolume newVolume = new FluidVolume();
-						fluidVolume.pushVolume(newVolume, Fraction.BUCKET);
-						add(offsetPosition, newVolume);
-					}
-				} else {
-					remove(offsetPosition);
+				if (world.getBlockState(sidePos).isAir() && (sideVolume.isEmpty() || sideVolume.equalsFluid(centerVolume)) && centerVolume.hasStored(Fraction.bottle()) && sideVolume.isSmallerThan(centerVolume)) {
+					centerVolume.pushVolume(sideVolume, Fraction.bottle());
+
+					add(sidePos, sideVolume);
 				}
 			}
 		}
@@ -110,12 +108,15 @@ public class WorldAtmosphereComponent implements Component, Tickable {
 	public CompoundTag toTag(CompoundTag tag) {
 		CompoundTag dataTag = new CompoundTag();
 
+		int i = 0;
+
 		for (Map.Entry<BlockPos, FluidVolume> entry : volumes.entrySet()) {
 			CompoundTag pointTag = new CompoundTag();
 			pointTag.putLong("pos", entry.getKey().asLong());
 			pointTag.put("volume", entry.getValue().toTag(new CompoundTag()));
 
-			dataTag.put("0", pointTag);
+			dataTag.put(String.valueOf(i), pointTag);
+			++i;
 		}
 
 		tag.put("data", dataTag);

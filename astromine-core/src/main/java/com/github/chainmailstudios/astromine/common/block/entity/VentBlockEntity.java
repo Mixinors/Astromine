@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import net.minecraft.block.AirBlock;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
@@ -36,7 +36,6 @@ import com.github.chainmailstudios.astromine.common.component.inventory.FluidInv
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
@@ -72,7 +71,7 @@ public class VentBlockEntity extends DefaultedEnergyFluidBlockEntity implements 
 
 			BlockPos output = position.offset(direction);
 
-			if (asEnergy().use(AstromineConfig.get().ventEnergyConsumed) && world.getBlockState(output).getBlock() instanceof AirBlock) {
+			if (asEnergy().use(AstromineConfig.get().ventEnergyConsumed) && world.getBlockState(output).isAir()) {
 				ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
 
 				WorldAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);

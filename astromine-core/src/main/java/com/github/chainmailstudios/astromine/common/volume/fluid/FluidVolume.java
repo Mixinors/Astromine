@@ -240,6 +240,10 @@ public class FluidVolume extends BaseVolume {
 		return new FluidVolume(fluid, fraction);
 	}
 
+	public boolean equalsFluid(FluidVolume volume) {
+		return this.fluid == volume.fluid;
+	}
+
 	@Override
 	public boolean equals(Object object) {
 		if (this == object)

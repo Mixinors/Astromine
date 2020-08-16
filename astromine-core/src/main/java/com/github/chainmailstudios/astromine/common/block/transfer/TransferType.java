@@ -24,9 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.block.transfer;
 
-import net.minecraft.util.Identifier;
-
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import net.minecraft.util.Identifier;
 
 public enum TransferType {
 	NONE(AstromineCommon.identifier("textures/widget/none.png")),
@@ -60,7 +59,11 @@ public enum TransferType {
 	}
 
 	public boolean isNone() {
-		return this == NONE || this == DISABLED;
+		return isDefault() || isDisabled();
+	}
+
+	public boolean isDefault() {
+		return this == NONE;
 	}
 
 	public boolean isDisabled() {

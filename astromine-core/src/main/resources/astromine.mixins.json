@@ -6,7 +6,7 @@
   "mixins": [
     "AbstractBlockMixin", "AbstractMinecartEntityMixin", "BiomeLayerSamplerMixin", "BrewingRecipeRegistryMixin", "BucketItemMixin",
     "DiggerEnchantmentTargetMixin", "DyeColorMixin", "EntityMixin", "FishingBobberEntityMixin", "FlamingAnvilCraftingMixin",
-    "GravityEntityMixin", "HoneyBlockMixin", "HopperBlockEntityMixin", "IdentifierMixin", "ItemEntityMixin", "LivingEntityMixin",
+    "GravityEntityMixin", "HoneyBlockMixin", "IdentifierMixin", "ItemEntityMixin", "LivingEntityMixin",
     "MiningToolItemMixin", "PiglinBrainMixin", "PiglinEntityMixin", "ServerChunkManagerMixin", "SquidEntityMixin", "StepAndDestroyBlockGoalMixin",
     "ThreadExecutorMixin", "WorldChunkMixin"
   ],

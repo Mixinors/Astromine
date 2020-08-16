@@ -24,15 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.recipe.SmeltingRecipe;
-import net.minecraft.util.Tickable;
-
 import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
 import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
@@ -41,6 +32,16 @@ import com.github.chainmailstudios.astromine.common.component.inventory.SimpleIt
 import com.github.chainmailstudios.astromine.common.inventory.BaseInventory;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import it.unimi.dsi.fastutil.ints.IntSet;
+import it.unimi.dsi.fastutil.ints.IntSets;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.recipe.SmeltingRecipe;
+import net.minecraft.util.Tickable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -65,12 +66,30 @@ public abstract class ElectricSmelterBlockEntity extends DefaultedEnergyItemBloc
 	@Override
 	protected ItemInventoryComponent createItemComponent() {
 		return new SimpleItemInventoryComponent(2).withInsertPredicate((direction, itemStack, slot) -> {
-			return slot == 1;
+			if (slot != 1)
+				return false;
+			BaseInventory inputInventory = new BaseInventory(1);
+			inputInventory.setStack(0, itemStack);
+			if (hasWorld()) {
+				Optional<SmeltingRecipe> recipe = (Optional<SmeltingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) RecipeType.SMELTING, inputInventory, world);
+				return recipe.isPresent();
+			}
+			return false;
 		}).withExtractPredicate(((direction, stack, slot) -> {
 			return slot == 0;
 		})).withListener((inv) -> {
 			shouldTry = true;
 		});
+	}
+
+	@Override
+	public IntSet getItemInputSlots() {
+		return IntSets.singleton(1);
+	}
+
+	@Override
+	public IntSet getItemOutputSlots() {
+		return IntSets.singleton(0);
 	}
 
 	@Override

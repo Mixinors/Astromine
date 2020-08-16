@@ -24,32 +24,27 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
-
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
-
 import com.github.chainmailstudios.astromine.client.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.client.registry.NetworkMemberRegistry.NetworkTypeRegistry;
 import com.github.chainmailstudios.astromine.common.block.*;
 import com.github.chainmailstudios.astromine.common.network.NetworkType;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
+import com.google.common.collect.Maps;
+import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergySide;
 import team.reborn.energy.EnergyStorage;
 import team.reborn.energy.EnergyTier;
 
-import com.google.common.collect.Maps;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import static com.github.chainmailstudios.astromine.common.network.NetworkMemberType.BUFFER;
-import static com.github.chainmailstudios.astromine.common.network.NetworkMemberType.NODE;
-import static com.github.chainmailstudios.astromine.common.network.NetworkMemberType.PROVIDER;
-import static com.github.chainmailstudios.astromine.common.network.NetworkMemberType.REQUESTER;
+import static com.github.chainmailstudios.astromine.common.network.NetworkMemberType.*;
 
 public class AstromineNetworkMembers {
 	private static final Map<Predicate<Block>, Consumer<Block>> BLOCK_CONSUMER = Maps.newHashMap();
@@ -136,9 +131,11 @@ public class AstromineNetworkMembers {
 			fluid.register(block, REQUESTER);
 			energy.register(block, REQUESTER);
 		});
-		BLOCK_CONSUMER.put(block -> block instanceof CapacitorBlock, block -> {
+		BLOCK_CONSUMER.put(block -> block instanceof CapacitorBlock && block != AstromineBlocks.CREATIVE_CAPACITOR, block -> {
 			energy.register(block, BUFFER);
 		});
+
+		energy.register(AstromineBlocks.CREATIVE_CAPACITOR, PROVIDER);
 
 		Registry.BLOCK.getEntries().forEach(entry -> acceptBlock(entry.getKey(), entry.getValue()));
 		RegistryEntryAddedCallback.event(Registry.BLOCK).register((index, identifier, block) -> acceptBlock(RegistryKey.of(Registry.BLOCK_KEY, identifier), block));
