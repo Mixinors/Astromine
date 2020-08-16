@@ -25,7 +25,6 @@
 package com.github.chainmailstudios.astromine.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import net.minecraft.block.AirBlock;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;

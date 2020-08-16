@@ -134,7 +134,7 @@ public class AstromineNetworkMembers {
 		BLOCK_CONSUMER.put(block -> block instanceof CapacitorBlock && block != AstromineBlocks.CREATIVE_CAPACITOR, block -> {
 			energy.register(block, BUFFER);
 		});
-		
+
 		energy.register(AstromineBlocks.CREATIVE_CAPACITOR, PROVIDER);
 
 		Registry.BLOCK.getEntries().forEach(entry -> acceptBlock(entry.getKey(), entry.getValue()));

@@ -26,7 +26,6 @@ package com.github.chainmailstudios.astromine.common.component.world;
 
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.google.common.collect.Lists;
-import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;

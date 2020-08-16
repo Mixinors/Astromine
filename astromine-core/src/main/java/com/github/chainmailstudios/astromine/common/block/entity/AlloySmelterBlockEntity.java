@@ -53,7 +53,7 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 	public boolean shouldTry = true;
 	public boolean isActive = false;
 
-	public boolean[] activity = {false, false, false, false, false};
+	public boolean[] activity = { false, false, false, false, false };
 
 	Optional<AlloySmeltingRecipe> recipe = Optional.empty();
 
@@ -91,7 +91,7 @@ public abstract class AlloySmelterBlockEntity extends DefaultedEnergyItemBlockEn
 
 	@Override
 	public IntSet getItemInputSlots() {
-		return new IntArraySet(new int[]{0, 1});
+		return new IntArraySet(new int[]{ 0, 1 });
 	}
 
 	@Override

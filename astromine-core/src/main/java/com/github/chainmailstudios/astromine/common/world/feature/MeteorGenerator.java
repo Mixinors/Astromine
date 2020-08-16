@@ -70,7 +70,8 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 	}
 
 	public boolean generate(StructureWorldAccess world, ChunkPos chunkPos, Random random, BlockPos blockPos) {
-		if (!world.toServerWorld().getRegistryKey().equals(World.OVERWORLD)) return false;
+		if (!world.toServerWorld().getRegistryKey().equals(World.OVERWORLD))
+			return false;
 		noise = new OpenSimplexNoise(world.getSeed());
 		BlockPos originPos = world.getTopPosition(Heightmap.Type.OCEAN_FLOOR_WG, new BlockPos(chunkPos.getStartX() + 8, 0, chunkPos.getStartZ() + 8));
 		originPos = emptySphere(world, originPos, 16, state -> {
@@ -135,8 +136,7 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 		}
 
 		for (BlockPos pos : bottomPositions) {
-			world.setBlockState(pos, hasWater && pos.getY() < world.getSeaLevel() ? Fluids.WATER.getStill().getDefaultState().getBlockState() :
-					world.getRandom().nextInt(10) == 0 ? Blocks.FIRE.getDefaultState() : Blocks.AIR.getDefaultState(), 3);
+			world.setBlockState(pos, hasWater && pos.getY() < world.getSeaLevel() ? Fluids.WATER.getStill().getDefaultState().getBlockState() : world.getRandom().nextInt(10) == 0 ? Blocks.FIRE.getDefaultState() : Blocks.AIR.getDefaultState(), 3);
 		}
 
 		for (BlockPos pos : underneathPositions) {

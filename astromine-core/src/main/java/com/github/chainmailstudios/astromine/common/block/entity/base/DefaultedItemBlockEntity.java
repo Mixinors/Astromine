@@ -25,7 +25,6 @@
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import net.minecraft.block.entity.BlockEntityType;
 
