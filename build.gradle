@@ -48,11 +48,11 @@ allprojects {
         }
         maven {
             name = "Wrenchable"
-            url "https://dl.bintray.com/zundrel/wrenchable"
+            url = "https://dl.bintray.com/zundrel/wrenchable"
         }
         maven {
             name = "Cloth"
-            url "https://dl.bintray.com/shedaniel/cloth"
+            url = "https://dl.bintray.com/shedaniel/cloth"
         }
         maven {
             name = "grondag"
@@ -62,6 +62,10 @@ allprojects {
                 password ""
             }
         }
+		maven {
+			name = "Earthcomputer"
+			url = "https://dl.bintray.com/earthcomputer/mods"
+		}
     }
 
     dependencies {
@@ -80,6 +84,7 @@ allprojects {
         }
         dependencies.ext.useAsRuntime = { dep ->
             modRuntime(dep) {
+				exclude module: "fabric-loader"
                 exclude group: "net.fabricmc.fabric-api"
                 if (!dep.contains("me.shedaniel")) {
                     exclude group: "me.shedaniel"
