@@ -81,7 +81,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 			    key.toString().endsWith("_nugget") || key.toString().endsWith("_fragment") ||
 			    item == AstromineFoundationsItems.ASTERITE || item == AstromineFoundationsItems.GALAXIUM) {
 				Identifier tagId = key.toString().endsWith("s") ? key : new Identifier(key.toString() + "s");
-				tagId = new Identifier("c", tagId.getPath().replaceFirst("asteroid_", ""));
+				tagId = new Identifier("c", tagId.getPath().replaceFirst("asteroid_", "").replaceFirst("meteor_", ""));
 
 				TagData.TagBuilder<ItemConvertible> builder = tags.item(tagId).append(item);
 
@@ -141,8 +141,8 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 
 		iterate(AstromineFoundationsBlocks.class, Block.class, block -> {
 			Identifier key = Registry.BLOCK.getKey(block).get().getValue();
-			if (key.toString().endsWith("_block")) {
-				Identifier tagId = new Identifier("c", key.getPath() + "s");
+			if (key.toString().endsWith("_block") || key.toString().endsWith("_ore")) {
+				Identifier tagId = new Identifier("c", key.getPath().replaceFirst("asteroid_", "").replaceFirst("meteor_", "") + "s");
 
 				tags.block(new Identifier("beacon_base_blocks")).append(block);
 				TagData.TagBuilder<ItemConvertible> itemBuilder = tags.item(tagId).append(block);
