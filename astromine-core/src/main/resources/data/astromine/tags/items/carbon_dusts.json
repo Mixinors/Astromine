@@ -1,7 +1,4 @@
 {
 	"replace": false,
-	"values": [
-		"#c:coal_dusts",
-		"#c:charcoal_dusts"
-	]
+	"values": []
 }

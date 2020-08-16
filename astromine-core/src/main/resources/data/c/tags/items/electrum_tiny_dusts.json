@@ -1,6 +1,4 @@
 {
   "replace": false,
-  "values": [
-    "astromine:electrum_tiny_dust"
-  ]
+  "values": []
 }
