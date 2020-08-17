@@ -154,7 +154,8 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 			if (key.toString().endsWith("_block") || key.toString().endsWith("_ore")) {
 				Identifier tagId = new Identifier("c", key.getPath().replaceFirst("asteroid_", "").replaceFirst("meteor_", "") + "s");
 
-				tags.block(new Identifier("beacon_base_blocks")).append(block);
+				if (key.toString().endsWith("_block"))
+					tags.block(new Identifier("beacon_base_blocks")).append(block);
 				TagData.TagBuilder<ItemConvertible> itemBuilder = tags.item(tagId).append(block);
 				TagData.TagBuilder<Block> blockBuilder = tags.block(tagId).append(block);
 
@@ -191,12 +192,18 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 		ImmutableMap<String, String> materialMap = ImmutableMap.<String, String>builder()
 			.put("copper", "c:copper_ingots")
 			.put("tin", "c:tin_ingots")
-			.put("silver", "c:tin_ingots")
-			.put("lead", "c:tin_ingots")
-			.put("bronze", "c:tin_ingots")
-			.put("steel", "c:tin_ingots")
-			.put("electrum", "c:tin_ingots")
-			.put("rose_gold", "c:tin_ingots")
+			.put("silver", "c:silver_ingots")
+			.put("lead", "c:lead_ingots")
+			.put("bronze", "c:bronze_ingots")
+			.put("steel", "c:steel_ingots")
+			.put("electrum", "c:electrum_ingots")
+			.put("rose_gold", "c:rose_gold_ingots")
+			.put("sterling_silver", "c:sterling_silver_ingots")
+			.put("fools_gold", "c:fools_gold_ingots")
+			.put("metite", "c:metite_ingots")
+			.put("asterite", "c:asterites")
+			.put("stellum", "c:stellum_ingots")
+			.put("galaxium", "c:galaxiums")
 			.build();
 		iterate(AstromineFoundationsItems.class, Item.class, item -> {
 			Identifier key = Registry.ITEM.getKey(item).get().getValue();
@@ -233,7 +240,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 			.pattern(" $")
 			.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
 			.input('#', TagRegistry.item(material))
-			.offerTo(recipes);
+			.offerTo(recipes, new Identifier(Registry.ITEM.getId(output).toString() + "_left"));
 		ShapedRecipeJsonFactory.create(output)
 			.criterion("impossible", new ImpossibleCriterion.Conditions())
 			.pattern("##")
@@ -241,7 +248,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 			.pattern("$")
 			.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
 			.input('#', TagRegistry.item(material))
-			.offerTo(recipes);
+			.offerTo(recipes, new Identifier(Registry.ITEM.getId(output).toString() + "_right"));
 	}
 
 	private static void pickaxeRecipe(RecipeData recipes, Item output, Identifier material) {
