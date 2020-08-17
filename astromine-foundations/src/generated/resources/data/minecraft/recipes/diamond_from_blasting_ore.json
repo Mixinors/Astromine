@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "tag": "c:asteroid_diamond_ores"
-  },
-  "result": "minecraft:diamond",
-  "experience": 0.1,
-  "cookingtime": 100
-}
