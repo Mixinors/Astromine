@@ -35,6 +35,7 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,6 +43,7 @@ import java.lang.reflect.Field;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
@@ -73,7 +75,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 		.put("iron", of(Items.IRON_INGOT, "c:iron_ingots").dust(AstromineFoundationsItems.IRON_DUST))
 		.put("gold", of(Items.GOLD_INGOT, "c:gold_ingots").dust(AstromineFoundationsItems.GOLD_DUST))
 		.put("lapis", of(Items.LAPIS_LAZULI, "c:lapis_lazulis").dust(AstromineFoundationsItems.LAPIS_DUST))
-		.put("redstone", of(Items.REDSTONE, "c:redstone").dust(Items.REDSTONE).dustTag(new Identifier("c:redstone_dusts")).tinyDust(AstromineFoundationsItems.REDSTONE_TINY_DUST))
+		.put("redstone", of(Items.REDSTONE, "c:redstone").dust(Items.REDSTONE).dustTag(asId("c:redstone_dusts")).tinyDust(AstromineFoundationsItems.REDSTONE_TINY_DUST))
 		.put("netherite", of(Items.NETHERITE_INGOT, "c:netherite_ingots").dust(AstromineFoundationsItems.NETHERITE_DUST))
 		.put("coal", of(Items.COAL, "c:coal").dust(AstromineFoundationsItems.COAL_DUST))
 		.put("charcoal", of(Items.CHARCOAL, "c:charcoal").dust(AstromineFoundationsItems.CHARCOAL_DUST))
@@ -104,7 +106,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 
 			handler.run();
 		} catch (Throwable throwable) {
-			AstromineCommon.LOGGER.error("Data generation failed with trace:");
+			AstromineCommon.LOGGER.error("Data generation failed with stack trace:");
 			throwable.printStackTrace();
 
 			System.exit(1);
@@ -116,6 +118,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 	private static void register() {
 		registerBlockLootTableOverrides((block, identifier) -> block instanceof SlabBlock, (lootTableData, block, identifier) ->
 			lootTableData.register(block, LootTableData.dropsSlabs(block)));
+
 		registerBlockLootTableOverrides((block, identifier) -> block instanceof AstromineOreBlock && identifier.getPath().startsWith("asteroid_") || identifier.getPath().startsWith("meteor_"),
 			(lootTableData, block, identifier) -> lootTableData.register(block, LootTableData.dropsBlockWithSilkTouch(
 				block,
@@ -158,117 +161,127 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 	}
 
 	private static void populateTags(TagData tags) {
-		// items
+		// Items
 		forEach(AstromineFoundationsItems.class, Item.class, item -> {
-			Identifier key = Registry.ITEM.getKey(item).get().getValue();
-			if (key.toString().endsWith("_cluster") || key.toString().endsWith("_gear") || key.toString().endsWith("_plates") ||
-			    key.toString().endsWith("_dust") || key.toString().endsWith("_ingot") || key.toString().endsWith("_wire") ||
-			    key.toString().endsWith("_nugget") || key.toString().endsWith("_fragment") ||
-			    item == AstromineFoundationsItems.ASTERITE || item == AstromineFoundationsItems.GALAXIUM) {
-				Identifier tagId = convertIdToCommonTag(key);
+					Registry.ITEM.getKey(item).ifPresent(registryKey -> {
+						Identifier key = registryKey.getValue();
 
-				TagData.TagBuilder<ItemConvertible> builder = tags.item(tagId).append(item);
+						if (key.toString().endsWith("_cluster") || key.toString().endsWith("_gear") || key.toString().endsWith("_plates") ||
+								key.toString().endsWith("_dust") || key.toString().endsWith("_ingot") || key.toString().endsWith("_wire") ||
+								key.toString().endsWith("_nugget") || key.toString().endsWith("_fragment") ||
+								item == AstromineFoundationsItems.ASTERITE || item == AstromineFoundationsItems.GALAXIUM) {
+							Identifier tagId = convertIdToCommonTag(key);
 
-				if (tagId.getPath().startsWith("fools_gold")) {
-					tagId = new Identifier("c", tagId.getPath().replaceFirst("fools_gold", "pyrite"));
-					tags.item(tagId).appendTag(builder);
-				}
-				if (tagId.getPath().endsWith("_fragments")) {
-					tagId = new Identifier("c", tagId.getPath().replaceFirst("_fragments", "_nuggets"));
-					tags.item(tagId).appendTag(builder);
-				}
-			}
-			if (key.toString().contains("gold_ingot")) {
-				tags.item(AstromineCommon.identifier("piglin_bartering_items")).append(item);
-			}
-			if (key.toString().contains("gold_nugget")) {
-				tags.item(AstromineCommon.identifier("piglin_loved_nuggets")).append(item);
-			}
-			if (key.toString().contains("fools_gold")) {
-				tags.item(AstromineCommon.identifier("tricks_piglins")).append(item);
-			}
-			if (key.toString().contains("gold")) {
-				tags.item(new Identifier("piglin_loved")).append(item);
+							TagData.TagBuilder<ItemConvertible> builder = tags.item(tagId).append(item);
 
-				if (item instanceof ArmorItem) {
-					tags.item(AstromineCommon.identifier("piglin_safe_armor")).append(item);
-				}
-			}
-			if (item instanceof PickaxeItem || item instanceof HammerItem || (item instanceof MultitoolItem && (((MultitoolItem) item).first instanceof PickaxeItem || ((MultitoolItem) item).second instanceof PickaxeItem))) {
-				tags.item(new Identifier("fabric:pickaxes")).append(item);
-			}
-			if (item instanceof AxeItem || (item instanceof MultitoolItem && (((MultitoolItem) item).first instanceof AxeItem || ((MultitoolItem) item).second instanceof AxeItem))) {
-				tags.item(new Identifier("fabric:axes")).append(item);
-			}
-			if (item instanceof HoeItem || (item instanceof MultitoolItem && (((MultitoolItem) item).first instanceof HoeItem || ((MultitoolItem) item).second instanceof HoeItem))) {
-				tags.item(new Identifier("fabric:hoes")).append(item);
-			}
-			if (item instanceof ShovelItem || item instanceof ExcavatorItem || (item instanceof MultitoolItem && (((MultitoolItem) item).first instanceof ShovelItem || ((MultitoolItem) item).second instanceof ShovelItem))) {
-				tags.item(new Identifier("fabric:shovels")).append(item);
-			}
-			if (item instanceof SwordItem) {
-				tags.item(new Identifier("fabric:shovels")).append(item);
-			}
-		});
+							if (tagId.getPath().startsWith("fools_gold")) {
+								tagId = asId("c", tagId.getPath().replaceFirst("fools_gold", "pyrite"));
+								tags.item(tagId).appendTag(builder);
+							}
+							if (tagId.getPath().endsWith("_fragments")) {
+								tagId = asId("c", tagId.getPath().replaceFirst("_fragments", "_nuggets"));
+								tags.item(tagId).appendTag(builder);
+							}
+						}
+						if (key.toString().contains("gold_ingot")) {
+							tags.item(AstromineCommon.identifier("piglin_bartering_items")).append(item);
+						}
+						if (key.toString().contains("gold_nugget")) {
+							tags.item(AstromineCommon.identifier("piglin_loved_nuggets")).append(item);
+						}
+						if (key.toString().contains("fools_gold")) {
+							tags.item(AstromineCommon.identifier("tricks_piglins")).append(item);
+						}
+						if (key.toString().contains("gold")) {
+							tags.item(asId("piglin_loved")).append(item);
 
-		tags.item(new Identifier("c:diamonds")).append(Items.DIAMOND);
-		tags.item(new Identifier("c:emeralds")).append(Items.EMERALD);
-		tags.item(new Identifier("c:iron_ingots")).append(Items.IRON_INGOT);
-		tags.item(new Identifier("c:gold_ingots")).append(Items.GOLD_INGOT);
-		tags.item(new Identifier("c:redstone_dusts")).append(Items.REDSTONE);
-		tags.item(new Identifier("c:lapis_lazulis")).append(Items.LAPIS_LAZULI);
-		tags.item(new Identifier("c:netherite_ingots")).append(Items.NETHERITE_INGOT);
-		tags.item(new Identifier("c:quartz")).append(Items.QUARTZ);
-		tags.item(new Identifier("c:redstone")).append(Items.REDSTONE);
-		tags.item(new Identifier("c:coal")).append(Items.COAL);
-		tags.item(new Identifier("c:charcoal")).append(Items.CHARCOAL);
+							if (item instanceof ArmorItem) {
+								tags.item(AstromineCommon.identifier("piglin_safe_armor")).append(item);
+							}
+						}
+						if (item instanceof PickaxeItem || item instanceof HammerItem || (item instanceof MultitoolItem && (((MultitoolItem) item).first instanceof PickaxeItem || ((MultitoolItem) item).second instanceof PickaxeItem))) {
+							tags.item(asId("fabric:pickaxes")).append(item);
+						}
+						if (item instanceof AxeItem || (item instanceof MultitoolItem && (((MultitoolItem) item).first instanceof AxeItem || ((MultitoolItem) item).second instanceof AxeItem))) {
+							tags.item(asId("fabric:axes")).append(item);
+						}
+						if (item instanceof HoeItem || (item instanceof MultitoolItem && (((MultitoolItem) item).first instanceof HoeItem || ((MultitoolItem) item).second instanceof HoeItem))) {
+							tags.item(asId("fabric:hoes")).append(item);
+						}
+						if (item instanceof ShovelItem || item instanceof ExcavatorItem || (item instanceof MultitoolItem && (((MultitoolItem) item).first instanceof ShovelItem || ((MultitoolItem) item).second instanceof ShovelItem))) {
+							tags.item(asId("fabric:shovels")).append(item);
+						}
+						if (item instanceof SwordItem) {
+							tags.item(asId("fabric:shovels")).append(item);
+						}
+					});
+				});
 
-		tags.item(new Identifier("c:wood_sticks")).append(Items.STICK);
+		tags.item(asId("c:diamonds")).append(Items.DIAMOND);
+		tags.item(asId("c:emeralds")).append(Items.EMERALD);
+		tags.item(asId("c:iron_ingots")).append(Items.IRON_INGOT);
+		tags.item(asId("c:gold_ingots")).append(Items.GOLD_INGOT);
+		tags.item(asId("c:redstone_dusts")).append(Items.REDSTONE);
+		tags.item(asId("c:lapis_lazulis")).append(Items.LAPIS_LAZULI);
+		tags.item(asId("c:netherite_ingots")).append(Items.NETHERITE_INGOT);
+		tags.item(asId("c:quartz")).append(Items.QUARTZ);
+		tags.item(asId("c:redstone")).append(Items.REDSTONE);
+		tags.item(asId("c:coal")).append(Items.COAL);
+		tags.item(asId("c:charcoal")).append(Items.CHARCOAL);
 
-		tags.item(AstromineCommon.identifier("carbon_dusts")).appendTag(new Identifier("c:coal_dusts")).appendTag(new Identifier("c:charcoal_dusts"));
+		tags.item(asId("c:wood_sticks")).append(Items.STICK);
 
-		// blocks
+		tags.item(AstromineCommon.identifier("carbon_dusts")).appendTag(asId("c:coal_dusts")).appendTag(asId("c:charcoal_dusts"));
+
 		tags.block(AstromineCommon.identifier("metite_ores")).append(AstromineFoundationsBlocks.METEOR_METITE_ORE, AstromineFoundationsBlocks.ASTEROID_METITE_ORE);
 
+		// Blocks
 		forEach(AstromineFoundationsBlocks.class, Block.class, block -> {
-			Identifier key = Registry.BLOCK.getId(block);
-			if (key.toString().endsWith("_block") || key.toString().endsWith("_ore")) {
-				Identifier tagId = convertIdToCommonTag(key);
+			Registry.BLOCK.getKey(block).ifPresent(registryKey -> {
+				Identifier key = registryKey.getValue();
 
-				if (key.toString().endsWith("_block"))
-					tags.block(new Identifier("beacon_base_blocks")).append(block);
-				TagData.TagBuilder<ItemConvertible> itemBuilder = tags.item(tagId).append(block);
-				TagData.TagBuilder<Block> blockBuilder = tags.block(tagId).append(block);
+				if (key.toString().endsWith("_block") || key.toString().endsWith("_ore")) {
+					Identifier tagId = convertIdToCommonTag(key);
 
-				if (tagId.getPath().startsWith("fools_gold")) {
-					tagId = new Identifier("c", tagId.getPath().replaceFirst("fools_gold", "pyrite"));
-					tags.item(tagId).appendTag(itemBuilder);
-					tags.block(tagId).appendTag(blockBuilder);
+					if (key.toString().endsWith("_block")) {
+						tags.block(asId("beacon_base_blocks")).append(block);
+					}
+
+					TagData.TagBuilder<ItemConvertible> itemBuilder = tags.item(tagId).append(block);
+					TagData.TagBuilder<Block> blockBuilder = tags.block(tagId).append(block);
+
+					if (tagId.getPath().startsWith("fools_gold")) {
+						tagId = asId("c", tagId.getPath().replaceFirst("fools_gold", "pyrite"));
+						tags.item(tagId).appendTag(itemBuilder);
+						tags.block(tagId).appendTag(blockBuilder);
+					}
 				}
-			}
-			if (block instanceof AstromineOreBlock) {
-				tags.block(AstromineCommon.identifier("rocket_explode")).append(block);
-			}
-		});
-		tags.block(new Identifier("c:diamond_ores")).append(Blocks.DIAMOND_ORE);
-		tags.block(new Identifier("c:emerald_ores")).append(Blocks.EMERALD_ORE);
-		tags.block(new Identifier("c:iron_ores")).append(Blocks.IRON_ORE);
-		tags.block(new Identifier("c:gold_ores")).appendTag(new Identifier("gold_ores"));
-		tags.block(new Identifier("c:redstone_ores")).append(Blocks.REDSTONE_ORE);
-		tags.block(new Identifier("c:lapis_ores")).append(Blocks.LAPIS_ORE);
-		tags.block(new Identifier("c:quartz_ores")).append(Blocks.NETHER_QUARTZ_ORE);
-		tags.block(new Identifier("gold_ores")).append(Blocks.NETHER_GOLD_ORE);
-		tags.block(new Identifier("c:cobblestones")).append(Blocks.COBBLESTONE);
 
-		tags.item(new Identifier("c:diamond_ores")).append(Blocks.DIAMOND_ORE);
-		tags.item(new Identifier("c:emerald_ores")).append(Blocks.EMERALD_ORE);
-		tags.item(new Identifier("c:iron_ores")).append(Blocks.IRON_ORE);
-		tags.item(new Identifier("c:gold_ores")).appendTag(new Identifier("gold_ores"));
-		tags.item(new Identifier("c:redstone_ores")).append(Blocks.REDSTONE_ORE);
-		tags.item(new Identifier("c:lapis_ores")).append(Blocks.LAPIS_ORE);
-		tags.item(new Identifier("c:quartz_ores")).append(Blocks.NETHER_QUARTZ_ORE);
-		tags.item(new Identifier("gold_ores")).append(Blocks.NETHER_GOLD_ORE);
-		tags.item(new Identifier("c:cobblestones")).append(Blocks.COBBLESTONE);
+				if (block instanceof AstromineOreBlock) {
+					tags.block(AstromineCommon.identifier("rocket_explode")).append(block);
+				}
+			});
+		});
+
+		tags.block(asId("c:diamond_ores")).append(Blocks.DIAMOND_ORE);
+		tags.block(asId("c:emerald_ores")).append(Blocks.EMERALD_ORE);
+		tags.block(asId("c:iron_ores")).append(Blocks.IRON_ORE);
+		tags.block(asId("c:gold_ores")).appendTag(asId("gold_ores"));
+		tags.block(asId("c:redstone_ores")).append(Blocks.REDSTONE_ORE);
+		tags.block(asId("c:lapis_ores")).append(Blocks.LAPIS_ORE);
+		tags.block(asId("c:quartz_ores")).append(Blocks.NETHER_QUARTZ_ORE);
+		tags.block(asId("gold_ores")).append(Blocks.NETHER_GOLD_ORE);
+		tags.block(asId("c:cobblestones")).append(Blocks.COBBLESTONE);
+
+		tags.item(asId("c:diamond_ores")).append(Blocks.DIAMOND_ORE);
+		tags.item(asId("c:emerald_ores")).append(Blocks.EMERALD_ORE);
+		tags.item(asId("c:iron_ores")).append(Blocks.IRON_ORE);
+		tags.item(asId("c:gold_ores")).appendTag(asId("gold_ores"));
+		tags.item(asId("c:redstone_ores")).append(Blocks.REDSTONE_ORE);
+		tags.item(asId("c:lapis_ores")).append(Blocks.LAPIS_ORE);
+		tags.item(asId("c:quartz_ores")).append(Blocks.NETHER_QUARTZ_ORE);
+		tags.item(asId("gold_ores")).append(Blocks.NETHER_GOLD_ORE);
+		tags.item(asId("c:cobblestones")).append(Blocks.COBBLESTONE);
 	}
 
 	private static void populateRecipes(RecipeData recipes) {
@@ -281,33 +294,47 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 			if (material != null) {
 				if (!material.getMaterialId().equals("univite")) {
 					if (itemIdPath.endsWith("_axe")) {
+						// Axe
 						Generators.ofAxe(recipes, item, material.asIngredient());
 					} else if (itemIdPath.endsWith("_pickaxe")) {
+						// Pickaxe
 						Generators.ofPickaxe(recipes, item, material.asIngredient());
 					} else if (itemIdPath.endsWith("_hoe")) {
+						// Hoe
 						Generators.ofHoe(recipes, item, material.asIngredient());
 					} else if (itemIdPath.endsWith("_sword")) {
+						// Sword
 						Generators.ofSword(recipes, item, material.asIngredient());
 					} else if (itemIdPath.endsWith("_shovel")) {
+						// Shovel
 						Generators.ofShovel(recipes, item, material.asIngredient());
 					} else if (itemIdPath.endsWith("_mining_tool")) {
+						// Mining Tool
 						Generators.ofMiningTool(recipes, item, material.asIngredient());
 					} else if (itemIdPath.endsWith("_mattock")) {
+						// Mattock
 						Generators.ofMattock(recipes, item, material.asIngredient());
 					} else if (itemIdPath.endsWith("_hammer")) {
+						// Hammer
 						Generators.ofHammer(recipes, item, material.asIngredient());
 					} else if (itemIdPath.endsWith("_excavator")) {
+						// Excavator
 						Generators.ofExcavator(recipes, item, material.asIngredient());
 					} else if (itemIdPath.endsWith("_helmet")) {
+						// Helmet
 						Generators.ofHelmet(recipes, item, material.asIngredient());
 					} else if (itemIdPath.endsWith("_chestplate")) {
+						// Chestplate
 						Generators.ofChestplate(recipes, item, material.asIngredient());
 					} else if (itemIdPath.endsWith("_leggings")) {
+						// Leggings
 						Generators.ofLeggings(recipes, item, material.asIngredient());
 					} else if (itemIdPath.endsWith("_boots")) {
+						// Boots
 						Generators.ofBoots(recipes, item, material.asIngredient());
 					}
 				} else if (item instanceof ToolItem || item instanceof ArmorItem || item instanceof DynamicAttributeTool) {
+					// Univite
 					Generators.ofUniviteSmithing(recipes, item, itemId);
 				}
 
@@ -319,16 +346,16 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 					Generators.ofNuggetToIngot(recipes, material.getIngotItemId(), itemId);
 
 					// 1 nugget (/fragment) to 1 tiny dust
-					Generators.ofTrituratingItemToDust(recipes, convertIdToCommonTag(itemId), material.getTinyDustId(), 1, 10, 90);
+					Generators.ofTrituratoringItemToDust(recipes, convertIdToCommonTag(itemId), material.getTinyDustId(), 1, 10, 90);
 
 					// 1 cluster to 1 nugget (/fragment)
-					Generators.ofSmelting(recipes, convertIdToCommonTag(new Identifier(material.getMaterialId() + "_cluster")), itemId);
+					Generators.ofSmelting(recipes, convertIdToCommonTag(asId(material.getMaterialId() + "_cluster")), itemId);
 
 					// 1 cluster to 1 nugget (/fragment)
-					Generators.ofBlasting(recipes, convertIdToCommonTag(new Identifier(material.getMaterialId() + "_cluster")), itemId);
+					Generators.ofBlasting(recipes, convertIdToCommonTag(asId(material.getMaterialId() + "_cluster")), itemId);
 
 					// 1 cluster to 2 tiny dusts
-					Generators.ofTrituratingItemToDust(recipes, convertIdToCommonTag(new Identifier(material.getMaterialId() + "_cluster")), material.getTinyDustId(), 2, 20, 180);
+					Generators.ofTrituratoringItemToDust(recipes, convertIdToCommonTag(asId(material.getMaterialId() + "_cluster")), material.getTinyDustId(), 2, 20, 180);
 
 					// 1 tiny dust to 1 nugget (/fragment)
 					Generators.ofSmelting(recipes, material.getTinyDustTagId(), itemId);
@@ -361,7 +388,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 
 					if (!material.getIngotItemId().equals(material.getDustId())) {
 						// 1 ingot to 1 dusts
-						Generators.ofTrituratingItemToDust(recipes, material.getItemTagId(), material.getDustId(), 1, 30, 270);
+						Generators.ofTrituratoringItemToDust(recipes, material.getItemTagId(), material.getDustId(), 1, 30, 270);
 					}
 				}
 			}
@@ -391,16 +418,24 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 						Generators.ofBlasting(recipes, convertIdToCommonTag(blockId), material.getIngotItemId());
 
 						// 1 ore to 2 dusts
-						Generators.ofTrituratingItemToDust(recipes, convertIdToCommonTag(blockId), material.getDustId(), 2, 30, 270);
+						Generators.ofTrituratoringItemToDust(recipes, convertIdToCommonTag(blockId), material.getDustId(), 2, 30, 270);
 					}
 				}
 			}
 		});
 	}
 
+	public static Identifier asId(String id) {
+		return new Identifier(id);
+	}
+
+	public static Identifier asId(String namespace, String path) {
+		return new Identifier(namespace, path);
+	}
+
 	public static Identifier convertIdToCommonTag(Identifier identifier) {
 		String s = identifier.getPath().replaceFirst("asteroid_", "").replaceFirst("meteor_", "");
-		return new Identifier("c", s.endsWith("s") ? s : s + "s");
+		return asId("c", s.endsWith("s") ? s : s + "s");
 	}
 
 	@Nullable
@@ -496,7 +531,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 				.pattern("##")
 				.pattern("#$")
 				.pattern(" $")
-				.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+				.input('$', TagRegistry.item(asId("c:wood_sticks")))
 				.input('#', material)
 				.offerTo(recipes);
 		}
@@ -507,7 +542,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 				.pattern("###")
 				.pattern(" $ ")
 				.pattern(" $ ")
-				.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+				.input('$', TagRegistry.item(asId("c:wood_sticks")))
 				.input('#', material)
 				.offerTo(recipes);
 		}
@@ -518,7 +553,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 				.pattern("##")
 				.pattern(" $")
 				.pattern(" $")
-				.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+				.input('$', TagRegistry.item(asId("c:wood_sticks")))
 				.input('#', material)
 				.offerTo(recipes);
 		}
@@ -529,7 +564,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 				.pattern("#")
 				.pattern("#")
 				.pattern("$")
-				.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+				.input('$', TagRegistry.item(asId("c:wood_sticks")))
 				.input('#', material)
 				.offerTo(recipes);
 		}
@@ -540,7 +575,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 				.pattern("#")
 				.pattern("$")
 				.pattern("$")
-				.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+				.input('$', TagRegistry.item(asId("c:wood_sticks")))
 				.input('#', material)
 				.offerTo(recipes);
 		}
@@ -551,7 +586,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 				.pattern("###")
 				.pattern(" # ")
 				.pattern(" $ ")
-				.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+				.input('$', TagRegistry.item(asId("c:wood_sticks")))
 				.input('#', material)
 				.offerTo(recipes);
 		}
@@ -562,7 +597,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 				.pattern("###")
 				.pattern("#$ ")
 				.pattern(" $ ")
-				.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+				.input('$', TagRegistry.item(asId("c:wood_sticks")))
 				.input('#', material)
 				.offerTo(recipes);
 		}
@@ -573,7 +608,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 				.pattern("###")
 				.pattern("#$#")
 				.pattern(" $ ")
-				.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+				.input('$', TagRegistry.item(asId("c:wood_sticks")))
 				.input('#', material)
 				.offerTo(recipes);
 		}
@@ -584,7 +619,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 				.pattern(" # ")
 				.pattern("#$#")
 				.pattern(" $ ")
-				.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+				.input('$', TagRegistry.item(asId("c:wood_sticks")))
 				.input('#', material)
 				.offerTo(recipes);
 		}
@@ -636,8 +671,8 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 
 		private static void ofUniviteSmithing(RecipeData recipes, Item output, Identifier keyPath) {
 			ofSmithing(recipes,
-				Ingredient.ofItems(Registry.ITEM.get(new Identifier(keyPath.toString().replace("univite_", "galaxium_")))),
-				Ingredient.fromTag(TagRegistry.item(new Identifier("c:univite_ingots"))),
+				Ingredient.ofItems(Registry.ITEM.get(asId(keyPath.toString().replace("univite_", "galaxium_")))),
+				Ingredient.fromTag(TagRegistry.item(asId("c:univite_ingots"))),
 				output);
 		}
 
@@ -668,7 +703,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 		}
 
 		private static void ofPresserIngotToPlate(RecipeData recipes, Item plate, Ingredient ingot) {
-			Generators.ofPresser(recipes, new Identifier(Registry.ITEM.getId(plate) + "_from_pressing_ingot"),
+			Generators.ofPressing(recipes, asId(Registry.ITEM.getId(plate) + "_from_pressing_ingot"),
 				ingot, 1, new ItemStack(plate), 60, 384);
 		}
 
@@ -738,19 +773,19 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 				.offerTo(recipes, ingot + "_from_block");
 		}
 
-		private static void ofTrituratingItemToDust(RecipeData recipes, Identifier itemTag, Identifier dust, int dustCount, int time, int energyConsumed) {
-			ofTriturating(recipes, new Identifier(dust + "_from_triturating_" + getTypeFromId(itemTag.getPath())),
+		private static void ofTrituratoringItemToDust(RecipeData recipes, Identifier itemTag, Identifier dust, int dustCount, int time, int energyConsumed) {
+			ofTriturating(recipes, asId(dust + "_from_triturating_" + getTypeFromId(itemTag.getPath())),
 				Ingredient.fromTag(TagRegistry.item(itemTag)), 1, new ItemStack(Registry.ITEM.get(dust), dustCount), time, energyConsumed);
 		}
 
 		/*
 		 * Machine recipe generators.
 		 */
-		private static void ofPresser(RecipeData recipes, Ingredient input, int inputCount, ItemStack output, int time, int energyConsumed) {
-			ofPresser(recipes, Registry.ITEM.getId(output.getItem()), input, inputCount, output, time, energyConsumed);
+		private static void ofPressing(RecipeData recipes, Ingredient input, int inputCount, ItemStack output, int time, int energyConsumed) {
+			ofPressing(recipes, Registry.ITEM.getId(output.getItem()), input, inputCount, output, time, energyConsumed);
 		}
 
-		private static void ofPresser(RecipeData recipes, Identifier id, Ingredient input, int inputCount, ItemStack output, int time, int energyConsumed) {
+		private static void ofPressing(RecipeData recipes, Identifier id, Ingredient input, int inputCount, ItemStack output, int time, int energyConsumed) {
 			recipes.accept(Providers.createProvider(PressingRecipe.Serializer.INSTANCE, id, json -> {
 				JsonObject inputJson = input.toJson().getAsJsonObject();
 				inputJson.addProperty("count", inputCount);
