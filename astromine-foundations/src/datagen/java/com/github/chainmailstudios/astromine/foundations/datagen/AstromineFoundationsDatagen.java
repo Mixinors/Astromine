@@ -3,6 +3,7 @@ package com.github.chainmailstudios.astromine.foundations.datagen;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.item.MultitoolItem;
 import com.github.chainmailstudios.astromine.common.recipe.PressingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
 import com.github.chainmailstudios.astromine.foundations.common.block.AstromineOreBlock;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsItems;
@@ -164,8 +165,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 			    key.toString().endsWith("_dust") || key.toString().endsWith("_ingot") || key.toString().endsWith("_wire") ||
 			    key.toString().endsWith("_nugget") || key.toString().endsWith("_fragment") ||
 			    item == AstromineFoundationsItems.ASTERITE || item == AstromineFoundationsItems.GALAXIUM) {
-				Identifier tagId = key.toString().endsWith("s") ? key : new Identifier(key.toString() + "s");
-				tagId = new Identifier("c", tagId.getPath().replaceFirst("asteroid_", "").replaceFirst("meteor_", ""));
+				Identifier tagId = convertIdToCommonTag(key);
 
 				TagData.TagBuilder<ItemConvertible> builder = tags.item(tagId).append(item);
 
@@ -233,7 +233,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 		forEach(AstromineFoundationsBlocks.class, Block.class, block -> {
 			Identifier key = Registry.BLOCK.getId(block);
 			if (key.toString().endsWith("_block") || key.toString().endsWith("_ore")) {
-				Identifier tagId = new Identifier("c", key.getPath().replaceFirst("asteroid_", "").replaceFirst("meteor_", "") + "s");
+				Identifier tagId = convertIdToCommonTag(key);
 
 				if (key.toString().endsWith("_block"))
 					tags.block(new Identifier("beacon_base_blocks")).append(block);
@@ -272,8 +272,6 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 	}
 
 	private static void populateRecipes(RecipeData recipes) {
-		Set<String> addedCluster = Sets.newHashSet();
-
 		forEach(AstromineFoundationsItems.class, Item.class, item -> {
 			Identifier itemId = Registry.ITEM.getId(item);
 			String itemIdPath = itemId.getPath();
@@ -319,6 +317,32 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 
 					// 9 nuggets (/fragments) to 1 ingot
 					Generators.ofNuggetToIngot(recipes, material.getIngotItemId(), itemId);
+
+					// 1 nugget (/fragment) to 1 tiny dust
+					Generators.ofTrituratingItemToDust(recipes, convertIdToCommonTag(itemId), material.getTinyDustId(), 1, 10, 90);
+
+					// 1 cluster to 1 nugget (/fragment)
+					Generators.ofSmelting(recipes, convertIdToCommonTag(new Identifier(material.getMaterialId() + "_cluster")), itemId);
+
+					// 1 cluster to 1 nugget (/fragment)
+					Generators.ofBlasting(recipes, convertIdToCommonTag(new Identifier(material.getMaterialId() + "_cluster")), itemId);
+
+					// 1 cluster to 2 tiny dusts
+					Generators.ofTrituratingItemToDust(recipes, convertIdToCommonTag(new Identifier(material.getMaterialId() + "_cluster")), material.getTinyDustId(), 2, 20, 180);
+
+					// 1 tiny dust to 1 nugget (/fragment)
+					Generators.ofSmelting(recipes, material.getTinyDustTagId(), itemId);
+
+					// 1 tiny dust to 1 nugget (/fragment)
+					Generators.ofBlasting(recipes, material.getTinyDustTagId(), itemId);
+
+					if (!material.getIngotItemId().equals(material.getDustId())) {
+						// 1 dust to 1 ingot (/fragment)
+						Generators.ofSmelting(recipes, material.getDustTagId(), material.getIngotItemId());
+
+						// 1 dust to 1 ingot (/fragment)
+						Generators.ofBlasting(recipes, material.getDustTagId(), material.getIngotItemId());
+					}
 				} else if (itemIdPath.endsWith("_plates")) {
 					// 2 ingots to 1 plate
 					Generators.ofIngotToPlate(recipes, item, material.asIngredient());
@@ -328,20 +352,15 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 				} else if (itemIdPath.endsWith("_gear")) {
 					// 4 ingots to 1 gear
 					Generators.ofIngotToGear(recipes, item, material.asIngredient());
-				} else if (itemIdPath.endsWith("_cluster")) {
-					if (addedCluster.add(material.getMaterialId())) {
-						// 1 cluster to 1 ingot
-						Generators.ofSmeltingCluster(recipes, item, material.getIngotItemId());
-
-						// 1 cluster to 1 ingot
-						Generators.ofBlastingCluster(recipes, item, material.getIngotItemId());
-					}
 				} else if (itemIdPath.endsWith("_tiny_dust")) {
 					// 9 tiny dust to 1 dust
 					Generators.ofTinyDustToDust(recipes, material.getDustId(), material.getTinyDustTagId());
 
 					// 1 dust to 9 tiny dust
 					Generators.ofDustToTinyDust(recipes, material.getTinyDustId(), material.getDustTagId());
+
+					// 1 ingot to 1 dusts
+					Generators.ofTrituratingItemToDust(recipes, material.getItemTagId(), material.getDustId(), 1, 30, 270);
 				}
 			}
 		});
@@ -364,14 +383,22 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 				} else if (blockIdPath.endsWith("_ore")) {
 					if (addedOre.add(material.getMaterialId())) {
 						// 1 ore to 1 ingot
-						Generators.ofSmeltingOre(recipes, block, material.getIngotItemId());
+						Generators.ofSmelting(recipes, convertIdToCommonTag(blockId), material.getIngotItemId());
 
 						// 1 ore to 1 ingot
-						Generators.ofBlastingOre(recipes, block, material.getIngotItemId());
+						Generators.ofBlasting(recipes, convertIdToCommonTag(blockId), material.getIngotItemId());
+
+						// 1 ore to 2 dusts
+						Generators.ofTrituratingItemToDust(recipes, convertIdToCommonTag(blockId), material.getDustId(), 2, 30, 270);
 					}
 				}
 			}
 		});
+	}
+
+	public static Identifier convertIdToCommonTag(Identifier identifier) {
+		String s = identifier.getPath().replaceFirst("asteroid_", "").replaceFirst("meteor_", "");
+		return new Identifier("c", s.endsWith("s") ? s : s + "s");
 	}
 
 	@Nullable
@@ -394,6 +421,12 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 		}
 
 		return getMaterialFromTinyDust(itemId);
+	}
+	
+	private static String getTypeFromId(String id) {
+		if (id.contains("tiny_dusts"))
+			return "tiny_dust";
+		return id.substring(id.lastIndexOf('_') + 1, id.endsWith("s") ? id.length() - 1 : id.length());
 	}
 
 	private static <T> void forEach(Class<?> scanning, Class<T> clazz, Consumer<T> consumer) {
@@ -614,14 +647,13 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 		}
 
 		private static void ofNuggetToIngot(RecipeData recipes, Identifier ingotItem, Identifier nuggetId) {
-			String nuggetIdPath = nuggetId.getPath();
 			ShapedRecipeJsonFactory.create(Registry.ITEM.get(ingotItem))
 				.criterion("impossible", new ImpossibleCriterion.Conditions())
 				.pattern("###")
 				.pattern("###")
 				.pattern("###")
-				.input('#', TagRegistry.item(new Identifier("c", nuggetIdPath + "s")))
-				.offerTo(recipes, ingotItem.toString() + "_from_" + nuggetIdPath.substring(nuggetIdPath.lastIndexOf('_') + 1));
+				.input('#', TagRegistry.item(convertIdToCommonTag(nuggetId)))
+				.offerTo(recipes, ingotItem.toString() + "_from_" + getTypeFromId(nuggetId.getPath()));
 		}
 
 		private static void ofIngotToPlate(RecipeData recipes, Item plate, Ingredient ingot) {
@@ -648,26 +680,26 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 				.offerTo(recipes, Registry.ITEM.getId(gear) + "_from_ingot");
 		}
 
-		private static void ofSmeltingCluster(RecipeData recipes, Item cluster, Identifier result) {
+		private static void ofSmelting(RecipeData recipes, Identifier itemTag, Identifier result) {
 			CookingRecipeJsonFactory
 				.createSmelting(
-					Ingredient.fromTag(TagRegistry.item(new Identifier("c", Registry.ITEM.getId(cluster).getPath() + "s"))),
+					Ingredient.fromTag(TagRegistry.item(itemTag)),
 					Registry.ITEM.get(result),
 					0.1F,
 					200)
 				.criterion("impossible", new ImpossibleCriterion.Conditions())
-				.offerTo(recipes, result + "_from_smelting_cluster");
+				.offerTo(recipes, result + "_from_smelting_" + getTypeFromId(itemTag.getPath()));
 		}
 
-		private static void ofBlastingCluster(RecipeData recipes, Item cluster, Identifier result) {
+		private static void ofBlasting(RecipeData recipes, Identifier itemTag, Identifier result) {
 			CookingRecipeJsonFactory
 				.createBlasting(
-					Ingredient.fromTag(TagRegistry.item(new Identifier("c", Registry.ITEM.getId(cluster).getPath() + "s"))),
+					Ingredient.fromTag(TagRegistry.item(itemTag)),
 					Registry.ITEM.get(result),
 					0.1F,
 					100)
 				.criterion("impossible", new ImpossibleCriterion.Conditions())
-				.offerTo(recipes, result + "_from_blasting_cluster");
+				.offerTo(recipes, result + "_from_blasting_" + getTypeFromId(itemTag.getPath()));
 		}
 
 		private static void ofTinyDustToDust(RecipeData recipes, Identifier dustItem, Identifier tinyDustTagId) {
@@ -700,30 +732,13 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 		private static void ofBlockToIngot(RecipeData recipes, Identifier ingot, Block block) {
 			ShapelessRecipeJsonFactory.create(Registry.ITEM.get(ingot), 9)
 				.criterion("impossible", new ImpossibleCriterion.Conditions())
-				.input(TagRegistry.item(new Identifier("c", Registry.BLOCK.getId(block).getPath() + "s")))
+				.input(TagRegistry.item(convertIdToCommonTag(Registry.BLOCK.getId(block))))
 				.offerTo(recipes, ingot + "_from_block");
 		}
 
-		private static void ofSmeltingOre(RecipeData recipes, Block ore, Identifier ingot) {
-			CookingRecipeJsonFactory
-				.createSmelting(
-					Ingredient.fromTag(TagRegistry.item(new Identifier("c", Registry.BLOCK.getId(ore).getPath() + "s"))),
-					Registry.ITEM.get(ingot),
-					0.1F,
-					200)
-				.criterion("impossible", new ImpossibleCriterion.Conditions())
-				.offerTo(recipes, ingot + "_from_smelting_ore");
-		}
-
-		private static void ofBlastingOre(RecipeData recipes, Block ore, Identifier ingot) {
-			CookingRecipeJsonFactory
-				.createBlasting(
-					Ingredient.fromTag(TagRegistry.item(new Identifier("c", Registry.BLOCK.getId(ore).getPath() + "s"))),
-					Registry.ITEM.get(ingot),
-					0.1F,
-					100)
-				.criterion("impossible", new ImpossibleCriterion.Conditions())
-				.offerTo(recipes, ingot + "_from_blasting_ore");
+		private static void ofTrituratingItemToDust(RecipeData recipes, Identifier itemTag, Identifier dust, int dustCount, int time, int energyConsumed) {
+			ofTriturating(recipes, new Identifier(dust + "_from_triturating_" + getTypeFromId(itemTag.getPath())),
+				Ingredient.fromTag(TagRegistry.item(itemTag)), 1, new ItemStack(Registry.ITEM.get(dust), dustCount), time, energyConsumed);
 		}
 
 		/*
@@ -735,6 +750,27 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 
 		private static void ofPresser(RecipeData recipes, Identifier id, Ingredient input, int inputCount, ItemStack output, int time, int energyConsumed) {
 			recipes.accept(Providers.createProvider(PressingRecipe.Serializer.INSTANCE, id, json -> {
+				JsonObject inputJson = input.toJson().getAsJsonObject();
+				inputJson.addProperty("count", inputCount);
+
+				json.add("input", inputJson);
+
+				JsonObject outputJson = new JsonObject();
+				outputJson.addProperty("item", Registry.ITEM.getId(output.getItem()).toString());
+				outputJson.addProperty("count", output.getCount());
+
+				json.add("output", outputJson);
+				json.addProperty("time", time);
+				json.addProperty("energy_consumed", energyConsumed);
+			}));
+		}
+
+		private static void ofTriturating(RecipeData recipes, Ingredient input, int inputCount, ItemStack output, int time, int energyConsumed) {
+			ofTriturating(recipes, Registry.ITEM.getId(output.getItem()), input, inputCount, output, time, energyConsumed);
+		}
+
+		private static void ofTriturating(RecipeData recipes, Identifier id, Ingredient input, int inputCount, ItemStack output, int time, int energyConsumed) {
+			recipes.accept(Providers.createProvider(TrituratingRecipe.Serializer.INSTANCE, id, json -> {
 				JsonObject inputJson = input.toJson().getAsJsonObject();
 				inputJson.addProperty("count", inputCount);
 

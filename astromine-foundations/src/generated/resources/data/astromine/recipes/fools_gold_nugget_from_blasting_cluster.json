@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "tag": "c:fools_gold_clusters"
+  },
+  "result": "astromine:fools_gold_nugget",
+  "experience": 0.1,
+  "cookingtime": 100
+}

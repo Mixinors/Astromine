@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "c:steel_clusters",
+    "count": 1
+  },
+  "output": {
+    "item": "astromine:steel_tiny_dust",
+    "count": 2
+  },
+  "time": 20,
+  "energy_consumed": 180
+}

@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "tag": "c:sterling_silver_tiny_dusts"
-  },
-  "result": "astromine:sterling_silver_nugget",
-  "experience": 0.1,
-  "cookingtime": 100
-}

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "tag": "c:emerald_clusters"
+  },
+  "result": "astromine:emerald_fragment",
+  "experience": 0.1,
+  "cookingtime": 100
+}

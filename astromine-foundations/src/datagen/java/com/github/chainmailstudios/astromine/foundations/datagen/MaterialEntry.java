@@ -61,7 +61,7 @@ public class MaterialEntry {
 
 	public MaterialEntry dust(Identifier dustId) {
 		this.dustId = dustId;
-		this.dustTagId = new Identifier("c", dustId.getPath() + "s");
+		this.dustTagId = AstromineFoundationsDatagen.convertIdToCommonTag(dustId);
 		if (dustId.toString().contains("_dust")) {
 			Identifier tinyDustId = new Identifier(dustId.toString().replace("_dust", "_tiny_dust"));
 			if (Registry.ITEM.getOrEmpty(tinyDustId).isPresent())
@@ -81,7 +81,7 @@ public class MaterialEntry {
 
 	public MaterialEntry tinyDust(Identifier tinyDustId) {
 		this.tinyDustId = tinyDustId;
-		this.tinyDustTagId = new Identifier("c", tinyDustId.getPath() + "s");
+		this.tinyDustTagId = AstromineFoundationsDatagen.convertIdToCommonTag(tinyDustId);
 		return this;
 	}
 

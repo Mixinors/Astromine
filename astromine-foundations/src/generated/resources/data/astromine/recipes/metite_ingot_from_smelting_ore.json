@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smelting",
   "ingredient": {
-    "tag": "c:meteor_metite_ores"
+    "tag": "c:metite_ores"
   },
   "result": "astromine:metite_ingot",
   "experience": 0.1,
