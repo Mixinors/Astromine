@@ -7,9 +7,8 @@ import com.github.chainmailstudios.astromine.foundations.common.block.AstromineO
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsItems;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Sets;
 import com.google.gson.JsonObject;
-import com.mojang.serialization.Dynamic;
-import com.mojang.serialization.JsonOps;
 import draylar.magna.item.ExcavatorItem;
 import draylar.magna.item.HammerItem;
 import me.shedaniel.cloth.api.datagen.v1.DataGeneratorHandler;
@@ -25,18 +24,13 @@ import net.minecraft.advancement.criterion.ImpossibleCriterion;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
-import net.minecraft.data.server.recipe.RecipeJsonProvider;
-import net.minecraft.data.server.recipe.ShapedRecipeJsonFactory;
-import net.minecraft.data.server.recipe.ShapelessRecipeJsonFactory;
-import net.minecraft.data.server.recipe.SmithingRecipeJsonFactory;
+import net.minecraft.data.server.recipe.*;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.*;
 import net.minecraft.loot.UniformLootTableRange;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.ApplyBonusLootFunction;
 import net.minecraft.loot.function.SetCountLootFunction;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
@@ -44,6 +38,7 @@ import net.minecraft.util.registry.Registry;
 
 import java.lang.reflect.Field;
 import java.nio.file.Paths;
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
@@ -231,7 +226,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 		iterate(AstromineFoundationsItems.class, Item.class, item -> {
 			Identifier key = Registry.ITEM.getKey(item).get().getValue();
 			if (key.getPath().indexOf('_') > 0) {
-				String material = materialMap.get(key.getPath().substring(0, key.getPath().replace("mining_tool", "miningtool").lastIndexOf('_')));
+				String material = materialMap.get(key.getPath().replace("mining_tool", "miningtool").substring(0, key.getPath().replace("mining_tool", "miningtool").lastIndexOf('_')));
 				if (material != null) {
 					if (!key.getPath().startsWith("univite_")) {
 						if (key.toString().endsWith("_axe")) {
@@ -331,9 +326,10 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 					.offerTo(recipes, key + "_from_dust");
 			}
 		});
+		Set<String> addedOre = Sets.newHashSet();
 		iterate(AstromineFoundationsBlocks.class, Block.class, block -> {
 			Identifier key = Registry.BLOCK.getKey(block).get().getValue();
-			String material = materialMap.get(key.getPath().substring(0, key.getPath().replace("mining_tool", "miningtool").lastIndexOf('_')));
+			String material = materialMap.get(key.getPath().replace("meteor_", "").replace("asteroid_", "").substring(0, key.getPath().replace("meteor_", "").replace("asteroid_", "").lastIndexOf('_')));
 			if (material != null) {
 				if (key.getPath().endsWith("_block")) {
 					// 9 ingots -> 1 block
@@ -350,6 +346,23 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 						.criterion("impossible", new ImpossibleCriterion.Conditions())
 						.input(TagRegistry.item(new Identifier("c", key.getPath() + "s")))
 						.offerTo(recipes, ingotItem + "_from_block");
+				} else if (key.getPath().endsWith("_ore")) {
+					if (addedOre.add(material)) {
+						CookingRecipeJsonFactory.createSmelting(
+							Ingredient.fromTag(TagRegistry.item(new Identifier("c", key.getPath() + "s"))),
+							Registry.ITEM.get(guessMaterialFromTag(material)),
+							0.1F,
+							200
+						).criterion("impossible", new ImpossibleCriterion.Conditions())
+							.offerTo(recipes, guessMaterialFromTag(material).getPath() + "_from_smelting_ore");
+						CookingRecipeJsonFactory.createBlasting(
+							Ingredient.fromTag(TagRegistry.item(new Identifier("c", key.getPath() + "s"))),
+							Registry.ITEM.get(guessMaterialFromTag(material)),
+							0.1F,
+							100
+						).criterion("impossible", new ImpossibleCriterion.Conditions())
+							.offerTo(recipes, guessMaterialFromTag(material).getPath() + "_from_blasting_ore");
+					}
 				}
 			}
 		});
