@@ -69,7 +69,7 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 			}
 		}
 
-		if (ores.method_28339()) {
+		if (ores.isEmpty()) {
 			return true;
 		}
 
