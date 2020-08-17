@@ -279,6 +279,23 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 					}
 				}
 			}
+
+			if (key.toString().endsWith("_tiny_dust")) {
+				// 9 tiny dusts -> 1 dust
+				Identifier dustItem = new Identifier(key.getNamespace(), key.getPath().replace("_tiny_dust", "_dust"));
+				ShapedRecipeJsonFactory.create(Registry.ITEM.get(dustItem))
+					.criterion("impossible", new ImpossibleCriterion.Conditions())
+					.pattern("###")
+					.pattern("###")
+					.pattern("###")
+					.input('#', TagRegistry.item(new Identifier("c", key.getPath() + "s")))
+					.offerTo(recipes, new Identifier(dustItem.toString() + "_from_tiny_dust"));
+				// 1 dust -> 9 tiny dusts
+				ShapelessRecipeJsonFactory.create(item, 9)
+					.criterion("impossible", new ImpossibleCriterion.Conditions())
+					.input(TagRegistry.item(new Identifier("c", dustItem.getPath() + "s")))
+					.offerTo(recipes, new Identifier(key.toString() + "_from_dust"));
+			}
 		});
 		iterate(AstromineFoundationsBlocks.class, Block.class, block -> {
 			Identifier key = Registry.BLOCK.getKey(block).get().getValue();
@@ -303,7 +320,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 			}
 		});
 	}
-	
+
 	private static Identifier guessMaterialFromTag(String tag) {
 		Identifier ingotItem = AstromineCommon.identifier((new Identifier(tag).getNamespace().equals("c") ? "" : new Identifier(tag).getNamespace() + ":") +
 		                                                  (tag.endsWith("s") ? new Identifier(tag).getPath().substring(0, new Identifier(tag).getPath().length() - 1) : new Identifier(tag).getPath()));

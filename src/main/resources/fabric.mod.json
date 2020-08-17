@@ -19,7 +19,7 @@
     "sources": "https://github.com/Chainmail-Studios/Astromine"
   },
   "license": "MIT",
-  "icon": "assets/astromine/icon.png",
+  "icon": "icon.png",
   "environment": "*",
   "depends": {
     "fabricloader": ">=0.8.7",

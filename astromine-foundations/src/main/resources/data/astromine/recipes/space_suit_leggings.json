@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["111", "121", "3 3"],
+  "key": {
+    "1": {
+      "item": "minecraft:white_wool"
+    },
+    "2": {
+      "tag": "c:metite_dusts"
+    },
+    "3": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "result": {
+    "item": "astromine:space_suit_leggings"
+  }
+}
