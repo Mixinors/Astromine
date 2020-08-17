@@ -359,8 +359,10 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 					// 1 dust to 9 tiny dust
 					Generators.ofDustToTinyDust(recipes, material.getTinyDustId(), material.getDustTagId());
 
-					// 1 ingot to 1 dusts
-					Generators.ofTrituratingItemToDust(recipes, material.getItemTagId(), material.getDustId(), 1, 30, 270);
+					if (!material.getIngotItemId().equals(material.getDustId())) {
+						// 1 ingot to 1 dusts
+						Generators.ofTrituratingItemToDust(recipes, material.getItemTagId(), material.getDustId(), 1, 30, 270);
+					}
 				}
 			}
 		});
