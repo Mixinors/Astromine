@@ -16,6 +16,7 @@ import me.shedaniel.cloth.api.datagen.v1.RecipeData;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.tag.TagRegistry;
+import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 import net.minecraft.advancement.criterion.ImpossibleCriterion;
@@ -33,18 +34,46 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import org.apache.logging.log4j.util.TriConsumer;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.nio.file.Paths;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 
+import static com.github.chainmailstudios.astromine.foundations.datagen.MaterialEntry.of;
+
 public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
+	public static final BiMap<String, MaterialEntry> MATERIALS = ImmutableBiMap.<String, MaterialEntry>builder()
+		.put("copper", of(AstromineFoundationsItems.COPPER_INGOT, "c:copper_ingots"))
+		.put("tin", of(AstromineFoundationsItems.TIN_INGOT, "c:tin_ingots"))
+		.put("silver", of(AstromineFoundationsItems.SILVER_INGOT, "c:silver_ingots"))
+		.put("lead", of(AstromineFoundationsItems.LEAD_INGOT, "c:lead_ingots"))
+		.put("bronze", of(AstromineFoundationsItems.BRONZE_INGOT, "c:bronze_ingots"))
+		.put("steel", of(AstromineFoundationsItems.STEEL_INGOT, "c:steel_ingots"))
+		.put("electrum", of(AstromineFoundationsItems.ELECTRUM_INGOT, "c:electrum_ingots"))
+		.put("rose_gold", of(AstromineFoundationsItems.ROSE_GOLD_INGOT, "c:rose_gold_ingots"))
+		.put("sterling_silver", of(AstromineFoundationsItems.STERLING_SILVER_INGOT, "c:sterling_silver_ingots"))
+		.put("fools_gold", of(AstromineFoundationsItems.FOOLS_GOLD_INGOT, "c:fools_gold_ingots"))
+		.put("metite", of(AstromineFoundationsItems.METITE_INGOT, "c:metite_ingots"))
+		.put("asterite", of(AstromineFoundationsItems.ASTERITE, "c:asterites"))
+		.put("stellum", of(AstromineFoundationsItems.STELLUM_INGOT, "c:stellum_ingots"))
+		.put("galaxium", of(AstromineFoundationsItems.GALAXIUM, "c:galaxiums"))
+		.put("diamond", of(Items.DIAMOND, "c:diamonds"))
+		.put("emerald", of(Items.EMERALD, "c:emeralds"))
+		.put("quartz", of(Items.QUARTZ, "c:quartz"))
+		.put("univite", of(AstromineFoundationsItems.UNIVITE_INGOT, "c:univite_ingots"))
+		.put("wooden", of(Items.OAK_PLANKS, "minecraft:planks"))
+		.put("stone", of(Items.COBBLESTONE, "c:cobblestones"))
+		.put("iron", of(Items.IRON_INGOT, "c:iron_ingots"))
+		.put("gold", of(Items.GOLD_INGOT, "c:gold_ingots"))
+		.put("redstone", of(Items.REDSTONE, "c:redstone"))
+		.put("netherite", of(Items.NETHERITE_INGOT, "c:netherite_ingots"))
+		.build();
+
 	private static final Multimap<Class<?>, DataGenConsumer<?>> CONSUMERS = Multimaps.newListMultimap(Maps.newHashMap(), Lists::newArrayList);
 	private static final Map<BiPredicate<Block, Identifier>, TriConsumer<LootTableData, Block, Identifier>> BLOCK_LOOT_TABLES = Maps.newLinkedHashMap();
 
@@ -181,6 +210,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 		tags.item(new Identifier("c:lapis_lazulis")).append(Items.LAPIS_LAZULI);
 		tags.item(new Identifier("c:netherite_ingots")).append(Items.NETHERITE_INGOT);
 		tags.item(new Identifier("c:quartz")).append(Items.QUARTZ);
+		tags.item(new Identifier("c:redstone")).append(Items.REDSTONE);
 
 		tags.item(new Identifier("c:wood_sticks")).append(Items.STICK);
 
@@ -190,7 +220,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 		tags.block(AstromineCommon.identifier("metite_ores")).append(AstromineFoundationsBlocks.METEOR_METITE_ORE, AstromineFoundationsBlocks.ASTEROID_METITE_ORE);
 
 		forEach(AstromineFoundationsBlocks.class, Block.class, block -> {
-			Identifier key = Registry.BLOCK.getKey(block).get().getValue();
+			Identifier key = Registry.BLOCK.getId(block);
 			if (key.toString().endsWith("_block") || key.toString().endsWith("_ore")) {
 				Identifier tagId = new Identifier("c", key.getPath().replaceFirst("asteroid_", "").replaceFirst("meteor_", "") + "s");
 
@@ -231,165 +261,131 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 	}
 
 	private static void populateRecipes(RecipeData recipes) {
-		ImmutableMap<String, String> materialMap = ImmutableMap.<String, String>builder()
-			.put("copper", "c:copper_ingots")
-			.put("tin", "c:tin_ingots")
-			.put("silver", "c:silver_ingots")
-			.put("lead", "c:lead_ingots")
-			.put("bronze", "c:bronze_ingots")
-			.put("steel", "c:steel_ingots")
-			.put("electrum", "c:electrum_ingots")
-			.put("rose_gold", "c:rose_gold_ingots")
-			.put("sterling_silver", "c:sterling_silver_ingots")
-			.put("fools_gold", "c:fools_gold_ingots")
-			.put("metite", "c:metite_ingots")
-			.put("asterite", "c:asterites")
-			.put("stellum", "c:stellum_ingots")
-			.put("galaxium", "c:galaxiums")
-			.put("diamond", "c:diamonds")
-			.put("emerald", "c:emeralds")
-			.put("quartz", "c:quartz")
-			.put("univite", "c:univite_ingots")
-			.put("wooden", "minecraft:planks")
-			.put("stone", "c:cobblestones")
-			.put("iron", "c:iron_ingots")
-			.put("gold", "c:gold_ingots")
-			.put("netherite", "c:netherite_ingots")
-			.build();
-
 		Set<String> addedCluster = Sets.newHashSet();
 
 		forEach(AstromineFoundationsItems.class, Item.class, item -> {
-			Optional<RegistryKey<Item>> optionalKey = Registry.ITEM.getKey(item);
+			Identifier itemId = Registry.ITEM.getId(item);
+			String itemIdPath = itemId.getPath();
 
-			optionalKey.ifPresent((registryKey) -> {
-				Identifier keyId = registryKey.getValue();
+			MaterialEntry material = getMaterial(itemId);
 
-				String keyPath = keyId.getPath();
-				
-				String keyString = keyId.toString();
-
-				if (keyPath.contains("_")) {
-					materialMap.keySet().forEach(materialKey -> {
-						if (keyPath.contains(materialKey)) {
-							String materialValue = materialMap.get(materialKey);
-							Identifier materialIdentifier = guessMaterialFromTag(materialValue);
-
-							if (!keyPath.startsWith("univite_")) {
-								if (keyString.endsWith("_axe")) {
-									Generators.ofAxe(recipes, item, new Identifier(materialValue));
-								} else if (keyString.endsWith("_pickaxe")) {
-									Generators.ofPickaxe(recipes, item, new Identifier(materialValue));
-								} else if (keyString.endsWith("_hoe")) {
-									Generators.ofHoe(recipes, item, new Identifier(materialValue));
-								} else if (keyString.endsWith("_sword")) {
-									Generators.ofSword(recipes, item, new Identifier(materialValue));
-								} else if (keyString.endsWith("_shovel")) {
-									Generators.ofShovel(recipes, item, new Identifier(materialValue));
-								} else if (keyString.endsWith("_mining_tool")) {
-									Generators.ofMiningTool(recipes, item, new Identifier(materialValue));
-								} else if (keyString.endsWith("_mattock")) {
-									Generators.ofMattock(recipes, item, new Identifier(materialValue));
-								} else if (keyString.endsWith("_hammer")) {
-									Generators.ofHammer(recipes, item, new Identifier(materialValue));
-								} else if (keyString.endsWith("_excavator")) {
-									Generators.ofExcavator(recipes, item, new Identifier(materialValue));
-								} else if (keyString.endsWith("_helmet")) {
-									Generators.ofHelmet(recipes, item, new Identifier(materialValue));
-								} else if (keyString.endsWith("_chestplate")) {
-									Generators.ofChestplate(recipes, item, new Identifier(materialValue));
-								} else if (keyString.endsWith("_leggings")) {
-									Generators.ofLeggings(recipes, item, new Identifier(materialValue));
-								} else if (keyString.endsWith("_boots")) {
-									Generators.ofBoots(recipes, item, new Identifier(materialValue));
-								}
-							} else if (item instanceof ToolItem || item instanceof ArmorItem) {
-								Generators.ofUniviteSmithing(recipes, item, keyPath);
-							}
-
-							if (keyString.endsWith("_nugget") || keyString.endsWith("_fragment")) {
-								// 1 ingot to 9 nuggets (/ fragments)
-								Generators.ofIngotToNugget(recipes, item, keyString, materialValue);
-
-								// 9 nuggets (/fragments) to 1 ingot
-								Generators.ofNuggetToIngot(recipes, materialIdentifier, keyPath);
-							} else if (keyString.endsWith("_plates")) {
-								// 2 ingots to 1 plate
-								Generators.ofIngotToPlate(recipes, item, keyString, materialValue);
-
-								// 1 ingot to 1 plate
-								Generators.ofPresserIngotToPlate(recipes, item, keyString, materialValue);
-							} else if (keyString.endsWith("_gear")) {
-								// 4 ingots to 1 gear
-								Generators.ofIngotToGear(recipes, item, keyString, materialValue);
-							}
-							if (keyPath.endsWith("_cluster")) {
-								if (addedCluster.add(materialValue)) {
-									// 1 cluster to 1 ingot
-									Generators.ofSmeltingCluster(recipes, keyPath, materialIdentifier);
-
-									// 1 cluster to 1 ingot
-									Generators.ofBlastingCluster(recipes, keyPath, materialIdentifier);
-								}
-							}
-						}
-
-						if (keyString.endsWith("_tiny_dust")) {
-							// 9 tiny dusts to 1 dust
-							Identifier dustItem = new Identifier(keyId.getNamespace(), keyPath.replace("_tiny_dust", "_dust"));
-							if (dustItem.toString().equals("astromine:redstone_dust")) {
-								dustItem = new Identifier("redstone");
-							} else if (!Registry.ITEM.getOrEmpty(dustItem).isPresent()) {
-								dustItem = new Identifier(dustItem.getPath());
-							}
-
-							// 9 tiny dust to 1 dust
-							Generators.ofTinyDustToDust(recipes, dustItem, keyPath);
-
-							// 1 dust to 9 tiny dust
-							Generators.ofDustToTinyDust(recipes, item, dustItem, keyId);
-						}
-					});
+			if (material != null) {
+				if (!material.getMaterialId().equals("univite")) {
+					if (itemIdPath.endsWith("_axe")) {
+						Generators.ofAxe(recipes, item, material.asIngredient());
+					} else if (itemIdPath.endsWith("_pickaxe")) {
+						Generators.ofPickaxe(recipes, item, material.asIngredient());
+					} else if (itemIdPath.endsWith("_hoe")) {
+						Generators.ofHoe(recipes, item, material.asIngredient());
+					} else if (itemIdPath.endsWith("_sword")) {
+						Generators.ofSword(recipes, item, material.asIngredient());
+					} else if (itemIdPath.endsWith("_shovel")) {
+						Generators.ofShovel(recipes, item, material.asIngredient());
+					} else if (itemIdPath.endsWith("_mining_tool")) {
+						Generators.ofMiningTool(recipes, item, material.asIngredient());
+					} else if (itemIdPath.endsWith("_mattock")) {
+						Generators.ofMattock(recipes, item, material.asIngredient());
+					} else if (itemIdPath.endsWith("_hammer")) {
+						Generators.ofHammer(recipes, item, material.asIngredient());
+					} else if (itemIdPath.endsWith("_excavator")) {
+						Generators.ofExcavator(recipes, item, material.asIngredient());
+					} else if (itemIdPath.endsWith("_helmet")) {
+						Generators.ofHelmet(recipes, item, material.asIngredient());
+					} else if (itemIdPath.endsWith("_chestplate")) {
+						Generators.ofChestplate(recipes, item, material.asIngredient());
+					} else if (itemIdPath.endsWith("_leggings")) {
+						Generators.ofLeggings(recipes, item, material.asIngredient());
+					} else if (itemIdPath.endsWith("_boots")) {
+						Generators.ofBoots(recipes, item, material.asIngredient());
+					}
+				} else if (item instanceof ToolItem || item instanceof ArmorItem || item instanceof DynamicAttributeTool) {
+					Generators.ofUniviteSmithing(recipes, item, itemId);
 				}
-			});
+
+				if (itemIdPath.endsWith("_nugget") || itemIdPath.endsWith("_fragment")) {
+					// 1 ingot to 9 nuggets (/ fragments)
+					Generators.ofIngotToNugget(recipes, item, material.asIngredient());
+
+					// 9 nuggets (/fragments) to 1 ingot
+					Generators.ofNuggetToIngot(recipes, material.getIngotItemId(), itemId);
+				} else if (itemIdPath.endsWith("_plates")) {
+					// 2 ingots to 1 plate
+					Generators.ofIngotToPlate(recipes, item, material.asIngredient());
+
+					// 1 ingot to 1 plate
+					Generators.ofPresserIngotToPlate(recipes, item, material.asIngredient());
+				} else if (itemIdPath.endsWith("_gear")) {
+					// 4 ingots to 1 gear
+					Generators.ofIngotToGear(recipes, item, material.asIngredient());
+				}
+				if (itemIdPath.endsWith("_cluster")) {
+					if (addedCluster.add(material.getMaterialId())) {
+						// 1 cluster to 1 ingot
+						Generators.ofSmeltingCluster(recipes, item, material.getIngotItemId());
+
+						// 1 cluster to 1 ingot
+						Generators.ofBlastingCluster(recipes, item, material.getIngotItemId());
+					}
+				}
+			}
+
+			if (itemIdPath.endsWith("_tiny_dust")) {
+				// 9 tiny dusts to 1 dust
+				Identifier dustItem = new Identifier(itemId.getNamespace(), itemIdPath.replace("_tiny_dust", "_dust"));
+				if (dustItem.toString().equals("astromine:redstone_dust")) {
+					dustItem = new Identifier("redstone");
+				} else if (!Registry.ITEM.getOrEmpty(dustItem).isPresent()) {
+					dustItem = new Identifier(dustItem.getPath());
+				}
+
+				// 9 tiny dust to 1 dust
+				Generators.ofTinyDustToDust(recipes, dustItem, itemIdPath);
+
+				// 1 dust to 9 tiny dust
+				Generators.ofDustToTinyDust(recipes, item, dustItem, itemId);
+			}
 		});
 
 		Set<String> addedOre = Sets.newHashSet();
 
 		forEach(AstromineFoundationsBlocks.class, Block.class, block -> {
-			Optional<RegistryKey<Block>> optionalKey = Registry.BLOCK.getKey(block);
+			Identifier blockId = Registry.BLOCK.getId(block);
+			String blockIdPath = blockId.getPath();
 
-			optionalKey.ifPresent((registryKey) -> {
-				Identifier keyId = registryKey.getValue();
+			MaterialEntry material = getMaterial(blockId);
 
-				String keyPath = keyId.getPath();
+			if (material != null) {
+				if (blockIdPath.endsWith("_block")) {
+					// 9 ingot to 1 block
+					Generators.ofIngotToBlock(recipes, block, material.asIngredient());
 
-				if (keyPath.contains("_")) {
-					materialMap.keySet().forEach(materialKey -> {
-						if (keyPath.contains(materialKey)) {
-							String materialValue = materialMap.get(materialKey);
-							Identifier materialIdentifier = guessMaterialFromTag(materialValue);
+					// 1 block to 9 ingot
+					Generators.ofBlockToIngot(recipes, material.getIngotItemId(), block);
+				} else if (blockIdPath.endsWith("_ore")) {
+					if (addedOre.add(material.getMaterialId())) {
+						// 1 ore to 1 ingot
+						Generators.ofSmeltingOre(recipes, block, material.getIngotItemId());
 
-							if (keyPath.endsWith("_block")) {
-								// 9 ingot to 1 block
-								Generators.ofIngotToBlock(recipes, block, materialValue, keyId);
-
-								// 1 block to 9 ingot
-								Generators.ofBlockToIngot(recipes, materialIdentifier, keyPath);
-							} else if (keyPath.endsWith("_ore")) {
-								if (addedOre.add(materialValue)) {
-									// 1 ore to 1 ingot
-									Generators.ofSmeltingOre(recipes, keyPath, materialIdentifier);
-
-									// 1 ore to 1 ingot
-									Generators.ofBlastingOre(recipes, keyPath, materialIdentifier);
-								}
-							}
-						}
-					});
+						// 1 ore to 1 ingot
+						Generators.ofBlastingOre(recipes, block, material.getIngotItemId());
+					}
 				}
-			});
+			}
 		});
+	}
+
+	@Nullable
+	private static MaterialEntry getMaterial(Identifier identifier) {
+		String path = identifier.getPath().replaceFirst("asteroid_", "").replaceFirst("meteor_", "");
+		if (path.contains("_")) {
+			return MATERIALS.keySet().stream()
+				.filter(path::startsWith)
+				.findFirst()
+				.map(MATERIALS::get)
+				.orElse(null);
+		}
+
+		return null;
 	}
 
 	private static Identifier guessMaterialFromTag(String tag) {
@@ -461,269 +457,275 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 		/*
 		 * Crafting recipe generators.
 		 */
-		private static void ofAxe(RecipeData recipes, Item output, Identifier material) {
+		private static void ofAxe(RecipeData recipes, Item output, Ingredient material) {
 			ShapedRecipeJsonFactory.create(output)
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.pattern("##")
-					.pattern("#$")
-					.pattern(" $")
-					.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
-					.input('#', TagRegistry.item(material))
-					.offerTo(recipes);
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.pattern("##")
+				.pattern("#$")
+				.pattern(" $")
+				.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+				.input('#', material)
+				.offerTo(recipes);
 		}
 
-		private static void ofPickaxe(RecipeData recipes, Item output, Identifier material) {
+		private static void ofPickaxe(RecipeData recipes, Item output, Ingredient material) {
 			ShapedRecipeJsonFactory.create(output)
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.pattern("###")
-					.pattern(" $ ")
-					.pattern(" $ ")
-					.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
-					.input('#', TagRegistry.item(material))
-					.offerTo(recipes);
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.pattern("###")
+				.pattern(" $ ")
+				.pattern(" $ ")
+				.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+				.input('#', material)
+				.offerTo(recipes);
 		}
 
-		private static void ofHoe(RecipeData recipes, Item output, Identifier material) {
+		private static void ofHoe(RecipeData recipes, Item output, Ingredient material) {
 			ShapedRecipeJsonFactory.create(output)
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.pattern("##")
-					.pattern(" $")
-					.pattern(" $")
-					.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
-					.input('#', TagRegistry.item(material))
-					.offerTo(recipes);
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.pattern("##")
+				.pattern(" $")
+				.pattern(" $")
+				.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+				.input('#', material)
+				.offerTo(recipes);
 		}
 
-		private static void ofSword(RecipeData recipes, Item output, Identifier material) {
+		private static void ofSword(RecipeData recipes, Item output, Ingredient material) {
 			ShapedRecipeJsonFactory.create(output)
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.pattern("#")
-					.pattern("#")
-					.pattern("$")
-					.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
-					.input('#', TagRegistry.item(material))
-					.offerTo(recipes);
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.pattern("#")
+				.pattern("#")
+				.pattern("$")
+				.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+				.input('#', material)
+				.offerTo(recipes);
 		}
 
-		private static void ofShovel(RecipeData recipes, Item output, Identifier material) {
+		private static void ofShovel(RecipeData recipes, Item output, Ingredient material) {
 			ShapedRecipeJsonFactory.create(output)
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.pattern("#")
-					.pattern("$")
-					.pattern("$")
-					.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
-					.input('#', TagRegistry.item(material))
-					.offerTo(recipes);
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.pattern("#")
+				.pattern("$")
+				.pattern("$")
+				.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+				.input('#', material)
+				.offerTo(recipes);
 		}
 
-		private static void ofMiningTool(RecipeData recipes, Item output, Identifier material) {
+		private static void ofMiningTool(RecipeData recipes, Item output, Ingredient material) {
 			ShapedRecipeJsonFactory.create(output)
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.pattern("###")
-					.pattern(" # ")
-					.pattern(" $ ")
-					.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
-					.input('#', TagRegistry.item(material))
-					.offerTo(recipes);
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.pattern("###")
+				.pattern(" # ")
+				.pattern(" $ ")
+				.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+				.input('#', material)
+				.offerTo(recipes);
 		}
 
-		private static void ofMattock(RecipeData recipes, Item output, Identifier material) {
+		private static void ofMattock(RecipeData recipes, Item output, Ingredient material) {
 			ShapedRecipeJsonFactory.create(output)
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.pattern("###")
-					.pattern("#$ ")
-					.pattern(" $ ")
-					.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
-					.input('#', TagRegistry.item(material))
-					.offerTo(recipes);
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.pattern("###")
+				.pattern("#$ ")
+				.pattern(" $ ")
+				.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+				.input('#', material)
+				.offerTo(recipes);
 		}
 
-		private static void ofHammer(RecipeData recipes, Item output, Identifier material) {
+		private static void ofHammer(RecipeData recipes, Item output, Ingredient material) {
 			ShapedRecipeJsonFactory.create(output)
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.pattern("###")
-					.pattern("#$#")
-					.pattern(" $ ")
-					.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
-					.input('#', TagRegistry.item(material))
-					.offerTo(recipes);
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.pattern("###")
+				.pattern("#$#")
+				.pattern(" $ ")
+				.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+				.input('#', material)
+				.offerTo(recipes);
 		}
 
-		private static void ofExcavator(RecipeData recipes, Item output, Identifier material) {
+		private static void ofExcavator(RecipeData recipes, Item output, Ingredient material) {
 			ShapedRecipeJsonFactory.create(output)
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.pattern(" # ")
-					.pattern("#$#")
-					.pattern(" $ ")
-					.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
-					.input('#', TagRegistry.item(material))
-					.offerTo(recipes);
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.pattern(" # ")
+				.pattern("#$#")
+				.pattern(" $ ")
+				.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+				.input('#', material)
+				.offerTo(recipes);
 		}
 
-		private static void ofHelmet(RecipeData recipes, Item output, Identifier material) {
+		private static void ofHelmet(RecipeData recipes, Item output, Ingredient material) {
 			ShapedRecipeJsonFactory.create(output)
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.pattern("###")
-					.pattern("# #")
-					.input('#', TagRegistry.item(material))
-					.offerTo(recipes);
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.pattern("###")
+				.pattern("# #")
+				.input('#', material)
+				.offerTo(recipes);
 		}
 
-		private static void ofChestplate(RecipeData recipes, Item output, Identifier material) {
+		private static void ofChestplate(RecipeData recipes, Item output, Ingredient material) {
 			ShapedRecipeJsonFactory.create(output)
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.pattern("# #")
-					.pattern("###")
-					.pattern("###")
-					.input('#', TagRegistry.item(material))
-					.offerTo(recipes);
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.pattern("# #")
+				.pattern("###")
+				.pattern("###")
+				.input('#', material)
+				.offerTo(recipes);
 		}
 
-		private static void ofLeggings(RecipeData recipes, Item output, Identifier material) {
+		private static void ofLeggings(RecipeData recipes, Item output, Ingredient material) {
 			ShapedRecipeJsonFactory.create(output)
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.pattern("###")
-					.pattern("# #")
-					.pattern("# #")
-					.input('#', TagRegistry.item(material))
-					.offerTo(recipes);
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.pattern("###")
+				.pattern("# #")
+				.pattern("# #")
+				.input('#', material)
+				.offerTo(recipes);
 		}
 
-		private static void ofBoots(RecipeData recipes, Item output, Identifier material) {
+		private static void ofBoots(RecipeData recipes, Item output, Ingredient material) {
 			ShapedRecipeJsonFactory.create(output)
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.pattern("# #")
-					.pattern("# #")
-					.input('#', TagRegistry.item(material))
-					.offerTo(recipes);
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.pattern("# #")
+				.pattern("# #")
+				.input('#', material)
+				.offerTo(recipes);
 		}
 
 		private static void ofSmithing(RecipeData recipes, Ingredient input, Ingredient addition, Item output) {
 			SmithingRecipeJsonFactory
-					.create(input, addition, output)
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.offerTo(recipes, Registry.ITEM.getId(output).getNamespace() + "_smithing");
+				.create(input, addition, output)
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.offerTo(recipes, Registry.ITEM.getId(output) + "_smithing");
 		}
 
-		private static void ofUniviteSmithing(RecipeData recipes, Item output, String keyPath) {
+		private static void ofUniviteSmithing(RecipeData recipes, Item output, Identifier keyPath) {
 			ofSmithing(recipes,
-					Ingredient.ofItems(Registry.ITEM.get(AstromineCommon.identifier(keyPath.replace("univite_", "galaxium_")))),
-					Ingredient.fromTag(TagRegistry.item(new Identifier("c:univite_ingots"))),
-					output);
+				Ingredient.ofItems(Registry.ITEM.get(new Identifier(keyPath.toString().replace("univite_", "galaxium_")))),
+				Ingredient.fromTag(TagRegistry.item(new Identifier("c:univite_ingots"))),
+				output);
 		}
 
-		private static void ofIngotToNugget(RecipeData recipes, Item item, String keyString, String materialKey) {
-			ShapelessRecipeJsonFactory.create(item, 9)
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.input(TagRegistry.item(new Identifier(materialKey)))
-					.offerTo(recipes, keyString + "_from_ingot");
+		private static void ofIngotToNugget(RecipeData recipes, Item nugget, Ingredient ingot) {
+			ShapelessRecipeJsonFactory.create(nugget, 9)
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.input(ingot)
+				.offerTo(recipes, Registry.ITEM.getId(nugget) + "_from_ingot");
 		}
 
-		private static void ofNuggetToIngot(RecipeData recipes, Identifier ingotItem, String keyPath) {
+		private static void ofNuggetToIngot(RecipeData recipes, Identifier ingotItem, Identifier nuggetId) {
+			String nuggetIdPath = nuggetId.getPath();
 			ShapedRecipeJsonFactory.create(Registry.ITEM.get(ingotItem))
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.pattern("###")
-					.pattern("###")
-					.pattern("###")
-					.input('#', TagRegistry.item(new Identifier("c", keyPath + "s")))
-					.offerTo(recipes, ingotItem.toString() + "_from_" + keyPath.substring(keyPath.lastIndexOf('_') + 1));
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.pattern("###")
+				.pattern("###")
+				.pattern("###")
+				.input('#', TagRegistry.item(new Identifier("c", nuggetIdPath + "s")))
+				.offerTo(recipes, ingotItem.toString() + "_from_" + nuggetIdPath.substring(nuggetIdPath.lastIndexOf('_') + 1));
 		}
 
-		private static void ofIngotToPlate(RecipeData recipes, Item item, String keyString, String materialKey) {
-			ShapedRecipeJsonFactory.create(item)
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.pattern("#")
-					.pattern("#")
-					.input('#', TagRegistry.item(new Identifier(materialKey)))
-					.offerTo(recipes, keyString + "_from_ingot");
+		private static void ofIngotToPlate(RecipeData recipes, Item plate, Ingredient ingot) {
+			ShapedRecipeJsonFactory.create(plate)
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.pattern("#")
+				.pattern("#")
+				.input('#', ingot)
+				.offerTo(recipes, Registry.ITEM.getId(plate) + "_from_ingot");
 		}
 
-		private static void ofIngotToGear(RecipeData recipes, Item item, String keyString, String materialKey) {
-			ShapedRecipeJsonFactory.create(item)
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.pattern(" # ")
-					.pattern("# #")
-					.pattern(" # ")
-					.input('#', TagRegistry.item(new Identifier(materialKey)))
-					.offerTo(recipes, keyString + "_from_ingot");
+		private static void ofPresserIngotToPlate(RecipeData recipes, Item plate, Ingredient ingot) {
+			Generators.ofPresser(recipes, new Identifier(Registry.ITEM.getId(plate) + "_from_pressing_ingot"),
+				ingot, 1, new ItemStack(plate), 60, 384);
 		}
 
-		private static void ofSmeltingCluster(RecipeData recipes, String keyPath, Identifier materialIdentifier) {
+		private static void ofIngotToGear(RecipeData recipes, Item gear, Ingredient input) {
+			ShapedRecipeJsonFactory.create(gear)
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.pattern(" # ")
+				.pattern("# #")
+				.pattern(" # ")
+				.input('#', input)
+				.offerTo(recipes, Registry.ITEM.getId(gear) + "_from_ingot");
+		}
+
+		private static void ofSmeltingCluster(RecipeData recipes, Item cluster, Identifier result) {
 			CookingRecipeJsonFactory
 				.createSmelting(
-					Ingredient.fromTag(TagRegistry.item(new Identifier("c", keyPath + "s"))),
-					Registry.ITEM.get(materialIdentifier),
+					Ingredient.fromTag(TagRegistry.item(new Identifier("c", Registry.ITEM.getId(cluster).getPath() + "s"))),
+					Registry.ITEM.get(result),
 					0.1F,
 					200)
 				.criterion("impossible", new ImpossibleCriterion.Conditions())
-				.offerTo(recipes, materialIdentifier.getPath() + "_from_smelting_cluster");
+				.offerTo(recipes, result + "_from_smelting_cluster");
 		}
 
-		private static void ofBlastingCluster(RecipeData recipes, String keyPath, Identifier materialIdentifier) {
+		private static void ofBlastingCluster(RecipeData recipes, Item cluster, Identifier result) {
 			CookingRecipeJsonFactory
 				.createBlasting(
-					Ingredient.fromTag(TagRegistry.item(new Identifier("c", keyPath + "s"))),
-					Registry.ITEM.get(materialIdentifier),
+					Ingredient.fromTag(TagRegistry.item(new Identifier("c", Registry.ITEM.getId(cluster).getPath() + "s"))),
+					Registry.ITEM.get(result),
 					0.1F,
 					100)
 				.criterion("impossible", new ImpossibleCriterion.Conditions())
-				.offerTo(recipes, materialIdentifier.getPath() + "_from_blasting_cluster");
+				.offerTo(recipes, result + "_from_blasting_cluster");
 		}
 
 		private static void ofTinyDustToDust(RecipeData recipes, Identifier dustItem, String keyPath) {
 			ShapedRecipeJsonFactory.create(Registry.ITEM.get(dustItem))
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.pattern("###")
-					.pattern("###")
-					.pattern("###")
-					.input('#', TagRegistry.item(new Identifier("c", keyPath + "s")))
-					.offerTo(recipes, dustItem + "_from_tiny_dust");
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.pattern("###")
+				.pattern("###")
+				.pattern("###")
+				.input('#', TagRegistry.item(new Identifier("c", keyPath + "s")))
+				.offerTo(recipes, dustItem + "_from_tiny_dust");
 		}
 
 		private static void ofDustToTinyDust(RecipeData recipes, Item item, Identifier dustItem, Identifier keyId) {
 			ShapelessRecipeJsonFactory.create(item, 9)
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.input(TagRegistry.item(new Identifier("c", dustItem.getPath() + "s")))
-					.offerTo(recipes, keyId + "_from_dust");
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.input(TagRegistry.item(new Identifier("c", dustItem.getPath() + "s")))
+				.offerTo(recipes, keyId + "_from_dust");
 		}
 
-		private static void ofIngotToBlock(RecipeData recipes, Block block, String materialKey, Identifier keyId) {
+		private static void ofIngotToBlock(RecipeData recipes, Block block, Ingredient ingot) {
 			ShapedRecipeJsonFactory.create(block)
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.pattern("###")
-					.pattern("###")
-					.pattern("###")
-					.input('#', TagRegistry.item(new Identifier(materialKey)))
-					.offerTo(recipes, keyId + "_from_ingot");
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.pattern("###")
+				.pattern("###")
+				.pattern("###")
+				.input('#', ingot)
+				.offerTo(recipes, Registry.BLOCK.getId(block) + "_from_ingot");
 		}
 
-		private static void ofBlockToIngot(RecipeData recipes, Identifier materialIdentifier, String keyPath) {
-			ShapelessRecipeJsonFactory.create(Registry.ITEM.get(materialIdentifier), 9)
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.input(TagRegistry.item(new Identifier("c", keyPath + "s")))
-					.offerTo(recipes, materialIdentifier + "_from_block");
+		private static void ofBlockToIngot(RecipeData recipes, Identifier ingot, Block block) {
+			ShapelessRecipeJsonFactory.create(Registry.ITEM.get(ingot), 9)
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.input(TagRegistry.item(new Identifier("c", Registry.BLOCK.getId(block).getPath() + "s")))
+				.offerTo(recipes, ingot + "_from_block");
 		}
 
-		private static void ofSmeltingOre(RecipeData recipes, String keyPath, Identifier materialIdentifier) {
+		private static void ofSmeltingOre(RecipeData recipes, Block ore, Identifier ingot) {
 			CookingRecipeJsonFactory
-					.createSmelting(
-							Ingredient.fromTag(TagRegistry.item(new Identifier("c", keyPath + "s"))),
-							Registry.ITEM.get(materialIdentifier),
-							0.1F,
-							200)
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.offerTo(recipes, materialIdentifier.getPath() + "_from_smelting_ore");
+				.createSmelting(
+					Ingredient.fromTag(TagRegistry.item(new Identifier("c", Registry.BLOCK.getId(ore).getPath() + "s"))),
+					Registry.ITEM.get(ingot),
+					0.1F,
+					200)
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.offerTo(recipes, ingot + "_from_smelting_ore");
 		}
 
-		private static void ofBlastingOre(RecipeData recipes, String keyPath, Identifier materialIdentifier) {
+		private static void ofBlastingOre(RecipeData recipes, Block ore, Identifier ingot) {
 			CookingRecipeJsonFactory
-					.createBlasting(
-							Ingredient.fromTag(TagRegistry.item(new Identifier("c", keyPath + "s"))),
-							Registry.ITEM.get(materialIdentifier),
-							0.1F,
-							100)
-					.criterion("impossible", new ImpossibleCriterion.Conditions())
-					.offerTo(recipes, materialIdentifier.getPath() + "_from_blasting_ore");
+				.createBlasting(
+					Ingredient.fromTag(TagRegistry.item(new Identifier("c", Registry.BLOCK.getId(ore).getPath()  + "s"))),
+					Registry.ITEM.get(ingot),
+					0.1F,
+					100)
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.offerTo(recipes, ingot + "_from_blasting_ore");
 		}
 
 		/*
@@ -735,23 +737,19 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 
 		private static void ofPresser(RecipeData recipes, Identifier id, Ingredient input, int inputCount, ItemStack output, int time, int energyConsumed) {
 			recipes.accept(Providers.createProvider(PressingRecipe.Serializer.INSTANCE, id, json -> {
-					JsonObject inputJson = input.toJson().getAsJsonObject();
-					inputJson.addProperty("count", inputCount);
+				JsonObject inputJson = input.toJson().getAsJsonObject();
+				inputJson.addProperty("count", inputCount);
 
-					json.add("input", inputJson);
+				json.add("input", inputJson);
 
-					JsonObject outputJson = new JsonObject();
-					outputJson.addProperty("item", Registry.ITEM.getId(output.getItem()).toString());
-					outputJson.addProperty("count", output.getCount());
+				JsonObject outputJson = new JsonObject();
+				outputJson.addProperty("item", Registry.ITEM.getId(output.getItem()).toString());
+				outputJson.addProperty("count", output.getCount());
 
-					json.add("output", outputJson);
-					json.addProperty("time", time);
-					json.addProperty("energy_consumed", energyConsumed);
+				json.add("output", outputJson);
+				json.addProperty("time", time);
+				json.addProperty("energy_consumed", energyConsumed);
 			}));
-		}
-
-		private static void ofPresserIngotToPlate(RecipeData recipes, Item item, String keyString, String materialKey) {
-			Generators.ofPresser(recipes, new Identifier(keyString + "_from_pressing_ingot"), Ingredient.fromTag(TagRegistry.item(new Identifier(materialKey))), 1, new ItemStack(item), 60, 384);
 		}
 	}
 }

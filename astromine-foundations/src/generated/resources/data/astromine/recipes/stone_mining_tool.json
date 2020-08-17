@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    " # ",
+    " $ "
+  ],
+  "key": {
+    "$": {
+      "tag": "c:wood_sticks"
+    },
+    "#": {
+      "tag": "c:cobblestones"
+    }
+  },
+  "result": {
+    "item": "astromine:stone_mining_tool"
+  }
+}
