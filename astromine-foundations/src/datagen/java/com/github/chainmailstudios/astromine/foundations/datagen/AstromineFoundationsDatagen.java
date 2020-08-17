@@ -295,6 +295,15 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 						// pressing 1 ingots -> 1 plate
 						pressing(new Identifier(key + "_from_pressing_ingot"), Ingredient.fromTag(TagRegistry.item(new Identifier(material))), 1,
 							new ItemStack(item), 60, 384).accept(recipes);
+					} else if (key.toString().endsWith("_gear")) {
+						// 4 ingots -> 1 gear
+						ShapedRecipeJsonFactory.create(item)
+							.criterion("impossible", new ImpossibleCriterion.Conditions())
+							.pattern(" # ")
+							.pattern("# #")
+							.pattern(" # ")
+							.input('#', TagRegistry.item(new Identifier(material)))
+							.offerTo(recipes, key + "_from_ingot");
 					}
 				}
 			}
