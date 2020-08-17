@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.widget;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -144,12 +146,14 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 		super.onMouseReleased(mouseX, mouseY, mouseButton);
 	}
 
+	@Environment(EnvType.CLIENT)
 	@Override
 	public @NotNull List<Text> getTooltip() {
 		Direction offset = MirrorUtilities.rotate(direction, rotation);
 		return Arrays.asList(new TranslatableText("text.astromine.siding." + offset.getName()), new TranslatableText("text.astromine.siding." + getSideName()));
 	}
 
+	@Environment(EnvType.CLIENT)
 	@Override
 	public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider) {
 		if (getHidden())

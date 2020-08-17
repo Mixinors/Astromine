@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.widget;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -49,6 +51,7 @@ public class EnergyVerticalBarWidget extends AbstractWidget {
 
 	private Supplier<EnergyVolume> volumeSupplier;
 
+	@Environment(EnvType.CLIENT)
 	@Override
 	public @NotNull List<Text> getTooltip() {
 		return Lists.newArrayList(EnergyUtilities.compoundDisplay(volumeSupplier.get().getAmount(), volumeSupplier.get().getMaxAmount()));
@@ -58,6 +61,7 @@ public class EnergyVerticalBarWidget extends AbstractWidget {
 		this.volumeSupplier = volumeSupplier;
 	}
 
+	@Environment(EnvType.CLIENT)
 	@Override
 	public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider) {
 		if (getHidden())
