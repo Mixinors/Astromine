@@ -225,6 +225,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 			.put("wooden", "minecraft:planks")
 			.put("stone", "c:cobblestones")
 			.put("iron", "c:iron_ingots")
+			.put("gold", "c:gold_ingots")
 			.put("netherite", "c:netherite_ingots")
 			.build();
 		iterate(AstromineFoundationsItems.class, Item.class, item -> {
