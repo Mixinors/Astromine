@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.widget;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -69,6 +71,7 @@ public class HorizontalArrowWidget extends AbstractWidget {
 		this.limitSupplier = limitSupplier;
 	}
 
+	@Environment(EnvType.CLIENT)
 	@Override
 	public void drawWidget(MatrixStack matrices, VertexConsumerProvider provider) {
 		if (getHidden()) {

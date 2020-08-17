@@ -24,6 +24,17 @@
 
 package com.github.chainmailstudios.astromine.common.widget;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.client.BaseRenderer;
+import com.github.chainmailstudios.astromine.client.render.SpriteRenderer;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.vini2003.blade.client.utilities.Layers;
+import com.github.vini2003.blade.common.widget.base.AbstractWidget;
+import com.google.common.collect.Lists;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
@@ -35,16 +46,6 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.client.BaseRenderer;
-import com.github.chainmailstudios.astromine.client.render.SpriteRenderer;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.vini2003.blade.client.utilities.Layers;
-import com.github.vini2003.blade.common.widget.base.AbstractWidget;
-
-import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -71,12 +72,14 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 		this.volume = volume;
 	}
 
+	@Environment(EnvType.CLIENT)
 	@Override
 	public List<Text> getTooltip() {
 		return Lists.newArrayList(FluidUtilities.rawFraction(progressFraction.get(), limitFraction.get(), new TranslatableText("text.astromine.fluid")), new TranslatableText("text.astromine.tooltip.fractional_value", progressFraction.get().toDecimalString(), limitFraction.get()
 			.toDecimalString()));
 	}
 
+	@Environment(EnvType.CLIENT)
 	@Override
 	public void drawWidget(MatrixStack matrices, VertexConsumerProvider provider) {
 		if (getHidden()) {
