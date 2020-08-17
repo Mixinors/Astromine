@@ -39,4 +39,4 @@ tpsgobrr/
 logs/
 */desktop.ini
 
-/astromine-foundations/src/generated/resources/.cache/cache
+/*/src/generated/resources/.cache/cache
