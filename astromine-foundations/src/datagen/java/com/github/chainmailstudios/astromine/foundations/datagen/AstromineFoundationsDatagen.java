@@ -22,6 +22,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonFactory;
+import net.minecraft.data.server.recipe.ShapelessRecipeJsonFactory;
 import net.minecraft.data.server.recipe.SmithingRecipeJsonFactory;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.*;
@@ -180,6 +181,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 		tags.block(new Identifier("c:lapis_ores")).append(Blocks.LAPIS_ORE);
 		tags.block(new Identifier("c:quartz_ores")).append(Blocks.NETHER_QUARTZ_ORE);
 		tags.block(new Identifier("gold_ores")).append(Blocks.NETHER_GOLD_ORE);
+		tags.block(new Identifier("c:cobblestones")).append(Blocks.COBBLESTONE);
 
 		tags.item(new Identifier("c:diamond_ores")).append(Blocks.DIAMOND_ORE);
 		tags.item(new Identifier("c:emerald_ores")).append(Blocks.EMERALD_ORE);
@@ -189,6 +191,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 		tags.item(new Identifier("c:lapis_ores")).append(Blocks.LAPIS_ORE);
 		tags.item(new Identifier("c:quartz_ores")).append(Blocks.NETHER_QUARTZ_ORE);
 		tags.item(new Identifier("gold_ores")).append(Blocks.NETHER_GOLD_ORE);
+		tags.item(new Identifier("c:cobblestones")).append(Blocks.COBBLESTONE);
 	}
 
 	private static void recipes(RecipeData recipes) {
@@ -207,39 +210,107 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 			.put("asterite", "c:asterites")
 			.put("stellum", "c:stellum_ingots")
 			.put("galaxium", "c:galaxiums")
+			.put("diamond", "c:diamonds")
+			.put("emerald", "c:emeralds")
+			.put("quartz", "c:quartz")
+			.put("univite", "c:univite_ingots")
+			.put("wooden", "minecraft:planks")
+			.put("stone", "c:cobblestones")
+			.put("iron", "c:iron_ingots")
+			.put("netherite", "c:netherite_ingots")
 			.build();
 		iterate(AstromineFoundationsItems.class, Item.class, item -> {
 			Identifier key = Registry.ITEM.getKey(item).get().getValue();
-			String material = materialMap.get(key.getPath().substring(0, key.getPath().lastIndexOf('_')));
-			if (material != null) {
-				if (key.toString().endsWith("_axe")) {
-					axeRecipe(recipes, item, new Identifier(material));
-				} else if (key.toString().endsWith("_pickaxe")) {
-					pickaxeRecipe(recipes, item, new Identifier(material));
-				} else if (key.toString().endsWith("_hoe")) {
-					hoeRecipe(recipes, item, new Identifier(material));
-				} else if (key.toString().endsWith("_sword")) {
-					swordRecipe(recipes, item, new Identifier(material));
-				} else if (key.toString().endsWith("_shovel")) {
-					shovelRecipe(recipes, item, new Identifier(material));
-				} else if (key.toString().endsWith("_mining_tool")) {
-					miningToolRecipe(recipes, item, new Identifier(material));
-				} else if (key.toString().endsWith("_mattock")) {
-					mattockRecipe(recipes, item, new Identifier(material));
-				} else if (key.toString().endsWith("_hammer")) {
-					hammerRecipe(recipes, item, new Identifier(material));
-				} else if (key.toString().endsWith("_excavator")) {
-					excavatorRecipe(recipes, item, new Identifier(material));
+			if (key.getPath().indexOf('_') > 0) {
+				String material = materialMap.get(key.getPath().substring(0, key.getPath().replace("mining_tool", "miningtool").lastIndexOf('_')));
+				if (material != null) {
+					if (!key.getPath().startsWith("univite_")) {
+						if (key.toString().endsWith("_axe")) {
+							axeRecipe(recipes, item, new Identifier(material));
+						} else if (key.toString().endsWith("_pickaxe")) {
+							pickaxeRecipe(recipes, item, new Identifier(material));
+						} else if (key.toString().endsWith("_hoe")) {
+							hoeRecipe(recipes, item, new Identifier(material));
+						} else if (key.toString().endsWith("_sword")) {
+							swordRecipe(recipes, item, new Identifier(material));
+						} else if (key.toString().endsWith("_shovel")) {
+							shovelRecipe(recipes, item, new Identifier(material));
+						} else if (key.toString().endsWith("_mining_tool")) {
+							miningToolRecipe(recipes, item, new Identifier(material));
+						} else if (key.toString().endsWith("_mattock")) {
+							mattockRecipe(recipes, item, new Identifier(material));
+						} else if (key.toString().endsWith("_hammer")) {
+							hammerRecipe(recipes, item, new Identifier(material));
+						} else if (key.toString().endsWith("_excavator")) {
+							excavatorRecipe(recipes, item, new Identifier(material));
+						} else if (key.toString().endsWith("_helmet")) {
+							helmetRecipe(recipes, item, new Identifier(material));
+						} else if (key.toString().endsWith("_chestplate")) {
+							chestplateRecipe(recipes, item, new Identifier(material));
+						} else if (key.toString().endsWith("_leggings")) {
+							leggingsRecipe(recipes, item, new Identifier(material));
+						} else if (key.toString().endsWith("_boots")) {
+							bootsRecipe(recipes, item, new Identifier(material));
+						}
+					} else if (item instanceof ToolItem || item instanceof DynamicAttributeTool || item instanceof ArmorItem) {
+						// univite smithing
+						SmithingRecipeJsonFactory.create(
+							Ingredient.ofItems(Registry.ITEM.get(AstromineCommon.identifier(key.getPath().replace("univite_", "galaxium_")))),
+							Ingredient.fromTag(TagRegistry.item(new Identifier("c:univite_ingots"))),
+							item
+						).criterion("impossible", new ImpossibleCriterion.Conditions())
+							.offerTo(recipes, new Identifier(key.toString() + "_smithing"));
+					}
+					if (key.toString().endsWith("_nugget") || key.toString().endsWith("_fragment")) {
+						// 1 ingot -> 9 nuggets / fragments
+						ShapelessRecipeJsonFactory.create(item, 9)
+							.criterion("impossible", new ImpossibleCriterion.Conditions())
+							.input(TagRegistry.item(new Identifier(material)))
+							.offerTo(recipes, new Identifier(key.toString() + "_from_ingot"));
+						// 9 nuggets / fragments -> 1 ingot
+						Identifier ingotItem = guessMaterialFromTag(material);
+						ShapedRecipeJsonFactory.create(Registry.ITEM.get(ingotItem))
+							.criterion("impossible", new ImpossibleCriterion.Conditions())
+							.pattern("###")
+							.pattern("###")
+							.pattern("###")
+							.input('#', TagRegistry.item(new Identifier("c", key.getPath() + "s")))
+							.offerTo(recipes, new Identifier(ingotItem.toString() + "_from_" + key.getPath().substring(key.getPath().lastIndexOf('_') + 1)));
+					}
 				}
-			} else if (key.getPath().startsWith("univite_") && (item instanceof ToolItem || item instanceof DynamicAttributeTool)) {
-				SmithingRecipeJsonFactory.create(
-					Ingredient.ofItems(Registry.ITEM.get(AstromineCommon.identifier(key.getPath().replace("univite_", "galaxium_")))),
-					Ingredient.fromTag(TagRegistry.item(new Identifier("c:univite_ingots"))),
-					item
-				).criterion("impossible", new ImpossibleCriterion.Conditions())
-					.offerTo(recipes, new Identifier(Registry.ITEM.getId(item).toString() + "_smithing"));
 			}
 		});
+		iterate(AstromineFoundationsBlocks.class, Block.class, block -> {
+			Identifier key = Registry.BLOCK.getKey(block).get().getValue();
+			String material = materialMap.get(key.getPath().substring(0, key.getPath().replace("mining_tool", "miningtool").lastIndexOf('_')));
+			if (material != null) {
+				if (key.getPath().endsWith("_block")) {
+					// 9 ingots -> 1 block
+					ShapedRecipeJsonFactory.create(block)
+						.criterion("impossible", new ImpossibleCriterion.Conditions())
+						.pattern("###")
+						.pattern("###")
+						.pattern("###")
+						.input('#', TagRegistry.item(new Identifier(material)))
+						.offerTo(recipes, new Identifier(key.toString() + "_from_ingot"));
+					// 1 block -> 9 ingots
+					Identifier ingotItem = guessMaterialFromTag(material);
+					ShapelessRecipeJsonFactory.create(Registry.ITEM.get(ingotItem), 9)
+						.criterion("impossible", new ImpossibleCriterion.Conditions())
+						.input(TagRegistry.item(new Identifier("c", key.getPath() + "s")))
+						.offerTo(recipes, new Identifier(ingotItem.toString() + "_from_block"));
+				}
+			}
+		});
+	}
+	
+	private static Identifier guessMaterialFromTag(String tag) {
+		Identifier ingotItem = AstromineCommon.identifier((new Identifier(tag).getNamespace().equals("c") ? "" : new Identifier(tag).getNamespace() + ":") +
+		                                                  (tag.endsWith("s") ? new Identifier(tag).getPath().substring(0, new Identifier(tag).getPath().length() - 1) : new Identifier(tag).getPath()));
+		if (!Registry.ITEM.getOrEmpty(ingotItem).isPresent()) {
+			return new Identifier(ingotItem.getPath());
+		}
+		return ingotItem;
 	}
 
 	private static void axeRecipe(RecipeData recipes, Item output, Identifier material) {
@@ -337,6 +408,44 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 			.pattern("#$#")
 			.pattern(" $ ")
 			.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
+			.input('#', TagRegistry.item(material))
+			.offerTo(recipes);
+	}
+
+	private static void helmetRecipe(RecipeData recipes, Item output, Identifier material) {
+		ShapedRecipeJsonFactory.create(output)
+			.criterion("impossible", new ImpossibleCriterion.Conditions())
+			.pattern("###")
+			.pattern("# #")
+			.input('#', TagRegistry.item(material))
+			.offerTo(recipes);
+	}
+
+	private static void chestplateRecipe(RecipeData recipes, Item output, Identifier material) {
+		ShapedRecipeJsonFactory.create(output)
+			.criterion("impossible", new ImpossibleCriterion.Conditions())
+			.pattern("# #")
+			.pattern("###")
+			.pattern("###")
+			.input('#', TagRegistry.item(material))
+			.offerTo(recipes);
+	}
+
+	private static void leggingsRecipe(RecipeData recipes, Item output, Identifier material) {
+		ShapedRecipeJsonFactory.create(output)
+			.criterion("impossible", new ImpossibleCriterion.Conditions())
+			.pattern("###")
+			.pattern("# #")
+			.pattern("# #")
+			.input('#', TagRegistry.item(material))
+			.offerTo(recipes);
+	}
+
+	private static void bootsRecipe(RecipeData recipes, Item output, Identifier material) {
+		ShapedRecipeJsonFactory.create(output)
+			.criterion("impossible", new ImpossibleCriterion.Conditions())
+			.pattern("# #")
+			.pattern("# #")
 			.input('#', TagRegistry.item(material))
 			.offerTo(recipes);
 	}

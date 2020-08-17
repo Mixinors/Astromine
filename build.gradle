@@ -83,16 +83,16 @@ allprojects {
 			name = "Earthcomputer"
 			url = "https://dl.bintray.com/earthcomputer/mods"
 		}
-		maven {
-			name = "AE2"
-			url = "https://maven.pkg.github.com/AppliedEnergistics/Applied-Energistics-2"
-			credentials {
-				username = "Shnupbups"
-				password = "dd5c3b024327d19fba02fcfbf1e9313d2012b8d3"
-			}
-			// No, that's not my GitHub password. It's a token whose *only* privilege is downloading packages
-			// GitHub requires an access token even for public repos which is stupid
-		}
+//		maven {
+//			name = "AE2"
+//			url = "https://maven.pkg.github.com/AppliedEnergistics/Applied-Energistics-2"
+//			credentials {
+//				username = "Shnupbups"
+//				password = "dd5c3b024327d19fba02fcfbf1e9313d2012b8d3"
+//			}
+//			// No, that's not my GitHub password. It's a token whose *only* privilege is downloading packages
+//			// GitHub requires an access token even for public repos which is stupid
+//		}
     }
 
     dependencies {
