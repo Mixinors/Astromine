@@ -38,3 +38,5 @@ tpsgobrr/
 # just in case weird things happen
 logs/
 */desktop.ini
+
+/astromine-foundations/src/generated/resources/.cache/cache
