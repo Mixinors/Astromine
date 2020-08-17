@@ -2,10 +2,14 @@ package com.github.chainmailstudios.astromine.foundations.datagen;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.item.MultitoolItem;
+import com.github.chainmailstudios.astromine.common.recipe.PressingRecipe;
 import com.github.chainmailstudios.astromine.foundations.common.block.AstromineOreBlock;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsItems;
 import com.google.common.collect.ImmutableMap;
+import com.google.gson.JsonObject;
+import com.mojang.serialization.Dynamic;
+import com.mojang.serialization.JsonOps;
 import draylar.magna.item.ExcavatorItem;
 import draylar.magna.item.HammerItem;
 import me.shedaniel.cloth.api.datagen.v1.DataGeneratorHandler;
@@ -21,6 +25,7 @@ import net.minecraft.advancement.criterion.ImpossibleCriterion;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
+import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonFactory;
 import net.minecraft.data.server.recipe.ShapelessRecipeJsonFactory;
 import net.minecraft.data.server.recipe.SmithingRecipeJsonFactory;
@@ -30,7 +35,10 @@ import net.minecraft.loot.UniformLootTableRange;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.ApplyBonusLootFunction;
 import net.minecraft.loot.function.SetCountLootFunction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -259,14 +267,14 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 							Ingredient.fromTag(TagRegistry.item(new Identifier("c:univite_ingots"))),
 							item
 						).criterion("impossible", new ImpossibleCriterion.Conditions())
-							.offerTo(recipes, new Identifier(key.toString() + "_smithing"));
+							.offerTo(recipes, key + "_smithing");
 					}
 					if (key.toString().endsWith("_nugget") || key.toString().endsWith("_fragment")) {
 						// 1 ingot -> 9 nuggets / fragments
 						ShapelessRecipeJsonFactory.create(item, 9)
 							.criterion("impossible", new ImpossibleCriterion.Conditions())
 							.input(TagRegistry.item(new Identifier(material)))
-							.offerTo(recipes, new Identifier(key.toString() + "_from_ingot"));
+							.offerTo(recipes, key + "_from_ingot");
 						// 9 nuggets / fragments -> 1 ingot
 						Identifier ingotItem = guessMaterialFromTag(material);
 						ShapedRecipeJsonFactory.create(Registry.ITEM.get(ingotItem))
@@ -275,7 +283,18 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 							.pattern("###")
 							.pattern("###")
 							.input('#', TagRegistry.item(new Identifier("c", key.getPath() + "s")))
-							.offerTo(recipes, new Identifier(ingotItem.toString() + "_from_" + key.getPath().substring(key.getPath().lastIndexOf('_') + 1)));
+							.offerTo(recipes, ingotItem.toString() + "_from_" + key.getPath().substring(key.getPath().lastIndexOf('_') + 1));
+					} else if (key.toString().endsWith("_plates")) {
+						// 2 ingots -> 1 plate
+						ShapedRecipeJsonFactory.create(item)
+							.criterion("impossible", new ImpossibleCriterion.Conditions())
+							.pattern("#")
+							.pattern("#")
+							.input('#', TagRegistry.item(new Identifier(material)))
+							.offerTo(recipes, key + "_from_ingot");
+						// pressing 1 ingots -> 1 plate
+						pressing(new Identifier(key + "_from_pressing_ingot"), Ingredient.fromTag(TagRegistry.item(new Identifier(material))), 1,
+							new ItemStack(item), 60, 384).accept(recipes);
 					}
 				}
 			}
@@ -283,18 +302,23 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 			if (key.toString().endsWith("_tiny_dust")) {
 				// 9 tiny dusts -> 1 dust
 				Identifier dustItem = new Identifier(key.getNamespace(), key.getPath().replace("_tiny_dust", "_dust"));
+				if (dustItem.toString().equals("astromine:redstone_dust")) {
+					dustItem = new Identifier("redstone");
+				} else if (!Registry.ITEM.getOrEmpty(dustItem).isPresent()) {
+					dustItem = new Identifier(dustItem.getPath());
+				}
 				ShapedRecipeJsonFactory.create(Registry.ITEM.get(dustItem))
 					.criterion("impossible", new ImpossibleCriterion.Conditions())
 					.pattern("###")
 					.pattern("###")
 					.pattern("###")
 					.input('#', TagRegistry.item(new Identifier("c", key.getPath() + "s")))
-					.offerTo(recipes, new Identifier(dustItem.toString() + "_from_tiny_dust"));
+					.offerTo(recipes, dustItem + "_from_tiny_dust");
 				// 1 dust -> 9 tiny dusts
 				ShapelessRecipeJsonFactory.create(item, 9)
 					.criterion("impossible", new ImpossibleCriterion.Conditions())
 					.input(TagRegistry.item(new Identifier("c", dustItem.getPath() + "s")))
-					.offerTo(recipes, new Identifier(key.toString() + "_from_dust"));
+					.offerTo(recipes, key + "_from_dust");
 			}
 		});
 		iterate(AstromineFoundationsBlocks.class, Block.class, block -> {
@@ -309,13 +333,13 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 						.pattern("###")
 						.pattern("###")
 						.input('#', TagRegistry.item(new Identifier(material)))
-						.offerTo(recipes, new Identifier(key.toString() + "_from_ingot"));
+						.offerTo(recipes, key + "_from_ingot");
 					// 1 block -> 9 ingots
 					Identifier ingotItem = guessMaterialFromTag(material);
 					ShapelessRecipeJsonFactory.create(Registry.ITEM.get(ingotItem), 9)
 						.criterion("impossible", new ImpossibleCriterion.Conditions())
 						.input(TagRegistry.item(new Identifier("c", key.getPath() + "s")))
-						.offerTo(recipes, new Identifier(ingotItem.toString() + "_from_block"));
+						.offerTo(recipes, ingotItem + "_from_block");
 				}
 			}
 		});
@@ -465,6 +489,57 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 			.pattern("# #")
 			.input('#', TagRegistry.item(material))
 			.offerTo(recipes);
+	}
+
+	private static Consumer<Consumer<RecipeJsonProvider>> pressing(Ingredient input, int inputCount, ItemStack output, int time, int energyConsumed) {
+		return pressing(Registry.ITEM.getId(output.getItem()), input, inputCount, output, time, energyConsumed);
+	}
+
+	private static Consumer<Consumer<RecipeJsonProvider>> pressing(Identifier id, Ingredient input, int inputCount, ItemStack output, int time, int energyConsumed) {
+		return consumer -> consumer.accept(new BasicRecipeJsonProvider(PressingRecipe.Serializer.INSTANCE, id) {
+			@Override
+			public void serialize(JsonObject json) {
+				JsonObject inputJson = (JsonObject) input.toJson();
+				inputJson.addProperty("count", inputCount);
+				json.add("input", inputJson);
+				JsonObject outputJson = new JsonObject();
+				outputJson.addProperty("item", Registry.ITEM.getId(output.getItem()).toString());
+				outputJson.addProperty("count", output.getCount());
+				json.add("output", outputJson);
+				json.addProperty("time", time);
+				json.addProperty("energy_consumed", energyConsumed);
+			}
+		});
+	}
+
+	private static abstract class BasicRecipeJsonProvider implements RecipeJsonProvider {
+		private final RecipeSerializer<?> serializer;
+		private final Identifier id;
+
+		public BasicRecipeJsonProvider(RecipeSerializer<?> serializer, Identifier id) {
+			this.serializer = serializer;
+			this.id = id;
+		}
+
+		@Override
+		public Identifier getRecipeId() {
+			return id;
+		}
+
+		@Override
+		public RecipeSerializer<?> getSerializer() {
+			return serializer;
+		}
+
+		@Override
+		public JsonObject toAdvancementJson() {
+			return null;
+		}
+
+		@Override
+		public Identifier getAdvancementId() {
+			return null;
+		}
 	}
 
 	private static <T> void iterate(Class<?> scanning, Class<T> clazz, Consumer<T> consumer) {
