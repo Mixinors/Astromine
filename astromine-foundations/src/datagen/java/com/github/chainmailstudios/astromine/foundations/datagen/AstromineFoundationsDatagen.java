@@ -21,6 +21,9 @@ import net.minecraft.advancement.criterion.ImpossibleCriterion;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
+import net.minecraft.data.client.model.BlockStateVariant;
+import net.minecraft.data.client.model.Models;
+import net.minecraft.data.client.model.Texture;
 import net.minecraft.data.server.recipe.*;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.*;
@@ -130,11 +133,28 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 			Identifier blockId = Registry.BLOCK.getId(block);
 			String blockIdPath = blockId.getPath();
 
-			if (blockIdPath.endsWith("_block") || (blockIdPath.endsWith("_ore") && !blockIdPath.startsWith("meteor_") && !blockIdPath.startsWith("asteroid_"))) {
-				modelStates.addSingletonCubeAll(block);
+			if (blockIdPath.endsWith("_block") || blockIdPath.endsWith("_ore")) {
+				if (blockIdPath.endsWith("_ore") && (blockIdPath.startsWith("meteor_") || blockIdPath.startsWith("asteroid_"))) {
+					Texture texture = Texture.sideEnd(Texture.getId(block), asId("astromine:block/asteroid_stone"));
+					Identifier identifier = Models.CUBE_COLUMN.upload(block, texture, modelStates::addModel);
+					modelStates.addState(block,ModelStateData.createSingletonBlockState(block, identifier));
+				} else {
+					modelStates.addSingletonCubeAll(block);
+				}
 			}
 
 			modelStates.addSimpleBlockItemModel(block);
+		});
+		register(Item.class, (handler, item) -> {
+			ModelStateData modelStates = handler.getModelStates();
+			Identifier itemId = Registry.ITEM.getId(item);
+			String itemIdPath = itemId.getPath();
+			
+			if (item instanceof ToolItem || item instanceof DynamicAttributeTool) {
+				modelStates.addHandheldItemModel(item);
+			} else {
+				modelStates.addGeneratedItemModel(item);
+			}
 		});
 	}
 
