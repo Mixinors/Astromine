@@ -6,8 +6,7 @@ import com.github.chainmailstudios.astromine.common.recipe.PressingRecipe;
 import com.github.chainmailstudios.astromine.foundations.common.block.AstromineOreBlock;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsItems;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Sets;
+import com.google.common.collect.*;
 import com.google.gson.JsonObject;
 import draylar.magna.item.ExcavatorItem;
 import draylar.magna.item.HammerItem;
@@ -35,22 +34,33 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import org.apache.logging.log4j.util.TriConsumer;
 
 import java.lang.reflect.Field;
 import java.nio.file.Paths;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 
 public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
+	private static final Multimap<Class<?>, DataGenConsumer<?>> CONSUMERS = Multimaps.newListMultimap(Maps.newHashMap(), Lists::newArrayList);
+	private static final Map<BiPredicate<Block, Identifier>, TriConsumer<LootTableData, Block, Identifier>> BLOCK_LOOT_TABLES = Maps.newLinkedHashMap();
+
 	@Override
 	public void onPreLaunch() {
 		try {
 			DataGeneratorHandler handler = DataGeneratorHandler.create(Paths.get("../astromine-foundations/src/generated/resources"));
 			FabricLoader.getInstance().getEntrypoints("main", ModInitializer.class).forEach(ModInitializer::onInitialize);
 
-			lootTables(handler.getLootTables());
+			register();
+			registerConsumers();
+
 			tags(handler.getTags());
 			recipes(handler.getRecipes());
+
+			iterate(AstromineFoundationsBlocks.class, Block.class, value -> callConsumers(handler, Block.class, value));
+			iterate(AstromineFoundationsItems.class, Item.class, value -> callConsumers(handler, Item.class, value));
 
 			handler.run();
 		} catch (Throwable throwable) {
@@ -60,29 +70,48 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 		System.exit(0);
 	}
 
-	private static void lootTables(LootTableData tables) {
-		iterate(AstromineFoundationsBlocks.class, Block.class, block -> {
-			if (block instanceof SlabBlock) {
-				tables.register(block, LootTableData.dropsSlabs(block));
-			} else if (block instanceof AstromineOreBlock) {
-				Identifier key = Registry.BLOCK.getKey(block).get().getValue();
-				if (key.getPath().startsWith("asteroid_") || key.getPath().startsWith("meteor_")) {
-					tables.register(block, LootTableData.dropsBlockWithSilkTouch(
-						block,
-						LootTableData.addExplosionDecayLootFunction(
-							block,
-							ItemEntry.builder(Registry.ITEM.get(AstromineCommon.identifier(key.toString().replace("_ore", "_cluster"))))
-								.apply(SetCountLootFunction.builder(UniformLootTableRange.between(1, 3)))
-								.apply(ApplyBonusLootFunction.oreDrops(Enchantments.FORTUNE))
-						)
-					));
-				} else {
-					tables.registerBlockDropSelf(block);
-				}
-			} else {
-				tables.registerBlockDropSelf(block);
+	private static void register() {
+		registerBlockLootTableOverrides((block, identifier) -> block instanceof SlabBlock, (lootTableData, block, identifier) ->
+			lootTableData.register(block, LootTableData.dropsSlabs(block)));
+		registerBlockLootTableOverrides((block, identifier) -> block instanceof AstromineOreBlock && identifier.getPath().startsWith("asteroid_") || identifier.getPath().startsWith("meteor_"),
+			(lootTableData, block, identifier) -> lootTableData.register(block, LootTableData.dropsBlockWithSilkTouch(
+				block,
+				LootTableData.addExplosionDecayLootFunction(
+					block,
+					ItemEntry.builder(Registry.ITEM.get(AstromineCommon.identifier(identifier.toString().replace("_ore", "_cluster"))))
+						.apply(SetCountLootFunction.builder(UniformLootTableRange.between(1, 3)))
+						.apply(ApplyBonusLootFunction.oreDrops(Enchantments.FORTUNE))
+				)
+			))
+		);
+	}
+
+	private static void registerConsumers() {
+		register(Block.class, (handler, value) -> {
+			Identifier id = Registry.BLOCK.getId(value);
+			BLOCK_LOOT_TABLES.entrySet().stream()
+				.filter(entry -> entry.getKey().test(value, id))
+				.findFirst()
+				.map(Map.Entry::getValue)
+				.orElse((lootTableData, block, identifier) -> lootTableData.registerBlockDropSelf(block))
+				.accept(handler.getLootTables(), value, id);
+		});
+	}
+
+	private static <T> void callConsumers(DataGeneratorHandler handler, Class<T> valueClass, T value) {
+		CONSUMERS.forEach((clazz, dataGenConsumer) -> {
+			if (clazz.isAssignableFrom(valueClass)) {
+				((DataGenConsumer<T>) dataGenConsumer).accept(handler, value);
 			}
 		});
+	}
+
+	private static <T> void register(Class<T> clazz, DataGenConsumer<T> consumer) {
+		CONSUMERS.put(clazz, consumer);
+	}
+
+	private static <T> void registerBlockLootTableOverrides(BiPredicate<Block, Identifier> predicate, TriConsumer<LootTableData, Block, Identifier> consumer) {
+		BLOCK_LOOT_TABLES.put(predicate, consumer);
 	}
 
 	private static void tags(TagData tags) {
@@ -223,11 +252,13 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 			.put("gold", "c:gold_ingots")
 			.put("netherite", "c:netherite_ingots")
 			.build();
+		Set<String> addedCluster = Sets.newHashSet();
 		iterate(AstromineFoundationsItems.class, Item.class, item -> {
 			Identifier key = Registry.ITEM.getKey(item).get().getValue();
 			if (key.getPath().indexOf('_') > 0) {
-				String material = materialMap.get(key.getPath().replace("mining_tool", "miningtool").substring(0, key.getPath().replace("mining_tool", "miningtool").lastIndexOf('_')));
+				String material = materialMap.get(key.getPath().replace("meteor_", "").replace("asteroid_", "").replace("mining_tool", "miningtool").substring(0, key.getPath().replace("meteor_", "").replace("asteroid_", "").replace("mining_tool", "miningtool").lastIndexOf('_')));
 				if (material != null) {
+					Identifier materialFromTag = guessMaterialFromTag(material);
 					if (!key.getPath().startsWith("univite_")) {
 						if (key.toString().endsWith("_axe")) {
 							axeRecipe(recipes, item, new Identifier(material));
@@ -272,7 +303,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 							.input(TagRegistry.item(new Identifier(material)))
 							.offerTo(recipes, key + "_from_ingot");
 						// 9 nuggets / fragments -> 1 ingot
-						Identifier ingotItem = guessMaterialFromTag(material);
+						Identifier ingotItem = materialFromTag;
 						ShapedRecipeJsonFactory.create(Registry.ITEM.get(ingotItem))
 							.criterion("impossible", new ImpossibleCriterion.Conditions())
 							.pattern("###")
@@ -300,6 +331,24 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 							.pattern(" # ")
 							.input('#', TagRegistry.item(new Identifier(material)))
 							.offerTo(recipes, key + "_from_ingot");
+					}
+					if (key.getPath().endsWith("_cluster")) {
+						if (addedCluster.add(material)) {
+							CookingRecipeJsonFactory.createSmelting(
+								Ingredient.fromTag(TagRegistry.item(new Identifier("c", key.getPath() + "s"))),
+								Registry.ITEM.get(materialFromTag),
+								0.1F,
+								200
+							).criterion("impossible", new ImpossibleCriterion.Conditions())
+								.offerTo(recipes, materialFromTag.getPath() + "_from_smelting_cluster");
+							CookingRecipeJsonFactory.createBlasting(
+								Ingredient.fromTag(TagRegistry.item(new Identifier("c", key.getPath() + "s"))),
+								Registry.ITEM.get(materialFromTag),
+								0.1F,
+								100
+							).criterion("impossible", new ImpossibleCriterion.Conditions())
+								.offerTo(recipes, materialFromTag.getPath() + "_from_blasting_cluster");
+						}
 					}
 				}
 			}
@@ -331,6 +380,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 			Identifier key = Registry.BLOCK.getKey(block).get().getValue();
 			String material = materialMap.get(key.getPath().replace("meteor_", "").replace("asteroid_", "").substring(0, key.getPath().replace("meteor_", "").replace("asteroid_", "").lastIndexOf('_')));
 			if (material != null) {
+				Identifier materialFromTag = guessMaterialFromTag(material);
 				if (key.getPath().endsWith("_block")) {
 					// 9 ingots -> 1 block
 					ShapedRecipeJsonFactory.create(block)
@@ -341,27 +391,26 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 						.input('#', TagRegistry.item(new Identifier(material)))
 						.offerTo(recipes, key + "_from_ingot");
 					// 1 block -> 9 ingots
-					Identifier ingotItem = guessMaterialFromTag(material);
-					ShapelessRecipeJsonFactory.create(Registry.ITEM.get(ingotItem), 9)
+					ShapelessRecipeJsonFactory.create(Registry.ITEM.get(materialFromTag), 9)
 						.criterion("impossible", new ImpossibleCriterion.Conditions())
 						.input(TagRegistry.item(new Identifier("c", key.getPath() + "s")))
-						.offerTo(recipes, ingotItem + "_from_block");
+						.offerTo(recipes, materialFromTag + "_from_block");
 				} else if (key.getPath().endsWith("_ore")) {
 					if (addedOre.add(material)) {
 						CookingRecipeJsonFactory.createSmelting(
 							Ingredient.fromTag(TagRegistry.item(new Identifier("c", key.getPath() + "s"))),
-							Registry.ITEM.get(guessMaterialFromTag(material)),
+							Registry.ITEM.get(materialFromTag),
 							0.1F,
 							200
 						).criterion("impossible", new ImpossibleCriterion.Conditions())
-							.offerTo(recipes, guessMaterialFromTag(material).getPath() + "_from_smelting_ore");
+							.offerTo(recipes, materialFromTag.getPath() + "_from_smelting_ore");
 						CookingRecipeJsonFactory.createBlasting(
 							Ingredient.fromTag(TagRegistry.item(new Identifier("c", key.getPath() + "s"))),
-							Registry.ITEM.get(guessMaterialFromTag(material)),
+							Registry.ITEM.get(materialFromTag),
 							0.1F,
 							100
 						).criterion("impossible", new ImpossibleCriterion.Conditions())
-							.offerTo(recipes, guessMaterialFromTag(material).getPath() + "_from_blasting_ore");
+							.offerTo(recipes, materialFromTag.getPath() + "_from_blasting_ore");
 					}
 				}
 			}
