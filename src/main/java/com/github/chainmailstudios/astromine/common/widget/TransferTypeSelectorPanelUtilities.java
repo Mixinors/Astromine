@@ -24,37 +24,31 @@
 
 package com.github.chainmailstudios.astromine.common.widget;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import com.github.vini2003.blade.common.data.widget.TabCollection;
-import nerdhub.cardinal.components.api.ComponentType;
-
 import com.google.common.collect.ImmutableMap;
+import nerdhub.cardinal.components.api.ComponentType;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 
-@Environment(EnvType.CLIENT)
 public class TransferTypeSelectorPanelUtilities {
 	public static void createTab(TabCollection tab, Position anchor, Direction rotation, BlockEntityTransferComponent component, BlockPos blockPos, ComponentType<?> type) {
-		final Position finalNorth = Position.of(anchor.getX() + 7 + 22, anchor.getY() + 31 + 22);
-		final Position finalSouth = Position.of(anchor.getX() + 7 + 0, anchor.getY() + 31 + 44);
-		final Position finalUp = Position.of(anchor.getX() + 7 + 22, anchor.getY() + 31 + 0);
-		final Position finalDown = Position.of(anchor.getX() + 7 + 22, anchor.getY() + 31 + 44);
-		final Position finalWest = Position.of(anchor.getX() + 7 + 44, anchor.getY() + 31 + 22);
-		final Position finalEast = Position.of(anchor.getX() + 7 + 0, anchor.getY() + 31 + 22);
+		final Position finalNorth = Position.of(anchor, 7 + 22, 31 + 22);
+		final Position finalSouth = Position.of(anchor, 7 + 0, 31 + 44);
+		final Position finalUp = Position.of(anchor, 7 + 22, 31 + 0);
+		final Position finalDown = Position.of(anchor, 7 + 22, 31 + 44);
+		final Position finalWest = Position.of(anchor, 7 + 44, 31 + 22);
+		final Position finalEast = Position.of(anchor, 7 + 0, 31 + 22);
 
-		final ImmutableMap<Direction, Position> positons = ImmutableMap.<Direction, Position> builder().put(Direction.NORTH, finalNorth).put(Direction.SOUTH, finalSouth).put(Direction.WEST, finalWest).put(Direction.EAST, finalEast).put(Direction.UP, finalUp).put(Direction.DOWN,
+		final ImmutableMap<Direction, Position> positions = ImmutableMap.<Direction, Position>builder().put(Direction.NORTH, finalNorth).put(Direction.SOUTH, finalSouth).put(Direction.WEST, finalWest).put(Direction.EAST, finalEast).put(Direction.UP, finalUp).put(Direction.DOWN,
 			finalDown).build();
 
 		for (Direction direction : Direction.values()) {
 			TransferTypeSelectorButtonWidget button = new TransferTypeSelectorButtonWidget();
-			button.setPosition(positons.get(MirrorUtilities.rotate(direction, rotation)));
+			button.setPosition(positions.get(MirrorUtilities.rotate(direction, rotation)));
 			button.setSize(Size.of(18, 18));
 			button.setComponent(component);
 			button.setType(type);
