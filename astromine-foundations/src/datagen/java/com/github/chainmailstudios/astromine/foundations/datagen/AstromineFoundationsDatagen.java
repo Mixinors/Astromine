@@ -14,6 +14,7 @@ import me.shedaniel.cloth.api.datagen.v1.RecipeData;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.tag.TagRegistry;
+import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 import net.minecraft.advancement.criterion.ImpossibleCriterion;
@@ -21,12 +22,14 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonFactory;
+import net.minecraft.data.server.recipe.SmithingRecipeJsonFactory;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.*;
 import net.minecraft.loot.UniformLootTableRange;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.ApplyBonusLootFunction;
 import net.minecraft.loot.function.SetCountLootFunction;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -228,6 +231,13 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 				} else if (key.toString().endsWith("_excavator")) {
 					excavatorRecipe(recipes, item, new Identifier(material));
 				}
+			} else if (key.getPath().startsWith("univite_") && (item instanceof ToolItem || item instanceof DynamicAttributeTool)) {
+				SmithingRecipeJsonFactory.create(
+					Ingredient.fromTag(TagRegistry.item(new Identifier(key.getPath().replace("univite_", "c:galaxium_") + "s"))),
+					Ingredient.fromTag(TagRegistry.item(new Identifier("c:univite_ingots"))),
+					item
+				).criterion("impossible", new ImpossibleCriterion.Conditions())
+					.offerTo(recipes, new Identifier(Registry.ITEM.getId(item).toString() + "_smithing"));
 			}
 		});
 	}
@@ -240,15 +250,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 			.pattern(" $")
 			.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
 			.input('#', TagRegistry.item(material))
-			.offerTo(recipes, new Identifier(Registry.ITEM.getId(output).toString() + "_left"));
-		ShapedRecipeJsonFactory.create(output)
-			.criterion("impossible", new ImpossibleCriterion.Conditions())
-			.pattern("##")
-			.pattern("$#")
-			.pattern("$")
-			.input('$', TagRegistry.item(new Identifier("c:wood_sticks")))
-			.input('#', TagRegistry.item(material))
-			.offerTo(recipes, new Identifier(Registry.ITEM.getId(output).toString() + "_right"));
+			.offerTo(recipes);
 	}
 
 	private static void pickaxeRecipe(RecipeData recipes, Item output, Identifier material) {
