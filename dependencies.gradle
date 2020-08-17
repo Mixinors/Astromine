@@ -69,5 +69,5 @@ project.ext.setRuntimeTestMods = {
     useAsRuntime("com.github.SuperCoder7979:databreaker:${databreaker_version}")
 	
 	// AE2
-    useAsRuntime("appeng:appliedenergistics2-fabric:${ae_version}")
+//    useAsRuntime("appeng:appliedenergistics2-fabric:${ae_version}")
 }

@@ -233,7 +233,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 				}
 			} else if (key.getPath().startsWith("univite_") && (item instanceof ToolItem || item instanceof DynamicAttributeTool)) {
 				SmithingRecipeJsonFactory.create(
-					Ingredient.fromTag(TagRegistry.item(new Identifier(key.getPath().replace("univite_", "c:galaxium_") + "s"))),
+					Ingredient.ofItems(Registry.ITEM.get(AstromineCommon.identifier(key.getPath().replace("univite_", "galaxium_")))),
 					Ingredient.fromTag(TagRegistry.item(new Identifier("c:univite_ingots"))),
 					item
 				).criterion("impossible", new ImpossibleCriterion.Conditions())

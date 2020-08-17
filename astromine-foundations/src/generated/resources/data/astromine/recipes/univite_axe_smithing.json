@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smithing",
   "base": {
-    "tag": "c:galaxium_axes"
+    "item": "astromine:galaxium_axe"
   },
   "addition": {
     "tag": "c:univite_ingots"

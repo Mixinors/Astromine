@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smithing",
   "base": {
-    "tag": "c:galaxium_hoes"
+    "item": "astromine:galaxium_hoe"
   },
   "addition": {
     "tag": "c:univite_ingots"
