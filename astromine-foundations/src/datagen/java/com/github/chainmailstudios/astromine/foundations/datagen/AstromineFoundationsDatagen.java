@@ -40,6 +40,7 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.Field;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
@@ -48,30 +49,34 @@ import static com.github.chainmailstudios.astromine.foundations.datagen.Material
 
 public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 	public static final BiMap<String, MaterialEntry> MATERIALS = ImmutableBiMap.<String, MaterialEntry>builder()
-		.put("copper", of(AstromineFoundationsItems.COPPER_INGOT, "c:copper_ingots"))
-		.put("tin", of(AstromineFoundationsItems.TIN_INGOT, "c:tin_ingots"))
-		.put("silver", of(AstromineFoundationsItems.SILVER_INGOT, "c:silver_ingots"))
-		.put("lead", of(AstromineFoundationsItems.LEAD_INGOT, "c:lead_ingots"))
-		.put("bronze", of(AstromineFoundationsItems.BRONZE_INGOT, "c:bronze_ingots"))
-		.put("steel", of(AstromineFoundationsItems.STEEL_INGOT, "c:steel_ingots"))
-		.put("electrum", of(AstromineFoundationsItems.ELECTRUM_INGOT, "c:electrum_ingots"))
-		.put("rose_gold", of(AstromineFoundationsItems.ROSE_GOLD_INGOT, "c:rose_gold_ingots"))
-		.put("sterling_silver", of(AstromineFoundationsItems.STERLING_SILVER_INGOT, "c:sterling_silver_ingots"))
-		.put("fools_gold", of(AstromineFoundationsItems.FOOLS_GOLD_INGOT, "c:fools_gold_ingots"))
-		.put("metite", of(AstromineFoundationsItems.METITE_INGOT, "c:metite_ingots"))
-		.put("asterite", of(AstromineFoundationsItems.ASTERITE, "c:asterites"))
-		.put("stellum", of(AstromineFoundationsItems.STELLUM_INGOT, "c:stellum_ingots"))
-		.put("galaxium", of(AstromineFoundationsItems.GALAXIUM, "c:galaxiums"))
-		.put("diamond", of(Items.DIAMOND, "c:diamonds"))
-		.put("emerald", of(Items.EMERALD, "c:emeralds"))
-		.put("quartz", of(Items.QUARTZ, "c:quartz"))
-		.put("univite", of(AstromineFoundationsItems.UNIVITE_INGOT, "c:univite_ingots"))
+		.put("copper", of(AstromineFoundationsItems.COPPER_INGOT, "c:copper_ingots").dust(AstromineFoundationsItems.COPPER_DUST))
+		.put("tin", of(AstromineFoundationsItems.TIN_INGOT, "c:tin_ingots").dust(AstromineFoundationsItems.TIN_DUST))
+		.put("silver", of(AstromineFoundationsItems.SILVER_INGOT, "c:silver_ingots").dust(AstromineFoundationsItems.SILVER_DUST))
+		.put("lead", of(AstromineFoundationsItems.LEAD_INGOT, "c:lead_ingots").dust(AstromineFoundationsItems.LEAD_DUST))
+		.put("bronze", of(AstromineFoundationsItems.BRONZE_INGOT, "c:bronze_ingots").dust(AstromineFoundationsItems.BRONZE_DUST))
+		.put("steel", of(AstromineFoundationsItems.STEEL_INGOT, "c:steel_ingots").dust(AstromineFoundationsItems.STEEL_DUST))
+		.put("electrum", of(AstromineFoundationsItems.ELECTRUM_INGOT, "c:electrum_ingots").dust(AstromineFoundationsItems.ELECTRUM_DUST))
+		.put("rose_gold", of(AstromineFoundationsItems.ROSE_GOLD_INGOT, "c:rose_gold_ingots").dust(AstromineFoundationsItems.ROSE_GOLD_DUST))
+		.put("sterling_silver", of(AstromineFoundationsItems.STERLING_SILVER_INGOT, "c:sterling_silver_ingots").dust(AstromineFoundationsItems.STERLING_SILVER_DUST))
+		.put("fools_gold", of(AstromineFoundationsItems.FOOLS_GOLD_INGOT, "c:fools_gold_ingots").dust(AstromineFoundationsItems.FOOLS_GOLD_DUST))
+		.put("metite", of(AstromineFoundationsItems.METITE_INGOT, "c:metite_ingots").dust(AstromineFoundationsItems.METITE_DUST))
+		.put("asterite", of(AstromineFoundationsItems.ASTERITE, "c:asterites").dust(AstromineFoundationsItems.ASTERITE_DUST))
+		.put("stellum", of(AstromineFoundationsItems.STELLUM_INGOT, "c:stellum_ingots").dust(AstromineFoundationsItems.STELLUM_DUST))
+		.put("galaxium", of(AstromineFoundationsItems.GALAXIUM, "c:galaxiums").dust(AstromineFoundationsItems.GALAXIUM_DUST))
+		.put("diamond", of(Items.DIAMOND, "c:diamonds").dust(AstromineFoundationsItems.DIAMOND_DUST))
+		.put("emerald", of(Items.EMERALD, "c:emeralds").dust(AstromineFoundationsItems.EMERALD_DUST))
+		.put("quartz", of(Items.QUARTZ, "c:quartz").dust(AstromineFoundationsItems.QUARTZ_DUST))
+		.put("univite", of(AstromineFoundationsItems.UNIVITE_INGOT, "c:univite_ingots").dust(AstromineFoundationsItems.UNIVITE_DUST))
 		.put("wooden", of(Items.OAK_PLANKS, "minecraft:planks"))
 		.put("stone", of(Items.COBBLESTONE, "c:cobblestones"))
-		.put("iron", of(Items.IRON_INGOT, "c:iron_ingots"))
-		.put("gold", of(Items.GOLD_INGOT, "c:gold_ingots"))
-		.put("redstone", of(Items.REDSTONE, "c:redstone"))
-		.put("netherite", of(Items.NETHERITE_INGOT, "c:netherite_ingots"))
+		.put("iron", of(Items.IRON_INGOT, "c:iron_ingots").dust(AstromineFoundationsItems.IRON_DUST))
+		.put("gold", of(Items.GOLD_INGOT, "c:gold_ingots").dust(AstromineFoundationsItems.GOLD_DUST))
+		.put("lapis", of(Items.LAPIS_LAZULI, "c:lapis_lazulis").dust(AstromineFoundationsItems.LAPIS_DUST))
+		.put("redstone", of(Items.REDSTONE, "c:redstone").dust(Items.REDSTONE).dustTag(new Identifier("c:redstone_dusts")).tinyDust(AstromineFoundationsItems.REDSTONE_TINY_DUST))
+		.put("netherite", of(Items.NETHERITE_INGOT, "c:netherite_ingots").dust(AstromineFoundationsItems.NETHERITE_DUST))
+		.put("coal", of(Items.COAL, "c:coal").dust(AstromineFoundationsItems.COAL_DUST))
+		.put("charcoal", of(Items.CHARCOAL, "c:charcoal").dust(AstromineFoundationsItems.CHARCOAL_DUST))
+		.put("raw_netherite", of(Items.ANCIENT_DEBRIS, "c:netherite_ingots").dust(AstromineFoundationsItems.RAW_NETHERITE_DUST))
 		.build();
 
 	private static final Multimap<Class<?>, DataGenConsumer<?>> CONSUMERS = Multimaps.newListMultimap(Maps.newHashMap(), Lists::newArrayList);
@@ -79,6 +84,10 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 
 	@Override
 	public void onPreLaunch() {
+		System.out.println(MATERIALS.size() + " Materials: ");
+		for (MaterialEntry value : MATERIALS.values()) {
+			System.out.println("- " + value);
+		}
 		try {
 			DataGeneratorHandler handler = DataGeneratorHandler.create(Paths.get("../astromine-foundations/src/generated/resources"));
 			FabricLoader.getInstance().getEntrypoints("main", ModInitializer.class).forEach(ModInitializer::onInitialize);
@@ -211,6 +220,8 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 		tags.item(new Identifier("c:netherite_ingots")).append(Items.NETHERITE_INGOT);
 		tags.item(new Identifier("c:quartz")).append(Items.QUARTZ);
 		tags.item(new Identifier("c:redstone")).append(Items.REDSTONE);
+		tags.item(new Identifier("c:coal")).append(Items.COAL);
+		tags.item(new Identifier("c:charcoal")).append(Items.CHARCOAL);
 
 		tags.item(new Identifier("c:wood_sticks")).append(Items.STICK);
 
@@ -267,7 +278,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 			Identifier itemId = Registry.ITEM.getId(item);
 			String itemIdPath = itemId.getPath();
 
-			MaterialEntry material = getMaterial(itemId);
+			MaterialEntry material = getMaterialFromId(itemId);
 
 			if (material != null) {
 				if (!material.getMaterialId().equals("univite")) {
@@ -317,8 +328,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 				} else if (itemIdPath.endsWith("_gear")) {
 					// 4 ingots to 1 gear
 					Generators.ofIngotToGear(recipes, item, material.asIngredient());
-				}
-				if (itemIdPath.endsWith("_cluster")) {
+				} else if (itemIdPath.endsWith("_cluster")) {
 					if (addedCluster.add(material.getMaterialId())) {
 						// 1 cluster to 1 ingot
 						Generators.ofSmeltingCluster(recipes, item, material.getIngotItemId());
@@ -326,23 +336,13 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 						// 1 cluster to 1 ingot
 						Generators.ofBlastingCluster(recipes, item, material.getIngotItemId());
 					}
+				} else if (itemIdPath.endsWith("_tiny_dust")) {
+					// 9 tiny dust to 1 dust
+					Generators.ofTinyDustToDust(recipes, material.getDustId(), material.getTinyDustTagId());
+
+					// 1 dust to 9 tiny dust
+					Generators.ofDustToTinyDust(recipes, material.getTinyDustId(), material.getDustTagId());
 				}
-			}
-
-			if (itemIdPath.endsWith("_tiny_dust")) {
-				// 9 tiny dusts to 1 dust
-				Identifier dustItem = new Identifier(itemId.getNamespace(), itemIdPath.replace("_tiny_dust", "_dust"));
-				if (dustItem.toString().equals("astromine:redstone_dust")) {
-					dustItem = new Identifier("redstone");
-				} else if (!Registry.ITEM.getOrEmpty(dustItem).isPresent()) {
-					dustItem = new Identifier(dustItem.getPath());
-				}
-
-				// 9 tiny dust to 1 dust
-				Generators.ofTinyDustToDust(recipes, dustItem, itemIdPath);
-
-				// 1 dust to 9 tiny dust
-				Generators.ofDustToTinyDust(recipes, item, dustItem, itemId);
 			}
 		});
 
@@ -352,7 +352,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 			Identifier blockId = Registry.BLOCK.getId(block);
 			String blockIdPath = blockId.getPath();
 
-			MaterialEntry material = getMaterial(blockId);
+			MaterialEntry material = getMaterialFromId(blockId);
 
 			if (material != null) {
 				if (blockIdPath.endsWith("_block")) {
@@ -375,28 +375,26 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 	}
 
 	@Nullable
-	private static MaterialEntry getMaterial(Identifier identifier) {
-		String path = identifier.getPath().replaceFirst("asteroid_", "").replaceFirst("meteor_", "");
+	private static MaterialEntry getMaterialFromTinyDust(Identifier itemId) {
+		return MATERIALS.values().stream()
+			.filter(material -> Objects.equals(material.getTinyDustId(), itemId))
+			.findFirst()
+			.orElse(null);
+	}
+
+	@Nullable
+	private static MaterialEntry getMaterialFromId(Identifier itemId) {
+		String path = itemId.getPath().replaceFirst("asteroid_", "").replaceFirst("meteor_", "");
 		if (path.contains("_")) {
 			return MATERIALS.keySet().stream()
 				.filter(path::startsWith)
 				.findFirst()
 				.map(MATERIALS::get)
-				.orElse(null);
+				.orElse(getMaterialFromTinyDust(itemId));
 		}
 
-		return null;
+		return getMaterialFromTinyDust(itemId);
 	}
-
-	private static Identifier guessMaterialFromTag(String tag) {
-		Identifier ingotItem = AstromineCommon.identifier((new Identifier(tag).getNamespace().equals("c") ? "" : new Identifier(tag).getNamespace() + ":") +
-		                                                  (tag.endsWith("s") ? new Identifier(tag).getPath().substring(0, new Identifier(tag).getPath().length() - 1) : new Identifier(tag).getPath()));
-		if (!Registry.ITEM.getOrEmpty(ingotItem).isPresent()) {
-			return new Identifier(ingotItem.getPath());
-		}
-		return ingotItem;
-	}
-
 
 	private static <T> void forEach(Class<?> scanning, Class<T> clazz, Consumer<T> consumer) {
 		for (Field field : scanning.getDeclaredFields()) {
@@ -672,21 +670,21 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 				.offerTo(recipes, result + "_from_blasting_cluster");
 		}
 
-		private static void ofTinyDustToDust(RecipeData recipes, Identifier dustItem, String keyPath) {
+		private static void ofTinyDustToDust(RecipeData recipes, Identifier dustItem, Identifier tinyDustTagId) {
 			ShapedRecipeJsonFactory.create(Registry.ITEM.get(dustItem))
 				.criterion("impossible", new ImpossibleCriterion.Conditions())
 				.pattern("###")
 				.pattern("###")
 				.pattern("###")
-				.input('#', TagRegistry.item(new Identifier("c", keyPath + "s")))
+				.input('#', TagRegistry.item(tinyDustTagId))
 				.offerTo(recipes, dustItem + "_from_tiny_dust");
 		}
 
-		private static void ofDustToTinyDust(RecipeData recipes, Item item, Identifier dustItem, Identifier keyId) {
-			ShapelessRecipeJsonFactory.create(item, 9)
+		private static void ofDustToTinyDust(RecipeData recipes, Identifier tinyDustItem, Identifier dustTagId) {
+			ShapelessRecipeJsonFactory.create(Registry.ITEM.get(tinyDustItem), 9)
 				.criterion("impossible", new ImpossibleCriterion.Conditions())
-				.input(TagRegistry.item(new Identifier("c", dustItem.getPath() + "s")))
-				.offerTo(recipes, keyId + "_from_dust");
+				.input(TagRegistry.item(dustTagId))
+				.offerTo(recipes, tinyDustItem + "_from_dust");
 		}
 
 		private static void ofIngotToBlock(RecipeData recipes, Block block, Ingredient ingot) {
@@ -720,7 +718,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 		private static void ofBlastingOre(RecipeData recipes, Block ore, Identifier ingot) {
 			CookingRecipeJsonFactory
 				.createBlasting(
-					Ingredient.fromTag(TagRegistry.item(new Identifier("c", Registry.BLOCK.getId(ore).getPath()  + "s"))),
+					Ingredient.fromTag(TagRegistry.item(new Identifier("c", Registry.BLOCK.getId(ore).getPath() + "s"))),
 					Registry.ITEM.get(ingot),
 					0.1F,
 					100)

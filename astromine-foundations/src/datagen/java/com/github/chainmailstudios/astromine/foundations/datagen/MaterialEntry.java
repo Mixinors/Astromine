@@ -8,11 +8,15 @@ import net.minecraft.util.registry.Registry;
 
 public class MaterialEntry {
 	private final Identifier itemId;
-	private final Identifier tagId;
+	private final Identifier itemTagId;
+	private Identifier dustId;
+	private Identifier dustTagId;
+	private Identifier tinyDustId;
+	private Identifier tinyDustTagId;
 
-	public MaterialEntry(Identifier itemId, Identifier tagId) {
+	public MaterialEntry(Identifier itemId, Identifier itemTagId) {
 		this.itemId = itemId;
-		this.tagId = tagId;
+		this.itemTagId = itemTagId;
 	}
 
 	public String getMaterialId() {
@@ -23,8 +27,24 @@ public class MaterialEntry {
 		return itemId;
 	}
 
-	public Identifier getTagId() {
-		return tagId;
+	public Identifier getItemTagId() {
+		return itemTagId;
+	}
+
+	public Identifier getDustId() {
+		return dustId;
+	}
+
+	public Identifier getDustTagId() {
+		return dustTagId;
+	}
+
+	public Identifier getTinyDustId() {
+		return tinyDustId;
+	}
+
+	public Identifier getTinyDustTagId() {
+		return tinyDustTagId;
 	}
 
 	public static MaterialEntry of(ItemConvertible item, String tagId) {
@@ -35,7 +55,49 @@ public class MaterialEntry {
 		return new MaterialEntry(new Identifier(itemId), new Identifier(tagId));
 	}
 
+	public MaterialEntry dust(ItemConvertible dust) {
+		return dust(Registry.ITEM.getId(dust.asItem()));
+	}
+
+	public MaterialEntry dust(Identifier dustId) {
+		this.dustId = dustId;
+		this.dustTagId = new Identifier("c", dustId.getPath() + "s");
+		if (dustId.toString().contains("_dust")) {
+			Identifier tinyDustId = new Identifier(dustId.toString().replace("_dust", "_tiny_dust"));
+			if (Registry.ITEM.getOrEmpty(tinyDustId).isPresent())
+				return tinyDust(tinyDustId);
+		}
+		return this;
+	}
+
+	public MaterialEntry dustTag(Identifier dustTagId) {
+		this.dustTagId = dustTagId;
+		return this;
+	}
+
+	public MaterialEntry tinyDust(ItemConvertible tinyDust) {
+		return tinyDust(Registry.ITEM.getId(tinyDust.asItem()));
+	}
+
+	public MaterialEntry tinyDust(Identifier tinyDustId) {
+		this.tinyDustId = tinyDustId;
+		this.tinyDustTagId = new Identifier("c", tinyDustId.getPath() + "s");
+		return this;
+	}
+
 	public Ingredient asIngredient() {
-		return Ingredient.fromTag(TagRegistry.item(tagId));
+		return Ingredient.fromTag(TagRegistry.item(itemTagId));
+	}
+
+	@Override
+	public String toString() {
+		return "MaterialEntry{" +
+		       "itemId=" + itemId +
+		       ", itemTagId=" + itemTagId +
+		       ", dustId=" + dustId +
+		       ", dustTagId=" + dustTagId +
+		       ", tinyDustId=" + tinyDustId +
+		       ", tinyDustTagId=" + tinyDustTagId +
+		       '}';
 	}
 }
