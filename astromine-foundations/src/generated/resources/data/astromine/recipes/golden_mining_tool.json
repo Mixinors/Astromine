@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    " # ",
+    " $ "
+  ],
+  "key": {
+    "$": {
+      "tag": "c:wood_sticks"
+    },
+    "#": {
+      "tag": "c:gold_ingots"
+    }
+  },
+  "result": {
+    "item": "astromine:golden_mining_tool"
+  }
+}

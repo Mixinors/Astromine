@@ -8,3 +8,8 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
+rootProject.name = "astromine"
+
+include 'astromine-core'
+include 'astromine-foundations'

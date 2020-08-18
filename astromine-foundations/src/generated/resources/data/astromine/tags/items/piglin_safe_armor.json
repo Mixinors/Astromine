@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:rose_gold_helmet",
+    "astromine:rose_gold_chestplate",
+    "astromine:rose_gold_leggings",
+    "astromine:rose_gold_boots",
+    "astromine:fools_gold_helmet",
+    "astromine:fools_gold_chestplate",
+    "astromine:fools_gold_leggings",
+    "astromine:fools_gold_boots"
+  ]
+}

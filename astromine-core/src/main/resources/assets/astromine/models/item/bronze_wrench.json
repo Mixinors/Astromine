@@ -1,0 +1,6 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "astromine:item/tool/bronze_wrench"
+  }
+}

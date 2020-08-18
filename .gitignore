@@ -12,6 +12,10 @@ classes/
 # idea
 
 .idea/
+*/.idea/
+*/build/
+*/out/
+*/classes/
 *.iml
 *.ipr
 *.iws
@@ -33,3 +37,6 @@ tpsgobrr/
 
 # just in case weird things happen
 logs/
+*/desktop.ini
+
+/*/src/generated/resources/.cache/cache
