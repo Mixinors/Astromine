@@ -7,7 +7,9 @@
     "facing=up,active=false": {
       "model": "astromine:block/vent_vertical_inactive"
     },
-    "facing=north,active=false": { "model": "astromine:block/vent_inactive" },
+    "facing=north,active=false": {
+      "model": "astromine:block/vent_inactive"
+    },
     "facing=south,active=false": {
       "model": "astromine:block/vent_inactive",
       "y": 180
@@ -27,7 +29,9 @@
     "facing=up,active=true": {
       "model": "astromine:block/vent_vertical_active"
     },
-    "facing=north,active=true": { "model": "astromine:block/vent_active" },
+    "facing=north,active=true": {
+      "model": "astromine:block/vent_active"
+    },
     "facing=south,active=true": {
       "model": "astromine:block/vent_active",
       "y": 180

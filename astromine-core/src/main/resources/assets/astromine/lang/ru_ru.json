@@ -434,7 +434,7 @@
   "item.astromine.diamond_mining_tool": "Алмазный Mining Tool",
   "item.astromine.netherite_mattock": "Незеритовая Mattock",
   "item.astromine.netherite_mining_tool": "Незеритовая Mining Tool",
-  "item.astromine.tin_helmet": "Оловянный Шлем", 
+  "item.astromine.tin_helmet": "Оловянный Шлем",
   "item.astromine.tin_chestplate": "Оловянный Нагрудник",
   "item.astromine.tin_leggings": "Оловянные Штаны",
   "item.astromine.tin_boots": "Оловянные Ботинки",
@@ -497,7 +497,6 @@
   "item.astromine.space_slime_spawn_egg": "Яйцо Призыва Космического Слизня",
   "item.astromine.super_space_slime_shooter": "Super Space Slime Shooter",
   "item.astromine.space_slime_ball": "Космическая Слизь",
-
   "item.astromine.manual": "Astromine Инструкция",
   "item.astromine.yeast": "Дрожжи",
   "item.astromine.rocket": "Рокета",
@@ -516,7 +515,6 @@
   "subtitles.astromine.fire_extinguisher_open": "Огнетушитель открывается",
   "subtitles.astromine.gunshot": "Огнестрельный",
   "subtitles.astromine.empty_magazine": "Магазин пуст",
-
   "text.astromine.manual.landing": "Your guide to the stars!",
   "category.astromine.liquid_generating": "Liquid Generating",
   "category.astromine.solid_generating": "Solid Generating",
@@ -553,7 +551,6 @@
   "text.astromine.astronautics.space_suit.title": "Скафандр",
   "text.astromine.astronautics.space_suit.page_one.title": "Скафандр",
   "text.astromine.astronautics.space_suit.page_one.text": "Жизненно важный для выживания во враждебной среде, скафандр-это самая важная вещь, которую можно носить с собой. $(p)с внутренними резервуарами, которые могут находиться под давлением в некоторых машинах, он может быть заполнен (не -) дышащими газами, пригодными для того, кто его носит.",
-
   "text.astromine.astronautics.rocket.title": "Рокета",
   "text.astromine.astronautics.rocket.page_one.title": "Рокета",
   "text.astromine.astronautics.rocket.page_one.text": "Your ticket to the final frontier.",
@@ -579,13 +576,11 @@
   "text.astromine.components.plates.page_one.text": "Тонкие листы металла, пластины полезны для построения$ (вещи)корпуса $() для$(вещи)машины $ ().",
   "text.astromine.components.plates.page_two.title": "Рецепт",
   "text.astromine.components.plates.page_two.text": "Хотя показанный рецепт явно предназначен для железных пластин $(item)$ (), простая замена железных слитков $(item)$ () на любые другие слитки $(thing)$ () создаст пластины этого типа.",
-  
   "text.astromine.creatures.space_slime.title": "Космичекий Слизень",
   "text.astromine.creatures.space_slime.page_one.title": "Космичекий Слизень",
   "text.astromine.creatures.space_slime.page_one.text": "Яростный противник, населяющий большие участки проходимого пространства.",
   "text.astromine.creatures.space_slime.page_two.title": "Дроп",
   "text.astromine.creatures.space_slime.page_two.text": "После Убийста, a $(thing)Космичекая Слизь$() будут падать $(thing)Космические Слизизневые Шары$().",
-  
   "text.astromine.gadgets.fire_extinguisher.title": "Огнетушитель",
   "text.astromine.gadgets.fire_extinguisher.page_one.title": "Огнетушитель",
   "text.astromine.gadgets.fire_extinguisher.page_one.text": "Важный инструмент в космических путешествиях, он отвечает за обеспечение маневренной тяги.$(p)Удивительно, но он также может тушить огонь.",
@@ -594,97 +589,78 @@
   "text.astromine.machinery.holographic_bridge_projector.page_one.title": "Голографический Проектор Моста",
   "text.astromine.machinery.holographic_bridge_projector.page_one.text": "Машина, которая создает голографический мост между ним и другим в своем роде; соединяется с$(item)$(l:gadgets/holographic_connector)Голографический Разъемом$().",
   "text.astromine.machinery.holographic_bridge_projector.page_two.title": "Рецепт",
-  
   "text.astromine.gadgets.holographic_connector.title": "Голографический Разъем",
   "text.astromine.gadgets.holographic_connector.page_one.title": "Голографический Разъем",
   "text.astromine.gadgets.holographic_connector.page_one.text": "Пульт дистанционного управления, который позволяет вам соединяться вместе $(item)$(l:machinery/holographic_bridge_projector)Голографический Проектор Моста$(). Они должны быть обращены друг к другу на одной линии, но могут иметь разную высоту.",
   "text.astromine.gadgets.holographic_connector.page_two.title": "Рецепт",
-  
   "text.astromine.machinery.creative_buffer.title": "Творческий Буфер",
   "text.astromine.machinery.creative_buffer.page_one.title": "Творческий Буфер",
   "text.astromine.machinery.creative_buffer.page_one.text": "Машина, которая производит бесконечно $(thing)item$() Энергию.",
-  
   "text.astromine.machinery.creative_capacitor.title": "Творческий Конденсатор",
   "text.astromine.machinery.creative_capacitor.page_one.title": "Творческий Конденсатор",
   "text.astromine.machinery.creative_capacitor.page_one.text": "Машина, которая производит $(thing)energy$() бесконечно.",
-  
   "text.astromine.machinery.creative_tank.title": "Творческий Танк",
   "text.astromine.machinery.creative_tank.page_one.title": "Творческий Танк",
   "text.astromine.machinery.creative_tank.page_one.text": "Машина, которая производит $(thing)fluid$() бесконечно.",
-  
   "text.astromine.machinery.electric_smelter.title": "Электричекая Печь",
   "text.astromine.machinery.electric_smelter.page_one.title": "Электричекая Печь",
   "text.astromine.machinery.electric_smelter.page_one.text": "Машина, которая потребляет $(thing)energy$() переплавляет $(thing)items$() в полезные материалы.",
-  
   "text.astromine.machinery.electric_smelter.page_two.title": "Рецепт",
   "text.astromine.machinery.electrolyzer.title": "Электролизер",
   "text.astromine.machinery.electrolyzer.page_one.title": "Электролизер",
   "text.astromine.machinery.electrolyzer.page_one.text": "Машина, которая производит $(thing)energy$() to electrolyze $(thing)fluids$() в полезные материалы.",
-  
   "text.astromine.machinery.electrolyzer.page_two.title": "Рецепт",
   "text.astromine.machinery.energy_cable.title": "Энергетический Кабель",
   "text.astromine.machinery.energy_cable.page_one.title": "Энергетический Кабель",
   "text.astromine.machinery.energy_cable.page_one.text": "Кабель который транспортирует $(thing)energy$(); никакой буферизации или поиска путей не требуется.",
-  
   "text.astromine.machinery.energy_cable.page_two.title": "Рецепт",
   "text.astromine.machinery.fluid_cable.title": "Жидкосный Кабель",
   "text.astromine.machinery.fluid_cable.page_one.title": "Жидкосный Кабель",
   "text.astromine.machinery.fluid_cable.page_one.text": "Кабель который транспортирует $(thing)fluids$(); никакой буферизации или поиска путей не требуется.",
-  
   "text.astromine.machinery.fluid_cable.page_two.title": "Рецепт",
   "text.astromine.machinery.fluid_extractor.title": "Жидкосный Экскаватор",
   "text.astromine.machinery.fluid_extractor.page_one.title": "Жидкосный Экскаватор",
   "text.astromine.machinery.fluid_extractor.page_one.text": "Машина, которая потребляет $(thing)energy$() подбирать $(thing)fluids$() из мира.",
-  
   "text.astromine.machinery.fluid_extractor.page_two.title": "Рецепт",
   "text.astromine.machinery.fluid_inserter.title": "Fluid Inserter",
   "text.astromine.machinery.fluid_inserter.page_one.title": "Fluid Inserter",
   "text.astromine.machinery.fluid_inserter.page_one.text": "Машина, которая потребляет $(thing)energy$() ставит $(thing)fluids$() в мир.",
-  
   "text.astromine.machinery.fluid_inserter.page_two.title": "Рецепт",
   "text.astromine.machinery.fluid_mixer.title": "Жидкостный Смешиватель",
   "text.astromine.machinery.fluid_mixer.page_one.title": "Жидкостный Смешиватель",
   "text.astromine.machinery.fluid_mixer.page_one.text": "Машина, которая потребляет $(thing)energy$() и смешивает $(thing)fluids$() в полезные материалы.",
   "text.astromine.machinery.fluid_mixer.page_two.title": "Рецепт",
-  
   "text.astromine.machinery.block_breaker.title": "Разрушитель Блоков",
   "text.astromine.machinery.block_breaker.page_one.title": "Разрушитель Блоков",
   "text.astromine.machinery.block_breaker.page_one.text": "Машина, которая потребляет $(thing)energy$() и ломает $(thing)blocks$() из мира.",
   "text.astromine.machinery.block_breaker.page_two.title": "Рецепт",
-  
   "text.astromine.machinery.block_placer.title": "Block Placer",
   "text.astromine.machinery.block_placer.page_one.title": "Block Placer",
   "text.astromine.machinery.block_placer.page_one.text": "Машина, которая потребляет $(thing)energy$() и ставит $(thing)blocks$() в мир.",
-  
   "text.astromine.machinery.block_placer.page_two.title": "Рецепт",
   "text.astromine.machinery.inserter.title": "Inserter",
   "text.astromine.machinery.inserter.page_one.title": "Inserter",
   "text.astromine.machinery.inserter.page_one.text": "Машина, которая поднимает предметы спереди и помещает их сзади для транспортировки предметов.",
   "text.astromine.machinery.inserter.page_two.title": "Рецепт",
   "text.astromine.machinery.inserter.page_three.title": "Рецепт",
-  
   "text.astromine.machinery.conveyor.title": "Конвейер",
   "text.astromine.machinery.conveyor.page_one.title": "Конвейер",
   "text.astromine.machinery.conveyor.page_one.text": "Машина, которая перевозит предметы.",
   "text.astromine.machinery.conveyor.page_two.title": "Рецепт",
   "text.astromine.machinery.conveyor.page_three.title": "Рецепт",
   "text.astromine.machinery.conveyor.page_four.title": "Рецепт",
-  
   "text.astromine.machinery.triturator.title": "Дробитель",
   "text.astromine.machinery.triturator.page_one.title": "Дробитель",
   "text.astromine.machinery.triturator.page_one.text": "Машина, которая потребляет $(thing)energy$() и передрабливает $(thing)items$() в полезные материалы.",
   "text.astromine.machinery.triturator.page_two.title": "Рецепт",
-  
   "text.astromine.machinery.presser.title": "Пресс",
   "text.astromine.machinery.presser.page_one.title": "Пресс",
   "text.astromine.machinery.presser.page_one.text": "Машина, которая потребляет $(thing)energy$() прессует $(thing)items$() в полезные материалы.",
   "text.astromine.machinery.presser.page_two.title": "Рецепт",
-  
   "text.astromine.machinery.vent.title": "Vent",
   "text.astromine.machinery.vent.page_one.title": "Vent",
   "text.astromine.machinery.vent.page_one.text": "Машина, которая потребляет энергия для вентиляции жидкостей в атмосферу.",
   "text.astromine.machinery.vent.page_two.title": "Рецепт",
-  
   "text.astromine.resources.copper.title": "Медь",
   "text.astromine.resources.copper.page_one.title": "Медь",
   "text.astromine.resources.copper.page_one.text": "очень распространенный металл с высокой тепловой и электрической проводимостью и ярко выраженным оранжевым оттенком.",
@@ -693,7 +669,6 @@
   "text.astromine.resources.copper.page_three.title": "Использования",
   "text.astromine.resources.copper.page_three.text": "Медь очень полезна для базовой электроники и инструментов. В сочетании с $(item)$(l:resources/tin)Оловом$() в $(item)$(l:machinery/alloy_smelter)Плавильной Печи$(), это может сделать $(item)$(l:resources/bronze)Бронзу$().",
   "text.astromine.resources.copper.page_four.title": "Статистика",
-  
   "text.astromine.resources.copper.page_four.text": "$(l)Tools$()$(br)Уровень Добычи: 1$(br)Базовая прочность: 200$(br)Скорость Добычи: 4$(br)Урон: 1.5$(br)Зачарованность: 10$(p)$(l)Броня$()$(br)Множитель Долговечности: 12$(br)Total Защита: 12$(br)Прочность: 0$(br)Зачарованность: 15",
   "text.astromine.resources.tin.title": "Олово",
   "text.astromine.resources.tin.page_one.title": "Олово",
@@ -704,7 +679,6 @@
   "text.astromine.resources.tin.page_three.text": "Олово полезно для покрытия, чтобы предотвратить коррозию. В сочетании с $(item)$(l:resources/copper)Медью$() в $(item)$(l:machinery/alloy_smelter)Плавильной Печи$(), это может сделать $(item)$(l:resources/bronze)Бронзу$().",
   "text.astromine.resources.tin.page_four.title": "Статистика",
   "text.astromine.resources.tin.page_four.text": "$(l)Tools$()$(br)Уровень Добычи: 1$(br)Базовая Прочность: 200$(br)Скорость Добычи: 5$(br)Урон: 1.0$(br)Зачарованность: 10$(p)$(l)Armor$()$(br)Durability Multiplier: 12$(br)Total Defense: 12$(br)Toughness: 0$(br)Enchantability: 15",
-  
   "text.astromine.resources.bronze.title": "Бронза",
   "text.astromine.resources.bronze.page_one.title": "Бронза",
   "text.astromine.resources.bronze.page_two.title": "Получение Бронза",
@@ -714,7 +688,6 @@
   "text.astromine.resources.bronze.page_three.text": "Бронза полезна для создания инструментов, а также используется в строительстве более совершенных машин.",
   "text.astromine.resources.bronze.page_four.title": "Статистика",
   "text.astromine.resources.bronze.page_four.text": "$(l)Tools$()$(br)Уровень Добычи: 2$(br)Базовая Прочность: 539$(br)Скорость Добычи: 7$(br)Урон: 2.5$(br)Зачарованность: 20$(p)$(l)Armor$()$(br)Durability Multiplier: 20$(br)Total Defense: 15$(br)Toughness: 0.7$(br)Enchantability: 18",
-  
   "text.astromine.resources.steel.title": "Сталь",
   "text.astromine.resources.steel.page_one.title": "Сталь",
   "text.astromine.resources.steel.page_one.text": "Сплав из $(item)Железа$() and $(thing)Carbon$(), Сталь невероятна прочна для металла земного происхождения.",
@@ -724,7 +697,6 @@
   "text.astromine.resources.steel.page_three.text": "Сталь полезна для создания инструментов, а также используется при постройке более совершенных машин.",
   "text.astromine.resources.steel.page_four.title": "Статистика",
   "text.astromine.resources.steel.page_four.text": "$(l)Tools$()$(br)Уровень Добычи: 3$(br)Базовая Прочность: 1043$(br)Скорость Добычи: 7.5$(br)Урон: 3$(br)Зачарованность: 24$(p)$(l)Armor$()$(br)Durability Multiplier: 24$(br)Total Defense: 17$(br)Toughness: 0.5$(br)Enchantability: 18",
-  
   "text.astromine.resources.silver.title": "Серебро",
   "text.astromine.resources.silver.page_one.title": "Серебро",
   "text.astromine.resources.silver.page_one.text": "Металл с высокой электропроводностью и отчетливой белой, блестящей текстурой.",
@@ -734,7 +706,6 @@
   "text.astromine.resources.silver.page_three.text": "Серебро очень полезен для базовой электроники и инструментов. В сочетании с $(item)$(l:resources/copper)Медью$() в $(item)$(l:machinery/alloy_smelter)Плавильной Печи$(), это может сделать $(item)$(l:resources/electrum)Электрум$(). В сочетании с $(item)$(l:resources/copper)Меди$() в $(item)$(l:machinery/alloy_smelter)Плавильной Печи$(), это может сделать $(item)$(l:resources/sterling_silver)Стерлинговое Серебро$().",
   "text.astromine.resources.silver.page_four.title": "Статистика",
   "text.astromine.resources.silver.page_four.text": "$(l)Tools$()$(br)Уровень Добычи: 2$(br)Базовая Прочность: 462$(br)Скорость Добычи: 6.5$(br)Урон: 2.0$(br)Зачарованность: 20$(p)$(l)Armor$()$(br)Durability Multiplier: 17$(br)Total Defense: ?$(br)Toughness: 0$(br)Enchantability: 22",
-  
   "text.astromine.resources.electrum.title": "Электрум",
   "text.astromine.resources.electrum.page_one.title": "Электрум",
   "text.astromine.resources.electrum.page_one.text": "Металл со значительной электропроводностью и золотистой текстурой.",
@@ -744,7 +715,6 @@
   "text.astromine.resources.electrum.page_three.text": "Электрум часто используется для монет.",
   "text.astromine.resources.electrum.page_four.title": "Статистика",
   "text.astromine.resources.electrum.page_four.text": "$(l)Tools$()$(br)Уровень Добычи: 2$(br)Базовая Прочность: 185$(br)Скорость Добычи: 11$(br)Урон: 1.0$(br)Зачарованность: 21$(p)$(l)Armor$()$(br)Durability Multiplier: 13$(br)Total Defense: ?$(br)Toughness: 0$(br)Enchantability: 25",
-  
   "text.astromine.resources.fools_gold.title": "Fool's Золото",
   "text.astromine.resources.fools_gold.page_one.title": "Fool's Золото",
   "text.astromine.resources.fools_gold.page_one.text": "Металл с помощью которого получают двуокись серы, которая, благодаря своему золотистому цвету, часто сбивает с толку неподготовленного путешественника.",
@@ -754,7 +724,6 @@
   "text.astromine.resources.fools_gold.page_three.text": "Fool's Золото часто используется для монет.",
   "text.astromine.resources.fools_gold.page_four.title": "Статистика",
   "text.astromine.resources.fools_gold.page_four.text": "$(l)Tools$()$(br)Уровень Добычи: 2$(br)Базовая Прочность: 250$(br)Скорость Добычи: 6.5$(br)Урон: 2.0$(br)Зачарованность: 16$(p)$(l)Armor$()$(br)Durability Multiplier: 15$(br)Total Defense: ?$(br)Toughness: 0$(br)Enchantability: 10",
-  
   "text.astromine.resources.rose_gold.title": "Роза Золото",
   "text.astromine.resources.rose_gold.page_one.title": "Роза Золото",
   "text.astromine.resources.rose_gold.page_one.text": "Металл со значительной электропроводностью rose розовая, розовая текстура.",
@@ -764,7 +733,6 @@
   "text.astromine.resources.rose_gold.page_three.text": "Роза Золото часто используется для монет.",
   "text.astromine.resources.rose_gold.page_four.title": "Статистика",
   "text.astromine.resources.rose_gold.page_four.text": "$(l)Tools$()$(br)Уровень Добычи: 1$(br)Базовая Прочность: 64$(br)Скорость Добычи: 10$(br)Урон: 0.5$(br)Зачарованность: 24$(p)$(l)Armor$()$(br)Durability Multiplier: 9$(br)Total Defense: ?$(br)Toughness: 0.1$(br)Enchantability: 25",
-  
   "text.astromine.resources.sterling_silver.title": "Стерлинговое Серебро",
   "text.astromine.resources.sterling_silver.page_one.title": "Стерлинговое Серебро",
   "text.astromine.resources.sterling_silver.page_one.text": "Металл со значительной электропроводностью серебристая текстура.",
@@ -774,7 +742,6 @@
   "text.astromine.resources.sterling_silver.page_three.text": "Стерлинговое Серебро часто используется для инструментов.",
   "text.astromine.resources.sterling_silver.page_four.title": "Статистика",
   "text.astromine.resources.sterling_silver.page_four.text": "$(l)Tools$()$(br)Уровень Добычи: 2$(br)Базовая Прочность: 697$(br)Скорость Добычи: 7$(br)Урон: 2.5$(br)Зачарованность: 20$(p)$(l)Armor$()$(br)Durability Multiplier: 18$(br)Total Defense: ?$(br)Toughness: 0.1$(br)Enchantability: 23",
-  
   "text.astromine.resources.asterite.title": "Астерит",
   "text.astromine.resources.asterite.page_one.title": "Астерит",
   "text.astromine.resources.asterite.page_one.text": "Фрагмент давно умершей звезды, этот красный драгоценный камень может показаться хрупким неподготовленному наблюдателю-тому, кто не знает его существенных достоинств. $(p)Его свойства позволяют квалифицированным мастерам создавать мощные инструменты.",
@@ -784,7 +751,6 @@
   "text.astromine.resources.asterite.page_three.text": "Астерит может использоваться для создания мощных инструментов.",
   "text.astromine.resources.asterite.page_four.title": "Статистика",
   "text.astromine.resources.asterite.page_four.text": "$(l)Tools$()$(br)Уровень Добычи: 5$(br)Базовая Прочность: 2015$(br)Скорость Добычи: 10$(br)Урон: 5$(br)Зачарованность: 20$(p)$(l)Armor$()$(br)Durability Multiplier: 22$(br)Total Defense: 23$(br)Toughness: 4$(br)Enchantability: 20",
-  
   "text.astromine.resources.galaxium.title": "Галаксиум",
   "text.astromine.resources.galaxium.page_one.title": "Галаксиум",
   "text.astromine.resources.galaxium.page_one.text": "Редкий драгоценный камень с глубоким, подавляющим темным блеском. Чрезвычайно плотный, этот материал теоретически может быть получен из больших скоплений в центре галактик.$(p)Нет никаких записей о таких явлениях, но путешествие человека содержит ключи ко многим тайнам, о которых он никогда раньше не думал.",
@@ -794,7 +760,6 @@
   "text.astromine.resources.galaxium.page_three.text": "Галаксиум может быть использован для создания чрезвычайно стойких инструментов и изысканной технологии.",
   "text.astromine.resources.galaxium.page_four.title": "Статистика",
   "text.astromine.resources.galaxium.page_four.text": "$(l)Tools$()$(br)Уровень Добычи: 6$(br)Базовая Прочность: 3072$(br)Скорость Добычи: 11$(br)Урон: 5$(br)Зачарованность: 18$(p)$(l)Armor$()$(br)Durability Multiplier: 44$(br)Total Defense: 25$(br)Toughness: 4.5$(br)Enchantability: 18",
-  
   "text.astromine.resources.metite.title": "Метит",
   "text.astromine.resources.metite.page_one.title": "Метит",
   "text.astromine.resources.metite.page_one.text": "A foreign metal, Метит выдерживает огромное давление, будучи незаменимым во всех областях космических путешествий.$(p)Приобретение его считается важной ступенькой в межзвездном путешествии.",
@@ -804,7 +769,6 @@
   "text.astromine.resources.metite.page_three.text": "Метит может быть использован для создания стандартных инструментов; однако он имеет гораздо больше пользы при создании астронавтической технологии.",
   "text.astromine.resources.metite.page_four.title": "Статистика",
   "text.astromine.resources.metite.page_four.text": "$(l)Tools$()$(br)Уровень Добычи: 2$(br)Базовая Прочность: 981$(br)Скорость Добычи: 14$(br)Урон: 5$(br)Зачарованность: 5$(p)$(l)Armor$()$(br)Durability Multiplier: 15$(br)Total Defense: 14$(br)Toughness: 0$(br)Enchantability: 7",
-  
   "text.astromine.resources.stellum.title": "Стеллум",
   "text.astromine.resources.stellum.page_one.title": "Стеллум",
   "text.astromine.resources.stellum.page_one.text": "Осколок живой звезды, сырая энергия, содержащаяся в этом материале, превзойдена лишь немногими, каждая молекула его вибрирует с$(thing)Звездная Энергия$().",
@@ -814,7 +778,6 @@
   "text.astromine.resources.stellum.page_three.text": "Стеллум can be used to create powerful tooling roughly equivalent to $(thing)$(l:resources/asterite)Asterite$(). Рожденный из сердца живой звезды, он огнеупорен до такой степени, какой никогда не видел прежде; и обладает силой, которая, будучи обуздана, может привести в действие целую цивилизацию.",
   "text.astromine.resources.stellum.page_four.title": "Статистика",
   "text.astromine.resources.stellum.page_four.text": "$(l)Tools$()$(br)Уровень Добычи: 5$(br)Базовая Прочность: 2643$(br)Скорость Добычи: 8$(br)Урон: 6$(br)Зачарованность: 15$(br)Fireproof$(p)$(l)Armor$()$(br)Durability Multiplier: 41$(br)Total Defense: 16$(br)Toughness: 6$(br)Enchantability: 15$(br)Fireproof",
-  
   "text.astromine.resources.univite.title": "Univite",
   "text.astromine.resources.univite.page_one.title": "Univite",
   "text.astromine.resources.univite.page_one.text": "Материал, столь желанный, что он вызвал множество межзвездных войн; только ограниченное количество его существует в этом царстве, как считается, возникло в самом сердце Вселенной, прежде чем кто-либо из нас даже осмелился подумать о существовании. Неизвестно, передает ли какой-либо материал более высокую мощность, чем Univite.",
@@ -824,28 +787,22 @@
   "text.astromine.resources.univite.page_three.text": "Univite может быть использован для создания сильнейшей оснастки и вооружения известных всем обнаруженным цивилизациям.",
   "text.astromine.resources.univite.page_four.title": "Статистика",
   "text.astromine.resources.univite.page_four.text": "$(l)Tools$()$(br)Уровень Добычи: 7$(br)Базовая Прочность: 3918$(br)Скорость Добычи: 12$(br)Урон: 6$(br)Зачарованность: 22$(br)Fireproof$(p)$(l)Armor$()$(br)Durability Multiplier: 50$(br)Total Defense: 27$(br)Toughness: 5$(br)Enchantability: 22$(br)Fireproof",
-  
   "text.astromine.warfare.nuclear_warhead.title": "Ядерная Боеголовка",
   "text.astromine.warfare.nuclear_warhead.page_one.title": "Ядерная Боеголовка",
   "text.astromine.warfare.nuclear_warhead.page_one.text": "Бомба, способная к разрушительному разрушению, уничтожая при этом все формы жизни.",
   "text.astromine.warfare.nuclear_warhead.page_two.title": "Рецепт",
-  
   "text.astromine.world.asteroid_ores.title": "Астероидные Руды",
   "text.astromine.world.asteroid_ores.page_one.title": "Астероидные Руды",
   "text.astromine.world.asteroid_ores.page_one.text": "Жилы руд, найденных в $(thing)$(l:world/asteroids)asteroids$(), которые могут быть собраны для получения ресурсов.$(p)Когда заминируют, сбросят их соответствующие $(thing)$(l:world/ore_clusters)ore clusters$().",
-  
   "text.astromine.world.asteroids.title": "Астероиды",
   "text.astromine.world.asteroids.page_one.title": "Астероиды",
   "text.astromine.world.asteroids.page_one.text": "Инородные тела, обнаруженные в межзвездном пространстве, в кольцах, скоплениях и многих других образованиях; говорят, что они содержат большое количество $(thing)$(l:world/asteroid_ores)ores$().",
-  
   "text.astromine.world.meteor_ores.title": "Метеоритные Руды",
   "text.astromine.world.meteor_ores.page_one.title": "Метеоритные Руды",
   "text.astromine.world.meteor_ores.page_one.text": "Жилы руд, найденных в $(thing)$(l:world/meteors)meteors$(), которые могут быть собраны для resources.$(p)Когда заминируют, сбросят их соответствующие $(thing)$(l:world/ore_clusters)ore clusters$().",
-  
   "text.astromine.world.meteors.title": "Метеориты",
   "text.astromine.world.meteors.page_one.title": "Метеориты",
   "text.astromine.world.meteors.page_one.text": "Инородные тела, которые, курсируя по лестнице, столкнулись с планетарным телом; говорят, что они содержат $(thing)$(l:world/meteor_ores)extraterrestrial ores$().",
-  
   "text.astromine.world.ore_clusters.title": "Рудные Скопления",
   "text.astromine.world.ore_clusters.page_one.title": "Рудные Скопления",
   "text.astromine.world.ore_clusters.page_one.text": "Скопления руд, полученных из $(thing)$(l:world/asteroid_ores)asteroid ores$() или $(thing)$(l:world/meteor_ores)meteor ores$(), которые могут быть обработаны для получения ресурсов.",

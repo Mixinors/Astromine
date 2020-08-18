@@ -1,7 +1,9 @@
 {
   "forge_marker": 1,
   "variants": {
-    "normal": { "model": "logisticalautomation:catwalk_pillar" },
+    "normal": {
+      "model": "logisticalautomation:catwalk_pillar"
+    },
     "inventory": [
       {
         "model": "logisticalautomation:catwalk_pillar",
@@ -9,7 +11,9 @@
       }
     ],
     "ne": {
-      "true": { "submodel": "logisticalautomation:blank" },
+      "true": {
+        "submodel": "logisticalautomation:blank"
+      },
       "false": {
         "submodel": {
           "ne": {
@@ -20,7 +24,9 @@
       }
     },
     "nw": {
-      "true": { "submodel": "logisticalautomation:blank" },
+      "true": {
+        "submodel": "logisticalautomation:blank"
+      },
       "false": {
         "submodel": {
           "nw": {
@@ -30,7 +36,9 @@
       }
     },
     "sw": {
-      "true": { "submodel": "logisticalautomation:blank" },
+      "true": {
+        "submodel": "logisticalautomation:blank"
+      },
       "false": {
         "submodel": {
           "sw": {
@@ -41,7 +49,9 @@
       }
     },
     "se": {
-      "true": { "submodel": "logisticalautomation:blank" },
+      "true": {
+        "submodel": "logisticalautomation:blank"
+      },
       "false": {
         "submodel": {
           "se": {

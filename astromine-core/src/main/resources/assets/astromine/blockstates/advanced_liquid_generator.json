@@ -11,7 +11,7 @@
       "model": "astromine:block/advanced_liquid_generator_inactive",
       "y": 270
     },
-    "facing=east,active=false": { 
+    "facing=east,active=false": {
       "model": "astromine:block/advanced_liquid_generator_inactive",
       "y": 90
     },

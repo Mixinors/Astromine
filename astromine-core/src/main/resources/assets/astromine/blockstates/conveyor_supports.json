@@ -1,5 +1,7 @@
 {
-    "variants": {
-        "": { "model": "astromine:block/conveyor_supports" }
+  "variants": {
+    "": {
+      "model": "astromine:block/conveyor_supports"
     }
+  }
 }

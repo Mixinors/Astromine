@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "astromine:asterite_block_from_ingot"
+      "astromine:tin_ingot_from_smelting_cluster"
     ]
   },
   "criteria": {
@@ -12,7 +12,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "astromine:asterite_block_from_ingot"
+        "recipe": "astromine:tin_ingot_from_smelting_cluster"
       }
     }
   },

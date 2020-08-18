@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "astromine:block/basic_buffer" }
+    "": {
+      "model": "astromine:block/basic_buffer"
+    }
   }
 }

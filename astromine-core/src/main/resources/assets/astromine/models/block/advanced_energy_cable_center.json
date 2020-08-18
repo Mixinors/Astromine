@@ -1,6 +1,6 @@
 {
-	"parent": "astromine:block/energy_cable_center",
-	"textures": {
-		"0": "astromine:block/advanced_energy_cable_center"
-	}
+  "parent": "astromine:block/energy_cable_center",
+  "textures": {
+    "0": "astromine:block/advanced_energy_cable_center"
+  }
 }

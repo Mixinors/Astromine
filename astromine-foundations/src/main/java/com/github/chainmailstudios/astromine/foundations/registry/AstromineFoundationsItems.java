@@ -65,6 +65,7 @@ public class AstromineFoundationsItems {
 	public static final Item DIAMOND_FRAGMENT = register("diamond_fragment", new Item(getBasicSettings()));
 	public static final Item EMERALD_FRAGMENT = register("emerald_fragment", new Item(getBasicSettings()));
 	public static final Item QUARTZ_FRAGMENT = register("quartz_fragment", new Item(getBasicSettings()));
+	public static final Item RAW_NETHERITE_FRAGMENT = register("raw_netherite_fragment", new Item(getBasicSettings()));
 
 	// Materials - Wires
 	public static final Item COPPER_WIRE = register("copper_wire", new Item(getBasicSettings()));
