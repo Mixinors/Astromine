@@ -57,6 +57,7 @@ public abstract class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlo
 
 	private static final int INPUT_ENERGY_VOLUME = 0;
 	private static final int INPUT_FLUID_VOLUME = 0;
+	public boolean shouldTry = true;
 
 	public LiquidGeneratorBlockEntity(Block energyBlock, BlockEntityType<?> type) {
 		super(energyBlock, type);
@@ -69,8 +70,7 @@ public abstract class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlo
 	@Override
 	protected FluidInventoryComponent createFluidComponent() {
 		return new SimpleFluidInventoryComponent(1).withListener((inv) -> {
-			if (this.world != null && !this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
-				recipe = (Optional) world.getRecipeManager().getAllOfType(LiquidGeneratingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof LiquidGeneratingRecipe).filter(recipe -> ((LiquidGeneratingRecipe) recipe).canCraft(this)).findFirst();
+			shouldTry = true;
 		});
 	}
 
@@ -112,6 +112,7 @@ public abstract class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlo
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
 		readRecipeProgress(tag);
+		shouldTry = true;
 		super.fromTag(state, tag);
 	}
 
@@ -128,14 +129,21 @@ public abstract class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlo
 		if (world.isClient())
 			return;
 
-		if (recipe.isPresent()) {
-			recipe.get().tick(this);
+		if (shouldTry) {
+			if (this.world != null && !this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
+				recipe = (Optional) world.getRecipeManager().getAllOfType(LiquidGeneratingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof LiquidGeneratingRecipe).filter(recipe -> ((LiquidGeneratingRecipe) recipe).canCraft(this)).findFirst();
+			if (recipe.isPresent()) {
+				recipe.get().tick(this);
 
-			if (recipe.isPresent() && !recipe.get().canCraft(this)) {
-				recipe = Optional.empty();
+				if (recipe.isPresent() && !recipe.get().canCraft(this)) {
+					recipe = Optional.empty();
+				}
+
+				isActive = true;
+			} else {
+				isActive = false;
+				shouldTry = false;
 			}
-
-			isActive = true;
 		} else {
 			isActive = false;
 		}
