@@ -111,9 +111,9 @@ public abstract class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlo
 
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+		super.fromTag(state, tag);
 		readRecipeProgress(tag);
 		shouldTry = true;
-		super.fromTag(state, tag);
 	}
 
 	@Override
@@ -130,7 +130,7 @@ public abstract class LiquidGeneratorBlockEntity extends DefaultedEnergyFluidBlo
 			return;
 
 		if (shouldTry) {
-			if (this.world != null && !this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
+			if (!this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
 				recipe = (Optional) world.getRecipeManager().getAllOfType(LiquidGeneratingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof LiquidGeneratingRecipe).filter(recipe -> ((LiquidGeneratingRecipe) recipe).canCraft(this)).findFirst();
 			if (recipe.isPresent()) {
 				recipe.get().tick(this);

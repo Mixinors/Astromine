@@ -55,7 +55,7 @@
   "item.astromine.holographic_connector": "Holographic Connector",
   "item.astromine.holographic_bridge_projector": "Holographic Bridge Projector",
   "itemGroup.astromine.astromine": "Astromine",
-  "itemGroup.astromine.astromine-foundations": "Astromine: Foundations",
+  "itemGroup.astromine.astromine_foundations": "Astromine: Foundations",
   "block.astromine.electrolyzer": "Electrolyzer",
   "block.astromine.fluid_mixer": "Fluid Mixer",
   "block.astromine.creative_capacitor": "Creative Capacitor",
