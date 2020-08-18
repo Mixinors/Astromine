@@ -27,6 +27,7 @@ import net.minecraft.data.client.model.Texture;
 import net.minecraft.data.server.recipe.*;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.*;
+import net.minecraft.loot.ConstantLootTableRange;
 import net.minecraft.loot.UniformLootTableRange;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.ApplyBonusLootFunction;
@@ -117,13 +118,24 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 		registerBlockLootTableOverrides((block, identifier) -> block instanceof SlabBlock, (lootTableData, block, identifier) ->
 			lootTableData.register(block, LootTableData.dropsSlabs(block)));
 
-		registerBlockLootTableOverrides((block, identifier) -> block instanceof AstromineOreBlock && identifier.getPath().startsWith("asteroid_") || identifier.getPath().startsWith("meteor_"),
+		registerBlockLootTableOverrides((block, identifier) -> block instanceof AstromineOreBlock && identifier.getPath().startsWith("meteor_"),
 			(lootTableData, block, identifier) -> lootTableData.register(block, LootTableData.dropsBlockWithSilkTouch(
 				block,
 				LootTableData.addExplosionDecayLootFunction(
 					block,
 					ItemEntry.builder(Registry.ITEM.get(AstromineCommon.identifier(identifier.toString().replace("_ore", "_cluster"))))
 						.apply(SetCountLootFunction.builder(UniformLootTableRange.between(1, 3)))
+						.apply(ApplyBonusLootFunction.oreDrops(Enchantments.FORTUNE))
+				)
+			))
+		);
+		registerBlockLootTableOverrides((block, identifier) -> block instanceof AstromineOreBlock && identifier.getPath().startsWith("asteroid_"),
+			(lootTableData, block, identifier) -> lootTableData.register(block, LootTableData.dropsBlockWithSilkTouch(
+				block,
+				LootTableData.addExplosionDecayLootFunction(
+					block,
+					ItemEntry.builder(Registry.ITEM.get(AstromineCommon.identifier(identifier.toString().replace("_ore", "_cluster"))))
+						.apply(SetCountLootFunction.builder(ConstantLootTableRange.create(1)))
 						.apply(ApplyBonusLootFunction.oreDrops(Enchantments.FORTUNE))
 				)
 			))
