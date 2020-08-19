@@ -22,7 +22,8 @@
   "icon": "assets/astromine-foundations/icon.png",
   "environment": "*",
   "entrypoints": {
-    "main": ["com.github.chainmailstudios.astromine.foundations.AstromineFoundations"]
+    "main": ["com.github.chainmailstudios.astromine.foundations.AstromineFoundations"],
+    "client": ["com.github.chainmailstudios.astromine.foundations.AstromineFoundationsClient"]
   },
   "accessWidener": "astromine-foundations.accesswidener",
   "depends": {

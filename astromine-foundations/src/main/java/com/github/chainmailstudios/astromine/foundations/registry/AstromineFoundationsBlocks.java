@@ -24,7 +24,9 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
+import com.github.chainmailstudios.astromine.foundations.common.block.AltarBlock;
 import com.github.chainmailstudios.astromine.foundations.common.block.AstromineOreBlock;
+import com.github.chainmailstudios.astromine.foundations.common.block.ItemDisplayerBlock;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
@@ -88,6 +90,9 @@ public class AstromineFoundationsBlocks {
 	public static final Block STERLING_SILVER_BLOCK = register("sterling_silver_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.LIGHT_GRAY).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(6, 6).sounds(BlockSoundGroup.METAL)),
 		getBasicSettings());
 	public static final Block FOOLS_GOLD_BLOCK = register("fools_gold_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5, 6).sounds(BlockSoundGroup.METAL)), getBasicSettings());
+	
+	public static final Block ITEM_DISPLAYER = register("item_displayer", new ItemDisplayerBlock(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5, 6).sounds(BlockSoundGroup.METAL)), getBasicSettings());
+	public static final Block ALTAR = register("altar", new AltarBlock(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5, 6).sounds(BlockSoundGroup.METAL)), getBasicSettings());
 
 	private static Item.Settings getBasicSettings() {
 		return AstromineFoundationsItems.getBasicSettings();
