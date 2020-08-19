@@ -192,7 +192,8 @@ public class AltarBlockEntity extends BlockEntity implements ItemInventoryFromIn
 
 		for (Supplier<ItemDisplayerBlockEntity> child : children) {
 			child.get().parent = null;
-			child.get().sync();
+			if (!world.isClient)
+				child.get().sync();
 		}
 
 		children.clear();
