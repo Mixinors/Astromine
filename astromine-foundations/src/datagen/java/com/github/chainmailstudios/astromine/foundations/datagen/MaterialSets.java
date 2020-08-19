@@ -6,7 +6,9 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static com.github.chainmailstudios.astromine.foundations.datagen.MaterialItemType.AXE;
@@ -27,7 +29,7 @@ import static com.github.chainmailstudios.astromine.foundations.datagen.Material
 import static com.github.chainmailstudios.astromine.foundations.datagen.MaterialItemType.SWORD;
 
 public class MaterialSets {
-	public static final Set<MaterialSet> MATERIAL_SETS = new HashSet<>();
+	public static final List<MaterialSet> MATERIAL_SETS = new ArrayList<>();
 
 	public static final MaterialSet WOOD = register(
 			new MaterialSet.Builder("wood")
@@ -125,6 +127,7 @@ public class MaterialSets {
 	public static final MaterialSet REDSTONE = register(
 			new MaterialSet.Builder("redstone")
 					.setType(DUST, new MaterialEntry(new Identifier("redstone"), "redstone_dusts"))
+					.setType(MISC_RESOURCE, new MaterialEntry(new Identifier("redstone")))
 					.setType(BLOCK, new MaterialEntry(new Identifier("redstone_block"), "redstone_blocks"))
 					.setType(ORE, new MaterialEntry(new Identifier("redstone_ore"), "redstone_ores"))
 					.tinyDust().asteroid()

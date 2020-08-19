@@ -1,21 +1,21 @@
 {
   "replace": false,
   "values": [
-    "astromine:stellum_leggings",
-    "astromine:electrum_leggings",
-    "astromine:sterling_silver_leggings",
+    "astromine:tin_leggings",
+    "astromine:copper_leggings",
+    "astromine:silver_leggings",
+    "astromine:lead_leggings",
     "astromine:steel_leggings",
+    "astromine:bronze_leggings",
+    "astromine:electrum_leggings",
+    "astromine:rose_gold_leggings",
+    "astromine:sterling_silver_leggings",
     "#c:leggings",
     "astromine:fools_gold_leggings",
-    "astromine:galaxium_leggings",
     "astromine:metite_leggings",
-    "astromine:lead_leggings",
-    "astromine:bronze_leggings",
     "astromine:asterite_leggings",
-    "astromine:univite_leggings",
-    "astromine:silver_leggings",
-    "astromine:copper_leggings",
-    "astromine:tin_leggings",
-    "astromine:rose_gold_leggings"
+    "astromine:stellum_leggings",
+    "astromine:galaxium_leggings",
+    "astromine:univite_leggings"
   ]
 }

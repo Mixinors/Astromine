@@ -1,21 +1,21 @@
 {
   "replace": false,
   "values": [
-    "astromine:stellum_chestplate",
-    "astromine:electrum_chestplate",
-    "astromine:sterling_silver_chestplate",
+    "astromine:tin_chestplate",
+    "astromine:copper_chestplate",
+    "astromine:silver_chestplate",
+    "astromine:lead_chestplate",
     "astromine:steel_chestplate",
+    "astromine:bronze_chestplate",
+    "astromine:electrum_chestplate",
+    "astromine:rose_gold_chestplate",
+    "astromine:sterling_silver_chestplate",
     "#c:chestplates",
     "astromine:fools_gold_chestplate",
-    "astromine:galaxium_chestplate",
     "astromine:metite_chestplate",
-    "astromine:lead_chestplate",
-    "astromine:bronze_chestplate",
     "astromine:asterite_chestplate",
-    "astromine:univite_chestplate",
-    "astromine:silver_chestplate",
-    "astromine:copper_chestplate",
-    "astromine:tin_chestplate",
-    "astromine:rose_gold_chestplate"
+    "astromine:stellum_chestplate",
+    "astromine:galaxium_chestplate",
+    "astromine:univite_chestplate"
   ]
 }

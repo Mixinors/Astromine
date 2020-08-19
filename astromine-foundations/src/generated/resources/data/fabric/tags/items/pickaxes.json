@@ -1,21 +1,21 @@
 {
   "replace": false,
   "values": [
-    "astromine:stellum_pickaxe",
-    "astromine:electrum_pickaxe",
-    "astromine:sterling_silver_pickaxe",
+    "astromine:tin_pickaxe",
+    "astromine:copper_pickaxe",
+    "astromine:silver_pickaxe",
+    "astromine:lead_pickaxe",
     "astromine:steel_pickaxe",
+    "astromine:bronze_pickaxe",
+    "astromine:electrum_pickaxe",
+    "astromine:rose_gold_pickaxe",
+    "astromine:sterling_silver_pickaxe",
     "#fabric:pickaxes",
     "astromine:fools_gold_pickaxe",
-    "astromine:galaxium_pickaxe",
     "astromine:metite_pickaxe",
-    "astromine:lead_pickaxe",
-    "astromine:bronze_pickaxe",
     "astromine:asterite_pickaxe",
-    "astromine:univite_pickaxe",
-    "astromine:silver_pickaxe",
-    "astromine:copper_pickaxe",
-    "astromine:tin_pickaxe",
-    "astromine:rose_gold_pickaxe"
+    "astromine:stellum_pickaxe",
+    "astromine:galaxium_pickaxe",
+    "astromine:univite_pickaxe"
   ]
 }

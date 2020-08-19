@@ -3,12 +3,14 @@ package com.github.chainmailstudios.astromine.foundations.datagen;
 import com.github.chainmailstudios.astromine.foundations.datagen.generators.tag.*;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class TagGenerators {
-	private static final Set<TagGenerator> GENERATORS = new HashSet<>();
+	private static final List<TagGenerator> GENERATORS = new ArrayList<>();
 
 	public static final TagGenerator BEACON_BASE_BLOCKS = register(new BeaconBaseTagGenerator());
 

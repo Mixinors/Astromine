@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "astromine:tin_ore",
-    "astromine:asteroid_tin_ore"
+    "astromine:asteroid_tin_ore",
+    "astromine:tin_ore"
   ]
 }

@@ -1,21 +1,21 @@
 {
   "replace": false,
   "values": [
-    "astromine:stellum_shovel",
-    "astromine:electrum_shovel",
-    "astromine:sterling_silver_shovel",
+    "astromine:tin_shovel",
+    "astromine:copper_shovel",
+    "astromine:silver_shovel",
+    "astromine:lead_shovel",
     "astromine:steel_shovel",
+    "astromine:bronze_shovel",
+    "astromine:electrum_shovel",
+    "astromine:rose_gold_shovel",
+    "astromine:sterling_silver_shovel",
     "#fabric:shovels",
     "astromine:fools_gold_shovel",
-    "astromine:galaxium_shovel",
     "astromine:metite_shovel",
-    "astromine:lead_shovel",
-    "astromine:bronze_shovel",
     "astromine:asterite_shovel",
-    "astromine:univite_shovel",
-    "astromine:silver_shovel",
-    "astromine:copper_shovel",
-    "astromine:tin_shovel",
-    "astromine:rose_gold_shovel"
+    "astromine:stellum_shovel",
+    "astromine:galaxium_shovel",
+    "astromine:univite_shovel"
   ]
 }

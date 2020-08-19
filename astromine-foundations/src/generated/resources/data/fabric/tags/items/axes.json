@@ -1,21 +1,21 @@
 {
   "replace": false,
   "values": [
-    "astromine:stellum_axe",
-    "astromine:electrum_axe",
-    "astromine:sterling_silver_axe",
+    "astromine:tin_axe",
+    "astromine:copper_axe",
+    "astromine:silver_axe",
+    "astromine:lead_axe",
     "astromine:steel_axe",
+    "astromine:bronze_axe",
+    "astromine:electrum_axe",
+    "astromine:rose_gold_axe",
+    "astromine:sterling_silver_axe",
     "#fabric:axes",
     "astromine:fools_gold_axe",
-    "astromine:galaxium_axe",
     "astromine:metite_axe",
-    "astromine:lead_axe",
-    "astromine:bronze_axe",
     "astromine:asterite_axe",
-    "astromine:univite_axe",
-    "astromine:silver_axe",
-    "astromine:copper_axe",
-    "astromine:tin_axe",
-    "astromine:rose_gold_axe"
+    "astromine:stellum_axe",
+    "astromine:galaxium_axe",
+    "astromine:univite_axe"
   ]
 }

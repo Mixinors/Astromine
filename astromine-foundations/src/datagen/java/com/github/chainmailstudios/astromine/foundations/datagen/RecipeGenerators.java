@@ -3,22 +3,26 @@ package com.github.chainmailstudios.astromine.foundations.datagen;
 import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.*;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static com.github.chainmailstudios.astromine.foundations.datagen.MaterialItemType.*;
 
 public class RecipeGenerators {
-	private static final Set<RecipeGenerator> GENERATORS = new HashSet<>();
+	private static final List<RecipeGenerator> GENERATORS = new ArrayList<>();
 
 	public static final RecipeGenerator INGOT_TO_BLOCK = register(new Crafting3x3RecipeGenerator(INGOT, BLOCK));
 	public static final RecipeGenerator GEM_TO_BLOCK = register(new Crafting3x3RecipeGenerator(GEM, BLOCK));
+	public static final RecipeGenerator MISC_TO_BLOCK = register(new Crafting3x3RecipeGenerator(MISC_RESOURCE, BLOCK));
 	public static final RecipeGenerator NUGGET_TO_INGOT = register(new Crafting3x3RecipeGenerator(NUGGET, INGOT));
 	public static final RecipeGenerator FRAGMENT_TO_GEM = register(new Crafting3x3RecipeGenerator(FRAGMENT, GEM));
 	public static final RecipeGenerator TINY_DUST_TO_DUST = register(new Crafting3x3RecipeGenerator(TINY_DUST, DUST));
 
 	public static final RecipeGenerator BLOCK_TO_INGOTS = register(new ShapelessCraftingRecipeGenerator(BLOCK, INGOT, 9));
 	public static final RecipeGenerator BLOCK_TO_GEMS = register(new ShapelessCraftingRecipeGenerator(BLOCK, GEM, 9));
+	public static final RecipeGenerator BLOCK_TO_MISC = register(new ShapelessCraftingRecipeGenerator(BLOCK, MISC_RESOURCE, 9));
 	public static final RecipeGenerator INGOT_TO_NUGGETS = register(new ShapelessCraftingRecipeGenerator(INGOT, NUGGET, 9));
 	public static final RecipeGenerator GEM_TO_FRAGMENTS = register(new ShapelessCraftingRecipeGenerator(GEM, FRAGMENT, 9));
 	public static final RecipeGenerator DUST_TO_TINY_DUSTS = register(new ShapelessCraftingRecipeGenerator(DUST, TINY_DUST, 9));
@@ -78,14 +82,17 @@ public class RecipeGenerators {
 
 	public static final RecipeGenerator ORE_TO_INGOT = register(new SmeltingRecipeGenerator(ORE, INGOT));
 	public static final RecipeGenerator ORE_TO_GEM = register(new SmeltingRecipeGenerator(ORE, GEM));
+	public static final RecipeGenerator ORE_TO_MISC = register(new SmeltingRecipeGenerator(ORE, MISC_RESOURCE));
 	public static final RecipeGenerator METEOR_ORE_TO_NUGGET = register(new SmeltingRecipeGenerator(METEOR_ORE, NUGGET));
 	public static final RecipeGenerator METEOR_ORE_TO_FRAGMENT = register(new SmeltingRecipeGenerator(METEOR_ORE, FRAGMENT));
 	public static final RecipeGenerator ASTEROID_ORE_TO_INGOT = register(new SmeltingRecipeGenerator(ASTEROID_ORE, INGOT));
 	public static final RecipeGenerator ASTEROID_ORE_TO_GEM = register(new SmeltingRecipeGenerator(ASTEROID_ORE, GEM));
+	public static final RecipeGenerator ASTEROID_ORE_TO_MISC = register(new SmeltingRecipeGenerator(ASTEROID_ORE, MISC_RESOURCE));
 	public static final RecipeGenerator DUST_TO_INGOT = register(new SmeltingRecipeGenerator(DUST, INGOT));
 	public static final RecipeGenerator DUST_TO_GEM = register(new SmeltingRecipeGenerator(DUST, GEM));
 	public static final RecipeGenerator ASTEROID_CLUSTER_TO_INGOT = register(new SmeltingRecipeGenerator(ASTEROID_CLUSTER, INGOT));
 	public static final RecipeGenerator ASTEROID_CLUSTER_TO_GEM = register(new SmeltingRecipeGenerator(ASTEROID_CLUSTER, GEM));
+	public static final RecipeGenerator ASTEROID_CLUSTER_TO_MISC = register(new SmeltingRecipeGenerator(ASTEROID_CLUSTER, MISC_RESOURCE));
 	public static final RecipeGenerator METEOR_CLUSTER_TO_NUGGET = register(new SmeltingRecipeGenerator(METEOR_CLUSTER, NUGGET));
 	public static final RecipeGenerator METEOR_CLUSTER_TO_FRAGMENT = register(new SmeltingRecipeGenerator(METEOR_CLUSTER, FRAGMENT));
 	public static final RecipeGenerator TINY_DUST_TO_NUGGET = register(new SmeltingRecipeGenerator(TINY_DUST, NUGGET));
@@ -93,14 +100,17 @@ public class RecipeGenerators {
 
 	public static final RecipeGenerator ORE_TO_INGOT_BLASTING = register(new BlastingRecipeGenerator(ORE, INGOT));
 	public static final RecipeGenerator ORE_TO_GEM_BLASTING = register(new BlastingRecipeGenerator(ORE, GEM));
+	public static final RecipeGenerator ORE_TO_MISC_BLASTING = register(new BlastingRecipeGenerator(ORE, MISC_RESOURCE));
 	public static final RecipeGenerator METEOR_ORE_TO_NUGGET_BLASTING = register(new BlastingRecipeGenerator(METEOR_ORE, NUGGET));
 	public static final RecipeGenerator METEOR_ORE_TO_FRAGMENT_BLASTING = register(new BlastingRecipeGenerator(METEOR_ORE, FRAGMENT));
 	public static final RecipeGenerator ASTEROID_ORE_TO_INGOT_BLASTING = register(new BlastingRecipeGenerator(ASTEROID_ORE, INGOT));
 	public static final RecipeGenerator ASTEROID_ORE_TO_GEM_BLASTING = register(new BlastingRecipeGenerator(ASTEROID_ORE, GEM));
+	public static final RecipeGenerator ASTEROID_ORE_TO_MISC_BLASTING = register(new BlastingRecipeGenerator(ASTEROID_ORE, MISC_RESOURCE));
 	public static final RecipeGenerator DUST_TO_INGOT_BLASTING = register(new BlastingRecipeGenerator(DUST, INGOT));
 	public static final RecipeGenerator DUST_TO_GEM_BLASTING = register(new BlastingRecipeGenerator(DUST, GEM));
 	public static final RecipeGenerator ASTEROID_CLUSTER_TO_INGOT_BLASTING = register(new BlastingRecipeGenerator(ASTEROID_CLUSTER, INGOT));
 	public static final RecipeGenerator ASTEROID_CLUSTER_TO_GEM_BLASTING = register(new BlastingRecipeGenerator(ASTEROID_CLUSTER, GEM));
+	public static final RecipeGenerator ASTEROID_CLUSTER_TO_MISC_BLASTING = register(new BlastingRecipeGenerator(ASTEROID_CLUSTER, MISC_RESOURCE));
 	public static final RecipeGenerator METEOR_CLUSTER_TO_NUGGET_BLASTING = register(new BlastingRecipeGenerator(METEOR_CLUSTER, NUGGET));
 	public static final RecipeGenerator METEOR_CLUSTER_TO_FRAGMENT_BLASTING = register(new BlastingRecipeGenerator(METEOR_CLUSTER, FRAGMENT));
 	public static final RecipeGenerator TINY_DUST_TO_NUGGET_BLASTING = register(new BlastingRecipeGenerator(TINY_DUST, NUGGET));
