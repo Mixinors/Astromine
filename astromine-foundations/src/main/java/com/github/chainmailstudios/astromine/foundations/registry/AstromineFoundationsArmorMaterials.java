@@ -26,6 +26,7 @@ package com.github.chainmailstudios.astromine.foundations.registry;
 
 import com.github.chainmailstudios.astromine.foundations.AstromineFoundations;
 import com.github.chainmailstudios.astromine.registry.AstromineArmorMaterials;
+
 import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.recipe.Ingredient;
@@ -57,6 +58,6 @@ public class AstromineFoundationsArmorMaterials {
 	public static final ArmorMaterial SPACE_SUIT = register("space_suit", 50, new int[]{ 1, 2, 3, 1 }, 2, AstromineFoundationsSoundEvents.SPACE_SUIT_EQUIPPED, 0.0f, 0.0f, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:metite_ingots"))));
 
 	private static ArmorMaterial register(String name, int durabilityMultiplier, int[] protectionAmounts, int enchantability, SoundEvent equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> supplier) {
-		return AstromineArmorMaterials.register(AstromineFoundations.appendId(name), durabilityMultiplier, protectionAmounts, enchantability, equipSound, toughness, knockbackResistance, supplier);
+		return AstromineArmorMaterials.register(name, durabilityMultiplier, protectionAmounts, enchantability, equipSound, toughness, knockbackResistance, supplier);
 	}
 }
