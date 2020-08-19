@@ -1,7 +1,7 @@
 {
   "type": "astromine:triturating",
   "input": {
-    "tag": "c:tin_ores",
+    "tag": "c:asteroid_tin_ores",
     "count": 1
   },
   "output": {

@@ -1,7 +1,7 @@
 {
   "type": "astromine:triturating",
   "input": {
-    "tag": "c:copper_ores",
+    "tag": "c:asteroid_copper_ores",
     "count": 1
   },
   "output": {

@@ -1,7 +1,7 @@
 {
   "type": "astromine:triturating",
   "input": {
-    "tag": "c:metite_ores",
+    "tag": "c:asteroid_metite_ores",
     "count": 1
   },
   "output": {

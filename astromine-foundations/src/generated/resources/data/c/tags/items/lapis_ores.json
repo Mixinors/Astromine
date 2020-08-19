@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "astromine:asteroid_lapis_ore",
+    "#c:asteroid_lapis_ores",
     "minecraft:lapis_ore"
   ]
 }

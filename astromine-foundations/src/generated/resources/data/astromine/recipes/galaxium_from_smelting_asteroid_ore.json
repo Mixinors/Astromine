@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smelting",
   "ingredient": {
-    "tag": "c:galaxium_ores"
+    "tag": "c:asteroid_galaxium_ores"
   },
   "result": "astromine:galaxium",
   "experience": 0.1,

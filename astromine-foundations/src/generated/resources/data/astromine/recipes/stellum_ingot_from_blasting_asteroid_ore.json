@@ -1,7 +1,7 @@
 {
   "type": "minecraft:blasting",
   "ingredient": {
-    "tag": "c:stellum_ores"
+    "tag": "c:asteroid_stellum_ores"
   },
   "result": "astromine:stellum_ingot",
   "experience": 0.1,

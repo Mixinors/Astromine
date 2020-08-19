@@ -185,11 +185,11 @@ public class MaterialSet {
 		}
 
 		public Builder asteroidOre() {
-			return addType(ASTEROID_ORE, new Identifier("c", name+"_ores"));
+			return addType(ASTEROID_ORE, new Identifier("c", "asteroid_"+name+"_ores"));
 		}
 
 		public Builder meteorOre() {
-			return addType(METEOR_ORE, new Identifier("c", name+"_ores"));
+			return addType(METEOR_ORE, new Identifier("c", "meteor_"+name+"_ores"));
 		}
 
 		public Builder asteroidCluster() {

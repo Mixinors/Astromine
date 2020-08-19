@@ -1,7 +1,7 @@
 {
   "type": "astromine:triturating",
   "input": {
-    "tag": "c:lead_ores",
+    "tag": "c:asteroid_lead_ores",
     "count": 1
   },
   "output": {

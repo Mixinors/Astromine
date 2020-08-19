@@ -1,7 +1,7 @@
 {
   "type": "minecraft:blasting",
   "ingredient": {
-    "tag": "c:coal_ores"
+    "tag": "c:asteroid_coal_ores"
   },
   "result": "minecraft:coal",
   "experience": 0.1,

@@ -1,7 +1,7 @@
 {
   "type": "minecraft:blasting",
   "ingredient": {
-    "tag": "c:lapis_ores"
+    "tag": "c:asteroid_lapis_ores"
   },
   "result": "minecraft:lapis_lazuli",
   "experience": 0.1,

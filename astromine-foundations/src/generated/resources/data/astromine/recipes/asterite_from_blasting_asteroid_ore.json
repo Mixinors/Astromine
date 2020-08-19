@@ -1,7 +1,7 @@
 {
   "type": "minecraft:blasting",
   "ingredient": {
-    "tag": "c:asterite_ores"
+    "tag": "c:asteroid_asterite_ores"
   },
   "result": "astromine:asterite",
   "experience": 0.1,

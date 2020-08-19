@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smelting",
   "ingredient": {
-    "tag": "c:iron_ores"
+    "tag": "c:asteroid_iron_ores"
   },
   "result": "minecraft:iron_ingot",
   "experience": 0.1,

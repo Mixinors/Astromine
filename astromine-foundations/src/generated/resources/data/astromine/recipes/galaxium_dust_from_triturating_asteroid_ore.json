@@ -1,7 +1,7 @@
 {
   "type": "astromine:triturating",
   "input": {
-    "tag": "c:galaxium_ores",
+    "tag": "c:asteroid_galaxium_ores",
     "count": 1
   },
   "output": {

@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "astromine:asteroid_lead_ore",
+    "#c:asteroid_lead_ores",
     "astromine:lead_ore"
   ]
 }

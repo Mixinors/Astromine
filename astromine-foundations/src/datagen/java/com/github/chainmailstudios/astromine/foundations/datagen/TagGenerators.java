@@ -55,6 +55,9 @@ public class TagGenerators {
 	public static final TagGenerator PIGLIN_SAFE_LEGGINGS = register(new PiglinArmorTagGenerator(MaterialItemType.LEGGINGS));
 	public static final TagGenerator PIGLIN_SAFE_BOOTS = register(new PiglinArmorTagGenerator(MaterialItemType.BOOTS));
 
+	public static final TagGenerator METEOR_ORES = register(new OreTagGenerator(MaterialItemType.METEOR_ORE));
+	public static final TagGenerator ASTEROID_ORES = register(new OreTagGenerator(MaterialItemType.ASTEROID_ORE));
+
 	public static final TagGenerator PYRITE = register(new PyriteTagGenerator());
 	public static final TagGenerator GEM_NUGGETS = register(new GemNuggetTagGenerator());
 	public static final TagGenerator NETHER_GOLD_ORE = register(new NetherGoldOreTagGenerator());

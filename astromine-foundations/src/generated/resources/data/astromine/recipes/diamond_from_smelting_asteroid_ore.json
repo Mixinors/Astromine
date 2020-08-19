@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smelting",
   "ingredient": {
-    "tag": "c:diamond_ores"
+    "tag": "c:asteroid_diamond_ores"
   },
   "result": "minecraft:diamond",
   "experience": 0.1,
