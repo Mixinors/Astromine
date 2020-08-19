@@ -9,10 +9,17 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
+import net.minecraft.util.math.BlockPos;
 
 public class ItemDisplayerBlockEntity extends BlockEntity implements ItemInventoryFromInventoryComponent, Tickable, BlockEntityClientSerializable {
-	private int age;
-	private ItemInventoryComponent inventory = new SimpleItemInventoryComponent(1);
+	private int spinAge;
+	private int lastSpinAddition;
+	private int yAge;
+	public BlockPos parent;
+	private ItemInventoryComponent inventory = new SimpleItemInventoryComponent(1).withListener(component -> {
+		if (!world.isClient)
+			sync();
+	});
 
 	public ItemDisplayerBlockEntity() {
 		super(AstromineFoundationsBlockEntityTypes.ITEM_DISPLAYER);
@@ -24,12 +31,38 @@ public class ItemDisplayerBlockEntity extends BlockEntity implements ItemInvento
 	}
 
 	@Override
-	public void tick() {
-		age++;
+	public int getMaxCountPerStack() {
+		return 1;
 	}
 
-	public int getAge() {
-		return age;
+	@Override
+	public void markDirty() {
+		super.markDirty();
+		sync();
+	}
+
+	@Override
+	public void tick() {
+		lastSpinAddition= 1;
+		spinAge++;
+		yAge++;
+		if (parent != null) {
+			AltarBlockEntity blockEntity = (AltarBlockEntity) world.getBlockEntity(parent);
+			spinAge += blockEntity.craftingTicks / 5;
+			lastSpinAddition += blockEntity.craftingTicks / 5;
+		}
+	}
+
+	public int getSpinAge() {
+		return spinAge;
+	}
+
+	public int getLastSpinAddition() {
+		return lastSpinAddition;
+	}
+
+	public int getYAge() {
+		return yAge;
 	}
 
 	@Override
@@ -46,11 +79,23 @@ public class ItemDisplayerBlockEntity extends BlockEntity implements ItemInvento
 	public void fromTag(BlockState state, CompoundTag tag) {
 		super.fromTag(state, tag);
 		inventory.fromTag(tag);
+		if (tag.contains("parent"))
+			parent = BlockPos.fromLong(tag.getLong("parent"));
+		else parent = null;
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
 		inventory.toTag(tag);
+		if (parent != null)
+			tag.putLong("parent", parent.asLong());
 		return super.toTag(tag);
+	}
+
+	public void onRemove() {
+		if (parent != null) {
+			AltarBlockEntity blockEntity = (AltarBlockEntity) world.getBlockEntity(parent);
+			blockEntity.onRemove();
+		}
 	}
 }

@@ -1,7 +1,8 @@
 package com.github.chainmailstudios.astromine.foundations.common.block;
 
 import com.github.chainmailstudios.astromine.common.block.base.MachineBlock;
-import com.github.chainmailstudios.astromine.foundations.common.block.altar.entity.ItemDisplayerBlockEntity;
+import com.github.chainmailstudios.astromine.foundations.common.block.altar.entity.AltarBlockEntity;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,7 +33,7 @@ public class AltarBlock extends MachineBlock {
 
 	@Override
 	public BlockEntity createBlockEntity() {
-		return new ItemDisplayerBlockEntity();
+		return new AltarBlockEntity();
 	}
 
 	@Override
@@ -48,11 +49,46 @@ public class AltarBlock extends MachineBlock {
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!world.isClient) {
-			BlockEntity blockEntity = world.getBlockEntity(pos);
-			// TODO logic
+			AltarBlockEntity blockEntity = (AltarBlockEntity) world.getBlockEntity(pos);
+			ItemStack stackInHand = player.getStackInHand(hand);
+
+			if (blockEntity.getStack(0).isEmpty()) {
+				if (blockEntity.initializeCrafting()) {
+					return ActionResult.SUCCESS;
+				} else {
+					return ActionResult.CONSUME;
+				}
+			} else if (ItemDisplayerBlock.canMergeItems(stackInHand, blockEntity.getStack(0))) {
+				ItemStack copy = stackInHand.copy();
+				copy.increment(1);
+				player.setStackInHand(hand, copy);
+				blockEntity.setStack(0, ItemStack.EMPTY);
+				player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, .6F, 1);
+				blockEntity.sync();
+			} else if (stackInHand.isEmpty()) {
+				player.setStackInHand(hand, blockEntity.getStack(0).copy());
+				blockEntity.setStack(0, ItemStack.EMPTY);
+				player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, .6F, 1);
+				blockEntity.sync();
+			} else {
+				return ActionResult.CONSUME;
+			}
 		}
 
 		return super.onUse(state, world, pos, player, hand, hit);
+	}
+
+	@Override
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
+		boolean power = world.isReceivingRedstonePower(pos);
+		if (!world.isClient) {
+			AltarBlockEntity blockEntity = (AltarBlockEntity) world.getBlockEntity(pos);
+
+			if (blockEntity.getStack(0).isEmpty()) {
+				blockEntity.initializeCrafting();
+			}
+		}
+		super.neighborUpdate(state, world, pos, block, fromPos, notify);
 	}
 
 	@Override
@@ -65,11 +101,20 @@ public class AltarBlock extends MachineBlock {
 		if (!state.isOf(newState.getBlock())) {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
 			if (blockEntity instanceof Inventory) {
-				ItemScatterer.spawn(world, pos, (Inventory)blockEntity);
+				ItemScatterer.spawn(world, pos.add(0, 1, 0), (Inventory) blockEntity);
 				world.updateComparators(pos, this);
 			}
 
 			super.onStateReplaced(state, world, pos, newState, moved);
 		}
+	}
+
+	@Override
+	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+		BlockEntity blockEntity = world.getBlockEntity(pos);
+		if (blockEntity instanceof AltarBlockEntity) {
+			((AltarBlockEntity) blockEntity).onRemove();
+		}
+		super.onBreak(world, pos, state, player);
 	}
 }

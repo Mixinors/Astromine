@@ -25,10 +25,7 @@
 package com.github.chainmailstudios.astromine.foundations;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
-import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsConfig;
-import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsItems;
-import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsOres;
+import com.github.chainmailstudios.astromine.foundations.registry.*;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
 
@@ -41,6 +38,8 @@ public class AstromineFoundations implements ModInitializer {
 		AstromineFoundationsBlocks.initialize();
 		AstromineFoundationsItems.initialize();
 		AstromineFoundationsOres.initialize();
+		AstromineFoundationsBlockEntityTypes.initialize();
+		AstromineFoundationsRecipeSerializers.initialize();
 	}
 
 	public static String appendId(String id) {

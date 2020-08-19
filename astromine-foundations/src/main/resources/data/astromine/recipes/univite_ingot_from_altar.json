@@ -1,0 +1,17 @@
+{
+  "type": "astromine:altar",
+  "inputs": [
+    {
+      "item": "diamond"
+    },
+    {
+      "item": "diamond"
+    },
+    {
+      "item": "iron_ingot"
+    }
+  ],
+  "output": {
+    "item": "astromine:univite_ingot"
+  }
+}

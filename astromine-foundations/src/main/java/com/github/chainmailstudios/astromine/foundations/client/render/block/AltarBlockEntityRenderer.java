@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.foundations.client.render.block;
 
 import com.github.chainmailstudios.astromine.foundations.common.block.altar.entity.AltarBlockEntity;
+import com.github.chainmailstudios.astromine.foundations.common.block.altar.entity.ItemDisplayerBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -13,6 +14,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.Random;
@@ -28,18 +30,32 @@ public class AltarBlockEntityRenderer extends BlockEntityRenderer<AltarBlockEnti
 
 	@Override
 	public void render(AltarBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+		if (entity.craftingTicks > 0)
+			entity.craftingTicksDelta = entity.craftingTicks + tickDelta;
 		matrices.push();
-		ItemStack itemStack = entity.getStack(0);
+		ItemStack itemStack = entity.getItemComponent().getStack(0);
 		int j = itemStack.isEmpty() ? 187 : Item.getRawId(itemStack.getItem()) + itemStack.getDamage();
 		this.random.setSeed(j);
 		BakedModel bakedModel = this.itemRenderer.getHeldItemModel(itemStack, entity.getWorld(), null);
 		boolean bl = bakedModel.hasDepth();
 		int k = 1;
 		float h = 0.25F;
-		float l = MathHelper.sin(((float) entity.getAge() + tickDelta) / 10.0F + hoverHeight) * 0.1F + 0.1F;
+		float l = MathHelper.sin(hoverHeight) * 0.1F + 0.1F;
 		float m = bakedModel.getTransformation().getTransformation(ModelTransformation.Mode.GROUND).scale.getY();
 		matrices.translate(0.5D, l + 1.0D + 0.25D * m, 0.5D);
+		double progress = 1;
 		float n = getHeight(entity, tickDelta);
+		if (entity.craftingTicks > 0) {
+			progress = Math.min(1, entity.craftingTicksDelta / (double) AltarBlockEntity.CRAFTING_TIME);
+			if (entity.craftingTicksDelta >= AltarBlockEntity.CRAFTING_TIME + AltarBlockEntity.CRAFTING_TIME_SPIN) {
+				progress *= 1 - Math.min(1, (entity.craftingTicksDelta - AltarBlockEntity.CRAFTING_TIME - AltarBlockEntity.CRAFTING_TIME_SPIN) / (double) AltarBlockEntity.CRAFTING_TIME_FALL);
+			}
+			BlockPos pos = entity.getPos();
+			BlockPos parentPos = entity.getPos();
+			matrices.translate(0, 3 * progress, 0);
+			
+			n = (entity.spinAge + tickDelta * entity.lastAgeAddition) / 20.0F + this.hoverHeight;
+		}
 		matrices.multiply(Vector3f.POSITIVE_Y.getRadialQuaternion(n));
 		float o = bakedModel.getTransformation().ground.scale.getX();
 		float p = bakedModel.getTransformation().ground.scale.getY();
@@ -79,6 +95,6 @@ public class AltarBlockEntityRenderer extends BlockEntityRenderer<AltarBlockEnti
 	}
 
 	public float getHeight(AltarBlockEntity entity, float tickDelta) {
-		return (entity.getAge() + tickDelta) / 20.0F + this.hoverHeight;
+		return (entity.spinAge + tickDelta) / 20.0F + this.hoverHeight;
 	}
 }

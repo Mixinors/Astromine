@@ -73,7 +73,7 @@ public class ItemDisplayerBlock extends MachineBlock {
 					displayerBlockEntity.setStack(0, ItemStack.EMPTY);
 					player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, .6F, 1);
 					displayerBlockEntity.sync();
-				} else{
+				} else {
 					return ActionResult.CONSUME;
 				}
 			}
@@ -82,7 +82,7 @@ public class ItemDisplayerBlock extends MachineBlock {
 		return super.onUse(state, world, pos, player, hand, hit);
 	}
 
-	private static boolean canMergeItems(ItemStack first, ItemStack second) {
+	public static boolean canMergeItems(ItemStack first, ItemStack second) {
 		if (first.getItem() != second.getItem()) {
 			return false;
 		} else if (first.getDamage() != second.getDamage()) {
@@ -104,11 +104,20 @@ public class ItemDisplayerBlock extends MachineBlock {
 		if (!state.isOf(newState.getBlock())) {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
 			if (blockEntity instanceof Inventory) {
-				ItemScatterer.spawn(world, pos, (Inventory)blockEntity);
+				ItemScatterer.spawn(world, pos.add(0, 1, 0), (Inventory) blockEntity);
 				world.updateComparators(pos, this);
 			}
 
 			super.onStateReplaced(state, world, pos, newState, moved);
 		}
+	}
+
+	@Override
+	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+		BlockEntity blockEntity = world.getBlockEntity(pos);
+		if (blockEntity instanceof ItemDisplayerBlockEntity) {
+			((ItemDisplayerBlockEntity) blockEntity).onRemove();
+		}
+		super.onBreak(world, pos, state, player);
 	}
 }
