@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "minecraft:coal_ore",
     "astromine:asteroid_coal_ore"
   ]
 }

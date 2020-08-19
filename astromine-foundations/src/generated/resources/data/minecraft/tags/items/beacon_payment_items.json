@@ -1,0 +1,30 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:netherite_scrap",
+    "minecraft:gold_ingot",
+    "astromine:stellum_ingot",
+    "minecraft:netherite_ingot",
+    "astromine:electrum_ingot",
+    "astromine:sterling_silver_ingot",
+    "astromine:steel_ingot",
+    "minecraft:lapis_lazuli",
+    "astromine:fools_gold_ingot",
+    "astromine:galaxium",
+    "astromine:metite_ingot",
+    "minecraft:coal",
+    "minecraft:charcoal",
+    "minecraft:emerald",
+    "minecraft:diamond",
+    "astromine:lead_ingot",
+    "astromine:bronze_ingot",
+    "astromine:asterite",
+    "astromine:univite_ingot",
+    "minecraft:iron_ingot",
+    "astromine:silver_ingot",
+    "astromine:copper_ingot",
+    "astromine:tin_ingot",
+    "astromine:rose_gold_ingot",
+    "minecraft:quartz"
+  ]
+}

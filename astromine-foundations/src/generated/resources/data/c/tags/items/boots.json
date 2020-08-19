@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:stellum_boots",
+    "astromine:electrum_boots",
+    "astromine:sterling_silver_boots",
+    "astromine:steel_boots",
+    "#c:boots",
+    "astromine:fools_gold_boots",
+    "astromine:galaxium_boots",
+    "astromine:metite_boots",
+    "astromine:lead_boots",
+    "astromine:bronze_boots",
+    "astromine:asterite_boots",
+    "astromine:univite_boots",
+    "astromine:silver_boots",
+    "astromine:copper_boots",
+    "astromine:tin_boots",
+    "astromine:rose_gold_boots"
+  ]
+}

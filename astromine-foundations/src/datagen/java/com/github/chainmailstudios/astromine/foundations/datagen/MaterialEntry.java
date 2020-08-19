@@ -1,103 +1,76 @@
 package com.github.chainmailstudios.astromine.foundations.datagen;
 
 import net.fabricmc.fabric.api.tag.TagRegistry;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-public class MaterialEntry {
+import java.util.Optional;
+
+public class MaterialEntry implements ItemConvertible {
 	private final Identifier itemId;
-	private final Identifier itemTagId;
-	private Identifier dustId;
-	private Identifier dustTagId;
-	private Identifier tinyDustId;
-	private Identifier tinyDustTagId;
+	private final Optional<Identifier> itemTagId;
+
+	public MaterialEntry(Identifier itemId) {
+		this.itemId = itemId;
+		this.itemTagId = Optional.empty();
+	}
 
 	public MaterialEntry(Identifier itemId, Identifier itemTagId) {
 		this.itemId = itemId;
-		this.itemTagId = itemTagId;
+		this.itemTagId = Optional.of(itemTagId);
 	}
 
-	public String getMaterialId() {
-		return AstromineFoundationsDatagen.MATERIALS.inverse().get(this);
+	public MaterialEntry(Identifier itemId, String itemTagId) {
+		this(itemId, new Identifier("c", itemTagId));
 	}
 
-	public Identifier getIngotItemId() {
+	public Identifier getItemId() {
 		return itemId;
 	}
 
+	public String getName() {
+		return getItemId().getPath();
+	}
+
+	public boolean hasItemTag() {
+		return itemTagId.isPresent();
+	}
+
+	public boolean isBlock() {
+		return asBlock() != Blocks.AIR;
+	}
+
 	public Identifier getItemTagId() {
-		return itemTagId;
-	}
-
-	public Identifier getDustId() {
-		return dustId;
-	}
-
-	public Identifier getDustTagId() {
-		return dustTagId;
-	}
-
-	public Identifier getTinyDustId() {
-		return tinyDustId;
-	}
-
-	public Identifier getTinyDustTagId() {
-		return tinyDustTagId;
-	}
-
-	public static MaterialEntry of(ItemConvertible item, String tagId) {
-		return of(Registry.ITEM.getId(item.asItem()).toString(), tagId);
-	}
-
-	public static MaterialEntry of(String itemId, String tagId) {
-		return new MaterialEntry(new Identifier(itemId), new Identifier(tagId));
-	}
-
-	public MaterialEntry dust(ItemConvertible dust) {
-		return dust(Registry.ITEM.getId(dust.asItem()));
-	}
-
-	public MaterialEntry dust(Identifier dustId) {
-		this.dustId = dustId;
-		this.dustTagId = AstromineFoundationsDatagen.convertIdToCommonTag(dustId);
-		if (dustId.toString().contains("_dust")) {
-			Identifier tinyDustId = new Identifier(dustId.toString().replace("_dust", "_tiny_dust"));
-			if (Registry.ITEM.getOrEmpty(tinyDustId).isPresent())
-				return tinyDust(tinyDustId);
-		}
-		return this;
-	}
-
-	public MaterialEntry dustTag(Identifier dustTagId) {
-		this.dustTagId = dustTagId;
-		return this;
-	}
-
-	public MaterialEntry tinyDust(ItemConvertible tinyDust) {
-		return tinyDust(Registry.ITEM.getId(tinyDust.asItem()));
-	}
-
-	public MaterialEntry tinyDust(Identifier tinyDustId) {
-		this.tinyDustId = tinyDustId;
-		this.tinyDustTagId = AstromineFoundationsDatagen.convertIdToCommonTag(tinyDustId);
-		return this;
+		return itemTagId.get();
 	}
 
 	public Ingredient asIngredient() {
-		return Ingredient.fromTag(TagRegistry.item(itemTagId));
+		if(hasItemTag()) return Ingredient.fromTag(asItemTag());
+		else return Ingredient.ofItems(asItem());
 	}
 
 	@Override
-	public String toString() {
-		return "MaterialEntry{" +
-		       "itemId=" + itemId +
-		       ", itemTagId=" + itemTagId +
-		       ", dustId=" + dustId +
-		       ", dustTagId=" + dustTagId +
-		       ", tinyDustId=" + tinyDustId +
-		       ", tinyDustTagId=" + tinyDustTagId +
-		       '}';
+	public Item asItem() {
+		return Registry.ITEM.get(itemId);
+	}
+
+	public Block asBlock() {
+		return Registry.BLOCK.get(itemId);
+	}
+
+	private Tag<Item> asItemTag() {
+		return TagRegistry.item(getItemTagId());
+	}
+
+	public boolean isFromVanilla() {
+		return itemId.getNamespace().equals("minecraft");
 	}
 }

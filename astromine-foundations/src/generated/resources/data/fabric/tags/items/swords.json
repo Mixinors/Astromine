@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:stellum_sword",
+    "astromine:electrum_sword",
+    "astromine:sterling_silver_sword",
+    "astromine:steel_sword",
+    "#fabric:swords",
+    "astromine:fools_gold_sword",
+    "astromine:galaxium_sword",
+    "astromine:metite_sword",
+    "astromine:lead_sword",
+    "astromine:bronze_sword",
+    "astromine:asterite_sword",
+    "astromine:univite_sword",
+    "astromine:silver_sword",
+    "astromine:copper_sword",
+    "astromine:tin_sword",
+    "astromine:rose_gold_sword"
+  ]
+}

@@ -1,7 +1,8 @@
 {
   "replace": false,
   "values": [
-    "astromine:rose_gold_ingot",
-    "astromine:fools_gold_ingot"
+    "minecraft:gold_ingot",
+    "astromine:fools_gold_ingot",
+    "astromine:rose_gold_ingot"
   ]
 }

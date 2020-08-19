@@ -3,14 +3,14 @@
   "pattern": [
     "###",
     " # ",
-    " $ "
+    " s "
   ],
   "key": {
-    "$": {
-      "tag": "c:wood_sticks"
-    },
     "#": {
       "tag": "c:tin_ingots"
+    },
+    "s": {
+      "tag": "c:wood_sticks"
     }
   },
   "result": {

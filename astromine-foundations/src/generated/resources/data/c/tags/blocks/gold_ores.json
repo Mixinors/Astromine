@@ -1,7 +1,8 @@
 {
   "replace": false,
   "values": [
-    "astromine:asteroid_gold_ore",
-    "#minecraft:gold_ores"
+    "minecraft:nether_gold_ore",
+    "minecraft:gold_ore",
+    "astromine:asteroid_gold_ore"
   ]
 }
