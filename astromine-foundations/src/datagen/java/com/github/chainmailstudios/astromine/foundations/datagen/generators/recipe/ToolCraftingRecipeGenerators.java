@@ -1,12 +1,10 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe;
 
-import net.fabricmc.fabric.api.tag.TagRegistry;
-
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.util.Identifier;
-
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialItemType;
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSet;
+import net.fabricmc.fabric.api.tag.TagRegistry;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.util.Identifier;
 
 public abstract class ToolCraftingRecipeGenerators extends ShapedCraftingRecipeGenerator {
 	public ToolCraftingRecipeGenerators(MaterialItemType input, MaterialItemType output, String... pattern) {

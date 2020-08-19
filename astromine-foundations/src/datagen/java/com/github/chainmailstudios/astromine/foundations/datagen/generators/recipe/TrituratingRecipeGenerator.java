@@ -4,10 +4,9 @@ import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
 import com.github.chainmailstudios.astromine.foundations.datagen.AstromineFoundationsDatagen;
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialItemType;
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSet;
-import me.shedaniel.cloth.api.datagen.v1.RecipeData;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import me.shedaniel.cloth.api.datagen.v1.RecipeData;
 
 public class TrituratingRecipeGenerator extends EnergyProcessingRecipeGenerator {
 	public TrituratingRecipeGenerator(MaterialItemType input, int inputCount, MaterialItemType output, int outputCount, int time, int energyConsumed) {
@@ -24,7 +23,7 @@ public class TrituratingRecipeGenerator extends EnergyProcessingRecipeGenerator 
 
 	@Override
 	public String getRecipeName(MaterialSet set) {
-		return set.getItemIdPath(output)+"_from_triturating_"+input.getName();
+		return set.getItemIdPath(output) + "_from_triturating_" + input.getName();
 	}
 
 	@Override

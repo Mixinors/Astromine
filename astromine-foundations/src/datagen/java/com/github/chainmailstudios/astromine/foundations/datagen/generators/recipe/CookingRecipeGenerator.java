@@ -17,7 +17,7 @@ public abstract class CookingRecipeGenerator extends SimpleProcessingRecipeGener
 
 	@Override
 	public boolean shouldGenerate(MaterialSet set) {
-		if(set.isFromVanilla(input) && set.isFromVanilla(output)) return false;
+		if (set.isFromVanilla(input) && set.isFromVanilla(output)) return false;
 		else return super.shouldGenerate(set);
 	}
 

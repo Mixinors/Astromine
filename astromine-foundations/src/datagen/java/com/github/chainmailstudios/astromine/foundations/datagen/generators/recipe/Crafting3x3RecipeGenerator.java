@@ -9,6 +9,6 @@ public class Crafting3x3RecipeGenerator extends ShapedCraftingRecipeGenerator {
 
 	@Override
 	public String getRecipeSuffix() {
-		return "_from_"+input.getName();
+		return "_from_" + input.getName();
 	}
 }

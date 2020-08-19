@@ -1,7 +1,5 @@
 package com.github.chainmailstudios.astromine.foundations.datagen;
 
-import me.shedaniel.cloth.api.datagen.v1.TagData;
-
 public enum MaterialItemType {
 	INGOT,
 	GEM(""),
@@ -51,7 +49,7 @@ public enum MaterialItemType {
 	}
 
 	public String getItemId(String materialName) {
-		return prefix+(prefix.isEmpty()?"":"_")+materialName+(suffix.isEmpty()?"":"_")+suffix;
+		return prefix + (prefix.isEmpty() ? "" : "_") + materialName + (suffix.isEmpty() ? "" : "_") + suffix;
 	}
 
 	public String getName() {

@@ -1,11 +1,10 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.generators.tag;
 
-import net.minecraft.util.Identifier;
-
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialItemType;
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSet;
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSets;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
+import net.minecraft.util.Identifier;
 
 public class NetherGoldOreTagGenerator implements TagGenerator {
 	@Override

@@ -25,7 +25,7 @@ public abstract class CraftingRecipeGenerator implements RecipeGenerator {
 
 	@Override
 	public boolean shouldGenerate(MaterialSet set) {
-		if(!set.hasType(input) || !set.hasType(output)) return false;
+		if (!set.hasType(input) || !set.hasType(output)) return false;
 		else return !set.isFromVanilla(input) || !set.isFromVanilla((output));
 	}
 

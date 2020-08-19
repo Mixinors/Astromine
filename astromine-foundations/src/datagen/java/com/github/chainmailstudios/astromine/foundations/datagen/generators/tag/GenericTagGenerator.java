@@ -1,14 +1,10 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.generators.tag;
 
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.util.Identifier;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialItemType;
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
-
-import java.util.Set;
+import net.minecraft.item.ItemConvertible;
+import net.minecraft.util.Identifier;
 
 public class GenericTagGenerator implements TagGenerator {
 	protected final String name;

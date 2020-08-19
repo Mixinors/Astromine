@@ -1,22 +1,19 @@
 package com.github.chainmailstudios.astromine.foundations.datagen;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.foundations.datagen.generators.Generator;
+import me.shedaniel.cloth.api.datagen.v1.TagData;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.foundations.datagen.generators.Generator;
-import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.RecipeGenerator;
-import com.github.chainmailstudios.astromine.foundations.datagen.generators.tag.TagGenerator;
-import me.shedaniel.cloth.api.datagen.v1.TagData;
-
-import static com.github.chainmailstudios.astromine.foundations.datagen.MaterialItemType.*;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import static com.github.chainmailstudios.astromine.foundations.datagen.MaterialItemType.*;
 
 public class MaterialSet {
 	private final String name;
@@ -66,7 +63,7 @@ public class MaterialSet {
 	public boolean isFromVanilla(MaterialItemType type) {
 		return hasType(type) && getEntry(type).isFromVanilla();
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -85,9 +82,9 @@ public class MaterialSet {
 
 	public void generateTags(TagData tags) {
 		items.forEach((type, entry) -> {
-			if(entry.hasItemTag()) {
+			if (entry.hasItemTag()) {
 				tags.item(entry.getItemTagId()).append(entry);
-				if(entry.isBlock()) {
+				if (entry.isBlock()) {
 					tags.block(entry.getItemTagId()).append(entry.asBlock());
 				}
 			}
@@ -128,7 +125,7 @@ public class MaterialSet {
 		public Builder setType(MaterialItemType type, ItemConvertible item, Identifier tagId) {
 			return setType(type, Registry.ITEM.getId(item.asItem()), tagId);
 		}
-		
+
 		public Builder addType(MaterialItemType type, Identifier tagId) {
 			return setType(type, AstromineCommon.identifier(type.getItemId(name)), tagId);
 		}
@@ -151,27 +148,27 @@ public class MaterialSet {
 		}
 
 		public Builder ingot() {
-			return addType(INGOT, new Identifier("c", name+"_ingots"));
+			return addType(INGOT, new Identifier("c", name + "_ingots"));
 		}
 
 		public Builder nugget() {
-			return addType(NUGGET, new Identifier("c", name+"_nuggets"));
+			return addType(NUGGET, new Identifier("c", name + "_nuggets"));
 		}
 
 		public Builder gem() {
-			return addType(GEM, new Identifier("c", name+"s"));
+			return addType(GEM, new Identifier("c", name + "s"));
 		}
 
 		public Builder fragment() {
-			return addType(FRAGMENT, new Identifier("c", name+"_fragments"));
+			return addType(FRAGMENT, new Identifier("c", name + "_fragments"));
 		}
 
 		public Builder block() {
-			return addType(BLOCK, new Identifier("c", name+"_blocks"));
+			return addType(BLOCK, new Identifier("c", name + "_blocks"));
 		}
 
 		public Builder ore() {
-			return addType(ORE, new Identifier("c", name+"_ores"));
+			return addType(ORE, new Identifier("c", name + "_ores"));
 		}
 
 		public Builder asteroid() {
@@ -185,19 +182,19 @@ public class MaterialSet {
 		}
 
 		public Builder asteroidOre() {
-			return addType(ASTEROID_ORE, new Identifier("c", "asteroid_"+name+"_ores"));
+			return addType(ASTEROID_ORE, new Identifier("c", "asteroid_" + name + "_ores"));
 		}
 
 		public Builder meteorOre() {
-			return addType(METEOR_ORE, new Identifier("c", "meteor_"+name+"_ores"));
+			return addType(METEOR_ORE, new Identifier("c", "meteor_" + name + "_ores"));
 		}
 
 		public Builder asteroidCluster() {
-			return addType(ASTEROID_CLUSTER, new Identifier("c", "asteroid_"+name+"_clusters"));
+			return addType(ASTEROID_CLUSTER, new Identifier("c", "asteroid_" + name + "_clusters"));
 		}
 
 		public Builder meteorCluster() {
-			return addType(METEOR_CLUSTER, new Identifier("c", "meteor_"+name+"_clusters"));
+			return addType(METEOR_CLUSTER, new Identifier("c", "meteor_" + name + "_clusters"));
 		}
 
 		public Builder dusts() {
@@ -206,23 +203,23 @@ public class MaterialSet {
 		}
 
 		public Builder dust() {
-			return addType(DUST, new Identifier("c", name+"_dusts"));
+			return addType(DUST, new Identifier("c", name + "_dusts"));
 		}
 
 		public Builder tinyDust() {
-			return addType(TINY_DUST, new Identifier("c", name+"_tiny_dusts"));
+			return addType(TINY_DUST, new Identifier("c", name + "_tiny_dusts"));
 		}
 
 		public Builder gear() {
-			return addType(GEAR, new Identifier("c", name+"_gears"));
+			return addType(GEAR, new Identifier("c", name + "_gears"));
 		}
 
 		public Builder plates() {
-			return addType(PLATES, new Identifier("c", name+"_plates"));
+			return addType(PLATES, new Identifier("c", name + "_plates"));
 		}
 
 		public Builder wire() {
-			return addType(WIRE, new Identifier("c", name+"_wires"));
+			return addType(WIRE, new Identifier("c", name + "_wires"));
 		}
 
 		public Builder allTools() {

@@ -1,10 +1,9 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.generators.tag;
 
-import net.minecraft.util.Identifier;
-
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialItemType;
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSet;
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSets;
+import net.minecraft.util.Identifier;
 
 public class BeaconPaymentTagGenerator extends GenericTagGenerator {
 	public BeaconPaymentTagGenerator(MaterialItemType type) {
@@ -13,6 +12,7 @@ public class BeaconPaymentTagGenerator extends GenericTagGenerator {
 
 	@Override
 	public boolean shouldGenerate(MaterialSet set) {
-		return super.shouldGenerate(set) && !set.equals(MaterialSets.RAW_NETHERITE);
+		return super.shouldGenerate(set) && !set.equals(MaterialSets.RAW_NETHERITE) && !set.equals(MaterialSets.COAL) &&
+		       !set.equals(MaterialSets.CHARCOAL) && !set.equals(MaterialSets.QUARTZ) && !set.equals(MaterialSets.LAPIS);
 	}
 }

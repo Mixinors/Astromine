@@ -4,10 +4,7 @@ import com.github.chainmailstudios.astromine.foundations.datagen.generators.tag.
 import me.shedaniel.cloth.api.datagen.v1.TagData;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class TagGenerators {
 	private static final List<TagGenerator> GENERATORS = new ArrayList<>();
@@ -72,11 +69,11 @@ public class TagGenerators {
 	public static void generateTags(TagData tags, MaterialSet set) {
 		GENERATORS.forEach((generator) -> {
 			try {
-				if(set.shouldGenerate(generator)) {
+				if (set.shouldGenerate(generator)) {
 					generator.generateTag(tags, set);
-					System.out.println("generated tag "+generator.getGeneratorName());
+					System.out.println("generated tag " + generator.getGeneratorName());
 				}
-			} catch(Exception e) {
+			} catch (Exception e) {
 				System.out.println("oh fuck tag bronked for " + generator.getGeneratorName());
 				System.out.println(e.getMessage());
 			}

@@ -1,10 +1,8 @@
 package com.github.chainmailstudios.astromine.foundations.datagen;
 
 import net.fabricmc.fabric.api.tag.TagRegistry;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.Ingredient;
@@ -53,7 +51,7 @@ public class MaterialEntry implements ItemConvertible {
 	}
 
 	public Ingredient asIngredient() {
-		if(hasItemTag()) return Ingredient.fromTag(asItemTag());
+		if (hasItemTag()) return Ingredient.fromTag(asItemTag());
 		else return Ingredient.ofItems(asItem());
 	}
 

@@ -4,9 +4,7 @@ import com.github.chainmailstudios.astromine.foundations.datagen.generators.reci
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static com.github.chainmailstudios.astromine.foundations.datagen.MaterialItemType.*;
 
@@ -155,12 +153,12 @@ public class RecipeGenerators {
 	public static void generateRecipes(RecipeData recipes, MaterialSet set) {
 		GENERATORS.forEach((generator) -> {
 			try {
-				if(set.shouldGenerate(generator)) {
+				if (set.shouldGenerate(generator)) {
 					generator.generateRecipe(recipes, set);
-					System.out.println("generated recipe "+generator.getRecipeId(set));
+					System.out.println("generated recipe " + generator.getRecipeId(set));
 				}
-			} catch(Exception e) {
-				System.out.println("oh fuck recipe bronked for " + set.getName()+" with generator "+generator.getString());
+			} catch (Exception e) {
+				System.out.println("oh fuck recipe bronked for " + set.getName() + " with generator " + generator.getString());
 				System.out.println(e.getMessage());
 			}
 		});
