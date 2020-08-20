@@ -2,13 +2,22 @@
   "type": "astromine:altar",
   "inputs": [
     {
-      "item": "diamond"
+      "tag": "c:galaxiums"
     },
     {
-      "item": "diamond"
+      "tag": "c:galaxiums"
     },
     {
-      "item": "iron_ingot"
+      "tag": "c:diamonds"
+    },
+    {
+      "tag": "c:diamonds"
+    },
+    {
+      "item": "minecraft:nether_star"
+    },
+    {
+      "tag": "c:stellum_plates"
     }
   ],
   "output": {

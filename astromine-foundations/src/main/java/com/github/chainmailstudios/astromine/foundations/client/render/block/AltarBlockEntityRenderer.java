@@ -1,7 +1,6 @@
 package com.github.chainmailstudios.astromine.foundations.client.render.block;
 
 import com.github.chainmailstudios.astromine.foundations.common.block.altar.entity.AltarBlockEntity;
-import com.github.chainmailstudios.astromine.foundations.common.block.altar.entity.ItemDisplayerBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -20,9 +19,9 @@ import net.minecraft.util.math.MathHelper;
 import java.util.Random;
 
 public class AltarBlockEntityRenderer extends BlockEntityRenderer<AltarBlockEntity> {
+	public static final float HOVER_HEIGHT = 0.2f;
 	private final ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
 	private final Random random = new Random();
-	private float hoverHeight = 2;
 
 	public AltarBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
 		super(dispatcher);
@@ -40,10 +39,10 @@ public class AltarBlockEntityRenderer extends BlockEntityRenderer<AltarBlockEnti
 		boolean bl = bakedModel.hasDepth();
 		int k = 1;
 		float h = 0.25F;
-		float l = MathHelper.sin(hoverHeight) * 0.1F + 0.1F;
+		float l = HOVER_HEIGHT + 0.1F;
 		float m = bakedModel.getTransformation().getTransformation(ModelTransformation.Mode.GROUND).scale.getY();
 		matrices.translate(0.5D, l + 1.0D + 0.25D * m, 0.5D);
-		double progress = 1;
+		double progress;
 		float n = getHeight(entity, tickDelta);
 		if (entity.craftingTicks > 0) {
 			progress = Math.min(1, entity.craftingTicksDelta / (double) AltarBlockEntity.CRAFTING_TIME);
@@ -52,9 +51,9 @@ public class AltarBlockEntityRenderer extends BlockEntityRenderer<AltarBlockEnti
 			}
 			BlockPos pos = entity.getPos();
 			BlockPos parentPos = entity.getPos();
-			matrices.translate(0, 3 * progress, 0);
+			matrices.translate(0, AltarBlockEntity.HEIGHT_OFFSET * progress, 0);
 			
-			n = (entity.spinAge + tickDelta * entity.lastAgeAddition) / 20.0F + this.hoverHeight;
+			n = (entity.spinAge + tickDelta * entity.lastAgeAddition) / 20.0F + HOVER_HEIGHT;
 		}
 		matrices.multiply(Vector3f.POSITIVE_Y.getRadialQuaternion(n));
 		float o = bakedModel.getTransformation().ground.scale.getX();
@@ -95,6 +94,6 @@ public class AltarBlockEntityRenderer extends BlockEntityRenderer<AltarBlockEnti
 	}
 
 	public float getHeight(AltarBlockEntity entity, float tickDelta) {
-		return (entity.spinAge + tickDelta) / 20.0F + this.hoverHeight;
+		return (entity.spinAge + tickDelta) / 20.0F + HOVER_HEIGHT;
 	}
 }

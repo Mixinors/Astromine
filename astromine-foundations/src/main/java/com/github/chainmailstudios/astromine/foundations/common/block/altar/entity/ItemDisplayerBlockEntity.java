@@ -17,7 +17,7 @@ public class ItemDisplayerBlockEntity extends BlockEntity implements ItemInvento
 	private int yAge;
 	public BlockPos parent;
 	private ItemInventoryComponent inventory = new SimpleItemInventoryComponent(1).withListener(component -> {
-		if (!world.isClient)
+		if (hasWorld() && !world.isClient)
 			sync();
 	});
 

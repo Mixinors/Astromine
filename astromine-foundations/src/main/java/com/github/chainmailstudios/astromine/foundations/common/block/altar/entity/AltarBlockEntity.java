@@ -10,11 +10,16 @@ import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LightningEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.LongTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.particle.DustParticleEffect;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Lazy;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
@@ -30,6 +35,7 @@ public class AltarBlockEntity extends BlockEntity implements ItemInventoryFromIn
 	public static final int CRAFTING_TIME = 100;
 	public static final int CRAFTING_TIME_SPIN = 80;
 	public static final int CRAFTING_TIME_FALL = 60;
+	public static final float HEIGHT_OFFSET = 0;
 	public int spinAge;
 	public int yAge;
 	public int lastAgeAddition;
@@ -38,7 +44,7 @@ public class AltarBlockEntity extends BlockEntity implements ItemInventoryFromIn
 	public AltarRecipe recipe;
 	public List<Supplier<ItemDisplayerBlockEntity>> children = Lists.newArrayList();
 	private ItemInventoryComponent inventory = new SimpleItemInventoryComponent(1).withListener(component -> {
-		if (!world.isClient)
+		if (hasWorld() && !world.isClient)
 			sync();
 	});
 
@@ -91,6 +97,10 @@ public class AltarBlockEntity extends BlockEntity implements ItemInventoryFromIn
 					}
 
 					recipe = null;
+					LightningEntity entity = EntityType.LIGHTNING_BOLT.create(world);
+					entity.refreshPositionAfterTeleport(pos.getX() + 0.5, pos.getY() + 1 + HEIGHT_OFFSET, pos.getZ() + 0.5);
+					entity.setCosmetic(true);
+					world.spawnEntity(entity);
 				}
 				if (craftingTicks >= CRAFTING_TIME + CRAFTING_TIME_SPIN + CRAFTING_TIME_FALL) {
 					onRemove();

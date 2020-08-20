@@ -15,15 +15,14 @@ import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.Random;
 
 public class ItemDisplayerBlockEntityRenderer extends BlockEntityRenderer<ItemDisplayerBlockEntity> {
+	public static final float HOVER_HEIGHT = -.3f;
 	private final ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
 	private final Random random = new Random();
-	private float hoverHeight = 2;
 
 	public ItemDisplayerBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
 		super(dispatcher);
@@ -39,17 +38,17 @@ public class ItemDisplayerBlockEntityRenderer extends BlockEntityRenderer<ItemDi
 		boolean bl = bakedModel.hasDepth();
 		int k = 1;
 		float h = 0.25F;
-		float l = MathHelper.sin(hoverHeight) * 0.1F + 0.1F;
+		float l = HOVER_HEIGHT + 0.1F;
 		float m = bakedModel.getTransformation().getTransformation(ModelTransformation.Mode.GROUND).scale.getY();
 		matrices.translate(0.5D, l + 1.0D + 0.25D * m, 0.5D);
-		double progress = 1;
+		double progress;
 		if (entity.parent != null) {
 			AltarBlockEntity parent = (AltarBlockEntity) entity.getWorld().getBlockEntity(entity.parent);
-			
+
 			progress = Math.min(1, parent.craftingTicksDelta / (double) AltarBlockEntity.CRAFTING_TIME);
 			BlockPos pos = entity.getPos();
 			BlockPos parentPos = parent.getPos();
-			Vec3d distance = new Vec3d(parentPos.getX() - pos.getX(), parentPos.getY() + 3 - pos.getY(), parentPos.getZ() - pos.getZ());
+			Vec3d distance = new Vec3d(parentPos.getX() - pos.getX(), parentPos.getY() + AltarBlockEntityRenderer.HOVER_HEIGHT - HOVER_HEIGHT + AltarBlockEntity.HEIGHT_OFFSET - pos.getY(), parentPos.getZ() - pos.getZ());
 			Vec3d multiply = distance.multiply(progress);
 			matrices.translate(multiply.x, multiply.y, multiply.z);
 		}
@@ -93,6 +92,6 @@ public class ItemDisplayerBlockEntityRenderer extends BlockEntityRenderer<ItemDi
 	}
 
 	public float getHeight(ItemDisplayerBlockEntity entity, float tickDelta) {
-		return (entity.getSpinAge() + tickDelta * entity.getLastSpinAddition()) / 20.0F + this.hoverHeight;
+		return (entity.getSpinAge() + tickDelta * entity.getLastSpinAddition()) / 20.0F + HOVER_HEIGHT;
 	}
 }

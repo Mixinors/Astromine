@@ -65,11 +65,13 @@ public class AltarBlock extends MachineBlock {
 				blockEntity.setStack(0, ItemStack.EMPTY);
 				player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, .6F, 1);
 				blockEntity.sync();
+				return ActionResult.SUCCESS;
 			} else if (stackInHand.isEmpty()) {
 				player.setStackInHand(hand, blockEntity.getStack(0).copy());
 				blockEntity.setStack(0, ItemStack.EMPTY);
 				player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, .6F, 1);
 				blockEntity.sync();
+				return ActionResult.SUCCESS;
 			} else {
 				return ActionResult.CONSUME;
 			}
