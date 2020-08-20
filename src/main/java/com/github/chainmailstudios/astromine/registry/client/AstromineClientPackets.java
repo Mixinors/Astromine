@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.registry.client;
 
+import com.github.chainmailstudios.astromine.client.cca.FuckingHellCCA;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
@@ -62,6 +63,30 @@ public class AstromineClientPackets {
 				rocketEntity.updateTrackedPosition(x, y, z);
 
 				MinecraftClient.getInstance().world.addEntity(id, rocketEntity);
+			});
+		});
+
+		ClientSidePacketRegistry.INSTANCE.register(FuckingHellCCA.FUCKS_ERASED, (context, buffer) -> {
+			buffer.retain();
+
+			context.getTaskQueue().execute(() -> {
+				FuckingHellCCA.onFucksErased(buffer);
+			});
+		});
+
+		ClientSidePacketRegistry.INSTANCE.register(FuckingHellCCA.FUCKS_GIVEN, (context, buffer) -> {
+			buffer.retain();
+
+			context.getTaskQueue().execute(() -> {
+				FuckingHellCCA.onFucksGiven(buffer);
+			});
+		});
+
+		ClientSidePacketRegistry.INSTANCE.register(FuckingHellCCA.FUCKS_TAKEN, (context, buffer) -> {
+			buffer.retain();
+
+			context.getTaskQueue().execute(() -> {
+				FuckingHellCCA.onFucksTaken(buffer);
 			});
 		});
 	}

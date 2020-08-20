@@ -24,6 +24,10 @@
 
 package com.github.chainmailstudios.astromine.common.component.world;
 
+import com.github.chainmailstudios.astromine.client.cca.FuckingHellCCA;
+import com.github.vini2003.blade.common.utilities.Networks;
+import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+import net.fabricmc.fabric.impl.networking.ServerSidePacketRegistryImpl;
 import net.minecraft.block.AirBlock;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
@@ -58,12 +62,28 @@ public class WorldAtmosphereComponent implements Component, Tickable {
 		return world;
 	}
 
+	public Map<BlockPos, FluidVolume> getVolumes() {
+		return volumes;
+	}
+
 	public void add(BlockPos blockPos, FluidVolume volume) {
 		volumes.put(blockPos, volume);
+
+		if (!world.isClient) {
+			world.getPlayers().forEach((player) -> {
+				ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, FuckingHellCCA.FUCKS_GIVEN, FuckingHellCCA.ofFucksGiven(blockPos, volume));
+			});
+		}
 	}
 
 	public void remove(BlockPos blockPos) {
 		volumes.remove(blockPos);
+
+		if (!world.isClient) {
+			world.getPlayers().forEach((player) -> {
+				ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, FuckingHellCCA.FUCKS_TAKEN, FuckingHellCCA.ofFucksTaken(blockPos));
+			});
+		}
 	}
 
 	public FluidVolume get(BlockPos position) {
