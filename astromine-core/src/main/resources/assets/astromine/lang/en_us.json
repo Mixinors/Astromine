@@ -106,6 +106,8 @@
   "block.astromine.basic_capacitor": "Basic Capacitor",
   "block.astromine.advanced_capacitor": "Advanced Capacitor",
   "block.astromine.elite_capacitor": "Elite Capacitor",
+  "block.astromine.item_displayer": "Item Displayer",
+  "block.astromine.altar": "Altar",
   "item.astromine.tin_wire": "Tin Wire",
   "item.astromine.copper_wire": "Copper Wire",
   "item.astromine.silver_wire": "Silver Wire",

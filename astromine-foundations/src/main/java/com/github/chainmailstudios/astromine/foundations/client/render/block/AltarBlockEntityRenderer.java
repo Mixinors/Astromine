@@ -14,12 +14,10 @@ import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 
 import java.util.Random;
 
 public class AltarBlockEntityRenderer extends BlockEntityRenderer<AltarBlockEntity> {
-	public static final float HOVER_HEIGHT = 0.2f;
 	private final ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
 	private final Random random = new Random();
 
@@ -39,21 +37,18 @@ public class AltarBlockEntityRenderer extends BlockEntityRenderer<AltarBlockEnti
 		boolean bl = bakedModel.hasDepth();
 		int k = 1;
 		float h = 0.25F;
-		float l = HOVER_HEIGHT + 0.1F;
+		float l = AltarBlockEntity.HOVER_HEIGHT + 0.1F;
 		float m = bakedModel.getTransformation().getTransformation(ModelTransformation.Mode.GROUND).scale.getY();
 		matrices.translate(0.5D, l + 1.0D + 0.25D * m, 0.5D);
 		double progress;
 		float n = getHeight(entity, tickDelta);
 		if (entity.craftingTicks > 0) {
-			progress = Math.min(1, entity.craftingTicksDelta / (double) AltarBlockEntity.CRAFTING_TIME);
-			if (entity.craftingTicksDelta >= AltarBlockEntity.CRAFTING_TIME + AltarBlockEntity.CRAFTING_TIME_SPIN) {
-				progress *= 1 - Math.min(1, (entity.craftingTicksDelta - AltarBlockEntity.CRAFTING_TIME - AltarBlockEntity.CRAFTING_TIME_SPIN) / (double) AltarBlockEntity.CRAFTING_TIME_FALL);
-			}
+			progress = entity.getYProgress(entity.craftingTicksDelta);
 			BlockPos pos = entity.getPos();
 			BlockPos parentPos = entity.getPos();
 			matrices.translate(0, AltarBlockEntity.HEIGHT_OFFSET * progress, 0);
-			
-			n = (entity.spinAge + tickDelta * entity.lastAgeAddition) / 20.0F + HOVER_HEIGHT;
+
+			n = (entity.spinAge + tickDelta * entity.lastAgeAddition) / 20.0F + AltarBlockEntity.HOVER_HEIGHT;
 		}
 		matrices.multiply(Vector3f.POSITIVE_Y.getRadialQuaternion(n));
 		float o = bakedModel.getTransformation().ground.scale.getX();
@@ -94,6 +89,6 @@ public class AltarBlockEntityRenderer extends BlockEntityRenderer<AltarBlockEnti
 	}
 
 	public float getHeight(AltarBlockEntity entity, float tickDelta) {
-		return (entity.spinAge + tickDelta) / 20.0F + HOVER_HEIGHT;
+		return (entity.spinAge + tickDelta) / 20.0F + AltarBlockEntity.HOVER_HEIGHT;
 	}
 }

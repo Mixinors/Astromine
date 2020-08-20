@@ -67,7 +67,6 @@ public class ItemDisplayerBlock extends MachineBlock {
 				if (displayerBlockEntity.getStack(0).isEmpty()) {
 					if (!stackInHand.isEmpty()) {
 						displayerBlockEntity.setStack(0, stackInHand.split(1));
-						player.playSound(SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1, 1);
 						displayerBlockEntity.sync();
 						return ActionResult.SUCCESS;
 					}

@@ -48,7 +48,7 @@ public class ItemDisplayerBlockEntityRenderer extends BlockEntityRenderer<ItemDi
 			progress = Math.min(1, parent.craftingTicksDelta / (double) AltarBlockEntity.CRAFTING_TIME);
 			BlockPos pos = entity.getPos();
 			BlockPos parentPos = parent.getPos();
-			Vec3d distance = new Vec3d(parentPos.getX() - pos.getX(), parentPos.getY() + AltarBlockEntityRenderer.HOVER_HEIGHT - HOVER_HEIGHT + AltarBlockEntity.HEIGHT_OFFSET - pos.getY(), parentPos.getZ() - pos.getZ());
+			Vec3d distance = new Vec3d(parentPos.getX() - pos.getX(), parentPos.getY() + AltarBlockEntity.HOVER_HEIGHT - HOVER_HEIGHT + AltarBlockEntity.HEIGHT_OFFSET - pos.getY(), parentPos.getZ() - pos.getZ());
 			Vec3d multiply = distance.multiply(progress);
 			matrices.translate(multiply.x, multiply.y, multiply.z);
 		}

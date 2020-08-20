@@ -18,7 +18,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.LongTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.particle.DustParticleEffect;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Lazy;
 import net.minecraft.util.Tickable;
@@ -35,7 +34,8 @@ public class AltarBlockEntity extends BlockEntity implements ItemInventoryFromIn
 	public static final int CRAFTING_TIME = 100;
 	public static final int CRAFTING_TIME_SPIN = 80;
 	public static final int CRAFTING_TIME_FALL = 60;
-	public static final float HEIGHT_OFFSET = 0;
+	public static final float HEIGHT_OFFSET = 0.3f;
+	public static final float HOVER_HEIGHT = 0f;
 	public int spinAge;
 	public int yAge;
 	public int lastAgeAddition;
@@ -107,6 +107,32 @@ public class AltarBlockEntity extends BlockEntity implements ItemInventoryFromIn
 				}
 			}
 		}
+		
+		if (!world.isClient && !inventory.getStack(0).isEmpty() && craftingTicks > 0 && craftingTicks <= CRAFTING_TIME + CRAFTING_TIME_SPIN + CRAFTING_TIME_FALL) {
+			spawnParticles();
+		}
+	}
+
+	public void spawnParticles() {
+		double yProgress = getYProgress(craftingTicks);
+		float l = AltarBlockEntity.HOVER_HEIGHT + 0.1F;
+		DustParticleEffect effect = new DustParticleEffect(1, 1, 1, 1);
+		((ServerWorld) world).spawnParticles(effect, getPos().getX() + 0.5D, getPos().getY() + l + 1.0D - 0.1D + AltarBlockEntity.HEIGHT_OFFSET * yProgress, getPos().getZ() + 0.5D, 2, 0.1D, 0D, 0.1D, 0);
+	}
+
+	public double getYProgress(double craftingTicksDelta) {
+		double progress = 0;
+
+		if (craftingTicks > 0) {
+			progress = Math.min(1, craftingTicksDelta / (double) AltarBlockEntity.CRAFTING_TIME);
+			if (craftingTicksDelta >= AltarBlockEntity.CRAFTING_TIME + AltarBlockEntity.CRAFTING_TIME_SPIN) {
+				progress *= 1 - Math.min(1, (craftingTicksDelta - AltarBlockEntity.CRAFTING_TIME - AltarBlockEntity.CRAFTING_TIME_SPIN) / (double) AltarBlockEntity.CRAFTING_TIME_FALL);
+			}
+			BlockPos pos = getPos();
+			BlockPos parentPos = getPos();
+		}
+
+		return progress;
 	}
 
 	public int getCraftingTicks() {
