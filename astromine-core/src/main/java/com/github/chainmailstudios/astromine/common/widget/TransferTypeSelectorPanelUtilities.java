@@ -43,7 +43,7 @@ public class TransferTypeSelectorPanelUtilities {
 		final Position finalWest = Position.of(anchor, 7 + 44, 31 + 22);
 		final Position finalEast = Position.of(anchor, 7 + 0, 31 + 22);
 
-		final ImmutableMap<Direction, Position> positions = ImmutableMap.<Direction, Position>builder().put(Direction.NORTH, finalNorth).put(Direction.SOUTH, finalSouth).put(Direction.WEST, finalWest).put(Direction.EAST, finalEast).put(Direction.UP, finalUp).put(Direction.DOWN,
+		final ImmutableMap<Direction, Position> positions = ImmutableMap.<Direction, Position> builder().put(Direction.NORTH, finalNorth).put(Direction.SOUTH, finalSouth).put(Direction.WEST, finalWest).put(Direction.EAST, finalEast).put(Direction.UP, finalUp).put(Direction.DOWN,
 			finalDown).build();
 
 		for (Direction direction : Direction.values()) {

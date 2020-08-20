@@ -1,0 +1,26 @@
+{
+  "type": "astromine:altar",
+  "inputs": [
+    {
+      "tag": "c:galaxiums"
+    },
+    {
+      "tag": "c:galaxiums"
+    },
+    {
+      "tag": "c:diamonds"
+    },
+    {
+      "tag": "c:diamonds"
+    },
+    {
+      "item": "minecraft:nether_star"
+    },
+    {
+      "tag": "c:stellum_plates"
+    }
+  ],
+  "output": {
+    "item": "astromine:univite_ingot"
+  }
+}

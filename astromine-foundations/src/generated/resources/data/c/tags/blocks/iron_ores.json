@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "astromine:asteroid_iron_ore",
+    "#c:asteroid_iron_ores",
     "minecraft:iron_ore"
   ]
 }

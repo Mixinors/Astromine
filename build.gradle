@@ -13,9 +13,9 @@ allprojects {
     apply plugin: 'fabric-loom'
     apply plugin: 'com.diffplug.spotless'
 
-    archivesBaseName = project.mod_name + "-" + project.mod_version + "+" + project.version_meta
+    archivesBaseName = project.mod_name
     group = rootProject.mod_group
-    version = rootProject.mod_version
+    version = rootProject.mod_version + "+" + project.version_meta
 
     ext {
         shouldGenerateData = false

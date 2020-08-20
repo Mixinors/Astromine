@@ -25,27 +25,21 @@
 package com.github.chainmailstudios.astromine.foundations;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
-import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsConfig;
-import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsItems;
-import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsOres;
-import me.shedaniel.cloth.api.dynamic.registry.v1.EarlyInitializer;
+import com.github.chainmailstudios.astromine.foundations.registry.*;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
 
-public class AstromineFoundations implements ModInitializer, EarlyInitializer {
+public class AstromineFoundations implements ModInitializer {
 	public static final String MOD_ID = "astromine-foundations";
 
 	@Override
 	public void onInitialize() {
+		AstromineFoundationsConfig.initialize();
 		AstromineFoundationsBlocks.initialize();
 		AstromineFoundationsItems.initialize();
-	}
-
-	@Override
-	public void onEarlyInitialization() {
-		AstromineFoundationsConfig.initialize();
 		AstromineFoundationsOres.initialize();
+		AstromineFoundationsBlockEntityTypes.initialize();
+		AstromineFoundationsRecipeSerializers.initialize();
 	}
 
 	public static String appendId(String id) {

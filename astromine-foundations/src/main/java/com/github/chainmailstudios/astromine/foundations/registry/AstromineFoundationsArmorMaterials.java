@@ -1,7 +1,32 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2020 Chainmail Studios
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.github.chainmailstudios.astromine.foundations.registry;
 
 import com.github.chainmailstudios.astromine.foundations.AstromineFoundations;
 import com.github.chainmailstudios.astromine.registry.AstromineArmorMaterials;
+
 import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.recipe.Ingredient;
@@ -22,8 +47,7 @@ public class AstromineFoundationsArmorMaterials {
 	public static final ArmorMaterial ROSE_GOLD = register("rose_gold", 9, new int[]{ 1, 3, 5, 2 }, 25, AstromineFoundationsSoundEvents.ROSE_GOLD_ARMOR_EQUIPPED, 0.1F, 0.0F, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:rose_gold_ingots"))));
 	public static final ArmorMaterial STERLING_SILVER = register("sterling_silver", 18, new int[]{ 2, 5, 6, 2 }, 23, AstromineFoundationsSoundEvents.STERLING_SILVER_ARMOR_EQUIPPED, 0.1F, 0.0F, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse(
 		"c:sterling_silver_ingots"))));
-	public static final ArmorMaterial FOOLS_GOLD = register("fools_gold", 15, new int[]{ 2, 5, 6, 2 }, 10, AstromineFoundationsSoundEvents.FOOLS_GOLD_ARMOR_EQUIPPED, 0.0F, 0.0F, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse(
-		"c:fools_gold_ingots"))));
+	public static final ArmorMaterial FOOLS_GOLD = register("fools_gold", 15, new int[]{ 2, 5, 6, 2 }, 10, AstromineFoundationsSoundEvents.FOOLS_GOLD_ARMOR_EQUIPPED, 0.0F, 0.0F, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:fools_gold_ingots"))));
 
 	public static final ArmorMaterial METITE = register("metite", 15, new int[]{ 2, 4, 6, 2 }, 7, AstromineFoundationsSoundEvents.METITE_ARMOR_EQUIPPED, 0.0f, 0.0f, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:metite_ingots"))));
 	public static final ArmorMaterial ASTERITE = register("asterite", 35, new int[]{ 4, 7, 8, 4 }, 20, AstromineFoundationsSoundEvents.ASTERITE_ARMOR_EQUIPPED, 4.0f, 0.1f, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:asterites"))));
@@ -34,6 +58,6 @@ public class AstromineFoundationsArmorMaterials {
 	public static final ArmorMaterial SPACE_SUIT = register("space_suit", 50, new int[]{ 1, 2, 3, 1 }, 2, AstromineFoundationsSoundEvents.SPACE_SUIT_EQUIPPED, 0.0f, 0.0f, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:metite_ingots"))));
 
 	private static ArmorMaterial register(String name, int durabilityMultiplier, int[] protectionAmounts, int enchantability, SoundEvent equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> supplier) {
-		return AstromineArmorMaterials.register(AstromineFoundations.appendId(name), durabilityMultiplier, protectionAmounts, enchantability, equipSound, toughness, knockbackResistance, supplier);
+		return AstromineArmorMaterials.register(name, durabilityMultiplier, protectionAmounts, enchantability, equipSound, toughness, knockbackResistance, supplier);
 	}
 }
