@@ -48,23 +48,29 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class WorldAtmosphereComponent implements Component, Tickable {
-	private static final Fraction TRESHHOLD = new Fraction(2, 1);
+		private final List<Direction> directions = Lists.newArrayList(Direction.values());
 
-	private final Map<BlockPos, FluidVolume> volumes = new ConcurrentHashMap<>();
+		private final Map<BlockPos, FluidVolume> volumes = new ConcurrentHashMap<>();
 
-	private final World world;
+		private final World world;
 
-	public WorldAtmosphereComponent(World world) {
-		this.world = world;
-	}
+		public WorldAtmosphereComponent(World world) {
+			this.world = world;
+		}
 
-	public World getWorld() {
-		return world;
-	}
+		public World getWorld() {
+			return world;
+		}
 
-	public Map<BlockPos, FluidVolume> getVolumes() {
-		return volumes;
-	}
+		public FluidVolume get(BlockPos position) {
+			RegistryKey<World> key = world.getRegistryKey();
+
+			if (!AstromineDimensions.isAstromine(key) && !volumes.containsKey(position)) {
+				return FluidVolume.oxygen();
+			} else {
+				return volumes.getOrDefault(position, FluidVolume.empty());
+			}
+		}
 
 	public void add(BlockPos blockPos, FluidVolume volume) {
 		volumes.put(blockPos, volume);
@@ -86,71 +92,63 @@ public class WorldAtmosphereComponent implements Component, Tickable {
 		}
 	}
 
-	public FluidVolume get(BlockPos position) {
-		RegistryKey<World> key = world.getRegistryKey();
+		@Override
+		public void tick() {
+			for (Map.Entry<BlockPos, FluidVolume> pair : volumes.entrySet()) {
+				BlockPos centerPos = pair.getKey();
 
-		if (!AstromineDimensions.isAstromine(key) && !volumes.containsKey(position)) {
-			return FluidVolume.oxygen();
-		} else {
-			return volumes.getOrDefault(position, FluidVolume.empty());
-		}
-	}
+				FluidVolume centerVolume = pair.getValue();
 
-	@Override
-	public void tick() {
-		List<Direction> directions = Lists.newArrayList(Direction.values());
+				centerVolume.extractVolume(Fraction.of(1, 2048));
 
-		for (Map.Entry<BlockPos, FluidVolume> pair : volumes.entrySet()) {
-			final FluidVolume fluidVolume = get(pair.getKey());
+				if (centerVolume.isEmpty()) {
+					remove(centerPos);
+				}
 
-			Collections.shuffle(directions);
+				Collections.shuffle(directions);
 
-			for (Direction direction : directions) {
-				final BlockPos offsetPosition = pair.getKey().offset(direction);
+				for (Direction direction : directions) {
+					BlockPos sidePos = centerPos.offset(direction);
 
-				if (world.getBlockState(offsetPosition).getBlock() instanceof AirBlock) {
-					FluidVolume offsetFluidVolume = get(offsetPosition);
+					FluidVolume sideVolume = get(sidePos);
 
-					if (!fluidVolume.isEmpty() && fluidVolume.getFluid() == offsetFluidVolume.getFluid() && fluidVolume.hasStored(Fraction.max(TRESHHOLD, offsetFluidVolume.getFraction()))) {
-						fluidVolume.pushVolume(offsetFluidVolume, Fraction.BUCKET);
-						add(offsetPosition, offsetFluidVolume);
-					} else if (!fluidVolume.isEmpty() && fluidVolume.hasStored(Fraction.max(TRESHHOLD, offsetFluidVolume.getFraction())) && offsetFluidVolume.equals(FluidVolume.oxygen())) {
-						FluidVolume newVolume = new FluidVolume();
-						fluidVolume.pushVolume(newVolume, Fraction.BUCKET);
-						add(offsetPosition, newVolume);
+					if (world.getBlockState(sidePos).isAir() && (sideVolume.isEmpty() || sideVolume.equalsFluid(centerVolume)) && centerVolume.hasStored(Fraction.bottle()) && sideVolume.isSmallerThan(centerVolume)) {
+						centerVolume.pushVolume(sideVolume, Fraction.bottle());
+
+						add(sidePos, sideVolume);
 					}
-				} else {
-					remove(offsetPosition);
 				}
 			}
 		}
-	}
 
-	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		CompoundTag dataTag = new CompoundTag();
+		@Override
+		public CompoundTag toTag(CompoundTag tag) {
+			CompoundTag dataTag = new CompoundTag();
 
-		for (Map.Entry<BlockPos, FluidVolume> entry : volumes.entrySet()) {
-			CompoundTag pointTag = new CompoundTag();
-			pointTag.putLong("pos", entry.getKey().asLong());
-			pointTag.put("volume", entry.getValue().toTag(new CompoundTag()));
+			int i = 0;
 
-			dataTag.put("0", pointTag);
+			for (Map.Entry<BlockPos, FluidVolume> entry : volumes.entrySet()) {
+				CompoundTag pointTag = new CompoundTag();
+				pointTag.putLong("pos", entry.getKey().asLong());
+				pointTag.put("volume", entry.getValue().toTag(new CompoundTag()));
+
+				dataTag.put(String.valueOf(i), pointTag);
+				++i;
+			}
+
+			tag.put("data", dataTag);
+
+			return tag;
 		}
 
-		tag.put("data", dataTag);
+		@Override
+		public void fromTag(CompoundTag tag) {
+			CompoundTag dataTag = tag.getCompound("data");
 
-		return tag;
-	}
+			for (String key : dataTag.getKeys()) {
+				CompoundTag pointTag = dataTag.getCompound(key);
 
-	@Override
-	public void fromTag(CompoundTag tag) {
-		CompoundTag dataTag = tag.getCompound("data");
-
-		for (String key : dataTag.getKeys()) {
-			CompoundTag pointTag = dataTag.getCompound(key);
-
-			volumes.put(BlockPos.fromLong(pointTag.getLong("pos")), FluidVolume.fromTag(pointTag.getCompound("volume")));
+				volumes.put(BlockPos.fromLong(pointTag.getLong("pos")), FluidVolume.fromTag(pointTag.getCompound("volume")));
+			}
 		}
 	}
-}
