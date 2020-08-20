@@ -2,7 +2,6 @@
   "replace": false,
   "values": [
     "#c:asteroid_gold_ores",
-    "minecraft:nether_gold_ore",
     "minecraft:gold_ore"
   ]
 }

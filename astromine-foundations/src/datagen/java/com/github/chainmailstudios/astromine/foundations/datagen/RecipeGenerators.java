@@ -154,7 +154,7 @@ public class RecipeGenerators {
 		GENERATORS.forEach((generator) -> {
 			try {
 				if (set.shouldGenerate(generator)) {
-					generator.generateRecipe(recipes, set);
+					generator.generate(recipes, set);
 					System.out.println("generated recipe " + generator.getRecipeId(set));
 				}
 			} catch (Exception e) {

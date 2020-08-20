@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.foundations.datagen;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.foundations.datagen.generators.Generator;
+import com.github.chainmailstudios.astromine.foundations.datagen.generators.SetGenerator;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
@@ -68,7 +69,7 @@ public class MaterialSet {
 		return name;
 	}
 
-	public boolean shouldGenerate(Generator generator) {
+	public boolean shouldGenerate(SetGenerator generator) {
 		return generator.shouldGenerate(this);
 	}
 
@@ -283,7 +284,7 @@ public class MaterialSet {
 		}
 
 		public Builder hammer() {
-			return addType(HAMMER, AstromineCommon.identifier("hammer"));
+			return addType(HAMMER, AstromineCommon.identifier("hammers"));
 		}
 
 		public Builder excavator() {

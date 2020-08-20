@@ -5,9 +5,9 @@ import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSets;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
 import net.minecraft.util.Identifier;
 
-public class PyriteTagGenerator implements TagGenerator {
+public class PyriteTagGenerator implements SetTagGenerator {
 	@Override
-	public void generateTag(TagData tags, MaterialSet set) {
+	public void generate(TagData tags, MaterialSet set) {
 		set.getItems().forEach((type, entry) -> {
 			if (entry.hasItemTag()) {
 				Identifier pyriteTagId = new Identifier(entry.getItemTagId().toString().replaceAll("fools_gold", "pyrite"));

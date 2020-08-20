@@ -29,7 +29,7 @@ public class ShapedCraftingRecipeGenerator extends CraftingRecipeGenerator {
 	}
 
 	@Override
-	public void generateRecipe(RecipeData recipes, MaterialSet set) {
+	public void generate(RecipeData recipes, MaterialSet set) {
 		ShapedRecipeJsonFactory factory = ShapedRecipeJsonFactory
 			.create(set.getItem(output))
 			.criterion("impossible", new ImpossibleCriterion.Conditions());

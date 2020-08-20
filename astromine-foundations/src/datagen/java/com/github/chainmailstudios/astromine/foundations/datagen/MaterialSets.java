@@ -250,7 +250,7 @@ public class MaterialSets {
 	public static void generateTags(TagData tags) {
 		MATERIAL_SETS.forEach((set) -> {
 			try {
-				TagGenerators.generateTags(tags, set);
+				TagGenerators.generateSetTags(tags, set);
 				set.generateTags(tags);
 				System.out.println("generated tags for " + set.getName());
 			} catch (Exception e) {

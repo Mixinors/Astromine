@@ -4,7 +4,7 @@ import com.github.chainmailstudios.astromine.foundations.datagen.MaterialItemTyp
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSet;
 import net.minecraft.util.Identifier;
 
-public class PiglinLovedTagGenerator extends GenericTagGenerator {
+public class PiglinLovedTagGenerator extends GenericSetTagGenerator {
 	public PiglinLovedTagGenerator(MaterialItemType type) {
 		super("piglin_loved", new Identifier("piglin_loved"), type);
 	}

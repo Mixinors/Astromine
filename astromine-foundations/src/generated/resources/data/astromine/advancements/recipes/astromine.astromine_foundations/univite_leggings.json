@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:univite_hammer"
+      "astromine:univite_leggings"
     ]
   },
   "criteria": {
@@ -12,7 +12,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:univite_hammer"
+        "recipe": "astromine:univite_leggings"
       }
     }
   },

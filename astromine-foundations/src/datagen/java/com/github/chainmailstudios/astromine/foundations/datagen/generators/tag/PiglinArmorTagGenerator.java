@@ -4,7 +4,7 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialItemType;
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSet;
 
-public class PiglinArmorTagGenerator extends GenericTagGenerator {
+public class PiglinArmorTagGenerator extends GenericSetTagGenerator {
 	public PiglinArmorTagGenerator(MaterialItemType type) {
 		super("piglin_armor", AstromineCommon.identifier("piglin_safe_armor"), type);
 	}

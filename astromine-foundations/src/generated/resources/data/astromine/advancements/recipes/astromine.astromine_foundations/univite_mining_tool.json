@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:netherite_mining_tool"
+      "astromine:univite_mining_tool"
     ]
   },
   "criteria": {
@@ -12,7 +12,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:netherite_mining_tool"
+        "recipe": "astromine:univite_mining_tool"
       }
     }
   },

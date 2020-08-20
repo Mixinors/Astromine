@@ -76,7 +76,6 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 
 	@Override
 	public double getGravity() {
-		World world = ((Entity) (Object) this).world;
 		return getGravity(world);
 	}
 

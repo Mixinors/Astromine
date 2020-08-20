@@ -7,13 +7,13 @@ import me.shedaniel.cloth.api.datagen.v1.TagData;
 import net.minecraft.block.Block;
 import net.minecraft.util.Identifier;
 
-public class BeaconBaseTagGenerator extends GenericTagGenerator {
+public class BeaconBaseTagGenerator extends GenericSetTagGenerator {
 	public BeaconBaseTagGenerator() {
 		super("beacon_base", new Identifier("beacon_base_blocks"), MaterialItemType.BLOCK);
 	}
 
 	@Override
-	public void generateTag(TagData tags, MaterialSet set) {
+	public void generate(TagData tags, MaterialSet set) {
 		TagData.TagBuilder<Block> builder = tags.block(new Identifier("beacon_base_blocks"));
 		builder.appendTag(set.getItemTagId(MaterialItemType.BLOCK));
 	}

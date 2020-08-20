@@ -27,7 +27,7 @@ public class TrituratingRecipeGenerator extends EnergyProcessingRecipeGenerator 
 	}
 
 	@Override
-	public void generateRecipe(RecipeData recipes, MaterialSet set) {
+	public void generate(RecipeData recipes, MaterialSet set) {
 		recipes.accept(AstromineFoundationsDatagen.Providers.createProvider(TrituratingRecipe.Serializer.INSTANCE, getRecipeId(set), json -> {
 			JsonElement inputJson = set.getIngredient(input).toJson();
 			if (inputJson.isJsonObject()) {

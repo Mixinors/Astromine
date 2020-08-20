@@ -5,7 +5,7 @@ import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSet;
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSets;
 import net.minecraft.util.Identifier;
 
-public class BeaconPaymentTagGenerator extends GenericTagGenerator {
+public class BeaconPaymentTagGenerator extends GenericSetTagGenerator {
 	public BeaconPaymentTagGenerator(MaterialItemType type) {
 		super("beacon_payment", new Identifier("beacon_payment_items"), type);
 	}

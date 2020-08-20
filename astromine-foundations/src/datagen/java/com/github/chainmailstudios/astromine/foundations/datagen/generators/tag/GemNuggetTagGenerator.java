@@ -5,9 +5,9 @@ import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
 import net.minecraft.util.Identifier;
 
-public class GemNuggetTagGenerator implements TagGenerator {
+public class GemNuggetTagGenerator implements SetTagGenerator {
 	@Override
-	public void generateTag(TagData tags, MaterialSet set) {
+	public void generate(TagData tags, MaterialSet set) {
 		tags.item(new Identifier(set.getItemTagId(MaterialItemType.FRAGMENT).toString().replaceAll("fragment", "nugget"))).appendTag(set.getItemTagId(MaterialItemType.FRAGMENT));
 	}
 

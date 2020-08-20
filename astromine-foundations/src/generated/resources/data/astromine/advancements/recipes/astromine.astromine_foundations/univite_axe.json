@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:univite_mattock"
+      "astromine:univite_axe"
     ]
   },
   "criteria": {
@@ -12,7 +12,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:univite_mattock"
+        "recipe": "astromine:univite_axe"
       }
     }
   },

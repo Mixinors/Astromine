@@ -20,7 +20,7 @@ public class SmeltingRecipeGenerator extends CookingRecipeGenerator {
 	}
 
 	@Override
-	public void generateRecipe(RecipeData recipes, MaterialSet set) {
+	public void generate(RecipeData recipes, MaterialSet set) {
 		CookingRecipeJsonFactory
 			.createSmelting(
 				set.getIngredient(input),

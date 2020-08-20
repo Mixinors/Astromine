@@ -6,19 +6,19 @@ import me.shedaniel.cloth.api.datagen.v1.TagData;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.util.Identifier;
 
-public class GenericTagGenerator implements TagGenerator {
+public class GenericSetTagGenerator implements SetTagGenerator {
 	protected final String name;
 	protected final Identifier tagId;
 	public final MaterialItemType type;
 
-	public GenericTagGenerator(String name, Identifier tagId, MaterialItemType type) {
+	public GenericSetTagGenerator(String name, Identifier tagId, MaterialItemType type) {
 		this.name = name;
 		this.tagId = tagId;
 		this.type = type;
 	}
 
 	@Override
-	public void generateTag(TagData tags, MaterialSet set) {
+	public void generate(TagData tags, MaterialSet set) {
 		TagData.TagBuilder<ItemConvertible> builder = tags.item(tagId);
 		builder.append(set.getEntry(type));
 	}

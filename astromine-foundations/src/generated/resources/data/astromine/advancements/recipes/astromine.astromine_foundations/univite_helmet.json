@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:univite_sword"
+      "astromine:univite_helmet"
     ]
   },
   "criteria": {
@@ -12,7 +12,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:univite_sword"
+        "recipe": "astromine:univite_helmet"
       }
     }
   },

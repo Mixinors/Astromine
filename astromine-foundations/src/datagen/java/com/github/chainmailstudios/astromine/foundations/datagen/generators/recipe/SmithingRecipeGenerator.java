@@ -17,11 +17,11 @@ public class SmithingRecipeGenerator implements RecipeGenerator {
 	}
 
 	@Override
-	public void generateRecipe(RecipeData recipes, MaterialSet set) {
+	public void generate(RecipeData recipes, MaterialSet set) {
 		SmithingRecipeJsonFactory
 			.create(Ingredient.ofItems(set.getSmithingBaseSet().getItem(type)), set.getIngredient(addition), set.getItem(type))
 			.criterion("impossible", new ImpossibleCriterion.Conditions())
-			.offerTo(recipes, getRecipeName(set));
+			.offerTo(recipes, getRecipeId(set));
 	}
 
 	@Override

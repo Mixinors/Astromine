@@ -6,9 +6,9 @@ import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSet;
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSets;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
 
-public class CarbonDustTagGenerator implements TagGenerator {
+public class CarbonDustTagGenerator implements SetTagGenerator {
 	@Override
-	public void generateTag(TagData tags, MaterialSet set) {
+	public void generate(TagData tags, MaterialSet set) {
 		tags.item(AstromineCommon.identifier("carbon_dusts")).appendTag(set.getItemTagId(MaterialItemType.DUST));
 	}
 

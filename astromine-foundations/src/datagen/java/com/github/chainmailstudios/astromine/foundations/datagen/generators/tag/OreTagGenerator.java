@@ -5,7 +5,7 @@ import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
 import net.minecraft.util.Identifier;
 
-public class OreTagGenerator implements TagGenerator {
+public class OreTagGenerator implements SetTagGenerator {
 	public final MaterialItemType type;
 
 	public OreTagGenerator(MaterialItemType type) {
@@ -13,7 +13,7 @@ public class OreTagGenerator implements TagGenerator {
 	}
 
 	@Override
-	public void generateTag(TagData tags, MaterialSet set) {
+	public void generate(TagData tags, MaterialSet set) {
 		tags.item(new Identifier("c", set.getName() + "_ores")).appendTag(set.getItemTagId(type));
 		tags.block(new Identifier("c", set.getName() + "_ores")).appendTag(set.getItemTagId(type));
 	}

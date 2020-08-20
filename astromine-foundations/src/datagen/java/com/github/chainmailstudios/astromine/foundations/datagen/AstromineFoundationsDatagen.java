@@ -169,6 +169,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 
 	private static void populateTags(TagData tags) {
 		MaterialSets.generateTags(tags);
+		TagGenerators.generateOneTimeTags(tags);
 	}
 
 	private static void populateRecipes(RecipeData recipes) {

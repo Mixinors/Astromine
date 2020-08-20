@@ -20,7 +20,7 @@ public class BlastingRecipeGenerator extends CookingRecipeGenerator {
 	}
 
 	@Override
-	public void generateRecipe(RecipeData recipes, MaterialSet set) {
+	public void generate(RecipeData recipes, MaterialSet set) {
 		CookingRecipeJsonFactory
 			.createBlasting(
 				set.getIngredient(input),

@@ -4,13 +4,11 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialEntry;
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialItemType;
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSet;
-import com.github.chainmailstudios.astromine.foundations.datagen.generators.Generator;
+import com.github.chainmailstudios.astromine.foundations.datagen.generators.SetGenerator;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
 import net.minecraft.util.Identifier;
 
-public interface RecipeGenerator extends Generator {
-	void generateRecipe(RecipeData recipes, MaterialSet set);
-
+public interface RecipeGenerator extends SetGenerator<RecipeData> {
 	MaterialItemType getOutput();
 
 	default MaterialEntry getOutput(MaterialSet set) {

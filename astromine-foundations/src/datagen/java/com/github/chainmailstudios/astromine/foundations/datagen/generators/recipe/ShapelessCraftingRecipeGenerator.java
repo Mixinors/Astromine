@@ -21,7 +21,7 @@ public class ShapelessCraftingRecipeGenerator extends CraftingRecipeGenerator {
 	}
 
 	@Override
-	public void generateRecipe(RecipeData recipes, MaterialSet set) {
+	public void generate(RecipeData recipes, MaterialSet set) {
 		ShapelessRecipeJsonFactory
 			.create(set.getItem(output), outputCount)
 			.criterion("impossible", new ImpossibleCriterion.Conditions())

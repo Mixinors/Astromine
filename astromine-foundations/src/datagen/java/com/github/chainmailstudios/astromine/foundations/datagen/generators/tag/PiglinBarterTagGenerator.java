@@ -4,7 +4,7 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialItemType;
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSet;
 
-public class PiglinBarterTagGenerator extends GenericTagGenerator {
+public class PiglinBarterTagGenerator extends GenericSetTagGenerator {
 	public PiglinBarterTagGenerator(MaterialItemType type) {
 		super("piglin_barter", AstromineCommon.identifier("piglin_bartering_items"), type);
 	}
