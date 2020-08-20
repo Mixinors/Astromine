@@ -25,7 +25,7 @@
 package com.github.chainmailstudios.astromine.mixin;
 
 import com.github.chainmailstudios.astromine.access.EntityAccess;
-import com.github.chainmailstudios.astromine.client.cca.FuckingHellCCA;
+import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
@@ -117,18 +117,6 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 				for (Entity existingEntity : existingPassengers) {
 					((EntityAccess) existingEntity).astromine_setLastVehicle(newEntity);
 				}
-
-				world.getPlayers().forEach((player) -> {
-					ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, FuckingHellCCA.FUCKS_ERASED, FuckingHellCCA.ofFucksErased());
-
-					ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
-
-					WorldAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);
-
-					atmosphereComponent.getVolumes().forEach(((blockPos, volume) -> {
-						ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, FuckingHellCCA.FUCKS_GIVEN, FuckingHellCCA.ofFucksGiven(blockPos, volume));
-					}));
-				});
 			} else if (lastY >= topPortal && topPortal != Integer.MIN_VALUE) {
 				RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey()).getValue());
 
@@ -151,18 +139,6 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 				for (Entity existingEntity : existingPassengers) {
 					((EntityAccess) existingEntity).astromine_setLastVehicle(newEntity);
 				}
-
-				world.getPlayers().forEach((player) -> {
-					ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, FuckingHellCCA.FUCKS_ERASED, FuckingHellCCA.ofFucksErased());
-
-					ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
-
-					WorldAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);
-
-					atmosphereComponent.getVolumes().forEach(((blockPos, volume) -> {
-						ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, FuckingHellCCA.FUCKS_GIVEN, FuckingHellCCA.ofFucksGiven(blockPos, volume));
-					}));
-				});
 			}
 		}
 
@@ -182,5 +158,20 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 			cir.setReturnValue(nextTeleportTarget);
 			nextTeleportTarget = null;
 		}
+	}
+
+	@Inject(at = @At("HEAD"), method = "moveToWorld(Lnet/minecraft/server/world/ServerWorld;)Lnet/minecraft/entity/Entity;")
+	void onThing(ServerWorld destination, CallbackInfoReturnable<Entity> cir) {
+		world.getPlayers().forEach((player) -> {
+			ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, ClientAtmosphereManager.GAS_ERASED, ClientAtmosphereManager.ofGasErased());
+
+			ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
+
+			WorldAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);
+
+			atmosphereComponent.getVolumes().forEach(((blockPos, volume) -> {
+				ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, ClientAtmosphereManager.GAS_ADDED, ClientAtmosphereManager.ofGasAdded(blockPos, volume));
+			}));
+		});
 	}
 }

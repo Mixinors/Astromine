@@ -24,19 +24,16 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.client.cca.FuckingHellCCA;
+import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
+import com.github.chainmailstudios.astromine.common.fluid.AdvancedFluid;
+import com.github.vini2003.blade.client.utilities.Layers;
+import com.github.vini2003.blade.common.data.Color;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.*;
-import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.texture.SpriteAtlasTexture;
-import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.LightType;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -81,10 +78,24 @@ public abstract class WorldRendererMixin {
 
 		VertexConsumerProvider.Immediate immediate = this.bufferBuilders.getEntityVertexConsumers();
 
-		VertexConsumer consumer = immediate.getBuffer(RenderLayer.getLines());
+		VertexConsumer consumer = immediate.getBuffer(Layers.flat());
 
-		FuckingHellCCA.getVolumes().forEach(((blockPos, volume) -> {
-			if (volume != null && !volume.isEmpty()) {
+		ClientAtmosphereManager.getVolumes().forEach(((blockPos, volume) -> {
+			int r = 255;
+			int g = 255;
+			int b = 255;
+			int a = 255;
+			
+			if (volume.getFluid() instanceof AdvancedFluid) {
+				int color = ((AdvancedFluid) volume.getFluid()).getTintColor();
+				
+				r = (color >> 24 & 255); 
+				g = (color >> 16 & 255);
+				b = (color >> 8 & 255);
+				a = (color & 255);
+			}
+			
+			if (!volume.isEmpty()) {
 				float bX = blockPos.getX();
 				float bY = blockPos.getY();
 				float bZ = blockPos.getZ();
@@ -94,64 +105,46 @@ public abstract class WorldRendererMixin {
 				float z = bZ - cZ;
 
 				// Bottom
-				consumer.vertex(matrices.peek().getModel(), x, y, z).color(127, 127, 127, 255);
-				consumer.next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y, z).color(127, 127, 127, 255);
-				consumer.next();
-				consumer.vertex(matrices.peek().getModel(), x, y, z + 1).color(127, 127, 127, 255);
-				consumer.next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y, z + 1).color(127, 127, 127, 255);
-				consumer.next();
+				consumer.vertex(matrices.peek().getModel(), x, y, z).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1, y, z).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x, y, z + 1).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1, y, z + 1).color(r, g, b, a).light(15728880).next();
+
 
 				// Top
-				consumer.vertex(matrices.peek().getModel(), x, y + 1, z).color(127, 127, 127, 255);
-				consumer.next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z).color(127, 127, 127, 255);
-				consumer.next();
-				consumer.vertex(matrices.peek().getModel(), x, y + 1, z + 1).color(127, 127, 127, 255);
-				consumer.next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z + 1).color(127, 127, 127, 255);
-				consumer.next();
+				consumer.vertex(matrices.peek().getModel(), x, y + 1, z).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x, y + 1, z + 1).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z + 1).color(r, g, b, a).light(15728880).next();
+
 
 				// Front
-				consumer.vertex(matrices.peek().getModel(), x, y, z).color(127, 127, 127, 255);
-				consumer.next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y, z).color(127, 127, 127, 255);
-				consumer.next();
-				consumer.vertex(matrices.peek().getModel(), x, y + 1, z).color(127, 127, 127, 255);
-				consumer.next();
-				consumer.vertex(matrices.peek().getModel(), x + 1   , y + 1, z).color(127, 127, 127, 255);
-				consumer.next();
+				consumer.vertex(matrices.peek().getModel(), x, y, z).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1, y, z).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x, y + 1, z).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1   , y + 1, z).color(r, g, b, a).light(15728880).next();
+
 
 				// Back
-				consumer.vertex(matrices.peek().getModel(), x, y, z + 1).color(127, 127, 127, 255);
-				consumer.next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y, z + 1).color(127, 127, 127, 255);
-				consumer.next();
-				consumer.vertex(matrices.peek().getModel(), x, y + 1, z + 1).color(127, 127, 127, 255);
-				consumer.next();
-				consumer.vertex(matrices.peek().getModel(), x + 1   , y + 1, z + 1).color(127, 127, 127, 255);
-				consumer.next();
+				consumer.vertex(matrices.peek().getModel(), x, y, z + 1).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1, y, z + 1).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x, y + 1, z + 1).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1   , y + 1, z + 1).color(r, g, b, a).light(15728880).next();
+
 
 				// Left
-				consumer.vertex(matrices.peek().getModel(), x, y, z).color(127, 127, 127, 255);
-				consumer.next();
-				consumer.vertex(matrices.peek().getModel(), x, y + 1, z).color(127, 127, 127, 255);
-				consumer.next();
-				consumer.vertex(matrices.peek().getModel(), x, y, z + 1).color(127, 127, 127, 255);
-				consumer.next();
-				consumer.vertex(matrices.peek().getModel(), x, y + 1, z + 1).color(127, 127, 127, 255);
-				consumer.next();
+				consumer.vertex(matrices.peek().getModel(), x, y, z).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x, y + 1, z).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x, y, z + 1).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x, y + 1, z + 1).color(r, g, b, a).light(15728880).next();
+
 
 				// Right
-				consumer.vertex(matrices.peek().getModel(), x + 1, y, z).color(127, 127, 127, 255);
-				consumer.next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z).color(127, 127, 127, 255);
-				consumer.next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z + 1).color(127, 127, 127, 255);
-				consumer.next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y, z + 1).color(127, 127, 127, 255);
-				consumer.next();
+				consumer.vertex(matrices.peek().getModel(), x + 1, y, z).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z + 1).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1, y, z + 1).color(r, g, b, a).light(15728880).next();
+
 			}
 		}));
 	}

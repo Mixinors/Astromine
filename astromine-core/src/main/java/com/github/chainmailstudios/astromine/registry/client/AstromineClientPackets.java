@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.registry.client;
 
-import com.github.chainmailstudios.astromine.client.cca.FuckingHellCCA;
+import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
@@ -66,27 +66,27 @@ public class AstromineClientPackets {
 			});
 		});
 
-		ClientSidePacketRegistry.INSTANCE.register(FuckingHellCCA.FUCKS_ERASED, (context, buffer) -> {
+		ClientSidePacketRegistry.INSTANCE.register(ClientAtmosphereManager.GAS_ERASED, (context, buffer) -> {
 			buffer.retain();
 
 			context.getTaskQueue().execute(() -> {
-				FuckingHellCCA.onFucksErased(buffer);
+				ClientAtmosphereManager.onGasErased(buffer);
 			});
 		});
 
-		ClientSidePacketRegistry.INSTANCE.register(FuckingHellCCA.FUCKS_GIVEN, (context, buffer) -> {
+		ClientSidePacketRegistry.INSTANCE.register(ClientAtmosphereManager.GAS_ADDED, (context, buffer) -> {
 			buffer.retain();
 
 			context.getTaskQueue().execute(() -> {
-				FuckingHellCCA.onFucksGiven(buffer);
+				ClientAtmosphereManager.onGasAdded(buffer);
 			});
 		});
 
-		ClientSidePacketRegistry.INSTANCE.register(FuckingHellCCA.FUCKS_TAKEN, (context, buffer) -> {
+		ClientSidePacketRegistry.INSTANCE.register(ClientAtmosphereManager.GAS_REMOVED, (context, buffer) -> {
 			buffer.retain();
 
 			context.getTaskQueue().execute(() -> {
-				FuckingHellCCA.onFucksTaken(buffer);
+				ClientAtmosphereManager.onGasRemoved(buffer);
 			});
 		});
 	}
