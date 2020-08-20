@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "c:iron_nuggets",
+    "count": 1
+  },
+  "output": {
+    "item": "astromine:iron_tiny_dust",
+    "count": 1
+  },
+  "time": 5,
+  "energy_consumed": 340
+}

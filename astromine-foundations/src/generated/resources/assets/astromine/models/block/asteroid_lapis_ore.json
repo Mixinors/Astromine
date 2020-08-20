@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "astromine:block/asteroid_stone",
+    "side": "astromine:block/asteroid_lapis_ore"
+  }
+}

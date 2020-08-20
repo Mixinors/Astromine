@@ -1,0 +1,29 @@
+{
+  "fire_extinguisher_open": {
+    "sounds": ["astromine:fire_extinguisher_open"],
+    "subtitle": "subtitles.astromine.fire_extinguisher_open"
+  },
+  "holographic_connector_click": {
+    "sounds": ["astromine:holographic_connector_click"],
+    "subtitle": "subtitles.astromine.holographic_connector_click"
+  },
+  "humming": {
+    "sounds": ["astromine:humming"],
+    "subtitle": "subtitles.astromine.humming"
+  },
+  "block.machine.click": {
+    "sounds": [
+      "astromine:machine_click_1",
+      "astromine:machine_click_2",
+      "astromine:machine_click_3",
+      "astromine:machine_click_4"
+    ],
+    "subtitle": "subtitle.astromine.machine.click"
+  },
+  "block.incinerator.incinerate": {
+    "sounds": [
+      "mob/ghast/fireball4"
+    ],
+    "subtitle": "subtitle.astromine.incinerator.incinerate"
+  }
+}

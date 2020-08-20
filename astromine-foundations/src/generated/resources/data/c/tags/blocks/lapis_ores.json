@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#c:asteroid_lapis_ores",
+    "minecraft:lapis_ore"
+  ]
+}

@@ -1,222 +1,263 @@
+import net.fabricmc.loom.task.RunClientTask
+
 plugins {
-    id 'fabric-loom' version '0.5-SNAPSHOT'
     id 'maven-publish'
-    id 'com.diffplug.spotless' version '5.1.0'
+    id 'com.diffplug.spotless' version '5.1.0' apply false
+    id 'fabric-loom' version '0.4.28' apply false
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+apply from: 'dependencies.gradle'
 
-archivesBaseName = project.mod_name + "-" + project.mod_version + "+" + project.version_meta
-group = project.mod_group
+allprojects {
+    apply plugin: 'maven-publish'
+    apply plugin: 'fabric-loom'
+    apply plugin: 'com.diffplug.spotless'
 
-spotless {
-    encoding 'UTF-8'
-    enforceCheck(false)
+    archivesBaseName = project.mod_name
+    group = rootProject.mod_group
+    version = rootProject.mod_version + "+" + project.version_meta
+
+    ext {
+        shouldGenerateData = false
+    }
+
+    spotless {
+        encoding 'UTF-8'
+        enforceCheck(false)
+        
+        java {
+            licenseHeaderFile(rootProject.file('HEADER'))
+            removeUnusedImports()
+            eclipse().configFile(rootProject.file('spotless/formatter-settings.xml'))
+        }
+    }
 
     java {
-        licenseHeaderFile(file('HEADER'))
-        removeUnusedImports()
-        eclipse().configFile(file('spotless/formatter-settings.xml'))
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
-}
-
-repositories {
-    maven {
-        name = "Onyx Studios"
-        url = "https://maven.onyxstudios.dev"
-    }
-    maven {
-        name = "JitPack"
-        url = "https://jitpack.io"
-    }
-    maven {
-        name = "Jared"
-        url = "https://maven.blamejared.com"
-    }
-    maven {
-        name = "BuildCraft"
-        url = "https://mod-buildcraft.com/maven"
-    }
-    maven {
-        name = "SonaType"
-        url = "https://oss.sonatype.org/content/repositories/snapshots/"
-    }
-    maven {
-        name = "Ladysnake Libs"
-        url = 'https://dl.bintray.com/ladysnake/libs'
-    }
-    maven {
-        name = "Wrenchable"
-        url "https://dl.bintray.com/zundrel/wrenchable"
-    }
-    maven {
-        name = "grondag"
-        url = "https://grondag-repo.appspot.com"
-        credentials {
-            username "guest"
-            password ""
-        }
-    }
-}
-
-minecraft {
-    accessWidener = file("src/main/resources/astromine.accesswidener")
-}
-
-dependencies {
-    // Minecraft
-    minecraft "com.mojang:minecraft:${minecraft_version}"
-
-    // Yarn
-    mappings "net.fabricmc:yarn:${yarn_mappings}:v2"
-
-    // Fabric Loader
-    modImplementation "net.fabricmc:fabric-loader:${loader_version}"
-
-    // Fabric API
-    modApi "net.fabricmc.fabric-api:fabric-api:${api_version}"
-
-    // Cardinal-Components API
-    useAsApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${cardinal_components_version}"
-    useAsApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-block:${cardinal_components_version}"
-    useAsApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${cardinal_components_version}"
-    useAsApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${cardinal_components_version}"
-    useAsApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-item:${cardinal_components_version}"
-    useAsApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-level:${cardinal_components_version}"
-    useAsApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-world:${cardinal_components_version}"
-    useAsApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-util:${cardinal_components_version}"
-
-    // Shapes
-    useAsApi "com.terraformersmc:shapes:${shapes_version}"
-
-    // Blade
-    useAsApi "com.github.vini2003:Blade:${blade_version}"
-
-    // Patchouli
-    useAsApi "vazkii.patchouli:Patchouli:${patchouli_version}"
-
-    // ModMenu
-    useAsApiOptionally "io.github.prospector:modmenu:${modmenu_version}"
-
-    // AutoConfig
-    useAsApi "me.sargunvohra.mcmods:autoconfig1u:${auto_config_version}"
-
-    // LBA
-    useAsApi "alexiil.mc.lib:libblockattributes-core:${lba_version}"
-    useAsApi "alexiil.mc.lib:libblockattributes-items:${lba_version}"
-    useAsApi "alexiil.mc.lib:libblockattributes-fluids:${lba_version}"
-
-    // Tech Reborn Energy
-    useAsApi "teamreborn:energy:${tr_energy_version}"
-
-    // Cloth API
-    useAsApi "me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${cloth_api_version}"
-
-    // Cloth Config
-    useAsApi "me.shedaniel.cloth:config-2:${cloth_config_version}"
-
-    // RoughlyEnoughItems
-    useAsApiOptionally("me.shedaniel:RoughlyEnoughItems:${rei_version}", false)
-
-    // DataBreaker
-//    useAsRuntime "com.github.SuperCoder7979:databreaker:${databreaker_version}"
-
-    // LibStructure
-    useAsApi "com.github.Draylar:LibStructure:${libstructure_version}"
-
-    // JOML
-    compile "org.joml:joml:${joml_version}"
-
-    // Magna
-    useAsApi "com.github.Draylar:magna:${magna_version}"
-
-    // Tech Reborn
-//    useAsRuntime "TechReborn:TechReborn-1.16:${tech_reborn_version}"
-
-    // Reborn Core
-//    useAsRuntime "RebornCore:RebornCore-1.16:${reborn_core_version}"
-
-    // Wrenchable
-    useAsApi "com.zundrel:wrenchable:${wrenchable_version}"
     
-    useAsApi "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
+    repositories {
+        mavenLocal()
+        maven {
+            name = "Onyx Studios"
+            url = "https://maven.onyxstudios.dev"
+        }
+        maven {
+            name = "JitPack"
+            url = "https://jitpack.io"
+        }
+        maven {
+            name = "Jared"
+            url = "https://maven.blamejared.com"
+        }
+        maven {
+            name = "BuildCraft"
+            url = "https://mod-buildcraft.com/maven"
+        }
+        maven {
+            name = "SonaType"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+        maven {
+            name = "Ladysnake Libs"
+            url = 'https://dl.bintray.com/ladysnake/libs'
+        }
+        maven {
+            name = "Wrenchable"
+            url = "https://dl.bintray.com/zundrel/wrenchable"
+        }
+        maven {
+            name = "Cloth"
+            url = "https://dl.bintray.com/shedaniel/cloth"
+        }
+        maven {
+            name = "grondag"
+            url = "https://grondag-repo.appspot.com"
+            credentials {
+                username = "guest"
+                password = ""
+            }
+        }
+		maven {
+			name = "Earthcomputer"
+			url = "https://dl.bintray.com/earthcomputer/mods"
+		}
+    }
+
+    dependencies {
+        dependencies.ext.useAsApiOptionally = { dep ->
+            modApi(dep) {
+                exclude group: "net.fabricmc.fabric-api"
+                if (!dep.contains("me.shedaniel")) {
+                    exclude group: "me.shedaniel"
+                }
+            }
+        }
+        dependencies.ext.useAsApi = { dep ->
+            useAsApiOptionally(dep)
+            if (project == rootProject)
+                include(dep)
+        }
+        dependencies.ext.useAsRuntime = { dep ->
+            modRuntime(dep) {
+				exclude module: "fabric-loader"
+                exclude group: "net.fabricmc.fabric-api"
+                if (!dep.contains("me.shedaniel")) {
+                    exclude group: "me.shedaniel"
+                }
+            }
+        }
+
+        minecraft group: 'com.mojang', name: 'minecraft', version: minecraft_version
+        mappings group: 'net.fabricmc', name: 'yarn', version: mappings_version, classifier: 'v2'
+        modImplementation group: 'net.fabricmc', name: 'fabric-loader', version: loader_version
+        modImplementation group: 'net.fabricmc.fabric-api', name: 'fabric-api', version: api_version
+
+        tap(rootProject.ext.setDefaultApis)
+    }
+
+    configurations {
+        dev
+    }
+
+    jar {
+        classifier("dev")
+    }
+
+    afterEvaluate {
+        remapJar {
+            input.set(file("${project.buildDir}/libs/$archivesBaseName-${version}-dev.jar"))
+            archiveName = "${archivesBaseName}-${version}.jar"
+        }
+        
+        artifacts {
+            dev file: file("${project.buildDir}/libs/$archivesBaseName-${version}-dev.jar"), type: 'jar', builtBy: remapJar
+        }
+
+        processResources {
+            inputs.property 'version', project.version
+
+            from(sourceSets.main.resources.srcDirs) {
+                include 'fabric.mod.json'
+                expand 'version': project.version
+            }
+
+            from(sourceSets.main.resources.srcDirs) {
+                exclude 'fabric.mod.json'
+            }
+        }
+
+        if (shouldGenerateData) {
+            sourceSets {
+                main {
+                    resources {
+                        srcDir 'src/generated/resources'
+                    }
+                }
+                datagen {
+                    compileClasspath += main.compileClasspath
+                    runtimeClasspath += main.runtimeClasspath
+                }
+            }
+
+            configurations {
+                datagenCompile.extendsFrom(compileClasspath)
+            }
+
+            dependencies {
+                datagenCompile sourceSets.main.output
+            }
+            
+            task generateData(type: RunClientTask, dependsOn: downloadAssets) {
+                classpath = configurations.runtimeClasspath
+                classpath sourceSets.main.output
+                classpath sourceSets.datagen.output
+            }
+
+            build.dependsOn generateData
+        }
+    }
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        archiveClassifier.set('sources')
+        from sourceSets.main.allSource
+    }
 }
 
-def useAsApi(dep) {
-    useAsApiOptionally(dep)
-    dependencies.include(dep)
-}
+subprojects {
+    task remapMavenJar(type: Copy, dependsOn: remapJar) {
+        afterEvaluate {
+            from("${project.buildDir}/libs/$archivesBaseName-${version}.jar")
+            into("${project.buildDir}/libs/")
+            rename { String fn -> "$archivesBaseName-${version}-maven.jar" }
+        }
+    }
 
-def useAsApiOptionally(dep, removeREI = true) {
-    dependencies.modApi(dep) {
-        exclude group: "net.fabricmc.fabric-api"
-        if (removeREI) {
-            exclude group: "me.shedaniel"
+    afterEvaluate {
+        publishing {
+            publications {
+                mavenJava(MavenPublication) {
+                    artifact(file("${project.buildDir}/libs/$archivesBaseName-${project.version}-maven.jar")) {
+                        builtBy remapMavenJar
+                    }
+                    artifact(sourcesJar) {
+                        builtBy remapSourcesJar
+                    }
+                }
+            }
         }
     }
 }
 
-def useAsRuntime(dep, removeREI = true) {
-    dependencies.modRuntime(dep) {
-        exclude group: "net.fabricmc.fabric-api"
-        if (removeREI) {
-            exclude group: "me.shedaniel"
-        }
+task remapMavenJar(type: net.fabricmc.loom.task.RemapJarTask, dependsOn: jar) {
+    afterEvaluate {
+        input = file("${project.buildDir}/libs/${archivesBaseName}-${version}-dev.jar")
+        archiveName = "${archivesBaseName}-${version}-maven.jar"
+        addNestedDependencies = false
     }
 }
 
-processResources {
-    inputs.property "version", "${mod_version}"
-
-    from(sourceSets.main.resources.srcDirs) {
-        include "fabric.mod.json"
-        expand "version": "${mod_version}"
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude "fabric.mod.json"
-    }
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = "sources"
-    from sourceSets.main.allSource
-}
-
-jar {
-    from "LICENSE"
-    manifest {
-        attributes([
-                "Specification-Title"     : "${mod_name}",
-                "Specification-Vendor"    : "${mod_group}",
-                "Specification-Version"   : "${mod_version}",
-                "Implementation-Title"    : "${mod_name}",
-                "Implementation-Version"  : "${mod_version}",
-                "Implementation-Vendor"   : "${mod_group}",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConfigs"            : "${mod_name}.mixins.json"
-        ])
-    }
+sourceSets {
+    datagen
 }
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifact(remapJar) {
-                builtBy remapJar
+            artifact(file("${project.buildDir}/libs/$archivesBaseName-${project.version}-maven.jar")) {
+                builtBy remapMavenJar
             }
             artifact(sourcesJar) {
                 builtBy remapSourcesJar
             }
+            pom.withXml {
+                def buildid = System.getenv("PUBLISH_BUILD")
+
+                def depsNode = asNode().appendNode("dependencies")
+                subprojects.each {
+                    def depNode = depsNode.appendNode("dependency")
+                    depNode.appendNode("groupId", it.group)
+                    depNode.appendNode("artifactId", it.name)
+                    depNode.appendNode("version", buildid != null ? "${it.version}-${buildid}" : it.version)
+                    depNode.appendNode("scope", "compile")
+                }
+            }
+        }
+    }
+}
+
+subprojects.each { remapJar.dependsOn("${it.path}:remapJar") }
+subprojects.each { spotlessApply.dependsOn("${it.path}:spotlessApply") }
+
+dependencies {
+    afterEvaluate {
+        subprojects.each {
+            compile project(path: ":${it.name}", configuration: "dev")
+            include project("${it.name}:")
         }
     }
 
-    repositories {
-        mavenLocal()
-    }
+    modRuntime "net.fabricmc:dev-launch-injector:+"
+    tap(rootProject.ext.setRuntimeTestMods)
 }

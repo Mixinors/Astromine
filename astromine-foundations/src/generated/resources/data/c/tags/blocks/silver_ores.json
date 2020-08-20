@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#c:asteroid_silver_ores",
+    "astromine:silver_ore"
+  ]
+}
