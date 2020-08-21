@@ -22,21 +22,18 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.transportations.common;
+package com.github.chainmailstudios.astromine.transportations;
 
-import com.github.chainmailstudios.astromine.AstromineClient;
-import com.github.chainmailstudios.astromine.registry.client.*;
-import com.github.chainmailstudios.astromine.transportations.common.registry.client.AstromineTransportationsBlockEntityRenderers;
-import com.github.chainmailstudios.astromine.transportations.common.registry.client.AstromineTransportationsClientMiscellaneous;
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.transportations.common.registry.AstromineTransportationsBlockEntityTypes;
+import com.github.chainmailstudios.astromine.transportations.common.registry.AstromineTransportationsBlocks;
+import com.github.chainmailstudios.astromine.transportations.common.registry.AstromineTransportationsNetworkMembers;
 
-@Environment(EnvType.CLIENT)
-public class AstromineTransportationsClient extends AstromineClient {
+public class AstromineTransportationsCommon extends AstromineCommon {
 	@Override
-	public void onInitializeClient() {
-		AstromineTransportationsBlockEntityRenderers.initialize();
-		AstromineTransportationsClientMiscellaneous.initialize();
+	public void onInitialize() {
+		AstromineTransportationsBlocks.initialize();
+		AstromineTransportationsBlockEntityTypes.initialize();
+		AstromineTransportationsNetworkMembers.initialize();
 	}
 }

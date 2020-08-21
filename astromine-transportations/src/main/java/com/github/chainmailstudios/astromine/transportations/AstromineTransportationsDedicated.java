@@ -22,18 +22,14 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.transportations.common;
+package com.github.chainmailstudios.astromine.transportations;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.transportations.common.registry.AstromineTransportationsBlockEntityTypes;
-import com.github.chainmailstudios.astromine.transportations.common.registry.AstromineTransportationsBlocks;
-import com.github.chainmailstudios.astromine.transportations.common.registry.AstromineTransportationsNetworkMembers;
+import com.github.chainmailstudios.astromine.AstromineDedicated;
+import net.fabricmc.api.DedicatedServerModInitializer;
 
-public class AstromineTransportationsCommon extends AstromineCommon {
+public class AstromineTransportationsDedicated extends AstromineDedicated {
 	@Override
-	public void onInitialize() {
-		AstromineTransportationsBlocks.initialize();
-		AstromineTransportationsBlockEntityTypes.initialize();
-		AstromineTransportationsNetworkMembers.initialize();
+	public void onInitializeServer() {
+		// Unused.
 	}
 }

@@ -3,7 +3,7 @@
   "id": "astromine-foundations",
   "version": "${version}",
   "name": "Astromine: Foundations",
-  "description": "The",
+  "description": "The base content module of Astromine.",
   "authors": [
     "vini2003",
     "Shnupbups",

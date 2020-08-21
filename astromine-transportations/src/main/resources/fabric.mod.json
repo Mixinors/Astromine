@@ -3,7 +3,7 @@
   "id": "astromine-transportations",
   "version": "${version}",
   "name": "Astromine: Transportations",
-  "description": "The item, fluid and energy transportation module of Astromine.",
+  "description": "The item, fluid and energy transport module of Astromine.",
   "authors": [
     "vini2003",
     "Shnupbups",
