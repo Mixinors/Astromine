@@ -35,7 +35,7 @@ import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
-import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.AbstractBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.recipe.base.AdvancedRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyGeneratingRecipe;
@@ -73,7 +73,7 @@ public class SolidGeneratingRecipe implements AdvancedRecipe<Inventory>, EnergyG
 	}
 
 	@Override
-	public <T extends DefaultedBlockEntity> boolean canCraft(T blockEntity) {
+	public <T extends AbstractBlockEntity> boolean canCraft(T blockEntity) {
 		Block block = blockEntity.getWorld().getBlockState(blockEntity.getPos()).getBlock();
 		if (!(block instanceof TieredHorizontalFacingEnergyMachineBlock))
 			return false;
@@ -85,7 +85,7 @@ public class SolidGeneratingRecipe implements AdvancedRecipe<Inventory>, EnergyG
 	}
 
 	@Override
-	public <T extends DefaultedBlockEntity> void craft(T blockEntity) {
+	public <T extends AbstractBlockEntity> void craft(T blockEntity) {
 		if (canCraft(blockEntity)) {
 			EnergyHandler energyHandler = Energy.of(blockEntity);
 			ItemInventoryComponent itemComponent = blockEntity.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
@@ -103,8 +103,8 @@ public class SolidGeneratingRecipe implements AdvancedRecipe<Inventory>, EnergyG
 		if (t.isFinished()) {
 			t.reset();
 
-			craft((DefaultedBlockEntity) t);
-		} else if (canCraft((DefaultedBlockEntity) t)) {
+			craft((AbstractBlockEntity) t);
+		} else if (canCraft((AbstractBlockEntity) t)) {
 			t.setLimit(getTime());
 			t.increment();
 			t.setActive(true);

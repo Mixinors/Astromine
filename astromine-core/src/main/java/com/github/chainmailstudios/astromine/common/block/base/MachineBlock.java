@@ -26,7 +26,7 @@ package com.github.chainmailstudios.astromine.common.block.base;
 
 import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
 
-public abstract class MachineBlock extends DefaultedBlockWithEntity implements MachineBlockWrenchable {
+public abstract class MachineBlock extends AbstractBlockWithEntity implements MachineBlockWrenchable {
 	public MachineBlock(Settings settings) {
 		super(settings);
 	}

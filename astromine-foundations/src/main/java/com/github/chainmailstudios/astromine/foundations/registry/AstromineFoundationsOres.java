@@ -26,7 +26,7 @@ package com.github.chainmailstudios.astromine.foundations.registry;
 
 import com.github.chainmailstudios.astromine.client.registry.AsteroidOreRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
-import com.github.chainmailstudios.astromine.foundations.AstromineFoundations;
+import com.github.chainmailstudios.astromine.foundations.AstromineFoundationsCommon;
 import me.shedaniel.cloth.api.dynamic.registry.v1.BiomesRegistry;
 import me.shedaniel.cloth.api.dynamic.registry.v1.DynamicRegistryCallback;
 import net.minecraft.util.Identifier;
@@ -37,16 +37,16 @@ import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 
 public class AstromineFoundationsOres {
-	public static final Identifier TIN_ORE_ID = AstromineFoundations.identifier("tin_ore");
+	public static final Identifier TIN_ORE_ID = AstromineFoundationsCommon.identifier("tin_ore");
 	public static final RegistryKey<ConfiguredFeature<?, ?>> TIN_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, TIN_ORE_ID);
 
-	public static final Identifier COPPER_ORE_ID = AstromineFoundations.identifier("copper_ore");
+	public static final Identifier COPPER_ORE_ID = AstromineFoundationsCommon.identifier("copper_ore");
 	public static final RegistryKey<ConfiguredFeature<?, ?>> COPPER_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, COPPER_ORE_ID);
 
-	public static final Identifier SILVER_ORE_ID = AstromineFoundations.identifier("silver_ore");
+	public static final Identifier SILVER_ORE_ID = AstromineFoundationsCommon.identifier("silver_ore");
 	public static final RegistryKey<ConfiguredFeature<?, ?>> SILVER_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, SILVER_ORE_ID);
 
-	public static final Identifier LEAD_ORE_ID = AstromineFoundations.identifier("lead_ore");
+	public static final Identifier LEAD_ORE_ID = AstromineFoundationsCommon.identifier("lead_ore");
 	public static final RegistryKey<ConfiguredFeature<?, ?>> LEAD_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, LEAD_ORE_ID);
 
 	public static void initialize() {

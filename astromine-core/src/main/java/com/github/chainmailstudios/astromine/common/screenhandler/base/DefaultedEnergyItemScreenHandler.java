@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.AbstractEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.widget.EnergyVerticalBarWidget;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
@@ -33,14 +33,14 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
 public class DefaultedEnergyItemScreenHandler extends DefaultedBlockEntityScreenHandler {
-	public DefaultedEnergyItemBlockEntity blockEntity;
+	public AbstractEnergyItemBlockEntity blockEntity;
 
 	public EnergyVerticalBarWidget energyBar;
 
 	public DefaultedEnergyItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 
-		blockEntity = (DefaultedEnergyItemBlockEntity) player.world.getBlockEntity(position);
+		blockEntity = (AbstractEnergyItemBlockEntity) player.world.getBlockEntity(position);
 	}
 
 	@Override

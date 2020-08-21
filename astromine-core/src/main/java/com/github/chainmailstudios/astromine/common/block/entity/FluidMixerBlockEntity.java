@@ -31,8 +31,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 
 import com.github.chainmailstudios.astromine.common.block.FluidMixerBlock;
-import com.github.chainmailstudios.astromine.common.block.base.DefaultedBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyFluidBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.base.AbstractBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.AbstractEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
@@ -45,7 +45,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public abstract class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEntity implements RecipeConsumer, Tickable {
+public abstract class FluidMixerBlockEntity extends AbstractEnergyFluidBlockEntity implements RecipeConsumer, Tickable {
 	public double current = 0;
 	public int limit = 100;
 
@@ -151,9 +151,9 @@ public abstract class FluidMixerBlockEntity extends DefaultedEnergyFluidBlockEnt
 		activity[4] = isActive;
 
 		if (isActive && !activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, true));
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(AbstractBlockWithEntity.ACTIVE, true));
 		} else if (!isActive && activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(DefaultedBlockWithEntity.ACTIVE, false));
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(AbstractBlockWithEntity.ACTIVE, false));
 		}
 	}
 

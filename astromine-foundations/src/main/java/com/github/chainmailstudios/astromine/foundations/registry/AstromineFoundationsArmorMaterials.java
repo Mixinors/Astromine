@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
-import com.github.chainmailstudios.astromine.foundations.AstromineFoundations;
 import com.github.chainmailstudios.astromine.registry.AstromineArmorMaterials;
 
 import net.fabricmc.fabric.api.tag.TagRegistry;

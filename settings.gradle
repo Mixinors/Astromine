@@ -13,3 +13,4 @@ rootProject.name = "astromine"
 
 include 'astromine-core'
 include 'astromine-foundations'
+include 'astromine-transportations'

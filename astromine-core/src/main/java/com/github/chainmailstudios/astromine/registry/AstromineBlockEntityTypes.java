@@ -30,14 +30,6 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.conveyor.entity.AlternatorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.conveyor.entity.ConveyorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.conveyor.entity.DoubleMachineBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.conveyor.entity.DownVerticalConveyorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.conveyor.entity.IncineratorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.conveyor.entity.InserterBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.conveyor.entity.SplitterBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.conveyor.entity.VerticalConveyorBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.*;
 
 import java.util.function.Supplier;
@@ -105,16 +97,6 @@ public class AstromineBlockEntityTypes {
 	public static final BlockEntityType<BlockPlacerBlockEntity> BLOCK_PLACER = register("block_placer", BlockPlacerBlockEntity::new, AstromineBlocks.BLOCK_PLACER);
 
 	public static final BlockEntityType<BufferBlockEntity> BUFFER = register("buffer", BufferBlockEntity::new, AstromineBlocks.BASIC_BUFFER, AstromineBlocks.ADVANCED_BUFFER, AstromineBlocks.ELITE_BUFFER);
-
-	public static final BlockEntityType<DoubleMachineBlockEntity> ALTERNATOR = register("alternator", AlternatorBlockEntity::new, AstromineBlocks.ALTERNATOR);
-	public static final BlockEntityType<DoubleMachineBlockEntity> SPLITTER = register("splitter", SplitterBlockEntity::new, AstromineBlocks.SPLITTER);
-	public static final BlockEntityType<IncineratorBlockEntity> INCINERATOR = register("incinerator", IncineratorBlockEntity::new, AstromineBlocks.INCINERATOR);
-	public static final BlockEntityType<InserterBlockEntity> INSERTER = register("inserter", InserterBlockEntity::new, AstromineBlocks.INSERTER, AstromineBlocks.FAST_INSERTER);
-
-	public static final BlockEntityType<ConveyorBlockEntity> CONVEYOR = register("conveyor", ConveyorBlockEntity::new, AstromineBlocks.BASIC_CONVEYOR, AstromineBlocks.ADVANCED_CONVEYOR, AstromineBlocks.ELITE_CONVEYOR);
-	public static final BlockEntityType<VerticalConveyorBlockEntity> VERTICAL_CONVEYOR = register("vertical_conveyor", VerticalConveyorBlockEntity::new, AstromineBlocks.BASIC_VERTICAL_CONVEYOR, AstromineBlocks.ADVANCED_VERTICAL_CONVEYOR, AstromineBlocks.ELITE_VERTICAL_CONVEYOR);
-	public static final BlockEntityType<DownVerticalConveyorBlockEntity> DOWNWARD_VERTICAL_CONVEYOR = register("downward_vertical_conveyor", DownVerticalConveyorBlockEntity::new, AstromineBlocks.BASIC_DOWNWARD_VERTICAL_CONVEYOR, AstromineBlocks.ADVANCED_DOWNWARD_VERTICAL_CONVEYOR,
-		AstromineBlocks.ELITE_DOWNWARD_VERTICAL_CONVEYOR);
 
 	public static void initialize() {
 		// Unused.

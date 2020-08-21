@@ -44,14 +44,6 @@ import java.util.function.Function;
 public class AstromineBlockEntityRenderers {
 	public static void initialize() {
 		register(AstromineBlockEntityTypes.HOLOGRAPHIC_BRIDGE, HolographicBridgeBlockEntityRenderer::new);
-
-		register(AstromineBlockEntityTypes.ALTERNATOR, DoubleMachineEntityRenderer::new);
-		register(AstromineBlockEntityTypes.SPLITTER, DoubleMachineEntityRenderer::new);
-		register(AstromineBlockEntityTypes.INSERTER, InserterBlockEntityRenderer::new);
-
-		register(AstromineBlockEntityTypes.CONVEYOR, ConveyorBlockEntityRenderer::new);
-		register(AstromineBlockEntityTypes.VERTICAL_CONVEYOR, VerticalConveyorBlockEntityRenderer::new);
-		register(AstromineBlockEntityTypes.DOWNWARD_VERTICAL_CONVEYOR, DownwardVerticalConveyorBlockEntityRenderer::new);
 	}
 
 	public static <B extends BlockEntity, C extends BlockEntityType<B>> void register(C c, Function<BlockEntityRenderDispatcher, BlockEntityRenderer<B>> b) {

@@ -29,7 +29,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Tickable;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedEnergyItemBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.AbstractEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
@@ -37,7 +37,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
-public abstract class CapacitorBlockEntity extends DefaultedEnergyItemBlockEntity implements Tickable {
+public abstract class CapacitorBlockEntity extends AbstractEnergyItemBlockEntity implements Tickable {
 	public CapacitorBlockEntity(Block energyBlock, BlockEntityType<?> type) {
 		super(energyBlock, type);
 	}

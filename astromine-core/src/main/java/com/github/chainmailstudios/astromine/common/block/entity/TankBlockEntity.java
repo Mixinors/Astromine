@@ -24,14 +24,14 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedFluidBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.AbstractFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
-public class TankBlockEntity extends DefaultedFluidBlockEntity {
+public class TankBlockEntity extends AbstractFluidBlockEntity {
 	public TankBlockEntity() {
 		super(AstromineBlockEntityTypes.FLUID_TANK);
 

@@ -30,14 +30,14 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.entity.base.DefaultedFluidBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.AbstractFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 
-public class CreativeTankBlockEntity extends DefaultedFluidBlockEntity implements Tickable {
+public class CreativeTankBlockEntity extends AbstractFluidBlockEntity implements Tickable {
 	public static final Identifier FLUID_CHANGE_PACKET = AstromineCommon.identifier("fluid_change_component");
 
 	public CreativeTankBlockEntity() {

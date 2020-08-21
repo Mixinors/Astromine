@@ -28,7 +28,6 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.MagmaBlock;
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
@@ -43,15 +42,6 @@ import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.*;
-import com.github.chainmailstudios.astromine.common.block.conveyor.AlternatorBlock;
-import com.github.chainmailstudios.astromine.common.block.conveyor.CatwalkBlock;
-import com.github.chainmailstudios.astromine.common.block.conveyor.CatwalkStairsBlock;
-import com.github.chainmailstudios.astromine.common.block.conveyor.ConveyorBlock;
-import com.github.chainmailstudios.astromine.common.block.conveyor.DownwardVerticalConveyorBlock;
-import com.github.chainmailstudios.astromine.common.block.conveyor.IncineratorBlock;
-import com.github.chainmailstudios.astromine.common.block.conveyor.InserterBlock;
-import com.github.chainmailstudios.astromine.common.block.conveyor.SplitterBlock;
-import com.github.chainmailstudios.astromine.common.block.conveyor.VerticalConveyorBlock;
 import com.github.chainmailstudios.astromine.common.item.AstromineBlockItem;
 import com.github.chainmailstudios.astromine.common.item.AstromineEnergyBlockItem;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
@@ -115,10 +105,6 @@ public class AstromineBlocks {
 	public static final Block BLOCK_BREAKER = register("block_breaker", new BlockBreakerBlock(AstromineBlocks.getAdvancedSettings()), AstromineItems.getBasicSettings());
 	public static final Block BLOCK_PLACER = register("block_placer", new BlockPlacerBlock(AstromineBlocks.getAdvancedSettings()), AstromineItems.getBasicSettings());
 
-	public static final Block ALTERNATOR = register("alternator", new AlternatorBlock(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
-	public static final Block SPLITTER = register("splitter", new SplitterBlock(AstromineBlocks.getBasicSettings()), AstromineItems.getBasicSettings());
-	public static final Block INCINERATOR = register("incinerator", new IncineratorBlock(AstromineBlocks.getBasicSettings().ticksRandomly()), AstromineItems.getBasicSettings());
-
 	public static final Block NUCLEAR_WARHEAD = register("nuclear_warhead", new NuclearWarheadBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(1F, 4F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 
 	public static final Block CREATIVE_TANK = register("creative_tank", new CreativeTankBlock(AstromineBlocks.getCreativeSettings()), AstromineItems.getBasicSettings());
@@ -140,22 +126,6 @@ public class AstromineBlocks {
 		.getBasicSettings());
 	public static final Block ELITE_ENERGY_CABLE = register("elite_energy_cable", new EnergyCableBlock(2048, FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AstromineItems
 		.getBasicSettings());
-
-	public static final Block INSERTER = register("inserter", new InserterBlock("normal", 16, AstromineBlocks.getBasicSettings().nonOpaque()), AstromineItems.getBasicSettings());
-	public static final Block FAST_INSERTER = register("fast_inserter", new InserterBlock("fast", 8, AstromineBlocks.getBasicSettings().nonOpaque()), AstromineItems.getBasicSettings());
-
-	public static final Block BASIC_CONVEYOR = register("basic_conveyor", new ConveyorBlock(AstromineBlocks.getBasicSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 16), AstromineItems.getBasicSettings());
-	public static final Block BASIC_VERTICAL_CONVEYOR = register("basic_vertical_conveyor", new VerticalConveyorBlock(AstromineBlocks.getBasicSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 16), AstromineItems.getBasicSettings());
-	public static final Block BASIC_DOWNWARD_VERTICAL_CONVEYOR = register("basic_downward_vertical_conveyor", new DownwardVerticalConveyorBlock(AstromineBlocks.getBasicSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 16), AstromineItems.getBasicSettings());
-	public static final Block ADVANCED_CONVEYOR = register("advanced_conveyor", new ConveyorBlock(AstromineBlocks.getAdvancedSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 8), AstromineItems.getBasicSettings());
-	public static final Block ADVANCED_VERTICAL_CONVEYOR = register("advanced_vertical_conveyor", new VerticalConveyorBlock(AstromineBlocks.getAdvancedSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 8), AstromineItems.getBasicSettings());
-	public static final Block ADVANCED_DOWNWARD_VERTICAL_CONVEYOR = register("advanced_downward_vertical_conveyor", new DownwardVerticalConveyorBlock(AstromineBlocks.getAdvancedSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 8), AstromineItems.getBasicSettings());
-	public static final Block ELITE_CONVEYOR = register("elite_conveyor", new ConveyorBlock(AstromineBlocks.getEliteSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 4), AstromineItems.getBasicSettings());
-	public static final Block ELITE_VERTICAL_CONVEYOR = register("elite_vertical_conveyor", new VerticalConveyorBlock(AstromineBlocks.getEliteSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 4), AstromineItems.getBasicSettings());
-	public static final Block ELITE_DOWNWARD_VERTICAL_CONVEYOR = register("elite_downward_vertical_conveyor", new DownwardVerticalConveyorBlock(AstromineBlocks.getEliteSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 4), AstromineItems.getBasicSettings());
-
-	public static final CatwalkBlock CATWALK = register("catwalk", new CatwalkBlock(FabricBlockSettings.copyOf(Blocks.STONE).sounds(BlockSoundGroup.METAL).nonOpaque()), AstromineItems.getBasicSettings());
-	public static final CatwalkStairsBlock CATWALK_STAIRS = register("catwalk_stairs", new CatwalkStairsBlock(FabricBlockSettings.copyOf(Blocks.STONE).sounds(BlockSoundGroup.METAL).nonOpaque()), AstromineItems.getBasicSettings());
 
 	public static final Block METEOR_STONE = register("meteor_stone", new Block(FabricBlockSettings.of(Material.STONE, MaterialColor.BLACK).requiresTool().breakByTool(FabricToolTags.PICKAXES, 3).strength(30, 1500)), AstromineItems.getBasicSettings().fireproof());
 	public static final Block ASTEROID_STONE = register("asteroid_stone", new Block(FabricBlockSettings.of(Material.STONE, MaterialColor.GRAY).requiresTool().breakByTool(FabricToolTags.PICKAXES, 3).strength(50, 1500)), AstromineItems.getBasicSettings().fireproof());
