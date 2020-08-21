@@ -25,7 +25,7 @@
 package com.github.chainmailstudios.astromine.common.network;
 
 import com.github.chainmailstudios.astromine.common.block.base.CableBlock;
-import com.github.chainmailstudios.astromine.common.network.type.NetworkType;
+import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
@@ -34,7 +34,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.client.registry.NetworkMemberRegistry;
+import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
 import com.github.chainmailstudios.astromine.common.utilities.WorldPos;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;

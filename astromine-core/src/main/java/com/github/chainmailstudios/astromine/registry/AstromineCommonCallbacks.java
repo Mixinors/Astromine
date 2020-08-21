@@ -37,7 +37,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFl
 import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
-import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedBlockEntityScreenHandler;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.ComponentBlockEntityScreenHandler;
 import nerdhub.cardinal.components.api.event.EntityComponentCallback;
 import nerdhub.cardinal.components.api.event.ItemComponentCallbackV2;
 import nerdhub.cardinal.components.api.event.WorldComponentCallback;
@@ -62,8 +62,8 @@ public class AstromineCommonCallbacks {
 
 		ServerTickEvents.START_SERVER_TICK.register((server) -> {
 			for (PlayerEntity playerEntity : server.getPlayerManager().getPlayerList()) {
-				if (playerEntity.currentScreenHandler instanceof DefaultedBlockEntityScreenHandler) {
-					DefaultedBlockEntityScreenHandler screenHandler = (DefaultedBlockEntityScreenHandler) playerEntity.currentScreenHandler;
+				if (playerEntity.currentScreenHandler instanceof ComponentBlockEntityScreenHandler) {
+					ComponentBlockEntityScreenHandler screenHandler = (ComponentBlockEntityScreenHandler) playerEntity.currentScreenHandler;
 
 					if (screenHandler.syncBlockEntity != null) {
 						screenHandler.syncBlockEntity.sync();

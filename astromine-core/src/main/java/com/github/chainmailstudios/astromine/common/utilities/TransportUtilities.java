@@ -27,7 +27,7 @@ package com.github.chainmailstudios.astromine.common.utilities;
 import alexiil.mc.lib.attributes.Simulation;
 import alexiil.mc.lib.attributes.item.ItemExtractable;
 import alexiil.mc.lib.attributes.item.ItemInsertable;
-import com.github.chainmailstudios.astromine.client.registry.NetworkMemberRegistry;
+import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;

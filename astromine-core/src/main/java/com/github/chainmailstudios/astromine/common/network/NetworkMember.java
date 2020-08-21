@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.network;
 
-import com.github.chainmailstudios.astromine.common.network.type.NetworkType;
+import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.google.common.collect.Sets;
 import java.util.Collection;
 import java.util.Collections;

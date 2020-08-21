@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "astromine-technologies",
+  "version": "${version}",
+  "name": "Astromine: Technologies",
+  "description": "The machinery module of Astromine.",
+  "authors": [
+    "vini2003",
+    "Shnupbups",
+    "Zundrel",
+    "shedaniel",
+    "MoonlitLamps",
+    "SuperCoder79",
+    "Draylar",
+    "HalfOf2",
+    "AK9"
+  ],
+  "contact": {
+    "sources": "https://github.com/Chainmail-Studios/Astromine"
+  },
+  "license": "MIT",
+  "icon": "assets/astromine-technologies/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["com.github.chainmailstudios.astromine.technologies.AstromineTechnologiesCommon"],
+    "client": ["com.github.chainmailstudios.astromine.technologies.AstromineTechnologiesClient"],
+    "server": ["com.github.chainmailstudios.astromine.technologies.AstromineTechnologiesDedicated"]
+  },
+  "mixins": ["astromine-technologies.mixins.json"],
+  "accessWidener": "astromine-technologies.accesswidener",
+  "depends": {
+    "fabricloader": ">=0.8.7",
+    "fabric": ">=0.11.8",
+    "minecraft": ">=1.16.1"
+  },
+  "custom": {
+    "modmenu:parent": "astromine"
+  }
+}

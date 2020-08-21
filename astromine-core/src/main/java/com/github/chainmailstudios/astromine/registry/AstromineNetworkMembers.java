@@ -24,11 +24,10 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.client.registry.NetworkMemberRegistry;
-import com.github.chainmailstudios.astromine.common.block.*;
+import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
-import com.github.chainmailstudios.astromine.common.network.type.NetworkType;
+import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
 import com.github.chainmailstudios.astromine.common.utilities.WorldPos;
 import com.google.common.collect.Maps;

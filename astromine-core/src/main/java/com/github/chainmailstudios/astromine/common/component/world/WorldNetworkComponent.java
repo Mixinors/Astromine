@@ -38,7 +38,7 @@ import net.minecraft.world.World;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
 import com.github.chainmailstudios.astromine.common.network.NetworkNode;
-import com.github.chainmailstudios.astromine.common.network.type.NetworkType;
+import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkTypeRegistry;
 import nerdhub.cardinal.components.api.component.Component;
 import org.jetbrains.annotations.NotNull;

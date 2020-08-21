@@ -28,7 +28,7 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.type.EnergyNetworkType;
 import com.github.chainmailstudios.astromine.common.network.type.FluidNetworkType;
-import com.github.chainmailstudios.astromine.common.network.type.NetworkType;
+import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkTypeRegistry;
 
 public class AstromineNetworkTypes {
