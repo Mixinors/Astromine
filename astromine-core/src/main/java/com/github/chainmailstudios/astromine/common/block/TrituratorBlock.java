@@ -34,12 +34,12 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.TrituratorBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.TrituratorScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
-public abstract class TrituratorBlock extends TieredHorizontalFacingEnergyMachineBlock {
+public abstract class TrituratorBlock extends WrenchableHorizontalFacingEnergyTieredBlockWithEntity {
 	public TrituratorBlock(Settings settings) {
 		super(settings);
 	}

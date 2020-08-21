@@ -34,12 +34,12 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.FluidMixerBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.FluidMixerScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
-public abstract class FluidMixerBlock extends TieredHorizontalFacingEnergyMachineBlock {
+public abstract class FluidMixerBlock extends WrenchableHorizontalFacingEnergyTieredBlockWithEntity {
 	public FluidMixerBlock(Settings settings) {
 		super(settings);
 	}

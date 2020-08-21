@@ -38,7 +38,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.client.BaseRenderer;
-import com.github.chainmailstudios.astromine.common.block.entity.base.AbstractBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
@@ -132,7 +132,7 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 				PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
 
 				buffer.writeBlockPos(getBlockPos());
-				buffer.writeIdentifier(AbstractBlockEntity.TRANSFER_UPDATE_PACKET);
+				buffer.writeIdentifier(ComponentBlockEntity.TRANSFER_UPDATE_PACKET);
 
 				buffer.writeIdentifier(type.getId());
 				buffer.writeEnumConstant(direction);

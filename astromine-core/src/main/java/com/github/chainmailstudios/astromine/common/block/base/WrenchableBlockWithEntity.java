@@ -22,25 +22,12 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block.entity.base;
+package com.github.chainmailstudios.astromine.common.block.base;
 
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
+import com.github.chainmailstudios.astromine.common.utilities.FacingBlockWrenchable;
 
-import net.minecraft.block.entity.BlockEntityType;
-
-import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-
-public abstract class AbstractFluidBlockEntity extends AbstractBlockEntity implements ComponentProvider, BlockEntityClientSerializable {
-	protected final FluidInventoryComponent fluidComponent = createFluidComponent();
-
-	protected abstract FluidInventoryComponent createFluidComponent();
-
-	public AbstractFluidBlockEntity(BlockEntityType<?> type) {
-		super(type);
-
-		addComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, fluidComponent);
-		fluidComponent.dispatchConsumers();
+public abstract class WrenchableBlockWithEntity extends BlockWithEntity implements FacingBlockWrenchable {
+	public WrenchableBlockWithEntity(Settings settings) {
+		super(settings);
 	}
 }

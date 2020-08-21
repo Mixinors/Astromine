@@ -33,8 +33,8 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-import com.github.chainmailstudios.astromine.common.block.base.AbstractBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.base.AbstractEnergyItemBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
@@ -43,7 +43,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import org.jetbrains.annotations.NotNull;
 
-public class BlockPlacerBlockEntity extends AbstractEnergyItemBlockEntity implements Tickable {
+public class BlockPlacerBlockEntity extends ComponentEnergyInventoryBlockEntity implements Tickable {
 	private Fraction cooldown = Fraction.empty();
 
 	public boolean isActive = false;
@@ -103,9 +103,9 @@ public class BlockPlacerBlockEntity extends AbstractEnergyItemBlockEntity implem
 		activity[4] = isActive;
 
 		if (isActive && !activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(AbstractBlockWithEntity.ACTIVE, true));
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, true));
 		} else if (!isActive && activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(AbstractBlockWithEntity.ACTIVE, false));
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, false));
 		}
 	}
 

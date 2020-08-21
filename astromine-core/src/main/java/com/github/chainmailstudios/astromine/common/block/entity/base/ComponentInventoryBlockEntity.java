@@ -22,12 +22,25 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block.base;
+package com.github.chainmailstudios.astromine.common.block.entity.base;
 
-import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import net.minecraft.block.entity.BlockEntityType;
 
-public abstract class FacingEnergyMachineBlock extends FacingMachineBlock implements EnergyCapacityProvider {
-	public FacingEnergyMachineBlock(Settings settings) {
-		super(settings);
+public abstract class ComponentInventoryBlockEntity extends ComponentBlockEntity implements ExtendedInventoryProvider {
+	protected final ItemInventoryComponent itemComponent = createItemComponent();
+
+	protected abstract ItemInventoryComponent createItemComponent();
+
+	public ComponentInventoryBlockEntity(BlockEntityType<?> type) {
+		super(type);
+
+		addComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, itemComponent);
+	}
+
+	@Override
+	public ItemInventoryComponent getItemComponent() {
+		return itemComponent;
 	}
 }

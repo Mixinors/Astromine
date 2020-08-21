@@ -53,10 +53,10 @@ import com.github.chainmailstudios.astromine.transportations.common.block.entity
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyable;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyor;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorTypes;
-import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
+import com.github.chainmailstudios.astromine.common.utilities.FacingBlockWrenchable;
 import com.github.chainmailstudios.astromine.common.utilities.RotationUtilities;
 
-public class VerticalConveyorBlock extends HorizontalFacingBlock implements BlockEntityProvider, Conveyor, MachineBlockWrenchable {
+public class VerticalConveyorBlock extends HorizontalFacingBlock implements BlockEntityProvider, Conveyor, FacingBlockWrenchable {
 	private int speed;
 
 	public VerticalConveyorBlock(Settings settings, int speed) {

@@ -27,6 +27,7 @@ package com.github.chainmailstudios.astromine.transportations.common;
 import com.github.chainmailstudios.astromine.AstromineClient;
 import com.github.chainmailstudios.astromine.registry.client.*;
 import com.github.chainmailstudios.astromine.transportations.common.registry.client.AstromineTransportationsBlockEntityRenderers;
+import com.github.chainmailstudios.astromine.transportations.common.registry.client.AstromineTransportationsClientMiscellaneous;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -36,5 +37,6 @@ public class AstromineTransportationsClient extends AstromineClient {
 	@Override
 	public void onInitializeClient() {
 		AstromineTransportationsBlockEntityRenderers.initialize();
+		AstromineTransportationsClientMiscellaneous.initialize();
 	}
 }

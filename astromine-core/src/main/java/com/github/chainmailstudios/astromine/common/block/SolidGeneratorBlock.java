@@ -34,12 +34,12 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.SolidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.SolidGeneratorScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
-public abstract class SolidGeneratorBlock extends TieredHorizontalFacingEnergyMachineBlock {
+public abstract class SolidGeneratorBlock extends WrenchableHorizontalFacingEnergyTieredBlockWithEntity {
 	public SolidGeneratorBlock(Settings settings) {
 		super(settings);
 	}

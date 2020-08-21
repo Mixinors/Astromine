@@ -24,26 +24,16 @@
 
 package com.github.chainmailstudios.astromine.transportations.common;
 
-import blue.endless.jankson.Jankson;
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.registry.*;
 import com.github.chainmailstudios.astromine.transportations.common.registry.AstromineTransportationsBlockEntityTypes;
 import com.github.chainmailstudios.astromine.transportations.common.registry.AstromineTransportationsBlocks;
-import com.google.gson.Gson;
-import me.shedaniel.cloth.api.dynamic.registry.v1.EarlyInitializer;
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.util.Identifier;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.util.HashSet;
-import java.util.Set;
+import com.github.chainmailstudios.astromine.transportations.common.registry.AstromineTransportationsNetworkMembers;
 
 public class AstromineTransportationsCommon extends AstromineCommon {
 	@Override
 	public void onInitialize() {
 		AstromineTransportationsBlocks.initialize();
 		AstromineTransportationsBlockEntityTypes.initialize();
+		AstromineTransportationsNetworkMembers.initialize();
 	}
 }

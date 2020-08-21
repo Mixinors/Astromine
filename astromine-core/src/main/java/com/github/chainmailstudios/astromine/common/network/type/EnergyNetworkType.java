@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.network.ticker;
+package com.github.chainmailstudios.astromine.common.network.type;
 
 import net.minecraft.block.entity.BlockEntity;
 
@@ -33,7 +33,7 @@ import com.github.chainmailstudios.astromine.common.component.block.entity.Block
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.github.chainmailstudios.astromine.common.network.type.NetworkType;
 import com.github.chainmailstudios.astromine.common.utilities.WorldPos;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import team.reborn.energy.Energy;
@@ -48,7 +48,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-public class NetworkTypeEnergy extends NetworkType {
+public class EnergyNetworkType extends NetworkType {
 	@Override
 	public void tick(NetworkInstance instance) {
 		Map<EnergyHandler, Double> inputs = Maps.newLinkedHashMap();

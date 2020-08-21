@@ -25,7 +25,7 @@
 package com.github.chainmailstudios.astromine.common.screenhandler.base;
 
 import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.base.AbstractBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.NameableComponent;
@@ -52,7 +52,7 @@ import java.util.Collections;
 import java.util.HashSet;
 
 public abstract class DefaultedBlockEntityScreenHandler extends BaseScreenHandler {
-	public AbstractBlockEntity syncBlockEntity;
+	public ComponentBlockEntity syncBlockEntity;
 	public Collection<SlotWidget> playerSlots = new HashSet<>();
 	public TabCollection mainTab;
 	protected TabWidget tabs;
@@ -60,7 +60,7 @@ public abstract class DefaultedBlockEntityScreenHandler extends BaseScreenHandle
 	public DefaultedBlockEntityScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player);
 
-		syncBlockEntity = (AbstractBlockEntity) player.world.getBlockEntity(position);
+		syncBlockEntity = (ComponentBlockEntity) player.world.getBlockEntity(position);
 
 		if (!player.world.isClient) {
 			syncBlockEntity.doNotSkipInventory();

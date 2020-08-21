@@ -34,12 +34,12 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.PresserBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.PresserScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
-public abstract class PresserBlock extends TieredHorizontalFacingEnergyMachineBlock {
+public abstract class PresserBlock extends WrenchableHorizontalFacingEnergyTieredBlockWithEntity {
 	public PresserBlock(Settings settings) {
 		super(settings);
 	}

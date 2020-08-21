@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.network;
 
+import com.github.chainmailstudios.astromine.common.network.type.NetworkType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;

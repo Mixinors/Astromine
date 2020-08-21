@@ -22,12 +22,19 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block.base;
+package com.github.chainmailstudios.astromine.common.network.type;
 
-public abstract class TieredHorizontalFacingEnergyMachineBlock extends HorizontalFacingEnergyMachineBlock {
-	public TieredHorizontalFacingEnergyMachineBlock(Settings settings) {
-		super(settings);
-	}
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
+import com.github.chainmailstudios.astromine.common.registry.NetworkTypeRegistry;
 
-	public abstract double getMachineSpeed();
+public abstract class NetworkType {
+	public static final NetworkType EMPTY = NetworkTypeRegistry.INSTANCE.register(AstromineCommon.identifier("empty_network"), new NetworkType() {
+		@Override
+		public void tick(NetworkInstance instance) {
+			// Unused.
+		}
+	});
+
+	public abstract void tick(NetworkInstance instance);
 }

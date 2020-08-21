@@ -57,8 +57,8 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public abstract class AbstractBlockWithEntity extends Block implements BlockEntityProvider {
-	protected AbstractBlockWithEntity(AbstractBlock.Settings settings) {
+public abstract class BlockWithEntity extends Block implements BlockEntityProvider {
+	protected BlockWithEntity(AbstractBlock.Settings settings) {
 		super(settings);
 	}
 

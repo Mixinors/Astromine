@@ -24,10 +24,10 @@
 
 package com.github.chainmailstudios.astromine.common.block.base;
 
-import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
-
-public abstract class HorizontalFacingMachineBlock extends HorizontalFacingBlockWithEntity implements MachineBlockWrenchable {
-	public HorizontalFacingMachineBlock(Settings settings) {
+public abstract class WrenchableHorizontalFacingEnergyTieredBlockWithEntity extends WrenchableHorizontalFacingEnergyBlockWithEntity {
+	public WrenchableHorizontalFacingEnergyTieredBlockWithEntity(Settings settings) {
 		super(settings);
 	}
+
+	public abstract double getMachineSpeed();
 }

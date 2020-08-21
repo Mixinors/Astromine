@@ -41,11 +41,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.access.DyeColorAccess;
-import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingMachineBlock;
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
 import com.github.vini2003.blade.common.data.Color;
 
-public class HolographicBridgeProjectorBlock extends HorizontalFacingMachineBlock {
+public class HolographicBridgeProjectorBlock extends WrenchableHorizontalFacingBlockWithEntity {
 	public HolographicBridgeProjectorBlock(AbstractBlock.Settings settings) {
 		super(settings);
 	}

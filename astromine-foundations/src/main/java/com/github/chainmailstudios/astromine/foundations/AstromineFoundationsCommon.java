@@ -39,4 +39,8 @@ public class AstromineFoundationsCommon extends AstromineCommon {
 		AstromineFoundationsBlockEntityTypes.initialize();
 		AstromineFoundationsRecipeSerializers.initialize();
 	}
+
+	public static String appendId(String id) {
+		return MOD_ID + ":" + id;
+	}
 }

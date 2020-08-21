@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.network.ticker;
+package com.github.chainmailstudios.astromine.common.network.type;
 
 import net.minecraft.block.FacingBlock;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -39,14 +39,14 @@ import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.github.chainmailstudios.astromine.common.network.type.NetworkType;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 
 import com.google.common.collect.Lists;
 import java.util.List;
 
-public class NetworkTypeFluid extends NetworkType {
+public class FluidNetworkType extends NetworkType {
 	@Override
 	public void tick(NetworkInstance instance) {
 		List<FluidVolume> inputs = Lists.newArrayList();

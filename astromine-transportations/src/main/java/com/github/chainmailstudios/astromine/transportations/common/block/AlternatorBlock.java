@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block;
 
-import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
+import com.github.chainmailstudios.astromine.common.utilities.FacingBlockWrenchable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -43,7 +43,7 @@ import com.github.chainmailstudios.astromine.transportations.common.block.entity
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyable;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyableBlock;
 
-public class AlternatorBlock extends HorizontalFacingBlock implements BlockEntityProvider, ConveyableBlock, MachineBlockWrenchable {
+public class AlternatorBlock extends HorizontalFacingBlock implements BlockEntityProvider, ConveyableBlock, FacingBlockWrenchable {
 	public AlternatorBlock(Settings settings) {
 		super(settings);
 	}

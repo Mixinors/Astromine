@@ -34,12 +34,12 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingEnergyMachineBlock;
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.BlockBreakerBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.BlockBreakerScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
-public class BlockBreakerBlock extends HorizontalFacingEnergyMachineBlock {
+public class BlockBreakerBlock extends WrenchableHorizontalFacingEnergyBlockWithEntity {
 	public BlockBreakerBlock(Settings settings) {
 		super(settings);
 	}

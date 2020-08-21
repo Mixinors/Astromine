@@ -24,11 +24,12 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block;
 
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
-import com.github.chainmailstudios.astromine.common.network.ticker.NetworkTypeEnergy;
+import com.github.chainmailstudios.astromine.common.block.base.CableBlock;
+import com.github.chainmailstudios.astromine.common.network.type.NetworkType;
+import com.github.chainmailstudios.astromine.common.network.type.EnergyNetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
-public class EnergyCableBlock extends AbstractCableBlock implements NetworkTypeEnergy.EnergyNodeSpeedProvider {
+public class EnergyCableBlock extends CableBlock implements EnergyNetworkType.EnergyNodeSpeedProvider {
 	private final double cableSpeed;
 
 	public EnergyCableBlock(double cableSpeed, Settings settings) {

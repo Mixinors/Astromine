@@ -37,8 +37,8 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
-import com.github.chainmailstudios.astromine.common.block.entity.base.AbstractBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.recipe.base.AdvancedRecipe;
@@ -94,12 +94,12 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory>, EnergyCon
 	}
 
 	@Override
-	public <T extends AbstractBlockEntity> boolean canCraft(T blockEntity) {
+	public <T extends ComponentBlockEntity> boolean canCraft(T blockEntity) {
 		Block block = blockEntity.getWorld().getBlockState(blockEntity.getPos()).getBlock();
-		if (!(block instanceof TieredHorizontalFacingEnergyMachineBlock))
+		if (!(block instanceof WrenchableHorizontalFacingEnergyTieredBlockWithEntity))
 			return false;
 
-		double machineSpeed = ((TieredHorizontalFacingEnergyMachineBlock) block).getMachineSpeed();
+		double machineSpeed = ((WrenchableHorizontalFacingEnergyTieredBlockWithEntity) block).getMachineSpeed();
 		Fraction speed = FractionUtilities.fromFloating(machineSpeed);
 
 		FluidInventoryComponent fluidComponent = blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
@@ -124,10 +124,10 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory>, EnergyCon
 	}
 
 	@Override
-	public <T extends AbstractBlockEntity> void craft(T blockEntity) {
+	public <T extends ComponentBlockEntity> void craft(T blockEntity) {
 		if (canCraft(blockEntity)) {
 			Block block = blockEntity.getWorld().getBlockState(blockEntity.getPos()).getBlock();
-			double machineSpeed = ((TieredHorizontalFacingEnergyMachineBlock) block).getMachineSpeed();
+			double machineSpeed = ((WrenchableHorizontalFacingEnergyTieredBlockWithEntity) block).getMachineSpeed();
 			Fraction speed = FractionUtilities.fromFloating(machineSpeed);
 
 			FluidInventoryComponent fluidComponent = blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
@@ -149,8 +149,8 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory>, EnergyCon
 		if (t.isFinished()) {
 			t.reset();
 
-			craft((AbstractBlockEntity) t);
-		} else if (canCraft((AbstractBlockEntity) t)) {
+			craft((ComponentBlockEntity) t);
+		} else if (canCraft((ComponentBlockEntity) t)) {
 			t.setLimit(getTime());
 			t.increment();
 			t.setActive(true);

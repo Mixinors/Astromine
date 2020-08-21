@@ -26,20 +26,19 @@ package com.github.chainmailstudios.astromine.common.block.entity.base;
 
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 
-public abstract class AbstractEnergyFluidBlockEntity extends AbstractEnergyBlockEntity implements ComponentProvider, BlockEntityClientSerializable {
+public abstract class ComponentFluidBlockEntity extends ComponentBlockEntity implements ComponentProvider, BlockEntityClientSerializable {
 	protected final FluidInventoryComponent fluidComponent = createFluidComponent();
 
 	protected abstract FluidInventoryComponent createFluidComponent();
 
-	public AbstractEnergyFluidBlockEntity(Block energyBlock, BlockEntityType<?> type) {
-		super(energyBlock, type);
+	public ComponentFluidBlockEntity(BlockEntityType<?> type) {
+		super(type);
 
 		addComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, fluidComponent);
 		fluidComponent.dispatchConsumers();

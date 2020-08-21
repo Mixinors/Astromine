@@ -24,10 +24,10 @@
 
 package com.github.chainmailstudios.astromine.common.block.base;
 
-import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
+import com.github.chainmailstudios.astromine.common.utilities.FacingBlockWrenchable;
 
-public abstract class FacingMachineBlock extends FacingBlockWithEntity implements MachineBlockWrenchable {
-	public FacingMachineBlock(Settings settings) {
+public abstract class WrenchableHorizontalFacingBlockWithEntity extends HorizontalFacingBlockWithEntity implements FacingBlockWrenchable {
+	public WrenchableHorizontalFacingBlockWithEntity(Settings settings) {
 		super(settings);
 	}
 }

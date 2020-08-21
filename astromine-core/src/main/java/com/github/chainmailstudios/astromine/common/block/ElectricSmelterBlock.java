@@ -34,12 +34,12 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.ElectricSmelterBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.ElectricSmelterScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
-public abstract class ElectricSmelterBlock extends TieredHorizontalFacingEnergyMachineBlock {
+public abstract class ElectricSmelterBlock extends WrenchableHorizontalFacingEnergyTieredBlockWithEntity {
 	public ElectricSmelterBlock(Settings settings) {
 		super(settings);
 	}

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.transportations.common.block;
+package com.github.chainmailstudios.astromine.common.block.base;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -42,7 +42,7 @@ import com.github.chainmailstudios.astromine.client.registry.NetworkMemberRegist
 import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkTracer;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.github.chainmailstudios.astromine.common.network.type.NetworkType;
 import com.github.chainmailstudios.astromine.common.utilities.CableWrenchable;
 import com.github.chainmailstudios.astromine.common.utilities.WorldPos;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
@@ -51,7 +51,7 @@ import nerdhub.cardinal.components.api.component.ComponentProvider;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AbstractCableBlock extends Block implements CableWrenchable {
+public abstract class CableBlock extends Block implements CableWrenchable {
 	public static final BooleanProperty EAST = BooleanProperty.of("east");
 	public static final BooleanProperty WEST = BooleanProperty.of("west");
 	public static final BooleanProperty NORTH = BooleanProperty.of("north");
@@ -59,7 +59,7 @@ public abstract class AbstractCableBlock extends Block implements CableWrenchabl
 	public static final BooleanProperty UP = BooleanProperty.of("up");
 	public static final BooleanProperty DOWN = BooleanProperty.of("down");
 
-	public static final Map<Direction, BooleanProperty> PROPERTY_MAP = new HashMap<Direction, BooleanProperty>() {
+	public static final Map<Direction, BooleanProperty> PROPERTIES = new HashMap<Direction, BooleanProperty>() {
 		{
 			put(Direction.EAST, EAST);
 			put(Direction.WEST, WEST);
@@ -84,7 +84,7 @@ public abstract class AbstractCableBlock extends Block implements CableWrenchabl
 	protected static final Map<Integer, VoxelShape> SHAPE_CACHE = new HashMap<>();
 	protected static final VoxelShape CENTER_SHAPE = Block.createCuboidShape(6.0D, 6.0D, 6.0D, 10.0D, 10.0D, 10.0D);
 
-	public AbstractCableBlock(AbstractBlock.Settings settings) {
+	public CableBlock(AbstractBlock.Settings settings) {
 		super(settings);
 	}
 
@@ -105,14 +105,14 @@ public abstract class AbstractCableBlock extends Block implements CableWrenchabl
 			BlockPos offsetPos = position.offset(direction);
 			WorldPos offsetBlock = WorldPos.of(world, offsetPos);
 
-			if (!(offsetBlock.getBlock() instanceof AbstractCableBlock))
+			if (!(offsetBlock.getBlock() instanceof CableBlock))
 				continue;
 			NetworkMember member = NetworkMemberRegistry.get(offsetBlock);
 			if (member.acceptsType(getNetworkType()))
 				continue;
 
 			NetworkTracer.Modeller offsetModeller = new NetworkTracer.Modeller();
-			offsetModeller.scanNeighbours(((AbstractCableBlock) offsetBlock.getBlock()).getNetworkType(), offsetPos, world);
+			offsetModeller.scanNeighbours(((CableBlock) offsetBlock.getBlock()).getNetworkType(), offsetPos, world);
 
 			world.setBlockState(offsetPos, offsetModeller.applyToBlockState(world.getBlockState(offsetPos)));
 		}
@@ -135,9 +135,9 @@ public abstract class AbstractCableBlock extends Block implements CableWrenchabl
 			BlockPos offsetPos = position.offset(directionA);
 			Block offsetBlock = world.getBlockState(offsetPos).getBlock();
 
-			if (!(offsetBlock instanceof AbstractCableBlock))
+			if (!(offsetBlock instanceof CableBlock))
 				continue;
-			if (((AbstractCableBlock) offsetBlock).getNetworkType() != getNetworkType())
+			if (((CableBlock) offsetBlock).getNetworkType() != getNetworkType())
 				continue;
 
 			NetworkTracer.Tracer.INSTANCE.trace(getNetworkType(), WorldPos.of(world, offsetPos));

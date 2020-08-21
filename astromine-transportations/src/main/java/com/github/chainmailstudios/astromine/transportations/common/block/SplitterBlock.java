@@ -41,9 +41,9 @@ import com.github.chainmailstudios.astromine.transportations.common.block.entity
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.SplitterBlockEntity;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyable;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyableBlock;
-import com.github.chainmailstudios.astromine.common.utilities.MachineBlockWrenchable;
+import com.github.chainmailstudios.astromine.common.utilities.FacingBlockWrenchable;
 
-public class SplitterBlock extends HorizontalFacingBlock implements BlockEntityProvider, ConveyableBlock, MachineBlockWrenchable {
+public class SplitterBlock extends HorizontalFacingBlock implements BlockEntityProvider, ConveyableBlock, FacingBlockWrenchable {
 	public SplitterBlock(Settings settings) {
 		super(settings);
 	}

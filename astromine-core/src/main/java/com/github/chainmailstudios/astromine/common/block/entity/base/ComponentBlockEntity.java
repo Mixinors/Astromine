@@ -34,7 +34,7 @@ import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
-import com.github.chainmailstudios.astromine.common.utilities.SidingUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.TransportUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.google.common.collect.Lists;
@@ -47,7 +47,6 @@ import net.fabricmc.fabric.api.network.PacketContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
@@ -64,7 +63,7 @@ import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-public abstract class AbstractBlockEntity extends BlockEntity implements ComponentProvider, PacketConsumer, BlockEntityClientSerializable, Tickable {
+public abstract class ComponentBlockEntity extends net.minecraft.block.entity.BlockEntity implements ComponentProvider, PacketConsumer, BlockEntityClientSerializable, Tickable {
 	protected final BlockEntityTransferComponent transferComponent = new BlockEntityTransferComponent();
 
 	protected final Map<ComponentType<?>, Component> allComponents = Maps.newHashMap();
@@ -75,7 +74,7 @@ public abstract class AbstractBlockEntity extends BlockEntity implements Compone
 
 	public static final Identifier TRANSFER_UPDATE_PACKET = AstromineCommon.identifier("transfer_update_packet");
 
-	public AbstractBlockEntity(BlockEntityType<?> type) {
+	public ComponentBlockEntity(BlockEntityType<?> type) {
 		super(type);
 
 		addConsumer(TRANSFER_UPDATE_PACKET, ((buffer, context) -> {
@@ -190,27 +189,27 @@ public abstract class AbstractBlockEntity extends BlockEntity implements Compone
 			BlockPos neighborPos = getPos().offset(offsetDirection);
 			BlockState neighborState = world.getBlockState(neighborPos);
 
-			BlockEntity neighborBlockEntity = world.getBlockEntity(neighborPos);
+			net.minecraft.block.entity.BlockEntity neighborBlockEntity = world.getBlockEntity(neighborPos);
 			if (neighborBlockEntity != null) {
 				ComponentProvider neighborProvider = ComponentProvider.fromBlockEntity(neighborBlockEntity);
 				Direction neighborDirection = offsetDirection.getOpposite();
 				BlockEntityTransferComponent neighborTransferComponent = neighborProvider != null ? neighborProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT) : null;
 
 				// Handle Item Siding
-				if (this instanceof BlockEntityWithInventory) {
+				if (this instanceof ExtendedInventoryProvider) {
 					if (!transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(offsetDirection).isDefault()) {
 						// input
 						ItemExtractable neighbor = ItemAttributes.EXTRACTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
 						ItemInsertable self = ItemAttributes.INSERTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
 
-						SidingUtilities.move(neighbor, self, 1);
+						TransportUtilities.move(neighbor, self, 1);
 					}
 					if (!transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(offsetDirection).isDefault()) {
 						// output
 						ItemExtractable self = ItemAttributes.EXTRACTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
 						ItemInsertable neighbor = ItemAttributes.INSERTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
 
-						SidingUtilities.move(self, neighbor, 1);
+						TransportUtilities.move(self, neighbor, 1);
 					}
 				}
 
@@ -233,8 +232,8 @@ public abstract class AbstractBlockEntity extends BlockEntity implements Compone
 				}
 
 				// Handle energy siding
-				if (SidingUtilities.isExtractingEnergy(this, transferComponent, offsetDirection)) {
-					if (SidingUtilities.isInsertingEnergy(neighborBlockEntity, neighborTransferComponent, neighborDirection)) {
+				if (TransportUtilities.isExtractingEnergy(this, transferComponent, offsetDirection)) {
+					if (TransportUtilities.isInsertingEnergy(neighborBlockEntity, neighborTransferComponent, neighborDirection)) {
 						energyTransfers.add(new Pair<>(Energy.of(this).side(offsetDirection), Energy.of(neighborBlockEntity).side(neighborDirection)));
 					}
 				}

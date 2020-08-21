@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block;
 
+import com.github.chainmailstudios.astromine.common.utilities.FacingBlockWrenchable;
+import com.github.chainmailstudios.astromine.common.utilities.MovementUtilities;
 import com.github.chainmailstudios.astromine.transportations.common.block.property.ConveyorProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
@@ -54,10 +56,8 @@ import com.github.chainmailstudios.astromine.transportations.common.conveyor.Con
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyor;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorConveyable;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorTypes;
-import com.github.chainmailstudios.astromine.transportations.common.utilities.MachineBlockWrenchable;
-import com.github.chainmailstudios.astromine.transportations.common.utilities.MovementUtilities;
 
-public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityProvider, Conveyor, MachineBlockWrenchable {
+public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityProvider, Conveyor, FacingBlockWrenchable {
 	private int speed;
 
 	public ConveyorBlock(Settings settings, int speed) {

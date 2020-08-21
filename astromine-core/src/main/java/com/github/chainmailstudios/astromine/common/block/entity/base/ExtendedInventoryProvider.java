@@ -27,7 +27,7 @@ package com.github.chainmailstudios.astromine.common.block.entity.base;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
-import com.github.chainmailstudios.astromine.common.utilities.SidingUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.TransportUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
@@ -42,7 +42,7 @@ import net.minecraft.world.WorldAccess;
 
 import java.util.stream.IntStream;
 
-public interface BlockEntityWithInventory extends ComponentProvider, InventoryProvider, SidedInventory, ItemInventoryFromInventoryComponent {
+public interface ExtendedInventoryProvider extends ComponentProvider, InventoryProvider, SidedInventory, ItemInventoryFromInventoryComponent {
 	@Override
 	ItemInventoryComponent getItemComponent();
 
@@ -52,7 +52,7 @@ public interface BlockEntityWithInventory extends ComponentProvider, InventoryPr
 	}
 
 	default boolean isSideOpenForItems(int slot, Direction direction, boolean inserting) {
-		return inserting ? SidingUtilities.isInsertingItem((BlockEntity) this, getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT), direction, true) && getItemInputSlots().contains(slot) : SidingUtilities.isExtractingItem((BlockEntity) this, getComponent(
+		return inserting ? TransportUtilities.isInsertingItem((BlockEntity) this, getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT), direction, true) && getItemInputSlots().contains(slot) : TransportUtilities.isExtractingItem((BlockEntity) this, getComponent(
 			AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT), direction, true) && getItemOutputSlots().contains(slot);
 	}
 

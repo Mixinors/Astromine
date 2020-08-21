@@ -34,8 +34,8 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-import com.github.chainmailstudios.astromine.common.block.base.AbstractBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.base.AbstractEnergyFluidBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
@@ -44,7 +44,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
-public class FluidExtractorBlockEntity extends AbstractEnergyFluidBlockEntity implements Tickable {
+public class FluidExtractorBlockEntity extends ComponentEnergyFluidBlockEntity implements Tickable {
 	private final Fraction cooldown = Fraction.empty();
 
 	public boolean isActive = false;
@@ -106,9 +106,9 @@ public class FluidExtractorBlockEntity extends AbstractEnergyFluidBlockEntity im
 		activity[4] = isActive;
 
 		if (isActive && !activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(AbstractBlockWithEntity.ACTIVE, true));
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, true));
 		} else if (!isActive && activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(AbstractBlockWithEntity.ACTIVE, false));
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, false));
 		}
 	}
 

@@ -24,24 +24,24 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 
-public abstract class AbstractEnergyItemBlockEntity extends AbstractEnergyBlockEntity implements BlockEntityWithInventory {
-	protected final ItemInventoryComponent itemComponent = createItemComponent();
+import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 
-	protected abstract ItemInventoryComponent createItemComponent();
+public abstract class ComponentEnergyFluidBlockEntity extends ComponentEnergyBlockEntity implements ComponentProvider, BlockEntityClientSerializable {
+	protected final FluidInventoryComponent fluidComponent = createFluidComponent();
 
-	public AbstractEnergyItemBlockEntity(Block energyBlock, BlockEntityType<?> type) {
+	protected abstract FluidInventoryComponent createFluidComponent();
+
+	public ComponentEnergyFluidBlockEntity(Block energyBlock, BlockEntityType<?> type) {
 		super(energyBlock, type);
 
-		addComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, itemComponent);
-	}
-
-	@Override
-	public ItemInventoryComponent getItemComponent() {
-		return itemComponent;
+		addComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, fluidComponent);
+		fluidComponent.dispatchConsumers();
 	}
 }

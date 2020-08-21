@@ -38,7 +38,7 @@ import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.EnergyStorage;
 
-public class SidingUtilities {
+public class TransportUtilities {
 	public static boolean isExtractingEnergy(BlockEntity entity, @Nullable BlockEntityTransferComponent transferComponent, Direction direction) {
 		if (!(entity instanceof EnergyStorage))
 			return false;

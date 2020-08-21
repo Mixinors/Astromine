@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.AbstractFluidBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.widget.FluidVerticalBarWidget;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.vini2003.blade.common.data.Position;
@@ -34,14 +34,14 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
 public class DefaultedFluidScreenHandler extends DefaultedBlockEntityScreenHandler {
-	public AbstractFluidBlockEntity blockEntity;
+	public ComponentFluidBlockEntity blockEntity;
 
 	public FluidVerticalBarWidget fluidBar;
 
 	public DefaultedFluidScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 
-		blockEntity = (AbstractFluidBlockEntity) player.world.getBlockEntity(position);
+		blockEntity = (ComponentFluidBlockEntity) player.world.getBlockEntity(position);
 	}
 
 	@Override

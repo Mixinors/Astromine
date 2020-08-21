@@ -34,11 +34,11 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingMachineBlock;
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.CreativeTankBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.CreativeTankScreenHandler;
 
-public class CreativeTankBlock extends HorizontalFacingMachineBlock {
+public class CreativeTankBlock extends WrenchableHorizontalFacingBlockWithEntity {
 	public CreativeTankBlock(Settings settings) {
 		super(settings);
 	}

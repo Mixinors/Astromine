@@ -26,7 +26,7 @@ package com.github.chainmailstudios.astromine.client.registry;
 
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.github.chainmailstudios.astromine.common.network.type.NetworkType;
 import com.github.chainmailstudios.astromine.common.utilities.WorldPos;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import com.google.common.collect.Sets;
@@ -47,33 +47,9 @@ import java.util.Map;
 public class NetworkMemberRegistry {
 	public static final NetworkMemberRegistry INSTANCE = new NetworkMemberRegistry();
 
-	private Map<NetworkType, NetworkTypeRegistry<?>> registries = new Reference2ObjectOpenHashMap<>();
+	private final Map<NetworkType, NetworkTypeRegistry<?>> registries = new Reference2ObjectOpenHashMap<>();
 
 	private NetworkMemberRegistry() {
-		registries.put(AstromineNetworkTypes.ENERGY, new NetworkTypeRegistryImpl<NetworkType>() {
-			@Override
-			public Collection<NetworkMemberType> get(WorldPos pos) {
-				if (!this.types.containsKey(pos.getBlock())) {
-					BlockEntity blockEntity = pos.getBlockEntity();
-					if (blockEntity instanceof EnergyStorage) {
-						return NetworkMember.REQUESTER_PROVIDER;
-					}
-				}
-				return super.get(pos);
-			}
-		});
-		registries.put(AstromineNetworkTypes.ITEM, new NetworkTypeRegistryImpl<NetworkType>() {
-			@Override
-			public Collection<NetworkMemberType> get(WorldPos pos) {
-				if (!this.types.containsKey(pos.getBlock())) {
-					BlockEntity blockEntity = pos.getBlockEntity();
-					if (blockEntity instanceof InventoryProvider) {
-						return NetworkMember.REQUESTER_PROVIDER;
-					}
-				}
-				return super.get(pos);
-			}
-		});
 	}
 
 	public static NetworkMember get(@Nullable WorldPos pos) {
@@ -88,6 +64,10 @@ public class NetworkMemberRegistry {
 		return blockEntity != null ? get(blockEntity.getWorld(), blockEntity.getPos()) : get(null, null);
 	}
 
+	public <T extends NetworkType, R extends NetworkTypeRegistry<?>> void register(T t, R r) {
+		registries.put(t, r);
+	}
+
 	public <T extends NetworkType> NetworkTypeRegistry<T> get(T type) {
 		return (NetworkTypeRegistry<T>) registries.computeIfAbsent(type, NetworkTypeRegistryImpl::new);
 	}
@@ -98,7 +78,7 @@ public class NetworkMemberRegistry {
 		Collection<NetworkMemberType> get(WorldPos pos);
 	}
 
-	private static class NetworkTypeRegistryImpl<T extends NetworkType> implements NetworkTypeRegistry<T> {
+	public static class NetworkTypeRegistryImpl<T extends NetworkType> implements NetworkTypeRegistry<T> {
 		protected final Map<Block, Collection<NetworkMemberType>> types = new Reference2ObjectOpenHashMap<>();
 
 		public NetworkTypeRegistryImpl() {}
@@ -116,7 +96,7 @@ public class NetworkMemberRegistry {
 		}
 	}
 
-	private class NetworkMemberImpl implements NetworkMember {
+	public class NetworkMemberImpl implements NetworkMember {
 		@Nullable
 		private final WorldPos pos;
 

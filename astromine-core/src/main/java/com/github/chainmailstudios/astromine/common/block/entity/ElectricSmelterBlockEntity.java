@@ -24,9 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.block.base.AbstractBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
-import com.github.chainmailstudios.astromine.common.block.entity.base.AbstractEnergyItemBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.inventory.BaseInventory;
@@ -46,7 +46,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public abstract class ElectricSmelterBlockEntity extends AbstractEnergyItemBlockEntity implements Tickable {
+public abstract class ElectricSmelterBlockEntity extends ComponentEnergyInventoryBlockEntity implements Tickable {
 	public double progress = 0;
 	public int limit = 100;
 
@@ -124,7 +124,7 @@ public abstract class ElectricSmelterBlockEntity extends AbstractEnergyItemBlock
 			if (recipe.isPresent() && recipe.get().matches(inputInventory, world)) {
 				limit = recipe.get().getCookTime();
 
-				double speed = Math.min(((TieredHorizontalFacingEnergyMachineBlock) this.getCachedState().getBlock()).getMachineSpeed() * 2, limit - progress);
+				double speed = Math.min(((WrenchableHorizontalFacingEnergyTieredBlockWithEntity) this.getCachedState().getBlock()).getMachineSpeed() * 2, limit - progress);
 				ItemStack output = recipe.get().getOutput().copy();
 
 				boolean isEmpty = itemComponent.getStack(0).isEmpty();
@@ -164,9 +164,9 @@ public abstract class ElectricSmelterBlockEntity extends AbstractEnergyItemBlock
 		activity[4] = isActive;
 
 		if (isActive && !activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(AbstractBlockWithEntity.ACTIVE, true));
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, true));
 		} else if (!isActive && activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(AbstractBlockWithEntity.ACTIVE, false));
+			world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, false));
 		}
 	}
 

@@ -28,7 +28,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.AbstractEnergyFluidBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.widget.EnergyVerticalBarWidget;
 import com.github.chainmailstudios.astromine.common.widget.FluidVerticalBarWidget;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
@@ -39,12 +39,12 @@ public class DefaultedEnergyFluidScreenHandler extends DefaultedBlockEntityScree
 	public EnergyVerticalBarWidget energyBar;
 	public FluidVerticalBarWidget fluidBar;
 
-	public AbstractEnergyFluidBlockEntity blockEntity;
+	public ComponentEnergyFluidBlockEntity blockEntity;
 
 	public DefaultedEnergyFluidScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 
-		blockEntity = (AbstractEnergyFluidBlockEntity) player.world.getBlockEntity(position);
+		blockEntity = (ComponentEnergyFluidBlockEntity) player.world.getBlockEntity(position);
 	}
 
 	@Override

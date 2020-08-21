@@ -31,7 +31,7 @@ import net.minecraft.world.World;
 import com.zundrel.wrenchable.WrenchableUtilities;
 import com.zundrel.wrenchable.block.BlockWrenchable;
 
-public interface MachineBlockWrenchable extends BlockWrenchable {
+public interface FacingBlockWrenchable extends BlockWrenchable {
 	@Override
 	default void onWrenched(World world, PlayerEntity playerEntity, BlockHitResult blockHitResult) {
 		if (playerEntity.isSneaking()) {

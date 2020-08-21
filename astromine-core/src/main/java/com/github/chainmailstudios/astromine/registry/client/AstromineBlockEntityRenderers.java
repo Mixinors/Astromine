@@ -31,12 +31,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 
-import com.github.chainmailstudios.astromine.client.render.block.ConveyorBlockEntityRenderer;
-import com.github.chainmailstudios.astromine.client.render.block.DoubleMachineEntityRenderer;
-import com.github.chainmailstudios.astromine.client.render.block.DownwardVerticalConveyorBlockEntityRenderer;
 import com.github.chainmailstudios.astromine.client.render.block.HolographicBridgeBlockEntityRenderer;
-import com.github.chainmailstudios.astromine.client.render.block.InserterBlockEntityRenderer;
-import com.github.chainmailstudios.astromine.client.render.block.VerticalConveyorBlockEntityRenderer;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 
 import java.util.function.Function;

@@ -25,13 +25,17 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.client.registry.NetworkMemberRegistry;
-import com.github.chainmailstudios.astromine.client.registry.NetworkMemberRegistry.NetworkTypeRegistry;
 import com.github.chainmailstudios.astromine.common.block.*;
-import com.github.chainmailstudios.astromine.common.network.NetworkType;
+import com.github.chainmailstudios.astromine.common.network.NetworkMember;
+import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
+import com.github.chainmailstudios.astromine.common.network.type.NetworkType;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
+import com.github.chainmailstudios.astromine.common.utilities.WorldPos;
 import com.google.common.collect.Maps;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.minecraft.block.Block;
+import net.minecraft.block.InventoryProvider;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
@@ -40,14 +44,16 @@ import team.reborn.energy.EnergySide;
 import team.reborn.energy.EnergyStorage;
 import team.reborn.energy.EnergyTier;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import static com.github.chainmailstudios.astromine.common.network.NetworkMemberType.*;
+import static com.github.chainmailstudios.astromine.common.network.NetworkMemberType.PROVIDER;
 
 public class AstromineNetworkMembers {
-	private static final Map<Predicate<Block>, Consumer<Block>> BLOCK_CONSUMER = Maps.newHashMap();
+	protected static final Map<Predicate<Block>, Consumer<Block>> BLOCK_CONSUMER = Maps.newHashMap();
 
 	public static void initialize() {
 		Energy.registerHolder(object -> {
@@ -76,16 +82,35 @@ public class AstromineNetworkMembers {
 				return EnergyTier.INFINITE;
 			}
 		});
-
-		NetworkTypeRegistry<NetworkType> energy = NetworkMemberRegistry.INSTANCE.get(AstromineNetworkTypes.ENERGY);
-		NetworkTypeRegistry<NetworkType> fluid = NetworkMemberRegistry.INSTANCE.get(AstromineNetworkTypes.FLUID);
-
-		BLOCK_CONSUMER.put(block -> block instanceof EnergyCableBlock, block -> {
-			energy.register(block, NODE);
+		NetworkMemberRegistry.INSTANCE.register(AstromineNetworkTypes.ENERGY, new NetworkMemberRegistry.NetworkTypeRegistryImpl<NetworkType>() {
+			@Override
+			public Collection<NetworkMemberType> get(WorldPos pos) {
+				if (!this.types.containsKey(pos.getBlock())) {
+					BlockEntity blockEntity = pos.getBlockEntity();
+					if (blockEntity instanceof EnergyStorage) {
+						return NetworkMember.REQUESTER_PROVIDER;
+					}
+				}
+				return super.get(pos);
+			}
 		});
-		BLOCK_CONSUMER.put(block -> block instanceof FluidCableBlock, block -> {
-			fluid.register(block, NODE);
+
+		NetworkMemberRegistry.INSTANCE.register(AstromineNetworkTypes.ITEM, new NetworkMemberRegistry.NetworkTypeRegistryImpl<NetworkType>() {
+			@Override
+			public Collection<NetworkMemberType> get(WorldPos pos) {
+				if (!this.types.containsKey(pos.getBlock())) {
+					BlockEntity blockEntity = pos.getBlockEntity();
+					if (blockEntity instanceof InventoryProvider) {
+						return NetworkMember.REQUESTER_PROVIDER;
+					}
+				}
+				return super.get(pos);
+			}
 		});
+
+		NetworkMemberRegistry.NetworkTypeRegistry<NetworkType> energy = NetworkMemberRegistry.INSTANCE.get(AstromineNetworkTypes.ENERGY);
+		NetworkMemberRegistry.NetworkTypeRegistry<NetworkType> fluid = NetworkMemberRegistry.INSTANCE.get(AstromineNetworkTypes.FLUID);
+
 		BLOCK_CONSUMER.put(block -> block instanceof AlloySmelterBlock, block -> {
 			energy.register(block, REQUESTER);
 		});

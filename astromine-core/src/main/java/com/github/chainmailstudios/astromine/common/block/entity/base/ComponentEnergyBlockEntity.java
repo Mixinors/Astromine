@@ -49,12 +49,12 @@ import team.reborn.energy.EnergyTier;
 import com.google.common.collect.Lists;
 import java.util.List;
 
-public abstract class AbstractEnergyBlockEntity extends AbstractBlockEntity implements ComponentProvider, EnergyStorage {
+public abstract class ComponentEnergyBlockEntity extends ComponentBlockEntity implements ComponentProvider, EnergyStorage {
 	private final EnergyCapacityProvider energyCapacityProvider;
 	private final List<Runnable> energyListeners = Lists.newArrayList();
 	private final EnergyVolume energyVolume;
 
-	public AbstractEnergyBlockEntity(Block energyBlock, BlockEntityType<?> type) {
+	public ComponentEnergyBlockEntity(Block energyBlock, BlockEntityType<?> type) {
 		super(type);
 		this.energyCapacityProvider = (EnergyCapacityProvider) energyBlock;
 		transferComponent.add(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);

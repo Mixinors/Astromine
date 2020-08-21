@@ -38,12 +38,12 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.block.base.MachineBlock;
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.BufferBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.BufferScreenHandler;
 import com.github.chainmailstudios.astromine.common.utilities.type.BufferType;
 
-public class BufferBlock extends MachineBlock {
+public class BufferBlock extends WrenchableBlockWithEntity {
 	private final BufferType type;
 
 	public BufferBlock(BufferType type, Settings settings) {

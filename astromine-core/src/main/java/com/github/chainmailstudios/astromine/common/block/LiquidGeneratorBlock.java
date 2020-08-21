@@ -34,12 +34,12 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.LiquidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.LiquidGeneratorScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
-public abstract class LiquidGeneratorBlock extends TieredHorizontalFacingEnergyMachineBlock {
+public abstract class LiquidGeneratorBlock extends WrenchableHorizontalFacingEnergyTieredBlockWithEntity {
 	public LiquidGeneratorBlock(Settings settings) {
 		super(settings);
 	}

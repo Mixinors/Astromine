@@ -34,12 +34,12 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.ElectrolyzerBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.ElectrolyzerScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
-public abstract class ElectrolyzerBlock extends TieredHorizontalFacingEnergyMachineBlock {
+public abstract class ElectrolyzerBlock extends WrenchableHorizontalFacingEnergyTieredBlockWithEntity {
 	public ElectrolyzerBlock(Settings settings) {
 		super(settings);
 	}

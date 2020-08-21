@@ -34,11 +34,11 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.block.base.MachineBlock;
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.CreativeBufferBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.CreativeBufferScreenHandler;
 
-public class CreativeBufferBlock extends MachineBlock {
+public class CreativeBufferBlock extends WrenchableBlockWithEntity {
 	public CreativeBufferBlock(Settings settings) {
 		super(settings);
 	}
