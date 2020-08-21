@@ -131,9 +131,9 @@ public class MaterialSets {
 	);
 	public static final MaterialSet RAW_NETHERITE = register(
 		new MaterialSet.Builder("raw_netherite")
-			.setType(GEM, new MaterialEntry(new Identifier("netherite_scrap"), "netherite_scraps"))
+			.setType(INGOT, new MaterialEntry(new Identifier("netherite_scrap"), "netherite_scraps"))
 			.setType(ORE, new MaterialEntry(new Identifier("ancient_debris"), "ancient_debris"))
-			.fragment().dusts()
+			.dusts()
 			.build()
 	);
 	public static final MaterialSet NETHERITE = register(
