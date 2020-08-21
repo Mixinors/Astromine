@@ -65,6 +65,6 @@ public class AstromineBiomes {
 	}
 
 	public static void initialize() {
-		// Unused.
+
 	}
 }

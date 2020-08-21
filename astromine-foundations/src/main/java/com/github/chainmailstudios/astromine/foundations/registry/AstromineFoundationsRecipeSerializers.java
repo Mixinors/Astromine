@@ -8,6 +8,6 @@ public class AstromineFoundationsRecipeSerializers {
 	public static final RecipeSerializer<AltarRecipe> ALLOY_SMELTING = Registry.register(Registry.RECIPE_SERIALIZER, AltarRecipe.Serializer.ID, AltarRecipe.Serializer.INSTANCE);
 
 	public static void initialize() {
-		// Unused.
+
 	}
 }

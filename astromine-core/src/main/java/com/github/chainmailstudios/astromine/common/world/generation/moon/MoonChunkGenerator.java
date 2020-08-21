@@ -88,7 +88,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public void buildSurface(ChunkRegion region, Chunk chunk) {
-		// Unused.
+
 	}
 
 	@Override

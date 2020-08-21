@@ -32,7 +32,7 @@ public abstract class NetworkType {
 	public static final NetworkType EMPTY = NetworkTypeRegistry.INSTANCE.register(AstromineCommon.identifier("empty_network"), new NetworkType() {
 		@Override
 		public void tick(NetworkInstance instance) {
-			// Unused.
+
 		}
 	});
 

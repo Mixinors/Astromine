@@ -33,6 +33,6 @@ import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 @Environment(EnvType.CLIENT)
 public class AstromineScreens {
 	public static void initialize() {
-		// Unused.
+
 	}
 }

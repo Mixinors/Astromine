@@ -29,6 +29,6 @@ import com.github.chainmailstudios.astromine.AstromineDedicated;
 public class AstromineTransportationsDedicated extends AstromineDedicated {
 	@Override
 	public void onInitializeServer() {
-		// Unused.
+
 	}
 }

@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.recipe;
 
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -115,7 +116,7 @@ public class SolidGeneratingRecipe implements AdvancedRecipe<Inventory>, EnergyG
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.ADVANCED_SOLID_GENERATOR);
+		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_SOLID_GENERATOR);
 	}
 
 	@Override

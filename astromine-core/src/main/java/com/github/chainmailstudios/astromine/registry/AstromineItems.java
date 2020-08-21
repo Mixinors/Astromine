@@ -29,7 +29,7 @@ import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.item.*;
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
-import com.github.chainmailstudios.astromine.common.item.weapon.GravityGauntletItem;
+import com.github.chainmailstudios.astromine.common.item.GravityGauntletItem;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
@@ -54,7 +54,6 @@ public class AstromineItems {
 
 	// Misc materials
 	public static final Item SPACE_SLIME_BALL = register("space_slime_ball", new Item(getBasicSettings()));
-	public static final Item YEAST = register("yeast", new Item(getBasicSettings()));
 	public static final Item GRAPHITE_SHEET = register("graphite_sheet", new Item(getBasicSettings()));
 
 	// Fantasy weaponry

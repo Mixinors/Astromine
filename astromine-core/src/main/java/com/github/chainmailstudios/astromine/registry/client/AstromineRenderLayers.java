@@ -33,7 +33,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 
 public class AstromineRenderLayers {
 	public static void initialize() {
-		// Unused.
+
 	}
 
 	/**

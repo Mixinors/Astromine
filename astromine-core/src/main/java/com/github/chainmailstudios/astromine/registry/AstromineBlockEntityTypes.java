@@ -35,7 +35,7 @@ import java.util.function.Supplier;
 
 public class AstromineBlockEntityTypes {
 	public static void initialize() {
-		// Unused.
+
 	}
 
 	/**

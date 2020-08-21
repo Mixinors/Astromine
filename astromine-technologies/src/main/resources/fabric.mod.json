@@ -24,7 +24,8 @@
   "entrypoints": {
     "main": ["com.github.chainmailstudios.astromine.technologies.AstromineTechnologiesCommon"],
     "client": ["com.github.chainmailstudios.astromine.technologies.AstromineTechnologiesClient"],
-    "server": ["com.github.chainmailstudios.astromine.technologies.AstromineTechnologiesDedicated"]
+    "server": ["com.github.chainmailstudios.astromine.technologies.AstromineTechnologiesDedicated"],
+    "rei_plugins": ["com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin"]
   },
   "mixins": ["astromine-technologies.mixins.json"],
   "accessWidener": "astromine-technologies.accesswidener",

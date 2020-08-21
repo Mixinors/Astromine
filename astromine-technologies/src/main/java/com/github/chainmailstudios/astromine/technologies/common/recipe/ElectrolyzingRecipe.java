@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.recipe;
 
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.Inventory;
@@ -176,7 +177,7 @@ public class ElectrolyzingRecipe implements AdvancedRecipe<Inventory>, EnergyCon
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.ADVANCED_ELECTROLYZER);
+		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_ELECTROLYZER);
 	}
 
 	public Identifier getIdentifier() {

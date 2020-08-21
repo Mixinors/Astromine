@@ -47,6 +47,6 @@ public class AstromineSoundEvents {
 	}
 
 	public static void initialize() {
-		// Unused.
+
 	}
 }

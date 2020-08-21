@@ -42,7 +42,7 @@ public class AstromineNetworkTypes {
 	});
 
 	public static void initialize() {
-		// Unused.
+
 	}
 
 	public static <T extends NetworkType> T register(String name, T type) {

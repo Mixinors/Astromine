@@ -89,6 +89,6 @@ public class AstromineTechnologiesScreenHandlers extends AstromineScreenHandlers
 	}));
 
 	public static void initialize() {
-		// Unused.
+
 	}
 }

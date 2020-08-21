@@ -67,6 +67,6 @@ public class AstromineDimensions {
 	}
 
 	public static void initialize() {
-		// Unused.
+
 	}
 }

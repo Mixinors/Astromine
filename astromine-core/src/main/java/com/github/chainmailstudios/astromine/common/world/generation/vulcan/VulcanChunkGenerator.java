@@ -88,7 +88,7 @@ public class VulcanChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public void buildSurface(ChunkRegion region, Chunk chunk) {
-		// Unused.
+
 	}
 
 	@Override

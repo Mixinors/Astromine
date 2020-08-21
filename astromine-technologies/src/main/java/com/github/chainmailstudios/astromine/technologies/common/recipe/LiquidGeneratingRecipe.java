@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.recipe;
 
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.Inventory;
@@ -153,7 +154,7 @@ public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory>, Energy
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.ADVANCED_LIQUID_GENERATOR);
+		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_LIQUID_GENERATOR);
 	}
 
 	public Fluid getFluid() {

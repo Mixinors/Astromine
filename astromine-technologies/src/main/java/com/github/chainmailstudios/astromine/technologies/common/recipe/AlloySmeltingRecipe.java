@@ -22,8 +22,11 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.recipe;
+package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
+import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.AdvancedIngredient;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -53,13 +56,13 @@ import com.google.gson.annotations.SerializedName;
 
 public class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 	final Identifier identifier;
-	final BetterIngredient firstInput;
-	final BetterIngredient secondInput;
+	final AdvancedIngredient firstInput;
+	final AdvancedIngredient secondInput;
 	final ItemStack output;
 	final double energyConsumed;
 	final int time;
 
-	public AlloySmeltingRecipe(Identifier identifier, BetterIngredient firstInput, BetterIngredient secondInput, ItemStack output, double energyConsumed, int time) {
+	public AlloySmeltingRecipe(Identifier identifier, AdvancedIngredient firstInput, AdvancedIngredient secondInput, ItemStack output, double energyConsumed, int time) {
 		this.identifier = identifier;
 		this.firstInput = firstInput;
 		this.secondInput = secondInput;
@@ -120,17 +123,17 @@ public class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return defaultedList;
 	}
 
-	public BetterIngredient getFirstInput() {
+	public AdvancedIngredient getFirstInput() {
 		return firstInput;
 	}
 
-	public BetterIngredient getSecondInput() {
+	public AdvancedIngredient getSecondInput() {
 		return secondInput;
 	}
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.ADVANCED_ALLOY_SMELTER);
+		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_ALLOY_SMELTER);
 	}
 
 	public int getTime() {

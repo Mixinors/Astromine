@@ -202,7 +202,7 @@ public abstract class AdvancedFluid extends FlowableFluid implements Breathable 
 		DamageSource source;
 
 		private Builder() {
-			// Unused.
+
 		}
 
 		public Builder fog(int fog) {

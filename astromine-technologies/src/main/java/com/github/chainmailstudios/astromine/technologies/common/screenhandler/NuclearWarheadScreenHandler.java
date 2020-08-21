@@ -38,6 +38,6 @@ public class NuclearWarheadScreenHandler extends BlockStateScreenHandler {
 
 	@Override
 	public void initialize(int width, int height) {
-		// Unused.
+
 	}
 }

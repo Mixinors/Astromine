@@ -40,6 +40,6 @@ public class AstromineTransportationsBlockEntityTypes extends AstromineBlockEnti
 	public static final BlockEntityType<DownVerticalConveyorBlockEntity> DOWNWARD_VERTICAL_CONVEYOR = register("downward_vertical_conveyor", DownVerticalConveyorBlockEntity::new, AstromineTransportationsBlocks.BASIC_DOWNWARD_VERTICAL_CONVEYOR, AstromineTransportationsBlocks.ADVANCED_DOWNWARD_VERTICAL_CONVEYOR, AstromineTransportationsBlocks.ELITE_DOWNWARD_VERTICAL_CONVEYOR);
 
 	public static void initialize() {
-		// Unused.
+
 	}
 }

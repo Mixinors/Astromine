@@ -31,14 +31,10 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 
-import com.github.chainmailstudios.astromine.technologies.client.render.block.HolographicBridgeBlockEntityRenderer;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-
 import java.util.function.Function;
 
 public class AstromineBlockEntityRenderers {
 	public static void initialize() {
-		register(AstromineBlockEntityTypes.HOLOGRAPHIC_BRIDGE, HolographicBridgeBlockEntityRenderer::new);
 	}
 
 	public static <B extends BlockEntity, C extends BlockEntityType<B>> void register(C c, Function<BlockEntityRenderDispatcher, BlockEntityRenderer<B>> b) {

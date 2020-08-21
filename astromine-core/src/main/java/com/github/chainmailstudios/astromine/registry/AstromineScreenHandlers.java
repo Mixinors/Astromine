@@ -33,6 +33,6 @@ import com.github.chainmailstudios.astromine.common.utilities.type.BufferType;
 
 public class AstromineScreenHandlers {
 	public static void initialize() {
-		// Unused.
+
 	}
 }

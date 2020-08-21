@@ -61,6 +61,6 @@ public class AstromineTransportationsBlocks extends AstromineBlocks {
 	public static final Block ELITE_ENERGY_CABLE = register("elite_energy_cable", new EnergyCableBlock(2048, FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AstromineItems.getBasicSettings());
 
 	public static void initialize() {
-		// Unused.
+
 	}
 }

@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.recipe;
 
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.Inventory;
@@ -185,7 +186,7 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory>, EnergyConsu
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.ADVANCED_FLUID_MIXER);
+		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_FLUID_MIXER);
 	}
 
 	public Identifier getIdentifier() {

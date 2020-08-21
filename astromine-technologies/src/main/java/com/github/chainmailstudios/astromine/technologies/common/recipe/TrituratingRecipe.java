@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.recipe;
 
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -126,7 +127,7 @@ public class TrituratingRecipe implements EnergyConsumingRecipe<Inventory> {
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.ADVANCED_TRITURATOR);
+		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_TRITURATOR);
 	}
 
 	public int getTime() {

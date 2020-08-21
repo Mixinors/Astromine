@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.recipe;
 
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -126,7 +127,7 @@ public class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineBlocks.ADVANCED_PRESSER);
+		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_PRESSER);
 	}
 
 	public int getTime() {

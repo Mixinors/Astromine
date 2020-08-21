@@ -74,7 +74,7 @@ public class AstromineBlocks {
 	public static final Block MARTIAN_STONE_WALL = register("martian_stone_wall", new WallBlock(FabricBlockSettings.copyOf(MARTIAN_STONE)), AstromineItems.getBasicSettings());
 
 	public static void initialize() {
-		// Unused.
+
 	}
 
 	/**
