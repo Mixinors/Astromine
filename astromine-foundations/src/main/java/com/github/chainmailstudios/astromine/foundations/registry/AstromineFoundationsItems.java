@@ -24,9 +24,10 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
-import com.github.chainmailstudios.astromine.common.item.DrillItem;
-import com.github.chainmailstudios.astromine.common.item.MultitoolItem;
-import com.github.chainmailstudios.astromine.common.item.SpaceSuitItem;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.item.*;
+import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
+import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.utilities.ToolUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.WorldPos;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
@@ -471,10 +472,9 @@ public class AstromineFoundationsItems {
 	public static final Item SPACE_SUIT_LEGGINGS = register("space_suit_leggings", new SpaceSuitItem(AstromineFoundationsArmorMaterials.SPACE_SUIT, EquipmentSlot.LEGS, getBasicSettings()));
 	public static final Item SPACE_SUIT_BOOTS = register("space_suit_boots", new SpaceSuitItem(AstromineFoundationsArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, getBasicSettings()));
 
-	// Drills
-	public static final Item BASIC_DRILL = register("basic_drill", new DrillItem(AstromineFoundationsToolMaterials.BASIC_DRILL, 1, -2.8F, 1, 90000, getBasicSettings().maxCount(1)));
-	public static final Item ADVANCED_DRILL = register("advanced_drill", new DrillItem(AstromineFoundationsToolMaterials.ADVANCED_DRILL, 1, -2.8F, 1, 240000, getBasicSettings().maxCount(1)));
-	public static final Item ELITE_DRILL = register("elite_drill", new DrillItem(AstromineFoundationsToolMaterials.ELITE_DRILL, 1, -2.8F, 1, 640000, getBasicSettings().maxCount(1)));
+	public static final Item BRONZE_WRENCH = register("bronze_wrench", new WrenchItem(getBasicSettings()));
+
+	public static final Item FIRE_EXTINGUISHER = register("fire_extinguisher", new FireExtinguisherItem(getBasicSettings().maxCount(1)));
 
 	protected static Item.Settings getBasicSettings() {
 		return AstromineItems.getBasicSettings().group(AstromineFoundationsItemGroups.ASTROMINE_FOUNDATIONS);
