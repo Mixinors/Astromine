@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.world.generation.mars;
 
-import com.github.chainmailstudios.astromine.common.miscellaneous.BiomeGenCache;
+import com.github.chainmailstudios.astromine.common.miscellaneous.BiomeGeneratorCache;
 import com.github.chainmailstudios.astromine.common.noise.OctaveNoiseSampler;
 import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
@@ -60,7 +60,7 @@ public class MarsChunkGenerator extends ChunkGenerator {
 	private final OctaveNoiseSampler<OpenSimplexNoise> lowerInterpolatedNoise;
 	private final OctaveNoiseSampler<OpenSimplexNoise> upperInterpolatedNoise;
 	private final OctaveNoiseSampler<OpenSimplexNoise> interpolationNoise;
-	private final ThreadLocal<BiomeGenCache> cache;
+	private final ThreadLocal<BiomeGeneratorCache> cache;
 
 	public MarsChunkGenerator(long seed, Registry<Biome> biomeRegistry) {
 		super(new MarsBiomeSource(seed, biomeRegistry), new StructuresConfig(false));
@@ -70,7 +70,7 @@ public class MarsChunkGenerator extends ChunkGenerator {
 		lowerInterpolatedNoise = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 5, 140.43, 45, 10);
 		upperInterpolatedNoise = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 5, 140.43, 45, 10);
 		interpolationNoise = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 3, 80.32, 3, 3);
-		this.cache = ThreadLocal.withInitial(() -> new BiomeGenCache(biomeSource));
+		this.cache = ThreadLocal.withInitial(() -> new BiomeGeneratorCache(biomeSource));
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class MarsChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public void buildSurface(ChunkRegion region, Chunk chunk) {
-		// Unused.
+
 	}
 
 	@Override

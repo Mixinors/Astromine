@@ -1,0 +1,9 @@
+archivesBaseName = "astromine-technologies"
+
+minecraft {
+    accessWidener = file("src/main/resources/astromine-technologies.accesswidener")
+}
+
+dependencies {
+    compile project(path: ':astromine-core', configuration: 'dev')
+}

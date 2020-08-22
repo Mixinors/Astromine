@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.world.generation.vulcan;
 
-import com.github.chainmailstudios.astromine.common.miscellaneous.BiomeGenCache;
+import com.github.chainmailstudios.astromine.common.miscellaneous.BiomeGeneratorCache;
 import com.github.chainmailstudios.astromine.common.noise.OctaveNoiseSampler;
 import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
@@ -59,7 +59,7 @@ public class VulcanChunkGenerator extends ChunkGenerator {
 	private final OctaveNoiseSampler<OpenSimplexNoise> baseNoise;
 	private final OctaveNoiseSampler<OpenSimplexNoise> warpX;
 	private final OctaveNoiseSampler<OpenSimplexNoise> warpZ;
-	private final ThreadLocal<BiomeGenCache> cache;
+	private final ThreadLocal<BiomeGeneratorCache> cache;
 
 	public VulcanChunkGenerator(long seed, Registry<Biome> biomeRegistry) {
 		super(new VulcanBiomeSource(biomeRegistry, seed), new StructuresConfig(false));
@@ -69,7 +69,7 @@ public class VulcanChunkGenerator extends ChunkGenerator {
 		baseNoise = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 5, 227.48, 45, 45);
 		warpX = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 3, 72.12, 3, 3);
 		warpZ = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 3, 72.12, 3, 3);
-		this.cache = ThreadLocal.withInitial(() -> new BiomeGenCache(biomeSource));
+		this.cache = ThreadLocal.withInitial(() -> new BiomeGeneratorCache(biomeSource));
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class VulcanChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public void buildSurface(ChunkRegion region, Chunk chunk) {
-		// Unused.
+
 	}
 
 	@Override

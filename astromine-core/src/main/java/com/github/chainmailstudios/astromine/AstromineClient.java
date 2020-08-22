@@ -45,5 +45,6 @@ public class AstromineClient implements ClientModInitializer {
 		AstromineClientPackets.initialize();
 		AstromineRenderLayers.initialize();
 		AstrominePatchouliPages.initialize();
+		AstromineClientMiscellaneous.initialize();
 	}
 }

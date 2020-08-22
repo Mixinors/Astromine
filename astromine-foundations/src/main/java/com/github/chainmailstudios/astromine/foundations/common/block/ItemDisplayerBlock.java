@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.foundations.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.base.MachineBlock;
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableBlockWithEntity;
 import com.github.chainmailstudios.astromine.foundations.common.block.altar.entity.ItemDisplayerBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -24,7 +24,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class ItemDisplayerBlock extends MachineBlock {
+public class ItemDisplayerBlock extends WrenchableBlockWithEntity {
 	protected static final VoxelShape SHAPE = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 9.0D, 16.0D);
 
 	public ItemDisplayerBlock(Settings settings) {

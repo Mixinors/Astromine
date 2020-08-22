@@ -32,6 +32,6 @@ public class AstromineFoundationsItemGroups {
 	public static final ItemGroup ASTROMINE_FOUNDATIONS = register("astromine_foundations", () -> AstromineFoundationsItems.UNIVITE_AXE);
 
 	public static void initialize() {
-		// Unused.
+
 	}
 }

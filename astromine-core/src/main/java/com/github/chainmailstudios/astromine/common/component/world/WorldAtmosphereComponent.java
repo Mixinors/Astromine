@@ -24,18 +24,17 @@
 
 package com.github.chainmailstudios.astromine.common.component.world;
 
+import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.google.common.collect.Lists;
+import nerdhub.cardinal.components.api.component.Component;
+import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
-
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
-import nerdhub.cardinal.components.api.component.Component;
 
 import java.util.Collections;
 import java.util.List;
@@ -57,21 +56,31 @@ public class WorldAtmosphereComponent implements Component, Tickable {
 		return world;
 	}
 
+	public Map<BlockPos, FluidVolume> getVolumes() {
+		return volumes;
+	}
+
+	public FluidVolume get(BlockPos position) {
+		return volumes.getOrDefault(position, FluidVolume.empty());
+	}
+
 	public void add(BlockPos blockPos, FluidVolume volume) {
 		volumes.put(blockPos, volume);
+
+		if (!world.isClient) {
+			world.getPlayers().forEach((player) -> {
+				ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, ClientAtmosphereManager.GAS_ADDED, ClientAtmosphereManager.ofGasAdded(blockPos, volume));
+			});
+		}
 	}
 
 	public void remove(BlockPos blockPos) {
 		volumes.remove(blockPos);
-	}
 
-	public FluidVolume get(BlockPos position) {
-		RegistryKey<World> key = world.getRegistryKey();
-
-		if (!AstromineDimensions.isAstromine(key) && !volumes.containsKey(position)) {
-			return FluidVolume.oxygen();
-		} else {
-			return volumes.getOrDefault(position, FluidVolume.empty());
+		if (!world.isClient) {
+			world.getPlayers().forEach((player) -> {
+				ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, ClientAtmosphereManager.GAS_REMOVED, ClientAtmosphereManager.ofGasRemoved(blockPos));
+			});
 		}
 	}
 

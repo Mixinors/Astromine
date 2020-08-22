@@ -14,7 +14,7 @@ public class AstromineFoundationsBlockEntityTypes {
 	public static final BlockEntityType<AltarBlockEntity> ALTAR = register("altar", AltarBlockEntity::new, AstromineFoundationsBlocks.ALTAR);
 
 	public static void initialize() {
-		// Unused.
+
 	}
 
 	public static <B extends BlockEntity> BlockEntityType<B> register(String name, Supplier<B> supplier, Block... supportedBlocks) {

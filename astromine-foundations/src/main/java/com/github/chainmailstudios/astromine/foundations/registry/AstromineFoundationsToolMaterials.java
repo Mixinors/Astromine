@@ -32,10 +32,6 @@ public class AstromineFoundationsToolMaterials {
 	public static final ToolMaterial GALAXIUM = register(6, 3072, 11f, 5.0f, 18, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:galaxiums"))));
 	public static final ToolMaterial UNIVITE = register(7, 3918, 12f, 6.0f, 22, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:univite_ingots"))));
 
-	public static final ToolMaterial BASIC_DRILL = register(2, Integer.MAX_VALUE, 10F, 2F, 16, () -> Ingredient.EMPTY);
-	public static final ToolMaterial ADVANCED_DRILL = register(3, Integer.MAX_VALUE, 15F, 3F, 20, () -> Ingredient.EMPTY);
-	public static final ToolMaterial ELITE_DRILL = register(5, Integer.MAX_VALUE, 20F, 5F, 16, () -> Ingredient.EMPTY);
-
 	public static ToolMaterial register(int miningLevel, int itemDurability, float miningSpeed, float attackDamage, int enchantibility, Supplier<Ingredient> repairIngredient) {
 		return AstromineToolMaterials.register(miningLevel, itemDurability, miningSpeed, attackDamage, enchantibility, repairIngredient);
 	}

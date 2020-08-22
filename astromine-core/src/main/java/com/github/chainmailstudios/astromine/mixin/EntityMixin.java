@@ -25,9 +25,14 @@
 package com.github.chainmailstudios.astromine.mixin;
 
 import com.github.chainmailstudios.astromine.access.EntityAccess;
+import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
+import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
 import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.google.common.collect.Lists;
+import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.server.world.ServerWorld;
@@ -76,6 +81,7 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 
 	@Override
 	public double getGravity() {
+		World world = ((Entity) (Object) this).world;
 		return getGravity(world);
 	}
 
@@ -152,5 +158,20 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 			cir.setReturnValue(nextTeleportTarget);
 			nextTeleportTarget = null;
 		}
+	}
+
+	@Inject(at = @At("HEAD"), method = "moveToWorld(Lnet/minecraft/server/world/ServerWorld;)Lnet/minecraft/entity/Entity;")
+	void onThing(ServerWorld destination, CallbackInfoReturnable<Entity> cir) {
+		world.getPlayers().forEach((player) -> {
+			ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, ClientAtmosphereManager.GAS_ERASED, ClientAtmosphereManager.ofGasErased());
+
+			ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
+
+			WorldAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);
+
+			atmosphereComponent.getVolumes().forEach(((blockPos, volume) -> {
+				ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, ClientAtmosphereManager.GAS_ADDED, ClientAtmosphereManager.ofGasAdded(blockPos, volume));
+			}));
+		});
 	}
 }

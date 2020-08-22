@@ -33,10 +33,10 @@ import net.minecraft.item.ItemStack;
 import java.util.function.Supplier;
 
 public class AstromineItemGroups {
-	public static final ItemGroup ASTROMINE = register("astromine", () -> AstromineItems.BRONZE_WRENCH);
+	public static final ItemGroup ASTROMINE = register("astromine", () -> AstromineItems.ITEM);
 
 	public static void initialize() {
-		// Unused.
+
 	}
 
 	public static ItemGroup register(String id, Supplier<ItemConvertible> icon) {
