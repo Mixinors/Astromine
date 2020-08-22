@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.technologies.client.rei.electricsmelting;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -48,7 +49,7 @@ public class ElectricSmeltingDisplay extends DefaultCookingDisplay {
 
 	@Override
 	public Identifier getRecipeCategory() {
-		return AstromineRoughlyEnoughItemsPlugin.ELECTRIC_SMELTING;
+		return AstromineTechnologiesRoughlyEnoughItemsPlugin.ELECTRIC_SMELTING;
 	}
 
 	public double getEnergyRequired() {

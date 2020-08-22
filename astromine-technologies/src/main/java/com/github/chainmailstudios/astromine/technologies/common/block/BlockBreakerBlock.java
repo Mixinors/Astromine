@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block;
+package com.github.chainmailstudios.astromine.technologies.common.block;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -35,8 +35,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.BlockBreakerBlockEntity;
-import com.github.chainmailstudios.astromine.common.screenhandler.BlockBreakerScreenHandler;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.BlockBreakerBlockEntity;
+import com.github.chainmailstudios.astromine.technologies.common.screenhandler.BlockBreakerScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 public class BlockBreakerBlock extends WrenchableHorizontalFacingEnergyBlockWithEntity {

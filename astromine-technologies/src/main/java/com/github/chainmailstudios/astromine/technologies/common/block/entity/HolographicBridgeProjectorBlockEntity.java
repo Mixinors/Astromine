@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block.entity;
+package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 
@@ -40,8 +40,8 @@ import net.minecraft.util.math.Vec3i;
 import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
 import com.github.chainmailstudios.astromine.common.utilities.LineUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.VectorUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.vini2003.blade.common.data.Color;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
@@ -62,7 +62,7 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 	private boolean hasCheckedChild = false;
 
 	public HolographicBridgeProjectorBlockEntity() {
-		super(AstromineBlockEntityTypes.HOLOGRAPHIC_BRIDGE);
+		super(AstromineTechnologiesBlockEntityTypes.HOLOGRAPHIC_BRIDGE);
 	}
 
 	public boolean hasChild() {
@@ -117,7 +117,7 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 			BlockPos nP = new BlockPos(v.getX(), v.getY(), v.getZ());
 
 			if ((nP.getX() != bCP.getX() && nP.getX() != bOP.getX()) || (nP.getZ() != bCP.getZ() && nP.getZ() != bOP.getZ())) {
-				this.world.setBlockState(nP, AstromineBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
+				this.world.setBlockState(nP, AstromineTechnologiesBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
 			}
 
 			ComponentProvider componentProvider = ComponentProvider.fromWorld(world);

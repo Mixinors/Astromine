@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.technologies.client.rei.generating;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -45,7 +46,7 @@ import java.util.List;
 public class LiquidGeneratingCategory extends AbstractEnergyGeneratingCategory<LiquidGeneratingDisplay> {
 	@Override
 	public Identifier getIdentifier() {
-		return AstromineRoughlyEnoughItemsPlugin.LIQUID_GENERATING;
+		return AstromineTechnologiesRoughlyEnoughItemsPlugin.LIQUID_GENERATING;
 	}
 
 	@Override

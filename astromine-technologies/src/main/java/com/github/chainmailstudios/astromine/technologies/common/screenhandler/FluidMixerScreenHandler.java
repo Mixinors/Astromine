@@ -28,7 +28,7 @@ import com.github.chainmailstudios.astromine.technologies.registry.AstromineTech
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.chainmailstudios.astromine.common.block.entity.FluidMixerBlockEntity;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.FluidMixerBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.ComponentEnergyFluidScreenHandler;
 import com.github.chainmailstudios.astromine.common.widget.FluidVerticalBarWidget;

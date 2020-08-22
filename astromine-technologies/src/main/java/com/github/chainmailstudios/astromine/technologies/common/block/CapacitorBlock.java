@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block;
+package com.github.chainmailstudios.astromine.technologies.common.block;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -35,10 +35,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.CapacitorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.CreativeCapacitorBlockEntity;
-import com.github.chainmailstudios.astromine.common.screenhandler.CapacitorScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.CreativeCapacitorScreenHandler;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.CapacitorBlockEntity;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.CreativeCapacitorBlockEntity;
+import com.github.chainmailstudios.astromine.technologies.common.screenhandler.CapacitorScreenHandler;
+import com.github.chainmailstudios.astromine.technologies.common.screenhandler.CreativeCapacitorScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 public abstract class CapacitorBlock extends WrenchableHorizontalFacingEnergyBlockWithEntity {

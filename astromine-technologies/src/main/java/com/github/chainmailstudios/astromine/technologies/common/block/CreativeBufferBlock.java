@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block;
+package com.github.chainmailstudios.astromine.technologies.common.block;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -35,8 +35,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.CreativeBufferBlockEntity;
-import com.github.chainmailstudios.astromine.common.screenhandler.CreativeBufferScreenHandler;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.CreativeBufferBlockEntity;
+import com.github.chainmailstudios.astromine.technologies.common.screenhandler.CreativeBufferScreenHandler;
 
 public class CreativeBufferBlock extends WrenchableBlockWithEntity {
 	public CreativeBufferBlock(Settings settings) {

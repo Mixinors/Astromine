@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block.entity;
+package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
@@ -31,8 +31,8 @@ import com.github.chainmailstudios.astromine.common.component.inventory.ItemInve
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
 import com.github.chainmailstudios.astromine.common.recipe.PressingRecipe;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
 import net.minecraft.block.Block;
@@ -172,25 +172,25 @@ public abstract class PresserBlockEntity extends ComponentEnergyInventoryBlockEn
 
 	public static class Primitive extends PresserBlockEntity {
 		public Primitive() {
-			super(AstromineBlocks.PRIMITIVE_PRESSER, AstromineBlockEntityTypes.PRIMITIVE_PRESSER);
+			super(AstromineTechnologiesBlocks.PRIMITIVE_PRESSER, AstromineTechnologiesBlockEntityTypes.PRIMITIVE_PRESSER);
 		}
 	}
 
 	public static class Basic extends PresserBlockEntity {
 		public Basic() {
-			super(AstromineBlocks.BASIC_PRESSER, AstromineBlockEntityTypes.BASIC_PRESSER);
+			super(AstromineTechnologiesBlocks.BASIC_PRESSER, AstromineTechnologiesBlockEntityTypes.BASIC_PRESSER);
 		}
 	}
 
 	public static class Advanced extends PresserBlockEntity {
 		public Advanced() {
-			super(AstromineBlocks.ADVANCED_PRESSER, AstromineBlockEntityTypes.ADVANCED_PRESSER);
+			super(AstromineTechnologiesBlocks.ADVANCED_PRESSER, AstromineTechnologiesBlockEntityTypes.ADVANCED_PRESSER);
 		}
 	}
 
 	public static class Elite extends PresserBlockEntity {
 		public Elite() {
-			super(AstromineBlocks.ELITE_PRESSER, AstromineBlockEntityTypes.ELITE_PRESSER);
+			super(AstromineTechnologiesBlocks.ELITE_PRESSER, AstromineTechnologiesBlockEntityTypes.ELITE_PRESSER);
 		}
 	}
 }

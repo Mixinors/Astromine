@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.technologies.client.rei.generating;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -72,7 +73,7 @@ public class SolidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
 
 	@Override
 	public Identifier getRecipeCategory() {
-		return AstromineRoughlyEnoughItemsPlugin.SOLID_GENERATING;
+		return AstromineTechnologiesRoughlyEnoughItemsPlugin.SOLID_GENERATING;
 	}
 
 	@Override

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block;
+package com.github.chainmailstudios.astromine.technologies.common.block;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
@@ -42,7 +42,7 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.access.DyeColorAccess;
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.HolographicBridgeProjectorBlockEntity;
 import com.github.vini2003.blade.common.data.Color;
 
 public class HolographicBridgeProjectorBlock extends WrenchableHorizontalFacingBlockWithEntity {

@@ -22,15 +22,15 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block.entity;
+package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.technologies.common.block.ElectrolyzerBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 
-import com.github.chainmailstudios.astromine.common.block.ElectrolyzerBlock;
 import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
@@ -38,8 +38,8 @@ import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFl
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.recipe.ElectrolyzingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import org.jetbrains.annotations.NotNull;
 
@@ -159,7 +159,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	public static class Primitive extends ElectrolyzerBlockEntity {
 		public Primitive() {
-			super(AstromineBlocks.PRIMITIVE_ELECTROLYZER, AstromineBlockEntityTypes.PRIMITIVE_ELECTROLYZER);
+			super(AstromineTechnologiesBlocks.PRIMITIVE_ELECTROLYZER, AstromineTechnologiesBlockEntityTypes.PRIMITIVE_ELECTROLYZER);
 		}
 
 		@Override
@@ -170,7 +170,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	public static class Basic extends ElectrolyzerBlockEntity {
 		public Basic() {
-			super(AstromineBlocks.BASIC_ELECTROLYZER, AstromineBlockEntityTypes.BASIC_ELECTROLYZER);
+			super(AstromineTechnologiesBlocks.BASIC_ELECTROLYZER, AstromineTechnologiesBlockEntityTypes.BASIC_ELECTROLYZER);
 		}
 
 		@Override
@@ -181,7 +181,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	public static class Advanced extends ElectrolyzerBlockEntity {
 		public Advanced() {
-			super(AstromineBlocks.ADVANCED_ELECTROLYZER, AstromineBlockEntityTypes.ADVANCED_ELECTROLYZER);
+			super(AstromineTechnologiesBlocks.ADVANCED_ELECTROLYZER, AstromineTechnologiesBlockEntityTypes.ADVANCED_ELECTROLYZER);
 		}
 
 		@Override
@@ -192,7 +192,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	public static class Elite extends ElectrolyzerBlockEntity {
 		public Elite() {
-			super(AstromineBlocks.ELITE_ELECTROLYZER, AstromineBlockEntityTypes.ELITE_ELECTROLYZER);
+			super(AstromineTechnologiesBlocks.ELITE_ELECTROLYZER, AstromineTechnologiesBlockEntityTypes.ELITE_ELECTROLYZER);
 		}
 
 		@Override

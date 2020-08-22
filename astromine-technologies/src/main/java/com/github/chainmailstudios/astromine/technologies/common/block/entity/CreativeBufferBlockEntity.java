@@ -22,18 +22,18 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block.entity;
+package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
 import net.minecraft.util.Tickable;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentInventoryBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 
 public class CreativeBufferBlockEntity extends ComponentInventoryBlockEntity implements Tickable {
 	public CreativeBufferBlockEntity() {
-		super(AstromineBlockEntityTypes.CREATIVE_BUFFER);
+		super(AstromineTechnologiesBlockEntityTypes.CREATIVE_BUFFER);
 
 		itemComponent.getStack(0).setCount(itemComponent.getStack(0).getMaxCount());
 	}

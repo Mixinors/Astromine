@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block.entity;
+package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
@@ -30,8 +30,8 @@ import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentE
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.inventory.BaseInventory;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
 import net.minecraft.block.Block;
@@ -172,25 +172,25 @@ public abstract class ElectricSmelterBlockEntity extends ComponentEnergyInventor
 
 	public static class Primitive extends ElectricSmelterBlockEntity {
 		public Primitive() {
-			super(AstromineBlocks.PRIMITIVE_ELECTRIC_SMELTER, AstromineBlockEntityTypes.PRIMITIVE_ELECTRIC_SMELTER);
+			super(AstromineTechnologiesBlocks.PRIMITIVE_ELECTRIC_SMELTER, AstromineTechnologiesBlockEntityTypes.PRIMITIVE_ELECTRIC_SMELTER);
 		}
 	}
 
 	public static class Basic extends ElectricSmelterBlockEntity {
 		public Basic() {
-			super(AstromineBlocks.BASIC_ELECTRIC_SMELTER, AstromineBlockEntityTypes.BASIC_ELECTRIC_SMELTER);
+			super(AstromineTechnologiesBlocks.BASIC_ELECTRIC_SMELTER, AstromineTechnologiesBlockEntityTypes.BASIC_ELECTRIC_SMELTER);
 		}
 	}
 
 	public static class Advanced extends ElectricSmelterBlockEntity {
 		public Advanced() {
-			super(AstromineBlocks.ADVANCED_ELECTRIC_SMELTER, AstromineBlockEntityTypes.ADVANCED_ELECTRIC_SMELTER);
+			super(AstromineTechnologiesBlocks.ADVANCED_ELECTRIC_SMELTER, AstromineTechnologiesBlockEntityTypes.ADVANCED_ELECTRIC_SMELTER);
 		}
 	}
 
 	public static class Elite extends ElectricSmelterBlockEntity {
 		public Elite() {
-			super(AstromineBlocks.ELITE_ELECTRIC_SMELTER, AstromineBlockEntityTypes.ELITE_ELECTRIC_SMELTER);
+			super(AstromineTechnologiesBlocks.ELITE_ELECTRIC_SMELTER, AstromineTechnologiesBlockEntityTypes.ELITE_ELECTRIC_SMELTER);
 		}
 	}
 }

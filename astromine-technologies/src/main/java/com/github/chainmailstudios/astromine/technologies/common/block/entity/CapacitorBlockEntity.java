@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block.entity;
+package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
@@ -32,8 +32,8 @@ import net.minecraft.util.Tickable;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
@@ -69,28 +69,28 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyInventoryBlock
 
 	public static class Primitive extends CapacitorBlockEntity {
 		public Primitive() {
-			super(AstromineBlocks.PRIMITIVE_CAPACITOR, AstromineBlockEntityTypes.PRIMITIVE_CAPACITOR);
+			super(AstromineTechnologiesBlocks.PRIMITIVE_CAPACITOR, AstromineTechnologiesBlockEntityTypes.PRIMITIVE_CAPACITOR);
 		}
 
 	}
 
 	public static class Basic extends CapacitorBlockEntity {
 		public Basic() {
-			super(AstromineBlocks.BASIC_CAPACITOR, AstromineBlockEntityTypes.BASIC_CAPACITOR);
+			super(AstromineTechnologiesBlocks.BASIC_CAPACITOR, AstromineTechnologiesBlockEntityTypes.BASIC_CAPACITOR);
 		}
 
 	}
 
 	public static class Advanced extends CapacitorBlockEntity {
 		public Advanced() {
-			super(AstromineBlocks.ADVANCED_CAPACITOR, AstromineBlockEntityTypes.ADVANCED_CAPACITOR);
+			super(AstromineTechnologiesBlocks.ADVANCED_CAPACITOR, AstromineTechnologiesBlockEntityTypes.ADVANCED_CAPACITOR);
 		}
 
 	}
 
 	public static class Elite extends CapacitorBlockEntity {
 		public Elite() {
-			super(AstromineBlocks.ELITE_CAPACITOR, AstromineBlockEntityTypes.ELITE_CAPACITOR);
+			super(AstromineTechnologiesBlocks.ELITE_CAPACITOR, AstromineTechnologiesBlockEntityTypes.ELITE_CAPACITOR);
 		}
 
 	}

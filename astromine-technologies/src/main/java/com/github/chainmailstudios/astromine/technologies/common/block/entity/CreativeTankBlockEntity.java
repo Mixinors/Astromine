@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block.entity;
+package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.Identifier;
@@ -35,13 +35,13 @@ import com.github.chainmailstudios.astromine.common.component.inventory.FluidInv
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 
 public class CreativeTankBlockEntity extends ComponentFluidBlockEntity implements Tickable {
 	public static final Identifier FLUID_CHANGE_PACKET = AstromineCommon.identifier("fluid_change_component");
 
 	public CreativeTankBlockEntity() {
-		super(AstromineBlockEntityTypes.CREATIVE_TANK);
+		super(AstromineTechnologiesBlockEntityTypes.CREATIVE_TANK);
 
 		addConsumer(FLUID_CHANGE_PACKET, (buffer, context) -> {
 			Identifier fluidIdentifier = buffer.readIdentifier();

@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.technologies.client.rei.fluidmixing;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.common.recipe.FluidMixingRecipe;
@@ -37,6 +38,6 @@ public class FluidMixingDisplay extends AbstractFluidMixingDisplay {
 
 	@Override
 	public Identifier getRecipeCategory() {
-		return AstromineRoughlyEnoughItemsPlugin.FLUID_MIXING;
+		return AstromineTechnologiesRoughlyEnoughItemsPlugin.FLUID_MIXING;
 	}
 }

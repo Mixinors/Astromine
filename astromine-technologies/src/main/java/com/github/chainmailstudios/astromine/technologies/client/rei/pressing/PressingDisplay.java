@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.technologies.client.rei.pressing;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -83,7 +84,7 @@ public class PressingDisplay implements RecipeDisplay {
 
 	@Override
 	public Identifier getRecipeCategory() {
-		return AstromineRoughlyEnoughItemsPlugin.PRESSING;
+		return AstromineTechnologiesRoughlyEnoughItemsPlugin.PRESSING;
 	}
 
 	@Override

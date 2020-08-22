@@ -22,15 +22,15 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block.entity;
+package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.technologies.common.block.LiquidGeneratorBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 
-import com.github.chainmailstudios.astromine.common.block.LiquidGeneratorBlock;
 import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
@@ -38,8 +38,8 @@ import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFl
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.recipe.LiquidGeneratingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import org.jetbrains.annotations.NotNull;
 
@@ -162,7 +162,7 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 
 	public static class Primitive extends LiquidGeneratorBlockEntity {
 		public Primitive() {
-			super(AstromineBlocks.PRIMITIVE_LIQUID_GENERATOR, AstromineBlockEntityTypes.PRIMITIVE_LIQUID_GENERATOR);
+			super(AstromineTechnologiesBlocks.PRIMITIVE_LIQUID_GENERATOR, AstromineTechnologiesBlockEntityTypes.PRIMITIVE_LIQUID_GENERATOR);
 		}
 
 		@Override
@@ -173,7 +173,7 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 
 	public static class Basic extends LiquidGeneratorBlockEntity {
 		public Basic() {
-			super(AstromineBlocks.BASIC_LIQUID_GENERATOR, AstromineBlockEntityTypes.BASIC_LIQUID_GENERATOR);
+			super(AstromineTechnologiesBlocks.BASIC_LIQUID_GENERATOR, AstromineTechnologiesBlockEntityTypes.BASIC_LIQUID_GENERATOR);
 		}
 
 		@Override
@@ -184,7 +184,7 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 
 	public static class Advanced extends LiquidGeneratorBlockEntity {
 		public Advanced() {
-			super(AstromineBlocks.ADVANCED_LIQUID_GENERATOR, AstromineBlockEntityTypes.ADVANCED_LIQUID_GENERATOR);
+			super(AstromineTechnologiesBlocks.ADVANCED_LIQUID_GENERATOR, AstromineTechnologiesBlockEntityTypes.ADVANCED_LIQUID_GENERATOR);
 		}
 
 		@Override
@@ -195,7 +195,7 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 
 	public static class Elite extends LiquidGeneratorBlockEntity {
 		public Elite() {
-			super(AstromineBlocks.ELITE_LIQUID_GENERATOR, AstromineBlockEntityTypes.ELITE_LIQUID_GENERATOR);
+			super(AstromineTechnologiesBlocks.ELITE_LIQUID_GENERATOR, AstromineTechnologiesBlockEntityTypes.ELITE_LIQUID_GENERATOR);
 		}
 
 		@Override

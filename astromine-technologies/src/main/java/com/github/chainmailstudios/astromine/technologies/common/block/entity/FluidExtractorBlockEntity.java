@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block.entity;
+package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -40,8 +40,8 @@ import com.github.chainmailstudios.astromine.common.component.inventory.FluidInv
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 public class FluidExtractorBlockEntity extends ComponentEnergyFluidBlockEntity implements Tickable {
@@ -52,7 +52,7 @@ public class FluidExtractorBlockEntity extends ComponentEnergyFluidBlockEntity i
 	public boolean[] activity = { false, false, false, false, false };
 
 	public FluidExtractorBlockEntity() {
-		super(AstromineBlocks.FLUID_EXTRACTOR, AstromineBlockEntityTypes.FLUID_EXTRACTOR);
+		super(AstromineTechnologiesBlocks.FLUID_EXTRACTOR, AstromineTechnologiesBlockEntityTypes.FLUID_EXTRACTOR);
 
 		fluidComponent.getVolume(0).setSize(Fraction.ofWhole(4));
 	}

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block;
+package com.github.chainmailstudios.astromine.technologies.common.block;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -35,8 +35,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.FluidInserterBlockEntity;
-import com.github.chainmailstudios.astromine.common.screenhandler.FluidInserterScreenHandler;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.FluidInserterBlockEntity;
+import com.github.chainmailstudios.astromine.technologies.common.screenhandler.FluidInserterScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 public class FluidInserterBlock extends WrenchableHorizontalFacingEnergyBlockWithEntity {

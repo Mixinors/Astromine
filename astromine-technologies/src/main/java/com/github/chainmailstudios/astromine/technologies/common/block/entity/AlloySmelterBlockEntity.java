@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block.entity;
+package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
@@ -30,9 +30,9 @@ import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentE
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.inventory.BaseInventory;
-import com.github.chainmailstudios.astromine.common.recipe.AlloySmeltingRecipe;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.AlloySmeltingRecipe;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
@@ -175,25 +175,25 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyInventoryBl
 
 	public static class Primitive extends AlloySmelterBlockEntity {
 		public Primitive() {
-			super(AstromineBlocks.PRIMITIVE_ALLOY_SMELTER, AstromineBlockEntityTypes.PRIMITIVE_ALLOY_SMELTER);
+			super(AstromineTechnologiesBlocks.PRIMITIVE_ALLOY_SMELTER, AstromineTechnologiesBlockEntityTypes.PRIMITIVE_ALLOY_SMELTER);
 		}
 	}
 
 	public static class Basic extends AlloySmelterBlockEntity {
 		public Basic() {
-			super(AstromineBlocks.BASIC_ALLOY_SMELTER, AstromineBlockEntityTypes.BASIC_ALLOY_SMELTER);
+			super(AstromineTechnologiesBlocks.BASIC_ALLOY_SMELTER, AstromineTechnologiesBlockEntityTypes.BASIC_ALLOY_SMELTER);
 		}
 	}
 
 	public static class Advanced extends AlloySmelterBlockEntity {
 		public Advanced() {
-			super(AstromineBlocks.ADVANCED_ALLOY_SMELTER, AstromineBlockEntityTypes.ADVANCED_ALLOY_SMELTER);
+			super(AstromineTechnologiesBlocks.ADVANCED_ALLOY_SMELTER, AstromineTechnologiesBlockEntityTypes.ADVANCED_ALLOY_SMELTER);
 		}
 	}
 
 	public static class Elite extends AlloySmelterBlockEntity {
 		public Elite() {
-			super(AstromineBlocks.ELITE_ALLOY_SMELTER, AstromineBlockEntityTypes.ELITE_ALLOY_SMELTER);
+			super(AstromineTechnologiesBlocks.ELITE_ALLOY_SMELTER, AstromineTechnologiesBlockEntityTypes.ELITE_ALLOY_SMELTER);
 		}
 	}
 }

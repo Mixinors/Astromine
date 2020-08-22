@@ -1,7 +1,5 @@
 package com.github.chainmailstudios.astromine.technologies.registry;
 
-import com.github.chainmailstudios.astromine.common.recipe.*;
-import com.github.chainmailstudios.astromine.common.recipe.AlloySmeltingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.ElectrolyzingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.FluidMixingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.LiquidGeneratingRecipe;
@@ -9,6 +7,7 @@ import com.github.chainmailstudios.astromine.common.recipe.PressingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.SolidGeneratingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineRecipeSerializers;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.AlloySmeltingRecipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.registry.Registry;
 

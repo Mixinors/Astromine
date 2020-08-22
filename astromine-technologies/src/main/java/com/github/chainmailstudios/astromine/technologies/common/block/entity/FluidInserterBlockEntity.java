@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block.entity;
+package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -39,8 +39,8 @@ import com.github.chainmailstudios.astromine.common.component.inventory.FluidInv
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 public class FluidInserterBlockEntity extends ComponentEnergyFluidBlockEntity implements Tickable {
@@ -51,7 +51,7 @@ public class FluidInserterBlockEntity extends ComponentEnergyFluidBlockEntity im
 	public boolean[] activity = { false, false, false, false, false };
 
 	public FluidInserterBlockEntity() {
-		super(AstromineBlocks.FLUID_INSERTER, AstromineBlockEntityTypes.FLUID_INSERTER);
+		super(AstromineTechnologiesBlocks.FLUID_INSERTER, AstromineTechnologiesBlockEntityTypes.FLUID_INSERTER);
 
 		fluidComponent.getVolume(0).setSize(Fraction.ofWhole(4));
 	}

@@ -22,16 +22,16 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block.entity;
+package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
 import net.minecraft.util.Tickable;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyBlockEntity;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 
 public class CreativeCapacitorBlockEntity extends ComponentEnergyBlockEntity implements Tickable {
 	public CreativeCapacitorBlockEntity() {
-		super(AstromineBlocks.CREATIVE_CAPACITOR, AstromineBlockEntityTypes.CREATIVE_CAPACITOR);
+		super(AstromineTechnologiesBlocks.CREATIVE_CAPACITOR, AstromineTechnologiesBlockEntityTypes.CREATIVE_CAPACITOR);
 	}
 }

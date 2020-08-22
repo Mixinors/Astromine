@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.technologies.client.rei.triturating;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -83,7 +84,7 @@ public class TrituratingDisplay implements RecipeDisplay {
 
 	@Override
 	public Identifier getRecipeCategory() {
-		return AstromineRoughlyEnoughItemsPlugin.TRITURATING;
+		return AstromineTechnologiesRoughlyEnoughItemsPlugin.TRITURATING;
 	}
 
 	@Override

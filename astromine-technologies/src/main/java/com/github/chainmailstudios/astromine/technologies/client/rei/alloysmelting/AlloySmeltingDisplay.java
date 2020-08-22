@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.technologies.client.rei.alloysmelting;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.AlloySmeltingRecipe;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -86,7 +87,7 @@ public class AlloySmeltingDisplay implements RecipeDisplay {
 
 	@Override
 	public Identifier getRecipeCategory() {
-		return AstromineRoughlyEnoughItemsPlugin.ALLOY_SMELTING;
+		return AstromineTechnologiesRoughlyEnoughItemsPlugin.ALLOY_SMELTING;
 	}
 
 	@Override

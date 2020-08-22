@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block.entity;
+package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
@@ -31,8 +31,8 @@ import com.github.chainmailstudios.astromine.common.component.inventory.ItemInve
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
 import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
 import net.minecraft.block.Block;
@@ -174,28 +174,28 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyInventoryBloc
 
 	public static class Primitive extends TrituratorBlockEntity {
 		public Primitive() {
-			super(AstromineBlocks.PRIMITIVE_TRITURATOR, AstromineBlockEntityTypes.PRIMITIVE_TRITURATOR);
+			super(AstromineTechnologiesBlocks.PRIMITIVE_TRITURATOR, AstromineTechnologiesBlockEntityTypes.PRIMITIVE_TRITURATOR);
 		}
 
 	}
 
 	public static class Basic extends TrituratorBlockEntity {
 		public Basic() {
-			super(AstromineBlocks.BASIC_TRITURATOR, AstromineBlockEntityTypes.BASIC_TRITURATOR);
+			super(AstromineTechnologiesBlocks.BASIC_TRITURATOR, AstromineTechnologiesBlockEntityTypes.BASIC_TRITURATOR);
 		}
 
 	}
 
 	public static class Advanced extends TrituratorBlockEntity {
 		public Advanced() {
-			super(AstromineBlocks.ADVANCED_TRITURATOR, AstromineBlockEntityTypes.ADVANCED_TRITURATOR);
+			super(AstromineTechnologiesBlocks.ADVANCED_TRITURATOR, AstromineTechnologiesBlockEntityTypes.ADVANCED_TRITURATOR);
 		}
 
 	}
 
 	public static class Elite extends TrituratorBlockEntity {
 		public Elite() {
-			super(AstromineBlocks.ELITE_TRITURATOR, AstromineBlockEntityTypes.ELITE_TRITURATOR);
+			super(AstromineTechnologiesBlocks.ELITE_TRITURATOR, AstromineTechnologiesBlockEntityTypes.ELITE_TRITURATOR);
 		}
 
 	}

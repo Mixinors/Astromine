@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.technologies.client.rei.electricsmelting;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -46,7 +47,7 @@ import java.util.List;
 @Environment(EnvType.CLIENT)
 public class ElectricSmeltingCategory extends DefaultCookingCategory {
 	public ElectricSmeltingCategory() {
-		super(AstromineRoughlyEnoughItemsPlugin.ELECTRIC_SMELTING, EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_ELECTRIC_SMELTER), "category.astromine.electric_smelting");
+		super(AstromineTechnologiesRoughlyEnoughItemsPlugin.ELECTRIC_SMELTING, EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_ELECTRIC_SMELTER), "category.astromine.electric_smelting");
 	}
 
 	@Override

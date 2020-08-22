@@ -25,10 +25,11 @@
 package com.github.chainmailstudios.astromine.technologies.common.screenhandler;
 
 import com.github.chainmailstudios.astromine.common.widget.vanilla.ResultSlot;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.AlloySmelterBlockEntity;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.chainmailstudios.astromine.common.block.entity.AlloySmelterBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.ComponentEnergyItemScreenHandler;
 import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
 import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;

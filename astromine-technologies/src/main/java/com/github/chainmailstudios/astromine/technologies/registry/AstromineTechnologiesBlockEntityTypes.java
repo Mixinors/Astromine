@@ -1,26 +1,6 @@
 package com.github.chainmailstudios.astromine.technologies.registry;
 
-import com.github.chainmailstudios.astromine.common.block.entity.*;
-import com.github.chainmailstudios.astromine.common.block.entity.AlloySmelterBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.BlockBreakerBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.BlockPlacerBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.BufferBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.CapacitorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.CreativeBufferBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.CreativeCapacitorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.CreativeTankBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.ElectricSmelterBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.ElectrolyzerBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.FluidExtractorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.FluidInserterBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.FluidMixerBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.HolographicBridgeProjectorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.LiquidGeneratorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.PresserBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.SolidGeneratorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.TankBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.TrituratorBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.VentBlockEntity;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.*;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import net.minecraft.block.entity.BlockEntityType;

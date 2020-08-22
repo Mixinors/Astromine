@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei.generating;
 
+import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -46,7 +47,7 @@ import java.util.List;
 public class SolidGeneratingCategory extends AbstractEnergyGeneratingCategory<SolidGeneratingDisplay> {
 	@Override
 	public Identifier getIdentifier() {
-		return AstromineRoughlyEnoughItemsPlugin.SOLID_GENERATING;
+		return AstromineTechnologiesRoughlyEnoughItemsPlugin.SOLID_GENERATING;
 	}
 
 	@Override

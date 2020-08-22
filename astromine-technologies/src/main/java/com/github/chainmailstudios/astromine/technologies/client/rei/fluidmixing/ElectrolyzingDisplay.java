@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.technologies.client.rei.fluidmixing;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -78,7 +79,7 @@ public class ElectrolyzingDisplay implements RecipeDisplay {
 
 	@Override
 	public Identifier getRecipeCategory() {
-		return AstromineRoughlyEnoughItemsPlugin.ELECTROLYZING;
+		return AstromineTechnologiesRoughlyEnoughItemsPlugin.ELECTROLYZING;
 	}
 
 	@Override

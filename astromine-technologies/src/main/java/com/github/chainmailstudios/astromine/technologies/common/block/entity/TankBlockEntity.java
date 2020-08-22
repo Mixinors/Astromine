@@ -22,18 +22,18 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block.entity;
+package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 public class TankBlockEntity extends ComponentFluidBlockEntity {
 	public TankBlockEntity() {
-		super(AstromineBlockEntityTypes.FLUID_TANK);
+		super(AstromineTechnologiesBlockEntityTypes.TANK);
 
 		fluidComponent.getVolume(0).setSize(new Fraction(AstromineConfig.get().tankFluid, 1));
 	}
