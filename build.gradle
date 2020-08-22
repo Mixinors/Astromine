@@ -83,6 +83,10 @@ allprojects {
 			name = "Earthcomputer"
 			url = "https://dl.bintray.com/earthcomputer/mods"
 		}
+		maven {
+			name = "Modmaven"
+			url = "https://modmaven.k-4u.nl"
+		}
     }
 
     dependencies {
