@@ -24,9 +24,10 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
-import com.github.chainmailstudios.astromine.common.item.DrillItem;
-import com.github.chainmailstudios.astromine.common.item.MultitoolItem;
-import com.github.chainmailstudios.astromine.common.item.SpaceSuitItem;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.item.*;
+import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
+import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.utilities.ToolUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.WorldPos;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
@@ -471,6 +472,10 @@ public class AstromineFoundationsItems {
 	public static final Item SPACE_SUIT_CHESTPLATE = register("space_suit_chestplate", new SpaceSuitItem(AstromineFoundationsArmorMaterials.SPACE_SUIT, EquipmentSlot.CHEST, getBasicSettings()));
 	public static final Item SPACE_SUIT_LEGGINGS = register("space_suit_leggings", new SpaceSuitItem(AstromineFoundationsArmorMaterials.SPACE_SUIT, EquipmentSlot.LEGS, getBasicSettings()));
 	public static final Item SPACE_SUIT_BOOTS = register("space_suit_boots", new SpaceSuitItem(AstromineFoundationsArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, getBasicSettings()));
+
+	public static final Item BRONZE_WRENCH = register("bronze_wrench", new WrenchItem(getBasicSettings()));
+
+	public static final Item FIRE_EXTINGUISHER = register("fire_extinguisher", new FireExtinguisherItem(getBasicSettings().maxCount(1)));
 
 	protected static Item.Settings getBasicSettings() {
 		return AstromineItems.getBasicSettings().group(AstromineFoundationsItemGroups.ASTROMINE_FOUNDATIONS);
