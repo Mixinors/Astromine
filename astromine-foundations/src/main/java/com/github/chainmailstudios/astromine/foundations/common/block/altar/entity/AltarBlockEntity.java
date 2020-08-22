@@ -5,6 +5,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.SimpleIt
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
 import com.github.chainmailstudios.astromine.foundations.common.recipe.AltarRecipe;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 import com.google.common.collect.Lists;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.util.NbtType;
@@ -19,6 +20,7 @@ import net.minecraft.nbt.LongTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Lazy;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
@@ -101,6 +103,7 @@ public class AltarBlockEntity extends BlockEntity implements ItemInventoryFromIn
 					entity.refreshPositionAfterTeleport(pos.getX() + 0.5, pos.getY() + 1 + HEIGHT_OFFSET, pos.getZ() + 0.5);
 					entity.setCosmetic(true);
 					world.spawnEntity(entity);
+					world.playSound(null, getPos(), AstromineSoundEvents.ALTAR_FINISH, SoundCategory.BLOCKS, 1.5F, 1);
 				}
 				if (craftingTicks >= CRAFTING_TIME + CRAFTING_TIME_SPIN + CRAFTING_TIME_FALL) {
 					onRemove();
@@ -164,6 +167,8 @@ public class AltarBlockEntity extends BlockEntity implements ItemInventoryFromIn
 			for (Supplier<ItemDisplayerBlockEntity> child : children) {
 				child.get().sync();
 			}
+
+			world.playSound(null, getPos(), AstromineSoundEvents.ALTAR_START, SoundCategory.BLOCKS, 1, 1);
 
 			return true;
 		} else {

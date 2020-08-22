@@ -25,5 +25,17 @@
       "mob/ghast/fireball4"
     ],
     "subtitle": "subtitle.astromine.incinerator.incinerate"
+  },
+  "block.altar.start": {
+	"sounds": [
+	  "astromine:altar_start"
+	],
+	"subtitle": "subtitle.astromine.altar.start"
+  },
+  "block.altar.finish": {
+	"sounds": [
+	  "astromine:altar_finish"
+	],
+	"subtitle": "subtitle.astromine.altar.finish"
   }
 }
