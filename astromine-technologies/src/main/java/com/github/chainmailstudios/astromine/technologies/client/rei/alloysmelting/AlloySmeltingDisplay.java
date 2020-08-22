@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei.alloysmelting;
 
-import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.AlloySmeltingRecipe;
 import net.fabricmc.api.EnvType;

@@ -25,10 +25,17 @@
 package com.github.chainmailstudios.astromine.technologies;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.technologies.registry.*;
 
 public class AstromineTechnologiesCommon extends AstromineCommon {
 	@Override
 	public void onInitialize() {
-
+		AstromineTechnologiesBlockEntityTypes.initialize();
+		AstromineTechnologiesBlocks.initialize();
+		AstromineTechnologiesItems.initialize();
+		AstromineTechnologiesNetworkMembers.initialize();
+		AstromineTechnologiesRecipeSerializers.initialize();
+		AstromineTechnologiesScreenHandlers.initialize();
+		AstromineTechnologiesToolMaterials.initialize();
 	}
 }

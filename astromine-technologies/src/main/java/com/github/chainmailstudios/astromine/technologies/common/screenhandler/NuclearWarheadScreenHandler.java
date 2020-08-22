@@ -29,8 +29,6 @@ import com.github.chainmailstudios.astromine.technologies.registry.AstromineTech
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
-
 public class NuclearWarheadScreenHandler extends BlockStateScreenHandler {
 	public NuclearWarheadScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AstromineTechnologiesScreenHandlers.NUCLEAR_WARHEAD, syncId, player, position);

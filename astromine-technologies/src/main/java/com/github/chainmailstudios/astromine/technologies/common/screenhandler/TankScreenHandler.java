@@ -29,7 +29,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.chainmailstudios.astromine.common.screenhandler.base.ComponentFluidScreenHandler;
-import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 
 public class TankScreenHandler extends ComponentFluidScreenHandler {
 	public TankScreenHandler(int syncId, PlayerEntity player, BlockPos position) {

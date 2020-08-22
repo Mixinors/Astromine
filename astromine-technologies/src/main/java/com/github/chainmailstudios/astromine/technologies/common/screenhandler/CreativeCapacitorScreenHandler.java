@@ -29,7 +29,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.chainmailstudios.astromine.common.screenhandler.base.ComponentEnergyScreenHandler;
-import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 
 public class CreativeCapacitorScreenHandler extends ComponentEnergyScreenHandler {
 	public CreativeCapacitorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {

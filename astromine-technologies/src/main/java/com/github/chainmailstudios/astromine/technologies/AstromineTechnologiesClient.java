@@ -25,6 +25,9 @@
 package com.github.chainmailstudios.astromine.technologies;
 
 import com.github.chainmailstudios.astromine.AstromineClient;
+import com.github.chainmailstudios.astromine.technologies.registry.client.AstromineTechnologiesBlockEntityRenderers;
+import com.github.chainmailstudios.astromine.technologies.registry.client.AstromineTechnologiesPatchouliPages;
+import com.github.chainmailstudios.astromine.technologies.registry.client.AstromineTechnologiesScreens;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -32,6 +35,8 @@ import net.fabricmc.api.Environment;
 public class AstromineTechnologiesClient extends AstromineClient {
 	@Override
 	public void onInitializeClient() {
-
+		AstromineTechnologiesBlockEntityRenderers.initialize();
+		AstromineTechnologiesPatchouliPages.initialize();
+		AstromineTechnologiesScreens.initialize();
 	}
 }

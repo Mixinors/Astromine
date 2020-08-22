@@ -2,7 +2,6 @@ package com.github.chainmailstudios.astromine.technologies.registry;
 
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.*;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import net.minecraft.block.entity.BlockEntityType;
 
 public class AstromineTechnologiesBlockEntityTypes extends AstromineBlockEntityTypes {
