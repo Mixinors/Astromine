@@ -3,7 +3,7 @@
   "id": "astromine-foundations",
   "version": "${version}",
   "name": "Astromine: Foundations",
-  "description": "The",
+  "description": "The base content module of Astromine.",
   "authors": [
     "vini2003",
     "Shnupbups",
@@ -22,9 +22,10 @@
   "icon": "assets/astromine-foundations/icon.png",
   "environment": "*",
   "entrypoints": {
-    "main": ["com.github.chainmailstudios.astromine.foundations.AstromineFoundations"],
+    "main": ["com.github.chainmailstudios.astromine.foundations.AstromineFoundationsCommon"],
     "client": ["com.github.chainmailstudios.astromine.foundations.AstromineFoundationsClient"]
   },
+  "mixins": ["astromine-foundations.mixins.json"],
   "accessWidener": "astromine-foundations.accesswidener",
   "depends": {
     "fabricloader": ">=0.9.2",

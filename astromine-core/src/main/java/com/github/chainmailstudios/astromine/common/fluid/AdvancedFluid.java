@@ -58,6 +58,7 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class AdvancedFluid extends FlowableFluid implements Breathable {
 	final int fogColor;
+	final int tintColor;
 	final int damage;
 
 	final boolean isInfinite;
@@ -72,8 +73,9 @@ public abstract class AdvancedFluid extends FlowableFluid implements Breathable 
 
 	DamageSource source;
 
-	public AdvancedFluid(int fogColor, int damage, boolean isInfinite, boolean isToxic, @Nullable DamageSource source) {
+	public AdvancedFluid(int fogColor, int tintColor, int damage, boolean isInfinite, boolean isToxic, @Nullable DamageSource source) {
 		this.fogColor = fogColor;
+		this.tintColor = tintColor;
 		this.damage = damage;
 		this.isInfinite = isInfinite;
 		this.isToxic = isToxic;
@@ -106,6 +108,18 @@ public abstract class AdvancedFluid extends FlowableFluid implements Breathable 
 	@Override
 	protected boolean isInfinite() {
 		return isInfinite;
+	}
+
+	public int getFogColor() {
+		return fogColor;
+	}
+
+	public int getTintColor() {
+		return tintColor;
+	}
+
+	public Block getBlock() {
+		return block;
 	}
 
 	@Override
@@ -188,7 +202,7 @@ public abstract class AdvancedFluid extends FlowableFluid implements Breathable 
 		DamageSource source;
 
 		private Builder() {
-			// Unused.
+
 		}
 
 		public Builder fog(int fog) {
@@ -227,8 +241,8 @@ public abstract class AdvancedFluid extends FlowableFluid implements Breathable 
 		}
 
 		public Fluid build() {
-			AdvancedFluid flowing = AstromineFluids.register(name + "_flowing", new Flowing(fog, damage, isInfinite, isToxic, source));
-			AdvancedFluid still = AstromineFluids.register(name, new Still(fog, damage, isInfinite, isToxic, source));
+			AdvancedFluid flowing = AstromineFluids.register(name + "_flowing", new Flowing(fog, tint, damage, isInfinite, isToxic, source));
+			AdvancedFluid still = AstromineFluids.register(name, new Still(fog, tint, damage, isInfinite, isToxic, source));
 
 			flowing.flowing = flowing;
 			still.flowing = flowing;
@@ -259,8 +273,8 @@ public abstract class AdvancedFluid extends FlowableFluid implements Breathable 
 	}
 
 	public static class Flowing extends AdvancedFluid {
-		public Flowing(int fogColor, int damage, boolean isInfinite, boolean isToxic, DamageSource source) {
-			super(fogColor, damage, isInfinite, isToxic, source);
+		public Flowing(int fogColor, int tintColor, int damage, boolean isInfinite, boolean isToxic, @Nullable DamageSource source) {
+			super(fogColor, tintColor, damage, isInfinite, isToxic, source);
 		}
 
 		@Override
@@ -281,8 +295,8 @@ public abstract class AdvancedFluid extends FlowableFluid implements Breathable 
 	}
 
 	public static class Still extends AdvancedFluid {
-		public Still(int fogColor, int damage, boolean isInfinite, boolean isToxic, DamageSource source) {
-			super(fogColor, damage, isInfinite, isToxic, source);
+		public Still(int fogColor, int tintColor, int damage, boolean isInfinite, boolean isToxic, @Nullable DamageSource source) {
+			super(fogColor, tintColor, damage, isInfinite, isToxic, source);
 		}
 
 		@Override

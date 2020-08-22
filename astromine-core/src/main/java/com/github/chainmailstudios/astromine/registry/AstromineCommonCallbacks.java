@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 import net.minecraft.entity.LivingEntity;
@@ -33,11 +34,10 @@ import net.minecraft.util.registry.Registry;
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
-import com.github.chainmailstudios.astromine.common.screenhandler.base.DefaultedBlockEntityScreenHandler;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.ComponentBlockEntityScreenHandler;
 import nerdhub.cardinal.components.api.event.EntityComponentCallback;
 import nerdhub.cardinal.components.api.event.ItemComponentCallbackV2;
 import nerdhub.cardinal.components.api.event.WorldComponentCallback;
@@ -62,8 +62,8 @@ public class AstromineCommonCallbacks {
 
 		ServerTickEvents.START_SERVER_TICK.register((server) -> {
 			for (PlayerEntity playerEntity : server.getPlayerManager().getPlayerList()) {
-				if (playerEntity.currentScreenHandler instanceof DefaultedBlockEntityScreenHandler) {
-					DefaultedBlockEntityScreenHandler screenHandler = (DefaultedBlockEntityScreenHandler) playerEntity.currentScreenHandler;
+				if (playerEntity.currentScreenHandler instanceof ComponentBlockEntityScreenHandler) {
+					ComponentBlockEntityScreenHandler screenHandler = (ComponentBlockEntityScreenHandler) playerEntity.currentScreenHandler;
 
 					if (screenHandler.syncBlockEntity != null) {
 						screenHandler.syncBlockEntity.sync();

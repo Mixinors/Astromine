@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.foundations.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.base.MachineBlock;
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableBlockWithEntity;
 import com.github.chainmailstudios.astromine.foundations.common.block.altar.entity.AltarBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -21,7 +21,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class AltarBlock extends MachineBlock {
+public class AltarBlock extends WrenchableBlockWithEntity {
 	public AltarBlock(Settings settings) {
 		super(settings);
 	}

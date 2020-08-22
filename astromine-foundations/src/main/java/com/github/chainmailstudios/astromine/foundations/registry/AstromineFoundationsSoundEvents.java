@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
-import com.github.chainmailstudios.astromine.foundations.AstromineFoundations;
+import com.github.chainmailstudios.astromine.foundations.AstromineFoundationsCommon;
 import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 import net.minecraft.sound.SoundEvent;
 
@@ -50,6 +50,6 @@ public class AstromineFoundationsSoundEvents {
 	public static final SoundEvent SPACE_SUIT_EQUIPPED = register("item.armor.equip_space_suit");
 
 	public static SoundEvent register(String id) {
-		return AstromineSoundEvents.register(AstromineFoundations.appendId(id));
+		return AstromineSoundEvents.register(AstromineFoundationsCommon.appendId(id));
 	}
 }

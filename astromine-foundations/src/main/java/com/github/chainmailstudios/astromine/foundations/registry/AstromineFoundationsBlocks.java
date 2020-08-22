@@ -99,7 +99,7 @@ public class AstromineFoundationsBlocks {
 	}
 
 	public static void initialize() {
-		// Unused.
+
 	}
 
 	public static <T extends Block> T register(String name, T block, Item.Settings settings) {

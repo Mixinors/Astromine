@@ -39,7 +39,7 @@ public class DimensionLayerRegistry {
 	private final Map<RegistryKey<World>, Pair<EntityPlacer, EntityPlacer>> PLACERS = new HashMap<>();
 
 	private DimensionLayerRegistry() {
-		// Unused.
+
 	}
 
 	public void register(Type type, RegistryKey<World> dimension, Integer levelY, RegistryKey<World> newDimension, EntityPlacer placer) {

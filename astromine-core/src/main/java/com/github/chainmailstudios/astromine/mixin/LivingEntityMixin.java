@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
+import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
+import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -49,7 +51,6 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
-import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
 import com.github.chainmailstudios.astromine.common.fluid.AdvancedFluid;
 import com.github.chainmailstudios.astromine.common.item.SpaceSuitItem;
@@ -89,7 +90,7 @@ public abstract class LivingEntityMixin implements GravityEntity {
 
 			WorldAtmosphereComponent atmosphereComponent = worldProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);
 
-			FluidVolume atmosphereVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
+			FluidVolume atmosphereVolume = AstromineDimensions.isAstromine(entity.world.getRegistryKey()) ? atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP)) : FluidVolume.empty();
 
 			if (SpaceSuitItem.hasFullArmor(equippedArmor))
 				return;
