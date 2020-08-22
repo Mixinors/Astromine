@@ -20,7 +20,7 @@ import net.minecraft.util.math.Vec3d;
 import java.util.Random;
 
 public class ItemDisplayerBlockEntityRenderer extends BlockEntityRenderer<ItemDisplayerBlockEntity> {
-	public static final float HOVER_HEIGHT = -.3f;
+	public static final float HOVER_HEIGHT = 0f;
 	private final ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
 	private final Random random = new Random();
 
