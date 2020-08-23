@@ -26,15 +26,13 @@ package com.github.chainmailstudios.astromine.mixin;
 
 import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
 import com.github.chainmailstudios.astromine.client.render.Layers;
-import com.github.chainmailstudios.astromine.common.fluid.AdvancedFluid;
-import com.github.vini2003.blade.common.data.Color;
+import com.github.chainmailstudios.astromine.common.fluid.ExtendedFluid;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -87,8 +85,8 @@ public abstract class WorldRendererMixin {
 			int b = 255;
 			int a = 31;
 			
-			if (volume.getFluid() instanceof AdvancedFluid) {
-				int color = ((AdvancedFluid) volume.getFluid()).getTintColor();
+			if (volume.getFluid() instanceof ExtendedFluid) {
+				int color = ((ExtendedFluid) volume.getFluid()).getTintColor();
 
 				r = (color >> 16 & 255);
 				g = (color >> 8 & 255);

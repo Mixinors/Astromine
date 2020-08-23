@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.transportations.common.registry.client;
+package com.github.chainmailstudios.astromine.transportations.registry.client;
 
-import com.github.chainmailstudios.astromine.transportations.common.registry.AstromineTransportationsBlockEntityTypes;
+import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
 import com.github.chainmailstudios.astromine.transportations.client.render.block.*;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import net.minecraft.block.entity.BlockEntity;

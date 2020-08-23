@@ -39,6 +39,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.math.BlockPos;
@@ -56,24 +57,24 @@ import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.github.vini2003.blade.common.data.Color;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class AdvancedFluid extends FlowableFluid implements Breathable {
-	final int fogColor;
-	final int tintColor;
-	final int damage;
+public abstract class ExtendedFluid extends FlowableFluid implements Breathable {
+	private final int fogColor;
+	private final int tintColor;
+	private final int damage;
 
-	final boolean isInfinite;
-	final boolean isToxic;
+	private final boolean isInfinite;
+	private final boolean isToxic;
 
-	Block block;
+	private Block block;
 
-	Fluid flowing;
-	Fluid still;
+	private Fluid flowing;
+	private Fluid still;
 
-	Item bucket;
+	private Item bucket;
 
-	DamageSource source;
+	private DamageSource source;
 
-	public AdvancedFluid(int fogColor, int tintColor, int damage, boolean isInfinite, boolean isToxic, @Nullable DamageSource source) {
+	public ExtendedFluid(int fogColor, int tintColor, int damage, boolean isInfinite, boolean isToxic, @Nullable DamageSource source) {
 		this.fogColor = fogColor;
 		this.tintColor = tintColor;
 		this.damage = damage;
@@ -201,6 +202,8 @@ public abstract class AdvancedFluid extends FlowableFluid implements Breathable 
 
 		DamageSource source;
 
+		ItemGroup group;
+
 		private Builder() {
 
 		}
@@ -240,9 +243,14 @@ public abstract class AdvancedFluid extends FlowableFluid implements Breathable 
 			return this;
 		}
 
+		public Builder group(ItemGroup group) {
+			this.group = group;
+			return this;
+		}
+
 		public Fluid build() {
-			AdvancedFluid flowing = AstromineFluids.register(name + "_flowing", new Flowing(fog, tint, damage, isInfinite, isToxic, source));
-			AdvancedFluid still = AstromineFluids.register(name, new Still(fog, tint, damage, isInfinite, isToxic, source));
+			ExtendedFluid flowing = AstromineFluids.register(name + "_flowing", new Flowing(fog, tint, damage, isInfinite, isToxic, source));
+			ExtendedFluid still = AstromineFluids.register(name, new Still(fog, tint, damage, isInfinite, isToxic, source));
 
 			flowing.flowing = flowing;
 			still.flowing = flowing;
@@ -254,7 +262,7 @@ public abstract class AdvancedFluid extends FlowableFluid implements Breathable 
 
 			Block block = AstromineBlocks.register(name, new FluidBlock(still, AbstractBlock.Settings.of(Material.WATER).noCollision().strength(100.0F).dropsNothing()));
 
-			Item bucket = AstromineItems.register(name + "_bucket", new BucketItem(still, (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1).group(AstromineItemGroups.ASTROMINE)));
+			Item bucket = AstromineItems.register(name + "_bucket", new BucketItem(still, (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1).group(group)));
 
 			flowing.block = block;
 			still.block = block;
@@ -272,7 +280,7 @@ public abstract class AdvancedFluid extends FlowableFluid implements Breathable 
 		}
 	}
 
-	public static class Flowing extends AdvancedFluid {
+	public static class Flowing extends ExtendedFluid {
 		public Flowing(int fogColor, int tintColor, int damage, boolean isInfinite, boolean isToxic, @Nullable DamageSource source) {
 			super(fogColor, tintColor, damage, isInfinite, isToxic, source);
 		}
@@ -294,7 +302,7 @@ public abstract class AdvancedFluid extends FlowableFluid implements Breathable 
 		}
 	}
 
-	public static class Still extends AdvancedFluid {
+	public static class Still extends ExtendedFluid {
 		public Still(int fogColor, int tintColor, int damage, boolean isInfinite, boolean isToxic, @Nullable DamageSource source) {
 			super(fogColor, tintColor, damage, isInfinite, isToxic, source);
 		}

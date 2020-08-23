@@ -14,7 +14,7 @@ public class Layers extends RenderLayer {
 			.depthTest(ALWAYS_DEPTH_TEST)
 			.transparency(TRANSLUCENT_TRANSPARENCY)
 			.alpha(ONE_TENTH_ALPHA)
-			.layering(VIEW_OFFSET_Z_LAYERING).build(false));
+			.layering(VIEW_OFFSET_Z_LAYERING).build(false)) ;
 
 	public Layers(String name, VertexFormat vertexFormat, int drawMode, int expectedBufferSize, boolean hasCrumbling, boolean translucent, Runnable startAction, Runnable endAction) {
 		super(name, vertexFormat, drawMode, expectedBufferSize, hasCrumbling, translucent, startAction, endAction);

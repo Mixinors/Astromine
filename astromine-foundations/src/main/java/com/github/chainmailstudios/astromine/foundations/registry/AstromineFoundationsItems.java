@@ -24,14 +24,10 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.item.*;
-import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
-import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.utilities.ToolUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.WorldPos;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
-import com.github.chainmailstudios.astromine.registry.AstromineToolMaterials;
 import draylar.magna.item.ExcavatorItem;
 import draylar.magna.item.HammerItem;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
@@ -477,7 +473,7 @@ public class AstromineFoundationsItems {
 	public static final Item FIRE_EXTINGUISHER = register("fire_extinguisher", new FireExtinguisherItem(getBasicSettings().maxCount(1)));
 
 	protected static Item.Settings getBasicSettings() {
-		return AstromineItems.getBasicSettings().group(AstromineFoundationsItemGroups.ASTROMINE_FOUNDATIONS);
+		return AstromineItems.getBasicSettings().group(AstromineFoundationsItemGroups.FOUNDATIONS);
 	}
 
 	public static void initialize() {

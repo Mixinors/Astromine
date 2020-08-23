@@ -33,7 +33,7 @@ import net.minecraft.item.ItemStack;
 import java.util.function.Supplier;
 
 public class AstromineItemGroups {
-	public static final ItemGroup ASTROMINE = register("astromine", () -> AstromineItems.ITEM);
+	public static final ItemGroup CORE = register("core", () -> AstromineItems.ITEM);
 
 	public static void initialize() {
 

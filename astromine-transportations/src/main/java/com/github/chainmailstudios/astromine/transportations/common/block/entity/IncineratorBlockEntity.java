@@ -25,7 +25,7 @@
 package com.github.chainmailstudios.astromine.transportations.common.block.entity;
 
 import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
-import com.github.chainmailstudios.astromine.transportations.common.registry.AstromineTransportationsBlockEntityTypes;
+import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;

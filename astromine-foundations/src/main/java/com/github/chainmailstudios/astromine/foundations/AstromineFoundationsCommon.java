@@ -36,6 +36,7 @@ public class AstromineFoundationsCommon extends AstromineCommon {
 		AstromineFoundationsBlocks.initialize();
 		AstromineFoundationsItems.initialize();
 		AstromineFoundationsOres.initialize();
+		AstromineFoundationsFluids.initialize();
 		AstromineFoundationsBlockEntityTypes.initialize();
 		AstromineFoundationsRecipeSerializers.initialize();
 	}

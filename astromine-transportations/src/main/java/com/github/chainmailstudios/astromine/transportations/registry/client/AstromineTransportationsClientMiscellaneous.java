@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.transportations.common.registry.client;
+package com.github.chainmailstudios.astromine.transportations.registry.client;
 
 import com.github.chainmailstudios.astromine.common.item.AstromineBlockItem;
 import com.github.chainmailstudios.astromine.registry.client.AstromineClientMiscellaneous;

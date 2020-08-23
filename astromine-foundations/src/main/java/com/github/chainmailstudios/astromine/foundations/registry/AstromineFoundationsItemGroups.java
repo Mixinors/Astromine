@@ -29,7 +29,7 @@ import net.minecraft.item.ItemGroup;
 import static com.github.chainmailstudios.astromine.registry.AstromineItemGroups.register;
 
 public class AstromineFoundationsItemGroups {
-	public static final ItemGroup ASTROMINE_FOUNDATIONS = register("astromine_foundations", () -> AstromineFoundationsItems.UNIVITE_AXE);
+	public static final ItemGroup FOUNDATIONS = register("foundations", () -> AstromineFoundationsBlocks.METITE_BLOCK);
 
 	public static void initialize() {
 

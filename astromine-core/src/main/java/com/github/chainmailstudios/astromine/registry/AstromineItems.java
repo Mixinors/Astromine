@@ -25,10 +25,7 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.item.*;
-import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
-import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.item.GravityGauntletItem;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.DispenserBlock;
@@ -101,6 +98,6 @@ public class AstromineItems {
 	}
 
 	public static Item.Settings getBasicSettings() {
-		return new Item.Settings().group(AstromineItemGroups.ASTROMINE);
+		return new Item.Settings().group(AstromineItemGroups.CORE);
 	}
 }

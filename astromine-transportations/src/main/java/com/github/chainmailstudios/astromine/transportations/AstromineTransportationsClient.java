@@ -25,8 +25,8 @@
 package com.github.chainmailstudios.astromine.transportations;
 
 import com.github.chainmailstudios.astromine.AstromineClient;
-import com.github.chainmailstudios.astromine.transportations.common.registry.client.AstromineTransportationsBlockEntityRenderers;
-import com.github.chainmailstudios.astromine.transportations.common.registry.client.AstromineTransportationsClientMiscellaneous;
+import com.github.chainmailstudios.astromine.transportations.registry.client.AstromineTransportationsBlockEntityRenderers;
+import com.github.chainmailstudios.astromine.transportations.registry.client.AstromineTransportationsClientMiscellaneous;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 

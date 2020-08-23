@@ -25,14 +25,18 @@
 package com.github.chainmailstudios.astromine.transportations;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.transportations.common.registry.AstromineTransportationsBlockEntityTypes;
-import com.github.chainmailstudios.astromine.transportations.common.registry.AstromineTransportationsBlocks;
-import com.github.chainmailstudios.astromine.transportations.common.registry.AstromineTransportationsNetworkMembers;
+import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
+import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlocks;
+import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsItems;
+import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsNetworkMembers;
+import com.github.chainmailstudios.astromine.transportations.registry.client.AstromineTransportationsItemGroups;
 
 public class AstromineTransportationsCommon extends AstromineCommon {
 	@Override
 	public void onInitialize() {
 		AstromineTransportationsBlocks.initialize();
+		AstromineTransportationsItems.initialize();
+		AstromineTransportationsItemGroups.initialize();
 		AstromineTransportationsBlockEntityTypes.initialize();
 		AstromineTransportationsNetworkMembers.initialize();
 	}

@@ -1,7 +1,7 @@
-package com.github.chainmailstudios.astromine.transportations.common.registry.client;
+package com.github.chainmailstudios.astromine.transportations.registry.client;
 
 import com.github.chainmailstudios.astromine.registry.client.AstromineRenderLayers;
-import com.github.chainmailstudios.astromine.transportations.common.registry.AstromineTransportationsBlocks;
+import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlocks;
 import net.minecraft.client.render.RenderLayer;
 
 public class AstromineTransportationsRenderLayer extends AstromineRenderLayers {

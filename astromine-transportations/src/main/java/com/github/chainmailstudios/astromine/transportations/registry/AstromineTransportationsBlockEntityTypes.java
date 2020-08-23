@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.transportations.common.registry;
+package com.github.chainmailstudios.astromine.transportations.registry;
 
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.*;

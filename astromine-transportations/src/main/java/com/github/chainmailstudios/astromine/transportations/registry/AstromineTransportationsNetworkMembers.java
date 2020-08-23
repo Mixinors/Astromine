@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.transportations.common.registry;
+package com.github.chainmailstudios.astromine.transportations.registry;
 
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
