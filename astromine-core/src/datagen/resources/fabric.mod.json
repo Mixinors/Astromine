@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "id": "astromine-datagen",
+  "version": "${version}",
+  "entrypoints": {
+    "preLaunch": ["com.github.chainmailstudios.astromine.datagen.AstromineDatagen"]
+  }
+}

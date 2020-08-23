@@ -4,7 +4,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.ItemInve
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
 import com.github.chainmailstudios.astromine.foundations.common.recipe.AltarRecipe;
-import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlockEntityTypes;
+import com.github.chainmailstudios.astromine.foundations.datagen.registry.AstromineFoundationsBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 import com.google.common.collect.Lists;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
@@ -19,13 +19,11 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.LongTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.particle.DustParticleEffect;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Lazy;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 
 import java.util.Iterator;
 import java.util.List;

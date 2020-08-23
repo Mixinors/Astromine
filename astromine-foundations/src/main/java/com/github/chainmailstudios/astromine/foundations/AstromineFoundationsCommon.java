@@ -25,9 +25,7 @@
 package com.github.chainmailstudios.astromine.foundations;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.foundations.registry.*;
-import net.fabricmc.api.ModInitializer;
-import net.minecraft.util.Identifier;
+import com.github.chainmailstudios.astromine.foundations.datagen.registry.*;
 
 public class AstromineFoundationsCommon extends AstromineCommon {
 	@Override
