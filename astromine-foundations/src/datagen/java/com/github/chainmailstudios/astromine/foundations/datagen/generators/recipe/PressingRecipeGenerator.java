@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe;
 
-import com.github.chainmailstudios.astromine.common.recipe.PressingRecipe;
 import com.github.chainmailstudios.astromine.foundations.datagen.AstromineFoundationsDatagen;
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialItemType;
 import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSet;
@@ -28,22 +27,22 @@ public class PressingRecipeGenerator extends EnergyProcessingRecipeGenerator {
 
 	@Override
 	public void generate(RecipeData recipes, MaterialSet set) {
-		recipes.accept(AstromineFoundationsDatagen.Providers.createProvider(PressingRecipe.Serializer.INSTANCE, getRecipeId(set), json -> {
-			JsonElement inputJson = set.getIngredient(input).toJson();
-			if (inputJson.isJsonObject()) {
-				inputJson.getAsJsonObject().addProperty("count", inputCount);
-			}
-
-			json.add("input", inputJson);
-
-			JsonObject outputJson = new JsonObject();
-			outputJson.addProperty("item", set.getItemId(output).toString());
-			outputJson.addProperty("count", outputCount);
-
-			json.add("output", outputJson);
-			json.addProperty("time", time);
-			json.addProperty("energy_consumed", energyConsumed);
-		}));
+//		recipes.accept(AstromineFoundationsDatagen.Providers.createProvider(PressingRecipe.Serializer.INSTANCE, getRecipeId(set), json -> {
+//			JsonElement inputJson = set.getIngredient(input).toJson();
+//			if (inputJson.isJsonObject()) {
+//				inputJson.getAsJsonObject().addProperty("count", inputCount);
+//			}
+//
+//			json.add("input", inputJson);
+//
+//			JsonObject outputJson = new JsonObject();
+//			outputJson.addProperty("item", set.getItemId(output).toString());
+//			outputJson.addProperty("count", outputCount);
+//
+//			json.add("output", outputJson);
+//			json.addProperty("time", time);
+//			json.addProperty("energy_consumed", energyConsumed);
+//		}));
 	}
 
 	@Override
