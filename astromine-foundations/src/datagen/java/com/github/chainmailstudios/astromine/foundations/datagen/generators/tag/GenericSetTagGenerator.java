@@ -1,7 +1,8 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.generators.tag;
 
-import com.github.chainmailstudios.astromine.foundations.datagen.MaterialItemType;
-import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSet;
+import com.github.chainmailstudios.astromine.common.generator.material.MaterialItemType;
+import com.github.chainmailstudios.astromine.common.generator.material.MaterialSet;
+import com.github.chainmailstudios.astromine.common.generator.tag.SetTagGenerator;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.util.Identifier;

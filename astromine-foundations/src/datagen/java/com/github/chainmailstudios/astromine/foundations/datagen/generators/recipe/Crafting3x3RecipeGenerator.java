@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe;
 
-import com.github.chainmailstudios.astromine.foundations.datagen.MaterialItemType;
+import com.github.chainmailstudios.astromine.common.generator.material.MaterialItemType;
 
 public class Crafting3x3RecipeGenerator extends ShapedCraftingRecipeGenerator {
 	public Crafting3x3RecipeGenerator(MaterialItemType input, MaterialItemType output) {

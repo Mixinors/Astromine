@@ -1,9 +1,13 @@
 package com.github.chainmailstudios.astromine.foundations.datagen;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.generator.entrypoint.RecipeGeneratorInitializer;
+import com.github.chainmailstudios.astromine.common.generator.entrypoint.TagGeneratorInitializer;
 import com.github.chainmailstudios.astromine.foundations.common.block.AstromineOreBlock;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsItems;
+import com.github.chainmailstudios.astromine.registry.AstromineTagGenerators;
+import com.github.chainmailstudios.astromine.registry.AstromineMaterialSets;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
@@ -45,6 +49,9 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 	@Override
 	public void onPreLaunch() {
 		try {
+			FabricLoader.getInstance().getEntrypoints("astromine_recipe_generators", RecipeGeneratorInitializer.class).forEach(RecipeGeneratorInitializer::onInitializeRecipeGenerators);
+			FabricLoader.getInstance().getEntrypoints("astromine_tag_generators", TagGeneratorInitializer.class).forEach(TagGeneratorInitializer::onInitializeTagGenerators);
+
 			DataGeneratorHandler handler = DataGeneratorHandler.create(Paths.get("../astromine-foundations/src/generated/resources"));
 			FabricLoader.getInstance().getEntrypoints("main", ModInitializer.class).forEach(ModInitializer::onInitialize);
 
@@ -126,6 +133,7 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 
 			modelStates.addSimpleBlockItemModel(block);
 		});
+
 		register(Item.class, (handler, item) -> {
 			ModelStateData modelStates = handler.getModelStates();
 			Identifier itemId = Registry.ITEM.getId(item);
@@ -168,52 +176,11 @@ public class AstromineFoundationsDatagen implements PreLaunchEntrypoint {
 	}
 
 	private static void populateTags(TagData tags) {
-		MaterialSets.generateTags(tags);
-		TagGenerators.generateOneTimeTags(tags);
+		AstromineMaterialSets.generateTags(tags);
+		AstromineTagGenerators.generateOneTimeTags(tags);
 	}
 
 	private static void populateRecipes(RecipeData recipes) {
-		MaterialSets.generateRecipes(recipes);
-	}
-
-	public static final class Providers {
-		public static DefaultedRecipeJsonProvider createProvider(RecipeSerializer<?> type, Identifier id, Consumer<JsonObject> serializer) {
-			return new DefaultedRecipeJsonProvider(type, id) {
-				@Override
-				public void serialize(JsonObject json) {
-					serializer.accept(json);
-				}
-			};
-		}
-
-		private static abstract class DefaultedRecipeJsonProvider implements RecipeJsonProvider {
-			private final RecipeSerializer<?> type;
-			private final Identifier id;
-
-			public DefaultedRecipeJsonProvider(RecipeSerializer<?> type, Identifier id) {
-				this.type = type;
-				this.id = id;
-			}
-
-			@Override
-			public Identifier getRecipeId() {
-				return id;
-			}
-
-			@Override
-			public RecipeSerializer<?> getSerializer() {
-				return type;
-			}
-
-			@Override
-			public JsonObject toAdvancementJson() {
-				return null;
-			}
-
-			@Override
-			public Identifier getAdvancementId() {
-				return null;
-			}
-		}
+		AstromineMaterialSets.generateRecipes(recipes);
 	}
 }

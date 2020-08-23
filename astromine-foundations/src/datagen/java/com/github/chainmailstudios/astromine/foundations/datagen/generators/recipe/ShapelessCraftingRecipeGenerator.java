@@ -1,7 +1,8 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe;
 
-import com.github.chainmailstudios.astromine.foundations.datagen.MaterialItemType;
-import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSet;
+import com.github.chainmailstudios.astromine.common.generator.material.MaterialItemType;
+import com.github.chainmailstudios.astromine.common.generator.material.MaterialSet;
+import com.github.chainmailstudios.astromine.common.generator.recipe.base.CraftingRecipeGenerator;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
 import net.minecraft.advancement.criterion.ImpossibleCriterion;
 import net.minecraft.data.server.recipe.ShapelessRecipeJsonFactory;

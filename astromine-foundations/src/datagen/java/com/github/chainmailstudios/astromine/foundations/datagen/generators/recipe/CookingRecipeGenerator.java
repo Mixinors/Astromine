@@ -1,7 +1,8 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe;
 
-import com.github.chainmailstudios.astromine.foundations.datagen.MaterialItemType;
-import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSet;
+import com.github.chainmailstudios.astromine.common.generator.material.MaterialItemType;
+import com.github.chainmailstudios.astromine.common.generator.material.MaterialSet;
+import com.github.chainmailstudios.astromine.common.generator.recipe.base.SimpleProcessingRecipeGenerator;
 
 public abstract class CookingRecipeGenerator extends SimpleProcessingRecipeGenerator {
 	public final float experience;

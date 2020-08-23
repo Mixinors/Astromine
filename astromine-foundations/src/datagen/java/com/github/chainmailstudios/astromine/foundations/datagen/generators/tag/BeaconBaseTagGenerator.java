@@ -1,8 +1,8 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.generators.tag;
 
-import com.github.chainmailstudios.astromine.foundations.datagen.MaterialItemType;
-import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSet;
-import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSets;
+import com.github.chainmailstudios.astromine.common.generator.material.MaterialItemType;
+import com.github.chainmailstudios.astromine.common.generator.material.MaterialSet;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsMaterialSets;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
 import net.minecraft.block.Block;
 import net.minecraft.util.Identifier;
@@ -20,6 +20,6 @@ public class BeaconBaseTagGenerator extends GenericSetTagGenerator {
 
 	@Override
 	public boolean shouldGenerate(MaterialSet set) {
-		return super.shouldGenerate(set) && !set.equals(MaterialSets.LAPIS) && !set.equals(MaterialSets.COAL) && !set.equals(MaterialSets.REDSTONE);
+		return super.shouldGenerate(set) && !set.equals(AstromineFoundationsMaterialSets.LAPIS) && !set.equals(AstromineFoundationsMaterialSets.COAL) && !set.equals(AstromineFoundationsMaterialSets.REDSTONE);
 	}
 }

@@ -1,7 +1,7 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe;
 
-import com.github.chainmailstudios.astromine.foundations.datagen.MaterialItemType;
-import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSet;
+import com.github.chainmailstudios.astromine.common.generator.material.MaterialItemType;
+import com.github.chainmailstudios.astromine.common.generator.material.MaterialSet;
 import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;

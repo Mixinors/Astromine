@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "tag": "c:raw_netherite_dusts"
-  },
-  "result": "minecraft:netherite_scrap",
-  "experience": 0.1,
-  "cookingtime": 100
-}

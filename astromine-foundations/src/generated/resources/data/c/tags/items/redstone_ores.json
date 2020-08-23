@@ -1,7 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "#c:asteroid_redstone_ores",
-    "minecraft:redstone_ore"
-  ]
-}

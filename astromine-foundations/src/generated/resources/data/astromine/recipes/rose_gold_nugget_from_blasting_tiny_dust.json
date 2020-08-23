@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "tag": "c:rose_gold_tiny_dusts"
-  },
-  "result": "astromine:rose_gold_nugget",
-  "experience": 0.1,
-  "cookingtime": 100
-}

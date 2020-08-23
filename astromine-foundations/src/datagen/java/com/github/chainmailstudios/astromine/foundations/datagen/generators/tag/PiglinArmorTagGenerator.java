@@ -1,8 +1,8 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.generators.tag;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.foundations.datagen.MaterialItemType;
-import com.github.chainmailstudios.astromine.foundations.datagen.MaterialSet;
+import com.github.chainmailstudios.astromine.common.generator.material.MaterialItemType;
+import com.github.chainmailstudios.astromine.common.generator.material.MaterialSet;
 
 public class PiglinArmorTagGenerator extends GenericSetTagGenerator {
 	public PiglinArmorTagGenerator(MaterialItemType type) {

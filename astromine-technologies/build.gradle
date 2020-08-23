@@ -6,4 +6,5 @@ minecraft {
 
 dependencies {
     compile project(path: ':astromine-core', configuration: 'dev')
+    compile project(path: ':astromine-foundations', configuration: 'dev')
 }
