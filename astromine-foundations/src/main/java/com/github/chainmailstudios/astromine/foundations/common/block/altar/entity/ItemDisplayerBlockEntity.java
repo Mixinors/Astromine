@@ -52,10 +52,16 @@ public class ItemDisplayerBlockEntity extends BlockEntity implements ItemInvento
 		lastSpinAddition= 1;
 		spinAge++;
 		yAge++;
+
 		if (parent != null) {
 			AltarBlockEntity blockEntity = (AltarBlockEntity) world.getBlockEntity(parent);
 			spinAge += blockEntity.craftingTicks / 5;
 			lastSpinAddition += blockEntity.craftingTicks / 5;
+
+			int velX = pos.getX() - parent.getX();
+			int velY = pos.getY() - parent.getY();
+			int velZ = pos.getZ() - parent.getZ();
+			world.addParticle(ParticleTypes.ENCHANT, parent.getX() + 0.5, parent.getY() + 1.8, parent.getZ() + 0.5, velX, velY - 1.3, velZ);
 		}
 	}
 

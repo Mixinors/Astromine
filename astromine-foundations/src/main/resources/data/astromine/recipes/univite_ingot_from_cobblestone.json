@@ -1,0 +1,11 @@
+{
+  "type": "astromine:altar",
+  "inputs": [
+    {
+      "item": "astromine:cobblestone"
+    }
+  ],
+  "output": {
+    "item": "astromine:univite_ingot"
+  }
+}
