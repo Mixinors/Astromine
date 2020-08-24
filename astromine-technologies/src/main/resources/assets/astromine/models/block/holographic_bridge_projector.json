@@ -1,8 +1,0 @@
-{
-  "parent": "block/orientable",
-  "textures": {
-    "top": "astromine:block/advanced_machine_top",
-    "front": "astromine:block/holographic_bridge_projector_side",
-    "side": "astromine:block/advanced_machine_side"
-  }
-}

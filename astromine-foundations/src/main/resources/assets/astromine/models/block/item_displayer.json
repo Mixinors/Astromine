@@ -6,6 +6,7 @@
 		"5": "astromine:block/altar_steel_top",
 		"6": "astromine:block/galaxium_block",
 		"7": "astromine:block/altar_steel_side"
+		"particle": "astromine:block/altar_steel"
 	},
 	"elements": [
 		{

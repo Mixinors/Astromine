@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GenericBlockModelStateGenerator implements OneTimeModelStateGenerator {
-	private final List<Block> blocks;
+	protected final List<Block> blocks;
 
 	public GenericBlockModelStateGenerator(Block... blocks) {
 		this.blocks = Arrays.asList(blocks);

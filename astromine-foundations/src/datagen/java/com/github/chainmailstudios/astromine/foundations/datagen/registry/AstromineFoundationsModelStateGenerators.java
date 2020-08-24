@@ -2,10 +2,14 @@ package com.github.chainmailstudios.astromine.foundations.datagen.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.ModelStateGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.GenericItemModelStateGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.HandheldItemModelStateGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.SimpleBlockItemModelStateGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.set.*;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineModelStateGenerators;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsItems;
 
 public class AstromineFoundationsModelStateGenerators extends AstromineModelStateGenerators {
 	public final ModelStateGenerator INGOT = register(new GenericItemSetModelStateGenerator(MaterialItemType.INGOT));
@@ -48,5 +52,9 @@ public class AstromineFoundationsModelStateGenerators extends AstromineModelStat
 	public final ModelStateGenerator LEGGINGS = register(new GenericItemSetModelStateGenerator(MaterialItemType.LEGGINGS));
 	public final ModelStateGenerator BOOTS = register(new GenericItemSetModelStateGenerator(MaterialItemType.BOOTS));
 
-	public final ModelStateGenerator MISC = register(new SimpleBlockItemModelStateGenerator(AstromineFoundationsBlocks.ALTAR, AstromineFoundationsBlocks.ITEM_DISPLAYER));
+	public final ModelStateGenerator MISC_BLOCKSTATES = register(new SimpleBlockItemModelStateGenerator(AstromineFoundationsBlocks.ALTAR, AstromineFoundationsBlocks.ITEM_DISPLAYER));
+
+	public final ModelStateGenerator SPACE_SUIT = register(new GenericItemModelStateGenerator(AstromineFoundationsItems.SPACE_SUIT_HELMET, AstromineFoundationsItems.SPACE_SUIT_CHESTPLATE, AstromineFoundationsItems.SPACE_SUIT_LEGGINGS, AstromineFoundationsItems.SPACE_SUIT_BOOTS));
+
+	public final ModelStateGenerator WRENCH = register(new HandheldItemModelStateGenerator(AstromineFoundationsItems.BRONZE_WRENCH));
 }

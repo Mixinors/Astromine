@@ -31,7 +31,7 @@ public class AstromineTechnologiesDatagen implements DatagenInitializer {
 
 	@Override
 	public AstromineModelStateGenerators getModelStateGenerators() {
-		return null;
+		return new AstromineTechnologiesModelStateGenerators();
 	}
 
 	@Override

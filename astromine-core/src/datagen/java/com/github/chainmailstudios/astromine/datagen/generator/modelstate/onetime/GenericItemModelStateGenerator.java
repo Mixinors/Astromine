@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GenericItemModelStateGenerator implements OneTimeModelStateGenerator {
-	private final List<Item> items;
+	protected final List<Item> items;
 
 	public GenericItemModelStateGenerator(Item... items) {
 		this.items = Arrays.asList(items);
