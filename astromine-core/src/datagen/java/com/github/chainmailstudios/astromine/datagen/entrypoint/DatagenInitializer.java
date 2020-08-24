@@ -1,15 +1,7 @@
 package com.github.chainmailstudios.astromine.datagen.entrypoint;
 
-import com.github.chainmailstudios.astromine.datagen.registry.AstromineLootTableGenerators;
-import com.github.chainmailstudios.astromine.datagen.registry.AstromineMaterialSets;
-import com.github.chainmailstudios.astromine.datagen.registry.AstromineModelStateGenerators;
-import com.github.chainmailstudios.astromine.datagen.registry.AstromineRecipeGenerators;
-import com.github.chainmailstudios.astromine.datagen.registry.AstromineTagGenerators;
-import me.shedaniel.cloth.api.datagen.v1.DataGeneratorHandler;
-import me.shedaniel.cloth.api.datagen.v1.LootTableData;
-import me.shedaniel.cloth.api.datagen.v1.ModelStateData;
-import me.shedaniel.cloth.api.datagen.v1.RecipeData;
-import me.shedaniel.cloth.api.datagen.v1.TagData;
+import com.github.chainmailstudios.astromine.datagen.registry.*;
+import me.shedaniel.cloth.api.datagen.v1.*;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -34,6 +26,7 @@ public interface DatagenInitializer {
 		registerRecipes(handler.getRecipes());
 		registerTags(handler.getTags());
 		registerModelStates(handler.getModelStates());
+		registerWorldGen(handler.getWorldGen());
 		handler.run();
 	}
 
@@ -61,6 +54,12 @@ public interface DatagenInitializer {
 		}
 	}
 
+	default void registerWorldGen(WorldGenData worldGen) {
+		if (getWorldGenGenerators() != null) {
+			getWorldGenGenerators().generateWorldGen(worldGen);
+		}
+	}
+
 	AstromineLootTableGenerators getLootTableGenerators();
 
 	AstromineRecipeGenerators getRecipeGenerators();
@@ -68,4 +67,6 @@ public interface DatagenInitializer {
 	AstromineTagGenerators getTagGenerators();
 
 	AstromineModelStateGenerators getModelStateGenerators();
+
+	AstromineWorldGenGenerators getWorldGenGenerators();
 }
