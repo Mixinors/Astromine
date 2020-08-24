@@ -24,13 +24,8 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import net.fabricmc.fabric.api.tag.TagRegistry;
-
-import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Lazy;
 
 import java.util.function.Supplier;

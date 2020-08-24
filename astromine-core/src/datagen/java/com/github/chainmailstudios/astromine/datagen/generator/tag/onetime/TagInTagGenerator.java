@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine.datagen.generator.tag.onetime;
 
-import com.github.chainmailstudios.astromine.datagen.generator.tag.onetime.OneTimeTagGenerator;
 import net.minecraft.util.Identifier;
 
 import me.shedaniel.cloth.api.datagen.v1.TagData;

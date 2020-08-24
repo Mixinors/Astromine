@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "astromine:lead_ore"
+          "name": "minecraft:air"
         }
       ],
       "conditions": [

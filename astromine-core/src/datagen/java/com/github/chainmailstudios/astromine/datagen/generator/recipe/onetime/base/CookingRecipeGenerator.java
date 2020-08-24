@@ -3,9 +3,6 @@ package com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.b
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 
-import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
-import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
-
 public abstract class CookingRecipeGenerator extends SimpleProcessingRecipeGenerator {
 	public final float experience;
 

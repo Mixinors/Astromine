@@ -24,18 +24,20 @@
 
 package com.github.chainmailstudios.astromine.common.component.world;
 
-import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.google.common.collect.Lists;
-import nerdhub.cardinal.components.api.component.Component;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
+import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import nerdhub.cardinal.components.api.component.Component;
+
+import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;

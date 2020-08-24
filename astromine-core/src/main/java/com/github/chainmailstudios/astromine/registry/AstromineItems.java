@@ -24,10 +24,8 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.item.*;
-import com.github.chainmailstudios.astromine.common.item.GravityGauntletItem;
 import net.fabricmc.loader.api.FabricLoader;
+
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.entity.EntityType;
@@ -38,6 +36,11 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.item.GravityGauntletItem;
+import com.github.chainmailstudios.astromine.common.item.MeteorSpawnerDevItem;
+import com.github.chainmailstudios.astromine.common.item.UncoloredSpawnEggItem;
 
 public class AstromineItems {
 	// Things

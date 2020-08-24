@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.client.screen.base;
 
-import com.github.chainmailstudios.astromine.common.screenhandler.base.ComponentBlockEntityScreenHandler;
-import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
+
+import com.github.chainmailstudios.astromine.common.screenhandler.base.ComponentBlockEntityScreenHandler;
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 
 public abstract class ComponentEnergyItemHandledScreen<T extends ComponentBlockEntityScreenHandler> extends ComponentBlockEntityHandledScreen<T> {
 	public ComponentEnergyItemHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {

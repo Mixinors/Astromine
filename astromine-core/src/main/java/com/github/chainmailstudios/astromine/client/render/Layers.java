@@ -1,7 +1,6 @@
 package com.github.chainmailstudios.astromine.client.render;
 
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 

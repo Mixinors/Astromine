@@ -29,8 +29,6 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.minecraft.block.Block;
 import net.minecraft.client.render.RenderLayer;
 
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
-
 public class AstromineRenderLayers {
 	public static void initialize() {
 

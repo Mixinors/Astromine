@@ -1,11 +1,11 @@
 package com.github.chainmailstudios.astromine.datagen.generator.tag.set;
 
-import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
-import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
-import com.github.chainmailstudios.astromine.datagen.generator.tag.set.SetTagGenerator;
-import me.shedaniel.cloth.api.datagen.v1.TagData;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.util.Identifier;
+
+import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
+import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
+import me.shedaniel.cloth.api.datagen.v1.TagData;
 
 public class GenericSetTagGenerator implements SetTagGenerator {
 	protected final String name;

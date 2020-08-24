@@ -28,7 +28,6 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.fluid.ExtendedFluid;
 
 public class AstromineFluids {
 	public static void initialize() {

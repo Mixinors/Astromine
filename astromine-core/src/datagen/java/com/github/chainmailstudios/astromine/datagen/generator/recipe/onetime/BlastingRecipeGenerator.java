@@ -7,9 +7,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.base.CookingRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.base.CookingSetRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
-import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
 
 public class BlastingRecipeGenerator extends CookingRecipeGenerator {

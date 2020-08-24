@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#c:meteor_metite_ores",
+    "#c:asteroid_metite_ores"
+  ]
+}

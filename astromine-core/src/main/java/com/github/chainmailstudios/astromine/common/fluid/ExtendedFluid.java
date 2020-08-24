@@ -52,7 +52,6 @@ import com.github.chainmailstudios.astromine.common.gas.Breathable;
 import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineFluids;
-import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.github.vini2003.blade.common.data.Color;
 import org.jetbrains.annotations.Nullable;

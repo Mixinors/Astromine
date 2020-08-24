@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.foundations.common.block;
 
-import com.github.chainmailstudios.astromine.foundations.datagen.registry.AstromineFoundationsBlocks;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.OreBlock;
 import net.minecraft.util.math.MathHelper;

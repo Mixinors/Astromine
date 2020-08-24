@@ -1,10 +1,13 @@
 package com.github.chainmailstudios.astromine.datagen.entrypoint;
 
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineLootTableGenerators;
+import com.github.chainmailstudios.astromine.datagen.registry.AstromineMaterialSets;
+import com.github.chainmailstudios.astromine.datagen.registry.AstromineModelStateGenerators;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineRecipeGenerators;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineTagGenerators;
 import me.shedaniel.cloth.api.datagen.v1.DataGeneratorHandler;
 import me.shedaniel.cloth.api.datagen.v1.LootTableData;
+import me.shedaniel.cloth.api.datagen.v1.ModelStateData;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
 
@@ -22,12 +25,15 @@ public interface DatagenInitializer {
 
 	String getModuleId();
 
+	AstromineMaterialSets getMaterialSets();
+
 	default void registerData() {
 		System.out.println("Running datagen for " + getModuleId());
 		DataGeneratorHandler handler = createHandler();
 		registerLootTables(handler.getLootTables());
 		registerRecipes(handler.getRecipes());
 		registerTags(handler.getTags());
+		registerModelStates(handler.getModelStates());
 		handler.run();
 	}
 
@@ -49,9 +55,17 @@ public interface DatagenInitializer {
 		}
 	}
 
+	default void registerModelStates(ModelStateData modelStates) {
+		if (getModelStateGenerators() != null) {
+			getModelStateGenerators().generateModelStates(modelStates);
+		}
+	}
+
 	AstromineLootTableGenerators getLootTableGenerators();
 
 	AstromineRecipeGenerators getRecipeGenerators();
 
 	AstromineTagGenerators getTagGenerators();
+
+	AstromineModelStateGenerators getModelStateGenerators();
 }

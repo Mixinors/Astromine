@@ -1,9 +1,6 @@
 package com.github.chainmailstudios.astromine.datagen.registry;
 
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
-import me.shedaniel.cloth.api.datagen.v1.LootTableData;
-import me.shedaniel.cloth.api.datagen.v1.RecipeData;
-import me.shedaniel.cloth.api.datagen.v1.TagData;
 
 import java.util.ArrayList;
 import java.util.List;

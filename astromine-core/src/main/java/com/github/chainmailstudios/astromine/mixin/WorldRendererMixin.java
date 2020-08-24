@@ -24,15 +24,9 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
-import com.github.chainmailstudios.astromine.client.render.Layers;
-import com.github.chainmailstudios.astromine.common.fluid.ExtendedFluid;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.*;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.util.math.Matrix4f;
-import net.minecraft.util.math.Vec3d;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -41,10 +35,23 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.BufferBuilderStorage;
+import net.minecraft.client.render.Camera;
+import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.LightmapTextureManager;
+import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.util.math.Matrix4f;
+import net.minecraft.util.math.Vec3d;
 
+import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
 import com.github.chainmailstudios.astromine.client.registry.SkyboxRegistry;
+import com.github.chainmailstudios.astromine.client.render.Layers;
 import com.github.chainmailstudios.astromine.client.render.sky.skybox.AbstractSkybox;
+import com.github.chainmailstudios.astromine.common.fluid.ExtendedFluid;
 
 @Mixin(WorldRenderer.class)
 @Environment(EnvType.CLIENT)

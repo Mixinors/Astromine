@@ -24,17 +24,18 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import alexiil.mc.lib.attributes.Simulation;
-import alexiil.mc.lib.attributes.item.ItemExtractable;
-import alexiil.mc.lib.attributes.item.ItemInsertable;
-import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
-import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
+
+import alexiil.mc.lib.attributes.Simulation;
+import alexiil.mc.lib.attributes.item.ItemExtractable;
+import alexiil.mc.lib.attributes.item.ItemInsertable;
+import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.EnergyStorage;
 

@@ -24,11 +24,12 @@
 
 package com.github.chainmailstudios.astromine.client.registry;
 
+import net.minecraft.block.Block;
+import net.minecraft.util.Pair;
+
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
-import net.minecraft.block.Block;
-import net.minecraft.util.Pair;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;

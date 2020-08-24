@@ -24,32 +24,31 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
-import com.github.chainmailstudios.astromine.common.network.NetworkMember;
-import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
-import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
-import com.github.chainmailstudios.astromine.common.utilities.WorldPos;
-import com.google.common.collect.Maps;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
+
+import com.github.chainmailstudios.astromine.common.network.NetworkMember;
+import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
+import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
+import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
+import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
+import com.github.chainmailstudios.astromine.common.utilities.WorldPos;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergySide;
 import team.reborn.energy.EnergyStorage;
 import team.reborn.energy.EnergyTier;
 
+import com.google.common.collect.Maps;
 import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-
-import static com.github.chainmailstudios.astromine.common.network.NetworkMemberType.*;
-import static com.github.chainmailstudios.astromine.common.network.NetworkMemberType.PROVIDER;
 
 public class AstromineNetworkMembers {
 	protected static final Map<Predicate<Block>, Consumer<Block>> BLOCK_CONSUMER = Maps.newHashMap();

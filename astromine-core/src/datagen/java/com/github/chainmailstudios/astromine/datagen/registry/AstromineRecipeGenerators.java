@@ -3,13 +3,12 @@ package com.github.chainmailstudios.astromine.datagen.registry;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.base.OneTimeRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.base.SetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
-import me.shedaniel.cloth.api.datagen.v1.LootTableData;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AstromineRecipeGenerators {
+public abstract class AstromineRecipeGenerators {
 	private final List<SetRecipeGenerator> SET_GENERATORS = new ArrayList<>();
 	private final List<OneTimeRecipeGenerator> ONE_TIME_GENERATORS = new ArrayList<>();
 
@@ -24,9 +23,7 @@ public class AstromineRecipeGenerators {
 	}
 
 	public void generateRecipes(RecipeData recipes) {
-		AstromineMaterialSets.getMaterialSets().forEach((set) -> {
-			generateSetRecipes(recipes, set);
-		});
+		AstromineMaterialSets.getMaterialSets().forEach((set) -> generateSetRecipes(recipes, set));
 		generateOneTimeRecipes(recipes);
 	}
 

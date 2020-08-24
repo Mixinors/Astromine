@@ -1,13 +1,13 @@
 package com.github.chainmailstudios.astromine.datagen.generator.recipe.set;
 
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.base.SetRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
-import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.RecipeGenerator;
-import me.shedaniel.cloth.api.datagen.v1.RecipeData;
 import net.minecraft.advancement.criterion.ImpossibleCriterion;
 import net.minecraft.data.server.recipe.SmithingRecipeJsonFactory;
 import net.minecraft.recipe.Ingredient;
+
+import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.base.SetRecipeGenerator;
+import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
+import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
+import me.shedaniel.cloth.api.datagen.v1.RecipeData;
 
 public class SmithingSetRecipeGenerator implements SetRecipeGenerator {
 	public final MaterialItemType addition;

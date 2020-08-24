@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "astromine:rose_gold_block"
+          "name": "minecraft:air"
         }
       ],
       "conditions": [

@@ -24,13 +24,15 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
 
 public class AstromineCommonPackets {
 	public static final Identifier BLOCK_ENTITY_UPDATE_PACKET = AstromineCommon.identifier("block_entity_update");

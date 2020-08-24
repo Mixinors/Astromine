@@ -2,8 +2,13 @@ package com.github.chainmailstudios.astromine.foundations.datagen;
 
 import com.github.chainmailstudios.astromine.datagen.entrypoint.DatagenInitializer;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineLootTableGenerators;
+import com.github.chainmailstudios.astromine.datagen.registry.AstromineMaterialSets;
+import com.github.chainmailstudios.astromine.datagen.registry.AstromineModelStateGenerators;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineRecipeGenerators;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineTagGenerators;
+import com.github.chainmailstudios.astromine.foundations.datagen.registry.AstromineFoundationsLootTableGenerators;
+import com.github.chainmailstudios.astromine.foundations.datagen.registry.AstromineFoundationsMaterialSets;
+import com.github.chainmailstudios.astromine.foundations.datagen.registry.AstromineFoundationsModelStateGenerators;
 import com.github.chainmailstudios.astromine.foundations.datagen.registry.AstromineFoundationsRecipeGenerators;
 import com.github.chainmailstudios.astromine.foundations.datagen.registry.AstromineFoundationsTagGenerators;
 
@@ -14,8 +19,13 @@ public class AstromineFoundationsDatagen implements DatagenInitializer {
 	}
 
 	@Override
+	public AstromineMaterialSets getMaterialSets() {
+		return new AstromineFoundationsMaterialSets();
+	}
+
+	@Override
 	public AstromineLootTableGenerators getLootTableGenerators() {
-		return null;
+		return new AstromineFoundationsLootTableGenerators();
 	}
 
 	@Override
@@ -26,5 +36,10 @@ public class AstromineFoundationsDatagen implements DatagenInitializer {
 	@Override
 	public AstromineTagGenerators getTagGenerators() {
 		return new AstromineFoundationsTagGenerators();
+	}
+
+	@Override
+	public AstromineModelStateGenerators getModelStateGenerators() {
+		return new AstromineFoundationsModelStateGenerators();
 	}
 }

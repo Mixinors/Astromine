@@ -1,10 +1,10 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import com.google.gson.JsonObject;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
 
+import com.google.gson.JsonObject;
 import java.util.function.Consumer;
 
 public class GeneratorUtilities {

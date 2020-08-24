@@ -26,9 +26,6 @@ package com.github.chainmailstudios.astromine.registry.client;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
-
-import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 
 @Environment(EnvType.CLIENT)
 public class AstromineScreens {

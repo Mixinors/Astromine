@@ -2,11 +2,7 @@ package com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.b
 
 import net.minecraft.util.Identifier;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.datagen.generator.Generator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.RecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
-import me.shedaniel.cloth.api.datagen.v1.RecipeData;
 
 public abstract class OneTimeRecipeGenerator implements RecipeGenerator {
 	public Identifier recipeId;

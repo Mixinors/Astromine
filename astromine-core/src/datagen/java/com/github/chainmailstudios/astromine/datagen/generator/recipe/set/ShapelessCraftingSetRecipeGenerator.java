@@ -1,11 +1,12 @@
 package com.github.chainmailstudios.astromine.datagen.generator.recipe.set;
 
+import net.minecraft.advancement.criterion.ImpossibleCriterion;
+import net.minecraft.data.server.recipe.ShapelessRecipeJsonFactory;
+
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.base.CraftingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
-import net.minecraft.advancement.criterion.ImpossibleCriterion;
-import net.minecraft.data.server.recipe.ShapelessRecipeJsonFactory;
 
 public class ShapelessCraftingSetRecipeGenerator extends CraftingSetRecipeGenerator {
 	public ShapelessCraftingSetRecipeGenerator(MaterialItemType input, MaterialItemType output, int outputCount) {

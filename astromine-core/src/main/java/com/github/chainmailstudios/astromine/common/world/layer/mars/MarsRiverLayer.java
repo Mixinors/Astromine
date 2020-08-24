@@ -24,11 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.world.layer.mars;
 
-import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.layer.type.CrossSamplingLayer;
 import net.minecraft.world.biome.layer.util.LayerRandomnessSource;
+
+import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
 
 public class MarsRiverLayer implements CrossSamplingLayer {
 	private final Registry<Biome> biomeRegistry;

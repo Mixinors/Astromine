@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "astromine:univite_block"
+          "name": "minecraft:air"
         }
       ],
       "conditions": [

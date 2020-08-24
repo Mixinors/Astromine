@@ -1,12 +1,13 @@
 package com.github.chainmailstudios.astromine.client.cca;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import io.netty.buffer.Unpooled;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import io.netty.buffer.Unpooled;
 
 import java.util.HashMap;
 import java.util.Map;

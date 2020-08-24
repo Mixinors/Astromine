@@ -1,12 +1,13 @@
 package com.github.chainmailstudios.astromine.datagen.generator.recipe.set;
 
+import net.minecraft.advancement.criterion.ImpossibleCriterion;
+import net.minecraft.data.server.recipe.ShapedRecipeJsonFactory;
+import net.minecraft.recipe.Ingredient;
+
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.base.CraftingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
-import net.minecraft.advancement.criterion.ImpossibleCriterion;
-import net.minecraft.data.server.recipe.ShapedRecipeJsonFactory;
-import net.minecraft.recipe.Ingredient;
 
 import java.util.HashMap;
 import java.util.Map;

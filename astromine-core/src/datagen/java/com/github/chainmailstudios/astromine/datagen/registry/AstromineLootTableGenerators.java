@@ -2,16 +2,13 @@ package com.github.chainmailstudios.astromine.datagen.registry;
 
 import com.github.chainmailstudios.astromine.datagen.generator.loottable.onetime.OneTimeLootTableGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.loottable.set.SetLootTableGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.base.OneTimeRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.base.SetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.LootTableData;
-import me.shedaniel.cloth.api.datagen.v1.RecipeData;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AstromineLootTableGenerators {
+public abstract class AstromineLootTableGenerators {
 	private final List<SetLootTableGenerator> SET_GENERATORS = new ArrayList<>();
 	private final List<OneTimeLootTableGenerator> ONE_TIME_GENERATORS = new ArrayList<>();
 
@@ -26,9 +23,7 @@ public class AstromineLootTableGenerators {
 	}
 
 	public void generateLootTables(LootTableData lootTables) {
-		AstromineMaterialSets.getMaterialSets().forEach((set) -> {
-			generateSetLootTables(lootTables, set);
-		});
+		AstromineMaterialSets.getMaterialSets().forEach((set) -> generateSetLootTables(lootTables, set));
 		generateOneTimeLootTables(lootTables);
 	}
 

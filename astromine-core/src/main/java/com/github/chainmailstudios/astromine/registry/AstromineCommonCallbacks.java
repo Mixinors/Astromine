@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 import net.minecraft.entity.LivingEntity;
@@ -34,6 +33,7 @@ import net.minecraft.util.registry.Registry;
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;

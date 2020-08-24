@@ -24,13 +24,6 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.registry.Registry;
-
-import static com.github.chainmailstudios.astromine.AstromineCommon.identifier;
-
 public class AstrominePotions {
 	public static void initialize() {
 

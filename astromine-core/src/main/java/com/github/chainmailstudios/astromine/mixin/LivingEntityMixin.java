@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
-import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -51,6 +49,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
+import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
 import com.github.chainmailstudios.astromine.common.fluid.ExtendedFluid;
 import com.github.chainmailstudios.astromine.common.item.SpaceSuitItem;
@@ -58,6 +57,7 @@ import com.github.chainmailstudios.astromine.common.registry.AtmosphereRegistry;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineAttributes;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
 import com.github.chainmailstudios.astromine.registry.AstromineTags;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 

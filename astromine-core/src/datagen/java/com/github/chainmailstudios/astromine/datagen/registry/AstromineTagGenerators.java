@@ -1,15 +1,14 @@
 package com.github.chainmailstudios.astromine.datagen.registry;
 
-import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import com.github.chainmailstudios.astromine.datagen.generator.tag.onetime.OneTimeTagGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.tag.set.SetTagGenerator;
-
+import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AstromineTagGenerators {
+public abstract class AstromineTagGenerators {
 	private final List<SetTagGenerator> SET_GENERATORS = new ArrayList<>();
 	private final List<OneTimeTagGenerator> ONE_TIME_GENERATORS = new ArrayList<>();
 
@@ -24,9 +23,7 @@ public class AstromineTagGenerators {
 	}
 
 	public void generateTags(TagData tags) {
-		AstromineMaterialSets.getMaterialSets().forEach((set) -> {
-			generateSetTags(tags, set);
-		});
+		AstromineMaterialSets.getMaterialSets().forEach((set) -> generateSetTags(tags, set));
 		generateOneTimeTags(tags);
 	}
 

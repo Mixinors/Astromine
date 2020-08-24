@@ -4,7 +4,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.ItemInve
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
 import com.github.chainmailstudios.astromine.foundations.common.recipe.AltarRecipe;
-import com.github.chainmailstudios.astromine.foundations.datagen.registry.AstromineFoundationsBlockEntityTypes;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 import com.google.common.collect.Lists;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;

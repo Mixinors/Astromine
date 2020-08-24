@@ -24,8 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.block.transfer;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
 import net.minecraft.util.Identifier;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
 
 public enum TransferType {
 	NONE(AstromineCommon.identifier("textures/widget/none.png")),

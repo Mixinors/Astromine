@@ -1,13 +1,14 @@
 package com.github.chainmailstudios.astromine.datagen.material;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.datagen.generator.SetGenerator;
-import me.shedaniel.cloth.api.datagen.v1.TagData;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.datagen.generator.SetGenerator;
+import me.shedaniel.cloth.api.datagen.v1.TagData;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -25,7 +25,13 @@
 package com.github.chainmailstudios.astromine.foundations;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.foundations.datagen.registry.*;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlockEntityTypes;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsConfig;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFluids;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsItems;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsOres;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsRecipeSerializers;
 
 public class AstromineFoundationsCommon extends AstromineCommon {
 	@Override

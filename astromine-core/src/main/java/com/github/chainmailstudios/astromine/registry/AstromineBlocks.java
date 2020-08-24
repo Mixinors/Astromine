@@ -44,7 +44,6 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.item.AstromineBlockItem;
 import com.github.chainmailstudios.astromine.common.item.AstromineEnergyBlockItem;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
-import com.github.chainmailstudios.astromine.common.utilities.type.BufferType;
 
 public class AstromineBlocks {
 	public static final Block METEOR_STONE = register("meteor_stone", new Block(FabricBlockSettings.of(Material.STONE, MaterialColor.BLACK).requiresTool().breakByTool(FabricToolTags.PICKAXES, 3).strength(30, 1500)), AstromineItems.getBasicSettings().fireproof());

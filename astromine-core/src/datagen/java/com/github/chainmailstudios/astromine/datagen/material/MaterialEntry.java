@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.datagen.material;
 
 import net.fabricmc.fabric.api.tag.TagRegistry;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;

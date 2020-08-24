@@ -27,7 +27,6 @@ package com.github.chainmailstudios.astromine.client.rei;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.OverlayTexture;
@@ -35,9 +34,6 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.Item;
-import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -50,7 +46,6 @@ import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.ToolUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.BuiltinPlugin;
@@ -65,11 +60,8 @@ import me.shedaniel.rei.gui.widget.Widget;
 import me.shedaniel.rei.impl.RenderingEntry;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.function.BiConsumer;
 
 @Environment(EnvType.CLIENT)
 public class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
