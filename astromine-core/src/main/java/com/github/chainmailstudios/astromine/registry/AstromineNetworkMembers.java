@@ -26,6 +26,7 @@ package com.github.chainmailstudios.astromine.registry;
 
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.entity.BlockEntity;
@@ -105,6 +106,8 @@ public class AstromineNetworkMembers {
 				return super.get(pos);
 			}
 		});
+
+		FabricLoader.getInstance().getEntrypoints("astromine-network-members", Runnable.class).forEach(Runnable::run);
 
 		Registry.BLOCK.getEntries().forEach(entry -> acceptBlock(entry.getKey(), entry.getValue()));
 		RegistryEntryAddedCallback.event(Registry.BLOCK).register((index, identifier, block) -> acceptBlock(RegistryKey.of(Registry.BLOCK_KEY, identifier), block));

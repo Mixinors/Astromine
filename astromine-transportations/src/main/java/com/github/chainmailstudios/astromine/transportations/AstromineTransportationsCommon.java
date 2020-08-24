@@ -38,6 +38,5 @@ public class AstromineTransportationsCommon extends AstromineCommon {
 		AstromineTransportationsItems.initialize();
 		AstromineTransportationsItemGroups.initialize();
 		AstromineTransportationsBlockEntityTypes.initialize();
-		AstromineTransportationsNetworkMembers.initialize();
 	}
 }

@@ -24,7 +24,8 @@
   "entrypoints": {
     "main": ["com.github.chainmailstudios.astromine.transportations.AstromineTransportationsCommon"],
     "client": ["com.github.chainmailstudios.astromine.transportations.AstromineTransportationsClient"],
-    "server": ["com.github.chainmailstudios.astromine.transportations.AstromineTransportationsDedicated"]
+    "server": ["com.github.chainmailstudios.astromine.transportations.AstromineTransportationsDedicated"],
+    "astromine-network-members": ["com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsNetworkMembers::initialize"]
   },
   "mixins": ["astromine-transportations.mixins.json"],
   "accessWidener": "astromine-transportations.accesswidener",
