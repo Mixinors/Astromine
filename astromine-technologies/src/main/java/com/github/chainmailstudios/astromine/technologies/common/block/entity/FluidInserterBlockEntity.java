@@ -44,7 +44,7 @@ import com.github.chainmailstudios.astromine.technologies.registry.AstromineTech
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 public class FluidInserterBlockEntity extends ComponentEnergyFluidBlockEntity implements Tickable {
-	private final Fraction cooldown = Fraction.empty();
+	private Fraction cooldown = Fraction.empty();
 
 	public boolean isActive = false;
 
@@ -68,17 +68,17 @@ public class FluidInserterBlockEntity extends ComponentEnergyFluidBlockEntity im
 		start:
 		if (this.world != null && !this.world.isClient()) {
 			if (asEnergy().getEnergy() < AstromineConfig.get().fluidInserterEnergyConsumed) {
-				cooldown.resetToEmpty();
+				cooldown = Fraction.empty();
 				isActive = false;
 				break start;
 			}
 
 			isActive = true;
 
-			cooldown.add(Fraction.of(1, AstromineConfig.get().fluidInserterTimeConsumed));
-			cooldown.simplify();
+			cooldown = Fraction.add(cooldown, Fraction.of(1, AstromineConfig.get().fluidInserterTimeConsumed));
+			cooldown = Fraction.simplify(cooldown);
 			if (cooldown.isBiggerOrEqualThan(Fraction.ofWhole(1))) {
-				cooldown.resetToEmpty();
+				cooldown = Fraction.empty();
 
 				FluidVolume fluidVolume = fluidComponent.getVolume(0);
 

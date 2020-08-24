@@ -76,17 +76,17 @@ public class BlockBreakerBlockEntity extends ComponentEnergyInventoryBlockEntity
 		start:
 		if (this.world != null && !this.world.isClient()) {
 			if (asEnergy().getEnergy() < AstromineConfig.get().blockBreakerEnergyConsumed) {
-				cooldown.resetToEmpty();
+				cooldown = Fraction.empty();
 				isActive = false;
 				break start;
 			}
 
 			isActive = true;
 
-			cooldown.add(Fraction.of(1, AstromineConfig.get().blockBreakerTimeConsumed));
-			cooldown.simplify();
+			cooldown = Fraction.add(cooldown, Fraction.of(1, AstromineConfig.get().blockBreakerTimeConsumed));
+			cooldown = Fraction.simplify(cooldown);
 			if (cooldown.isBiggerOrEqualThan(Fraction.ofWhole(1))) {
-				cooldown.resetToEmpty();
+				cooldown = Fraction.empty();
 
 				ItemStack stored = itemComponent.getStack(0);
 
