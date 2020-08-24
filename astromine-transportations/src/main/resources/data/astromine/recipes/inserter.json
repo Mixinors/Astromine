@@ -6,10 +6,10 @@
       "item": "astromine:basic_circuit"
     },
     "6": {
-      "item": "astromine:bronze_plates"
+      "tag": "c:bronze_plates"
     },
     "7": {
-      "item": "astromine:bronze_gear"
+      "tag": "c:bronze_gears"
     }
   },
   "result": {
