@@ -27,6 +27,11 @@ public class InfusingCategory implements RecipeCategory<InfusingDisplay> {
 	}
 
 	@Override
+	public EntryStack getLogo() {
+		return EntryStack.create(AstromineFoundationsBlocks.ALTAR);
+	}
+
+	@Override
 	public List<Widget> setupDisplay(InfusingDisplay display, Rectangle bounds) {
 		List<Widget> widgets = Lists.newArrayList();
 		widgets.add(Widgets.createCategoryBase(bounds));
