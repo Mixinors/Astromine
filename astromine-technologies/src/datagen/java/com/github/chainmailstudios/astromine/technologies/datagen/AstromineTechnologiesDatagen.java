@@ -27,9 +27,4 @@ public class AstromineTechnologiesDatagen implements DatagenInitializer {
 	public AstromineTagGenerators getTagGenerators() {
 		return null;
 	}
-
-	@Override
-	public Generator<ModelStateData> getModelStateGenerator() {
-		return null;
-	}
 }
