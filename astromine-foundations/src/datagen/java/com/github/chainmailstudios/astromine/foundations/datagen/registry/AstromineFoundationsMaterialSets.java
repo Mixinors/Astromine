@@ -4,7 +4,7 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialEntry;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
-import com.github.chainmailstudios.astromine.registry.AstromineMaterialSets;
+import com.github.chainmailstudios.astromine.datagen.registry.AstromineMaterialSets;
 import net.minecraft.util.Identifier;
 
 public class AstromineFoundationsMaterialSets extends AstromineMaterialSets {

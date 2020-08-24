@@ -19,6 +19,7 @@ allprojects {
 
     ext {
         shouldGenerateData = false
+        isRunningGenerateDataTask = false
     }
 
     spotless {
@@ -165,21 +166,34 @@ allprojects {
                 }
             }
 
+            task datagenJar(type: Jar) {
+                classifier("datagen")
+                from sourceSets.datagen.output
+            }
+
             configurations {
+                datagenDev
                 datagenCompile.extendsFrom(compileClasspath)
             }
 
             dependencies {
                 datagenCompile sourceSets.main.output
             }
-            
-            task generateData(type: RunClientTask, dependsOn: downloadAssets) {
-                classpath = configurations.runtimeClasspath
-                classpath sourceSets.main.output
-                classpath sourceSets.datagen.output
-            }
 
-            build.dependsOn generateData
+            artifacts {
+                datagenDev file: file("${project.buildDir}/libs/$archivesBaseName-${version}-datagen.jar"), type: 'jar', builtBy: datagenJar
+            }
+            
+            if (isRunningGenerateDataTask) {
+                task generateData(type: RunClientTask, dependsOn: downloadAssets) {
+                    classpath = configurations.runtimeClasspath
+                    classpath sourceSets.datagen.runtimeClasspath
+                    classpath sourceSets.main.output
+                    classpath sourceSets.datagen.output
+                }
+
+                build.dependsOn generateData
+            }
         }
     }
 
@@ -214,6 +228,13 @@ subprojects {
     }
 }
 
+task generateDataAll
+subprojects.forEach {
+    if (it.isRunningGenerateDataTask) {
+        generateDataAll.dependsOn("${it.path}:generateData")
+    }
+}
+
 task remapMavenJar(type: net.fabricmc.loom.task.RemapJarTask, dependsOn: jar) {
     afterEvaluate {
         input = file("${project.buildDir}/libs/${archivesBaseName}-${version}-dev.jar")
@@ -240,11 +261,13 @@ publishing {
 
                 def depsNode = asNode().appendNode("dependencies")
                 subprojects.each {
-                    def depNode = depsNode.appendNode("dependency")
-                    depNode.appendNode("groupId", it.group)
-                    depNode.appendNode("artifactId", it.name)
-                    depNode.appendNode("version", buildid != null ? "${it.version}-${buildid}" : it.version)
-                    depNode.appendNode("scope", "compile")
+                    if (!it.isRunningGenerateDataTask) {
+                        def depNode = depsNode.appendNode("dependency")
+                        depNode.appendNode("groupId", it.group)
+                        depNode.appendNode("artifactId", it.name)
+                        depNode.appendNode("version", buildid != null ? "${it.version}-${buildid}" : it.version)
+                        depNode.appendNode("scope", "compile")
+                    }
                 }
             }
         }
@@ -257,11 +280,14 @@ subprojects.each { spotlessApply.dependsOn("${it.path}:spotlessApply") }
 dependencies {
     afterEvaluate {
         subprojects.each {
-            compile project(path: ":${it.name}", configuration: "dev")
-            include project("${it.name}:")
+            compile project(path: ":${it.path}", configuration: "dev")
+            if (!it.isRunningGenerateDataTask) {
+                include project("${it.path}:")
+            }
         }
     }
 
+    // We would like to give a huge thanks to loom for not applying this
     modRuntime "net.fabricmc:dev-launch-injector:+"
     tap(rootProject.ext.setRuntimeTestMods)
 }
