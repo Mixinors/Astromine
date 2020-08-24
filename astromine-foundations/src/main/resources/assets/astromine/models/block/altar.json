@@ -11,7 +11,7 @@
 		"9": "particle/sga_m",
 		"10": "particle/sga_k",
 		"11": "particle/sga_z",
-		"particle": "particle/sga_d"
+		"particle": "astromine:block/altar_steel"
 	},
 	"elements": [
 		{
