@@ -93,7 +93,9 @@ allprojects {
     dependencies {
         dependencies.ext.useAsApiOptionally = { dep ->
             modApi(dep) {
-                exclude group: "net.fabricmc.fabric-api"
+                if (!dep.contains("net.fabricmc.fabric-api")) {
+                    exclude group: "net.fabricmc.fabric-api"
+                }
                 exclude group: "net.fabricmc"
                 if (!dep.contains("me.shedaniel")) {
                     exclude group: "me.shedaniel"
@@ -107,8 +109,10 @@ allprojects {
         }
         dependencies.ext.useAsRuntime = { dep ->
             modRuntime(dep) {
+                if (!dep.contains("net.fabricmc.fabric-api")) {
+                    exclude group: "net.fabricmc.fabric-api"
+                }
                 exclude group: "net.fabricmc"
-                exclude group: "net.fabricmc.fabric-api"
                 if (!dep.contains("me.shedaniel")) {
                     exclude group: "me.shedaniel"
                 }
