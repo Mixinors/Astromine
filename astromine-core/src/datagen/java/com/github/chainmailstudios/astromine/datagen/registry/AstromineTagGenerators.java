@@ -28,6 +28,7 @@ public abstract class AstromineTagGenerators {
 	}
 
 	private void generateSetTags(TagData tags, MaterialSet set) {
+		set.generateTags(tags);
 		SET_GENERATORS.forEach((generator) -> {
 			try {
 				if (set.shouldGenerate(generator)) {
