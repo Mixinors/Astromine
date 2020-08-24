@@ -25,7 +25,7 @@ allprojects {
     spotless {
         encoding 'UTF-8'
         enforceCheck(false)
-        
+
         java {
             licenseHeaderFile(rootProject.file('HEADER'))
             removeUnusedImports()
@@ -37,7 +37,7 @@ allprojects {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    
+
     repositories {
         mavenLocal()
         maven {
@@ -80,14 +80,14 @@ allprojects {
                 password = ""
             }
         }
-		maven {
-			name = "Earthcomputer"
-			url = "https://dl.bintray.com/earthcomputer/mods"
-		}
-		maven {
-			name = "Modmaven"
-			url = "https://modmaven.k-4u.nl"
-		}
+        maven {
+            name = "Earthcomputer"
+            url = "https://dl.bintray.com/earthcomputer/mods"
+        }
+        maven {
+            name = "Modmaven"
+            url = "https://modmaven.k-4u.nl"
+        }
     }
 
     dependencies {
@@ -106,7 +106,7 @@ allprojects {
         }
         dependencies.ext.useAsRuntime = { dep ->
             modRuntime(dep) {
-				exclude module: "fabric-loader"
+                exclude module: "fabric-loader"
                 exclude group: "net.fabricmc.fabric-api"
                 if (!dep.contains("me.shedaniel")) {
                     exclude group: "me.shedaniel"
@@ -135,7 +135,7 @@ allprojects {
             input.set(file("${project.buildDir}/libs/$archivesBaseName-${version}-dev.jar"))
             archiveName = "${archivesBaseName}-${version}.jar"
         }
-        
+
         artifacts {
             dev file: file("${project.buildDir}/libs/$archivesBaseName-${version}-dev.jar"), type: 'jar', builtBy: remapJar
         }
@@ -183,7 +183,7 @@ allprojects {
             artifacts {
                 datagenDev file: file("${project.buildDir}/libs/$archivesBaseName-${version}-datagen.jar"), type: 'jar', builtBy: datagenJar
             }
-            
+
             if (isRunningGenerateDataTask) {
                 task generateData(type: RunClientTask, dependsOn: downloadAssets) {
                     classpath = configurations.runtimeClasspath
@@ -193,6 +193,8 @@ allprojects {
                 }
 
                 build.dependsOn generateData
+            } else {
+                rootProject.dependencies.include(rootProject.project("$path:"))
             }
         }
     }
@@ -281,9 +283,6 @@ dependencies {
     afterEvaluate {
         subprojects.each {
             compile project(path: ":${it.path}", configuration: "dev")
-            if (!it.isRunningGenerateDataTask) {
-                include project("${it.path}:")
-            }
         }
     }
 
