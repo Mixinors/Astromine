@@ -29,7 +29,6 @@ bin/
 .project
 
 # fabric
-
 run/
 
 # where half puts :woman_mage: mods
@@ -39,4 +38,4 @@ tpsgobrr/
 logs/
 */desktop.ini
 
-/*/src/generated/resources/.cache/cache
+\.cache/
