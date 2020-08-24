@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "active=false,facing=east": {
+      "y": 90,
+      "model": "astromine:block/basic_liquid_generator_inactive"
+    },
+    "active=false,facing=north": {
+      "model": "astromine:block/basic_liquid_generator_inactive"
+    },
+    "active=false,facing=south": {
+      "y": 180,
+      "model": "astromine:block/basic_liquid_generator_inactive"
+    },
+    "active=false,facing=west": {
+      "y": 270,
+      "model": "astromine:block/basic_liquid_generator_inactive"
+    },
+    "active=true,facing=east": {
+      "y": 90,
+      "model": "astromine:block/basic_liquid_generator_active"
+    },
+    "active=true,facing=north": {
+      "model": "astromine:block/basic_liquid_generator_active"
+    },
+    "active=true,facing=south": {
+      "y": 180,
+      "model": "astromine:block/basic_liquid_generator_active"
+    },
+    "active=true,facing=west": {
+      "y": 270,
+      "model": "astromine:block/basic_liquid_generator_active"
+    }
+  }
+}

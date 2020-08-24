@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "astromine:block/tank",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "astromine:block/tank"
+    },
+    "facing=south": {
+      "model": "astromine:block/tank",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "astromine:block/tank",
+      "y": 270
+    }
+  }
+}
