@@ -586,6 +586,7 @@
   "category.astromine.triturating": "Triturating",
   "category.astromine.fluid_mixing": "Fluid Mixing",
   "category.astromine.electrolyzing": "Electrolyzing",
+  "category.astromine.infusing": "Infusing",
   "category.astromine.cooking.time": "%s sec",
   "category.astromine.cooking.energy": "%s energy",
   "category.astromine.generating.energy": "%s generated/tick",

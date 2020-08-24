@@ -64,7 +64,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
+public abstract class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
 	private static final Identifier ENERGY_BACKGROUND = AstromineCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_background_thin.png");
 	private static final Identifier ENERGY_FOREGROUND = AstromineCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_foreground_thin.png");
 
@@ -74,11 +74,6 @@ public class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
 
 	public static EntryStack convertA2R(FluidVolume volume) {
 		return EntryStack.create(volume.getFluid(), convertA2R(volume.getFraction()));
-	}
-
-	@Override
-	public Identifier getPluginIdentifier() {
-		return AstromineCommon.identifier("rei_plugin");
 	}
 
 	@Override
