@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "astromine:item_displayer"
+          "name": "minecraft:air"
         }
       ],
       "conditions": [
