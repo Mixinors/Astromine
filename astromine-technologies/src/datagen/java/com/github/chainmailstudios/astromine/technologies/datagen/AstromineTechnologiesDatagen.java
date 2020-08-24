@@ -1,13 +1,7 @@
 package com.github.chainmailstudios.astromine.technologies.datagen;
 
 import com.github.chainmailstudios.astromine.datagen.entrypoint.DatagenInitializer;
-import com.github.chainmailstudios.astromine.datagen.generator.Generator;
-import com.github.chainmailstudios.astromine.datagen.registry.AstromineLootTableGenerators;
-import com.github.chainmailstudios.astromine.datagen.registry.AstromineMaterialSets;
-import com.github.chainmailstudios.astromine.datagen.registry.AstromineModelStateGenerators;
-import com.github.chainmailstudios.astromine.datagen.registry.AstromineRecipeGenerators;
-import com.github.chainmailstudios.astromine.datagen.registry.AstromineTagGenerators;
-import me.shedaniel.cloth.api.datagen.v1.ModelStateData;
+import com.github.chainmailstudios.astromine.datagen.registry.*;
 
 public class AstromineTechnologiesDatagen implements DatagenInitializer {
 	@Override
@@ -37,6 +31,11 @@ public class AstromineTechnologiesDatagen implements DatagenInitializer {
 
 	@Override
 	public AstromineModelStateGenerators getModelStateGenerators() {
+		return null;
+	}
+
+	@Override
+	public AstromineWorldGenGenerators getWorldGenGenerators() {
 		return null;
 	}
 }
