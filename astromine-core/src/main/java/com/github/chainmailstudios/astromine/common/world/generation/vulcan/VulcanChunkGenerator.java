@@ -24,6 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.world.generation.vulcan;
 
+import com.github.chainmailstudios.astromine.common.miscellaneous.BiomeGeneratorCache;
+import com.github.chainmailstudios.astromine.common.noise.FastNoise;
+import com.github.chainmailstudios.astromine.common.noise.OctaveNoiseSampler;
+import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -40,20 +47,13 @@ import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-
-import com.github.chainmailstudios.astromine.common.miscellaneous.BiomeGeneratorCache;
-import com.github.chainmailstudios.astromine.common.noise.OctaveNoiseSampler;
-import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 
 import java.util.Arrays;
 import java.util.Random;
 
-public class VulcanChunkGenerator extends ChunkGenerator {
+public class    VulcanChunkGenerator extends ChunkGenerator {
 	public static Codec<VulcanChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed), RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)).apply(instance,
-		VulcanChunkGenerator::new));
+			VulcanChunkGenerator::new));
 
 	private final long seed;
 	private final Registry<Biome> biomeRegistry;
@@ -62,15 +62,25 @@ public class VulcanChunkGenerator extends ChunkGenerator {
 	private final OctaveNoiseSampler<OpenSimplexNoise> warpZ;
 	private final ThreadLocal<BiomeGeneratorCache> cache;
 
+	private final FastNoise fastNoise;
+
 	public VulcanChunkGenerator(long seed, Registry<Biome> biomeRegistry) {
 		super(new VulcanBiomeSource(biomeRegistry, seed), new StructuresConfig(false));
 		this.seed = seed;
 		this.biomeRegistry = biomeRegistry;
 		Random random = new Random(seed);
-		baseNoise = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 5, 227.48, 45, 45);
+
+		baseNoise = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 5, 1140.3, 45, 45);
 		warpX = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 3, 72.12, 3, 3);
 		warpZ = new OctaveNoiseSampler<>(OpenSimplexNoise.class, random, 3, 72.12, 3, 3);
+
 		this.cache = ThreadLocal.withInitial(() -> new BiomeGeneratorCache(biomeSource));
+
+		fastNoise = new FastNoise((int) seed);
+
+		fastNoise.SetCellularDistanceFunction(FastNoise.CellularDistanceFunction.Euclidean);
+		fastNoise.SetCellularReturnType(FastNoise.CellularReturnType.Distance2Div);
+		fastNoise.SetFrequency(0.02F);
 	}
 
 	@Override
@@ -128,25 +138,40 @@ public class VulcanChunkGenerator extends ChunkGenerator {
 
 				int height = (int) (depth + (noise * scale));
 
-				int genHeight = Math.max(100, height);
+				int genHeight = Math.max(101, height);
+
+				float cellularNoise = fastNoise.GetCellular(x, z);
 
 				for (int y = 0; y <= genHeight; ++y) {
-					// Place stone or lava
-					if (y <= height) {
-						chunk.setBlockState(new BlockPos(x, y, z), AstromineBlocks.VULCAN_STONE.getDefaultState(), false);
+					final BlockPos pos = new BlockPos(x, y, z);
 
-						// Place magma blocks at high altitudes
-						if (y == genHeight && chunkRandom.nextInt(6) == 0) {
-							chunk.setBlockState(new BlockPos(x, y, z), Blocks.MAGMA_BLOCK.getDefaultState(), false);
+					// Fractures
+					if (y >= 1) {
+						cellularNoise -= 0.00025;
+
+						if (cellularNoise > -0.1 && height <= 101) {
+							chunk.setBlockState(pos, Blocks.AIR.getDefaultState(), false);
+						} else {
+							if (y >= 100) {
+								chunk.setBlockState(pos, AstromineBlocks.VULCAN_STONE.getDefaultState(), false);
+							}
 						}
-					} else {
-						chunk.setBlockState(new BlockPos(x, y, z), Blocks.LAVA.getDefaultState(), false);
 					}
 
+					// Bedrock
 					if (y <= 5) {
 						if (chunkRandom.nextInt(y + 1) == 0) {
-							chunk.setBlockState(new BlockPos(x, y, z), Blocks.BEDROCK.getDefaultState(), false);
+							chunk.setBlockState(pos, Blocks.BEDROCK.getDefaultState(), false);
 						}
+					}
+				}
+
+				for (int y = 0; y <= 100; ++y) {
+					final BlockPos pos = new BlockPos(x, y, z);
+
+					// Lava
+					if (chunk.getBlockState(pos).isAir()) {
+						chunk.setBlockState(pos, Blocks.LAVA.getDefaultState(), false);
 					}
 				}
 			}
