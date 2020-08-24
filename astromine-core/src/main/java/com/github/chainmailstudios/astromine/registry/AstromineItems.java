@@ -83,7 +83,7 @@ public class AstromineItems {
 	 *        Name of item instance to be registered
 	 * @param item
 	 *        Item instance to be registered
-	 * @return Item instanced registered
+	 * @return Item instance registered
 	 */
 	public static <T extends Item> T register(String name, T item) {
 		return register(AstromineCommon.identifier(name), item);
