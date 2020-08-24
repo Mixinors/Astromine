@@ -149,12 +149,10 @@ public class    VulcanChunkGenerator extends ChunkGenerator {
 					if (y >= 1) {
 						cellularNoise -= 0.00025;
 
-						if (cellularNoise > -0.1) {
+						if (cellularNoise > -0.1 && height <= 101) {
 							chunk.setBlockState(pos, Blocks.AIR.getDefaultState(), false);
 						} else {
-							if (cellularNoise < -0.1) {
-								chunk.setBlockState(pos, AstromineBlocks.VULCAN_STONE.getDefaultState(), false);
-							}
+							chunk.setBlockState(pos, AstromineBlocks.VULCAN_STONE.getDefaultState(), false);
 						}
 					}
 
