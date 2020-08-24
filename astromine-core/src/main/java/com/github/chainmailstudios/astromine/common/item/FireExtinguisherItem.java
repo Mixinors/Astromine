@@ -81,7 +81,7 @@ public class FireExtinguisherItem extends Item {
 			user.getItemCooldownManager().set(this, AstromineConfig.get().fireExtinguisherSneakingDelay);
 		}
 
-		BlockHitResult result = (BlockHitResult) user.rayTrace(6, 0, false);
+		BlockHitResult result = (BlockHitResult) user.raycast(6, 0, false);
 
 		BlockPos.Mutable.method_29715(new Box(result.getBlockPos()).expand(1)).forEach(position -> {
 			BlockState state = world.getBlockState(position);
