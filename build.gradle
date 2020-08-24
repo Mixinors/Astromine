@@ -3,7 +3,7 @@ import net.fabricmc.loom.task.RunClientTask
 plugins {
     id 'maven-publish'
     id 'com.diffplug.spotless' version '5.1.0' apply false
-    id 'fabric-loom' version '0.5-SNAPSHOT' apply false
+    id 'fabric-loom' version '0.4.28' apply false
 }
 
 apply from: 'dependencies.gradle'
@@ -94,6 +94,7 @@ allprojects {
         dependencies.ext.useAsApiOptionally = { dep ->
             modApi(dep) {
                 exclude group: "net.fabricmc.fabric-api"
+                exclude group: "net.fabricmc"
                 if (!dep.contains("me.shedaniel")) {
                     exclude group: "me.shedaniel"
                 }
@@ -106,7 +107,7 @@ allprojects {
         }
         dependencies.ext.useAsRuntime = { dep ->
             modRuntime(dep) {
-                exclude module: "fabric-loader"
+                exclude group: "net.fabricmc"
                 exclude group: "net.fabricmc.fabric-api"
                 if (!dep.contains("me.shedaniel")) {
                     exclude group: "me.shedaniel"
@@ -116,8 +117,8 @@ allprojects {
 
         minecraft group: 'com.mojang', name: 'minecraft', version: minecraft_version
         mappings group: 'net.fabricmc', name: 'yarn', version: mappings_version, classifier: 'v2'
-        modImplementation group: 'net.fabricmc', name: 'fabric-loader', version: loader_version
-        modImplementation group: 'net.fabricmc.fabric-api', name: 'fabric-api', version: api_version
+        modImplementation "net.fabricmc:fabric-loader:$loader_version"
+        useAsApiOptionally "net.fabricmc.fabric-api:fabric-api:$api_version"
 
         tap(rootProject.ext.setDefaultApis)
     }
