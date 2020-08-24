@@ -8,7 +8,7 @@ public class DropSelfSetLootTableGenerator implements SetLootTableGenerator {
 	private final MaterialItemType type;
 
 	public DropSelfSetLootTableGenerator(MaterialItemType type) {
-		if(!type.isBlock()) throw new IllegalArgumentException("type "+type.getName()+" isn't a block");
+		if (!type.isBlock()) throw new IllegalArgumentException("type " + type.getName() + " isn't a block");
 		else this.type = type;
 	}
 

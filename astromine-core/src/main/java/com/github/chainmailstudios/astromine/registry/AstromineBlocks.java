@@ -101,6 +101,7 @@ public class AstromineBlocks {
 	public static <T extends Block> T register(String name, T block, BlockItem item) {
 		T b = register(AstromineCommon.identifier(name), block);
 		if (item != null) {
+			Item.BLOCK_ITEMS.put(block, item);
 			AstromineItems.register(name, item);
 		}
 		return b;

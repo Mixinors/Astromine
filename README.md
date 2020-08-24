@@ -14,4 +14,4 @@ Find the artifacts at [Github Actions](https://github.com/Chainmail-Studios/Astr
 Please note that the latest development builds are not supported and are more prone to errors.
 
 ### Contributing
-Please run `./gradlew spotlessJavaApply` before you pull request to apply our license headers and code styles.
+Please run `./gradlew spotlessJavaApply` before you pull request to apply our license headers and code styles. Please consult with us first if you are going to make a big pull request to see if it has the chance of getting accepted.

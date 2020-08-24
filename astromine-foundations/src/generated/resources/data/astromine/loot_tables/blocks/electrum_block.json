@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:air"
+          "name": "astromine:electrum_block"
         }
       ],
       "conditions": [
