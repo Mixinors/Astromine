@@ -60,9 +60,12 @@ public abstract class WorldRendererMixin {
 	@Final
 	private MinecraftClient client;
 
-	@Shadow private ClientWorld world;
+	@Shadow
+	private ClientWorld world;
 
-	@Shadow @Final private BufferBuilderStorage bufferBuilders;
+	@Shadow
+	@Final
+	private BufferBuilderStorage bufferBuilders;
 
 	@Inject(at = @At("HEAD"), method = "renderSky(Lnet/minecraft/client/util/math/MatrixStack;F)V", cancellable = true)
 	void onRenderSky(MatrixStack matrices, float tickDelta, CallbackInfo callbackInformation) {
@@ -74,7 +77,8 @@ public abstract class WorldRendererMixin {
 		}
 	}
 
-	@Inject(at = @At(value = "HEAD", target = "Lnet/minecraft/client/render/WorldRenderer;checkEmpty(Lnet/minecraft/client/util/math/MatrixStack;)V"), method = "render(Lnet/minecraft/client/util/math/MatrixStack;FJZLnet/minecraft/client/render/Camera;Lnet/minecraft/client/render/GameRenderer;Lnet/minecraft/client/render/LightmapTextureManager;Lnet/minecraft/util/math/Matrix4f;)V")
+	@Inject(at = @At(value = "HEAD", target = "Lnet/minecraft/client/render/WorldRenderer;checkEmpty(Lnet/minecraft/client/util/math/MatrixStack;)V"),
+		method = "render(Lnet/minecraft/client/util/math/MatrixStack;FJZLnet/minecraft/client/render/Camera;Lnet/minecraft/client/render/GameRenderer;Lnet/minecraft/client/render/LightmapTextureManager;Lnet/minecraft/util/math/Matrix4f;)V")
 	void onRender(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci) {
 		Vec3d cameraPosition = camera.getPos();
 
@@ -91,7 +95,7 @@ public abstract class WorldRendererMixin {
 			int g = 255;
 			int b = 255;
 			int a = 31;
-			
+
 			if (volume.getFluid() instanceof ExtendedFluid) {
 				int color = ((ExtendedFluid) volume.getFluid()).getTintColor();
 
@@ -99,7 +103,7 @@ public abstract class WorldRendererMixin {
 				g = (color >> 8 & 255);
 				b = (color & 255);
 			}
-			
+
 			if (!volume.isEmpty()) {
 				float bX = blockPos.getX();
 				float bY = blockPos.getY();
@@ -114,7 +118,7 @@ public abstract class WorldRendererMixin {
 				consumer.vertex(matrices.peek().getModel(), x, y, z + 1).color(r, g, b, a).light(15728880).next();
 				consumer.vertex(matrices.peek().getModel(), x + 1, y, z + 1).color(r, g, b, a).light(15728880).next();
 				consumer.vertex(matrices.peek().getModel(), x + 1, y, z).color(r, g, b, a).light(15728880).next();
-				
+
 				// Top
 				consumer.vertex(matrices.peek().getModel(), x, y + 1, z).color(r, g, b, a).light(15728880).next();
 				consumer.vertex(matrices.peek().getModel(), x, y + 1, z + 1).color(r, g, b, a).light(15728880).next();
@@ -138,7 +142,7 @@ public abstract class WorldRendererMixin {
 				consumer.vertex(matrices.peek().getModel(), x, y + 1, z).color(r, g, b, a).light(15728880).next();
 				consumer.vertex(matrices.peek().getModel(), x, y + 1, z + 1).color(r, g, b, a).light(15728880).next();
 				consumer.vertex(matrices.peek().getModel(), x, y, z + 1).color(r, g, b, a).light(15728880).next();
-				
+
 				// Right
 				consumer.vertex(matrices.peek().getModel(), x + 1, y, z).color(r, g, b, a).light(15728880).next();
 				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z).color(r, g, b, a).light(15728880).next();

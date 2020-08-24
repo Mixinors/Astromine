@@ -47,8 +47,7 @@ public class NetworkMemberRegistry {
 
 	private final Map<NetworkType, NetworkTypeRegistry<?>> registries = new Reference2ObjectOpenHashMap<>();
 
-	private NetworkMemberRegistry() {
-	}
+	private NetworkMemberRegistry() {}
 
 	public static NetworkMember get(@Nullable WorldPos pos) {
 		return INSTANCE.new NetworkMemberImpl(pos);

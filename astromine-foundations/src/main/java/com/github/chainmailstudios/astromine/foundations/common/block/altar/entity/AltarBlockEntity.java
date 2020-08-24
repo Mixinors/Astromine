@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2020 Chainmail Studios
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.github.chainmailstudios.astromine.foundations.common.block.altar.entity;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
@@ -77,11 +101,11 @@ public class AltarBlockEntity extends BlockEntity implements ItemInventoryFromIn
 		yAge++;
 		lastAgeAddition = spinAge;
 		spinAge++;
-		spinAge += Math.min(CRAFTING_TIME, craftingTicks) / 5 * (craftingTicks >= CRAFTING_TIME + CRAFTING_TIME_SPIN ?
-			1 - (craftingTicks - CRAFTING_TIME_SPIN - CRAFTING_TIME) / (float) CRAFTING_TIME_FALL : 1);
+		spinAge += Math.min(CRAFTING_TIME, craftingTicks) / 5 * (craftingTicks >= CRAFTING_TIME + CRAFTING_TIME_SPIN ? 1 - (craftingTicks - CRAFTING_TIME_SPIN - CRAFTING_TIME) / (float) CRAFTING_TIME_FALL : 1);
 		lastAgeAddition = spinAge - lastAgeAddition;
 
-		if (craftingTicks == 0) craftingTicksDelta = 0;
+		if (craftingTicks == 0)
+			craftingTicksDelta = 0;
 
 		if (craftingTicks > 0) {
 			craftingTicks++;
@@ -110,7 +134,7 @@ public class AltarBlockEntity extends BlockEntity implements ItemInventoryFromIn
 				}
 			}
 		}
-		
+
 		if (!world.isClient && !inventory.getStack(0).isEmpty() && craftingTicks > 0 && craftingTicks <= CRAFTING_TIME + CRAFTING_TIME_SPIN + CRAFTING_TIME_FALL) {
 			spawnParticles();
 		}
@@ -143,7 +167,8 @@ public class AltarBlockEntity extends BlockEntity implements ItemInventoryFromIn
 	}
 
 	public boolean initializeCrafting() {
-		if (craftingTicks > 0) return false;
+		if (craftingTicks > 0)
+			return false;
 
 		children = scanDisplayers();
 		Iterator<Supplier<ItemDisplayerBlockEntity>> iterator = children.iterator();
@@ -178,14 +203,8 @@ public class AltarBlockEntity extends BlockEntity implements ItemInventoryFromIn
 	}
 
 	private List<Supplier<ItemDisplayerBlockEntity>> scanDisplayers() {
-		return IntStream.range(-4, 5).boxed().flatMap(xOffset ->
-			IntStream.range(-4, 5).boxed()
-				.map(zOffset -> world.getBlockEntity(pos.add(xOffset, 0, zOffset))))
-			.filter(blockEntity -> blockEntity instanceof ItemDisplayerBlockEntity)
-			.map(blockEntity -> (ItemDisplayerBlockEntity) blockEntity)
-			.filter(blockEntity -> blockEntity.parent == null || pos.equals(blockEntity.parent))
-			.map(blockEntity -> (Supplier<ItemDisplayerBlockEntity>) () -> blockEntity)
-			.collect(Collectors.toList());
+		return IntStream.range(-4, 5).boxed().flatMap(xOffset -> IntStream.range(-4, 5).boxed().map(zOffset -> world.getBlockEntity(pos.add(xOffset, 0, zOffset)))).filter(blockEntity -> blockEntity instanceof ItemDisplayerBlockEntity).map(
+			blockEntity -> (ItemDisplayerBlockEntity) blockEntity).filter(blockEntity -> blockEntity.parent == null || pos.equals(blockEntity.parent)).map(blockEntity -> (Supplier<ItemDisplayerBlockEntity>) () -> blockEntity).collect(Collectors.toList());
 	}
 
 	@Override

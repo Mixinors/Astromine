@@ -2,12 +2,10 @@ package com.github.chainmailstudios.astromine.foundations.datagen.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.ModelStateGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.modelstate.set.ColumnBlockSetModelStateGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.modelstate.set.GenericBlockSetModelStateGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.modelstate.set.GenericItemSetModelStateGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.modelstate.set.HandheldItemSetModelStateGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.modelstate.set.*;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineModelStateGenerators;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
 
 public class AstromineFoundationsModelStateGenerators extends AstromineModelStateGenerators {
 	public final ModelStateGenerator INGOT = register(new GenericItemSetModelStateGenerator(MaterialItemType.INGOT));
@@ -49,4 +47,6 @@ public class AstromineFoundationsModelStateGenerators extends AstromineModelStat
 	public final ModelStateGenerator CHESTPLATE = register(new GenericItemSetModelStateGenerator(MaterialItemType.CHESTPLATE));
 	public final ModelStateGenerator LEGGINGS = register(new GenericItemSetModelStateGenerator(MaterialItemType.LEGGINGS));
 	public final ModelStateGenerator BOOTS = register(new GenericItemSetModelStateGenerator(MaterialItemType.BOOTS));
+
+	public final ModelStateGenerator MISC = register(new SimpleBlockItemModelStateGenerator(AstromineFoundationsBlocks.ALTAR, AstromineFoundationsBlocks.ITEM_DISPLAYER));
 }
