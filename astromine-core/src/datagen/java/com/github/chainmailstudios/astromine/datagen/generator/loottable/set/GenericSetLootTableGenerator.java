@@ -20,6 +20,6 @@ public abstract class GenericSetLootTableGenerator implements SetLootTableGenera
 
 	@Override
 	public boolean shouldGenerate(MaterialSet set) {
-		return set.hasType(type);
+		return set.hasType(type) && !set.isFromVanilla(type);
 	}
 }
