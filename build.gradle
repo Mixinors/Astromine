@@ -201,6 +201,8 @@ allprojects {
             } else {
                 rootProject.dependencies.include(rootProject.project("$path:"))
             }
+        } else {
+            rootProject.dependencies.include(rootProject.project("$path:"))
         }
     }
 
