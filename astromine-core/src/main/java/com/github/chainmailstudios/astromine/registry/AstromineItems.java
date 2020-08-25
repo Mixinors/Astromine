@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.common.item.ManualItem;
 import net.fabricmc.loader.api.FabricLoader;
 
 import net.minecraft.block.DispenserBlock;
@@ -58,6 +59,8 @@ public class AstromineItems {
 
 	// Fantasy weaponry
 	public static final Item GRAVITY_GAUNTLET = register("gravity_gauntlet", new GravityGauntletItem(getBasicSettings().maxCount(1), AstromineConfig.get().gravityGauntletEnergy));
+	
+	public static final Item MANUAL = register("manual", new ManualItem(getBasicSettings().maxCount(1)));
 
 	public static void initialize() {
 		for (UncoloredSpawnEggItem spawnEggItem : UncoloredSpawnEggItem.getAll()) {

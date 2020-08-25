@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -45,7 +46,6 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.access.EntityAccess;
 import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
-import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
 import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
