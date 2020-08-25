@@ -210,6 +210,10 @@ allprojects {
         archiveClassifier.set('sources')
         from sourceSets.main.allSource
     }
+    
+    task deleteBuildFolder {
+        file("${buildDir}").deleteDir()
+    }
 }
 
 subprojects {
@@ -243,6 +247,9 @@ subprojects.forEach {
         generateDataAll.dependsOn("${it.path}:generateData")
     }
 }
+
+task deleteBuildFolderAll
+subprojects.each { deleteBuildFolderAll.dependsOn("${it.path}:deleteBuildFolder") }
 
 task remapMavenJar(type: net.fabricmc.loom.task.RemapJarTask, dependsOn: jar) {
     afterEvaluate {
