@@ -67,6 +67,10 @@ public final class Fraction extends Number implements Comparable<Fraction> {
 	}
 
 	public static Fraction add(Fraction fractionA, Fraction fractionB) {
+		if (fractionA.denominator == 0)
+			return fractionB;
+		if (fractionB.denominator == 0)
+			return fractionA;
 		long denominator = lowestCommonDenominator(fractionA.denominator, fractionB.denominator);
 
 		return new Fraction(fractionA.numerator * (denominator / fractionA.denominator) + fractionB.numerator * (denominator / fractionB.denominator), denominator);
