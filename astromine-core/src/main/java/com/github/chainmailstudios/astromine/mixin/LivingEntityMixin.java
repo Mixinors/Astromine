@@ -51,12 +51,13 @@ import net.minecraft.util.math.Direction;
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
-import com.github.chainmailstudios.astromine.common.fluid.AdvancedFluid;
+import com.github.chainmailstudios.astromine.common.fluid.ExtendedFluid;
 import com.github.chainmailstudios.astromine.common.item.SpaceSuitItem;
 import com.github.chainmailstudios.astromine.common.registry.AtmosphereRegistry;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineAttributes;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
 import com.github.chainmailstudios.astromine.registry.AstromineTags;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 
@@ -89,7 +90,7 @@ public abstract class LivingEntityMixin implements GravityEntity {
 
 			WorldAtmosphereComponent atmosphereComponent = worldProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);
 
-			FluidVolume atmosphereVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
+			FluidVolume atmosphereVolume = AstromineDimensions.isAstromine(entity.world.getRegistryKey()) ? atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP)) : FluidVolume.empty();
 
 			if (SpaceSuitItem.hasFullArmor(equippedArmor))
 				return;
@@ -107,11 +108,11 @@ public abstract class LivingEntityMixin implements GravityEntity {
 					FluidState fluidState = blockState.getFluidState();
 					Fluid collidingFluid = fluidState.getFluid();
 
-					if (collidingFluid instanceof AdvancedFluid) {
-						AdvancedFluid advancedFluid = (AdvancedFluid) collidingFluid;
+					if (collidingFluid instanceof ExtendedFluid) {
+						ExtendedFluid extendedFluid = (ExtendedFluid) collidingFluid;
 
-						if (advancedFluid.isToxic()) {
-							entity.damage(advancedFluid.getSource(), advancedFluid.getDamage());
+						if (extendedFluid.isToxic()) {
+							entity.damage(extendedFluid.getSource(), extendedFluid.getDamage());
 
 							break;
 						}

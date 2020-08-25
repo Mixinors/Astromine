@@ -1,0 +1,17 @@
+archivesBaseName = "astromine-technologies"
+shouldGenerateData = true
+
+minecraft {
+    accessWidener = file("src/main/resources/astromine-technologies.accesswidener")
+}
+
+dependencies {
+    compile project(path: ':astromine-core', configuration: 'dev')
+    compile project(path: ':astromine-foundations', configuration: 'dev')
+}
+
+afterEvaluate {
+    dependencies {
+        datagenCompile project(path: ":astromine-core", configuration: 'datagenDev')
+    }
+}

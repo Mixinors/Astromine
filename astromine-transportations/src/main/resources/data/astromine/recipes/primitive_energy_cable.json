@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["000", "345", "000"],
+  "key": {
+    "0": { "tag": "c:copper_plates" },
+    "3": { "tag": "c:iron_nuggets" },
+    "4": { "item": "astromine:basic_circuit" },
+    "5": { "tag": "c:iron_nuggets" }
+  },
+  "result": { "item": "astromine:primitive_energy_cable", "count": 16 }
+}

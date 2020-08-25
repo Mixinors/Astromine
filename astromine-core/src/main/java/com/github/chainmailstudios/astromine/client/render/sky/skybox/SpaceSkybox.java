@@ -198,7 +198,7 @@ public class SpaceSkybox extends AbstractSkybox {
 		ImmutableMap.Builder<Identifier, Identifier> textures = ImmutableMap.builder();
 
 		public Builder() {
-			// Unused.
+
 		}
 
 		public Builder up(Identifier up) {

@@ -25,8 +25,7 @@
     "main": ["com.github.chainmailstudios.astromine.AstromineCommon"],
     "client": ["com.github.chainmailstudios.astromine.AstromineClient"],
     "server": ["com.github.chainmailstudios.astromine.AstromineDedicated"],
-    "cloth-early-init": ["com.github.chainmailstudios.astromine.AstromineCommon"],
-    "rei_plugins": ["com.github.chainmailstudios.astromine.client.rei.AstromineREIPlugin"],
+    "preLaunch": ["com.github.chainmailstudios.astromine.AstromineCommon"],
     "modmenu": ["com.github.chainmailstudios.astromine.client.modmenu.AstromineModMenuSupport"]
   },
   "mixins": ["astromine.mixins.json"],

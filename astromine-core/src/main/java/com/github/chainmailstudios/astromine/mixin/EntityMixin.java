@@ -24,17 +24,8 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.access.EntityAccess;
-import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
-import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
-import com.google.common.collect.Lists;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.TeleportTarget;
-import net.minecraft.world.World;
+import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -44,6 +35,23 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.TeleportTarget;
+import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.access.EntityAccess;
+import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
+import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
+import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
+import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+
+import com.google.common.collect.Lists;
 import java.util.List;
 
 @Mixin(Entity.class)
@@ -153,5 +161,20 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 			cir.setReturnValue(nextTeleportTarget);
 			nextTeleportTarget = null;
 		}
+	}
+
+	@Inject(at = @At("HEAD"), method = "moveToWorld(Lnet/minecraft/server/world/ServerWorld;)Lnet/minecraft/entity/Entity;")
+	void onThing(ServerWorld destination, CallbackInfoReturnable<Entity> cir) {
+		world.getPlayers().forEach((player) -> {
+			ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, ClientAtmosphereManager.GAS_ERASED, ClientAtmosphereManager.ofGasErased());
+
+			ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
+
+			WorldAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);
+
+			atmosphereComponent.getVolumes().forEach(((blockPos, volume) -> {
+				ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, ClientAtmosphereManager.GAS_ADDED, ClientAtmosphereManager.ofGasAdded(blockPos, volume));
+			}));
+		});
 	}
 }

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "astromine:block/primitive_capacitor",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "astromine:block/primitive_capacitor"
+    },
+    "facing=south": {
+      "model": "astromine:block/primitive_capacitor",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "astromine:block/primitive_capacitor",
+      "y": 270
+    }
+  }
+}

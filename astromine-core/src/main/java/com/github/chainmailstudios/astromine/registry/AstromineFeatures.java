@@ -24,6 +24,20 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import net.minecraft.structure.StructurePieceType;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.GenerationStep;
+import net.minecraft.world.gen.chunk.StructureConfig;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
+import net.minecraft.world.gen.feature.DefaultFeatureConfig;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.FeatureConfig;
+import net.minecraft.world.gen.feature.StructureFeature;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.world.feature.AsteroidOreFeature;
 import com.github.chainmailstudios.astromine.common.world.feature.MeteorFeature;
@@ -32,14 +46,6 @@ import com.github.chainmailstudios.astromine.common.world.feature.MoonCraterFeat
 import me.shedaniel.cloth.api.dynamic.registry.v1.BiomesRegistry;
 import me.shedaniel.cloth.api.dynamic.registry.v1.DynamicRegistryCallback;
 import net.earthcomputer.libstructure.LibStructure;
-import net.minecraft.structure.StructurePieceType;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.chunk.StructureConfig;
-import net.minecraft.world.gen.feature.*;
 
 public class AstromineFeatures {
 	public static final Identifier ASTEROID_ORES_ID = AstromineCommon.identifier("asteroid_ores");

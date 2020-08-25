@@ -32,9 +32,10 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.client.registry.NetworkMemberRegistry;
-import com.github.chainmailstudios.astromine.common.block.AbstractCableBlock;
+import com.github.chainmailstudios.astromine.common.block.base.CableBlock;
 import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
+import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
+import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.WorldPos;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
@@ -123,7 +124,7 @@ public class NetworkTracer {
 		private final Set<Direction> directions = new HashSet<>();
 
 		public void scanBlockState(BlockState blockState) {
-			for (Map.Entry<Direction, BooleanProperty> property : AbstractCableBlock.PROPERTY_MAP.entrySet()) {
+			for (Map.Entry<Direction, BooleanProperty> property : CableBlock.PROPERTIES.entrySet()) {
 				if (blockState.get(property.getValue())) {
 					directions.add(property.getKey());
 				}
@@ -143,10 +144,10 @@ public class NetworkTracer {
 		}
 
 		public BlockState applyToBlockState(BlockState state) {
-			if (!(state.getBlock() instanceof AbstractCableBlock))
+			if (!(state.getBlock() instanceof CableBlock))
 				return state;
 			for (Direction direction : Direction.values()) {
-				state = state.with(AbstractCableBlock.PROPERTY_MAP.get(direction), directions.contains(direction));
+				state = state.with(CableBlock.PROPERTIES.get(direction), directions.contains(direction));
 			}
 			return state;
 		}
@@ -154,7 +155,7 @@ public class NetworkTracer {
 		public VoxelShape applyToVoxelShape(VoxelShape shape) {
 			for (Direction direction : Direction.values()) {
 				if (directions.contains(direction)) {
-					shape = VoxelShapes.union(shape, AbstractCableBlock.SHAPE_MAP.get(AbstractCableBlock.PROPERTY_MAP.get(direction)));
+					shape = VoxelShapes.union(shape, CableBlock.SHAPE_MAP.get(CableBlock.PROPERTIES.get(direction)));
 				}
 			}
 			return shape;

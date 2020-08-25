@@ -46,16 +46,17 @@ project.ext.setDefaultApis = {
     // LibStructure
     useAsApi("net.earthcomputer:libstructure:${libstructure_version}")
 
-    // JOML
-    compile("org.joml:joml:${joml_version}")
-
     // Magna
     useAsApi("com.github.Draylar:magna:${magna_version}")
 
     // Wrenchable
     useAsApi("com.zundrel:wrenchable:${wrenchable_version}")
 
+    // Fabric Language Kotlin
     useAsApi("net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}")
+
+    // JOML
+    compile("org.joml:joml:${joml_version}")
 }
 
 project.ext.setRuntimeTestMods = {
@@ -67,4 +68,7 @@ project.ext.setRuntimeTestMods = {
 
     // DataBreaker
     useAsRuntime("com.github.SuperCoder7979:databreaker:${databreaker_version}")
+	
+	// AE2
+    useAsRuntime("appeng:appliedenergistics2-fabric:${ae2_version}")
 }

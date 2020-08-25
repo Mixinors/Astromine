@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["   ", " 4 ", "676"],
+  "key": {
+    "4": {
+      "item": "astromine:basic_circuit"
+    },
+    "6": {
+      "tag": "c:bronze_plates"
+    },
+    "7": {
+      "tag": "c:bronze_gears"
+    }
+  },
+  "result": {
+    "item": "astromine:inserter",
+    "count": 1
+  }
+}

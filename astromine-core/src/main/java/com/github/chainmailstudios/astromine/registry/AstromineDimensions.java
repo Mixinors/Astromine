@@ -24,13 +24,14 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -67,6 +68,6 @@ public class AstromineDimensions {
 	}
 
 	public static void initialize() {
-		// Unused.
+
 	}
 }

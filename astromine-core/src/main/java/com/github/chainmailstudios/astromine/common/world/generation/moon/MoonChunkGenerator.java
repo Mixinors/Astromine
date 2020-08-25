@@ -24,11 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.world.generation.moon;
 
-import com.github.chainmailstudios.astromine.common.miscellaneous.BiomeGenCache;
-import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -45,6 +40,12 @@ import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
+import com.github.chainmailstudios.astromine.common.miscellaneous.BiomeGeneratorCache;
+import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 
 import java.util.Arrays;
 
@@ -59,7 +60,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 	private final OpenSimplexNoise mainNoise2;
 	private final OpenSimplexNoise ridgedNoise;
 	private final OpenSimplexNoise detailNoise;
-	private final ThreadLocal<BiomeGenCache> cache;
+	private final ThreadLocal<BiomeGeneratorCache> cache;
 
 	public MoonChunkGenerator(long seed, Registry<Biome> biomeRegistry) {
 		super(new MoonBiomeSource(seed, biomeRegistry), new StructuresConfig(false));
@@ -69,7 +70,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 		this.mainNoise2 = new OpenSimplexNoise(seed + 79);
 		this.ridgedNoise = new OpenSimplexNoise(seed - 79);
 		this.detailNoise = new OpenSimplexNoise(seed + 2003);
-		this.cache = ThreadLocal.withInitial(() -> new BiomeGenCache(biomeSource));
+		this.cache = ThreadLocal.withInitial(() -> new BiomeGeneratorCache(biomeSource));
 	}
 
 	@Override
@@ -88,7 +89,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
 	@Override
 	public void buildSurface(ChunkRegion region, Chunk chunk) {
-		// Unused.
+
 	}
 
 	@Override

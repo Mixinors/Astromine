@@ -48,7 +48,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.RayTraceContext;
+import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
@@ -68,7 +68,7 @@ public abstract class BucketItemMixin {
 
 	@Inject(at = @At("HEAD"), method = "use(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/TypedActionResult;", cancellable = true)
 	void onUse(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> callbackInformationReturnable) {
-		BlockHitResult result = rayTrace(world, user, fluid == Fluids.EMPTY ? RayTraceContext.FluidHandling.SOURCE_ONLY : RayTraceContext.FluidHandling.NONE);
+		BlockHitResult result = raycast(world, user, fluid == Fluids.EMPTY ? RaycastContext.FluidHandling.SOURCE_ONLY : RaycastContext.FluidHandling.NONE);
 
 		if (result.getType() == HitResult.Type.BLOCK) {
 			BlockState state = world.getBlockState(result.getBlockPos());
@@ -120,7 +120,7 @@ public abstract class BucketItemMixin {
 		}
 	}
 
-	private static BlockHitResult rayTrace(World world, PlayerEntity player, RayTraceContext.FluidHandling fluidHandling) {
+	private static BlockHitResult raycast(World world, PlayerEntity player, RaycastContext.FluidHandling fluidHandling) {
 		float f = player.pitch;
 		float g = player.yaw;
 		Vec3d vec3d = player.getCameraPosVec(1.0F);
@@ -131,6 +131,6 @@ public abstract class BucketItemMixin {
 		float l = i * j;
 		float n = h * j;
 		Vec3d vec3d2 = vec3d.add((double) l * 5.0D, (double) k * 5.0D, (double) n * 5.0D);
-		return world.rayTrace(new RayTraceContext(vec3d, vec3d2, RayTraceContext.ShapeType.OUTLINE, fluidHandling, player));
+		return world.raycast(new RaycastContext(vec3d, vec3d2, RaycastContext.ShapeType.OUTLINE, fluidHandling, player));
 	}
 }

@@ -12,4 +12,7 @@ pluginManagement {
 rootProject.name = "astromine"
 
 include 'astromine-core'
+include 'astromine-datagen-initializer'
 include 'astromine-foundations'
+include 'astromine-transportations'
+include 'astromine-technologies'

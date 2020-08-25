@@ -3,7 +3,7 @@ import net.fabricmc.loom.task.RunClientTask
 plugins {
     id 'maven-publish'
     id 'com.diffplug.spotless' version '5.1.0' apply false
-    id 'fabric-loom' version '0.4.28' apply false
+    id 'fabric-loom' version '0.4-SNAPSHOT' apply false
 }
 
 apply from: 'dependencies.gradle'
@@ -13,18 +13,19 @@ allprojects {
     apply plugin: 'fabric-loom'
     apply plugin: 'com.diffplug.spotless'
 
-    archivesBaseName = project.mod_name + "-" + project.mod_version + "+" + project.version_meta
+    archivesBaseName = project.mod_name
     group = rootProject.mod_group
-    version = rootProject.mod_version
+    version = rootProject.mod_version + "+" + project.version_meta
 
     ext {
         shouldGenerateData = false
+        isRunningGenerateDataTask = false
     }
 
     spotless {
         encoding 'UTF-8'
         enforceCheck(false)
-        
+
         java {
             licenseHeaderFile(rootProject.file('HEADER'))
             removeUnusedImports()
@@ -36,7 +37,7 @@ allprojects {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    
+
     repositories {
         mavenLocal()
         maven {
@@ -79,16 +80,23 @@ allprojects {
                 password = ""
             }
         }
-		maven {
-			name = "Earthcomputer"
-			url = "https://dl.bintray.com/earthcomputer/mods"
-		}
+        maven {
+            name = "Earthcomputer"
+            url = "https://dl.bintray.com/earthcomputer/mods"
+        }
+        maven {
+            name = "Modmaven"
+            url = "https://modmaven.k-4u.nl"
+        }
     }
 
     dependencies {
         dependencies.ext.useAsApiOptionally = { dep ->
             modApi(dep) {
-                exclude group: "net.fabricmc.fabric-api"
+                if (!dep.contains("net.fabricmc.fabric-api")) {
+                    exclude group: "net.fabricmc.fabric-api"
+                }
+                exclude group: "net.fabricmc"
                 if (!dep.contains("me.shedaniel")) {
                     exclude group: "me.shedaniel"
                 }
@@ -101,8 +109,10 @@ allprojects {
         }
         dependencies.ext.useAsRuntime = { dep ->
             modRuntime(dep) {
-				exclude module: "fabric-loader"
-                exclude group: "net.fabricmc.fabric-api"
+                if (!dep.contains("net.fabricmc.fabric-api")) {
+                    exclude group: "net.fabricmc.fabric-api"
+                }
+                exclude group: "net.fabricmc"
                 if (!dep.contains("me.shedaniel")) {
                     exclude group: "me.shedaniel"
                 }
@@ -111,8 +121,8 @@ allprojects {
 
         minecraft group: 'com.mojang', name: 'minecraft', version: minecraft_version
         mappings group: 'net.fabricmc', name: 'yarn', version: mappings_version, classifier: 'v2'
-        modImplementation group: 'net.fabricmc', name: 'fabric-loader', version: loader_version
-        modImplementation group: 'net.fabricmc.fabric-api', name: 'fabric-api', version: api_version
+        modImplementation "net.fabricmc:fabric-loader:$loader_version"
+        useAsApiOptionally "net.fabricmc.fabric-api:fabric-api:$api_version"
 
         tap(rootProject.ext.setDefaultApis)
     }
@@ -130,7 +140,7 @@ allprojects {
             input.set(file("${project.buildDir}/libs/$archivesBaseName-${version}-dev.jar"))
             archiveName = "${archivesBaseName}-${version}.jar"
         }
-        
+
         artifacts {
             dev file: file("${project.buildDir}/libs/$archivesBaseName-${version}-dev.jar"), type: 'jar', builtBy: remapJar
         }
@@ -161,27 +171,48 @@ allprojects {
                 }
             }
 
+            task datagenJar(type: Jar) {
+                classifier("datagen")
+                from sourceSets.datagen.output
+            }
+
             configurations {
+                datagenDev
                 datagenCompile.extendsFrom(compileClasspath)
             }
 
             dependencies {
                 datagenCompile sourceSets.main.output
             }
-            
-            task generateData(type: RunClientTask, dependsOn: downloadAssets) {
-                classpath = configurations.runtimeClasspath
-                classpath sourceSets.main.output
-                classpath sourceSets.datagen.output
+
+            artifacts {
+                datagenDev file: file("${project.buildDir}/libs/$archivesBaseName-${version}-datagen.jar"), type: 'jar', builtBy: datagenJar
             }
 
-            build.dependsOn generateData
+            if (isRunningGenerateDataTask) {
+                task generateData(type: RunClientTask, dependsOn: downloadAssets) {
+                    classpath = configurations.runtimeClasspath
+                    classpath sourceSets.datagen.runtimeClasspath
+                    classpath sourceSets.main.output
+                    classpath sourceSets.datagen.output
+                }
+
+                build.dependsOn generateData
+            } else {
+                rootProject.dependencies.include(rootProject.project("$path:"))
+            }
+        } else {
+            rootProject.dependencies.include(rootProject.project("$path:"))
         }
     }
 
     task sourcesJar(type: Jar, dependsOn: classes) {
         archiveClassifier.set('sources')
         from sourceSets.main.allSource
+    }
+    
+    task deleteBuildFolder {
+        file("${buildDir}").deleteDir()
     }
 }
 
@@ -210,6 +241,16 @@ subprojects {
     }
 }
 
+task generateDataAll
+subprojects.forEach {
+    if (it.isRunningGenerateDataTask) {
+        generateDataAll.dependsOn("${it.path}:generateData")
+    }
+}
+
+task deleteBuildFolderAll
+subprojects.each { deleteBuildFolderAll.dependsOn("${it.path}:deleteBuildFolder") }
+
 task remapMavenJar(type: net.fabricmc.loom.task.RemapJarTask, dependsOn: jar) {
     afterEvaluate {
         input = file("${project.buildDir}/libs/${archivesBaseName}-${version}-dev.jar")
@@ -236,11 +277,13 @@ publishing {
 
                 def depsNode = asNode().appendNode("dependencies")
                 subprojects.each {
-                    def depNode = depsNode.appendNode("dependency")
-                    depNode.appendNode("groupId", it.group)
-                    depNode.appendNode("artifactId", it.name)
-                    depNode.appendNode("version", buildid != null ? "${it.version}-${buildid}" : it.version)
-                    depNode.appendNode("scope", "compile")
+                    if (!it.isRunningGenerateDataTask) {
+                        def depNode = depsNode.appendNode("dependency")
+                        depNode.appendNode("groupId", it.group)
+                        depNode.appendNode("artifactId", it.name)
+                        depNode.appendNode("version", buildid != null ? "${it.version}-${buildid}" : it.version)
+                        depNode.appendNode("scope", "compile")
+                    }
                 }
             }
         }
@@ -253,11 +296,11 @@ subprojects.each { spotlessApply.dependsOn("${it.path}:spotlessApply") }
 dependencies {
     afterEvaluate {
         subprojects.each {
-            compile project(path: ":${it.name}", configuration: "dev")
-            include project("${it.name}:")
+            compile project(path: ":${it.path}", configuration: "dev")
         }
     }
 
+    // We would like to give a huge thanks to loom for not applying this
     modRuntime "net.fabricmc:dev-launch-injector:+"
     tap(rootProject.ext.setRuntimeTestMods)
 }

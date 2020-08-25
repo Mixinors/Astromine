@@ -24,22 +24,25 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.client.render.sky.MarsSkyProperties;
-import com.github.chainmailstudios.astromine.client.render.sky.MoonSkyProperties;
-import com.github.chainmailstudios.astromine.client.render.sky.SpaceSkyProperties;
-import com.github.chainmailstudios.astromine.client.render.sky.VulcanSkyProperties;
-import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.SkyProperties;
-import net.minecraft.util.Identifier;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import net.minecraft.client.render.SkyProperties;
+import net.minecraft.util.Identifier;
+
+import com.github.chainmailstudios.astromine.client.render.sky.MarsSkyProperties;
+import com.github.chainmailstudios.astromine.client.render.sky.MoonSkyProperties;
+import com.github.chainmailstudios.astromine.client.render.sky.SpaceSkyProperties;
+import com.github.chainmailstudios.astromine.client.render.sky.VulcanSkyProperties;
+import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 
 @Environment(EnvType.CLIENT)
 @Mixin(SkyProperties.class)

@@ -35,7 +35,7 @@ import net.minecraft.util.BlockRotation;
 
 import org.jetbrains.annotations.Nullable;
 
-public abstract class HorizontalFacingBlockWithEntity extends DefaultedBlockWithEntity {
+public abstract class HorizontalFacingBlockWithEntity extends BlockWithEntity {
 	public HorizontalFacingBlockWithEntity(Settings settings) {
 		super(settings);
 	}

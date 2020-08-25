@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.world.feature;
 
-import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 import net.minecraft.block.Block;
 import net.minecraft.util.Pair;
 import net.minecraft.util.collection.WeightedList;
@@ -36,6 +35,7 @@ import net.minecraft.world.gen.feature.Feature;
 import com.mojang.serialization.Codec;
 
 import com.github.chainmailstudios.astromine.client.registry.AsteroidOreRegistry;
+import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.terraformersmc.shapes.api.Position;
 import com.terraformersmc.shapes.api.Quaternion;
@@ -43,7 +43,6 @@ import com.terraformersmc.shapes.api.Shape;
 import com.terraformersmc.shapes.impl.Shapes;
 import com.terraformersmc.shapes.impl.layer.transform.RotateLayer;
 import com.terraformersmc.shapes.impl.layer.transform.TranslateLayer;
-
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;

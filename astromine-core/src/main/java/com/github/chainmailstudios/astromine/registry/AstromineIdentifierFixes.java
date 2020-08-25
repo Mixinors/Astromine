@@ -24,11 +24,8 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.common.registry.IdentifierFixRegistry;
-
 public class AstromineIdentifierFixes {
 	public static void initialize() {
-		IdentifierFixRegistry.INSTANCE.register("mars_soil", "martian_soil");
-		IdentifierFixRegistry.INSTANCE.register("energy_cable", "advanced_energy_cable");
+
 	}
 }

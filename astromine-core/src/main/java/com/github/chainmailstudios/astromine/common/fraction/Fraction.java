@@ -29,13 +29,13 @@ import net.minecraft.nbt.CompoundTag;
 import com.google.common.base.Objects;
 import java.text.DecimalFormat;
 
-public class Fraction extends Number implements Comparable<Fraction> {
+public final class Fraction extends Number implements Comparable<Fraction> {
 	public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.###");
 	public static final Fraction BUCKET = new Fraction(1, 1);
 	public static final Fraction BOTTLE = new Fraction(1, 3);
 
-	private long numerator;
-	private long denominator;
+	private final long numerator;
+	private final long denominator;
 
 	public Fraction(long numerator, long denominator) {
 		this.numerator = numerator;
@@ -67,13 +67,13 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	}
 
 	public static Fraction add(Fraction fractionA, Fraction fractionB) {
+		if (fractionA.denominator == 0)
+			return fractionB;
+		if (fractionB.denominator == 0)
+			return fractionA;
 		long denominator = lowestCommonDenominator(fractionA.denominator, fractionB.denominator);
 
 		return new Fraction(fractionA.numerator * (denominator / fractionA.denominator) + fractionB.numerator * (denominator / fractionB.denominator), denominator);
-	}
-
-	public void add(Fraction fraction) {
-		setFrom(Fraction.add(this, fraction));
 	}
 
 	private static long lowestCommonDenominator(long a, long b) {
@@ -125,43 +125,20 @@ public class Fraction extends Number implements Comparable<Fraction> {
 		return new Fraction(fractionA.numerator * (denominator / fractionA.denominator) - fractionB.numerator * (denominator / fractionB.denominator), denominator);
 	}
 
-	public void subtract(Fraction fraction) {
-		setFrom(Fraction.subtract(this, fraction));
-	}
-
 	public static Fraction divide(Fraction fractionA, Fraction fractionB) {
 		return multiply(fractionA, Fraction.inverse(fractionB));
-	}
-
-	public void divide(Fraction fraction) {
-		setFrom(Fraction.divide(this, fraction));
 	}
 
 	public static Fraction multiply(Fraction fractionA, Fraction fractionB) {
 		return new Fraction(fractionA.numerator * fractionB.numerator, fractionA.denominator * fractionB.denominator);
 	}
 
-	public void multiply(Fraction fraction) {
-		setFrom(Fraction.multiply(this, fraction));
-	}
-
-	/**
-	 * Fraction inversion method.
-	 */
 	public static Fraction inverse(Fraction fraction) {
 		return new Fraction(fraction.denominator, fraction.numerator);
 	}
 
-	public void inverse() {
-		setFrom(Fraction.inverse(this));
-	}
-
 	public static Fraction limit(Fraction source, Fraction target) {
 		return new Fraction(source.numerator * (target.denominator / source.denominator), target.denominator);
-	}
-
-	public void limit(Fraction fraction) {
-		setFrom(Fraction.limit(this, fraction));
 	}
 
 	public static Fraction min(Fraction fractionA, Fraction fractionB) {
@@ -225,16 +202,8 @@ public class Fraction extends Number implements Comparable<Fraction> {
 		return this.numerator;
 	}
 
-	public void setNumerator(long numerator) {
-		this.numerator = numerator;
-	}
-
 	public long getDenominator() {
 		return this.denominator;
-	}
-
-	public void setDenominator(long denominator) {
-		this.denominator = denominator;
 	}
 
 	@Override
@@ -276,14 +245,6 @@ public class Fraction extends Number implements Comparable<Fraction> {
 		return new Fraction(fraction.numerator / divisor, fraction.denominator / divisor);
 	}
 
-	public void simplify() {
-		setFrom(simplify(this));
-	}
-
-	public void resetToEmpty() {
-		setFrom(Fraction.empty());
-	}
-
 	@Override
 	public String toString() {
 		return "Fraction{" + "numerator=" + this.numerator + ", denominator=" + this.denominator + '}';
@@ -319,10 +280,5 @@ public class Fraction extends Number implements Comparable<Fraction> {
 
 	public Fraction copy() {
 		return new Fraction(this.numerator, this.denominator);
-	}
-
-	public void setFrom(Fraction fraction) {
-		this.numerator = fraction.numerator;
-		this.denominator = fraction.denominator;
 	}
 }

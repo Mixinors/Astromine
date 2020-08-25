@@ -3,6 +3,6 @@
   "id": "astromine-foundations-datagen",
   "version": "${version}",
   "entrypoints": {
-    "preLaunch": ["com.github.chainmailstudios.astromine.foundations.datagen.AstromineFoundationsDatagen"]
+    "astromine_datagen": ["com.github.chainmailstudios.astromine.foundations.datagen.AstromineFoundationsDatagen"]
   }
 }

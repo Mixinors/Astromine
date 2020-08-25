@@ -1,8 +1,0 @@
-{
-  "parent": "block/orientable",
-  "textures": {
-    "top": "astromine:block/advanced_machine_top",
-    "front": "astromine:block/advanced_liquid_generator_front_inactive",
-    "side": "astromine:block/advanced_machine_side"
-  }
-}

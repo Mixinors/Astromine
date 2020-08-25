@@ -8,3 +8,9 @@ minecraft {
 dependencies {
     compile project(path: ':astromine-core', configuration: 'dev')
 }
+
+afterEvaluate {
+    dependencies {
+        datagenCompile project(path: ":astromine-core", configuration: 'datagenDev')
+    }
+}

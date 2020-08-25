@@ -24,13 +24,8 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.item.*;
-import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
-import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
-import com.github.chainmailstudios.astromine.common.item.weapon.GravityGauntletItem;
 import net.fabricmc.loader.api.FabricLoader;
+
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.entity.EntityType;
@@ -41,6 +36,11 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.item.GravityGauntletItem;
+import com.github.chainmailstudios.astromine.common.item.MeteorSpawnerDevItem;
+import com.github.chainmailstudios.astromine.common.item.UncoloredSpawnEggItem;
 
 public class AstromineItems {
 	// Things
@@ -54,44 +54,10 @@ public class AstromineItems {
 
 	// Misc materials
 	public static final Item SPACE_SLIME_BALL = register("space_slime_ball", new Item(getBasicSettings()));
-	public static final Item YEAST = register("yeast", new Item(getBasicSettings()));
 	public static final Item GRAPHITE_SHEET = register("graphite_sheet", new Item(getBasicSettings()));
 
 	// Fantasy weaponry
 	public static final Item GRAVITY_GAUNTLET = register("gravity_gauntlet", new GravityGauntletItem(getBasicSettings().maxCount(1), AstromineConfig.get().gravityGauntletEnergy));
-
-	// Realistic tooling
-	public static final Item FIRE_EXTINGUISHER = register("fire_extinguisher", new FireExtinguisherItem(getBasicSettings().maxCount(1)));
-
-	// Circuits
-	public static final Item BASIC_CIRCUIT = register("basic_circuit", new Item(getBasicSettings()));
-	public static final Item ADVANCED_CIRCUIT = register("advanced_circuit", new Item(getBasicSettings()));
-	public static final Item ELITE_CIRCUIT = register("elite_circuit", new Item(getBasicSettings()));
-
-	// Machine Chassis
-	public static final Item PRIMITIVE_MACHINE_CHASSIS = register("primitive_machine_chassis", new Item(getBasicSettings()));
-	public static final Item BASIC_MACHINE_CHASSIS = register("basic_machine_chassis", new Item(getBasicSettings()));
-	public static final Item ADVANCED_MACHINE_CHASSIS = register("advanced_machine_chassis", new Item(getBasicSettings()));
-	public static final Item ELITE_MACHINE_CHASSIS = register("elite_machine_chassis", new Item(getBasicSettings()));
-
-	// Gas Canisters
-	public static final Item GAS_CANISTER = register("gas_canister", FluidVolumeItem.of(getBasicSettings(), Fraction.of(8, 1)));
-	public static final Item PRESSURIZED_GAS_CANISTER = register("pressurized_gas_canister", FluidVolumeItem.of(getBasicSettings(), Fraction.of(32, 1)));
-
-	// Batteries
-	public static final Item BASIC_BATTERY = register("basic_battery", EnergyVolumeItem.of(getBasicSettings(), 9000));
-	public static final Item ADVANCED_BATTERY = register("advanced_battery", EnergyVolumeItem.of(getBasicSettings(), 24000));
-	public static final Item ELITE_BATTERY = register("elite_battery", EnergyVolumeItem.of(getBasicSettings(), 64000));
-	public static final Item CREATIVE_BATTERY = register("creative_battery", EnergyVolumeItem.ofCreative(getBasicSettings()));
-
-	// Misc Tools
-	public static final Item HOLOGRAPHIC_CONNECTOR = register("holographic_connector", new HolographicConnectorItem(getBasicSettings().maxCount(1)));
-	public static final Item BRONZE_WRENCH = register("bronze_wrench", new WrenchItem(getBasicSettings()));
-
-	// Drills
-	public static final Item BASIC_DRILL = register("basic_drill", new DrillItem(AstromineToolMaterials.BASIC_DRILL, 1, -2.8F, 1, 90000, getBasicSettings().maxCount(1)));
-	public static final Item ADVANCED_DRILL = register("advanced_drill", new DrillItem(AstromineToolMaterials.ADVANCED_DRILL, 1, -2.8F, 1, 240000, getBasicSettings().maxCount(1)));
-	public static final Item ELITE_DRILL = register("elite_drill", new DrillItem(AstromineToolMaterials.ELITE_DRILL, 1, -2.8F, 1, 640000, getBasicSettings().maxCount(1)));
 
 	public static void initialize() {
 		for (UncoloredSpawnEggItem spawnEggItem : UncoloredSpawnEggItem.getAll()) {
@@ -117,7 +83,7 @@ public class AstromineItems {
 	 *        Name of item instance to be registered
 	 * @param item
 	 *        Item instance to be registered
-	 * @return Item instanced registered
+	 * @return Item instance registered
 	 */
 	public static <T extends Item> T register(String name, T item) {
 		return register(AstromineCommon.identifier(name), item);
@@ -135,6 +101,6 @@ public class AstromineItems {
 	}
 
 	public static Item.Settings getBasicSettings() {
-		return new Item.Settings().group(AstromineItemGroups.ASTROMINE);
+		return new Item.Settings().group(AstromineItemGroups.CORE);
 	}
 }

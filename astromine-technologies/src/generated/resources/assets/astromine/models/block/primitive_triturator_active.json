@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "top": "astromine:block/primitive_machine_top",
+    "bottom": "astromine:block/primitive_machine_bottom",
+    "side": "astromine:block/primitive_machine_side",
+    "front": "astromine:block/primitive_triturator_front_active"
+  }
+}

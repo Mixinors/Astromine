@@ -24,9 +24,10 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import net.minecraft.world.World;
+
 import com.github.chainmailstudios.astromine.common.entity.placer.SpaceEntityPlacer;
 import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
-import net.minecraft.world.World;
 
 public class AstromineDimensionLayers {
 	public static void initialize() {

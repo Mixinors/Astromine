@@ -31,19 +31,17 @@ import net.minecraft.block.Block;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.block.base.TieredHorizontalFacingEnergyMachineBlock;
-import com.github.chainmailstudios.astromine.common.network.ticker.NetworkTypeEnergy;
-
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 public class AstromineBlockItem extends BlockItem {
+	public static final List<BiConsumer<BlockItem, List<Text>>> APPENDERS = new ArrayList<>();
+
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
 
 	public AstromineBlockItem(Block block, Settings settings) {
@@ -53,13 +51,10 @@ public class AstromineBlockItem extends BlockItem {
 	@Environment(EnvType.CLIENT)
 	@Override
 	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-		if (getBlock() instanceof TieredHorizontalFacingEnergyMachineBlock) {
-			tooltip.add(new TranslatableText("text.astromine.tooltip.speed", DECIMAL_FORMAT.format(((TieredHorizontalFacingEnergyMachineBlock) getBlock()).getMachineSpeed())).formatted(Formatting.GRAY));
-			tooltip.add(new LiteralText(" "));
-		} else if (getBlock() instanceof NetworkTypeEnergy.EnergyNodeSpeedProvider) {
-			tooltip.add(new TranslatableText("text.astromine.tooltip.cable.speed", ((NetworkTypeEnergy.EnergyNodeSpeedProvider) getBlock()).getNodeSpeed()).formatted(Formatting.GRAY));
-			tooltip.add(new LiteralText(" "));
+		for (BiConsumer<BlockItem, List<Text>> appender : APPENDERS) {
+			appender.accept(this, tooltip);
 		}
+
 		super.appendTooltip(stack, world, tooltip, context);
 	}
 }

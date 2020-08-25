@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "top": "astromine:block/elite_machine_top",
+    "bottom": "astromine:block/elite_machine_bottom",
+    "side": "astromine:block/elite_machine_side",
+    "front": "astromine:block/elite_presser_front_inactive"
+  }
+}

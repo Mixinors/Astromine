@@ -24,11 +24,6 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.source.BiomeLayerSampler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -36,6 +31,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.source.BiomeLayerSampler;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
 
 @Mixin(BiomeLayerSampler.class)
 public class BiomeLayerSamplerMixin {

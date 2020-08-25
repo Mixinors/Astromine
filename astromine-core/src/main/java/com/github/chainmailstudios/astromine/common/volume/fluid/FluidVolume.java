@@ -30,10 +30,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
-import com.github.chainmailstudios.astromine.registry.AstromineFluids;
 
 import com.google.common.base.Objects;
 
@@ -81,7 +81,7 @@ public class FluidVolume extends BaseVolume {
 	}
 
 	public static FluidVolume oxygen() {
-		return new FluidVolume(AstromineFluids.OXYGEN, Fraction.BUCKET, (byte) 0b1);
+		return new FluidVolume(Registry.FLUID.get(AstromineCommon.identifier("oxygen")), Fraction.BUCKET, (byte) 0b1);
 	}
 
 	public static FluidVolume attached(SimpleFluidInventoryComponent component) {
@@ -110,7 +110,7 @@ public class FluidVolume extends BaseVolume {
 		FluidVolume fluidVolume = new FluidVolume(Fluids.EMPTY);
 
 		if (!tag.contains("fluid")) {
-			fluidVolume.fluid = AstromineFluids.OXYGEN;
+			fluidVolume.fluid = Registry.FLUID.get(AstromineCommon.identifier("oxygen"));
 		} else {
 			fluidVolume.fluid = Registry.FLUID.get(new Identifier(tag.getString("fluid")));
 		}

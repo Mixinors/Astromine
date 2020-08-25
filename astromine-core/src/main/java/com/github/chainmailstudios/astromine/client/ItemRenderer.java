@@ -31,7 +31,7 @@ import net.minecraft.item.ItemStack;
 
 public abstract class ItemRenderer<I extends Item> {
 	public ItemRenderer(Item item) {
-		// Unused.
+
 	}
 
 	public abstract void render(ItemStack stack, MatrixStack matrix, VertexConsumerProvider vertexes, int light, int overlay);

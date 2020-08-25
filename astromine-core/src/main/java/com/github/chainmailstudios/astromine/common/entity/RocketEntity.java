@@ -24,14 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.entity;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.registry.AstromineParticles;
-import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
-import net.fabricmc.fabric.api.tag.TagRegistry;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.Entity;
@@ -62,6 +56,13 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 import net.minecraft.world.explosion.ExplosionBehavior;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.registry.AstromineParticles;
+import io.netty.buffer.Unpooled;
 
 import java.util.Optional;
 
@@ -185,12 +186,9 @@ public class RocketEntity extends Entity {
 							BlockPos blockPos = new BlockPos(s, t, u);
 							BlockState blockState = this.world.getBlockState(blockPos);
 							float power = 0;
-							if (blockState.isIn(TagRegistry.block(AstromineCommon.identifier("rocket_explode")))) {
+							if (WitherEntity.canDestroy(blockState)) {
 								bl = true;
-								power = 3;
-							} else if (WitherEntity.canDestroy(blockState)) {
 								power = 2.1f;
-								bl = true;
 							}
 							if (power > 0) {
 								this.world.createExplosion(null, DamageSource.explosion((LivingEntity) null), new ExplosionBehavior() {

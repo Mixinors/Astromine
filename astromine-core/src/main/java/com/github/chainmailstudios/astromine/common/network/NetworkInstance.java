@@ -30,6 +30,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkTypeRegistry;
 
 import com.google.common.collect.Sets;

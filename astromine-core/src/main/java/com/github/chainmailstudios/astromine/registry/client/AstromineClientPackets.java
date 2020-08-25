@@ -30,6 +30,7 @@ import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 
 import net.minecraft.client.MinecraftClient;
 
+import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
 import com.github.chainmailstudios.astromine.common.entity.RocketEntity;
 import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
 
@@ -62,6 +63,30 @@ public class AstromineClientPackets {
 				rocketEntity.updateTrackedPosition(x, y, z);
 
 				MinecraftClient.getInstance().world.addEntity(id, rocketEntity);
+			});
+		});
+
+		ClientSidePacketRegistry.INSTANCE.register(ClientAtmosphereManager.GAS_ERASED, (context, buffer) -> {
+			buffer.retain();
+
+			context.getTaskQueue().execute(() -> {
+				ClientAtmosphereManager.onGasErased(buffer);
+			});
+		});
+
+		ClientSidePacketRegistry.INSTANCE.register(ClientAtmosphereManager.GAS_ADDED, (context, buffer) -> {
+			buffer.retain();
+
+			context.getTaskQueue().execute(() -> {
+				ClientAtmosphereManager.onGasAdded(buffer);
+			});
+		});
+
+		ClientSidePacketRegistry.INSTANCE.register(ClientAtmosphereManager.GAS_REMOVED, (context, buffer) -> {
+			buffer.retain();
+
+			context.getTaskQueue().execute(() -> {
+				ClientAtmosphereManager.onGasRemoved(buffer);
 			});
 		});
 	}

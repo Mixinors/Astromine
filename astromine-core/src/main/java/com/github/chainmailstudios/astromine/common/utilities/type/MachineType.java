@@ -28,5 +28,6 @@ public enum MachineType {
 	PRIMITIVE,
 	BASIC,
 	ADVANCED,
-	ELITE
+	ELITE,
+	CREATIVE
 }

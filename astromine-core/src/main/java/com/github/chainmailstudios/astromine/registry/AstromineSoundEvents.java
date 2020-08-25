@@ -42,11 +42,14 @@ public class AstromineSoundEvents {
 	public static final SoundEvent MACHINE_CLICK = register("block.machine.click");
 	public static final SoundEvent INCINERATE = register("block.incinerator.incinerate");
 
+	public static final SoundEvent ALTAR_START = register("block.altar.start");
+	public static final SoundEvent ALTAR_FINISH = register("block.altar.finish");
+
 	public static SoundEvent register(String id) {
 		return Registry.register(Registry.SOUND_EVENT, AstromineCommon.identifier(id), new SoundEvent(AstromineCommon.identifier(id)));
 	}
 
 	public static void initialize() {
-		// Unused.
+
 	}
 }

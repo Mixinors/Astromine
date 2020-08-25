@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["000", "345", "000"],
+  "key": {
+    "0": { "tag": "c:steel_plates" },
+    "3": { "tag": "c:diamond_nuggets" },
+    "4": { "item": "astromine:advanced_circuit" },
+    "5": { "tag": "c:diamond_nuggets" }
+  },
+  "result": { "item": "astromine:advanced_energy_cable", "count": 16 }
+}

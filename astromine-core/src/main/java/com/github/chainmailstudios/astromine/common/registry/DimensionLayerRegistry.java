@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.registry;
 
-import com.github.chainmailstudios.astromine.common.entity.placer.EntityPlacer;
 import net.minecraft.util.Pair;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.entity.placer.EntityPlacer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +40,7 @@ public class DimensionLayerRegistry {
 	private final Map<RegistryKey<World>, Pair<EntityPlacer, EntityPlacer>> PLACERS = new HashMap<>();
 
 	private DimensionLayerRegistry() {
-		// Unused.
+
 	}
 
 	public void register(Type type, RegistryKey<World> dimension, Integer levelY, RegistryKey<World> newDimension, EntityPlacer placer) {

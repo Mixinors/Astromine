@@ -31,28 +31,10 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 
-import com.github.chainmailstudios.astromine.client.render.block.ConveyorBlockEntityRenderer;
-import com.github.chainmailstudios.astromine.client.render.block.DoubleMachineEntityRenderer;
-import com.github.chainmailstudios.astromine.client.render.block.DownwardVerticalConveyorBlockEntityRenderer;
-import com.github.chainmailstudios.astromine.client.render.block.HolographicBridgeBlockEntityRenderer;
-import com.github.chainmailstudios.astromine.client.render.block.InserterBlockEntityRenderer;
-import com.github.chainmailstudios.astromine.client.render.block.VerticalConveyorBlockEntityRenderer;
-import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
-
 import java.util.function.Function;
 
 public class AstromineBlockEntityRenderers {
-	public static void initialize() {
-		register(AstromineBlockEntityTypes.HOLOGRAPHIC_BRIDGE, HolographicBridgeBlockEntityRenderer::new);
-
-		register(AstromineBlockEntityTypes.ALTERNATOR, DoubleMachineEntityRenderer::new);
-		register(AstromineBlockEntityTypes.SPLITTER, DoubleMachineEntityRenderer::new);
-		register(AstromineBlockEntityTypes.INSERTER, InserterBlockEntityRenderer::new);
-
-		register(AstromineBlockEntityTypes.CONVEYOR, ConveyorBlockEntityRenderer::new);
-		register(AstromineBlockEntityTypes.VERTICAL_CONVEYOR, VerticalConveyorBlockEntityRenderer::new);
-		register(AstromineBlockEntityTypes.DOWNWARD_VERTICAL_CONVEYOR, DownwardVerticalConveyorBlockEntityRenderer::new);
-	}
+	public static void initialize() {}
 
 	public static <B extends BlockEntity, C extends BlockEntityType<B>> void register(C c, Function<BlockEntityRenderDispatcher, BlockEntityRenderer<B>> b) {
 		BlockEntityRendererRegistry.INSTANCE.register(c, b);

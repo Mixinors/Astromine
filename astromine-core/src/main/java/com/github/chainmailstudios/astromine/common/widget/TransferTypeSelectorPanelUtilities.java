@@ -24,15 +24,17 @@
 
 package com.github.chainmailstudios.astromine.common.widget;
 
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import com.github.vini2003.blade.common.data.widget.TabCollection;
-import com.google.common.collect.ImmutableMap;
 import nerdhub.cardinal.components.api.ComponentType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
+
+import com.google.common.collect.ImmutableMap;
 
 public class TransferTypeSelectorPanelUtilities {
 	public static void createTab(TabCollection tab, Position anchor, Direction rotation, BlockEntityTransferComponent component, BlockPos blockPos, ComponentType<?> type) {
@@ -43,7 +45,7 @@ public class TransferTypeSelectorPanelUtilities {
 		final Position finalWest = Position.of(anchor, 7 + 44, 31 + 22);
 		final Position finalEast = Position.of(anchor, 7 + 0, 31 + 22);
 
-		final ImmutableMap<Direction, Position> positions = ImmutableMap.<Direction, Position>builder().put(Direction.NORTH, finalNorth).put(Direction.SOUTH, finalSouth).put(Direction.WEST, finalWest).put(Direction.EAST, finalEast).put(Direction.UP, finalUp).put(Direction.DOWN,
+		final ImmutableMap<Direction, Position> positions = ImmutableMap.<Direction, Position> builder().put(Direction.NORTH, finalNorth).put(Direction.SOUTH, finalSouth).put(Direction.WEST, finalWest).put(Direction.EAST, finalEast).put(Direction.UP, finalUp).put(Direction.DOWN,
 			finalDown).build();
 
 		for (Direction direction : Direction.values()) {
