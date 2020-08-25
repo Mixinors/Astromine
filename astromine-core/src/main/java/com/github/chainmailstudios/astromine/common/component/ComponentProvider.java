@@ -49,47 +49,6 @@ public interface ComponentProvider extends nerdhub.cardinal.components.api.compo
 		return optional.orElse(null);
 	}
 
-	/**
-	 * Convenience method to retrieve ComponentProvider from a given {@link ItemStack} Requires the
-	 * <tt>cardinal-components-item</tt> module.
-	 */
-	@SuppressWarnings("ConstantConditions")
-	static ComponentProvider fromItemStack(ItemStack stack) {
-		return (ComponentProvider) (Object) stack;
-	}
-
-	/**
-	 * Convenience method to retrieve a ComponentProvider from a given {@link Entity}. Requires the
-	 * <tt>cardinal-components-entity</tt> module.
-	 */
-	static ComponentProvider fromEntity(Entity entity) {
-		return (ComponentProvider) entity;
-	}
-
-	/**
-	 * Convenience method to retrieve a ComponentProvider from a given {@link World}. Requires the
-	 * <tt>cardinal-components-world</tt> module.
-	 */
-	static ComponentProvider fromWorld(World world) {
-		return (ComponentProvider) world;
-	}
-
-	/**
-	 * Convenience method to retrieve a ComponentProvider from given {@link LevelProperties}. Requires the
-	 * <tt>cardinal-components-level</tt> module.
-	 */
-	static ComponentProvider fromLevel(WorldProperties level) {
-		return (ComponentProvider) level;
-	}
-
-	/**
-	 * Convenience method to retrieve a ComponentProvider from given {@link Chunk}. Requires the
-	 * <tt>cardinal-components-chunk</tt> module.
-	 */
-	static ComponentProvider fromChunk(Chunk chunk) {
-		return (ComponentProvider) chunk;
-	}
-
 	static ComponentProvider fromBlockEntity(BlockEntity blockEntity) {
 		return blockEntity instanceof ComponentProvider ? (ComponentProvider) blockEntity : null;
 	}

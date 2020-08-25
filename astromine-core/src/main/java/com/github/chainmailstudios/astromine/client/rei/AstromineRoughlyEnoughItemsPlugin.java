@@ -77,11 +77,6 @@ public abstract class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
 	}
 
 	@Override
-	public void registerEntries(EntryRegistry entryRegistry) {
-		entryRegistry.registerEntry(EntryStack.create(ToolUtilities.getAstromineBook()).setting(EntryStack.Settings.CHECK_TAGS, EntryStack.Settings.TRUE));
-	}
-
-	@Override
 	public void registerOthers(RecipeHelper recipeHelper) {
 		BuiltinPlugin.getInstance().registerInformation(EntryStack.create(ToolUtilities.getAstromineBook()).setting(EntryStack.Settings.CHECK_TAGS, EntryStack.Settings.TRUE), new TranslatableText("item.astromine.manual"), texts -> {
 			texts.add(new TranslatableText("text.astromine.manual.obtain.info"));

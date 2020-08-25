@@ -212,7 +212,7 @@ allprojects {
     }
     
     task deleteBuildFolder {
-        file("${buildDir}").deleteDir()
+        file("${buildDir}/libs").deleteDir()
     }
 }
 

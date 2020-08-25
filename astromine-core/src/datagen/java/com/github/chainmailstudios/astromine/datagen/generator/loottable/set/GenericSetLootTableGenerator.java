@@ -4,7 +4,6 @@ import net.minecraft.block.Block;
 
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
-import me.shedaniel.cloth.api.datagen.v1.LootTableData;
 
 public abstract class GenericSetLootTableGenerator implements SetLootTableGenerator {
 	protected final MaterialItemType type;
