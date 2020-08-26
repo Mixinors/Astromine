@@ -3,14 +3,10 @@ import net.fabricmc.loom.task.RunClientTask
 plugins {
     id 'maven-publish'
     id 'com.diffplug.spotless' version '5.1.0' apply false
-    id 'fabric-loom' version '0.5-SNAPSHOT'
+    id 'fabric-loom' version '0.4-SNAPSHOT' apply false
 }
 
 apply from: 'dependencies.gradle'
-
-loom {
-    shareCaches = true
-}
 
 allprojects {
     apply plugin: 'maven-publish'
@@ -24,10 +20,6 @@ allprojects {
     ext {
         shouldGenerateData = false
         isRunningGenerateDataTask = false
-    }
-
-    loom {
-        shareCaches = true
     }
 
     spotless {
@@ -129,7 +121,6 @@ allprojects {
         mappings group: 'net.fabricmc', name: 'yarn', version: mappings_version, classifier: 'v2'
         modImplementation "net.fabricmc:fabric-loader:$loader_version"
         useAsApiOptionally "net.fabricmc.fabric-api:fabric-api:$api_version"
-        modImplementation "com.google.code.findbugs:jsr305:3.0.2"
 
         tap(rootProject.ext.setDefaultApis)
     }
