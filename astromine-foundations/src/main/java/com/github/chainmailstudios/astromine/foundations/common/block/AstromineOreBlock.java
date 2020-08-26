@@ -51,7 +51,7 @@ public class AstromineOreBlock extends OreBlock {
 			return MathHelper.nextInt(random, 5, 8);
 		} else if (this == AstromineFoundationsBlocks.ASTEROID_GALAXIUM_ORE || this == AstromineFoundationsBlocks.ASTEROID_STELLUM_ORE) {
 			return MathHelper.nextInt(random, 6, 9);
-		} else if (this == AstromineFoundationsBlocks.ASTEROID_METITE_ORE || this == AstromineFoundationsBlocks.METEOR_METITE_ORE) {
+		} else if (this == AstromineFoundationsBlocks.ASTEROID_METITE_ORE) {
 			return MathHelper.nextInt(random, 4, 7);
 		} else if (this == AstromineFoundationsBlocks.ASTEROID_COAL_ORE) {
 			return MathHelper.nextInt(random, 0, 2);
@@ -59,7 +59,7 @@ public class AstromineOreBlock extends OreBlock {
 			return MathHelper.nextInt(random, 1, 2);
 		} else if (this == AstromineFoundationsBlocks.ASTEROID_IRON_ORE) {
 			return MathHelper.nextInt(random, 1, 3);
-		} else if (this == AstromineFoundationsBlocks.ASTEROID_GOLD_ORE) {
+		} else if (this == AstromineFoundationsBlocks.ASTEROID_GOLD_ORE || this == AstromineFoundationsBlocks.METEOR_METITE_ORE) {
 			return MathHelper.nextInt(random, 2, 3);
 		} else if (this == AstromineFoundationsBlocks.ASTEROID_DIAMOND_ORE || this == AstromineFoundationsBlocks.ASTEROID_EMERALD_ORE) {
 			return MathHelper.nextInt(random, 3, 7);
@@ -76,7 +76,7 @@ public class AstromineOreBlock extends OreBlock {
 		if (this == AstromineFoundationsBlocks.METEOR_METITE_ORE && player instanceof ServerPlayerEntity) {
 			ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
 			if (!stack.isEffectiveOn(state) && stack.isEffectiveOn(Blocks.STONE.getDefaultState())) {
-				AstromineFoundationsCriteria.METITE_ORE_UNDERESTIMATION.trigger((ServerPlayerEntity) player);
+				AstromineFoundationsCriteria.UNDERESTIMATE_METITE.trigger((ServerPlayerEntity) player);
 			}
 		}
 	}

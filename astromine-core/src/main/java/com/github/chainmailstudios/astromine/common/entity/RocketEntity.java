@@ -44,6 +44,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -61,6 +62,7 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.registry.AstromineCriteria;
 import com.github.chainmailstudios.astromine.registry.AstromineParticles;
 import io.netty.buffer.Unpooled;
 
@@ -116,6 +118,9 @@ public class RocketEntity extends Entity {
 
 		if (stack.getItem() == Items.FLINT_AND_STEEL) {
 			this.getDataTracker().set(IS_GO, true);
+			if(player instanceof ServerPlayerEntity) {
+				AstromineCriteria.LAUNCH_ROCKET.trigger((ServerPlayerEntity) player);
+			}
 			return ActionResult.SUCCESS;
 		} else if (stack.getItem() == Items.STICK) {
 			this.kill();

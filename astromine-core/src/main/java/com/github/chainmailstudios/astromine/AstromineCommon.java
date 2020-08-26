@@ -78,6 +78,7 @@ public class AstromineCommon implements ModInitializer, PreLaunchEntrypoint {
 		AstromineBlockEntityTypes.initialize();
 		AstromineSoundEvents.initialize();
 		AstromineNetworkMembers.initialize();
+		AstromineCriteria.initialize();
 
 		if (FabricLoader.getInstance().isModLoaded("libblockattributes_fluids")) {
 			try {

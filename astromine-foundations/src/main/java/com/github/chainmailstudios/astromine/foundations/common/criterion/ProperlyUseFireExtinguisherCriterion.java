@@ -1,7 +1,5 @@
 package com.github.chainmailstudios.astromine.foundations.common.criterion;
 
-import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsCriteria;
-import com.google.gson.JsonObject;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
@@ -9,10 +7,14 @@ import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
-public class MetiteOreUnderestimationCriterion extends AbstractCriterion<MetiteOreUnderestimationCriterion.Conditions> {
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsCriteria;
+
+import com.google.gson.JsonObject;
+
+public class ProperlyUseFireExtinguisherCriterion extends AbstractCriterion<ProperlyUseFireExtinguisherCriterion.Conditions> {
 	private final Identifier id;
 
-	public MetiteOreUnderestimationCriterion(Identifier id) {
+	public ProperlyUseFireExtinguisherCriterion(Identifier id) {
 		this.id = id;
 	}
 
@@ -36,7 +38,7 @@ public class MetiteOreUnderestimationCriterion extends AbstractCriterion<MetiteO
 		}
 
 		public static Conditions create() {
-			return new Conditions(AstromineFoundationsCriteria.UNDERESTIMATE_METITE.id, EntityPredicate.Extended.EMPTY);
+			return new Conditions(AstromineFoundationsCriteria.PROPERLY_USE_FIRE_EXTINGUISHER.id, EntityPredicate.Extended.EMPTY);
 		}
 	}
 }

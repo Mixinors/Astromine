@@ -1,0 +1,42 @@
+{
+  "parent": "astromine:astromine/get_metite_ingot",
+  "display": {
+    "icon": {
+      "item": "astromine:space_suit_chestplate"
+    },
+    "title": {
+      "translate": "advancements.astromine.get_space_suit.title"
+    },
+    "description": {
+      "translate": "advancements.astromine.get_space_suit.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 10
+  },
+  "criteria": {
+    "get_space_suit": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "astromine:space_suit_helmet"
+          },
+          {
+            "item": "astromine:space_suit_chestplate"
+          },
+          {
+            "item": "astromine:space_suit_leggings"
+          },
+          {
+            "item": "astromine:space_suit_boots"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "parent": "astromine:astromine/root",
+  "display": {
+    "icon": {
+      "item": "astromine:fire_extinguisher"
+    },
+    "title": {
+      "translate": "advancements.astromine.get_fire_extinguisher.title"
+    },
+    "description": {
+      "translate": "advancements.astromine.get_fire_extinguisher.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_fire_extinguisher": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "astromine:fire_extinguisher"
+          }
+        ]
+      }
+    }
+  }
+}
