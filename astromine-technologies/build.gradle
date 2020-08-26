@@ -1,7 +1,7 @@
 archivesBaseName = "astromine-technologies"
 shouldGenerateData = true
 
-minecraft {
+loom {
     accessWidener = file("src/main/resources/astromine-technologies.accesswidener")
 }
 
