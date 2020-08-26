@@ -25,9 +25,18 @@
 package com.github.chainmailstudios.astromine.foundations.common.block;
 
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsCriteria;
 import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.OreBlock;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 
 import java.util.Random;
 
@@ -58,6 +67,17 @@ public class AstromineOreBlock extends OreBlock {
 			return MathHelper.nextInt(random, 2, 5);
 		} else {
 			return 0;
+		}
+	}
+
+	@Override
+	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+		super.onBreak(world, pos, state, player);
+		if (this == AstromineFoundationsBlocks.METEOR_METITE_ORE && player instanceof ServerPlayerEntity) {
+			ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
+			if (!stack.isEffectiveOn(state) && stack.isEffectiveOn(Blocks.STONE.getDefaultState())) {
+				AstromineFoundationsCriteria.METITE_ORE_UNDERESTIMATION.trigger((ServerPlayerEntity) player);
+			}
 		}
 	}
 }
