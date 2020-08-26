@@ -35,6 +35,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.LiquidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.LiquidGeneratorScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
@@ -84,6 +85,11 @@ public abstract class LiquidGeneratorBlock extends WrenchableHorizontalFacingEne
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().primitiveLiquidGeneratorEnergy;
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.PRIMITIVE;
+		}
 	}
 
 	public static class Basic extends LiquidGeneratorBlock.Base {
@@ -104,6 +110,11 @@ public abstract class LiquidGeneratorBlock extends WrenchableHorizontalFacingEne
 		@Override
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().basicLiquidGeneratorEnergy;
+		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.BASIC;
 		}
 	}
 
@@ -126,6 +137,11 @@ public abstract class LiquidGeneratorBlock extends WrenchableHorizontalFacingEne
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().advancedLiquidGeneratorEnergy;
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ADVANCED;
+		}
 	}
 
 	public static class Elite extends LiquidGeneratorBlock.Base {
@@ -146,6 +162,11 @@ public abstract class LiquidGeneratorBlock extends WrenchableHorizontalFacingEne
 		@Override
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().eliteLiquidGeneratorEnergy;
+		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ELITE;
 		}
 	}
 }

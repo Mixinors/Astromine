@@ -35,6 +35,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.ElectrolyzerBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.ElectrolyzerScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
@@ -84,6 +85,11 @@ public abstract class ElectrolyzerBlock extends WrenchableHorizontalFacingEnergy
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().primitiveElectrolyzerEnergy;
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.PRIMITIVE;
+		}
 	}
 
 	public static class Basic extends ElectrolyzerBlock.Base {
@@ -104,6 +110,11 @@ public abstract class ElectrolyzerBlock extends WrenchableHorizontalFacingEnergy
 		@Override
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().basicElectrolyzerEnergy;
+		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.BASIC;
 		}
 	}
 
@@ -126,6 +137,11 @@ public abstract class ElectrolyzerBlock extends WrenchableHorizontalFacingEnergy
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().advancedElectrolyzerEnergy;
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ADVANCED;
+		}
 	}
 
 	public static class Elite extends ElectrolyzerBlock.Base {
@@ -146,6 +162,11 @@ public abstract class ElectrolyzerBlock extends WrenchableHorizontalFacingEnergy
 		@Override
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().eliteElectrolyzerEnergy;
+		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ELITE;
 		}
 	}
 }

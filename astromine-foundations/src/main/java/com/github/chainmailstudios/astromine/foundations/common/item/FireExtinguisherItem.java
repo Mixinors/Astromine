@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.item;
+package com.github.chainmailstudios.astromine.foundations.common.item;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -34,6 +34,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -44,7 +45,9 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsCriteria;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.github.chainmailstudios.astromine.registry.AstromineCriteria;
 import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 
 public class FireExtinguisherItem extends Item {
@@ -76,6 +79,9 @@ public class FireExtinguisherItem extends Item {
 
 		if (!user.isSneaking()) {
 			user.addVelocity(thrustVec.x, thrustVec.y, thrustVec.z);
+			if(user instanceof ServerPlayerEntity) {
+				AstromineFoundationsCriteria.USE_FIRE_EXTINGUISHER.trigger((ServerPlayerEntity) user);
+			}
 			user.getItemCooldownManager().set(this, AstromineConfig.get().fireExtinguisherStandingDelay);
 		} else {
 			user.getItemCooldownManager().set(this, AstromineConfig.get().fireExtinguisherSneakingDelay);
@@ -83,7 +89,7 @@ public class FireExtinguisherItem extends Item {
 
 		BlockHitResult result = (BlockHitResult) user.raycast(6, 0, false);
 
-		BlockPos.Mutable.method_29715(new Box(result.getBlockPos()).expand(1)).forEach(position -> {
+		BlockPos.Mutable.method_29715(new Box(result.getBlockPos()).expand(2)).forEach(position -> {
 			BlockState state = world.getBlockState(position);
 
 			if (state.getBlock() instanceof FireBlock) {
@@ -94,8 +100,13 @@ public class FireExtinguisherItem extends Item {
 			}
 		});
 
-		world.getOtherEntities(null, new Box(result.getBlockPos()).expand(1)).forEach(entity -> {
-			entity.setFireTicks(0);
+		world.getOtherEntities(null, new Box(result.getBlockPos()).expand(3)).forEach(entity -> {
+			if(entity.isOnFire()) {
+				entity.setFireTicks(0);
+				if(user instanceof ServerPlayerEntity) {
+					AstromineFoundationsCriteria.PROPERLY_USE_FIRE_EXTINGUISHER.trigger((ServerPlayerEntity) user);
+				}
+			}
 		});
 
 		if (world.isClient) {

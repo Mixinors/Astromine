@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.foundations.client.render.block;
 
-import com.github.chainmailstudios.astromine.foundations.common.block.altar.entity.AltarBlockEntity;
+import com.github.chainmailstudios.astromine.foundations.common.block.entity.AltarBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;

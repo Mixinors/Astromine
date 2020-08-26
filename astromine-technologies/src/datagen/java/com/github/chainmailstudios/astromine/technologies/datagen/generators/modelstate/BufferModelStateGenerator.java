@@ -1,26 +1,20 @@
 package com.github.chainmailstudios.astromine.technologies.datagen.generators.modelstate;
 
 import net.minecraft.block.Block;
-import net.minecraft.data.client.model.BlockStateVariant;
-import net.minecraft.data.client.model.BlockStateVariantMap;
 import net.minecraft.data.client.model.Models;
 import net.minecraft.data.client.model.Texture;
 import net.minecraft.data.client.model.TextureKey;
-import net.minecraft.data.client.model.VariantSettings;
-import net.minecraft.data.client.model.VariantsBlockStateSupplier;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.utilities.type.MachineType;
+import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.GenericBlockModelStateGenerator;
 import me.shedaniel.cloth.api.datagen.v1.ModelStateData;
 
 public class BufferModelStateGenerator extends GenericBlockModelStateGenerator {
-	private final MachineType type;
+	private final MachineTier type;
 
-	public BufferModelStateGenerator(MachineType type, Block... blocks) {
+	public BufferModelStateGenerator(MachineTier type, Block... blocks) {
 		super(blocks);
 		this.type = type;
 	}
@@ -29,7 +23,7 @@ public class BufferModelStateGenerator extends GenericBlockModelStateGenerator {
 		return (new Texture()).put(TextureKey.SIDE, getSubId(getTextureId(type), "_side")).put(TextureKey.TOP, Texture.getSubId(block, "_top")).put(TextureKey.BOTTOM, getSubId(getTextureId(type), "_bottom"));
 	}
 
-	public static Identifier getTextureId(MachineType type) {
+	public static Identifier getTextureId(MachineTier type) {
 		switch(type) {
 			case PRIMITIVE:
 				return AstromineCommon.identifier("primitive_machine");

@@ -13,7 +13,7 @@
                 "state": {
                   "Name": "astromine:tin_ore"
                 },
-                "size": 11
+                "size": 9
               },
               "type": "minecraft:ore"
             },
@@ -37,7 +37,7 @@
     },
     "decorator": {
       "config": {
-        "count": 20
+        "count": 16
       },
       "type": "minecraft:count"
     }

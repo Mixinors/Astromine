@@ -3,10 +3,14 @@ import net.fabricmc.loom.task.RunClientTask
 plugins {
     id 'maven-publish'
     id 'com.diffplug.spotless' version '5.1.0' apply false
-    id 'fabric-loom' version '0.4-SNAPSHOT' apply false
+    id 'fabric-loom' version '0.5-SNAPSHOT'
 }
 
 apply from: 'dependencies.gradle'
+
+loom {
+    shareCaches = true
+}
 
 allprojects {
     apply plugin: 'maven-publish'
@@ -20,6 +24,10 @@ allprojects {
     ext {
         shouldGenerateData = false
         isRunningGenerateDataTask = false
+    }
+
+    loom {
+        shareCaches = true
     }
 
     spotless {
@@ -41,48 +49,46 @@ allprojects {
     repositories {
         mavenLocal()
         maven {
-            name = "Onyx Studios"
-            url = "https://maven.onyxstudios.dev"
-        }
-        maven {
             name = "JitPack"
             url = "https://jitpack.io"
-        }
-        maven {
-            name = "Jared"
-            url = "https://maven.blamejared.com"
+            content {
+                includeGroupByRegex "com.github.\\w+"
+            }
         }
         maven {
             name = "BuildCraft"
             url = "https://mod-buildcraft.com/maven"
-        }
-        maven {
-            name = "SonaType"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+            content {
+                includeGroup "alexiil.mc.lib"
+            }
         }
         maven {
             name = "Ladysnake Libs"
             url = 'https://dl.bintray.com/ladysnake/libs'
+            content {
+                includeGroup "io.github.onyxstudios.Cardinal-Components-API"
+            }
         }
         maven {
             name = "Wrenchable"
             url = "https://dl.bintray.com/zundrel/wrenchable"
+            content {
+                includeGroup "com.zundrel"
+            }
         }
         maven {
             name = "Cloth"
             url = "https://dl.bintray.com/shedaniel/cloth"
-        }
-        maven {
-            name = "grondag"
-            url = "https://grondag-repo.appspot.com"
-            credentials {
-                username = "guest"
-                password = ""
+            content {
+                includeGroup "me.shedaniel.cloth.api"
             }
         }
         maven {
             name = "Earthcomputer"
             url = "https://dl.bintray.com/earthcomputer/mods"
+            content {
+                includeGroup "net.earthcomputer"
+            }
         }
         maven {
             name = "Modmaven"
@@ -123,6 +129,7 @@ allprojects {
         mappings group: 'net.fabricmc', name: 'yarn', version: mappings_version, classifier: 'v2'
         modImplementation "net.fabricmc:fabric-loader:$loader_version"
         useAsApiOptionally "net.fabricmc.fabric-api:fabric-api:$api_version"
+        modImplementation "com.google.code.findbugs:jsr305:3.0.2"
 
         tap(rootProject.ext.setDefaultApis)
     }

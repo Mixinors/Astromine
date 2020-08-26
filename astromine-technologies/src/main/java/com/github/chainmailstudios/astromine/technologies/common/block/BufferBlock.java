@@ -41,18 +41,18 @@ import net.minecraft.world.World;
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableBlockWithEntity;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.BufferBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.BufferScreenHandler;
-import com.github.chainmailstudios.astromine.common.utilities.type.BufferType;
+import com.github.chainmailstudios.astromine.common.utilities.tier.BufferTier;
 
 public class BufferBlock extends WrenchableBlockWithEntity {
-	private final BufferType type;
+	private final BufferTier type;
 
-	public BufferBlock(BufferType type, Settings settings) {
+	public BufferBlock(BufferTier type, Settings settings) {
 		super(settings);
 
 		this.type = type;
 	}
 
-	public BufferType getType() {
+	public BufferTier getType() {
 		return type;
 	}
 

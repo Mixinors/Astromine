@@ -13,7 +13,7 @@
                 "state": {
                   "Name": "astromine:copper_ore"
                 },
-                "size": 14
+                "size": 11
               },
               "type": "minecraft:ore"
             },
@@ -37,7 +37,7 @@
     },
     "decorator": {
       "config": {
-        "count": 20
+        "count": 18
       },
       "type": "minecraft:count"
     }

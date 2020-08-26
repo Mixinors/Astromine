@@ -10,19 +10,15 @@ import net.minecraft.data.client.model.TextureKey;
 import net.minecraft.data.client.model.VariantSettings;
 import net.minecraft.data.client.model.VariantsBlockStateSupplier;
 import net.minecraft.item.Item;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
-import com.github.chainmailstudios.astromine.common.utilities.type.MachineType;
-import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.GenericBlockModelStateGenerator;
+import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import me.shedaniel.cloth.api.datagen.v1.ModelStateData;
 
 public class MachineModelStateGenerator extends TieredFacingModelStateGenerator {
 
-	public MachineModelStateGenerator(MachineType type, Block... blocks) {
+	public MachineModelStateGenerator(MachineTier type, Block... blocks) {
 		super(type, blocks);
 	}
 

@@ -22,12 +22,34 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.utilities.type;
+package com.github.chainmailstudios.astromine.common.utilities.tier;
 
-public enum MachineType {
-	PRIMITIVE,
-	BASIC,
-	ADVANCED,
-	ELITE,
-	CREATIVE
+public enum BufferTier {
+	BASIC(6),
+	ADVANCED(12),
+	ELITE(24);
+
+	private final int height;
+
+	BufferTier(int height) {
+		this.height = height;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public static BufferTier byName(String name) {
+		if (name.equals("basic")) {
+			return BASIC;
+		} else if (name.equals("advanced")) {
+			return ADVANCED;
+		} else {
+			return ELITE;
+		}
+	}
+
+	public String toName() {
+		return this == BASIC ? "basic" : this == ADVANCED ? "advanced" : "elite";
+	}
 }

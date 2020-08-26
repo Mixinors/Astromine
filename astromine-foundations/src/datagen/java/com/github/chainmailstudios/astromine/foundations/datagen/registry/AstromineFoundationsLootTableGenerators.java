@@ -1,9 +1,12 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.registry;
 
+import net.minecraft.loot.UniformLootTableRange;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.datagen.generator.loottable.LootTableGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.loottable.onetime.DropSelfLootTableGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.loottable.set.DropSelfSetLootTableGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.loottable.set.FortuneMultiOreSetLootTableGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.loottable.set.FortuneOreSetLootTableGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineLootTableGenerators;
@@ -13,7 +16,7 @@ public class AstromineFoundationsLootTableGenerators extends AstromineLootTableG
 	public final LootTableGenerator BLOCK = register(new DropSelfSetLootTableGenerator(MaterialItemType.BLOCK));
 	public final LootTableGenerator ORE = register(new DropSelfSetLootTableGenerator(MaterialItemType.ORE));
 
-	public final LootTableGenerator METEOR_ORE = register(new FortuneOreSetLootTableGenerator(MaterialItemType.METEOR_ORE, MaterialItemType.METEOR_CLUSTER));
+	public final LootTableGenerator METEOR_ORE = register(new FortuneMultiOreSetLootTableGenerator(MaterialItemType.METEOR_ORE, MaterialItemType.METEOR_CLUSTER, new UniformLootTableRange(2)));
 	public final LootTableGenerator ASTEROID_ORE = register(new FortuneOreSetLootTableGenerator(MaterialItemType.ASTEROID_ORE, MaterialItemType.ASTEROID_CLUSTER));
 
 	public final LootTableGenerator MISC = register(new DropSelfLootTableGenerator(AstromineFoundationsBlocks.ALTAR, AstromineFoundationsBlocks.ITEM_DISPLAYER));

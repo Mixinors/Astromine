@@ -1,0 +1,30 @@
+{
+  "parent": "astromine:astromine/root",
+  "display": {
+    "icon": {
+      "item": "astromine:meteor_stone"
+    },
+    "title": {
+      "translate": "advancements.astromine.get_meteor_stone.title"
+    },
+    "description": {
+      "translate": "advancements.astromine.get_meteor_stone.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_meteor_stone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "astromine:meteor_stone"
+          }
+        ]
+      }
+    }
+  }
+}

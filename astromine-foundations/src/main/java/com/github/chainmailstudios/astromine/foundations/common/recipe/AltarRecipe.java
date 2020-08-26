@@ -29,7 +29,7 @@ import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.recipe.base.AstromineRecipe;
 import com.github.chainmailstudios.astromine.common.utilities.IngredientUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
-import com.github.chainmailstudios.astromine.foundations.common.block.altar.entity.AltarBlockEntity;
+import com.github.chainmailstudios.astromine.foundations.common.block.entity.AltarBlockEntity;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;

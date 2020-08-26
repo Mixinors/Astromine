@@ -25,9 +25,9 @@
 package com.github.chainmailstudios.astromine.technologies.registry;
 
 import com.github.chainmailstudios.astromine.technologies.common.block.*;
-import com.github.chainmailstudios.astromine.common.utilities.type.BufferType;
+import com.github.chainmailstudios.astromine.common.utilities.tier.BufferTier;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
-import com.github.chainmailstudios.astromine.registry.AstromineItems;
+
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Block;
@@ -84,9 +84,9 @@ public class AstromineTechnologiesBlocks extends AstromineBlocks {
 	public static final Block ADVANCED_FLUID_MIXER = register("advanced_fluid_mixer", new FluidMixerBlock.Advanced(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block ELITE_FLUID_MIXER = register("elite_fluid_mixer", new FluidMixerBlock.Elite(getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
 
-	public static final Block BASIC_BUFFER = register("basic_buffer", new BufferBlock(BufferType.BASIC, getBasicSettings()), AstromineTechnologiesItems.getBasicSettings());
-	public static final Block ADVANCED_BUFFER = register("advanced_buffer", new BufferBlock(BufferType.ADVANCED, getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
-	public static final Block ELITE_BUFFER = register("elite_buffer", new BufferBlock(BufferType.ELITE, getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block BASIC_BUFFER = register("basic_buffer", new BufferBlock(BufferTier.BASIC, getBasicSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block ADVANCED_BUFFER = register("advanced_buffer", new BufferBlock(BufferTier.ADVANCED, getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block ELITE_BUFFER = register("elite_buffer", new BufferBlock(BufferTier.ELITE, getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block CREATIVE_BUFFER = register("creative_buffer", new CreativeBufferBlock(getCreativeSettings()), AstromineTechnologiesItems.getBasicSettings());
 
 	public static final Block FLUID_EXTRACTOR = register("fluid_extractor", new FluidExtractorBlock(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());

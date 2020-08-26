@@ -27,6 +27,7 @@ package com.github.chainmailstudios.astromine.foundations.registry;
 import com.github.chainmailstudios.astromine.common.item.*;
 import com.github.chainmailstudios.astromine.common.utilities.ToolUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.WorldPos;
+import com.github.chainmailstudios.astromine.foundations.common.item.FireExtinguisherItem;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import draylar.magna.item.ExcavatorItem;
 import draylar.magna.item.HammerItem;

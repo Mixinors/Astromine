@@ -24,8 +24,8 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
-import com.github.chainmailstudios.astromine.foundations.common.block.altar.entity.AltarBlockEntity;
-import com.github.chainmailstudios.astromine.foundations.common.block.altar.entity.ItemDisplayerBlockEntity;
+import com.github.chainmailstudios.astromine.foundations.common.block.entity.AltarBlockEntity;
+import com.github.chainmailstudios.astromine.foundations.common.block.entity.ItemDisplayerBlockEntity;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;

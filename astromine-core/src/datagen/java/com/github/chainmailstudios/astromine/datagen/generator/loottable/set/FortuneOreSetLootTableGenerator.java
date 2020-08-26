@@ -16,7 +16,7 @@ import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.LootTableData;
 
 public class FortuneOreSetLootTableGenerator extends GenericSetLootTableGenerator {
-	private final MaterialItemType drop;
+	protected final MaterialItemType drop;
 
 	public FortuneOreSetLootTableGenerator(MaterialItemType ore, MaterialItemType drop) {
 		super(ore);
