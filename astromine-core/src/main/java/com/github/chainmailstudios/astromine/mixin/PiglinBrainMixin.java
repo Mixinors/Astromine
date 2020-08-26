@@ -71,7 +71,7 @@ public abstract class PiglinBrainMixin {
 	}
 
 	@Inject(method = "consumeOffHandItem(Lnet/minecraft/entity/mob/PiglinEntity;Z)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/mob/PiglinBrain;acceptsForBarter(Lnet/minecraft/item/Item;)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
-	private static void triggerCriterion(PiglinEntity piglin, boolean bl, CallbackInfo ci, boolean bl2, ItemStack itemStack) {
+	private static void triggerCriterion(PiglinEntity piglin, boolean bl, CallbackInfo ci, ItemStack itemStack, boolean bl2) {
 		if(bl && bl2 && itemStack.getItem().isIn(AstromineTags.TRICKS_PIGLINS)) {
 			Optional<PlayerEntity> optional = piglin.getBrain().getOptionalMemory(MemoryModuleType.NEAREST_VISIBLE_PLAYER);
 			if (optional.isPresent() && optional.get() instanceof ServerPlayerEntity) {
