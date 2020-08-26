@@ -49,7 +49,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
-import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
+import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
 import com.github.chainmailstudios.astromine.common.fluid.ExtendedFluid;
 import com.github.chainmailstudios.astromine.common.item.SpaceSuitItem;
@@ -86,9 +86,9 @@ public abstract class LivingEntityMixin implements GravityEntity {
 		Entity entity = (Entity) (Object) this;
 
 		if (AtmosphereRegistry.INSTANCE.containsKey(entity.world.getRegistryKey()) && !entity.getType().isIn(AstromineTags.DOES_NOT_BREATHE)) {
-			ComponentProvider worldProvider = ComponentProvider.fromWorld(entity.world);
+			ComponentProvider chunkProvider = ComponentProvider.fromChunk(entity.world.getChunk(entity.getBlockPos()));
 
-			WorldAtmosphereComponent atmosphereComponent = worldProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);
+			ChunkAtmosphereComponent atmosphereComponent = chunkProvider.getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);
 
 			FluidVolume atmosphereVolume = AstromineDimensions.isAstromine(entity.world.getRegistryKey()) ? atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP)) : FluidVolume.empty();
 

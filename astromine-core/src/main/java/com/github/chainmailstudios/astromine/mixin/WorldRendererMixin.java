@@ -27,6 +27,9 @@ package com.github.chainmailstudios.astromine.mixin;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
+import net.minecraft.client.render.entity.PlayerEntityRenderer;
+import net.minecraft.text.LiteralText;
+import net.minecraft.util.math.ChunkPos;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -104,7 +107,7 @@ public abstract class WorldRendererMixin {
 				b = (color & 255);
 			}
 
-			if (!volume.isEmpty()) {
+			if (!volume.isEmpty() && world.isChunkLoaded(blockPos)) {
 				float bX = blockPos.getX();
 				float bY = blockPos.getY();
 				float bZ = blockPos.getZ();

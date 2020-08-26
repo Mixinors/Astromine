@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import nerdhub.cardinal.components.api.event.ChunkComponentCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 import net.minecraft.entity.LivingEntity;
@@ -33,7 +34,7 @@ import net.minecraft.util.registry.Registry;
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
+import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
@@ -41,23 +42,20 @@ import com.github.chainmailstudios.astromine.common.screenhandler.base.Component
 import nerdhub.cardinal.components.api.event.EntityComponentCallback;
 import nerdhub.cardinal.components.api.event.ItemComponentCallbackV2;
 import nerdhub.cardinal.components.api.event.WorldComponentCallback;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.WorldChunk;
 
 public class AstromineCommonCallbacks {
+	private static int atmosphereTickCounter = 0;
+
 	@SuppressWarnings("UnstableApiUsage")
 	public static void initialize() {
-		ServerTickEvents.START_SERVER_TICK.register((server) -> {
-			// for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-			// ComponentProvider componentProvider = ComponentProvider.fromWorld(player.world);
-			//
-			// WorldAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);
-			//
-			// PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
-			// FluidVolume volume = atmosphereComponent.get(player.getBlockPos().offset(Direction.UP));
-			//
-			// buffer.writeIdentifier(volume.getFluidIdentifier());
-			//
-			// ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, AstromineCommonPackets.PRESSURE_UPDATE, buffer);
-			// }
+		ServerTickEvents.START_SERVER_TICK.register(server -> {
+			if (atmosphereTickCounter < AstromineConfig.get().gasTickRate) {
+				atmosphereTickCounter++;
+			} else {
+				atmosphereTickCounter = 0;
+			}
 		});
 
 		ServerTickEvents.START_SERVER_TICK.register((server) -> {
@@ -84,16 +82,19 @@ public class AstromineCommonCallbacks {
 			}));
 		}));
 
-		WorldComponentCallback.EVENT.register(((world, container) -> {
-			WorldAtmosphereComponent component = new WorldAtmosphereComponent(world);
-			container.put(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT, component);
+		ChunkComponentCallback.EVENT.register((chunk, componentContainer) -> {
+			if (chunk instanceof WorldChunk) {
+				WorldChunk worldChunk = (WorldChunk) chunk;
+				ChunkAtmosphereComponent component = new ChunkAtmosphereComponent(worldChunk.getWorld(), chunk);
+				componentContainer.put(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT, component);
 
-			ServerTickEvents.START_WORLD_TICK.register((tickWorld -> {
-				if (tickWorld == component.getWorld()) {
-					component.tick();
-				}
-			}));
-		}));
+				ServerTickEvents.START_WORLD_TICK.register((tickWorld -> {
+					if (atmosphereTickCounter == AstromineConfig.get().gasTickRate && component.getWorld().isChunkLoaded(chunk.getPos().x, chunk.getPos().z) && tickWorld == component.getWorld()) {
+						component.tick();
+					}
+				}));
+			}
+		});
 
 		WorldComponentCallback.EVENT.register((world, container) -> {
 			WorldBridgeComponent component = new WorldBridgeComponent(world);
