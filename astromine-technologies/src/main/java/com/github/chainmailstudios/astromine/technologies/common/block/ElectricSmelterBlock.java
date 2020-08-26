@@ -35,6 +35,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.ElectricSmelterBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.ElectricSmelterScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
@@ -84,6 +85,11 @@ public abstract class ElectricSmelterBlock extends WrenchableHorizontalFacingEne
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().primitiveElectricSmelterEnergy;
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.PRIMITIVE;
+		}
 	}
 
 	public static class Basic extends ElectricSmelterBlock.Base {
@@ -104,6 +110,11 @@ public abstract class ElectricSmelterBlock extends WrenchableHorizontalFacingEne
 		@Override
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().basicElectricSmelterEnergy;
+		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.BASIC;
 		}
 	}
 
@@ -126,6 +137,11 @@ public abstract class ElectricSmelterBlock extends WrenchableHorizontalFacingEne
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().advancedElectricSmelterEnergy;
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ADVANCED;
+		}
 	}
 
 	public static class Elite extends ElectricSmelterBlock.Base {
@@ -146,6 +162,11 @@ public abstract class ElectricSmelterBlock extends WrenchableHorizontalFacingEne
 		@Override
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().eliteElectricSmelterEnergy;
+		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ELITE;
 		}
 	}
 }

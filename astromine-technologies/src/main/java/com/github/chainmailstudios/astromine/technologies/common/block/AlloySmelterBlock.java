@@ -35,9 +35,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.AlloySmelterBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.AlloySmelterScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+
+import java.util.Objects;
 
 public abstract class AlloySmelterBlock extends WrenchableHorizontalFacingEnergyTieredBlockWithEntity {
 	public AlloySmelterBlock(Settings settings) {
@@ -84,6 +87,11 @@ public abstract class AlloySmelterBlock extends WrenchableHorizontalFacingEnergy
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().primitiveAlloySmelterEnergy;
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.PRIMITIVE;
+		}
 	}
 
 	public static class Basic extends AlloySmelterBlock.Base {
@@ -104,6 +112,11 @@ public abstract class AlloySmelterBlock extends WrenchableHorizontalFacingEnergy
 		@Override
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().basicAlloySmelterEnergy;
+		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.BASIC;
 		}
 	}
 
@@ -126,6 +139,11 @@ public abstract class AlloySmelterBlock extends WrenchableHorizontalFacingEnergy
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().advancedAlloySmelterEnergy;
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ADVANCED;
+		}
 	}
 
 	public static class Elite extends AlloySmelterBlock.Base {
@@ -146,6 +164,11 @@ public abstract class AlloySmelterBlock extends WrenchableHorizontalFacingEnergy
 		@Override
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().eliteAlloySmelterEnergy;
+		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ELITE;
 		}
 	}
 }

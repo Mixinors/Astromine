@@ -25,7 +25,7 @@
 package com.github.chainmailstudios.astromine.technologies.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.utilities.type.BufferType;
+import com.github.chainmailstudios.astromine.common.utilities.tier.BufferTier;
 import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.*;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
@@ -85,7 +85,7 @@ public class AstromineTechnologiesScreenHandlers extends AstromineScreenHandlers
 	}));
 
 	public static final ScreenHandlerType<BufferScreenHandler> BUFFER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("buffer"), ((syncId, inventory, buffer) -> {
-		return new BufferScreenHandler(syncId, inventory.player, buffer.readBlockPos(), buffer.readEnumConstant(BufferType.class));
+		return new BufferScreenHandler(syncId, inventory.player, buffer.readBlockPos(), buffer.readEnumConstant(BufferTier.class));
 	}));
 
 	public static final ScreenHandlerType<TrituratorScreenHandler> TRITURATOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("triturator"), ((syncId, inventory, buffer) -> {

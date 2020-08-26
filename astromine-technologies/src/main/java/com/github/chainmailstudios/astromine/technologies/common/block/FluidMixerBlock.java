@@ -35,6 +35,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.FluidMixerBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.FluidMixerScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
@@ -84,6 +85,11 @@ public abstract class FluidMixerBlock extends WrenchableHorizontalFacingEnergyTi
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().primitiveFluidMixerEnergy;
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.PRIMITIVE;
+		}
 	}
 
 	public static class Basic extends FluidMixerBlock.Base {
@@ -104,6 +110,11 @@ public abstract class FluidMixerBlock extends WrenchableHorizontalFacingEnergyTi
 		@Override
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().basicFluidMixerEnergy;
+		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.BASIC;
 		}
 	}
 
@@ -126,6 +137,11 @@ public abstract class FluidMixerBlock extends WrenchableHorizontalFacingEnergyTi
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().advancedFluidMixerEnergy;
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ADVANCED;
+		}
 	}
 
 	public static class Elite extends FluidMixerBlock.Base {
@@ -146,6 +162,11 @@ public abstract class FluidMixerBlock extends WrenchableHorizontalFacingEnergyTi
 		@Override
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().eliteFluidMixerEnergy;
+		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ELITE;
 		}
 	}
 }

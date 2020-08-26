@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.technologies.datagen;
 
-import com.github.chainmailstudios.astromine.common.utilities.type.MachineType;
+import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.ModelStateGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.GenericItemModelStateGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.HandheldItemModelStateGenerator;
@@ -12,11 +12,11 @@ import com.github.chainmailstudios.astromine.technologies.registry.AstromineTech
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesItems;
 
 public class AstromineTechnologiesModelStateGenerators extends AstromineModelStateGenerators {
-	public final ModelStateGenerator PRIMITIVE_CAPACITOR = register(new TieredFacingModelStateGenerator(MachineType.PRIMITIVE, AstromineTechnologiesBlocks.PRIMITIVE_CAPACITOR));
-	public final ModelStateGenerator BASIC_CAPACITOR = register(new TieredFacingModelStateGenerator(MachineType.BASIC, AstromineTechnologiesBlocks.BASIC_CAPACITOR));
-	public final ModelStateGenerator ELITE_CAPACITOR = register(new TieredFacingModelStateGenerator(MachineType.ELITE, AstromineTechnologiesBlocks.ELITE_CAPACITOR));
+	public final ModelStateGenerator PRIMITIVE_CAPACITOR = register(new TieredFacingModelStateGenerator(MachineTier.PRIMITIVE, AstromineTechnologiesBlocks.PRIMITIVE_CAPACITOR));
+	public final ModelStateGenerator BASIC_CAPACITOR = register(new TieredFacingModelStateGenerator(MachineTier.BASIC, AstromineTechnologiesBlocks.BASIC_CAPACITOR));
+	public final ModelStateGenerator ELITE_CAPACITOR = register(new TieredFacingModelStateGenerator(MachineTier.ELITE, AstromineTechnologiesBlocks.ELITE_CAPACITOR));
 
-	public final ModelStateGenerator ADVANCED_STUFF = register(new TieredFacingModelStateGenerator(MachineType.ADVANCED,
+	public final ModelStateGenerator ADVANCED_STUFF = register(new TieredFacingModelStateGenerator(MachineTier.ADVANCED,
 			AstromineTechnologiesBlocks.ADVANCED_CAPACITOR,
 			AstromineTechnologiesBlocks.CREATIVE_CAPACITOR,
 			AstromineTechnologiesBlocks.TANK,
@@ -24,14 +24,14 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 			AstromineTechnologiesBlocks.HOLOGRAPHIC_BRIDGE_PROJECTOR
 	));
 
-	public final ModelStateGenerator BUFFERS = register(new BufferModelStateGenerator(MachineType.ADVANCED,
+	public final ModelStateGenerator BUFFERS = register(new BufferModelStateGenerator(MachineTier.ADVANCED,
 			AstromineTechnologiesBlocks.BASIC_BUFFER,
 			AstromineTechnologiesBlocks.ADVANCED_BUFFER,
 			AstromineTechnologiesBlocks.ELITE_BUFFER,
 			AstromineTechnologiesBlocks.CREATIVE_BUFFER
 	));
 
-	public final ModelStateGenerator PRIMITIVE_MACHINES = register(new MachineModelStateGenerator(MachineType.PRIMITIVE,
+	public final ModelStateGenerator PRIMITIVE_MACHINES = register(new MachineModelStateGenerator(MachineTier.PRIMITIVE,
 			AstromineTechnologiesBlocks.PRIMITIVE_ALLOY_SMELTER,
 			AstromineTechnologiesBlocks.PRIMITIVE_ELECTRIC_SMELTER,
 			AstromineTechnologiesBlocks.PRIMITIVE_ELECTROLYZER,
@@ -41,7 +41,7 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 			AstromineTechnologiesBlocks.PRIMITIVE_SOLID_GENERATOR,
 			AstromineTechnologiesBlocks.PRIMITIVE_TRITURATOR
 	));
-	public final ModelStateGenerator BASIC_MACHINES = register(new MachineModelStateGenerator(MachineType.BASIC,
+	public final ModelStateGenerator BASIC_MACHINES = register(new MachineModelStateGenerator(MachineTier.BASIC,
 			AstromineTechnologiesBlocks.BASIC_ALLOY_SMELTER,
 			AstromineTechnologiesBlocks.BASIC_ELECTRIC_SMELTER,
 			AstromineTechnologiesBlocks.BASIC_ELECTROLYZER,
@@ -51,7 +51,7 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 			AstromineTechnologiesBlocks.BASIC_SOLID_GENERATOR,
 			AstromineTechnologiesBlocks.BASIC_TRITURATOR
 	));
-	public final ModelStateGenerator ADVANCED_MACHINES = register(new MachineModelStateGenerator(MachineType.ADVANCED,
+	public final ModelStateGenerator ADVANCED_MACHINES = register(new MachineModelStateGenerator(MachineTier.ADVANCED,
 			AstromineTechnologiesBlocks.ADVANCED_ALLOY_SMELTER,
 			AstromineTechnologiesBlocks.ADVANCED_ELECTRIC_SMELTER,
 			AstromineTechnologiesBlocks.ADVANCED_ELECTROLYZER,
@@ -65,7 +65,7 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 			AstromineTechnologiesBlocks.BLOCK_BREAKER,
 			AstromineTechnologiesBlocks.BLOCK_PLACER
 	));
-	public final ModelStateGenerator ELITE_MACHINES = register(new MachineModelStateGenerator(MachineType.ELITE,
+	public final ModelStateGenerator ELITE_MACHINES = register(new MachineModelStateGenerator(MachineTier.ELITE,
 			AstromineTechnologiesBlocks.ELITE_ALLOY_SMELTER,
 			AstromineTechnologiesBlocks.ELITE_ELECTRIC_SMELTER,
 			AstromineTechnologiesBlocks.ELITE_ELECTROLYZER,

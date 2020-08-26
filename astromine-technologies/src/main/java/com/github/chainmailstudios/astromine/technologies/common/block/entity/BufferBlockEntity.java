@@ -30,14 +30,14 @@ import net.minecraft.nbt.CompoundTag;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentInventoryBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.utilities.type.BufferType;
+import com.github.chainmailstudios.astromine.common.utilities.tier.BufferTier;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import org.jetbrains.annotations.NotNull;
 
 public class BufferBlockEntity extends ComponentInventoryBlockEntity {
-	private BufferType type;
+	private BufferTier type;
 
-	public BufferBlockEntity(BufferType type) {
+	public BufferBlockEntity(BufferTier type) {
 		super(AstromineTechnologiesBlockEntityTypes.BUFFER);
 
 		this.type = type;
@@ -62,7 +62,7 @@ public class BufferBlockEntity extends ComponentInventoryBlockEntity {
 
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		type = BufferType.byName(tag.getString("type"));
+		type = BufferTier.byName(tag.getString("type"));
 		((SimpleItemInventoryComponent) itemComponent).resize(9 * type.getHeight());
 		itemComponent.addListener(this::markDirty);
 		super.fromTag(state, tag);

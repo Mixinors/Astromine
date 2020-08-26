@@ -25,7 +25,7 @@
 package com.github.chainmailstudios.astromine.foundations.common.block;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableBlockWithEntity;
-import com.github.chainmailstudios.astromine.foundations.common.block.altar.entity.AltarBlockEntity;
+import com.github.chainmailstudios.astromine.foundations.common.block.entity.AltarBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;

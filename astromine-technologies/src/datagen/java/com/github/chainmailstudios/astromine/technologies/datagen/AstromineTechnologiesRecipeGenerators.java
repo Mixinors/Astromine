@@ -13,7 +13,7 @@ public class AstromineTechnologiesRecipeGenerators extends AstromineRecipeGenera
 	public final RecipeGenerator ASTEROID_ORE_TO_DUSTS = register(new TrituratingRecipeGenerator(ASTEROID_ORE, DUST, 2, 30, 270));
 	public final RecipeGenerator METEOR_ORE_TO_TINY_DUSTS = register(new TrituratingRecipeGenerator(METEOR_ORE, TINY_DUST, 6, 30, 270));
 	public final RecipeGenerator ASTEROID_CLUSTER_TO_DUSTS = register(new TrituratingRecipeGenerator(ASTEROID_CLUSTER, DUST, 2, 30, 270));
-	public final RecipeGenerator METEOR_CLUSTER_TO_TINY_DUSTS = register(new TrituratingRecipeGenerator(METEOR_CLUSTER, TINY_DUST, 6, 30, 270));
+	public final RecipeGenerator METEOR_CLUSTER_TO_TINY_DUSTS = register(new TrituratingRecipeGenerator(METEOR_CLUSTER, TINY_DUST, 3, 30, 270));
 	public final RecipeGenerator INGOT_TO_DUST = register(new TrituratingRecipeGenerator(INGOT, DUST, 10, 340));
 	public final RecipeGenerator GEM_TO_DUST = register(new TrituratingRecipeGenerator(GEM, DUST, 10, 340));
 	public final RecipeGenerator NUGGET_TO_TINY_DUST = register(new TrituratingRecipeGenerator(NUGGET, TINY_DUST, 5, 340));

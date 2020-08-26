@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.block.base;
 
-public abstract class WrenchableHorizontalFacingEnergyTieredBlockWithEntity extends WrenchableHorizontalFacingEnergyBlockWithEntity {
+public abstract class WrenchableHorizontalFacingEnergyTieredBlockWithEntity extends WrenchableHorizontalFacingEnergyBlockWithEntity implements TieredMachine {
 	public WrenchableHorizontalFacingEnergyTieredBlockWithEntity(Settings settings) {
 		super(settings);
 	}

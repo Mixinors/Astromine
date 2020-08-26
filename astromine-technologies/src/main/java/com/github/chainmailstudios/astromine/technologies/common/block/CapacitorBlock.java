@@ -35,15 +35,22 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.CapacitorBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.CreativeCapacitorBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.CapacitorScreenHandler;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.CreativeCapacitorScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
-public abstract class CapacitorBlock extends WrenchableHorizontalFacingEnergyBlockWithEntity {
+public abstract class CapacitorBlock extends WrenchableHorizontalFacingEnergyTieredBlockWithEntity {
 	public CapacitorBlock(Settings settings) {
 		super(settings);
+	}
+
+	@Override
+	public double getMachineSpeed() {
+		return 0;
 	}
 
 	public abstract static class Base extends CapacitorBlock {
@@ -81,6 +88,11 @@ public abstract class CapacitorBlock extends WrenchableHorizontalFacingEnergyBlo
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().primitiveCapacitorEnergy;
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.PRIMITIVE;
+		}
 	}
 
 	public static class Basic extends CapacitorBlock.Base {
@@ -96,6 +108,11 @@ public abstract class CapacitorBlock extends WrenchableHorizontalFacingEnergyBlo
 		@Override
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().basicCapacitorEnergy;
+		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.BASIC;
 		}
 	}
 
@@ -113,6 +130,11 @@ public abstract class CapacitorBlock extends WrenchableHorizontalFacingEnergyBlo
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().advancedCapacitorEnergy;
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ADVANCED;
+		}
 	}
 
 	public static class Elite extends CapacitorBlock.Base {
@@ -128,6 +150,11 @@ public abstract class CapacitorBlock extends WrenchableHorizontalFacingEnergyBlo
 		@Override
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().eliteCapacitorEnergy;
+		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ELITE;
 		}
 	}
 
@@ -154,6 +181,11 @@ public abstract class CapacitorBlock extends WrenchableHorizontalFacingEnergyBlo
 		@Override
 		public boolean isCreative() {
 			return true;
+		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.CREATIVE;
 		}
 	}
 }

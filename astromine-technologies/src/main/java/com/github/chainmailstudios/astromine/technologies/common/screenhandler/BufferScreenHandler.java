@@ -30,18 +30,18 @@ import net.minecraft.util.math.BlockPos;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.ComponentItemScreenHandler;
-import com.github.chainmailstudios.astromine.common.utilities.type.BufferType;
+import com.github.chainmailstudios.astromine.common.utilities.tier.BufferTier;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import com.github.vini2003.blade.common.widget.base.SlotListWidget;
 
 public class BufferScreenHandler extends ComponentItemScreenHandler {
-	public final BufferType bufferType;
+	public final BufferTier bufferTier;
 
-	public BufferScreenHandler(int syncId, PlayerEntity player, BlockPos position, BufferType bufferType) {
+	public BufferScreenHandler(int syncId, PlayerEntity player, BlockPos position, BufferTier bufferTier) {
 		super(AstromineTechnologiesScreenHandlers.BUFFER, syncId, player, position);
-		this.bufferType = bufferType;
+		this.bufferTier = bufferTier;
 	}
 
 	@Override

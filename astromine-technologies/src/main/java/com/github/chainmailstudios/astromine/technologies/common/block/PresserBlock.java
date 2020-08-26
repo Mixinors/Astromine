@@ -35,6 +35,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.PresserBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.PresserScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
@@ -84,6 +85,11 @@ public abstract class PresserBlock extends WrenchableHorizontalFacingEnergyTiere
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().primitivePresserEnergy;
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.PRIMITIVE;
+		}
 	}
 
 	public static class Basic extends PresserBlock.Base {
@@ -104,6 +110,11 @@ public abstract class PresserBlock extends WrenchableHorizontalFacingEnergyTiere
 		@Override
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().basicPresserEnergy;
+		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.BASIC;
 		}
 	}
 
@@ -126,6 +137,11 @@ public abstract class PresserBlock extends WrenchableHorizontalFacingEnergyTiere
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().advancedPresserEnergy;
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ADVANCED;
+		}
 	}
 
 	public static class Elite extends PresserBlock.Base {
@@ -146,6 +162,11 @@ public abstract class PresserBlock extends WrenchableHorizontalFacingEnergyTiere
 		@Override
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().elitePresserEnergy;
+		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ELITE;
 		}
 	}
 }

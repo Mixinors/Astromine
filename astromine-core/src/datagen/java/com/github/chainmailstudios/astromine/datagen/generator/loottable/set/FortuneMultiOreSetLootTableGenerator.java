@@ -1,31 +1,23 @@
 package com.github.chainmailstudios.astromine.datagen.generator.loottable.set;
 
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.loot.ConstantLootTableRange;
-import net.minecraft.loot.LootPool;
-import net.minecraft.loot.LootTable;
 import net.minecraft.loot.LootTableRange;
-import net.minecraft.loot.LootTableRanges;
 import net.minecraft.loot.UniformLootTableRange;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.ApplyBonusLootFunction;
 import net.minecraft.loot.function.SetCountLootFunction;
+import net.minecraft.util.math.IntRange;
 
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.LootTableData;
 
-public class FortuneOreSetLootTableGenerator extends GenericSetLootTableGenerator {
-	protected final MaterialItemType drop;
+public class FortuneMultiOreSetLootTableGenerator extends FortuneOreSetLootTableGenerator {
+	private final LootTableRange dropCountRange;
 
-	public FortuneOreSetLootTableGenerator(MaterialItemType ore, MaterialItemType drop) {
-		super(ore);
-		this.drop = drop;
-	}
-
-	@Override
-	public boolean shouldGenerate(MaterialSet set) {
-		return super.shouldGenerate(set) && set.hasType(drop);
+	public FortuneMultiOreSetLootTableGenerator(MaterialItemType ore, MaterialItemType drop, LootTableRange dropCountRange) {
+		super(ore, drop);
+		this.dropCountRange = dropCountRange;
 	}
 
 	@Override
@@ -35,6 +27,7 @@ public class FortuneOreSetLootTableGenerator extends GenericSetLootTableGenerato
 				LootTableData.addExplosionDecayLootFunction(
 						getBlock(set),
 						ItemEntry.builder(set.getItem(drop))
+								.apply(SetCountLootFunction.builder(dropCountRange))
 								.apply(ApplyBonusLootFunction.oreDrops(Enchantments.FORTUNE))
 				)
 		));
@@ -42,6 +35,6 @@ public class FortuneOreSetLootTableGenerator extends GenericSetLootTableGenerato
 
 	@Override
 	public String getGeneratorName() {
-		return "fortune_ore_set";
+		return "fortune_multi_ore_set";
 	}
 }

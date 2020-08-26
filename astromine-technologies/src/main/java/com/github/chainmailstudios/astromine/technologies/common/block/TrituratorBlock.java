@@ -35,6 +35,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.TrituratorBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.TrituratorScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
@@ -84,6 +85,11 @@ public abstract class TrituratorBlock extends WrenchableHorizontalFacingEnergyTi
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().primitiveTrituratorEnergy;
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.PRIMITIVE;
+		}
 	}
 
 	public static class Basic extends TrituratorBlock.Base {
@@ -104,6 +110,11 @@ public abstract class TrituratorBlock extends WrenchableHorizontalFacingEnergyTi
 		@Override
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().basicTrituratorEnergy;
+		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.BASIC;
 		}
 	}
 
@@ -126,6 +137,11 @@ public abstract class TrituratorBlock extends WrenchableHorizontalFacingEnergyTi
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().advancedTrituratorEnergy;
 		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ADVANCED;
+		}
 	}
 
 	public static class Elite extends TrituratorBlock.Base {
@@ -146,6 +162,11 @@ public abstract class TrituratorBlock extends WrenchableHorizontalFacingEnergyTi
 		@Override
 		public double getEnergyCapacity() {
 			return AstromineConfig.get().eliteTrituratorEnergy;
+		}
+
+		@Override
+		public MachineTier getTier() {
+			return MachineTier.ELITE;
 		}
 	}
 }
