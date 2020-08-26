@@ -41,48 +41,46 @@ allprojects {
     repositories {
         mavenLocal()
         maven {
-            name = "Onyx Studios"
-            url = "https://maven.onyxstudios.dev"
-        }
-        maven {
             name = "JitPack"
             url = "https://jitpack.io"
-        }
-        maven {
-            name = "Jared"
-            url = "https://maven.blamejared.com"
+            content {
+                includeGroupByRegex "com.github.\\w+"
+            }
         }
         maven {
             name = "BuildCraft"
             url = "https://mod-buildcraft.com/maven"
-        }
-        maven {
-            name = "SonaType"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+            content {
+                includeGroup "alexiil.mc.lib"
+            }
         }
         maven {
             name = "Ladysnake Libs"
             url = 'https://dl.bintray.com/ladysnake/libs'
+            content {
+                includeGroup "io.github.onyxstudios.Cardinal-Components-API"
+            }
         }
         maven {
             name = "Wrenchable"
             url = "https://dl.bintray.com/zundrel/wrenchable"
+            content {
+                includeGroup "com.zundrel"
+            }
         }
         maven {
             name = "Cloth"
             url = "https://dl.bintray.com/shedaniel/cloth"
-        }
-        maven {
-            name = "grondag"
-            url = "https://grondag-repo.appspot.com"
-            credentials {
-                username = "guest"
-                password = ""
+            content {
+                includeGroup "me.shedaniel.cloth.api"
             }
         }
         maven {
             name = "Earthcomputer"
             url = "https://dl.bintray.com/earthcomputer/mods"
+            content {
+                includeGroup "net.earthcomputer"
+            }
         }
         maven {
             name = "Modmaven"
