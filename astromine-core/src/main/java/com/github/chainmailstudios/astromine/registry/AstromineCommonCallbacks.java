@@ -46,7 +46,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.WorldChunk;
 
 public class AstromineCommonCallbacks {
-	private static int atmosphereTickCounter = 0;
+	public static int atmosphereTickCounter = 0;
 
 	@SuppressWarnings("UnstableApiUsage")
 	public static void initialize() {

@@ -24,11 +24,15 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
+import com.github.chainmailstudios.astromine.registry.AstromineCommonCallbacks;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -63,7 +67,10 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 	@Shadow
 	public World world;
 
-	private World astromine_lastWorld;
+	@Shadow
+	public abstract BlockPos getBlockPos();
+
+	private World astromine_lastWorld = null;
 
 	@Unique
 	Entity lastVehicle = null;
@@ -155,12 +162,13 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	void onThing(CallbackInfo ci) {
-		if ((Object) this instanceof ServerPlayerEntity && world != astromine_lastWorld) {
+		// TODO Make this sync all visible chunks around the player.
+		if (AstromineCommonCallbacks.atmosphereTickCounter == AstromineConfig.get().gasTickRate && ((Entity) (Object) this) instanceof ServerPlayerEntity && world != astromine_lastWorld) {
 			astromine_lastWorld = world;
 
 			ServerSidePacketRegistry.INSTANCE.sendToPlayer(((PlayerEntity) (Object) this), ClientAtmosphereManager.GAS_ERASED, ClientAtmosphereManager.ofGasErased());
 
-			ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
+			ComponentProvider componentProvider = ComponentProvider.fromChunk(world.getChunk(getBlockPos()));
 
 			ChunkAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);
 

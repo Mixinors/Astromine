@@ -121,8 +121,10 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 				if (isInChunk(sidePos)) {
 					FluidVolume sideVolume = get(sidePos);
 
-					if (world.getBlockState(sidePos).isAir() && (sideVolume.isEmpty() || sideVolume.equalsFluid(centerVolume)) && (centerVolume.hasStored(Fraction.bottle()) || !world.isAir(centerPos)) && sideVolume.isSmallerThan(centerVolume)) {
+					if ((world.getBlockState(sidePos).isAir() || !world.getBlockState(sidePos).isSideSolidFullSquare(world, sidePos, direction.getOpposite())) && (world.getBlockState(centerPos).isAir() || !world.getBlockState(centerPos).isSideSolidFullSquare(world, centerPos, direction)) && (sideVolume.isEmpty() || sideVolume.equalsFluid(centerVolume)) && (centerVolume.hasStored(Fraction.bottle()) || !world.isAir(centerPos) && world.getBlockState(sidePos).isFullCube(world, centerPos)) && sideVolume.isSmallerThan(centerVolume)) {
 						if (world.isAir(centerPos)) {
+							centerVolume.pushVolume(sideVolume, Fraction.bottle());
+						} else if (!world.getBlockState(centerPos).isSideSolidFullSquare(world, centerPos, direction)) {
 							centerVolume.pushVolume(sideVolume, Fraction.bottle());
 						} else {
 							centerVolume.pushVolume(sideVolume, centerVolume.getFraction());
@@ -137,12 +139,14 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 
 					FluidVolume sideVolume = chunkAtmosphereComponent.get(sidePos);
 
-					if (world.getBlockState(sidePos).isAir() && (sideVolume.isEmpty() || sideVolume.equalsFluid(centerVolume)) && (centerVolume.hasStored(Fraction.bottle()) || !world.isAir(centerPos)) && sideVolume.isSmallerThan(centerVolume)) {
+					if ((world.getBlockState(sidePos).isAir() || !world.getBlockState(sidePos).isSideSolidFullSquare(world, sidePos, direction.getOpposite())) && (world.getBlockState(centerPos).isAir() || !world.getBlockState(centerPos).isSideSolidFullSquare(world, centerPos, direction)) && (sideVolume.isEmpty() || sideVolume.equalsFluid(centerVolume)) && (centerVolume.hasStored(Fraction.bottle()) || !world.isAir(centerPos) && world.getBlockState(sidePos).isOpaqueFullCube(world, centerPos)) && sideVolume.isSmallerThan(centerVolume)) {
 						// Keeping these here just in case I need them for debugging in the future.
 						// AstromineCommon.LOGGER.info("Step 1: Moving from ChunkPos(" + chunk.getPos().x + "," + chunk.getPos().z + ") to ChunkPos(" + neighborPos.x + "," + neighborPos.z + ")");
 						// AstromineCommon.LOGGER.info("Step 2: Moving from " + centerPos + " to " + sidePos);
 
 						if (world.isAir(centerPos)) {
+							centerVolume.pushVolume(sideVolume, Fraction.bottle());
+						} else if (!world.getBlockState(centerPos).isSideSolidFullSquare(world, centerPos, direction)) {
 							centerVolume.pushVolume(sideVolume, Fraction.bottle());
 						} else {
 							centerVolume.pushVolume(sideVolume, centerVolume.getFraction());

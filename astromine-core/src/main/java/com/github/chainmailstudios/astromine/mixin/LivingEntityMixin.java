@@ -129,35 +129,39 @@ public abstract class LivingEntityMixin implements GravityEntity {
 				boolean hasBoots = false;
 
 				for (ItemStack stack : getArmorItems()) {
-					if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_helmet")) {
-						hasHelmet = true;
-					}
-					if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_chestplate")) {
-						hasChestplate = true;
-					}
-					if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_leggings")) {
-						hasLeggings = true;
-					}
-					if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_boots")) {
-						hasBoots = true;
+					if (!stack.isEmpty()) {
+						if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_helmet")) {
+							hasHelmet = true;
+						}
+						if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_chestplate")) {
+							hasChestplate = true;
+						}
+						if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_leggings")) {
+							hasLeggings = true;
+						}
+						if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_boots")) {
+							hasBoots = true;
+						}
 					}
 				}
 
 				boolean hasSuit = hasHelmet && hasChestplate && hasLeggings && hasBoots;
 
 				for (ItemStack stack : getArmorItems()) {
-					if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_chestplate")) { // TODO: Properly verify for Space Suit.
-						ComponentProvider provider = ComponentProvider.fromItemStack(stack);
+					if (!stack.isEmpty()) {
+						if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_chestplate")) { // TODO: Properly verify for Space Suit.
+							ComponentProvider provider = ComponentProvider.fromItemStack(stack);
 
-						FluidInventoryComponent fluidComponent = provider.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+							FluidInventoryComponent fluidComponent = provider.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
-						if (fluidComponent.getVolume(0).isEmpty() || !hasSuit) { // TODO: Check if can breathe!
-							isBreathing = false;
-						} else {
-							fluidComponent.getVolume(0).extractVolume(Fraction.of(1, 512));
+							if (fluidComponent.getVolume(0).isEmpty() || !hasSuit) { // TODO: Check if can breathe!
+								isBreathing = false;
+							} else {
+								fluidComponent.getVolume(0).extractVolume(Fraction.of(1, 512));
+							}
+
+							Optional.ofNullable(FluidEffectRegistry.INSTANCE.get(fluidComponent.getVolume(0).getFluid())).ifPresent(it -> it.accept((LivingEntity) entity));
 						}
-
-						Optional.ofNullable(FluidEffectRegistry.INSTANCE.get(fluidComponent.getVolume(0).getFluid())).ifPresent(it -> it.accept((LivingEntity) entity));
 					}
 				}
 
