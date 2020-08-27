@@ -49,17 +49,4 @@ public class SpaceSuitItem extends ArmorItem {
 	public SpaceSuitItem(ArmorMaterial material, EquipmentSlot slot, Settings settings) {
 		super(material, slot, settings);
 	}
-
-	@Override
-	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-		super.appendTooltip(stack, world, tooltip, context);
-
-		if (this == AstromineTechnologiesItems.SPACE_SUIT_CHESTPLATE) {
-			FluidInventoryComponent fluidComponent = ComponentProvider.fromItemStack(stack).getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
-
-			fluidComponent.getContents().forEach((key, value) -> {
-				tooltip.add(new LiteralText(value.getFraction().toFractionalString() + " | " + new TranslatableText(value.getFluid().getDefaultState().getBlockState().getBlock().getTranslationKey()).getString()).formatted(Formatting.GRAY));
-			});
-		}
-	}
 }

@@ -41,9 +41,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.item.AstromineBlockItem;
-import com.github.chainmailstudios.astromine.common.item.AstromineEnergyBlockItem;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
+import com.github.chainmailstudios.astromine.common.item.EnergyBlockItem;
+import com.github.chainmailstudios.astromine.common.utilities.capability.energy.EnergyCapacityProvider;
 
 public class AstromineBlocks {
 	public static final Block METEOR_STONE = register("meteor_stone", new Block(FabricBlockSettings.of(Material.STONE, MaterialColor.BLACK).requiresTool().breakByTool(FabricToolTags.PICKAXES, 3).strength(30, 1500)), AstromineItems.getBasicSettings().fireproof());
@@ -86,7 +85,7 @@ public class AstromineBlocks {
 	 * @return Block instance registered
 	 */
 	public static <T extends Block> T register(String name, T block, Item.Settings settings) {
-		return register(name, block, block instanceof EnergyCapacityProvider ? AstromineEnergyBlockItem.create(block, settings) : new AstromineBlockItem(block, settings));
+		return register(name, block, block instanceof EnergyCapacityProvider ? EnergyBlockItem.create(block, settings) : new BlockItemWithTooltipCallback(block, settings));
 	}
 
 	/**

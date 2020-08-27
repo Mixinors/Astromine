@@ -37,7 +37,7 @@ import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentB
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.NameableComponent;
-import com.github.chainmailstudios.astromine.common.widget.TransferTypeSelectorPanelUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.WidgetUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
@@ -118,7 +118,7 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 			if (componentProvider.getComponent(type) instanceof NameableComponent) {
 				NameableComponent nameableComponent = (NameableComponent) componentProvider.getComponent(type);
 				TabCollection current = (TabCollection) tabs.addTab(nameableComponent.getSymbol(), () -> Collections.singletonList(nameableComponent.getName()));
-				TransferTypeSelectorPanelUtilities.createTab(current, Position.of(tabs, tabs.getWidth() / 2 - 38, getTabWidgetExtendedHeight() / 2), finalRotation, transferComponent, syncBlockEntity.getPos(), type);
+				WidgetUtilities.createTransferTab(current, Position.of(tabs, tabs.getWidth() / 2 - 38, getTabWidgetExtendedHeight() / 2), finalRotation, transferComponent, syncBlockEntity.getPos(), type);
 				TextWidget invTabTitle = new TextWidget();
 				invTabTitle.setPosition(Position.of(invPos, 0, -10));
 				invTabTitle.setText(getPlayer().inventory.getName());

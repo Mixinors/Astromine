@@ -33,11 +33,11 @@ import net.minecraft.util.registry.Registry;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.BaseVolume;
+import com.github.chainmailstudios.astromine.common.volume.base.Volume;
 
 import com.google.common.base.Objects;
 
-public class FluidVolume extends BaseVolume {
+public class FluidVolume extends Volume {
 	private Fluid fluid = Fluids.EMPTY;
 
 	private byte signal = 0b0;
@@ -73,6 +73,11 @@ public class FluidVolume extends BaseVolume {
 	public FluidVolume(Fluid fluid, Fraction fraction, Runnable runnable) {
 		this.fluid = fluid;
 		this.fraction = fraction;
+		this.runnable = runnable;
+	}
+
+	public FluidVolume(Runnable runnable) {
+		this();
 		this.runnable = runnable;
 	}
 
@@ -151,11 +156,11 @@ public class FluidVolume extends BaseVolume {
 		this.fluid = fluid;
 	}
 
-	public <T extends BaseVolume> T insertVolume(FluidVolume volume) {
+	public <T extends Volume> T insertVolume(FluidVolume volume) {
 		return (T) insertVolume(volume.getFluid(), volume.getFraction());
 	}
 
-	public <T extends BaseVolume> T insertVolume(Fluid fluid, Fraction fraction) {
+	public <T extends Volume> T insertVolume(Fluid fluid, Fraction fraction) {
 		if (this.fluid != Fluids.EMPTY && fluid != this.fluid)
 			return (T) FluidVolume.empty();
 
@@ -167,7 +172,7 @@ public class FluidVolume extends BaseVolume {
 		return (T) volume;
 	}
 
-	public <T extends BaseVolume> T extractVolume(Fluid fluid, Fraction fraction) {
+	public <T extends Volume> T extractVolume(Fluid fluid, Fraction fraction) {
 		if (fluid != this.fluid)
 			return (T) FluidVolume.empty();
 
@@ -180,7 +185,7 @@ public class FluidVolume extends BaseVolume {
 	}
 
 	@Override
-	public <T extends BaseVolume> T extractVolume(Fraction taken) {
+	public <T extends Volume> T extractVolume(Fraction taken) {
 		T t = (T) new FluidVolume(fluid, super.extractVolume(taken).getFraction());
 
 		if (this.fraction.equals(Fraction.empty()))
@@ -190,13 +195,13 @@ public class FluidVolume extends BaseVolume {
 	}
 
 	@Override
-	public <T extends BaseVolume> T insertVolume(Fraction fraction) {
+	public <T extends Volume> T insertVolume(Fraction fraction) {
 		T t = (T) new FluidVolume(fluid, super.insertVolume(fraction).getFraction());
 
 		return t;
 	}
 
-	public <T extends BaseVolume> void pullVolume(T target, Fraction pulled) {
+	public <T extends Volume> void pullVolume(T target, Fraction pulled) {
 		if (target instanceof FluidVolume && ((FluidVolume) target).getFluid() != fluid) {
 			setFluid(((FluidVolume) target).getFluid());
 		}
@@ -210,7 +215,7 @@ public class FluidVolume extends BaseVolume {
 		super.pullVolume(target, pulled);
 	}
 
-	public <T extends BaseVolume> void pushVolume(T target, Fraction pushed) {
+	public <T extends Volume> void pushVolume(T target, Fraction pushed) {
 		if (target instanceof FluidVolume && ((FluidVolume) target).getFluid() != fluid) {
 			((FluidVolume) target).setFluid(fluid);
 		}

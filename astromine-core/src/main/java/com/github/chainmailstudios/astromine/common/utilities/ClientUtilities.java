@@ -51,18 +51,8 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import java.util.function.Function;
 
 public class ClientUtilities {
-	public static void addEntity(PersistentProjectileEntity persistentProjectileEntity) {
-		MinecraftClient.getInstance().world.addEntity(persistentProjectileEntity.getEntityId(), persistentProjectileEntity);
-	}
-
 	public static void playSound(BlockPos position, SoundEvent sound, SoundCategory category, float volume, float pitch, boolean useDistance) {
 		MinecraftClient.getInstance().world.playSoundFromEntity(MinecraftClient.getInstance().player, MinecraftClient.getInstance().player, sound, category, volume, pitch);
-	}
-
-	public static final class Weapon {
-		public static boolean isAiming() {
-			return MinecraftClient.getInstance().options.keyUse.isPressed();
-		}
 	}
 
 	@Environment(EnvType.CLIENT)

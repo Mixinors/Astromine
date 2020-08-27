@@ -28,7 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
 
-import com.github.chainmailstudios.astromine.common.utilities.TriPredicate;
+import com.github.chainmailstudios.astromine.common.utilities.data.predicate.TriPredicate;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;

@@ -57,18 +57,6 @@ public class HolographicConnectorItem extends Item {
 		super(settings);
 	}
 
-	@Environment(EnvType.CLIENT)
-	@Override
-	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-		super.appendTooltip(stack, world, tooltip, context);
-
-		Pair<RegistryKey<World>, BlockPos> pair = readBlock(stack);
-		if (pair != null) {
-			tooltip.add(Text.of(null));
-			tooltip.add(new TranslatableText("text.astromine.selected.dimension.pos", pair.getLeft().getValue(), pair.getRight().getX(), pair.getRight().getY(), pair.getRight().getZ()).formatted(Formatting.GRAY));
-		}
-	}
-
 	@Override
 	public ActionResult useOnBlock(ItemUsageContext context) {
 		World world = context.getWorld();
@@ -171,7 +159,7 @@ public class HolographicConnectorItem extends Item {
 		return stack;
 	}
 
-	private Pair<RegistryKey<World>, BlockPos> readBlock(ItemStack stack) {
+	public Pair<RegistryKey<World>, BlockPos> readBlock(ItemStack stack) {
 		CompoundTag tag = stack.getTag();
 		if (tag == null)
 			return null;

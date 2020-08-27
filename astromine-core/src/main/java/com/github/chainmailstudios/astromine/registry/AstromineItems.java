@@ -40,7 +40,6 @@ import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.item.GravityGauntletItem;
-import com.github.chainmailstudios.astromine.common.item.MeteorSpawnerDevItem;
 import com.github.chainmailstudios.astromine.common.item.UncoloredSpawnEggItem;
 
 public class AstromineItems {
@@ -49,8 +48,6 @@ public class AstromineItems {
 	public static final Item ITEM = register("item", new Item(new Item.Settings()));
 
 	public static final Item SPACE_SLIME_SPAWN_EGG = register("space_slime_spawn_egg", new UncoloredSpawnEggItem(AstromineEntityTypes.SPACE_SLIME, getBasicSettings()));
-
-	public static final Item ROCKET = register("rocket", new UncoloredSpawnEggItem(AstromineEntityTypes.ROCKET, getBasicSettings()));
 
 	public static final Item SPACE_SLIME_BALL = register("space_slime_ball", new Item(getBasicSettings()));
 
@@ -70,10 +67,6 @@ public class AstromineItems {
 					return stack;
 				}
 			});
-		}
-
-		if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
-			Registry.register(Registry.ITEM, AstromineCommon.identifier("meteor_spawner"), new MeteorSpawnerDevItem(new Item.Settings()));
 		}
 	}
 

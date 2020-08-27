@@ -26,8 +26,8 @@ package com.github.chainmailstudios.astromine.technologies.common.screenhandler;
 
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.ElectricSmelterBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.ComponentEnergyItemScreenHandler;
-import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
-import com.github.chainmailstudios.astromine.common.widget.vanilla.ResultSlot;
+import com.github.chainmailstudios.astromine.common.widget.blade.HorizontalArrowWidget;
+import com.github.chainmailstudios.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
@@ -48,7 +48,7 @@ public class ElectricSmelterScreenHandler extends ComponentEnergyItemScreenHandl
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		SlotWidget output = new SlotWidget(0, smelter, ResultSlot::new);
+		SlotWidget output = new SlotWidget(0, smelter, ExtractionSlot::new);
 		output.setSize(Size.of(18, 18));
 
 		SlotWidget input = new SlotWidget(1, smelter);

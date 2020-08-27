@@ -4,10 +4,11 @@
   "package": "com.github.chainmailstudios.astromine.technologies.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+	"BuiltinModelItemRendererMixin"
   ],
   "client": [
   ],
   "injectors": {
-    "defaultRequire": 1
+	"defaultRequire": 1
   }
 }

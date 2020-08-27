@@ -1,0 +1,45 @@
+package com.github.chainmailstudios.astromine.discoveries.registry;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.discoveries.common.world.feature.AsteroidOreFeature;
+import com.github.chainmailstudios.astromine.discoveries.common.world.feature.MeteorFeature;
+import com.github.chainmailstudios.astromine.discoveries.common.world.feature.MeteorGenerator;
+import com.github.chainmailstudios.astromine.discoveries.common.world.feature.MoonCraterFeature;
+import com.github.chainmailstudios.astromine.registry.AstromineFeatures;
+import me.shedaniel.cloth.api.dynamic.registry.v1.BiomesRegistry;
+import me.shedaniel.cloth.api.dynamic.registry.v1.DynamicRegistryCallback;
+import net.earthcomputer.libstructure.LibStructure;
+import net.minecraft.structure.StructurePieceType;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.GenerationStep;
+import net.minecraft.world.gen.chunk.StructureConfig;
+import net.minecraft.world.gen.feature.*;
+
+public class AstromineDiscoveriesFeatures extends AstromineFeatures {
+	public static final Identifier ASTEROID_ORES_ID = AstromineCommon.identifier("asteroid_ores");
+	public static final Feature<DefaultFeatureConfig> ASTEROID_ORES = register(new AsteroidOreFeature(DefaultFeatureConfig.CODEC), ASTEROID_ORES_ID);
+	public static final RegistryKey<ConfiguredFeature<?, ?>> ASTEROID_ORES_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, ASTEROID_ORES_ID);
+
+	public static final Identifier MOON_CRATER_ID = AstromineCommon.identifier("moon_crater");
+	public static final Feature<DefaultFeatureConfig> MOON_CRATER = register(new MoonCraterFeature(DefaultFeatureConfig.CODEC), MOON_CRATER_ID);
+	public static final RegistryKey<ConfiguredFeature<?, ?>> MOON_CRATER_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, MOON_CRATER_ID);
+
+	public static final Identifier METEOR_ID = AstromineCommon.identifier("meteor");
+	public static final StructurePieceType METEOR_STRUCTURE = register(MeteorGenerator::new, METEOR_ID);
+	public static final RegistryKey<ConfiguredStructureFeature<?, ?>> METEOR_KEY = RegistryKey.of(Registry.CONFIGURED_STRUCTURE_FEATURE_WORLDGEN, METEOR_ID);
+
+	public static void initialize() {
+		MeteorFeature meteor = new MeteorFeature(DefaultFeatureConfig.CODEC);
+		ConfiguredStructureFeature<DefaultFeatureConfig, ? extends StructureFeature<DefaultFeatureConfig>> meteorStructure = meteor.configure(new DefaultFeatureConfig());
+		LibStructure.registerStructure(METEOR_ID, meteor, GenerationStep.Feature.RAW_GENERATION, new StructureConfig(32, 8, 12345), meteorStructure);
+
+		DynamicRegistryCallback.callback(Registry.BIOME_KEY).register((manager, key, biome) -> {
+			if (biome.getCategory() != Biome.Category.NETHER && biome.getCategory() != Biome.Category.THEEND) {
+				BiomesRegistry.registerStructure(manager, biome, () -> meteorStructure);
+			}
+		});
+	}
+}

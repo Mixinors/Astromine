@@ -24,14 +24,14 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.screenhandler;
 
-import com.github.chainmailstudios.astromine.common.widget.vanilla.ResultSlot;
+import com.github.chainmailstudios.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.AlloySmelterBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.chainmailstudios.astromine.common.screenhandler.base.ComponentEnergyItemScreenHandler;
-import com.github.chainmailstudios.astromine.common.widget.HorizontalArrowWidget;
+import com.github.chainmailstudios.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
@@ -57,7 +57,7 @@ public class AlloySmelterScreenHandler extends ComponentEnergyItemScreenHandler 
 		secondInput.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
 		secondInput.setSize(Size.of(18, 18));
 
-		SlotWidget output = new SlotWidget(2, smelter, ResultSlot::new);
+		SlotWidget output = new SlotWidget(2, smelter, ExtractionSlot::new);
 		output.setPosition(Position.of(energyBar.getX(), energyBar.getY()));
 		output.setSize(Size.of(18, 18));
 

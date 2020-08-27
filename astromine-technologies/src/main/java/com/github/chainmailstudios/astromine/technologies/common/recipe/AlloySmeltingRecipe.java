@@ -25,7 +25,7 @@
 package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
-import com.github.chainmailstudios.astromine.common.recipe.ingredient.AdvancedIngredient;
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.ArrayIngredient;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -55,13 +55,13 @@ import com.google.gson.annotations.SerializedName;
 
 public class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 	final Identifier identifier;
-	final AdvancedIngredient firstInput;
-	final AdvancedIngredient secondInput;
+	final ArrayIngredient firstInput;
+	final ArrayIngredient secondInput;
 	final ItemStack output;
 	final double energyConsumed;
 	final int time;
 
-	public AlloySmeltingRecipe(Identifier identifier, AdvancedIngredient firstInput, AdvancedIngredient secondInput, ItemStack output, double energyConsumed, int time) {
+	public AlloySmeltingRecipe(Identifier identifier, ArrayIngredient firstInput, ArrayIngredient secondInput, ItemStack output, double energyConsumed, int time) {
 		this.identifier = identifier;
 		this.firstInput = firstInput;
 		this.secondInput = secondInput;
@@ -122,11 +122,11 @@ public class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return defaultedList;
 	}
 
-	public AdvancedIngredient getFirstInput() {
+	public ArrayIngredient getFirstInput() {
 		return firstInput;
 	}
 
-	public AdvancedIngredient getSecondInput() {
+	public ArrayIngredient getSecondInput() {
 		return secondInput;
 	}
 
