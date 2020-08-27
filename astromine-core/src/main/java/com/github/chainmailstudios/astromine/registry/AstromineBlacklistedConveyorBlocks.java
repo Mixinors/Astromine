@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.common.registry.BlacklistedConveyorBlockRegistry;
+import com.github.chainmailstudios.astromine.common.registry.base.UniRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.Pair;
@@ -31,26 +33,16 @@ import net.minecraft.util.Pair;
 import java.util.HashMap;
 
 public class AstromineBlacklistedConveyorBlocks {
-	public static HashMap<Item, Pair<Float, Boolean>> blacklistedBlocks = new HashMap<>();
-
-	static {
-		addBlacklistedBlock(Items.CHEST, true);
-		addBlacklistedBlock(Items.TRAPPED_CHEST, true);
-		addBlacklistedBlock(Items.ENDER_CHEST, true);
-		addBlacklistedBlock(Items.CREEPER_HEAD, true);
-		addBlacklistedBlock(Items.DRAGON_HEAD, 0.625F, true);
-		addBlacklistedBlock(Items.PLAYER_HEAD, true);
-		addBlacklistedBlock(Items.ZOMBIE_HEAD, true);
-		addBlacklistedBlock(Items.SKELETON_SKULL, true);
-		addBlacklistedBlock(Items.WITHER_SKELETON_SKULL, true);
-		addBlacklistedBlock(Items.REDSTONE, 0.8F, false);
-	}
-
-	public static void addBlacklistedBlock(Item item, boolean lifted) {
-		addBlacklistedBlock(item, 1, lifted);
-	}
-
-	public static void addBlacklistedBlock(Item item, float scale, boolean lifted) {
-		blacklistedBlocks.put(item, new Pair<>(scale, lifted));
+	public static void initialize() {
+		BlacklistedConveyorBlockRegistry.INSTANCE.register(Items.CHEST, new Pair<>(1F, true));
+		BlacklistedConveyorBlockRegistry.INSTANCE.register(Items.TRAPPED_CHEST, new Pair<>(1F, true));
+		BlacklistedConveyorBlockRegistry.INSTANCE.register(Items.ENDER_CHEST, new Pair<>(1F, true));
+		BlacklistedConveyorBlockRegistry.INSTANCE.register(Items.CREEPER_HEAD, new Pair<>(1F, true));
+		BlacklistedConveyorBlockRegistry.INSTANCE.register(Items.DRAGON_HEAD, new Pair<>(0.625F, true));
+		BlacklistedConveyorBlockRegistry.INSTANCE.register(Items.PLAYER_HEAD, new Pair<>(1F, true));
+		BlacklistedConveyorBlockRegistry.INSTANCE.register(Items.ZOMBIE_HEAD, new Pair<>(1F, true));
+		BlacklistedConveyorBlockRegistry.INSTANCE.register(Items.SKELETON_SKULL, new Pair<>(1F, true));
+		BlacklistedConveyorBlockRegistry.INSTANCE.register(Items.WITHER_SKELETON_SKULL, new Pair<>(1F, true));
+		BlacklistedConveyorBlockRegistry.INSTANCE.register(Items.REDSTONE, new Pair<>(0.8F, true));
 	}
 }

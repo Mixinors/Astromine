@@ -25,13 +25,22 @@
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidInventoryBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
+import net.minecraft.item.ItemStack;
 
-public class TankBlockEntity extends ComponentFluidBlockEntity {
+import java.util.Map;
+
+public class TankBlockEntity extends ComponentFluidInventoryBlockEntity {
 	public TankBlockEntity() {
 		super(AstromineTechnologiesBlockEntityTypes.TANK);
 
@@ -41,5 +50,41 @@ public class TankBlockEntity extends ComponentFluidBlockEntity {
 	@Override
 	protected FluidInventoryComponent createFluidComponent() {
 		return new SimpleFluidInventoryComponent(1);
+	}
+
+	@Override
+	protected ItemInventoryComponent createItemComponent() {
+		return new SimpleItemInventoryComponent(2);
+	}
+
+	@Override
+	public void tick() {
+		super.tick();
+
+		ItemStack leftStack = itemComponent.getStack(0);
+		ItemStack rightStack = itemComponent.getStack(1);
+
+		ComponentProvider leftProvider = ComponentProvider.fromItemStack(leftStack);
+		ComponentProvider rightProvider = ComponentProvider.fromItemStack(rightStack);
+
+		FluidInventoryComponent leftComponent = leftProvider.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+		FluidInventoryComponent rightComponent = rightProvider.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+
+		if (leftComponent != null) {
+			for (FluidVolume volume : leftComponent.getContents().values()) {
+				if (volume.equalsFluid(fluidComponent.getVolume(0)) || fluidComponent.getVolume(0).isEmpty()) {
+					volume.pushVolume(fluidComponent.getVolume(0), Fraction.min(Fraction.bottle(), fluidComponent.getVolume(0).getAvailable()));
+					break;
+				}
+			}
+		}
+
+		if (!fluidComponent.getVolume(0).isEmpty() && rightComponent != null) {
+			for (FluidVolume volume : rightComponent.getContents().values()) {
+				if (volume.equalsFluid(fluidComponent.getVolume(0)) || volume.isEmpty()) {
+					fluidComponent.getVolume(0).pushVolume(volume, Fraction.min(Fraction.bottle(), volume.getAvailable()));
+				}
+			}
+		}
 	}
 }

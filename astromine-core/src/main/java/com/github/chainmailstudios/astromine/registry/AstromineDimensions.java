@@ -50,10 +50,12 @@ public class AstromineDimensions {
 	public static final RegistryKey<World> MOON_WORLD = register(Registry.DIMENSION, MOON_ID);
 
 	public static final Identifier MARS_ID = AstromineCommon.identifier("mars");
+	public static final RegistryKey<DimensionOptions> MARS_OPTIONS = register(Registry.DIMENSION_OPTIONS, MARS_ID);
 	public static final RegistryKey<DimensionType> MARS_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, MARS_ID);
 	public static final RegistryKey<World> MARS_WORLD = register(Registry.DIMENSION, MARS_ID);
 
 	public static final Identifier VULCAN_ID = AstromineCommon.identifier("vulcan");
+	public static final RegistryKey<DimensionOptions> VULCAN_OPTIONS = register(Registry.DIMENSION_OPTIONS, VULCAN_ID);
 	public static final RegistryKey<DimensionType> VULCAN_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, VULCAN_ID);
 	public static final RegistryKey<World> VULCAN_WORLD = register(Registry.DIMENSION, VULCAN_ID);
 

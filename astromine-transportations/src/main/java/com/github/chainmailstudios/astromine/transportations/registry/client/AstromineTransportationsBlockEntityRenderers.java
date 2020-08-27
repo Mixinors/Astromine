@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.transportations.registry.client;
 
+import com.github.chainmailstudios.astromine.registry.client.AstromineBlockEntityRenderers;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
 import com.github.chainmailstudios.astromine.transportations.client.render.block.*;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
@@ -34,7 +35,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 
 import java.util.function.Function;
 
-public class AstromineTransportationsBlockEntityRenderers {
+public class AstromineTransportationsBlockEntityRenderers extends AstromineBlockEntityRenderers {
 	public static void initialize() {
 		register(AstromineTransportationsBlockEntityTypes.ALTERNATOR, AbstractConveyableBlockEntityRenderer::new);
 		register(AstromineTransportationsBlockEntityTypes.SPLITTER, AbstractConveyableBlockEntityRenderer::new);
@@ -43,9 +44,5 @@ public class AstromineTransportationsBlockEntityRenderers {
 		register(AstromineTransportationsBlockEntityTypes.CONVEYOR, ConveyorBlockEntityRenderer::new);
 		register(AstromineTransportationsBlockEntityTypes.VERTICAL_CONVEYOR, VerticalConveyorBlockEntityRenderer::new);
 		register(AstromineTransportationsBlockEntityTypes.DOWNWARD_VERTICAL_CONVEYOR, DownwardVerticalConveyorBlockEntityRenderer::new);
-	}
-
-	public static <B extends BlockEntity, C extends BlockEntityType<B>> void register(C c, Function<BlockEntityRenderDispatcher, BlockEntityRenderer<B>> b) {
-		BlockEntityRendererRegistry.INSTANCE.register(c, b);
 	}
 }

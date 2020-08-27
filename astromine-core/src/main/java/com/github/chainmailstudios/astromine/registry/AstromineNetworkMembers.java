@@ -81,6 +81,7 @@ public class AstromineNetworkMembers {
 				return EnergyTier.INFINITE;
 			}
 		});
+
 		NetworkMemberRegistry.INSTANCE.register(AstromineNetworkTypes.ENERGY, new NetworkMemberRegistry.NetworkTypeRegistryImpl<NetworkType>() {
 			@Override
 			public Collection<NetworkMemberType> get(WorldPos pos) {
@@ -110,6 +111,7 @@ public class AstromineNetworkMembers {
 		FabricLoader.getInstance().getEntrypoints("astromine-network-members", Runnable.class).forEach(Runnable::run);
 
 		Registry.BLOCK.getEntries().forEach(entry -> acceptBlock(entry.getKey(), entry.getValue()));
+
 		RegistryEntryAddedCallback.event(Registry.BLOCK).register((index, identifier, block) -> acceptBlock(RegistryKey.of(Registry.BLOCK_KEY, identifier), block));
 	}
 

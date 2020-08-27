@@ -156,8 +156,12 @@ public class BaseVolume {
 		this.size = size;
 	}
 
+	public Fraction getAvailable() {
+		return Fraction.subtract(getSize(), getFraction());
+	}
+
 	public boolean hasAvailable(Fraction fraction) {
-		Fraction available = Fraction.subtract(getSize(), getFraction());
+		Fraction available = getAvailable();
 		return available.equals(fraction) || available.isBiggerThan(fraction);
 	}
 

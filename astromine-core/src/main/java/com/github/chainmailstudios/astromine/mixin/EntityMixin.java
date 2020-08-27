@@ -27,6 +27,8 @@ package com.github.chainmailstudios.astromine.mixin;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -60,6 +62,8 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 
 	@Shadow
 	public World world;
+
+	private World astromine_lastWorld;
 
 	@Unique
 	Entity lastVehicle = null;
@@ -101,47 +105,11 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 			if (lastY <= bottomPortal && bottomPortal != Integer.MIN_VALUE) {
 				RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey()).getValue());
 
-				ServerWorld serverWorld = entity.world.getServer().getWorld(worldKey);
-
-				List<Entity> existingPassengers = Lists.newArrayList(entity.getPassengerList());
-
-				List<DataTracker.Entry<?>> entries = Lists.newArrayList();
-				for (DataTracker.Entry<?> entry : entity.getDataTracker().getAllEntries()) {
-					entries.add(entry.copy());
-				}
-
-				nextTeleportTarget = DimensionLayerRegistry.INSTANCE.getPlacer(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey()).placeEntity(entity);
-				Entity newEntity = entity.moveToWorld(serverWorld);
-
-				for (DataTracker.Entry entry : entries) {
-					newEntity.getDataTracker().set(entry.getData(), entry.get());
-				}
-
-				for (Entity existingEntity : existingPassengers) {
-					((EntityAccess) existingEntity).astromine_setLastVehicle(newEntity);
-				}
+				astromine_teleport(entity, worldKey);
 			} else if (lastY >= topPortal && topPortal != Integer.MIN_VALUE) {
 				RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey()).getValue());
 
-				ServerWorld serverWorld = entity.world.getServer().getWorld(worldKey);
-
-				List<Entity> existingPassengers = Lists.newArrayList(entity.getPassengerList());
-
-				List<DataTracker.Entry<?>> entries = Lists.newArrayList();
-				for (DataTracker.Entry<?> entry : entity.getDataTracker().getAllEntries()) {
-					entries.add(entry.copy());
-				}
-
-				nextTeleportTarget = DimensionLayerRegistry.INSTANCE.getPlacer(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey()).placeEntity(entity);
-				Entity newEntity = entity.moveToWorld(serverWorld);
-
-				for (DataTracker.Entry entry : entries) {
-					newEntity.getDataTracker().set(entry.getData(), entry.get());
-				}
-
-				for (Entity existingEntity : existingPassengers) {
-					((EntityAccess) existingEntity).astromine_setLastVehicle(newEntity);
-				}
+				astromine_teleport(entity, worldKey);
 			}
 		}
 
@@ -155,6 +123,28 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 		}
 	}
 
+	void astromine_teleport(Entity entity, RegistryKey<World> destinationKey) {
+		ServerWorld serverWorld = entity.world.getServer().getWorld(destinationKey);
+
+		List<Entity> existingPassengers = Lists.newArrayList(entity.getPassengerList());
+
+		List<DataTracker.Entry<?>> entries = Lists.newArrayList();
+		for (DataTracker.Entry<?> entry : entity.getDataTracker().getAllEntries()) {
+			entries.add(entry.copy());
+		}
+
+		nextTeleportTarget = DimensionLayerRegistry.INSTANCE.getPlacer(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey()).placeEntity(entity);
+		Entity newEntity = entity.moveToWorld(serverWorld);
+
+		for (DataTracker.Entry entry : entries) {
+			newEntity.getDataTracker().set(entry.getData(), entry.get());
+		}
+
+		for (Entity existingEntity : existingPassengers) {
+			((EntityAccess) existingEntity).astromine_setLastVehicle(newEntity);
+		}
+	}
+
 	@Inject(method = "getTeleportTarget", at = @At("HEAD"), cancellable = true)
 	protected void getTeleportTarget(ServerWorld destination, CallbackInfoReturnable<TeleportTarget> cir) {
 		if (nextTeleportTarget != null) {
@@ -163,18 +153,20 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 		}
 	}
 
-	@Inject(at = @At("HEAD"), method = "moveToWorld(Lnet/minecraft/server/world/ServerWorld;)Lnet/minecraft/entity/Entity;")
-	void onThing(ServerWorld destination, CallbackInfoReturnable<Entity> cir) {
-		world.getPlayers().forEach((player) -> {
-			ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, ClientAtmosphereManager.GAS_ERASED, ClientAtmosphereManager.ofGasErased());
+	@Inject(at = @At("HEAD"), method = "tick()V")
+	void onThing(CallbackInfo ci) {
+		if ((Object) this instanceof ServerPlayerEntity && world != astromine_lastWorld) {
+			astromine_lastWorld = world;
+
+			ServerSidePacketRegistry.INSTANCE.sendToPlayer(((PlayerEntity) (Object) this), ClientAtmosphereManager.GAS_ERASED, ClientAtmosphereManager.ofGasErased());
 
 			ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
 
 			WorldAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);
 
 			atmosphereComponent.getVolumes().forEach(((blockPos, volume) -> {
-				ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, ClientAtmosphereManager.GAS_ADDED, ClientAtmosphereManager.ofGasAdded(blockPos, volume));
+				ServerSidePacketRegistry.INSTANCE.sendToPlayer(((PlayerEntity) (Object) this), ClientAtmosphereManager.GAS_ADDED, ClientAtmosphereManager.ofGasAdded(blockPos, volume));
 			}));
-		});
+		}
 	}
 }

@@ -22,47 +22,44 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.item;
+package com.github.chainmailstudios.astromine.technologies.common.item;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesItems;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.collection.DefaultedList;
 
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import net.minecraft.world.World;
+
+import java.util.List;
 
 public class SpaceSuitItem extends ArmorItem {
 	public SpaceSuitItem(ArmorMaterial material, EquipmentSlot slot, Settings settings) {
 		super(material, slot, settings);
 	}
 
-	public static ItemStack getHelmet(DefaultedList<ItemStack> stacks) {
-		return stacks.get(0);
-	}
+	@Override
+	public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+		super.appendTooltip(stack, world, tooltip, context);
 
-	public static ItemStack getChestplate(DefaultedList<ItemStack> stacks) {
-		return stacks.get(1);
-	}
+		if (this == AstromineTechnologiesItems.SPACE_SUIT_CHESTPLATE) {
+			FluidInventoryComponent fluidComponent = ComponentProvider.fromItemStack(stack).getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
-	public static ItemStack getLeggings(DefaultedList<ItemStack> stacks) {
-		return stacks.get(2);
-	}
-
-	public static ItemStack getBoots(DefaultedList<ItemStack> stacks) {
-		return stacks.get(3);
-	}
-
-	public static boolean hasFullArmor(DefaultedList<ItemStack> stacks) {
-		return stacks.stream().allMatch(stack -> stack.getItem() instanceof SpaceSuitItem);
-	}
-
-	public static FluidVolume readVolume(DefaultedList<ItemStack> stacks) {
-		return FluidVolume.fromTag(getChestplate(stacks).getOrCreateTag().getCompound("gas_volume"));
-	}
-
-	public static void writeVolume(DefaultedList<ItemStack> stacks, FluidVolume volume) {
-		getChestplate(stacks).getOrCreateTag().put("gas_volume", volume.toTag(new CompoundTag()));
+			fluidComponent.getContents().forEach((key, value) -> {
+				tooltip.add(new LiteralText(value.getFraction().toFractionalString() + " | " + new TranslatableText(value.getFluid().getDefaultState().getBlockState().getBlock().getTranslationKey()).getString()).formatted(Formatting.GRAY));
+			});
+		}
 	}
 }

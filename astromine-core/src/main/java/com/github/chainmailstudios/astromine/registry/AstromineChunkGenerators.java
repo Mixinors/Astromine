@@ -24,18 +24,25 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import com.mojang.serialization.Codec;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.common.world.generation.mars.MarsChunkGenerator;
 import com.github.chainmailstudios.astromine.common.world.generation.moon.MoonChunkGenerator;
 import com.github.chainmailstudios.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
 import com.github.chainmailstudios.astromine.common.world.generation.vulcan.VulcanChunkGenerator;
+import net.minecraft.world.gen.chunk.ChunkGenerator;
 
 public class AstromineChunkGenerators {
 	public static void initialize() {
-		Registry.register(Registry.CHUNK_GENERATOR, AstromineDimensions.EARTH_SPACE_ID, EarthSpaceChunkGenerator.CODEC);
-		Registry.register(Registry.CHUNK_GENERATOR, AstromineDimensions.MOON_ID, MoonChunkGenerator.CODEC);
-		Registry.register(Registry.CHUNK_GENERATOR, AstromineDimensions.MARS_ID, MarsChunkGenerator.CODEC);
-		Registry.register(Registry.CHUNK_GENERATOR, AstromineDimensions.VULCAN_ID, VulcanChunkGenerator.CODEC);
+		register(AstromineDimensions.EARTH_SPACE_ID, EarthSpaceChunkGenerator.CODEC);
+		register(AstromineDimensions.MOON_ID, MoonChunkGenerator.CODEC);
+		register(AstromineDimensions.MARS_ID, MarsChunkGenerator.CODEC);
+		register(AstromineDimensions.VULCAN_ID, VulcanChunkGenerator.CODEC);
+	}
+
+	public static void register(Identifier id, Codec<? extends ChunkGenerator> codec) {
+		Registry.register(Registry.CHUNK_GENERATOR, id, codec);
 	}
 }

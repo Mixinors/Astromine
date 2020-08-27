@@ -25,10 +25,11 @@
 package com.github.chainmailstudios.astromine.foundations.registry;
 
 import com.github.chainmailstudios.astromine.foundations.common.recipe.AltarRecipe;
+import com.github.chainmailstudios.astromine.registry.AstromineRecipeSerializers;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.registry.Registry;
 
-public class AstromineFoundationsRecipeSerializers {
+public class AstromineFoundationsRecipeSerializers extends AstromineRecipeSerializers {
 	public static final RecipeSerializer<AltarRecipe> ALLOY_SMELTING = Registry.register(Registry.RECIPE_SERIALIZER, AltarRecipe.Serializer.ID, AltarRecipe.Serializer.INSTANCE);
 
 	public static void initialize() {
