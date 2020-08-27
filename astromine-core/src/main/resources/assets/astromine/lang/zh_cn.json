@@ -228,7 +228,7 @@
   "item.astromine.coal_dust": "煤炭粉",
   "item.astromine.charcoal_dust": "木炭粉",
   "item.astromine.quartz_dust": "石英粉",
-  "item.astromine.raw_netherite_dust": "下界合金粉",
+  "item.astromine.raw_netherite_dust": "下界合金碎片粉",
   "item.astromine.asterite_dust": "彗晶粉",
   "item.astromine.stellum_dust": "辰耀粉",
   "item.astromine.galaxium_dust": "星玉粉",
@@ -254,7 +254,7 @@
   "item.astromine.coal_tiny_dust": "小堆煤炭粉",
   "item.astromine.charcoal_tiny_dust": "小堆木炭粉",
   "item.astromine.quartz_tiny_dust": "小堆石英粉",
-  "item.astromine.raw_netherite_tiny_dust": "小堆Raw 下界合金粉",
+  "item.astromine.raw_netherite_tiny_dust": "小堆下界合金碎片粉",
   "item.astromine.asterite_tiny_dust": "小堆彗晶粉",
   "item.astromine.stellum_tiny_dust": "小堆辰耀粉",
   "item.astromine.galaxium_tiny_dust": "小堆星玉粉",
@@ -320,7 +320,6 @@
   "item.astromine.diamond_fragment": "钻石碎片",
   "item.astromine.emerald_fragment": "绿宝石碎片",
   "item.astromine.quartz_fragment": "石英碎片",
-  "item.astromine.raw_netherite_fragment": "Raw 下界合金碎片",
   "item.astromine.asterite": "彗晶",
   "item.astromine.galaxium": "星玉",
   "item.astromine.metite_nugget": "陨铁粒",
@@ -905,4 +904,5 @@
   "advancements.astromine.launch_rocket.description": "发射火箭",
   "advancements.astromine.tricked_piglin.title": "丢人！",
   "advancements.astromine.tricked_piglin.description": "使用黄铁诈骗猪灵"
-}
+  }
+  
