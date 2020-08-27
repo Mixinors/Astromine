@@ -206,14 +206,20 @@ allprojects {
         }
     }
 
-    task sourcesJar(type: Jar, dependsOn: classes) {
-        archiveClassifier.set('sources')
-        from sourceSets.main.allSource
+    if (!ignoreRemapSrc) {
+        task sourcesJar(type: Jar, dependsOn: classes) {
+            archiveClassifier.set('sources')
+            from sourceSets.main.allSource
+        }
     }
-    
+
     task deleteBuildFolder {
         file("${buildDir}").listFiles().each { it.deleteDir() }
     }
+}
+
+afterEvaluate {
+    tasks.getByName("remapAllJars").onlyIf { !ignoreRemapSrc }
 }
 
 subprojects {
@@ -232,8 +238,10 @@ subprojects {
                     artifact(file("${project.buildDir}/libs/$archivesBaseName-${project.version}-maven.jar")) {
                         builtBy remapMavenJar
                     }
-                    artifact(sourcesJar) {
-                        builtBy remapSourcesJar
+                    if (!ignoreRemapSrc) {
+                        artifact(sourcesJar) {
+                            builtBy remapSourcesJar
+                        }
                     }
                 }
             }
@@ -270,8 +278,10 @@ publishing {
             artifact(file("${project.buildDir}/libs/$archivesBaseName-${project.version}-maven.jar")) {
                 builtBy remapMavenJar
             }
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
+            if (!ignoreRemapSrc) {
+                artifact(sourcesJar) {
+                    builtBy remapSourcesJar
+                }
             }
             pom.withXml {
                 def buildid = System.getenv("PUBLISH_BUILD")
