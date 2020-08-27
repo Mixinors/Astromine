@@ -151,7 +151,7 @@ public abstract class LivingEntityMixin implements GravityEntity {
 
 						FluidInventoryComponent fluidComponent = provider.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
-						if (fluidComponent.getVolume(0).isEmpty() || !hasSuit) {
+						if (fluidComponent.getVolume(0).isEmpty() || !hasSuit) { // TODO: Check if can breathe!
 							isBreathing = false;
 						} else {
 							fluidComponent.getVolume(0).extractVolume(Fraction.of(1, 512));
