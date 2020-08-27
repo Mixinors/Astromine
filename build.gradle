@@ -3,14 +3,10 @@ import net.fabricmc.loom.task.RunClientTask
 plugins {
     id 'maven-publish'
     id 'com.diffplug.spotless' version '5.1.0' apply false
-    id 'fabric-loom' version '0.5-SNAPSHOT'
+    id 'fabric-loom' version '0.5.22'
 }
 
 apply from: 'dependencies.gradle'
-
-loom {
-    shareCaches = true
-}
 
 allprojects {
     apply plugin: 'maven-publish'
@@ -23,7 +19,8 @@ allprojects {
 
     ext {
         shouldGenerateData = false
-        isRunningGenerateDataTask = false
+        // A special flag to disable this module to go into production jar and mark this moudle to be running the datagen task.
+        isRunningGenerateDataTask = path == ":astromine-datagen-initializer"
     }
 
     loom {
@@ -136,6 +133,7 @@ allprojects {
 
     configurations {
         dev
+        built
     }
 
     jar {
@@ -150,6 +148,7 @@ allprojects {
 
         artifacts {
             dev file: file("${project.buildDir}/libs/$archivesBaseName-${version}-dev.jar"), type: 'jar', builtBy: remapJar
+            built file: file("${project.buildDir}/libs/$archivesBaseName-${version}.jar"), type: 'jar', builtBy: remapJar
         }
 
         processResources {
@@ -203,13 +202,7 @@ allprojects {
                     classpath sourceSets.main.output
                     classpath sourceSets.datagen.output
                 }
-
-                build.dependsOn generateData
-            } else {
-                rootProject.dependencies.include(rootProject.project("$path:"))
             }
-        } else {
-            rootProject.dependencies.include(rootProject.project("$path:"))
         }
     }
 
@@ -219,7 +212,7 @@ allprojects {
     }
     
     task deleteBuildFolder {
-        file("${buildDir}/libs").deleteDir()
+        file("${buildDir}").listFiles().each { it.deleteDir() }
     }
 }
 
@@ -257,6 +250,7 @@ subprojects.forEach {
 
 task deleteBuildFolderAll
 subprojects.each { deleteBuildFolderAll.dependsOn("${it.path}:deleteBuildFolder") }
+build.dependsOn(deleteBuildFolderAll)
 
 task remapMavenJar(type: net.fabricmc.loom.task.RemapJarTask, dependsOn: jar) {
     afterEvaluate {
@@ -298,16 +292,19 @@ publishing {
 }
 
 subprojects.each { remapJar.dependsOn("${it.path}:remapJar") }
+subprojects.each { build.dependsOn("${it.path}:build") }
 subprojects.each { spotlessApply.dependsOn("${it.path}:spotlessApply") }
 
 dependencies {
     afterEvaluate {
         subprojects.each {
             compile project(path: ":${it.path}", configuration: "dev")
+            if (!it.isRunningGenerateDataTask) {
+                include project(path: ":${it.path}", configuration: "built")
+            }
         }
     }
 
-    // We would like to give a huge thanks to loom for not applying this
     modRuntime "net.fabricmc:dev-launch-injector:+"
     tap(rootProject.ext.setRuntimeTestMods)
 }
