@@ -24,11 +24,18 @@
 
 package com.github.chainmailstudios.astromine.common.component.world;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import nerdhub.cardinal.components.api.ComponentType;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
+import nerdhub.cardinal.components.api.component.extension.CopyableComponent;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
@@ -38,24 +45,32 @@ import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import nerdhub.cardinal.components.api.component.Component;
 
 import com.google.common.collect.Lists;
+import net.minecraft.world.chunk.Chunk;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class WorldAtmosphereComponent implements Component, Tickable {
+public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 	private final List<Direction> directions = Lists.newArrayList(Direction.values());
 
 	private final Map<BlockPos, FluidVolume> volumes = new ConcurrentHashMap<>();
 
 	private final World world;
+	private final Chunk chunk;
 
-	public WorldAtmosphereComponent(World world) {
+	public ChunkAtmosphereComponent(World world, Chunk chunk) {
 		this.world = world;
+		this.chunk = chunk;
 	}
 
 	public World getWorld() {
 		return world;
+	}
+
+	public Chunk getChunk() {
+		return chunk;
 	}
 
 	public Map<BlockPos, FluidVolume> getVolumes() {
@@ -93,7 +108,7 @@ public class WorldAtmosphereComponent implements Component, Tickable {
 
 			FluidVolume centerVolume = pair.getValue();
 
-			centerVolume.extractVolume(Fraction.of(1, 2048));
+			centerVolume.extractVolume(Fraction.of(AstromineConfig.get().gasDecayNumerator, AstromineConfig.get().gasDecayDenominator));
 
 			if (centerVolume.isEmpty()) {
 				remove(centerPos);
@@ -103,16 +118,66 @@ public class WorldAtmosphereComponent implements Component, Tickable {
 
 			for (Direction direction : directions) {
 				BlockPos sidePos = centerPos.offset(direction);
+				if (isInChunk(sidePos)) {
+					FluidVolume sideVolume = get(sidePos);
 
-				FluidVolume sideVolume = get(sidePos);
+					if (world.getBlockState(sidePos).isAir() && (sideVolume.isEmpty() || sideVolume.equalsFluid(centerVolume)) && (centerVolume.hasStored(Fraction.bottle()) || !world.isAir(centerPos)) && sideVolume.isSmallerThan(centerVolume)) {
+						if (world.isAir(centerPos)) {
+							centerVolume.pushVolume(sideVolume, Fraction.bottle());
+						} else {
+							centerVolume.pushVolume(sideVolume, centerVolume.getFraction());
+						}
 
-				if (world.getBlockState(sidePos).isAir() && (sideVolume.isEmpty() || sideVolume.equalsFluid(centerVolume)) && centerVolume.hasStored(Fraction.bottle()) && sideVolume.isSmallerThan(centerVolume)) {
-					centerVolume.pushVolume(sideVolume, Fraction.bottle());
+						add(sidePos, sideVolume);
+					}
+				} else {
+					ChunkPos neighborPos = getNeighborFromPos(sidePos);
+					ComponentProvider provider = ComponentProvider.fromChunk(world.getChunk(neighborPos.x, neighborPos.z));
+					ChunkAtmosphereComponent chunkAtmosphereComponent = provider.getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);
 
-					add(sidePos, sideVolume);
+					FluidVolume sideVolume = chunkAtmosphereComponent.get(sidePos);
+
+					if (world.getBlockState(sidePos).isAir() && (sideVolume.isEmpty() || sideVolume.equalsFluid(centerVolume)) && (centerVolume.hasStored(Fraction.bottle()) || !world.isAir(centerPos)) && sideVolume.isSmallerThan(centerVolume)) {
+						// Keeping these here just in case I need them for debugging in the future.
+						// AstromineCommon.LOGGER.info("Step 1: Moving from ChunkPos(" + chunk.getPos().x + "," + chunk.getPos().z + ") to ChunkPos(" + neighborPos.x + "," + neighborPos.z + ")");
+						// AstromineCommon.LOGGER.info("Step 2: Moving from " + centerPos + " to " + sidePos);
+
+						if (world.isAir(centerPos)) {
+							centerVolume.pushVolume(sideVolume, Fraction.bottle());
+						} else {
+							centerVolume.pushVolume(sideVolume, centerVolume.getFraction());
+						}
+
+						chunkAtmosphereComponent.add(sidePos, sideVolume);
+					}
 				}
 			}
 		}
+	}
+
+	public boolean isInChunk(BlockPos pos) {
+		return isInChunk(chunk.getPos(), pos);
+	}
+
+	public ChunkPos getNeighborFromPos(BlockPos pos) {
+		return getNeighborFromPos(chunk.getPos(), pos);
+	}
+
+	public static boolean isInChunk(ChunkPos chunkPos, BlockPos pos) {
+		return pos.getX() >= chunkPos.getStartX() && pos.getX() <= chunkPos.getEndX() && pos.getZ() >= chunkPos.getStartZ() && pos.getZ() <= chunkPos.getEndZ();
+	}
+
+	public static ChunkPos getNeighborFromPos(ChunkPos chunkPos, BlockPos pos) {
+		if (pos.getX() < chunkPos.getStartX()) {
+			return new ChunkPos(chunkPos.x - 1, chunkPos.z);
+		} else if (pos.getX() > chunkPos.getEndX()) {
+			return new ChunkPos(chunkPos.x + 1, chunkPos.z);
+		} else if (pos.getZ() < chunkPos.getStartZ()) {
+			return new ChunkPos(chunkPos.x, chunkPos.z - 1);
+		} else if (pos.getZ() > chunkPos.getEndZ()) {
+			return new ChunkPos(chunkPos.x, chunkPos.z + 1);
+		}
+		return chunkPos;
 	}
 
 	@Override
@@ -144,5 +209,10 @@ public class WorldAtmosphereComponent implements Component, Tickable {
 
 			volumes.put(BlockPos.fromLong(pointTag.getLong("pos")), FluidVolume.fromTag(pointTag.getCompound("volume")));
 		}
+	}
+
+	@Override
+	public ComponentType<?> getComponentType() {
+		return AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT;
 	}
 }

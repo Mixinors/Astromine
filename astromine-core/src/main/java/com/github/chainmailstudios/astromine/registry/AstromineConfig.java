@@ -369,6 +369,13 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Delay for the Fire Extinguisher standing actions.")
 	public int fireExtinguisherStandingDelay = 10;
 
+	@Comment("Tick rate for gas movement in the atmosphere. This is inversely correlated to gas movement speed, higher means slower. Lower numbers are also less performant, so choose wisely.")
+	public int gasTickRate = 10;
+	@Comment("Numerator for the gas decay rate fraction. It will decay gas by this fraction every gas tick.")
+	public int gasDecayNumerator = 5;
+	@Comment("Denominator for the gas decay rate fraction. It will decay gas by this fraction every gas tick.")
+	public int gasDecayDenominator = 1024;
+
 	public static AstromineConfig get() {
 		try {
 			return AutoConfig.getConfigHolder(AstromineConfig.class).getConfig();

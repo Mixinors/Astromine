@@ -48,7 +48,7 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.access.EntityAccess;
 import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
-import com.github.chainmailstudios.astromine.common.component.world.WorldAtmosphereComponent;
+import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
 import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
@@ -162,7 +162,7 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 
 			ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
 
-			WorldAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_ATMOSPHERE_COMPONENT);
+			ChunkAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);
 
 			atmosphereComponent.getVolumes().forEach(((blockPos, volume) -> {
 				ServerSidePacketRegistry.INSTANCE.sendToPlayer(((PlayerEntity) (Object) this), ClientAtmosphereManager.GAS_ADDED, ClientAtmosphereManager.ofGasAdded(blockPos, volume));
