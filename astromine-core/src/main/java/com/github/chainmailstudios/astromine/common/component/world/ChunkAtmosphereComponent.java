@@ -121,8 +121,12 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 				if (isInChunk(sidePos)) {
 					FluidVolume sideVolume = get(sidePos);
 
-					if (world.getBlockState(sidePos).isAir() && (sideVolume.isEmpty() || sideVolume.equalsFluid(centerVolume)) && centerVolume.hasStored(Fraction.bottle()) && sideVolume.isSmallerThan(centerVolume)) {
-						centerVolume.pushVolume(sideVolume, Fraction.bottle());
+					if (world.getBlockState(sidePos).isAir() && (sideVolume.isEmpty() || sideVolume.equalsFluid(centerVolume)) && (centerVolume.hasStored(Fraction.bottle()) || !world.isAir(centerPos)) && sideVolume.isSmallerThan(centerVolume)) {
+						if (world.isAir(centerPos)) {
+							centerVolume.pushVolume(sideVolume, Fraction.bottle());
+						} else {
+							centerVolume.pushVolume(sideVolume, centerVolume.getFraction());
+						}
 
 						add(sidePos, sideVolume);
 					}
@@ -133,12 +137,16 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 
 					FluidVolume sideVolume = chunkAtmosphereComponent.get(sidePos);
 
-					if (world.getBlockState(sidePos).isAir() && (sideVolume.isEmpty() || sideVolume.equalsFluid(centerVolume)) && centerVolume.hasStored(Fraction.bottle()) && sideVolume.isSmallerThan(centerVolume)) {
+					if (world.getBlockState(sidePos).isAir() && (sideVolume.isEmpty() || sideVolume.equalsFluid(centerVolume)) && (centerVolume.hasStored(Fraction.bottle()) || !world.isAir(centerPos)) && sideVolume.isSmallerThan(centerVolume)) {
 						// Keeping these here just in case I need them for debugging in the future.
 						// AstromineCommon.LOGGER.info("Step 1: Moving from ChunkPos(" + chunk.getPos().x + "," + chunk.getPos().z + ") to ChunkPos(" + neighborPos.x + "," + neighborPos.z + ")");
 						// AstromineCommon.LOGGER.info("Step 2: Moving from " + centerPos + " to " + sidePos);
 
-						centerVolume.pushVolume(sideVolume, Fraction.bottle());
+						if (world.isAir(centerPos)) {
+							centerVolume.pushVolume(sideVolume, Fraction.bottle());
+						} else {
+							centerVolume.pushVolume(sideVolume, centerVolume.getFraction());
+						}
 
 						chunkAtmosphereComponent.add(sidePos, sideVolume);
 					}
@@ -148,14 +156,18 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 	}
 
 	public boolean isInChunk(BlockPos pos) {
-		ChunkPos chunkPos = chunk.getPos();
-
-		return pos.getX() >= chunkPos.getStartX() && pos.getX() <= chunkPos.getEndX() && pos.getZ() >= chunkPos.getStartZ() && pos.getZ() <= chunkPos.getEndZ();
+		return isInChunk(chunk.getPos(), pos);
 	}
 
 	public ChunkPos getNeighborFromPos(BlockPos pos) {
-		ChunkPos chunkPos = chunk.getPos();
+		return getNeighborFromPos(chunk.getPos(), pos);
+	}
 
+	public static boolean isInChunk(ChunkPos chunkPos, BlockPos pos) {
+		return pos.getX() >= chunkPos.getStartX() && pos.getX() <= chunkPos.getEndX() && pos.getZ() >= chunkPos.getStartZ() && pos.getZ() <= chunkPos.getEndZ();
+	}
+
+	public static ChunkPos getNeighborFromPos(ChunkPos chunkPos, BlockPos pos) {
 		if (pos.getX() < chunkPos.getStartX()) {
 			return new ChunkPos(chunkPos.x - 1, chunkPos.z);
 		} else if (pos.getX() > chunkPos.getEndX()) {

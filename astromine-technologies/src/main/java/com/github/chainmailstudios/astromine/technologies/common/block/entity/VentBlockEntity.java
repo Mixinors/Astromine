@@ -29,6 +29,7 @@ import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
@@ -76,13 +77,31 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 
 				ChunkAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);
 
-				FluidVolume volume = atmosphereComponent.get(output);
+				FluidVolume centerVolume = fluidComponent.getVolume(0);
 
-				fluidComponent.getVolume(0).pushVolume(volume, Fraction.of(1, 8));
+				if (ChunkAtmosphereComponent.isInChunk(world.getChunk(output).getPos(), pos)) {
+					FluidVolume sideVolume = atmosphereComponent.get(output);
+					if ((sideVolume.isEmpty() || sideVolume.equalsFluid(centerVolume)) && sideVolume.isSmallerThan(centerVolume)) {
+						centerVolume.pushVolume(sideVolume, Fraction.of(1, 8));
 
-				atmosphereComponent.add(output, volume);
+						atmosphereComponent.add(output, sideVolume);
 
-				isActive = true;
+						isActive = true;
+					}
+				} else {
+					ChunkPos neighborPos = ChunkAtmosphereComponent.getNeighborFromPos(world.getChunk(output).getPos(), output);
+					ComponentProvider provider = ComponentProvider.fromChunk(world.getChunk(neighborPos.x, neighborPos.z));
+					ChunkAtmosphereComponent neighborAtmosphereComponent = provider.getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);
+
+					FluidVolume sideVolume = neighborAtmosphereComponent.get(output);
+					if ((sideVolume.isEmpty() || sideVolume.equalsFluid(centerVolume)) && sideVolume.isSmallerThan(centerVolume)) {
+						centerVolume.pushVolume(sideVolume, Fraction.of(1, 8));
+
+						neighborAtmosphereComponent.add(output, sideVolume);
+
+						isActive = true;
+					}
+				}
 			} else {
 				isActive = false;
 			}
