@@ -8,4 +8,5 @@ accessible method net/minecraft/recipe/RecipeManager getAllOfType (Lnet/minecraf
 accessible method net/minecraft/entity/SpawnRestriction register (Lnet/minecraft/entity/EntityType;Lnet/minecraft/entity/SpawnRestriction$Location;Lnet/minecraft/world/Heightmap$Type;Lnet/minecraft/entity/SpawnRestriction$SpawnPredicate;)V
 accessible method net/minecraft/client/com.github.chainmailstudios.astromine.technologies.client.particle/CrackParticle <init> (Lnet/minecraft/client/world/ClientWorld;DDDLnet/minecraft/item/ItemStack;)V
 accessible field net/minecraft/block/EntityShapeContext heldItem Lnet/minecraft/item/Item;
+accessible method net/minecraft/block/TallPlantBlock method_30036 (Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/entity/player/PlayerEntity;)V
 accessible field net/minecraft/util/DyeColor color I

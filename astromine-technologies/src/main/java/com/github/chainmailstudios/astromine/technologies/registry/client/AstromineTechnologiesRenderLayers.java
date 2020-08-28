@@ -22,24 +22,14 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.technologies;
+package com.github.chainmailstudios.astromine.technologies.registry.client;
 
-import com.github.chainmailstudios.astromine.AstromineClient;
-import com.github.chainmailstudios.astromine.technologies.registry.client.*;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import com.github.chainmailstudios.astromine.registry.client.AstromineRenderLayers;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
+import net.minecraft.client.render.RenderLayer;
 
-@Environment(EnvType.CLIENT)
-public class AstromineTechnologiesClient extends AstromineClient {
-	@Override
-	public void onInitializeClient() {
-		AstromineTechnologiesBlockEntityRenderers.initialize();
-		AstromineTechnologiesPatchouliPages.initialize();
-		AstromineTechnologiesScreens.initialize();
-		AstromineTechnologiesClientCallbacks.initialize();
-		AstromineTechnologiesClientModels.initialize();
-		AstromineTechnologiesEntityRenderers.initialize();
-		AstromineTechnologiesParticleFactories.initialize();
-		AstromineTechnologiesRenderLayers.initialize();
+public class AstromineTechnologiesRenderLayers extends AstromineRenderLayers {
+	public static void initialize() {
+		register(AstromineTechnologiesBlocks.AIRLOCK, RenderLayer.getTranslucent());
 	}
 }
