@@ -35,9 +35,8 @@ import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import com.mojang.serialization.Codec;
 
-import com.github.chainmailstudios.astromine.client.registry.AsteroidOreRegistry;
+import com.github.chainmailstudios.astromine.discoveries.client.registry.AsteroidOreRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.terraformersmc.shapes.api.Position;
 import com.terraformersmc.shapes.api.Quaternion;
 import com.terraformersmc.shapes.api.Shape;

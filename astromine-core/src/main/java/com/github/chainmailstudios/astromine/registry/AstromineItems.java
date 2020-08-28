@@ -25,7 +25,6 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.common.item.ManualItem;
-import net.fabricmc.loader.api.FabricLoader;
 
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
@@ -39,7 +38,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.item.GravityGauntletItem;
 import com.github.chainmailstudios.astromine.common.item.UncoloredSpawnEggItem;
 
 public class AstromineItems {
@@ -47,8 +45,6 @@ public class AstromineItems {
 	public static final Item FLUID = register("fluid", new Item(new Item.Settings()));
 	public static final Item ITEM = register("item", new Item(new Item.Settings()));
 
-	public static final Item GRAVITY_GAUNTLET = register("gravity_gauntlet", new GravityGauntletItem(getBasicSettings().maxCount(1), AstromineConfig.get().gravityGauntletEnergy));
-	
 	public static final Item MANUAL = register("manual", new ManualItem(getBasicSettings().maxCount(1)));
 
 	public static void initialize() {

@@ -14,7 +14,7 @@ public class AstromineDiscoveriesItems extends AstromineItems {
 
 	}
 
-	public static Item.Settings getBasicSetting() {
+	public static Item.Settings getBasicSettings() {
 		return AstromineItems.getBasicSettings().group(AstromineDiscoveriesItemGroups.DISCOVERIES);
 	}
 }

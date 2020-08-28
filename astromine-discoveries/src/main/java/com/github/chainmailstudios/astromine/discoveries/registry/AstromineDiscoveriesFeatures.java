@@ -11,6 +11,7 @@ import me.shedaniel.cloth.api.dynamic.registry.v1.DynamicRegistryCallback;
 import net.earthcomputer.libstructure.LibStructure;
 import net.minecraft.structure.StructurePieceType;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
@@ -30,6 +31,10 @@ public class AstromineDiscoveriesFeatures extends AstromineFeatures {
 	public static final Identifier METEOR_ID = AstromineCommon.identifier("meteor");
 	public static final StructurePieceType METEOR_STRUCTURE = register(MeteorGenerator::new, METEOR_ID);
 	public static final RegistryKey<ConfiguredStructureFeature<?, ?>> METEOR_KEY = RegistryKey.of(Registry.CONFIGURED_STRUCTURE_FEATURE_WORLDGEN, METEOR_ID);
+
+	public static void performStuff() {
+
+	}
 
 	public static void initialize() {
 		MeteorFeature meteor = new MeteorFeature(DefaultFeatureConfig.CODEC);

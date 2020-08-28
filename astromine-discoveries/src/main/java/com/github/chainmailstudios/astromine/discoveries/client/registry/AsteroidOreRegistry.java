@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.client.registry;
+package com.github.chainmailstudios.astromine.discoveries.client.registry;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.Pair;

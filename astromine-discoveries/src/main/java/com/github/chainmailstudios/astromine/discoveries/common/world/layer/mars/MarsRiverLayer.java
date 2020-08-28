@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.layer.mars;
 
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBiomes;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.layer.type.CrossSamplingLayer;
@@ -37,7 +38,7 @@ public class MarsRiverLayer implements CrossSamplingLayer {
 
 	public MarsRiverLayer(Registry<Biome> biomeRegistry) {
 		this.biomeRegistry = biomeRegistry;
-		this.riverId = biomeRegistry.getRawId(biomeRegistry.get(AstromineBiomes.MARTIAN_RIVERBED));
+		this.riverId = biomeRegistry.getRawId(biomeRegistry.get(AstromineDiscoveriesBiomes.MARTIAN_RIVERBED));
 	}
 
 	@Override

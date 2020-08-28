@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.generation.vulcan;
 
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBiomes;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryLookupCodec;
 import net.minecraft.world.biome.Biome;
@@ -60,6 +61,6 @@ public class VulcanBiomeSource extends BiomeSource {
 
 	@Override
 	public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
-		return registry.get(AstromineBiomes.VULCAN_PLAINS);
+		return registry.get(AstromineDiscoveriesBiomes.VULCAN_PLAINS);
 	}
 }

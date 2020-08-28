@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.layer.moon;
 
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBiomes;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.layer.type.InitLayer;
@@ -43,13 +44,13 @@ public class MoonBiomeLayer implements InitLayer, IdentityCoordinateTransformer 
 	public int sample(LayerRandomnessSource context, int x, int y) {
 		switch (context.nextInt(3)) {
 			case 0:
-				return biomeRegistry.getRawId(biomeRegistry.get(AstromineBiomes.LUNAR_PLAINS));
+				return biomeRegistry.getRawId(biomeRegistry.get(AstromineDiscoveriesBiomes.LUNAR_PLAINS));
 			case 1:
-				return biomeRegistry.getRawId(biomeRegistry.get(AstromineBiomes.LUNAR_HILLS));
+				return biomeRegistry.getRawId(biomeRegistry.get(AstromineDiscoveriesBiomes.LUNAR_HILLS));
 			case 2:
-				return biomeRegistry.getRawId(biomeRegistry.get(AstromineBiomes.LUNAR_LOWLANDS));
+				return biomeRegistry.getRawId(biomeRegistry.get(AstromineDiscoveriesBiomes.LUNAR_LOWLANDS));
 		}
 
-		return biomeRegistry.getRawId(biomeRegistry.get(AstromineBiomes.LUNAR_PLAINS));
+		return biomeRegistry.getRawId(biomeRegistry.get(AstromineDiscoveriesBiomes.LUNAR_PLAINS));
 	}
 }

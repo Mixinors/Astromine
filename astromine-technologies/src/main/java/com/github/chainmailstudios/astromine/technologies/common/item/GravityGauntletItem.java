@@ -22,8 +22,9 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.item;
+package com.github.chainmailstudios.astromine.technologies.common.item;
 
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesItems;
 import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
 
 import net.minecraft.entity.EquipmentSlot;
@@ -60,7 +61,7 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 		if (hand == Hand.OFF_HAND)
 			return TypedActionResult.pass(stack);
 		ItemStack offStack = user.getStackInHand(Hand.OFF_HAND);
-		if (offStack.getItem() == AstromineItems.GRAVITY_GAUNTLET) {
+		if (offStack.getItem() == AstromineTechnologiesItems.GRAVITY_GAUNTLET) {
 			EnergyHandler selfHandler = Energy.of(stack);
 			EnergyHandler otherHandler = Energy.of(offStack);
 			if (selfHandler.getEnergy() > AstromineConfig.get().gravityGauntletConsumed && otherHandler.getEnergy() > AstromineConfig.get().gravityGauntletConsumed) {
@@ -76,7 +77,7 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 		if (world.isClient)
 			return stack;
 		ItemStack offStack = user.getStackInHand(Hand.OFF_HAND);
-		if (offStack.getItem() == AstromineItems.GRAVITY_GAUNTLET) {
+		if (offStack.getItem() == AstromineTechnologiesItems.GRAVITY_GAUNTLET) {
 			EnergyHandler selfHandler = Energy.of(stack);
 			EnergyHandler otherHandler = Energy.of(offStack);
 			if (selfHandler.getEnergy() > AstromineConfig.get().gravityGauntletConsumed && otherHandler.getEnergy() > AstromineConfig.get().gravityGauntletConsumed) {
@@ -105,7 +106,7 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 		if (attacker.world.isClient)
 			return super.postHit(stack, target, attacker);
 		ItemStack offStack = attacker.getStackInHand(Hand.OFF_HAND);
-		if (offStack.getItem() == AstromineItems.GRAVITY_GAUNTLET) {
+		if (offStack.getItem() == AstromineTechnologiesItems.GRAVITY_GAUNTLET) {
 			if (stack.getOrCreateTag().getBoolean("Charged") && offStack.getOrCreateTag().getBoolean("Charged")) {
 				target.takeKnockback(1, attacker.getX() - target.getX(), attacker.getZ() - target.getZ());
 				target.addVelocity(0f, 0.5f, 0f);
