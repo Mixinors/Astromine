@@ -4,8 +4,9 @@ import net.fabricmc.loom.task.RunClientTask
 plugins {
     id 'maven-publish'
     id 'com.diffplug.spotless' version '5.1.0' apply false
-    id 'fabric-loom' version '0.5.22'
+    id 'fabric-loom' version '0.5.22' apply false
     id 'com.matthewprenger.cursegradle' version '1.4.0'
+    id("net.corda.plugins.jar-filter") version("5.0.8") apply false
 }
 
 apply from: 'dependencies.gradle'
@@ -15,6 +16,7 @@ allprojects {
     apply plugin: 'fabric-loom'
     apply plugin: 'com.diffplug.spotless'
     apply plugin: 'com.matthewprenger.cursegradle'
+    apply plugin: 'net.corda.plugins.jar-filter'
 
     archivesBaseName = project.mod_name
     group = rootProject.mod_group
@@ -134,39 +136,78 @@ allprojects {
         tap(rootProject.ext.setDefaultApis)
     }
 
+    afterEvaluate {
+        processResources {
+            filesMatching('fabric.mod.json') {
+                expand 'version': project.version
+            }
+            inputs.property "version", project.version
+        }
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+    }
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier("sources")
+        from sourceSets.main.allSource
+    }
+}
+
+subprojects {
+    archivesBaseName = project.name
+    
+    ext {
+        cfProjectId = -1
+    }
+
+    task remapMavenJar(type: Copy, dependsOn: remapJar) {
+        afterEvaluate {
+            from("${project.buildDir}/libs/$archivesBaseName-${version}.jar")
+            into("${project.buildDir}/libs/")
+            rename { String fn -> "$archivesBaseName-${version}-maven.jar" }
+        }
+    }
+
     configurations {
         dev
-        built
+        remapped
     }
 
     jar {
         classifier("dev")
     }
 
+    remapJar {
+        input.set(file("${project.buildDir}/filtered-libs/$archivesBaseName-${version}-dev-filtered.jar"))
+        classifier(null)
+    }
+
+    artifacts {
+        dev file: file("${project.buildDir}/libs/$archivesBaseName-${version}-dev.jar"), type: "jar", builtBy: jar
+        remapped file: file("${project.buildDir}/libs/$archivesBaseName-${version}.jar"), type: "jar", builtBy: remapJar
+    }
+
+    task jarFilter(type: net.corda.gradle.jarfilter.JarFilterTask) {
+        jars jar
+        annotations {
+            forRemove = [
+                    "org.jetbrains.annotations.NotNull",
+                    "org.jetbrains.annotations.Nullable",
+                    "org.jetbrains.annotations.ApiStatus\$Experimental",
+                    "org.jetbrains.annotations.ApiStatus\$Internal",
+                    "org.jetbrains.annotations.ApiStatus\$ScheduledForRemoval",
+                    "org.jetbrains.annotations.ApiStatus\$AvailableSince",
+                    "org.jetbrains.annotations.ApiStatus\$NonExtendable",
+                    "org.jetbrains.annotations.ApiStatus\$OverrideOnly"
+            ]
+        }
+    }
+
+    remapJar.dependsOn("jarFilter")
+
     afterEvaluate {
-        remapJar {
-            input.set(file("${project.buildDir}/libs/$archivesBaseName-${version}-dev.jar"))
-            archiveName = "${archivesBaseName}-${version}.jar"
-        }
-
-        artifacts {
-            dev file: file("${project.buildDir}/libs/$archivesBaseName-${version}-dev.jar"), type: 'jar', builtBy: remapJar
-            built file: file("${project.buildDir}/libs/$archivesBaseName-${version}.jar"), type: 'jar', builtBy: remapJar
-        }
-
-        processResources {
-            inputs.property 'version', project.version
-
-            from(sourceSets.main.resources.srcDirs) {
-                include 'fabric.mod.json'
-                expand 'version': project.version
-            }
-
-            from(sourceSets.main.resources.srcDirs) {
-                exclude 'fabric.mod.json'
-            }
-        }
-
         if (shouldGenerateData) {
             sourceSets {
                 main {
@@ -207,55 +248,6 @@ allprojects {
                 }
             }
         }
-    }
-
-    if (!ignoreRemapSrc) {
-        task sourcesJar(type: Jar, dependsOn: classes) {
-            archiveClassifier.set('sources')
-            from sourceSets.main.allSource
-        }
-    }
-
-    task deleteBuildFolder {
-        file("${buildDir}").listFiles().each { it.deleteDir() }
-    }
-}
-
-afterEvaluate {
-    try {
-        tasks.getByName("remapAllJars").onlyIf { !ignoreRemapSrc }
-    } catch (ignored) {
-    }
-}
-
-subprojects {
-    ext {
-        cfProjectId = -1
-    }
-
-    task remapMavenJar(type: Copy, dependsOn: remapJar) {
-        afterEvaluate {
-            from("${project.buildDir}/libs/$archivesBaseName-${version}.jar")
-            into("${project.buildDir}/libs/")
-            rename { String fn -> "$archivesBaseName-${version}-maven.jar" }
-        }
-    }
-
-    afterEvaluate {
-        publishing {
-            publications {
-                mavenJava(MavenPublication) {
-                    artifact(file("${project.buildDir}/libs/$archivesBaseName-${project.version}-maven.jar")) {
-                        builtBy remapMavenJar
-                    }
-                    if (!ignoreRemapSrc) {
-                        artifact(sourcesJar) {
-                            builtBy remapSourcesJar
-                        }
-                    }
-                }
-            }
-        }
 
         curseforge {
             if ((project.hasProperty('curse_api_key') || System.getenv('curse_api_key') != null) && cfProjectId >= 0) {
@@ -286,6 +278,28 @@ subprojects {
             }
         }
     }
+
+    publishing {
+        publications {
+            create("${archivesBaseName}_mavenJava", MavenPublication) {
+                afterEvaluate {
+                    artifact(file("${project.buildDir}/libs/$archivesBaseName-${version}-maven.jar")) {
+                        builtBy remapMavenJar
+                    }
+                    artifact(sourcesJar) {
+                        builtBy remapSourcesJar
+                    }
+                }
+            }
+        }
+    }
+
+    task copyBuiltToMain(type: Copy) {
+        from "${project.buildDir}/libs/"
+        into "${rootProject.buildDir}/libs/"
+        include "*.jar"
+    }
+    build.finalizedBy(copyBuiltToMain)
 }
 
 task generateDataAll
@@ -295,24 +309,46 @@ subprojects.forEach {
     }
 }
 
-task deleteBuildFolderAll
-subprojects.each { deleteBuildFolderAll.dependsOn("${it.path}:deleteBuildFolder") }
-build.dependsOn(deleteBuildFolderAll)
+task deleteBuildFolderAll {
+    doLast {
+        allprojects {
+            delete it.buildDir
+            mkdir "${it.buildDir}/libs"
+        }
+    }
+}
+build.mustRunAfter(deleteBuildFolderAll)
 
 task releaseOnCf
 releaseOnCf.dependsOn(":curseforge")
 subprojects { releaseOnCf.dependsOn("${it.path}:curseforge") }
+subprojects { rootProject.remapJar.dependsOn("${it.path}:remapJar") }
+subprojects { rootProject.spotlessApply.dependsOn("${it.path}:spotlessApply") }
 
 task remapMavenJar(type: RemapJarTask, dependsOn: jar) {
     afterEvaluate {
-        input = file("${project.buildDir}/libs/${archivesBaseName}-${version}-dev.jar")
+        input.set(file("${project.buildDir}/libs/${archivesBaseName}-${version}-dev.jar"))
         archiveName = "${archivesBaseName}-${version}-maven.jar"
-        addNestedDependencies = false
+        addNestedDependencies.set(false)
     }
 }
 
 sourceSets {
     datagen
+}
+
+dependencies {
+    afterEvaluate {
+        subprojects.each {
+            compile project(path: ":${it.path}", configuration: "dev")
+            if (!it.isRunningGenerateDataTask) {
+                include project(path: ":${it.path}", configuration: "remapped")
+            }
+        }
+    }
+
+    modRuntime "net.fabricmc:dev-launch-injector:+"
+    tap(rootProject.ext.setRuntimeTestMods)
 }
 
 publishing {
@@ -321,45 +357,23 @@ publishing {
             artifact(file("${project.buildDir}/libs/$archivesBaseName-${project.version}-maven.jar")) {
                 builtBy remapMavenJar
             }
-            if (!ignoreRemapSrc) {
-                artifact(sourcesJar) {
-                    builtBy remapSourcesJar
-                }
+            artifact(sourcesJar) {
+                builtBy remapSourcesJar
             }
             pom.withXml {
-                def buildid = System.getenv("PUBLISH_BUILD")
-
                 def depsNode = asNode().appendNode("dependencies")
                 subprojects.each {
                     if (!it.isRunningGenerateDataTask) {
                         def depNode = depsNode.appendNode("dependency")
                         depNode.appendNode("groupId", it.group)
                         depNode.appendNode("artifactId", it.name)
-                        depNode.appendNode("version", buildid != null ? "${it.version}-${buildid}" : it.version)
+                        depNode.appendNode("version", it.version)
                         depNode.appendNode("scope", "compile")
                     }
                 }
             }
         }
     }
-}
-
-subprojects.each { remapJar.dependsOn("${it.path}:remapJar") }
-subprojects.each { build.dependsOn("${it.path}:build") }
-subprojects.each { spotlessApply.dependsOn("${it.path}:spotlessApply") }
-
-dependencies {
-    afterEvaluate {
-        subprojects.each {
-            compile project(path: ":${it.path}", configuration: "dev")
-            if (!it.isRunningGenerateDataTask) {
-                include project(path: ":${it.path}", configuration: "built")
-            }
-        }
-    }
-
-    modRuntime "net.fabricmc:dev-launch-injector:+"
-    tap(rootProject.ext.setRuntimeTestMods)
 }
 
 curseforge {

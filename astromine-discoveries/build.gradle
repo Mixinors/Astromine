@@ -1,4 +1,3 @@
-archivesBaseName = "astromine-discoveries"
 shouldGenerateData = true
 
 loom {

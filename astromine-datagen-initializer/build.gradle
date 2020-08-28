@@ -1,4 +1,3 @@
-archivesBaseName = "astromine-datagen-initializer"
 shouldGenerateData = true
 
 dependencies {
