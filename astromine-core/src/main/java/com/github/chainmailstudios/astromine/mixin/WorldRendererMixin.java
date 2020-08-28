@@ -24,12 +24,10 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
+import com.github.chainmailstudios.astromine.client.render.layer.Layer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import net.minecraft.client.render.entity.PlayerEntityRenderer;
-import net.minecraft.text.LiteralText;
-import net.minecraft.util.math.ChunkPos;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -52,8 +50,7 @@ import net.minecraft.util.math.Vec3d;
 
 import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
 import com.github.chainmailstudios.astromine.client.registry.SkyboxRegistry;
-import com.github.chainmailstudios.astromine.client.render.Layers;
-import com.github.chainmailstudios.astromine.client.render.sky.skybox.AbstractSkybox;
+import com.github.chainmailstudios.astromine.client.render.sky.skybox.Skybox;
 import com.github.chainmailstudios.astromine.common.fluid.ExtendedFluid;
 
 @Mixin(WorldRenderer.class)
@@ -72,7 +69,7 @@ public abstract class WorldRendererMixin {
 
 	@Inject(at = @At("HEAD"), method = "renderSky(Lnet/minecraft/client/util/math/MatrixStack;F)V", cancellable = true)
 	void onRenderSky(MatrixStack matrices, float tickDelta, CallbackInfo callbackInformation) {
-		AbstractSkybox skybox = SkyboxRegistry.INSTANCE.get(this.client.world.getRegistryKey());
+		Skybox skybox = SkyboxRegistry.INSTANCE.get(this.client.world.getRegistryKey());
 
 		if (skybox != null) {
 			skybox.render(matrices, tickDelta);
@@ -91,7 +88,7 @@ public abstract class WorldRendererMixin {
 
 		VertexConsumerProvider.Immediate immediate = this.bufferBuilders.getEntityVertexConsumers();
 
-		VertexConsumer consumer = immediate.getBuffer(Layers.FLAT_NO_CUTOUT);
+		VertexConsumer consumer = immediate.getBuffer(Layer.getFlatNoCutout());
 
 		ClientAtmosphereManager.getVolumes().forEach(((blockPos, volume) -> {
 			int r = 255;

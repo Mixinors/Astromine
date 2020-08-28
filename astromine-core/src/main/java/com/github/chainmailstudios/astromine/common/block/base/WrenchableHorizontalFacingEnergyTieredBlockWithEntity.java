@@ -24,10 +24,14 @@
 
 package com.github.chainmailstudios.astromine.common.block.base;
 
-public abstract class WrenchableHorizontalFacingEnergyTieredBlockWithEntity extends WrenchableHorizontalFacingEnergyBlockWithEntity implements TieredMachine {
+import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
+
+public abstract class WrenchableHorizontalFacingEnergyTieredBlockWithEntity extends WrenchableHorizontalFacingEnergyBlockWithEntity {
 	public WrenchableHorizontalFacingEnergyTieredBlockWithEntity(Settings settings) {
 		super(settings);
 	}
 
 	public abstract double getMachineSpeed();
+
+	public abstract MachineTier getTier();
 }

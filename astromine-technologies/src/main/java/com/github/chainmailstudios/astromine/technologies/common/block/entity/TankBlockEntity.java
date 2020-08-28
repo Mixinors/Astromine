@@ -36,6 +36,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 
 import java.util.Map;
@@ -43,6 +44,12 @@ import java.util.Map;
 public class TankBlockEntity extends ComponentFluidInventoryBlockEntity {
 	public TankBlockEntity() {
 		super(AstromineTechnologiesBlockEntityTypes.TANK);
+
+		fluidComponent.getVolume(0).setSize(new Fraction(AstromineConfig.get().tankFluid, 1));
+	}
+
+	public TankBlockEntity(BlockEntityType<?> type) {
+		super(type);
 
 		fluidComponent.getVolume(0).setSize(new Fraction(AstromineConfig.get().tankFluid, 1));
 	}

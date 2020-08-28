@@ -35,8 +35,8 @@ import net.minecraft.util.math.Direction;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
-import com.github.chainmailstudios.astromine.common.volume.energy.CreativeEnergyVolume;
+import com.github.chainmailstudios.astromine.common.utilities.capability.energy.EnergyCapacityProvider;
+import com.github.chainmailstudios.astromine.common.volume.energy.InfiniteEnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import org.jetbrains.annotations.NotNull;
@@ -67,7 +67,7 @@ public abstract class ComponentEnergyBlockEntity extends ComponentBlockEntity im
 			});
 			setMaxStoredPower(getEnergyCapacity());
 		} else {
-			energyVolume = new CreativeEnergyVolume(() -> {
+			energyVolume = new InfiniteEnergyVolume(() -> {
 				for (Runnable listener : energyListeners) {
 					listener.run();
 				}

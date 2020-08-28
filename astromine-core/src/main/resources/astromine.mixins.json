@@ -4,17 +4,18 @@
   "package": "com.github.chainmailstudios.astromine.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "AbstractMinecartEntityMixin", "BiomeLayerSamplerMixin", "BucketItemMixin",
-    "DiggerEnchantmentTargetMixin", "DyeColorMixin", "EntityMixin", "FishingBobberEntityMixin",
-    "GravityEntityMixin", "HoneyBlockMixin", "IdentifierMixin", "ItemEntityMixin", "LivingEntityMixin",
-    "MiningToolItemMixin", "PiglinBrainMixin", "PiglinEntityMixin", "ServerChunkManagerMixin", "SquidEntityMixin", "StepAndDestroyBlockGoalMixin",
-    "ThreadExecutorMixin", "WorldChunkMixin"
+	"AbstractMinecartEntityMixin", "BiomeLayerSamplerMixin", "BucketItemMixin", "DiggerEnchantmentTargetMixin",
+	"DyeColorMixin", "EntityMixin", "FishingBobberEntityMixin", "GravityEntityMixin", "HoneyBlockMixin",
+	"IdentifierMixin", "ItemEntityMixin", "LivingEntityMixin", "MiningToolItemMixin", "PiglinBrainMixin",
+	"PiglinEntityMixin", "ServerChunkManagerMixin", "SquidEntityMixin", "StepAndDestroyBlockGoalMixin",
+	"ThreadExecutorMixin", "WorldChunkMixin"
   ],
   "client": [
-    "BossBarHudMixin", "BuiltinModelItemRendererMixin", "ClientRecipeBookMixin", "CurrentDownParticleMixin", "EggEntityMixin",
-    "InGameHudMixin", "ItemRendererMixin", "SkyPropertiesMixin", "WorldRendererMixin"
+	"BossBarHudMixin", "ClientRecipeBookMixin", "CurrentDownParticleMixin",
+	"EggEntityMixin", "ItemRendererMixin", "SkyPropertiesMixin", "WorldRendererMixin",
+	"ItemMixin"
   ],
   "injectors": {
-    "defaultRequire": 1
+	"defaultRequire": 1
   }
 }

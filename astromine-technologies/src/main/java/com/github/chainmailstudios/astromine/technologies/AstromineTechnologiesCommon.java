@@ -38,5 +38,10 @@ public class AstromineTechnologiesCommon extends AstromineCommon {
 		AstromineTechnologiesScreenHandlers.initialize();
 		AstromineTechnologiesToolMaterials.initialize();
 		AstromineTechnologiesCommonCallbacks.initialize();
+		AstromineTechnologiesEntityTypes.initialize();
+		AstromineTechnologiesCriteria.initialize();
+		AstromineTechnologiesNetworkMembers.initialize();
+		AstromineTechnologiesRecipeSerializers.initialize();
+		AstromineTechnologiesArmorMaterials.initialize();
 	}
 }

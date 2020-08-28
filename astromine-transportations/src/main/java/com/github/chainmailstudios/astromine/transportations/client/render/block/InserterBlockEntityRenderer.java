@@ -37,7 +37,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.client.model.InserterArmModel;
+import com.github.chainmailstudios.astromine.transportations.client.model.InserterArmModel;
 
 public class InserterBlockEntityRenderer extends BlockEntityRenderer<InserterBlockEntity> implements ConveyorRenderer<InserterBlockEntity> {
 	public InserterBlockEntityRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher) {

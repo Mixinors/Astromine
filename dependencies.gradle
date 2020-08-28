@@ -57,6 +57,7 @@ project.ext.setDefaultApis = {
 
     // JOML
     compile("org.joml:joml:${joml_version}")
+    include("org.joml:joml:${joml_version}")
 }
 
 project.ext.setRuntimeTestMods = {

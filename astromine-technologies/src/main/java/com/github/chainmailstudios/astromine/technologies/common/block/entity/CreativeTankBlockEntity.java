@@ -37,32 +37,17 @@ import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 
-public class CreativeTankBlockEntity extends ComponentFluidBlockEntity implements Tickable {
-	public static final Identifier FLUID_CHANGE_PACKET = AstromineCommon.identifier("fluid_change_component");
-
+public class CreativeTankBlockEntity extends TankBlockEntity {
 	public CreativeTankBlockEntity() {
 		super(AstromineTechnologiesBlockEntityTypes.CREATIVE_TANK);
-
-		addConsumer(FLUID_CHANGE_PACKET, (buffer, context) -> {
-			Identifier fluidIdentifier = buffer.readIdentifier();
-
-			Fluid fluid = Registry.FLUID.get(fluidIdentifier);
-
-			fluidComponent.setVolume(0, new FluidVolume(fluid, new Fraction(Integer.MAX_VALUE, 1)));
-
-			sync();
-		});
 
 		fluidComponent.getVolume(0).setSize(new Fraction(Integer.MAX_VALUE, 1));
 	}
 
 	@Override
-	protected FluidInventoryComponent createFluidComponent() {
-		return new SimpleFluidInventoryComponent(1);
-	}
-
-	@Override
 	public void tick() {
+		super.tick();
+
 		fluidComponent.getVolume(0).setFraction(new Fraction(Integer.MAX_VALUE, 1));
 	}
 }

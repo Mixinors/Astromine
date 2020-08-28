@@ -53,13 +53,7 @@ import java.util.Optional;
 
 public final class LibBlockAttributesCompatibility {
 	public static void initialize() {
-		// LBA 0.7.1: replace these 6 method calls with "FluidAttributes.forEachInv()"
-		appendAdder(FluidAttributes.FIXED_INV_VIEW);
-		appendAdder(FluidAttributes.FIXED_INV);
-		appendAdder(FluidAttributes.GROUPED_INV_VIEW);
-		appendAdder(FluidAttributes.GROUPED_INV);
-		appendAdder(FluidAttributes.INSERTABLE);
-		appendAdder(FluidAttributes.EXTRACTABLE);
+		FluidAttributes.forEachInv(LibBlockAttributesCompatibility::appendAdder);
 	}
 
 	private static <T> void appendAdder(Attribute<T> attribute) {
@@ -72,12 +66,8 @@ public final class LibBlockAttributesCompatibility {
 		if (blockEntity != null) {
 			ComponentProvider componentProvider = ComponentProvider.fromBlockEntity(blockEntity);
 
-			// LBA 0.7.1: replace this get&opposite call with "list.getTargetSide()"
 			@Nullable
-			Direction direction = list.getSearchDirection();
-			if (direction != null) {
-				direction = direction.getOpposite();
-			}
+			Direction direction = list.getTargetSide();
 
 			FluidInventoryComponent component = componentProvider.getSidedComponent(direction, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
@@ -147,7 +137,7 @@ public final class LibBlockAttributesCompatibility {
 				return false;
 			}
 
-			boolean allowed = false;
+			boolean allowed;
 
 			if (incoming.isEmpty()) {
 				if (current.isEmpty()) {

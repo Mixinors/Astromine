@@ -35,7 +35,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
+import com.github.chainmailstudios.astromine.common.utilities.capability.energy.EnergyCapacityProvider;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import me.shedaniel.cloth.api.durability.bar.DurabilityBarItem;
 import team.reborn.energy.Energy;

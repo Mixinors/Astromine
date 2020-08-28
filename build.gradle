@@ -219,7 +219,7 @@ allprojects {
 }
 
 afterEvaluate {
-    tasks.getByName("remapAllJars").onlyIf { !ignoreRemapSrc }
+    //tasks.getByName("remapAllJars").onlyIf { !ignoreRemapSrc }
 }
 
 subprojects {

@@ -25,7 +25,6 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.common.item.ManualItem;
-import net.fabricmc.loader.api.FabricLoader;
 
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
@@ -39,8 +38,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.item.GravityGauntletItem;
-import com.github.chainmailstudios.astromine.common.item.MeteorSpawnerDevItem;
 import com.github.chainmailstudios.astromine.common.item.UncoloredSpawnEggItem;
 
 public class AstromineItems {
@@ -48,14 +45,6 @@ public class AstromineItems {
 	public static final Item FLUID = register("fluid", new Item(new Item.Settings()));
 	public static final Item ITEM = register("item", new Item(new Item.Settings()));
 
-	public static final Item SPACE_SLIME_SPAWN_EGG = register("space_slime_spawn_egg", new UncoloredSpawnEggItem(AstromineEntityTypes.SPACE_SLIME, getBasicSettings()));
-
-	public static final Item ROCKET = register("rocket", new UncoloredSpawnEggItem(AstromineEntityTypes.ROCKET, getBasicSettings()));
-
-	public static final Item SPACE_SLIME_BALL = register("space_slime_ball", new Item(getBasicSettings()));
-
-	public static final Item GRAVITY_GAUNTLET = register("gravity_gauntlet", new GravityGauntletItem(getBasicSettings().maxCount(1), AstromineConfig.get().gravityGauntletEnergy));
-	
 	public static final Item MANUAL = register("manual", new ManualItem(getBasicSettings().maxCount(1)));
 
 	public static void initialize() {
@@ -70,10 +59,6 @@ public class AstromineItems {
 					return stack;
 				}
 			});
-		}
-
-		if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
-			Registry.register(Registry.ITEM, AstromineCommon.identifier("meteor_spawner"), new MeteorSpawnerDevItem(new Item.Settings()));
 		}
 	}
 

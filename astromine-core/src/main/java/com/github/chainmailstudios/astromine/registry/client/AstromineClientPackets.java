@@ -31,9 +31,6 @@ import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.client.MinecraftClient;
 
 import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
-import com.github.chainmailstudios.astromine.common.entity.RocketEntity;
-import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
-
 import java.util.UUID;
 
 @Environment(EnvType.CLIENT)
@@ -41,30 +38,12 @@ public class AstromineClientPackets {
 	@Environment(EnvType.CLIENT)
 	public static void initialize() {
 		// TODO: 08/08/2020 - 11:00:51
+		// TODO: 27/08/2020 - 21:15:05
 		// ClientSidePacketRegistry.INSTANCE.register(AstromineCommonPackets.PRESSURE_UPDATE, ((context, buffer) -> {
 		// Identifier identifier = buffer.readIdentifier();
 		//
 		// AstromineScreens.GAS_IMAGE.setTexture(AstromineCommon.identifier("textures/symbol/" + identifier.getPath() + ".png"));
 		// }));
-
-		ClientSidePacketRegistry.INSTANCE.register(RocketEntity.ROCKET_SPAWN, (context, buffer) -> {
-			double x = buffer.readDouble();
-			double y = buffer.readDouble();
-			double z = buffer.readDouble();
-			UUID uuid = buffer.readUuid();
-			int id = buffer.readInt();
-
-			context.getTaskQueue().execute(() -> {
-				RocketEntity rocketEntity = AstromineEntityTypes.ROCKET.create(MinecraftClient.getInstance().world);
-
-				rocketEntity.setUuid(uuid);
-				rocketEntity.setEntityId(id);
-				rocketEntity.updatePosition(x, y, z);
-				rocketEntity.updateTrackedPosition(x, y, z);
-
-				MinecraftClient.getInstance().world.addEntity(id, rocketEntity);
-			});
-		});
 
 		ClientSidePacketRegistry.INSTANCE.register(ClientAtmosphereManager.GAS_ERASED, (context, buffer) -> {
 			buffer.retain();

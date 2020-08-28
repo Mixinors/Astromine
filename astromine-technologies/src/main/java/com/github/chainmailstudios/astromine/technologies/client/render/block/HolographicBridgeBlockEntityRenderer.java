@@ -37,7 +37,7 @@ import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 
-import com.github.chainmailstudios.astromine.client.render.layer.Layers;
+import com.github.chainmailstudios.astromine.client.render.layer.Layer;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.HolographicBridgeProjectorBlockEntity;
 
 public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<HolographicBridgeProjectorBlockEntity> {
@@ -70,7 +70,7 @@ public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<Ho
 
 			matrices.push();
 
-			VertexConsumer consumer = provider.getBuffer(Layers.getHolographicBridge());
+			VertexConsumer consumer = provider.getBuffer(Layer.getHolographicBridge());
 
 			float xA = end.getX() - pA.getX();
 			float xB = start.getX() - pA.getX();

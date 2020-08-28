@@ -37,24 +37,6 @@ import java.util.Set;
 public class AstromineBiomes {
 	private static final Set<RegistryKey<?>> KEYS = new HashSet<>();
 
-	public static final Identifier ASTEROID_BELT_ID = AstromineCommon.identifier("asteroid_belt");
-	public static final RegistryKey<Biome> ASTEROID_BELT = register(Registry.BIOME_KEY, ASTEROID_BELT_ID);
-
-	public static final Identifier VULCAN_PLAINS_ID = AstromineCommon.identifier("vulcan_plains");
-	public static final RegistryKey<Biome> VULCAN_PLAINS = register(Registry.BIOME_KEY, VULCAN_PLAINS_ID);
-
-	public static final Identifier LUNAR_PLAINS_ID = AstromineCommon.identifier("lunar_plains");
-	public static final RegistryKey<Biome> LUNAR_PLAINS = register(Registry.BIOME_KEY, LUNAR_PLAINS_ID);
-	public static final Identifier LUNAR_HILLS_ID = AstromineCommon.identifier("lunar_hills");
-	public static final RegistryKey<Biome> LUNAR_HILLS = register(Registry.BIOME_KEY, LUNAR_HILLS_ID);
-	public static final Identifier LUNAR_LOWLANDS_ID = AstromineCommon.identifier("lunar_lowlands");
-	public static final RegistryKey<Biome> LUNAR_LOWLANDS = register(Registry.BIOME_KEY, LUNAR_LOWLANDS_ID);
-
-	public static final Identifier MARTIAN_PLAINS_ID = AstromineCommon.identifier("martian_plains");
-	public static final RegistryKey<Biome> MARTIAN_PLAINS = register(Registry.BIOME_KEY, MARTIAN_PLAINS_ID);
-	public static final Identifier MARTIAN_RIVERBED_ID = AstromineCommon.identifier("martian_riverbed");
-	public static final RegistryKey<Biome> MARTIAN_RIVERBED = register(Registry.BIOME_KEY, MARTIAN_RIVERBED_ID);
-
 	public static <T> RegistryKey<T> register(RegistryKey<Registry<T>> registry, Identifier identifier) {
 		RegistryKey<T> key = RegistryKey.of(registry, identifier);
 		KEYS.add(key);
