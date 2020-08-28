@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.registry.client;
 
-import com.github.chainmailstudios.astromine.client.render.sky.skybox.SpaceSkybox;
-
 public class AstromineSkyboxes {
 	public static void initialize() {
 

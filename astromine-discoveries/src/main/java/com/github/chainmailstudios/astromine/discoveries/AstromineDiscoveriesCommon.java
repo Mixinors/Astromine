@@ -9,10 +9,13 @@ public class AstromineDiscoveriesCommon extends AstromineCommon {
 		AstromineDiscoveriesBiomeSources.initialize();
 		AstromineDiscoveriesChunkGenerators.initialize();
 		AstromineDiscoveriesCommonCallbacks.initialize();
-		AstromineDiscoveriesCriteria.initialize();
 		AstromineDiscoveriesDimensionLayers.initialize();
 		AstromineDiscoveriesDimensions.initialize();
 		AstromineDiscoveriesFeatures.initialize();
 		AstromineDiscoveriesGravities.initialize();
+		AstromineDiscoveriesBlocks.initialize();
+		AstromineDiscoveriesItems.initialize();
+		AstromineDiscoveriesItemGroups.initialize();
+		AstromineDiscoveriesAtmospheres.initialize();
 	}
 }

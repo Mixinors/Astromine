@@ -38,7 +38,6 @@ import com.github.chainmailstudios.astromine.discoveries.client.model.SpaceSlime
 import com.github.chainmailstudios.astromine.discoveries.common.entity.SpaceSlimeEntity;
 
 public class SpaceSlimeEntityRenderer extends MobEntityRenderer<SpaceSlimeEntity, SpaceSlimeEntityModel> {
-
 	private static final Identifier TEXTURE = AstromineCommon.identifier("textures/entity/space_slime/space_slime.png");
 
 	public SpaceSlimeEntityRenderer(EntityRenderDispatcher entityRenderDispatcher) {

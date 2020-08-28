@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.generation.mars;
 
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -136,7 +137,7 @@ public class MarsChunkGenerator extends ChunkGenerator {
 
 				int height = (int) (depth + (noise * scale));
 				for (int y = 0; y <= height; ++y) {
-					chunk.setBlockState(new BlockPos(x, y, z), y == height ? AstromineBlocks.MARTIAN_SOIL.getDefaultState() : AstromineBlocks.MARTIAN_STONE.getDefaultState(), false);
+					chunk.setBlockState(new BlockPos(x, y, z), y == height ? AstromineDiscoveriesBlocks.MARTIAN_SOIL.getDefaultState() : AstromineDiscoveriesBlocks.MARTIAN_STONE.getDefaultState(), false);
 					if (y <= 5) {
 						if (chunkRandom.nextInt(y + 1) == 0) {
 							chunk.setBlockState(new BlockPos(x, y, z), Blocks.BEDROCK.getDefaultState(), false);

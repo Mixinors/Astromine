@@ -11,9 +11,8 @@
 	"ThreadExecutorMixin", "WorldChunkMixin"
   ],
   "client": [
-	"BossBarHudMixin", "BuiltinModelItemRendererMixin", "ClientRecipeBookMixin", "CurrentDownParticleMixin",
-	"EggEntityMixin",
-	"InGameHudMixin", "ItemRendererMixin", "SkyPropertiesMixin", "WorldRendererMixin"
+	"BossBarHudMixin", "ClientRecipeBookMixin", "CurrentDownParticleMixin",
+	"EggEntityMixin", "ItemRendererMixin", "SkyPropertiesMixin", "WorldRendererMixin"
   ],
   "injectors": {
 	"defaultRequire": 1

@@ -61,10 +61,10 @@ public class AstromineTechnologiesItems extends AstromineItems {
 
 	public static final Item HOLOGRAPHIC_CONNECTOR = register("holographic_connector", new HolographicConnectorItem(getBasicSettings().maxCount(1)));
 
-	public static final Item SPACE_SUIT_HELMET = register("space_suit_helmet", new SpaceSuitItem(AstromineFoundationsArmorMaterials.SPACE_SUIT, EquipmentSlot.HEAD, getBasicSettings()));
-	public static final Item SPACE_SUIT_CHESTPLATE = register("space_suit_chestplate", new SpaceSuitItem(AstromineFoundationsArmorMaterials.SPACE_SUIT, EquipmentSlot.CHEST, getBasicSettings()));
-	public static final Item SPACE_SUIT_LEGGINGS = register("space_suit_leggings", new SpaceSuitItem(AstromineFoundationsArmorMaterials.SPACE_SUIT, EquipmentSlot.LEGS, getBasicSettings()));
-	public static final Item SPACE_SUIT_BOOTS = register("space_suit_boots", new SpaceSuitItem(AstromineFoundationsArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, getBasicSettings()));
+	public static final Item SPACE_SUIT_HELMET = register("space_suit_helmet", new SpaceSuitItem(AstromineTechnologiesArmorMaterials.SPACE_SUIT, EquipmentSlot.HEAD, getBasicSettings()));
+	public static final Item SPACE_SUIT_CHESTPLATE = register("space_suit_chestplate", new SpaceSuitItem(AstromineTechnologiesArmorMaterials.SPACE_SUIT, EquipmentSlot.CHEST, getBasicSettings()));
+	public static final Item SPACE_SUIT_LEGGINGS = register("space_suit_leggings", new SpaceSuitItem(AstromineTechnologiesArmorMaterials.SPACE_SUIT, EquipmentSlot.LEGS, getBasicSettings()));
+	public static final Item SPACE_SUIT_BOOTS = register("space_suit_boots", new SpaceSuitItem(AstromineTechnologiesArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, getBasicSettings()));
 
 	public static final Item ROCKET = register("rocket", new UncoloredSpawnEggItem(AstromineTechnologiesEntityTypes.ROCKET, getBasicSettings()));
 

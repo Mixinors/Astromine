@@ -24,12 +24,11 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.model;
 
+import com.github.chainmailstudios.astromine.technologies.common.entity.RocketEntity;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
-
-import com.github.chainmailstudios.astromine.common.entity.RocketEntity;
 
 public class RocketEntityModel extends EntityModel<RocketEntity> {
 	private final ModelPart model;

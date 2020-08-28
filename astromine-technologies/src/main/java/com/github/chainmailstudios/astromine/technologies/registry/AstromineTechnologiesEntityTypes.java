@@ -1,7 +1,7 @@
 package com.github.chainmailstudios.astromine.technologies.registry;
 
-import com.github.chainmailstudios.astromine.common.entity.RocketEntity;
 import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.common.entity.RocketEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;

@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.feature;
 
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.util.Pair;
 import net.minecraft.util.collection.WeightedList;
@@ -84,7 +85,7 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 			for (Position streamPosition : vein.stream().collect(Collectors.toSet())) {
 				BlockPos orePosition = streamPosition.toBlockPos();
 
-				if (world.getBlockState(orePosition).getBlock() == AstromineBlocks.ASTEROID_STONE) {
+				if (world.getBlockState(orePosition).getBlock() == AstromineDiscoveriesBlocks.ASTEROID_STONE) {
 					world.setBlockState(orePosition, ore.getDefaultState(), 0b0110100);
 				}
 			}

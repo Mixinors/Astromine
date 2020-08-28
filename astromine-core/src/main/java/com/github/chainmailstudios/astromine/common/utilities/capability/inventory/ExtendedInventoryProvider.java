@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block.entity.base;
+package com.github.chainmailstudios.astromine.common.utilities.capability.inventory;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.InventoryProvider;

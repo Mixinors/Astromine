@@ -28,7 +28,7 @@ import com.github.chainmailstudios.astromine.registry.client.AstromineRenderLaye
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlocks;
 import net.minecraft.client.render.RenderLayer;
 
-public class AstromineTransportationsRenderLayer extends AstromineRenderLayers {
+public class AstromineTransportationsRenderLayers extends AstromineRenderLayers {
 	public static void initialize() {
 		register(AstromineTransportationsBlocks.ALTERNATOR, RenderLayer.getCutout());
 		register(AstromineTransportationsBlocks.SPLITTER, RenderLayer.getCutout());

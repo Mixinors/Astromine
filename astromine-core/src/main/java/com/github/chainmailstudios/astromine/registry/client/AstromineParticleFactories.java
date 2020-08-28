@@ -31,20 +31,11 @@ import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.minecraft.client.particle.CrackParticle;
 import net.minecraft.item.ItemStack;
 
-import com.github.chainmailstudios.astromine.technologies.client.particle.MarsDustParticle;
-import com.github.chainmailstudios.astromine.technologies.client.particle.RocketFlameParticle;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.github.chainmailstudios.astromine.registry.AstromineParticles;
 
 @Environment(EnvType.CLIENT)
 public class AstromineParticleFactories {
 	public static void initialize() {
-		ParticleFactoryRegistry.getInstance().register(AstromineParticles.SPACE_SLIME, (parameters, world, x, y, z, velocityX, velocityY, velocityZ) -> new CrackParticle(world, x, y, z, new ItemStack(AstromineItems.SPACE_SLIME_BALL)));
-		ParticleFactoryRegistry.getInstance().register(AstromineParticles.ROCKET_FLAME, provider -> (parameters, world, x, y, z, velocityX, velocityY, velocityZ) -> {
-			RocketFlameParticle particle = new RocketFlameParticle(world, x, y, z, velocityX, velocityY, velocityZ);
-			particle.setSprite(provider);
-			return particle;
-		});
-		ParticleFactoryRegistry.getInstance().register(AstromineParticles.MARS_DUST, MarsDustParticle.Factory::new);
 	}
 }

@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.technologies.common.advancement;
 
-import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesCriteria;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesCriteria;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
@@ -37,7 +37,7 @@ public class LaunchRocketCriterion extends AbstractCriterion<LaunchRocketCriteri
 		}
 
 		public static Conditions create() {
-			return new Conditions(AstromineDiscoveriesCriteria.LAUNCH_ROCKET.getId(), EntityPredicate.Extended.EMPTY);
+			return new Conditions(AstromineTechnologiesCriteria.LAUNCH_ROCKET.getId(), EntityPredicate.Extended.EMPTY);
 		}
 	}
 }

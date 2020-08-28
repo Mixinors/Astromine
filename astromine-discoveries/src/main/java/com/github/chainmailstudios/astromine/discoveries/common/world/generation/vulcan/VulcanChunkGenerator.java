@@ -28,6 +28,7 @@ import com.github.chainmailstudios.astromine.common.miscellaneous.BiomeGenerator
 import com.github.chainmailstudios.astromine.common.noise.FastNoise;
 import com.github.chainmailstudios.astromine.common.noise.OctaveNoiseSampler;
 import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -153,7 +154,7 @@ public class    VulcanChunkGenerator extends ChunkGenerator {
 							chunk.setBlockState(pos, Blocks.AIR.getDefaultState(), false);
 						} else {
 							if (y >= 100) {
-								chunk.setBlockState(pos, AstromineBlocks.VULCAN_STONE.getDefaultState(), false);
+								chunk.setBlockState(pos, AstromineDiscoveriesBlocks.VULCAN_STONE.getDefaultState(), false);
 							}
 						}
 					}

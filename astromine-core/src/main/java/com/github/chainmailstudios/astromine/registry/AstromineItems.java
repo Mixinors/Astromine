@@ -47,10 +47,6 @@ public class AstromineItems {
 	public static final Item FLUID = register("fluid", new Item(new Item.Settings()));
 	public static final Item ITEM = register("item", new Item(new Item.Settings()));
 
-	public static final Item SPACE_SLIME_SPAWN_EGG = register("space_slime_spawn_egg", new UncoloredSpawnEggItem(AstromineEntityTypes.SPACE_SLIME, getBasicSettings()));
-
-	public static final Item SPACE_SLIME_BALL = register("space_slime_ball", new Item(getBasicSettings()));
-
 	public static final Item GRAVITY_GAUNTLET = register("gravity_gauntlet", new GravityGauntletItem(getBasicSettings().maxCount(1), AstromineConfig.get().gravityGauntletEnergy));
 	
 	public static final Item MANUAL = register("manual", new ManualItem(getBasicSettings().maxCount(1)));
