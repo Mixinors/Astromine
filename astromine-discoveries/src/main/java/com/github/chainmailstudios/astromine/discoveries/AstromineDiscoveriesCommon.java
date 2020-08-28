@@ -19,11 +19,8 @@ public class AstromineDiscoveriesCommon extends AstromineCommon {
 		AstromineDiscoveriesItems.initialize();
 		AstromineDiscoveriesItemGroups.initialize();
 		AstromineDiscoveriesAtmospheres.initialize();
-	}
-
-	@Override
-	public void onPreLaunch() {
 		AstromineDiscoveriesDimensions.initialize();
 		AstromineDiscoveriesFeatures.initialize();
+		AstromineDiscoveriesEntityTypes.initialize();
 	}
 }
