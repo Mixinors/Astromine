@@ -1,4 +1,5 @@
 archivesBaseName = "astromine-transportations"
+cfProjectId = 404375
 
 loom {
     accessWidener = file("src/main/resources/astromine-transportations.accesswidener")

@@ -1,5 +1,6 @@
 archivesBaseName = "astromine-foundations"
 shouldGenerateData = true
+cfProjectId = 404374
 
 loom {
     accessWidener = file("src/main/resources/astromine-foundations.accesswidener")

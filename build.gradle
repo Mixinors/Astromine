@@ -1,9 +1,11 @@
+import net.fabricmc.loom.task.RemapJarTask
 import net.fabricmc.loom.task.RunClientTask
 
 plugins {
     id 'maven-publish'
     id 'com.diffplug.spotless' version '5.1.0' apply false
     id 'fabric-loom' version '0.5.22'
+    id 'com.matthewprenger.cursegradle' version '1.4.0'
 }
 
 apply from: 'dependencies.gradle'
@@ -12,6 +14,7 @@ allprojects {
     apply plugin: 'maven-publish'
     apply plugin: 'fabric-loom'
     apply plugin: 'com.diffplug.spotless'
+    apply plugin: 'com.matthewprenger.cursegradle'
 
     archivesBaseName = project.mod_name
     group = rootProject.mod_group
@@ -221,10 +224,15 @@ allprojects {
 afterEvaluate {
     try {
         tasks.getByName("remapAllJars").onlyIf { !ignoreRemapSrc }
-    } catch (ignored) {}
+    } catch (ignored) {
+    }
 }
 
 subprojects {
+    ext {
+        cfProjectId = -1
+    }
+
     task remapMavenJar(type: Copy, dependsOn: remapJar) {
         afterEvaluate {
             from("${project.buildDir}/libs/$archivesBaseName-${version}.jar")
@@ -248,6 +256,35 @@ subprojects {
                 }
             }
         }
+
+        curseforge {
+            if ((project.hasProperty('curse_api_key') || System.getenv('curse_api_key') != null) && cfProjectId >= 0) {
+                project {
+                    id = cfProjectId.toString()
+                    releaseType = rootProject.release_cycle
+                    changelog = "View the changelog at https://github.com/Chainmail-Studios/Astromine"
+                    ((String) rootProject.tagged_versions).split(",").each {
+                        addGameVersion it
+                    }
+                    relations {
+                        requiredDependency "fabric-api"
+                        embeddedLibrary "cloth-api"
+                        embeddedLibrary "cloth-config"
+                        embeddedLibrary "auto-config-updated-api"
+                        embeddedLibrary "cardinal-components"
+                        embeddedLibrary "libblockattributes"
+                        embeddedLibrary "patchouli-fabric"
+                    }
+                    mainArtifact(file("${project.buildDir}/libs/${project.archivesBaseName}-${project.version}.jar"))
+                }
+            }
+            options {
+                forgeGradleIntegration = false
+                javaIntegration = false
+                javaVersionAutoDetect = false
+                debug = true
+            }
+        }
     }
 }
 
@@ -262,7 +299,11 @@ task deleteBuildFolderAll
 subprojects.each { deleteBuildFolderAll.dependsOn("${it.path}:deleteBuildFolder") }
 build.dependsOn(deleteBuildFolderAll)
 
-task remapMavenJar(type: net.fabricmc.loom.task.RemapJarTask, dependsOn: jar) {
+task releaseOnCf
+releaseOnCf.dependsOn(":curseforge")
+subprojects { releaseOnCf.dependsOn("${it.path}:curseforge") }
+
+task remapMavenJar(type: RemapJarTask, dependsOn: jar) {
     afterEvaluate {
         input = file("${project.buildDir}/libs/${archivesBaseName}-${version}-dev.jar")
         archiveName = "${archivesBaseName}-${version}-maven.jar"
@@ -319,4 +360,34 @@ dependencies {
 
     modRuntime "net.fabricmc:dev-launch-injector:+"
     tap(rootProject.ext.setRuntimeTestMods)
+}
+
+curseforge {
+    if (project.hasProperty('curse_api_key') || System.getenv('curse_api_key') != null) {
+        apiKey = project.hasProperty('curse_api_key') ? project.property('curse_api_key') : System.getenv('curse_api_key')
+        project {
+            id = "391739"
+            releaseType = rootProject.release_cycle
+            changelog = "View the changelog at https://github.com/Chainmail-Studios/Astromine"
+            ((String) rootProject.tagged_versions).split(",").each {
+                addGameVersion it
+            }
+            relations {
+                requiredDependency "fabric-api"
+                embeddedLibrary "cloth-api"
+                embeddedLibrary "cloth-config"
+                embeddedLibrary "auto-config-updated-api"
+                embeddedLibrary "cardinal-components"
+                embeddedLibrary "libblockattributes"
+                embeddedLibrary "patchouli-fabric"
+            }
+            mainArtifact(file("${project.buildDir}/libs/${project.archivesBaseName}-${project.version}.jar"))
+        }
+    }
+    options {
+        forgeGradleIntegration = false
+        javaIntegration = false
+        javaVersionAutoDetect = false
+        debug = true
+    }
 }
