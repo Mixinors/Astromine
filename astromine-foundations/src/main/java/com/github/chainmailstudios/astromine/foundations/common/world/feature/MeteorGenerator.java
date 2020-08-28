@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.discoveries.common.world.feature;
+package com.github.chainmailstudios.astromine.foundations.common.world.feature;
 
-import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
-import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesFeatures;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFeatures;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -67,11 +67,11 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 	private static OpenSimplexNoise noise;
 
 	public MeteorGenerator(Random random, int x, int z) {
-		super(AstromineDiscoveriesFeatures.METEOR_STRUCTURE, random, x, 64, z, 16, 16, 16);
+		super(AstromineFoundationsFeatures.METEOR_STRUCTURE, random, x, 64, z, 16, 16, 16);
 	}
 
 	public MeteorGenerator(StructureManager manager, CompoundTag tag) {
-		super(AstromineDiscoveriesFeatures.METEOR_STRUCTURE, tag);
+		super(AstromineFoundationsFeatures.METEOR_STRUCTURE, tag);
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 				return Blocks.AIR.getDefaultState();
 			}
 		}, state -> Blocks.COBBLESTONE.getDefaultState());
-		buildSphere(world, originPos, 8, AstromineDiscoveriesBlocks.METEOR_STONE.getDefaultState());
+		buildSphere(world, originPos, 8, AstromineFoundationsBlocks.METEOR_STONE.getDefaultState());
 
 		Shape vein = Shapes.ellipsoid((float) 4, (float) 4, (float) 4).applyLayer(RotateLayer.of(Quaternion.of(random.nextDouble() * 360, random.nextDouble() * 360, random.nextDouble() * 360, true))).applyLayer(TranslateLayer.of(Position.of(originPos)));
 
@@ -100,7 +100,7 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 			for (Position streamPosition : vein.stream().collect(Collectors.toSet())) {
 				BlockPos orePosition = streamPosition.toBlockPos();
 
-				if (world.getBlockState(orePosition).getBlock() == AstromineDiscoveriesBlocks.METEOR_STONE) {
+				if (world.getBlockState(orePosition).getBlock() == AstromineFoundationsBlocks.METEOR_STONE) {
 					world.setBlockState(orePosition, metiteOre.getDefaultState(), 0b0110100);
 				}
 			}

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.discoveries.common.world.feature;
+package com.github.chainmailstudios.astromine.foundations.common.world.feature;
 
 import net.minecraft.structure.StructureManager;
 import net.minecraft.structure.StructureStart;
