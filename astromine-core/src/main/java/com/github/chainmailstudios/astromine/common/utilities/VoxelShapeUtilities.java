@@ -52,6 +52,17 @@ public class VoxelShapeUtilities {
 		return collision;
 	}
 
+	public static VoxelShape rotateDirection(Direction direction, VoxelShape shape) {
+		if (direction == Direction.EAST)
+			return rotateNinety(Direction.Axis.Y, shape);
+		else if (direction == Direction.SOUTH)
+			return rotateOneHundredAndEighty(Direction.Axis.Y, shape);
+		else if (direction == Direction.WEST)
+			return rotateTwoHundredAndSeventy(Direction.Axis.Y, shape);
+
+		return shape;
+	}
+
 	public static VoxelShape rotateNinety(Direction.Axis axis, Collection<VoxelShape> shapes) {
 		return rotate(axis, NINETY_DEGREES, shapes);
 	}

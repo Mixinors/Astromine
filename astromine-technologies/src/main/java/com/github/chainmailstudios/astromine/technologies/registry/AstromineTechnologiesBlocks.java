@@ -31,7 +31,9 @@ import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
+import net.minecraft.item.TallBlockItem;
 import net.minecraft.sound.BlockSoundGroup;
 
 public class AstromineTechnologiesBlocks extends AstromineBlocks {
@@ -102,7 +104,9 @@ public class AstromineTechnologiesBlocks extends AstromineBlocks {
 	public static final Block ELITE_CAPACITOR = register("elite_capacitor", new CapacitorBlock.Elite(getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block CREATIVE_CAPACITOR = register("creative_capacitor", new CapacitorBlock.Creative(getCreativeSettings()), AstromineTechnologiesItems.getBasicSettings());
 
-	public static void initialize() {
+	public static final Block AIRLOCK = new AirlockBlock(getBasicSettings());
 
+	public static void initialize() {
+		register("airlock", AIRLOCK, new TallBlockItem(AIRLOCK, AstromineTechnologiesItems.getBasicSettings()));
 	}
 }
