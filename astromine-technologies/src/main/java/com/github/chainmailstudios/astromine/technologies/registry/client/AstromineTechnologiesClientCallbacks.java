@@ -1,9 +1,7 @@
 package com.github.chainmailstudios.astromine.technologies.registry.client;
 
-import com.github.chainmailstudios.astromine.common.callback.TooltipCallback;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
 import com.github.chainmailstudios.astromine.registry.client.AstromineClientCallbacks;
 import com.github.chainmailstudios.astromine.technologies.common.entity.RocketEntity;
 import com.github.chainmailstudios.astromine.technologies.common.item.HolographicConnectorItem;
@@ -11,6 +9,7 @@ import com.github.chainmailstudios.astromine.technologies.common.item.SpaceSuitI
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesItems;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.LiteralText;
@@ -26,7 +25,7 @@ import java.util.UUID;
 
 public class AstromineTechnologiesClientCallbacks extends AstromineClientCallbacks {
 	public static void initialize() {
-		TooltipCallback.EVENT.register(((stack, world, tooltip, context) -> {
+		ItemTooltipCallback.EVENT.register(((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof HolographicConnectorItem) {
 				Pair<RegistryKey<World>, BlockPos> pair = ((HolographicConnectorItem) stack.getItem()).readBlock(stack);
 				if (pair != null) {
@@ -36,7 +35,7 @@ public class AstromineTechnologiesClientCallbacks extends AstromineClientCallbac
 			}
 		}));
 
-		TooltipCallback.EVENT.register(((stack, world, tooltip, context) -> {
+		ItemTooltipCallback.EVENT.register(((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof SpaceSuitItem) {
 				if (stack.getItem() == AstromineTechnologiesItems.SPACE_SUIT_CHESTPLATE) {
 					FluidInventoryComponent fluidComponent = ComponentProvider.fromItemStack(stack).getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);

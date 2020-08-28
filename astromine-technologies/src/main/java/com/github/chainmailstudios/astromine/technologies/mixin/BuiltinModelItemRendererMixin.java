@@ -1,7 +1,5 @@
 package com.github.chainmailstudios.astromine.technologies.mixin;
 
-import com.github.chainmailstudios.astromine.registry.AstromineItems;
-import com.github.chainmailstudios.astromine.registry.client.AstromineClientModels;
 import com.github.chainmailstudios.astromine.technologies.client.model.RocketEntityModel;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesItems;
 import com.github.chainmailstudios.astromine.technologies.registry.client.AstromineTechnologiesClientModels;

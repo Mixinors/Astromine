@@ -24,6 +24,9 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block;
 
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingBlockWithEntity;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.HolographicBridgeProjectorBlockEntity;
+import com.github.vini2003.blade.common.data.Color;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -40,11 +43,6 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.access.DyeColorAccess;
-import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingBlockWithEntity;
-import com.github.chainmailstudios.astromine.technologies.common.block.entity.HolographicBridgeProjectorBlockEntity;
-import com.github.vini2003.blade.common.data.Color;
-
 public class HolographicBridgeProjectorBlock extends WrenchableHorizontalFacingBlockWithEntity {
 	public HolographicBridgeProjectorBlock(AbstractBlock.Settings settings) {
 		super(settings);
@@ -60,13 +58,13 @@ public class HolographicBridgeProjectorBlock extends WrenchableHorizontalFacingB
 			HolographicBridgeProjectorBlockEntity entity = (HolographicBridgeProjectorBlockEntity) world.getBlockEntity(position);
 
 			if (entity != null) {
-				entity.color = Color.of(0x7e000000 >> 2 | ((DyeColorAccess) (Object) dye.getColor()).astromine_getColor());
+				entity.color = Color.of(0x7e000000 >> 2 | dye.getColor().color);
 
 				if (!world.isClient())
 					entity.sync();
 
 				if (entity.hasChild()) {
-					entity.getChild().color = Color.of(0x7e000000 >> 2 | ((DyeColorAccess) (Object) dye.getColor()).astromine_getColor());
+					entity.getChild().color = Color.of(0x7e000000 >> 2 | dye.getColor().color);
 					if (!world.isClient())
 						entity.getChild().sync();
 				}

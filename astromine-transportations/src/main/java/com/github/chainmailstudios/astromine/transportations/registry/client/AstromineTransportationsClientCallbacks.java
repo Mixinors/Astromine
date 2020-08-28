@@ -24,9 +24,9 @@
 
 package com.github.chainmailstudios.astromine.transportations.registry.client;
 
-import com.github.chainmailstudios.astromine.common.callback.TooltipCallback;
-import com.github.chainmailstudios.astromine.registry.client.AstromineClientCallbacks;
 import com.github.chainmailstudios.astromine.common.network.type.EnergyNetworkType;
+import com.github.chainmailstudios.astromine.registry.client.AstromineClientCallbacks;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.item.BlockItem;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
@@ -34,7 +34,7 @@ import net.minecraft.util.Formatting;
 
 public class AstromineTransportationsClientCallbacks extends AstromineClientCallbacks {
 	public static void initialize() {
-		TooltipCallback.EVENT.register(((stack, world, tooltip, context) -> {
+		ItemTooltipCallback.EVENT.register(((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof BlockItem && ((BlockItem) stack.getItem()).getBlock() instanceof EnergyNetworkType.EnergyNodeSpeedProvider) {
 				tooltip.add(new TranslatableText("text.astromine.tooltip.cable.speed", ((EnergyNetworkType.EnergyNodeSpeedProvider) ((BlockItem) stack.getItem()).getBlock()).getNodeSpeed()).formatted(Formatting.GRAY));
 				tooltip.add(new LiteralText(" "));
