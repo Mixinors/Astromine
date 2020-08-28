@@ -9,6 +9,9 @@ You may find release builds at [CurseForge](https://www.curseforge.com/minecraft
 ### Building From Source
 Run `./gradlew build`, the resulting jar will appear at `build/libs`.
 
+### Generating Data
+Run `./gradlew generateDataAll`
+
 ### Staging Releases
 Find the artifacts at [Github Actions](https://github.com/Chainmail-Studios/Astromine/actions?query=workflow%3A%22Staging+Build%22).  
 Please note that the latest development builds are not supported and are more prone to errors.

@@ -33,15 +33,11 @@ import net.minecraft.block.entity.BlockEntityType;
 
 import java.util.function.Supplier;
 
-public class AstromineFoundationsBlockEntityTypes {
+public class AstromineFoundationsBlockEntityTypes extends AstromineBlockEntityTypes {
 	public static final BlockEntityType<ItemDisplayerBlockEntity> ITEM_DISPLAYER = register("item_displayer", ItemDisplayerBlockEntity::new, AstromineFoundationsBlocks.ITEM_DISPLAYER);
 	public static final BlockEntityType<AltarBlockEntity> ALTAR = register("altar", AltarBlockEntity::new, AstromineFoundationsBlocks.ALTAR);
 
 	public static void initialize() {
 
-	}
-
-	public static <B extends BlockEntity> BlockEntityType<B> register(String name, Supplier<B> supplier, Block... supportedBlocks) {
-		return AstromineBlockEntityTypes.register(name, supplier, supportedBlocks);
 	}
 }

@@ -53,8 +53,6 @@ public class AstromineFoundationsModelStateGenerators extends AstromineModelStat
 	public final ModelStateGenerator BOOTS = register(new GenericItemSetModelStateGenerator(MaterialItemType.BOOTS));
 
 	public final ModelStateGenerator MISC_BLOCKSTATES = register(new SimpleBlockItemModelStateGenerator(AstromineFoundationsBlocks.ALTAR, AstromineFoundationsBlocks.ITEM_DISPLAYER));
-
-	public final ModelStateGenerator SPACE_SUIT = register(new GenericItemModelStateGenerator(AstromineFoundationsItems.SPACE_SUIT_HELMET, AstromineFoundationsItems.SPACE_SUIT_CHESTPLATE, AstromineFoundationsItems.SPACE_SUIT_LEGGINGS, AstromineFoundationsItems.SPACE_SUIT_BOOTS));
-
+	
 	public final ModelStateGenerator WRENCH = register(new HandheldItemModelStateGenerator(AstromineFoundationsItems.BRONZE_WRENCH));
 }

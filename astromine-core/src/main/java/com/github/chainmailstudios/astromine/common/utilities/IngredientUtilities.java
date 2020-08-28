@@ -27,7 +27,7 @@ package com.github.chainmailstudios.astromine.common.utilities;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 
-import com.github.chainmailstudios.astromine.common.recipe.ingredient.AdvancedIngredient;
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.ArrayIngredient;
 
 import com.google.gson.JsonElement;
 
@@ -36,8 +36,8 @@ public class IngredientUtilities {
 		return Ingredient.fromJson(jsonElement);
 	}
 
-	public static AdvancedIngredient fromBetterJson(JsonElement jsonElement) {
-		return AdvancedIngredient.fromJson(jsonElement);
+	public static ArrayIngredient fromBetterJson(JsonElement jsonElement) {
+		return ArrayIngredient.fromJson(jsonElement);
 	}
 
 	public static Ingredient fromPacket(PacketByteBuf buffer) {
@@ -48,11 +48,11 @@ public class IngredientUtilities {
 		ingredient.write(buffer);
 	}
 
-	public static AdvancedIngredient fromBetterPacket(PacketByteBuf buffer) {
-		return AdvancedIngredient.fromPacket(buffer);
+	public static ArrayIngredient fromBetterPacket(PacketByteBuf buffer) {
+		return ArrayIngredient.fromPacket(buffer);
 	}
 
-	public static void toBetterPacket(PacketByteBuf buffer, AdvancedIngredient ingredient) {
+	public static void toBetterPacket(PacketByteBuf buffer, ArrayIngredient ingredient) {
 		ingredient.write(buffer);
 	}
 }

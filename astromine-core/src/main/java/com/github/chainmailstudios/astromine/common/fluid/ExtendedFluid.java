@@ -48,7 +48,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 
-import com.github.chainmailstudios.astromine.common.gas.Breathable;
 import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineFluids;
@@ -56,13 +55,11 @@ import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.github.vini2003.blade.common.data.Color;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class ExtendedFluid extends FlowableFluid implements Breathable {
+public abstract class ExtendedFluid extends FlowableFluid {
 	private final int fogColor;
 	private final int tintColor;
-	private final int damage;
 
 	private final boolean isInfinite;
-	private final boolean isToxic;
 
 	private Block block;
 
@@ -73,26 +70,15 @@ public abstract class ExtendedFluid extends FlowableFluid implements Breathable 
 
 	private DamageSource source;
 
-	public ExtendedFluid(int fogColor, int tintColor, int damage, boolean isInfinite, boolean isToxic, @Nullable DamageSource source) {
+	public ExtendedFluid(int fogColor, int tintColor, boolean isInfinite, @Nullable DamageSource source) {
 		this.fogColor = fogColor;
 		this.tintColor = tintColor;
-		this.damage = damage;
 		this.isInfinite = isInfinite;
-		this.isToxic = isToxic;
 		this.source = source == null ? DamageSource.GENERIC : source;
 	}
 
 	public DamageSource getSource() {
 		return source;
-	}
-
-	@Override
-	public boolean isToxic() {
-		return isToxic;
-	}
-
-	public int getDamage() {
-		return damage;
 	}
 
 	@Override
@@ -248,8 +234,8 @@ public abstract class ExtendedFluid extends FlowableFluid implements Breathable 
 		}
 
 		public Fluid build() {
-			ExtendedFluid flowing = AstromineFluids.register(name + "_flowing", new Flowing(fog, tint, damage, isInfinite, isToxic, source));
-			ExtendedFluid still = AstromineFluids.register(name, new Still(fog, tint, damage, isInfinite, isToxic, source));
+			ExtendedFluid flowing = AstromineFluids.register(name + "_flowing", new Flowing(fog, tint, isInfinite, source));
+			ExtendedFluid still = AstromineFluids.register(name, new Still(fog, tint, isInfinite, source));
 
 			flowing.flowing = flowing;
 			still.flowing = flowing;
@@ -280,8 +266,8 @@ public abstract class ExtendedFluid extends FlowableFluid implements Breathable 
 	}
 
 	public static class Flowing extends ExtendedFluid {
-		public Flowing(int fogColor, int tintColor, int damage, boolean isInfinite, boolean isToxic, @Nullable DamageSource source) {
-			super(fogColor, tintColor, damage, isInfinite, isToxic, source);
+		public Flowing(int fogColor, int tintColor, boolean isInfinite, @Nullable DamageSource source) {
+			super(fogColor, tintColor, isInfinite, source);
 		}
 
 		@Override
@@ -302,8 +288,8 @@ public abstract class ExtendedFluid extends FlowableFluid implements Breathable 
 	}
 
 	public static class Still extends ExtendedFluid {
-		public Still(int fogColor, int tintColor, int damage, boolean isInfinite, boolean isToxic, @Nullable DamageSource source) {
-			super(fogColor, tintColor, damage, isInfinite, isToxic, source);
+		public Still(int fogColor, int tintColor, boolean isInfinite, @Nullable DamageSource source) {
+			super(fogColor, tintColor, isInfinite, source);
 		}
 
 		@Override

@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
+import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedInventoryProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 

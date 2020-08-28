@@ -3,7 +3,7 @@ import net.fabricmc.loom.task.RunClientTask
 plugins {
     id 'maven-publish'
     id 'com.diffplug.spotless' version '5.1.0' apply false
-    id 'fabric-loom' version '0.4-SNAPSHOT' apply false
+    id 'fabric-loom' version '0.5.22'
 }
 
 apply from: 'dependencies.gradle'
@@ -19,7 +19,12 @@ allprojects {
 
     ext {
         shouldGenerateData = false
-        isRunningGenerateDataTask = false
+        // A special flag to disable this module to go into production jar and mark this moudle to be running the datagen task.
+        isRunningGenerateDataTask = path == ":astromine-datagen-initializer"
+    }
+
+    loom {
+        shareCaches = true
     }
 
     spotless {
@@ -121,12 +126,14 @@ allprojects {
         mappings group: 'net.fabricmc', name: 'yarn', version: mappings_version, classifier: 'v2'
         modImplementation "net.fabricmc:fabric-loader:$loader_version"
         useAsApiOptionally "net.fabricmc.fabric-api:fabric-api:$api_version"
+        modImplementation "com.google.code.findbugs:jsr305:3.0.2"
 
         tap(rootProject.ext.setDefaultApis)
     }
 
     configurations {
         dev
+        built
     }
 
     jar {
@@ -141,6 +148,7 @@ allprojects {
 
         artifacts {
             dev file: file("${project.buildDir}/libs/$archivesBaseName-${version}-dev.jar"), type: 'jar', builtBy: remapJar
+            built file: file("${project.buildDir}/libs/$archivesBaseName-${version}.jar"), type: 'jar', builtBy: remapJar
         }
 
         processResources {
@@ -194,24 +202,24 @@ allprojects {
                     classpath sourceSets.main.output
                     classpath sourceSets.datagen.output
                 }
-
-                build.dependsOn generateData
-            } else {
-                rootProject.dependencies.include(rootProject.project("$path:"))
             }
-        } else {
-            rootProject.dependencies.include(rootProject.project("$path:"))
         }
     }
 
-    task sourcesJar(type: Jar, dependsOn: classes) {
-        archiveClassifier.set('sources')
-        from sourceSets.main.allSource
+    if (!ignoreRemapSrc) {
+        task sourcesJar(type: Jar, dependsOn: classes) {
+            archiveClassifier.set('sources')
+            from sourceSets.main.allSource
+        }
     }
-    
+
     task deleteBuildFolder {
-        file("${buildDir}/libs").deleteDir()
+        file("${buildDir}").listFiles().each { it.deleteDir() }
     }
+}
+
+afterEvaluate {
+    //tasks.getByName("remapAllJars").onlyIf { !ignoreRemapSrc }
 }
 
 subprojects {
@@ -230,8 +238,10 @@ subprojects {
                     artifact(file("${project.buildDir}/libs/$archivesBaseName-${project.version}-maven.jar")) {
                         builtBy remapMavenJar
                     }
-                    artifact(sourcesJar) {
-                        builtBy remapSourcesJar
+                    if (!ignoreRemapSrc) {
+                        artifact(sourcesJar) {
+                            builtBy remapSourcesJar
+                        }
                     }
                 }
             }
@@ -248,6 +258,7 @@ subprojects.forEach {
 
 task deleteBuildFolderAll
 subprojects.each { deleteBuildFolderAll.dependsOn("${it.path}:deleteBuildFolder") }
+build.dependsOn(deleteBuildFolderAll)
 
 task remapMavenJar(type: net.fabricmc.loom.task.RemapJarTask, dependsOn: jar) {
     afterEvaluate {
@@ -267,8 +278,10 @@ publishing {
             artifact(file("${project.buildDir}/libs/$archivesBaseName-${project.version}-maven.jar")) {
                 builtBy remapMavenJar
             }
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
+            if (!ignoreRemapSrc) {
+                artifact(sourcesJar) {
+                    builtBy remapSourcesJar
+                }
             }
             pom.withXml {
                 def buildid = System.getenv("PUBLISH_BUILD")
@@ -289,16 +302,19 @@ publishing {
 }
 
 subprojects.each { remapJar.dependsOn("${it.path}:remapJar") }
+subprojects.each { build.dependsOn("${it.path}:build") }
 subprojects.each { spotlessApply.dependsOn("${it.path}:spotlessApply") }
 
 dependencies {
     afterEvaluate {
         subprojects.each {
             compile project(path: ":${it.path}", configuration: "dev")
+            if (!it.isRunningGenerateDataTask) {
+                include project(path: ":${it.path}", configuration: "built")
+            }
         }
     }
 
-    // We would like to give a huge thanks to loom for not applying this
     modRuntime "net.fabricmc:dev-launch-injector:+"
     tap(rootProject.ext.setRuntimeTestMods)
 }

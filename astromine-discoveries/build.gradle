@@ -1,0 +1,18 @@
+archivesBaseName = "astromine-discoveries"
+shouldGenerateData = true
+
+loom {
+    accessWidener = file("src/main/resources/astromine-discoveries.accesswidener")
+}
+
+dependencies {
+    compile project(path: ':astromine-core', configuration: 'dev')
+    compile project(path: ':astromine-foundations', configuration: 'dev')
+}
+
+afterEvaluate {
+    dependencies {
+        datagenCompile project(path: ":astromine-core", configuration: 'datagenDev')
+        datagenCompile project(path: ":astromine-foundations", configuration: 'datagenDev')
+    }
+}

@@ -40,7 +40,7 @@ import com.github.chainmailstudios.astromine.access.WorldChunkAccess;
 public class ExplosionUtilities {
 	private static final BlockState AIR = Blocks.AIR.getDefaultState();
 
-	public static void tryExploding(World world, int x, int y, int z, int power) {
+	public static void attemptExplosion(World world, int x, int y, int z, int power) {
 		if (!world.isClient) {
 			long start = System.currentTimeMillis();
 			long blocks = explode(world, x, y, z, power);

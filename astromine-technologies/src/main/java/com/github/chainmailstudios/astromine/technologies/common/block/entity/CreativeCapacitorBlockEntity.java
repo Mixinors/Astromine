@@ -30,7 +30,7 @@ import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentE
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 
-public class CreativeCapacitorBlockEntity extends ComponentEnergyBlockEntity implements Tickable {
+public class CreativeCapacitorBlockEntity extends CapacitorBlockEntity {
 	public CreativeCapacitorBlockEntity() {
 		super(AstromineTechnologiesBlocks.CREATIVE_CAPACITOR, AstromineTechnologiesBlockEntityTypes.CREATIVE_CAPACITOR);
 	}

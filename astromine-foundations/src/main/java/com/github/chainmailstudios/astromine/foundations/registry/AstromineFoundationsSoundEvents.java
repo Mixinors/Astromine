@@ -28,7 +28,7 @@ import com.github.chainmailstudios.astromine.foundations.AstromineFoundationsCom
 import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 import net.minecraft.sound.SoundEvent;
 
-public class AstromineFoundationsSoundEvents {
+public class AstromineFoundationsSoundEvents extends AstromineSoundEvents {
 	// Armory
 	public static final SoundEvent COPPER_ARMOR_EQUIPPED = register("item.armor.equip_copper");
 	public static final SoundEvent TIN_ARMOR_EQUIPPED = register("item.armor.equip_tin");
@@ -48,8 +48,4 @@ public class AstromineFoundationsSoundEvents {
 	public static final SoundEvent GALAXIUM_ARMOR_EQUIPPED = register("item.armor.equip_galaxium");
 	public static final SoundEvent UNIVITE_ARMOR_EQUIPPED = register("item.armor.equip_univite");
 	public static final SoundEvent SPACE_SUIT_EQUIPPED = register("item.armor.equip_space_suit");
-
-	public static SoundEvent register(String id) {
-		return AstromineSoundEvents.register(AstromineFoundationsCommon.appendId(id));
-	}
 }

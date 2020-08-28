@@ -29,7 +29,7 @@ import com.github.chainmailstudios.astromine.transportations.registry.client.Ast
 import net.minecraft.item.Item;
 
 public class AstromineTransportationsItems extends AstromineItems {
-	public static Item.Settings getBasicSettings() {
+	public static Item.Settings getTransportationsBasicSettings() {
 		return new Item.Settings().group(AstromineTransportationsItemGroups.TRANSPORTATIONS);
 	}
 

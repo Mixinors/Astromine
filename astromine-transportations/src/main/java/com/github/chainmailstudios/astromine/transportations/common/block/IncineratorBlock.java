@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block;
 
-import com.github.chainmailstudios.astromine.common.utilities.FacingBlockWrenchable;
+import com.github.chainmailstudios.astromine.common.utilities.capability.block.FacingBlockWrenchable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;

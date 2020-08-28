@@ -57,7 +57,7 @@ public class NuclearWarheadBlock extends Block {
 			return;
 		if (world.isReceivingRedstonePower(pos)) {
 			if (AstromineConfig.get().nuclearWarheadEnabled) {
-				ExplosionUtilities.tryExploding(world, pos.getX(), pos.getY(), pos.getZ(), 128);
+				ExplosionUtilities.attemptExplosion(world, pos.getX(), pos.getY(), pos.getZ(), 128);
 			} else {
 				world.breakBlock(pos, true);
 			}

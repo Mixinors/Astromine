@@ -38,8 +38,8 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyCapacityProvider;
-import com.github.chainmailstudios.astromine.common.utilities.WorldPos;
+import com.github.chainmailstudios.astromine.common.utilities.capability.energy.EnergyCapacityProvider;
+import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergySide;
 import team.reborn.energy.EnergyStorage;
@@ -81,6 +81,7 @@ public class AstromineNetworkMembers {
 				return EnergyTier.INFINITE;
 			}
 		});
+
 		NetworkMemberRegistry.INSTANCE.register(AstromineNetworkTypes.ENERGY, new NetworkMemberRegistry.NetworkTypeRegistryImpl<NetworkType>() {
 			@Override
 			public Collection<NetworkMemberType> get(WorldPos pos) {
@@ -110,6 +111,7 @@ public class AstromineNetworkMembers {
 		FabricLoader.getInstance().getEntrypoints("astromine-network-members", Runnable.class).forEach(Runnable::run);
 
 		Registry.BLOCK.getEntries().forEach(entry -> acceptBlock(entry.getKey(), entry.getValue()));
+
 		RegistryEntryAddedCallback.event(Registry.BLOCK).register((index, identifier, block) -> acceptBlock(RegistryKey.of(Registry.BLOCK_KEY, identifier), block));
 	}
 

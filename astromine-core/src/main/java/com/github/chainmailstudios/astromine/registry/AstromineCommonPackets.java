@@ -37,8 +37,6 @@ import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
 public class AstromineCommonPackets {
 	public static final Identifier BLOCK_ENTITY_UPDATE_PACKET = AstromineCommon.identifier("block_entity_update");
 
-	public static final Identifier PRESSURE_UPDATE = AstromineCommon.identifier("pressure_update");
-
 	public static void initialize() {
 		ServerSidePacketRegistry.INSTANCE.register(BLOCK_ENTITY_UPDATE_PACKET, (((context, buffer) -> {
 			BlockPos blockPos = buffer.readBlockPos();

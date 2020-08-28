@@ -1,7 +1,5 @@
 archivesBaseName = "astromine-datagen-initializer"
 shouldGenerateData = true
-// A special flag to disable this module to go into production jar and mark this moudle to be running the datagen task.
-isRunningGenerateDataTask = true
 
 dependencies {
     rootProject.subprojects.forEach {

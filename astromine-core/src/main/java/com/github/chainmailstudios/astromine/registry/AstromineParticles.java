@@ -42,7 +42,7 @@ public class AstromineParticles {
 	 * @param name
 	 *        Name of {@link DefaultParticleType} to register
 	 * @param alwaysShow
-	 *        Whether or not the particle should always appear visible
+	 *        Whether or not the com.github.chainmailstudios.astromine.technologies.client.particle should always appear visible
 	 * @return Registered {@link DefaultParticleType}
 	 */
 	public static DefaultParticleType register(String name, boolean alwaysShow) {

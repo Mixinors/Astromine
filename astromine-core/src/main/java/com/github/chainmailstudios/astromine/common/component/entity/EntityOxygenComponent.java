@@ -57,7 +57,7 @@ public class EntityOxygenComponent implements Component {
 		return tag;
 	}
 
-	public void simulate(FluidVolume atmosphereVolume) {
+	public void simulate(boolean isBreathing) {
 		if (entity instanceof PlayerEntity) {
 			PlayerEntity player = (PlayerEntity) entity;
 
@@ -66,16 +66,10 @@ public class EntityOxygenComponent implements Component {
 			}
 		}
 
-		if (BreathableRegistry.INSTANCE.containsKey(entity.getType())) {
-			if (!BreathableRegistry.INSTANCE.canBreathe(entity.getType(), atmosphereVolume.getFluid())) {
-				oxygen = nextOxygen(false, oxygen);
-			} else {
-				oxygen = nextOxygen(true, oxygen);
-			}
+		oxygen = nextOxygen(isBreathing, oxygen);
 
-			if (oxygen == getMinimumOxygen()) {
-				entity.damage(DamageSource.GENERIC, 1.0F);
-			}
+		if (oxygen == getMinimumOxygen()) {
+			entity.damage(DamageSource.GENERIC, 1.0F);
 		}
 	}
 

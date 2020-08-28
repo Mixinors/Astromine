@@ -38,6 +38,7 @@ public class AstromineNetworkTypes {
 		@Override
 		public void tick(NetworkInstance instance) {
 			// TODO: item network
+			// TODO: still todo two months later
 		}
 	});
 

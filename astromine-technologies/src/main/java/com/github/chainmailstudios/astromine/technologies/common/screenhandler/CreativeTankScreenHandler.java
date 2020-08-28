@@ -32,7 +32,8 @@ import com.github.chainmailstudios.astromine.common.screenhandler.base.Component
 
 // TODO! - 07/08/2020 - 17:13:28
 // TODO! - 21/08/2020 - 17:31:08
-public class CreativeTankScreenHandler extends ComponentFluidScreenHandler {
+// TODO! - 27/08/2020 - 07:56:00
+public class CreativeTankScreenHandler extends TankScreenHandler {
 	public CreativeTankScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AstromineTechnologiesScreenHandlers.CREATIVE_TANK, syncId, player, position);
 	}

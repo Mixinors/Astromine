@@ -36,7 +36,7 @@ import com.github.chainmailstudios.astromine.common.block.base.CableBlock;
 import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
-import com.github.chainmailstudios.astromine.common.utilities.WorldPos;
+import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;

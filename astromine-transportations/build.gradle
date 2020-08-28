@@ -1,6 +1,6 @@
 archivesBaseName = "astromine-transportations"
 
-minecraft {
+loom {
     accessWidener = file("src/main/resources/astromine-transportations.accesswidener")
 }
 

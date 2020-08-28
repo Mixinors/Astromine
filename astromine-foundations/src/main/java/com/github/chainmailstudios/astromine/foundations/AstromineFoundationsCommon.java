@@ -38,6 +38,8 @@ public class AstromineFoundationsCommon extends AstromineCommon {
 		AstromineFoundationsBlockEntityTypes.initialize();
 		AstromineFoundationsRecipeSerializers.initialize();
 		AstromineFoundationsCriteria.initialize();
+		AstromineFoundationsFluidEffects.initialize();
+		AstromineFoundationsFeatures.initialize();
 	}
 
 	public static String appendId(String id) {

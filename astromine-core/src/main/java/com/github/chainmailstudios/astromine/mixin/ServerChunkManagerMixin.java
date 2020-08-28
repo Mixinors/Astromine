@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
+import com.github.chainmailstudios.astromine.common.callback.ServerChunkManagerCallback;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -41,36 +42,13 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.level.storage.LevelStorage;
 import com.mojang.datafixers.DataFixer;
 
-import com.github.chainmailstudios.astromine.common.world.generation.mars.MarsChunkGenerator;
-import com.github.chainmailstudios.astromine.common.world.generation.moon.MoonChunkGenerator;
-import com.github.chainmailstudios.astromine.common.world.generation.space.EarthSpaceChunkGenerator;
-import com.github.chainmailstudios.astromine.common.world.generation.vulcan.VulcanChunkGenerator;
-
 import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 
 @Mixin(ServerChunkManager.class)
 public class ServerChunkManagerMixin {
-
-	@Mutable
-	@Shadow
-	@Final
-	private ChunkGenerator chunkGenerator;
-
 	@Inject(method = "<init>", at = @At("RETURN"))
-	private void handleConstructor(ServerWorld world, LevelStorage.Session session, DataFixer dataFixer, StructureManager structureManager, Executor workerExecutor, ChunkGenerator chunkGenerator, int viewDistance, boolean bl,
-		WorldGenerationProgressListener worldGenerationProgressListener, Supplier<PersistentStateManager> supplier, CallbackInfo ci) {
-		if (chunkGenerator instanceof EarthSpaceChunkGenerator) {
-			this.chunkGenerator = ((EarthSpaceChunkGenerator) chunkGenerator).withSeedCommon(world.getSeed());
-		}
-		if (chunkGenerator instanceof MoonChunkGenerator) {
-			this.chunkGenerator = ((MoonChunkGenerator) chunkGenerator).withSeedCommon(world.getSeed());
-		}
-		if (chunkGenerator instanceof MarsChunkGenerator) {
-			this.chunkGenerator = ((MarsChunkGenerator) chunkGenerator).withSeedCommon(world.getSeed());
-		}
-		if (chunkGenerator instanceof VulcanChunkGenerator) {
-			this.chunkGenerator = ((VulcanChunkGenerator) chunkGenerator).withSeedCommon(world.getSeed());
-		}
+	private void handleConstructor(ServerWorld world, LevelStorage.Session session, DataFixer dataFixer, StructureManager structureManager, Executor workerExecutor, ChunkGenerator chunkGenerator, int viewDistance, boolean bl, WorldGenerationProgressListener worldGenerationProgressListener, Supplier<PersistentStateManager> supplier, CallbackInfo ci) {
+		ServerChunkManagerCallback.EVENT.invoker().handle((ServerChunkManager) (Object) this);
 	}
 }
