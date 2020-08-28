@@ -13,5 +13,6 @@ dependencies {
 afterEvaluate {
     dependencies {
         datagenCompile project(path: ":astromine-core", configuration: 'datagenDev')
+        datagenCompile project(path: ":astromine-foundations", configuration: 'datagenDev')
     }
 }

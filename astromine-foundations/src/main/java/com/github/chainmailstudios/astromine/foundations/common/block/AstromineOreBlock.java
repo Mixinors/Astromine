@@ -47,24 +47,8 @@ public class AstromineOreBlock extends OreBlock {
 
 	@Override
 	protected int getExperienceWhenMined(Random random) {
-		if (this == AstromineFoundationsBlocks.ASTEROID_ASTERITE_ORE) {
-			return MathHelper.nextInt(random, 5, 8);
-		} else if (this == AstromineFoundationsBlocks.ASTEROID_GALAXIUM_ORE || this == AstromineFoundationsBlocks.ASTEROID_STELLUM_ORE) {
-			return MathHelper.nextInt(random, 6, 9);
-		} else if (this == AstromineFoundationsBlocks.ASTEROID_METITE_ORE) {
-			return MathHelper.nextInt(random, 4, 7);
-		} else if (this == AstromineFoundationsBlocks.ASTEROID_COAL_ORE) {
-			return MathHelper.nextInt(random, 0, 2);
-		} else if (this == AstromineFoundationsBlocks.ASTEROID_TIN_ORE || this == AstromineFoundationsBlocks.ASTEROID_COPPER_ORE) {
-			return MathHelper.nextInt(random, 1, 2);
-		} else if (this == AstromineFoundationsBlocks.ASTEROID_IRON_ORE) {
-			return MathHelper.nextInt(random, 1, 3);
-		} else if (this == AstromineFoundationsBlocks.ASTEROID_GOLD_ORE || this == AstromineFoundationsBlocks.METEOR_METITE_ORE) {
+		if (this == AstromineFoundationsBlocks.METEOR_METITE_ORE) {
 			return MathHelper.nextInt(random, 2, 3);
-		} else if (this == AstromineFoundationsBlocks.ASTEROID_DIAMOND_ORE || this == AstromineFoundationsBlocks.ASTEROID_EMERALD_ORE) {
-			return MathHelper.nextInt(random, 3, 7);
-		} else if (this == AstromineFoundationsBlocks.ASTEROID_LAPIS_ORE || this == AstromineFoundationsBlocks.ASTEROID_REDSTONE_ORE) {
-			return MathHelper.nextInt(random, 2, 5);
 		} else {
 			return 0;
 		}

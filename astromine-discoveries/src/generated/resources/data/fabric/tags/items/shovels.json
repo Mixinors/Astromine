@@ -1,0 +1,20 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:tin_shovel",
+    "astromine:copper_shovel",
+    "astromine:silver_shovel",
+    "astromine:lead_shovel",
+    "astromine:steel_shovel",
+    "astromine:bronze_shovel",
+    "astromine:electrum_shovel",
+    "astromine:rose_gold_shovel",
+    "astromine:sterling_silver_shovel",
+    "astromine:fools_gold_shovel",
+    "astromine:metite_shovel",
+    "astromine:asterite_shovel",
+    "astromine:stellum_shovel",
+    "astromine:galaxium_shovel",
+    "astromine:univite_shovel"
+  ]
+}
