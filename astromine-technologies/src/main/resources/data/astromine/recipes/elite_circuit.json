@@ -3,8 +3,8 @@
   "pattern": ["000", "121", "000"],
   "key": {
     "0": { "tag": "c:steel_plates" },
-    "1": { "tag": "c:gold_plates" },
+    "1": { "tag": "c:iron_plates" },
     "2": { "item": "astromine:advanced_circuit" }
   },
-  "result": { "item": "astromine:elite_circuit", "count": 2 }
+  "result": { "item": "astromine:elite_circuit", "count": 3 }
 }

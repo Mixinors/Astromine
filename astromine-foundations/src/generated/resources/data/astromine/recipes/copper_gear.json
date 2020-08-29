@@ -11,6 +11,7 @@
     }
   },
   "result": {
-    "item": "astromine:copper_gear"
+    "item": "astromine:copper_gear",
+    "count": 2
   }
 }
