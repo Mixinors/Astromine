@@ -51,7 +51,7 @@ public class ComponentEntityFluidScreenHandler extends ComponentEntityScreenHand
 		fluidBar = new FluidVerticalBarWidget();
 		fluidBar.setPosition(Position.of(mainTab, 7, 11));
 		fluidBar.setSize(Size.of(24F, 48F));
-		fluidBar.setVolume(() -> blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(0));
+		fluidBar.setVolume(() -> blockEntity.getFluidComponent().getVolume(0));
 
 		mainTab.addWidget(fluidBar);
 	}
