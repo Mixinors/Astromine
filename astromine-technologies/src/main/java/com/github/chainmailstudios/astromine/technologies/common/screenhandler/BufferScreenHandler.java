@@ -29,14 +29,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
-import com.github.chainmailstudios.astromine.common.screenhandler.base.ComponentItemScreenHandler;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityItemScreenHandler;
 import com.github.chainmailstudios.astromine.common.utilities.tier.BufferTier;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import com.github.vini2003.blade.common.widget.base.SlotListWidget;
 
-public class BufferScreenHandler extends ComponentItemScreenHandler {
+public class BufferScreenHandler extends ComponentBlockEntityItemScreenHandler {
 	public final BufferTier bufferTier;
 
 	public BufferScreenHandler(int syncId, PlayerEntity player, BlockPos position, BufferTier bufferTier) {

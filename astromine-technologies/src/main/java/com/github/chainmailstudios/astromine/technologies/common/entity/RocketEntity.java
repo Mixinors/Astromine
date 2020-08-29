@@ -24,9 +24,13 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.entity;
 
+import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidEntity;
+import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedInventoryProvider;
+import com.github.chainmailstudios.astromine.technologies.common.screenhandler.RocketScreenHandler;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesCriteria;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.Entity;
@@ -39,12 +43,14 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -67,34 +73,29 @@ import com.github.chainmailstudios.astromine.registry.AstromineCriteria;
 import com.github.chainmailstudios.astromine.registry.AstromineParticles;
 import io.netty.buffer.Unpooled;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 
-public class RocketEntity extends Entity {
+public class RocketEntity extends ComponentFluidEntity implements ExtendedScreenHandlerFactory {
 	private static final TrackedData<Boolean> IS_GO = DataTracker.registerData(RocketEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-
-	private final FluidInventoryComponent fluidInventory = new SimpleFluidInventoryComponent(1);
 
 	public static final Identifier ROCKET_SPAWN = AstromineCommon.identifier("rocket_spawn");
 
+	@Override
+	public FluidInventoryComponent createFluidComponent() {
+		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1);;
+		fluidComponent.getVolume(0).setSize(Fraction.ofWhole(128));
+		return fluidComponent;
+	}
+
 	public RocketEntity(EntityType<?> type, World world) {
 		super(type, world);
-		fluidInventory.getContents().forEach((k, v) -> v.setSize(new Fraction(100, 1)));
 		this.getDataTracker().set(IS_GO, false);
 	}
 
 	@Override
 	protected void initDataTracker() {
 		this.getDataTracker().startTracking(IS_GO, false);
-	}
-
-	@Override
-	protected void readCustomDataFromTag(CompoundTag tag) {
-		fluidInventory.read(fluidInventory, tag.getCompound("fluid"), Optional.empty(), Optional.empty());
-	}
-
-	@Override
-	protected void writeCustomDataToTag(CompoundTag tag) {
-		tag.put("fluid", fluidInventory.write(fluidInventory, Optional.empty(), Optional.empty()));
 	}
 
 	public Box getHardCollisionBox(Entity collidingEntity) {
@@ -105,6 +106,7 @@ public class RocketEntity extends Entity {
 		return this.getBoundingBox();
 	}
 
+	@Override
 	public boolean collides() {
 		return !this.removed;
 	}
@@ -181,6 +183,7 @@ public class RocketEntity extends Entity {
 				int j = MathHelper.floor(this.getY());
 				int n = MathHelper.floor(this.getX());
 				int o = MathHelper.floor(this.getZ());
+
 				boolean bl = false;
 
 				for (int p = -2; p <= 2; ++p) {
@@ -189,13 +192,17 @@ public class RocketEntity extends Entity {
 							int s = n + p;
 							int t = j + r;
 							int u = o + q;
+
 							BlockPos blockPos = new BlockPos(s, t, u);
 							BlockState blockState = this.world.getBlockState(blockPos);
+
 							float power = 0;
+
 							if (WitherEntity.canDestroy(blockState)) {
 								bl = true;
 								power = 2.1f;
 							}
+
 							if (power > 0) {
 								this.world.createExplosion(null, DamageSource.explosion((LivingEntity) null), new ExplosionBehavior() {
 									@Override
@@ -221,7 +228,17 @@ public class RocketEntity extends Entity {
 	}
 
 	public void spawnParticles(Vec3d thrustVec, Vec3d speed) {
-		world.addParticle(AstromineParticles.ROCKET_FLAME, getX() + ((thrustVec.getX() - (Math.min(0.6f, random.nextFloat())) * (random.nextBoolean() ? 1 : -1))), getY() + thrustVec.getY(), getZ() + ((thrustVec.getZ() - (Math.min(0.6f, random.nextFloat())) * (random.nextBoolean()
-			? 1 : -1))), speed.getX(), speed.getY(), speed.getZ());
+		world.addParticle(AstromineParticles.ROCKET_FLAME, getX() + ((thrustVec.getX() - (Math.min(0.6f, random.nextFloat())) * (random.nextBoolean() ? 1 : -1))), getY() + thrustVec.getY(), getZ() + ((thrustVec.getZ() - (Math.min(0.6f, random.nextFloat())) * (random.nextBoolean() ? 1 : -1))), speed.getX(), speed.getY(), speed.getZ());
+	}
+
+	@Override
+	public void writeScreenOpeningData(ServerPlayerEntity serverPlayerEntity, PacketByteBuf buffer) {
+		buffer.writeInt(this.getEntityId());
+	}
+
+	@Nullable
+	@Override
+	public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
+		return new RocketScreenHandler(syncId, player, getEntityId());
 	}
 }

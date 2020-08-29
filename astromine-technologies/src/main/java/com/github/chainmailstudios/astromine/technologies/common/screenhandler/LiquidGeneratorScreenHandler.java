@@ -29,12 +29,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.LiquidGeneratorBlockEntity;
-import com.github.chainmailstudios.astromine.common.screenhandler.base.ComponentEnergyFluidScreenHandler;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyFluidScreenHandler;
 import com.github.chainmailstudios.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 
-public class LiquidGeneratorScreenHandler extends ComponentEnergyFluidScreenHandler {
+public class LiquidGeneratorScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
 	private LiquidGeneratorBlockEntity generator;
 
 	public LiquidGeneratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {

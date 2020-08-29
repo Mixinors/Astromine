@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.common.entity.base.*;
 import nerdhub.cardinal.components.api.event.ChunkComponentCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
@@ -38,11 +39,10 @@ import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosph
 import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
-import com.github.chainmailstudios.astromine.common.screenhandler.base.ComponentBlockEntityScreenHandler;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
 import nerdhub.cardinal.components.api.event.EntityComponentCallback;
 import nerdhub.cardinal.components.api.event.ItemComponentCallbackV2;
 import nerdhub.cardinal.components.api.event.WorldComponentCallback;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.WorldChunk;
 
 public class AstromineCommonCallbacks {
@@ -115,5 +115,17 @@ public class AstromineCommonCallbacks {
 				});
 			}
 		});
+
+		EntityComponentCallback.register(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, ComponentFluidItemEntity.class, ComponentFluidItemEntity::getFluidComponent);
+		EntityComponentCallback.register(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, ComponentFluidItemEntity.class, ComponentFluidItemEntity::getItemComponent);
+
+		EntityComponentCallback.register(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, ComponentEnergyItemEntity.class, ComponentEnergyItemEntity::getItemComponent);
+		EntityComponentCallback.register(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, ComponentEnergyItemEntity.class, ComponentEnergyItemEntity::getEnergyComponent);
+
+		EntityComponentCallback.register(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, ComponentItemEntity.class, ComponentItemEntity::getItemComponent);
+
+		EntityComponentCallback.register(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, ComponentFluidEntity.class, ComponentFluidEntity::getFluidComponent);
+
+		EntityComponentCallback.register(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, ComponentEnergyEntity.class, ComponentEnergyEntity::getEnergyComponent);
 	}
 }

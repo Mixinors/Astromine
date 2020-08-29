@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.screenhandler;
 
-import com.github.chainmailstudios.astromine.common.screenhandler.base.BlockStateScreenHandler;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.block.BlockStateScreenHandler;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;

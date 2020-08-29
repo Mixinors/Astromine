@@ -22,29 +22,29 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.screenhandler.base;
+package com.github.chainmailstudios.astromine.common.screenhandler.base.entity;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.util.math.BlockPos;
-
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
+import com.github.chainmailstudios.astromine.common.entity.base.ComponentEnergyFluidEntity;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.widget.blade.EnergyVerticalBarWidget;
 import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBarWidget;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.ScreenHandlerType;
+import team.reborn.energy.EnergySide;
 
-public class ComponentEnergyFluidScreenHandler extends ComponentBlockEntityScreenHandler {
+public class ComponentEntityEnergyFluidScreenHandler extends ComponentEntityScreenHandler {
 	public EnergyVerticalBarWidget energyBar;
 	public FluidVerticalBarWidget fluidBar;
 
-	public ComponentEnergyFluidBlockEntity blockEntity;
+	public ComponentEnergyFluidEntity entity;
 
-	public ComponentEnergyFluidScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
-		super(type, syncId, player, position);
+	public ComponentEntityEnergyFluidScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, int entityId) {
+		super(type, syncId, player, entityId);
 
-		blockEntity = (ComponentEnergyFluidBlockEntity) player.world.getBlockEntity(position);
+		entity = (ComponentEnergyFluidEntity) player.world.getEntityById(entityId);
 	}
 
 	@Override
@@ -54,12 +54,12 @@ public class ComponentEnergyFluidScreenHandler extends ComponentBlockEntityScree
 		energyBar = new EnergyVerticalBarWidget();
 		energyBar.setPosition(Position.of(mainTab, 7, 11));
 		energyBar.setSize(Size.of(24, 48));
-		energyBar.setVolume(blockEntity::getEnergyVolume);
+		energyBar.setVolume(() -> EnergyVolume.of(entity.getEnergyComponent().getStorage().getStored(EnergySide.UNKNOWN)));
 
 		fluidBar = new FluidVerticalBarWidget();
 		fluidBar.setPosition(Position.of(energyBar, energyBar.getWidth() + 7, 0));
 		fluidBar.setSize(Size.of(energyBar.getWidth(), energyBar.getHeight()));
-		fluidBar.setVolume(() -> blockEntity.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(0));
+		fluidBar.setVolume(() -> entity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(0));
 
 		mainTab.addWidget(energyBar);
 		mainTab.addWidget(fluidBar);

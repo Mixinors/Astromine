@@ -30,13 +30,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.TrituratorBlockEntity;
-import com.github.chainmailstudios.astromine.common.screenhandler.base.ComponentEnergyItemScreenHandler;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyItemScreenHandler;
 import com.github.chainmailstudios.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 
-public class TrituratorScreenHandler extends ComponentEnergyItemScreenHandler {
+public class TrituratorScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
 	private TrituratorBlockEntity triturator;
 
 	public TrituratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {

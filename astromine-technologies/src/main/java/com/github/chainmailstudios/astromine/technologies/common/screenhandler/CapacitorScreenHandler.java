@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.screenhandler;
 
-import com.github.chainmailstudios.astromine.common.screenhandler.base.ComponentEnergyItemScreenHandler;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyItemScreenHandler;
 import com.github.chainmailstudios.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
@@ -38,7 +38,7 @@ import net.minecraft.util.math.BlockPos;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
-public class CapacitorScreenHandler extends ComponentEnergyItemScreenHandler {
+public class CapacitorScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
 	public CapacitorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AstromineTechnologiesScreenHandlers.CAPACITOR, syncId, player, position);
 	}

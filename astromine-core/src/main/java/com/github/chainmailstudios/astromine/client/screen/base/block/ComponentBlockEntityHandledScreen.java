@@ -22,16 +22,16 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.client.screen.base;
+package com.github.chainmailstudios.astromine.client.screen.base.block;
 
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
-import com.github.chainmailstudios.astromine.common.screenhandler.base.ComponentBlockEntityScreenHandler;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 
-public abstract class ComponentItemHandledScreen<T extends ComponentBlockEntityScreenHandler> extends ComponentBlockEntityHandledScreen<T> {
-	public ComponentItemHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
+public class ComponentBlockEntityHandledScreen<T extends ComponentBlockEntityScreenHandler> extends com.github.vini2003.blade.client.handler.BaseHandledScreen<T> {
+	public ComponentBlockEntityHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 	}
 }

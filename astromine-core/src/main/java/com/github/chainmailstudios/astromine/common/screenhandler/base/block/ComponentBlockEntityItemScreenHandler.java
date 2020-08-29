@@ -22,16 +22,20 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.client.screen.base;
+package com.github.chainmailstudios.astromine.common.screenhandler.base.block;
 
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.text.Text;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.util.math.BlockPos;
 
-import com.github.chainmailstudios.astromine.common.screenhandler.base.ComponentBlockEntityScreenHandler;
-import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentInventoryBlockEntity;
 
-public abstract class ComponentEnergyHandledScreen<T extends ComponentBlockEntityScreenHandler> extends ComponentBlockEntityHandledScreen<T> {
-	public ComponentEnergyHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
-		super(handler, inventory, title);
+public class ComponentBlockEntityItemScreenHandler extends ComponentBlockEntityScreenHandler {
+	public ComponentInventoryBlockEntity blockEntity;
+
+	public ComponentBlockEntityItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
+		super(type, syncId, player, position);
+
+		blockEntity = (ComponentInventoryBlockEntity) player.world.getBlockEntity(position);
 	}
 }

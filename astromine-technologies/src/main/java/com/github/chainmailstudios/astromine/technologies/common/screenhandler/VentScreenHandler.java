@@ -28,9 +28,9 @@ import com.github.chainmailstudios.astromine.technologies.registry.AstromineTech
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.chainmailstudios.astromine.common.screenhandler.base.ComponentEnergyFluidScreenHandler;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyFluidScreenHandler;
 
-public class VentScreenHandler extends ComponentEnergyFluidScreenHandler {
+public class VentScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
 	public VentScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AstromineTechnologiesScreenHandlers.VENT, syncId, player, position);
 	}

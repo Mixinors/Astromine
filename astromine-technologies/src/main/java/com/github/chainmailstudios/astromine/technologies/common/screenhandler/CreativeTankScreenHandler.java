@@ -28,8 +28,6 @@ import com.github.chainmailstudios.astromine.technologies.registry.AstromineTech
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.chainmailstudios.astromine.common.screenhandler.base.ComponentFluidScreenHandler;
-
 // TODO! - 07/08/2020 - 17:13:28
 // TODO! - 21/08/2020 - 17:31:08
 // TODO! - 27/08/2020 - 07:56:00

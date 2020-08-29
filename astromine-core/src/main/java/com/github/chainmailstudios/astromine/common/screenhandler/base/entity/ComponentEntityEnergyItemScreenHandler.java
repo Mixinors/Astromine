@@ -22,26 +22,26 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.screenhandler.base;
+package com.github.chainmailstudios.astromine.common.screenhandler.base.entity;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.util.math.BlockPos;
-
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyBlockEntity;
+import com.github.chainmailstudios.astromine.common.entity.base.ComponentEnergyItemEntity;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.widget.blade.EnergyVerticalBarWidget;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.ScreenHandlerType;
+import team.reborn.energy.EnergySide;
 
-public class ComponentEnergyScreenHandler extends ComponentBlockEntityScreenHandler {
-	public ComponentEnergyBlockEntity blockEntity;
+public class ComponentEntityEnergyItemScreenHandler extends ComponentEntityScreenHandler {
+	public ComponentEnergyItemEntity entity;
 
 	public EnergyVerticalBarWidget energyBar;
 
-	public ComponentEnergyScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
-		super(type, syncId, player, position);
+	public ComponentEntityEnergyItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, int entityId) {
+		super(type, syncId, player, entityId);
 
-		blockEntity = (ComponentEnergyBlockEntity) player.world.getBlockEntity(position);
+		entity = (ComponentEnergyItemEntity) player.world.getEntityById(entityId);
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class ComponentEnergyScreenHandler extends ComponentBlockEntityScreenHand
 		energyBar = new EnergyVerticalBarWidget();
 		energyBar.setPosition(Position.of(mainTab, 7F, 11));
 		energyBar.setSize(Size.of(24F, 48F));
-		energyBar.setVolume(blockEntity::getEnergyVolume);
+		energyBar.setVolume(() -> EnergyVolume.of(entity.getEnergyComponent().getStorage().getStored(EnergySide.UNKNOWN)));
 
 		mainTab.addWidget(energyBar);
 	}

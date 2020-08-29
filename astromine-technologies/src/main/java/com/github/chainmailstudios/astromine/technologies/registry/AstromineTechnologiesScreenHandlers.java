@@ -112,6 +112,11 @@ public class AstromineTechnologiesScreenHandlers extends AstromineScreenHandlers
 		return new AlloySmelterScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 
+	public static final ScreenHandlerType<RocketScreenHandler> ROCKET = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("rocket"), ((syncId, inventory, buffer) -> {
+		return new RocketScreenHandler(syncId, inventory.player, buffer.readInt());
+	}));
+
+
 	public static void initialize() {
 
 	}

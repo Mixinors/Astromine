@@ -22,20 +22,37 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.screenhandler.base;
+package com.github.chainmailstudios.astromine.common.screenhandler.base.block;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidInventoryBlockEntity;
+import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBarWidget;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.vini2003.blade.common.data.Position;
+import com.github.vini2003.blade.common.data.Size;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentInventoryBlockEntity;
+public class ComponentBlockEntityFluidInventoryScreenHandler extends ComponentBlockEntityScreenHandler {
+	public ComponentFluidInventoryBlockEntity blockEntity;
 
-public class ComponentItemScreenHandler extends ComponentBlockEntityScreenHandler {
-	public ComponentInventoryBlockEntity blockEntity;
+	public FluidVerticalBarWidget fluidBar;
 
-	public ComponentItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
+	public ComponentBlockEntityFluidInventoryScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 
-		blockEntity = (ComponentInventoryBlockEntity) player.world.getBlockEntity(position);
+		blockEntity = (ComponentFluidInventoryBlockEntity) player.world.getBlockEntity(position);
+	}
+
+	@Override
+	public void initialize(int width, int height) {
+		super.initialize(width, height);
+
+		fluidBar = new FluidVerticalBarWidget();
+		fluidBar.setPosition(Position.of(mainTab, 7, 11));
+		fluidBar.setSize(Size.of(24F, 48F));
+		fluidBar.setVolume(() -> blockEntity.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(0));
+
+		mainTab.addWidget(fluidBar);
 	}
 }

@@ -22,21 +22,13 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.screenhandler.base;
-
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
+package com.github.chainmailstudios.astromine.common.screenhandler.base.entity;
 
 import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.NameableComponent;
+import com.github.chainmailstudios.astromine.common.entity.base.ComponentEntity;
 import com.github.chainmailstudios.astromine.common.utilities.WidgetUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.vini2003.blade.common.data.Position;
@@ -47,26 +39,29 @@ import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import com.github.vini2003.blade.common.widget.base.TabWidget;
 import com.github.vini2003.blade.common.widget.base.TextWidget;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
+import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.math.Direction;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 
-public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandler {
-	public ComponentBlockEntity syncBlockEntity;
+public abstract class ComponentEntityScreenHandler extends BaseScreenHandler {
+	public ComponentEntity syncEntity;
 	public Collection<SlotWidget> playerSlots = new HashSet<>();
 	public TabCollection mainTab;
 	protected TabWidget tabs;
 
-	public ComponentBlockEntityScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
+	public ComponentEntityScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, int entityId) {
 		super(type, syncId, player);
 
-		syncBlockEntity = (ComponentBlockEntity) player.world.getBlockEntity(position);
-
-		if (!player.world.isClient) {
-			syncBlockEntity.doNotSkipInventory();
-			syncBlockEntity.sync();
-		}
+		syncEntity = (ComponentEntity) player.world.getEntityById(entityId);
 	}
 
 	public int getTabWidgetExtendedHeight() {
@@ -81,13 +76,13 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 
 		addWidget(tabs);
 
-		mainTab = (TabCollection) tabs.addTab(syncBlockEntity.getCachedState().getBlock().asItem());
+		mainTab = (TabCollection) tabs.addTab(Items.BEE_SPAWN_EGG);
 		mainTab.setPosition(Position.of(tabs, 0, 25F + 7F));
 		mainTab.setSize(Size.of(176F, 184F));
 
 		TextWidget title = new TextWidget();
 		title.setPosition(Position.of(mainTab, 8, 0));
-		title.setText(new TranslatableText(syncBlockEntity.getCachedState().getBlock().asItem().getTranslationKey()));
+		title.setText(syncEntity.getDisplayName());
 		title.setColor(4210752);
 		mainTab.addWidget(title);
 
@@ -98,40 +93,5 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 		invTitle.setColor(4210752);
 		mainTab.addWidget(invTitle);
 		playerSlots = Slots.addPlayerInventory(invPos, Size.of(18F, 18F), mainTab, getPlayer().inventory);
-
-		ComponentProvider componentProvider = ComponentProvider.fromBlockEntity(syncBlockEntity);
-
-		Direction rotation = Direction.NORTH;
-		Block block = syncBlockEntity.getCachedState().getBlock();
-
-		if (block instanceof HorizontalFacingBlockWithEntity) {
-			DirectionProperty property = ((HorizontalFacingBlockWithEntity) block).getDirectionProperty();
-			if (property != null)
-				rotation = syncBlockEntity.getCachedState().get(property);
-		}
-
-		final Direction finalRotation = rotation;
-
-		BlockEntityTransferComponent transferComponent = componentProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
-
-		transferComponent.get().forEach((type, entry) -> {
-			if (componentProvider.getComponent(type) instanceof NameableComponent) {
-				NameableComponent nameableComponent = (NameableComponent) componentProvider.getComponent(type);
-				TabCollection current = (TabCollection) tabs.addTab(nameableComponent.getSymbol(), () -> Collections.singletonList(nameableComponent.getName()));
-				WidgetUtilities.createTransferTab(current, Position.of(tabs, tabs.getWidth() / 2 - 38, getTabWidgetExtendedHeight() / 2), finalRotation, transferComponent, syncBlockEntity.getPos(), type);
-				TextWidget invTabTitle = new TextWidget();
-				invTabTitle.setPosition(Position.of(invPos, 0, -10));
-				invTabTitle.setText(getPlayer().inventory.getName());
-				invTabTitle.setColor(4210752);
-				current.addWidget(invTabTitle);
-				playerSlots.addAll(Slots.addPlayerInventory(invPos, Size.of(18F, 18F), current, getPlayer().inventory));
-
-				TextWidget tabTitle = new TextWidget();
-				tabTitle.setPosition(Position.of(mainTab, 8, 0));
-				tabTitle.setText(nameableComponent.getName());
-				tabTitle.setColor(4210752);
-				current.addWidget(tabTitle);
-			}
-		});
 	}
 }

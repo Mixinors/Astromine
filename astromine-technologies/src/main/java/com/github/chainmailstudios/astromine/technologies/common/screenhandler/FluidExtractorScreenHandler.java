@@ -28,9 +28,9 @@ import com.github.chainmailstudios.astromine.technologies.registry.AstromineTech
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.chainmailstudios.astromine.common.screenhandler.base.ComponentEnergyFluidScreenHandler;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyFluidScreenHandler;
 
-public class FluidExtractorScreenHandler extends ComponentEnergyFluidScreenHandler {
+public class FluidExtractorScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
 	public FluidExtractorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AstromineTechnologiesScreenHandlers.FLUID_EXTRACTOR, syncId, player, position);
 	}
