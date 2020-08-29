@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.technologies.common.entity;
+package com.github.chainmailstudios.astromine.discoveries.common.entity;
 
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
@@ -65,9 +65,9 @@ import com.github.chainmailstudios.astromine.common.component.inventory.FluidInv
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidEntity;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.registry.AstromineParticles;
-import com.github.chainmailstudios.astromine.technologies.common.screenhandler.RocketScreenHandler;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesCriteria;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesCriteria;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesParticles;
+import com.github.chainmailstudios.astromine.discoveries.common.screenhandler.RocketScreenHandler;
 import io.netty.buffer.Unpooled;
 
 import javax.annotation.Nullable;
@@ -124,7 +124,7 @@ public class RocketEntity extends ComponentFluidEntity implements ExtendedScreen
 		if (stack.getItem() == Items.FLINT_AND_STEEL) {
 			this.getDataTracker().set(IS_GO, true);
 			if (player instanceof ServerPlayerEntity) {
-				AstromineTechnologiesCriteria.LAUNCH_ROCKET.trigger((ServerPlayerEntity) player);
+				AstromineDiscoveriesCriteria.LAUNCH_ROCKET.trigger((ServerPlayerEntity) player);
 			}
 			return ActionResult.SUCCESS;
 		} else if (stack.getItem() == Items.STICK) {
@@ -230,7 +230,7 @@ public class RocketEntity extends ComponentFluidEntity implements ExtendedScreen
 	}
 
 	public void spawnParticles(Vec3d thrustVec, Vec3d speed) {
-		world.addParticle(AstromineParticles.ROCKET_FLAME, getX() + ((thrustVec.getX() - (Math.min(0.6f, random.nextFloat())) * (random.nextBoolean() ? 1 : -1))), getY() + thrustVec.getY(), getZ() + ((thrustVec.getZ() - (Math.min(0.6f, random.nextFloat())) * (random.nextBoolean()
+		world.addParticle(AstromineDiscoveriesParticles.ROCKET_FLAME, getX() + ((thrustVec.getX() - (Math.min(0.6f, random.nextFloat())) * (random.nextBoolean() ? 1 : -1))), getY() + thrustVec.getY(), getZ() + ((thrustVec.getZ() - (Math.min(0.6f, random.nextFloat())) * (random.nextBoolean()
 			? 1 : -1))), speed.getX(), speed.getY(), speed.getZ());
 	}
 
