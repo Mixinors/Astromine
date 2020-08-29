@@ -72,6 +72,11 @@ public abstract class CapacitorBlock extends WrenchableHorizontalFacingEnergyTie
 		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
 			buffer.writeBlockPos(pos);
 		}
+
+		@Override
+		public boolean showSpeedInTooltip() {
+			return false;
+		}
 	}
 
 	public static class Primitive extends CapacitorBlock.Base {

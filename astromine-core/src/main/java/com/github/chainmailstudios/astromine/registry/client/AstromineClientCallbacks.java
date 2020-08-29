@@ -62,8 +62,9 @@ public class AstromineClientCallbacks {
 
 		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof BlockItem && ((BlockItem) stack.getItem()).getBlock() instanceof WrenchableHorizontalFacingEnergyTieredBlockWithEntity) {
-				tooltip.add(new TranslatableText("text.astromine.tooltip.speed", Fraction.DECIMAL_FORMAT.format(((WrenchableHorizontalFacingEnergyTieredBlockWithEntity) ((BlockItem) stack.getItem()).getBlock()).getMachineSpeed())).formatted(Formatting.GRAY));
-				tooltip.add(new LiteralText(" "));
+				if(((WrenchableHorizontalFacingEnergyTieredBlockWithEntity)((BlockItem) stack.getItem()).getBlock()).showSpeedInTooltip()) {
+					tooltip.add(new TranslatableText("text.astromine.tooltip.speed", Fraction.DECIMAL_FORMAT.format(((WrenchableHorizontalFacingEnergyTieredBlockWithEntity) ((BlockItem) stack.getItem()).getBlock()).getMachineSpeed())).formatted(Formatting.GRAY));
+				}
 			}
 		});
 	}

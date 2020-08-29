@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.discoveries.registry;
 
+import com.github.chainmailstudios.astromine.discoveries.common.entity.RocketEntity;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.SpaceSlimeEntity;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.SuperSpaceSlimeEntity;
 import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
@@ -15,6 +16,8 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.world.Heightmap;
 
 public class AstromineDiscoveriesEntityTypes extends AstromineEntityTypes {
+	public static final EntityType<RocketEntity> ROCKET = register("rocket", FabricEntityTypeBuilder.create(SpawnGroup.MISC, RocketEntity::new).dimensions(EntityDimensions.changing(1.5f, 20f)).trackable(256, 4).build());
+
 	public static final EntityType<SpaceSlimeEntity> SPACE_SLIME = register("space_slime", FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, SpaceSlimeEntity::new).dimensions(EntityDimensions.changing(2.04F, 2.04F)).trackable(128, 4).build());
 
 	public static final EntityType<SuperSpaceSlimeEntity> SUPER_SPACE_SLIME = register("super_space_slime", FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, SuperSpaceSlimeEntity::new).dimensions(EntityDimensions.changing(6.125F, 6.125F)).trackable(128, 4).build());

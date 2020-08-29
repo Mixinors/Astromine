@@ -15,7 +15,7 @@ public class AstromineDiscoveriesDatagen implements DatagenInitializer {
 
 	@Override
 	public AstromineMaterialSets getMaterialSets() {
-		return new AstromineMaterialSets();
+		return null;
 	}
 
 	@Override

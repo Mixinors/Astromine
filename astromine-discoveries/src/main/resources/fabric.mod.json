@@ -24,7 +24,8 @@
   "entrypoints": {
     "main": ["com.github.chainmailstudios.astromine.discoveries.AstromineDiscoveriesCommon"],
     "client": ["com.github.chainmailstudios.astromine.discoveries.AstromineDiscoveriesClient"],
-    "server": ["com.github.chainmailstudios.astromine.discoveries.AstromineDiscoveriesDedicated"]
+    "server": ["com.github.chainmailstudios.astromine.discoveries.AstromineDiscoveriesDedicated"],
+    "rei_plugins": ["com.github.chainmailstudios.astromine.discoveries.client.rei.AstromineDiscoveriesRoughlyEnoughItemsPlugin"]
   },
   "accessWidener": "astromine-discoveries.accesswidener",
   "depends": {

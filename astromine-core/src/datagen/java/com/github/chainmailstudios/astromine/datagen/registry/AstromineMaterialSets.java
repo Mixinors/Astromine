@@ -5,7 +5,7 @@ import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AstromineMaterialSets {
+public abstract class AstromineMaterialSets {
 	public static final List<MaterialSet> MATERIAL_SETS = new ArrayList<>();
 
 	public static MaterialSet register(MaterialSet set) {

@@ -444,6 +444,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item UNIVITE_LEGGINGS = register("univite_leggings", new ArmorItem(AstromineFoundationsArmorMaterials.UNIVITE, EquipmentSlot.LEGS, AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final Item UNIVITE_BOOTS = register("univite_boots", new ArmorItem(AstromineFoundationsArmorMaterials.UNIVITE, EquipmentSlot.FEET, AstromineFoundationsItems.getBasicSettings().fireproof()));
 
+	public static final Item METEOR_METITE_CLUSTER = register("meteor_metite_cluster", new Item(AstromineFoundationsItems.getBasicSettings()));
+
 	public static final Item BRONZE_WRENCH = register("bronze_wrench", new WrenchItem(AstromineFoundationsItems.getBasicSettings()));
 
 	public static final Item FIRE_EXTINGUISHER = register("fire_extinguisher", new FireExtinguisherItem(AstromineFoundationsItems.getBasicSettings().maxCount(1)));

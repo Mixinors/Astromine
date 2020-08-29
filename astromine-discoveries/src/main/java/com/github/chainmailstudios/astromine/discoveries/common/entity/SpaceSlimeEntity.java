@@ -41,6 +41,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
 import com.github.chainmailstudios.astromine.discoveries.common.entity.ai.superspaceslime.SpaceSlimeJumpHoverGoal;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesParticles;
 import com.github.chainmailstudios.astromine.registry.AstromineParticles;
 
 import java.util.Random;
@@ -70,7 +71,7 @@ public class SpaceSlimeEntity extends SlimeEntity {
 
 	@Override
 	protected ParticleEffect getParticles() {
-		return AstromineParticles.SPACE_SLIME;
+		return AstromineDiscoveriesParticles.SPACE_SLIME;
 	}
 
 	@Override

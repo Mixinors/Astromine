@@ -24,14 +24,11 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
-import com.github.chainmailstudios.astromine.foundations.common.block.AltarBlock;
 import com.github.chainmailstudios.astromine.foundations.common.block.AstromineOreBlock;
-import com.github.chainmailstudios.astromine.foundations.common.block.ItemDisplayerBlock;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.*;
-import net.minecraft.item.Item;
 import net.minecraft.sound.BlockSoundGroup;
 
 public class AstromineFoundationsBlocks extends AstromineBlocks {
@@ -67,6 +64,7 @@ public class AstromineFoundationsBlocks extends AstromineBlocks {
 	public static final Block METEOR_STONE_STAIRS = register("meteor_stone_stairs", new StairsBlock(METEOR_STONE.getDefaultState(), FabricBlockSettings.copyOf(METEOR_STONE)), AstromineFoundationsItems.getBasicSettings().fireproof());
 	public static final Block METEOR_STONE_WALL = register("meteor_stone_wall", new WallBlock(FabricBlockSettings.copyOf(METEOR_STONE)), AstromineFoundationsItems.getBasicSettings().fireproof());
 
-	public static final Block ITEM_DISPLAYER = register("item_displayer", new ItemDisplayerBlock(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5, 6).sounds(BlockSoundGroup.METAL).nonOpaque()), AstromineFoundationsItems.getBasicSettings());
-	public static final Block ALTAR = register("altar", new AltarBlock(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5, 6).sounds(BlockSoundGroup.METAL).nonOpaque()), AstromineFoundationsItems.getBasicSettings());
+	public static void initialize() {
+
+	}
 }

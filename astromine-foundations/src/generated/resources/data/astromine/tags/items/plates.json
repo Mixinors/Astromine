@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:iron_plates",
+    "astromine:gold_plates",
+    "astromine:netherite_plates",
+    "astromine:tin_plates",
+    "astromine:copper_plates",
+    "astromine:silver_plates",
+    "astromine:lead_plates",
+    "astromine:steel_plates",
+    "astromine:bronze_plates",
+    "astromine:electrum_plates",
+    "astromine:rose_gold_plates",
+    "astromine:sterling_silver_plates",
+    "astromine:fools_gold_plates",
+    "astromine:metite_plates",
+    "astromine:stellum_plates",
+    "astromine:univite_plates"
+  ]
+}

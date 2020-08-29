@@ -23,10 +23,8 @@ public class AstromineFoundationsModelStateGenerators extends AstromineModelStat
 	public final ModelStateGenerator ORE = register(new GenericBlockSetModelStateGenerator(MaterialItemType.ORE));
 
 	public final ModelStateGenerator METEOR_ORE = register(new ColumnBlockSetModelStateGenerator(MaterialItemType.METEOR_ORE, AstromineCommon.identifier("block/meteor_stone")));
-	public final ModelStateGenerator ASTEROID_ORE = register(new ColumnBlockSetModelStateGenerator(MaterialItemType.ASTEROID_ORE, AstromineCommon.identifier("block/asteroid_stone")));
 
 	public final ModelStateGenerator METEOR_CLUSTER = register(new GenericItemSetModelStateGenerator(MaterialItemType.METEOR_CLUSTER));
-	public final ModelStateGenerator ASTEROID_CLUSTER = register(new GenericItemSetModelStateGenerator(MaterialItemType.ASTEROID_CLUSTER));
 
 	public final ModelStateGenerator DUST = register(new GenericItemSetModelStateGenerator(MaterialItemType.DUST));
 	public final ModelStateGenerator TINY_DUST = register(new GenericItemSetModelStateGenerator(MaterialItemType.TINY_DUST));
@@ -51,8 +49,6 @@ public class AstromineFoundationsModelStateGenerators extends AstromineModelStat
 	public final ModelStateGenerator CHESTPLATE = register(new GenericItemSetModelStateGenerator(MaterialItemType.CHESTPLATE));
 	public final ModelStateGenerator LEGGINGS = register(new GenericItemSetModelStateGenerator(MaterialItemType.LEGGINGS));
 	public final ModelStateGenerator BOOTS = register(new GenericItemSetModelStateGenerator(MaterialItemType.BOOTS));
-
-	public final ModelStateGenerator MISC_BLOCKSTATES = register(new SimpleBlockItemModelStateGenerator(AstromineFoundationsBlocks.ALTAR, AstromineFoundationsBlocks.ITEM_DISPLAYER));
 	
 	public final ModelStateGenerator WRENCH = register(new HandheldItemModelStateGenerator(AstromineFoundationsItems.BRONZE_WRENCH));
 }

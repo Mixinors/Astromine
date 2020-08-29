@@ -37,9 +37,6 @@ public class AstromineTechnologiesClient extends AstromineClient {
 		AstromineTechnologiesPatchouliPages.initialize();
 		AstromineTechnologiesScreens.initialize();
 		AstromineTechnologiesClientCallbacks.initialize();
-		AstromineTechnologiesClientModels.initialize();
-		AstromineTechnologiesEntityRenderers.initialize();
-		AstromineTechnologiesParticleFactories.initialize();
 		AstromineTechnologiesRenderLayers.initialize();
 	}
 }

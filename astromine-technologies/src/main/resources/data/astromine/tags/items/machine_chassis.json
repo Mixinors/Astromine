@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:primitive_machine_chassis",
+    "astromine:basic_machine_chassis",
+    "astromine:advanced_machine_chassis",
+    "astromine:elite_machine_chassis"
+  ]
+}

@@ -4,6 +4,7 @@ import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.datagen.generator.tag.onetime.OneTimeTagGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.tag.set.GenericSetTagGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.tag.set.SetTagGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.tag.onetime.TagInTagGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
@@ -72,4 +73,7 @@ public class AstromineFoundationsTagGenerators extends AstromineTagGenerators {
 	public final OneTimeTagGenerator MINING_TOOLS_SHOVELS = register(new TagInTagGenerator(new Identifier("fabric", "shovels"), AstromineCommon.identifier("mining_tools")));
 	public final OneTimeTagGenerator HAMMERS_PICKAXES = register(new TagInTagGenerator(new Identifier("fabric", "pickaxes"), AstromineCommon.identifier("hammers")));
 	public final OneTimeTagGenerator EXCAVATORS_SHOVELS = register(new TagInTagGenerator(new Identifier("fabric", "shovels"), AstromineCommon.identifier("excavators")));
+
+	public final SetTagGenerator GEARS = register(new GenericSetTagGenerator("gears", AstromineCommon.identifier("gears"), MaterialItemType.GEAR));
+	public final SetTagGenerator PLATES = register(new GenericSetTagGenerator("plates", AstromineCommon.identifier("plates"), MaterialItemType.PLATES));
 }

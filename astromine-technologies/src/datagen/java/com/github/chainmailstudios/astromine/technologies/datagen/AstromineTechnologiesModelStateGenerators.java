@@ -107,12 +107,4 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 			AstromineTechnologiesItems.ADVANCED_DRILL,
 			AstromineTechnologiesItems.ELITE_DRILL
 	));
-
-	public final ModelStateGenerator SPACE_SUIT = register(new GenericItemModelStateGenerator(
-		
-		AstromineTechnologiesItems.SPACE_SUIT_HELMET,
-		AstromineTechnologiesItems.SPACE_SUIT_CHESTPLATE,
-		AstromineTechnologiesItems.SPACE_SUIT_LEGGINGS,
-		AstromineTechnologiesItems.SPACE_SUIT_BOOTS
-	));
 }

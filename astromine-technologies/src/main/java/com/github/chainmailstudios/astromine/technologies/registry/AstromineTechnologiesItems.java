@@ -27,14 +27,11 @@ package com.github.chainmailstudios.astromine.technologies.registry;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.item.DrillItem;
 import com.github.chainmailstudios.astromine.technologies.common.item.GravityGauntletItem;
-import com.github.chainmailstudios.astromine.common.item.UncoloredSpawnEggItem;
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.github.chainmailstudios.astromine.technologies.common.item.HolographicConnectorItem;
-import com.github.chainmailstudios.astromine.technologies.common.item.SpaceSuitItem;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Item;
 
 public class AstromineTechnologiesItems extends AstromineItems {
@@ -62,13 +59,6 @@ public class AstromineTechnologiesItems extends AstromineItems {
 	public static final Item HOLOGRAPHIC_CONNECTOR = register("holographic_connector", new HolographicConnectorItem(getBasicSettings().maxCount(1)));
 
 	public static final Item GRAVITY_GAUNTLET = register("gravity_gauntlet", new GravityGauntletItem(getBasicSettings().maxCount(1), AstromineConfig.get().gravityGauntletEnergy));
-
-	public static final Item SPACE_SUIT_HELMET = register("space_suit_helmet", new SpaceSuitItem(AstromineTechnologiesArmorMaterials.SPACE_SUIT, EquipmentSlot.HEAD, getBasicSettings()));
-	public static final Item SPACE_SUIT_CHESTPLATE = register("space_suit_chestplate", new SpaceSuitItem(AstromineTechnologiesArmorMaterials.SPACE_SUIT, EquipmentSlot.CHEST, getBasicSettings()));
-	public static final Item SPACE_SUIT_LEGGINGS = register("space_suit_leggings", new SpaceSuitItem(AstromineTechnologiesArmorMaterials.SPACE_SUIT, EquipmentSlot.LEGS, getBasicSettings()));
-	public static final Item SPACE_SUIT_BOOTS = register("space_suit_boots", new SpaceSuitItem(AstromineTechnologiesArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, getBasicSettings()));
-
-	public static final Item ROCKET = register("rocket", new UncoloredSpawnEggItem(AstromineTechnologiesEntityTypes.ROCKET, getBasicSettings()));
 
 	public static void initialize() {
 

@@ -23,8 +23,7 @@
   "environment": "*",
   "entrypoints": {
     "main": ["com.github.chainmailstudios.astromine.foundations.AstromineFoundationsCommon"],
-    "client": ["com.github.chainmailstudios.astromine.foundations.AstromineFoundationsClient"],
-    "rei_plugins": ["com.github.chainmailstudios.astromine.foundations.client.rei.AstromineFoundationsRoughlyEnoughItemsPlugin"]
+    "client": ["com.github.chainmailstudios.astromine.foundations.AstromineFoundationsClient"]
   },
   "mixins": ["astromine-foundations.mixins.json"],
   "accessWidener": "astromine-foundations.accesswidener",

@@ -16,11 +16,18 @@ public class AstromineDiscoveriesCommon extends AstromineCommon {
 		AstromineDiscoveriesOres.initialize();
 		AstromineDiscoveriesGravities.initialize();
 		AstromineDiscoveriesBlocks.initialize();
+		AstromineDiscoveriesBlockEntityTypes.initialize();
 		AstromineDiscoveriesItems.initialize();
 		AstromineDiscoveriesItemGroups.initialize();
 		AstromineDiscoveriesAtmospheres.initialize();
 		AstromineDiscoveriesDimensions.initialize();
 		AstromineDiscoveriesFeatures.initialize();
 		AstromineDiscoveriesEntityTypes.initialize();
+		AstromineDiscoveriesArmorMaterials.initialize();
+		AstromineDiscoveriesCriteria.initialize();
+		AstromineDiscoveriesSoundEvents.initialize();
+		AstromineDiscoveriesRecipeSerializers.initialize();
+		AstromineDiscoveriesScreenHandlers.initialize();
+		AstromineDiscoveriesParticles.initialize();
 	}
 }

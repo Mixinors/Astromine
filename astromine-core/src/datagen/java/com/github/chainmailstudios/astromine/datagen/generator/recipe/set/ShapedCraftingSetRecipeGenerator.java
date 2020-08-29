@@ -3,6 +3,7 @@ package com.github.chainmailstudios.astromine.datagen.generator.recipe.set;
 import net.minecraft.advancement.criterion.ImpossibleCriterion;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonFactory;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.base.CraftingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;

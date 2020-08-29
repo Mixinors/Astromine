@@ -70,7 +70,5 @@ public class AstromineTechnologiesScreens extends AstromineScreens {
 		ScreenRegistry.register(AstromineTechnologiesScreenHandlers.FLUID_MIXER, FluidMixerHandledScreen::new);
 
 		ScreenRegistry.register(AstromineTechnologiesScreenHandlers.ALLOY_SMELTER, AlloySmelterHandledScreen::new);
-
-		ScreenRegistry.register(AstromineTechnologiesScreenHandlers.ROCKET, RocketHandledScreen::new);
 	}
 }
