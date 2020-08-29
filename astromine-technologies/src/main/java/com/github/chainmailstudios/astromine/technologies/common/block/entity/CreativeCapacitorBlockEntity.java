@@ -24,9 +24,6 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
-import net.minecraft.util.Tickable;
-
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 

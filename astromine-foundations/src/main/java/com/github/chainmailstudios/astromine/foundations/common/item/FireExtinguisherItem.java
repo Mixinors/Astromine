@@ -47,7 +47,6 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsCriteria;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.github.chainmailstudios.astromine.registry.AstromineCriteria;
 import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 
 public class FireExtinguisherItem extends Item {
@@ -79,7 +78,7 @@ public class FireExtinguisherItem extends Item {
 
 		if (!user.isSneaking()) {
 			user.addVelocity(thrustVec.x, thrustVec.y, thrustVec.z);
-			if(user instanceof ServerPlayerEntity) {
+			if (user instanceof ServerPlayerEntity) {
 				((ServerPlayerEntity) user).networkHandler.floatingTicks = 0;
 				AstromineFoundationsCriteria.USE_FIRE_EXTINGUISHER.trigger((ServerPlayerEntity) user);
 			}
@@ -102,9 +101,9 @@ public class FireExtinguisherItem extends Item {
 		});
 
 		world.getOtherEntities(null, new Box(result.getBlockPos()).expand(3)).forEach(entity -> {
-			if(entity.isOnFire()) {
+			if (entity.isOnFire()) {
 				entity.setFireTicks(0);
-				if(user instanceof ServerPlayerEntity) {
+				if (user instanceof ServerPlayerEntity) {
 					AstromineFoundationsCriteria.PROPERLY_USE_FIRE_EXTINGUISHER.trigger((ServerPlayerEntity) user);
 				}
 			}

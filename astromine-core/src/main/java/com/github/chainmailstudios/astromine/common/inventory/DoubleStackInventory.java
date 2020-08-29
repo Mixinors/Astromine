@@ -37,17 +37,12 @@ import net.minecraft.util.collection.DefaultedList;
  */
 public interface DoubleStackInventory extends Inventory {
 	/**
-	 * Gets the item list of this inventory. Must return the same instance every time it's called.
-	 */
-	DefaultedList<ItemStack> getItems();
-	// Creation
-
-	/**
 	 * Creates an inventory from the item list.
 	 */
 	static DoubleStackInventory of(DefaultedList<ItemStack> items) {
 		return () -> items;
 	}
+	// Creation
 
 	/**
 	 * Creates a new inventory with the size.
@@ -55,6 +50,11 @@ public interface DoubleStackInventory extends Inventory {
 	static DoubleStackInventory ofSize(int size) {
 		return of(DefaultedList.ofSize(size, ItemStack.EMPTY));
 	}
+
+	/**
+	 * Gets the item list of this inventory. Must return the same instance every time it's called.
+	 */
+	DefaultedList<ItemStack> getItems();
 	// Inventory
 
 	/**
@@ -95,8 +95,16 @@ public interface DoubleStackInventory extends Inventory {
 		return getStack(0);
 	}
 
+	default void setLeftStack(ItemStack stack) {
+		setStack(0, stack);
+	}
+
 	default ItemStack getRightStack() {
 		return getStack(1);
+	}
+
+	default void setRightStack(ItemStack stack) {
+		setStack(1, stack);
 	}
 
 	/**
@@ -145,14 +153,6 @@ public interface DoubleStackInventory extends Inventory {
 			stack.setCount(getMaxCountPerStack());
 		}
 		markDirty();
-	}
-
-	default void setLeftStack(ItemStack stack) {
-		setStack(0, stack);
-	}
-
-	default void setRightStack(ItemStack stack) {
-		setStack(1, stack);
 	}
 
 	/**

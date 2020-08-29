@@ -2,9 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "pattern": ["010", "121", "010"],
   "key": {
-    "0": { "tag": "c:metite_plates" },
-    "1": { "tag": "c:electrum_plates" },
-    "2": { "item": "astromine:advanced_machine_chassis" }
+    "0": {"tag": "c:metite_plates"},
+    "1": {"tag": "c:electrum_plates"},
+    "2": {"item": "astromine:advanced_machine_chassis"}
   },
-  "result": { "item": "astromine:elite_machine_chassis", "count": 2 }
+  "result": {"item": "astromine:elite_machine_chassis", "count": 2}
 }

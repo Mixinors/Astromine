@@ -1,14 +1,14 @@
 {
-	"name": "text.astromine.world.asteroids.title",
-	"icon": "astromine:asteroid_stone",
-	"category": "world",
-	"sortnum": 0,
-	"pages": [
-		{
-			"type": "spotlight",
-			"item": "astromine:asteroid_stone",
-			"title": "text.astromine.world.asteroids.page_one.title",
-			"text": "text.astromine.world.asteroids.page_one.text"
-		}
-	]
+  "name": "text.astromine.world.asteroids.title",
+  "icon": "astromine:asteroid_stone",
+  "category": "world",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:asteroid_stone",
+      "title": "text.astromine.world.asteroids.page_one.title",
+      "text": "text.astromine.world.asteroids.page_one.text"
+    }
+  ]
 }

@@ -40,16 +40,14 @@ import com.github.chainmailstudios.astromine.common.component.inventory.FluidInv
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 public class FluidExtractorBlockEntity extends ComponentEnergyFluidBlockEntity implements Tickable {
-	private Fraction cooldown = Fraction.empty();
-
 	public boolean isActive = false;
-
 	public boolean[] activity = { false, false, false, false, false };
+	private Fraction cooldown = Fraction.empty();
 
 	public FluidExtractorBlockEntity() {
 		super(AstromineTechnologiesBlocks.FLUID_EXTRACTOR, AstromineTechnologiesBlockEntityTypes.FLUID_EXTRACTOR);

@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.base.WrenchableBlockWithEntity;
-import com.github.chainmailstudios.astromine.discoveries.common.block.entity.AltarBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -48,6 +46,9 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableBlockWithEntity;
+import com.github.chainmailstudios.astromine.discoveries.common.block.entity.AltarBlockEntity;
 
 public class AltarBlock extends WrenchableBlockWithEntity {
 	protected static final VoxelShape SHAPE_TOP = Block.createCuboidShape(0.0D, 14.0D, 0.0D, 16.0D, 16.0D, 16.0D);

@@ -24,10 +24,9 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
-import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
 import net.minecraft.item.ItemGroup;
 
-import static com.github.chainmailstudios.astromine.registry.AstromineItemGroups.register;
+import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
 
 public class AstromineFoundationsItemGroups extends AstromineItemGroups {
 	public static final ItemGroup FOUNDATIONS = register("foundations", () -> AstromineFoundationsItems.UNIVITE_AXE);

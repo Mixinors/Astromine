@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.discoveries.client.render.block;
 
-import com.github.chainmailstudios.astromine.discoveries.common.block.entity.AltarBlockEntity;
-import com.github.chainmailstudios.astromine.discoveries.common.block.entity.AltarPedestalBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -40,6 +38,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+
+import com.github.chainmailstudios.astromine.discoveries.common.block.entity.AltarBlockEntity;
+import com.github.chainmailstudios.astromine.discoveries.common.block.entity.AltarPedestalBlockEntity;
 
 import java.util.Random;
 

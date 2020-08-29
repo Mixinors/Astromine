@@ -5,10 +5,9 @@ import com.github.chainmailstudios.astromine.datagen.generator.modelstate.ModelS
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.GenericItemModelStateGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.HandheldItemModelStateGenerator;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineModelStateGenerators;
-import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsItems;
 import com.github.chainmailstudios.astromine.technologies.datagen.generators.modelstate.BufferModelStateGenerator;
-import com.github.chainmailstudios.astromine.technologies.datagen.generators.modelstate.TieredFacingModelStateGenerator;
 import com.github.chainmailstudios.astromine.technologies.datagen.generators.modelstate.MachineModelStateGenerator;
+import com.github.chainmailstudios.astromine.technologies.datagen.generators.modelstate.TieredFacingModelStateGenerator;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesItems;
 

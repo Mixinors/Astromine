@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.recipe;
 
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.Inventory;
@@ -53,6 +52,7 @@ import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
@@ -62,15 +62,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
 public class LiquidGeneratingRecipe implements AdvancedRecipe<Inventory>, EnergyGeneratingRecipe<Inventory> {
+	private static final int INPUT_ENERGY_VOLUME = 0;
+	private static final int INPUT_FLUID_VOLUME = 0;
 	final Identifier identifier;
 	final RegistryKey<Fluid> fluidKey;
 	final Lazy<Fluid> fluid;
 	final Fraction amount;
 	final double energyGenerated;
 	final int time;
-
-	private static final int INPUT_ENERGY_VOLUME = 0;
-	private static final int INPUT_FLUID_VOLUME = 0;
 
 	public LiquidGeneratingRecipe(Identifier identifier, RegistryKey<Fluid> fluidKey, Fraction amount, double energyGenerated, int time) {
 		this.identifier = identifier;

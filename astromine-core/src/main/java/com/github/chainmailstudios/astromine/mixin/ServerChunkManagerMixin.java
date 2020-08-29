@@ -24,11 +24,7 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.common.callback.ServerChunkManagerCallback;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -42,13 +38,16 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.level.storage.LevelStorage;
 import com.mojang.datafixers.DataFixer;
 
+import com.github.chainmailstudios.astromine.common.callback.ServerChunkManagerCallback;
+
 import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 
 @Mixin(ServerChunkManager.class)
 public class ServerChunkManagerMixin {
 	@Inject(method = "<init>", at = @At("RETURN"))
-	private void handleConstructor(ServerWorld world, LevelStorage.Session session, DataFixer dataFixer, StructureManager structureManager, Executor workerExecutor, ChunkGenerator chunkGenerator, int viewDistance, boolean bl, WorldGenerationProgressListener worldGenerationProgressListener, Supplier<PersistentStateManager> supplier, CallbackInfo ci) {
+	private void handleConstructor(ServerWorld world, LevelStorage.Session session, DataFixer dataFixer, StructureManager structureManager, Executor workerExecutor, ChunkGenerator chunkGenerator, int viewDistance, boolean bl,
+		WorldGenerationProgressListener worldGenerationProgressListener, Supplier<PersistentStateManager> supplier, CallbackInfo ci) {
 		ServerChunkManagerCallback.EVENT.invoker().handle((ServerChunkManager) (Object) this);
 	}
 }

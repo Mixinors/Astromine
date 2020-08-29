@@ -28,12 +28,8 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.MagmaBlock;
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.WallBlock;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.sound.BlockSoundGroup;
@@ -56,6 +52,7 @@ public class AstromineBlocks {
 	 *        Block instance to be registered
 	 * @param settings
 	 *        Item.Settings of BlockItem of Block instance to be registered
+	 *
 	 * @return Block instance registered
 	 */
 	public static <T extends Block> T register(String name, T block, Item.Settings settings) {
@@ -69,6 +66,7 @@ public class AstromineBlocks {
 	 *        Block instance to be registered
 	 * @param item
 	 *        BlockItem instance of Block to be registered
+	 *
 	 * @return Block instance registered
 	 */
 	public static <T extends Block> T register(String name, T block, BlockItem item) {
@@ -85,6 +83,7 @@ public class AstromineBlocks {
 	 *        Name of block instance to be registered
 	 * @param block
 	 *        Block instance to be registered
+	 *
 	 * @return Block instance registered
 	 */
 	public static <T extends Block> T register(String name, T block) {
@@ -96,6 +95,7 @@ public class AstromineBlocks {
 	 *        Identifier of block instance to be registered
 	 * @param block
 	 *        Block instance to be registered
+	 *
 	 * @return Block instance registered
 	 */
 	public static <T extends Block> T register(Identifier name, T block) {

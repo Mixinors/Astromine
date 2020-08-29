@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block.entity;
 
-import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 
@@ -43,20 +42,21 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
+import com.github.chainmailstudios.astromine.common.inventory.SingularStackInventory;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyable;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyor;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorConveyable;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorTypes;
-import com.github.chainmailstudios.astromine.common.inventory.SingularStackInventory;
+import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
 
 public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyable, SingularStackInventory, BlockEntityClientSerializable, RenderAttachmentBlockEntity, Tickable {
-	private DefaultedList<ItemStack> stacks = DefaultedList.ofSize(1, ItemStack.EMPTY);
 	protected boolean front = false;
 	protected boolean down = false;
 	protected boolean across = false;
 	protected int position = 0;
 	protected int prevPosition = 0;
 	protected boolean hasBeenRemoved = false;
+	private DefaultedList<ItemStack> stacks = DefaultedList.ofSize(1, ItemStack.EMPTY);
 
 	public ConveyorBlockEntity() {
 		super(AstromineTransportationsBlockEntityTypes.CONVEYOR);
@@ -274,16 +274,16 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 		return position;
 	}
 
-	@Override
-	public int getPreviousPosition() {
-		return prevPosition;
-	}
-
 	public void setPosition(int position) {
 		if (position == 0)
 			this.prevPosition = 0;
 		else this.prevPosition = this.position;
 		this.position = position;
+	}
+
+	@Override
+	public int getPreviousPosition() {
+		return prevPosition;
 	}
 
 	protected void sendPacket(ServerWorld w, CompoundTag tag) {

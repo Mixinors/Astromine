@@ -1,7 +1,8 @@
 package com.github.chainmailstudios.astromine.datagen.generator.loottable.onetime;
 
-import me.shedaniel.cloth.api.datagen.v1.LootTableData;
 import net.minecraft.block.Block;
+
+import me.shedaniel.cloth.api.datagen.v1.LootTableData;
 
 import java.util.Arrays;
 import java.util.List;

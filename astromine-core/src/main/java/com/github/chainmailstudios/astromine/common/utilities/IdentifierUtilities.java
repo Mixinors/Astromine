@@ -33,6 +33,7 @@ public class IdentifierUtilities {
 	 *
 	 * @param identifier
 	 *        the specified identifier.
+	 *
 	 * @return true if yes; false if no.
 	 */
 	public static boolean isValid(String identifier) {
@@ -48,6 +49,7 @@ public class IdentifierUtilities {
 	 *
 	 * @param namespace
 	 *        the specified namespace.
+	 *
 	 * @return true if yes; false if no.
 	 */
 	private static boolean isNamespaceValid(String namespace) {
@@ -61,6 +63,7 @@ public class IdentifierUtilities {
 	 *
 	 * @param path
 	 *        the specified path.
+	 *
 	 * @return true if yes; false if no.
 	 */
 	private static boolean isPathValid(String path) {

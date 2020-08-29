@@ -24,14 +24,15 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry.client;
 
-import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlockEntityTypes;
-import com.github.chainmailstudios.astromine.discoveries.client.render.block.AltarBlockEntityRenderer;
-import com.github.chainmailstudios.astromine.discoveries.client.render.block.AltarPedestalBlockEntityRenderer;
-import com.github.chainmailstudios.astromine.registry.client.AstromineBlockEntityRenderers;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+
+import com.github.chainmailstudios.astromine.discoveries.client.render.block.AltarBlockEntityRenderer;
+import com.github.chainmailstudios.astromine.discoveries.client.render.block.AltarPedestalBlockEntityRenderer;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.client.AstromineBlockEntityRenderers;
 
 import java.util.function.Function;
 

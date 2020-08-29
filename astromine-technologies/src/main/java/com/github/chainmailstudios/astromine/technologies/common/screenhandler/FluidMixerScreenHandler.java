@@ -24,16 +24,16 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.screenhandler;
 
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.chainmailstudios.astromine.technologies.common.block.entity.FluidMixerBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyFluidScreenHandler;
 import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBarWidget;
 import com.github.chainmailstudios.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.FluidMixerBlockEntity;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 

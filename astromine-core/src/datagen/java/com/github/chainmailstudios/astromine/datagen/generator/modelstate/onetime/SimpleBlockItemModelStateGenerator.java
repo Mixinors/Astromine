@@ -1,9 +1,9 @@
 package com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime;
 
-import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.OneTimeModelStateGenerator;
-import me.shedaniel.cloth.api.datagen.v1.ModelStateData;
 import net.minecraft.block.Block;
 import net.minecraft.data.client.model.ModelIds;
+
+import me.shedaniel.cloth.api.datagen.v1.ModelStateData;
 
 import java.util.Arrays;
 import java.util.List;

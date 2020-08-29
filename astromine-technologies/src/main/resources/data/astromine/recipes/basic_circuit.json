@@ -2,9 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "pattern": ["000", "121", "000"],
   "key": {
-    "0": { "tag": "c:copper_plates" },
-    "1": { "tag": "c:iron_plates" },
-    "2": { "tag": "c:redstone_dusts" }
+    "0": {"tag": "c:copper_plates"},
+    "1": {"tag": "c:iron_plates"},
+    "2": {"tag": "c:redstone_dusts"}
   },
-  "result": { "item": "astromine:basic_circuit", "count": 3 }
+  "result": {"item": "astromine:basic_circuit", "count": 3}
 }

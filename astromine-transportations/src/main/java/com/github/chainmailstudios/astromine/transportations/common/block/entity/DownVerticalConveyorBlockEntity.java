@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block.entity;
 
-import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
-import com.github.chainmailstudios.astromine.transportations.common.block.property.ConveyorProperties;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.client.MinecraftClient;
@@ -36,10 +34,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
+import com.github.chainmailstudios.astromine.transportations.common.block.property.ConveyorProperties;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyable;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyor;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorConveyable;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorTypes;
+import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
 
 public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	protected boolean down = false;

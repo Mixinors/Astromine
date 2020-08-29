@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.foundations.common.world.feature;
 
-import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
-import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFeatures;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -47,8 +45,8 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
-import com.github.chainmailstudios.astromine.registry.AstromineFeatures;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFeatures;
 import com.terraformersmc.shapes.api.Position;
 import com.terraformersmc.shapes.api.Quaternion;
 import com.terraformersmc.shapes.api.Shape;
@@ -72,6 +70,21 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 
 	public MeteorGenerator(StructureManager manager, CompoundTag tag) {
 		super(AstromineFoundationsFeatures.METEOR_STRUCTURE, tag);
+	}
+
+	public static void buildSphere(StructureWorldAccess world, BlockPos originPos, int radius, BlockState state) {
+		for (int x = -radius; x <= radius; x++) {
+			for (int z = -radius; z <= radius; z++) {
+				for (int y = -radius; y <= radius; y++) {
+					double distance = Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2) + Math.pow(y, 2));
+
+					// place blocks within spherical radius
+					if (distance <= radius - ((radius * 1f / 3f) * noise.sample((originPos.getX() + x) / 10f, (originPos.getY() + y) / 10f, (originPos.getZ() + z) / 10f))) {
+						world.setBlockState(originPos.add(x, y, z), state, 3);
+					}
+				}
+			}
+		}
 	}
 
 	@Override
@@ -157,21 +170,6 @@ public class MeteorGenerator extends StructurePieceWithDimensions {
 		}
 
 		return placedPositions.stream().filter(pos -> pos.getX() == originPos.getX() && pos.getZ() == originPos.getZ()).min(Comparator.comparingInt(Vec3i::getY)).orElse(originPos).offset(Direction.DOWN);
-	}
-
-	public static void buildSphere(StructureWorldAccess world, BlockPos originPos, int radius, BlockState state) {
-		for (int x = -radius; x <= radius; x++) {
-			for (int z = -radius; z <= radius; z++) {
-				for (int y = -radius; y <= radius; y++) {
-					double distance = Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2) + Math.pow(y, 2));
-
-					// place blocks within spherical radius
-					if (distance <= radius - ((radius * 1f / 3f) * noise.sample((originPos.getX() + x) / 10f, (originPos.getY() + y) / 10f, (originPos.getZ() + z) / 10f))) {
-						world.setBlockState(originPos.add(x, y, z), state, 3);
-					}
-				}
-			}
-		}
 	}
 
 	@FunctionalInterface

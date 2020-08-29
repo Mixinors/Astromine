@@ -66,6 +66,7 @@ public interface ItemInventoryComponent extends NameableComponent {
 	 *
 	 * @param predicate
 	 *        the specified predicate.
+	 *
 	 * @return the retrieved collection.
 	 */
 	default List<ItemStack> getContentsMatching(Predicate<ItemStack> predicate) {
@@ -88,6 +89,7 @@ public interface ItemInventoryComponent extends NameableComponent {
 	 *
 	 * @param predicate
 	 *        the specified predicate.
+	 *
 	 * @return the retrieved collection.
 	 */
 	default Collection<ItemStack> getContentsMatchingSimulated(Predicate<ItemStack> predicate) {
@@ -124,6 +126,7 @@ public interface ItemInventoryComponent extends NameableComponent {
 	 *
 	 * @param stack
 	 *        the specified stack.
+	 *
 	 * @return SUCCESS w. empty if inserted; FAIL w. stack if not.
 	 */
 	default TypedActionResult<ItemStack> insert(Direction direction, ItemStack stack) {
@@ -142,6 +145,7 @@ public interface ItemInventoryComponent extends NameableComponent {
 	 *        the specified stack.
 	 * @param count
 	 *        the specified count.
+	 *
 	 * @return SUCCESS w. modified stack if inserted; FAIL w. unmodified stack if not.
 	 */
 	default TypedActionResult<ItemStack> insert(Direction direction, ItemStack stack, int count) {
@@ -204,6 +208,7 @@ public interface ItemInventoryComponent extends NameableComponent {
 	 *
 	 * @param predicate
 	 *        the specified predicate.
+	 *
 	 * @return SUCCESS w. the retrieved collection if extracted anything; FAIL w. empty if not.
 	 */
 	default TypedActionResult<Collection<ItemStack>> extractMatching(Direction direction, Predicate<ItemStack> predicate) {
@@ -230,6 +235,7 @@ public interface ItemInventoryComponent extends NameableComponent {
 	 *
 	 * @param predicate
 	 *        the specified predicate.
+	 *
 	 * @return SUCCESS w. the retrieved collection if extracted anything; FAIL w. empty if not.
 	 */
 	default TypedActionResult<ItemStack> extractFirstMatching(Direction direction, Predicate<ItemStack> predicate) {
@@ -259,6 +265,7 @@ public interface ItemInventoryComponent extends NameableComponent {
 	 *
 	 * @param slot
 	 *        the slot of the specified stack.
+	 *
 	 * @return SUCCESS w. stack if extracted; FAIL w. empty if not.
 	 */
 	default TypedActionResult<ItemStack> extract(Direction direction, int slot) {
@@ -286,6 +293,7 @@ public interface ItemInventoryComponent extends NameableComponent {
 	 *        the slot of the specified stack.
 	 * @param count
 	 *        the specified count.
+	 *
 	 * @return SUCCESS w. stack if extracted; FAIL w. empty if not.
 	 */
 	default TypedActionResult<ItemStack> extract(int slot, int count) {

@@ -24,18 +24,13 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.item;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
@@ -46,11 +41,9 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
+import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 import com.github.chainmailstudios.astromine.technologies.common.block.HolographicBridgeProjectorBlock;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.HolographicBridgeProjectorBlockEntity;
-import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
-
-import java.util.List;
 
 public class HolographicConnectorItem extends Item {
 	public HolographicConnectorItem(Settings settings) {

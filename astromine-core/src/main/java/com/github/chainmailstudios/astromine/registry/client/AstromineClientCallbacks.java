@@ -24,6 +24,13 @@
 
 package com.github.chainmailstudios.astromine.registry.client;
 
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+
+import net.minecraft.item.BlockItem;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
+
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
@@ -32,11 +39,6 @@ import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
-import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.minecraft.item.BlockItem;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
@@ -62,7 +64,7 @@ public class AstromineClientCallbacks {
 
 		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof BlockItem && ((BlockItem) stack.getItem()).getBlock() instanceof WrenchableHorizontalFacingEnergyTieredBlockWithEntity) {
-				if(((WrenchableHorizontalFacingEnergyTieredBlockWithEntity)((BlockItem) stack.getItem()).getBlock()).showSpeedInTooltip()) {
+				if (((WrenchableHorizontalFacingEnergyTieredBlockWithEntity) ((BlockItem) stack.getItem()).getBlock()).showSpeedInTooltip()) {
 					tooltip.add(new TranslatableText("text.astromine.tooltip.speed", Fraction.DECIMAL_FORMAT.format(((WrenchableHorizontalFacingEnergyTieredBlockWithEntity) ((BlockItem) stack.getItem()).getBlock()).getMachineSpeed())).formatted(Formatting.GRAY));
 				}
 			}

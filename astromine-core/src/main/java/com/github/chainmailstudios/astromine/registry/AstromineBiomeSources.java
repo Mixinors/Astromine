@@ -24,9 +24,6 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import net.minecraft.util.registry.Registry;
-
-
 public class AstromineBiomeSources {
 	public static void initialize() {
 

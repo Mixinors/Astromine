@@ -56,26 +56,6 @@ public class EnergyVolume {
 		return new EnergyVolume(amount);
 	}
 
-	public void setAmount(double amount) {
-		this.amount = MathHelper.clamp(amount, 0, getMaxAmount());
-		if (listener != null)
-			listener.run();
-	}
-
-	public double getAmount() {
-		return amount;
-	}
-
-	public void setMaxAmount(double maxAmount) {
-		this.maxAmount = maxAmount;
-		if (listener != null)
-			listener.run();
-	}
-
-	public double getMaxAmount() {
-		return maxAmount;
-	}
-
 	/**
 	 * Deserializes a Volume from a tag.
 	 *
@@ -99,6 +79,26 @@ public class EnergyVolume {
 		}
 
 		return energyVolume;
+	}
+
+	public double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = MathHelper.clamp(amount, 0, getMaxAmount());
+		if (listener != null)
+			listener.run();
+	}
+
+	public double getMaxAmount() {
+		return maxAmount;
+	}
+
+	public void setMaxAmount(double maxAmount) {
+		this.maxAmount = maxAmount;
+		if (listener != null)
+			listener.run();
 	}
 
 	public EnergyVolume copy() {

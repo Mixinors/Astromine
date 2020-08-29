@@ -24,14 +24,14 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.screenhandler;
 
-import com.github.chainmailstudios.astromine.common.widget.vanilla.ExtractionSlot;
-import com.github.chainmailstudios.astromine.technologies.common.block.entity.AlloySmelterBlockEntity;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyItemScreenHandler;
 import com.github.chainmailstudios.astromine.common.widget.blade.HorizontalArrowWidget;
+import com.github.chainmailstudios.astromine.common.widget.vanilla.ExtractionSlot;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.AlloySmelterBlockEntity;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;

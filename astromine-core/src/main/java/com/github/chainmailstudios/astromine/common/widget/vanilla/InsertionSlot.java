@@ -26,7 +26,6 @@ package com.github.chainmailstudios.astromine.common.widget.vanilla;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
 
 public class InsertionSlot extends Slot {

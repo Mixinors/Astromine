@@ -36,11 +36,9 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.AlloySmelterBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.AlloySmelterScreenHandler;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-
-import java.util.Objects;
 
 public abstract class AlloySmelterBlock extends WrenchableHorizontalFacingEnergyTieredBlockWithEntity {
 	public AlloySmelterBlock(Settings settings) {

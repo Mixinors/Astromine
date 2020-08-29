@@ -24,17 +24,7 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
-import net.minecraft.fluid.Fluid;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Tickable;
-import net.minecraft.util.registry.Registry;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 
 public class CreativeTankBlockEntity extends TankBlockEntity {

@@ -24,13 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.entity;
 
-import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.NameableComponent;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
+import net.minecraft.screen.ScreenHandlerType;
+
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentEntity;
-import com.github.chainmailstudios.astromine.common.utilities.WidgetUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import com.github.vini2003.blade.common.data.Slots;
@@ -39,17 +37,8 @@ import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import com.github.vini2003.blade.common.widget.base.TabWidget;
 import com.github.vini2003.blade.common.widget.base.TextWidget;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Items;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.math.Direction;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 
 public abstract class ComponentEntityScreenHandler extends BaseScreenHandler {

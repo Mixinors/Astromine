@@ -35,9 +35,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyBlockWithEntity;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.FluidInserterBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.FluidInserterScreenHandler;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 public class FluidInserterBlock extends WrenchableHorizontalFacingEnergyBlockWithEntity {
 	public FluidInserterBlock(Settings settings) {

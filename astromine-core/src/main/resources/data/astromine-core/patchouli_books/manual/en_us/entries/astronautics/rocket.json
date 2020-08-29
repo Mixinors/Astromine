@@ -1,20 +1,20 @@
 {
-	"name": "text.astromine.astronautics.rocket.title",
-	"icon": "astromine:rocket",
-	"category": "astronautics",
-	"sortnum": 0,
-	"pages": [
-		{
-			"type": "entity",
-			"entity": "astromine:rocket",
-			"name": "text.astromine.astronautics.rocket.page_one.title",
-			"text": "text.astromine.astronautics.rocket.page_one.text"
-		},
-		{
-			"type": "crafting",
-			"recipe": "astromine:rocket",
-			"title": "text.astromine.astronautics.rocket.page_two.title",
-			"text": "text.astromine.astronautics.rocket.page_two.text"
-		}
-	]
+  "name": "text.astromine.astronautics.rocket.title",
+  "icon": "astromine:rocket",
+  "category": "astronautics",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "entity",
+      "entity": "astromine:rocket",
+      "name": "text.astromine.astronautics.rocket.page_one.title",
+      "text": "text.astromine.astronautics.rocket.page_one.text"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:rocket",
+      "title": "text.astromine.astronautics.rocket.page_two.title",
+      "text": "text.astromine.astronautics.rocket.page_two.text"
+    }
+  ]
 }

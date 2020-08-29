@@ -24,11 +24,10 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import com.mojang.serialization.Codec;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-
 import net.minecraft.world.gen.chunk.ChunkGenerator;
+import com.mojang.serialization.Codec;
 
 public class AstromineChunkGenerators {
 	public static void initialize() {

@@ -24,12 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MiningToolItem;
+
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
 
 import java.util.UUID;
 
@@ -43,11 +44,8 @@ public class ToolUtilities {
 	}
 
 	private static float getAttackSpeed(MiningToolItem item) {
-		return item.getAttributeModifiers(EquipmentSlot.MAINHAND).get(EntityAttributes.GENERIC_ATTACK_SPEED).stream()
-			.filter((EntityAttributeModifier modifier) -> modifier.getId().equals(UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3")))
-			.map(EntityAttributeModifier::getValue)
-			.findFirst()
-			.orElse(0d).floatValue();
+		return item.getAttributeModifiers(EquipmentSlot.MAINHAND).get(EntityAttributes.GENERIC_ATTACK_SPEED).stream().filter((EntityAttributeModifier modifier) -> modifier.getId().equals(UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3"))).map(
+			EntityAttributeModifier::getValue).findFirst().orElse(0d).floatValue();
 	}
 
 	public static ItemStack getAstromineBook() {

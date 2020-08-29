@@ -37,17 +37,12 @@ import net.minecraft.util.collection.DefaultedList;
  */
 public interface SingularStackInventory extends Inventory {
 	/**
-	 * Gets the item list of this inventory. Must return the same instance every time it's called.
-	 */
-	DefaultedList<ItemStack> getItems();
-	// Creation
-
-	/**
 	 * Creates an inventory from the item list.
 	 */
 	static SingularStackInventory of(DefaultedList<ItemStack> items) {
 		return () -> items;
 	}
+	// Creation
 
 	/**
 	 * Creates a new inventory with the size.
@@ -55,6 +50,11 @@ public interface SingularStackInventory extends Inventory {
 	static SingularStackInventory ofSize(int size) {
 		return of(DefaultedList.ofSize(size, ItemStack.EMPTY));
 	}
+
+	/**
+	 * Gets the item list of this inventory. Must return the same instance every time it's called.
+	 */
+	DefaultedList<ItemStack> getItems();
 	// Inventory
 
 	/**
@@ -93,6 +93,10 @@ public interface SingularStackInventory extends Inventory {
 
 	default ItemStack getStack() {
 		return getStack(0);
+	}
+
+	default void setStack(ItemStack stack) {
+		setStack(0, stack);
 	}
 
 	/**
@@ -137,10 +141,6 @@ public interface SingularStackInventory extends Inventory {
 			stack.setCount(getMaxCountPerStack());
 		}
 		markDirty();
-	}
-
-	default void setStack(ItemStack stack) {
-		setStack(0, stack);
 	}
 
 	/**

@@ -77,6 +77,10 @@ public abstract class ExtendedFluid extends FlowableFluid {
 		this.source = source == null ? DamageSource.GENERIC : source;
 	}
 
+	public static Builder builder() {
+		return new Builder();
+	}
+
 	public DamageSource getSource() {
 		return source;
 	}
@@ -162,10 +166,6 @@ public abstract class ExtendedFluid extends FlowableFluid {
 	@Override
 	public int getLevel(FluidState state) {
 		return 0;
-	}
-
-	public static Builder builder() {
-		return new Builder();
 	}
 
 	public static class Builder {

@@ -24,8 +24,8 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry;
 
-import com.github.chainmailstudios.astromine.discoveries.client.registry.AsteroidOreRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
+import com.github.chainmailstudios.astromine.discoveries.client.registry.AsteroidOreRegistry;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsConfig;
 
 public class AstromineDiscoveriesOres {

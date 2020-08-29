@@ -1,8 +1,9 @@
 package com.github.chainmailstudios.astromine.datagen.generator.worldgen.onetime;
 
-import me.shedaniel.cloth.api.datagen.v1.WorldGenData;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
+
+import me.shedaniel.cloth.api.datagen.v1.WorldGenData;
 
 public class GenericFeatureWorldGenGenerator implements OneTimeWorldGenGenerator {
 	private final Identifier identifier;

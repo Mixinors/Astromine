@@ -24,19 +24,9 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block.entity;
 
-import alexiil.mc.lib.attributes.SearchOptions;
-import alexiil.mc.lib.attributes.Simulation;
-import alexiil.mc.lib.attributes.item.ItemAttributes;
-import alexiil.mc.lib.attributes.item.ItemExtractable;
-import alexiil.mc.lib.attributes.item.ItemInsertable;
-import alexiil.mc.lib.attributes.item.compat.FixedInventoryVanillaWrapper;
-import alexiil.mc.lib.attributes.item.impl.EmptyItemExtractable;
-import alexiil.mc.lib.attributes.item.impl.RejectingItemInsertable;
-import com.github.chainmailstudios.astromine.common.inventory.SingularStackInventory;
-import com.github.chainmailstudios.astromine.transportations.common.block.InserterBlock;
-import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
+
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ComposterBlock;
@@ -60,13 +50,25 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
+import alexiil.mc.lib.attributes.SearchOptions;
+import alexiil.mc.lib.attributes.Simulation;
+import alexiil.mc.lib.attributes.item.ItemAttributes;
+import alexiil.mc.lib.attributes.item.ItemExtractable;
+import alexiil.mc.lib.attributes.item.ItemInsertable;
+import alexiil.mc.lib.attributes.item.compat.FixedInventoryVanillaWrapper;
+import alexiil.mc.lib.attributes.item.impl.EmptyItemExtractable;
+import alexiil.mc.lib.attributes.item.impl.RejectingItemInsertable;
+import com.github.chainmailstudios.astromine.common.inventory.SingularStackInventory;
+import com.github.chainmailstudios.astromine.transportations.common.block.InserterBlock;
+import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
+
 import java.util.List;
 import java.util.stream.IntStream;
 
 public class InserterBlockEntity extends BlockEntity implements SingularStackInventory, BlockEntityClientSerializable, RenderAttachmentBlockEntity, Tickable {
-	private DefaultedList<ItemStack> stacks = DefaultedList.ofSize(1, ItemStack.EMPTY);
 	protected int position = 0;
 	protected int prevPosition = 0;
+	private DefaultedList<ItemStack> stacks = DefaultedList.ofSize(1, ItemStack.EMPTY);
 
 	public InserterBlockEntity() {
 		super(AstromineTransportationsBlockEntityTypes.INSERTER);
@@ -74,6 +76,87 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 
 	public InserterBlockEntity(BlockEntityType type) {
 		super(type);
+	}
+
+	private static IntStream getAvailableSlots(Inventory inventory, Direction side) {
+		return inventory instanceof SidedInventory ? IntStream.of(((SidedInventory) inventory).getAvailableSlots(side)) : IntStream.range(0, inventory.size());
+	}
+
+	public static ItemStack transfer(Inventory from, Inventory to, ItemStack stack, Direction side) {
+		if (to instanceof SidedInventory && side != null) {
+			SidedInventory sidedInventory = (SidedInventory) to;
+			int[] is = sidedInventory.getAvailableSlots(side);
+
+			for (int i = 0; i < is.length && !stack.isEmpty(); ++i) {
+				stack = transfer(from, to, stack, is[i], side);
+			}
+		} else {
+			int j = to.size();
+
+			for (int k = 0; k < j && !stack.isEmpty(); ++k) {
+				stack = transfer(from, to, stack, k, side);
+			}
+		}
+
+		return stack;
+	}
+
+	private static boolean canInsert(Inventory inventory, ItemStack stack, int slot, Direction side) {
+		if (!inventory.isValid(slot, stack)) {
+			return false;
+		} else {
+			return !(inventory instanceof SidedInventory) || ((SidedInventory) inventory).canInsert(slot, stack, side);
+		}
+	}
+
+	private static boolean canMergeItems(ItemStack first, ItemStack second) {
+		if (first.getItem() != second.getItem()) {
+			return false;
+		} else if (first.getDamage() != second.getDamage()) {
+			return false;
+		} else if (first.getCount() > first.getMaxCount()) {
+			return false;
+		} else {
+			return ItemStack.areTagsEqual(first, second);
+		}
+	}
+
+	private static boolean canExtract(Inventory inv, ItemStack stack, int slot, Direction facing) {
+		return !(inv instanceof SidedInventory) || ((SidedInventory) inv).canExtract(slot, stack, facing);
+	}
+
+	private static boolean extract(SingularStackInventory singularStackInventory, Inventory inventory, int slot, Direction side) {
+		ItemStack itemStack = inventory.getStack(slot);
+		if (!itemStack.isEmpty() && canExtract(inventory, itemStack, slot, side)) {
+			ItemStack itemStack2 = itemStack.copy();
+			ItemStack itemStack3 = transfer(inventory, singularStackInventory, inventory.removeStack(slot, inventory.getStack(slot).getCount()), (Direction) null);
+			if (itemStack3.isEmpty()) {
+				inventory.markDirty();
+				return true;
+			}
+
+			inventory.setStack(slot, itemStack2);
+		}
+
+		return false;
+	}
+
+	private static ItemStack transfer(Inventory from, Inventory to, ItemStack stack, int slot, Direction direction) {
+		ItemStack itemStack = to.getStack(slot);
+		if (canInsert(to, stack, slot, direction)) {
+			boolean bl2 = to.isEmpty();
+			if (itemStack.isEmpty()) {
+				to.setStack(slot, stack);
+				stack = ItemStack.EMPTY;
+			} else if (canMergeItems(itemStack, stack)) {
+				int i = stack.getMaxCount() - itemStack.getCount();
+				int j = Math.min(stack.getCount(), i);
+				stack.decrement(j);
+				itemStack.increment(j);
+			}
+		}
+
+		return stack;
 	}
 
 	@Override
@@ -172,92 +255,11 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 		}
 	}
 
-	private static IntStream getAvailableSlots(Inventory inventory, Direction side) {
-		return inventory instanceof SidedInventory ? IntStream.of(((SidedInventory) inventory).getAvailableSlots(side)) : IntStream.range(0, inventory.size());
-	}
-
 	private boolean isInventoryFull(Inventory inv, Direction direction) {
 		return getAvailableSlots(inv, direction).allMatch((i) -> {
 			ItemStack itemStack = inv.getStack(i);
 			return itemStack.getCount() >= itemStack.getMaxCount();
 		});
-	}
-
-	public static ItemStack transfer(Inventory from, Inventory to, ItemStack stack, Direction side) {
-		if (to instanceof SidedInventory && side != null) {
-			SidedInventory sidedInventory = (SidedInventory) to;
-			int[] is = sidedInventory.getAvailableSlots(side);
-
-			for (int i = 0; i < is.length && !stack.isEmpty(); ++i) {
-				stack = transfer(from, to, stack, is[i], side);
-			}
-		} else {
-			int j = to.size();
-
-			for (int k = 0; k < j && !stack.isEmpty(); ++k) {
-				stack = transfer(from, to, stack, k, side);
-			}
-		}
-
-		return stack;
-	}
-
-	private static boolean canInsert(Inventory inventory, ItemStack stack, int slot, Direction side) {
-		if (!inventory.isValid(slot, stack)) {
-			return false;
-		} else {
-			return !(inventory instanceof SidedInventory) || ((SidedInventory) inventory).canInsert(slot, stack, side);
-		}
-	}
-
-	private static boolean canMergeItems(ItemStack first, ItemStack second) {
-		if (first.getItem() != second.getItem()) {
-			return false;
-		} else if (first.getDamage() != second.getDamage()) {
-			return false;
-		} else if (first.getCount() > first.getMaxCount()) {
-			return false;
-		} else {
-			return ItemStack.areTagsEqual(first, second);
-		}
-	}
-
-	private static boolean canExtract(Inventory inv, ItemStack stack, int slot, Direction facing) {
-		return !(inv instanceof SidedInventory) || ((SidedInventory) inv).canExtract(slot, stack, facing);
-	}
-
-	private static boolean extract(SingularStackInventory singularStackInventory, Inventory inventory, int slot, Direction side) {
-		ItemStack itemStack = inventory.getStack(slot);
-		if (!itemStack.isEmpty() && canExtract(inventory, itemStack, slot, side)) {
-			ItemStack itemStack2 = itemStack.copy();
-			ItemStack itemStack3 = transfer(inventory, singularStackInventory, inventory.removeStack(slot, inventory.getStack(slot).getCount()), (Direction) null);
-			if (itemStack3.isEmpty()) {
-				inventory.markDirty();
-				return true;
-			}
-
-			inventory.setStack(slot, itemStack2);
-		}
-
-		return false;
-	}
-
-	private static ItemStack transfer(Inventory from, Inventory to, ItemStack stack, int slot, Direction direction) {
-		ItemStack itemStack = to.getStack(slot);
-		if (canInsert(to, stack, slot, direction)) {
-			boolean bl2 = to.isEmpty();
-			if (itemStack.isEmpty()) {
-				to.setStack(slot, stack);
-				stack = ItemStack.EMPTY;
-			} else if (canMergeItems(itemStack, stack)) {
-				int i = stack.getMaxCount() - itemStack.getCount();
-				int j = Math.min(stack.getCount(), i);
-				stack.decrement(j);
-				itemStack.increment(j);
-			}
-		}
-
-		return stack;
 	}
 
 	@Override
@@ -303,15 +305,15 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 		return position;
 	}
 
-	public int getPrevPosition() {
-		return prevPosition;
-	}
-
 	public void setPosition(int position) {
 		if (position == 0)
 			this.prevPosition = 0;
 		else this.prevPosition = this.position;
 		this.position = position;
+	}
+
+	public int getPrevPosition() {
+		return prevPosition;
 	}
 
 	protected void sendPacket(ServerWorld w, CompoundTag tag) {

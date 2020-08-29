@@ -24,14 +24,6 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.generation.vulcan;
 
-import com.github.chainmailstudios.astromine.common.miscellaneous.BiomeGeneratorCache;
-import com.github.chainmailstudios.astromine.common.noise.FastNoise;
-import com.github.chainmailstudios.astromine.common.noise.OctaveNoiseSampler;
-import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
-import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -48,13 +40,21 @@ import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
+import com.github.chainmailstudios.astromine.common.miscellaneous.BiomeGeneratorCache;
+import com.github.chainmailstudios.astromine.common.noise.FastNoise;
+import com.github.chainmailstudios.astromine.common.noise.OctaveNoiseSampler;
+import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
 
 import java.util.Arrays;
 import java.util.Random;
 
-public class    VulcanChunkGenerator extends ChunkGenerator {
+public class VulcanChunkGenerator extends ChunkGenerator {
 	public static Codec<VulcanChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed), RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)).apply(instance,
-			VulcanChunkGenerator::new));
+		VulcanChunkGenerator::new));
 
 	private final long seed;
 	private final Registry<Biome> biomeRegistry;

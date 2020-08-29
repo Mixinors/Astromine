@@ -157,7 +157,7 @@ allprojects {
 
 subprojects {
     archivesBaseName = project.name
-    
+
     ext {
         cfProjectId = -1
     }

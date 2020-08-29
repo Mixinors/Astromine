@@ -38,17 +38,15 @@ import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentE
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import org.jetbrains.annotations.NotNull;
 
 public class BlockPlacerBlockEntity extends ComponentEnergyInventoryBlockEntity implements Tickable {
-	private Fraction cooldown = Fraction.empty();
-
 	public boolean isActive = false;
-
 	public boolean[] activity = { false, false, false, false, false };
+	private Fraction cooldown = Fraction.empty();
 
 	public BlockPlacerBlockEntity() {
 		super(AstromineTechnologiesBlocks.BLOCK_PLACER, AstromineTechnologiesBlockEntityTypes.BLOCK_PLACER);

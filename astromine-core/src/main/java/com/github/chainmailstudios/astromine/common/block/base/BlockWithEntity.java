@@ -58,11 +58,19 @@ import net.minecraft.world.World;
 import java.util.List;
 
 public abstract class BlockWithEntity extends Block implements BlockEntityProvider {
+	public static final BooleanProperty ACTIVE = BooleanProperty.of("active");
+
 	protected BlockWithEntity(AbstractBlock.Settings settings) {
 		super(settings);
 	}
 
-	public static final BooleanProperty ACTIVE = BooleanProperty.of("active");
+	public static void markActive(World world, BlockPos pos) {
+		world.setBlockState(pos, world.getBlockState(pos).with(ACTIVE, true));
+	}
+
+	public static void markInactive(World world, BlockPos pos) {
+		world.setBlockState(pos, world.getBlockState(pos).with(ACTIVE, false));
+	}
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
@@ -124,14 +132,6 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
 		return super.getPlacementState(context).with(ACTIVE, false);
-	}
-
-	public static void markActive(World world, BlockPos pos) {
-		world.setBlockState(pos, world.getBlockState(pos).with(ACTIVE, true));
-	}
-
-	public static void markInactive(World world, BlockPos pos) {
-		world.setBlockState(pos, world.getBlockState(pos).with(ACTIVE, false));
 	}
 
 	@Override

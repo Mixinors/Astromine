@@ -36,9 +36,9 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.TrituratorBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.TrituratorScreenHandler;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 public abstract class TrituratorBlock extends WrenchableHorizontalFacingEnergyTieredBlockWithEntity {
 	public TrituratorBlock(Settings settings) {

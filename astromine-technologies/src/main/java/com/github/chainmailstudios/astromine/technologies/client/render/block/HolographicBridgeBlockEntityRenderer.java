@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.render.block;
 
-import com.github.chainmailstudios.astromine.technologies.common.block.HolographicBridgeProjectorBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.client.render.OverlayTexture;
@@ -38,6 +37,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 
 import com.github.chainmailstudios.astromine.client.render.layer.Layer;
+import com.github.chainmailstudios.astromine.technologies.common.block.HolographicBridgeProjectorBlock;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.HolographicBridgeProjectorBlockEntity;
 
 public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<HolographicBridgeProjectorBlockEntity> {

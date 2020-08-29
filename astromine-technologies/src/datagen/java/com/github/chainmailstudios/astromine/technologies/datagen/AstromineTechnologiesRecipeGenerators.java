@@ -5,7 +5,18 @@ import com.github.chainmailstudios.astromine.datagen.registry.AstromineRecipeGen
 import com.github.chainmailstudios.astromine.technologies.datagen.generators.recipe.PressingRecipeGenerator;
 import com.github.chainmailstudios.astromine.technologies.datagen.generators.recipe.TrituratingRecipeGenerator;
 
-import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.*;
+import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.ASTEROID_CLUSTER;
+import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.ASTEROID_ORE;
+import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.DUST;
+import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.FRAGMENT;
+import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.GEM;
+import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.INGOT;
+import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.METEOR_CLUSTER;
+import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.METEOR_ORE;
+import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.NUGGET;
+import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.ORE;
+import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.PLATES;
+import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.TINY_DUST;
 
 
 public class AstromineTechnologiesRecipeGenerators extends AstromineRecipeGenerators {

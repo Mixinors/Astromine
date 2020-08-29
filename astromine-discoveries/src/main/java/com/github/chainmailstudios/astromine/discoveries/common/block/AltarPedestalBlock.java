@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.base.WrenchableBlockWithEntity;
-import com.github.chainmailstudios.astromine.discoveries.common.block.entity.AltarPedestalBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -48,11 +46,26 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableBlockWithEntity;
+import com.github.chainmailstudios.astromine.discoveries.common.block.entity.AltarPedestalBlockEntity;
+
 public class AltarPedestalBlock extends WrenchableBlockWithEntity {
 	protected static final VoxelShape SHAPE = Block.createCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D);
 
 	public AltarPedestalBlock(Settings settings) {
 		super(settings);
+	}
+
+	public static boolean canMergeItems(ItemStack first, ItemStack second) {
+		if (first.getItem() != second.getItem()) {
+			return false;
+		} else if (first.getDamage() != second.getDamage()) {
+			return false;
+		} else if (first.getCount() >= first.getMaxCount()) {
+			return false;
+		} else {
+			return ItemStack.areTagsEqual(first, second);
+		}
 	}
 
 	@Override
@@ -114,18 +127,6 @@ public class AltarPedestalBlock extends WrenchableBlockWithEntity {
 		}
 
 		return super.onUse(state, world, pos, player, hand, hit);
-	}
-
-	public static boolean canMergeItems(ItemStack first, ItemStack second) {
-		if (first.getItem() != second.getItem()) {
-			return false;
-		} else if (first.getDamage() != second.getDamage()) {
-			return false;
-		} else if (first.getCount() >= first.getMaxCount()) {
-			return false;
-		} else {
-			return ItemStack.areTagsEqual(first, second);
-		}
 	}
 
 	@Override

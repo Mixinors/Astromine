@@ -3,7 +3,6 @@ package com.github.chainmailstudios.astromine.datagen.generator.recipe.set;
 import net.minecraft.advancement.criterion.ImpossibleCriterion;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonFactory;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.base.CraftingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
@@ -34,8 +33,8 @@ public class ShapedCraftingSetRecipeGenerator extends CraftingSetRecipeGenerator
 	@Override
 	public void generate(RecipeData recipes, MaterialSet set) {
 		ShapedRecipeJsonFactory factory = ShapedRecipeJsonFactory
-			.create(set.getItem(output))
-			.criterion("impossible", new ImpossibleCriterion.Conditions());
+				.create(set.getItem(output))
+				.criterion("impossible", new ImpossibleCriterion.Conditions());
 		for (String s : pattern) {
 			factory.pattern(s);
 		}

@@ -25,12 +25,12 @@ public class BlastingRecipeGenerator extends CookingRecipeGenerator {
 	@Override
 	public void generate(RecipeData recipes) {
 		CookingRecipeJsonFactory
-			.createBlasting(
-				input,
-				Registry.ITEM.get(output),
-				experience,
-				time)
-			.criterion("impossible", new ImpossibleCriterion.Conditions())
-			.offerTo(recipes, getRecipeId());
+				.createBlasting(
+						input,
+						Registry.ITEM.get(output),
+						experience,
+						time)
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.offerTo(recipes, getRecipeId());
 	}
 }

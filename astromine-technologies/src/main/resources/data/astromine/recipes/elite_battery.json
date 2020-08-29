@@ -2,15 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "pattern": ["012", "345", "678"],
   "key": {
-    "0": { "item": "minecraft:air" },
-    "1": { "tag": "c:steel_plates" },
-    "2": { "item": "minecraft:air" },
-    "3": { "tag": "c:metite_plates" },
-    "4": { "tag": "c:stellum_dusts" },
-    "5": { "tag": "c:metite_plates" },
-    "6": { "tag": "c:metite_plates" },
-    "7": { "tag": "c:stellum_dusts" },
-    "8": { "tag": "c:metite_plates" }
+    "0": {"item": "minecraft:air"},
+    "1": {"tag": "c:steel_plates"},
+    "2": {"item": "minecraft:air"},
+    "3": {"tag": "c:metite_plates"},
+    "4": {"tag": "c:stellum_dusts"},
+    "5": {"tag": "c:metite_plates"},
+    "6": {"tag": "c:metite_plates"},
+    "7": {"tag": "c:stellum_dusts"},
+    "8": {"tag": "c:metite_plates"}
   },
-  "result": { "item": "astromine:elite_battery", "count": 1 }
+  "result": {"item": "astromine:elite_battery", "count": 1}
 }

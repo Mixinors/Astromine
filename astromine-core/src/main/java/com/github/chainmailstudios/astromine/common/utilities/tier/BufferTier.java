@@ -35,10 +35,6 @@ public enum BufferTier {
 		this.height = height;
 	}
 
-	public int getHeight() {
-		return height;
-	}
-
 	public static BufferTier byName(String name) {
 		if (name.equals("basic")) {
 			return BASIC;
@@ -47,6 +43,10 @@ public enum BufferTier {
 		} else {
 			return ELITE;
 		}
+	}
+
+	public int getHeight() {
+		return height;
 	}
 
 	public String toName() {

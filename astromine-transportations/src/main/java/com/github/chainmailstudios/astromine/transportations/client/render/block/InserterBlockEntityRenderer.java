@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.transportations.client.render.block;
 
-import com.github.chainmailstudios.astromine.transportations.common.block.InserterBlock;
-import com.github.chainmailstudios.astromine.transportations.common.block.entity.InserterBlockEntity;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -38,6 +36,8 @@ import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.transportations.client.model.InserterArmModel;
+import com.github.chainmailstudios.astromine.transportations.common.block.InserterBlock;
+import com.github.chainmailstudios.astromine.transportations.common.block.entity.InserterBlockEntity;
 
 public class InserterBlockEntityRenderer extends BlockEntityRenderer<InserterBlockEntity> implements ConveyorRenderer<InserterBlockEntity> {
 	public InserterBlockEntityRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher) {

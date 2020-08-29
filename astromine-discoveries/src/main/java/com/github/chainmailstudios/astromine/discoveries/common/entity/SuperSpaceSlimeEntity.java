@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.entity;
 
-import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesEntityTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
@@ -60,9 +59,8 @@ import com.github.chainmailstudios.astromine.discoveries.common.entity.ai.supers
 import com.github.chainmailstudios.astromine.discoveries.common.entity.ai.superspaceslime.SuperSpaceSlimeMoveGoal;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.ai.superspaceslime.SuperSpaceSlimeRandomLookGoal;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.ai.superspaceslime.SuperSpaceSlimeSwimmingGoal;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesEntityTypes;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesParticles;
-import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineParticles;
 
 public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 

@@ -97,13 +97,6 @@ public class FluidVolume extends Volume {
 		return new FluidVolume(fluid, fraction);
 	}
 
-	@Override
-	public void setFraction(Fraction fraction) {
-		super.setFraction(fraction);
-		if (runnable != null)
-			runnable.run();
-	}
-
 	/**
 	 * Deserializes a Volume from a tag.
 	 *
@@ -133,6 +126,13 @@ public class FluidVolume extends Volume {
 		}
 
 		return fluidVolume;
+	}
+
+	@Override
+	public void setFraction(Fraction fraction) {
+		super.setFraction(fraction);
+		if (runnable != null)
+			runnable.run();
 	}
 
 	/**

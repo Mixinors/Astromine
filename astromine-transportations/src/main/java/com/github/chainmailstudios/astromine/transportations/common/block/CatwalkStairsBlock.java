@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block;
 
-import com.github.chainmailstudios.astromine.common.utilities.RotationUtilities;
-import com.github.chainmailstudios.astromine.transportations.common.block.property.ConveyorProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -39,6 +37,9 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.WorldAccess;
+
+import com.github.chainmailstudios.astromine.common.utilities.RotationUtilities;
+import com.github.chainmailstudios.astromine.transportations.common.block.property.ConveyorProperties;
 
 public class CatwalkStairsBlock extends HorizontalFacingBlock {
 	public CatwalkStairsBlock(Settings settings) {

@@ -24,14 +24,13 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.layer.moon;
 
-import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBiomes;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.layer.type.InitLayer;
 import net.minecraft.world.biome.layer.util.IdentityCoordinateTransformer;
 import net.minecraft.world.biome.layer.util.LayerRandomnessSource;
 
-import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBiomes;
 
 public class MoonBiomeLayer implements InitLayer, IdentityCoordinateTransformer {
 	private final Registry<Biome> biomeRegistry;

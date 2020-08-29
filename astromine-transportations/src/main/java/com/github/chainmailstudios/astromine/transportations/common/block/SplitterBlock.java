@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block;
 
-import com.github.chainmailstudios.astromine.transportations.common.block.entity.SplitterBlockEntity;
-import com.github.chainmailstudios.astromine.transportations.common.block.entity.base.AbstractConveyableBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -39,9 +37,11 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
+import com.github.chainmailstudios.astromine.common.utilities.capability.block.FacingBlockWrenchable;
+import com.github.chainmailstudios.astromine.transportations.common.block.entity.SplitterBlockEntity;
+import com.github.chainmailstudios.astromine.transportations.common.block.entity.base.AbstractConveyableBlockEntity;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyable;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyableBlock;
-import com.github.chainmailstudios.astromine.common.utilities.capability.block.FacingBlockWrenchable;
 
 public class SplitterBlock extends HorizontalFacingBlock implements BlockEntityProvider, ConveyableBlock, FacingBlockWrenchable {
 	public SplitterBlock(Settings settings) {

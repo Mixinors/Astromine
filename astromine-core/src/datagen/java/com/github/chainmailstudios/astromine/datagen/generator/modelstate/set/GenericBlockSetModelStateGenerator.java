@@ -10,7 +10,7 @@ public class GenericBlockSetModelStateGenerator extends GenericItemSetModelState
 
 	public GenericBlockSetModelStateGenerator(MaterialItemType type) {
 		super(type);
-		if(!type.isBlock()) throw new IllegalArgumentException("type "+type.getName()+" isn't a block");
+		if (!type.isBlock()) throw new IllegalArgumentException("type " + type.getName() + " isn't a block");
 	}
 
 	@Override
@@ -25,6 +25,6 @@ public class GenericBlockSetModelStateGenerator extends GenericItemSetModelState
 
 	@Override
 	public String getGeneratorName() {
-		return type.getName()+"_block_set_modelstate";
+		return type.getName() + "_block_set_modelstate";
 	}
 }

@@ -24,9 +24,9 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
-import com.github.chainmailstudios.astromine.foundations.AstromineFoundationsCommon;
-import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 import net.minecraft.sound.SoundEvent;
+
+import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 
 public class AstromineFoundationsSoundEvents extends AstromineSoundEvents {
 	// Armory

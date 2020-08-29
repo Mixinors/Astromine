@@ -2,11 +2,9 @@ package com.github.chainmailstudios.astromine.datagen.generator.loottable.set;
 
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.loot.LootTableRange;
-import net.minecraft.loot.UniformLootTableRange;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.ApplyBonusLootFunction;
 import net.minecraft.loot.function.SetCountLootFunction;
-import net.minecraft.util.math.IntRange;
 
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;

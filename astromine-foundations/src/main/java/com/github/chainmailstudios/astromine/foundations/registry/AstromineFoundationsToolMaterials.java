@@ -32,9 +32,7 @@ import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.registry.AstromineToolMaterials;
 
-import java.util.function.Supplier;
-
-public class AstromineFoundationsToolMaterials extends AstromineToolMaterials{
+public class AstromineFoundationsToolMaterials extends AstromineToolMaterials {
 	public static final ToolMaterial COPPER = register(1, 200, 4f, 1.5f, 10, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:copper_ingots"))));
 	public static final ToolMaterial TIN = register(1, 200, 5f, 1.0f, 10, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:tin_ingots"))));
 	public static final ToolMaterial SILVER = register(2, 462, 6.5f, 2.0f, 20, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:silver_ingots"))));

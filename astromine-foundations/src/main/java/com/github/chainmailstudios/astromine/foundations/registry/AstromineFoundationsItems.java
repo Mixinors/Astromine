@@ -24,19 +24,22 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
-import com.github.chainmailstudios.astromine.common.item.*;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.item.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.ItemScatterer;
+
+import com.github.chainmailstudios.astromine.common.item.DynamicToolItem;
+import com.github.chainmailstudios.astromine.common.item.WrenchItem;
 import com.github.chainmailstudios.astromine.common.utilities.ToolUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
 import com.github.chainmailstudios.astromine.foundations.common.item.FireExtinguisherItem;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import draylar.magna.item.ExcavatorItem;
 import draylar.magna.item.HammerItem;
-import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.*;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ItemScatterer;
 
 public class AstromineFoundationsItems extends AstromineItems {
 	// Materials - Nuggets & Fragments

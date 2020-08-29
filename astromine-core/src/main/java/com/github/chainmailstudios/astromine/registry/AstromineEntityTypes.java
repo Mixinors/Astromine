@@ -24,20 +24,10 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
-
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.entity.SpawnRestriction;
-import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.Heightmap;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 
@@ -59,6 +49,7 @@ public class AstromineEntityTypes {
 	 *        Name of EntityType instance to be registered
 	 * @param type
 	 *        EntityType instance to register
+	 *
 	 * @return Registered EntityType
 	 */
 	public static <T extends Entity> EntityType<T> register(String id, EntityType<T> type) {

@@ -24,6 +24,11 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.screenhandler;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.util.math.BlockPos;
+
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyItemScreenHandler;
 import com.github.chainmailstudios.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
@@ -31,10 +36,6 @@ import com.github.chainmailstudios.astromine.technologies.registry.AstromineTech
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.util.math.BlockPos;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 

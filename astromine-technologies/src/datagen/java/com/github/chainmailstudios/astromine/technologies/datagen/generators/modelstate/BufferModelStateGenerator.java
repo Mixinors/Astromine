@@ -19,12 +19,8 @@ public class BufferModelStateGenerator extends GenericBlockModelStateGenerator {
 		this.type = type;
 	}
 
-	public Texture getTexture(Block block) {
-		return (new Texture()).put(TextureKey.SIDE, getSubId(getTextureId(type), "_side")).put(TextureKey.TOP, Texture.getSubId(block, "_top")).put(TextureKey.BOTTOM, getSubId(getTextureId(type), "_bottom"));
-	}
-
 	public static Identifier getTextureId(MachineTier type) {
-		switch(type) {
+		switch (type) {
 			case PRIMITIVE:
 				return AstromineCommon.identifier("primitive_machine");
 			case BASIC:
@@ -38,6 +34,10 @@ public class BufferModelStateGenerator extends GenericBlockModelStateGenerator {
 
 	public static Identifier getSubId(Identifier main, String suffix) {
 		return new Identifier(main.getNamespace(), "block/" + main.getPath() + suffix);
+	}
+
+	public Texture getTexture(Block block) {
+		return (new Texture()).put(TextureKey.SIDE, getSubId(getTextureId(type), "_side")).put(TextureKey.TOP, Texture.getSubId(block, "_top")).put(TextureKey.BOTTOM, getSubId(getTextureId(type), "_bottom"));
 	}
 
 	@Override

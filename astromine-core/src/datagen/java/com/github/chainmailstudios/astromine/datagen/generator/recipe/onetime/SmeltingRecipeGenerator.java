@@ -25,12 +25,12 @@ public class SmeltingRecipeGenerator extends CookingRecipeGenerator {
 	@Override
 	public void generate(RecipeData recipes) {
 		CookingRecipeJsonFactory
-			.createSmelting(
-				input,
-				Registry.ITEM.get(output),
-				experience,
-				time)
-			.criterion("impossible", new ImpossibleCriterion.Conditions())
-			.offerTo(recipes, getRecipeId());
+				.createSmelting(
+						input,
+						Registry.ITEM.get(output),
+						experience,
+						time)
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.offerTo(recipes, getRecipeId());
 	}
 }

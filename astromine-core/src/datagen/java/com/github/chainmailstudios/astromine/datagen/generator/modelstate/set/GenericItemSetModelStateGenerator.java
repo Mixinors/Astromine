@@ -23,6 +23,6 @@ public class GenericItemSetModelStateGenerator implements SetModelStateGenerator
 
 	@Override
 	public String getGeneratorName() {
-		return type.getName()+"_item_set_modelstate";
+		return type.getName() + "_item_set_modelstate";
 	}
 }

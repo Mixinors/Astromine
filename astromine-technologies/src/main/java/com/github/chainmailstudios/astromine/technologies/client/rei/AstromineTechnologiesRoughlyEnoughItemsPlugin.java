@@ -24,6 +24,15 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.item.BucketItem;
+import net.minecraft.item.Item;
+import net.minecraft.recipe.SmeltingRecipe;
+import net.minecraft.util.Identifier;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.common.recipe.ElectrolyzingRecipe;
@@ -51,14 +60,8 @@ import com.github.chainmailstudios.astromine.technologies.client.rei.triturating
 import com.github.chainmailstudios.astromine.technologies.common.recipe.AlloySmeltingRecipe;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.*;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.Item;
-import net.minecraft.recipe.SmeltingRecipe;
-import net.minecraft.util.Identifier;
+import me.shedaniel.rei.api.EntryStack;
+import me.shedaniel.rei.api.RecipeHelper;
 
 import java.util.Collections;
 import java.util.Map;

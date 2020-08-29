@@ -1,13 +1,14 @@
 package com.github.chainmailstudios.astromine.technologies.datagen.generators.recipe;
 
+import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
+import com.github.chainmailstudios.astromine.common.utilities.GeneratorUtilities;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.base.EnergyProcessingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
-import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
-import com.github.chainmailstudios.astromine.common.utilities.GeneratorUtilities;
+import me.shedaniel.cloth.api.datagen.v1.RecipeData;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import me.shedaniel.cloth.api.datagen.v1.RecipeData;
 
 public class TrituratingRecipeGenerator extends EnergyProcessingSetRecipeGenerator {
 	public TrituratingRecipeGenerator(MaterialItemType input, int inputCount, MaterialItemType output, int outputCount, int time, int energyConsumed) {

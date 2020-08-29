@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block.entity.base;
 
-import com.github.chainmailstudios.astromine.common.inventory.DoubleStackInventory;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 
@@ -43,12 +42,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
+import com.github.chainmailstudios.astromine.common.inventory.DoubleStackInventory;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyable;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorConveyable;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorTypes;
 
 public class AbstractConveyableBlockEntity extends BlockEntity implements Conveyable, DoubleStackInventory, BlockEntityClientSerializable, RenderAttachmentBlockEntity, Tickable {
-	private DefaultedList<ItemStack> stacks = DefaultedList.ofSize(2, ItemStack.EMPTY);
 	int leftPosition = 0;
 	int prevLeftPosition = 0;
 	int rightPosition = 0;
@@ -56,6 +55,7 @@ public class AbstractConveyableBlockEntity extends BlockEntity implements Convey
 	boolean hasBeenRemoved = false;
 	boolean left = false;
 	boolean right = false;
+	private DefaultedList<ItemStack> stacks = DefaultedList.ofSize(2, ItemStack.EMPTY);
 
 	public AbstractConveyableBlockEntity(BlockEntityType type) {
 		super(type);
@@ -178,15 +178,15 @@ public class AbstractConveyableBlockEntity extends BlockEntity implements Convey
 		return leftPosition;
 	}
 
-	public int getRightPosition() {
-		return rightPosition;
-	}
-
 	public void setLeftPosition(int leftPosition) {
 		if (leftPosition == 0)
 			this.prevLeftPosition = 0;
 		else this.prevLeftPosition = this.leftPosition;
 		this.leftPosition = leftPosition;
+	}
+
+	public int getRightPosition() {
+		return rightPosition;
 	}
 
 	public void setRightPosition(int rightPosition) {

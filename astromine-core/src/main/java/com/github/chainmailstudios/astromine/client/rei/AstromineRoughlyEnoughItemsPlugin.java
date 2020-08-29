@@ -24,6 +24,21 @@
 
 package com.github.chainmailstudios.astromine.client.rei;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.texture.SpriteAtlasTexture;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.render.sprite.SpriteRenderer;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
@@ -39,19 +54,6 @@ import me.shedaniel.rei.api.widgets.Tooltip;
 import me.shedaniel.rei.gui.widget.EntryWidget;
 import me.shedaniel.rei.gui.widget.Widget;
 import me.shedaniel.rei.impl.RenderingEntry;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.texture.SpriteAtlasTexture;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -80,9 +82,8 @@ public abstract class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
 				if (generating)
 					return Tooltip.create(mouse, new TranslatableText("text.astromine.energy"), ClientHelper.getInstance().getFormattedModFromIdentifier(AstromineCommon.identifier("a")), new LiteralText(""), new TranslatableText("category.astromine.generating.energy",
 						EnergyUtilities.simpleDisplay(energy)));
-				else
-					return Tooltip.create(mouse, new TranslatableText("text.astromine.energy"), ClientHelper.getInstance().getFormattedModFromIdentifier(AstromineCommon.identifier("a")), new LiteralText(""), new TranslatableText("category.astromine.consuming.energy",
-						EnergyUtilities.simpleDisplay(energy)));
+				else return Tooltip.create(mouse, new TranslatableText("text.astromine.energy"), ClientHelper.getInstance().getFormattedModFromIdentifier(AstromineCommon.identifier("a")), new LiteralText(""), new TranslatableText("category.astromine.consuming.energy",
+					EnergyUtilities.simpleDisplay(energy)));
 			}
 		}).notFavoritesInteractable());
 	}

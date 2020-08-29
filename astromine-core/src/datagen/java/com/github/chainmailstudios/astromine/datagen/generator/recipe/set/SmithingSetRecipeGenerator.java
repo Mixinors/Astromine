@@ -21,9 +21,9 @@ public class SmithingSetRecipeGenerator implements SetRecipeGenerator {
 	@Override
 	public void generate(RecipeData recipes, MaterialSet set) {
 		SmithingRecipeJsonFactory
-			.create(Ingredient.ofItems(set.getSmithingBaseSet().getItem(type)), set.getIngredient(addition), set.getItem(type))
-			.criterion("impossible", new ImpossibleCriterion.Conditions())
-			.offerTo(recipes, getRecipeId(set));
+				.create(Ingredient.ofItems(set.getSmithingBaseSet().getItem(type)), set.getIngredient(addition), set.getItem(type))
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.offerTo(recipes, getRecipeId(set));
 	}
 
 	@Override

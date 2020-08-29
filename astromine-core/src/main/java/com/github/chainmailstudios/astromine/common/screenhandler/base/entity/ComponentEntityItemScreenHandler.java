@@ -24,9 +24,10 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.entity;
 
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
+
+import com.github.chainmailstudios.astromine.common.entity.base.ComponentItemEntity;
 
 public class ComponentEntityItemScreenHandler extends ComponentEntityScreenHandler {
 	public ComponentItemEntity entity;

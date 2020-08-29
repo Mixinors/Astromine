@@ -25,8 +25,8 @@
 package com.github.chainmailstudios.astromine.transportations.common.block;
 
 import com.github.chainmailstudios.astromine.common.block.base.CableBlock;
-import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.network.type.EnergyNetworkType;
+import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
 public class EnergyCableBlock extends CableBlock implements EnergyNetworkType.EnergyNodeSpeedProvider {

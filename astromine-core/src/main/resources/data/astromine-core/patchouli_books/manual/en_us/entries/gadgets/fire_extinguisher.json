@@ -1,19 +1,19 @@
 {
-	"name": "text.astromine.gadgets.fire_extinguisher.title",
-	"icon": "astromine:fire_extinguisher",
-	"category": "gadgets",
-	"sortnum": 0,
-	"pages": [
-		{
-			"type": "spotlight",
-			"item": "astromine:fire_extinguisher",
-			"title": "text.astromine.gadgets.fire_extinguisher.page_one.title",
-			"text": "text.astromine.gadgets.fire_extinguisher.page_one.text"
-		},
-		{
-			"type": "crafting",
-			"recipe": "astromine:fire_extinguisher",
-			"title": "text.astromine.gadgets.fire_extinguisher.page_two.title"
-		}
-	]
+  "name": "text.astromine.gadgets.fire_extinguisher.title",
+  "icon": "astromine:fire_extinguisher",
+  "category": "gadgets",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:fire_extinguisher",
+      "title": "text.astromine.gadgets.fire_extinguisher.page_one.title",
+      "text": "text.astromine.gadgets.fire_extinguisher.page_one.text"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:fire_extinguisher",
+      "title": "text.astromine.gadgets.fire_extinguisher.page_two.title"
+    }
+  ]
 }

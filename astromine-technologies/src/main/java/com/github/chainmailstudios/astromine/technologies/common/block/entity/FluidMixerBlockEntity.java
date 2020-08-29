@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
-import com.github.chainmailstudios.astromine.technologies.common.block.FluidMixerBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -38,26 +37,23 @@ import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFl
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.recipe.FluidMixingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.github.chainmailstudios.astromine.technologies.common.block.FluidMixerBlock;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
 public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEntity implements RecipeConsumer, Tickable {
-	public double current = 0;
-	public int limit = 100;
-
-	public boolean isActive = false;
-
-	public boolean[] activity = { false, false, false, false, false };
-
-	private Optional<FluidMixingRecipe> recipe = Optional.empty();
-
 	private static final int FIRST_INPUT_FLUID_VOLUME = 0;
 	private static final int SECOND_INPUT_FLUID_VOLUME = 1;
 	private static final int OUTPUT_FLUID_VOLUME = 2;
+	public double current = 0;
+	public int limit = 100;
+	public boolean isActive = false;
+	public boolean[] activity = { false, false, false, false, false };
+	private Optional<FluidMixingRecipe> recipe = Optional.empty();
 
 	public FluidMixerBlockEntity(Block energyBlock, BlockEntityType<?> type) {
 		super(energyBlock, type);
@@ -85,13 +81,13 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 	}
 
 	@Override
-	public int getLimit() {
-		return limit;
+	public void setCurrent(double current) {
+		this.current = current;
 	}
 
 	@Override
-	public void setCurrent(double current) {
-		this.current = current;
+	public int getLimit() {
+		return limit;
 	}
 
 	@Override

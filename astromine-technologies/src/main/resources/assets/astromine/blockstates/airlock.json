@@ -3,8 +3,8 @@
     {
       "when": {
         "facing": "north",
-		"half": "lower",
-		"powered": "false"
+        "half": "lower",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom"
@@ -13,8 +13,8 @@
     {
       "when": {
         "facing": "east",
-		"half": "lower",
-		"powered": "false"
+        "half": "lower",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom",
@@ -24,8 +24,8 @@
     {
       "when": {
         "facing": "south",
-		"half": "lower",
-		"powered": "false"
+        "half": "lower",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom",
@@ -35,19 +35,19 @@
     {
       "when": {
         "facing": "west",
-		"half": "lower",
-		"powered": "false"
+        "half": "lower",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom",
         "y": 270
       }
     },
-	{
+    {
       "when": {
         "facing": "north",
-		"half": "lower",
-		"powered": "true"
+        "half": "lower",
+        "powered": "true"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom_open"
@@ -56,8 +56,8 @@
     {
       "when": {
         "facing": "east",
-		"half": "lower",
-		"powered": "true"
+        "half": "lower",
+        "powered": "true"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom_open",
@@ -67,8 +67,8 @@
     {
       "when": {
         "facing": "south",
-		"half": "lower",
-		"powered": "true"
+        "half": "lower",
+        "powered": "true"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom_open",
@@ -78,19 +78,19 @@
     {
       "when": {
         "facing": "west",
-		"half": "lower",
-		"powered": "true"
+        "half": "lower",
+        "powered": "true"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom_open",
         "y": 270
       }
     },
-	{
+    {
       "when": {
         "facing": "north",
-		"half": "upper",
-		"powered": "false"
+        "half": "upper",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_top"
@@ -99,8 +99,8 @@
     {
       "when": {
         "facing": "east",
-		"half": "upper",
-		"powered": "false"
+        "half": "upper",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_top",
@@ -110,8 +110,8 @@
     {
       "when": {
         "facing": "south",
-		"half": "upper",
-		"powered": "false"
+        "half": "upper",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_top",
@@ -121,19 +121,19 @@
     {
       "when": {
         "facing": "west",
-		"half": "upper",
-		"powered": "false"
+        "half": "upper",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_top",
         "y": 270
       }
     },
-	{
+    {
       "when": {
         "facing": "north",
-		"half": "upper",
-		"powered": "true"
+        "half": "upper",
+        "powered": "true"
       },
       "apply": {
         "model": "astromine:block/airlock_top_open"
@@ -142,8 +142,8 @@
     {
       "when": {
         "facing": "east",
-		"half": "upper",
-		"powered": "true"
+        "half": "upper",
+        "powered": "true"
       },
       "apply": {
         "model": "astromine:block/airlock_top_open",
@@ -153,8 +153,8 @@
     {
       "when": {
         "facing": "south",
-		"half": "upper",
-		"powered": "true"
+        "half": "upper",
+        "powered": "true"
       },
       "apply": {
         "model": "astromine:block/airlock_top_open",
@@ -164,19 +164,19 @@
     {
       "when": {
         "facing": "west",
-		"half": "upper",
-		"powered": "true"
+        "half": "upper",
+        "powered": "true"
       },
       "apply": {
         "model": "astromine:block/airlock_top_open",
         "y": 270
       }
     },
-	{
+    {
       "when": {
         "facing": "north",
-		"half": "lower",
-		"left": "false"
+        "half": "lower",
+        "left": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom_left"
@@ -185,8 +185,8 @@
     {
       "when": {
         "facing": "east",
-		"half": "lower",
-		"left": "false"
+        "half": "lower",
+        "left": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom_left",
@@ -196,8 +196,8 @@
     {
       "when": {
         "facing": "south",
-		"half": "lower",
-		"left": "false"
+        "half": "lower",
+        "left": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom_left",
@@ -207,20 +207,20 @@
     {
       "when": {
         "facing": "west",
-		"half": "lower",
-		"left": "false"
+        "half": "lower",
+        "left": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom_left",
         "y": 270
       }
     },
-	{
+    {
       "when": {
         "facing": "north",
-		"half": "lower",
-		"left": "true",
-		"powered": "false"
+        "half": "lower",
+        "left": "true",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom_left_connected"
@@ -229,9 +229,9 @@
     {
       "when": {
         "facing": "east",
-		"half": "lower",
-		"left": "true",
-		"powered": "false"
+        "half": "lower",
+        "left": "true",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom_left_connected",
@@ -241,9 +241,9 @@
     {
       "when": {
         "facing": "south",
-		"half": "lower",
-		"left": "true",
-		"powered": "false"
+        "half": "lower",
+        "left": "true",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom_left_connected",
@@ -253,20 +253,20 @@
     {
       "when": {
         "facing": "west",
-		"half": "lower",
-		"left": "true",
-		"powered": "false"
+        "half": "lower",
+        "left": "true",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom_left_connected",
         "y": 270
       }
     },
-	{
+    {
       "when": {
         "facing": "north",
-		"half": "upper",
-		"left": "false"
+        "half": "upper",
+        "left": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_top_left"
@@ -275,8 +275,8 @@
     {
       "when": {
         "facing": "east",
-		"half": "upper",
-		"left": "false"
+        "half": "upper",
+        "left": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_top_left",
@@ -286,8 +286,8 @@
     {
       "when": {
         "facing": "south",
-		"half": "upper",
-		"left": "false"
+        "half": "upper",
+        "left": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_top_left",
@@ -297,20 +297,20 @@
     {
       "when": {
         "facing": "west",
-		"half": "upper",
-		"left": "false"
+        "half": "upper",
+        "left": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_top_left",
         "y": 270
       }
     },
-	{
+    {
       "when": {
         "facing": "north",
-		"half": "upper",
-		"left": "true",
-		"powered": "false"
+        "half": "upper",
+        "left": "true",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_top_left_connected"
@@ -319,9 +319,9 @@
     {
       "when": {
         "facing": "east",
-		"half": "upper",
-		"left": "true",
-		"powered": "false"
+        "half": "upper",
+        "left": "true",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_top_left_connected",
@@ -331,9 +331,9 @@
     {
       "when": {
         "facing": "south",
-		"half": "upper",
-		"left": "true",
-		"powered": "false"
+        "half": "upper",
+        "left": "true",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_top_left_connected",
@@ -343,20 +343,20 @@
     {
       "when": {
         "facing": "west",
-		"half": "upper",
-		"left": "true",
-		"powered": "false"
+        "half": "upper",
+        "left": "true",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_top_left_connected",
         "y": 270
       }
     },
-	{
+    {
       "when": {
         "facing": "north",
-		"half": "lower",
-		"right": "false"
+        "half": "lower",
+        "right": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom_right"
@@ -365,8 +365,8 @@
     {
       "when": {
         "facing": "east",
-		"half": "lower",
-		"right": "false"
+        "half": "lower",
+        "right": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom_right",
@@ -376,8 +376,8 @@
     {
       "when": {
         "facing": "south",
-		"half": "lower",
-		"right": "false"
+        "half": "lower",
+        "right": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom_right",
@@ -387,20 +387,20 @@
     {
       "when": {
         "facing": "west",
-		"half": "lower",
-		"right": "false"
+        "half": "lower",
+        "right": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom_right",
         "y": 270
       }
     },
-	{
+    {
       "when": {
         "facing": "north",
-		"half": "lower",
-		"right": "true",
-		"powered": "false"
+        "half": "lower",
+        "right": "true",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom_right_connected"
@@ -409,9 +409,9 @@
     {
       "when": {
         "facing": "east",
-		"half": "lower",
-		"right": "true",
-		"powered": "false"
+        "half": "lower",
+        "right": "true",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom_right_connected",
@@ -421,9 +421,9 @@
     {
       "when": {
         "facing": "south",
-		"half": "lower",
-		"right": "true",
-		"powered": "false"
+        "half": "lower",
+        "right": "true",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom_right_connected",
@@ -433,20 +433,20 @@
     {
       "when": {
         "facing": "west",
-		"half": "lower",
-		"right": "true",
-		"powered": "false"
+        "half": "lower",
+        "right": "true",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_bottom_right_connected",
         "y": 270
       }
     },
-	{
+    {
       "when": {
         "facing": "north",
-		"half": "upper",
-		"right": "false"
+        "half": "upper",
+        "right": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_top_right"
@@ -455,8 +455,8 @@
     {
       "when": {
         "facing": "east",
-		"half": "upper",
-		"right": "false"
+        "half": "upper",
+        "right": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_top_right",
@@ -466,8 +466,8 @@
     {
       "when": {
         "facing": "south",
-		"half": "upper",
-		"right": "false"
+        "half": "upper",
+        "right": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_top_right",
@@ -477,20 +477,20 @@
     {
       "when": {
         "facing": "west",
-		"half": "upper",
-		"right": "false"
+        "half": "upper",
+        "right": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_top_right",
         "y": 270
       }
     },
-	{
+    {
       "when": {
         "facing": "north",
-		"half": "upper",
-		"right": "true",
-		"powered": "false"
+        "half": "upper",
+        "right": "true",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_top_right_connected"
@@ -499,9 +499,9 @@
     {
       "when": {
         "facing": "east",
-		"half": "upper",
-		"right": "true",
-		"powered": "false"
+        "half": "upper",
+        "right": "true",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_top_right_connected",
@@ -511,9 +511,9 @@
     {
       "when": {
         "facing": "south",
-		"half": "upper",
-		"right": "true",
-		"powered": "false"
+        "half": "upper",
+        "right": "true",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_top_right_connected",
@@ -523,9 +523,9 @@
     {
       "when": {
         "facing": "west",
-		"half": "upper",
-		"right": "true",
-		"powered": "false"
+        "half": "upper",
+        "right": "true",
+        "powered": "false"
       },
       "apply": {
         "model": "astromine:block/airlock_top_right_connected",

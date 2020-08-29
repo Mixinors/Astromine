@@ -24,10 +24,6 @@
 
 package com.github.chainmailstudios.astromine.registry.client;
 
-import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
-
-import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
-
 public class AstromineEntityRenderers {
 	public static void initialize() {
 

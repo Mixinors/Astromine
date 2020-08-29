@@ -22,6 +22,6 @@ public class HandheldItemSetModelStateGenerator extends GenericItemSetModelState
 
 	@Override
 	public String getGeneratorName() {
-		return type.getName()+"_handheld_item_set_modelstate";
+		return type.getName() + "_handheld_item_set_modelstate";
 	}
 }

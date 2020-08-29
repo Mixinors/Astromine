@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.generation.mars;
 
-import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -48,7 +47,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.github.chainmailstudios.astromine.common.miscellaneous.BiomeGeneratorCache;
 import com.github.chainmailstudios.astromine.common.noise.OctaveNoiseSampler;
 import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
 
 import java.util.Arrays;
 import java.util.Random;

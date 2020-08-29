@@ -1,6 +1,6 @@
 {
-	"name": "text.astromine.patchouli.components.title",
-	"description": "text.astromine.patchouli.components.description",
-	"icon": "astromine:iron_gear",
-	"sortnum": 2
+  "name": "text.astromine.patchouli.components.title",
+  "description": "text.astromine.patchouli.components.description",
+  "icon": "astromine:iron_gear",
+  "sortnum": 2
 }

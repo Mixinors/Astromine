@@ -24,12 +24,16 @@
 
 package com.github.chainmailstudios.astromine.transportations.registry;
 
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
-import com.github.chainmailstudios.astromine.transportations.common.block.*;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
-import net.minecraft.block.*;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.Material;
 import net.minecraft.sound.BlockSoundGroup;
+
+import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.transportations.common.block.*;
 
 public class AstromineTransportationsBlocks extends AstromineBlocks {
 	public static final Block ALTERNATOR = register("alternator", new AlternatorBlock(getBasicSettings()), AstromineTransportationsItems.getTransportationsBasicSettings());
@@ -44,7 +48,8 @@ public class AstromineTransportationsBlocks extends AstromineBlocks {
 	public static final Block BASIC_DOWNWARD_VERTICAL_CONVEYOR = register("basic_downward_vertical_conveyor", new DownwardVerticalConveyorBlock(getBasicSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 16), AstromineTransportationsItems.getTransportationsBasicSettings());
 	public static final Block ADVANCED_CONVEYOR = register("advanced_conveyor", new ConveyorBlock(getAdvancedSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 8), AstromineTransportationsItems.getTransportationsBasicSettings());
 	public static final Block ADVANCED_VERTICAL_CONVEYOR = register("advanced_vertical_conveyor", new VerticalConveyorBlock(getAdvancedSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 8), AstromineTransportationsItems.getTransportationsBasicSettings());
-	public static final Block ADVANCED_DOWNWARD_VERTICAL_CONVEYOR = register("advanced_downward_vertical_conveyor", new DownwardVerticalConveyorBlock(getAdvancedSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 8), AstromineTransportationsItems.getTransportationsBasicSettings());
+	public static final Block ADVANCED_DOWNWARD_VERTICAL_CONVEYOR = register("advanced_downward_vertical_conveyor", new DownwardVerticalConveyorBlock(getAdvancedSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 8), AstromineTransportationsItems
+		.getTransportationsBasicSettings());
 	public static final Block ELITE_CONVEYOR = register("elite_conveyor", new ConveyorBlock(getEliteSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 4), AstromineTransportationsItems.getTransportationsBasicSettings());
 	public static final Block ELITE_VERTICAL_CONVEYOR = register("elite_vertical_conveyor", new VerticalConveyorBlock(getEliteSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 4), AstromineTransportationsItems.getTransportationsBasicSettings());
 	public static final Block ELITE_DOWNWARD_VERTICAL_CONVEYOR = register("elite_downward_vertical_conveyor", new DownwardVerticalConveyorBlock(getEliteSettings().sounds(BlockSoundGroup.METAL).nonOpaque(), 4), AstromineTransportationsItems.getTransportationsBasicSettings());

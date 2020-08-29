@@ -41,6 +41,7 @@ public class LineUtilities {
 	 *        the second specified position.
 	 * @param segments
 	 *        the segments between both positions.
+	 *
 	 * @return the dots of the requested curve.
 	 */
 	public static Collection<Vector3f> getBezierSegments(Vector3f posA, Vector3f posB, Vector3f posC, float segments) {

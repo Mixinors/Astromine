@@ -1,10 +1,11 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.generators.tag;
 
-import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
+import net.minecraft.util.Identifier;
+
 import com.github.chainmailstudios.astromine.datagen.generator.tag.set.SetTagGenerator;
+import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import com.github.chainmailstudios.astromine.foundations.datagen.registry.AstromineFoundationsMaterialSets;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
-import net.minecraft.util.Identifier;
 
 public class PyriteTagGenerator implements SetTagGenerator {
 	@Override

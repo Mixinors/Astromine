@@ -145,6 +145,34 @@ public final class Fraction extends Number implements Comparable<Fraction> {
 		return (fractionA.isSmallerThan(fractionB) ? fractionA : fractionB);
 	}
 
+	/**
+	 * Fraction comparison method.
+	 */
+	public static Fraction max(Fraction fractionA, Fraction fractionB) {
+		return (fractionA.isBiggerThan(fractionB) ? fractionA : fractionB);
+	}
+
+	public static Fraction fromTag(CompoundTag tag) {
+		long[] values = tag.getLongArray("values");
+
+		if (values.length != 2)
+			values = new long[]{ 0, 0 };
+
+		return new Fraction(values[0], values[1]);
+	}
+
+	public static Fraction simplify(Fraction fraction) {
+		if (fraction.numerator == 0)
+			return new Fraction(0, 1);
+		if ((fraction.numerator <= 0 && fraction.denominator >= 0) || (fraction.numerator >= 0 && fraction.denominator <= 0)) {
+			return fraction;
+		}
+
+		long divisor = greatestCommonDivisor(fraction.numerator, fraction.denominator);
+
+		return new Fraction(fraction.numerator / divisor, fraction.denominator / divisor);
+	}
+
 	public boolean isSmallerThan(Fraction fraction) {
 		return !this.isBiggerThan(fraction);
 	}
@@ -174,22 +202,6 @@ public final class Fraction extends Number implements Comparable<Fraction> {
 	 */
 	public boolean isBiggerOrEqualThan(Fraction fraction) {
 		return isBiggerThan(fraction) || equals(fraction);
-	}
-
-	/**
-	 * Fraction comparison method.
-	 */
-	public static Fraction max(Fraction fractionA, Fraction fractionB) {
-		return (fractionA.isBiggerThan(fractionB) ? fractionA : fractionB);
-	}
-
-	public static Fraction fromTag(CompoundTag tag) {
-		long[] values = tag.getLongArray("values");
-
-		if (values.length != 2)
-			values = new long[]{ 0, 0 };
-
-		return new Fraction(values[0], values[1]);
 	}
 
 	public CompoundTag toTag(CompoundTag tag) {
@@ -231,18 +243,6 @@ public final class Fraction extends Number implements Comparable<Fraction> {
 		Fraction simplifiedB = Fraction.simplify(target);
 
 		return simplifiedA.numerator == simplifiedB.numerator && simplifiedA.denominator == simplifiedB.denominator;
-	}
-
-	public static Fraction simplify(Fraction fraction) {
-		if (fraction.numerator == 0)
-			return new Fraction(0, 1);
-		if ((fraction.numerator <= 0 && fraction.denominator >= 0) || (fraction.numerator >= 0 && fraction.denominator <= 0)) {
-			return fraction;
-		}
-
-		long divisor = greatestCommonDivisor(fraction.numerator, fraction.denominator);
-
-		return new Fraction(fraction.numerator / divisor, fraction.denominator / divisor);
 	}
 
 	@Override

@@ -1,7 +1,12 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.registry;
 
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.RecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.*;
+import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.BlastingSetRecipeGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.Crafting3x3SetRecipeGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.ShapedCraftingSetRecipeGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.ShapelessCraftingSetRecipeGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.SmeltingSetRecipeGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.SmithingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineRecipeGenerators;
 import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.ArmorCraftingRecipeGenerators;
 import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.ToolCraftingRecipeGenerators;

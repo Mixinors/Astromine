@@ -30,7 +30,9 @@ import com.github.chainmailstudios.astromine.registry.AstromineNetworkMembers;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import com.github.chainmailstudios.astromine.technologies.common.block.*;
 
-import static com.github.chainmailstudios.astromine.common.network.NetworkMemberType.*;
+import static com.github.chainmailstudios.astromine.common.network.NetworkMemberType.BUFFER;
+import static com.github.chainmailstudios.astromine.common.network.NetworkMemberType.PROVIDER;
+import static com.github.chainmailstudios.astromine.common.network.NetworkMemberType.REQUESTER;
 
 public class AstromineTechnologiesNetworkMembers extends AstromineNetworkMembers {
 	public static void initialize() {

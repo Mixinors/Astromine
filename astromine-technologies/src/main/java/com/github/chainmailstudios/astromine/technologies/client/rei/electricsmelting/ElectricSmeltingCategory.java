@@ -24,14 +24,14 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei.electricsmelting;
 
-import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
-import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import net.minecraft.text.TranslatableText;
 
+import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.EntryStack;

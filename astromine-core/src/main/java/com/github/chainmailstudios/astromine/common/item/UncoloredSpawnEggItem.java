@@ -153,6 +153,7 @@ public class UncoloredSpawnEggItem extends Item {
 	 *
 	 * @param tag
 	 *        tag to check
+	 *
 	 * @return {@link EntityType} of tag, or this item's type field
 	 */
 	public EntityType<?> getEntityType(CompoundTag tag) {

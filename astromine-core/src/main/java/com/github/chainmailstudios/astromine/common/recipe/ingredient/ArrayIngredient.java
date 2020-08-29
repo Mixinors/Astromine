@@ -51,6 +51,10 @@ public class ArrayIngredient implements Predicate<ItemStack> {
 	private ItemStack[] matchingStacks;
 	private Ingredient ingredient;
 
+	private ArrayIngredient(Entry... entries) {
+		this.entries = entries;
+	}
+
 	public static ArrayIngredient ofItemStacks(ItemStack... stacks) {
 		return ofItemStacks(Arrays.asList(stacks));
 	}
@@ -61,10 +65,6 @@ public class ArrayIngredient implements Predicate<ItemStack> {
 
 	public static ArrayIngredient ofEntries(Stream<? extends Entry> stacks) {
 		return new ArrayIngredient(stacks.toArray(Entry[]::new));
-	}
-
-	private ArrayIngredient(Entry... entries) {
-		this.entries = entries;
 	}
 
 	public static ArrayIngredient fromJson(JsonElement json) {

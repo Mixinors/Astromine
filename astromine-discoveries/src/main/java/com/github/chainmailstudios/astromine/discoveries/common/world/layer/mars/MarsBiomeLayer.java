@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.layer.mars;
 
-import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBiomes;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.layer.type.ParentedLayer;
@@ -32,7 +31,7 @@ import net.minecraft.world.biome.layer.util.IdentityCoordinateTransformer;
 import net.minecraft.world.biome.layer.util.LayerSampleContext;
 import net.minecraft.world.biome.layer.util.LayerSampler;
 
-import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBiomes;
 
 public class MarsBiomeLayer implements ParentedLayer, IdentityCoordinateTransformer {
 	private final Registry<Biome> biomeRegistry;

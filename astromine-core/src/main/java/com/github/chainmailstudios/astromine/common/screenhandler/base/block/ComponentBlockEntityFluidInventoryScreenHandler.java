@@ -24,14 +24,15 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.block;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.util.math.BlockPos;
+
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidInventoryBlockEntity;
 import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBarWidget;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.util.math.BlockPos;
 
 public class ComponentBlockEntityFluidInventoryScreenHandler extends ComponentBlockEntityScreenHandler {
 	public ComponentFluidInventoryBlockEntity blockEntity;

@@ -25,13 +25,7 @@
 package com.github.chainmailstudios.astromine.common.component;
 
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldProperties;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.level.LevelProperties;
 
 import nerdhub.cardinal.components.api.ComponentType;
 import nerdhub.cardinal.components.api.component.Component;
@@ -42,14 +36,14 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface ComponentProvider extends nerdhub.cardinal.components.api.component.ComponentProvider {
+	static ComponentProvider fromBlockEntity(BlockEntity blockEntity) {
+		return blockEntity instanceof ComponentProvider ? (ComponentProvider) blockEntity : null;
+	}
+
 	<T extends Component> Collection<T> getSidedComponents(@Nullable Direction direction);
 
 	default <T extends Component> T getSidedComponent(@Nullable Direction direction, @NotNull ComponentType<T> type) {
 		Optional<T> optional = (Optional<T>) getSidedComponents(direction).stream().filter(component -> type.getComponentClass().isInstance(component)).findFirst();
 		return optional.orElse(null);
-	}
-
-	static ComponentProvider fromBlockEntity(BlockEntity blockEntity) {
-		return blockEntity instanceof ComponentProvider ? (ComponentProvider) blockEntity : null;
 	}
 }

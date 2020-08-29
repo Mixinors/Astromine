@@ -76,6 +76,7 @@ public interface ItemInventoryFromInventoryComponent extends Inventory {
 	 *
 	 * @param slot
 	 *        the specified slot.
+	 *
 	 * @return the requested ItemStack.
 	 */
 	@Override
@@ -90,6 +91,7 @@ public interface ItemInventoryFromInventoryComponent extends Inventory {
 	 *        the specified slot.
 	 * @param count
 	 *        the specified count.
+	 *
 	 * @return the requested ItemStack.
 	 */
 	@Override
@@ -114,6 +116,7 @@ public interface ItemInventoryFromInventoryComponent extends Inventory {
 	 *
 	 * @param slot
 	 *        the specified slot.
+	 *
 	 * @return the retrieved ItemStack.
 	 */
 	@Override
@@ -150,6 +153,7 @@ public interface ItemInventoryFromInventoryComponent extends Inventory {
 	 *
 	 * @param player
 	 *        the specified player.
+	 *
 	 * @return true if yes; false if no.
 	 */
 	@Override

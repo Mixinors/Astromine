@@ -24,12 +24,13 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block.entity;
 
-import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
-import com.github.chainmailstudios.astromine.transportations.common.block.entity.base.AbstractConveyableBlockEntity;
-import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
+
+import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
+import com.github.chainmailstudios.astromine.transportations.common.block.entity.base.AbstractConveyableBlockEntity;
+import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
 
 public class SplitterBlockEntity extends AbstractConveyableBlockEntity {
 	public SplitterBlockEntity() {

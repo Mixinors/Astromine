@@ -24,15 +24,9 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
-import com.github.chainmailstudios.astromine.discoveries.common.recipe.AltarRecipe;
-import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlockEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
-import com.google.common.collect.Lists;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.util.NbtType;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityType;
@@ -49,6 +43,14 @@ import net.minecraft.util.Lazy;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
+import com.github.chainmailstudios.astromine.discoveries.common.recipe.AltarRecipe;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
+
+import com.google.common.collect.Lists;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;

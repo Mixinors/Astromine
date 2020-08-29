@@ -24,22 +24,22 @@
 
 package com.github.chainmailstudios.astromine.client.cca;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import io.netty.buffer.Unpooled;
-import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
-import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
-public class ClientAtmosphereManager {
-	private static final Long2ObjectMap<FluidVolume> VOLUMES = new Long2ObjectOpenHashMap<>();
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import io.netty.buffer.Unpooled;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 
+public class ClientAtmosphereManager {
 	public static final Identifier GAS_ADDED = AstromineCommon.identifier("gas_added");
 	public static final Identifier GAS_REMOVED = AstromineCommon.identifier("gas_removed");
 	public static final Identifier GAS_ERASED = AstromineCommon.identifier("gas_erased");
+	private static final Long2ObjectMap<FluidVolume> VOLUMES = new Long2ObjectOpenHashMap<>();
 
 	public static Long2ObjectMap<FluidVolume> getVolumes() {
 		return VOLUMES;

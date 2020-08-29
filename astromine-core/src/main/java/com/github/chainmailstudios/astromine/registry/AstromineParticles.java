@@ -32,13 +32,14 @@ import net.minecraft.util.registry.Registry;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 
 public class AstromineParticles {
-		/**
+	/**
 	 * Registers a new {@link DefaultParticleType} instance under the given name.
 	 *
 	 * @param name
 	 *        Name of {@link DefaultParticleType} to register
 	 * @param alwaysShow
 	 *        Whether or not the com.github.chainmailstudios.astromine.technologies.client.particle should always appear visible
+	 *
 	 * @return Registered {@link DefaultParticleType}
 	 */
 	public static DefaultParticleType register(String name, boolean alwaysShow) {
