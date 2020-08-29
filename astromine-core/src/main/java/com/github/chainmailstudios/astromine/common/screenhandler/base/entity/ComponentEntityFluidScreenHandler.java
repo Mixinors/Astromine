@@ -29,7 +29,6 @@ import net.minecraft.screen.ScreenHandlerType;
 
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidEntity;
 import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBarWidget;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 

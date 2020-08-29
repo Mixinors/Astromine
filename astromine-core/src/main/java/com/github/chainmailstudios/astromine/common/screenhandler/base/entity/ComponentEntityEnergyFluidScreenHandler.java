@@ -31,7 +31,6 @@ import com.github.chainmailstudios.astromine.common.entity.base.ComponentEnergyF
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.widget.blade.EnergyVerticalBarWidget;
 import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBarWidget;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import team.reborn.energy.EnergySide;
