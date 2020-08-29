@@ -90,6 +90,7 @@ public class RocketEntity extends ComponentFluidEntity implements ExtendedScreen
 
 	public RocketEntity(EntityType<?> type, World world) {
 		super(type, world);
+
 		this.getDataTracker().set(IS_GO, false);
 	}
 
@@ -115,6 +116,10 @@ public class RocketEntity extends ComponentFluidEntity implements ExtendedScreen
 	public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
 		if (player.world.isClient) {
 			return ActionResult.CONSUME;
+		}
+
+		if (player.isSneaking()) {
+			player.openHandledScreen(this);
 		}
 
 		ItemStack stack = player.getStackInHand(hand);

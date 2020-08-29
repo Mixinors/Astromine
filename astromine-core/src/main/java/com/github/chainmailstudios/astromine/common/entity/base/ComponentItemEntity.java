@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import nerdhub.cardinal.components.api.ComponentType;
 import nerdhub.cardinal.components.api.component.Component;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundTag;
@@ -21,10 +22,8 @@ import java.util.Set;
 public abstract class ComponentItemEntity extends ComponentEntity {
 	public abstract ItemInventoryComponent createItemComponent();
 
-	private final ItemInventoryComponent itemComponent = createItemComponent();
-
 	public ItemInventoryComponent getItemComponent() {
-		return itemComponent;
+		return ComponentProvider.fromEntity(this).getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
 	}
 
 	public ComponentItemEntity(EntityType<?> type, World world) {

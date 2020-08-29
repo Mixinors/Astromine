@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import nerdhub.cardinal.components.api.ComponentType;
 import nerdhub.cardinal.components.api.component.Component;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.math.Direction;
@@ -20,18 +21,14 @@ import java.util.Set;
 public abstract class ComponentFluidItemEntity extends ComponentEntity {
 	public abstract ItemInventoryComponent createItemComponent();
 
-	private final ItemInventoryComponent itemComponent = createItemComponent();
-
 	public abstract FluidInventoryComponent createFluidComponent();
 
-	private final FluidInventoryComponent fluidComponent = createFluidComponent();
-
 	public ItemInventoryComponent getItemComponent() {
-		return itemComponent;
+		return ComponentProvider.fromEntity(this).getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
 	}
 
 	public FluidInventoryComponent getFluidComponent() {
-		return fluidComponent;
+		return ComponentProvider.fromEntity(this).getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 	}
 
 	public ComponentFluidItemEntity(EntityType<?> type, World world) {
