@@ -24,9 +24,23 @@
 
 package com.github.chainmailstudios.astromine.client.rei;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.client.render.sprite.SpriteRenderer;
+import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import me.shedaniel.math.Point;
+import me.shedaniel.math.Rectangle;
+import me.shedaniel.rei.api.ClientHelper;
+import me.shedaniel.rei.api.EntryStack;
+import me.shedaniel.rei.api.plugins.REIPluginV0;
+import me.shedaniel.rei.api.widgets.Tooltip;
+import me.shedaniel.rei.gui.widget.EntryWidget;
+import me.shedaniel.rei.gui.widget.Widget;
+import me.shedaniel.rei.impl.RenderingEntry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.OverlayTexture;
@@ -38,25 +52,6 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.client.render.sprite.SpriteRenderer;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.ToolUtilities;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import me.shedaniel.math.Point;
-import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.BuiltinPlugin;
-import me.shedaniel.rei.api.ClientHelper;
-import me.shedaniel.rei.api.EntryStack;
-import me.shedaniel.rei.api.RecipeHelper;
-import me.shedaniel.rei.api.plugins.REIPluginV0;
-import me.shedaniel.rei.api.widgets.Tooltip;
-import me.shedaniel.rei.gui.widget.EntryWidget;
-import me.shedaniel.rei.gui.widget.Widget;
-import me.shedaniel.rei.impl.RenderingEntry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -75,14 +70,6 @@ public abstract class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
 		return EntryStack.create(volume.getFluid(), convertA2R(volume.getFraction()));
 	}
 
-	@Override
-	public void registerOthers(RecipeHelper recipeHelper) {
-		BuiltinPlugin.getInstance().registerInformation(EntryStack.create(ToolUtilities.getAstromineBook()).setting(EntryStack.Settings.CHECK_TAGS, EntryStack.Settings.TRUE), new TranslatableText("item.astromine.manual"), texts -> {
-			texts.add(new TranslatableText("text.astromine.manual.obtain.info"));
-			return texts;
-		});
-	}
-
 	public static List<Widget> createEnergyDisplay(Rectangle bounds, double energy, boolean generating, long speed) {
 		return Collections.singletonList(new EnergyEntryWidget(bounds, speed, generating).entry(new RenderingEntry() {
 			@Override
@@ -93,8 +80,9 @@ public abstract class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
 				if (generating)
 					return Tooltip.create(mouse, new TranslatableText("text.astromine.energy"), ClientHelper.getInstance().getFormattedModFromIdentifier(AstromineCommon.identifier("a")), new LiteralText(""), new TranslatableText("category.astromine.generating.energy",
 						EnergyUtilities.simpleDisplay(energy)));
-				else return Tooltip.create(mouse, new TranslatableText("text.astromine.energy"), ClientHelper.getInstance().getFormattedModFromIdentifier(AstromineCommon.identifier("a")), new LiteralText(""), new TranslatableText("category.astromine.consuming.energy",
-					EnergyUtilities.simpleDisplay(energy)));
+				else
+					return Tooltip.create(mouse, new TranslatableText("text.astromine.energy"), ClientHelper.getInstance().getFormattedModFromIdentifier(AstromineCommon.identifier("a")), new LiteralText(""), new TranslatableText("category.astromine.consuming.energy",
+						EnergyUtilities.simpleDisplay(energy)));
 			}
 		}).notFavoritesInteractable());
 	}

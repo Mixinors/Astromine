@@ -24,34 +24,28 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
+import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
+import com.github.chainmailstudios.astromine.client.registry.SkyboxRegistry;
 import com.github.chainmailstudios.astromine.client.render.layer.Layer;
+import com.github.chainmailstudios.astromine.client.render.sky.skybox.Skybox;
+import com.github.chainmailstudios.astromine.common.fluid.ExtendedFluid;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.*;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Matrix4f;
+import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.BufferBuilderStorage;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.LightmapTextureManager;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.util.math.Matrix4f;
-import net.minecraft.util.math.Vec3d;
-
-import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
-import com.github.chainmailstudios.astromine.client.registry.SkyboxRegistry;
-import com.github.chainmailstudios.astromine.client.render.sky.skybox.Skybox;
-import com.github.chainmailstudios.astromine.common.fluid.ExtendedFluid;
 
 @Mixin(WorldRenderer.class)
 @Environment(EnvType.CLIENT)
@@ -90,7 +84,10 @@ public abstract class WorldRendererMixin {
 
 		VertexConsumer consumer = immediate.getBuffer(Layer.getFlatNoCutout());
 
-		ClientAtmosphereManager.getVolumes().forEach(((blockPos, volume) -> {
+		for (Long2ObjectMap.Entry<FluidVolume> entry : ClientAtmosphereManager.getVolumes().long2ObjectEntrySet()) {
+			long blockPos = entry.getLongKey();
+			FluidVolume volume = entry.getValue();
+
 			int r = 255;
 			int g = 255;
 			int b = 255;
@@ -104,10 +101,10 @@ public abstract class WorldRendererMixin {
 				b = (color & 255);
 			}
 
-			if (!volume.isEmpty() && world.isChunkLoaded(blockPos)) {
-				float bX = blockPos.getX();
-				float bY = blockPos.getY();
-				float bZ = blockPos.getZ();
+			int bX = BlockPos.unpackLongX(blockPos);
+			int bZ = BlockPos.unpackLongZ(blockPos);
+			if (!volume.isEmpty() && world.isChunkLoaded(bX >> 4, bZ >> 4)) {
+				int bY = BlockPos.unpackLongY(blockPos);
 
 				float x = bX - cX;
 				float y = bY - cY;
@@ -149,6 +146,6 @@ public abstract class WorldRendererMixin {
 				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z + 1).color(r, g, b, a).light(15728880).next();
 				consumer.vertex(matrices.peek().getModel(), x + 1, y, z + 1).color(r, g, b, a).light(15728880).next();
 			}
-		}));
+		}
 	}
 }
