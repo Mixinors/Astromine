@@ -24,15 +24,26 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
+import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
+import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
+import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
+import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
 import com.github.chainmailstudios.astromine.registry.AstromineCommonCallbacks;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.google.common.collect.Lists;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
-
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.TeleportTarget;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -42,26 +53,10 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.TeleportTarget;
-import net.minecraft.world.World;
-
-import com.github.chainmailstudios.astromine.access.EntityAccess;
-import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
-import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
-import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
-import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-
-import com.google.common.collect.Lists;
 import java.util.List;
 
 @Mixin(Entity.class)
-public abstract class EntityMixin implements EntityAccess, GravityEntity {
+public abstract class EntityMixin implements GravityEntity {
 	int lastY = 0;
 
 	@Shadow
@@ -77,16 +72,6 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 
 	@Unique
 	TeleportTarget nextTeleportTarget = null;
-
-	@Override
-	public Entity astromine_getLastVehicle() {
-		return lastVehicle;
-	}
-
-	@Override
-	public void astromine_setLastVehicle(Entity lastVehicle) {
-		this.lastVehicle = lastVehicle;
-	}
 
 	@ModifyVariable(at = @At("HEAD"), method = "handleFallDamage(FF)Z", index = 1)
 	float getDamageMultiplier(float damageMultiplier) {
@@ -148,7 +133,7 @@ public abstract class EntityMixin implements EntityAccess, GravityEntity {
 		}
 
 		for (Entity existingEntity : existingPassengers) {
-			((EntityAccess) existingEntity).astromine_setLastVehicle(newEntity);
+			((EntityMixin) (Object) existingEntity).lastVehicle = newEntity;
 		}
 	}
 

@@ -72,7 +72,7 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 
 			BlockPos output = position.offset(direction);
 
-			if (asEnergy().use(AstromineConfig.get().ventEnergyConsumed) && world.getBlockState(output).isAir()) {
+			if (asEnergy().use(AstromineConfig.get().ventEnergyConsumed) && (world.getBlockState(output).isAir() || world.getBlockState(output).isSideSolidFullSquare(world, pos, direction.getOpposite()))) {
 				ComponentProvider componentProvider = ComponentProvider.fromChunk(world.getChunk(getPos()));
 
 				ChunkAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);

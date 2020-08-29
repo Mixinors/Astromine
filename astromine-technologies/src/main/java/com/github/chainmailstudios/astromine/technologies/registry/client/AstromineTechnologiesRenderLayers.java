@@ -22,21 +22,14 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.mixin;
+package com.github.chainmailstudios.astromine.technologies.registry.client;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import com.github.chainmailstudios.astromine.registry.client.AstromineRenderLayers;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
+import net.minecraft.client.render.RenderLayer;
 
-import net.minecraft.util.DyeColor;
-
-import com.github.chainmailstudios.astromine.access.DyeColorAccess;
-
-@Mixin(DyeColor.class)
-public class DyeColorMixin implements DyeColorAccess {
-	@Shadow
-	int color;
-
-	public int astromine_getColor() {
-		return color;
+public class AstromineTechnologiesRenderLayers extends AstromineRenderLayers {
+	public static void initialize() {
+		register(AstromineTechnologiesBlocks.AIRLOCK, RenderLayer.getTranslucent());
 	}
 }

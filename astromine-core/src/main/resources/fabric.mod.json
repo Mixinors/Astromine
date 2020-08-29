@@ -25,13 +25,13 @@
     "main": ["com.github.chainmailstudios.astromine.AstromineCommon"],
     "client": ["com.github.chainmailstudios.astromine.AstromineClient"],
     "server": ["com.github.chainmailstudios.astromine.AstromineDedicated"],
-    "preLaunch": ["com.github.chainmailstudios.astromine.AstromineCommon"],
-    "modmenu": ["com.github.chainmailstudios.astromine.client.modmenu.AstromineModMenuSupport"]
+    "modmenu": ["com.github.chainmailstudios.astromine.client.modmenu.AstromineModMenuSupport"],
+    "rei_plugins": ["com.github.chainmailstudios.astromine.client.rei.AstromineCoreRoughlyEnoughItemsPlugin"]
   },
   "mixins": ["astromine.mixins.json"],
   "accessWidener": "astromine-core.accesswidener",
   "depends": {
-    "fabricloader": ">=0.8.7",
+    "fabricloader": ">=0.9.2",
     "fabric": ">=0.11.8",
     "minecraft": ">=1.16.1"
   },

@@ -48,7 +48,7 @@ import com.github.chainmailstudios.astromine.common.utilities.ToolUtilities;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
-public class DynamicToolItem extends Item implements DynamicAttributeTool, Vanishable {
+public class DynamicToolItem extends Item implements DynamicAttributeTool, Vanishable, DiggerTool {
 	public final MiningToolItem first;
 	public final MiningToolItem second;
 	private final ToolMaterial material;

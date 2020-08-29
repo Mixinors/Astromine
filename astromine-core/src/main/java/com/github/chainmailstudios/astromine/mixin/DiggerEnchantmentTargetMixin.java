@@ -24,14 +24,12 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
+import com.github.chainmailstudios.astromine.common.item.DiggerTool;
+import net.minecraft.item.Item;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import net.minecraft.item.Item;
-
-import com.github.chainmailstudios.astromine.common.item.DynamicToolItem;
 
 /**
  * for future reference, the inner class numbers of the EnchantmentTarget enum: 1 = armor 2 = breakable 3 = bow 4 =
@@ -43,7 +41,7 @@ import com.github.chainmailstudios.astromine.common.item.DynamicToolItem;
 public class DiggerEnchantmentTargetMixin {
 	@Inject(at = @At("HEAD"), method = "isAcceptableItem(Lnet/minecraft/item/Item;)Z", cancellable = true)
 	public void makeMultiToolEnchantable(Item item, CallbackInfoReturnable<Boolean> cir) {
-		if (item instanceof DynamicToolItem)
+		if (item instanceof DiggerTool)
 			cir.setReturnValue(true);
 	}
 }

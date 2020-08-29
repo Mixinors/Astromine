@@ -80,6 +80,7 @@ public class FireExtinguisherItem extends Item {
 		if (!user.isSneaking()) {
 			user.addVelocity(thrustVec.x, thrustVec.y, thrustVec.z);
 			if(user instanceof ServerPlayerEntity) {
+				((ServerPlayerEntity) user).networkHandler.floatingTicks = 0;
 				AstromineFoundationsCriteria.USE_FIRE_EXTINGUISHER.trigger((ServerPlayerEntity) user);
 			}
 			user.getItemCooldownManager().set(this, AstromineConfig.get().fireExtinguisherStandingDelay);

@@ -25,16 +25,14 @@
 package com.github.chainmailstudios.astromine.registry.client;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.callback.TooltipCallback;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
-import net.fabricmc.fabric.api.event.client.ClientTickCallback;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.item.BlockItem;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
@@ -44,7 +42,7 @@ import team.reborn.energy.EnergyHandler;
 
 public class AstromineClientCallbacks {
 	public static void initialize() {
-		TooltipCallback.EVENT.register((stack, world, tooltip, context) -> {
+		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof FluidVolumeItem) {
 				FluidInventoryComponent fluidComponent = ComponentProvider.fromItemStack(stack).getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
@@ -54,19 +52,19 @@ public class AstromineClientCallbacks {
 			}
 		});
 
-		TooltipCallback.EVENT.register(((stack, world, tooltip, context) -> {
+		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof EnergyVolumeItem) {
 				EnergyHandler energyHandler = Energy.of(stack);
 
 				tooltip.add(EnergyUtilities.compoundDisplayColored(energyHandler.getEnergy(), energyHandler.getMaxStored()));
 			}
-		}));
+		});
 
-		TooltipCallback.EVENT.register((((stack, world, tooltip, context) -> {
+		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof BlockItem && ((BlockItem) stack.getItem()).getBlock() instanceof WrenchableHorizontalFacingEnergyTieredBlockWithEntity) {
 				tooltip.add(new TranslatableText("text.astromine.tooltip.speed", Fraction.DECIMAL_FORMAT.format(((WrenchableHorizontalFacingEnergyTieredBlockWithEntity) ((BlockItem) stack.getItem()).getBlock()).getMachineSpeed())).formatted(Formatting.GRAY));
 				tooltip.add(new LiteralText(" "));
 			}
-		})));
+		});
 	}
 }
