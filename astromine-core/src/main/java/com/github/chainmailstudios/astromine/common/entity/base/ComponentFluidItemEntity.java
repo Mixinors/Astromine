@@ -20,11 +20,11 @@ import java.util.Set;
 public abstract class ComponentFluidItemEntity extends ComponentEntity {
 	public abstract ItemInventoryComponent createItemComponent();
 
-	private ItemInventoryComponent itemComponent = createItemComponent();
+	private final ItemInventoryComponent itemComponent = createItemComponent();
 
 	public abstract FluidInventoryComponent createFluidComponent();
 
-	private FluidInventoryComponent fluidComponent = createFluidComponent();
+	private final FluidInventoryComponent fluidComponent = createFluidComponent();
 
 	public ItemInventoryComponent getItemComponent() {
 		return itemComponent;

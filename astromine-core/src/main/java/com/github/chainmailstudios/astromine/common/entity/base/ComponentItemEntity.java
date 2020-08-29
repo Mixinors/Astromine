@@ -21,7 +21,7 @@ import java.util.Set;
 public abstract class ComponentItemEntity extends ComponentEntity {
 	public abstract ItemInventoryComponent createItemComponent();
 
-	private ItemInventoryComponent itemComponent = createItemComponent();
+	private final ItemInventoryComponent itemComponent = createItemComponent();
 
 	public ItemInventoryComponent getItemComponent() {
 		return itemComponent;

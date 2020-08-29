@@ -10,11 +10,11 @@ import net.minecraft.world.World;
 public abstract class ComponentEnergyItemEntity extends ComponentEntity {
 	public abstract ItemInventoryComponent createItemComponent();
 
-	private ItemInventoryComponent itemComponent = createItemComponent();
+	private final ItemInventoryComponent itemComponent = createItemComponent();
 
 	public abstract EnergyInventoryComponent createEnergyComponent();
 
-	private EnergyInventoryComponent energyComponent = createEnergyComponent();
+	private final EnergyInventoryComponent energyComponent = createEnergyComponent();
 
 	public ItemInventoryComponent getItemComponent() {
 		return itemComponent;

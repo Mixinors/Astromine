@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 public abstract class ComponentFluidEntity extends ComponentEntity {
 	public abstract FluidInventoryComponent createFluidComponent();
 
-	private FluidInventoryComponent fluidComponent = createFluidComponent();
+	private final FluidInventoryComponent fluidComponent = createFluidComponent();
 
 	public FluidInventoryComponent getFluidComponent() {
 		return fluidComponent;

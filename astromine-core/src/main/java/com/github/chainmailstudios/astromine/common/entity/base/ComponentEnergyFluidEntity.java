@@ -9,13 +9,13 @@ import net.minecraft.world.World;
 public abstract class ComponentEnergyFluidEntity extends ComponentEntity {
 	public abstract FluidInventoryComponent createFluidComponent();
 
-	private FluidInventoryComponent fluidComponent = createFluidComponent();
+	private final FluidInventoryComponent fluidComponent = createFluidComponent();
 
 	public abstract EnergyInventoryComponent createEnergyComponent();
 
 	private EnergyInventoryComponent energyComponent = createEnergyComponent();
 
-	public FluidInventoryComponent getFluidComponent() {
+	public final FluidInventoryComponent getFluidComponent() {
 		return fluidComponent;
 	}
 
