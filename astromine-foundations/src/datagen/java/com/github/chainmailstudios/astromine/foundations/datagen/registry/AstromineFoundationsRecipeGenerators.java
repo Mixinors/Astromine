@@ -1,14 +1,10 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.registry;
 
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.RecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.BlastingSetRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.Crafting3x3SetRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.ShapedCraftingSetRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.ShapelessCraftingSetRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.SmeltingSetRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.SmithingSetRecipeGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.*;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineRecipeGenerators;
-import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.*;
+import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.ArmorCraftingRecipeGenerators;
+import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.ToolCraftingRecipeGenerators;
 
 import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.*;
 
@@ -106,7 +102,7 @@ public class AstromineFoundationsRecipeGenerators extends AstromineRecipeGenerat
 	public final RecipeGenerator TINY_DUST_TO_FRAGMENT_BLASTING = register(new BlastingSetRecipeGenerator(TINY_DUST, FRAGMENT));
 
 	public final RecipeGenerator INGOT_TO_PLATES_CRAFTING = register(new ShapedCraftingSetRecipeGenerator(INGOT, PLATES, "#", "#"));
-	public final RecipeGenerator INGOT_TO_GEAR_CRAFTING = register(new ShapedCraftingSetRecipeGenerator(INGOT, GEAR, " # ", "# #", " # "));
+	public final RecipeGenerator INGOT_TO_GEAR_CRAFTING = register(new ShapedCraftingSetRecipeGenerator(INGOT, GEAR, 2, " # ", "# #", " # "));
 
 	public final RecipeGenerator PICKAXE_SMITHING_FROM_INGOT = register(new SmithingSetRecipeGenerator(PICKAXE, INGOT));
 	public final RecipeGenerator PICKAXE_SMITHING_FROM_GEM = register(new SmithingSetRecipeGenerator(PICKAXE, GEM));
