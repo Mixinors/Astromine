@@ -114,8 +114,13 @@ public class VulcanChunkGenerator extends ChunkGenerator {
 		ChunkRandom chunkRandom = new ChunkRandom();
 		chunkRandom.setTerrainSeed(chunk.getPos().x, chunk.getPos().z);
 
+		BlockPos.Mutable mutable = new BlockPos.Mutable();
+
 		for (int x = x1; x <= x2; ++x) {
+			mutable.setX(x);
 			for (int z = z1; z <= z2; ++z) {
+				mutable.setZ(z);
+
 				float depth = 0;
 				float scale = 0;
 				int i = 0;
@@ -144,17 +149,17 @@ public class VulcanChunkGenerator extends ChunkGenerator {
 				float cellularNoise = fastNoise.getCellular(x, z);
 
 				for (int y = 0; y <= genHeight; ++y) {
-					final BlockPos pos = new BlockPos(x, y, z);
+					mutable.setY(y);
 
 					// Fractures
 					if (y >= 1) {
 						cellularNoise -= 0.00025;
 
 						if (cellularNoise > -0.1 && height <= 101) {
-							chunk.setBlockState(pos, Blocks.AIR.getDefaultState(), false);
+							chunk.setBlockState(mutable, Blocks.AIR.getDefaultState(), false);
 						} else {
 							if (y >= 100) {
-								chunk.setBlockState(pos, AstromineDiscoveriesBlocks.VULCAN_STONE.getDefaultState(), false);
+								chunk.setBlockState(mutable, AstromineDiscoveriesBlocks.VULCAN_STONE.getDefaultState(), false);
 							}
 						}
 					}
@@ -162,17 +167,17 @@ public class VulcanChunkGenerator extends ChunkGenerator {
 					// Bedrock
 					if (y <= 5) {
 						if (chunkRandom.nextInt(y + 1) == 0) {
-							chunk.setBlockState(pos, Blocks.BEDROCK.getDefaultState(), false);
+							chunk.setBlockState(mutable, Blocks.BEDROCK.getDefaultState(), false);
 						}
 					}
 				}
 
 				for (int y = 0; y <= 100; ++y) {
-					final BlockPos pos = new BlockPos(x, y, z);
+					mutable.setY(y);
 
 					// Lava
-					if (chunk.getBlockState(pos).isAir()) {
-						chunk.setBlockState(pos, Blocks.LAVA.getDefaultState(), false);
+					if (chunk.getBlockState(mutable).isAir()) {
+						chunk.setBlockState(mutable, Blocks.LAVA.getDefaultState(), false);
 					}
 				}
 			}
