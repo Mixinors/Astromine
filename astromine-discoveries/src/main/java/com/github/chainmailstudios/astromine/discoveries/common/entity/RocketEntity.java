@@ -68,6 +68,7 @@ import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesCriteria;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesParticles;
 import com.github.chainmailstudios.astromine.discoveries.common.screenhandler.RocketScreenHandler;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsItems;
 import io.netty.buffer.Unpooled;
 
 import javax.annotation.Nullable;
@@ -96,12 +97,9 @@ public class RocketEntity extends ComponentFluidEntity implements ExtendedScreen
 		this.getDataTracker().startTracking(IS_GO, false);
 	}
 
-	public Box getHardCollisionBox(Entity collidingEntity) {
-		return collidingEntity.isPushable() ? collidingEntity.getBoundingBox() : null;
-	}
-
-	public Box getCollisionBox() {
-		return this.getBoundingBox();
+	@Override
+	public boolean method_30948() {
+		return !this.removed;
 	}
 
 	@Override
@@ -115,11 +113,16 @@ public class RocketEntity extends ComponentFluidEntity implements ExtendedScreen
 			return ActionResult.CONSUME;
 		}
 
-		if (player.isSneaking()) {
-			player.openHandledScreen(this);
-		}
-
 		ItemStack stack = player.getStackInHand(hand);
+
+		if (player.isSneaking()) {
+			if (stack.getItem() == AstromineFoundationsItems.BRONZE_WRENCH) {
+				this.remove();
+			} else {
+				player.openHandledScreen(this);
+			}
+			return ActionResult.SUCCESS;
+		}
 
 		if (stack.getItem() == Items.FLINT_AND_STEEL) {
 			this.getDataTracker().set(IS_GO, true);
@@ -127,12 +130,7 @@ public class RocketEntity extends ComponentFluidEntity implements ExtendedScreen
 				AstromineDiscoveriesCriteria.LAUNCH_ROCKET.trigger((ServerPlayerEntity) player);
 			}
 			return ActionResult.SUCCESS;
-		} else if (stack.getItem() == Items.STICK) {
-			this.kill();
 		}
-
-		if (!stack.isEmpty())
-			return ActionResult.CONSUME;
 
 		player.startRiding(this);
 
