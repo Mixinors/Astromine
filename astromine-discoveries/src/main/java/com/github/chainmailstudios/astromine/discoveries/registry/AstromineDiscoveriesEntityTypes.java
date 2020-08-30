@@ -65,8 +65,5 @@ public class AstromineDiscoveriesEntityTypes extends AstromineEntityTypes {
 		});
 
 		SpawnRestriction.register(AstromineDiscoveriesEntityTypes.SPACE_SLIME, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SpaceSlimeEntity::canSpawnInDark);
-
-		FabricDefaultAttributeRegistry.register(SPACE_SLIME, SpaceSlimeEntity.createMobAttributes());
-		FabricDefaultAttributeRegistry.register(SUPER_SPACE_SLIME, SuperSpaceSlimeEntity.createMobAttributes());
 	}
 }
