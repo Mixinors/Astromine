@@ -5,7 +5,7 @@
   "text.astromine.message.holographic_connection_failed": "在 %s 和 %s 的投影机连接失败。",
   "text.astromine.message.holographic_connection_clear": "已清除选定的投影器 ！",
   "text.astromine.message.holographic_connector_select": "已选定 %s 的投影器 ！",
-  "text.astromine.tooltip.fractional_bar": "已用%s，共 %s (%s)",
+  "text.astromine.tooltip.fractional_bar": "剩余%s单位，共可储存%s单位（%s）",
   "text.astromine.tooltip.fractional_value": "%s/%s",
   "text.astromine.tooltip.fractional_value_simple": "%s",
   "text.astromine.tooltip.energy_value": "%s E",
