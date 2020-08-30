@@ -145,7 +145,7 @@ public class MarsChunkGenerator extends ChunkGenerator {
 					chunk.setBlockState(mutable, y == height ? AstromineDiscoveriesBlocks.MARTIAN_SOIL.getDefaultState() : AstromineDiscoveriesBlocks.MARTIAN_STONE.getDefaultState(), false);
 					if (y <= 5) {
 						if (chunkRandom.nextInt(y + 1) == 0) {
-							chunk.setBlockState(new BlockPos(x, y, z), Blocks.BEDROCK.getDefaultState(), false);
+							chunk.setBlockState(mutable, Blocks.BEDROCK.getDefaultState(), false);
 						}
 					}
 				}
