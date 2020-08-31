@@ -50,6 +50,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
@@ -69,12 +70,14 @@ import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDisco
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesParticles;
 import com.github.chainmailstudios.astromine.discoveries.common.screenhandler.RocketScreenHandler;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsItems;
+import com.zundrel.wrenchable.entity.EntityWrenchable;
+import com.zundrel.wrenchable.wrench.Wrench;
 import io.netty.buffer.Unpooled;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-public class RocketEntity extends ComponentFluidEntity implements ExtendedScreenHandlerFactory {
+public class RocketEntity extends ComponentFluidEntity implements ExtendedScreenHandlerFactory, EntityWrenchable {
 	public static final Identifier ROCKET_SPAWN = AstromineCommon.identifier("rocket_spawn");
 	private static final TrackedData<Boolean> IS_GO = DataTracker.registerData(RocketEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
@@ -109,18 +112,18 @@ public class RocketEntity extends ComponentFluidEntity implements ExtendedScreen
 
 	@Override
 	public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
-		if (player.world.isClient) {
+		if (player.world.isClient || this.removed) {
 			return ActionResult.CONSUME;
 		}
 
 		ItemStack stack = player.getStackInHand(hand);
 
+		if (stack.getItem() instanceof Wrench) {
+			return ActionResult.PASS;
+		}
+
 		if (player.isSneaking()) {
-			if (stack.getItem() == AstromineFoundationsItems.BRONZE_WRENCH) {
-				this.remove();
-			} else {
-				player.openHandledScreen(this);
-			}
+			player.openHandledScreen(this);
 			return ActionResult.SUCCESS;
 		}
 
@@ -241,5 +244,10 @@ public class RocketEntity extends ComponentFluidEntity implements ExtendedScreen
 	@Override
 	public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
 		return new RocketScreenHandler(syncId, player, getEntityId());
+	}
+
+	@Override
+	public void onWrenched(World world, PlayerEntity player, EntityHitResult result) {
+		this.remove();
 	}
 }

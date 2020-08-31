@@ -1,7 +1,6 @@
 {
   "replace": false,
   "values": [
-    "astromine:meteor_stone",
     "astromine:asteroid_stone",
     "astromine:blazing_asteroid_stone"
   ]

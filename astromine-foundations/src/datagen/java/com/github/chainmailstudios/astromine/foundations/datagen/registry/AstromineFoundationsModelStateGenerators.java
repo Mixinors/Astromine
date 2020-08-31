@@ -50,5 +50,5 @@ public class AstromineFoundationsModelStateGenerators extends AstromineModelStat
 	public final ModelStateGenerator LEGGINGS = register(new GenericItemSetModelStateGenerator(MaterialItemType.LEGGINGS));
 	public final ModelStateGenerator BOOTS = register(new GenericItemSetModelStateGenerator(MaterialItemType.BOOTS));
 
-	public final ModelStateGenerator WRENCH = register(new HandheldItemModelStateGenerator(AstromineFoundationsItems.BRONZE_WRENCH));
+	public final ModelStateGenerator WRENCH = register(new HandheldItemModelStateGenerator(AstromineFoundationsItems.COPPER_WRENCH, AstromineFoundationsItems.BRONZE_WRENCH, AstromineFoundationsItems.STEEL_WRENCH));
 }

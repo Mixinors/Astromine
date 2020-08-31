@@ -10,6 +10,7 @@ import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.Smithi
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineRecipeGenerators;
 import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.ArmorCraftingRecipeGenerators;
 import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.ToolCraftingRecipeGenerators;
+import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.WrenchCraftingRecipeGenerator;
 
 import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.*;
 
@@ -124,4 +125,6 @@ public class AstromineFoundationsRecipeGenerators extends AstromineRecipeGenerat
 	public final RecipeGenerator LEGGINGS_SMITHING_FROM_GEM = register(new SmithingSetRecipeGenerator(LEGGINGS, GEM));
 	public final RecipeGenerator BOOTS_SMITHING_FROM_INGOT = register(new SmithingSetRecipeGenerator(BOOTS, INGOT));
 	public final RecipeGenerator BOOTS_SMITHING_FROM_GEM = register(new SmithingSetRecipeGenerator(BOOTS, GEM));
+
+	public final RecipeGenerator WRENCH = register(new WrenchCraftingRecipeGenerator());
 }

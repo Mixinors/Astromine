@@ -449,7 +449,9 @@ public class AstromineFoundationsItems extends AstromineItems {
 
 	public static final Item METEOR_METITE_CLUSTER = register("meteor_metite_cluster", new Item(AstromineFoundationsItems.getBasicSettings()));
 
-	public static final Item BRONZE_WRENCH = register("bronze_wrench", new WrenchItem(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item COPPER_WRENCH = register("copper_wrench", new WrenchItem(AstromineFoundationsToolMaterials.COPPER, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item BRONZE_WRENCH = register("bronze_wrench", new WrenchItem(AstromineFoundationsToolMaterials.BRONZE, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item STEEL_WRENCH = register("steel_wrench", new WrenchItem(AstromineFoundationsToolMaterials.STEEL, AstromineFoundationsItems.getBasicSettings()));
 
 	public static final Item FIRE_EXTINGUISHER = register("fire_extinguisher", new FireExtinguisherItem(AstromineFoundationsItems.getBasicSettings().maxCount(1)));
 
