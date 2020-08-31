@@ -29,7 +29,9 @@ import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.math.Vector3f;
+import net.minecraft.entity.Dismounting;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
@@ -248,6 +250,12 @@ public class RocketEntity extends ComponentFluidEntity implements ExtendedScreen
 
 	@Override
 	public void onWrenched(World world, PlayerEntity player, EntityHitResult result) {
-		this.remove();
+		this.removeAllPassengers();
+		this.kill();
+	}
+
+	@Override
+	public Vec3d updatePassengerForDismount(LivingEntity passenger) {
+		return new Vec3d((this.getX()-2)+this.getEntityWorld().getRandom().nextInt(5), this.getY(), (this.getZ()-2)+this.getEntityWorld().getRandom().nextInt(5));
 	}
 }
