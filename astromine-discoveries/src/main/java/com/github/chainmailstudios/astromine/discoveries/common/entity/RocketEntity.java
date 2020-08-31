@@ -217,7 +217,7 @@ public class RocketEntity extends ComponentFluidEntity implements ExtendedScreen
 
 									@Override
 									public boolean canDestroyBlock(Explosion explosion, BlockView world, BlockPos pos, BlockState state, float power) {
-										return true;
+										return RocketEntity.this.canExplosionDestroyBlock(explosion, world, pos, state, power);
 									}
 								}, blockPos.getX() + .5, blockPos.getY() + .5, blockPos.getZ() + .5, power, false, Explosion.DestructionType.DESTROY);
 							}
