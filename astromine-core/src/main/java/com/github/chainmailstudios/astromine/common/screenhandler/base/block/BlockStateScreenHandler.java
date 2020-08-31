@@ -24,19 +24,30 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.block;
 
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
-
-import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class BlockStateScreenHandler extends BaseScreenHandler {
 	BlockState state;
+	public BlockPos position;
+	public Block originalBlock;
 
 	public BlockStateScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player);
 
-		state = player.world.getBlockState(position);
+		this.state = player.world.getBlockState(position);
+		this.originalBlock = state.getBlock();
+		this.position = position;
+	}
+
+	@Override
+	public boolean canUse(@Nullable PlayerEntity player) {
+		return canUse(ScreenHandlerContext.create(player.world, position), player, originalBlock);
 	}
 }

@@ -58,6 +58,11 @@ public abstract class ComponentEntityScreenHandler extends BaseScreenHandler {
 	}
 
 	@Override
+	public boolean canUse(PlayerEntity player) {
+		return this.syncEntity.isAlive() && this.syncEntity.distanceTo(player) < 8.0F;
+	}
+
+	@Override
 	public void initialize(int width, int height) {
 		tabs = new TabWidget();
 		tabs.setSize(Size.of(176F, 188F + getTabWidgetExtendedHeight()));

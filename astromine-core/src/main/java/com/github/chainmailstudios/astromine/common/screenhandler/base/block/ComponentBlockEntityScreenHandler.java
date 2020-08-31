@@ -26,6 +26,7 @@ package com.github.chainmailstudios.astromine.common.screenhandler.base.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.text.TranslatableText;
@@ -47,6 +48,7 @@ import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import com.github.vini2003.blade.common.widget.base.TabWidget;
 import com.github.vini2003.blade.common.widget.base.TextWidget;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -54,6 +56,8 @@ import java.util.HashSet;
 
 public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandler {
 	public ComponentBlockEntity syncBlockEntity;
+	public BlockPos position;
+	public Block originalBlock;
 	public Collection<SlotWidget> playerSlots = new HashSet<>();
 	public TabCollection mainTab;
 	protected TabWidget tabs;
@@ -61,7 +65,9 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 	public ComponentBlockEntityScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player);
 
-		syncBlockEntity = (ComponentBlockEntity) player.world.getBlockEntity(position);
+		this.position = position;
+		this.syncBlockEntity = (ComponentBlockEntity) player.world.getBlockEntity(position);
+		this.originalBlock = player.world.getBlockState(position).getBlock();
 
 		if (!player.world.isClient) {
 			syncBlockEntity.doNotSkipInventory();
@@ -71,6 +77,11 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 
 	public int getTabWidgetExtendedHeight() {
 		return 0;
+	}
+
+	@Override
+	public boolean canUse(@Nullable PlayerEntity player) {
+		return canUse(ScreenHandlerContext.create(player.world, position), player, originalBlock);
 	}
 
 	@Override
