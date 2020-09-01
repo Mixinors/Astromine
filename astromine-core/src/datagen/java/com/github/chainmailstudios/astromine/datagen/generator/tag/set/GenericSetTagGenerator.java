@@ -21,7 +21,7 @@ public class GenericSetTagGenerator implements SetTagGenerator {
 	@Override
 	public void generate(TagData tags, MaterialSet set) {
 		TagData.TagBuilder<ItemConvertible> builder = tags.item(tagId);
-		builder.append(set.getEntry(type));
+		builder.append(type.isOptionalInTag(), set.getEntry(type));
 	}
 
 	@Override

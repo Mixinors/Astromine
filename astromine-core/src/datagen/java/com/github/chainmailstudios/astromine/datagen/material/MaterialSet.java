@@ -84,9 +84,9 @@ public class MaterialSet {
 	public void generateTags(TagData tags) {
 		items.forEach((type, entry) -> {
 			if (entry.hasItemTag()) {
-				tags.item(entry.getItemTagId()).append(entry);
+				tags.item(entry.getItemTagId()).append(type.isOptionalInTag(), entry);
 				if (entry.isBlock()) {
-					tags.block(entry.getItemTagId()).append(entry.asBlock());
+					tags.block(entry.getItemTagId()).append(type.isOptionalInTag(), entry.asBlock());
 				}
 			}
 		});

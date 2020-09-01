@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "astromine:asteroid_lapis_ore"
+    {
+      "id": "astromine:asteroid_lapis_ore",
+      "required": false
+    }
   ]
 }

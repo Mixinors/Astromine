@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "astromine:asteroid_silver_ore"
+    {
+      "id": "astromine:asteroid_silver_ore",
+      "required": false
+    }
   ]
 }

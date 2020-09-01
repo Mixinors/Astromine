@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "astromine:asteroid_metite_cluster"
+    {
+      "id": "astromine:asteroid_metite_cluster",
+      "required": false
+    }
   ]
 }

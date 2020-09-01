@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "astromine:asteroid_diamond_cluster"
+    {
+      "id": "astromine:asteroid_diamond_cluster",
+      "required": false
+    }
   ]
 }
