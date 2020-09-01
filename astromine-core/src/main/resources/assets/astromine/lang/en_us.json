@@ -560,7 +560,9 @@
   "item.astromine.manual": "Astromine Manual",
   "item.astromine.yeast": "Yeast",
   "item.astromine.rocket": "Rocket",
+  "item.astromine.copper_wrench": "Copper Wrench",
   "item.astromine.bronze_wrench": "Bronze Wrench",
+  "item.astromine.steel_wrench": "Steel Wrench",
   "item.astromine.gravity_gauntlet": "Gravity Gauntlet",
   "item.minecraft.potion.effect.rocket_fuel": "Rocket Fuel Bottle",
   "item.minecraft.splash_potion.effect.rocket_fuel": "Splash Rocket Fuel Bottle",
@@ -923,10 +925,12 @@
   "advancements.astromine.get_electric_smelter.description": "Craft an Electric Smelter",
   "advancements.astromine.get_presser.title": "Pressing Matters",
   "advancements.astromine.get_presser.description": "Craft a Presser",
-  "advancements.astromine.get_triturator.title": "It Means Pulverizer",
+  "advancements.astromine.get_triturator.title": "AKA Pulverizer",
   "advancements.astromine.get_triturator.description": "Craft a Triturator",
   "advancements.astromine.get_gear.title": "Grinds Your Gears",
   "advancements.astromine.get_gear.description": "Craft a Gear",
   "advancements.astromine.get_plates.title": "Flat Ingots",
-  "advancements.astromine.get_plates.description": "Craft some Plates"
+  "advancements.astromine.get_plates.description": "Craft some Plates",
+  "advancements.astromine.get_rose_gold_ingot.title": "Pretty in Pink",
+  "advancements.astromine.get_rose_gold_ingot.description": "Obtain a Rose Gold Ingot"
 }
