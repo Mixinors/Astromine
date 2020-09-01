@@ -83,11 +83,11 @@ public class AstromineDiscoveriesClientModels extends AstromineClientModels {
 	public static void renderRocket(RocketEntityModel rocketEntityModel, ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
 		matrices.push();
 		if (mode == ModelTransformation.Mode.GUI) {
-			matrices.translate(0.5F, 0.1F, 0F);
+			matrices.translate(0.5F, 0.15F, 0F);
 		}
 		matrices.scale(1.0F, -1.0F, -1.0F);
 		if (mode == ModelTransformation.Mode.GUI) {
-			matrices.scale(0.06F, 0.06F, 0.06F);
+			matrices.scale(0.08F, 0.08F, 0.08F);
 		} else {
 			matrices.scale(0.3F, 0.3F, 0.3F);
 		}
