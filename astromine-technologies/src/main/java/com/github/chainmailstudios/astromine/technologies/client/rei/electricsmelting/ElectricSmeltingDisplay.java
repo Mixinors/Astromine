@@ -37,7 +37,7 @@ public class ElectricSmeltingDisplay extends DefaultCookingDisplay {
 
 	public ElectricSmeltingDisplay(AbstractCookingRecipe recipe) {
 		super(recipe);
-		this.energyRequired = recipe.getCookTime() * 2;
+		this.energyRequired = 500;
 	}
 
 	@Override
