@@ -112,7 +112,7 @@ allprojects {
         }
         dependencies.ext.useAsApi = { dep ->
             useAsApiOptionally(dep)
-            if (project == rootProject)
+            if (project.name == "astromine-core")
                 include(dep)
         }
         dependencies.ext.useAsRuntime = { dep ->
