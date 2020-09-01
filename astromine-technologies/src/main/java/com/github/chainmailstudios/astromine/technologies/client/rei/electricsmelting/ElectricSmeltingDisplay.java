@@ -24,26 +24,20 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei.electricsmelting;
 
+import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
+import me.shedaniel.rei.plugin.cooking.DefaultCookingDisplay;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
 import net.minecraft.recipe.AbstractCookingRecipe;
 import net.minecraft.util.Identifier;
 
-import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
-import me.shedaniel.rei.plugin.cooking.DefaultCookingDisplay;
-
 @Environment(EnvType.CLIENT)
 public class ElectricSmeltingDisplay extends DefaultCookingDisplay {
-	static {
-		getFuel().clear();
-	}
-
 	private final double energyRequired;
 
 	public ElectricSmeltingDisplay(AbstractCookingRecipe recipe) {
 		super(recipe);
-		this.energyRequired = recipe.getCookTime() * 2;
+		this.energyRequired = 500;
 	}
 
 	@Override
