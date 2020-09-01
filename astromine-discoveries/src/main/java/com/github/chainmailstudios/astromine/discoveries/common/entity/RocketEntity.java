@@ -92,7 +92,6 @@ public class RocketEntity extends ComponentFluidEntity implements ExtendedScreen
 	@Override
 	public FluidInventoryComponent createFluidComponent() {
 		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1);
-		;
 		fluidComponent.getVolume(0).setSize(Fraction.ofWhole(128));
 		return fluidComponent;
 	}
@@ -125,7 +124,7 @@ public class RocketEntity extends ComponentFluidEntity implements ExtendedScreen
 		}
 
 		if (player.isSneaking()) {
-			player.openHandledScreen(this);
+//			player.openHandledScreen(this);
 			return ActionResult.SUCCESS;
 		}
 
