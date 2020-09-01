@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "astromine:asteroid_redstone_cluster"
+    {
+      "id": "astromine:asteroid_redstone_cluster",
+      "required": false
+    }
   ]
 }

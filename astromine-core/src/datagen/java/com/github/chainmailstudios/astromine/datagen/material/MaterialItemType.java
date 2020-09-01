@@ -9,9 +9,9 @@ public enum MaterialItemType {
 	BLOCK,
 	ORE,
 	METEOR_ORE("meteor", "ore"),
-	ASTEROID_ORE("asteroid", "ore"),
+	ASTEROID_ORE("asteroid", "ore", true),
 	METEOR_CLUSTER("meteor", "cluster"),
-	ASTEROID_CLUSTER("asteroid", "cluster"),
+	ASTEROID_CLUSTER("asteroid", "cluster", true),
 	DUST,
 	TINY_DUST,
 	GEAR,
@@ -34,19 +34,26 @@ public enum MaterialItemType {
 
 	final String prefix;
 	final String suffix;
+	final boolean optionalInTag;
 
 	MaterialItemType() {
 		this.prefix = "";
 		this.suffix = this.getName();
+		this.optionalInTag = false;
 	}
 
 	MaterialItemType(String suffix) {
-		this("", suffix);
+		this("", suffix, false);
+	}
+
+	MaterialItemType(String prefix, String suffix, boolean optionalInTag) {
+		this.prefix = prefix;
+		this.suffix = suffix;
+		this.optionalInTag = optionalInTag;
 	}
 
 	MaterialItemType(String prefix, String suffix) {
-		this.prefix = prefix;
-		this.suffix = suffix;
+		this(prefix, suffix, false);
 	}
 
 	public String getItemId(String materialName) {
@@ -59,5 +66,9 @@ public enum MaterialItemType {
 
 	public boolean isBlock() {
 		return this == BLOCK || this == ORE || this == METEOR_ORE || this == ASTEROID_ORE;
+	}
+
+	public boolean isOptionalInTag() {
+		return optionalInTag;
 	}
 }

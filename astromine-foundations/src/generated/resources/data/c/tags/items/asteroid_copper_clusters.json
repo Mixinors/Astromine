@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "astromine:asteroid_copper_cluster"
+    {
+      "id": "astromine:asteroid_copper_cluster",
+      "required": false
+    }
   ]
 }

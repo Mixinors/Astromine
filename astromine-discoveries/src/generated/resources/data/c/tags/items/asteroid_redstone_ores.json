@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "astromine:asteroid_redstone_ore"
+    {
+      "id": "astromine:asteroid_redstone_ore",
+      "required": false
+    }
   ]
 }

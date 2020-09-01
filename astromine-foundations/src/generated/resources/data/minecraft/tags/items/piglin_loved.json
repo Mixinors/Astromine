@@ -8,8 +8,14 @@
     "astromine:gold_plates",
     "astromine:gold_wire",
     "astromine:gold_dust",
-    "astromine:asteroid_gold_cluster",
-    "astromine:asteroid_gold_ore",
+    {
+      "id": "astromine:asteroid_gold_cluster",
+      "required": false
+    },
+    {
+      "id": "astromine:asteroid_gold_ore",
+      "required": false
+    },
     "minecraft:golden_pickaxe",
     "minecraft:golden_axe",
     "minecraft:golden_shovel",
