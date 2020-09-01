@@ -46,6 +46,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsCriteria;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsSoundEvents;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 
@@ -110,7 +111,7 @@ public class FireExtinguisherItem extends Item {
 		});
 
 		if (world.isClient) {
-			world.playSound(user, user.getBlockPos(), AstromineSoundEvents.FIRE_EXTINGUISHER_OPEN, SoundCategory.PLAYERS, 1f, 1f);
+			world.playSound(user, user.getBlockPos(), AstromineFoundationsSoundEvents.FIRE_EXTINGUISHER_OPEN, SoundCategory.PLAYERS, 1f, 1f);
 		}
 
 		return super.use(world, user, hand);

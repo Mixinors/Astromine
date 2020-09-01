@@ -1,0 +1,15 @@
+{
+  "holographic_connector_click": {
+    "sounds": ["astromine:holographic_connector_click"],
+    "subtitle": "subtitles.astromine.holographic_connector_click"
+  },
+  "block.machine.click": {
+    "sounds": [
+      "astromine:machine_click_1",
+      "astromine:machine_click_2",
+      "astromine:machine_click_3",
+      "astromine:machine_click_4"
+    ],
+    "subtitle": "subtitle.astromine.machine.click"
+  }
+}

@@ -31,6 +31,9 @@ import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 public class AstromineDiscoveriesSoundEvents extends AstromineSoundEvents {
 	public static final SoundEvent SPACE_SUIT_EQUIPPED = register("item.armor.equip_space_suit");
 
+	public static final SoundEvent ALTAR_START = register("block.altar.start");
+	public static final SoundEvent ALTAR_FINISH = register("block.altar.finish");
+
 	public static void initialize() {
 
 	}

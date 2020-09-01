@@ -29,6 +29,8 @@ import net.minecraft.sound.SoundEvent;
 import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 
 public class AstromineFoundationsSoundEvents extends AstromineSoundEvents {
+	public static final SoundEvent FIRE_EXTINGUISHER_OPEN = register("fire_extinguisher_open");
+
 	// Armory
 	public static final SoundEvent COPPER_ARMOR_EQUIPPED = register("item.armor.equip_copper");
 	public static final SoundEvent TIN_ARMOR_EQUIPPED = register("item.armor.equip_tin");

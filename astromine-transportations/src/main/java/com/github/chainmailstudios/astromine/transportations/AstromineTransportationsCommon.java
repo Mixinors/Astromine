@@ -28,6 +28,7 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlocks;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsItems;
+import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsSoundEvents;
 import com.github.chainmailstudios.astromine.transportations.registry.client.AstromineTransportationsItemGroups;
 
 public class AstromineTransportationsCommon extends AstromineCommon {
@@ -37,5 +38,6 @@ public class AstromineTransportationsCommon extends AstromineCommon {
 		AstromineTransportationsItems.initialize();
 		AstromineTransportationsItemGroups.initialize();
 		AstromineTransportationsBlockEntityTypes.initialize();
+		AstromineTransportationsSoundEvents.initialize();
 	}
 }

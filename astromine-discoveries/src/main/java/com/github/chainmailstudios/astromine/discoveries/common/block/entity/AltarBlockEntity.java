@@ -48,6 +48,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.SimpleIt
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
 import com.github.chainmailstudios.astromine.discoveries.common.recipe.AltarRecipe;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesSoundEvents;
 import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 
 import com.google.common.collect.Lists;
@@ -129,7 +130,7 @@ public class AltarBlockEntity extends BlockEntity implements ItemInventoryFromIn
 					entity.refreshPositionAfterTeleport(pos.getX() + 0.5, pos.getY() + 1 + HEIGHT_OFFSET, pos.getZ() + 0.5);
 					entity.setCosmetic(true);
 					world.spawnEntity(entity);
-					world.playSound(null, getPos(), AstromineSoundEvents.ALTAR_FINISH, SoundCategory.BLOCKS, 1.5F, 1);
+					world.playSound(null, getPos(), AstromineDiscoveriesSoundEvents.ALTAR_FINISH, SoundCategory.BLOCKS, 1.5F, 1);
 				}
 				if (craftingTicks >= CRAFTING_TIME + CRAFTING_TIME_SPIN + CRAFTING_TIME_FALL) {
 					onRemove();
@@ -195,7 +196,7 @@ public class AltarBlockEntity extends BlockEntity implements ItemInventoryFromIn
 				child.get().sync();
 			}
 
-			world.playSound(null, getPos(), AstromineSoundEvents.ALTAR_START, SoundCategory.BLOCKS, 1, 1);
+			world.playSound(null, getPos(), AstromineDiscoveriesSoundEvents.ALTAR_START, SoundCategory.BLOCKS, 1, 1);
 
 			return true;
 		} else {

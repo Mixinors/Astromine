@@ -35,6 +35,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyable;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorTypes;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
+import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsSoundEvents;
 
 public class IncineratorBlockEntity extends BlockEntity implements Conveyable {
 	public boolean hasBeenRemoved = false;
@@ -78,6 +79,6 @@ public class IncineratorBlockEntity extends BlockEntity implements Conveyable {
 		float max = 0.4F;
 		float random = min + ((float) Math.random()) * (max - min);
 		random = random - (random / 2);
-		world.playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AstromineSoundEvents.INCINERATE, SoundCategory.BLOCKS, 0.25F, 1.0F + random);
+		world.playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AstromineTransportationsSoundEvents.INCINERATE, SoundCategory.BLOCKS, 0.25F, 1.0F + random);
 	}
 }

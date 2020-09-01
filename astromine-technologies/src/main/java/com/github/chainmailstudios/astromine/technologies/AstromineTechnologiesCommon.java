@@ -32,6 +32,7 @@ import com.github.chainmailstudios.astromine.technologies.registry.AstromineTech
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesNetworkMembers;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesRecipeSerializers;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesSoundEvents;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesToolMaterials;
 
 public class AstromineTechnologiesCommon extends AstromineCommon {
@@ -46,5 +47,6 @@ public class AstromineTechnologiesCommon extends AstromineCommon {
 		AstromineTechnologiesToolMaterials.initialize();
 		AstromineTechnologiesNetworkMembers.initialize();
 		AstromineTechnologiesRecipeSerializers.initialize();
+		AstromineTechnologiesSoundEvents.initialize();
 	}
 }

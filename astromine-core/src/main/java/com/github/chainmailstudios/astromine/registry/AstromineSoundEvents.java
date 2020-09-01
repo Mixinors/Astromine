@@ -30,21 +30,6 @@ import net.minecraft.util.registry.Registry;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 
 public class AstromineSoundEvents {
-	public static final SoundEvent EMPTY = register("empty");
-
-	// Tooling
-	public static final SoundEvent FIRE_EXTINGUISHER_OPEN = register("fire_extinguisher_open");
-	public static final SoundEvent HOLOGRAPHIC_CONNECTOR_CLICK = register("holographic_connector_click");
-
-	// Machinery
-	public static final SoundEvent HUMMING = register("humming");
-
-	public static final SoundEvent MACHINE_CLICK = register("block.machine.click");
-	public static final SoundEvent INCINERATE = register("block.incinerator.incinerate");
-
-	public static final SoundEvent ALTAR_START = register("block.altar.start");
-	public static final SoundEvent ALTAR_FINISH = register("block.altar.finish");
-
 	public static SoundEvent register(String id) {
 		return Registry.register(Registry.SOUND_EVENT, AstromineCommon.identifier(id), new SoundEvent(AstromineCommon.identifier(id)));
 	}
