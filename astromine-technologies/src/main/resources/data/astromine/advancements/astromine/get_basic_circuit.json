@@ -2,13 +2,13 @@
   "parent": "astromine:astromine/get_plates",
   "display": {
     "icon": {
-      "item": "astromine:primitive_machine_chassis"
+      "item": "astromine:basic_circuit"
     },
     "title": {
-      "translate": "advancements.astromine.get_chassis.title"
+      "translate": "advancements.astromine.get_basic_circuit.title"
     },
     "description": {
-      "translate": "advancements.astromine.get_chassis.description"
+      "translate": "advancements.astromine.get_basic_circuit.description"
     },
     "frame": "task",
     "show_toast": true,
@@ -16,12 +16,12 @@
     "hidden": false
   },
   "criteria": {
-    "get_chassis": {
+    "get_basic_circuit": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "astromine:machine_chassis"
+            "item": "astromine:basic_circuit"
           }
         ]
       }

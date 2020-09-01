@@ -932,5 +932,11 @@
   "advancements.astromine.get_plates.title": "Flat Ingots",
   "advancements.astromine.get_plates.description": "Craft some Plates",
   "advancements.astromine.get_rose_gold_ingot.title": "Pretty in Pink",
-  "advancements.astromine.get_rose_gold_ingot.description": "Obtain a Rose Gold Ingot"
+  "advancements.astromine.get_rose_gold_ingot.description": "Obtain a Rose Gold Ingot",
+  "advancements.astromine.get_basic_circuit.title": "Circuit Maker",
+  "advancements.astromine.get_basic_circuit.description": "Craft a Basic Circuit",
+  "advancements.astromine.get_advanced_circuit.title": "Super Circuit Maker",
+  "advancements.astromine.get_advanced_circuit.description": "Craft an Advanced Circuit",
+  "advancements.astromine.get_elite_circuit.title": "New Super Circuit Maker U Deluxe",
+  "advancements.astromine.get_elite_circuit.description": "Craft an Elite Circuit"
 }

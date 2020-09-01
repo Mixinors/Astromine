@@ -1,14 +1,14 @@
 {
-  "parent": "astromine:astromine/get_plates",
+  "parent": "astromine:astromine/get_advanced_circuit",
   "display": {
     "icon": {
-      "item": "astromine:primitive_machine_chassis"
+      "item": "astromine:elite_circuit"
     },
     "title": {
-      "translate": "advancements.astromine.get_chassis.title"
+      "translate": "advancements.astromine.get_elite_circuit.title"
     },
     "description": {
-      "translate": "advancements.astromine.get_chassis.description"
+      "translate": "advancements.astromine.get_elite_circuit.description"
     },
     "frame": "task",
     "show_toast": true,
@@ -16,12 +16,12 @@
     "hidden": false
   },
   "criteria": {
-    "get_chassis": {
+    "get_elite_circuit": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "astromine:machine_chassis"
+            "item": "astromine:elite_circuit"
           }
         ]
       }
