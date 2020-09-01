@@ -24,19 +24,22 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
-import com.github.chainmailstudios.astromine.common.item.*;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.item.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.ItemScatterer;
+
+import com.github.chainmailstudios.astromine.common.item.DynamicToolItem;
+import com.github.chainmailstudios.astromine.common.item.WrenchItem;
 import com.github.chainmailstudios.astromine.common.utilities.ToolUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
 import com.github.chainmailstudios.astromine.foundations.common.item.FireExtinguisherItem;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import draylar.magna.item.ExcavatorItem;
 import draylar.magna.item.HammerItem;
-import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.*;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ItemScatterer;
 
 public class AstromineFoundationsItems extends AstromineItems {
 	// Materials - Nuggets & Fragments
@@ -444,7 +447,11 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item UNIVITE_LEGGINGS = register("univite_leggings", new ArmorItem(AstromineFoundationsArmorMaterials.UNIVITE, EquipmentSlot.LEGS, AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final Item UNIVITE_BOOTS = register("univite_boots", new ArmorItem(AstromineFoundationsArmorMaterials.UNIVITE, EquipmentSlot.FEET, AstromineFoundationsItems.getBasicSettings().fireproof()));
 
-	public static final Item BRONZE_WRENCH = register("bronze_wrench", new WrenchItem(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item METEOR_METITE_CLUSTER = register("meteor_metite_cluster", new Item(AstromineFoundationsItems.getBasicSettings()));
+
+	public static final Item COPPER_WRENCH = register("copper_wrench", new WrenchItem(AstromineFoundationsToolMaterials.COPPER, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item BRONZE_WRENCH = register("bronze_wrench", new WrenchItem(AstromineFoundationsToolMaterials.BRONZE, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item STEEL_WRENCH = register("steel_wrench", new WrenchItem(AstromineFoundationsToolMaterials.STEEL, AstromineFoundationsItems.getBasicSettings()));
 
 	public static final Item FIRE_EXTINGUISHER = register("fire_extinguisher", new FireExtinguisherItem(AstromineFoundationsItems.getBasicSettings().maxCount(1)));
 

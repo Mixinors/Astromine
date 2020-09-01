@@ -24,13 +24,15 @@
 
 package com.github.chainmailstudios.astromine.transportations.registry.client;
 
-import com.github.chainmailstudios.astromine.common.network.type.EnergyNetworkType;
-import com.github.chainmailstudios.astromine.registry.client.AstromineClientCallbacks;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+
 import net.minecraft.item.BlockItem;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
+
+import com.github.chainmailstudios.astromine.common.network.type.EnergyNetworkType;
+import com.github.chainmailstudios.astromine.registry.client.AstromineClientCallbacks;
 
 public class AstromineTransportationsClientCallbacks extends AstromineClientCallbacks {
 	public static void initialize() {

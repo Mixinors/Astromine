@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.entity.ai.superspaceslime;
 
-import com.github.chainmailstudios.astromine.discoveries.common.entity.SpaceSlimeEntity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.Vec3d;
+
+import com.github.chainmailstudios.astromine.discoveries.common.entity.SpaceSlimeEntity;
 
 import java.util.EnumSet;
 

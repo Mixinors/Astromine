@@ -2,15 +2,14 @@ package com.github.chainmailstudios.astromine.discoveries.datagen.registry;
 
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.RecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.BlastingSetRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.Crafting3x3SetRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.ShapedCraftingSetRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.ShapelessCraftingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.SmeltingSetRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.SmithingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineRecipeGenerators;
-import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.*;
 
-import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.*;
+import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.ASTEROID_CLUSTER;
+import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.ASTEROID_ORE;
+import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.GEM;
+import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.INGOT;
+import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.MISC_RESOURCE;
 
 
 public class AstromineDiscoveriesRecipeGenerators extends AstromineRecipeGenerators {

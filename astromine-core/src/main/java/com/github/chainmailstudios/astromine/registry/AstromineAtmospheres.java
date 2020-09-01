@@ -24,9 +24,6 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.common.registry.AtmosphereRegistry;
-
 public class AstromineAtmospheres {
-	public static void initialize() {
-	}
+	public static void initialize() {}
 }

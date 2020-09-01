@@ -39,6 +39,7 @@ public class AstromineRenderLayers {
 	 *        Block instance to be registered
 	 * @param renderLayer
 	 *        RenderLayer of block instance to be registered
+	 *
 	 * @return Block instance registered
 	 */
 	public static <T extends Block> T register(T block, RenderLayer renderLayer) {

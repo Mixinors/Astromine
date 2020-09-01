@@ -35,9 +35,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableFacingEnergyBlockWithEntity;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.VentBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.VentScreenHandler;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 public class VentBlock extends WrenchableFacingEnergyBlockWithEntity {
 	public VentBlock(Settings settings) {

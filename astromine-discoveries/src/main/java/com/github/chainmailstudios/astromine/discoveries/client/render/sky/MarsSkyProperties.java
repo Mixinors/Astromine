@@ -34,6 +34,7 @@ import net.minecraft.util.math.Vec3d;
 @Environment(EnvType.CLIENT)
 public class MarsSkyProperties extends SkyProperties {
 	private final float[] rgba = new float[4];
+
 	public MarsSkyProperties() {
 		super(Float.NaN, false, SkyType.NORMAL, true, true);
 	}

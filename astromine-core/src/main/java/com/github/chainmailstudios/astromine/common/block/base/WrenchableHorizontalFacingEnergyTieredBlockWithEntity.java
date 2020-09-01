@@ -33,5 +33,9 @@ public abstract class WrenchableHorizontalFacingEnergyTieredBlockWithEntity exte
 
 	public abstract double getMachineSpeed();
 
+	public boolean showSpeedInTooltip() {
+		return true;
+	}
+
 	public abstract MachineTier getTier();
 }

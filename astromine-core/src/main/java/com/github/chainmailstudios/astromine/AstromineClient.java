@@ -24,11 +24,11 @@
 
 package com.github.chainmailstudios.astromine;
 
-import com.github.chainmailstudios.astromine.registry.AstromineKeybinds;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
+import com.github.chainmailstudios.astromine.registry.AstromineKeybinds;
 import com.github.chainmailstudios.astromine.registry.client.*;
 
 @Environment(EnvType.CLIENT)

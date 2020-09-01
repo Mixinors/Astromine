@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
-import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedInventoryProvider;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.PacketContext;
 
@@ -51,6 +50,7 @@ import com.github.chainmailstudios.astromine.common.component.block.entity.Block
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
 import com.github.chainmailstudios.astromine.common.utilities.TransportUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedInventoryProvider;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import nerdhub.cardinal.components.api.ComponentRegistry;
@@ -71,15 +71,11 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 public abstract class ComponentBlockEntity extends net.minecraft.block.entity.BlockEntity implements ComponentProvider, PacketConsumer, BlockEntityClientSerializable, Tickable {
-	protected final BlockEntityTransferComponent transferComponent = new BlockEntityTransferComponent();
-
-	protected final Map<ComponentType<?>, Component> allComponents = Maps.newHashMap();
-
-	protected final Map<Identifier, BiConsumer<PacketByteBuf, PacketContext>> allHandlers = Maps.newHashMap();
-
-	protected boolean skipInventory = true;
-
 	public static final Identifier TRANSFER_UPDATE_PACKET = AstromineCommon.identifier("transfer_update_packet");
+	protected final BlockEntityTransferComponent transferComponent = new BlockEntityTransferComponent();
+	protected final Map<ComponentType<?>, Component> allComponents = Maps.newHashMap();
+	protected final Map<Identifier, BiConsumer<PacketByteBuf, PacketContext>> allHandlers = Maps.newHashMap();
+	protected boolean skipInventory = true;
 
 	public ComponentBlockEntity(BlockEntityType<?> type) {
 		super(type);

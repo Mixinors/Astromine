@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.foundations.common.block;
 
-import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
-import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsCriteria;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -37,6 +35,9 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsCriteria;
 
 import java.util.Random;
 

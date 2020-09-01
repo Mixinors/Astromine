@@ -108,6 +108,7 @@ public class StackUtilities {
 	 *        Max. count of stackA
 	 * @param maxB
 	 *        Max. count of stackB
+	 *
 	 * @return Resulting ItemStacks
 	 */
 	public static Pair<ItemStack, ItemStack> merge(ItemStack stackA, ItemStack stackB, int maxA, int maxB) {

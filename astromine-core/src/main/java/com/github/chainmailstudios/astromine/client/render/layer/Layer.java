@@ -31,9 +31,11 @@ import net.minecraft.client.render.VertexFormats;
 import net.minecraft.util.Identifier;
 
 public class Layer extends RenderLayer {
-	private static final RenderLayer HOLOGRAPHIC_BRIDGE = RenderLayer.of("holographic_bridge", VertexFormats.POSITION_COLOR_LIGHT, 7, 256, false, true, RenderLayer.MultiPhaseParameters.builder().cull(RenderPhase.DISABLE_CULLING).lightmap(ENABLE_LIGHTMAP).shadeModel(RenderLayer.SMOOTH_SHADE_MODEL).transparency(RenderLayer.TRANSLUCENT_TRANSPARENCY).alpha(RenderLayer.ONE_TENTH_ALPHA).layering(RenderLayer.VIEW_OFFSET_Z_LAYERING).build(false));
+	private static final RenderLayer HOLOGRAPHIC_BRIDGE = RenderLayer.of("holographic_bridge", VertexFormats.POSITION_COLOR_LIGHT, 7, 256, false, true, RenderLayer.MultiPhaseParameters.builder().cull(RenderPhase.DISABLE_CULLING).lightmap(ENABLE_LIGHTMAP).shadeModel(
+		RenderLayer.SMOOTH_SHADE_MODEL).transparency(RenderLayer.TRANSLUCENT_TRANSPARENCY).alpha(RenderLayer.ONE_TENTH_ALPHA).layering(RenderLayer.VIEW_OFFSET_Z_LAYERING).build(false));
 
-	private static final RenderLayer FLAT_NO_CUTOUT = of("flat_no_cutout", VertexFormats.POSITION_COLOR_LIGHT, 7, 256, RenderLayer.MultiPhaseParameters.builder().texture(NO_TEXTURE).cull(DISABLE_CULLING).lightmap(ENABLE_LIGHTMAP).shadeModel(SMOOTH_SHADE_MODEL).depthTest(ALWAYS_DEPTH_TEST).transparency(TRANSLUCENT_TRANSPARENCY).alpha(ONE_TENTH_ALPHA).layering(VIEW_OFFSET_Z_LAYERING).build(false));
+	private static final RenderLayer FLAT_NO_CUTOUT = of("flat_no_cutout", VertexFormats.POSITION_COLOR_LIGHT, 7, 256, RenderLayer.MultiPhaseParameters.builder().texture(NO_TEXTURE).cull(DISABLE_CULLING).lightmap(ENABLE_LIGHTMAP).shadeModel(SMOOTH_SHADE_MODEL).depthTest(
+		ALWAYS_DEPTH_TEST).transparency(TRANSLUCENT_TRANSPARENCY).alpha(ONE_TENTH_ALPHA).layering(VIEW_OFFSET_Z_LAYERING).build(false));
 
 	public Layer(String name, VertexFormat vertexFormat, int drawMode, int expectedBufferSize, boolean hasCrumbling, boolean translucent, Runnable startAction, Runnable endAction) {
 		super(name, vertexFormat, drawMode, expectedBufferSize, hasCrumbling, translucent, startAction, endAction);

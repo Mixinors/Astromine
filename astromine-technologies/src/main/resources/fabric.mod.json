@@ -25,8 +25,15 @@
     "main": ["com.github.chainmailstudios.astromine.technologies.AstromineTechnologiesCommon"],
     "client": ["com.github.chainmailstudios.astromine.technologies.AstromineTechnologiesClient"],
     "server": ["com.github.chainmailstudios.astromine.technologies.AstromineTechnologiesDedicated"],
-    "rei_plugins": ["com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin"],
-    "astromine-network-members": ["com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesNetworkMembers::initialize"]
+    "rei_plugins": [
+      "com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin"
+    ],
+    "rei_containers": [
+      "com.github.chainmailstudios.astromine.technologies.common.rei.AstromineTechnologiesServerContainerPlugin"
+    ],
+    "astromine-network-members": [
+      "com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesNetworkMembers::initialize"
+    ]
   },
   "mixins": ["astromine-technologies.mixins.json"],
   "accessWidener": "astromine-technologies.accesswidener",

@@ -24,13 +24,13 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block.entity;
 
-import com.github.chainmailstudios.astromine.transportations.common.block.entity.base.AbstractConveyableBlockEntity;
-import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 
-import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
+import com.github.chainmailstudios.astromine.transportations.common.block.entity.base.AbstractConveyableBlockEntity;
+import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
+import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsSoundEvents;
 
 public class AlternatorBlockEntity extends AbstractConveyableBlockEntity {
 	public boolean right = false;
@@ -60,6 +60,6 @@ public class AlternatorBlockEntity extends AbstractConveyableBlockEntity {
 			setLeftStack(stack);
 		}
 
-		getWorld().playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AstromineSoundEvents.MACHINE_CLICK, SoundCategory.BLOCKS, 1.0F, 1.0F);
+		getWorld().playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AstromineTransportationsSoundEvents.MACHINE_CLICK, SoundCategory.BLOCKS, 1.0F, 1.0F);
 	}
 }

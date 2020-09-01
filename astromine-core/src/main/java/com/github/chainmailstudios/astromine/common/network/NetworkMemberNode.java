@@ -35,22 +35,6 @@ public class NetworkMemberNode {
 
 	private int dir;
 
-	public static NetworkMemberNode of(BlockPos blockPos, Direction direction) {
-		return new NetworkMemberNode(blockPos, direction);
-	}
-
-	public static NetworkMemberNode of(long pos, int dir) {
-		return new NetworkMemberNode(pos, dir);
-	}
-
-	public static NetworkMemberNode of(BlockPos blockPos) {
-		return new NetworkMemberNode(blockPos);
-	}
-
-	public static NetworkMemberNode of(long pos) {
-		return new NetworkMemberNode(pos);
-	}
-
 	public NetworkMemberNode(BlockPos blockPos, Direction direction) {
 		setBlockPos(blockPos);
 		setDirection(direction);
@@ -69,6 +53,26 @@ public class NetworkMemberNode {
 	public NetworkMemberNode(long pos) {
 		setPos(pos);
 		setDir(-1);
+	}
+
+	public static NetworkMemberNode of(BlockPos blockPos, Direction direction) {
+		return new NetworkMemberNode(blockPos, direction);
+	}
+
+	public static NetworkMemberNode of(long pos, int dir) {
+		return new NetworkMemberNode(pos, dir);
+	}
+
+	public static NetworkMemberNode of(BlockPos blockPos) {
+		return new NetworkMemberNode(blockPos);
+	}
+
+	public static NetworkMemberNode of(long pos) {
+		return new NetworkMemberNode(pos);
+	}
+
+	public static NetworkMemberNode fromTag(CompoundTag tag) {
+		return of(tag.getLong("pos"), tag.getInt("dir"));
 	}
 
 	public BlockPos getBlockPos() {
@@ -107,10 +111,6 @@ public class NetworkMemberNode {
 		tag.putLong("pos", pos);
 		tag.putInt("dir", dir);
 		return tag;
-	}
-
-	public static NetworkMemberNode fromTag(CompoundTag tag) {
-		return of(tag.getLong("pos"), tag.getInt("dir"));
 	}
 
 	@Override

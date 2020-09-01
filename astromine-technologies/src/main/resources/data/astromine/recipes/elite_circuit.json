@@ -2,9 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "pattern": ["000", "121", "000"],
   "key": {
-    "0": { "tag": "c:steel_plates" },
-    "1": { "tag": "c:gold_plates" },
-    "2": { "item": "astromine:advanced_circuit" }
+    "0": {"tag": "c:metite_plates"},
+    "1": {"tag": "c:electrum_plates"},
+    "2": {"item": "astromine:advanced_circuit"}
   },
-  "result": { "item": "astromine:elite_circuit", "count": 2 }
+  "result": {"item": "astromine:elite_circuit", "count": 1}
 }

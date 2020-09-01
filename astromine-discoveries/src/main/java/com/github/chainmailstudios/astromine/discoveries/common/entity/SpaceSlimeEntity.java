@@ -41,7 +41,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
 import com.github.chainmailstudios.astromine.discoveries.common.entity.ai.superspaceslime.SpaceSlimeJumpHoverGoal;
-import com.github.chainmailstudios.astromine.registry.AstromineParticles;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesParticles;
 
 import java.util.Random;
 
@@ -53,6 +53,19 @@ public class SpaceSlimeEntity extends SlimeEntity {
 	public SpaceSlimeEntity(EntityType<? extends SlimeEntity> entityType, World world) {
 		super(entityType, world);
 		this.floatingCooldown = world.random.nextInt(200);
+	}
+
+	public static boolean canSpawnInDark(EntityType<? extends SpaceSlimeEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {
+		return world.getDifficulty() != Difficulty.PEACEFUL && isSpawnDark(world, pos, random) && canMobSpawn(type, world, spawnReason, pos, random) && random.nextDouble() <= .15;
+	}
+
+	public static boolean isSpawnDark(WorldAccess world, BlockPos pos, Random random) {
+		if (world.getLightLevel(LightType.SKY, pos) > random.nextInt(32)) {
+			return false;
+		} else {
+			int i = ((ServerWorld) world).isThundering() ? world.getLightLevel(pos, 10) : world.getLightLevel(pos);
+			return i <= random.nextInt(8);
+		}
 	}
 
 	@Override
@@ -70,7 +83,7 @@ public class SpaceSlimeEntity extends SlimeEntity {
 
 	@Override
 	protected ParticleEffect getParticles() {
-		return AstromineParticles.SPACE_SLIME;
+		return AstromineDiscoveriesParticles.SPACE_SLIME;
 	}
 
 	@Override
@@ -114,19 +127,6 @@ public class SpaceSlimeEntity extends SlimeEntity {
 
 	public void setFloatingProgress(int progress) {
 		this.dataTracker.set(FLOATING_PROGRESS, progress);
-	}
-
-	public static boolean canSpawnInDark(EntityType<? extends SpaceSlimeEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {
-		return world.getDifficulty() != Difficulty.PEACEFUL && isSpawnDark(world, pos, random) && canMobSpawn(type, world, spawnReason, pos, random) && random.nextDouble() <= .15;
-	}
-
-	public static boolean isSpawnDark(WorldAccess world, BlockPos pos, Random random) {
-		if (world.getLightLevel(LightType.SKY, pos) > random.nextInt(32)) {
-			return false;
-		} else {
-			int i = ((ServerWorld) world).isThundering() ? world.getLightLevel(pos, 10) : world.getLightLevel(pos);
-			return i <= random.nextInt(8);
-		}
 	}
 
 	@Override

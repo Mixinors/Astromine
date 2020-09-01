@@ -1,7 +1,12 @@
 package com.github.chainmailstudios.astromine.discoveries.datagen;
 
 import com.github.chainmailstudios.astromine.datagen.entrypoint.DatagenInitializer;
-import com.github.chainmailstudios.astromine.datagen.registry.*;
+import com.github.chainmailstudios.astromine.datagen.registry.AstromineLootTableGenerators;
+import com.github.chainmailstudios.astromine.datagen.registry.AstromineMaterialSets;
+import com.github.chainmailstudios.astromine.datagen.registry.AstromineModelStateGenerators;
+import com.github.chainmailstudios.astromine.datagen.registry.AstromineRecipeGenerators;
+import com.github.chainmailstudios.astromine.datagen.registry.AstromineTagGenerators;
+import com.github.chainmailstudios.astromine.datagen.registry.AstromineWorldGenGenerators;
 import com.github.chainmailstudios.astromine.discoveries.datagen.registry.AstromineDiscoveriesLootTableGenerators;
 import com.github.chainmailstudios.astromine.discoveries.datagen.registry.AstromineDiscoveriesModelStateGenerators;
 import com.github.chainmailstudios.astromine.discoveries.datagen.registry.AstromineDiscoveriesRecipeGenerators;
@@ -15,7 +20,7 @@ public class AstromineDiscoveriesDatagen implements DatagenInitializer {
 
 	@Override
 	public AstromineMaterialSets getMaterialSets() {
-		return new AstromineMaterialSets();
+		return null;
 	}
 
 	@Override
@@ -40,6 +45,7 @@ public class AstromineDiscoveriesDatagen implements DatagenInitializer {
 
 	@Override
 	public AstromineWorldGenGenerators getWorldGenGenerators() {
-		return new AstromineWorldGenGenerators() {};
+		return new AstromineWorldGenGenerators() {
+		};
 	}
 }

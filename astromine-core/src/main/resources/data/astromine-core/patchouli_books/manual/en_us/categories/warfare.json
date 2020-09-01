@@ -1,6 +1,6 @@
 {
-	"name": "text.astromine.patchouli.warfare.title",
-	"description": "text.astromine.patchouli.warfare.description",
-	"icon": "astromine:scar_h",
-	"sortnum": 6
+  "name": "text.astromine.patchouli.warfare.title",
+  "description": "text.astromine.patchouli.warfare.description",
+  "icon": "astromine:scar_h",
+  "sortnum": 6
 }

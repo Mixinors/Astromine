@@ -31,16 +31,12 @@ package com.github.chainmailstudios.astromine.common.noise;
  * @author SuperCoder79
  */
 public abstract class Noise {
-	public Noise(long seed) {}
-
-	public abstract double sample(double x, double z);
-
-	public abstract double sample(double x, double y, double z);
-
-	// Helper noise functions =======================
-
 	private static final int CHAR_BIT = 8;
 	private static final int SIZE_INT = 8;
+
+	public Noise(long seed) {}
+
+	// Helper noise functions =======================
 
 	/**
 	 * A bit hack that computes a rough estimation of a square root for the given number Don't use this in places that
@@ -48,6 +44,7 @@ public abstract class Noise {
 	 *
 	 * @param d
 	 *        the input for the fastSqrt algorithm
+	 *
 	 * @return a **rough** approximation of square root
 	 */
 	public static double fastSqrt(double d) {
@@ -59,6 +56,7 @@ public abstract class Noise {
 	 *
 	 * @param n
 	 *        the number to get the absolute value of
+	 *
 	 * @return the absolute value
 	 */
 	public static int fastAbs(int n) {
@@ -79,6 +77,18 @@ public abstract class Noise {
 		}
 	}
 
+	protected static double lerp(double progress, double start, double end) {
+		return start + progress * (end - start);
+	}
+
+	protected static double sigmoid(double x) {
+		return (1 / (1 + Math.exp(-x)));
+	}
+
+	public abstract double sample(double x, double z);
+
+	public abstract double sample(double x, double y, double z);
+
 	// ensures that the returned value is in [-1, 1]
 	protected double clamp(double value) {
 		return (value > 1) ? 1 : (value < -1) ? -1 : value;
@@ -87,13 +97,5 @@ public abstract class Noise {
 	// ensures that the returned value is in [0, 1]
 	protected double clampPositive(double value) {
 		return (value < 0) ? 0 : value;
-	}
-
-	protected static double lerp(double progress, double start, double end) {
-		return start + progress * (end - start);
-	}
-
-	protected static double sigmoid(double x) {
-		return (1 / (1 + Math.exp(-x)));
 	}
 }

@@ -27,11 +27,11 @@ package com.github.chainmailstudios.astromine.technologies.client.screen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
-import com.github.chainmailstudios.astromine.client.screen.base.ComponentEnergyItemHandledScreen;
+import com.github.chainmailstudios.astromine.client.screen.base.block.ComponentBlockEntityEnergyItemHandledScreen;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.BlockBreakerScreenHandler;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 
-public class BlockBreakerHandledScreen extends ComponentEnergyItemHandledScreen<BlockBreakerScreenHandler> {
+public class BlockBreakerHandledScreen extends ComponentBlockEntityEnergyItemHandledScreen<BlockBreakerScreenHandler> {
 	public BlockBreakerHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 	}

@@ -27,11 +27,11 @@ package com.github.chainmailstudios.astromine.technologies.client.screen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
-import com.github.chainmailstudios.astromine.client.screen.base.ComponentEnergyFluidHandledScreen;
+import com.github.chainmailstudios.astromine.client.screen.base.block.ComponentBlockEntityEnergyFluidHandledScreen;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.FluidMixerScreenHandler;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 
-public class FluidMixerHandledScreen extends ComponentEnergyFluidHandledScreen<FluidMixerScreenHandler> {
+public class FluidMixerHandledScreen extends ComponentBlockEntityEnergyFluidHandledScreen<FluidMixerScreenHandler> {
 	public FluidMixerHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 	}

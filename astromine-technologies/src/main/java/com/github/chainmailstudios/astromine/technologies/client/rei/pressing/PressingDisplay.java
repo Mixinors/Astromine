@@ -24,22 +24,21 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei.pressing;
 
+import com.github.chainmailstudios.astromine.common.recipe.PressingRecipe;
 import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.technologies.client.rei.SimpleTransferRecipeDisplay;
+import me.shedaniel.rei.api.EntryStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
 import net.minecraft.util.Identifier;
-
-import com.github.chainmailstudios.astromine.common.recipe.PressingRecipe;
-import me.shedaniel.rei.api.EntryStack;
-import me.shedaniel.rei.api.RecipeDisplay;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
-public class PressingDisplay implements RecipeDisplay {
+public class PressingDisplay extends SimpleTransferRecipeDisplay {
 	private final List<List<EntryStack>> inputs;
 	private final List<EntryStack> outputs;
 	private final int timeRequired;
@@ -51,6 +50,7 @@ public class PressingDisplay implements RecipeDisplay {
 	}
 
 	public PressingDisplay(List<List<EntryStack>> inputs, List<EntryStack> outputs, int timeRequired, double energyRequired, Identifier recipeId) {
+		super(1, 1);
 		this.inputs = inputs;
 		this.outputs = outputs;
 		this.timeRequired = timeRequired;
@@ -69,8 +69,8 @@ public class PressingDisplay implements RecipeDisplay {
 	}
 
 	@Override
-	public List<EntryStack> getOutputEntries() {
-		return outputs;
+	public List<List<EntryStack>> getResultingEntries() {
+		return Collections.singletonList(outputs);
 	}
 
 	public int getTimeRequired() {

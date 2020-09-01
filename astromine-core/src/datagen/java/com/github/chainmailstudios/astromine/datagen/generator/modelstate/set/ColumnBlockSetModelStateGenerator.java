@@ -26,6 +26,6 @@ public class ColumnBlockSetModelStateGenerator extends GenericBlockSetModelState
 
 	@Override
 	public String getGeneratorName() {
-		return type.getName()+"_column_block_set_modelstate";
+		return type.getName() + "_column_block_set_modelstate";
 	}
 }

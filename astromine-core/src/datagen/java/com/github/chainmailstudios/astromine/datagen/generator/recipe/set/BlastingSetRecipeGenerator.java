@@ -24,13 +24,13 @@ public class BlastingSetRecipeGenerator extends CookingSetRecipeGenerator {
 	@Override
 	public void generate(RecipeData recipes, MaterialSet set) {
 		CookingRecipeJsonFactory
-			.createBlasting(
-				set.getIngredient(input),
-				set.getItem(output),
-				experience,
-				time)
-			.criterion("impossible", new ImpossibleCriterion.Conditions())
-			.offerTo(recipes, getRecipeId(set));
+				.createBlasting(
+						set.getIngredient(input),
+						set.getItem(output),
+						experience,
+						time)
+				.criterion("impossible", new ImpossibleCriterion.Conditions())
+				.offerTo(recipes, getRecipeId(set));
 	}
 
 	@Override

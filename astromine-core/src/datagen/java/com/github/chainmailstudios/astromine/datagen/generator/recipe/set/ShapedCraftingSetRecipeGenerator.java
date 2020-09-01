@@ -14,11 +14,13 @@ import java.util.Map;
 
 public class ShapedCraftingSetRecipeGenerator extends CraftingSetRecipeGenerator {
 	public final Map<Character, Ingredient> ingredients;
+	public final Map<Character, MaterialItemType> types;
 	public final String[] pattern;
 
 	public ShapedCraftingSetRecipeGenerator(MaterialItemType input, MaterialItemType output, int outputCount, String... pattern) {
 		super(input, output, outputCount);
 		this.ingredients = new HashMap<>();
+		this.types = new HashMap<>();
 		this.pattern = pattern;
 	}
 
@@ -30,16 +32,21 @@ public class ShapedCraftingSetRecipeGenerator extends CraftingSetRecipeGenerator
 		this.ingredients.put(c, ingredient);
 	}
 
+	public void addType(char c, MaterialItemType type) {
+		this.types.put(c, type);
+	}
+
 	@Override
 	public void generate(RecipeData recipes, MaterialSet set) {
 		ShapedRecipeJsonFactory factory = ShapedRecipeJsonFactory
-			.create(set.getItem(output))
-			.criterion("impossible", new ImpossibleCriterion.Conditions());
+				.create(set.getItem(output))
+				.criterion("impossible", new ImpossibleCriterion.Conditions());
 		for (String s : pattern) {
 			factory.pattern(s);
 		}
 		factory.input('#', set.getIngredient(input));
 		ingredients.forEach(factory::input);
+		types.forEach((c, type) -> factory.input(c, set.getIngredient(type)));
 		factory.offerTo(recipes, getRecipeId(set));
 	}
 

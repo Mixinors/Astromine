@@ -63,6 +63,20 @@ public abstract class BucketItemMixin {
 	@Final
 	private Fluid fluid;
 
+	private static BlockHitResult raycast(World world, PlayerEntity player, RaycastContext.FluidHandling fluidHandling) {
+		float f = player.pitch;
+		float g = player.yaw;
+		Vec3d vec3d = player.getCameraPosVec(1.0F);
+		float h = MathHelper.cos(-g * 0.017453292F - 3.1415927F);
+		float i = MathHelper.sin(-g * 0.017453292F - 3.1415927F);
+		float j = -MathHelper.cos(-f * 0.017453292F);
+		float k = MathHelper.sin(-f * 0.017453292F);
+		float l = i * j;
+		float n = h * j;
+		Vec3d vec3d2 = vec3d.add((double) l * 5.0D, (double) k * 5.0D, (double) n * 5.0D);
+		return world.raycast(new RaycastContext(vec3d, vec3d2, RaycastContext.ShapeType.OUTLINE, fluidHandling, player));
+	}
+
 	@Shadow
 	public abstract TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand);
 
@@ -118,19 +132,5 @@ public abstract class BucketItemMixin {
 				}
 			}
 		}
-	}
-
-	private static BlockHitResult raycast(World world, PlayerEntity player, RaycastContext.FluidHandling fluidHandling) {
-		float f = player.pitch;
-		float g = player.yaw;
-		Vec3d vec3d = player.getCameraPosVec(1.0F);
-		float h = MathHelper.cos(-g * 0.017453292F - 3.1415927F);
-		float i = MathHelper.sin(-g * 0.017453292F - 3.1415927F);
-		float j = -MathHelper.cos(-f * 0.017453292F);
-		float k = MathHelper.sin(-f * 0.017453292F);
-		float l = i * j;
-		float n = h * j;
-		Vec3d vec3d2 = vec3d.add((double) l * 5.0D, (double) k * 5.0D, (double) n * 5.0D);
-		return world.raycast(new RaycastContext(vec3d, vec3d2, RaycastContext.ShapeType.OUTLINE, fluidHandling, player));
 	}
 }

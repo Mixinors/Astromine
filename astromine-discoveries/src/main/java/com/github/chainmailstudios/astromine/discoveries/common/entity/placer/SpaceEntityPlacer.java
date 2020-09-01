@@ -24,11 +24,11 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.entity.placer;
 
-import com.github.chainmailstudios.astromine.common.entity.placer.EntityPlacer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.TeleportTarget;
 
+import com.github.chainmailstudios.astromine.common.entity.placer.EntityPlacer;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 public class SpaceEntityPlacer implements EntityPlacer {

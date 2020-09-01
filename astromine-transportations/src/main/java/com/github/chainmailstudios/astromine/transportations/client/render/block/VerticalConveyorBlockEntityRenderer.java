@@ -24,14 +24,14 @@
 
 package com.github.chainmailstudios.astromine.transportations.client.render.block;
 
-import com.github.chainmailstudios.astromine.transportations.common.block.entity.VerticalConveyorBlockEntity;
-import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyor;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 
+import com.github.chainmailstudios.astromine.transportations.common.block.entity.VerticalConveyorBlockEntity;
+import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyor;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorTypes;
 
 public class VerticalConveyorBlockEntityRenderer extends BlockEntityRenderer<VerticalConveyorBlockEntity> implements ConveyorRenderer<VerticalConveyorBlockEntity> {

@@ -1,9 +1,0 @@
-{
-	"replace": false,
-	"values": [
-		"astromine:rocket_fuel",
-		"astromine:rocket_fuel_flowing",
-		"astromine:oxygen",
-		"astromine:oxygen_flowing"
-	]
-}

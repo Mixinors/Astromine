@@ -24,9 +24,10 @@
 
 package com.github.chainmailstudios.astromine.technologies.registry;
 
-import com.github.chainmailstudios.astromine.registry.AstromineToolMaterials;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
+
+import com.github.chainmailstudios.astromine.registry.AstromineToolMaterials;
 
 public class AstromineTechnologiesToolMaterials extends AstromineToolMaterials {
 	public static final ToolMaterial BASIC_DRILL = register(2, Integer.MAX_VALUE, 10F, 2F, 16, () -> Ingredient.EMPTY);

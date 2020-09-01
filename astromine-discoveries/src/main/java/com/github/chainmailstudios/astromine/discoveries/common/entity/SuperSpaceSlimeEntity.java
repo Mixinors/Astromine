@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.entity;
 
-import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesEntityTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
@@ -60,8 +59,8 @@ import com.github.chainmailstudios.astromine.discoveries.common.entity.ai.supers
 import com.github.chainmailstudios.astromine.discoveries.common.entity.ai.superspaceslime.SuperSpaceSlimeMoveGoal;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.ai.superspaceslime.SuperSpaceSlimeRandomLookGoal;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.ai.superspaceslime.SuperSpaceSlimeSwimmingGoal;
-import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineParticles;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesEntityTypes;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesParticles;
 
 public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 
@@ -171,7 +170,7 @@ public class SuperSpaceSlimeEntity extends MobEntity implements Monster {
 	}
 
 	protected ParticleEffect getParticles() {
-		return AstromineParticles.SPACE_SLIME;
+		return AstromineDiscoveriesParticles.SPACE_SLIME;
 	}
 
 	protected SoundEvent getSquishSound() {

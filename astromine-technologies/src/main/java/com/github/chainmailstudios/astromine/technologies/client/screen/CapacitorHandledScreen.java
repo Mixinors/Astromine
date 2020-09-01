@@ -27,11 +27,11 @@ package com.github.chainmailstudios.astromine.technologies.client.screen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
-import com.github.chainmailstudios.astromine.client.screen.base.ComponentEnergyItemHandledScreen;
+import com.github.chainmailstudios.astromine.client.screen.base.block.ComponentBlockEntityEnergyItemHandledScreen;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.CapacitorScreenHandler;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 
-public class CapacitorHandledScreen extends ComponentEnergyItemHandledScreen<CapacitorScreenHandler> {
+public class CapacitorHandledScreen extends ComponentBlockEntityEnergyItemHandledScreen<CapacitorScreenHandler> {
 	public CapacitorHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 	}

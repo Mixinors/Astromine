@@ -1,10 +1,11 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.generators.tag;
 
+import net.minecraft.util.Identifier;
+
+import com.github.chainmailstudios.astromine.datagen.generator.tag.set.SetTagGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
-import com.github.chainmailstudios.astromine.datagen.generator.tag.set.SetTagGenerator;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
-import net.minecraft.util.Identifier;
 
 public class GemNuggetTagGenerator implements SetTagGenerator {
 	@Override

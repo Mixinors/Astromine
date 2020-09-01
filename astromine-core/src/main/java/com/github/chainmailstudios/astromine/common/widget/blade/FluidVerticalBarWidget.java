@@ -52,12 +52,10 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class FluidVerticalBarWidget extends AbstractWidget {
+	private final Identifier FLUID_BACKGROUND = AstromineCommon.identifier("textures/widget/fluid_volume_fractional_vertical_bar_background.png");
 	private Supplier<FluidVolume> volume;
-
 	private Supplier<Fraction> progressFraction;
 	private Supplier<Fraction> limitFraction;
-
-	private final Identifier FLUID_BACKGROUND = AstromineCommon.identifier("textures/widget/fluid_volume_fractional_vertical_bar_background.png");
 
 	public Identifier getBackgroundTexture() {
 		return FLUID_BACKGROUND;

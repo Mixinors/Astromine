@@ -1,0 +1,30 @@
+{
+  "parent": "astromine:astromine/get_basic_circuit",
+  "display": {
+    "icon": {
+      "item": "astromine:advanced_circuit"
+    },
+    "title": {
+      "translate": "advancements.astromine.get_advanced_circuit.title"
+    },
+    "description": {
+      "translate": "advancements.astromine.get_advanced_circuit.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_advanced_circuit": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "astromine:advanced_circuit"
+          }
+        ]
+      }
+    }
+  }
+}

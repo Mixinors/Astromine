@@ -28,10 +28,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 
-import net.minecraft.client.MinecraftClient;
-
 import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
-import java.util.UUID;
 
 @Environment(EnvType.CLIENT)
 public class AstromineClientPackets {

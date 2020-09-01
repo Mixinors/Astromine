@@ -27,9 +27,6 @@ package com.github.chainmailstudios.astromine.registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.biome.Biome;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
 
 import java.util.HashSet;
 import java.util.Set;

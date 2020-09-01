@@ -24,7 +24,7 @@ public class GenericOreFeatureWorldGenGenerator extends GenericFeatureWorldGenGe
 
 	public GenericOreFeatureWorldGenGenerator(BlockState oreBlockState, RangeDecoratorConfig range, int count, int size, RuleTest ruleTest) {
 		super(Registry.BLOCK.getId(oreBlockState.getBlock()), Feature.ORE.configure(new OreFeatureConfig(ruleTest, oreBlockState, size))
-			.decorate(Decorator.RANGE.configure(range)).spreadHorizontally().repeat(count));
+				.decorate(Decorator.RANGE.configure(range)).spreadHorizontally().repeat(count));
 	}
 
 	@Override

@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
-import com.github.chainmailstudios.astromine.technologies.common.block.SolidGeneratorBlock;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 
 import net.minecraft.block.Block;
@@ -42,6 +41,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.SimpleIt
 import com.github.chainmailstudios.astromine.common.recipe.SolidGeneratingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
+import com.github.chainmailstudios.astromine.technologies.common.block.SolidGeneratorBlock;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import org.jetbrains.annotations.NotNull;
@@ -76,13 +76,13 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 	}
 
 	@Override
-	public int getLimit() {
-		return limit;
+	public void setCurrent(double current) {
+		this.current = current;
 	}
 
 	@Override
-	public void setCurrent(double current) {
-		this.current = current;
+	public int getLimit() {
+		return limit;
 	}
 
 	@Override

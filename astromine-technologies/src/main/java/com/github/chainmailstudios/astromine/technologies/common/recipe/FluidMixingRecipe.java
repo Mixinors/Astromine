@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.recipe;
 
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.Inventory;
@@ -53,6 +52,7 @@ import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
@@ -62,6 +62,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
 public class FluidMixingRecipe implements AdvancedRecipe<Inventory>, EnergyConsumingRecipe<Inventory> {
+	private static final int INPUT_ENERGY_VOLUME = 0;
+	private static final int FIRST_INPUT_FLUID_VOLUME = 0;
+	private static final int SECOND_INPUT_FLUID_VOLUME = 1;
+	private static final int OUTPUT_FLUID_VOLUME = 2;
 	final Identifier identifier;
 	final RegistryKey<Fluid> firstInputFluidKey;
 	final Lazy<Fluid> firstInputFluid;
@@ -74,11 +78,6 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory>, EnergyConsu
 	final Fraction outputAmount;
 	final double energyConsumed;
 	final int time;
-
-	private static final int INPUT_ENERGY_VOLUME = 0;
-	private static final int FIRST_INPUT_FLUID_VOLUME = 0;
-	private static final int SECOND_INPUT_FLUID_VOLUME = 1;
-	private static final int OUTPUT_FLUID_VOLUME = 2;
 
 	public FluidMixingRecipe(Identifier identifier, RegistryKey<Fluid> firstInputFluidKey, Fraction firstInputAmount, RegistryKey<Fluid> secondInputFluidKey, Fraction secondInputAmount, RegistryKey<Fluid> outputFluidKey, Fraction outputAmount, double energyConsumed, int time) {
 		this.identifier = identifier;

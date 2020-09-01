@@ -1,0 +1,30 @@
+{
+  "parent": "astromine:astromine/root",
+  "display": {
+    "icon": {
+      "item": "astromine:iron_gear"
+    },
+    "title": {
+      "translate": "advancements.astromine.get_gear.title"
+    },
+    "description": {
+      "translate": "advancements.astromine.get_gear.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_gear": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "astromine:gears"
+          }
+        ]
+      }
+    }
+  }
+}

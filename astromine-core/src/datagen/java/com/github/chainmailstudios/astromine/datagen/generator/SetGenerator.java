@@ -8,6 +8,9 @@ import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
  */
 public interface SetGenerator<T> extends Generator<T> {
 	boolean shouldGenerate(MaterialSet set);
+
 	void generate(T data, MaterialSet set);
-	default void generate(T data) { }
+
+	default void generate(T data) {
+	}
 }

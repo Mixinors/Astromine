@@ -24,22 +24,21 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei.triturating;
 
+import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
 import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.technologies.client.rei.SimpleTransferRecipeDisplay;
+import me.shedaniel.rei.api.EntryStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
 import net.minecraft.util.Identifier;
-
-import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
-import me.shedaniel.rei.api.EntryStack;
-import me.shedaniel.rei.api.RecipeDisplay;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
-public class TrituratingDisplay implements RecipeDisplay {
+public class TrituratingDisplay extends SimpleTransferRecipeDisplay {
 	private final List<List<EntryStack>> inputs;
 	private final List<EntryStack> outputs;
 	private final int timeRequired;
@@ -51,6 +50,7 @@ public class TrituratingDisplay implements RecipeDisplay {
 	}
 
 	public TrituratingDisplay(List<List<EntryStack>> inputs, List<EntryStack> outputs, int timeRequired, double energyRequired, Identifier recipeId) {
+		super(1, 1);
 		this.inputs = inputs;
 		this.outputs = outputs;
 		this.timeRequired = timeRequired;
@@ -69,8 +69,8 @@ public class TrituratingDisplay implements RecipeDisplay {
 	}
 
 	@Override
-	public List<EntryStack> getOutputEntries() {
-		return outputs;
+	public @NotNull List<List<EntryStack>> getResultingEntries() {
+		return Collections.singletonList(outputs);
 	}
 
 	public int getTimeRequired() {

@@ -24,15 +24,13 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
 
 public class AstromineDiscoveriesBiomes extends AstromineBiomes {
 	public static final Identifier ASTEROID_BELT_ID = AstromineCommon.identifier("asteroid_belt");

@@ -45,6 +45,7 @@ public class AstromineBlockEntityTypes {
 	 *        Supplier of BlockEntity to use for BlockEntityType
 	 * @param supportedBlocks
 	 *        Blocks the BlockEntity can be attached to
+	 *
 	 * @return Registered BlockEntityType
 	 */
 	public static <B extends BlockEntity> BlockEntityType<B> register(String name, Supplier<B> supplier, Block... supportedBlocks) {

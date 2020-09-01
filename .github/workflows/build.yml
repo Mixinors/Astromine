@@ -1,12 +1,12 @@
 name: Staging Build
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Setup Java
         uses: actions/setup-java@v1
         with:

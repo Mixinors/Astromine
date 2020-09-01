@@ -1,10 +1,11 @@
 package com.github.chainmailstudios.astromine.datagen;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.datagen.entrypoint.DatagenInitializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.datagen.entrypoint.DatagenInitializer;
 
 public class AstromineDatagenInitializer implements PreLaunchEntrypoint {
 	@Override

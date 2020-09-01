@@ -25,15 +25,12 @@
 package com.github.chainmailstudios.astromine.transportations.registry.client;
 
 import com.github.chainmailstudios.astromine.registry.client.AstromineBlockEntityRenderers;
+import com.github.chainmailstudios.astromine.transportations.client.render.block.AbstractConveyableBlockEntityRenderer;
+import com.github.chainmailstudios.astromine.transportations.client.render.block.ConveyorBlockEntityRenderer;
+import com.github.chainmailstudios.astromine.transportations.client.render.block.DownwardVerticalConveyorBlockEntityRenderer;
+import com.github.chainmailstudios.astromine.transportations.client.render.block.InserterBlockEntityRenderer;
+import com.github.chainmailstudios.astromine.transportations.client.render.block.VerticalConveyorBlockEntityRenderer;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
-import com.github.chainmailstudios.astromine.transportations.client.render.block.*;
-import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-
-import java.util.function.Function;
 
 public class AstromineTransportationsBlockEntityRenderers extends AstromineBlockEntityRenderers {
 	public static void initialize() {

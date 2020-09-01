@@ -24,8 +24,8 @@
 
 package com.github.chainmailstudios.astromine.transportations.registry;
 
-import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
+import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkMembers;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import com.github.chainmailstudios.astromine.transportations.common.block.EnergyCableBlock;

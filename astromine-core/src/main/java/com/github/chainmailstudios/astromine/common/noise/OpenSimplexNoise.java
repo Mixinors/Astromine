@@ -53,7 +53,23 @@ public class OpenSimplexNoise extends Noise {
 	private static final double NORM_CONSTANT_4D = 30;
 
 	private static final long DEFAULT_SEED = 0;
-
+	// Gradients for 2D. They approximate the directions to the
+	// vertices of an octagon from the center.
+	private static final byte[] gradients2D = new byte[]{ 5, 2, 2, 5, -5, 2, -2, 5, 5, -2, 2, -5, -5, -2, -2, -5, };
+	// Gradients for 3D. They approximate the directions to the
+	// vertices of a rhombicuboctahedron from the center, skewed so
+	// that the triangular and square facets can be inscribed inside
+	// circles of the same radius.
+	private static final byte[] gradients3D = new byte[]{ -11, 4, 4, -4, 11, 4, -4, 4, 11, 11, 4, 4, 4, 11, 4, 4, 4, 11, -11, -4, 4, -4, -11, 4, -4, -4, 11, 11, -4, 4, 4, -11, 4, 4, -4, 11, -11, 4, -4, -4, 11, -4, -4, 4, -11, 11, 4, -4, 4, 11, -4, 4, 4, -11, -11, -4, -4, -4, -11,
+		-4, -4, -4, -11, 11, -4, -4, 4, -11, -4, 4, -4, -11, };
+	// Gradients for 4D. They approximate the directions to the
+	// vertices of a disprismatotesseractihexadecachoron from the center,
+	// skewed so that the tetrahedral and cubic facets can be inscribed inside
+	// spheres of the same radius.
+	private static final byte[] gradients4D = new byte[]{ 3, 1, 1, 1, 1, 3, 1, 1, 1, 1, 3, 1, 1, 1, 1, 3, -3, 1, 1, 1, -1, 3, 1, 1, -1, 1, 3, 1, -1, 1, 1, 3, 3, -1, 1, 1, 1, -3, 1, 1, 1, -1, 3, 1, 1, -1, 1, 3, -3, -1, 1, 1, -1, -3, 1, 1, -1, -1, 3, 1, -1, -1, 1, 3, 3, 1, -1, 1,
+		1, 3, -1, 1, 1, 1, -3, 1, 1, 1, -1, 3, -3, 1, -1, 1, -1, 3, -1, 1, -1, 1, -3, 1, -1, 1, -1, 3, 3, -1, -1, 1, 1, -3, -1, 1, 1, -1, -3, 1, 1, -1, -1, 3, -3, -1, -1, 1, -1, -3, -1, 1, -1, -1, -3, 1, -1, -1, -1, 3, 3, 1, 1, -1, 1, 3, 1, -1, 1, 1, 3, -1, 1, 1, 1, -3, -3, 1, 1,
+		-1, -1, 3, 1, -1, -1, 1, 3, -1, -1, 1, 1, -3, 3, -1, 1, -1, 1, -3, 1, -1, 1, -1, 3, -1, 1, -1, 1, -3, -3, -1, 1, -1, -1, -3, 1, -1, -1, -1, 3, -1, -1, -1, 1, -3, 3, 1, -1, -1, 1, 3, -1, -1, 1, 1, -3, -1, 1, 1, -1, -3, -3, 1, -1, -1, -1, 3, -1, -1, -1, 1, -3, -1, -1, 1,
+		-1, -3, 3, -1, -1, -1, 1, -3, -1, -1, 1, -1, -3, -1, 1, -1, -1, -3, -3, -1, -1, -1, -1, -3, -1, -1, -1, -1, -3, -1, -1, -1, -1, -3, };
 	private final short[] perm;
 	private final short[] permGradIndex3D;
 
@@ -79,6 +95,11 @@ public class OpenSimplexNoise extends Noise {
 			permGradIndex3D[i] = (short) ((perm[i] % (gradients3D.length / 3)) * 3);
 			source[r] = source[i];
 		}
+	}
+
+	private static int fastFloor(double x) {
+		int xi = (int) x;
+		return x < xi ? xi - 1 : xi;
 	}
 
 	// 2D OpenSimplex Noise.
@@ -1362,7 +1383,7 @@ public class OpenSimplexNoise extends Noise {
 					}
 
 				} else { // Both closest points on the smaller side
-							// One of the two extra points is (0,0,0,0)
+					// One of the two extra points is (0,0,0,0)
 					xsv_ext2 = xsb;
 					ysv_ext2 = ysb;
 					zsv_ext2 = zsb;
@@ -1779,7 +1800,7 @@ public class OpenSimplexNoise extends Noise {
 						dw_ext2 += 2;
 					}
 				} else { // Both closest points on the smaller side
-							// One of the two extra points is (1,1,1,1)
+					// One of the two extra points is (1,1,1,1)
 					xsv_ext2 = xsb + 1;
 					ysv_ext2 = ysb + 1;
 					zsv_ext2 = zsb + 1;
@@ -2076,29 +2097,4 @@ public class OpenSimplexNoise extends Noise {
 		int index = perm[(perm[(perm[(perm[xsb & 0xFF] + ysb) & 0xFF] + zsb) & 0xFF] + wsb) & 0xFF] & 0xFC;
 		return gradients4D[index] * dx + gradients4D[index + 1] * dy + gradients4D[index + 2] * dz + gradients4D[index + 3] * dw;
 	}
-
-	private static int fastFloor(double x) {
-		int xi = (int) x;
-		return x < xi ? xi - 1 : xi;
-	}
-
-	// Gradients for 2D. They approximate the directions to the
-	// vertices of an octagon from the center.
-	private static final byte[] gradients2D = new byte[]{ 5, 2, 2, 5, -5, 2, -2, 5, 5, -2, 2, -5, -5, -2, -2, -5, };
-
-	// Gradients for 3D. They approximate the directions to the
-	// vertices of a rhombicuboctahedron from the center, skewed so
-	// that the triangular and square facets can be inscribed inside
-	// circles of the same radius.
-	private static final byte[] gradients3D = new byte[]{ -11, 4, 4, -4, 11, 4, -4, 4, 11, 11, 4, 4, 4, 11, 4, 4, 4, 11, -11, -4, 4, -4, -11, 4, -4, -4, 11, 11, -4, 4, 4, -11, 4, 4, -4, 11, -11, 4, -4, -4, 11, -4, -4, 4, -11, 11, 4, -4, 4, 11, -4, 4, 4, -11, -11, -4, -4, -4, -11,
-		-4, -4, -4, -11, 11, -4, -4, 4, -11, -4, 4, -4, -11, };
-
-	// Gradients for 4D. They approximate the directions to the
-	// vertices of a disprismatotesseractihexadecachoron from the center,
-	// skewed so that the tetrahedral and cubic facets can be inscribed inside
-	// spheres of the same radius.
-	private static final byte[] gradients4D = new byte[]{ 3, 1, 1, 1, 1, 3, 1, 1, 1, 1, 3, 1, 1, 1, 1, 3, -3, 1, 1, 1, -1, 3, 1, 1, -1, 1, 3, 1, -1, 1, 1, 3, 3, -1, 1, 1, 1, -3, 1, 1, 1, -1, 3, 1, 1, -1, 1, 3, -3, -1, 1, 1, -1, -3, 1, 1, -1, -1, 3, 1, -1, -1, 1, 3, 3, 1, -1, 1,
-		1, 3, -1, 1, 1, 1, -3, 1, 1, 1, -1, 3, -3, 1, -1, 1, -1, 3, -1, 1, -1, 1, -3, 1, -1, 1, -1, 3, 3, -1, -1, 1, 1, -3, -1, 1, 1, -1, -3, 1, 1, -1, -1, 3, -3, -1, -1, 1, -1, -3, -1, 1, -1, -1, -3, 1, -1, -1, -1, 3, 3, 1, 1, -1, 1, 3, 1, -1, 1, 1, 3, -1, 1, 1, 1, -3, -3, 1, 1,
-		-1, -1, 3, 1, -1, -1, 1, 3, -1, -1, 1, 1, -3, 3, -1, 1, -1, 1, -3, 1, -1, 1, -1, 3, -1, 1, -1, 1, -3, -3, -1, 1, -1, -1, -3, 1, -1, -1, -1, 3, -1, -1, -1, 1, -3, 3, 1, -1, -1, 1, 3, -1, -1, 1, 1, -3, -1, 1, 1, -1, -3, -3, 1, -1, -1, -1, 3, -1, -1, -1, 1, -3, -1, -1, 1,
-		-1, -3, 3, -1, -1, -1, 1, -3, -1, -1, 1, -1, -3, -1, 1, -1, -1, -3, -3, -1, -1, -1, -1, -3, -1, -1, -1, -1, -3, -1, -1, -1, -1, -3, };
 }

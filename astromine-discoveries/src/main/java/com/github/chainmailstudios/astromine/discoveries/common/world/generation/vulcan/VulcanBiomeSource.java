@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.generation.vulcan;
 
-import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBiomes;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryLookupCodec;
 import net.minecraft.world.biome.Biome;
@@ -33,7 +32,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.space.EarthSpaceBiomeSource;
-import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBiomes;
 
 import com.google.common.collect.ImmutableList;
 

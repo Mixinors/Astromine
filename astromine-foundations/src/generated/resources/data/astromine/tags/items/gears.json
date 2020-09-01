@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:iron_gear",
+    "astromine:gold_gear",
+    "astromine:netherite_gear",
+    "astromine:tin_gear",
+    "astromine:copper_gear",
+    "astromine:silver_gear",
+    "astromine:lead_gear",
+    "astromine:steel_gear",
+    "astromine:bronze_gear",
+    "astromine:electrum_gear",
+    "astromine:rose_gold_gear",
+    "astromine:sterling_silver_gear",
+    "astromine:fools_gold_gear",
+    "astromine:metite_gear",
+    "astromine:stellum_gear",
+    "astromine:univite_gear"
+  ]
+}

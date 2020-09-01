@@ -27,8 +27,8 @@ public class ShapelessCraftingRecipeGenerator extends OneTimeRecipeGenerator {
 	@Override
 	public void generate(RecipeData recipes) {
 		ShapelessRecipeJsonFactory factory = ShapelessRecipeJsonFactory
-			.create(Registry.ITEM.get(output), outputCount)
-			.criterion("impossible", new ImpossibleCriterion.Conditions());
+				.create(Registry.ITEM.get(output), outputCount)
+				.criterion("impossible", new ImpossibleCriterion.Conditions());
 		ingredients.forEach((factory::input));
 		factory.offerTo(recipes, getRecipeId());
 	}

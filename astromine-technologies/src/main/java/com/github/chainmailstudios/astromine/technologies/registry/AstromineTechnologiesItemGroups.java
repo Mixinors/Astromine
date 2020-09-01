@@ -24,8 +24,9 @@
 
 package com.github.chainmailstudios.astromine.technologies.registry;
 
-import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
 import net.minecraft.item.ItemGroup;
+
+import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
 
 public class AstromineTechnologiesItemGroups extends AstromineItemGroups {
 	public static final ItemGroup TECHNOLOGIES = register("technologies", () -> AstromineTechnologiesItems.ADVANCED_CIRCUIT);

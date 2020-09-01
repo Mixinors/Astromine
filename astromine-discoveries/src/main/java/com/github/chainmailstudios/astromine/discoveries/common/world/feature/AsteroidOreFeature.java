@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.feature;
 
-import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.util.Pair;
 import net.minecraft.util.collection.WeightedList;
@@ -35,8 +34,9 @@ import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import com.mojang.serialization.Codec;
 
-import com.github.chainmailstudios.astromine.discoveries.client.registry.AsteroidOreRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
+import com.github.chainmailstudios.astromine.discoveries.client.registry.AsteroidOreRegistry;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
 import com.terraformersmc.shapes.api.Position;
 import com.terraformersmc.shapes.api.Quaternion;
 import com.terraformersmc.shapes.api.Shape;

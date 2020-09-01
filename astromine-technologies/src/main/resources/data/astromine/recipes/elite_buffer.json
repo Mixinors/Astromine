@@ -1,16 +1,11 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["012", "345", "678"],
+  "pattern": ["010", "343", "010"],
   "key": {
-    "0": { "tag": "c:metite_plates" },
-    "1": { "tag": "c:iron_plates" },
-    "2": { "tag": "c:metite_plates" },
-    "3": { "item": "astromine:elite_circuit" },
-    "4": { "item": "astromine:advanced_machine_chassis" },
-    "5": { "item": "astromine:elite_circuit" },
-    "6": { "tag": "c:metite_plates" },
-    "7": { "tag": "c:iron_plates" },
-    "8": { "tag": "c:metite_plates" }
+    "0": {"tag": "c:metite_plates"},
+    "1": {"tag": "c:electrum_plates"},
+    "3": {"item": "astromine:elite_circuit"},
+    "4": {"item": "astromine:advanced_machine_chassis"}
   },
-  "result": { "item": "astromine:elite_buffer", "count": 1 }
+  "result": {"item": "astromine:elite_buffer", "count": 1}
 }

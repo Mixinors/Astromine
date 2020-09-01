@@ -25,7 +25,15 @@
 package com.github.chainmailstudios.astromine.technologies;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.technologies.registry.*;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesItemGroups;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesItems;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesNetworkMembers;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesRecipeSerializers;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesSoundEvents;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesToolMaterials;
 
 public class AstromineTechnologiesCommon extends AstromineCommon {
 	@Override
@@ -37,11 +45,8 @@ public class AstromineTechnologiesCommon extends AstromineCommon {
 		AstromineTechnologiesRecipeSerializers.initialize();
 		AstromineTechnologiesScreenHandlers.initialize();
 		AstromineTechnologiesToolMaterials.initialize();
-		AstromineTechnologiesCommonCallbacks.initialize();
-		AstromineTechnologiesEntityTypes.initialize();
-		AstromineTechnologiesCriteria.initialize();
 		AstromineTechnologiesNetworkMembers.initialize();
 		AstromineTechnologiesRecipeSerializers.initialize();
-		AstromineTechnologiesArmorMaterials.initialize();
+		AstromineTechnologiesSoundEvents.initialize();
 	}
 }

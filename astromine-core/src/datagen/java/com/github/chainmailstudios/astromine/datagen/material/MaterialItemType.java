@@ -29,7 +29,8 @@ public enum MaterialItemType {
 	HELMET,
 	CHESTPLATE,
 	LEGGINGS,
-	BOOTS;
+	BOOTS,
+	WRENCH;
 
 	final String prefix;
 	final String suffix;

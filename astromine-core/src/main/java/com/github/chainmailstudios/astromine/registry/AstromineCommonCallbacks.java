@@ -24,12 +24,12 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import nerdhub.cardinal.components.api.event.ChunkComponentCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.chunk.WorldChunk;
 
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
@@ -37,13 +37,17 @@ import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFl
 import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
+import com.github.chainmailstudios.astromine.common.entity.base.ComponentEnergyEntity;
+import com.github.chainmailstudios.astromine.common.entity.base.ComponentEnergyItemEntity;
+import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidEntity;
+import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidItemEntity;
+import com.github.chainmailstudios.astromine.common.entity.base.ComponentItemEntity;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
-import com.github.chainmailstudios.astromine.common.screenhandler.base.ComponentBlockEntityScreenHandler;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
+import nerdhub.cardinal.components.api.event.ChunkComponentCallback;
 import nerdhub.cardinal.components.api.event.EntityComponentCallback;
 import nerdhub.cardinal.components.api.event.ItemComponentCallbackV2;
 import nerdhub.cardinal.components.api.event.WorldComponentCallback;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.WorldChunk;
 
 public class AstromineCommonCallbacks {
 	public static int atmosphereTickCounter = 0;
@@ -57,7 +61,6 @@ public class AstromineCommonCallbacks {
 				atmosphereTickCounter = 0;
 			}
 		});
-
 
 		ServerTickEvents.START_SERVER_TICK.register((server) -> {
 			for (PlayerEntity playerEntity : server.getPlayerManager().getPlayerList()) {
@@ -115,5 +118,17 @@ public class AstromineCommonCallbacks {
 				});
 			}
 		});
+
+		EntityComponentCallback.register(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, ComponentFluidItemEntity.class, ComponentFluidItemEntity::createFluidComponent);
+		EntityComponentCallback.register(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, ComponentFluidItemEntity.class, ComponentFluidItemEntity::createItemComponent);
+
+		EntityComponentCallback.register(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, ComponentEnergyItemEntity.class, ComponentEnergyItemEntity::createItemComponent);
+		EntityComponentCallback.register(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, ComponentEnergyItemEntity.class, ComponentEnergyItemEntity::createEnergyComponent);
+
+		EntityComponentCallback.register(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, ComponentItemEntity.class, ComponentItemEntity::createItemComponent);
+
+		EntityComponentCallback.register(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, ComponentFluidEntity.class, ComponentFluidEntity::createFluidComponent);
+
+		EntityComponentCallback.register(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, ComponentEnergyEntity.class, ComponentEnergyEntity::createEnergyComponent);
 	}
 }

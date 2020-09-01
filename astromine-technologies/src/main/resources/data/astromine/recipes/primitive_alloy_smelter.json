@@ -1,34 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["012", "345", "678"],
+  "pattern": ["010", "343", "070"],
   "key": {
-    "0": {
-      "tag": "c:iron_plates"
-    },
-    "1": {
-      "item": "astromine:basic_circuit"
-    },
-    "2": {
-      "tag": "c:iron_plates"
-    },
-    "3": {
-      "tag": "c:iron_gears"
-    },
-    "4": {
-      "item": "astromine:primitive_machine_chassis"
-    },
-    "5": {
-      "tag": "c:iron_gears"
-    },
-    "6": {
-      "tag": "c:iron_plates"
-    },
-    "7": {
-      "item": "astromine:basic_battery"
-    },
-    "8": {
-      "tag": "c:iron_plates"
-    }
+    "0": {"tag": "c:copper_plates"},
+    "1": {"item": "astromine:basic_circuit"},
+    "3": {"tag": "c:tin_gears"},
+    "4": {"item": "astromine:primitive_machine_chassis"},
+    "7": {"item": "astromine:basic_battery"}
   },
   "result": {
     "item": "astromine:primitive_alloy_smelter",

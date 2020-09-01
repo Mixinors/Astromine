@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.recipe;
 
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -46,6 +45,7 @@ import com.github.chainmailstudios.astromine.common.utilities.IngredientUtilitie
 import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
@@ -55,14 +55,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
 public class SolidGeneratingRecipe implements AdvancedRecipe<Inventory>, EnergyGeneratingRecipe<Inventory> {
+	private static final int OUTPUT_ENERGY_VOLUME = 0;
+	private static final int INPUT_ITEM_SLOT = 0;
 	final Identifier identifier;
 	final Ingredient input;
 	final int amount;
 	final double energyGenerated;
 	final int time;
-
-	private static final int OUTPUT_ENERGY_VOLUME = 0;
-	private static final int INPUT_ITEM_SLOT = 0;
 
 	public SolidGeneratingRecipe(Identifier identifier, Ingredient input, int amount, double energyGenerated, int time) {
 		this.identifier = identifier;

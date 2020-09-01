@@ -1,0 +1,17 @@
+{
+  "block.incinerator.incinerate": {
+    "sounds": [
+      "mob/ghast/fireball4"
+    ],
+    "subtitle": "subtitle.astromine.incinerator.incinerate"
+  },
+  "block.machine.click": {
+    "sounds": [
+      "astromine:machine_click_1",
+      "astromine:machine_click_2",
+      "astromine:machine_click_3",
+      "astromine:machine_click_4"
+    ],
+    "subtitle": "subtitle.astromine.machine.click"
+  }
+}

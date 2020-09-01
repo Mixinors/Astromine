@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.transportations.client.render.block;
 
-import com.github.chainmailstudios.astromine.transportations.common.block.entity.base.AbstractConveyableBlockEntity;
-import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorTypes;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
@@ -33,6 +31,9 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
+
+import com.github.chainmailstudios.astromine.transportations.common.block.entity.base.AbstractConveyableBlockEntity;
+import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorTypes;
 
 public class AbstractConveyableBlockEntityRenderer extends BlockEntityRenderer<AbstractConveyableBlockEntity> implements ConveyorRenderer<AbstractConveyableBlockEntity> {
 	public AbstractConveyableBlockEntityRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher) {

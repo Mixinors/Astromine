@@ -45,13 +45,13 @@ public class BufferBlockEntity extends ComponentInventoryBlockEntity {
 		((SimpleItemInventoryComponent) itemComponent).resize(9 * type.getHeight());
 	}
 
+	public BufferBlockEntity() {
+		super(AstromineTechnologiesBlockEntityTypes.BUFFER);
+	}
+
 	@Override
 	protected ItemInventoryComponent createItemComponent() {
 		return new SimpleItemInventoryComponent(1);
-	}
-
-	public BufferBlockEntity() {
-		super(AstromineTechnologiesBlockEntityTypes.BUFFER);
 	}
 
 	@Override

@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.discoveries.client.render.sky.skybox;
 
-import com.github.chainmailstudios.astromine.client.render.sky.skybox.Skybox;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
@@ -35,6 +34,8 @@ import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import com.mojang.blaze3d.systems.RenderSystem;
+
+import com.github.chainmailstudios.astromine.client.render.sky.skybox.Skybox;
 
 import com.google.common.collect.ImmutableMap;
 

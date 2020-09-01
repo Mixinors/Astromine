@@ -1,11 +1,12 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.registry;
 
+import net.minecraft.util.Identifier;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialEntry;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineMaterialSets;
-import net.minecraft.util.Identifier;
 
 public class AstromineFoundationsMaterialSets extends AstromineMaterialSets {
 	public static final MaterialSet WOOD = register(
@@ -152,7 +153,7 @@ public class AstromineFoundationsMaterialSets extends AstromineMaterialSets {
 	);
 	public static final MaterialSet COPPER = register(
 			new MaterialSet.Builder("copper")
-					.basics().metal().ore().asteroid().wire().allTools().armor()
+					.basics().metal().ore().asteroid().wire().allTools().armor().wrench()
 					.build()
 	);
 	public static final MaterialSet SILVER = register(
@@ -167,12 +168,12 @@ public class AstromineFoundationsMaterialSets extends AstromineMaterialSets {
 	);
 	public static final MaterialSet STEEL = register(
 			new MaterialSet.Builder("steel")
-					.basics().metal().wire().allTools().armor()
+					.basics().metal().wire().allTools().armor().wrench()
 					.build()
 	);
 	public static final MaterialSet BRONZE = register(
 			new MaterialSet.Builder("bronze")
-					.basics().metal().allTools().armor()
+					.basics().metal().allTools().armor().wrench()
 					.build()
 	);
 	public static final MaterialSet ELECTRUM = register(

@@ -8,9 +8,9 @@ import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
 
 public class GenericSetTagGenerator implements SetTagGenerator {
+	public final MaterialItemType type;
 	protected final String name;
 	protected final Identifier tagId;
-	public final MaterialItemType type;
 
 	public GenericSetTagGenerator(String name, Identifier tagId, MaterialItemType type) {
 		this.name = name;

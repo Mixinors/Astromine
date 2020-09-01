@@ -314,6 +314,10 @@ public class MaterialSet {
 			return addType(BOOTS, new Identifier("c", "boots"));
 		}
 
+		public Builder wrench() {
+			return addType(WRENCH, new Identifier("c", "wrenches"));
+		}
+
 		public Builder smithingBaseSet(MaterialSet set) {
 			this.smithingBaseSet = set;
 			return this;

@@ -24,7 +24,9 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidBlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.item.ItemStack;
+
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidInventoryBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
@@ -33,13 +35,9 @@ import com.github.chainmailstudios.astromine.common.component.inventory.SimpleIt
 import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.ItemStack;
-
-import java.util.Map;
 
 public class TankBlockEntity extends ComponentFluidInventoryBlockEntity {
 	public TankBlockEntity() {

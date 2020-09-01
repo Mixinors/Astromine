@@ -80,6 +80,7 @@ public class SuperSpaceSlimeEntityRenderer extends MobEntityRenderer<SuperSpaceS
 	 *
 	 * @param slimeEntity
 	 *        Super Space Slime to return texture for
+	 *
 	 * @return texture of entity, accounting for current phase
 	 */
 	@Override

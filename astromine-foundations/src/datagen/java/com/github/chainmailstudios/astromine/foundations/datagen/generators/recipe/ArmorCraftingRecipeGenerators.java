@@ -9,6 +9,11 @@ public abstract class ArmorCraftingRecipeGenerators extends ShapedCraftingSetRec
 		super(input, output, pattern);
 	}
 
+	@Override
+	public boolean shouldGenerate(MaterialSet set) {
+		return !set.usesSmithing() && super.shouldGenerate(set);
+	}
+
 	public static class HelmetCraftingRecipeGenerator extends ArmorCraftingRecipeGenerators {
 		public HelmetCraftingRecipeGenerator(MaterialItemType input) {
 			super(input, MaterialItemType.HELMET, "###", "# #");
@@ -31,10 +36,5 @@ public abstract class ArmorCraftingRecipeGenerators extends ShapedCraftingSetRec
 		public BootsCraftingRecipeGenerator(MaterialItemType input) {
 			super(input, MaterialItemType.BOOTS, "# #", "# #");
 		}
-	}
-
-	@Override
-	public boolean shouldGenerate(MaterialSet set) {
-		return !set.usesSmithing() && super.shouldGenerate(set);
 	}
 }

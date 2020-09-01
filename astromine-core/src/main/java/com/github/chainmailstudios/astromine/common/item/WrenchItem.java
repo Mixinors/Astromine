@@ -24,12 +24,35 @@
 
 package com.github.chainmailstudios.astromine.common.item;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ToolItem;
+import net.minecraft.item.ToolMaterial;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.world.World;
 
 import com.zundrel.wrenchable.wrench.Wrench;
 
-public class WrenchItem extends Item implements Wrench {
-	public WrenchItem(Settings settings) {
-		super(settings);
+public class WrenchItem extends ToolItem implements Wrench {
+	public WrenchItem(ToolMaterial material, Settings settings) {
+		super(material, settings);
+	}
+
+	@Override
+	public void onBlockWrenched(World world, ItemStack stack, PlayerEntity player, Hand hand, BlockHitResult result) {
+		if(player instanceof ServerPlayerEntity) {
+			stack.damage(1, world.getRandom(), (ServerPlayerEntity)player);
+		}
+	}
+
+	@Override
+	public void onEntityWrenched(World world, ItemStack stack, PlayerEntity player, Hand hand, EntityHitResult result) {
+		if(player instanceof ServerPlayerEntity) {
+			stack.damage(1, world.getRandom(), (ServerPlayerEntity)player);
+		}
 	}
 }

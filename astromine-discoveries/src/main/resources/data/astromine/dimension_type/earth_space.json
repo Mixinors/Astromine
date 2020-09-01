@@ -6,11 +6,11 @@
   "has_skylight": false,
   "has_ceiling": false,
   "infiniburn": "astromine:infiniburn_space",
-  "logical_height" : 256,
-  "has_raids" : false,
+  "logical_height": 256,
+  "has_raids": false,
   "respawn_anchor_works": false,
-  "bed_works" : false,
-  "piglin_safe" : false,
+  "bed_works": false,
+  "piglin_safe": false,
   "fixed_time": 15000,
   "effects": "astromine:earth_space"
 }

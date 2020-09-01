@@ -33,8 +33,6 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 public class AstromineAttributes {
 	public static final EntityAttribute GRAVITY_MULTIPLIER = Registry.register(Registry.ATTRIBUTE, AstromineCommon.identifier("gravity_multiplier"), new ClampedEntityAttribute("attribute.name.generic.astromine.gravity_multiplier", 1d, -100d, 100d));
 
-	public static void initialize() {
-	}
-
+	public static void initialize() {}
 
 }

@@ -32,6 +32,14 @@ import com.google.common.base.Objects;
 public class NetworkNode {
 	private long pos;
 
+	public NetworkNode(BlockPos blockPos) {
+		setBlockPos(blockPos);
+	}
+
+	public NetworkNode(long pos) {
+		setPos(pos);
+	}
+
 	public static NetworkNode of(BlockPos blockPos) {
 		return new NetworkNode(blockPos);
 	}
@@ -40,12 +48,8 @@ public class NetworkNode {
 		return new NetworkNode(pos);
 	}
 
-	public NetworkNode(BlockPos blockPos) {
-		setBlockPos(blockPos);
-	}
-
-	public NetworkNode(long pos) {
-		setPos(pos);
+	public static NetworkNode fromTag(CompoundTag tag) {
+		return of(tag.getLong("pos"));
 	}
 
 	public BlockPos getBlockPos() {
@@ -67,10 +71,6 @@ public class NetworkNode {
 	public CompoundTag toTag(CompoundTag tag) {
 		tag.putLong("pos", pos);
 		return tag;
-	}
-
-	public static NetworkNode fromTag(CompoundTag tag) {
-		return of(tag.getLong("pos"));
 	}
 
 	@Override

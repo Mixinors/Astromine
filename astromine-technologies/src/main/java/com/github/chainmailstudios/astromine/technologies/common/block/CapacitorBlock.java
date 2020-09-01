@@ -34,14 +34,13 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.CapacitorBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.CreativeCapacitorBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.CapacitorScreenHandler;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.CreativeCapacitorScreenHandler;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 public abstract class CapacitorBlock extends WrenchableHorizontalFacingEnergyTieredBlockWithEntity {
 	public CapacitorBlock(Settings settings) {
@@ -71,6 +70,11 @@ public abstract class CapacitorBlock extends WrenchableHorizontalFacingEnergyTie
 		@Override
 		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
 			buffer.writeBlockPos(pos);
+		}
+
+		@Override
+		public boolean showSpeedInTooltip() {
+			return false;
 		}
 	}
 

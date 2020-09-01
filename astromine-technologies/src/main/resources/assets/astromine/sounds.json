@@ -1,0 +1,6 @@
+{
+  "holographic_connector_click": {
+    "sounds": ["astromine:holographic_connector_click"],
+    "subtitle": "subtitles.astromine.holographic_connector_click"
+  }
+}

@@ -29,8 +29,7 @@ public class InfiniteEnergyVolume extends EnergyVolume {
 		super(0, listener);
 	}
 
-	public InfiniteEnergyVolume() {
-	}
+	public InfiniteEnergyVolume() {}
 
 	@Override
 	public double getAmount() {

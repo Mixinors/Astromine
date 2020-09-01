@@ -32,10 +32,6 @@ import net.minecraft.util.registry.Registry;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 
 public class AstromineParticles {
-	public static final DefaultParticleType SPACE_SLIME = register("space_slime", false);
-	public static final DefaultParticleType ROCKET_FLAME = register("rocket_flame", true);
-	public static final DefaultParticleType MARS_DUST = register("mars_dust", false);
-
 	/**
 	 * Registers a new {@link DefaultParticleType} instance under the given name.
 	 *
@@ -43,6 +39,7 @@ public class AstromineParticles {
 	 *        Name of {@link DefaultParticleType} to register
 	 * @param alwaysShow
 	 *        Whether or not the com.github.chainmailstudios.astromine.technologies.client.particle should always appear visible
+	 *
 	 * @return Registered {@link DefaultParticleType}
 	 */
 	public static DefaultParticleType register(String name, boolean alwaysShow) {

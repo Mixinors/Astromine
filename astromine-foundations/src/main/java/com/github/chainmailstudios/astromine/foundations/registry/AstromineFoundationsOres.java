@@ -24,15 +24,16 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
-import com.github.chainmailstudios.astromine.foundations.AstromineFoundationsCommon;
-import me.shedaniel.cloth.api.dynamic.registry.v1.BiomesRegistry;
-import me.shedaniel.cloth.api.dynamic.registry.v1.DynamicRegistryCallback;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
+
+import com.github.chainmailstudios.astromine.foundations.AstromineFoundationsCommon;
+import me.shedaniel.cloth.api.dynamic.registry.v1.BiomesRegistry;
+import me.shedaniel.cloth.api.dynamic.registry.v1.DynamicRegistryCallback;
 
 public class AstromineFoundationsOres {
 	public static final Identifier TIN_ORE_ID = AstromineFoundationsCommon.identifier("tin_ore");

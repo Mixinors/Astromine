@@ -24,19 +24,20 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.screenhandler;
 
-import com.github.chainmailstudios.astromine.technologies.common.block.entity.ElectrolyzerBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
-import com.github.chainmailstudios.astromine.common.screenhandler.base.ComponentEnergyFluidScreenHandler;
-import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBarWidget;
-import com.github.chainmailstudios.astromine.common.widget.blade.HorizontalArrowWidget;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
-import com.github.vini2003.blade.common.data.Position;
-import com.github.vini2003.blade.common.data.Size;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-public class ElectrolyzerScreenHandler extends ComponentEnergyFluidScreenHandler {
+import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyFluidScreenHandler;
+import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBarWidget;
+import com.github.chainmailstudios.astromine.common.widget.blade.HorizontalArrowWidget;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.ElectrolyzerBlockEntity;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
+import com.github.vini2003.blade.common.data.Position;
+import com.github.vini2003.blade.common.data.Size;
+
+public class ElectrolyzerScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
 	private ElectrolyzerBlockEntity electrolyzer;
 
 	public ElectrolyzerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {

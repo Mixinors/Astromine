@@ -22,8 +22,12 @@ public class MachineModelStateGenerator extends TieredFacingModelStateGenerator 
 		super(type, blocks);
 	}
 
+	public static BlockStateVariantMap activeMap(Identifier active, Identifier inactive) {
+		return BlockStateVariantMap.create(BlockWithEntity.ACTIVE).register(Boolean.TRUE, BlockStateVariant.create().put(VariantSettings.MODEL, active)).register(Boolean.FALSE, BlockStateVariant.create().put(VariantSettings.MODEL, inactive));
+	}
+
 	public Texture getTexture(Block block, boolean active) {
-		return (new Texture()).put(TextureKey.SIDE, getSubId(getTextureId(type), "_side")).put(TextureKey.FRONT, Texture.getSubId(block, "_front_"+(active?"active":"inactive"))).put(TextureKey.TOP, getSubId(getTextureId(type), "_top")).put(TextureKey.BOTTOM, getSubId(getTextureId(type), "_bottom"));
+		return (new Texture()).put(TextureKey.SIDE, getSubId(getTextureId(type), "_side")).put(TextureKey.FRONT, Texture.getSubId(block, "_front_" + (active ? "active" : "inactive"))).put(TextureKey.TOP, getSubId(getTextureId(type), "_top")).put(TextureKey.BOTTOM, getSubId(getTextureId(type), "_bottom"));
 	}
 
 	@Override
@@ -41,9 +45,5 @@ public class MachineModelStateGenerator extends TieredFacingModelStateGenerator 
 			data.addState(block, VariantsBlockStateSupplier.create(block).coordinate(facingMap()).coordinate(activeMap(active, inactive)));
 			data.addSimpleItemModel(Item.BLOCK_ITEMS.get(block), ModelIds.getBlockSubModelId(block, "_inactive"));
 		});
-	}
-
-	public static BlockStateVariantMap activeMap(Identifier active, Identifier inactive) {
-		return BlockStateVariantMap.create(BlockWithEntity.ACTIVE).register(Boolean.TRUE, BlockStateVariant.create().put(VariantSettings.MODEL, active)).register(Boolean.FALSE, BlockStateVariant.create().put(VariantSettings.MODEL, inactive));
 	}
 }

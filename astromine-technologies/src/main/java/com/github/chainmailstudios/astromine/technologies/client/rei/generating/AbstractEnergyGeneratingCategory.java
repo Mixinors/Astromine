@@ -24,10 +24,10 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei.generating;
 
-import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
+import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.RecipeCategory;
 import me.shedaniel.rei.api.widgets.Widgets;

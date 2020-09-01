@@ -24,9 +24,6 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei.alloysmelting;
 
-import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
-import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -34,6 +31,9 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
+import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.EntryStack;
@@ -74,7 +74,7 @@ public class AlloySmeltingCategory implements RecipeCategory<AlloySmeltingDispla
 		widgets.add(Widgets.createResultSlotBackground(new Point(startPoint.x + 61, startPoint.y + 19)));
 		widgets.add(Widgets.createSlot(new Point(startPoint.x + 4, startPoint.y + 19 - 9)).entries(display.getInputEntries().get(0)).markInput());
 		widgets.add(Widgets.createSlot(new Point(startPoint.x + 4, startPoint.y + 19 + 9)).entries(display.getInputEntries().get(1)).markInput());
-		widgets.add(Widgets.createSlot(new Point(startPoint.x + 61, startPoint.y + 19)).entries(display.getOutputEntries()).disableBackground().markOutput());
+		widgets.add(Widgets.createSlot(new Point(startPoint.x + 61, startPoint.y + 19)).entries(display.getResultingEntries().get(0)).disableBackground().markOutput());
 		return widgets;
 	}
 }

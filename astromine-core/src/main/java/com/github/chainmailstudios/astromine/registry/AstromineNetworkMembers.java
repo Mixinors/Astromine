@@ -25,8 +25,8 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
-
 import net.fabricmc.loader.api.FabricLoader;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.entity.BlockEntity;

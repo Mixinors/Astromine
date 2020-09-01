@@ -32,7 +32,7 @@ public enum MachineTier {
 	CREATIVE;
 
 	public MachineTier upgradesFrom() {
-		switch(this) {
+		switch (this) {
 			case BASIC:
 				return PRIMITIVE;
 			case ADVANCED:
@@ -45,7 +45,7 @@ public enum MachineTier {
 	}
 
 	public MachineTier upgradesTo() {
-		switch(this) {
+		switch (this) {
 			case PRIMITIVE:
 				return BASIC;
 			case BASIC:

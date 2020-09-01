@@ -67,8 +67,8 @@ project.ext.setRuntimeTestMods = {
     useAsRuntime("RebornCore:RebornCore-1.16:${reborn_core_version}")
 
     // DataBreaker
-    // useAsRuntime("com.github.SuperCoder7979:databreaker:${databreaker_version}")
-	
-	// AE2
+     useAsRuntime("com.github.SuperCoder7979:databreaker:${databreaker_version}")
+
+    // AE2
     useAsRuntime("appeng:appliedenergistics2-fabric:${ae2_version}")
 }

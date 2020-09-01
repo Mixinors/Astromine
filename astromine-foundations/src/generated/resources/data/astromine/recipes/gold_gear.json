@@ -11,6 +11,7 @@
     }
   },
   "result": {
-    "item": "astromine:gold_gear"
+    "item": "astromine:gold_gear",
+    "count": 2
   }
 }

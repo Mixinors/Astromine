@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.generation.mars;
 
-import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -48,7 +47,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.github.chainmailstudios.astromine.common.miscellaneous.BiomeGeneratorCache;
 import com.github.chainmailstudios.astromine.common.noise.OctaveNoiseSampler;
 import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
-import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -105,8 +104,13 @@ public class MarsChunkGenerator extends ChunkGenerator {
 		ChunkRandom chunkRandom = new ChunkRandom();
 		chunkRandom.setTerrainSeed(chunk.getPos().x, chunk.getPos().z);
 
+		BlockPos.Mutable mutable = new BlockPos.Mutable();
+
 		for (int x = x1; x <= x2; ++x) {
+			mutable.setX(x);
 			for (int z = z1; z <= z2; ++z) {
+				mutable.setZ(z);
+
 				float depth = 0;
 				float scale = 0;
 				int i = 0;
@@ -137,10 +141,11 @@ public class MarsChunkGenerator extends ChunkGenerator {
 
 				int height = (int) (depth + (noise * scale));
 				for (int y = 0; y <= height; ++y) {
-					chunk.setBlockState(new BlockPos(x, y, z), y == height ? AstromineDiscoveriesBlocks.MARTIAN_SOIL.getDefaultState() : AstromineDiscoveriesBlocks.MARTIAN_STONE.getDefaultState(), false);
+					mutable.setY(y);
+					chunk.setBlockState(mutable, y == height ? AstromineDiscoveriesBlocks.MARTIAN_SOIL.getDefaultState() : AstromineDiscoveriesBlocks.MARTIAN_STONE.getDefaultState(), false);
 					if (y <= 5) {
 						if (chunkRandom.nextInt(y + 1) == 0) {
-							chunk.setBlockState(new BlockPos(x, y, z), Blocks.BEDROCK.getDefaultState(), false);
+							chunk.setBlockState(mutable, Blocks.BEDROCK.getDefaultState(), false);
 						}
 					}
 				}

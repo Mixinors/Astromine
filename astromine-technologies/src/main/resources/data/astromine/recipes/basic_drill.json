@@ -2,24 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "pattern": ["010", "343", "676"],
   "key": {
-    "0": {
-      "item": "astromine:basic_circuit"
-    },
-    "1": {
-      "item": "astromine:bronze_pickaxe"
-    },
-    "3": {
-      "tag": "c:bronze_gears"
-    },
-    "4": {
-      "item": "minecraft:iron_block"
-    },
-    "6": {
-      "item": "astromine:basic_battery"
-    },
-    "7": {
-      "item": "astromine:basic_machine_chassis"
-    }
+    "0": {"item": "astromine:basic_circuit"},
+    "1": {"item": "astromine:bronze_pickaxe"},
+    "3": {"tag": "c:bronze_gears"},
+    "4": {"item": "minecraft:iron_block"},
+    "6": {"item": "astromine:basic_battery"},
+    "7": {"item": "astromine:basic_machine_chassis"}
   },
   "result": {
     "item": "astromine:basic_drill",

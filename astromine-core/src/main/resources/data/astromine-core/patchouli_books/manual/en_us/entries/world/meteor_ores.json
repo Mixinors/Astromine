@@ -1,13 +1,13 @@
 {
-	"name": "text.astromine.world.meteor_ores.title",
-	"icon": "astromine:meteor_metite_ore",
-	"category": "world",
-	"sortnum": 0,
-	"pages": [
-		{
-			"type": "text",
-			"title": "text.astromine.world.meteor_ores.page_one.title",
-			"text": "text.astromine.world.meteor_ores.page_one.text"
-		}
-	]
+  "name": "text.astromine.world.meteor_ores.title",
+  "icon": "astromine:meteor_metite_ore",
+  "category": "world",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "text",
+      "title": "text.astromine.world.meteor_ores.page_one.title",
+      "text": "text.astromine.world.meteor_ores.page_one.text"
+    }
+  ]
 }
