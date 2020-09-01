@@ -24,9 +24,11 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei.electricsmelting;
 
+import it.unimi.dsi.fastutil.ints.IntList;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.TranslatableText;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
@@ -71,4 +73,7 @@ public class ElectricSmeltingCategory extends DefaultCookingCategory {
 	public int getDisplayHeight() {
 		return 66;
 	}
+
+	@Override
+	public void renderRedSlots(MatrixStack matrices, List<Widget> widgets, Rectangle bounds, DefaultCookingDisplay display, IntList redSlots) {}
 }

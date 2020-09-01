@@ -28,6 +28,9 @@
     "rei_plugins": [
       "com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin"
     ],
+    "rei_containers": [
+      "com.github.chainmailstudios.astromine.technologies.common.rei.AstromineTechnologiesServerContainerPlugin"
+    ],
     "astromine-network-members": [
       "com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesNetworkMembers::initialize"
     ]

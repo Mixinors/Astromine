@@ -24,24 +24,23 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei.alloysmelting;
 
+import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.technologies.client.rei.SimpleTransferRecipeDisplay;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.AlloySmeltingRecipe;
+import com.google.common.collect.Lists;
+import me.shedaniel.rei.api.EntryStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 
-import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
-import com.github.chainmailstudios.astromine.technologies.common.recipe.AlloySmeltingRecipe;
-import me.shedaniel.rei.api.EntryStack;
-import me.shedaniel.rei.api.RecipeDisplay;
-
-import com.google.common.collect.Lists;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
-public class AlloySmeltingDisplay implements RecipeDisplay {
+public class AlloySmeltingDisplay extends SimpleTransferRecipeDisplay {
 	private final List<List<EntryStack>> inputs;
 	private final List<EntryStack> outputs;
 	private final int timeRequired;
@@ -54,6 +53,7 @@ public class AlloySmeltingDisplay implements RecipeDisplay {
 	}
 
 	public AlloySmeltingDisplay(List<List<EntryStack>> inputs, List<EntryStack> outputs, int timeRequired, double energyRequired, Identifier recipeId) {
+		super(1, 2);
 		this.inputs = inputs;
 		this.outputs = outputs;
 		this.timeRequired = timeRequired;
@@ -72,8 +72,8 @@ public class AlloySmeltingDisplay implements RecipeDisplay {
 	}
 
 	@Override
-	public List<EntryStack> getOutputEntries() {
-		return outputs;
+	public @NotNull List<List<EntryStack>> getResultingEntries() {
+		return Collections.singletonList(outputs);
 	}
 
 	public int getTimeRequired() {
