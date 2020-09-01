@@ -24,13 +24,13 @@
 
 package com.github.chainmailstudios.astromine.client.screen.base.block;
 
+import com.github.chainmailstudios.astromine.client.screen.base.BladeHandledScreen;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
-import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
-import com.github.vini2003.blade.common.handler.BaseScreenHandler;
-
-public class ComponentBlockEntityHandledScreen<T extends ComponentBlockEntityScreenHandler> extends com.github.vini2003.blade.client.handler.BaseHandledScreen<T> {
+public class ComponentBlockEntityHandledScreen<T extends ComponentBlockEntityScreenHandler> extends BladeHandledScreen<T> {
 	public ComponentBlockEntityHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 	}
