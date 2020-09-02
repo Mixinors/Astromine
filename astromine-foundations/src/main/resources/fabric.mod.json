@@ -13,10 +13,13 @@
     "SuperCoder79",
     "Draylar",
     "HalfOf2",
+    "Martmists",
     "AK9"
   ],
   "contact": {
-    "sources": "https://github.com/Chainmail-Studios/Astromine"
+    "sources": "https://github.com/Chainmail-Studios/Astromine",
+    "issues": "https://github.com/Chainmail-Studios/Astromine/issues",
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/astromine-foundations"
   },
   "license": "MIT",
   "icon": "assets/astromine-foundations/icon.png",
@@ -29,8 +32,8 @@
   "accessWidener": "astromine-foundations.accesswidener",
   "depends": {
     "fabricloader": ">=0.9.2",
-    "fabric": ">=0.11.8",
-    "minecraft": ">=1.16.1",
+    "fabric": ">=0.19.0",
+    "minecraft": ">=1.16.2",
     "astromine-core": "*"
   },
   "custom": {

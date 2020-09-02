@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime;
 
 import net.minecraft.advancement.criterion.ImpossibleCriterion;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonFactory;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -16,13 +17,13 @@ public class ShapedCraftingRecipeGenerator extends OneTimeRecipeGenerator {
 	public final Map<Character, Ingredient> ingredients;
 	public final String[] pattern;
 
-	public ShapedCraftingRecipeGenerator(Identifier output, int outputCount, String... pattern) {
+	public ShapedCraftingRecipeGenerator(ItemConvertible output, int outputCount, String... pattern) {
 		super(output, outputCount);
 		this.ingredients = new HashMap<>();
 		this.pattern = pattern;
 	}
 
-	public ShapedCraftingRecipeGenerator(Identifier output, String... pattern) {
+	public ShapedCraftingRecipeGenerator(ItemConvertible output, String... pattern) {
 		this(output, 1, pattern);
 	}
 
@@ -33,10 +34,11 @@ public class ShapedCraftingRecipeGenerator extends OneTimeRecipeGenerator {
 
 	@Override
 	public void generate(RecipeData recipes) {
-		if (pattern.length == 0) throw new IllegalStateException("recipe must have at least one ingredient");
+		if (ingredients.size() == 0) throw new IllegalStateException("recipe must have at least one ingredient");
+		else if(pattern.length == 0) throw new IllegalStateException("recipe must have a pattern");
 		else {
 			ShapedRecipeJsonFactory factory = ShapedRecipeJsonFactory
-					.create(Registry.ITEM.get(output))
+					.create(output, outputCount)
 					.criterion("impossible", new ImpossibleCriterion.Conditions());
 			for (String s : pattern) {
 				factory.pattern(s);

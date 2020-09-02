@@ -28,6 +28,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
 import net.minecraft.server.world.ServerChunkManager;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.world.World;
@@ -114,8 +115,10 @@ public class ExplosionUtilities {
 							for (int oy = 0; oy < 16; oy++) {
 								for (int oz = 0; oz < 16; oz++) {
 									if (in(bx + ox, by + oy, bz + oz, radius)) {
-										section.setBlockState(ox, oy, oz, AIR);
-										destroyed++;
+										if(section.getBlockState(ox, oy, oz).getHardness(chunk, BlockPos.ORIGIN) != -1) {
+											section.setBlockState(ox, oy, oz, AIR);
+											destroyed++;
+										}
 									}
 								}
 							}

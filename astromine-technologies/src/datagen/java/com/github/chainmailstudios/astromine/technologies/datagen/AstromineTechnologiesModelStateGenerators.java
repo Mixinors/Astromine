@@ -2,8 +2,8 @@ package com.github.chainmailstudios.astromine.technologies.datagen;
 
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.ModelStateGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.GenericItemModelStateGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.HandheldItemModelStateGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.GenericItemModelGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.HandheldItemModelGenerator;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineModelStateGenerators;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsItems;
 import com.github.chainmailstudios.astromine.technologies.datagen.generators.modelstate.BufferModelStateGenerator;
@@ -103,32 +103,32 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 			AstromineTechnologiesBlocks.ELITE_TRITURATOR
 	));
 
-	public final ModelStateGenerator MACHINE_CHASSIS = register(new GenericItemModelStateGenerator(
+	public final ModelStateGenerator MACHINE_CHASSIS = register(new GenericItemModelGenerator(
 			AstromineTechnologiesItems.PRIMITIVE_MACHINE_CHASSIS,
 			AstromineTechnologiesItems.BASIC_MACHINE_CHASSIS,
 			AstromineTechnologiesItems.ADVANCED_MACHINE_CHASSIS,
 			AstromineTechnologiesItems.ELITE_MACHINE_CHASSIS
 	));
 
-	public final ModelStateGenerator CANISTERS = register(new GenericItemModelStateGenerator(
-			AstromineTechnologiesItems.PRESSURIZED_GAS_CANISTER,
-			AstromineTechnologiesItems.GAS_CANISTER
-			));
-
-	public final ModelStateGenerator CIRCUITS = register(new GenericItemModelStateGenerator(
+	public final ModelStateGenerator CANISTERS = register(new GenericItemModelGenerator(
+			AstromineTechnologiesItems.GAS_CANISTER,
+			AstromineTechnologiesItems.PRESSURIZED_GAS_CANISTER
+	));
+  
+	public final ModelStateGenerator CIRCUITS = register(new GenericItemModelGenerator(
 			AstromineTechnologiesItems.BASIC_CIRCUIT,
 			AstromineTechnologiesItems.ADVANCED_CIRCUIT,
 			AstromineTechnologiesItems.ELITE_CIRCUIT
 	));
 
-	public final ModelStateGenerator BATTERIES = register(new GenericItemModelStateGenerator(
+	public final ModelStateGenerator BATTERIES = register(new GenericItemModelGenerator(
 			AstromineTechnologiesItems.BASIC_BATTERY,
 			AstromineTechnologiesItems.ADVANCED_BATTERY,
 			AstromineTechnologiesItems.ELITE_BATTERY,
 			AstromineTechnologiesItems.CREATIVE_BATTERY
 	));
 
-	public final ModelStateGenerator DRILLS = register(new HandheldItemModelStateGenerator(
+	public final ModelStateGenerator DRILLS = register(new HandheldItemModelGenerator(
 			AstromineTechnologiesItems.BASIC_DRILL,
 			AstromineTechnologiesItems.ADVANCED_DRILL,
 			AstromineTechnologiesItems.ELITE_DRILL
