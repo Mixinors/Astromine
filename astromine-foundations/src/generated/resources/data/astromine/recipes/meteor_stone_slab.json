@@ -9,6 +9,7 @@
     }
   },
   "result": {
-    "item": "astromine:meteor_stone_slab"
+    "item": "astromine:meteor_stone_slab",
+    "count": 6
   }
 }

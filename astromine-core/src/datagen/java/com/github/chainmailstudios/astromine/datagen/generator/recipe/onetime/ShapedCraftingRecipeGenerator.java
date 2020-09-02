@@ -34,10 +34,11 @@ public class ShapedCraftingRecipeGenerator extends OneTimeRecipeGenerator {
 
 	@Override
 	public void generate(RecipeData recipes) {
-		if (pattern.length == 0) throw new IllegalStateException("recipe must have at least one ingredient");
+		if (ingredients.size() == 0) throw new IllegalStateException("recipe must have at least one ingredient");
+		else if(pattern.length == 0) throw new IllegalStateException("recipe must have a pattern");
 		else {
 			ShapedRecipeJsonFactory factory = ShapedRecipeJsonFactory
-					.create(output)
+					.create(output, outputCount)
 					.criterion("impossible", new ImpossibleCriterion.Conditions());
 			for (String s : pattern) {
 				factory.pattern(s);

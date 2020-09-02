@@ -11,6 +11,7 @@
     }
   },
   "result": {
-    "item": "astromine:vulcan_stone_stairs"
+    "item": "astromine:vulcan_stone_stairs",
+    "count": 4
   }
 }

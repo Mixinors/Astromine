@@ -11,6 +11,7 @@
     }
   },
   "result": {
-    "item": "astromine:asteroid_stone_stairs"
+    "item": "astromine:asteroid_stone_stairs",
+    "count": 4
   }
 }
