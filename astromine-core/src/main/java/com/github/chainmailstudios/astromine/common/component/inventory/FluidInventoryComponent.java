@@ -34,7 +34,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
@@ -73,11 +73,11 @@ public interface FluidInventoryComponent extends NameableComponent {
 	}
 
 	default Collection<FluidVolume> getContentsMatchingSimulated(Predicate<FluidVolume> predicate) {
-		return this.getContentsSimulated().stream().map(FluidVolume::copy).filter(predicate).collect(Collectors.toList());
+		return this.getContentsSimulated().stream().filter(predicate).collect(Collectors.toList());
 	}
 
 	default Collection<FluidVolume> getContentsSimulated() {
-		return this.getContents().values().stream().map(FluidVolume::copy).collect(Collectors.toList());
+		return this.getContents().values().stream().map((volume) -> (FluidVolume) volume.copy()).collect(Collectors.toList());
 	}
 
 	default boolean canInsert() {
@@ -98,7 +98,7 @@ public interface FluidInventoryComponent extends NameableComponent {
 
 	default TypedActionResult<FluidVolume> insert(Direction direction, FluidVolume volume) {
 		if (this.canInsert()) {
-			return this.insert(direction, volume.getFluid(), volume.getFraction());
+			return this.insert(direction, volume.getFluid(), volume.getAmount());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, volume);
 		}
@@ -106,11 +106,11 @@ public interface FluidInventoryComponent extends NameableComponent {
 
 	default TypedActionResult<FluidVolume> insert(Direction direction, Fluid fluid, Fraction fraction) {
 		Optional<Map.Entry<Integer, FluidVolume>> matchingVolumeOptional = this.getContents().entrySet().stream().filter(entry -> {
-			return canInsert(direction, entry.getValue(), entry.getKey());
+			return canInsert(direction, entry.getValue(), entry.getKey()) && entry.getValue().getFluid() == fluid;
 		}).findFirst();
 
 		if (matchingVolumeOptional.isPresent()) {
-			matchingVolumeOptional.get().getValue().insertVolume(fluid, fraction);
+			matchingVolumeOptional.get().getValue().into(fraction);
 			return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().getValue());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, null);
@@ -155,27 +155,31 @@ public interface FluidInventoryComponent extends NameableComponent {
 		FluidVolume volume = this.getVolume(slot);
 
 		if (!volume.isEmpty() && this.canExtract(direction, volume, slot)) {
-			return this.extract(direction, slot, volume.getFraction());
+			return this.extract(direction, slot, volume.getAmount());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, FluidVolume.empty());
 		}
 	}
 
+	@Nullable
 	default FluidVolume getVolume(int slot) {
-		return this.getContents().get(slot);
+		return this.getContents().getOrDefault(slot, null);
 	}
 
+	@Nullable
 	default FluidVolume getFirstExtractableVolume(Direction direction) {
 		return getContents().entrySet().stream().filter((entry) -> canExtract(direction, entry.getValue(), entry.getKey()) && !entry.getValue().isEmpty()).map(Map.Entry::getValue).findFirst().orElse(null);
 	}
 
+	@Nullable
 	default FluidVolume getFirstInsertableVolume(FluidVolume volume, Direction direction) {
-		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, entry.getValue(), entry.getKey()) && (entry.getValue().isEmpty() || (entry.getValue().getFluid() == volume.getFluid() && entry.getValue().hasAvailable(volume.getFraction())))).map(
+		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, entry.getValue(), entry.getKey()) && (entry.getValue().isEmpty() || (entry.getValue().getFluid() == volume.getFluid() && entry.getValue().hasAvailable(volume.getAmount())))).map(
 			Map.Entry::getValue).findFirst().orElse(null);
 	}
 
+	@Nullable
 	default FluidVolume getFirstInsertableVolume(Fluid fluid, Direction direction) {
-		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, entry.getValue(), entry.getKey()) && (entry.getValue().isEmpty() || (entry.getValue().getFluid() == fluid))).map(Map.Entry::getValue).findFirst().orElse(null);
+		return getContents().entrySet().stream().filter((entry)     -> canInsert(direction, entry.getValue(), entry.getKey()) && (entry.getValue().isEmpty() || (entry.getValue().getFluid() == fluid))).map(Map.Entry::getValue).findFirst().orElse(null);
 	}
 
 	default TypedActionResult<FluidVolume> extract(Direction direction, int slot, Fraction fraction) {
@@ -185,7 +189,7 @@ public interface FluidInventoryComponent extends NameableComponent {
 			FluidVolume volume = matchingVolumeOptional.get();
 
 			if (canExtract(direction, volume, slot)) {
-				return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().extractVolume(matchingVolumeOptional.get().getFluid(), fraction));
+				return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().from(fraction));
 			} else {
 				return new TypedActionResult<>(ActionResult.FAIL, FluidVolume.empty());
 			}
@@ -219,7 +223,7 @@ public interface FluidInventoryComponent extends NameableComponent {
 				FluidVolume volume = source.getVolume(position);
 
 				if (volume != null) {
-					CompoundTag volumeTag = source.getVolume(position).toTag(new CompoundTag());
+					CompoundTag volumeTag = source.getVolume(position).toTag();
 
 					volumesTag.put(String.valueOf(position), volumeTag);
 				}
@@ -312,7 +316,7 @@ public interface FluidInventoryComponent extends NameableComponent {
 
 				if (target.getSize() >= position) {
 					if (target.getVolume(position) != null) {
-						target.getVolume(position).setFraction(volume.getFraction());
+						target.getVolume(position).setAmount(volume.getAmount());
 						target.getVolume(position).setSize(volume.getSize());
 						target.getVolume(position).setFluid(volume.getFluid());
 					} else {

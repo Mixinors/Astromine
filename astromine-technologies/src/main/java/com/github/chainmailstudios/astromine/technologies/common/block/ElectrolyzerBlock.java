@@ -75,21 +75,6 @@ public abstract class ElectrolyzerBlock extends WrenchableHorizontalFacingEnergy
 		public BlockEntity createBlockEntity() {
 			return new ElectrolyzerBlockEntity.Primitive();
 		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().primitiveElectrolyzerSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().primitiveElectrolyzerEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.PRIMITIVE;
-		}
 	}
 
 	public static class Basic extends ElectrolyzerBlock.Base {
@@ -100,21 +85,6 @@ public abstract class ElectrolyzerBlock extends WrenchableHorizontalFacingEnergy
 		@Override
 		public BlockEntity createBlockEntity() {
 			return new ElectrolyzerBlockEntity.Basic();
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().basicElectrolyzerSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().basicElectrolyzerEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.BASIC;
 		}
 	}
 
@@ -127,21 +97,6 @@ public abstract class ElectrolyzerBlock extends WrenchableHorizontalFacingEnergy
 		public BlockEntity createBlockEntity() {
 			return new ElectrolyzerBlockEntity.Advanced();
 		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().advancedElectrolyzerSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().advancedElectrolyzerEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.ADVANCED;
-		}
 	}
 
 	public static class Elite extends ElectrolyzerBlock.Base {
@@ -152,21 +107,6 @@ public abstract class ElectrolyzerBlock extends WrenchableHorizontalFacingEnergy
 		@Override
 		public BlockEntity createBlockEntity() {
 			return new ElectrolyzerBlockEntity.Elite();
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().eliteElectrolyzerSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().eliteElectrolyzerEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.ELITE;
 		}
 	}
 }

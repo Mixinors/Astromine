@@ -43,8 +43,6 @@ import net.minecraft.world.World;
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import draylar.magna.api.MagnaTool;
-import team.reborn.energy.Energy;
-import team.reborn.energy.EnergyHandler;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
@@ -54,13 +52,17 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	private final ToolMaterial material;
 	private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 
-	public DrillItem(ToolMaterial material, float attackDamage, float attackSpeed, int radius, double energy, Settings settings) {
-		super(settings, energy, false);
+	public DrillItem(ToolMaterial material, float attackDamage, float attackSpeed, int radius, double size, Settings settings) {
+		super(settings, size);
+
 		this.radius = radius;
 		this.material = material;
+
 		ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
+
 		builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Tool modifier", attackDamage, EntityAttributeModifier.Operation.ADDITION));
 		builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Tool modifier", attackSpeed, EntityAttributeModifier.Operation.ADDITION));
+
 		this.attributeModifiers = builder.build();
 	}
 
@@ -71,16 +73,27 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 
 	@Override
 	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		EnergyHandler energy = Energy.of(stack);
-		energy.use(getEnergy() * AstromineConfig.get().drillEntityHitMultiplier);
+		com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler.ofOptional(stack).ifPresent(handler -> {
+			handler.withVolume(0, optionalVolume -> {
+				optionalVolume.ifPresent(volume -> {
+					volume.into(getEnergy() * AstromineConfig.get().drillEntityHitMultiplier);
+				});
+			});
+		});
+
 		return true;
 	}
 
 	@Override
 	public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
 		if (!world.isClient && state.getHardness(world, pos) != 0.0F) {
-			EnergyHandler energy = Energy.of(stack);
-			energy.use(getEnergy());
+			com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler.ofOptional(stack).ifPresent(handler -> {
+				handler.withVolume(0, optionalVolume -> {
+					optionalVolume.ifPresent(volume -> {
+						volume.into(getEnergy());
+					});
+				});
+			});
 		}
 		return true;
 	}
@@ -102,7 +115,17 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 
 	@Override
 	public float postProcessMiningSpeed(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user, float currentSpeed, boolean isEffective) {
-		return Energy.of(stack).getEnergy() <= getEnergy() ? 0F : currentSpeed;
+		boolean[] empty = { false };
+
+		com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler.ofOptional(stack).ifPresent(handler -> {
+			handler.withVolume(0, optionalVolume -> {
+				optionalVolume.ifPresent(volume -> {
+					empty[0] = volume.getAmount() < getEnergy();
+				});
+			});
+		});
+
+		return empty[0] ? 0F : currentSpeed;
 	}
 
 	@Override

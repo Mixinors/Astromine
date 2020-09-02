@@ -22,14 +22,18 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.recipe;
+package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
+import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
+import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
@@ -42,8 +46,7 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.recipe.base.AdvancedRecipe;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
@@ -52,7 +55,7 @@ import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
+import net.minecraft.world.World;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
@@ -61,11 +64,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
-public class FluidMixingRecipe implements AdvancedRecipe<Inventory>, EnergyConsumingRecipe<Inventory> {
-	private static final int INPUT_ENERGY_VOLUME = 0;
-	private static final int FIRST_INPUT_FLUID_VOLUME = 0;
-	private static final int SECOND_INPUT_FLUID_VOLUME = 1;
-	private static final int OUTPUT_FLUID_VOLUME = 2;
+public class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<Inventory> {
 	final Identifier identifier;
 	final RegistryKey<Fluid> firstInputFluidKey;
 	final Lazy<Fluid> firstInputFluid;
@@ -94,72 +93,34 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory>, EnergyConsu
 		this.time = time;
 	}
 
-	@Override
-	public <T extends ComponentBlockEntity> boolean canCraft(T blockEntity) {
-		Block block = blockEntity.getWorld().getBlockState(blockEntity.getPos()).getBlock();
-		if (!(block instanceof WrenchableHorizontalFacingEnergyTieredBlockWithEntity))
+	public boolean matches(FluidInventoryComponent fluidComponent) {
+		FluidHandler fluidHandler = FluidHandler.of(fluidComponent);
+
+		FluidVolume firstInputVolume = fluidHandler.getFirst();
+		FluidVolume secondInputVolume = fluidHandler.getSecond();
+		FluidVolume outputVolume = fluidHandler.getThird();
+
+		if (!firstInputVolume.getFluid().matchesType(firstInputFluid.get()) && !secondInputVolume.getFluid().matchesType(firstInputFluid.get())) {
 			return false;
-
-		double machineSpeed = ((WrenchableHorizontalFacingEnergyTieredBlockWithEntity) block).getMachineSpeed();
-		Fraction speed = FractionUtilities.fromFloating(machineSpeed);
-
-		FluidInventoryComponent fluidComponent = blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
-
-		FluidVolume firstInputVolume = fluidComponent.getVolume(FIRST_INPUT_FLUID_VOLUME);
-		FluidVolume secondInputVolume = fluidComponent.getVolume(SECOND_INPUT_FLUID_VOLUME);
-		FluidVolume outputVolume = fluidComponent.getVolume(OUTPUT_FLUID_VOLUME);
-
-		if (Energy.of(blockEntity).getEnergy() < energyConsumed * machineSpeed)
-			return false;
-		if (!firstInputVolume.getFluid().matchesType(firstInputFluid.get()))
-			return false;
-		if (!firstInputVolume.hasStored(Fraction.simplify(Fraction.multiply(firstInputAmount, speed))))
-			return false;
-		if (!secondInputVolume.getFluid().matchesType(secondInputFluid.get()))
-			return false;
-		if (!secondInputVolume.hasStored(Fraction.simplify(Fraction.multiply(secondInputAmount, speed))))
-			return false;
-		if (!outputVolume.getFluid().matchesType(outputFluid.get()) && !outputVolume.isEmpty())
-			return false;
-		return outputVolume.hasAvailable(Fraction.simplify(Fraction.multiply(outputAmount, speed)));
-	}
-
-	@Override
-	public <T extends ComponentBlockEntity> void craft(T blockEntity) {
-		if (canCraft(blockEntity)) {
-			Block block = blockEntity.getWorld().getBlockState(blockEntity.getPos()).getBlock();
-			double machineSpeed = ((WrenchableHorizontalFacingEnergyTieredBlockWithEntity) block).getMachineSpeed();
-			Fraction speed = FractionUtilities.fromFloating(machineSpeed);
-
-			FluidInventoryComponent fluidComponent = blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
-
-			FluidVolume firstInputFluidVolume = fluidComponent.getVolume(FIRST_INPUT_FLUID_VOLUME);
-			FluidVolume secondInputFluidVolume = fluidComponent.getVolume(SECOND_INPUT_FLUID_VOLUME);
-			FluidVolume outputVolume = fluidComponent.getVolume(OUTPUT_FLUID_VOLUME);
-
-			EnergyHandler energyHandler = Energy.of(blockEntity);
-
-			if (energyHandler.getEnergy() >= energyConsumed * machineSpeed) {
-				firstInputFluidVolume.extractVolume(Fraction.simplify(Fraction.multiply(firstInputAmount, speed)));
-				secondInputFluidVolume.extractVolume(Fraction.simplify(Fraction.multiply(secondInputAmount, speed)));
-				outputVolume.insertVolume(new FluidVolume(outputFluid.get(), Fraction.simplify(Fraction.multiply(outputAmount, speed)).copy()));
-			}
 		}
-	}
 
-	@Override
-	public <T extends RecipeConsumer> void tick(T t) {
-		if (t.isFinished()) {
-			t.reset();
-
-			craft((ComponentBlockEntity) t);
-		} else if (canCraft((ComponentBlockEntity) t)) {
-			t.setLimit(getTime());
-			t.increment();
-			t.setActive(true);
-		} else {
-			t.reset();
+		if (!firstInputVolume.hasStored(firstInputAmount)) {
+			return false;
 		}
+
+		if (!secondInputVolume.getFluid().matchesType(secondInputFluid.get()) && !firstInputVolume.getFluid().matchesType(secondInputFluid.get())) {
+			return false;
+		}
+
+		if (!secondInputVolume.hasStored(secondInputAmount)) {
+			return false;
+		}
+
+		if (!outputVolume.getFluid().matchesType(outputFluid.get()) && !outputVolume.isEmpty()) {
+			return false;
+		}
+
+		return outputVolume.hasAvailable(outputAmount);
 	}
 
 	@Override
@@ -175,6 +136,26 @@ public class FluidMixingRecipe implements AdvancedRecipe<Inventory>, EnergyConsu
 	@Override
 	public RecipeType<?> getType() {
 		return Type.INSTANCE;
+	}
+
+	@Override
+	public boolean matches(Inventory inv, World world) {
+		return false;
+	}
+
+	@Override
+	public ItemStack craft(Inventory inv) {
+		return ItemStack.EMPTY;
+	}
+
+	@Override
+	public boolean fits(int width, int height) {
+		return false;
+	}
+
+	@Override
+	public ItemStack getOutput() {
+		return ItemStack.EMPTY;
 	}
 
 	@Override

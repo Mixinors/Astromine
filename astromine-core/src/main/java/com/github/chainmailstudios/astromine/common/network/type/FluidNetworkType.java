@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.network.type;
 
+import com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler;
+import com.github.chainmailstudios.astromine.common.volume.handler.TransferHandler;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
@@ -31,10 +33,10 @@ import net.minecraft.state.property.Property;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
-import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.SidedComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
@@ -56,8 +58,8 @@ public class FluidNetworkType extends NetworkType {
 			BlockEntity blockEntity = instance.getWorld().getBlockEntity(memberNode.getBlockPos());
 			NetworkMember networkMember = NetworkMemberRegistry.get(blockEntity);
 
-			if (blockEntity instanceof ComponentProvider && networkMember.acceptsType(this)) {
-				ComponentProvider provider = ComponentProvider.fromBlockEntity(blockEntity);
+			if (blockEntity instanceof SidedComponentProvider && networkMember.acceptsType(this)) {
+				SidedComponentProvider provider = SidedComponentProvider.fromBlockEntity(blockEntity);
 
 				FluidInventoryComponent fluidComponent = provider.getSidedComponent(memberNode.getDirection(), AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
@@ -92,7 +94,7 @@ public class FluidNetworkType extends NetworkType {
 		for (FluidVolume input : inputs) {
 			for (FluidVolume output : outputs) {
 				if (!input.isEmpty() && !output.isFull() && (input.getFluid() == output.getFluid() || output.isEmpty())) {
-					output.pullVolume(input, Fraction.bottle());
+					output.from(input, Fraction.bottle());
 				} else if (input.isEmpty()) {
 					break;
 				}

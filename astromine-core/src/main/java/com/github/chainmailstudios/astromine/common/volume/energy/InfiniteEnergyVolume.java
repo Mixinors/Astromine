@@ -24,25 +24,30 @@
 
 package com.github.chainmailstudios.astromine.common.volume.energy;
 
+import com.github.chainmailstudios.astromine.common.volume.base.Volume;
+import net.minecraft.util.Identifier;
+
 public class InfiniteEnergyVolume extends EnergyVolume {
-	public InfiniteEnergyVolume(Runnable listener) {
-		super(0, listener);
+	public InfiniteEnergyVolume() {
+		super(Double.MAX_VALUE, Double.MAX_VALUE);
 	}
 
-	public InfiniteEnergyVolume() {}
-
-	@Override
-	public double getAmount() {
-		return Integer.MAX_VALUE;
-	}
-
-	@Override
-	public double getMaxAmount() {
-		return Integer.MAX_VALUE;
-	}
-
-	@Override
-	public EnergyVolume copy() {
+	public static InfiniteEnergyVolume of() {
 		return new InfiniteEnergyVolume();
+	}
+
+	@Override
+	public Double getAmount() {
+		return Double.MAX_VALUE;
+	}
+
+	@Override
+	public Double getSize() {
+		return Double.MAX_VALUE;
+	}
+
+	@Override
+	public <V extends Volume<Identifier, Double>> V copy() {
+		return (V) of();
 	}
 }

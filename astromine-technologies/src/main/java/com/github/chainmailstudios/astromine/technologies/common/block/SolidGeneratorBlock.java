@@ -75,21 +75,6 @@ public abstract class SolidGeneratorBlock extends WrenchableHorizontalFacingEner
 		public BlockEntity createBlockEntity() {
 			return new SolidGeneratorBlockEntity.Primitive();
 		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().primitiveSolidGeneratorSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().primitiveSolidGeneratorEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.PRIMITIVE;
-		}
 	}
 
 	public static class Basic extends Base {
@@ -100,21 +85,6 @@ public abstract class SolidGeneratorBlock extends WrenchableHorizontalFacingEner
 		@Override
 		public BlockEntity createBlockEntity() {
 			return new SolidGeneratorBlockEntity.Basic();
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().basicSolidGeneratorSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().basicSolidGeneratorEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.BASIC;
 		}
 	}
 
@@ -127,21 +97,6 @@ public abstract class SolidGeneratorBlock extends WrenchableHorizontalFacingEner
 		public BlockEntity createBlockEntity() {
 			return new SolidGeneratorBlockEntity.Advanced();
 		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().advancedSolidGeneratorSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().advancedSolidGeneratorEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.ADVANCED;
-		}
 	}
 
 	public static class Elite extends Base {
@@ -152,21 +107,6 @@ public abstract class SolidGeneratorBlock extends WrenchableHorizontalFacingEner
 		@Override
 		public BlockEntity createBlockEntity() {
 			return new SolidGeneratorBlockEntity.Elite();
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().eliteSolidGeneratorSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().eliteSolidGeneratorEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.ELITE;
 		}
 	}
 }

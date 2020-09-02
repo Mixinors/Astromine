@@ -24,6 +24,13 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler;
+import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergyConsumedProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.fluid.FluidState;
@@ -38,81 +45,92 @@ import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
-public class FluidExtractorBlockEntity extends ComponentEnergyFluidBlockEntity implements Tickable {
-	public boolean isActive = false;
-	public boolean[] activity = { false, false, false, false, false };
+public class FluidExtractorBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	private Fraction cooldown = Fraction.empty();
 
 	public FluidExtractorBlockEntity() {
 		super(AstromineTechnologiesBlocks.FLUID_EXTRACTOR, AstromineTechnologiesBlockEntityTypes.FLUID_EXTRACTOR);
-
-		fluidComponent.getVolume(0).setSize(Fraction.ofWhole(4));
 	}
 
 	@Override
 	protected FluidInventoryComponent createFluidComponent() {
-		return new SimpleFluidInventoryComponent(1);
+		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1);
+		FluidHandler.of(fluidComponent).getFirst().setSize(Fraction.of(8));
+		return fluidComponent;
+	}
+
+	@Override
+	protected EnergyInventoryComponent createEnergyComponent() {
+		EnergyInventoryComponent energyComponent = new SimpleEnergyInventoryComponent(1);
+		EnergyHandler.of(energyComponent).getFirst().setSize(getEnergySize());
+		return energyComponent;
+	}
+
+	@Override
+	public double getEnergyConsumed() {
+		return AstromineConfig.get().fluidExtractorEnergyConsumed;
+	}
+
+	@Override
+	public double getEnergySize() {
+		return AstromineConfig.get().fluidExtractorEnergy;
+	}
+
+	@Override
+	public double getMachineSpeed() {
+		return AstromineConfig.get().fluidExtractorSpeed;
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
 
-		start:
-		if (this.world != null && !this.world.isClient()) {
-			if (asEnergy().getEnergy() < AstromineConfig.get().fluidExtractorEnergyConsumed) {
-				cooldown = Fraction.empty();
-				isActive = false;
-				break start;
-			}
+		if (world == null) return;
+		if (world.isClient) return;
 
-			isActive = true;
+		EnergyHandler.ofOptional(this).ifPresent(energies -> {
+			FluidHandler.ofOptional(this).ifPresent(fluids -> {
+				if (energies.getFirst().getAmount() < getEnergyConsumed()) {
+					cooldown = Fraction.empty();
 
-			cooldown = Fraction.add(cooldown, Fraction.of(1, AstromineConfig.get().fluidExtractorTimeConsumed));
-			cooldown = Fraction.simplify(cooldown);
-			if (cooldown.isBiggerOrEqualThan(Fraction.ofWhole(1))) {
-				cooldown = Fraction.empty();
+					tickInactive();
+				} else {
+					tickActive();
 
-				FluidVolume fluidVolume = fluidComponent.getVolume(0);
+					cooldown = cooldown.add(Fraction.ofDecimal(1.0D / getMachineSpeed()));
 
-				Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
-				BlockPos targetPos = pos.offset(direction);
-				FluidState targetFluidState = world.getFluidState(targetPos);
+					cooldown.ifBiggerOrEqualThan(Fraction.of(1), () -> {
+						cooldown = Fraction.empty();
 
-				if (targetFluidState.isStill()) {
-					FluidVolume toInsert = new FluidVolume(targetFluidState.getFluid(), Fraction.bucket());
-					if (fluidVolume.hasAvailable(Fraction.bucket())) {
-						fluidVolume.pullVolume(toInsert, toInsert.getFraction());
-						asEnergy().extract(AstromineConfig.get().fluidExtractorEnergyConsumed);
+						FluidVolume fluidVolume = fluids.getFirst();
 
-						world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
-						world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
-					}
+						Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
+
+						BlockPos targetPos = pos.offset(direction);
+
+						FluidState targetFluidState = world.getFluidState(targetPos);
+
+						if (targetFluidState.isStill()) {
+							FluidVolume toInsert = FluidVolume.of(Fraction.bucket(), targetFluidState.getFluid());
+
+							if (toInsert.getFluid() == fluidVolume.getFluid() && fluidVolume.hasAvailable(toInsert.getAmount())) {
+								toInsert.into(fluidVolume, toInsert.getAmount());
+
+								energies.getFirst().from(getEnergyConsumed());
+
+								world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
+								world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
+							}
+						}
+					});
 				}
-			}
-		}
-
-		if (activity.length - 1 >= 0)
-			System.arraycopy(activity, 1, activity, 0, activity.length - 1);
-
-		activity[4] = isActive;
-
-		if (isActive && !activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, true));
-		} else if (!isActive && activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, false));
-		}
-	}
-
-	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		tag.put("cooldown", cooldown.toTag(new CompoundTag()));
-		return super.toTag(tag);
+			});
+		});
 	}
 }

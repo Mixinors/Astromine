@@ -59,7 +59,7 @@ public class AstromineDiscoveriesItems extends AstromineItems {
 	public static final Item SPACE_SUIT_LEGGINGS = register("space_suit_leggings", new SpaceSuitItem(AstromineDiscoveriesArmorMaterials.SPACE_SUIT, EquipmentSlot.LEGS, getBasicSettings()));
 	public static final Item SPACE_SUIT_BOOTS = register("space_suit_boots", new SpaceSuitItem(AstromineDiscoveriesArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, getBasicSettings()));
 
-	public static final Item ROCKET = register("rocket", new UncoloredSpawnEggItem(AstromineDiscoveriesEntityTypes.ROCKET, getBasicSettings()));
+	public static final Item PRIMITIVE_ROCKET = register("rocket", new UncoloredSpawnEggItem(AstromineDiscoveriesEntityTypes.PRIMITIVE_ROCKET, getBasicSettings()));
 
 	public static void initialize() {
 

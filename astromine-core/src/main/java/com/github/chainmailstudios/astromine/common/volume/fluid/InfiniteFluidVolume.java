@@ -1,50 +1,31 @@
-/*
- * MIT License
- *
- * Copyright (c) 2020 Chainmail Studios
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 package com.github.chainmailstudios.astromine.common.volume.fluid;
 
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.base.Volume;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.util.Identifier;
 
 public class InfiniteFluidVolume extends FluidVolume {
-	public InfiniteFluidVolume(Runnable listener) {
-		super(listener);
+	public InfiniteFluidVolume(Fluid fluid) {
+		super(Fraction.of(Long.MAX_VALUE), Fraction.of(Long.MAX_VALUE), fluid);
 	}
 
-	public InfiniteFluidVolume() {}
-
 	@Override
-	public Fraction getFraction() {
-		return Fraction.ofWhole(Integer.MAX_VALUE);
+	public Fraction getAmount() {
+		return Fraction.of(Long.MAX_VALUE);
 	}
 
 	@Override
 	public Fraction getSize() {
-		return Fraction.ofWhole(Integer.MAX_VALUE);
+		return Fraction.of(Long.MAX_VALUE);
+	}
+
+	public static InfiniteFluidVolume of(Fluid fluid) {
+		return new InfiniteFluidVolume(fluid);
 	}
 
 	@Override
-	public FluidVolume copy() {
-		return new InfiniteFluidVolume();
+	public <V extends Volume<Identifier, Fraction>> V copy() {
+		return (V) of(getFluid());
 	}
 }

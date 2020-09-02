@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.item;
 
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesItems;
 import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
 
 import net.minecraft.entity.EquipmentSlot;
@@ -40,7 +41,7 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesItems;
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
@@ -50,12 +51,8 @@ import com.google.common.collect.Multimap;
 public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttributeTool {
 	private static final Multimap<EntityAttribute, EntityAttributeModifier> EAMS = HashMultimap.create();
 
-	static {
-		EAMS.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "attack", 4f, EntityAttributeModifier.Operation.ADDITION));
-	}
-
-	public GravityGauntletItem(Settings settings, double maxAmount) {
-		super(settings, maxAmount, false);
+	public GravityGauntletItem(Settings settings, double size) {
+		super(settings, size);
 	}
 
 	@Override
@@ -133,5 +130,9 @@ public class GravityGauntletItem extends EnergyVolumeItem implements DynamicAttr
 			return EAMS;
 		}
 		return super.getAttributeModifiers(slot);
+	}
+
+	static {
+		EAMS.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "attack", 4f, EntityAttributeModifier.Operation.ADDITION));
 	}
 }

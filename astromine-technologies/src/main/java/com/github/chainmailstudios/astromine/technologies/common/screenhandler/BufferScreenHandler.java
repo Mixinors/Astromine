@@ -37,11 +37,8 @@ import com.github.vini2003.blade.common.data.Size;
 import com.github.vini2003.blade.common.widget.base.SlotListWidget;
 
 public class BufferScreenHandler extends ComponentBlockEntityItemScreenHandler {
-	public final BufferTier bufferTier;
-
-	public BufferScreenHandler(int syncId, PlayerEntity player, BlockPos position, BufferTier bufferTier) {
+	public BufferScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AstromineTechnologiesScreenHandlers.BUFFER, syncId, player, position);
-		this.bufferTier = bufferTier;
 	}
 
 	@Override

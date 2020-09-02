@@ -24,12 +24,20 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.entity.base.*;
+import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import nerdhub.cardinal.components.api.event.ChunkComponentCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.chunk.WorldChunk;
 
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
@@ -37,17 +45,12 @@ import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFl
 import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentEnergyEntity;
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentEnergyItemEntity;
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidEntity;
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidItemEntity;
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentItemEntity;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
-import nerdhub.cardinal.components.api.event.ChunkComponentCallback;
 import nerdhub.cardinal.components.api.event.EntityComponentCallback;
 import nerdhub.cardinal.components.api.event.ItemComponentCallbackV2;
 import nerdhub.cardinal.components.api.event.WorldComponentCallback;
+import net.minecraft.world.chunk.WorldChunk;
 
 public class AstromineCommonCallbacks {
 	public static int atmosphereTickCounter = 0;
@@ -61,6 +64,7 @@ public class AstromineCommonCallbacks {
 				atmosphereTickCounter = 0;
 			}
 		});
+
 
 		ServerTickEvents.START_SERVER_TICK.register((server) -> {
 			for (PlayerEntity playerEntity : server.getPlayerManager().getPlayerList()) {
@@ -111,9 +115,23 @@ public class AstromineCommonCallbacks {
 
 		Registry.ITEM.forEach(item -> {
 			if (item instanceof FluidVolumeItem) {
+				FluidVolumeItem volumeItem = (FluidVolumeItem) item;
+
 				ItemComponentCallbackV2.register(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, item, (useless, stack) -> {
 					FluidInventoryComponent component = new SimpleFluidInventoryComponent(1);
-					component.getVolume(0).setSize(((FluidVolumeItem) item).getSize());
+					component.setVolume(0, FluidVolume.of(Fraction.empty(), volumeItem.getSize(), Fluids.EMPTY));
+					return component;
+				});
+			}
+		});
+
+		Registry.ITEM.forEach(item -> {
+			if (item instanceof EnergyVolumeItem) {
+				EnergyVolumeItem volumeItem = (EnergyVolumeItem) item;
+
+				ItemComponentCallbackV2.register(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, item, (useless, stack) -> {
+					EnergyInventoryComponent component = new SimpleEnergyInventoryComponent(1);
+					component.setVolume(0, EnergyVolume.of(0.0D, volumeItem.getSize()));
 					return component;
 				});
 			}

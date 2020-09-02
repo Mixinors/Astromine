@@ -31,8 +31,12 @@ public class TieredFacingModelStateGenerator extends GenericBlockModelStateGener
 				return AstromineCommon.identifier("primitive_machine");
 			case BASIC:
 				return AstromineCommon.identifier("basic_machine");
+			case ADVANCED:
+				return AstromineCommon.identifier("advanced_machine");
 			case ELITE:
 				return AstromineCommon.identifier("elite_machine");
+			case CREATIVE:
+				return AstromineCommon.identifier("creative_machine");
 			default:
 				return AstromineCommon.identifier("advanced_machine");
 		}

@@ -37,9 +37,8 @@ import com.github.chainmailstudios.astromine.registry.client.AstromineClientCall
 public class AstromineTransportationsClientCallbacks extends AstromineClientCallbacks {
 	public static void initialize() {
 		ItemTooltipCallback.EVENT.register(((stack, context, tooltip) -> {
-			if (stack.getItem() instanceof BlockItem && ((BlockItem) stack.getItem()).getBlock() instanceof EnergyNetworkType.EnergyNodeSpeedProvider) {
-				tooltip.add(new TranslatableText("text.astromine.tooltip.cable.speed", ((EnergyNetworkType.EnergyNodeSpeedProvider) ((BlockItem) stack.getItem()).getBlock()).getNodeSpeed()).formatted(Formatting.GRAY));
-				tooltip.add(new LiteralText(" "));
+			if (stack.getItem() instanceof BlockItem && ((BlockItem) stack.getItem()).getBlock() instanceof EnergyNetworkType.NodeSpeedProvider) {
+				tooltip.add(new TranslatableText("text.astromine.tooltip.cable.speed", ((EnergyNetworkType.NodeSpeedProvider) ((BlockItem) stack.getItem()).getBlock()).getNodeSpeed()).formatted(Formatting.GRAY));
 			}
 		}));
 	}

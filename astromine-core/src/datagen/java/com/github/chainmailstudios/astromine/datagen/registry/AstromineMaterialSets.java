@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.datagen.registry;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ public abstract class AstromineMaterialSets {
 
 	public static MaterialSet register(MaterialSet set) {
 		MATERIAL_SETS.add(set);
-		System.out.println("registered material " + set.getName());
+		AstromineCommon.LOGGER.info("Registered " + set.getName() + ".");
 		return set;
 	}
 

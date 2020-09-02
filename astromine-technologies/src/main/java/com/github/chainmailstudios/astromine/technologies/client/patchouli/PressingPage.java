@@ -25,9 +25,7 @@
 package com.github.chainmailstudios.astromine.technologies.client.patchouli;
 
 import com.github.chainmailstudios.astromine.client.patchouli.BasicEnergyConsumingPage;
-import com.github.chainmailstudios.astromine.common.recipe.PressingRecipe;
-
-public class PressingPage extends BasicEnergyConsumingPage<PressingRecipe> {
+import com.github.chainmailstudios.astromine.technologies.common.recipe.PressingRecipe;public class PressingPage extends BasicEnergyConsumingPage<PressingRecipe> {
 	public PressingPage() {
 		super(PressingRecipe.Type.INSTANCE);
 	}

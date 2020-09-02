@@ -24,9 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.block.base;
 
-import com.github.chainmailstudios.astromine.common.utilities.capability.energy.EnergyCapacityProvider;
-
-public abstract class WrenchableFacingEnergyBlockWithEntity extends WrenchableFacingBlockWithEntity implements EnergyCapacityProvider {
+public abstract class WrenchableFacingEnergyBlockWithEntity extends WrenchableFacingBlockWithEntity {
 	public WrenchableFacingEnergyBlockWithEntity(Settings settings) {
 		super(settings);
 	}

@@ -75,21 +75,6 @@ public abstract class FluidMixerBlock extends WrenchableHorizontalFacingEnergyTi
 		public BlockEntity createBlockEntity() {
 			return new FluidMixerBlockEntity.Primitive();
 		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().primitiveFluidMixerSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().primitiveFluidMixerEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.PRIMITIVE;
-		}
 	}
 
 	public static class Basic extends FluidMixerBlock.Base {
@@ -100,21 +85,6 @@ public abstract class FluidMixerBlock extends WrenchableHorizontalFacingEnergyTi
 		@Override
 		public BlockEntity createBlockEntity() {
 			return new FluidMixerBlockEntity.Basic();
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().basicFluidMixerSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().basicFluidMixerEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.BASIC;
 		}
 	}
 
@@ -127,21 +97,6 @@ public abstract class FluidMixerBlock extends WrenchableHorizontalFacingEnergyTi
 		public BlockEntity createBlockEntity() {
 			return new FluidMixerBlockEntity.Advanced();
 		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().advancedFluidMixerSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().advancedFluidMixerEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.ADVANCED;
-		}
 	}
 
 	public static class Elite extends FluidMixerBlock.Base {
@@ -152,21 +107,6 @@ public abstract class FluidMixerBlock extends WrenchableHorizontalFacingEnergyTi
 		@Override
 		public BlockEntity createBlockEntity() {
 			return new FluidMixerBlockEntity.Elite();
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().eliteFluidMixerSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().eliteFluidMixerEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.ELITE;
 		}
 	}
 }

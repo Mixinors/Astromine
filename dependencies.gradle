@@ -52,8 +52,8 @@ project.ext.setDefaultApis = {
     // Wrenchable
     useAsApi("com.zundrel:wrenchable:${wrenchable_version}")
 
-    // Fabric Language Kotlin
-    useAsApi("net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}")
+    // Kotlin
+    useAsApi("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${project.kotlin_version}")
 
     // JOML
     useAsApi("org.joml:joml:${joml_version}")

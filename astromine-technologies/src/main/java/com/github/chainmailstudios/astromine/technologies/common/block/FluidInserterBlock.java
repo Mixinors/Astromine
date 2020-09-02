@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block;
 
+import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -34,12 +35,12 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyBlockWithEntity;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingTieredEnergyBlockWithEntity;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.FluidInserterBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.FluidInserterScreenHandler;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
-public class FluidInserterBlock extends WrenchableHorizontalFacingEnergyBlockWithEntity {
+public class FluidInserterBlock extends WrenchableHorizontalFacingTieredEnergyBlockWithEntity {
 	public FluidInserterBlock(Settings settings) {
 		super(settings);
 	}
@@ -62,10 +63,5 @@ public class FluidInserterBlock extends WrenchableHorizontalFacingEnergyBlockWit
 	@Override
 	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
 		buffer.writeBlockPos(pos);
-	}
-
-	@Override
-	public double getEnergyCapacity() {
-		return AstromineConfig.get().fluidInserterEnergy;
 	}
 }

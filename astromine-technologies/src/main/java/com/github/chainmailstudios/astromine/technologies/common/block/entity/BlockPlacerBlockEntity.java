@@ -24,6 +24,13 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler;
+import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergyConsumedProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.item.BlockItem;
@@ -37,15 +44,13 @@ import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import org.jetbrains.annotations.NotNull;
 
-public class BlockPlacerBlockEntity extends ComponentEnergyInventoryBlockEntity implements Tickable {
-	public boolean isActive = false;
-	public boolean[] activity = { false, false, false, false, false };
+public class BlockPlacerBlockEntity extends ComponentEnergyInventoryBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	private Fraction cooldown = Fraction.empty();
 
 	public BlockPlacerBlockEntity() {
@@ -58,58 +63,74 @@ public class BlockPlacerBlockEntity extends ComponentEnergyInventoryBlockEntity 
 	}
 
 	@Override
+	protected EnergyInventoryComponent createEnergyComponent() {
+		EnergyInventoryComponent energyComponent = new SimpleEnergyInventoryComponent(1);
+		EnergyHandler.of(energyComponent).getFirst().setSize(getEnergySize());
+		return energyComponent;
+	}
+
+	@Override
+	public double getEnergySize() {
+		return AstromineConfig.get().blockPlacerEnergy;
+	}
+
+	@Override
+	public double getEnergyConsumed() {
+		return AstromineConfig.get().blockPlacerEnergyConsumed;
+	}
+
+	@Override
+	public double getMachineSpeed() {
+		return AstromineConfig.get().blockPlacerSpeed;
+	}
+
+	@Override
 	public void tick() {
 		super.tick();
 
-		if (world.isClient())
-			return;
+		if (world == null) return;
+		if (world.isClient) return;
 
-		start:
-		if (this.world != null && !this.world.isClient()) {
-			if (asEnergy().getEnergy() < AstromineConfig.get().blockPlacerEnergyConsumed) {
-				cooldown = Fraction.empty();
-				isActive = false;
-				break start;
-			}
+		EnergyHandler.ofOptional(this).ifPresent(energies -> {
+			ItemHandler.ofOptional(this).ifPresent(items -> {
+				if (energies.getFirst().getAmount() < getEnergyConsumed()) {
+					cooldown = Fraction.empty();
 
-			isActive = true;
+					tickInactive();
+				} else {
+					tickActive();
 
-			cooldown = Fraction.add(cooldown, Fraction.of(1, AstromineConfig.get().blockPlacerTimeConsumed));
-			cooldown = Fraction.simplify(cooldown);
-			if (cooldown.isBiggerOrEqualThan(Fraction.ofWhole(1))) {
-				cooldown = Fraction.empty();
+					cooldown = cooldown.add(Fraction.ofDecimal(1.0D / getMachineSpeed()));
 
-				ItemStack stored = itemComponent.getStack(0);
+					cooldown.ifBiggerOrEqualThan(Fraction.of(1), () -> {
+						cooldown = Fraction.empty();
 
-				Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
-				BlockPos targetPos = pos.offset(direction);
-				BlockState targetState = world.getBlockState(targetPos);
+						ItemStack stored = items.getFirst();
 
-				if (stored.getItem() instanceof BlockItem && targetState.isAir()) {
-					BlockState newState = ((BlockItem) stored.getItem()).getBlock().getDefaultState();
-					world.setBlockState(targetPos, newState);
-					stored.decrement(1);
+						Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
 
-					asEnergy().extract(AstromineConfig.get().blockPlacerEnergyConsumed);
+						BlockPos targetPos = pos.offset(direction);
+
+						BlockState targetState = world.getBlockState(targetPos);
+
+						if (stored.getItem() instanceof BlockItem && targetState.isAir()) {
+							BlockState newState = ((BlockItem) stored.getItem()).getBlock().getDefaultState();
+
+							world.setBlockState(targetPos, newState);
+
+							stored.decrement(1);
+
+							energies.getFirst().from(getEnergyConsumed());
+						}
+					});
 				}
-			}
-		}
-
-		if (activity.length - 1 >= 0)
-			System.arraycopy(activity, 1, activity, 0, activity.length - 1);
-
-		activity[4] = isActive;
-
-		if (isActive && !activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, true));
-		} else if (!isActive && activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, false));
-		}
+			});
+		});
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.put("cooldown", cooldown.toTag(new CompoundTag()));
+		tag.put("cooldown", cooldown.toTag());
 		return super.toTag(tag);
 	}
 

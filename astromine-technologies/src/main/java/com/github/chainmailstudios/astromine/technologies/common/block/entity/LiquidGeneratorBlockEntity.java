@@ -24,6 +24,19 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
+import com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler;
+import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
+import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
+import com.github.chainmailstudios.astromine.technologies.common.block.LiquidGeneratorBlock;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.FluidSizeProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.FluidMixingRecipe;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.LiquidGeneratingRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -34,126 +47,103 @@ import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.recipe.LiquidGeneratingRecipe;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.github.chainmailstudios.astromine.technologies.common.block.LiquidGeneratorBlock;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlockEntity implements RecipeConsumer, Tickable {
-	private static final int INPUT_ENERGY_VOLUME = 0;
-	private static final int INPUT_FLUID_VOLUME = 0;
-	public double current = 0;
+public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider, FluidSizeProvider {
+	public double progress = 0;
 	public int limit = 100;
-	public boolean isActive = false;
-	public boolean[] activity = { false, false, false, false, false };
-	public boolean shouldTry = true;
-	private Optional<LiquidGeneratingRecipe> recipe = Optional.empty();
+	public boolean shouldTry;
+
+	private Optional<LiquidGeneratingRecipe> optionalRecipe = Optional.empty();
 
 	public LiquidGeneratorBlockEntity(Block energyBlock, BlockEntityType<?> type) {
 		super(energyBlock, type);
-
-		fluidComponent.getVolume(INPUT_FLUID_VOLUME).setSize(getTankSize());
 	}
 
-	abstract Fraction getTankSize();
+	@Override
+	protected EnergyInventoryComponent createEnergyComponent() {
+		EnergyInventoryComponent energyComponent = new SimpleEnergyInventoryComponent(1);
+		EnergyHandler.of(energyComponent).getFirst().setSize(getEnergySize());
+		return energyComponent;
+	}
 
 	@Override
 	protected FluidInventoryComponent createFluidComponent() {
-		return new SimpleFluidInventoryComponent(1).withListener((inv) -> {
-			shouldTry = true;
-		});
-	}
-
-	@Override
-	public double getCurrent() {
-		return current;
-	}
-
-	@Override
-	public void setCurrent(double current) {
-		this.current = current;
-	}
-
-	@Override
-	public int getLimit() {
-		return limit;
-	}
-
-	@Override
-	public void setLimit(int limit) {
-		this.limit = limit;
-	}
-
-	@Override
-	public boolean isActive() {
-		return isActive;
-	}
-
-	@Override
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
-	}
-
-	@Override
-	public void increment() {
-		this.current += 1 * ((LiquidGeneratorBlock) this.getCachedState().getBlock()).getMachineSpeed();
-	}
-
-	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		super.fromTag(state, tag);
-		readRecipeProgress(tag);
-		shouldTry = true;
-	}
-
-	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		writeRecipeProgress(tag);
-		return super.toTag(tag);
+		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(3);
+		FluidHandler.of(fluidComponent).getFirst().setSize(getFluidSize());
+		FluidHandler.of(fluidComponent).getSecond().setSize(getFluidSize());
+		FluidHandler.of(fluidComponent).getThird().setSize(getFluidSize());
+		fluidComponent.addListener(() -> shouldTry = true);
+		return fluidComponent;
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
 
-		if (world.isClient())
-			return;
+		if (world == null) return;
+		if (world.isClient) return;
 
-		if (shouldTry) {
-			if (!this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
-				recipe = (Optional) world.getRecipeManager().getAllOfType(LiquidGeneratingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof LiquidGeneratingRecipe).filter(recipe -> ((LiquidGeneratingRecipe) recipe).canCraft(this)).findFirst();
-			if (recipe.isPresent()) {
-				recipe.get().tick(this);
+		EnergyHandler.ofOptional(this).ifPresent(energies -> {
+				FluidHandler.ofOptional(this).ifPresent(fluids -> {
+					if (!optionalRecipe.isPresent() && shouldTry) {
+						optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(LiquidGeneratingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof LiquidGeneratingRecipe).filter(recipe -> ((LiquidGeneratingRecipe) recipe).matches(fluidComponent)).findFirst();
+						shouldTry = false;
+					}
 
-				if (recipe.isPresent() && !recipe.get().canCraft(this)) {
-					recipe = Optional.empty();
-				}
+					if (!optionalRecipe.isPresent()) {
+						tickInactive();
+					}
 
-				isActive = true;
-			} else {
-				isActive = false;
-				shouldTry = false;
-			}
-		} else {
-			isActive = false;
-		}
+					optionalRecipe.ifPresent(recipe -> {
+						if (recipe.matches(fluidComponent)) {
+							limit = recipe.getTime();
 
-		if (activity.length - 1 >= 0)
-			System.arraycopy(activity, 1, activity, 0, activity.length - 1);
+							double speed = Math.min(getMachineSpeed(), limit - progress);
+							double generated = recipe.getEnergyGenerated() * speed / limit;
 
-		activity[4] = isActive;
+							if (energies.getFirst().hasAvailable(generated)) {
+								if (progress + speed >= limit) {
+									optionalRecipe = Optional.empty();
 
-		if (isActive && !activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, true));
-		} else if (!isActive && activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, false));
-		}
+									fluids.getFirst().from(recipe.getAmount());
+
+									energies.getFirst().into(generated);
+								} else {
+									progress += speed;
+								}
+
+								tickActive();
+							} else {
+								tickInactive();
+							}
+						} else {
+							tickInactive();
+						}
+					});
+				});
+		});
+	}
+
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		tag.putDouble("progress", progress);
+		tag.putInt("limit", limit);
+		return super.toTag(tag);
+	}
+
+	@Override
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+		progress = tag.getDouble("progress");
+		limit = tag.getInt("limit");
+		super.fromTag(state, tag);
 	}
 
 	public static class Primitive extends LiquidGeneratorBlockEntity {
@@ -162,8 +152,23 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 		}
 
 		@Override
-		Fraction getTankSize() {
+		public Fraction getFluidSize() {
 			return Fraction.of(AstromineConfig.get().primitiveLiquidGeneratorFluid, 1);
+		}
+
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().primitiveLiquidGeneratorSpeed;
+		}
+
+		@Override
+		public double getEnergySize() {
+			return AstromineConfig.get().primitiveLiquidGeneratorEnergy;
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.PRIMITIVE;
 		}
 	}
 
@@ -173,8 +178,23 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 		}
 
 		@Override
-		Fraction getTankSize() {
+		public Fraction getFluidSize() {
 			return Fraction.of(AstromineConfig.get().basicLiquidGeneratorFluid, 1);
+		}
+
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().basicLiquidGeneratorSpeed;
+		}
+
+		@Override
+		public double getEnergySize() {
+			return AstromineConfig.get().basicLiquidGeneratorEnergy;
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.BASIC;
 		}
 	}
 
@@ -184,8 +204,23 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 		}
 
 		@Override
-		Fraction getTankSize() {
+		public Fraction getFluidSize() {
 			return Fraction.of(AstromineConfig.get().advancedLiquidGeneratorFluid, 1);
+		}
+
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().advancedLiquidGeneratorSpeed;
+		}
+
+		@Override
+		public double getEnergySize() {
+			return AstromineConfig.get().advancedLiquidGeneratorEnergy;
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.ADVANCED;
 		}
 	}
 
@@ -195,8 +230,23 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 		}
 
 		@Override
-		Fraction getTankSize() {
+		public Fraction getFluidSize() {
 			return Fraction.of(AstromineConfig.get().eliteLiquidGeneratorFluid, 1);
+		}
+
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().eliteLiquidGeneratorSpeed;
+		}
+
+		@Override
+		public double getEnergySize() {
+			return AstromineConfig.get().eliteLiquidGeneratorEnergy;
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.ELITE;
 		}
 	}
 }

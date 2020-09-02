@@ -87,7 +87,7 @@ public class AstromineTechnologiesScreenHandlers extends AstromineScreenHandlers
 	}));
 
 	public static final ScreenHandlerType<BufferScreenHandler> BUFFER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("buffer"), ((syncId, inventory, buffer) -> {
-		return new BufferScreenHandler(syncId, inventory.player, buffer.readBlockPos(), buffer.readEnumConstant(BufferTier.class));
+		return new BufferScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 
 	public static final ScreenHandlerType<TrituratorScreenHandler> TRITURATOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("triturator"), ((syncId, inventory, buffer) -> {

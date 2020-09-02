@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.datagen.registry;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.datagen.generator.worldgen.onetime.OneTimeWorldGenGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.worldgen.set.SetWorldGenGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
@@ -32,10 +33,11 @@ public abstract class AstromineWorldGenGenerators {
 			try {
 				if (set.shouldGenerate(generator)) {
 					generator.generate(worldGen, set);
+					AstromineCommon.LOGGER.info("World generation of " + set.getName() + " succeeded, with generator " + generator.getGeneratorName() + ".");
 				}
-			} catch (Exception e) {
-				System.out.println("oh fuck worldgen bronked for " + set.getName());
-				System.out.println(e.getMessage());
+			} catch (Exception exception) {
+				AstromineCommon.LOGGER.error("World generation of " + set.getName() + " failed, with generator " + generator.getGeneratorName() + ".");
+				AstromineCommon.LOGGER.error(exception.getMessage());
 			}
 		});
 	}

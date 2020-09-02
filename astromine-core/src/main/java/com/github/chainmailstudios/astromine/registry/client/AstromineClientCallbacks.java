@@ -24,49 +24,41 @@
 
 package com.github.chainmailstudios.astromine.registry.client;
 
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
+import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
+import com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler;
+import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-
 import net.minecraft.item.BlockItem;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
-import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
-import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
-import team.reborn.energy.Energy;
-import team.reborn.energy.EnergyHandler;
-
 public class AstromineClientCallbacks {
 	public static void initialize() {
 		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
-			if (stack.getItem() instanceof FluidVolumeItem) {
-				FluidInventoryComponent fluidComponent = ComponentProvider.fromItemStack(stack).getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
-
-				fluidComponent.getContents().forEach((key, value) -> {
-					tooltip.add(new LiteralText(value.getFraction().toFractionalString() + " | " + new TranslatableText(value.getFluid().getDefaultState().getBlockState().getBlock().getTranslationKey()).getString()).formatted(Formatting.GRAY));
+			if (stack.getItem() instanceof EnergyVolumeItem) {
+				FluidHandler.ofOptional(stack).ifPresent(handler -> {
+					handler.withVolume(0, optionalVolume -> {
+						optionalVolume.ifPresent(volume -> {
+							tooltip.add(new LiteralText("" + volume.getAmount().doubleValue() + ":" + volume.getSize()));
+						});
+					});
 				});
 			}
 		});
 
 		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof EnergyVolumeItem) {
-				EnergyHandler energyHandler = Energy.of(stack);
-
-				tooltip.add(EnergyUtilities.compoundDisplayColored(energyHandler.getEnergy(), energyHandler.getMaxStored()));
-			}
-		});
-
-		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
-			if (stack.getItem() instanceof BlockItem && ((BlockItem) stack.getItem()).getBlock() instanceof WrenchableHorizontalFacingEnergyTieredBlockWithEntity) {
-				if (((WrenchableHorizontalFacingEnergyTieredBlockWithEntity) ((BlockItem) stack.getItem()).getBlock()).showSpeedInTooltip()) {
-					tooltip.add(new TranslatableText("text.astromine.tooltip.speed", Fraction.DECIMAL_FORMAT.format(((WrenchableHorizontalFacingEnergyTieredBlockWithEntity) ((BlockItem) stack.getItem()).getBlock()).getMachineSpeed())).formatted(Formatting.GRAY));
-				}
+				EnergyHandler.ofOptional(stack).ifPresent(handler -> {
+					handler.withVolume(0, optionalVolume -> {
+						optionalVolume.ifPresent(volume -> {
+							tooltip.add(EnergyUtilities.compoundDisplayColored(volume.getAmount(), volume.getSize()));
+						});
+					});
+				});
 			}
 		});
 	}
