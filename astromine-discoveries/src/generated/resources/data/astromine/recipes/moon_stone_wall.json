@@ -10,6 +10,7 @@
     }
   },
   "result": {
-    "item": "astromine:moon_stone_wall"
+    "item": "astromine:moon_stone_wall",
+    "count": 6
   }
 }

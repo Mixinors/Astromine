@@ -9,6 +9,7 @@
     }
   },
   "result": {
-    "item": "astromine:asteroid_stone_slab"
+    "item": "astromine:asteroid_stone_slab",
+    "count": 6
   }
 }

@@ -11,6 +11,7 @@
     }
   },
   "result": {
-    "item": "astromine:meteor_stone_stairs"
+    "item": "astromine:meteor_stone_stairs",
+    "count": 4
   }
 }

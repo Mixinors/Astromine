@@ -38,16 +38,19 @@ public class ShapedCraftingSetRecipeGenerator extends CraftingSetRecipeGenerator
 
 	@Override
 	public void generate(RecipeData recipes, MaterialSet set) {
-		ShapedRecipeJsonFactory factory = ShapedRecipeJsonFactory
-				.create(set.getItem(output))
-				.criterion("impossible", new ImpossibleCriterion.Conditions());
-		for (String s : pattern) {
-			factory.pattern(s);
+		if(pattern.length == 0) throw new IllegalStateException("recipe must have a pattern");
+		else {
+			ShapedRecipeJsonFactory factory = ShapedRecipeJsonFactory
+					.create(set.getItem(output), outputCount)
+					.criterion("impossible", new ImpossibleCriterion.Conditions());
+			for (String s : pattern) {
+				factory.pattern(s);
+			}
+			factory.input('#', set.getIngredient(input));
+			ingredients.forEach(factory::input);
+			types.forEach((c, type) -> factory.input(c, set.getIngredient(type)));
+			factory.offerTo(recipes, getRecipeId(set));
 		}
-		factory.input('#', set.getIngredient(input));
-		ingredients.forEach(factory::input);
-		types.forEach((c, type) -> factory.input(c, set.getIngredient(type)));
-		factory.offerTo(recipes, getRecipeId(set));
 	}
 
 	@Override

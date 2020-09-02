@@ -10,6 +10,7 @@
     }
   },
   "result": {
-    "item": "astromine:martian_stone_wall"
+    "item": "astromine:martian_stone_wall",
+    "count": 6
   }
 }
