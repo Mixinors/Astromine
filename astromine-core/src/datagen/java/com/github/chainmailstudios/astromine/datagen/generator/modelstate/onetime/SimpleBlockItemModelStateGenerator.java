@@ -8,11 +8,9 @@ import me.shedaniel.cloth.api.datagen.v1.ModelStateData;
 import java.util.Arrays;
 import java.util.List;
 
-public class SimpleBlockItemModelStateGenerator implements OneTimeModelStateGenerator {
-	private List<Block> blocks;
-
+public class SimpleBlockItemModelStateGenerator extends GenericBlockModelStateGenerator {
 	public SimpleBlockItemModelStateGenerator(Block... blocks) {
-		this.blocks = Arrays.asList(blocks);
+		super(blocks);
 	}
 
 	@Override
@@ -25,6 +23,6 @@ public class SimpleBlockItemModelStateGenerator implements OneTimeModelStateGene
 
 	@Override
 	public String getGeneratorName() {
-		return "block_item_set_modelstate";
+		return "block_item_modelstate";
 	}
 }
