@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.datagen.registry;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.base.OneTimeRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.base.SetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
@@ -32,11 +33,11 @@ public abstract class AstromineRecipeGenerators {
 			try {
 				if (set.shouldGenerate(generator)) {
 					generator.generate(recipes, set);
-					System.out.println("generated recipe " + generator.getRecipeId(set));
+					AstromineCommon.LOGGER.info("Recipe generation of " + set.getName() + " succeeded, with generator " + generator.getGeneratorName() + ".");
 				}
-			} catch (Exception e) {
-				System.out.println("oh fuck recipe bronked for " + set.getName() + " with generator " + generator.getString());
-				System.out.println(e.getMessage());
+			} catch (Exception exception) {
+				AstromineCommon.LOGGER.error("Recipe generation of " + set.getName() + " failed, with generator " + generator.getGeneratorName() + ".");
+				AstromineCommon.LOGGER.error(exception.getMessage());
 			}
 		});
 	}

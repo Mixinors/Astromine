@@ -24,6 +24,11 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block;
 
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingTieredBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.BufferBlockEntity;
+import com.github.chainmailstudios.astromine.technologies.common.screenhandler.BufferScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -43,49 +48,84 @@ import com.github.chainmailstudios.astromine.common.utilities.tier.BufferTier;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.BufferBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.BufferScreenHandler;
 
-public class BufferBlock extends WrenchableBlockWithEntity {
-	private final BufferTier type;
-
-	public BufferBlock(BufferTier type, Settings settings) {
+public abstract class BufferBlock extends WrenchableHorizontalFacingTieredBlockWithEntity {
+	public BufferBlock(Settings settings) {
 		super(settings);
-
-		this.type = type;
 	}
 
-	public BufferTier getType() {
-		return type;
-	}
+	public abstract static class Base extends BufferBlock {
+		public Base(Settings settings) {
+			super(settings);
+		}
 
-	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos blockPos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (!world.isClient && !player.isSneaking() && !(player.getStackInHand(hand).getItem() instanceof BucketItem)) {
-			player.openHandledScreen(state.createScreenHandlerFactory(world, blockPos));
-			return ActionResult.CONSUME;
-		} else if (!player.isSneaking() && player.getStackInHand(hand).getItem() instanceof BucketItem) {
-			return super.onUse(state, world, blockPos, player, hand, hit);
-		} else {
-			return ActionResult.SUCCESS;
+		@Override
+		public boolean hasScreenHandler() {
+			return true;
+		}
+
+		@Override
+		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+			return new BufferScreenHandler(syncId, playerInventory.player, pos);
+		}
+
+		@Override
+		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
+			buffer.writeBlockPos(pos);
 		}
 	}
 
-	@Override
-	public boolean hasScreenHandler() {
-		return true;
+	public static class Primitive extends BufferBlock.Base {
+		public Primitive(Settings settings) {
+			super(settings);
+		}
+
+		@Override
+		public BlockEntity createBlockEntity() {
+			return new BufferBlockEntity.Primitive();
+		}
 	}
 
-	@Override
-	public BlockEntity createBlockEntity() {
-		return new BufferBlockEntity(type);
+	public static class Basic extends BufferBlock.Base {
+		public Basic(Settings settings) {
+			super(settings);
+		}
+
+		@Override
+		public BlockEntity createBlockEntity() {
+			return new BufferBlockEntity.Basic();
+		}
 	}
 
-	@Override
-	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-		return new BufferScreenHandler(syncId, playerInventory.player, pos, type);
+	public static class Advanced extends BufferBlock.Base {
+		public Advanced(Settings settings) {
+			super(settings);
+		}
+
+		@Override
+		public BlockEntity createBlockEntity() {
+			return new BufferBlockEntity.Advanced();
+		}
 	}
 
-	@Override
-	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
-		buffer.writeBlockPos(pos);
-		buffer.writeEnumConstant(type);
+	public static class Elite extends BufferBlock.Base {
+		public Elite(Settings settings) {
+			super(settings);
+		}
+
+		@Override
+		public BlockEntity createBlockEntity() {
+			return new BufferBlockEntity.Elite();
+		}
+	}
+
+	public static class Creative extends BufferBlock.Base {
+		public Creative(Settings settings) {
+			super(settings);
+		}
+
+		@Override
+		public BlockEntity createBlockEntity() {
+			return new BufferBlockEntity.Creative();
+		}
 	}
 }

@@ -35,12 +35,7 @@ import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
-import com.github.chainmailstudios.astromine.common.recipe.ElectrolyzingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.FluidMixingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.LiquidGeneratingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.PressingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.SolidGeneratingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.*;
 import com.github.chainmailstudios.astromine.technologies.client.rei.alloysmelting.AlloySmeltingCategory;
 import com.github.chainmailstudios.astromine.technologies.client.rei.alloysmelting.AlloySmeltingDisplay;
 import com.github.chainmailstudios.astromine.technologies.client.rei.electricsmelting.ElectricSmeltingCategory;
@@ -57,7 +52,6 @@ import com.github.chainmailstudios.astromine.technologies.client.rei.pressing.Pr
 import com.github.chainmailstudios.astromine.technologies.client.rei.pressing.PressingDisplay;
 import com.github.chainmailstudios.astromine.technologies.client.rei.triturating.TrituratingCategory;
 import com.github.chainmailstudios.astromine.technologies.client.rei.triturating.TrituratingDisplay;
-import com.github.chainmailstudios.astromine.technologies.common.recipe.AlloySmeltingRecipe;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.EntryStack;
@@ -93,7 +87,6 @@ public class AstromineTechnologiesRoughlyEnoughItemsPlugin extends AstromineRoug
 		recipeHelper.registerRecipes(TRITURATING, TrituratingRecipe.class, TrituratingDisplay::new);
 		recipeHelper.registerRecipes(ELECTRIC_SMELTING, SmeltingRecipe.class, ElectricSmeltingDisplay::new);
 		recipeHelper.registerRecipes(LIQUID_GENERATING, LiquidGeneratingRecipe.class, LiquidGeneratingDisplay::new);
-		recipeHelper.registerRecipes(SOLID_GENERATING, SolidGeneratingRecipe.class, SolidGeneratingDisplay::new);
 		recipeHelper.registerRecipes(FLUID_MIXING, FluidMixingRecipe.class, FluidMixingDisplay::new);
 		recipeHelper.registerRecipes(ELECTROLYZING, ElectrolyzingRecipe.class, ElectrolyzingDisplay::new);
 		recipeHelper.registerRecipes(PRESSING, PressingRecipe.class, PressingDisplay::new);

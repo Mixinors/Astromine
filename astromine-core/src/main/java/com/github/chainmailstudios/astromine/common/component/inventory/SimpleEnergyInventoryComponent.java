@@ -24,4 +24,60 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
-public class SimpleEnergyInventoryComponent implements EnergyInventoryComponent {}
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import net.minecraft.nbt.CompoundTag;
+
+import java.util.*;
+
+public class SimpleEnergyInventoryComponent implements EnergyInventoryComponent {
+	private final Map<Integer, EnergyVolume> contents = new HashMap<>();
+
+	private final List<Runnable> listeners = new ArrayList<>();
+
+	private final int size;
+
+	public SimpleEnergyInventoryComponent() {
+		this(0);
+	}
+
+	public SimpleEnergyInventoryComponent(int size) {
+		this.size = size;
+		for (int i = 0; i < size; ++i) {
+			contents.put(i, EnergyVolume.attached(this));
+		}
+	}
+
+	@Override
+	public Map<Integer, EnergyVolume> getContents() {
+		return contents;
+	}
+
+	@Override
+	public int getSize() {
+		return size;
+	}
+
+	@Override
+	public List<Runnable> getListeners() {
+		return listeners;
+	}
+
+	@Override
+	public void fromTag(CompoundTag compoundTag) {
+		read(this, compoundTag, Optional.empty(), Optional.empty());
+	}
+
+	@Override
+	public CompoundTag toTag(CompoundTag compoundTag) {
+		write(this, compoundTag, Optional.empty(), Optional.empty());
+		return compoundTag;
+	}
+
+	@Override
+	public SimpleEnergyInventoryComponent copy() {
+		SimpleEnergyInventoryComponent component = new SimpleEnergyInventoryComponent(getSize());
+		component.fromTag(toTag(new CompoundTag()));
+		return component;
+	}
+}

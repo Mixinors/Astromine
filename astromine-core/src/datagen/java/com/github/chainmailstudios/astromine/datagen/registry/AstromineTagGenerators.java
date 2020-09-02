@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.datagen.registry;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.datagen.generator.tag.onetime.OneTimeTagGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.tag.set.SetTagGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
@@ -33,11 +34,11 @@ public abstract class AstromineTagGenerators {
 			try {
 				if (set.shouldGenerate(generator)) {
 					generator.generate(tags, set);
-					System.out.println("generated tag " + generator.getGeneratorName());
+					AstromineCommon.LOGGER.info("Tag generation of " + set.getName() + " succeeded, with generator " + generator.getGeneratorName() + ".");
 				}
-			} catch (Exception e) {
-				System.out.println("oh fuck tag bronked for " + generator.getGeneratorName());
-				System.out.println(e.getMessage());
+			} catch (Exception exception) {
+				AstromineCommon.LOGGER.error("Tag generation of " + set.getName() + " failed, with generator " + generator.getGeneratorName() + ".");
+				AstromineCommon.LOGGER.error(exception.getMessage());
 			}
 		});
 	}

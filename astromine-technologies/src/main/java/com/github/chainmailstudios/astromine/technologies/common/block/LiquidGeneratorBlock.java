@@ -75,21 +75,6 @@ public abstract class LiquidGeneratorBlock extends WrenchableHorizontalFacingEne
 		public BlockEntity createBlockEntity() {
 			return new LiquidGeneratorBlockEntity.Primitive();
 		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().primitiveLiquidGeneratorSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().primitiveLiquidGeneratorEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.PRIMITIVE;
-		}
 	}
 
 	public static class Basic extends LiquidGeneratorBlock.Base {
@@ -100,21 +85,6 @@ public abstract class LiquidGeneratorBlock extends WrenchableHorizontalFacingEne
 		@Override
 		public BlockEntity createBlockEntity() {
 			return new LiquidGeneratorBlockEntity.Basic();
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().basicLiquidGeneratorSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().basicLiquidGeneratorEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.BASIC;
 		}
 	}
 
@@ -127,21 +97,6 @@ public abstract class LiquidGeneratorBlock extends WrenchableHorizontalFacingEne
 		public BlockEntity createBlockEntity() {
 			return new LiquidGeneratorBlockEntity.Advanced();
 		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().advancedLiquidGeneratorSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().advancedLiquidGeneratorEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.ADVANCED;
-		}
 	}
 
 	public static class Elite extends LiquidGeneratorBlock.Base {
@@ -152,21 +107,6 @@ public abstract class LiquidGeneratorBlock extends WrenchableHorizontalFacingEne
 		@Override
 		public BlockEntity createBlockEntity() {
 			return new LiquidGeneratorBlockEntity.Elite();
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().eliteLiquidGeneratorSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().eliteLiquidGeneratorEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.ELITE;
 		}
 	}
 }

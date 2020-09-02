@@ -42,9 +42,9 @@ import alexiil.mc.lib.attributes.fluid.FluidInvTankChangeListener;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKey;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKeys;
-import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.SidedComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import org.jetbrains.annotations.Nullable;
@@ -64,12 +64,12 @@ public final class LibBlockAttributesCompatibility {
 		BlockEntity blockEntity = world.getBlockEntity(blockPos);
 
 		if (blockEntity != null) {
-			ComponentProvider componentProvider = ComponentProvider.fromBlockEntity(blockEntity);
+			SidedComponentProvider sidedComponentProvider = SidedComponentProvider.fromBlockEntity(blockEntity);
 
 			@Nullable
 			Direction direction = list.getTargetSide();
 
-			FluidInventoryComponent component = componentProvider.getSidedComponent(direction, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+			FluidInventoryComponent component = sidedComponentProvider.getSidedComponent(direction, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
 			if (component != null) {
 				list.offer(new LibBlockAttributesWrapper(component));
@@ -78,14 +78,14 @@ public final class LibBlockAttributesCompatibility {
 	}
 
 	private static alexiil.mc.lib.attributes.fluid.volume.FluidVolume wrapLibBlockAttributes(FluidVolume volume) {
-		return FluidKeys.get(volume.getFluid()).withAmount(wrapLibBlockAttributes(volume.getFraction().copy()));
+		return FluidKeys.get(volume.getFluid()).withAmount(wrapLibBlockAttributes(volume.getAmount().copy()));
 	}
 
 	private static Optional<FluidVolume> wrapVolumeToAstromine(alexiil.mc.lib.attributes.fluid.volume.FluidVolume volume) {
 		if (volume.getRawFluid() == null)
 			return Optional.empty();
 
-		return Optional.of(new FluidVolume(volume.getRawFluid(), wrapVolumeToAstromine(volume.amount())));
+		return Optional.of(FluidVolume.of(wrapVolumeToAstromine(volume.amount()), volume.getRawFluid()));
 	}
 
 	private static FluidAmount wrapLibBlockAttributes(Fraction fraction) {
@@ -133,7 +133,7 @@ public final class LibBlockAttributesCompatibility {
 			FluidVolume incoming = optionalFluidVolume.get();
 			FluidVolume current = component.getVolume(tank);
 
-			if (incoming.getFraction().isBiggerThan(current.getSize())) {
+			if (incoming.getAmount().biggerThan(current.getSize())) {
 				return false;
 			}
 
@@ -148,11 +148,11 @@ public final class LibBlockAttributesCompatibility {
 				allowed = component.canInsert(null, incoming, tank);
 			} else if (incoming.getFluid() == current.getFluid()) {
 
-				if (incoming.getFraction().equals(current.getFraction())) {
+				if (incoming.getAmount().equals(current.getAmount())) {
 					return true;
 				}
 
-				if (incoming.isSmallerThan(current)) {
+				if (incoming.smallerThan(current.getAmount())) {
 					allowed = component.canExtract(null, current, tank);
 				} else {
 					allowed = component.canInsert(null, incoming, tank);
@@ -164,7 +164,7 @@ public final class LibBlockAttributesCompatibility {
 			if (allowed && simulation.isAction()) {
 
 				current.setFluid(incoming.getFluid());
-				current.setFraction(incoming.getFraction());
+				current.setAmount(incoming.getAmount());
 
 				component.setVolume(tank, current);
 			}
@@ -176,7 +176,7 @@ public final class LibBlockAttributesCompatibility {
 		public boolean isFluidValidForTank(int tank, FluidKey fluidKey) {
 			validateTankIndex(tank);
 			Fluid fluid = fluidKey.getRawFluid();
-			return fluid != null && component.canInsert(null, new FluidVolume(fluid, Fraction.BUCKET.copy()), tank);
+			return fluid != null && component.canInsert(null, FluidVolume.of(Fraction.bucket(), fluid), tank);
 		}
 
 		@Override

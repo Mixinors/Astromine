@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.datagen.registry;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.datagen.generator.loottable.onetime.OneTimeLootTableGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.loottable.set.SetLootTableGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
@@ -32,11 +33,11 @@ public abstract class AstromineLootTableGenerators {
 			try {
 				if (set.shouldGenerate(generator)) {
 					generator.generate(lootTables, set);
-					System.out.println("generated loot table " + generator.getGeneratorName());
+					AstromineCommon.LOGGER.info("Loot table generation of " + set.getName() + " succeeded, with generator " + generator.getGeneratorName() + ".");
 				}
-			} catch (Exception e) {
-				System.out.println("oh fuck loot table bronked for " + set.getName() + " with generator " + generator.getGeneratorName());
-				System.out.println(e.getMessage());
+			} catch (Exception exception) {
+				AstromineCommon.LOGGER.error("Loot table generation of " + set.getName() + " failed, with generator " + generator.getGeneratorName() + ".");
+				AstromineCommon.LOGGER.error(exception.getMessage());
 			}
 		});
 	}

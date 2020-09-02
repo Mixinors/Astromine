@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.block;
 
+import com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
@@ -54,7 +55,7 @@ public class ComponentBlockEntityEnergyFluidScreenHandler extends ComponentBlock
 		energyBar = new EnergyVerticalBarWidget();
 		energyBar.setPosition(Position.of(mainTab, 7, 11));
 		energyBar.setSize(Size.of(24, 48));
-		energyBar.setVolume(blockEntity::getEnergyVolume);
+		energyBar.setVolume(() -> EnergyHandler.ofOptional(blockEntity).get().getVolume(0));
 
 		fluidBar = new FluidVerticalBarWidget();
 		fluidBar.setPosition(Position.of(energyBar, energyBar.getWidth() + 7, 0));

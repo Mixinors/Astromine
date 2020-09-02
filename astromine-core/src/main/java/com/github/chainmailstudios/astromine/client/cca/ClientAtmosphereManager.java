@@ -52,7 +52,7 @@ public class ClientAtmosphereManager {
 	public static PacketByteBuf ofGasAdded(BlockPos gasPosition, FluidVolume gasVolume) {
 		CompoundTag gasPayload = new CompoundTag();
 		gasPayload.putLong("gasPosition", gasPosition.asLong());
-		gasPayload.put("gasVolume", gasVolume.toTag(new CompoundTag()));
+		gasPayload.put("gasVolume", gasVolume.toTag());
 		PacketByteBuf gasBuffer = new PacketByteBuf(Unpooled.buffer());
 		gasBuffer.writeCompoundTag(gasPayload);
 		return gasBuffer;

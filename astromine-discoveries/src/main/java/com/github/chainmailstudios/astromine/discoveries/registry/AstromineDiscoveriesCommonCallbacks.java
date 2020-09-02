@@ -24,12 +24,12 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry;
 
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import net.minecraft.server.world.ServerWorld;
 
 import com.github.chainmailstudios.astromine.common.callback.ServerChunkManagerCallback;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.mars.MarsChunkGenerator;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.moon.MoonChunkGenerator;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.space.EarthSpaceChunkGenerator;
@@ -66,7 +66,7 @@ public class AstromineDiscoveriesCommonCallbacks extends AstromineCommonCallback
 
 		ItemComponentCallbackV2.register(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, AstromineDiscoveriesItems.SPACE_SUIT_CHESTPLATE, (useless, stack) -> {
 			FluidInventoryComponent component = new SimpleFluidInventoryComponent(1);
-			component.getVolume(0).setSize(Fraction.ofWhole(64));
+			component.getVolume(0).setSize(Fraction.of(64));
 			return component;
 		});
 	}

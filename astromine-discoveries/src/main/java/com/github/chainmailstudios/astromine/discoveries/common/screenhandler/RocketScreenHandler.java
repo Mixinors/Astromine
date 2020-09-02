@@ -1,35 +1,21 @@
-/*
- * MIT License
- *
- * Copyright (c) 2020 Chainmail Studios
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 package com.github.chainmailstudios.astromine.discoveries.common.screenhandler;
 
-import net.minecraft.entity.player.PlayerEntity;
-
 import com.github.chainmailstudios.astromine.common.screenhandler.base.entity.ComponentEntityFluidScreenHandler;
+import com.github.chainmailstudios.astromine.discoveries.common.entity.base.RocketEntity;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesCommonPackets;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesScreenHandlers;
+import com.github.vini2003.blade.common.data.Position;
+import com.github.vini2003.blade.common.data.Size;
+import com.github.vini2003.blade.common.widget.base.ButtonWidget;
+import com.github.vini2003.blade.common.widget.base.TextWidget;
+import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 
 public class RocketScreenHandler extends ComponentEntityFluidScreenHandler {
+	private TextWidget fuelTextWidget;
+
 	public RocketScreenHandler(int syncId, PlayerEntity player, int entityId) {
 		super(AstromineDiscoveriesScreenHandlers.ROCKET, syncId, player, entityId);
 	}
@@ -37,5 +23,26 @@ public class RocketScreenHandler extends ComponentEntityFluidScreenHandler {
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
+
+		ButtonWidget launchButtonWidget = new ButtonWidget((widget) -> {
+			syncEntity.getDataTracker().set(RocketEntity.IS_RUNNING, true);
+
+			ClientSidePacketRegistry.INSTANCE.sendToServer(AstromineDiscoveriesCommonPackets.ROCKET_LAUNCH, AstromineDiscoveriesCommonPackets.ofRocketLaunch(syncEntity.getEntityId()));
+
+			return null;
+		});
+
+		launchButtonWidget.setPosition(Position.of(fluidBar.getX() + fluidBar.getWidth() + 9, fluidBar.getY()));
+		launchButtonWidget.setSize(Size.of(72, 18));
+		launchButtonWidget.setLabel(new TranslatableText("text.astromine.rocket.launch"));
+
+		fuelTextWidget = new TextWidget();
+
+
+		mainTab.addWidget(launchButtonWidget);
+	}
+
+	public void setFuelText(Text text) {
+		this.fuelTextWidget.setText(text);
 	}
 }

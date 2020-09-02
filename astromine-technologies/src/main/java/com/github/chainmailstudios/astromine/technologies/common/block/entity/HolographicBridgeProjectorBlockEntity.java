@@ -52,7 +52,7 @@ import java.util.ArrayList;
 public class HolographicBridgeProjectorBlockEntity extends BlockEntity implements Tickable, BlockEntityClientSerializable {
 	public ArrayList<Vector3f> segments = null;
 
-	public Color color = Color.of(0x7e80cad4);
+	public Color color = Color.of("0x7e80cad4");
 
 	private HolographicBridgeProjectorBlockEntity child = null;
 	private HolographicBridgeProjectorBlockEntity parent = null;
@@ -196,8 +196,6 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 			this.childPosition = BlockPos.fromLong(tag.getLong("child_position"));
 		}
 
-		this.color = Color.of(tag.getInt("color"));
-
 		super.fromTag(state, tag);
 	}
 
@@ -208,8 +206,6 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 		} else if (this.childPosition != null) {
 			tag.putLong("child_position", this.childPosition.asLong());
 		}
-
-		tag.putInt("color", this.color.toInt());
 
 		return super.toTag(tag);
 	}

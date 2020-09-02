@@ -22,8 +22,10 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.recipe;
+package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
+import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -43,7 +45,6 @@ import com.github.chainmailstudios.astromine.common.utilities.IngredientUtilitie
 import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
@@ -75,20 +76,7 @@ public class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 	}
 
 	@Override
-	public ItemStack craft(Inventory inventory) {
-		ItemInventoryComponent component = ItemInventoryComponentFromItemInventory.of(inventory);
-		List<ItemStack> matching = Lists.newArrayList(component.getContentsMatching(input));
-
-		ItemStack stack = matching.isEmpty() ? ItemStack.EMPTY : matching.get(0);
-
-		for (Map.Entry<Integer, ItemStack> entry : component.getContents().entrySet()) {
-			if (entry.getValue() == stack && !stack.isEmpty()) {
-				component.getStack(entry.getKey()).decrement(1);
-
-				break;
-			}
-		}
-
+	public ItemStack craft(Inventory inv) {
 		return output.copy();
 	}
 

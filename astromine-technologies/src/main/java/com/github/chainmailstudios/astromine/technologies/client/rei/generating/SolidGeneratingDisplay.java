@@ -24,13 +24,12 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei.generating;
 
+import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import net.minecraft.util.Identifier;
 
-import com.github.chainmailstudios.astromine.common.recipe.SolidGeneratingRecipe;
-import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import me.shedaniel.rei.api.EntryStack;
 
 import java.util.Collections;
@@ -42,16 +41,6 @@ public class SolidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
 	private final List<EntryStack> stacks;
 	private final Identifier id;
 	private final Double time;
-
-	public SolidGeneratingDisplay(SolidGeneratingRecipe recipe) {
-		super(recipe.getEnergyGenerated());
-		this.stacks = EntryStack.ofIngredient(recipe.getInput());
-		for (EntryStack stack : stacks) {
-			stack.setAmount(recipe.getAmount());
-		}
-		this.id = recipe.getId();
-		this.time = null;
-	}
 
 	public SolidGeneratingDisplay(double energyGenerated, List<EntryStack> stacks, Identifier id, Double time) {
 		super(energyGenerated);

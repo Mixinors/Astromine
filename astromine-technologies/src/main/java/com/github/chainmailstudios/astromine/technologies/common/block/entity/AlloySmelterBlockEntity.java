@@ -24,44 +24,43 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Tickable;
-
-import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.inventory.BaseInventory;
+import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
+import com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler;
+import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.AlloySmeltingRecipe;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public abstract class AlloySmelterBlockEntity extends ComponentEnergyInventoryBlockEntity implements Tickable {
+public abstract class AlloySmelterBlockEntity extends ComponentEnergyInventoryBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
 	public double progress = 0;
 	public int limit = 100;
+	public boolean shouldTry = false;
 
-	public boolean shouldTry = true;
-	public boolean isActive = false;
-
-	public boolean[] activity = { false, false, false, false, false };
-
-	Optional<AlloySmeltingRecipe> recipe = Optional.empty();
+	private Optional<AlloySmeltingRecipe> optionalRecipe = Optional.empty();
 
 	public AlloySmelterBlockEntity(Block energyBlock, BlockEntityType<?> type) {
 		super(energyBlock, type);
-
-		addEnergyListener(() -> shouldTry = true);
 	}
 
 	@Override
@@ -70,24 +69,16 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyInventoryBl
 			return slot == 0 || slot == 1;
 		}).withExtractPredicate(((direction, stack, slot) -> {
 			return slot == 2;
-		})).withListener((inv) -> {
+		})).withListener((inventory) -> {
 			shouldTry = true;
 		});
 	}
 
 	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		super.fromTag(state, tag);
-		progress = tag.getDouble("progress");
-		limit = tag.getInt("limit");
-		shouldTry = true;
-	}
-
-	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		tag.putDouble("progress", progress);
-		tag.putInt("limit", limit);
-		return super.toTag(tag);
+	protected EnergyInventoryComponent createEnergyComponent() {
+		EnergyInventoryComponent energyComponent = new SimpleEnergyInventoryComponent(1);
+		EnergyHandler.of(energyComponent).getFirst().setSize(getEnergySize());
+		return energyComponent;
 	}
 
 	@Override
@@ -104,79 +95,102 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyInventoryBl
 	public void tick() {
 		super.tick();
 
-		if (world.isClient())
-			return;
-		if (shouldTry) {
-			BaseInventory inputInventory = new BaseInventory(2);
-			inputInventory.setStack(0, itemComponent.getStack(0));
-			inputInventory.setStack(1, itemComponent.getStack(1));
-			if (!recipe.isPresent()) {
-				if (hasWorld() && !world.isClient) {
-					recipe = world.getRecipeManager().getFirstMatch(AlloySmeltingRecipe.Type.INSTANCE, inputInventory, world);
+		if (world == null) return;
+		if (world.isClient) return;
+
+		EnergyHandler.ofOptional(this).ifPresent(energies -> {
+			ItemHandler.ofOptional(this).ifPresent(items -> {
+				BaseInventory inputInventory = BaseInventory.of(items.getFirst(), items.getSecond());
+
+				if (!optionalRecipe.isPresent() && shouldTry) {
+					optionalRecipe = world.getRecipeManager().getFirstMatch(AlloySmeltingRecipe.Type.INSTANCE, inputInventory, world);
 				}
-			}
-			if (recipe.isPresent() && recipe.get().matches(inputInventory, world)) {
-				limit = recipe.get().getTime();
 
-				double speed = Math.min(((WrenchableHorizontalFacingEnergyTieredBlockWithEntity) this.getCachedState().getBlock()).getMachineSpeed(), limit - progress);
-				double consumed = recipe.get().getEnergyConsumed() * speed / limit;
+				optionalRecipe.ifPresent(recipe -> {
+					if (recipe.matches(inputInventory, world)) {
+						limit = recipe.getTime();
 
-				ItemStack output = recipe.get().getOutput().copy();
+						double speed = Math.min(getMachineSpeed(), limit - progress);
+						double consumed = recipe.getEnergyConsumed() * speed / limit;
 
-				boolean isEmpty = itemComponent.getStack(2).isEmpty();
-				boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(2), output) && ItemStack.areTagsEqual(itemComponent.getStack(2), output);
+						ItemStack output = recipe.getOutput().copy();
 
-				if ((isEmpty || isEqual) && itemComponent.getStack(2).getCount() + output.getCount() <= itemComponent.getStack(2).getMaxCount() && asEnergy().use(consumed)) {
-					if (progress + speed >= limit) {
-						ItemStack stack1 = itemComponent.getStack(0);
-						ItemStack stack2 = itemComponent.getStack(1);
-						if (recipe.get().getFirstInput().test(stack1) || recipe.get().getSecondInput().test(stack2)) {
-							stack1.decrement(recipe.get().getFirstInput().testMatching(stack1).getCount());
-							stack2.decrement(recipe.get().getSecondInput().testMatching(stack2).getCount());
-						} else if (recipe.get().getFirstInput().test(stack2) || recipe.get().getSecondInput().test(stack1)) {
-							stack2.decrement(recipe.get().getFirstInput().testMatching(stack2).getCount());
-							stack1.decrement(recipe.get().getSecondInput().testMatching(stack1).getCount());
-						}
+						boolean isEmpty = items.getThird().isEmpty();
+						boolean isEqual = ItemStack.areItemsEqual(items.getThird(), output) && ItemStack.areTagsEqual(items.getThird(), output);
 
-						if (isEmpty) {
-							itemComponent.setStack(2, output);
+						if (energies.getFirst().hasStored(consumed) && (isEmpty || isEqual) && items.getThird().getCount() + output.getCount() <= items.getThird().getMaxCount()) {
+							energies.getFirst().from(consumed);
+
+							if (progress + speed >= limit) {
+								optionalRecipe = Optional.empty();
+
+								ItemStack first = items.getFirst();
+								ItemStack second = items.getSecond();
+
+								if (recipe.getFirstInput().test(first) && recipe.getSecondInput().test(second)) {
+									first.decrement(recipe.getFirstInput().testMatching(first).getCount());
+									second.decrement(recipe.getSecondInput().testMatching(second).getCount());
+								} else if (recipe.getFirstInput().test(second) && recipe.getSecondInput().test(first)) {
+									second.decrement(recipe.getFirstInput().testMatching(second).getCount());
+									first.decrement(recipe.getSecondInput().testMatching(first).getCount());
+								}
+
+								if (isEmpty) {
+									items.setThird(output);
+								} else {
+									items.getThird().increment(output.getCount());
+									shouldTry = true;
+								}
+
+								progress = 0;
+							} else {
+								progress += speed;
+							}
+
+							tickActive();
 						} else {
-							itemComponent.getStack(2).increment(output.getCount());
+							tickInactive();
 						}
-
-						progress = 0;
 					} else {
-						progress += speed;
+						tickInactive();
 					}
+				});
+			});
+		});
+	}
 
-					isActive = true;
-				}
-			} else {
-				shouldTry = false;
-				isActive = false;
-				progress = 0;
-				recipe = Optional.empty();
-			}
-		} else {
-			progress = 0;
-			isActive = false;
-		}
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		tag.putDouble("progress", progress);
+		tag.putInt("limit", limit);
+		return super.toTag(tag);
+	}
 
-		if (activity.length - 1 >= 0)
-			System.arraycopy(activity, 1, activity, 0, activity.length - 1);
-
-		activity[4] = isActive;
-
-		if (isActive && !activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, true));
-		} else if (!isActive && activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, false));
-		}
+	@Override
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+		progress = tag.getDouble("progress");
+		limit = tag.getInt("limit");
+		super.fromTag(state, tag);
 	}
 
 	public static class Primitive extends AlloySmelterBlockEntity {
 		public Primitive() {
 			super(AstromineTechnologiesBlocks.PRIMITIVE_ALLOY_SMELTER, AstromineTechnologiesBlockEntityTypes.PRIMITIVE_ALLOY_SMELTER);
+		}
+
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().primitiveAlloySmelterSpeed;
+		}
+
+		@Override
+		public double getEnergySize() {
+			return AstromineConfig.get().primitiveAlloySmelterEnergy;
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.PRIMITIVE;
 		}
 	}
 
@@ -184,17 +198,62 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyInventoryBl
 		public Basic() {
 			super(AstromineTechnologiesBlocks.BASIC_ALLOY_SMELTER, AstromineTechnologiesBlockEntityTypes.BASIC_ALLOY_SMELTER);
 		}
+
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().basicAlloySmelterSpeed;
+		}
+
+		@Override
+		public double getEnergySize() {
+			return AstromineConfig.get().basicAlloySmelterEnergy;
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.BASIC;
+		}
 	}
 
 	public static class Advanced extends AlloySmelterBlockEntity {
 		public Advanced() {
 			super(AstromineTechnologiesBlocks.ADVANCED_ALLOY_SMELTER, AstromineTechnologiesBlockEntityTypes.ADVANCED_ALLOY_SMELTER);
 		}
+
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().advancedAlloySmelterSpeed;
+		}
+
+		@Override
+		public double getEnergySize() {
+			return AstromineConfig.get().advancedAlloySmelterEnergy;
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.ADVANCED;
+		}
 	}
 
 	public static class Elite extends AlloySmelterBlockEntity {
 		public Elite() {
 			super(AstromineTechnologiesBlocks.ELITE_ALLOY_SMELTER, AstromineTechnologiesBlockEntityTypes.ELITE_ALLOY_SMELTER);
+		}
+
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().eliteAlloySmelterSpeed;
+		}
+
+		@Override
+		public double getEnergySize() {
+			return AstromineConfig.get().eliteAlloySmelterEnergy;
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.ELITE;
 		}
 	}
 }

@@ -75,21 +75,6 @@ public abstract class TrituratorBlock extends WrenchableHorizontalFacingEnergyTi
 		public BlockEntity createBlockEntity() {
 			return new TrituratorBlockEntity.Primitive();
 		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().primitiveTrituratorSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().primitiveTrituratorEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.PRIMITIVE;
-		}
 	}
 
 	public static class Basic extends TrituratorBlock.Base {
@@ -100,21 +85,6 @@ public abstract class TrituratorBlock extends WrenchableHorizontalFacingEnergyTi
 		@Override
 		public BlockEntity createBlockEntity() {
 			return new TrituratorBlockEntity.Basic();
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().basicTrituratorSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().basicTrituratorEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.BASIC;
 		}
 	}
 
@@ -127,21 +97,6 @@ public abstract class TrituratorBlock extends WrenchableHorizontalFacingEnergyTi
 		public BlockEntity createBlockEntity() {
 			return new TrituratorBlockEntity.Advanced();
 		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().advancedTrituratorSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().advancedTrituratorEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.ADVANCED;
-		}
 	}
 
 	public static class Elite extends TrituratorBlock.Base {
@@ -152,21 +107,6 @@ public abstract class TrituratorBlock extends WrenchableHorizontalFacingEnergyTi
 		@Override
 		public BlockEntity createBlockEntity() {
 			return new TrituratorBlockEntity.Elite();
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().eliteTrituratorSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().eliteTrituratorEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.ELITE;
 		}
 	}
 }

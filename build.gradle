@@ -12,6 +12,12 @@ plugins {
 apply from: 'dependencies.gradle'
 
 allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xmaxerrs" << "4096"
+        }
+    }
+
     apply plugin: 'maven-publish'
     apply plugin: 'fabric-loom'
     apply plugin: 'com.diffplug.spotless'

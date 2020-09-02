@@ -83,7 +83,7 @@ public class CapacitorScreenHandler extends ComponentBlockEntityEnergyItemScreen
 			if (!Energy.valid(stack))
 				return 0;
 			EnergyHandler handler = Energy.of(stack);
-			return handler.getEnergy() < handler.getMaxStored() && blockEntity.getEnergyVolume().getAmount() > 0 && handler.getMaxInput() > 0 ? 1 : 0;
+			return handler.getEnergy() < handler.getMaxStored() && (blockEntity.getEnergyComponent().getVolume(0)).getAmount() > 0 && handler.getMaxInput() > 0 ? 1 : 0;
 		});
 
 		mainTab.addWidget(input);

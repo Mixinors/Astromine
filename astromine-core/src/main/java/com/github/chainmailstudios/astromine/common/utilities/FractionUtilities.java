@@ -26,7 +26,7 @@ package com.github.chainmailstudios.astromine.common.utilities;
 
 import net.minecraft.network.PacketByteBuf;
 
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

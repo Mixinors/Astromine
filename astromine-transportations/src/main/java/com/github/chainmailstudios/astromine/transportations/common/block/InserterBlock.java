@@ -24,12 +24,11 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.block.ShapeContext;
+import com.github.chainmailstudios.astromine.common.utilities.capability.block.FacingBlockWrenchable;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
@@ -41,13 +40,13 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.utilities.capability.block.FacingBlockWrenchable;
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.InserterBlockEntity;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyableBlock;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
-public class InserterBlock extends HorizontalFacingBlock implements BlockEntityProvider, ConveyableBlock, FacingBlockWrenchable {
+public class InserterBlock extends HorizontalFacingBlock implements BlockEntityProvider, ConveyableBlock, FacingBlockWrenchable, Waterloggable {
 	private String type;
 	private int speed;
 
@@ -73,12 +72,18 @@ public class InserterBlock extends HorizontalFacingBlock implements BlockEntityP
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> stateManagerBuilder) {
-		stateManagerBuilder.add(FACING, Properties.POWERED);
+		stateManagerBuilder.add(FACING, Properties.POWERED, Properties.WATERLOGGED);
 	}
 
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext itemPlacementContext) {
-		return this.getDefaultState().with(Properties.POWERED, false).with(FACING, itemPlacementContext.getPlayer().isSneaking() ? itemPlacementContext.getPlayerFacing().getOpposite() : itemPlacementContext.getPlayerFacing());
+	public BlockState getPlacementState(ItemPlacementContext context) {
+		return this.getDefaultState().with(Properties.POWERED, false).with(FACING, context.getPlayer().isSneaking() ? context.getPlayerFacing().getOpposite() : context.getPlayerFacing()).with(Properties.WATERLOGGED, context.getWorld().getBlockState(context.getBlockPos()).getBlock() == Blocks.WATER);
+	}
+
+
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return (state.contains(Properties.WATERLOGGED) && state.get(Properties.WATERLOGGED)) ? Fluids.WATER.getDefaultState() : super.getFluidState(state);
 	}
 
 	@Override

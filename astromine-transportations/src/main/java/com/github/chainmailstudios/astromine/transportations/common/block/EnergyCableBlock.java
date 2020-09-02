@@ -29,7 +29,7 @@ import com.github.chainmailstudios.astromine.common.network.type.EnergyNetworkTy
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
-public class EnergyCableBlock extends CableBlock implements EnergyNetworkType.EnergyNodeSpeedProvider {
+public class EnergyCableBlock extends CableBlock implements EnergyNetworkType.NodeSpeedProvider {
 	private final double cableSpeed;
 
 	public EnergyCableBlock(double cableSpeed, Settings settings) {

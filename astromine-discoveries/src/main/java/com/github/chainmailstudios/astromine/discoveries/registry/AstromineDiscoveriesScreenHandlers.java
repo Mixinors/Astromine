@@ -24,12 +24,12 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry;
 
+import com.github.chainmailstudios.astromine.discoveries.common.screenhandler.RocketScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 
 import net.minecraft.screen.ScreenHandlerType;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.discoveries.common.screenhandler.RocketScreenHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 
 public class AstromineDiscoveriesScreenHandlers extends AstromineScreenHandlers {

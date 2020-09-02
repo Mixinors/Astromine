@@ -24,7 +24,10 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentInventoryBlockEntity;
@@ -34,37 +37,72 @@ import com.github.chainmailstudios.astromine.common.utilities.tier.BufferTier;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import org.jetbrains.annotations.NotNull;
 
-public class BufferBlockEntity extends ComponentInventoryBlockEntity {
-	private BufferTier type;
-
-	public BufferBlockEntity(BufferTier type) {
-		super(AstromineTechnologiesBlockEntityTypes.BUFFER);
-
-		this.type = type;
-
-		((SimpleItemInventoryComponent) itemComponent).resize(9 * type.getHeight());
+public abstract class BufferBlockEntity extends ComponentInventoryBlockEntity {
+	public BufferBlockEntity(BlockEntityType<?> type) {
+		super(type);
 	}
 
-	public BufferBlockEntity() {
-		super(AstromineTechnologiesBlockEntityTypes.BUFFER);
+	public static class Primitive extends BufferBlockEntity {
+		public Primitive() {
+			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_BUFFER);
+		}
+
+		@Override
+		protected ItemInventoryComponent createItemComponent() {
+			return new SimpleItemInventoryComponent(6 * 9);
+		}
 	}
 
-	@Override
-	protected ItemInventoryComponent createItemComponent() {
-		return new SimpleItemInventoryComponent(1);
+	public static class Basic extends BufferBlockEntity {
+		public Basic() {
+			super(AstromineTechnologiesBlockEntityTypes.BASIC_BUFFER);
+		}
+
+		@Override
+		protected ItemInventoryComponent createItemComponent() {
+			return new SimpleItemInventoryComponent(12 * 9);
+		}
 	}
 
-	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		tag.putString("type", type.toName());
-		return super.toTag(tag);
+	public static class Advanced extends BufferBlockEntity {
+		public Advanced() {
+			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_BUFFER);
+		}
+
+		@Override
+		protected ItemInventoryComponent createItemComponent() {
+			return new SimpleItemInventoryComponent(18 * 9);
+		}
 	}
 
-	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		type = BufferTier.byName(tag.getString("type"));
-		((SimpleItemInventoryComponent) itemComponent).resize(9 * type.getHeight());
-		itemComponent.addListener(this::markDirty);
-		super.fromTag(state, tag);
+	public static class Elite extends BufferBlockEntity {
+		public Elite() {
+			super(AstromineTechnologiesBlockEntityTypes.ELITE_BUFFER);
+		}
+
+		@Override
+		protected ItemInventoryComponent createItemComponent() {
+			return new SimpleItemInventoryComponent(24 * 9);
+		}
+	}
+
+	public static class Creative extends BufferBlockEntity {
+		public Creative() {
+			super(AstromineTechnologiesBlockEntityTypes.CREATIVE_BUFFER);
+		}
+
+		@Override
+		protected ItemInventoryComponent createItemComponent() {
+			return new SimpleItemInventoryComponent(6 * 9);
+		}
+
+		@Override
+		public void tick() {
+			ItemHandler.ofOptional(this).ifPresent(items -> {
+				items.forEach(stack -> {
+					stack.setCount(stack.getMaxCount());
+				});
+			});
+		}
 	}
 }

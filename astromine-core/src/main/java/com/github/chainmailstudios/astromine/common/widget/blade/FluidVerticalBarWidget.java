@@ -41,7 +41,7 @@ import net.minecraft.util.Identifier;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.BaseRenderer;
 import com.github.chainmailstudios.astromine.client.render.sprite.SpriteRenderer;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.vini2003.blade.client.utilities.Layers;
@@ -66,7 +66,7 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 	}
 
 	public void setVolume(Supplier<FluidVolume> volume) {
-		this.progressFraction = volume.get()::getFraction;
+		this.progressFraction = volume.get()::getAmount;
 		this.limitFraction = volume.get()::getSize;
 
 		this.volume = volume;

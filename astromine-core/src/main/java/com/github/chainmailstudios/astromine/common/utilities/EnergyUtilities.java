@@ -29,24 +29,82 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import net.minecraft.util.math.Direction;
+import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.EnergyHandler;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import team.reborn.energy.EnergySide;
+
 import java.text.DecimalFormat;
 
 public class EnergyUtilities {
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###");
 
+	@Nullable
+	public static Direction toDirection(EnergySide side) {
+		switch (side) {
+			case NORTH: {
+				return Direction.NORTH;
+			}
+			case SOUTH: {
+				return Direction.SOUTH;
+			}
+			case WEST: {
+				return Direction.WEST;
+			}
+			case EAST: {
+				return Direction.EAST;
+			}
+			case UP: {
+				return Direction.UP;
+			}
+			case DOWN: {
+				return Direction.DOWN;
+			}
+			default: {
+				return null;
+			}
+		}
+	}
+
+	@Nullable
+	public static EnergySide toSide(Direction direction) {
+		switch (direction) {
+			case NORTH: {
+				return EnergySide.NORTH;
+			}
+			case SOUTH: {
+				return EnergySide.SOUTH;
+			}
+			case WEST: {
+				return EnergySide.WEST;
+			}
+			case EAST: {
+				return EnergySide.EAST;
+			}
+			case UP: {
+				return EnergySide.UP;
+			}
+			case DOWN: {
+				return EnergySide.DOWN;
+			}
+			default: {
+				return EnergySide.UNKNOWN;
+			}
+		}
+	}
+
 	public static double fromJson(JsonElement element) {
-		if (element instanceof JsonPrimitive)
+		if (element instanceof JsonPrimitive) {
 			return element.getAsDouble();
-		if (element instanceof JsonObject)
-			return ParsingUtilities.fromJson(element, Fraction.class).doubleValue() * EnergyVolume.OLD_NEW_RATIO;
-		throw new IllegalArgumentException("Invalid amount: " + element.toString());
+		} else {
+			throw new IllegalArgumentException("Invalid amount: " + element.toString());
+		}
 	}
 
 	public static double fromPacket(PacketByteBuf buf) {

@@ -38,7 +38,6 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
-import com.github.chainmailstudios.astromine.common.utilities.capability.energy.EnergyCapacityProvider;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergySide;
@@ -55,33 +54,6 @@ public class AstromineNetworkMembers {
 	protected static final Map<Predicate<Block>, Consumer<Block>> BLOCK_CONSUMER = Maps.newHashMap();
 
 	public static void initialize() {
-		Energy.registerHolder(object -> {
-			if (object instanceof ItemStack) {
-				return !((ItemStack) object).isEmpty() && ((ItemStack) object).getItem() instanceof EnergyCapacityProvider && ((EnergyCapacityProvider) ((ItemStack) object).getItem()).isCreative();
-			}
-			return false;
-		}, object -> new EnergyStorage() {
-			@Override
-			public double getStored(EnergySide face) {
-				return Integer.MAX_VALUE;
-			}
-
-			@Override
-			public void setStored(double amount) {
-
-			}
-
-			@Override
-			public double getMaxStoredPower() {
-				return Integer.MAX_VALUE;
-			}
-
-			@Override
-			public EnergyTier getTier() {
-				return EnergyTier.INFINITE;
-			}
-		});
-
 		NetworkMemberRegistry.INSTANCE.register(AstromineNetworkTypes.ENERGY, new NetworkMemberRegistry.NetworkTypeRegistryImpl<NetworkType>() {
 			@Override
 			public Collection<NetworkMemberType> get(WorldPos pos) {
