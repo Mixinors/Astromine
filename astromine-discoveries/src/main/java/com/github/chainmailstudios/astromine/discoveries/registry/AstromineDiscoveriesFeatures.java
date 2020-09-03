@@ -34,6 +34,7 @@ import net.minecraft.world.gen.feature.Feature;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.discoveries.common.world.feature.AsteroidOreFeature;
 import com.github.chainmailstudios.astromine.discoveries.common.world.feature.MoonCraterFeature;
+import com.github.chainmailstudios.astromine.discoveries.common.world.feature.MoonLakeFeature;
 import com.github.chainmailstudios.astromine.registry.AstromineFeatures;
 
 public class AstromineDiscoveriesFeatures extends AstromineFeatures {
@@ -44,6 +45,10 @@ public class AstromineDiscoveriesFeatures extends AstromineFeatures {
 	public static final Identifier MOON_CRATER_ID = AstromineCommon.identifier("moon_crater");
 	public static final Feature<DefaultFeatureConfig> MOON_CRATER = register(new MoonCraterFeature(DefaultFeatureConfig.CODEC), MOON_CRATER_ID);
 	public static final RegistryKey<ConfiguredFeature<?, ?>> MOON_CRATER_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, MOON_CRATER_ID);
+
+	public static final Identifier MOON_LAKE_ID = AstromineCommon.identifier("moon_lake");
+	public static final Feature<DefaultFeatureConfig> MOON_LAKE = register(new MoonLakeFeature(DefaultFeatureConfig.CODEC), MOON_LAKE_ID);
+	public static final RegistryKey<ConfiguredFeature<?, ?>> MOON_LAKE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, MOON_LAKE_ID);
 
 	public static void initialize() {
 
