@@ -30,6 +30,7 @@ import net.minecraft.server.world.ServerWorld;
 import com.github.chainmailstudios.astromine.common.callback.ServerChunkManagerCallback;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
+import com.github.chainmailstudios.astromine.discoveries.common.world.generation.glacios.GlaciosChunkGenerator;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.mars.MarsChunkGenerator;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.moon.MoonChunkGenerator;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.space.EarthSpaceChunkGenerator;
@@ -61,6 +62,12 @@ public class AstromineDiscoveriesCommonCallbacks extends AstromineCommonCallback
 		ServerChunkManagerCallback.EVENT.register(manager -> {
 			if (manager.chunkGenerator instanceof VulcanChunkGenerator) {
 				manager.chunkGenerator = ((VulcanChunkGenerator) manager.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
+			}
+		});
+
+		ServerChunkManagerCallback.EVENT.register(manager -> {
+			if (manager.chunkGenerator instanceof GlaciosChunkGenerator) {
+				manager.chunkGenerator = ((GlaciosChunkGenerator) manager.chunkGenerator).withSeedCommon(((ServerWorld) manager.getWorld()).getSeed());
 			}
 		});
 

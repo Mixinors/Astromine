@@ -53,8 +53,10 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class VulcanChunkGenerator extends ChunkGenerator {
-	public static Codec<VulcanChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed), RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)).apply(instance,
-		VulcanChunkGenerator::new));
+	public static Codec<VulcanChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
+			instance.group(Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed),
+					RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry))
+					.apply(instance, VulcanChunkGenerator::new));
 
 	private final long seed;
 	private final Registry<Biome> biomeRegistry;

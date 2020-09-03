@@ -31,14 +31,15 @@ import net.minecraft.world.biome.source.BiomeSource;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import com.github.chainmailstudios.astromine.discoveries.common.world.generation.space.EarthSpaceBiomeSource;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBiomes;
 
 import com.google.common.collect.ImmutableList;
 
 public class VulcanBiomeSource extends BiomeSource {
-	public static final Codec<VulcanBiomeSource> CODEC = RecordCodecBuilder.create((instance) -> instance.group(RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry), Codec.LONG.fieldOf("seed").stable().forGetter((
-		biomeSource) -> biomeSource.seed)).apply(instance, instance.stable(VulcanBiomeSource::new)));
+	public static final Codec<VulcanBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry),
+			Codec.LONG.fieldOf("seed").stable().forGetter((biomeSource) -> biomeSource.seed))
+			.apply(instance, instance.stable(VulcanBiomeSource::new)));
 	private final long seed;
 	private final Registry<Biome> registry;
 
@@ -55,7 +56,7 @@ public class VulcanBiomeSource extends BiomeSource {
 
 	@Override
 	public BiomeSource withSeed(long seed) {
-		return new EarthSpaceBiomeSource(registry, seed);
+		return new VulcanBiomeSource(registry, seed);
 	}
 
 	@Override

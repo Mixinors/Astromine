@@ -55,6 +55,7 @@ public class AstromineDiscoveriesClientCallbacks extends AstromineClientCallback
 		SkyPropertiesCallback.EVENT.register((properties) -> properties.put(AstromineDiscoveriesDimensions.MOON_ID, new MoonSkyProperties()));
 		SkyPropertiesCallback.EVENT.register((properties) -> properties.put(AstromineDiscoveriesDimensions.MARS_ID, new MarsSkyProperties()));
 		SkyPropertiesCallback.EVENT.register((properties) -> properties.put(AstromineDiscoveriesDimensions.VULCAN_ID, new VulcanSkyProperties()));
+		SkyPropertiesCallback.EVENT.register((properties) -> properties.put(AstromineDiscoveriesDimensions.GLACIOS_ID, new SpaceSkyProperties()));
 
 		ItemTooltipCallback.EVENT.register(((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof SpaceSuitItem) {
