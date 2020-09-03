@@ -90,6 +90,7 @@ public abstract class LivingEntityMixin implements GravityEntity {
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	void onTick(CallbackInfo callbackInformation) {
 		Entity entity = (Entity) (Object) this;
+		if (entity.world.isClient) return;
 
 		if (!entity.getType().isIn(AstromineTags.DOES_NOT_BREATHE)) {
 			ComponentProvider chunkProvider = ComponentProvider.fromChunk(entity.world.getChunk(entity.getBlockPos()));
@@ -112,7 +113,7 @@ public abstract class LivingEntityMixin implements GravityEntity {
 
 			Box collisionBox = entity.getBoundingBox();
 
-			for (BlockPos blockPos : BlockPos.method_29715(collisionBox).collect(Collectors.toList())) {
+			for (BlockPos blockPos : (Iterable<BlockPos>) () -> BlockPos.method_29715(collisionBox).iterator()) {
 				BlockState blockState = entity.world.getBlockState(blockPos);
 
 				if (blockState.getBlock() instanceof FluidBlock) {
