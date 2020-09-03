@@ -16,6 +16,7 @@ import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 
@@ -53,13 +54,17 @@ public class AstromineDiscoveriesClientModels extends AstromineClientModels {
 	public static void renderRocket(PrimitiveRocketEntityModel primitiveRocketEntityModel, ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
 		matrices.push();
 		if (mode == ModelTransformation.Mode.GUI) {
-			matrices.translate(0.5F, 0.1F, 0F);
+			matrices.translate(0.66F, 0.22F, 0F);
 		}
 		matrices.scale(1.0F, -1.0F, -1.0F);
 		if (mode == ModelTransformation.Mode.GUI) {
-			matrices.scale(0.06F, 0.06F, 0.06F);
+			matrices.scale(0.09F, 0.09F, 0.09F);
+			matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(45));
+			matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(45));
 		} else {
 			matrices.scale(0.3F, 0.3F, 0.3F);
+			matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(45));
+			matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(45));
 		}
 		VertexConsumer vertexConsumer2 = ItemRenderer.getDirectGlintVertexConsumer(vertexConsumerProvider, primitiveRocketEntityModel.getLayer(PrimitiveRocketEntityRenderer.ID), false, stack.hasGlint());
 		primitiveRocketEntityModel.render(matrices, vertexConsumer2, i, j, 1.0F, 1.0F, 1.0F, 1.0F);

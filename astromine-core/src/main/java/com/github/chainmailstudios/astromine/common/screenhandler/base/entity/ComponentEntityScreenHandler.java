@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.common.screenhandler.base.entity;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerType;
 
@@ -53,6 +54,8 @@ public abstract class ComponentEntityScreenHandler extends BaseScreenHandler {
 		syncEntity = (ComponentEntity) player.world.getEntityById(entityId);
 	}
 
+	public abstract ItemStack getSymbol();
+
 	public int getTabWidgetExtendedHeight() {
 		return 0;
 	}
@@ -70,7 +73,7 @@ public abstract class ComponentEntityScreenHandler extends BaseScreenHandler {
 
 		addWidget(tabs);
 
-		mainTab = (TabCollection) tabs.addTab(Items.BEE_SPAWN_EGG);
+		mainTab = (TabCollection) tabs.addTab(getSymbol());
 		mainTab.setPosition(Position.of(tabs, 0, 25F + 7F));
 		mainTab.setSize(Size.of(176F, 184F));
 

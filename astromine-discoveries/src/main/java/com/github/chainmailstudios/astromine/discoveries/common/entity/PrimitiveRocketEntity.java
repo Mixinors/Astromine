@@ -24,8 +24,12 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.entity;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.utilities.FractionUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
+import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.base.RocketEntity;
 import com.github.chainmailstudios.astromine.discoveries.common.screenhandler.RocketScreenHandler;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesItems;
@@ -76,7 +80,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 
 	@Override
 	protected Function<RocketEntity, Fraction> createConsumptionFunction() {
-		return entity -> FractionUtilities.fromFloating(1D - entity.getY() / 1024D);
+		return entity -> Fraction.of((long) (1024 - entity.getY()), 1024 * 32);
 	}
 
 	@Override
@@ -86,7 +90,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 
 	@Override
 	protected Function<RocketEntity, Vector3d> createAccelerationFunction() {
-		return entity -> new Vector3d(0D, entity.getY() / 1024D, 0D);
+		return entity -> new Vector3d(0D, getY() / 1024D / 4D, 0D);
 	}
 
 	@Override
@@ -97,8 +101,13 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 	@Override
 	public FluidInventoryComponent createFluidComponent() {
 		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1);;
-		fluidComponent.getVolume(0).setSize(Fraction.of(128));
+		FluidHandler.of(fluidComponent).getFirst().setSize(Fraction.of(128));
 		return fluidComponent;
+	}
+
+	@Override
+	public ItemInventoryComponent createItemComponent() {
+		return new SimpleItemInventoryComponent(2);
 	}
 
 	@Override

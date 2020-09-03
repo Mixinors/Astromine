@@ -22,27 +22,32 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.block.entity.base;
+package com.github.chainmailstudios.astromine.common.entity.base;
 
 import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedComponentSidedInventoryProvider;
-import net.minecraft.block.Block;
-import net.minecraft.block.entity.BlockEntityType;
+import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedInventoryProvider;
+import net.minecraft.entity.EntityType;
+import net.minecraft.world.World;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 
-public abstract class ComponentEnergyInventoryBlockEntity extends ComponentEnergyBlockEntity implements ExtendedComponentSidedInventoryProvider {
-	protected final ItemInventoryComponent itemComponent = createItemComponent();
-
-	protected abstract ItemInventoryComponent createItemComponent();
-
-	public ComponentEnergyInventoryBlockEntity(Block energyBlock, BlockEntityType<?> type) {
-		super(energyBlock, type);
-
-		addComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, itemComponent);
+public abstract class ComponentFluidInventoryEntity extends ComponentEntity implements ExtendedInventoryProvider {
+	public ComponentFluidInventoryEntity(EntityType<?> type, World world) {
+		super(type, world);
 	}
 
+	public abstract ItemInventoryComponent createItemComponent();
+
+	public abstract FluidInventoryComponent createFluidComponent();
+
 	public ItemInventoryComponent getItemComponent() {
-		return itemComponent;
+		return ComponentProvider.fromEntity(this).getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
+	}
+
+	public FluidInventoryComponent getFluidComponent() {
+		return ComponentProvider.fromEntity(this).getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 	}
 }

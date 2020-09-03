@@ -30,8 +30,8 @@ import net.minecraft.text.Text;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.entity.ComponentEntityItemScreenHandler;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 
-public abstract class ComponentEntityItemHandledScreen<T extends ComponentEntityItemScreenHandler> extends ComponentEntityHandledScreen<T> {
-	public ComponentEntityItemHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
+public abstract class ComponentEntityInventoryHandledScreen<T extends ComponentEntityItemScreenHandler> extends ComponentEntityHandledScreen<T> {
+	public ComponentEntityInventoryHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 	}
 }
