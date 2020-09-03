@@ -24,13 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
-import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedInventoryProvider;
+import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedComponentSidedInventoryProvider;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 
-public abstract class ComponentInventoryBlockEntity extends ComponentBlockEntity implements ExtendedInventoryProvider {
+public abstract class ComponentInventoryBlockEntity extends ComponentBlockEntity implements ExtendedComponentSidedInventoryProvider {
 	protected final ItemInventoryComponent itemComponent = createItemComponent();
 
 	protected abstract ItemInventoryComponent createItemComponent();

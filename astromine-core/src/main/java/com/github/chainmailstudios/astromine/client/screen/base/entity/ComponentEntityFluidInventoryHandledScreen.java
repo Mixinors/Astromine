@@ -22,30 +22,16 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.entity.base;
+package com.github.chainmailstudios.astromine.client.screen.base.entity;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.world.World;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.entity.ComponentEntityFluidInventoryScreenHandler;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.entity.ComponentEntityFluidScreenHandler;
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.text.Text;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
-
-public abstract class ComponentFluidItemEntity extends ComponentEntity {
-	public ComponentFluidItemEntity(EntityType<?> type, World world) {
-		super(type, world);
-	}
-
-	public abstract ItemInventoryComponent createItemComponent();
-
-	public abstract FluidInventoryComponent createFluidComponent();
-
-	public ItemInventoryComponent getItemComponent() {
-		return ComponentProvider.fromEntity(this).getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
-	}
-
-	public FluidInventoryComponent getFluidComponent() {
-		return ComponentProvider.fromEntity(this).getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+public abstract class ComponentEntityFluidInventoryHandledScreen<T extends ComponentEntityFluidInventoryScreenHandler> extends ComponentEntityHandledScreen<T> {
+	public ComponentEntityFluidInventoryHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
+		super(handler, inventory, title);
 	}
 }

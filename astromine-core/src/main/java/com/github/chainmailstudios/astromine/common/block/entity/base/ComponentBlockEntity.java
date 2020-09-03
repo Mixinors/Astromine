@@ -25,7 +25,7 @@
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
 import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
-import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedInventoryProvider;
+import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedComponentSidedInventoryProvider;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.PacketContext;
 
@@ -208,7 +208,7 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 				BlockEntityTransferComponent neighborTransferComponent = neighborProvider != null ? neighborProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT) : null;
 
 				// Handle Item Siding
-				if (this instanceof ExtendedInventoryProvider) {
+				if (this instanceof ExtendedComponentSidedInventoryProvider) {
 					if (!transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(offsetDirection).isDefault()) {
 						// input
 						ItemExtractable neighbor = ItemAttributes.EXTRACTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));

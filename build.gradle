@@ -278,9 +278,7 @@ subprojects {
             }
             options {
                 forgeGradleIntegration = false
-                javaIntegration = false
                 javaVersionAutoDetect = false
-                debug = true
             }
         }
     }
@@ -406,8 +404,6 @@ curseforge {
     }
     options {
         forgeGradleIntegration = false
-        javaIntegration = false
         javaVersionAutoDetect = false
-        debug = true
     }
 }

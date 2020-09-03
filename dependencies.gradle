@@ -53,6 +53,8 @@ project.ext.setDefaultApis = {
     useAsApi("com.zundrel:wrenchable:${wrenchable_version}")
 
     // Kotlin
+    useAsApi("org.jetbrains.kotlin:kotlin-stdlib:${project.kotlin_version}")
+    useAsApi("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${project.kotlin_version}")
     useAsApi("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${project.kotlin_version}")
 
     // JOML
@@ -67,7 +69,7 @@ project.ext.setRuntimeTestMods = {
     useAsRuntime("RebornCore:RebornCore-1.16:${reborn_core_version}")
 
     // DataBreaker
-     useAsRuntime("com.github.SuperCoder7979:databreaker:${databreaker_version}")
+    useAsRuntime("com.github.SuperCoder7979:databreaker:${databreaker_version}")
 
     // AE2
     useAsRuntime("appeng:appliedenergistics2-fabric:${ae2_version}")

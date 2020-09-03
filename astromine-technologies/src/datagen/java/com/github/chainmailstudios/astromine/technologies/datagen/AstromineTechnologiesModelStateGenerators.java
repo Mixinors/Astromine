@@ -5,10 +5,9 @@ import com.github.chainmailstudios.astromine.datagen.generator.modelstate.ModelS
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.GenericItemModelGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.HandheldItemModelGenerator;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineModelStateGenerators;
-import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsItems;
 import com.github.chainmailstudios.astromine.technologies.datagen.generators.modelstate.BufferModelStateGenerator;
-import com.github.chainmailstudios.astromine.technologies.datagen.generators.modelstate.TieredFacingModelStateGenerator;
 import com.github.chainmailstudios.astromine.technologies.datagen.generators.modelstate.MachineModelStateGenerator;
+import com.github.chainmailstudios.astromine.technologies.datagen.generators.modelstate.TieredFacingModelStateGenerator;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesItems;
 
@@ -132,12 +131,5 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 			AstromineTechnologiesItems.BASIC_DRILL,
 			AstromineTechnologiesItems.ADVANCED_DRILL,
 			AstromineTechnologiesItems.ELITE_DRILL
-	));
-
-	public final ModelStateGenerator SPACE_SUIT = register(new GenericItemModelStateGenerator(
-		AstromineTechnologiesItems.SPACE_SUIT_HELMET,
-		AstromineTechnologiesItems.SPACE_SUIT_CHESTPLATE,
-		AstromineTechnologiesItems.SPACE_SUIT_LEGGINGS,
-		AstromineTechnologiesItems.SPACE_SUIT_BOOTS
 	));
 }

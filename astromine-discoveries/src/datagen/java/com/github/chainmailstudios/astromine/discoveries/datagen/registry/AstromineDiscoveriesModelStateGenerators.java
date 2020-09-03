@@ -51,4 +51,11 @@ public class AstromineDiscoveriesModelStateGenerators extends AstromineModelStat
 			AstromineDiscoveriesBlocks.VULCAN_STONE_SLAB,
 			AstromineDiscoveriesBlocks.VULCAN_STONE_STAIRS
 	));
+
+	public final ModelStateGenerator SPACE_SUIT = register(new GenericItemModelGenerator(
+		AstromineDiscoveriesItems.SPACE_SUIT_HELMET,
+		AstromineDiscoveriesItems.SPACE_SUIT_CHESTPLATE,
+		AstromineDiscoveriesItems.SPACE_SUIT_LEGGINGS,
+		AstromineDiscoveriesItems.SPACE_SUIT_BOOTS
+	));
 }
