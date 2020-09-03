@@ -137,8 +137,8 @@ public class AstromineCommonCallbacks {
 			}
 		});
 
-		EntityComponentCallback.register(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, ComponentFluidItemEntity.class, ComponentFluidItemEntity::createFluidComponent);
-		EntityComponentCallback.register(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, ComponentFluidItemEntity.class, ComponentFluidItemEntity::createItemComponent);
+		EntityComponentCallback.register(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, ComponentFluidInventoryEntity.class, ComponentFluidInventoryEntity::createFluidComponent);
+		EntityComponentCallback.register(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, ComponentFluidInventoryEntity.class, ComponentFluidInventoryEntity::createItemComponent);
 
 		EntityComponentCallback.register(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, ComponentEnergyItemEntity.class, ComponentEnergyItemEntity::createItemComponent);
 		EntityComponentCallback.register(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, ComponentEnergyItemEntity.class, ComponentEnergyItemEntity::createEnergyComponent);

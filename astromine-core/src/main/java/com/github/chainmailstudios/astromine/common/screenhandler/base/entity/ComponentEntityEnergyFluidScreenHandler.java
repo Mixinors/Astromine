@@ -35,7 +35,7 @@ import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import team.reborn.energy.EnergySide;
 
-public class ComponentEntityEnergyFluidScreenHandler extends ComponentEntityScreenHandler {
+public abstract class ComponentEntityEnergyFluidScreenHandler extends ComponentEntityScreenHandler {
 	public EnergyVerticalBarWidget energyBar;
 	public FluidVerticalBarWidget fluidBar;
 
