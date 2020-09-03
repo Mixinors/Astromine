@@ -141,22 +141,25 @@ public class VulcanChunkGenerator extends ChunkGenerator {
 
 				// Noise calculation
 				double noise = baseNoise.sample(x + warpX.sample(x, z), z + warpZ.sample(x, z));
+				double fractureNoise = fastNoise.getCellular(x, z);
 
 				int height = (int) (depth + (noise * scale));
 
 				int genHeight = Math.max(101, height);
-
-				float cellularNoise = fastNoise.getCellular(x, z);
 
 				for (int y = 0; y <= genHeight; ++y) {
 					mutable.setY(y);
 
 					// Fractures
 					if (y >= 1) {
-						cellularNoise -= 0.00025;
+						fractureNoise -= 0.00025;
 
-						if (cellularNoise > -0.1125 && y > height) {
-							chunk.setBlockState(mutable, Blocks.AIR.getDefaultState(), false);
+						if (fractureNoise > -0.125 && y > height) {
+							if (y >= 100) {
+								chunk.setBlockState(mutable, Blocks.AIR.getDefaultState(), false);
+							} else { // Sea level: 99
+								chunk.setBlockState(mutable, Blocks.LAVA.getDefaultState(), false);
+							}
 						} else {
 							chunk.setBlockState(mutable, AstromineDiscoveriesBlocks.VULCAN_STONE.getDefaultState(), false);
 						}
@@ -167,15 +170,6 @@ public class VulcanChunkGenerator extends ChunkGenerator {
 						if (chunkRandom.nextInt(y + 1) == 0) {
 							chunk.setBlockState(mutable, Blocks.BEDROCK.getDefaultState(), false);
 						}
-					}
-				}
-
-				for (int y = 0; y <= 100; ++y) {
-					mutable.setY(y);
-
-					// Lava
-					if (chunk.getBlockState(mutable).isAir()) {
-						chunk.setBlockState(mutable, Blocks.LAVA.getDefaultState(), false);
 					}
 				}
 			}
