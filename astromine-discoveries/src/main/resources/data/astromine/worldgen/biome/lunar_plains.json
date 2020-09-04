@@ -13,12 +13,14 @@
   "carvers": {},
   "features": [
     [
+      "astromine:moon_ore"
+    ],
+    [
       "astromine:moon_crater"
     ],
     [
       "astromine:moon_lake"
     ],
-    [],
     [],
     [],
     [],
