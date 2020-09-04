@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "c:moon_lunum_ores",
+    "count": 1
+  },
+  "output": {
+    "item": "astromine:lunum_dust",
+    "count": 2
+  },
+  "time": 90,
+  "energy_consumed": 340
+}

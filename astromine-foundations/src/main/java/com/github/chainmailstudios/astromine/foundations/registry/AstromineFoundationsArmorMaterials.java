@@ -51,4 +51,5 @@ public class AstromineFoundationsArmorMaterials extends AstromineArmorMaterials 
 	public static final ArmorMaterial STELLUM = register("stellum", 41, new int[]{ 3, 5, 6, 2 }, 15, AstromineFoundationsSoundEvents.STELLUM_ARMOR_EQUIPPED, 6.0f, 0.2f, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:stellum_ingots"))));
 	public static final ArmorMaterial GALAXIUM = register("galaxium", 44, new int[]{ 4, 8, 9, 4 }, 18, AstromineFoundationsSoundEvents.GALAXIUM_ARMOR_EQUIPPED, 4.5f, 0.1f, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:galaxiums"))));
 	public static final ArmorMaterial UNIVITE = register("univite", 47, new int[]{ 5, 8, 9, 5 }, 22, AstromineFoundationsSoundEvents.UNIVITE_ARMOR_EQUIPPED, 5.0f, 0.1f, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:univite_ingots"))));
+	public static final ArmorMaterial LUNUM = register("lunum", 30, new int[]{ 4, 7, 8, 4 }, 18, AstromineFoundationsSoundEvents.LUNUM_ARMOR_EQUIPPED, 1.0f, 0.1f, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:lunum_ingots"))));
 }

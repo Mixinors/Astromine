@@ -59,6 +59,8 @@ public class AstromineFoundationsBlocks extends AstromineBlocks {
 		.getBasicSettings());
 	public static final Block UNIVITE_BLOCK = register("univite_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.WHITE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 6).strength(80, 2000).sounds(BlockSoundGroup.METAL)), AstromineFoundationsItems
 		.getBasicSettings().fireproof());
+	public static final Block LUNUM_BLOCK = register("lunum_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.WHITE_TERRACOTTA).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(10, 75).sounds(BlockSoundGroup.METAL)), AstromineFoundationsItems
+			.getBasicSettings());
 
 	public static final Block COPPER_BLOCK = register("copper_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.ORANGE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(4, 6).sounds(BlockSoundGroup.METAL)), AstromineFoundationsItems
 		.getBasicSettings());

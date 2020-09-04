@@ -21,6 +21,7 @@
     "astromine:asterite_mining_tool",
     "astromine:stellum_mining_tool",
     "astromine:galaxium_mining_tool",
-    "astromine:univite_mining_tool"
+    "astromine:univite_mining_tool",
+    "astromine:lunum_mining_tool"
   ]
 }

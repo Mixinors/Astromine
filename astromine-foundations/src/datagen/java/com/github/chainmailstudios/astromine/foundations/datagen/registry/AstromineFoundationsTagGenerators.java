@@ -59,7 +59,6 @@ public class AstromineFoundationsTagGenerators extends AstromineTagGenerators {
 	public final SetTagGenerator TRICKS_PIGLINS = register(new TricksPiglinsTagGenerator());
 
 	public final SetTagGenerator METEOR_ORES = register(new OreTagGenerator(MaterialItemType.METEOR_ORE));
-	public final SetTagGenerator ASTEROID_ORES = register(new OreTagGenerator(MaterialItemType.ASTEROID_ORE));
 
 	public final SetTagGenerator PYRITE = register(new PyriteTagGenerator());
 	public final SetTagGenerator GEM_NUGGETS = register(new GemNuggetTagGenerator());

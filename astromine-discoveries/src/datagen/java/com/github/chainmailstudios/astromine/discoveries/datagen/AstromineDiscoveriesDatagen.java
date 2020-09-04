@@ -45,7 +45,6 @@ public class AstromineDiscoveriesDatagen implements DatagenInitializer {
 
 	@Override
 	public AstromineWorldGenGenerators getWorldGenGenerators() {
-		return new AstromineWorldGenGenerators() {
-		};
+		return null;
 	}
 }

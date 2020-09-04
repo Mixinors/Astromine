@@ -7,11 +7,13 @@ loom {
 dependencies {
     compile project(path: ':astromine-core', configuration: 'dev')
     compile project(path: ':astromine-foundations', configuration: 'dev')
+    compile project(path: ':astromine-technologies', configuration: 'dev')
 }
 
 afterEvaluate {
     dependencies {
         datagenCompile project(path: ":astromine-core", configuration: 'datagenDev')
         datagenCompile project(path: ":astromine-foundations", configuration: 'datagenDev')
+        datagenCompile project(path: ":astromine-technologies", configuration: 'datagenDev')
     }
 }

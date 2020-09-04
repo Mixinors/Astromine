@@ -30,7 +30,8 @@ public enum MaterialItemType {
 	CHESTPLATE,
 	LEGGINGS,
 	BOOTS,
-	WRENCH;
+	WRENCH,
+	MOON_ORE("moon", "ore", true);
 
 	final String prefix;
 	final String suffix;
@@ -65,7 +66,7 @@ public enum MaterialItemType {
 	}
 
 	public boolean isBlock() {
-		return this == BLOCK || this == ORE || this == METEOR_ORE || this == ASTEROID_ORE;
+		return this == BLOCK || this == ORE || this == METEOR_ORE || this == ASTEROID_ORE || this == MOON_ORE;
 	}
 
 	public boolean isOptionalInTag() {
