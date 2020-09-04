@@ -35,6 +35,7 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.ChunkRandom;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
@@ -95,6 +96,9 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 		int z2 = chunk.getPos().getEndZ();
 		int y2 = 256;
 
+		ChunkRandom random = new ChunkRandom();
+		random.setPopulationSeed(this.seed, x1, z1);
+
 		for (int x = x1; x <= x2; ++x) {
 			for (int z = z1; z <= z2; ++z) {
 				for (int y = y1; y <= y2; ++y) {
@@ -102,7 +106,9 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 					noise -= computeNoiseFalloff(y);
 
 					if (noise > 0.545) {
-						chunk.setBlockState(mutable.set(x, y, z), AstromineDiscoveriesBlocks.ASTEROID_STONE.getDefaultState(), false);
+						if (random.nextInt(64) != 0) {
+							chunk.setBlockState(mutable.set(x, y, z), AstromineDiscoveriesBlocks.ASTEROID_STONE.getDefaultState(), false);
+						}
 					}
 				}
 			}
