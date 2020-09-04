@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "astromine:moon_lunum_ore",
+      "required": false
+    }
+  ]
+}
