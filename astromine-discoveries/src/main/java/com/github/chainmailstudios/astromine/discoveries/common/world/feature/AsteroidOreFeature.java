@@ -85,7 +85,9 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 				BlockPos orePosition = streamPosition.toBlockPos();
 
 				if (world.getBlockState(orePosition).getBlock() == AstromineDiscoveriesBlocks.ASTEROID_STONE) {
-					world.setBlockState(orePosition, ore.getDefaultState(), 0b0110100);
+					if (random.nextInt(8) == 0) { // Only 1 in 8 blocks is ore, essentially anti-veinminer
+						world.setBlockState(orePosition, ore.getDefaultState(), 0b0110100);
+					}
 				}
 			}
 		}
