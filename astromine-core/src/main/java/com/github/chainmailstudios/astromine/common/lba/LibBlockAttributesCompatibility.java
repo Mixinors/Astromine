@@ -66,13 +66,15 @@ public final class LibBlockAttributesCompatibility {
 		if (blockEntity != null) {
 			SidedComponentProvider sidedComponentProvider = SidedComponentProvider.fromBlockEntity(blockEntity);
 
-			@Nullable
-			Direction direction = list.getTargetSide();
+			if(sidedComponentProvider != null) {
+				@Nullable
+				Direction direction = list.getTargetSide();
 
-			FluidInventoryComponent component = sidedComponentProvider.getSidedComponent(direction, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+				FluidInventoryComponent component = sidedComponentProvider.getSidedComponent(direction, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
-			if (component != null) {
-				list.offer(new LibBlockAttributesWrapper(component));
+				if (component != null) {
+					list.offer(new LibBlockAttributesWrapper(component));
+				}
 			}
 		}
 	}
