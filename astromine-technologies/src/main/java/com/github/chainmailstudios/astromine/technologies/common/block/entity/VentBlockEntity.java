@@ -24,30 +24,31 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergyConsumedProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.FluidSizeProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.FacingBlock;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
 
-import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
-
-public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements Tickable {
-	public boolean isActive = false;
-
-	public boolean[] activity = { false, false, false, false, false };
-
+public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements FluidSizeProvider, EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	public VentBlockEntity() {
 		super(AstromineTechnologiesBlocks.VENT, AstromineTechnologiesBlockEntityTypes.VENT);
 
@@ -56,68 +57,96 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 
 	@Override
 	protected FluidInventoryComponent createFluidComponent() {
-		return new SimpleFluidInventoryComponent(1);
+		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1);
+		FluidHandler.of(fluidComponent).getFirst().setSize(getFluidSize());
+		return fluidComponent;
+	}
+
+	@Override
+	protected EnergyInventoryComponent createEnergyComponent() {
+		return new SimpleEnergyInventoryComponent(getEnergySize());
+	}
+
+	@Override
+	public double getEnergySize() {
+		return AstromineConfig.get().ventEnergy;
+	}
+
+	@Override
+	public Fraction getFluidSize() {
+		return Fraction.of(AstromineConfig.get().ventFluid, 1);
+	}
+
+	@Override
+	public double getMachineSpeed() {
+		return AstromineConfig.get().ventSpeed;
+	}
+
+	@Override
+	public double getEnergyConsumed() {
+		return AstromineConfig.get().ventEnergyConsumed;
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
 
-		if (world.isClient())
-			return;
-		if (fluidComponent.getVolume(0).hasStored(Fraction.of(1, 8))) {
-			BlockPos position = getPos();
+		if (world == null) return;
+		if (world.isClient) return;
 
-			Direction direction = world.getBlockState(position).get(FacingBlock.FACING);
+		FluidHandler.ofOptional(this).ifPresent(fluids -> {
+			EnergyVolume energyVolume = getEnergyComponent().getVolume();
+			if (energyVolume.hasStored(Fraction.of(1, 8))) {
+				BlockPos position = getPos();
 
-			BlockPos output = position.offset(direction);
+				Direction direction = world.getBlockState(position).get(FacingBlock.FACING);
 
-			if (asEnergy().use(AstromineConfig.get().ventEnergyConsumed) && (world.getBlockState(output).isAir() || world.getBlockState(output).isSideSolidFullSquare(world, pos, direction.getOpposite()))) {
-				ComponentProvider componentProvider = ComponentProvider.fromChunk(world.getChunk(getPos()));
+				BlockPos output = position.offset(direction);
 
-				ChunkAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);
+				if (energyVolume.hasStored(getEnergyConsumed()) && (world.getBlockState(output).isAir() || world.getBlockState(output).isSideSolidFullSquare(world, pos, direction.getOpposite()))) {
+					ComponentProvider componentProvider = ComponentProvider.fromChunk(world.getChunk(getPos()));
 
-				FluidVolume centerVolume = fluidComponent.getVolume(0);
+					ChunkAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);
 
-				if (ChunkAtmosphereComponent.isInChunk(world.getChunk(output).getPos(), pos)) {
-					FluidVolume sideVolume = atmosphereComponent.get(output);
-					if ((sideVolume.isEmpty() || sideVolume.equalsFluid(centerVolume)) && sideVolume.isSmallerThan(centerVolume)) {
-						centerVolume.pushVolume(sideVolume, Fraction.of(1, 8));
+					FluidVolume centerVolume = fluids.getFirst();
 
-						atmosphereComponent.add(output, sideVolume);
+					if (ChunkAtmosphereComponent.isInChunk(world.getChunk(output).getPos(), pos)) {
+						FluidVolume sideVolume = atmosphereComponent.get(output);
+						if ((sideVolume.isEmpty() || sideVolume.getFluid() == centerVolume.getFluid()) && sideVolume.smallerThan(centerVolume.getAmount())) {
+							centerVolume.add(sideVolume, Fraction.of(1, 8));
 
-						isActive = true;
+							atmosphereComponent.add(output, sideVolume);
+
+							energyVolume.minus(getEnergyConsumed());
+
+							tickActive();
+						} else {
+							tickInactive();
+						}
+					} else {
+						ChunkPos neighborPos = ChunkAtmosphereComponent.getNeighborFromPos(world.getChunk(output).getPos(), output);
+						ComponentProvider provider = ComponentProvider.fromChunk(world.getChunk(neighborPos.x, neighborPos.z));
+						ChunkAtmosphereComponent neighborAtmosphereComponent = provider.getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);
+
+						FluidVolume sideVolume = neighborAtmosphereComponent.get(output);
+						if ((sideVolume.isEmpty() || sideVolume.getFluid() == centerVolume.getFluid()) && sideVolume.smallerThan(centerVolume.getAmount())) {
+							centerVolume.add(sideVolume, Fraction.of(1, 8));
+
+							neighborAtmosphereComponent.add(output, sideVolume);
+
+							energyVolume.minus(getEnergyConsumed());
+
+							tickActive();
+						} else {
+							tickInactive();
+						}
 					}
 				} else {
-					ChunkPos neighborPos = ChunkAtmosphereComponent.getNeighborFromPos(world.getChunk(output).getPos(), output);
-					ComponentProvider provider = ComponentProvider.fromChunk(world.getChunk(neighborPos.x, neighborPos.z));
-					ChunkAtmosphereComponent neighborAtmosphereComponent = provider.getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);
-
-					FluidVolume sideVolume = neighborAtmosphereComponent.get(output);
-					if ((sideVolume.isEmpty() || sideVolume.equalsFluid(centerVolume)) && sideVolume.isSmallerThan(centerVolume)) {
-						centerVolume.pushVolume(sideVolume, Fraction.of(1, 8));
-
-						neighborAtmosphereComponent.add(output, sideVolume);
-
-						isActive = true;
-					}
+					tickInactive();
 				}
 			} else {
-				isActive = false;
+				tickInactive();
 			}
-		} else {
-			isActive = false;
-		}
-
-		if (activity.length - 1 >= 0)
-			System.arraycopy(activity, 1, activity, 0, activity.length - 1);
-
-		activity[4] = isActive;
-
-		if (isActive && !activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, true));
-		} else if (!isActive && activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, false));
-		}
+		});
 	}
 }

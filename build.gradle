@@ -12,6 +12,12 @@ plugins {
 apply from: 'dependencies.gradle'
 
 allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xmaxerrs" << "4096"
+        }
+    }
+
     apply plugin: 'maven-publish'
     apply plugin: 'fabric-loom'
     apply plugin: 'com.diffplug.spotless'
@@ -272,9 +278,7 @@ subprojects {
             }
             options {
                 forgeGradleIntegration = false
-                javaIntegration = false
                 javaVersionAutoDetect = false
-                debug = true
             }
         }
     }
@@ -400,8 +404,6 @@ curseforge {
     }
     options {
         forgeGradleIntegration = false
-        javaIntegration = false
         javaVersionAutoDetect = false
-        debug = true
     }
 }

@@ -24,29 +24,84 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
-
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import net.minecraft.util.math.Direction;
+import org.jetbrains.annotations.Nullable;
+import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
+import team.reborn.energy.EnergySide;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import java.text.DecimalFormat;
+import java.util.Objects;
 
 public class EnergyUtilities {
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###");
 
+	@Nullable
+	public static Direction toDirection(EnergySide side) {
+		switch (side) {
+			case NORTH: {
+				return Direction.NORTH;
+			}
+			case SOUTH: {
+				return Direction.SOUTH;
+			}
+			case WEST: {
+				return Direction.WEST;
+			}
+			case EAST: {
+				return Direction.EAST;
+			}
+			case UP: {
+				return Direction.UP;
+			}
+			case DOWN: {
+				return Direction.DOWN;
+			}
+			default: {
+				return null;
+			}
+		}
+	}
+
+	@Nullable
+	public static EnergySide toSide(Direction direction) {
+		switch (direction) {
+			case NORTH: {
+				return EnergySide.NORTH;
+			}
+			case SOUTH: {
+				return EnergySide.SOUTH;
+			}
+			case WEST: {
+				return EnergySide.WEST;
+			}
+			case EAST: {
+				return EnergySide.EAST;
+			}
+			case UP: {
+				return EnergySide.UP;
+			}
+			case DOWN: {
+				return EnergySide.DOWN;
+			}
+			default: {
+				return EnergySide.UNKNOWN;
+			}
+		}
+	}
+
 	public static double fromJson(JsonElement element) {
-		if (element instanceof JsonPrimitive)
+		if (element instanceof JsonPrimitive) {
 			return element.getAsDouble();
-		if (element instanceof JsonObject)
-			return ParsingUtilities.fromJson(element, Fraction.class).doubleValue() * EnergyVolume.OLD_NEW_RATIO;
-		throw new IllegalArgumentException("Invalid amount: " + element.toString());
+		} else {
+			throw new IllegalArgumentException("Invalid amount: " + element.toString());
+		}
 	}
 
 	public static double fromPacket(PacketByteBuf buf) {
@@ -83,5 +138,25 @@ public class EnergyUtilities {
 
 	public static MutableText compoundDisplayColored(double energy, double maxEnergy) {
 		return compoundDisplay(energy, maxEnergy).formatted(Formatting.GRAY);
+	}
+
+	public static EnergyHandler of(Object object) {
+		return Objects.requireNonNull(ofNullable(object));
+	}
+
+	@Nullable
+	public static EnergyHandler ofNullable(Object object) {
+		return ofNullable(object, null);
+	}
+
+	@Nullable
+	public static EnergyHandler ofNullable(Object object, @Nullable Direction direction) {
+		if (Energy.valid(object)) {
+			if (direction == null)
+				return Energy.of(object);
+			return Energy.of(object).side(direction);
+		}
+
+		return null;
 	}
 }

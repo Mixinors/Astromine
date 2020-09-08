@@ -24,15 +24,15 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei.fluidmixing;
 
+import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.FluidMixingRecipe;
 import net.minecraft.util.Identifier;
 
-import com.github.chainmailstudios.astromine.common.recipe.FluidMixingRecipe;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 
 public class FluidMixingDisplay extends AbstractFluidMixingDisplay {
 	public FluidMixingDisplay(FluidMixingRecipe recipe) {
-		super(recipe.getEnergyConsumed(), new FluidVolume(recipe.getFirstInputFluid(), recipe.getFirstInputAmount()), new FluidVolume(recipe.getSecondInputFluid(), recipe.getSecondInputAmount()), new FluidVolume(recipe.getOutputFluid(), recipe.getOutputAmount()), recipe.getId());
+		super(recipe.getEnergyConsumed(), FluidVolume.of(recipe.getFirstInputAmount(), recipe.getFirstInputFluid()), FluidVolume.of(recipe.getSecondInputAmount(), recipe.getSecondInputFluid()), FluidVolume.of(recipe.getOutputAmount(), recipe.getOutputFluid()), recipe.getId());
 	}
 
 	@Override

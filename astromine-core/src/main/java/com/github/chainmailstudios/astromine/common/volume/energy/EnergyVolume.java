@@ -24,102 +24,98 @@
 
 package com.github.chainmailstudios.astromine.common.volume.energy;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.volume.base.Volume;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Identifier;
 
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+public class EnergyVolume extends Volume<Identifier, Double> {
+	public static final Identifier ID = AstromineCommon.identifier("energy");
 
-public class EnergyVolume {
-	public static final double OLD_NEW_RATIO = 1000;
-	private Runnable listener;
-	private double amount;
-	private double maxAmount = Double.MAX_VALUE;
-
-	public EnergyVolume() {
-		this(0);
+	public EnergyVolume(double amount, double size) {
+		super(ID, amount, size);
 	}
 
-	public EnergyVolume(double amount) {
-		this.amount = amount;
+	public EnergyVolume(double amount, double size, Runnable runnable) {
+		super(ID, amount, size, runnable);
 	}
 
-	public EnergyVolume(double amount, Runnable listener) {
-		this(amount);
-		this.listener = listener;
+	@Override
+	public <V extends Volume<Identifier, Double>> V add(V v, Double doubleA) {
+		if (!(v instanceof EnergyVolume)) return (V) this;
+
+		double amount = Math.min(v.getSize() - v.getAmount(), Math.min(getAmount(), doubleA));
+
+		if (amount > 0.0D) {
+			v.setAmount(v.getAmount() + amount);
+			setAmount(getAmount() - amount);
+		}
+
+		return (V) this;
+	}
+
+	@Override
+	public <V extends Volume<Identifier, Double>> V add(Double aDouble) {
+		double amount = Math.min(getSize() - getAmount(), aDouble);
+
+		setAmount(getAmount() + amount);
+
+		return (V) this;
+	}
+
+	@Override
+	public <V extends Volume<Identifier, Double>> V moveFrom(V v, Double doubleA) {
+		if (!(v instanceof EnergyVolume)) return (V) this;
+
+		v.add(this, doubleA);
+
+		return (V) this;
+	}
+
+	@Override
+	public <V extends Volume<Identifier, Double>> V minus(Double aDouble) {
+		double amount = Math.min(getAmount(), aDouble);
+
+		setAmount(getAmount() - amount);
+
+		return (V) this;
 	}
 
 	public static EnergyVolume empty() {
-		return new EnergyVolume();
+		return new EnergyVolume(0.0D, 0.0D);
+	}
+
+	public static EnergyVolume attached(SimpleEnergyInventoryComponent component) {
+		return new EnergyVolume(0.0D, 0.0D, component::dispatchConsumers);
+	}
+
+	public static EnergyVolume attached(double size, SimpleEnergyInventoryComponent component) {
+		return new EnergyVolume(0.0D, size, component::dispatchConsumers);
 	}
 
 	public static EnergyVolume of(double amount) {
-		return new EnergyVolume(amount);
+		return new EnergyVolume(amount, Long.MAX_VALUE);
 	}
 
-	/**
-	 * Deserializes a Volume from a tag.
-	 *
-	 * @return a Volume
-	 */
-	public static EnergyVolume fromTag(CompoundTag tag) {
-		EnergyVolume energyVolume = new EnergyVolume();
-
-		if (!tag.contains("fraction")) {
-			if (tag.contains("amount"))
-				energyVolume.amount = tag.getDouble("amount");
-		} else {
-			energyVolume.amount = Fraction.fromTag(tag.getCompound("fraction")).doubleValue() * OLD_NEW_RATIO;
-		}
-
-		if (!tag.contains("size")) {
-			if (tag.contains("maxAmount"))
-				energyVolume.maxAmount = tag.getDouble("maxAmount");
-		} else {
-			energyVolume.maxAmount = Fraction.fromTag(tag.getCompound("size")).doubleValue() * OLD_NEW_RATIO;
-		}
-
-		return energyVolume;
+	public static EnergyVolume of(double amount, double size) {
+		return new EnergyVolume(amount, size);
 	}
 
-	public double getAmount() {
-		return amount;
-	}
-
-	public void setAmount(double amount) {
-		this.amount = MathHelper.clamp(amount, 0, getMaxAmount());
-		if (listener != null)
-			listener.run();
-	}
-
-	public double getMaxAmount() {
-		return maxAmount;
-	}
-
-	public void setMaxAmount(double maxAmount) {
-		this.maxAmount = maxAmount;
-		if (listener != null)
-			listener.run();
-	}
-
-	public EnergyVolume copy() {
-		return new EnergyVolume(getMaxAmount());
-	}
-
-	public CompoundTag toTag(CompoundTag tag) {
+	@Override
+	public CompoundTag toTag() {
+		CompoundTag tag = new CompoundTag();
 		tag.putDouble("amount", getAmount());
-		tag.putDouble("maxAmount", getMaxAmount());
+		tag.putDouble("size", getSize());
 		return tag;
 	}
 
-	public boolean isEmpty() {
-		return getAmount() <= 0.0;
+	public static EnergyVolume fromTag(CompoundTag tag) {
+		return of(tag.getDouble("amount"), tag.getDouble("size"));
 	}
 
-	public boolean isFull() {
-		return getAmount() >= getMaxAmount();
-	}
-
-	public boolean hasAvailable(double produced) {
-		return getMaxAmount() - getAmount() >= produced;
+	@Override
+	public <V extends Volume<Identifier, Double>> V copy() {
+		return (V) of(getAmount(), getSize());
 	}
 }

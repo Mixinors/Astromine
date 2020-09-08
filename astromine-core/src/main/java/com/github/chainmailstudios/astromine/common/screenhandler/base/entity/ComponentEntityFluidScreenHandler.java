@@ -32,7 +32,7 @@ import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBa
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 
-public class ComponentEntityFluidScreenHandler extends ComponentEntityScreenHandler {
+public abstract class ComponentEntityFluidScreenHandler extends ComponentEntityScreenHandler {
 	public ComponentFluidEntity blockEntity;
 
 	public FluidVerticalBarWidget fluidBar;

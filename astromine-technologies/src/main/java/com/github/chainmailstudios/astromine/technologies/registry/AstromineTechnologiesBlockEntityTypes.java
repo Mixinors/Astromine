@@ -34,8 +34,17 @@ public class AstromineTechnologiesBlockEntityTypes extends AstromineBlockEntityT
 
 	public static final BlockEntityType<VentBlockEntity> VENT = register("vent", VentBlockEntity::new, AstromineTechnologiesBlocks.VENT);
 
-	public static final BlockEntityType<TankBlockEntity> TANK = register("tank", TankBlockEntity::new, AstromineTechnologiesBlocks.TANK);
-	public static final BlockEntityType<CreativeTankBlockEntity> CREATIVE_TANK = register("creative_tank", CreativeTankBlockEntity::new, AstromineTechnologiesBlocks.CREATIVE_TANK);
+	public static final BlockEntityType<TankBlockEntity.Primitive> PRIMITIVE_TANK = register("primitive_tank", TankBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_TANK);
+	public static final BlockEntityType<TankBlockEntity.Basic> BASIC_TANK = register("basic_tank", TankBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_TANK);
+	public static final BlockEntityType<TankBlockEntity.Advanced> ADVANCED_TANK = register("advanced_tank", TankBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_TANK);
+	public static final BlockEntityType<TankBlockEntity.Elite> ELITE_TANK = register("elite_tank", TankBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_TANK);
+	public static final BlockEntityType<TankBlockEntity.Elite> CREATIVE_TANK = register("creative_tank", TankBlockEntity.Elite::new, AstromineTechnologiesBlocks.CREATIVE_TANK);
+
+	public static final BlockEntityType<BufferBlockEntity.Primitive> PRIMITIVE_BUFFER = register("primitive_buffer", BufferBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_BUFFER);
+	public static final BlockEntityType<BufferBlockEntity.Basic> BASIC_BUFFER = register("basic_buffer", BufferBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_BUFFER);
+	public static final BlockEntityType<BufferBlockEntity.Advanced> ADVANCED_BUFFER = register("advanced_buffer", BufferBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_BUFFER);
+	public static final BlockEntityType<BufferBlockEntity.Elite> ELITE_BUFFER = register("elite_buffer", BufferBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_BUFFER);
+	public static final BlockEntityType<BufferBlockEntity.Elite> CREATIVE_BUFFER = register("creative_buffer", BufferBlockEntity.Elite::new, AstromineTechnologiesBlocks.CREATIVE_BUFFER);
 
 	public static final BlockEntityType<SolidGeneratorBlockEntity.Primitive> PRIMITIVE_SOLID_GENERATOR = register("primitive_solid_generator", SolidGeneratorBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_SOLID_GENERATOR);
 	public static final BlockEntityType<SolidGeneratorBlockEntity.Basic> BASIC_SOLID_GENERATOR = register("basic_solid_generator", SolidGeneratorBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_SOLID_GENERATOR);
@@ -81,16 +90,13 @@ public class AstromineTechnologiesBlockEntityTypes extends AstromineBlockEntityT
 	public static final BlockEntityType<CapacitorBlockEntity.Basic> BASIC_CAPACITOR = register("basic_capacitor", CapacitorBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_CAPACITOR);
 	public static final BlockEntityType<CapacitorBlockEntity.Advanced> ADVANCED_CAPACITOR = register("advanced_capacitor", CapacitorBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_CAPACITOR);
 	public static final BlockEntityType<CapacitorBlockEntity.Elite> ELITE_CAPACITOR = register("elite_capacitor", CapacitorBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_CAPACITOR);
-	public static final BlockEntityType<CreativeCapacitorBlockEntity> CREATIVE_CAPACITOR = register("creative_capacitor", CreativeCapacitorBlockEntity::new, AstromineTechnologiesBlocks.CREATIVE_CAPACITOR);
+	public static final BlockEntityType<CapacitorBlockEntity.Creative> CREATIVE_CAPACITOR = register("creative_capacitor", CapacitorBlockEntity.Creative::new, AstromineTechnologiesBlocks.CREATIVE_CAPACITOR);
 
 	public static final BlockEntityType<FluidExtractorBlockEntity> FLUID_EXTRACTOR = register("fluid_extractor", FluidExtractorBlockEntity::new, AstromineTechnologiesBlocks.FLUID_EXTRACTOR);
 	public static final BlockEntityType<FluidInserterBlockEntity> FLUID_INSERTER = register("fluid_inserter", FluidInserterBlockEntity::new, AstromineTechnologiesBlocks.FLUID_INSERTER);
 
 	public static final BlockEntityType<BlockBreakerBlockEntity> BLOCK_BREAKER = register("block_breaker", BlockBreakerBlockEntity::new, AstromineTechnologiesBlocks.BLOCK_BREAKER);
 	public static final BlockEntityType<BlockPlacerBlockEntity> BLOCK_PLACER = register("block_placer", BlockPlacerBlockEntity::new, AstromineTechnologiesBlocks.BLOCK_PLACER);
-
-	public static final BlockEntityType<BufferBlockEntity> BUFFER = register("buffer", BufferBlockEntity::new, AstromineTechnologiesBlocks.BASIC_BUFFER, AstromineTechnologiesBlocks.ADVANCED_BUFFER, AstromineTechnologiesBlocks.ELITE_BUFFER);
-	public static final BlockEntityType<CreativeBufferBlockEntity> CREATIVE_BUFFER = register("creative_buffer", CreativeBufferBlockEntity::new, AstromineTechnologiesBlocks.CREATIVE_BUFFER);
 
 	public static void initialize() {
 

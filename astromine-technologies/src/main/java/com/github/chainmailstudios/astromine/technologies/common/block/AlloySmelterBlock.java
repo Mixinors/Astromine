@@ -75,21 +75,6 @@ public abstract class AlloySmelterBlock extends WrenchableHorizontalFacingEnergy
 		public BlockEntity createBlockEntity() {
 			return new AlloySmelterBlockEntity.Primitive();
 		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().primitiveAlloySmelterSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().primitiveAlloySmelterEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.PRIMITIVE;
-		}
 	}
 
 	public static class Basic extends AlloySmelterBlock.Base {
@@ -100,21 +85,6 @@ public abstract class AlloySmelterBlock extends WrenchableHorizontalFacingEnergy
 		@Override
 		public BlockEntity createBlockEntity() {
 			return new AlloySmelterBlockEntity.Basic();
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().basicAlloySmelterSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().basicAlloySmelterEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.BASIC;
 		}
 	}
 
@@ -127,21 +97,6 @@ public abstract class AlloySmelterBlock extends WrenchableHorizontalFacingEnergy
 		public BlockEntity createBlockEntity() {
 			return new AlloySmelterBlockEntity.Advanced();
 		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().advancedAlloySmelterSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().advancedAlloySmelterEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.ADVANCED;
-		}
 	}
 
 	public static class Elite extends AlloySmelterBlock.Base {
@@ -152,21 +107,6 @@ public abstract class AlloySmelterBlock extends WrenchableHorizontalFacingEnergy
 		@Override
 		public BlockEntity createBlockEntity() {
 			return new AlloySmelterBlockEntity.Elite();
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().eliteAlloySmelterSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().eliteAlloySmelterEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.ELITE;
 		}
 	}
 }

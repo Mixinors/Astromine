@@ -3,6 +3,7 @@ package com.github.chainmailstudios.astromine.discoveries.datagen.registry;
 import com.github.chainmailstudios.astromine.datagen.generator.loottable.LootTableGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.loottable.onetime.DropSelfLootTableGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.loottable.onetime.SlabLootTableGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.loottable.set.DropSelfSetLootTableGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.loottable.set.FortuneOreSetLootTableGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineLootTableGenerators;
@@ -10,6 +11,7 @@ import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDisco
 
 public class AstromineDiscoveriesLootTableGenerators extends AstromineLootTableGenerators {
 	public final LootTableGenerator ASTEROID_ORE = register(new FortuneOreSetLootTableGenerator(MaterialItemType.ASTEROID_ORE, MaterialItemType.ASTEROID_CLUSTER));
+	public final LootTableGenerator MOON_ORE = register(new DropSelfSetLootTableGenerator(MaterialItemType.MOON_ORE));
 
 	public final LootTableGenerator DROP_SELF = register(new DropSelfLootTableGenerator(
 			AstromineDiscoveriesBlocks.ALTAR,
@@ -36,4 +38,8 @@ public class AstromineDiscoveriesLootTableGenerators extends AstromineLootTableG
 			AstromineDiscoveriesBlocks.MARTIAN_STONE_SLAB,
 			AstromineDiscoveriesBlocks.VULCAN_STONE_SLAB
 	));
+
+	public static void initialize() {
+
+	}
 }

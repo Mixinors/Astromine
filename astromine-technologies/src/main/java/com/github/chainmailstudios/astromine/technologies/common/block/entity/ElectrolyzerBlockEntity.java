@@ -24,133 +24,122 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.FluidSizeProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.ElectrolyzingRecipe;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Tickable;
-
-import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.recipe.ElectrolyzingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.github.chainmailstudios.astromine.technologies.common.block.ElectrolyzerBlock;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockEntity implements RecipeConsumer, Tickable {
-	private static final int INPUT_FLUID_VOLUME = 0;
-	private static final int FIRST_OUTPUT_FLUID_VOLUME = 1;
-	private static final int SECOND_OUTPUT_FLUID_VOLUME = 2;
-	public double current = 0;
+public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider, FluidSizeProvider {
+	public double progress = 0;
 	public int limit = 100;
-	public boolean isActive = false;
-	public boolean[] activity = { false, false, false, false, false };
-	private Optional<ElectrolyzingRecipe> recipe = Optional.empty();
+	public boolean shouldTry = false;
+
+	private Optional<ElectrolyzingRecipe> optionalRecipe = Optional.empty();
 
 	public ElectrolyzerBlockEntity(Block energyBlock, BlockEntityType<?> type) {
 		super(energyBlock, type);
-
-		fluidComponent.getVolume(INPUT_FLUID_VOLUME).setSize(getTankSize());
-		fluidComponent.getVolume(FIRST_OUTPUT_FLUID_VOLUME).setSize(getTankSize());
-		fluidComponent.getVolume(SECOND_OUTPUT_FLUID_VOLUME).setSize(getTankSize());
-
-		addEnergyListener(fluidComponent::dispatchConsumers);
 	}
 
-	abstract Fraction getTankSize();
+	@Override
+	protected EnergyInventoryComponent createEnergyComponent() {
+		return new SimpleEnergyInventoryComponent(getEnergySize());
+	}
 
 	@Override
 	protected FluidInventoryComponent createFluidComponent() {
-		return new SimpleFluidInventoryComponent(3).withListener((inv) -> {
-			if (this.world != null && !this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
-				recipe = (Optional) world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof ElectrolyzingRecipe).filter(recipe -> ((ElectrolyzingRecipe) recipe).canCraft(this)).findFirst();
-		});
-	}
-
-	@Override
-	public double getCurrent() {
-		return current;
-	}
-
-	@Override
-	public void setCurrent(double current) {
-		this.current = current;
-	}
-
-	@Override
-	public int getLimit() {
-		return limit;
-	}
-
-	@Override
-	public void setLimit(int limit) {
-		this.limit = limit;
-	}
-
-	@Override
-	public boolean isActive() {
-		return isActive;
-	}
-
-	@Override
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
-	}
-
-	@Override
-	public void increment() {
-		current += ((ElectrolyzerBlock) this.getCachedState().getBlock()).getMachineSpeed();
-	}
-
-	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		readRecipeProgress(tag);
-		super.fromTag(state, tag);
-	}
-
-	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		writeRecipeProgress(tag);
-		return super.toTag(tag);
+		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(3);
+		FluidHandler.of(fluidComponent).getFirst().setSize(getFluidSize());
+		FluidHandler.of(fluidComponent).getSecond().setSize(getFluidSize());
+		FluidHandler.of(fluidComponent).getThird().setSize(getFluidSize());
+		fluidComponent.addListener(() -> shouldTry = true);
+		return fluidComponent;
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
 
-		if (world.isClient())
-			return;
+		if (world == null) return;
+		if (world.isClient) return;
 
-		if (recipe.isPresent()) {
-			recipe.get().tick(this);
-
-			if (recipe.isPresent() && !recipe.get().canCraft(this)) {
-				recipe = Optional.empty();
+		FluidHandler.ofOptional(this).ifPresent(fluids -> {
+			EnergyVolume volume = getEnergyComponent().getVolume();
+			if (!optionalRecipe.isPresent() && shouldTry) {
+				optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof ElectrolyzingRecipe).filter(recipe -> ((ElectrolyzingRecipe) recipe).matches(fluidComponent)).findFirst();
 			}
 
-			isActive = true;
-		} else {
-			isActive = false;
-		}
+			optionalRecipe.ifPresent(recipe -> {
+				if (recipe.matches(fluidComponent)) {
+					limit = recipe.getTime();
 
-		if (activity.length - 1 >= 0)
-			System.arraycopy(activity, 1, activity, 0, activity.length - 1);
+					double speed = Math.min(getMachineSpeed(), limit - progress);
+					double consumed = recipe.getEnergyConsumed() * speed / limit;
 
-		activity[4] = isActive;
+					if (volume.hasStored(consumed)) {
+						volume.minus(consumed);
 
-		if (isActive && !activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, true));
-		} else if (!isActive && activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, false));
-		}
+						if (progress + speed >= limit) {
+							optionalRecipe = Optional.empty();
+
+							if (volume.hasAvailable(consumed)) {
+								FluidVolume inputVolume = fluids.getFirst();
+								FluidVolume firstOutputVolume = fluids.getSecond();
+								FluidVolume secondOutputVolume = fluids.getThird();
+
+								inputVolume.minus(recipe.getInputAmount());
+								firstOutputVolume.moveFrom(FluidVolume.of(recipe.getFirstOutputAmount(), recipe.getFirstOutputFluid()), recipe.getFirstOutputAmount());
+								secondOutputVolume.moveFrom(FluidVolume.of(recipe.getSecondOutputAmount(), recipe.getSecondOutputFluid()), recipe.getSecondOutputAmount());
+							}
+
+							progress = 0;
+						} else {
+							progress += speed;
+						}
+
+						tickActive();
+					} else {
+						tickInactive();
+					}
+				} else {
+					tickInactive();
+				}
+			});
+		});
+	}
+
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		tag.putDouble("progress", progress);
+		tag.putInt("limit", limit);
+		return super.toTag(tag);
+	}
+
+	@Override
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+		progress = tag.getDouble("progress");
+		limit = tag.getInt("limit");
+		super.fromTag(state, tag);
 	}
 
 	public static class Primitive extends ElectrolyzerBlockEntity {
@@ -159,8 +148,23 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 		}
 
 		@Override
-		Fraction getTankSize() {
+		public Fraction getFluidSize() {
 			return Fraction.of(AstromineConfig.get().primitiveElectrolyzerFluid, 1);
+		}
+
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().primitiveElectrolyzerSpeed;
+		}
+
+		@Override
+		public double getEnergySize() {
+			return AstromineConfig.get().primitiveElectrolyzerEnergy;
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.PRIMITIVE;
 		}
 	}
 
@@ -170,8 +174,23 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 		}
 
 		@Override
-		Fraction getTankSize() {
+		public Fraction getFluidSize() {
 			return Fraction.of(AstromineConfig.get().basicElectrolyzerFluid, 1);
+		}
+
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().basicElectrolyzerSpeed;
+		}
+
+		@Override
+		public double getEnergySize() {
+			return AstromineConfig.get().basicElectrolyzerEnergy;
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.BASIC;
 		}
 	}
 
@@ -181,8 +200,23 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 		}
 
 		@Override
-		Fraction getTankSize() {
+		public Fraction getFluidSize() {
 			return Fraction.of(AstromineConfig.get().advancedElectrolyzerFluid, 1);
+		}
+
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().advancedElectrolyzerSpeed;
+		}
+
+		@Override
+		public double getEnergySize() {
+			return AstromineConfig.get().advancedElectrolyzerEnergy;
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.ADVANCED;
 		}
 	}
 
@@ -192,8 +226,23 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 		}
 
 		@Override
-		Fraction getTankSize() {
+		public Fraction getFluidSize() {
 			return Fraction.of(AstromineConfig.get().eliteElectrolyzerFluid, 1);
+		}
+
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().eliteElectrolyzerSpeed;
+		}
+
+		@Override
+		public double getEnergySize() {
+			return AstromineConfig.get().eliteElectrolyzerEnergy;
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.ELITE;
 		}
 	}
 }

@@ -72,7 +72,7 @@ public class AstromineTechnologiesNetworkMembers extends AstromineNetworkMembers
 			energy.register(block, PROVIDER);
 		});
 		BLOCK_CONSUMER.put(block -> block instanceof TankBlock, block -> {
-			energy.register(block, BUFFER);
+			fluid.register(block, BUFFER);
 		});
 		BLOCK_CONSUMER.put(block -> block instanceof TrituratorBlock, block -> {
 			energy.register(block, REQUESTER);

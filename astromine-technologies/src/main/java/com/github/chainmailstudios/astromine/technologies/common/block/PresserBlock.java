@@ -75,21 +75,6 @@ public abstract class PresserBlock extends WrenchableHorizontalFacingEnergyTiere
 		public BlockEntity createBlockEntity() {
 			return new PresserBlockEntity.Primitive();
 		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().primitivePresserSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().primitivePresserEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.PRIMITIVE;
-		}
 	}
 
 	public static class Basic extends PresserBlock.Base {
@@ -100,21 +85,6 @@ public abstract class PresserBlock extends WrenchableHorizontalFacingEnergyTiere
 		@Override
 		public BlockEntity createBlockEntity() {
 			return new PresserBlockEntity.Basic();
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().basicPresserSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().basicPresserEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.BASIC;
 		}
 	}
 
@@ -127,21 +97,6 @@ public abstract class PresserBlock extends WrenchableHorizontalFacingEnergyTiere
 		public BlockEntity createBlockEntity() {
 			return new PresserBlockEntity.Advanced();
 		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().advancedPresserSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().advancedPresserEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.ADVANCED;
-		}
 	}
 
 	public static class Elite extends PresserBlock.Base {
@@ -152,21 +107,6 @@ public abstract class PresserBlock extends WrenchableHorizontalFacingEnergyTiere
 		@Override
 		public BlockEntity createBlockEntity() {
 			return new PresserBlockEntity.Elite();
-		}
-
-		@Override
-		public double getMachineSpeed() {
-			return AstromineConfig.get().elitePresserSpeed;
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().elitePresserEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.ELITE;
 		}
 	}
 }

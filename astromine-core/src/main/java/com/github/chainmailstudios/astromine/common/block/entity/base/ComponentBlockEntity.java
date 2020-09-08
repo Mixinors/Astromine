@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
+import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
+import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedComponentSidedInventoryProvider;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.PacketContext;
 
@@ -45,12 +47,11 @@ import alexiil.mc.lib.attributes.item.ItemExtractable;
 import alexiil.mc.lib.attributes.item.ItemInsertable;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
-import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.SidedComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
 import com.github.chainmailstudios.astromine.common.utilities.TransportUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedInventoryProvider;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import nerdhub.cardinal.components.api.ComponentRegistry;
@@ -70,12 +71,20 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-public abstract class ComponentBlockEntity extends net.minecraft.block.entity.BlockEntity implements ComponentProvider, PacketConsumer, BlockEntityClientSerializable, Tickable {
-	public static final Identifier TRANSFER_UPDATE_PACKET = AstromineCommon.identifier("transfer_update_packet");
+public abstract class ComponentBlockEntity extends net.minecraft.block.entity.BlockEntity implements SidedComponentProvider, PacketConsumer, BlockEntityClientSerializable, Tickable {
 	protected final BlockEntityTransferComponent transferComponent = new BlockEntityTransferComponent();
+
 	protected final Map<ComponentType<?>, Component> allComponents = Maps.newHashMap();
+
 	protected final Map<Identifier, BiConsumer<PacketByteBuf, PacketContext>> allHandlers = Maps.newHashMap();
+
 	protected boolean skipInventory = true;
+
+	public boolean isActive = false;
+
+	public boolean[] activity = { false, false, false, false, false };
+
+	public static final Identifier TRANSFER_UPDATE_PACKET = AstromineCommon.identifier("transfer_update_packet");
 
 	public ComponentBlockEntity(BlockEntityType<?> type) {
 		super(type);
@@ -194,12 +203,12 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 
 			net.minecraft.block.entity.BlockEntity neighborBlockEntity = world.getBlockEntity(neighborPos);
 			if (neighborBlockEntity != null) {
-				ComponentProvider neighborProvider = ComponentProvider.fromBlockEntity(neighborBlockEntity);
+				SidedComponentProvider neighborProvider = SidedComponentProvider.fromBlockEntity(neighborBlockEntity);
 				Direction neighborDirection = offsetDirection.getOpposite();
 				BlockEntityTransferComponent neighborTransferComponent = neighborProvider != null ? neighborProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT) : null;
 
 				// Handle Item Siding
-				if (this instanceof ExtendedInventoryProvider) {
+				if (this instanceof ExtendedComponentSidedInventoryProvider) {
 					if (!transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(offsetDirection).isDefault()) {
 						// input
 						ItemExtractable neighbor = ItemAttributes.EXTRACTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
@@ -250,5 +259,26 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 			EnergyHandler output = pair.getRight();
 			input.into(output).move(Math.max(0, Math.min(input.getMaxOutput() / energyTransfers.size(), Math.min(Math.min(input.getEnergy() / (i + 1), output.getMaxStored() - output.getEnergy()), Math.min(input.getMaxOutput(), output.getMaxInput())))));
 		}
+
+		if (world.getBlockState(getPos()).contains(BlockWithEntity.ACTIVE)) {
+			if (activity.length - 1 >= 0)
+				System.arraycopy(activity, 1, activity, 0, activity.length - 1);
+
+			activity[4] = isActive;
+
+			if (isActive && !activity[0]) {
+				world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, true));
+			} else if (!isActive && activity[0]) {
+				world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, false));
+			}
+		}
+	}
+
+	public void tickActive() {
+		isActive = true;
+	}
+
+	public void tickInactive() {
+		isActive = false;
 	}
 }

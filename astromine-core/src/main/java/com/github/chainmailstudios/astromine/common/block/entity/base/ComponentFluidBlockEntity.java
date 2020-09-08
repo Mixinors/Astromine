@@ -28,12 +28,14 @@ import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 
 import net.minecraft.block.entity.BlockEntityType;
 
-import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.SidedComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 
-public abstract class ComponentFluidBlockEntity extends ComponentBlockEntity implements ComponentProvider, BlockEntityClientSerializable {
+public abstract class ComponentFluidBlockEntity extends ComponentBlockEntity implements SidedComponentProvider, BlockEntityClientSerializable {
 	protected final FluidInventoryComponent fluidComponent = createFluidComponent();
+
+	protected abstract FluidInventoryComponent createFluidComponent();
 
 	public ComponentFluidBlockEntity(BlockEntityType<?> type) {
 		super(type);
@@ -42,5 +44,7 @@ public abstract class ComponentFluidBlockEntity extends ComponentBlockEntity imp
 		fluidComponent.dispatchConsumers();
 	}
 
-	protected abstract FluidInventoryComponent createFluidComponent();
+	public FluidInventoryComponent getFluidComponent() {
+		return fluidComponent;
+	}
 }

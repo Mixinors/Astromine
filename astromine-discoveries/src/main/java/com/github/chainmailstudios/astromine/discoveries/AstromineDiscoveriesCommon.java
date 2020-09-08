@@ -30,6 +30,7 @@ import com.github.chainmailstudios.astromine.discoveries.registry.*;
 public class AstromineDiscoveriesCommon extends AstromineCommon {
 	@Override
 	public void onInitialize() {
+		AstromineDiscoveriesDecorators.initialize();
 		AstromineDiscoveriesBiomes.initialize();
 		AstromineDiscoveriesBiomeSources.initialize();
 		AstromineDiscoveriesChunkGenerators.initialize();

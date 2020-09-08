@@ -24,9 +24,9 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
@@ -35,10 +35,6 @@ import net.minecraft.item.Item;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.item.EnergyBlockItem;
-import com.github.chainmailstudios.astromine.common.utilities.capability.energy.EnergyCapacityProvider;
 
 public class AstromineBlocks {
 	public static void initialize() {
@@ -56,7 +52,7 @@ public class AstromineBlocks {
 	 * @return Block instance registered
 	 */
 	public static <T extends Block> T register(String name, T block, Item.Settings settings) {
-		return register(name, block, block instanceof EnergyCapacityProvider ? EnergyBlockItem.create(block, settings) : new BlockItem(block, settings));
+		return register(name, block, new BlockItem(block, settings));
 	}
 
 	/**

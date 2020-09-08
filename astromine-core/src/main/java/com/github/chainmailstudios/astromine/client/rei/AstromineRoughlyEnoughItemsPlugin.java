@@ -41,7 +41,7 @@ import net.minecraft.util.math.MathHelper;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.render.sprite.SpriteRenderer;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
@@ -69,7 +69,7 @@ public abstract class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
 	}
 
 	public static EntryStack convertA2R(FluidVolume volume) {
-		return EntryStack.create(volume.getFluid(), convertA2R(volume.getFraction()));
+		return EntryStack.create(volume.getFluid(), convertA2R(volume.getAmount()));
 	}
 
 	public static List<Widget> createEnergyDisplay(Rectangle bounds, double energy, boolean generating, long speed) {

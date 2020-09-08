@@ -24,37 +24,36 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.ItemStack;
-
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidInventoryBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
+import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.FluidSizeProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.item.BucketItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 
-public class TankBlockEntity extends ComponentFluidInventoryBlockEntity {
-	public TankBlockEntity() {
-		super(AstromineTechnologiesBlockEntityTypes.TANK);
-
-		fluidComponent.getVolume(0).setSize(new Fraction(AstromineConfig.get().tankFluid, 1));
-	}
-
+public abstract class TankBlockEntity extends ComponentFluidInventoryBlockEntity implements TierProvider, FluidSizeProvider, SpeedProvider {
 	public TankBlockEntity(BlockEntityType<?> type) {
 		super(type);
-
-		fluidComponent.getVolume(0).setSize(new Fraction(AstromineConfig.get().tankFluid, 1));
 	}
 
 	@Override
 	protected FluidInventoryComponent createFluidComponent() {
-		return new SimpleFluidInventoryComponent(1);
+		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1);
+		FluidHandler.of(fluidComponent).getFirst().setSize(getFluidSize());
+		return fluidComponent;
 	}
 
 	@Override
@@ -66,30 +65,164 @@ public class TankBlockEntity extends ComponentFluidInventoryBlockEntity {
 	public void tick() {
 		super.tick();
 
-		ItemStack leftStack = itemComponent.getStack(0);
-		ItemStack rightStack = itemComponent.getStack(1);
+		if (world == null) return;
+		if (world.isClient) return;
 
-		ComponentProvider leftProvider = ComponentProvider.fromItemStack(leftStack);
-		ComponentProvider rightProvider = ComponentProvider.fromItemStack(rightStack);
+		FluidHandler.ofOptional(this).ifPresent(fluids -> {
+			ItemHandler.ofOptional(this).ifPresent(items -> {
+				FluidHandler.ofOptional(items.getFirst()).ifPresent(stackFluids -> {
+					FluidVolume ourVolume = fluids.getFirst();
+					FluidVolume stackVolume = stackFluids.getFirst();
+					
+					if (stackVolume.getFluid() == ourVolume.getFluid() || ourVolume.isEmpty()) {
+						if (items.getFirst().getItem() instanceof BucketItem) {
+							if (items.getFirst().getItem() != Items.BUCKET && items.getFirst().getCount() == 1) {
+								if (ourVolume.hasAvailable(Fraction.bucket())) {
+									ourVolume.moveFrom(stackVolume, Fraction.bucket());
 
-		FluidInventoryComponent leftComponent = leftProvider.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
-		FluidInventoryComponent rightComponent = rightProvider.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+									items.setFirst(new ItemStack(Items.BUCKET));
+								}
+							}
+						} else {
+							ourVolume.moveFrom(stackVolume, Fraction.ofDecimal(getMachineSpeed()));
+						}
+					}
+				});
 
-		if (leftComponent != null) {
-			for (FluidVolume volume : leftComponent.getContents().values()) {
-				if (volume.equalsFluid(fluidComponent.getVolume(0)) || fluidComponent.getVolume(0).isEmpty()) {
-					volume.pushVolume(fluidComponent.getVolume(0), Fraction.min(Fraction.bottle(), fluidComponent.getVolume(0).getAvailable()));
-					break;
-				}
-			}
+				FluidHandler.ofOptional(items.getSecond()).ifPresent(stackFluids -> {
+					FluidVolume ourVolume = fluids.getFirst();
+					FluidVolume stackVolume = stackFluids.getFirst();
+
+					if (stackVolume.getFluid() == ourVolume.getFluid() || stackVolume.isEmpty()) {
+						if (items.getSecond().getItem() instanceof BucketItem) {
+							if (items.getSecond().getItem() == Items.BUCKET && items.getSecond().getCount() == 1) {
+								if (ourVolume.hasStored(Fraction.bucket())) {
+									ourVolume.add(stackVolume, Fraction.bucket());
+
+									items.setSecond(new ItemStack(stackVolume.getFluid().getBucketItem()));
+								}
+							}
+						} else {
+							ourVolume.add(stackVolume, Fraction.ofDecimal(getMachineSpeed()));
+						}
+					}
+				});
+			});
+		});
+	}
+
+	public static class Primitive extends TankBlockEntity {
+		public Primitive() {
+			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_TANK);
 		}
 
-		if (!fluidComponent.getVolume(0).isEmpty() && rightComponent != null) {
-			for (FluidVolume volume : rightComponent.getContents().values()) {
-				if (volume.equalsFluid(fluidComponent.getVolume(0)) || volume.isEmpty()) {
-					fluidComponent.getVolume(0).pushVolume(volume, Fraction.min(Fraction.bottle(), volume.getAvailable()));
-				}
-			}
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().primitiveTankSpeed;
+		}
+
+		@Override
+		public Fraction getFluidSize() {
+			return Fraction.of(AstromineConfig.get().primitiveTankFluid, 1);
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.PRIMITIVE;
+		}
+	}
+
+	public static class Basic extends TankBlockEntity {
+		public Basic() {
+			super(AstromineTechnologiesBlockEntityTypes.BASIC_TANK);
+		}
+
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().basicTankSpeed;
+		}
+
+		@Override
+		public Fraction getFluidSize() {
+			return Fraction.of(AstromineConfig.get().basicTankFluid, 1);
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.BASIC;
+		}
+	}
+
+	public static class Advanced extends TankBlockEntity {
+		public Advanced() {
+			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_TANK);
+		}
+
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().advancedTankSpeed;
+		}
+
+		@Override
+		public Fraction getFluidSize() {
+			return Fraction.of(AstromineConfig.get().advancedTankFluid, 1);
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.ADVANCED;
+		}
+	}
+
+	public static class Elite extends TankBlockEntity {
+		public Elite() {
+			super(AstromineTechnologiesBlockEntityTypes.ELITE_TANK);
+		}
+
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().eliteTankSpeed;
+		}
+
+		@Override
+		public Fraction getFluidSize() {
+			return Fraction.of(AstromineConfig.get().eliteTankFluid, 1);
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.ELITE;
+		}
+	}
+
+	public static class Creative extends TankBlockEntity {
+		public Creative() {
+			super(AstromineTechnologiesBlockEntityTypes.CREATIVE_TANK);
+		}
+
+		@Override
+		public double getMachineSpeed() {
+			return Double.MAX_VALUE;
+		}
+
+		@Override
+		public Fraction getFluidSize() {
+			return Fraction.of(Long.MAX_VALUE);
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.CREATIVE;
+		}
+
+		@Override
+		public void tick() {
+			super.tick();
+
+			FluidHandler.ofOptional(fluidComponent).ifPresent(fluids -> {
+				fluids.getFirst().setAmount(Fraction.of(Long.MAX_VALUE));
+				fluids.getFirst().setSize(Fraction.of(Long.MAX_VALUE));
+			});
 		}
 	}
 }

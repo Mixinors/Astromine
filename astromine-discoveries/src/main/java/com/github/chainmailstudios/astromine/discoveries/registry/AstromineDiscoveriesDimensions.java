@@ -55,6 +55,11 @@ public class AstromineDiscoveriesDimensions extends AstromineDimensions {
 	public static final RegistryKey<DimensionType> VULCAN_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, VULCAN_ID);
 	public static final RegistryKey<World> VULCAN_WORLD = register(Registry.DIMENSION, VULCAN_ID);
 
+	public static final Identifier GLACIOS_ID = AstromineCommon.identifier("glacios");
+	public static final RegistryKey<DimensionOptions> GLACIOS_OPTIONS = register(Registry.DIMENSION_OPTIONS, GLACIOS_ID);
+	public static final RegistryKey<DimensionType> GLACIOS_TYPE_KEY = register(Registry.DIMENSION_TYPE_KEY, GLACIOS_ID);
+	public static final RegistryKey<World> GLACIOS_WORLD = register(Registry.DIMENSION, GLACIOS_ID);
+
 	public static void initialize() {
 
 	}

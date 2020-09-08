@@ -24,12 +24,14 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.block.ShapeContext;
+import com.github.chainmailstudios.astromine.common.utilities.RotationUtilities;
+import com.github.chainmailstudios.astromine.transportations.common.block.property.ConveyorProperties;
+import net.minecraft.block.*;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
@@ -38,10 +40,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.WorldAccess;
 
-import com.github.chainmailstudios.astromine.common.utilities.RotationUtilities;
-import com.github.chainmailstudios.astromine.transportations.common.block.property.ConveyorProperties;
-
-public class CatwalkStairsBlock extends HorizontalFacingBlock {
+public class CatwalkStairsBlock extends HorizontalFacingBlock implements Waterloggable {
 	public CatwalkStairsBlock(Settings settings) {
 		super(settings);
 
@@ -50,12 +49,17 @@ public class CatwalkStairsBlock extends HorizontalFacingBlock {
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(FACING, ConveyorProperties.LEFT, ConveyorProperties.RIGHT);
+		builder.add(FACING, ConveyorProperties.LEFT, ConveyorProperties.RIGHT, Properties.WATERLOGGED);
 	}
 
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext itemPlacementContext) {
-		return this.getDefaultState().with(FACING, itemPlacementContext.getPlayer().isSneaking() ? itemPlacementContext.getPlayerFacing().getOpposite() : itemPlacementContext.getPlayerFacing());
+	public FluidState getFluidState(BlockState state) {
+		return (state.contains(Properties.WATERLOGGED) && state.get(Properties.WATERLOGGED)) ? Fluids.WATER.getDefaultState() : super.getFluidState(state);
+	}
+
+	@Override
+	public BlockState getPlacementState(ItemPlacementContext context) {
+		return this.getDefaultState().with(FACING, context.getPlayer().isSneaking() ? context.getPlayerFacing().getOpposite() : context.getPlayerFacing()).with(Properties.WATERLOGGED, context.getWorld().getBlockState(context.getBlockPos()).getBlock() == Blocks.WATER);
 	}
 
 	public boolean isAdjacentBlockOfMyType(WorldAccess world, BlockPos position, Direction facing) {

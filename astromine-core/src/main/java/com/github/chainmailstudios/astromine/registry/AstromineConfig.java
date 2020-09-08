@@ -35,7 +35,7 @@ import me.sargunvohra.mcmods.autoconfig1u.shadowed.blue.endless.jankson.Comment;
 @Config(name = "astromine/config")
 public class AstromineConfig implements ConfigData {
 	@ConfigEntry.Gui.Excluded
-	public static final AstromineConfig DEFAULT = new AstromineConfig();
+	public static AstromineConfig instance;
 
 	@Comment("Whether Nuclear Warheads are enabled.")
 	public boolean nuclearWarheadEnabled = true;
@@ -304,14 +304,50 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Energy for the Fluid Extractor.")
 	public double fluidExtractorEnergy = 16384D;
 
+	@Comment("Speed for the Vent.")
+	public double ventSpeed = 1D;
+
 	@Comment("Energy for the Vent.")
 	public double ventEnergy = 16384D;
 
 	@Comment("Fluid for the Vent.")
 	public long ventFluid = 16L;
 
-	@Comment("Fluid for the Tank.")
-	public long tankFluid = 16L;
+	@Comment("Fluid for the Primitive Tank.")
+	public long primitiveTankFluid = 16L;
+
+	@Comment("Speed for the Primitive Tank.")
+	public double primitiveTankSpeed = 0.5D;
+
+	@Comment("Fluid for the Basic Tank.")
+	public long basicTankFluid = 32L;
+
+	@Comment("Speed for the Basic Tank.")
+	public double basicTankSpeed = 1D;
+
+	@Comment("Fluid for the Advanced Tank.")
+	public long advancedTankFluid = 128L;
+
+	@Comment("Speed for the Advanced Tank.")
+	public double advancedTankSpeed = 2D;
+
+	@Comment("Fluid for the Elite Tank.")
+	public long eliteTankFluid = 256L;
+
+	@Comment("Speed for the Elite Tank.")
+	public double eliteTankSpeed = 4D;
+
+	@Comment("Speed for the Primitive Capacitor.")
+	public double primitiveCapacitorSpeed = 0.5D;
+
+	@Comment("Speed for the Basic Capacitor.")
+	public double basicCapacitorSpeed = 1D;
+
+	@Comment("Speed for the Advanced Capacitor.")
+	public double advancedCapacitorSpeed = 2D;
+
+	@Comment("Speed for the Elite Capacitor.")
+	public double eliteCapacitorSpeed = 4D;
 
 	@Comment("Energy for the Primitive Capacitor.")
 	public double primitiveCapacitorEnergy = 16384D;
@@ -341,16 +377,16 @@ public class AstromineConfig implements ConfigData {
 	public double ventEnergyConsumed = 1024D;
 
 	@Comment("Delay for the Block Placer actions (smaller is faster).")
-	public long blockPlacerTimeConsumed = 40L;
+	public long blockPlacerSpeed = 40L;
 
 	@Comment("Delay for the Block Breaker actions (smaller is faster).")
-	public long blockBreakerTimeConsumed = 40L;
+	public long blockBreakerSpeed = 40L;
 
 	@Comment("Delay for the Fluid Inserter actions (smaller is faster).")
-	public long fluidInserterTimeConsumed = 40L;
+	public long fluidInserterSpeed = 40L;
 
 	@Comment("Delay for the Fluid Extractor actions (smaller is faster).")
-	public long fluidExtractorTimeConsumed = 40L;
+	public long fluidExtractorSpeed = 40L;
 
 	@Comment("Energy for the Gravity Gauntlet.")
 	public double gravityGauntletEnergy = 16384D;
@@ -380,19 +416,21 @@ public class AstromineConfig implements ConfigData {
 	public int gasDecayDenominator = 1024;
 
 	public static AstromineConfig get() {
-		try {
-			return AutoConfig.getConfigHolder(AstromineConfig.class).getConfig();
-		} catch (RuntimeException exception) {
-			return DEFAULT;
+		if (instance == null) {
+			try {
+				AutoConfig.register(AstromineConfig.class, JanksonConfigSerializer::new);
+				try {
+					((ConfigManager<AstromineConfig>) AutoConfig.getConfigHolder(AstromineConfig.class)).save();
+				} catch (Throwable throwable) {
+					throwable.printStackTrace();
+				}
+				instance = AutoConfig.getConfigHolder(AstromineConfig.class).getConfig();
+			} catch (Throwable throwable) {
+				throwable.printStackTrace();
+				instance = new AstromineConfig();
+			}
 		}
-	}
 
-	public static void initialize() {
-		AutoConfig.register(AstromineConfig.class, JanksonConfigSerializer::new);
-		try {
-			((ConfigManager<AstromineConfig>) AutoConfig.getConfigHolder(AstromineConfig.class)).save();
-		} catch (Throwable throwable) {
-			throwable.printStackTrace();
-		}
+		return instance;
 	}
 }

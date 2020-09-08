@@ -24,11 +24,14 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry;
 
+import com.github.chainmailstudios.astromine.discoveries.common.world.generation.glacios.GlaciosChunkGenerator;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.mars.MarsChunkGenerator;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.moon.MoonChunkGenerator;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.space.EarthSpaceChunkGenerator;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.vulcan.VulcanChunkGenerator;
 import com.github.chainmailstudios.astromine.registry.AstromineChunkGenerators;
+
+import net.minecraft.util.registry.Registry;
 
 public class AstromineDiscoveriesChunkGenerators extends AstromineChunkGenerators {
 	public static void initialize() {
@@ -36,5 +39,6 @@ public class AstromineDiscoveriesChunkGenerators extends AstromineChunkGenerator
 		register(AstromineDiscoveriesDimensions.MOON_ID, MoonChunkGenerator.CODEC);
 		register(AstromineDiscoveriesDimensions.MARS_ID, MarsChunkGenerator.CODEC);
 		register(AstromineDiscoveriesDimensions.VULCAN_ID, VulcanChunkGenerator.CODEC);
+		register(AstromineDiscoveriesDimensions.GLACIOS_ID, GlaciosChunkGenerator.CODEC);
 	}
 }

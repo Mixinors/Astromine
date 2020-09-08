@@ -6,3 +6,4 @@ accessible method net/minecraft/item/Item rayTrace (Lnet/minecraft/world/World;L
 accessible method net/minecraft/recipe/RecipeManager getAllOfType (Lnet/minecraft/recipe/RecipeType;)Ljava/util/Map;
 accessible field net/minecraft/block/EntityShapeContext heldItem Lnet/minecraft/item/Item;
 accessible method net/minecraft/advancement/criterion/Criteria register (Lnet/minecraft/advancement/criterion/Criterion;)Lnet/minecraft/advancement/criterion/Criterion;
+accessible field net/minecraft/item/BucketItem fluid Lnet/minecraft/fluid/Fluid;

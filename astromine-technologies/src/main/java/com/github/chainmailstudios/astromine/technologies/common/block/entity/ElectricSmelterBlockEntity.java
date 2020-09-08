@@ -24,6 +24,23 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.inventory.BaseInventory;
+import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
+import it.unimi.dsi.fastutil.ints.IntSet;
+import it.unimi.dsi.fastutil.ints.IntSets;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -31,56 +48,46 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SmeltingRecipe;
-import net.minecraft.util.Tickable;
-
-import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.inventory.BaseInventory;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
-import it.unimi.dsi.fastutil.ints.IntSet;
-import it.unimi.dsi.fastutil.ints.IntSets;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public abstract class ElectricSmelterBlockEntity extends ComponentEnergyInventoryBlockEntity implements Tickable {
+public abstract class ElectricSmelterBlockEntity extends ComponentEnergyInventoryBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
 	public double progress = 0;
 	public int limit = 100;
-
 	public boolean shouldTry = true;
-	public boolean isActive = false;
 
-	public boolean[] activity = { false, false, false, false, false };
-
-	Optional<SmeltingRecipe> recipe = Optional.empty();
+	private Optional<SmeltingRecipe> optionalRecipe = Optional.empty();
 
 	public ElectricSmelterBlockEntity(Block energyBlock, BlockEntityType<?> type) {
 		super(energyBlock, type);
-
-		addEnergyListener(() -> shouldTry = true);
 	}
 
 	@Override
 	protected ItemInventoryComponent createItemComponent() {
 		return new SimpleItemInventoryComponent(2).withInsertPredicate((direction, itemStack, slot) -> {
-			if (slot != 1)
+			if (slot != 1) {
 				return false;
-			BaseInventory inputInventory = new BaseInventory(1);
-			inputInventory.setStack(0, itemStack);
-			if (hasWorld()) {
+			}
+
+			BaseInventory inputInventory = BaseInventory.of(itemStack);
+
+			if (world != null) {
 				Optional<SmeltingRecipe> recipe = (Optional<SmeltingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) RecipeType.SMELTING, inputInventory, world);
 				return recipe.isPresent();
 			}
+
 			return false;
 		}).withExtractPredicate(((direction, stack, slot) -> {
 			return slot == 0;
 		})).withListener((inv) -> {
 			shouldTry = true;
 		});
+	}
+
+	@Override
+	protected EnergyInventoryComponent createEnergyComponent() {
+		return new SimpleEnergyInventoryComponent(getEnergySize());
 	}
 
 	@Override
@@ -91,6 +98,63 @@ public abstract class ElectricSmelterBlockEntity extends ComponentEnergyInventor
 	@Override
 	public IntSet getItemOutputSlots() {
 		return IntSets.singleton(0);
+	}
+
+	@Override
+	public void tick() {
+		super.tick();
+
+		if (world == null) return;
+		if (world.isClient) return;
+
+		ItemHandler.ofOptional(this).ifPresent(items -> {
+			EnergyVolume energyVolume = getEnergyComponent().getVolume();
+			BaseInventory inputInventory = BaseInventory.of(items.getSecond());
+
+			if (!optionalRecipe.isPresent() && shouldTry) {
+				optionalRecipe = (Optional<SmeltingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) RecipeType.SMELTING, inputInventory, world);
+				shouldTry = false;
+			}
+
+			optionalRecipe.ifPresent(recipe -> {
+				if (recipe.matches(inputInventory, world)) {
+					limit = recipe.getCookTime();
+
+					double speed = Math.min(getMachineSpeed() * 2, limit - progress);
+
+					ItemStack output = recipe.getOutput().copy();
+
+					boolean isEmpty = items.getFirst().isEmpty();
+					boolean isEqual = ItemStack.areItemsEqual(items.getFirst(), output) && ItemStack.areTagsEqual(items.getFirst(), output);
+
+					if ((isEmpty || isEqual) && items.getFirst().getCount() + output.getCount() <= items.getFirst().getMaxCount() && energyVolume.use(500.0D / limit * speed)) {
+						if (progress + speed >= limit) {
+							optionalRecipe = Optional.empty();
+
+							items.getSecond().decrement(1);
+
+							if (isEmpty) {
+								items.setFirst(output);
+							} else {
+								items.getFirst().increment(output.getCount());
+
+								shouldTry = true; // Vanilla is garbage; if we don't do it here, it only triggers the listener on #setStack.
+							}
+
+							progress = 0;
+						} else {
+							progress += speed;
+						}
+
+						tickActive();
+					} else {
+						tickInactive();
+					}
+				} else {
+					tickInactive();
+				}
+			});
+		});
 	}
 
 	@Override
@@ -108,72 +172,24 @@ public abstract class ElectricSmelterBlockEntity extends ComponentEnergyInventor
 		return super.toTag(tag);
 	}
 
-	@Override
-	public void tick() {
-		super.tick();
-
-		if (world.isClient())
-			return;
-		if (shouldTry) {
-			BaseInventory inputInventory = new BaseInventory(1);
-			inputInventory.setStack(0, itemComponent.getStack(1));
-			if (!recipe.isPresent()) {
-				if (hasWorld() && !world.isClient) {
-					recipe = (Optional<SmeltingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) RecipeType.SMELTING, inputInventory, world);
-				}
-			}
-			if (recipe.isPresent() && recipe.get().matches(inputInventory, world)) {
-				limit = recipe.get().getCookTime();
-
-				double speed = Math.min(((WrenchableHorizontalFacingEnergyTieredBlockWithEntity) this.getCachedState().getBlock()).getMachineSpeed() * 2, limit - progress);
-				ItemStack output = recipe.get().getOutput().copy();
-
-				boolean isEmpty = itemComponent.getStack(0).isEmpty();
-				boolean isEqual = ItemStack.areItemsEqual(itemComponent.getStack(0), output) && ItemStack.areTagsEqual(itemComponent.getStack(0), output);
-
-				if ((isEmpty || isEqual) && itemComponent.getStack(0).getCount() + output.getCount() <= itemComponent.getStack(0).getMaxCount() && asEnergy().use(500 / limit * speed)) {
-					if (progress + speed >= limit) {
-						itemComponent.getStack(1).decrement(1);
-
-						if (isEmpty) {
-							itemComponent.setStack(0, output);
-						} else {
-							itemComponent.getStack(0).increment(output.getCount());
-						}
-
-						progress = 0;
-					} else {
-						progress += speed;
-					}
-
-					isActive = true;
-				}
-			} else {
-				shouldTry = false;
-				isActive = false;
-				progress = 0;
-				recipe = Optional.empty();
-			}
-		} else {
-			progress = 0;
-			isActive = false;
-		}
-
-		if (activity.length - 1 >= 0)
-			System.arraycopy(activity, 1, activity, 0, activity.length - 1);
-
-		activity[4] = isActive;
-
-		if (isActive && !activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, true));
-		} else if (!isActive && activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, false));
-		}
-	}
-
 	public static class Primitive extends ElectricSmelterBlockEntity {
 		public Primitive() {
 			super(AstromineTechnologiesBlocks.PRIMITIVE_ELECTRIC_SMELTER, AstromineTechnologiesBlockEntityTypes.PRIMITIVE_ELECTRIC_SMELTER);
+		}
+
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().primitiveElectricSmelterSpeed;
+		}
+
+		@Override
+		public double getEnergySize() {
+			return AstromineConfig.get().primitiveElectricSmelterEnergy;
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.PRIMITIVE;
 		}
 	}
 
@@ -181,17 +197,62 @@ public abstract class ElectricSmelterBlockEntity extends ComponentEnergyInventor
 		public Basic() {
 			super(AstromineTechnologiesBlocks.BASIC_ELECTRIC_SMELTER, AstromineTechnologiesBlockEntityTypes.BASIC_ELECTRIC_SMELTER);
 		}
+
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().basicElectricSmelterSpeed;
+		}
+
+		@Override
+		public double getEnergySize() {
+			return AstromineConfig.get().basicElectricSmelterEnergy;
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.BASIC;
+		}
 	}
 
 	public static class Advanced extends ElectricSmelterBlockEntity {
 		public Advanced() {
 			super(AstromineTechnologiesBlocks.ADVANCED_ELECTRIC_SMELTER, AstromineTechnologiesBlockEntityTypes.ADVANCED_ELECTRIC_SMELTER);
 		}
+
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().advancedElectricSmelterSpeed;
+		}
+
+		@Override
+		public double getEnergySize() {
+			return AstromineConfig.get().advancedElectricSmelterEnergy;
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.ADVANCED;
+		}
 	}
 
 	public static class Elite extends ElectricSmelterBlockEntity {
 		public Elite() {
 			super(AstromineTechnologiesBlocks.ELITE_ELECTRIC_SMELTER, AstromineTechnologiesBlockEntityTypes.ELITE_ELECTRIC_SMELTER);
+		}
+
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().eliteElectricSmelterSpeed;
+		}
+
+		@Override
+		public double getEnergySize() {
+			return AstromineConfig.get().eliteElectricSmelterEnergy;
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.ELITE;
 		}
 	}
 }

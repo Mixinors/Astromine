@@ -52,7 +52,7 @@ public class SolidGeneratorScreenHandler extends ComponentBlockEntityEnergyItemS
 		arrow.setPosition(Position.of(Position.absolute(energyBar), energyBar.getWidth() + 3, energyBar.getHeight() / 2F - 8));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> generator.limit);
-		arrow.setProgressSupplier(() -> (int) generator.current);
+		arrow.setProgressSupplier(() -> (int) generator.progress);
 
 		SlotWidget input = new SlotWidget(0, blockEntity);
 		input.setPosition(Position.of(arrow, -26, 0));

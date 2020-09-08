@@ -1,5 +1,6 @@
 package com.github.chainmailstudios.astromine.datagen.registry;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.OneTimeModelStateGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.set.SetModelStateGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
@@ -32,11 +33,11 @@ public abstract class AstromineModelStateGenerators {
 			try {
 				if (set.shouldGenerate(generator)) {
 					generator.generate(modelStates, set);
-					System.out.println("generated modelstate " + generator.getGeneratorName());
+					AstromineCommon.LOGGER.info("Model/State generation of " + set.getName() + " succeeded, with generator " + generator.getGeneratorName() + ".");
 				}
-			} catch (Exception e) {
-				System.out.println("oh fuck modelstate bronked for " + set.getName() + " with generator " + generator.getGeneratorName());
-				System.out.println(e.getMessage());
+			} catch (Exception exception) {
+				AstromineCommon.LOGGER.error("Model/State generation of " + set.getName() + " failed, with generator " + generator.getGeneratorName() + ".");
+				AstromineCommon.LOGGER.error(exception.getMessage());
 			}
 		});
 	}

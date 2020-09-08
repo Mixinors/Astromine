@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.nbt.CompoundTag;
 
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
@@ -35,7 +36,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class SimpleFluidInventoryComponent implements FluidInventoryComponent {
-	private final Map<Integer, FluidVolume> contents = new HashMap<>();
+	private final Map<Integer, FluidVolume> contents = new Int2ObjectOpenHashMap<>();
 
 	private final List<Runnable> listeners = new ArrayList<>();
 

@@ -7,6 +7,7 @@ import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetim
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.SimpleBlockItemModelGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.SimpleBlockItemModelStateGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.set.ColumnBlockSetModelStateGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.modelstate.set.GenericBlockSetModelStateGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.set.GenericItemSetModelStateGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineModelStateGenerators;
@@ -17,6 +18,8 @@ public class AstromineDiscoveriesModelStateGenerators extends AstromineModelStat
 	public final ModelStateGenerator ASTEROID_ORE = register(new ColumnBlockSetModelStateGenerator(MaterialItemType.ASTEROID_ORE, AstromineCommon.identifier("block/asteroid_stone")));
 
 	public final ModelStateGenerator ASTEROID_CLUSTER = register(new GenericItemSetModelStateGenerator(MaterialItemType.ASTEROID_CLUSTER));
+
+	public final ModelStateGenerator MOON_ORE = register(new GenericBlockSetModelStateGenerator(MaterialItemType.MOON_ORE));
 
 	public final ModelStateGenerator STANDARD_ITEMS = register(new GenericItemModelGenerator(
 			AstromineDiscoveriesItems.SPACE_SUIT_HELMET,
@@ -51,4 +54,15 @@ public class AstromineDiscoveriesModelStateGenerators extends AstromineModelStat
 			AstromineDiscoveriesBlocks.VULCAN_STONE_SLAB,
 			AstromineDiscoveriesBlocks.VULCAN_STONE_STAIRS
 	));
+
+	public final ModelStateGenerator SPACE_SUIT = register(new GenericItemModelGenerator(
+		AstromineDiscoveriesItems.SPACE_SUIT_HELMET,
+		AstromineDiscoveriesItems.SPACE_SUIT_CHESTPLATE,
+		AstromineDiscoveriesItems.SPACE_SUIT_LEGGINGS,
+		AstromineDiscoveriesItems.SPACE_SUIT_BOOTS
+	));
+
+	public static void initialize() {
+
+	}
 }

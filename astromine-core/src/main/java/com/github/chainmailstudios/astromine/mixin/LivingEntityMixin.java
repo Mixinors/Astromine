@@ -24,6 +24,12 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.registry.BreathableRegistry;
+import com.github.chainmailstudios.astromine.common.registry.FluidEffectRegistry;
+import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
+import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -45,16 +51,11 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.registry.AtmosphereRegistry;
-import com.github.chainmailstudios.astromine.common.registry.BreathableRegistry;
-import com.github.chainmailstudios.astromine.common.registry.FluidEffectRegistry;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineAttributes;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
@@ -68,21 +69,15 @@ import java.util.stream.Collectors;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin implements GravityEntity {
 	@Shadow
-	public float flyingSpeed;
-	@Shadow
 	@Final
 	private DefaultedList<ItemStack> equippedArmor;
-
-	@Inject(at = @At("RETURN"), method = "createLivingAttributes()Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;")
-	private static void createLivingAttributesInject(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
-		cir.getReturnValue().add(AstromineAttributes.GRAVITY_MULTIPLIER);
-	}
 
 	@Shadow
 	public abstract double getAttributeValue(EntityAttribute attribute);
 
-	@Shadow
-	public abstract Iterable<ItemStack> getArmorItems();
+	@Shadow public abstract Iterable<ItemStack> getArmorItems();
+
+	@Shadow public float flyingSpeed;
 
 	@ModifyConstant(method = "travel(Lnet/minecraft/util/math/Vec3d;)V", constant = @Constant(doubleValue = 0.08D, ordinal = 0))
 	private double modifyGravity(double original) {
@@ -96,89 +91,119 @@ public abstract class LivingEntityMixin implements GravityEntity {
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	void onTick(CallbackInfo callbackInformation) {
 		Entity entity = (Entity) (Object) this;
+		if (entity.world.isClient) return;
 
-		if (AtmosphereRegistry.INSTANCE.containsKey(entity.world.getRegistryKey()) && !entity.getType().isIn(AstromineTags.DOES_NOT_BREATHE)) {
+		if (!entity.getType().isIn(AstromineTags.DOES_NOT_BREATHE)) {
 			ComponentProvider chunkProvider = ComponentProvider.fromChunk(entity.world.getChunk(entity.getBlockPos()));
 
 			ChunkAtmosphereComponent atmosphereComponent = chunkProvider.getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);
 
-			FluidVolume atmosphereVolume = AstromineDimensions.isAstromine(entity.world.getRegistryKey()) ? atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP)) : FluidVolume.oxygen();
+			if (atmosphereComponent != null) {
+				FluidVolume atmosphereVolume;
 
-			boolean isSubmerged = false;
+				if (!AstromineDimensions.isAstromine(entity.world.getRegistryKey())) {
+					atmosphereVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
 
-			Box collisionBox = entity.getBoundingBox();
-
-			for (BlockPos blockPos : BlockPos.method_29715(collisionBox).collect(Collectors.toList())) {
-				BlockState blockState = entity.world.getBlockState(blockPos);
-
-				if (blockState.getBlock() instanceof FluidBlock) {
-					isSubmerged = true;
-
-					Optional.ofNullable(FluidEffectRegistry.INSTANCE.get(blockState.getFluidState().getFluid())).ifPresent(it -> it.accept((LivingEntity) (Object) this));
+					if (atmosphereVolume.isEmpty()) {
+						atmosphereVolume = FluidVolume.oxygen();
+					}
+				} else {
+					atmosphereVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
 				}
-			}
 
-			if (!isSubmerged) {
-				boolean isBreathing = true;
+				boolean isSubmerged = false;
 
-				ComponentProvider entityProvider = ComponentProvider.fromEntity(entity);
+				Box collisionBox = entity.getBoundingBox();
 
-				EntityOxygenComponent oxygenComponent = entityProvider.getComponent(AstromineComponentTypes.ENTITY_OXYGEN_COMPONENT);
+				for (BlockPos blockPos : (Iterable<BlockPos>) () -> BlockPos.method_29715(collisionBox).iterator()) {
+					BlockState blockState = entity.world.getBlockState(blockPos);
 
-				boolean hasHelmet = false;
-				boolean hasChestplate = false;
-				boolean hasLeggings = false;
-				boolean hasBoots = false;
+					if (blockState.getBlock() instanceof FluidBlock) {
+						isSubmerged = true;
 
-				for (ItemStack stack : getArmorItems()) {
-					if (!stack.isEmpty()) {
-						if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_helmet")) {
-							hasHelmet = true;
-						}
-						if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_chestplate")) {
-							hasChestplate = true;
-						}
-						if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_leggings")) {
-							hasLeggings = true;
-						}
-						if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_boots")) {
-							hasBoots = true;
-						}
+						Optional.ofNullable(FluidEffectRegistry.INSTANCE.get(blockState.getFluidState().getFluid())).ifPresent(it -> it.accept((LivingEntity) (Object) this));
 					}
 				}
 
-				boolean hasSuit = hasHelmet && hasChestplate && hasLeggings && hasBoots;
+				if (!isSubmerged) {
+					boolean isBreathing = true;
 
-				for (ItemStack stack : getArmorItems()) {
-					if (!stack.isEmpty()) {
-						if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_chestplate")) { // TODO: Properly verify for Space Suit.
-							ComponentProvider provider = ComponentProvider.fromItemStack(stack);
+					ComponentProvider entityProvider = ComponentProvider.fromEntity(entity);
 
-							FluidInventoryComponent fluidComponent = provider.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+					EntityOxygenComponent oxygenComponent = entityProvider.getComponent(AstromineComponentTypes.ENTITY_OXYGEN_COMPONENT);
 
-							if (fluidComponent.getVolume(0).isEmpty() || !hasSuit) { // TODO: Check if can breathe!
-								isBreathing = false;
-							} else {
-								fluidComponent.getVolume(0).extractVolume(Fraction.of(1, 512));
+					if (oxygenComponent != null) {
+						boolean hasHelmet = false;
+						boolean hasChestplate = false;
+						boolean hasLeggings = false;
+						boolean hasBoots = false;
+
+						for (ItemStack stack : getArmorItems()) {
+							if (!stack.isEmpty()) {
+								if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_helmet")) {
+									hasHelmet = true;
+								}
+								if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_chestplate")) {
+									hasChestplate = true;
+								}
+								if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_leggings")) {
+									hasLeggings = true;
+								}
+								if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_boots")) {
+									hasBoots = true;
+								}
+							}
+						}
+
+						boolean hasSuit = hasHelmet && hasChestplate && hasLeggings && hasBoots;
+
+						for (ItemStack stack : getArmorItems()) {
+							if (!stack.isEmpty()) {
+								if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_chestplate")) { // TODO: Properly verify for Space Suit.
+									ComponentProvider provider = ComponentProvider.fromItemStack(stack);
+
+									FluidInventoryComponent fluidComponent = provider.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+
+									if (fluidComponent != null) {
+										FluidVolume volume = FluidHandler.of(fluidComponent).getFirst();
+
+										if (volume != null) {
+											boolean canBreathe = BreathableRegistry.INSTANCE.canBreathe(entity.getType(), volume.getFluid());
+
+											if ((volume.isEmpty() || !canBreathe) && hasSuit) { // TODO: Check if can breathe!
+												isBreathing = false;
+											}
+
+											if (!canBreathe) {
+												if (FluidEffectRegistry.INSTANCE.contains(volume.getFluid())) {
+													FluidEffectRegistry.INSTANCE.get(volume.getFluid()).accept((LivingEntity) entity);
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+
+						if (!isBreathing) {
+							oxygenComponent.simulate(false);
+						} else {
+							if (!hasSuit && BreathableRegistry.INSTANCE.containsKey(entity.getType())) {
+								if (!BreathableRegistry.INSTANCE.canBreathe(entity.getType(), atmosphereVolume.getFluid())) {
+									isBreathing = false;
+								}
 							}
 
-							Optional.ofNullable(FluidEffectRegistry.INSTANCE.get(fluidComponent.getVolume(0).getFluid())).ifPresent(it -> it.accept((LivingEntity) entity));
+							oxygenComponent.simulate(isBreathing);
 						}
 					}
-				}
-
-				if (!isBreathing) {
-					oxygenComponent.simulate(false);
-				} else {
-					if (!hasSuit && BreathableRegistry.INSTANCE.containsKey(entity.getType())) {
-						if (!BreathableRegistry.INSTANCE.canBreathe(entity.getType(), atmosphereVolume.getFluid())) {
-							isBreathing = false;
-						}
-					}
-
-					oxygenComponent.simulate(isBreathing);
 				}
 			}
 		}
+	}
+
+	@Inject(at = @At("RETURN"), method = "createLivingAttributes()Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;")
+	private static void createLivingAttributesInject(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
+		cir.getReturnValue().add(AstromineAttributes.GRAVITY_MULTIPLIER);
 	}
 }

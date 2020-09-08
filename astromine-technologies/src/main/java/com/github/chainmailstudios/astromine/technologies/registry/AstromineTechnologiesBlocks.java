@@ -38,13 +38,15 @@ import com.github.chainmailstudios.astromine.technologies.common.block.*;
 
 public class AstromineTechnologiesBlocks extends AstromineBlocks {
 	public static final Block HOLOGRAPHIC_BRIDGE_PROJECTOR = register("holographic_bridge_projector", new HolographicBridgeProjectorBlock(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
-	public static final Block HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK = register("holographic_bridge_invisible", new HolographicBridgeInvisibleBlock(FabricBlockSettings.of(HolographicBridgeInvisibleBlock.MATERIAL).dropsNothing().strength(-1.0F, 3600000.8F).nonOpaque().lightLevel(15)
-		.allowsSpawning((a, b, c, d) -> false)));
+	public static final Block HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK = register("holographic_bridge_invisible", new HolographicBridgeInvisibleBlock(FabricBlockSettings.of(HolographicBridgeInvisibleBlock.MATERIAL).dropsNothing().strength(-1.0F, 3600000.8F).nonOpaque().lightLevel(15).allowsSpawning((a, b, c, d) -> false)));
 
 	public static final Block VENT = register("vent", new VentBlock(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
 
-	public static final Block TANK = register("tank", new TankBlock(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
-	public static final Block CREATIVE_TANK = register("creative_tank", new CreativeTankBlock(getCreativeSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block PRIMITIVE_TANK = register("primitive_tank", new TankBlock.Primitive(getPrimitiveSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block BASIC_TANK = register("basic_tank", new TankBlock.Basic(getBasicSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block ADVANCED_TANK = register("advanced_tank", new TankBlock.Advanced(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block ELITE_TANK = register("elite_tank", new TankBlock.Elite(getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block CREATIVE_TANK = register("creative_tank", new TankBlock.Creative(getCreativeSettings()), AstromineTechnologiesItems.getBasicSettings());
 
 	public static final Block PRIMITIVE_SOLID_GENERATOR = register("primitive_solid_generator", new SolidGeneratorBlock.Primitive(getPrimitiveSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block BASIC_SOLID_GENERATOR = register("basic_solid_generator", new SolidGeneratorBlock.Basic(getBasicSettings()), AstromineTechnologiesItems.getBasicSettings());
@@ -86,18 +88,18 @@ public class AstromineTechnologiesBlocks extends AstromineBlocks {
 	public static final Block ADVANCED_FLUID_MIXER = register("advanced_fluid_mixer", new FluidMixerBlock.Advanced(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block ELITE_FLUID_MIXER = register("elite_fluid_mixer", new FluidMixerBlock.Elite(getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
 
-	public static final Block BASIC_BUFFER = register("basic_buffer", new BufferBlock(BufferTier.BASIC, getBasicSettings()), AstromineTechnologiesItems.getBasicSettings());
-	public static final Block ADVANCED_BUFFER = register("advanced_buffer", new BufferBlock(BufferTier.ADVANCED, getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
-	public static final Block ELITE_BUFFER = register("elite_buffer", new BufferBlock(BufferTier.ELITE, getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
-	public static final Block CREATIVE_BUFFER = register("creative_buffer", new CreativeBufferBlock(getCreativeSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block PRIMITIVE_BUFFER = register("primitive_buffer", new BufferBlock.Primitive(getPrimitiveSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block BASIC_BUFFER = register("basic_buffer", new BufferBlock.Basic(getBasicSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block ADVANCED_BUFFER = register("advanced_buffer", new BufferBlock.Advanced(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block ELITE_BUFFER = register("elite_buffer", new BufferBlock.Elite(getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block CREATIVE_BUFFER = register("creative_buffer", new BufferBlock.Creative(getCreativeSettings()), AstromineTechnologiesItems.getBasicSettings());
 
 	public static final Block FLUID_EXTRACTOR = register("fluid_extractor", new FluidExtractorBlock(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block FLUID_INSERTER = register("fluid_inserter", new FluidInserterBlock(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block BLOCK_BREAKER = register("block_breaker", new BlockBreakerBlock(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block BLOCK_PLACER = register("block_placer", new BlockPlacerBlock(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
 
-	public static final Block NUCLEAR_WARHEAD = register("nuclear_warhead", new NuclearWarheadBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(1F, 4F).sounds(BlockSoundGroup.METAL)), AstromineTechnologiesItems
-		.getBasicSettings());
+	public static final Block NUCLEAR_WARHEAD = register("nuclear_warhead", new NuclearWarheadBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 5).strength(1F, 4F).sounds(BlockSoundGroup.METAL)), AstromineTechnologiesItems.getBasicSettings());
 
 	public static final Block PRIMITIVE_CAPACITOR = register("primitive_capacitor", new CapacitorBlock.Primitive(getPrimitiveSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block BASIC_CAPACITOR = register("basic_capacitor", new CapacitorBlock.Basic(getBasicSettings()), AstromineTechnologiesItems.getBasicSettings());

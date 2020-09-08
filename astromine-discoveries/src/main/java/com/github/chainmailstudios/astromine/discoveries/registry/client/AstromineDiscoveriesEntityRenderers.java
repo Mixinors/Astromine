@@ -24,9 +24,9 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry.client;
 
+import com.github.chainmailstudios.astromine.discoveries.client.render.entity.PrimitiveRocketEntityRenderer;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 
-import com.github.chainmailstudios.astromine.discoveries.client.render.entity.RocketEntityRenderer;
 import com.github.chainmailstudios.astromine.discoveries.client.render.entity.SpaceSlimeEntityRenderer;
 import com.github.chainmailstudios.astromine.discoveries.client.render.entity.SuperSpaceSlimeEntityRenderer;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesEntityTypes;
@@ -34,7 +34,7 @@ import com.github.chainmailstudios.astromine.registry.client.AstromineEntityRend
 
 public class AstromineDiscoveriesEntityRenderers extends AstromineEntityRenderers {
 	public static void initialize() {
-		EntityRendererRegistry.INSTANCE.register(AstromineDiscoveriesEntityTypes.ROCKET, RocketEntityRenderer::new);
+		EntityRendererRegistry.INSTANCE.register(AstromineDiscoveriesEntityTypes.PRIMITIVE_ROCKET, (dispatcher, context) -> new PrimitiveRocketEntityRenderer(dispatcher));
 		EntityRendererRegistry.INSTANCE.register(AstromineDiscoveriesEntityTypes.SPACE_SLIME, (dispatcher, context) -> new SpaceSlimeEntityRenderer(dispatcher));
 		EntityRendererRegistry.INSTANCE.register(AstromineDiscoveriesEntityTypes.SUPER_SPACE_SLIME, (dispatcher, context) -> new SuperSpaceSlimeEntityRenderer(dispatcher));
 	}

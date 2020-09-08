@@ -60,6 +60,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 	private final OpenSimplexNoise mainNoise2;
 	private final OpenSimplexNoise ridgedNoise;
 	private final OpenSimplexNoise detailNoise;
+	private final OpenSimplexNoise caveNoise;
 	private final ThreadLocal<BiomeGeneratorCache> cache;
 
 	public MoonChunkGenerator(long seed, Registry<Biome> biomeRegistry) {
@@ -70,6 +71,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 		this.mainNoise2 = new OpenSimplexNoise(seed + 79);
 		this.ridgedNoise = new OpenSimplexNoise(seed - 79);
 		this.detailNoise = new OpenSimplexNoise(seed + 2003);
+		this.caveNoise = new OpenSimplexNoise(seed - 2003);
 		this.cache = ThreadLocal.withInitial(() -> new BiomeGeneratorCache(biomeSource));
 	}
 
@@ -137,7 +139,13 @@ public class MoonChunkGenerator extends ChunkGenerator {
 				int height = (int) (depth + (noise * scale));
 				for (int y = 0; y <= height; ++y) {
 					mutable.setY(y);
-					chunk.setBlockState(mutable, AstromineDiscoveriesBlocks.MOON_STONE.getDefaultState(), false);
+
+					double caveExtent = caveNoise.sample(x * SCALE, y / 32.0, z * SCALE) + computeNoiseFalloff(y);
+
+					if (caveExtent > -0.575) {
+						chunk.setBlockState(mutable, AstromineDiscoveriesBlocks.MOON_STONE.getDefaultState(), false);
+					}
+
 					if (y <= 5) {
 						if (chunkRandom.nextInt(y + 1) == 0) {
 							chunk.setBlockState(mutable, Blocks.BEDROCK.getDefaultState(), false);
@@ -146,6 +154,10 @@ public class MoonChunkGenerator extends ChunkGenerator {
 				}
 			}
 		}
+	}
+
+	private static double computeNoiseFalloff(int y) {
+		return Math.max(((10.0) / (y + 0.1)) - 1, 0);
 	}
 
 	@Override

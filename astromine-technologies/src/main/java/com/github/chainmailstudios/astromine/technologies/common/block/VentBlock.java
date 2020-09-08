@@ -55,11 +55,6 @@ public class VentBlock extends WrenchableFacingEnergyBlockWithEntity {
 	}
 
 	@Override
-	public double getEnergyCapacity() {
-		return AstromineConfig.get().ventEnergy;
-	}
-
-	@Override
 	public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
 		return new VentScreenHandler(syncId, playerInventory.player, pos);
 	}
@@ -68,4 +63,6 @@ public class VentBlock extends WrenchableFacingEnergyBlockWithEntity {
 	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
 		buffer.writeBlockPos(pos);
 	}
+
+
 }

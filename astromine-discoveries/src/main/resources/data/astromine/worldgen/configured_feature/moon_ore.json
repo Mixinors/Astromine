@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:decorated",
+  "config": {
+    "feature": {
+      "config": {},
+      "type": "astromine:moon_ore"
+    },
+    "decorator": {
+      "config": {
+        "count": 2
+      },
+      "type": "astromine:moon_ore_decorator"
+    }
+  }
+}

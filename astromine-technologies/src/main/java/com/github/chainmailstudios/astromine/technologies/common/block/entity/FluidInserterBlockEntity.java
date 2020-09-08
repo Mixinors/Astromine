@@ -24,90 +24,105 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergyConsumedProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
-
-public class FluidInserterBlockEntity extends ComponentEnergyFluidBlockEntity implements Tickable {
-	public boolean isActive = false;
-	public boolean[] activity = { false, false, false, false, false };
+public class FluidInserterBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	private Fraction cooldown = Fraction.empty();
 
 	public FluidInserterBlockEntity() {
 		super(AstromineTechnologiesBlocks.FLUID_INSERTER, AstromineTechnologiesBlockEntityTypes.FLUID_INSERTER);
-
-		fluidComponent.getVolume(0).setSize(Fraction.ofWhole(4));
 	}
 
 	@Override
 	protected FluidInventoryComponent createFluidComponent() {
-		return new SimpleFluidInventoryComponent(1);
+		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1);
+		FluidHandler.of(fluidComponent).getFirst().setSize(Fraction.of(8));
+		return fluidComponent;
+	}
+
+	@Override
+	protected EnergyInventoryComponent createEnergyComponent() {
+		return new SimpleEnergyInventoryComponent(getEnergySize());
+	}
+
+	@Override
+	public double getEnergyConsumed() {
+		return AstromineConfig.get().fluidInserterEnergyConsumed;
+	}
+
+	@Override
+	public double getEnergySize() {
+		return AstromineConfig.get().fluidInserterEnergy;
+	}
+
+	@Override
+	public double getMachineSpeed() {
+		return AstromineConfig.get().fluidInserterSpeed;
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
 
-		start:
-		if (this.world != null && !this.world.isClient()) {
-			if (asEnergy().getEnergy() < AstromineConfig.get().fluidInserterEnergyConsumed) {
-				cooldown = Fraction.empty();
-				isActive = false;
-				break start;
-			}
+		if (world == null) return;
+		if (world.isClient) return;
 
-			isActive = true;
-
-			cooldown = Fraction.add(cooldown, Fraction.of(1, AstromineConfig.get().fluidInserterTimeConsumed));
-			cooldown = Fraction.simplify(cooldown);
-			if (cooldown.isBiggerOrEqualThan(Fraction.ofWhole(1))) {
+		FluidHandler.ofOptional(this).ifPresent(fluids -> {
+			EnergyVolume energyVolume = getEnergyComponent().getVolume();
+			if (energyVolume.getAmount() < getEnergyConsumed()) {
 				cooldown = Fraction.empty();
 
-				FluidVolume fluidVolume = fluidComponent.getVolume(0);
+				tickInactive();
+			} else {
+				tickActive();
 
-				Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
-				BlockPos targetPos = pos.offset(direction);
-				BlockState targetState = world.getBlockState(targetPos);
+				cooldown = cooldown.add(Fraction.ofDecimal(1.0D / getMachineSpeed()));
 
-				if (targetState.isAir() && fluidVolume.hasStored(Fraction.bucket())) {
-					FluidVolume toInsert = fluidVolume.extractVolume(Fraction.bucket());
-					world.setBlockState(targetPos, toInsert.getFluid().getDefaultState().getBlockState());
-					asEnergy().extract(AstromineConfig.get().fluidInserterEnergyConsumed);
-					world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1, 1);
-				}
+				cooldown.ifBiggerOrEqualThan(Fraction.of(1), () -> {
+					cooldown = Fraction.empty();
+
+					FluidVolume fluidVolume = fluids.getFirst();
+
+					Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
+
+					BlockPos targetPos = pos.offset(direction);
+
+					BlockState targetState = world.getBlockState(targetPos);
+
+					if (targetState.isAir()) {
+						if (fluidVolume.hasStored(Fraction.bucket())) {
+							FluidVolume toInsert = FluidVolume.of(Fraction.bucket(), fluidVolume.getFluid());
+
+							fluidVolume.minus(Fraction.bucket());
+
+							energyVolume.minus(getEnergyConsumed());
+
+							world.setBlockState(targetPos, toInsert.getFluid().getDefaultState().getBlockState());
+							world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1, 1);
+						}
+					}
+				});
 			}
-
-			if (activity.length - 1 >= 0)
-				System.arraycopy(activity, 1, activity, 0, activity.length - 1);
-
-			activity[4] = isActive;
-
-			if (isActive && !activity[0]) {
-				world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, true));
-			} else if (!isActive && activity[0]) {
-				world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, false));
-			}
-		}
-	}
-
-	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		tag.put("cooldown", cooldown.toTag(new CompoundTag()));
-		return super.toTag(tag);
+		});
 	}
 }

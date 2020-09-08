@@ -26,191 +26,262 @@ package com.github.chainmailstudios.astromine.common.volume.base;
 
 import net.minecraft.nbt.CompoundTag;
 
-import com.github.chainmailstudios.astromine.common.fraction.Fraction;
+import java.util.Objects;
 
-import com.google.common.base.Objects;
+public abstract class Volume<T, N extends Number> {
+	private T t;
 
-public class Volume {
-	protected Fraction fraction = Fraction.empty();
+	private N n;
 
-	protected Fraction size = new Fraction(Integer.MAX_VALUE, 1);
+	private N s;
 
-	/**
-	 * Instantiates a Volume with an empty fraction.
-	 */
-	public Volume() {}
+	private Runnable r;
 
-	/**
-	 * Instantiates a Volume with a specified fraction.
-	 */
-	public Volume(Fraction fraction) {
-		this.fraction = fraction;
+	public Volume(T t, N n, N s) {
+		this.t = t;
+		this.n = n;
+		this.s = s;
+	}
+
+	public Volume(T t, N n, N s, Runnable r) {
+		this(t, n, s);
+
+		this.r = r;
+	}
+
+	public T getType() {
+		return t;
+	}
+
+	public void setType(T t) {
+		this.t = t;
+
+		if (r != null) r.run();
+	}
+
+	public N getAmount() {
+		return n;
+	}
+
+	public void setAmount(N n) {
+		this.n = n;
+
+		if (r != null) r.run();
+	}
+
+	public N getSize() {
+		return s;
+	}
+
+	public void setSize(N s) {
+		this.s = s;
+
+		if (r != null) r.run();
+	}
+
+	public void setRunnable(Runnable r) {
+		this.r = r;
 	}
 
 	public boolean isFull() {
-		return getFraction().equals(getSize());
+		return n.equals(s);
+	}
+
+	public Volume<T, N> ifFull(Runnable runnable) {
+		if (isFull()) {
+			runnable.run();
+		}
+
+		return this;
+	}
+
+	public Volume<T, N> ifNotFull(Runnable runnable) {
+		if (!isFull()) {
+			runnable.run();
+		}
+
+		return this;
 	}
 
 	public boolean isEmpty() {
-		return this.getFraction().equals(Fraction.empty());
+		return n.doubleValue() == 0.0D;
 	}
 
-	public Fraction getFraction() {
-		return this.fraction;
-	}
-
-	public void setFraction(Fraction fraction) {
-		this.fraction = fraction;
-	}
-
-	/**
-	 * Serializes this Volume and its properties into a tag.
-	 *
-	 * @return a tag
-	 */
-	public CompoundTag toTag(CompoundTag tag) {
-		// TODO: Null checks.
-
-		tag.put("fraction", this.fraction.toTag(new CompoundTag()));
-		tag.put("size", this.size.toTag(new CompoundTag()));
-
-		return tag;
-	}
-
-	/**
-	 * Takes a Volume out of this Volume.
-	 */
-	public <T extends Volume> T extractVolume(Fraction taken) {
-		T volume = (T) new Volume();
-		pushVolume(volume, taken);
-		return volume;
-	}
-
-	public <T extends Volume> T insertVolume(Fraction fraction) {
-		Volume volume = new Volume(fraction);
-
-		this.pullVolume(volume, fraction);
-
-		return (T) volume;
-	}
-
-	/**
-	 * Pull fluids from a Volume into this Volume. If the Volume's fractional available is smaller than pulled, ask for
-	 * the minimum. If not, ask for the minimum between requested size and available for pulling into this.
-	 */
-	public <T extends Volume> void pullVolume(T target, Fraction pulled) {
-		if (target.fraction.isSmallerOrEqualThan(Fraction.empty()))
-			return;
-
-		Fraction available = Fraction.subtract(this.size, this.fraction);
-
-		pulled = Fraction.min(pulled, available);
-
-		if (target.fraction.isSmallerThan(pulled)) { // If target has less than required.
-			setFraction(Fraction.add(getFraction(), target.fraction));
-			target.setFraction(Fraction.subtract(target.fraction, target.fraction));
-
-			setFraction(Fraction.simplify(getFraction()));
-			target.setFraction(Fraction.simplify(target.getFraction()));
-		} else { // If target has more than or equal to required.
-			target.setFraction(Fraction.subtract(target.fraction, pulled));
-			setFraction(Fraction.add(getFraction(), pulled));
-
-			target.setFraction(Fraction.simplify(target.getFraction()));
-			setFraction(Fraction.simplify(getFraction()));
+	public Volume<T, N> ifEmpty(Runnable runnable) {
+		if (isEmpty()) {
+			runnable.run();
 		}
+
+		return this;
 	}
 
-	/**
-	 * Push fluids from this Volume into a Volume. If the Volume's fractional available is smaller than pushed, ask for
-	 * the minimum. If not, ask for the minimum between requested size and available for pushing into target.
-	 */
-	public <T extends Volume> void pushVolume(T target, Fraction pushed) {
-		if (fraction.isSmallerOrEqualThan(Fraction.empty()))
-			return;
-
-		Fraction available = Fraction.subtract(target.size, target.fraction);
-
-		pushed = Fraction.min(pushed, available);
-
-		if (fraction.isSmallerThan(pushed)) { // If target has less than required.
-			target.setFraction(Fraction.add(target.getFraction(), fraction));
-			setFraction(Fraction.subtract(fraction, fraction));
-
-			target.setFraction(Fraction.simplify(target.getFraction()));
-			setFraction(Fraction.simplify(getFraction()));
-		} else { // If target has more than or equal to required.
-			target.setFraction(Fraction.add(target.getFraction(), pushed));
-			setFraction(Fraction.subtract(fraction, pushed));
-
-			target.setFraction(Fraction.simplify(target.getFraction()));
-			setFraction(Fraction.simplify(getFraction()));
+	public Volume<T, N> ifNotEmpty(Runnable runnable) {
+		if (!isEmpty()) {
+			runnable.run();
 		}
+
+		return this;
 	}
 
-	public Fraction getSize() {
-		return this.size;
+	public boolean hasAvailable(Number required) {
+		return s.doubleValue() - n.doubleValue() >= required.doubleValue();
 	}
 
-	public void setSize(Fraction size) {
-		this.size = size;
+	public Volume<T, N> ifAvailable(Number required, Runnable runnable) {
+		if (hasAvailable(required)) {
+			runnable.run();
+		}
+
+		return this;
 	}
 
-	public Fraction getAvailable() {
-		return Fraction.subtract(getSize(), getFraction());
+	public Volume<T, N> ifNotAvailable(Number required, Runnable runnable) {
+		if (!hasAvailable(required)) {
+			runnable.run();
+		}
+
+		return this;
 	}
 
-	public boolean hasAvailable(Fraction fraction) {
-		Fraction available = getAvailable();
-		return available.equals(fraction) || available.isBiggerThan(fraction);
+	public boolean hasStored(Number required) {
+		return n.doubleValue() >= required.doubleValue();
 	}
 
-	public boolean hasStored(Fraction fraction) {
-		return this.fraction.isBiggerOrEqualThan(fraction);
+	public Volume<T, N> ifStored(Number required, Runnable runnable) {
+		if (hasStored(required)) {
+			runnable.run();
+		}
+
+		return this;
 	}
 
-	/**
-	 * Fraction comparison method.
-	 */
-	public <T extends Volume> boolean isSmallerThan(T volume) {
-		return !this.isBiggerThan(volume);
+	public Volume<T, N> ifNotStored(Number required, Runnable runnable) {
+		if (!hasStored(required)) {
+			runnable.run();
+		}
+
+		return this;
 	}
 
-	/**
-	 * Fraction comparison method.
-	 */
-	public <T extends Volume> boolean isBiggerThan(T volume) {
-		return fraction.isBiggerThan(volume.fraction);
+	public boolean biggerThan(Number number) {
+		return n.doubleValue() > number.doubleValue();
 	}
 
-	/**
-	 * Fraction comparison method.
-	 */
-	public <T extends Volume> boolean isSmallerOrEqualThan(T volume) {
-		return isSmallerThan(volume) || equals(volume);
+	public Volume<T, N> ifBiggerThan(Number number, Runnable runnable) {
+		if (biggerThan(number)) {
+			runnable.run();
+		}
+
+		return this;
 	}
 
-	/**
-	 * Fraction comparison method.
-	 */
-	public <T extends Volume> boolean isBiggerOrEqualThan(T volume) {
-		return isBiggerThan(volume) || equals(volume);
+	public Volume<T, N> ifNotBiggerThan(Number number, Runnable runnable) {
+		if (!biggerThan(number)) {
+			runnable.run();
+		}
+
+		return this;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(this.fraction);
+	public boolean smallerThan(Number number) {
+		return n.doubleValue() < number.doubleValue();
+	}
+
+	public Volume<T, N> ifSmallerThan(Number number, Runnable runnable) {
+		if (smallerThan(number)) {
+			runnable.run();
+		}
+
+		return this;
+	}
+
+	public Volume<T, N> ifNotSmallerThan(Number number, Runnable runnable) {
+		if (!smallerThan(number)) {
+			runnable.run();
+		}
+
+		return this;
+	}
+
+	public boolean biggerOrEqualThan(Number number) {
+		return n.doubleValue() >= number.doubleValue();
+	}
+
+	public Volume<T, N> ifBiggerOrEqualThan(Number number, Runnable runnable) {
+		if (biggerOrEqualThan(number)) {
+			runnable.run();
+		}
+
+		return this;
+	}
+
+	public Volume<T, N> ifNotBiggerOrEqualThan(Number number, Runnable runnable) {
+		if (!biggerOrEqualThan(number)) {
+			runnable.run();
+		}
+
+		return this;
+	}
+
+	public boolean smallerOrEqualThan(Number number) {
+		return n.doubleValue() <= number.doubleValue();
+	}
+
+	public Volume<T, N> ifSmallerOrEqualThan(Number number, Runnable runnable) {
+		if (smallerOrEqualThan(number)) {
+			runnable.run();
+		}
+
+		return this;
+	}
+
+	public Volume<T, N> ifNotSmallerOrEqualThan(Number number, Runnable runnable) {
+		if (!smallerOrEqualThan(number)) {
+			runnable.run();
+		}
+
+		return this;
 	}
 
 	@Override
 	public boolean equals(Object object) {
-		if (this == object)
+		if (this == object) return true;
+
+		if (!(object instanceof Volume)) return false;
+
+		Volume<?, ?> volume = (Volume<?, ?>) object;
+
+		if (!Objects.equals(t, volume.t)) return false;
+		if (!Objects.equals(n, volume.n)) return false;
+
+		return Objects.equals(s, volume.s);
+	}
+
+	@Override
+	public int hashCode() {
+		int result = t != null ? t.hashCode() : 0;
+		result = 31 * result + (n != null ? n.hashCode() : 0);
+		result = 31 * result + (s != null ? s.hashCode() : 0);
+		return result;
+	}
+
+	public abstract CompoundTag toTag();
+
+	public abstract <V extends Volume<T, N>> V add(V v, N n);
+
+	public abstract <V extends Volume<T, N>> V add(N n);
+
+	public abstract <V extends Volume<T, N>> V moveFrom(V v, N n);
+
+	public abstract <V extends Volume<T, N>> V minus(N n);
+
+	public abstract <V extends Volume<T, N>> V copy();
+
+	public boolean use(N n) {
+		if (hasStored(n)) {
+			minus(n);
 			return true;
-		if (!(object instanceof Volume))
-			return false;
-
-		Volume volume = (Volume) object;
-
-		return Objects.equal(this.fraction, volume.fraction);
+		}
+		return false;
 	}
 }

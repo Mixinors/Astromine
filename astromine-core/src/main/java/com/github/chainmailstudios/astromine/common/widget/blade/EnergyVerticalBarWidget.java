@@ -55,7 +55,7 @@ public class EnergyVerticalBarWidget extends AbstractWidget {
 	@Environment(EnvType.CLIENT)
 	@Override
 	public @NotNull List<Text> getTooltip() {
-		return Lists.newArrayList(EnergyUtilities.compoundDisplay(volumeSupplier.get().getAmount(), volumeSupplier.get().getMaxAmount()));
+		return Lists.newArrayList(EnergyUtilities.compoundDisplay(volumeSupplier.get().getAmount(), volumeSupplier.get().getSize()));
 	}
 
 	public void setVolume(Supplier<EnergyVolume> volumeSupplier) {
@@ -79,7 +79,7 @@ public class EnergyVerticalBarWidget extends AbstractWidget {
 
 		EnergyVolume volume = volumeSupplier.get();
 
-		float sBGY = (float) (sY / volume.getMaxAmount() * volume.getAmount());
+		float sBGY = (float) (sY / volume.getSize() * volume.getAmount());
 
 		Scissors area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - (y + sY) * scale), (int) (sX * scale), (int) (sY * scale));
 

@@ -164,7 +164,7 @@
     ],
     "subtitle": "subtitles.item.armor.equip"
   },
-  "item.armor.equip_space_suit": {
+  "item.armor.equip_lunum": {
     "sounds": [
       "minecraft:item/armor/equip_generic1",
       "minecraft:item/armor/equip_generic2",

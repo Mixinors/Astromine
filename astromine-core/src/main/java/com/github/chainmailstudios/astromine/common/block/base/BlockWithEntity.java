@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.block.base;
 
+import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
+import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 
 import net.minecraft.block.AbstractBlock;
@@ -74,7 +76,7 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		if (!world.isClient && !(player.getStackInHand(hand).getItem() instanceof BucketItem) && hasScreenHandler()) {
+		if (!world.isClient && (!(player.getStackInHand(hand).getItem() instanceof BucketItem) && !(player.getStackInHand(hand).getItem() instanceof EnergyVolumeItem) && !(player.getStackInHand(hand).getItem() instanceof FluidVolumeItem)) && hasScreenHandler()) {
 			player.openHandledScreen(state.createScreenHandlerFactory(world, pos));
 			return ActionResult.CONSUME;
 		} else if (player.getStackInHand(hand).getItem() instanceof BucketItem) {
@@ -137,8 +139,6 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 	@Override
 	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
 		super.onPlaced(world, pos, state, placer, itemStack);
-
-		CompoundTag tag = itemStack.getOrCreateTag();
 
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 		if (blockEntity != null) {

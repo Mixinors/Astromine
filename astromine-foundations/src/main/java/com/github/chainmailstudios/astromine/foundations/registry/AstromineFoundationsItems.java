@@ -46,6 +46,7 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item METITE_NUGGET = register("metite_nugget", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item STELLUM_NUGGET = register("stellum_nugget", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final Item UNIVITE_NUGGET = register("univite_nugget", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item LUNUM_NUGGET = register("lunum_nugget", new Item(AstromineFoundationsItems.getBasicSettings()));
 
 	public static final Item COPPER_NUGGET = register("copper_nugget", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item TIN_NUGGET = register("tin_nugget", new Item(AstromineFoundationsItems.getBasicSettings()));
@@ -86,6 +87,7 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item METITE_INGOT = register("metite_ingot", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item STELLUM_INGOT = register("stellum_ingot", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final Item UNIVITE_INGOT = register("univite_ingot", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item LUNUM_INGOT = register("lunum_ingot", new Item(AstromineFoundationsItems.getBasicSettings()));
 
 	public static final Item COPPER_INGOT = register("copper_ingot", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item TIN_INGOT = register("tin_ingot", new Item(AstromineFoundationsItems.getBasicSettings()));
@@ -105,6 +107,7 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item STELLUM_DUST = register("stellum_dust", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final Item GALAXIUM_DUST = register("galaxium_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item UNIVITE_DUST = register("univite_dust", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item LUNUM_DUST = register("lunum_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 
 	public static final Item COPPER_DUST = register("copper_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item TIN_DUST = register("tin_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
@@ -135,7 +138,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item STELLUM_TINY_DUST = register("stellum_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final Item GALAXIUM_TINY_DUST = register("galaxium_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item UNIVITE_TINY_DUST = register("univite_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
-
+	public static final Item LUNUM_TINY_DUST = register("lunum_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
+	
 	public static final Item COPPER_TINY_DUST = register("copper_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item TIN_TINY_DUST = register("tin_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item SILVER_TINY_DUST = register("silver_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
@@ -164,6 +168,7 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item METITE_PLATES = register("metite_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item STELLUM_PLATES = register("stellum_plates", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final Item UNIVITE_PLATES = register("univite_plates", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item LUNUM_PLATES = register("lunum_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
 
 	public static final Item COPPER_PLATES = register("copper_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item TIN_PLATES = register("tin_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
@@ -185,7 +190,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item METITE_GEAR = register("metite_gear", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item STELLUM_GEAR = register("stellum_gear", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final Item UNIVITE_GEAR = register("univite_gear", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
-
+	public static final Item LUNUM_GEAR = register("lunum_gear", new Item(AstromineFoundationsItems.getBasicSettings()));
+	
 	public static final Item COPPER_GEAR = register("copper_gear", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item TIN_GEAR = register("tin_gear", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item SILVER_GEAR = register("silver_gear", new Item(AstromineFoundationsItems.getBasicSettings()));
@@ -348,8 +354,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item STELLUM_SWORD = register("stellum_sword", new SwordItem(AstromineFoundationsToolMaterials.STELLUM, 3, -2.4f, AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final Item STELLUM_MINING_TOOL = register("stellum_mining_tool", new DynamicToolItem(STELLUM_SHOVEL, STELLUM_PICKAXE, AstromineFoundationsToolMaterials.STELLUM, AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final Item STELLUM_MATTOCK = register("stellum_mattock", new DynamicToolItem(STELLUM_HOE, STELLUM_AXE, AstromineFoundationsToolMaterials.STELLUM, AstromineFoundationsItems.getBasicSettings().fireproof()));
-	public static final Item STELLUM_HAMMER = register("stellum_hammer", new HammerItem(AstromineFoundationsToolMaterials.STELLUM, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item STELLUM_EXCAVATOR = register("stellum_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.STELLUM, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item STELLUM_HAMMER = register("stellum_hammer", new HammerItem(AstromineFoundationsToolMaterials.STELLUM, 1, -2.8f, AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item STELLUM_EXCAVATOR = register("stellum_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.STELLUM, 1, -2.8f, AstromineFoundationsItems.getBasicSettings().fireproof()));
 
 	public static final PickaxeItem GALAXIUM_PICKAXE = register("galaxium_pickaxe", new PickaxeItem(AstromineFoundationsToolMaterials.GALAXIUM, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 	public static final AxeItem GALAXIUM_AXE = register("galaxium_axe", new AxeItem(AstromineFoundationsToolMaterials.GALAXIUM, 5f, -3.0f, AstromineFoundationsItems.getBasicSettings()));
@@ -368,9 +374,19 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item UNIVITE_SWORD = register("univite_sword", new SwordItem(AstromineFoundationsToolMaterials.UNIVITE, 3, -2.4f, AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final Item UNIVITE_MINING_TOOL = register("univite_mining_tool", new DynamicToolItem(UNIVITE_SHOVEL, UNIVITE_PICKAXE, AstromineFoundationsToolMaterials.UNIVITE, AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final Item UNIVITE_MATTOCK = register("univite_mattock", new DynamicToolItem(UNIVITE_HOE, UNIVITE_AXE, AstromineFoundationsToolMaterials.UNIVITE, AstromineFoundationsItems.getBasicSettings().fireproof()));
-	public static final Item UNIVITE_HAMMER = register("univite_hammer", new HammerItem(AstromineFoundationsToolMaterials.UNIVITE, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item UNIVITE_EXCAVATOR = register("univite_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.UNIVITE, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item UNIVITE_HAMMER = register("univite_hammer", new HammerItem(AstromineFoundationsToolMaterials.UNIVITE, 1, -2.8f, AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item UNIVITE_EXCAVATOR = register("univite_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.UNIVITE, 1, -2.8f, AstromineFoundationsItems.getBasicSettings().fireproof()));
 
+	public static final PickaxeItem LUNUM_PICKAXE = register("lunum_pickaxe", new PickaxeItem(AstromineFoundationsToolMaterials.LUNUM, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
+	public static final AxeItem LUNUM_AXE = register("lunum_axe", new AxeItem(AstromineFoundationsToolMaterials.LUNUM, 5f, -3.0f, AstromineFoundationsItems.getBasicSettings()));
+	public static final ShovelItem LUNUM_SHOVEL = register("lunum_shovel", new ShovelItem(AstromineFoundationsToolMaterials.LUNUM, 1.5f, -3.0f, AstromineFoundationsItems.getBasicSettings()));
+	public static final HoeItem LUNUM_HOE = register("lunum_hoe", new HoeItem(AstromineFoundationsToolMaterials.LUNUM, -5, 0f, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item LUNUM_SWORD = register("lunum_sword", new SwordItem(AstromineFoundationsToolMaterials.LUNUM, 3, -2.4f, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item LUNUM_MINING_TOOL = register("lunum_mining_tool", new DynamicToolItem(LUNUM_SHOVEL, LUNUM_PICKAXE, AstromineFoundationsToolMaterials.LUNUM, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item LUNUM_MATTOCK = register("lunum_mattock", new DynamicToolItem(LUNUM_HOE, LUNUM_AXE, AstromineFoundationsToolMaterials.LUNUM, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item LUNUM_HAMMER = register("lunum_hammer", new HammerItem(AstromineFoundationsToolMaterials.LUNUM, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item LUNUM_EXCAVATOR = register("lunum_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.LUNUM, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
+	
 	// Armors
 	public static final Item COPPER_HELMET = register("copper_helmet", new ArmorItem(AstromineFoundationsArmorMaterials.COPPER, EquipmentSlot.HEAD, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item COPPER_CHESTPLATE = register("copper_chestplate", new ArmorItem(AstromineFoundationsArmorMaterials.COPPER, EquipmentSlot.CHEST, AstromineFoundationsItems.getBasicSettings()));
@@ -447,6 +463,11 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item UNIVITE_LEGGINGS = register("univite_leggings", new ArmorItem(AstromineFoundationsArmorMaterials.UNIVITE, EquipmentSlot.LEGS, AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final Item UNIVITE_BOOTS = register("univite_boots", new ArmorItem(AstromineFoundationsArmorMaterials.UNIVITE, EquipmentSlot.FEET, AstromineFoundationsItems.getBasicSettings().fireproof()));
 
+	public static final Item LUNUM_HELMET = register("lunum_helmet", new ArmorItem(AstromineFoundationsArmorMaterials.LUNUM, EquipmentSlot.HEAD, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item LUNUM_CHESTPLATE = register("lunum_chestplate", new ArmorItem(AstromineFoundationsArmorMaterials.LUNUM, EquipmentSlot.CHEST, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item LUNUM_LEGGINGS = register("lunum_leggings", new ArmorItem(AstromineFoundationsArmorMaterials.LUNUM, EquipmentSlot.LEGS, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item LUNUM_BOOTS = register("lunum_boots", new ArmorItem(AstromineFoundationsArmorMaterials.LUNUM, EquipmentSlot.FEET, AstromineFoundationsItems.getBasicSettings()));
+	
 	public static final Item METEOR_METITE_CLUSTER = register("meteor_metite_cluster", new Item(AstromineFoundationsItems.getBasicSettings()));
 
 	public static final Item COPPER_WRENCH = register("copper_wrench", new WrenchItem(AstromineFoundationsToolMaterials.COPPER, AstromineFoundationsItems.getBasicSettings()));

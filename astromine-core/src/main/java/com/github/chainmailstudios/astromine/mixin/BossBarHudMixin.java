@@ -59,7 +59,7 @@ public abstract class BossBarHudMixin extends DrawableHelper {
 
 	@Inject(method = "renderBossBar", at = @At("HEAD"), cancellable = true)
 	private void renderCustomBossBar(MatrixStack matrices, int i, int j, BossBar bossBar, CallbackInfo ci) {
-		if (bossBar instanceof ClientBossBar && ((TranslatableText) bossBar.getName()).getKey().contains("super_space_slim")) {
+		if (bossBar instanceof ClientBossBar && bossBar.getName() instanceof TranslatableText && ((TranslatableText) bossBar.getName()).getKey().contains("super_space_slim")) {
 			this.client.getTextureManager().bindTexture(CUSTOM_BAR_TEX);
 
 			// draw empty background bar
@@ -72,8 +72,8 @@ public abstract class BossBarHudMixin extends DrawableHelper {
 			this.drawTexture(matrices, i, j, 0, 12, overlayBarWidth, 12);
 
 			ci.cancel();
+			
+			this.client.getTextureManager().bindTexture(BARS_TEXTURE);
 		}
-
-		this.client.getTextureManager().bindTexture(BARS_TEXTURE);
 	}
 }

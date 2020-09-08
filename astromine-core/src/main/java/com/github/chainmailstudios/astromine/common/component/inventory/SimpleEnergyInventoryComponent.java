@@ -24,4 +24,55 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
-public class SimpleEnergyInventoryComponent implements EnergyInventoryComponent {}
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import net.minecraft.nbt.CompoundTag;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SimpleEnergyInventoryComponent implements EnergyInventoryComponent {
+	private final EnergyVolume content;
+
+	private final List<Runnable> listeners = new ArrayList<>();
+
+	public SimpleEnergyInventoryComponent() {
+		this.content = EnergyVolume.attached(this);
+	}
+
+	public SimpleEnergyInventoryComponent(double size) {
+		this.content = EnergyVolume.attached(size, this);
+	}
+
+	public SimpleEnergyInventoryComponent(EnergyVolume volume) {
+		this.content = volume;
+		this.content.setRunnable(this::dispatchConsumers);
+	}
+
+	@Override
+	public EnergyVolume getVolume() {
+		return content;
+	}
+
+	@Override
+	public List<Runnable> getListeners() {
+		return listeners;
+	}
+
+	@Override
+	public void fromTag(CompoundTag compoundTag) {
+		read(compoundTag);
+	}
+
+	@Override
+	public CompoundTag toTag(CompoundTag compoundTag) {
+		write(compoundTag);
+		return compoundTag;
+	}
+
+	@Override
+	public SimpleEnergyInventoryComponent copy() {
+		SimpleEnergyInventoryComponent component = new SimpleEnergyInventoryComponent();
+		component.fromTag(toTag(new CompoundTag()));
+		return component;
+	}
+}

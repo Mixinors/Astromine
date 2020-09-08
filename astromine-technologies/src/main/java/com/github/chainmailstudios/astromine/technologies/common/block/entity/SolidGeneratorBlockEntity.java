@@ -24,39 +24,32 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Tickable;
-
-import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.recipe.SolidGeneratingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
-import com.github.chainmailstudios.astromine.technologies.common.block.SolidGeneratorBlock;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
-
-public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventoryBlockEntity implements RecipeConsumer, Tickable {
-	public double current = 0;
+public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventoryBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+	public double progress = 0;
 	public int limit = 100;
-
-	public boolean isActive = false;
-
-	public boolean[] activity = { false, false, false, false, false };
-
-	private Optional<SolidGeneratingRecipe> recipe = Optional.empty();
 
 	public SolidGeneratorBlockEntity(Block energyBlock, BlockEntityType<?> type) {
 		super(energyBlock, type);
@@ -64,116 +57,76 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 
 	@Override
 	protected ItemInventoryComponent createItemComponent() {
-		return new SimpleItemInventoryComponent(1).withListener((inv) -> {
-			if (hasWorld() && !this.world.isClient() && (!recipe.isPresent() || !recipe.get().canCraft(this)))
-				recipe = (Optional) world.getRecipeManager().getAllOfType(SolidGeneratingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof SolidGeneratingRecipe).filter(recipe -> ((SolidGeneratingRecipe) recipe).canCraft(this)).findFirst();
-		});
+		return new SimpleItemInventoryComponent(1);
 	}
 
 	@Override
-	public double getCurrent() {
-		return current;
-	}
-
-	@Override
-	public void setCurrent(double current) {
-		this.current = current;
-	}
-
-	@Override
-	public int getLimit() {
-		return limit;
-	}
-
-	@Override
-	public void setLimit(int limit) {
-		this.limit = limit;
-	}
-
-	@Override
-	public boolean isActive() {
-		return isActive;
-	}
-
-	@Override
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
-	}
-
-	@Override
-	public void increment() {
-		current += 1 * ((SolidGeneratorBlock) this.getCachedState().getBlock()).getMachineSpeed();
-	}
-
-	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		readRecipeProgress(tag);
-		super.fromTag(state, tag);
-	}
-
-	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		writeRecipeProgress(tag);
-		return super.toTag(tag);
+	protected EnergyInventoryComponent createEnergyComponent() {
+		return new SimpleEnergyInventoryComponent(getEnergySize());
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
 
-		if (world.isClient())
-			return;
+		if (world == null) return;
+		if (world.isClient) return;
 
-		if (recipe.isPresent()) {
-			recipe.get().tick(this);
-
-			if (recipe.isPresent() && !recipe.get().canCraft(this)) {
-				recipe = Optional.empty();
-			}
-
-			isActive = true;
-		} else {
-			ItemStack burnStack = itemComponent.getStack(0);
+		ItemHandler.ofOptional(this).ifPresent(items -> {
+			EnergyVolume energyVolume = getEnergyComponent().getVolume();
+			ItemStack burnStack = items.getFirst();
 
 			Integer value = FuelRegistry.INSTANCE.get(burnStack.getItem());
 
-			boolean isFuel = !(burnStack.getItem() instanceof BucketItem) && value != null && value > 0;
+			if (value != null) {
+				boolean isFuel = !(burnStack.getItem() instanceof BucketItem) && value > 0;
 
-			if (isFuel) {
-				if (current == 0) {
-					limit = value / 2;
-					current++;
-					burnStack.decrement(1);
-				}
-			}
-
-			double produced = 5;
-			for (int i = 0; i < 3 * ((SolidGeneratorBlock) this.getCachedState().getBlock()).getMachineSpeed(); i++) {
-				if (current > 0 && current <= limit) {
-					if (EnergyUtilities.hasAvailable(asEnergy(), produced)) {
-						current++;
-						asEnergy().insert(produced);
+				if (isFuel) {
+					if (progress == 0) {
+						limit = value / 2;
+						progress++;
 					}
-				} else {
-					current = 0;
-					limit = 100;
-					break;
 				}
+
+				double produced = 5;
+				for (int i = 0; i < 3 * getMachineSpeed(); i++) {
+					if (progress > 0 && progress <= limit) {
+						if (energyVolume.hasAvailable(produced)) {
+							progress++;
+							energyVolume.add(produced * getMachineSpeed());
+						}
+					} else {
+						burnStack.decrement(1);
+
+						progress = 0;
+						limit = 100;
+						break;
+					}
+				}
+
+				if (isFuel || progress != 0) {
+					tickActive();
+				} else {
+					tickInactive();
+				}
+			} else {
+				tickInactive();
 			}
+		});
+	}
 
-			isActive = isFuel || current != 0;
-		}
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		tag.putDouble("progress", progress);
+		tag.putInt("limit", limit);
+		return super.toTag(tag);
+	}
 
-		if (activity.length - 1 >= 0)
-			System.arraycopy(activity, 1, activity, 0, activity.length - 1);
-
-		activity[4] = isActive;
-
-		if (isActive && !activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, true));
-		} else if (!isActive && activity[0]) {
-			world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, false));
-		}
+	@Override
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+		progress = tag.getDouble("progress");
+		limit = tag.getInt("limit");
+		super.fromTag(state, tag);
 	}
 
 	public static class Primitive extends SolidGeneratorBlockEntity {
@@ -181,6 +134,20 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 			super(AstromineTechnologiesBlocks.PRIMITIVE_SOLID_GENERATOR, AstromineTechnologiesBlockEntityTypes.PRIMITIVE_SOLID_GENERATOR);
 		}
 
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().primitiveSolidGeneratorSpeed;
+		}
+
+		@Override
+		public double getEnergySize() {
+			return AstromineConfig.get().primitiveSolidGeneratorEnergy;
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.PRIMITIVE;
+		}
 	}
 
 	public static class Basic extends SolidGeneratorBlockEntity {
@@ -188,6 +155,20 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 			super(AstromineTechnologiesBlocks.BASIC_SOLID_GENERATOR, AstromineTechnologiesBlockEntityTypes.BASIC_SOLID_GENERATOR);
 		}
 
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().basicSolidGeneratorSpeed;
+		}
+
+		@Override
+		public double getEnergySize() {
+			return AstromineConfig.get().basicSolidGeneratorEnergy;
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.BASIC;
+		}
 	}
 
 	public static class Advanced extends SolidGeneratorBlockEntity {
@@ -195,6 +176,20 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 			super(AstromineTechnologiesBlocks.ADVANCED_SOLID_GENERATOR, AstromineTechnologiesBlockEntityTypes.ADVANCED_SOLID_GENERATOR);
 		}
 
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().advancedSolidGeneratorSpeed;
+		}
+
+		@Override
+		public double getEnergySize() {
+			return AstromineConfig.get().advancedSolidGeneratorEnergy;
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.ADVANCED;
+		}
 	}
 
 	public static class Elite extends SolidGeneratorBlockEntity {
@@ -202,5 +197,19 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 			super(AstromineTechnologiesBlocks.ELITE_SOLID_GENERATOR, AstromineTechnologiesBlockEntityTypes.ELITE_SOLID_GENERATOR);
 		}
 
+		@Override
+		public double getMachineSpeed() {
+			return AstromineConfig.get().eliteSolidGeneratorSpeed;
+		}
+
+		@Override
+		public double getEnergySize() {
+			return AstromineConfig.get().eliteSolidGeneratorEnergy;
+		}
+
+		@Override
+		public MachineTier getMachineTier() {
+			return MachineTier.ELITE;
+		}
 	}
 }

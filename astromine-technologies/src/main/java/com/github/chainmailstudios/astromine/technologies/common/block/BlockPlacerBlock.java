@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block;
 
+import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -34,12 +35,12 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyBlockWithEntity;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingTieredEnergyBlockWithEntity;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.BlockPlacerBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.BlockPlacerScreenHandler;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
-public class BlockPlacerBlock extends WrenchableHorizontalFacingEnergyBlockWithEntity {
+public class BlockPlacerBlock extends WrenchableHorizontalFacingTieredEnergyBlockWithEntity {
 	public BlockPlacerBlock(Settings settings) {
 		super(settings);
 	}
@@ -47,11 +48,6 @@ public class BlockPlacerBlock extends WrenchableHorizontalFacingEnergyBlockWithE
 	@Override
 	public BlockEntity createBlockEntity() {
 		return new BlockPlacerBlockEntity();
-	}
-
-	@Override
-	public double getEnergyCapacity() {
-		return AstromineConfig.get().blockPlacerEnergy;
 	}
 
 	@Override

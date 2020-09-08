@@ -25,7 +25,7 @@
 package com.github.chainmailstudios.astromine.technologies.client.patchouli;
 
 import com.github.chainmailstudios.astromine.client.patchouli.BasicEnergyConsumingPage;
-import com.github.chainmailstudios.astromine.common.recipe.TrituratingRecipe;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.TrituratingRecipe;
 
 public class TrituratingPage extends BasicEnergyConsumingPage<TrituratingRecipe> {
 	public TrituratingPage() {

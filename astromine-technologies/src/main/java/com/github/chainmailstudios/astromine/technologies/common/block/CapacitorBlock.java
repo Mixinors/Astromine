@@ -38,18 +38,12 @@ import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizon
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.CapacitorBlockEntity;
-import com.github.chainmailstudios.astromine.technologies.common.block.entity.CreativeCapacitorBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.CapacitorScreenHandler;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.CreativeCapacitorScreenHandler;
 
 public abstract class CapacitorBlock extends WrenchableHorizontalFacingEnergyTieredBlockWithEntity {
 	public CapacitorBlock(Settings settings) {
 		super(settings);
-	}
-
-	@Override
-	public double getMachineSpeed() {
-		return 0;
 	}
 
 	public abstract static class Base extends CapacitorBlock {
@@ -71,11 +65,6 @@ public abstract class CapacitorBlock extends WrenchableHorizontalFacingEnergyTie
 		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
 			buffer.writeBlockPos(pos);
 		}
-
-		@Override
-		public boolean showSpeedInTooltip() {
-			return false;
-		}
 	}
 
 	public static class Primitive extends CapacitorBlock.Base {
@@ -86,16 +75,6 @@ public abstract class CapacitorBlock extends WrenchableHorizontalFacingEnergyTie
 		@Override
 		public BlockEntity createBlockEntity() {
 			return new CapacitorBlockEntity.Primitive();
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().primitiveCapacitorEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.PRIMITIVE;
 		}
 	}
 
@@ -108,16 +87,6 @@ public abstract class CapacitorBlock extends WrenchableHorizontalFacingEnergyTie
 		public BlockEntity createBlockEntity() {
 			return new CapacitorBlockEntity.Basic();
 		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().basicCapacitorEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.BASIC;
-		}
 	}
 
 	public static class Advanced extends CapacitorBlock.Base {
@@ -128,16 +97,6 @@ public abstract class CapacitorBlock extends WrenchableHorizontalFacingEnergyTie
 		@Override
 		public BlockEntity createBlockEntity() {
 			return new CapacitorBlockEntity.Advanced();
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().advancedCapacitorEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.ADVANCED;
 		}
 	}
 
@@ -150,16 +109,6 @@ public abstract class CapacitorBlock extends WrenchableHorizontalFacingEnergyTie
 		public BlockEntity createBlockEntity() {
 			return new CapacitorBlockEntity.Elite();
 		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return AstromineConfig.get().eliteCapacitorEnergy;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.ELITE;
-		}
 	}
 
 	public static class Creative extends CapacitorBlock.Base {
@@ -168,28 +117,13 @@ public abstract class CapacitorBlock extends WrenchableHorizontalFacingEnergyTie
 		}
 
 		@Override
-		public BlockEntity createBlockEntity() {
-			return new CreativeCapacitorBlockEntity();
-		}
-
-		@Override
-		public double getEnergyCapacity() {
-			return Integer.MAX_VALUE;
-		}
-
-		@Override
 		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-			return new CreativeCapacitorScreenHandler(syncId, playerInventory.player, pos);
+			return new CapacitorScreenHandler(syncId, playerInventory.player, pos);
 		}
 
 		@Override
-		public boolean isCreative() {
-			return true;
-		}
-
-		@Override
-		public MachineTier getTier() {
-			return MachineTier.CREATIVE;
+		public BlockEntity createBlockEntity() {
+			return new CapacitorBlockEntity.Creative();
 		}
 	}
 }

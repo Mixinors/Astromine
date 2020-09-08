@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "entity",
-      "entity": "astromine:rocket",
+      "entity": "astromine:primitive_rocket",
       "name": "text.astromine.astronautics.rocket.page_one.title",
       "text": "text.astromine.astronautics.rocket.page_one.text"
     },

@@ -26,6 +26,7 @@ package com.github.chainmailstudios.astromine.discoveries.registry;
 
 import net.minecraft.util.registry.Registry;
 
+import com.github.chainmailstudios.astromine.discoveries.common.world.generation.glacios.GlaciosBiomeSource;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.mars.MarsBiomeSource;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.moon.MoonBiomeSource;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.space.EarthSpaceBiomeSource;
@@ -38,5 +39,6 @@ public class AstromineDiscoveriesBiomeSources extends AstromineBiomeSources {
 		Registry.register(Registry.BIOME_SOURCE, AstromineDiscoveriesDimensions.MOON_ID, MoonBiomeSource.CODEC);
 		Registry.register(Registry.BIOME_SOURCE, AstromineDiscoveriesDimensions.MARS_ID, MarsBiomeSource.CODEC);
 		Registry.register(Registry.BIOME_SOURCE, AstromineDiscoveriesDimensions.VULCAN_ID, VulcanBiomeSource.CODEC);
+		Registry.register(Registry.BIOME_SOURCE, AstromineDiscoveriesDimensions.GLACIOS_ID, GlaciosBiomeSource.CODEC);
 	}
 }

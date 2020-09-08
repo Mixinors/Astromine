@@ -24,8 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.item;
 
+import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
+import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
+import draylar.magna.api.MagnaTool;
 import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -39,28 +44,24 @@ import net.minecraft.item.Vanishable;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import draylar.magna.api.MagnaTool;
-import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
-
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 
 public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool, Vanishable, MagnaTool, DiggerTool {
 	private final int radius;
 	private final ToolMaterial material;
 	private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 
-	public DrillItem(ToolMaterial material, float attackDamage, float attackSpeed, int radius, double energy, Settings settings) {
-		super(settings, energy, false);
+	public DrillItem(ToolMaterial material, float attackDamage, float attackSpeed, int radius, double size, Settings settings) {
+		super(settings, size);
+
 		this.radius = radius;
 		this.material = material;
+
 		ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
+
 		builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Tool modifier", attackDamage, EntityAttributeModifier.Operation.ADDITION));
 		builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Tool modifier", attackSpeed, EntityAttributeModifier.Operation.ADDITION));
+
 		this.attributeModifiers = builder.build();
 	}
 
@@ -71,16 +72,23 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 
 	@Override
 	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		EnergyHandler energy = Energy.of(stack);
-		energy.use(getEnergy() * AstromineConfig.get().drillEntityHitMultiplier);
+		if (!target.world.isClient) {
+			EnergyHandler handler = EnergyUtilities.ofNullable(stack);
+			if (handler != null) {
+				handler.use(getEnergy() * AstromineConfig.get().drillEntityHitMultiplier);
+			}
+		}
+
 		return true;
 	}
 
 	@Override
 	public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
 		if (!world.isClient && state.getHardness(world, pos) != 0.0F) {
-			EnergyHandler energy = Energy.of(stack);
-			energy.use(getEnergy());
+			EnergyHandler handler = EnergyUtilities.ofNullable(stack);
+			if (handler != null) {
+				handler.use(getEnergy());
+			}
 		}
 		return true;
 	}
@@ -102,7 +110,12 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 
 	@Override
 	public float postProcessMiningSpeed(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user, float currentSpeed, boolean isEffective) {
-		return Energy.of(stack).getEnergy() <= getEnergy() ? 0F : currentSpeed;
+		EnergyHandler handler = EnergyUtilities.ofNullable(stack);
+		if (handler != null || handler.getEnergy() < getEnergy()) {
+			return 0F;
+		}
+
+		return currentSpeed;
 	}
 
 	@Override

@@ -24,15 +24,15 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei.fluidmixing;
 
+import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.ElectrolyzingRecipe;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import net.minecraft.util.Identifier;
 
-import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
-import com.github.chainmailstudios.astromine.common.recipe.ElectrolyzingRecipe;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeDisplay;
 
@@ -58,8 +58,7 @@ public class ElectrolyzingDisplay implements RecipeDisplay {
 	}
 
 	public ElectrolyzingDisplay(ElectrolyzingRecipe recipe) {
-		this(recipe.getEnergyConsumed(), new FluidVolume(recipe.getInputFluid(), recipe.getInputAmount()), new FluidVolume(recipe.getFirstOutputFluid(), recipe.getFirstOutputAmount()), new FluidVolume(recipe.getSecondOutputFluid(), recipe.getSecondOutputAmount()), recipe
-			.getId());
+		this(recipe.getEnergyConsumed(), FluidVolume.of(recipe.getInputAmount(), recipe.getInputFluid()), FluidVolume.of(recipe.getFirstOutputAmount(), recipe.getFirstOutputFluid()), FluidVolume.of(recipe.getSecondOutputAmount(), recipe.getSecondOutputFluid()), recipe.getId());
 	}
 
 	@Override

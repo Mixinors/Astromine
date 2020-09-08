@@ -59,6 +59,14 @@ public class BaseInventory implements Inventory, RecipeInputProvider {
 		this.stacks = DefaultedList.copyOf(ItemStack.EMPTY, items);
 	}
 
+	public static BaseInventory of(int size) {
+		return new BaseInventory(size);
+	}
+
+	public static BaseInventory of(ItemStack... items) {
+		return new BaseInventory(items);
+	}
+
 	public void addListener(InventoryChangedListener... listeners) {
 		this.listeners.addAll(Arrays.asList(listeners));
 	}

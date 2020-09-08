@@ -51,6 +51,9 @@ public class AstromineDiscoveriesBiomes extends AstromineBiomes {
 	public static final Identifier MARTIAN_RIVERBED_ID = AstromineCommon.identifier("martian_riverbed");
 	public static final RegistryKey<Biome> MARTIAN_RIVERBED = register(Registry.BIOME_KEY, MARTIAN_RIVERBED_ID);
 
+	public static final Identifier GLACIOS_ID = AstromineCommon.identifier("glacios");
+	public static final RegistryKey<Biome> GLACIOS = register(Registry.BIOME_KEY, GLACIOS_ID);
+
 	public static void initialize() {
 
 	}

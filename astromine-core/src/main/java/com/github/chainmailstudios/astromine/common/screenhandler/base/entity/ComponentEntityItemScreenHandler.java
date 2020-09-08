@@ -29,7 +29,7 @@ import net.minecraft.screen.ScreenHandlerType;
 
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentItemEntity;
 
-public class ComponentEntityItemScreenHandler extends ComponentEntityScreenHandler {
+public abstract class ComponentEntityItemScreenHandler extends ComponentEntityScreenHandler {
 	public ComponentItemEntity entity;
 
 	public ComponentEntityItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, int entityId) {

@@ -32,6 +32,11 @@ import it.unimi.dsi.fastutil.HashCommon;
 
 import java.util.Arrays;
 
+/**
+ * A non-threadsafe cache used to lossily store biome data. Best used with thread locals.
+ *
+ * @author gegy1000, SuperCoder79
+ */
 public class BiomeGeneratorCache {
 	private static final int CACHE_SIZE = 65536;
 

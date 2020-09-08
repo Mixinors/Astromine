@@ -35,7 +35,7 @@ import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
 import team.reborn.energy.EnergySide;
 
-public class ComponentEntityEnergyFluidScreenHandler extends ComponentEntityScreenHandler {
+public abstract class ComponentEntityEnergyFluidScreenHandler extends ComponentEntityScreenHandler {
 	public EnergyVerticalBarWidget energyBar;
 	public FluidVerticalBarWidget fluidBar;
 
@@ -54,7 +54,7 @@ public class ComponentEntityEnergyFluidScreenHandler extends ComponentEntityScre
 		energyBar = new EnergyVerticalBarWidget();
 		energyBar.setPosition(Position.of(mainTab, 7, 11));
 		energyBar.setSize(Size.of(24, 48));
-		energyBar.setVolume(() -> EnergyVolume.of(entity.getEnergyComponent().getStorage().getStored(EnergySide.UNKNOWN)));
+		energyBar.setVolume(() -> entity.getEnergyComponent().getVolume());
 
 		fluidBar = new FluidVerticalBarWidget();
 		fluidBar.setPosition(Position.of(energyBar, energyBar.getWidth() + 7, 0));

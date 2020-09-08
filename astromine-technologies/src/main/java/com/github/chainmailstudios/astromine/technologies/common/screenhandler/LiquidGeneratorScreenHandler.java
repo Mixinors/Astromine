@@ -51,7 +51,7 @@ public class LiquidGeneratorScreenHandler extends ComponentBlockEntityEnergyFlui
 		arrow.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight() / 2F - 8));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> generator.limit);
-		arrow.setProgressSupplier(() -> (int) generator.current);
+		arrow.setProgressSupplier(() -> (int) generator.progress);
 
 		energyBar.setPosition(Position.of(mainTab, 68, 11));
 		fluidBar.setPosition(Position.of(mainTab, 7, 11));

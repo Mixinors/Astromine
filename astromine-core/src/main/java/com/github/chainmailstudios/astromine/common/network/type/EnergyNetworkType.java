@@ -24,68 +24,61 @@
 
 package com.github.chainmailstudios.astromine.common.network.type;
 
-import net.minecraft.block.entity.BlockEntity;
-
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
-import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
+import com.github.chainmailstudios.astromine.common.volume.handler.TransferHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.google.common.collect.Lists;
+import it.unimi.dsi.fastutil.objects.Reference2DoubleMap;
+import it.unimi.dsi.fastutil.objects.Reference2DoubleOpenHashMap;
+import net.minecraft.block.entity.BlockEntity;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
-import team.reborn.energy.EnergyStorage;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 public class EnergyNetworkType extends NetworkType {
 	@Override
 	public void tick(NetworkInstance instance) {
-		Map<EnergyHandler, Double> inputs = Maps.newLinkedHashMap();
-		Map<EnergyHandler, Double> requesters = Maps.newLinkedHashMap();
+		Reference2DoubleMap<EnergyHandler> providers = new Reference2DoubleOpenHashMap<>();
+		Reference2DoubleMap<EnergyHandler> requesters = new Reference2DoubleOpenHashMap<>();
 
 		for (NetworkMemberNode memberNode : instance.members) {
 			WorldPos memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPos());
 			NetworkMember networkMember = NetworkMemberRegistry.get(memberPos);
 			BlockEntity blockEntity = memberPos.getBlockEntity();
 
-			double speedOfMovement = 0;
 			WorldPos nodePosition = memberPos.offset(memberNode.getDirection());
-			if (nodePosition.getBlock() instanceof EnergyNodeSpeedProvider) {
-				speedOfMovement = ((EnergyNodeSpeedProvider) nodePosition.getBlock()).getNodeSpeed();
-			}
 
-			if (speedOfMovement <= 0)
-				continue;
+			double speedOfMovement = nodePosition.getBlock() instanceof NodeSpeedProvider ? ((NodeSpeedProvider) nodePosition.getBlock()).getNodeSpeed() : 0.0D;
 
-			if (blockEntity instanceof EnergyStorage && networkMember.acceptsType(this)) {
-				TransferType type = TransferType.NONE;
+			if (speedOfMovement <= 0) continue;
 
-				if (blockEntity instanceof ComponentProvider) {
-					ComponentProvider provider = ComponentProvider.fromBlockEntity(blockEntity);
-					BlockEntityTransferComponent transferComponent = provider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
-					if (transferComponent != null) {
-						type = transferComponent.get(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).get(memberNode.getDirection());
-					}
-				}
+			if (networkMember.acceptsType(this)) {
+				TransferType[] type = { TransferType.NONE };
 
-				if (!type.isDisabled()) {
-					if (type.canExtract() || networkMember.isProvider(this)) {
-						inputs.put(Energy.of(blockEntity).side(memberNode.getDirection()), speedOfMovement);
+				TransferHandler.of(blockEntity).ifPresent(handler -> {
+					handler.withDirection(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, memberNode.getDirection(), transferType -> {
+						type[0] = transferType;
+					});
+				});
+
+				EnergyHandler volume = Energy.of(blockEntity).side(memberNode.getDirection());
+				if (!type[0].isDisabled()) {
+					if (type[0].canExtract() || networkMember.isProvider(this)) {
+						providers.put(volume, speedOfMovement);
 					}
 
-					if (type.canInsert() || networkMember.isRequester(this)) {
-						requesters.put(Energy.of(blockEntity).side(memberNode.getDirection()), speedOfMovement);
+					if (type[0].canInsert() || networkMember.isRequester(this)) {
+						requesters.put(volume, speedOfMovement);
 					}
 				}
 			}
@@ -93,19 +86,31 @@ public class EnergyNetworkType extends NetworkType {
 
 		List<EnergyHandler> requesterKeys = Lists.newArrayList(requesters.keySet());
 		requesterKeys.sort(Comparator.comparingDouble(EnergyHandler::getEnergy));
-		for (Map.Entry<EnergyHandler, Double> inputEntry : inputs.entrySet()) {
+
+		for (Reference2DoubleMap.Entry<EnergyHandler> inputEntry : providers.reference2DoubleEntrySet()) {
 			EnergyHandler input = inputEntry.getKey();
-			double inputSpeed = inputEntry.getValue();
+
+			double inputSpeed = inputEntry.getDoubleValue();
+
 			for (int i = requesterKeys.size() - 1; i >= 0; i--) {
 				EnergyHandler output = requesterKeys.get(i);
-				double outputSpeed = requesters.get(output);
-				double speed = Collections.min(Arrays.asList(inputSpeed / requesters.size(), outputSpeed / requesters.size(), input.getEnergy() / (i + 1), output.getMaxStored() - output.getEnergy(), input.getMaxOutput(), output.getMaxInput()));
+
+				double outputSpeed = requesters.getOrDefault(output, 0.0D);
+
+				double speed = Collections.min(Arrays.asList(
+					inputSpeed / requesters.size(),
+					outputSpeed / requesters.size(),
+					input.getEnergy() / (i + 1),
+					output.getMaxStored() - output.getEnergy(),
+					input.getMaxOutput(), output.getMaxInput()
+				));
+
 				input.into(output).move(speed);
 			}
 		}
 	}
 
-	public interface EnergyNodeSpeedProvider {
+	public interface NodeSpeedProvider {
 		double getNodeSpeed();
 	}
 }

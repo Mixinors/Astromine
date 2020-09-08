@@ -24,34 +24,23 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
-
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedComponentSidedInventoryProvider;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import net.minecraft.block.entity.BlockEntityType;
 
-import com.github.chainmailstudios.astromine.common.component.ComponentProvider;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedInventoryProvider;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-
-public abstract class ComponentFluidInventoryBlockEntity extends ComponentBlockEntity implements ComponentProvider, BlockEntityClientSerializable, ExtendedInventoryProvider {
+public abstract class ComponentFluidInventoryBlockEntity extends ComponentFluidBlockEntity implements ExtendedComponentSidedInventoryProvider {
 	protected final ItemInventoryComponent itemComponent = createItemComponent();
-	protected final FluidInventoryComponent fluidComponent = createFluidComponent();
+
+	protected abstract ItemInventoryComponent createItemComponent();
 
 	public ComponentFluidInventoryBlockEntity(BlockEntityType<?> type) {
 		super(type);
 
-		addComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, fluidComponent);
 		addComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, itemComponent);
-		fluidComponent.dispatchConsumers();
 		itemComponent.dispatchConsumers();
 	}
 
-	protected abstract ItemInventoryComponent createItemComponent();
-
-	protected abstract FluidInventoryComponent createFluidComponent();
-
-	@Override
 	public ItemInventoryComponent getItemComponent() {
 		return itemComponent;
 	}
