@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "c:netherite_blocks",
+    "count": 1
+  },
+  "output": {
+    "item": "astromine:netherite_dust",
+    "count": 9
+  },
+  "time": 120,
+  "energy_consumed": 540
+}

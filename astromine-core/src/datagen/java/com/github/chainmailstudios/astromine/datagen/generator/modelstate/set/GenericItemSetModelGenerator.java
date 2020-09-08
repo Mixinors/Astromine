@@ -4,10 +4,10 @@ import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.ModelStateData;
 
-public class GenericItemSetModelStateGenerator implements SetModelStateGenerator {
+public class GenericItemSetModelGenerator implements SetModelStateGenerator {
 	protected final MaterialItemType type;
 
-	public GenericItemSetModelStateGenerator(MaterialItemType type) {
+	public GenericItemSetModelGenerator(MaterialItemType type) {
 		this.type = type;
 	}
 

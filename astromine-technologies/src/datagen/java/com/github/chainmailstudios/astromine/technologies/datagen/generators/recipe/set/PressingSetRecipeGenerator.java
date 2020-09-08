@@ -1,35 +1,34 @@
-package com.github.chainmailstudios.astromine.technologies.datagen.generators.recipe;
+package com.github.chainmailstudios.astromine.technologies.datagen.generators.recipe.set;
 
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.base.EnergyProcessingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
-import com.github.chainmailstudios.astromine.common.utilities.GeneratorUtilities;
-import com.github.chainmailstudios.astromine.technologies.common.recipe.TrituratingRecipe;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.PressingRecipe;import com.github.chainmailstudios.astromine.common.utilities.GeneratorUtilities;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
 
-public class TrituratingRecipeGenerator extends EnergyProcessingSetRecipeGenerator {
-	public TrituratingRecipeGenerator(MaterialItemType input, int inputCount, MaterialItemType output, int outputCount, int time, int energyConsumed) {
+public class PressingSetRecipeGenerator extends EnergyProcessingSetRecipeGenerator {
+	public PressingSetRecipeGenerator(MaterialItemType input, int inputCount, MaterialItemType output, int outputCount, int time, int energyConsumed) {
 		super(input, inputCount, output, outputCount, time, energyConsumed);
 	}
 
-	public TrituratingRecipeGenerator(MaterialItemType input, MaterialItemType output, int outputCount, int time, int energyConsumed) {
+	public PressingSetRecipeGenerator(MaterialItemType input, MaterialItemType output, int outputCount, int time, int energyConsumed) {
 		this(input, 1, output, outputCount, time, energyConsumed);
 	}
 
-	public TrituratingRecipeGenerator(MaterialItemType input, MaterialItemType output, int time, int energyConsumed) {
+	public PressingSetRecipeGenerator(MaterialItemType input, MaterialItemType output, int time, int energyConsumed) {
 		this(input, 1, output, 1, time, energyConsumed);
 	}
 
 	@Override
 	public String getRecipeName(MaterialSet set) {
-		return set.getItemIdPath(output) + "_from_triturating_" + input.getName();
+		return set.getItemIdPath(output) + "_from_pressing_" + input.getName();
 	}
 
 	@Override
 	public void generate(RecipeData recipes, MaterialSet set) {
-		recipes.accept(GeneratorUtilities.Providers.createProvider(TrituratingRecipe.Serializer.INSTANCE, getRecipeId(set), json -> {
+		recipes.accept(GeneratorUtilities.Providers.createProvider(PressingRecipe.Serializer.INSTANCE, getRecipeId(set), json -> {
 			JsonElement inputJson = set.getIngredient(input).toJson();
 			if (inputJson.isJsonObject()) {
 				inputJson.getAsJsonObject().addProperty("count", inputCount);
@@ -49,6 +48,6 @@ public class TrituratingRecipeGenerator extends EnergyProcessingSetRecipeGenerat
 
 	@Override
 	public String getGeneratorName() {
-		return "triturating";
+		return "pressing_set";
 	}
 }

@@ -6,9 +6,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
+import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.InvalidIdentifierException;
 import net.minecraft.util.registry.Registry;
 
 import java.util.Optional;
@@ -58,7 +60,9 @@ public class MaterialEntry implements ItemConvertible {
 
 	@Override
 	public Item asItem() {
-		return Registry.ITEM.get(itemId);
+		Item item = Registry.ITEM.get(itemId);
+		if(item.equals(Items.AIR)) throw new InvalidIdentifierException("oh fuck entry "+this.getItemId()+" returned air");
+		return item;
 	}
 
 	public Block asBlock() {

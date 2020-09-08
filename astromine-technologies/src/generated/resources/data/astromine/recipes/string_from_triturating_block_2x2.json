@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "minecraft:wool",
+    "count": 1
+  },
+  "output": {
+    "item": "minecraft:string",
+    "count": 4
+  },
+  "time": 60,
+  "energy_consumed": 340
+}

@@ -69,7 +69,7 @@ public class MaterialSet {
 		return name;
 	}
 
-	public boolean shouldGenerate(SetGenerator generator) {
+	public boolean shouldGenerate(SetGenerator<?> generator) {
 		return generator.shouldGenerate(this);
 	}
 
@@ -83,7 +83,7 @@ public class MaterialSet {
 
 	public void generateTags(TagData tags) {
 		items.forEach((type, entry) -> {
-			if (entry.hasItemTag()) {
+			if (entry.hasItemTag() && !entry.getItemTagId().getPath().isEmpty() && !entry.getItemTagId().getPath().equals("minecraft")) {
 				tags.item(entry.getItemTagId()).append(type.isOptionalInTag(), entry);
 				if (entry.isBlock()) {
 					tags.block(entry.getItemTagId()).append(type.isOptionalInTag(), entry.asBlock());
@@ -166,6 +166,10 @@ public class MaterialSet {
 
 		public Builder block() {
 			return addType(BLOCK, new Identifier("c", name + "_blocks"));
+		}
+
+		public Builder block2x2() {
+			return addType(BLOCK_2x2, new Identifier("c", name + "_blocks"));
 		}
 
 		public Builder ore() {

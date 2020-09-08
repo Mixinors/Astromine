@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "item": "minecraft:blue_concrete",
+    "count": 1
+  },
+  "output": {
+    "item": "minecraft:blue_concrete_powder",
+    "count": 1
+  },
+  "time": 10,
+  "energy_consumed": 50
+}

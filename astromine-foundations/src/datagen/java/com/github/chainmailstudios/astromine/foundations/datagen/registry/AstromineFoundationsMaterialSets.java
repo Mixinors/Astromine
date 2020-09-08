@@ -98,6 +98,7 @@ public class AstromineFoundationsMaterialSets extends AstromineMaterialSets {
 			new MaterialSet.Builder("quartz")
 					.setType(MaterialItemType.GEM, new MaterialEntry(new Identifier("quartz"), "quartz"))
 					.setType(MaterialItemType.ORE, new MaterialEntry(new Identifier("nether_quartz_ore"), "quartz_ores"))
+					.setType(MaterialItemType.BLOCK_2x2, new MaterialEntry(new Identifier("quartz_block"), "quartz_blocks"))
 					.dusts()
 					.fragment()
 					.build()
@@ -123,6 +124,85 @@ public class AstromineFoundationsMaterialSets extends AstromineMaterialSets {
 			new MaterialSet.Builder("charcoal")
 					.setType(MaterialItemType.GEM, new MaterialEntry(new Identifier("charcoal"), "charcoal"))
 					.dusts()
+					.build()
+	);
+	public static final MaterialSet GLOWSTONE = register(
+			new MaterialSet.Builder("glowstone")
+					.setType(MaterialItemType.DUST, new MaterialEntry(new Identifier("glowstone_dust"), "glowstone_dusts"))
+					.setType(MaterialItemType.BLOCK_2x2, new MaterialEntry(new Identifier("glowstone"), "glowstone_blocks"))
+					.tinyDust()
+					.build()
+	);
+	public static final MaterialSet BONE = register(
+			new MaterialSet.Builder("bone")
+					.setType(MaterialItemType.MISC_RESOURCE, new MaterialEntry(new Identifier("bone_meal")))
+					.setType(MaterialItemType.BLOCK, new MaterialEntry(new Identifier("bone_block"), "bone_blocks"))
+					.build()
+	);
+	public static final MaterialSet WHEAT = register(
+			new MaterialSet.Builder("wheat")
+					.setType(MaterialItemType.MISC_RESOURCE, new MaterialEntry(new Identifier("wheat")))
+					.setType(MaterialItemType.BLOCK, new MaterialEntry(new Identifier("hay_block")))
+					.build()
+	);
+	public static final MaterialSet DRIED_KELP = register(
+			new MaterialSet.Builder("dried_kelp")
+					.setType(MaterialItemType.MISC_RESOURCE, new MaterialEntry(new Identifier("dried_kelp")))
+					.setType(MaterialItemType.BLOCK, new MaterialEntry(new Identifier("dried_kelp_block")))
+					.build()
+	);
+	public static final MaterialSet SLIME = register(
+			new MaterialSet.Builder("slime")
+					.setType(MaterialItemType.MISC_RESOURCE, new MaterialEntry(new Identifier("slime_ball")))
+					.setType(MaterialItemType.BLOCK, new MaterialEntry(new Identifier("slime_block"), "slime_blocks"))
+					.build()
+	);
+	public static final MaterialSet MAGMA = register(
+			new MaterialSet.Builder("magma")
+					.setType(MaterialItemType.MISC_RESOURCE, new MaterialEntry(new Identifier("magma_cream")))
+					.setType(MaterialItemType.BLOCK_2x2, new MaterialEntry(new Identifier("magma_block")))
+					.build()
+	);
+	public static final MaterialSet HONEYCOMB = register(
+			new MaterialSet.Builder("honeycomb")
+					.setType(MaterialItemType.MISC_RESOURCE, new MaterialEntry(new Identifier("honeycomb")))
+					.setType(MaterialItemType.BLOCK_2x2, new MaterialEntry(new Identifier("honeycomb_block")))
+					.build()
+	);
+	public static final MaterialSet NETHER_WART = register(
+			new MaterialSet.Builder("nether_wart")
+					.setType(MaterialItemType.MISC_RESOURCE, new MaterialEntry(new Identifier("nether_wart")))
+					.setType(MaterialItemType.BLOCK, new MaterialEntry(new Identifier("nether_wart_block")))
+					.build()
+	);
+	public static final MaterialSet PURPUR = register(
+			new MaterialSet.Builder("purpur")
+					.setType(MaterialItemType.MISC_RESOURCE, new MaterialEntry(new Identifier("popped_chorus_fruit")))
+					.setType(MaterialItemType.BLOCK_2x2, new MaterialEntry(new Identifier("purpur_block"), "purpur_blocks"))
+					.build()
+	);
+	public static final MaterialSet SNOW = register(
+			new MaterialSet.Builder("snow")
+					.setType(MaterialItemType.MISC_RESOURCE, new MaterialEntry(new Identifier("snowball")))
+					.setType(MaterialItemType.BLOCK_2x2, new MaterialEntry(new Identifier("snow_block")))
+					.build()
+	);
+	public static final MaterialSet WOOL = register(
+			new MaterialSet.Builder("wool")
+					.setType(MaterialItemType.MISC_RESOURCE, new MaterialEntry(new Identifier("string")))
+					.setType(MaterialItemType.BLOCK_2x2, new MaterialEntry(new Identifier("white_wool"), new Identifier("wool")))
+					.build()
+	);
+	public static final MaterialSet SAND = register(
+			new MaterialSet.Builder("sand")
+					.setType(MaterialItemType.MISC_RESOURCE, new MaterialEntry(new Identifier("sand")))
+					.setType(MaterialItemType.BLOCK_2x2, new MaterialEntry(new Identifier("sandstone"), "yellow_sandstones"))
+					.build()
+	);
+	public static final MaterialSet RED_SAND = register(
+			new MaterialSet.Builder("red_sand")
+					.setType(MaterialItemType.MISC_RESOURCE, new MaterialEntry(new Identifier("red_sand")))
+					.setType(MaterialItemType.BLOCK_2x2, new MaterialEntry(new Identifier("red_sandstone"), "red_sandstones"))
 					.build()
 	);
 	public static final MaterialSet RAW_NETHERITE = register(

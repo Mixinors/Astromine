@@ -163,6 +163,7 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item CHARCOAL_TINY_DUST = register("charcoal_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item QUARTZ_TINY_DUST = register("quartz_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item RAW_NETHERITE_TINY_DUST = register("raw_netherite_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item GLOWSTONE_TINY_DUST = register("glowstone_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 
 	// Materials - Plates
 	public static final Item METITE_PLATES = register("metite_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
@@ -481,19 +482,7 @@ public class AstromineFoundationsItems extends AstromineItems {
 	}
 
 	public static void initialize() {
-		UseBlockCallback.EVENT.register((player, world, hand, blockHitResult) -> {
-			if (!world.isClient()) {
-				WorldPos worldPos = WorldPos.of(world, blockHitResult.getBlockPos());
-				if (worldPos.getBlock() == Blocks.BOOKSHELF) {
-					if (player.getStackInHand(hand).getItem() == METITE_AXE) {
-						ItemScatterer.spawn(world, worldPos.getX(), worldPos.getY(), worldPos.getZ(), ToolUtilities.getAstromineBook());
-						world.breakBlock(worldPos.getBlockPos(), false);
-						return ActionResult.SUCCESS;
-					}
-				}
-			}
-			return ActionResult.PASS;
-		});
+
 	}
 
 	public static <T extends Item> T register(String name, T item) {
