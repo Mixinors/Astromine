@@ -35,7 +35,7 @@ import me.sargunvohra.mcmods.autoconfig1u.shadowed.blue.endless.jankson.Comment;
 @Config(name = "astromine/foundations")
 public class AstromineFoundationsConfig implements ConfigData {
 	@ConfigEntry.Gui.Excluded
-	public static final AstromineFoundationsConfig DEFAULT = new AstromineFoundationsConfig();
+	public static AstromineFoundationsConfig instance;
 
 	@Comment("Whether generation of Copper Ore in the Overworld is enabled.")
 	public boolean overworldCopperOre = true;
@@ -230,19 +230,21 @@ public class AstromineFoundationsConfig implements ConfigData {
 	public int asteroidGalaxiumOreMaximumSize = 48;
 
 	public static AstromineFoundationsConfig get() {
-		try {
-			return AutoConfig.getConfigHolder(AstromineFoundationsConfig.class).getConfig();
-		} catch (RuntimeException exception) {
-			return DEFAULT;
+		if (instance == null) {
+			try {
+				AutoConfig.register(AstromineFoundationsConfig.class, JanksonConfigSerializer::new);
+				try {
+					((ConfigManager<AstromineFoundationsConfig>) AutoConfig.getConfigHolder(AstromineFoundationsConfig.class)).save();
+				} catch (Throwable throwable) {
+					throwable.printStackTrace();
+				}
+				instance = AutoConfig.getConfigHolder(AstromineFoundationsConfig.class).getConfig();
+			} catch (Throwable throwable) {
+				throwable.printStackTrace();
+				instance = new AstromineFoundationsConfig();
+			}
 		}
-	}
 
-	public static void initialize() {
-		AutoConfig.register(AstromineFoundationsConfig.class, JanksonConfigSerializer::new);
-		try {
-			((ConfigManager<AstromineFoundationsConfig>) AutoConfig.getConfigHolder(AstromineFoundationsConfig.class)).save();
-		} catch (Throwable throwable) {
-			throwable.printStackTrace();
-		}
+		return instance;
 	}
 }
