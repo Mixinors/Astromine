@@ -21,7 +21,7 @@ public class AstromineTechnologiesDatagen implements DatagenInitializer {
 
 	@Override
 	public AstromineLootTableGenerators getLootTableGenerators() {
-		return null;
+		return new AstromineTechnologiesLootTableGenerators();
 	}
 
 	@Override
