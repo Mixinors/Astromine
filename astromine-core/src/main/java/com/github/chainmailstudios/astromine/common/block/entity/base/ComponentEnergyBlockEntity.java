@@ -41,7 +41,7 @@ public abstract class ComponentEnergyBlockEntity extends ComponentBlockEntity im
 		super(type);
 
 		transferComponent.add(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
-		addComponent(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, createEnergyComponent());
+		addComponent(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, energyComponent);
 	}
 
 	@Override
