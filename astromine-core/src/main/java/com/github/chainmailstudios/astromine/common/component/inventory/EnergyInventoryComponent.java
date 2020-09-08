@@ -24,32 +24,28 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import net.minecraft.item.Item;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.text.TranslatableText;
-
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import nerdhub.cardinal.components.api.ComponentType;
+import net.fabricmc.fabric.api.util.NbtType;
+import net.minecraft.item.Item;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Direction;
-import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import team.reborn.energy.EnergyStorage;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public interface EnergyInventoryComponent extends NameableComponent {
-	Map<Integer, EnergyVolume> getContents();
+	EnergyVolume getVolume();
 
 	default Item getSymbol() {
 		return AstromineItems.ENERGY.asItem();
@@ -59,40 +55,28 @@ public interface EnergyInventoryComponent extends NameableComponent {
 		return new TranslatableText("text.astromine.energy");
 	}
 
-	default Collection<EnergyVolume> getContentsMatching(Predicate<EnergyVolume> predicate) {
-		return this.getContents().values().stream().filter(predicate).collect(Collectors.toList());
+	default EnergyVolume getSimulated() {
+		return getVolume().copy();
 	}
 
-	default Collection<EnergyVolume> getExtractableContentsMatching(Direction direction, Predicate<EnergyVolume> predicate) {
-		return this.getContents().entrySet().stream().filter((entry) -> canExtract(direction, entry.getValue(), entry.getKey()) && predicate.test(entry.getValue())).map(Map.Entry::getValue).collect(Collectors.toList());
-	}
-
-	default Collection<EnergyVolume> getContentsMatchingSimulated(Predicate<EnergyVolume> predicate) {
-		return this.getContentsSimulated().stream().filter(predicate).collect(Collectors.toList());
-	}
-
-	default Collection<EnergyVolume> getContentsSimulated() {
-		return this.getContents().values().stream().map((volume) -> (EnergyVolume) volume.copy()).collect(Collectors.toList());
-	}
-
-	default boolean canInsert() {
+	default boolean canInsert(@Nullable Direction direction) {
 		return true;
 	}
 
-	default boolean canInsert(@Nullable Direction direction, EnergyVolume fluid, int slot) {
+	default boolean canInsert(@Nullable Direction direction, double volume) {
 		return true;
 	}
 
-	default boolean canExtract() {
+	default boolean canExtract(@Nullable Direction direction) {
 		return true;
 	}
 
-	default boolean canExtract(@Nullable Direction direction, EnergyVolume fluid, int slot) {
+	default boolean canExtract(@Nullable Direction direction, double volume) {
 		return true;
 	}
 
 	default TypedActionResult<EnergyVolume> insert(Direction direction, EnergyVolume volume) {
-		if (this.canInsert()) {
+		if (this.canInsert(direction)) {
 			return this.insert(direction, volume);
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, volume);
@@ -100,26 +84,18 @@ public interface EnergyInventoryComponent extends NameableComponent {
 	}
 
 	default TypedActionResult<EnergyVolume> insert(Direction direction, double amount) {
-		Optional<Map.Entry<Integer, EnergyVolume>> matchingVolumeOptional = this.getContents().entrySet().stream().filter(entry -> {
-			return canInsert(direction, entry.getValue(), entry.getKey());
-		}).findFirst();
-
-		if (matchingVolumeOptional.isPresent()) {
-			matchingVolumeOptional.get().getValue().into(amount);
-			return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().getValue());
-		} else {
-			return new TypedActionResult<>(ActionResult.FAIL, null);
+		EnergyVolume volume = getVolume();
+		if (canInsert(direction, amount)) {
+			volume.add(amount);
+			return new TypedActionResult<>(ActionResult.SUCCESS, volume);
 		}
+		return new TypedActionResult<>(ActionResult.FAIL, null);
 	}
 
-	default void setVolume(int slot, EnergyVolume volume) {
-		if (slot <= this.getSize()) {
-			this.getContents().put(slot, volume);
-			this.dispatchConsumers();
-		}
+	default void setVolume(EnergyVolume volume) {
+		getVolume().setSize(volume.getSize());
+		getVolume().setAmount(volume.getAmount());
 	}
-
-	int getSize();
 
 	default void dispatchConsumers() {
 		this.getListeners().forEach(Runnable::run);
@@ -129,15 +105,14 @@ public interface EnergyInventoryComponent extends NameableComponent {
 
 	default TypedActionResult<Collection<EnergyVolume>> extractMatching(Direction direction, Predicate<EnergyVolume> predicate) {
 		HashSet<EnergyVolume> extractedVolumes = new HashSet<>();
-		this.getContents().forEach((slot, volume) -> {
-			if (canExtract(direction, volume, slot) && predicate.test(volume)) {
-				TypedActionResult<EnergyVolume> extractionResult = this.extract(direction, slot);
+		EnergyVolume volume = getVolume();
+		if (canExtract(direction) && predicate.test(volume)) {
+			TypedActionResult<EnergyVolume> extractionResult = this.extract(direction);
 
-				if (extractionResult.getResult().isAccepted()) {
-					extractedVolumes.add(extractionResult.getValue());
-				}
+			if (extractionResult.getResult().isAccepted()) {
+				extractedVolumes.add(extractionResult.getValue());
 			}
-		});
+		}
 
 		if (!extractedVolumes.isEmpty()) {
 			return new TypedActionResult<>(ActionResult.SUCCESS, extractedVolumes);
@@ -146,178 +121,69 @@ public interface EnergyInventoryComponent extends NameableComponent {
 		}
 	}
 
-	default TypedActionResult<EnergyVolume> extract(Direction direction, int slot) {
-		EnergyVolume volume = this.getVolume(slot);
+	default TypedActionResult<EnergyVolume> extract(Direction direction) {
+		EnergyVolume volume = this.getVolume();
 
-		if (!volume.isEmpty() && this.canExtract(direction, volume, slot)) {
-			return this.extract(direction, slot, volume.getAmount());
+		if (!volume.isEmpty() && this.canExtract(direction)) {
+			return this.extract(direction, volume.getAmount());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, EnergyVolume.empty());
 		}
-	}
-
-	@Nullable
-	default EnergyVolume getVolume(int slot) {
-		return this.getContents().getOrDefault(slot, null);
 	}
 
 	@Nullable
 	default EnergyVolume getFirstExtractableVolume(Direction direction) {
-		return getContents().entrySet().stream().filter((entry) -> canExtract(direction, entry.getValue(), entry.getKey()) && (!entry.getValue().isEmpty())).map(Map.Entry::getValue).findFirst().orElse(null);
+		EnergyVolume volume = getVolume();
+		if (canExtract(direction) && !volume.isEmpty()) return volume;
+		return null;
 	}
 
 	@Nullable
-	default EnergyVolume getFirstInsertableVolume(EnergyVolume volume, Direction direction) {
-		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, entry.getValue(), entry.getKey()) && (entry.getValue().hasAvailable(volume.getAmount()))).map(
-				Map.Entry::getValue).findFirst().orElse(null);
+	default EnergyVolume getFirstInsertableVolume(double amount, Direction direction) {
+		EnergyVolume volume = getVolume();
+		if (canInsert(direction) && volume.hasAvailable(amount)) return volume;
+		return null;
 	}
 
 	@Nullable
 	default EnergyVolume getFirstInsertableVolume(Direction direction) {
-		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, entry.getValue(), entry.getKey()) && (!entry.getValue().isFull())).map(Map.Entry::getValue).findFirst().orElse(null);
+		EnergyVolume volume = getVolume();
+		if (canInsert(direction) && !volume.isFull()) return volume;
+		return null;
 	}
 
-	default TypedActionResult<EnergyVolume> extract(Direction direction, int slot, double amount) {
-		Optional<EnergyVolume> matchingVolumeOptional = Optional.ofNullable(this.getVolume(slot));
+	default TypedActionResult<EnergyVolume> extract(Direction direction, double amount) {
+		EnergyVolume volume = this.getVolume();
 
-		if (matchingVolumeOptional.isPresent()) {
-			EnergyVolume volume = matchingVolumeOptional.get();
-
-			if (canExtract(direction, volume, slot)) {
-				return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().from(matchingVolumeOptional.get(), amount));
-			} else {
-				return new TypedActionResult<>(ActionResult.FAIL, EnergyVolume.empty());
-			}
+		if (canExtract(direction, amount)) {
+			return new TypedActionResult<>(ActionResult.SUCCESS, volume.minus(amount));
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, EnergyVolume.empty());
 		}
 	}
 
-	default CompoundTag write(EnergyInventoryComponent source, Optional<String> subtag, Optional<Range<Integer>> range) {
+	default CompoundTag write() {
 		CompoundTag tag = new CompoundTag();
-		this.write(source, tag, subtag, range);
+		this.write(tag);
 		return tag;
 	}
 
-	default void write(EnergyInventoryComponent source, CompoundTag tag, Optional<String> subtag, Optional<Range<Integer>> range) {
-		if (source == null || source.getSize() <= 0) {
-			return;
-		}
-
-		if (tag == null) {
-			return;
-		}
-
-		CompoundTag volumesTag = new CompoundTag();
-
-		int minimum = range.isPresent() ? range.get().getMinimum() : 0;
-		int maximum = range.isPresent() ? range.get().getMaximum() : source.getSize();
-
-		for (int position = minimum; position < maximum; ++position) {
-			if (source.getVolume(position) != null) {
-				EnergyVolume volume = source.getVolume(position);
-
-				if (volume != null) {
-					CompoundTag volumeTag = source.getVolume(position).toTag();
-
-					volumesTag.put(String.valueOf(position), volumeTag);
-				}
-			}
-		}
-
-		if (subtag.isPresent()) {
-			CompoundTag inventoryTag = new CompoundTag();
-
-			inventoryTag.putInt("size", source.getSize());
-			inventoryTag.put("volumes", volumesTag);
-
-			tag.put(subtag.get(), inventoryTag);
-		} else {
-			tag.putInt("size", source.getSize());
-			tag.put("volumes", volumesTag);
-		}
+	default void write(CompoundTag tag) {
+		tag.putDouble("energy", getVolume().getAmount());
+		tag.putDouble("maxEnergy", getVolume().getSize());
 	}
 
-	default void read(EnergyInventoryComponent target, CompoundTag tag, Optional<String> subtag, Optional<Range<Integer>> range) {
-		if (tag == null) {
-			return;
-		}
-
-		Tag rawTag;
-
-		if (subtag.isPresent()) {
-			rawTag = tag.get(subtag.get());
-		} else {
-			rawTag = tag;
-		}
-
-		if (!(rawTag instanceof CompoundTag)) {
-			AstromineCommon.LOGGER.log(Level.ERROR, "Inventory contents failed to be read: " + rawTag.getClass().getName() + " is not instance of " + CompoundTag.class.getName() + "!");
-			return;
-		}
-
-		CompoundTag compoundTag = (CompoundTag) rawTag;
-
-		if (!compoundTag.contains("size")) {
-			AstromineCommon.LOGGER.log(Level.ERROR, "Inventory contents failed to be read: " + CompoundTag.class.getName() + " does not contain 'size' value! (" + getClass().getName() + ")");
-			return;
-		}
-
-		int size = compoundTag.getInt("size");
-
-		if (size == 0) {
-			AstromineCommon.LOGGER.log(Level.WARN, "Inventory contents size successfully read, but with size of zero. This may indicate a non-integer 'size' value! (" + getClass().getName() + ")");
-		}
-
-		if (!compoundTag.contains("volumes")) {
-			AstromineCommon.LOGGER.log(Level.ERROR, "Inventory contents failed to be read: " + CompoundTag.class.getName() + " does not contain 'volumes' subtag!");
-			return;
-		}
-
-		Tag rawVolumesTag = compoundTag.get("volumes");
-
-		if (!(rawVolumesTag instanceof CompoundTag)) {
-			AstromineCommon.LOGGER.log(Level.ERROR, "Inventory contents failed to be read: " + rawVolumesTag.getClass().getName() + " is not instance of " + CompoundTag.class.getName() + "!");
-			return;
-		}
-
-		CompoundTag volumesTag = (CompoundTag) rawVolumesTag;
-
-		int minimum = range.isPresent() ? range.get().getMinimum() : 0;
-		int maximum = range.isPresent() ? range.get().getMaximum() : target.getSize();
-
-		if (size < maximum) {
-			AstromineCommon.LOGGER.log(Level.WARN, "Inventory size from tag smaller than specified maximum: will continue reading!");
-			maximum = size;
-		}
-
-		if (target.getSize() < maximum) {
-			AstromineCommon.LOGGER.log(Level.WARN, "Inventory size from target smaller than specified maximum: will continue reading!");
-			maximum = target.getSize();
-		}
-
-		for (int position = minimum; position < maximum; ++position) {
-			if (volumesTag.contains(String.valueOf(position))) {
-				Tag rawVolumeTag = volumesTag.get(String.valueOf(position));
-
-				if (!(rawVolumeTag instanceof CompoundTag)) {
-					AstromineCommon.LOGGER.log(Level.ERROR, "Inventory volume skipped: stored tag not instance of " + CompoundTag.class.getName() + "!");
-					return;
-				}
-
-				CompoundTag volumeTag = (CompoundTag) rawVolumeTag;
-
-				EnergyVolume volume = EnergyVolume.fromTag(volumeTag);
-
-				if (target.getSize() >= position) {
-					if (target.getVolume(position) != null) {
-						target.getVolume(position).setAmount(volume.getAmount());
-						target.getVolume(position).setSize(volume.getSize());
-					} else {
-						target.setVolume(position, volume);
-					}
-				}
-			}
+	default void read(CompoundTag tag) {
+		clear();
+		EnergyVolume volume = getVolume();
+		if (tag.contains("maxEnergy"))
+			volume.setSize(tag.getDouble("maxEnergy"));
+		if (tag.contains("energy", NbtType.COMPOUND)) {
+			EnergyVolume energy = EnergyVolume.fromTag(tag.getCompound("energy"));
+			volume.setAmount(energy.getAmount());
+		} else if (tag.contains("energy", NbtType.DOUBLE)) {
+			double energy = tag.getDouble("energy");
+			volume.setAmount(energy);
 		}
 	}
 
@@ -335,11 +201,11 @@ public interface EnergyInventoryComponent extends NameableComponent {
 	}
 
 	default void clear() {
-		this.getContents().clear();
+		this.getVolume().setAmount(0.0);
 	}
 
 	default boolean isEmpty() {
-		return this.getContents().values().stream().allMatch(EnergyVolume::isEmpty);
+		return this.getVolume().isEmpty();
 	}
 
 	<T extends EnergyInventoryComponent> T copy();
@@ -347,5 +213,21 @@ public interface EnergyInventoryComponent extends NameableComponent {
 	@Override
 	default @NotNull ComponentType<?> getComponentType() {
 		return AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT;
+	}
+
+	default void setAmount(double amount) {
+		getVolume().setAmount(amount);
+	}
+	
+	default double getAmount() {
+		return getVolume().getAmount();
+	}
+
+	default void setSize(double amount) {
+		getVolume().setSize(amount);
+	}
+
+	default double getSize() {
+		return getVolume().getSize();
 	}
 }

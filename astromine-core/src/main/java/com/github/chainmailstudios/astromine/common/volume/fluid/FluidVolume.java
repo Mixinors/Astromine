@@ -60,7 +60,7 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 	}
 
 	@Override
-	public <V extends Volume<Identifier, Fraction>> V into(V v, Fraction fraction) {
+	public <V extends Volume<Identifier, Fraction>> V add(V v, Fraction fraction) {
 		if (!(v instanceof FluidVolume)) return (V) this;
 
 		if (((FluidVolume) v).getFluid() != getFluid()) {
@@ -86,7 +86,7 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 	}
 
 	@Override
-	public <V extends Volume<Identifier, Fraction>> V into(Fraction fraction) {
+	public <V extends Volume<Identifier, Fraction>> V add(Fraction fraction) {
 		Fraction amount = Fraction.minimum(getSize().subtract(getAmount()), fraction);
 
 		setAmount(Fraction.add(getAmount(), amount));
@@ -95,7 +95,7 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 	}
 
 	@Override
-	public <V extends Volume<Identifier, Fraction>> V from(V v, Fraction fraction) {
+	public <V extends Volume<Identifier, Fraction>> V moveFrom(V v, Fraction fraction) {
 		if (!(v instanceof FluidVolume)) return (V) this;
 
 		if (((FluidVolume) v).getFluid() != getFluid()) {
@@ -106,13 +106,13 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 			}
 		}
 
-		v.into(this, fraction);
+		v.add(this, fraction);
 
 		return (V) this;
 	}
 
 	@Override
-	public <V extends Volume<Identifier, Fraction>> V from(Fraction fraction) {
+	public <V extends Volume<Identifier, Fraction>> V minus(Fraction fraction) {
 		Fraction amount = Fraction.minimum(getAmount(), fraction);
 
 		setAmount(Fraction.subtract(getAmount(), amount));

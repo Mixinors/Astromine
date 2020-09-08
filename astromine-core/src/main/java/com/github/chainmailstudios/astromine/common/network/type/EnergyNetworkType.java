@@ -24,12 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.network.type;
 
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.energy.WrappedEnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler;
-import com.github.chainmailstudios.astromine.common.volume.handler.TransferHandler;
-import net.minecraft.block.entity.BlockEntity;
-
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
@@ -37,17 +31,25 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
+import com.github.chainmailstudios.astromine.common.volume.handler.TransferHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-
 import com.google.common.collect.Lists;
+import it.unimi.dsi.fastutil.objects.Reference2DoubleMap;
+import it.unimi.dsi.fastutil.objects.Reference2DoubleOpenHashMap;
+import net.minecraft.block.entity.BlockEntity;
+import team.reborn.energy.Energy;
+import team.reborn.energy.EnergyHandler;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class EnergyNetworkType extends NetworkType {
 	@Override
 	public void tick(NetworkInstance instance) {
-		Map<EnergyVolume, Double> providers = new HashMap<>();
-		Map<EnergyVolume, Double> requesters = new HashMap<>();
+		Reference2DoubleMap<EnergyHandler> providers = new Reference2DoubleOpenHashMap<>();
+		Reference2DoubleMap<EnergyHandler> requesters = new Reference2DoubleOpenHashMap<>();
 
 		for (NetworkMemberNode memberNode : instance.members) {
 			WorldPos memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPos());
@@ -69,44 +71,41 @@ public class EnergyNetworkType extends NetworkType {
 					});
 				});
 
-				Optional<EnergyHandler> optionalHandler = EnergyHandler.ofOptional(blockEntity, memberNode.getDirection());
+				EnergyHandler volume = Energy.of(blockEntity).side(memberNode.getDirection());
+				if (!type[0].isDisabled()) {
+					if (type[0].canExtract() || networkMember.isProvider(this)) {
+						providers.put(volume, speedOfMovement);
+					}
 
-				if (optionalHandler.isPresent()) {
-					optionalHandler.ifPresent(handler -> {
-						if (!type[0].isDisabled()) {
-							if (type[0].canExtract() || networkMember.isProvider(this)) {
-								handler.withFirstExtractable(memberNode.getDirection(), optionalVolume -> {
-									optionalVolume.ifPresent(volume -> providers.put(volume, speedOfMovement));
-								});
-							}
-
-							if (type[0].canInsert() || networkMember.isRequester(this)) {
-								handler.withFirstInsertable(memberNode.getDirection(), optionalVolume -> {
-									optionalVolume.ifPresent(volume -> requesters.put(volume, speedOfMovement));
-								});
-							}
-						}
-					});
+					if (type[0].canInsert() || networkMember.isRequester(this)) {
+						requesters.put(volume, speedOfMovement);
+					}
 				}
 			}
 		}
 
-		List<EnergyVolume> requesterKeys = Lists.newArrayList(requesters.keySet());
-		requesterKeys.sort(Comparator.comparingDouble(EnergyVolume::getAmount));
+		List<EnergyHandler> requesterKeys = Lists.newArrayList(requesters.keySet());
+		requesterKeys.sort(Comparator.comparingDouble(EnergyHandler::getEnergy));
 
-		for (Map.Entry<EnergyVolume, Double> inputEntry : providers.entrySet()) {
-			EnergyVolume input = inputEntry.getKey();
+		for (Reference2DoubleMap.Entry<EnergyHandler> inputEntry : providers.reference2DoubleEntrySet()) {
+			EnergyHandler input = inputEntry.getKey();
 
-			double inputSpeed = inputEntry.getValue();
+			double inputSpeed = inputEntry.getDoubleValue();
 
 			for (int i = requesterKeys.size() - 1; i >= 0; i--) {
-				EnergyVolume output = requesterKeys.get(i);
+				EnergyHandler output = requesterKeys.get(i);
 
 				double outputSpeed = requesters.getOrDefault(output, 0.0D);
 
-				double speed = Collections.min(Arrays.asList(inputSpeed / requesters.size(), outputSpeed / requesters.size(), input.getAmount() / (i + 1), output.getSize() - output.getAmount(), (input instanceof WrappedEnergyVolume ? ((WrappedEnergyVolume) input).getMaximumOutput() : Double.MAX_VALUE), (output instanceof WrappedEnergyVolume ? ((WrappedEnergyVolume) output).getMaximumInput() : Double.MAX_VALUE)));
+				double speed = Collections.min(Arrays.asList(
+					inputSpeed / requesters.size(),
+					outputSpeed / requesters.size(),
+					input.getEnergy() / (i + 1),
+					output.getMaxStored() - output.getEnergy(),
+					input.getMaxOutput(), output.getMaxInput()
+				));
 
-				input.into(output, speed);
+				input.into(output).move(speed);
 			}
 		}
 	}

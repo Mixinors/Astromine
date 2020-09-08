@@ -24,22 +24,22 @@
 
 package com.github.chainmailstudios.astromine.common.component.block.entity;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
-
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.utilities.DirectionUtilities;
+import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
+import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import nerdhub.cardinal.components.api.ComponentRegistry;
 import nerdhub.cardinal.components.api.ComponentType;
 import nerdhub.cardinal.components.api.component.Component;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.collect.Maps;
 import java.util.Map;
 
 public class BlockEntityTransferComponent implements Component {
-	private final Map<ComponentType<?>, TransferEntry> components = Maps.newHashMap();
+	private final Reference2ReferenceMap<ComponentType<?>, TransferEntry> components = new Reference2ReferenceOpenHashMap<>();
 
 	public TransferEntry get(ComponentType<?> type) {
 		return components.computeIfAbsent(type, t -> new TransferEntry());
@@ -80,7 +80,7 @@ public class BlockEntityTransferComponent implements Component {
 
 	public static class TransferEntry {
 		public static final Direction[] DIRECTIONS = Direction.values();
-		private final Map<Direction, TransferType> types = Maps.newHashMap();
+		private final Reference2ReferenceMap<Direction, TransferType> types = new Reference2ReferenceOpenHashMap<>(6, 1);
 
 		public TransferEntry() {
 			for (Direction direction : DIRECTIONS) {
@@ -98,13 +98,16 @@ public class BlockEntityTransferComponent implements Component {
 
 		public void fromTag(CompoundTag tag) {
 			for (String directionKey : tag.getKeys()) {
-				types.put(DirectionUtilities.byNameOrId(directionKey), TransferType.valueOf(tag.getString(directionKey)));
+				if (tag.contains(directionKey)) {
+					types.put(DirectionUtilities.byNameOrId(directionKey), TransferType.valueOf(tag.getString(directionKey)));
+				}
 			}
 		}
 
 		public CompoundTag toTag(CompoundTag tag) {
 			for (Map.Entry<Direction, TransferType> entry : types.entrySet()) {
-				tag.putString(String.valueOf(entry.getKey().getName()), entry.getValue().toString());
+				if (entry.getValue() != TransferType.NONE)
+					tag.putString(String.valueOf(entry.getKey().getName()), entry.getValue().toString());
 			}
 
 			return tag;

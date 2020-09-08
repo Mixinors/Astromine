@@ -24,27 +24,24 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.InfiniteEnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler;
-import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.github.chainmailstudios.astromine.technologies.common.block.CapacitorBlock;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Tickable;
-
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
+import team.reborn.energy.Energy;
+import team.reborn.energy.EnergyHandler;
 
 public abstract class CapacitorBlockEntity extends ComponentEnergyInventoryBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
 	public CapacitorBlockEntity(Block energyBlock, BlockEntityType<?> type) {
@@ -58,9 +55,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyInventoryBlock
 
 	@Override
 	protected EnergyInventoryComponent createEnergyComponent() {
-		EnergyInventoryComponent energyComponent = new SimpleEnergyInventoryComponent(1);
-		EnergyHandler.of(energyComponent).getFirst().setSize(getEnergySize());
-		return energyComponent;
+		return new SimpleEnergyInventoryComponent(getEnergySize());
 	}
 
 	@Override
@@ -70,15 +65,17 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyInventoryBlock
 		if (world == null) return;
 		if (world.isClient) return;
 
-		ItemHandler.ofOptional(this).ifPresent(items -> {
-			EnergyHandler.ofOptional(items.getFirst()).ifPresent(stackHandler -> {
-				EnergyHandler.of(this).getFirst().from(EnergyHandler.of(items.getFirst()).getFirst(), getMachineSpeed());
-			});
+		ItemStack inputStack = itemComponent.getStack(0);
+		if (Energy.valid(inputStack)) {
+			EnergyHandler energyHandler = Energy.of(inputStack);
+			energyHandler.into(Energy.of(this)).move(1024 * getMachineSpeed());
+		}
 
-			EnergyHandler.ofOptional(items.getSecond()).ifPresent(stackHandler -> {
-				EnergyHandler.of(this).getFirst().into(EnergyHandler.of(items.getSecond()).getFirst(), getMachineSpeed());
-			});
-		});
+		ItemStack outputStack = itemComponent.getStack(1);
+		if (Energy.valid(outputStack)) {
+			EnergyHandler energyHandler = Energy.of(outputStack);
+			Energy.of(this).into(energyHandler).move(1024 * getMachineSpeed());
+		}
 	}
 
 	public static class Primitive extends CapacitorBlockEntity {
@@ -172,9 +169,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyInventoryBlock
 
 		@Override
 		protected EnergyInventoryComponent createEnergyComponent() {
-			EnergyInventoryComponent energyComponent = new SimpleEnergyInventoryComponent(1);
-			EnergyHandler.of(energyComponent).setFirst(InfiniteEnergyVolume.of());
-			return energyComponent;
+			return new SimpleEnergyInventoryComponent(InfiniteEnergyVolume.of());
 		}
 
 		@Override

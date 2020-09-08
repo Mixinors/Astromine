@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.network.type;
 
-import com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler;
-import com.github.chainmailstudios.astromine.common.volume.handler.TransferHandler;
 import net.minecraft.block.FacingBlock;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
@@ -94,7 +92,7 @@ public class FluidNetworkType extends NetworkType {
 		for (FluidVolume input : inputs) {
 			for (FluidVolume output : outputs) {
 				if (!input.isEmpty() && !output.isFull() && (input.getFluid() == output.getFluid() || output.isEmpty())) {
-					output.from(input, Fraction.bottle());
+					output.moveFrom(input, Fraction.bottle());
 				} else if (input.isEmpty()) {
 					break;
 				}

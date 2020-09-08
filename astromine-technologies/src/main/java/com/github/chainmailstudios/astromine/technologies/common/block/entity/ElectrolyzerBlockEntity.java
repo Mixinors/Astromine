@@ -24,33 +24,29 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
-import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
-import com.github.chainmailstudios.astromine.technologies.common.block.ElectrolyzerBlock;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.FluidSizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.ElectrolyzingRecipe;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.NotNull;
-import team.reborn.energy.Energy;
 
 import java.util.Optional;
 
@@ -67,9 +63,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	@Override
 	protected EnergyInventoryComponent createEnergyComponent() {
-		EnergyInventoryComponent energyComponent = new SimpleEnergyInventoryComponent(1);
-		EnergyHandler.of(energyComponent).getFirst().setSize(getEnergySize());
-		return energyComponent;
+		return new SimpleEnergyInventoryComponent(getEnergySize());
 	}
 
 	@Override
@@ -89,50 +83,49 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 		if (world == null) return;
 		if (world.isClient) return;
 
-		EnergyHandler.ofOptional(this).ifPresent(energies -> {
-				FluidHandler.ofOptional(this).ifPresent(fluids -> {
-					if (!optionalRecipe.isPresent() && shouldTry) {
-						optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof ElectrolyzingRecipe).filter(recipe -> ((ElectrolyzingRecipe) recipe).matches(fluidComponent)).findFirst();
-					}
+		FluidHandler.ofOptional(this).ifPresent(fluids -> {
+			EnergyVolume volume = getEnergyComponent().getVolume();
+			if (!optionalRecipe.isPresent() && shouldTry) {
+				optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof ElectrolyzingRecipe).filter(recipe -> ((ElectrolyzingRecipe) recipe).matches(fluidComponent)).findFirst();
+			}
 
-					optionalRecipe.ifPresent(recipe -> {
-						if (recipe.matches(fluidComponent)) {
-							limit = recipe.getTime();
+			optionalRecipe.ifPresent(recipe -> {
+				if (recipe.matches(fluidComponent)) {
+					limit = recipe.getTime();
 
-							double speed = Math.min(getMachineSpeed(), limit - progress);
-							double consumed = recipe.getEnergyConsumed() * speed / limit;
+					double speed = Math.min(getMachineSpeed(), limit - progress);
+					double consumed = recipe.getEnergyConsumed() * speed / limit;
 
-							if (energies.getFirst().hasStored(consumed)) {
-								energies.getFirst().from(consumed);
+					if (volume.hasStored(consumed)) {
+						volume.minus(consumed);
 
-								if (progress + speed >= limit) {
-									optionalRecipe = Optional.empty();
+						if (progress + speed >= limit) {
+							optionalRecipe = Optional.empty();
 
-									if (energies.getFirst().hasAvailable(consumed)) {
-										FluidVolume inputVolume = fluids.getFirst();
-										FluidVolume firstOutputVolume = fluids.getSecond();
-										FluidVolume secondOutputVolume = fluids.getThird();
+							if (volume.hasAvailable(consumed)) {
+								FluidVolume inputVolume = fluids.getFirst();
+								FluidVolume firstOutputVolume = fluids.getSecond();
+								FluidVolume secondOutputVolume = fluids.getThird();
 
-										inputVolume.from(recipe.getInputAmount());
-										firstOutputVolume.from(FluidVolume.of(recipe.getFirstOutputAmount(), recipe.getFirstOutputFluid()), recipe.getFirstOutputAmount());
-										secondOutputVolume.from(FluidVolume.of(recipe.getSecondOutputAmount(), recipe.getSecondOutputFluid()), recipe.getSecondOutputAmount());
-									}
-
-									progress = 0;
-								} else {
-									progress += speed;
-								}
-
-								tickActive();
-							} else {
-								tickInactive();
+								inputVolume.minus(recipe.getInputAmount());
+								firstOutputVolume.moveFrom(FluidVolume.of(recipe.getFirstOutputAmount(), recipe.getFirstOutputFluid()), recipe.getFirstOutputAmount());
+								secondOutputVolume.moveFrom(FluidVolume.of(recipe.getSecondOutputAmount(), recipe.getSecondOutputFluid()), recipe.getSecondOutputAmount());
 							}
+
+							progress = 0;
 						} else {
-							tickInactive();
+							progress += speed;
 						}
-					});
-				});
+
+						tickActive();
+					} else {
+						tickInactive();
+					}
+				} else {
+					tickInactive();
+				}
 			});
+		});
 	}
 
 	@Override

@@ -77,12 +77,12 @@ public class AbstractBlockMixin {
 									optionalFirstExtractable.ifPresent((firstExtractable) -> {
 										if (isBucket) {
 											firstExtractable.ifStored(Fraction.bucket(), () -> {
-												firstExtractable.into(stackVolume, Fraction.bucket());
+												firstExtractable.add(stackVolume, Fraction.bucket());
 
 												player.setStackInHand(hand, new ItemStack(stackVolume.getFluid().getBucketItem()));
 											});
 										} else {
-											firstExtractable.into(stackVolume, Fraction.bucket());
+											firstExtractable.add(stackVolume, Fraction.bucket());
 										}
 									});
 								});
@@ -91,14 +91,14 @@ public class AbstractBlockMixin {
 									optionalFirstInsertable.ifPresent((firstInsertable) -> {
 										if (isBucket) {
 											firstInsertable.ifAvailable(Fraction.bucket(), () -> {
-												firstInsertable.from(stackVolume, Fraction.bucket());
+												firstInsertable.moveFrom(stackVolume, Fraction.bucket());
 
 												if (!player.isCreative()) {
 													player.setStackInHand(hand, new ItemStack(Items.BUCKET));
 												}
 											});
 										} else {
-											firstInsertable.from(stackVolume, Fraction.bucket());
+											firstInsertable.moveFrom(stackVolume, Fraction.bucket());
 										}
 									});
 								});

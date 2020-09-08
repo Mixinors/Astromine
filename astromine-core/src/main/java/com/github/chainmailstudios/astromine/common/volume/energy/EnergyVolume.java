@@ -26,11 +26,7 @@ package com.github.chainmailstudios.astromine.common.volume.energy;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 
@@ -46,7 +42,7 @@ public class EnergyVolume extends Volume<Identifier, Double> {
 	}
 
 	@Override
-	public <V extends Volume<Identifier, Double>> V into(V v, Double doubleA) {
+	public <V extends Volume<Identifier, Double>> V add(V v, Double doubleA) {
 		if (!(v instanceof EnergyVolume)) return (V) this;
 
 		double amount = Math.min(v.getSize() - v.getAmount(), Math.min(getAmount(), doubleA));
@@ -60,7 +56,7 @@ public class EnergyVolume extends Volume<Identifier, Double> {
 	}
 
 	@Override
-	public <V extends Volume<Identifier, Double>> V into(Double aDouble) {
+	public <V extends Volume<Identifier, Double>> V add(Double aDouble) {
 		double amount = Math.min(getSize() - getAmount(), aDouble);
 
 		setAmount(getAmount() + amount);
@@ -69,16 +65,16 @@ public class EnergyVolume extends Volume<Identifier, Double> {
 	}
 
 	@Override
-	public <V extends Volume<Identifier, Double>> V from(V v, Double doubleA) {
+	public <V extends Volume<Identifier, Double>> V moveFrom(V v, Double doubleA) {
 		if (!(v instanceof EnergyVolume)) return (V) this;
 
-		v.into(this, doubleA);
+		v.add(this, doubleA);
 
 		return (V) this;
 	}
 
 	@Override
-	public <V extends Volume<Identifier, Double>> V from(Double aDouble) {
+	public <V extends Volume<Identifier, Double>> V minus(Double aDouble) {
 		double amount = Math.min(getAmount(), aDouble);
 
 		setAmount(getAmount() - amount);
@@ -92,6 +88,10 @@ public class EnergyVolume extends Volume<Identifier, Double> {
 
 	public static EnergyVolume attached(SimpleEnergyInventoryComponent component) {
 		return new EnergyVolume(0.0D, 0.0D, component::dispatchConsumers);
+	}
+
+	public static EnergyVolume attached(double size, SimpleEnergyInventoryComponent component) {
+		return new EnergyVolume(0.0D, size, component::dispatchConsumers);
 	}
 
 	public static EnergyVolume of(double amount) {

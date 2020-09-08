@@ -24,22 +24,19 @@
 
 package com.github.chainmailstudios.astromine.registry.client;
 
-import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeBlockItem;
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
+import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
-import com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler;
 import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.minecraft.item.BlockItem;
 import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
+import team.reborn.energy.EnergyHandler;
 
 public class AstromineClientCallbacks {
 	public static void initialize() {
 		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
-			if (stack.getItem() instanceof EnergyVolumeItem) {
+			if (stack.getItem() instanceof FluidVolumeItem) {
 				FluidHandler.ofOptional(stack).ifPresent(handler -> {
 					handler.withVolume(0, optionalVolume -> {
 						optionalVolume.ifPresent(volume -> {
@@ -51,14 +48,11 @@ public class AstromineClientCallbacks {
 		});
 
 		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
-			if (stack.getItem() instanceof EnergyVolumeItem) {
-				EnergyHandler.ofOptional(stack).ifPresent(handler -> {
-					handler.withVolume(0, optionalVolume -> {
-						optionalVolume.ifPresent(volume -> {
-							tooltip.add(EnergyUtilities.compoundDisplayColored(volume.getAmount(), volume.getSize()));
-						});
-					});
-				});
+			if (stack.getItem() instanceof EnergyVolumeItem || stack.getItem() instanceof EnergyVolumeBlockItem) {
+				EnergyHandler handler = EnergyUtilities.ofNullable(stack);
+				if (handler != null) {
+					tooltip.add(EnergyUtilities.compoundDisplayColored(handler.getEnergy(), handler.getMaxStored()));
+				}
 			}
 		});
 	}

@@ -24,28 +24,26 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
-import com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
-
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.NotNull;
 
@@ -64,9 +62,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 
 	@Override
 	protected EnergyInventoryComponent createEnergyComponent() {
-		EnergyInventoryComponent energyComponent = new SimpleEnergyInventoryComponent(1);
-		EnergyHandler.of(energyComponent).getFirst().setSize(getEnergySize());
-		return energyComponent;
+		return new SimpleEnergyInventoryComponent(getEnergySize());
 	}
 
 	@Override
@@ -76,47 +72,46 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 		if (world == null) return;
 		if (world.isClient) return;
 
-		EnergyHandler.ofOptional(this).ifPresent(energies -> {
-			ItemHandler.ofOptional(this).ifPresent(items -> {
-				ItemStack burnStack = items.getFirst();
+		ItemHandler.ofOptional(this).ifPresent(items -> {
+			EnergyVolume energyVolume = getEnergyComponent().getVolume();
+			ItemStack burnStack = items.getFirst();
 
-				Integer value = FuelRegistry.INSTANCE.get(burnStack.getItem());
+			Integer value = FuelRegistry.INSTANCE.get(burnStack.getItem());
 
-				if (value != null) {
-					boolean isFuel = !(burnStack.getItem() instanceof BucketItem) && value > 0;
+			if (value != null) {
+				boolean isFuel = !(burnStack.getItem() instanceof BucketItem) && value > 0;
 
-					if (isFuel) {
-						if (progress == 0) {
-							limit = value / 2;
+				if (isFuel) {
+					if (progress == 0) {
+						limit = value / 2;
+						progress++;
+					}
+				}
+
+				double produced = 5;
+				for (int i = 0; i < 3 * getMachineSpeed(); i++) {
+					if (progress > 0 && progress <= limit) {
+						if (energyVolume.hasAvailable(produced)) {
 							progress++;
+							energyVolume.add(produced * getMachineSpeed());
 						}
-					}
-
-					double produced = 5;
-					for (int i = 0; i < 3 * getMachineSpeed(); i++) {
-						if (progress > 0 && progress <= limit) {
-							if (energies.getFirst().hasAvailable(produced)) {
-								progress++;
-								energies.getFirst().into(produced * getMachineSpeed());
-							}
-						} else {
-							burnStack.decrement(1);
-
-							progress = 0;
-							limit = 100;
-							break;
-						}
-					}
-
-					if (isFuel || progress != 0) {
-						tickActive();
 					} else {
-						tickInactive();
+						burnStack.decrement(1);
+
+						progress = 0;
+						limit = 100;
+						break;
 					}
+				}
+
+				if (isFuel || progress != 0) {
+					tickActive();
 				} else {
 					tickInactive();
 				}
-			});
+			} else {
+				tickInactive();
+			}
 		});
 	}
 

@@ -24,16 +24,12 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.loader.api.FabricLoader;
-
+import com.github.chainmailstudios.astromine.common.utilities.ExplosionUtilities;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import com.github.chainmailstudios.astromine.common.utilities.ExplosionUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 public class NuclearWarheadBlock extends Block {
 	public NuclearWarheadBlock(Settings settings) {
@@ -47,9 +43,7 @@ public class NuclearWarheadBlock extends Block {
 
 	@Override
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
-		if (!(!world.isClient && FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER)) {
-			this.tryDetonate(world, pos);
-		}
+		this.tryDetonate(world, pos);
 	}
 
 	private void tryDetonate(World world, BlockPos pos) {

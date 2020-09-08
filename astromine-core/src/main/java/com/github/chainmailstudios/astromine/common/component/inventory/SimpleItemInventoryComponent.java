@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
@@ -42,12 +43,7 @@ import java.util.Optional;
  * defined on instantiation.
  */
 public class SimpleItemInventoryComponent implements ItemInventoryComponent {
-	private final HashMap<Integer, ItemStack> contents = new HashMap<Integer, ItemStack>() {
-		@Override
-		public ItemStack get(Object key) {
-			return super.getOrDefault(key, ItemStack.EMPTY);
-		}
-	};
+	private final Int2ObjectOpenHashMap<ItemStack> contents = new Int2ObjectOpenHashMap<>();
 
 	private final List<Runnable> listeners = new ArrayList<>();
 	private TriPredicate<@Nullable Direction, ItemStack, Integer> insertPredicate = (direction, itemStack, slot) -> true;
@@ -64,6 +60,7 @@ public class SimpleItemInventoryComponent implements ItemInventoryComponent {
 		for (int i = 0; i < size; ++i) {
 			contents.put(i, ItemStack.EMPTY);
 		}
+		this.contents.defaultReturnValue(ItemStack.EMPTY);
 	}
 
 	public void resize(int size) {

@@ -24,15 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.block;
 
-import com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.util.math.BlockPos;
-
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
 import com.github.chainmailstudios.astromine.common.widget.blade.EnergyVerticalBarWidget;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.util.math.BlockPos;
 
 public class ComponentBlockEntityEnergyItemScreenHandler extends ComponentBlockEntityScreenHandler {
 	public ComponentEnergyInventoryBlockEntity blockEntity;
@@ -52,7 +50,7 @@ public class ComponentBlockEntityEnergyItemScreenHandler extends ComponentBlockE
 		energyBar = new EnergyVerticalBarWidget();
 		energyBar.setPosition(Position.of(mainTab, 7F, 11));
 		energyBar.setSize(Size.of(24F, 48F));
-		energyBar.setVolume(() -> EnergyHandler.ofOptional(blockEntity).get().getVolume(0));
+		energyBar.setVolume(() -> blockEntity.getEnergyComponent().getVolume());
 
 		mainTab.addWidget(energyBar);
 	}

@@ -24,23 +24,20 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
-
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
+import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import team.reborn.energy.EnergySide;
 
 import java.text.DecimalFormat;
+import java.util.Objects;
 
 public class EnergyUtilities {
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###");
@@ -141,5 +138,25 @@ public class EnergyUtilities {
 
 	public static MutableText compoundDisplayColored(double energy, double maxEnergy) {
 		return compoundDisplay(energy, maxEnergy).formatted(Formatting.GRAY);
+	}
+
+	public static EnergyHandler of(Object object) {
+		return Objects.requireNonNull(ofNullable(object));
+	}
+
+	@Nullable
+	public static EnergyHandler ofNullable(Object object) {
+		return ofNullable(object, null);
+	}
+
+	@Nullable
+	public static EnergyHandler ofNullable(Object object, @Nullable Direction direction) {
+		if (Energy.valid(object)) {
+			if (direction == null)
+				return Energy.of(object);
+			return Energy.of(object).side(direction);
+		}
+
+		return null;
 	}
 }

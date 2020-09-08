@@ -25,37 +25,32 @@
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import net.minecraft.nbt.CompoundTag;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SimpleEnergyInventoryComponent implements EnergyInventoryComponent {
-	private final Map<Integer, EnergyVolume> contents = new HashMap<>();
+	private final EnergyVolume content;
 
 	private final List<Runnable> listeners = new ArrayList<>();
 
-	private final int size;
-
 	public SimpleEnergyInventoryComponent() {
-		this(0);
+		this.content = EnergyVolume.attached(this);
 	}
 
-	public SimpleEnergyInventoryComponent(int size) {
-		this.size = size;
-		for (int i = 0; i < size; ++i) {
-			contents.put(i, EnergyVolume.attached(this));
-		}
+	public SimpleEnergyInventoryComponent(double size) {
+		this.content = EnergyVolume.attached(size, this);
 	}
 
-	@Override
-	public Map<Integer, EnergyVolume> getContents() {
-		return contents;
+	public SimpleEnergyInventoryComponent(EnergyVolume volume) {
+		this.content = volume;
+		this.content.setRunnable(this::dispatchConsumers);
 	}
 
 	@Override
-	public int getSize() {
-		return size;
+	public EnergyVolume getVolume() {
+		return content;
 	}
 
 	@Override
@@ -65,18 +60,18 @@ public class SimpleEnergyInventoryComponent implements EnergyInventoryComponent 
 
 	@Override
 	public void fromTag(CompoundTag compoundTag) {
-		read(this, compoundTag, Optional.empty(), Optional.empty());
+		read(compoundTag);
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag compoundTag) {
-		write(this, compoundTag, Optional.empty(), Optional.empty());
+		write(compoundTag);
 		return compoundTag;
 	}
 
 	@Override
 	public SimpleEnergyInventoryComponent copy() {
-		SimpleEnergyInventoryComponent component = new SimpleEnergyInventoryComponent(getSize());
+		SimpleEnergyInventoryComponent component = new SimpleEnergyInventoryComponent();
 		component.fromTag(toTag(new CompoundTag()));
 		return component;
 	}

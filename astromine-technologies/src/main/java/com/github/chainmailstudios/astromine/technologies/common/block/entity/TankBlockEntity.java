@@ -30,22 +30,16 @@ import com.github.chainmailstudios.astromine.common.component.inventory.ItemInve
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
-import com.github.chainmailstudios.astromine.common.volume.fluid.InfiniteFluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler;
 import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.FluidSizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -84,13 +78,13 @@ public abstract class TankBlockEntity extends ComponentFluidInventoryBlockEntity
 						if (items.getFirst().getItem() instanceof BucketItem) {
 							if (items.getFirst().getItem() != Items.BUCKET && items.getFirst().getCount() == 1) {
 								if (ourVolume.hasAvailable(Fraction.bucket())) {
-									ourVolume.from(stackVolume, Fraction.bucket());
+									ourVolume.moveFrom(stackVolume, Fraction.bucket());
 
 									items.setFirst(new ItemStack(Items.BUCKET));
 								}
 							}
 						} else {
-							ourVolume.from(stackVolume, Fraction.ofDecimal(getMachineSpeed()));
+							ourVolume.moveFrom(stackVolume, Fraction.ofDecimal(getMachineSpeed()));
 						}
 					}
 				});
@@ -103,13 +97,13 @@ public abstract class TankBlockEntity extends ComponentFluidInventoryBlockEntity
 						if (items.getSecond().getItem() instanceof BucketItem) {
 							if (items.getSecond().getItem() == Items.BUCKET && items.getSecond().getCount() == 1) {
 								if (ourVolume.hasStored(Fraction.bucket())) {
-									ourVolume.into(stackVolume, Fraction.bucket());
+									ourVolume.add(stackVolume, Fraction.bucket());
 
 									items.setSecond(new ItemStack(stackVolume.getFluid().getBucketItem()));
 								}
 							}
 						} else {
-							ourVolume.into(stackVolume, Fraction.ofDecimal(getMachineSpeed()));
+							ourVolume.add(stackVolume, Fraction.ofDecimal(getMachineSpeed()));
 						}
 					}
 				});

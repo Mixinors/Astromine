@@ -26,7 +26,6 @@ package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.common.callback.ServerChunkTickCallback;
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
@@ -122,13 +121,11 @@ public class AstromineCommonCallbacks {
 					component.setVolume(0, FluidVolume.of(Fraction.empty(), volumeItem.getSize(), Fluids.EMPTY));
 					return component;
 				});
-			} else 	if (item instanceof EnergyVolumeItem) {
+			} else if (item instanceof EnergyVolumeItem) {
 				EnergyVolumeItem volumeItem = (EnergyVolumeItem) item;
 
 				ItemComponentCallbackV2.register(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, item, (useless, stack) -> {
-					EnergyInventoryComponent component = new SimpleEnergyInventoryComponent(1);
-					component.setVolume(0, EnergyVolume.of(0.0D, volumeItem.getSize()));
-					return component;
+					return new SimpleEnergyInventoryComponent(EnergyVolume.of(0.0D, volumeItem.getSize()));
 				});
 			}
 		};

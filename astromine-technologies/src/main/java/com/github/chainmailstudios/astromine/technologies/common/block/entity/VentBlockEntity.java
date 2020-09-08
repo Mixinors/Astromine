@@ -24,34 +24,29 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
-import com.github.chainmailstudios.astromine.common.inventory.BaseInventory;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
-import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergyConsumedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.FluidSizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.FacingBlock;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
-
-import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
 
 public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements FluidSizeProvider, EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	public VentBlockEntity() {
@@ -69,9 +64,7 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 
 	@Override
 	protected EnergyInventoryComponent createEnergyComponent() {
-		EnergyInventoryComponent energyComponent = new SimpleEnergyInventoryComponent(1);
-		EnergyHandler.of(energyComponent).getFirst().setSize(getEnergySize());
-		return energyComponent;
+		return new SimpleEnergyInventoryComponent(getEnergySize());
 	}
 
 	@Override
@@ -101,60 +94,59 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 		if (world == null) return;
 		if (world.isClient) return;
 
-		EnergyHandler.ofOptional(this).ifPresent(energies -> {
-			FluidHandler.ofOptional(this).ifPresent(fluids -> {
-					if (energies.getFirst().hasStored(Fraction.of(1, 8))) {
-						BlockPos position = getPos();
+		FluidHandler.ofOptional(this).ifPresent(fluids -> {
+			EnergyVolume energyVolume = getEnergyComponent().getVolume();
+			if (energyVolume.hasStored(Fraction.of(1, 8))) {
+				BlockPos position = getPos();
 
-						Direction direction = world.getBlockState(position).get(FacingBlock.FACING);
+				Direction direction = world.getBlockState(position).get(FacingBlock.FACING);
 
-						BlockPos output = position.offset(direction);
+				BlockPos output = position.offset(direction);
 
-						if (energies.getFirst().hasStored(getEnergyConsumed()) && (world.getBlockState(output).isAir() || world.getBlockState(output).isSideSolidFullSquare(world, pos, direction.getOpposite()))) {
-							ComponentProvider componentProvider = ComponentProvider.fromChunk(world.getChunk(getPos()));
+				if (energyVolume.hasStored(getEnergyConsumed()) && (world.getBlockState(output).isAir() || world.getBlockState(output).isSideSolidFullSquare(world, pos, direction.getOpposite()))) {
+					ComponentProvider componentProvider = ComponentProvider.fromChunk(world.getChunk(getPos()));
 
-							ChunkAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);
+					ChunkAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);
 
-							FluidVolume centerVolume = fluids.getFirst();
+					FluidVolume centerVolume = fluids.getFirst();
 
-							if (ChunkAtmosphereComponent.isInChunk(world.getChunk(output).getPos(), pos)) {
-								FluidVolume sideVolume = atmosphereComponent.get(output);
-								if ((sideVolume.isEmpty() || sideVolume.getFluid() == centerVolume.getFluid()) && sideVolume.smallerThan(centerVolume.getAmount())) {
-									centerVolume.into(sideVolume, Fraction.of(1, 8));
+					if (ChunkAtmosphereComponent.isInChunk(world.getChunk(output).getPos(), pos)) {
+						FluidVolume sideVolume = atmosphereComponent.get(output);
+						if ((sideVolume.isEmpty() || sideVolume.getFluid() == centerVolume.getFluid()) && sideVolume.smallerThan(centerVolume.getAmount())) {
+							centerVolume.add(sideVolume, Fraction.of(1, 8));
 
-									atmosphereComponent.add(output, sideVolume);
+							atmosphereComponent.add(output, sideVolume);
 
-									energies.getFirst().from(getEnergyConsumed());
+							energyVolume.minus(getEnergyConsumed());
 
-									tickActive();
-								} else {
-									tickInactive();
-								}
-							} else {
-								ChunkPos neighborPos = ChunkAtmosphereComponent.getNeighborFromPos(world.getChunk(output).getPos(), output);
-								ComponentProvider provider = ComponentProvider.fromChunk(world.getChunk(neighborPos.x, neighborPos.z));
-								ChunkAtmosphereComponent neighborAtmosphereComponent = provider.getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);
-
-								FluidVolume sideVolume = neighborAtmosphereComponent.get(output);
-								if ((sideVolume.isEmpty() || sideVolume.getFluid() == centerVolume.getFluid()) && sideVolume.smallerThan(centerVolume.getAmount())) {
-									centerVolume.into(sideVolume, Fraction.of(1, 8));
-
-									neighborAtmosphereComponent.add(output, sideVolume);
-
-									energies.getFirst().from(getEnergyConsumed());
-
-									tickActive();
-								} else {
-									tickInactive();
-								}
-							}
+							tickActive();
 						} else {
 							tickInactive();
 						}
 					} else {
-						tickInactive();
+						ChunkPos neighborPos = ChunkAtmosphereComponent.getNeighborFromPos(world.getChunk(output).getPos(), output);
+						ComponentProvider provider = ComponentProvider.fromChunk(world.getChunk(neighborPos.x, neighborPos.z));
+						ChunkAtmosphereComponent neighborAtmosphereComponent = provider.getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);
+
+						FluidVolume sideVolume = neighborAtmosphereComponent.get(output);
+						if ((sideVolume.isEmpty() || sideVolume.getFluid() == centerVolume.getFluid()) && sideVolume.smallerThan(centerVolume.getAmount())) {
+							centerVolume.add(sideVolume, Fraction.of(1, 8));
+
+							neighborAtmosphereComponent.add(output, sideVolume);
+
+							energyVolume.minus(getEnergyConsumed());
+
+							tickActive();
+						} else {
+							tickInactive();
+						}
 					}
-			});
+				} else {
+					tickInactive();
+				}
+			} else {
+				tickInactive();
+			}
 		});
 	}
 }

@@ -24,16 +24,6 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.util.Tickable;
-
-import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
@@ -41,18 +31,24 @@ import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEn
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
 import com.github.chainmailstudios.astromine.common.inventory.BaseInventory;
-import com.github.chainmailstudios.astromine.technologies.common.recipe.PressingRecipe;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
-import com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.PressingRecipe;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.recipe.RecipeType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -93,9 +89,7 @@ public abstract class PresserBlockEntity extends ComponentEnergyInventoryBlockEn
 
 	@Override
 	protected EnergyInventoryComponent createEnergyComponent() {
-		EnergyInventoryComponent energyComponent = new SimpleEnergyInventoryComponent(1);
-		EnergyHandler.of(energyComponent).getFirst().setSize(getEnergySize());
-		return energyComponent;
+		return new SimpleEnergyInventoryComponent(getEnergySize());
 	}
 
 	@Override
@@ -115,56 +109,55 @@ public abstract class PresserBlockEntity extends ComponentEnergyInventoryBlockEn
 		if (world == null) return;
 		if (world.isClient) return;
 
-		EnergyHandler.ofOptional(this).ifPresent(energies -> {
-			ItemHandler.ofOptional(this).ifPresent(items -> {
-				BaseInventory inputInventory = BaseInventory.of(items.getFirst(), items.getSecond());
+		ItemHandler.ofOptional(this).ifPresent(items -> {
+			EnergyVolume volume = getEnergyComponent().getVolume();
+			BaseInventory inputInventory = BaseInventory.of(items.getFirst(), items.getSecond());
 
-				if (!optionalRecipe.isPresent() && shouldTry) {
-					optionalRecipe = (Optional<PressingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) PressingRecipe.Type.INSTANCE, ItemInventoryFromInventoryComponent.of(itemComponent), world);
-				}
+			if (!optionalRecipe.isPresent() && shouldTry) {
+				optionalRecipe = (Optional<PressingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) PressingRecipe.Type.INSTANCE, ItemInventoryFromInventoryComponent.of(itemComponent), world);
+			}
 
-				optionalRecipe.ifPresent(recipe -> {
-					if (optionalRecipe.get().matches(inputInventory, world)) {
-						limit = recipe.getTime();
+			optionalRecipe.ifPresent(recipe -> {
+				if (optionalRecipe.get().matches(inputInventory, world)) {
+					limit = recipe.getTime();
 
-						double speed = Math.min(getMachineSpeed(), limit - progress);
-						double consumed = recipe.getEnergyConsumed() * speed / limit;
+					double speed = Math.min(getMachineSpeed(), limit - progress);
+					double consumed = recipe.getEnergyConsumed() * speed / limit;
 
-						ItemStack output = optionalRecipe.get().getOutput().copy();
+					ItemStack output = optionalRecipe.get().getOutput().copy();
 
-						boolean isEmpty = items.getFirst().isEmpty();
-						boolean isEqual = ItemStack.areItemsEqual(items.getFirst(), output) && ItemStack.areTagsEqual(items.getFirst(), output);
+					boolean isEmpty = items.getFirst().isEmpty();
+					boolean isEqual = ItemStack.areItemsEqual(items.getFirst(), output) && ItemStack.areTagsEqual(items.getFirst(), output);
 
-						if (energies.getFirst().hasStored(consumed)) {
-							if ((isEmpty || isEqual) && items.getFirst().getCount() + output.getCount() <= items.getFirst().getMaxCount()) {
-								energies.getFirst().from(consumed);
+					if (volume.hasStored(consumed)) {
+						if ((isEmpty || isEqual) && items.getFirst().getCount() + output.getCount() <= items.getFirst().getMaxCount()) {
+							volume.minus(consumed);
 
-								if (progress + speed >= limit) {
-									optionalRecipe = Optional.empty();
+							if (progress + speed >= limit) {
+								optionalRecipe = Optional.empty();
 
-									items.getSecond().decrement(1);
+								items.getSecond().decrement(1);
 
-									if (isEmpty) {
-										items.setFirst(output);
-									} else {
-										items.getFirst().increment(output.getCount());
-										shouldTry = true;
-									}
-
-									progress = 0;
+								if (isEmpty) {
+									items.setFirst(output);
 								} else {
-									progress += speed;
+									items.getFirst().increment(output.getCount());
+									shouldTry = true;
 								}
 
-								tickActive();
+								progress = 0;
 							} else {
-								tickInactive();
+								progress += speed;
 							}
+
+							tickActive();
 						} else {
 							tickInactive();
 						}
+					} else {
+						tickInactive();
 					}
-				});
+				}
 			});
 		});
 	}

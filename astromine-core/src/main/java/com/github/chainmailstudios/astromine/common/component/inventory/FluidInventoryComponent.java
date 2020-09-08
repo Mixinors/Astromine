@@ -110,7 +110,7 @@ public interface FluidInventoryComponent extends NameableComponent {
 		}).findFirst();
 
 		if (matchingVolumeOptional.isPresent()) {
-			matchingVolumeOptional.get().getValue().into(fraction);
+			matchingVolumeOptional.get().getValue().add(fraction);
 			return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().getValue());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, null);
@@ -189,7 +189,7 @@ public interface FluidInventoryComponent extends NameableComponent {
 			FluidVolume volume = matchingVolumeOptional.get();
 
 			if (canExtract(direction, volume, slot)) {
-				return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().from(fraction));
+				return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().minus(fraction));
 			} else {
 				return new TypedActionResult<>(ActionResult.FAIL, FluidVolume.empty());
 			}

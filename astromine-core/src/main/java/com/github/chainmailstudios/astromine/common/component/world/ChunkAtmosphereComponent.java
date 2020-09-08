@@ -105,7 +105,7 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 
 			FluidVolume centerVolume = pair.getValue();
 
-			centerVolume.from(Fraction.of(AstromineConfig.get().gasDecayNumerator, AstromineConfig.get().gasDecayDenominator));
+			centerVolume.minus(Fraction.of(AstromineConfig.get().gasDecayNumerator, AstromineConfig.get().gasDecayDenominator));
 
 			if (centerVolume.isEmpty()) {
 				remove(centerPos);
@@ -120,11 +120,11 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 
 					if (!(Registry.BLOCK.getId(world.getBlockState(sidePos).getBlock()).toString().equals("astromine:airlock") && !world.getBlockState(sidePos).get(Properties.POWERED)) && (world.getBlockState(sidePos).isAir() || !world.getBlockState(sidePos).isSideSolidFullSquare(world, sidePos, direction.getOpposite())) && (world.getBlockState(centerPos).isAir() || !world.getBlockState(centerPos).isSideSolidFullSquare(world, centerPos, direction)) && (sideVolume.isEmpty() || sideVolume.getFluid() == centerVolume.getFluid()) && (centerVolume.hasStored(Fraction.bottle()) || !world.isAir(centerPos) && world.getBlockState(sidePos).isOpaqueFullCube(world, centerPos)) && sideVolume.smallerThan(centerVolume.getAmount())) {
 						if (world.isAir(centerPos)) {
-							centerVolume.into(sideVolume, Fraction.bottle());
+							centerVolume.add(sideVolume, Fraction.bottle());
 						} else if (!world.getBlockState(centerPos).isSideSolidFullSquare(world, centerPos, direction)) {
-							centerVolume.into(sideVolume, Fraction.bottle());
+							centerVolume.add(sideVolume, Fraction.bottle());
 						} else {
-							centerVolume.into(sideVolume, centerVolume.getAmount());
+							centerVolume.add(sideVolume, centerVolume.getAmount());
 						}
 
 						add(sidePos, sideVolume);
@@ -142,11 +142,11 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 						// AstromineCommon.LOGGER.info("Step 2: Moving from " + centerPos + " to " + sidePos);
 
 						if (world.isAir(centerPos)) {
-							centerVolume.into(sideVolume, Fraction.bottle());
+							centerVolume.add(sideVolume, Fraction.bottle());
 						} else if (!world.getBlockState(centerPos).isSideSolidFullSquare(world, centerPos, direction)) {
-							centerVolume.into(sideVolume, Fraction.bottle());
+							centerVolume.add(sideVolume, Fraction.bottle());
 						} else {
-							centerVolume.into(sideVolume, centerVolume.getAmount());
+							centerVolume.add(sideVolume, centerVolume.getAmount());
 						}
 
 						chunkAtmosphereComponent.add(sidePos, sideVolume);

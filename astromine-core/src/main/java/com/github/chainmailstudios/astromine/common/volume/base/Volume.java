@@ -79,6 +79,10 @@ public abstract class Volume<T, N extends Number> {
 		if (r != null) r.run();
 	}
 
+	public void setRunnable(Runnable r) {
+		this.r = r;
+	}
+
 	public boolean isFull() {
 		return n.equals(s);
 	}
@@ -170,12 +174,12 @@ public abstract class Volume<T, N extends Number> {
 
 		return this;
 	}
-	
+
 	public Volume<T, N> ifNotBiggerThan(Number number, Runnable runnable) {
 		if (!biggerThan(number)) {
 			runnable.run();
 		}
-		
+
 		return this;
 	}
 
@@ -263,13 +267,21 @@ public abstract class Volume<T, N extends Number> {
 
 	public abstract CompoundTag toTag();
 
-	public abstract <V extends Volume<T, N>> V into(V v, N n);
+	public abstract <V extends Volume<T, N>> V add(V v, N n);
 
-	public abstract <V extends Volume<T, N>> V into(N n);
+	public abstract <V extends Volume<T, N>> V add(N n);
 
-	public abstract <V extends Volume<T, N>> V from(V v, N n);
+	public abstract <V extends Volume<T, N>> V moveFrom(V v, N n);
 
-	public abstract <V extends Volume<T, N>> V from(N n);
+	public abstract <V extends Volume<T, N>> V minus(N n);
 
 	public abstract <V extends Volume<T, N>> V copy();
+
+	public boolean use(N n) {
+		if (hasStored(n)) {
+			minus(n);
+			return true;
+		}
+		return false;
+	}
 }

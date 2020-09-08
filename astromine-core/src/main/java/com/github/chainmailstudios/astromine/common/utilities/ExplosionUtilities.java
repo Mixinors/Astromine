@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
@@ -34,9 +35,6 @@ import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.chunk.WorldChunk;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.access.WorldChunkAccess;
 
 public class ExplosionUtilities {
 	private static final BlockState AIR = Blocks.AIR.getDefaultState();
@@ -100,33 +98,24 @@ public class ExplosionUtilities {
 		ChunkSection[] sections = chunk.getSectionArray();
 		for (int i = -scr; i <= scr; i++) {
 			int by = i * 16;
-			if (encompassed(bx, by, bz, bx + 15, by + 15, bz + 15, radius)) {
-				int val = i + sc;
-				if (val >= 0 && val < 16) {
-					((WorldChunkAccess) chunk).astromine_removeSubchunk(val);
-					destroyed += 4096;
-				}
-			} else {
-				int val = i + sc;
-				if (val >= 0 && val < 16) {
-					ChunkSection section = sections[val];
-					if (section != null) {
-						for (int ox = 0; ox < 16; ox++) {
-							for (int oy = 0; oy < 16; oy++) {
-								for (int oz = 0; oz < 16; oz++) {
-									if (in(bx + ox, by + oy, bz + oz, radius)) {
-										if(section.getBlockState(ox, oy, oz).getHardness(chunk, BlockPos.ORIGIN) != -1) {
-											section.setBlockState(ox, oy, oz, AIR);
-											destroyed++;
-										}
+			int val = i + sc;
+			if (val >= 0 && val < 16) {
+				ChunkSection section = sections[val];
+				if (section != null) {
+					for (int ox = 0; ox < 16; ox++) {
+						for (int oy = 0; oy < 16; oy++) {
+							for (int oz = 0; oz < 16; oz++) {
+								if (in(bx + ox, by + oy, bz + oz, radius)) {
+									if (section.getBlockState(ox, oy, oz).getHardness(chunk, BlockPos.ORIGIN) != -1) {
+										section.setBlockState(ox, oy, oz, AIR);
+										destroyed++;
 									}
 								}
 							}
 						}
-						chunk.getLightingProvider().setSectionStatus(ChunkSectionPos.from(bx >> 4, i, bz >> 4), false);
 					}
+					chunk.getLightingProvider().setSectionStatus(ChunkSectionPos.from(bx >> 4, i, bz >> 4), false);
 				}
-
 			}
 		}
 		return destroyed;

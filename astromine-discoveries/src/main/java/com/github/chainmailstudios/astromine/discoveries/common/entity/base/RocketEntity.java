@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine.discoveries.common.entity.base;
 
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidEntity;
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidInventoryEntity;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
@@ -17,7 +16,6 @@ import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.ItemScatterer;
@@ -82,7 +80,7 @@ public abstract class RocketEntity extends ComponentFluidInventoryEntity {
 			FluidVolume tank = getTank();
 
 			if (fuelPredicate.test(tank) || tank.isEmpty()) {
-				tank.from(consumptionFunction.apply(this));
+				tank.minus(consumptionFunction.apply(this));
 
 				if (tank.isEmpty()) {
 					if (world.isClient) {
@@ -109,7 +107,7 @@ public abstract class RocketEntity extends ComponentFluidInventoryEntity {
 					}
 				}
 
-				if (BlockPos.Mutable.method_29715(getBoundingBox()).anyMatch(pos -> !world.getBlockState(pos).isAir())) {
+				if (BlockPos.Mutable.method_29715(getBoundingBox()).anyMatch(pos -> world.getBlockState(pos).isFullCube(world, pos))) {
 					if (world.isClient) {
 						this.world.getPlayers().forEach(player -> player.sendMessage(new TranslatableText("text.astromine.rocket.disassemble_collision").formatted(Formatting.RED), false));
 					}
@@ -138,13 +136,13 @@ public abstract class RocketEntity extends ComponentFluidInventoryEntity {
 						if (items.getFirst().getItem() instanceof BucketItem) {
 							if (items.getFirst().getItem() != Items.BUCKET && items.getFirst().getCount() == 1) {
 								if (ourVolume.hasAvailable(Fraction.bucket())) {
-									ourVolume.from(stackVolume, Fraction.bucket());
+									ourVolume.moveFrom(stackVolume, Fraction.bucket());
 
 									items.setFirst(new ItemStack(Items.BUCKET));
 								}
 							}
 						} else {
-							ourVolume.from(stackVolume, Fraction.bucket());
+							ourVolume.moveFrom(stackVolume, Fraction.bucket());
 						}
 					}
 				});
@@ -157,13 +155,13 @@ public abstract class RocketEntity extends ComponentFluidInventoryEntity {
 						if (items.getSecond().getItem() instanceof BucketItem) {
 							if (items.getSecond().getItem() == Items.BUCKET && items.getSecond().getCount() == 1) {
 								if (ourVolume.hasStored(Fraction.bucket())) {
-									ourVolume.into(stackVolume, Fraction.bucket());
+									ourVolume.add(stackVolume, Fraction.bucket());
 
 									items.setSecond(new ItemStack(stackVolume.getFluid().getBucketItem()));
 								}
 							}
 						} else {
-							ourVolume.into(stackVolume, Fraction.bucket());
+							ourVolume.add(stackVolume, Fraction.bucket());
 						}
 					}
 				});

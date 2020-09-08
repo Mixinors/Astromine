@@ -24,14 +24,21 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
-import com.github.chainmailstudios.astromine.technologies.common.block.BlockBreakerBlock;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergyConsumedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -43,15 +50,6 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -71,9 +69,7 @@ public class BlockBreakerBlockEntity extends ComponentEnergyInventoryBlockEntity
 
 	@Override
 	protected EnergyInventoryComponent createEnergyComponent() {
-		EnergyInventoryComponent energyComponent = new SimpleEnergyInventoryComponent(1);
-		EnergyHandler.of(energyComponent).getFirst().setSize(getEnergySize());
-		return energyComponent;
+		return new SimpleEnergyInventoryComponent(getEnergySize());
 	}
 
 	@Override
@@ -98,59 +94,58 @@ public class BlockBreakerBlockEntity extends ComponentEnergyInventoryBlockEntity
 		if (world == null) return;
 		if (world.isClient) return;
 
-		EnergyHandler.ofOptional(this).ifPresent(energies -> {
-			ItemHandler.ofOptional(this).ifPresent(items -> {
-				if (energies.getFirst().getAmount() < getEnergyConsumed()) {
+		ItemHandler.ofOptional(this).ifPresent(items -> {
+			EnergyVolume energyVolume = getEnergyComponent().getVolume();
+			if (energyVolume.getAmount() < getEnergyConsumed()) {
+				cooldown = Fraction.empty();
+
+				tickInactive();
+			} else {
+				tickActive();
+
+				cooldown = cooldown.add(Fraction.ofDecimal(1.0D / getMachineSpeed()));
+
+				cooldown.ifBiggerOrEqualThan(Fraction.of(1), () -> {
 					cooldown = Fraction.empty();
 
-					tickInactive();
-				} else {
-					tickActive();
+					ItemStack stored = items.getFirst();
 
-					cooldown = cooldown.add(Fraction.ofDecimal(1.0D / getMachineSpeed()));
+					Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
 
-					cooldown.ifBiggerOrEqualThan(Fraction.of(1), () -> {
-						cooldown = Fraction.empty();
+					BlockPos targetPos = getPos().offset(direction);
 
-						ItemStack stored = items.getFirst();
+					BlockState targetState = world.getBlockState(targetPos);
 
-						Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
+					if (targetState.isAir()) {
+						tickInactive();
+					} else {
+						BlockEntity targetEntity = world.getBlockEntity(targetPos);
 
-						BlockPos targetPos = getPos().offset(direction);
+						List<ItemStack> drops = Block.getDroppedStacks(targetState, (ServerWorld) world, targetPos, targetEntity);
 
-						BlockState targetState = world.getBlockState(targetPos);
+						ItemStack storedCopy = stored.copy();
 
-						if (targetState.isAir()) {
-							tickInactive();
-						} else {
-							BlockEntity targetEntity = world.getBlockEntity(targetPos);
+						Optional<ItemStack> matching = drops.stream().filter(stack -> storedCopy.isEmpty() || StackUtilities.equalItemAndTag(stack, storedCopy)).findFirst();
 
-							List<ItemStack> drops = Block.getDroppedStacks(targetState, (ServerWorld) world, targetPos, targetEntity);
+						matching.ifPresent(match -> {
+							Pair<ItemStack, ItemStack> pair = StackUtilities.merge(match, stored, match.getMaxCount(), stored.getMaxCount());
+							items.setFirst(pair.getRight());
+							drops.remove(match);
+							drops.add(pair.getLeft());
+						});
 
-							ItemStack storedCopy = stored.copy();
+						drops.forEach(stack -> {
+							if (!stack.isEmpty()) {
+								ItemScatterer.spawn(world, targetPos.getX(), targetPos.getY(), targetPos.getZ(), stack);
+							}
+						});
 
-							Optional<ItemStack> matching = drops.stream().filter(stack -> storedCopy.isEmpty() || StackUtilities.equalItemAndTag(stack, storedCopy)).findFirst();
+						world.breakBlock(targetPos, false);
 
-							matching.ifPresent(match -> {
-								Pair<ItemStack, ItemStack> pair = StackUtilities.merge(match, stored, match.getMaxCount(), stored.getMaxCount());
-								items.setFirst(pair.getRight());
-								drops.remove(match);
-								drops.add(pair.getLeft());
-							});
-
-							drops.forEach(stack -> {
-								if (!stack.isEmpty()) {
-									ItemScatterer.spawn(world, targetPos.getX(), targetPos.getY(), targetPos.getZ(), stack);
-								}
-							});
-
-							world.breakBlock(targetPos, false);
-
-							energies.getFirst().from(getEnergyConsumed());
-						}
-					});
-				}
-			});
+						energyVolume.minus(getEnergyConsumed());
+					}
+				});
+			}
 		});
 	}
 

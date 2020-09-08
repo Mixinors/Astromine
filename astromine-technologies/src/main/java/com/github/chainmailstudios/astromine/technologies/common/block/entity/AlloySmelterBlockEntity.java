@@ -31,7 +31,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEn
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.inventory.BaseInventory;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
-import com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
@@ -76,9 +76,7 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyInventoryBl
 
 	@Override
 	protected EnergyInventoryComponent createEnergyComponent() {
-		EnergyInventoryComponent energyComponent = new SimpleEnergyInventoryComponent(1);
-		EnergyHandler.of(energyComponent).getFirst().setSize(getEnergySize());
-		return energyComponent;
+		return new SimpleEnergyInventoryComponent(getEnergySize());
 	}
 
 	@Override
@@ -98,63 +96,62 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyInventoryBl
 		if (world == null) return;
 		if (world.isClient) return;
 
-		EnergyHandler.ofOptional(this).ifPresent(energies -> {
-			ItemHandler.ofOptional(this).ifPresent(items -> {
-				BaseInventory inputInventory = BaseInventory.of(items.getFirst(), items.getSecond());
+		ItemHandler.ofOptional(this).ifPresent(items -> {
+			EnergyVolume volume = getEnergyComponent().getVolume();
+			BaseInventory inputInventory = BaseInventory.of(items.getFirst(), items.getSecond());
 
-				if (!optionalRecipe.isPresent() && shouldTry) {
-					optionalRecipe = world.getRecipeManager().getFirstMatch(AlloySmeltingRecipe.Type.INSTANCE, inputInventory, world);
-				}
+			if (!optionalRecipe.isPresent() && shouldTry) {
+				optionalRecipe = world.getRecipeManager().getFirstMatch(AlloySmeltingRecipe.Type.INSTANCE, inputInventory, world);
+			}
 
-				optionalRecipe.ifPresent(recipe -> {
-					if (recipe.matches(inputInventory, world)) {
-						limit = recipe.getTime();
+			optionalRecipe.ifPresent(recipe -> {
+				if (recipe.matches(inputInventory, world)) {
+					limit = recipe.getTime();
 
-						double speed = Math.min(getMachineSpeed(), limit - progress);
-						double consumed = recipe.getEnergyConsumed() * speed / limit;
+					double speed = Math.min(getMachineSpeed(), limit - progress);
+					double consumed = recipe.getEnergyConsumed() * speed / limit;
 
-						ItemStack output = recipe.getOutput().copy();
+					ItemStack output = recipe.getOutput().copy();
 
-						boolean isEmpty = items.getThird().isEmpty();
-						boolean isEqual = ItemStack.areItemsEqual(items.getThird(), output) && ItemStack.areTagsEqual(items.getThird(), output);
+					boolean isEmpty = items.getThird().isEmpty();
+					boolean isEqual = ItemStack.areItemsEqual(items.getThird(), output) && ItemStack.areTagsEqual(items.getThird(), output);
 
-						if (energies.getFirst().hasStored(consumed) && (isEmpty || isEqual) && items.getThird().getCount() + output.getCount() <= items.getThird().getMaxCount()) {
-							energies.getFirst().from(consumed);
+					if (volume.hasStored(consumed) && (isEmpty || isEqual) && items.getThird().getCount() + output.getCount() <= items.getThird().getMaxCount()) {
+						volume.minus(consumed);
 
-							if (progress + speed >= limit) {
-								optionalRecipe = Optional.empty();
+						if (progress + speed >= limit) {
+							optionalRecipe = Optional.empty();
 
-								ItemStack first = items.getFirst();
-								ItemStack second = items.getSecond();
+							ItemStack first = items.getFirst();
+							ItemStack second = items.getSecond();
 
-								if (recipe.getFirstInput().test(first) && recipe.getSecondInput().test(second)) {
-									first.decrement(recipe.getFirstInput().testMatching(first).getCount());
-									second.decrement(recipe.getSecondInput().testMatching(second).getCount());
-								} else if (recipe.getFirstInput().test(second) && recipe.getSecondInput().test(first)) {
-									second.decrement(recipe.getFirstInput().testMatching(second).getCount());
-									first.decrement(recipe.getSecondInput().testMatching(first).getCount());
-								}
-
-								if (isEmpty) {
-									items.setThird(output);
-								} else {
-									items.getThird().increment(output.getCount());
-									shouldTry = true;
-								}
-
-								progress = 0;
-							} else {
-								progress += speed;
+							if (recipe.getFirstInput().test(first) && recipe.getSecondInput().test(second)) {
+								first.decrement(recipe.getFirstInput().testMatching(first).getCount());
+								second.decrement(recipe.getSecondInput().testMatching(second).getCount());
+							} else if (recipe.getFirstInput().test(second) && recipe.getSecondInput().test(first)) {
+								second.decrement(recipe.getFirstInput().testMatching(second).getCount());
+								first.decrement(recipe.getSecondInput().testMatching(first).getCount());
 							}
 
-							tickActive();
+							if (isEmpty) {
+								items.setThird(output);
+							} else {
+								items.getThird().increment(output.getCount());
+								shouldTry = true;
+							}
+
+							progress = 0;
 						} else {
-							tickInactive();
+							progress += speed;
 						}
+
+						tickActive();
 					} else {
 						tickInactive();
 					}
-				});
+				} else {
+					tickInactive();
+				}
 			});
 		});
 	}

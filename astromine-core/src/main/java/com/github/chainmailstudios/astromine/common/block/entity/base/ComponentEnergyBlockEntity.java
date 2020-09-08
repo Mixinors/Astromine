@@ -44,6 +44,7 @@ public abstract class ComponentEnergyBlockEntity extends ComponentBlockEntity im
 		addComponent(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, createEnergyComponent());
 	}
 
+	@Override
 	public EnergyInventoryComponent getEnergyComponent() {
 		return energyComponent;
 	}

@@ -24,32 +24,28 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergyConsumedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-
-import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 public class FluidExtractorBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	private Fraction cooldown = Fraction.empty();
@@ -67,9 +63,7 @@ public class FluidExtractorBlockEntity extends ComponentEnergyFluidBlockEntity i
 
 	@Override
 	protected EnergyInventoryComponent createEnergyComponent() {
-		EnergyInventoryComponent energyComponent = new SimpleEnergyInventoryComponent(1);
-		EnergyHandler.of(energyComponent).getFirst().setSize(getEnergySize());
-		return energyComponent;
+		return new SimpleEnergyInventoryComponent(getEnergySize());
 	}
 
 	@Override
@@ -94,43 +88,42 @@ public class FluidExtractorBlockEntity extends ComponentEnergyFluidBlockEntity i
 		if (world == null) return;
 		if (world.isClient) return;
 
-		EnergyHandler.ofOptional(this).ifPresent(energies -> {
-			FluidHandler.ofOptional(this).ifPresent(fluids -> {
-				if (energies.getFirst().getAmount() < getEnergyConsumed()) {
+		FluidHandler.ofOptional(this).ifPresent(fluids -> {
+			EnergyVolume energyVolume = getEnergyComponent().getVolume();
+			if (energyVolume.getAmount() < getEnergyConsumed()) {
+				cooldown = Fraction.empty();
+
+				tickInactive();
+			} else {
+				tickActive();
+
+				cooldown = cooldown.add(Fraction.ofDecimal(1.0D / getMachineSpeed()));
+
+				cooldown.ifBiggerOrEqualThan(Fraction.of(1), () -> {
 					cooldown = Fraction.empty();
 
-					tickInactive();
-				} else {
-					tickActive();
+					FluidVolume fluidVolume = fluids.getFirst();
 
-					cooldown = cooldown.add(Fraction.ofDecimal(1.0D / getMachineSpeed()));
+					Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
 
-					cooldown.ifBiggerOrEqualThan(Fraction.of(1), () -> {
-						cooldown = Fraction.empty();
+					BlockPos targetPos = pos.offset(direction);
 
-						FluidVolume fluidVolume = fluids.getFirst();
+					FluidState targetFluidState = world.getFluidState(targetPos);
 
-						Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
+					if (targetFluidState.isStill()) {
+						FluidVolume toInsert = FluidVolume.of(Fraction.bucket(), targetFluidState.getFluid());
 
-						BlockPos targetPos = pos.offset(direction);
+						if (toInsert.getFluid() == fluidVolume.getFluid() && fluidVolume.hasAvailable(toInsert.getAmount())) {
+							toInsert.add(fluidVolume, toInsert.getAmount());
 
-						FluidState targetFluidState = world.getFluidState(targetPos);
+							energyVolume.minus(getEnergyConsumed());
 
-						if (targetFluidState.isStill()) {
-							FluidVolume toInsert = FluidVolume.of(Fraction.bucket(), targetFluidState.getFluid());
-
-							if (toInsert.getFluid() == fluidVolume.getFluid() && fluidVolume.hasAvailable(toInsert.getAmount())) {
-								toInsert.into(fluidVolume, toInsert.getAmount());
-
-								energies.getFirst().from(getEnergyConsumed());
-
-								world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
-								world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
-							}
+							world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
+							world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
 						}
-					});
-				}
-			});
+					}
+				});
+			}
 		});
 	}
 }

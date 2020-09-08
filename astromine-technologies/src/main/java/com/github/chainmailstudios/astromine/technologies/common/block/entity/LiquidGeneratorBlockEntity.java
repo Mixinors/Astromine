@@ -24,34 +24,27 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
-import com.github.chainmailstudios.astromine.common.volume.handler.EnergyHandler;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
-import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
-import com.github.chainmailstudios.astromine.technologies.common.block.LiquidGeneratorBlock;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.FluidSizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
-import com.github.chainmailstudios.astromine.technologies.common.recipe.FluidMixingRecipe;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.LiquidGeneratingRecipe;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Tickable;
-
-import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.recipe.base.RecipeConsumer;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -69,9 +62,7 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 
 	@Override
 	protected EnergyInventoryComponent createEnergyComponent() {
-		EnergyInventoryComponent energyComponent = new SimpleEnergyInventoryComponent(1);
-		EnergyHandler.of(energyComponent).getFirst().setSize(getEnergySize());
-		return energyComponent;
+		return new SimpleEnergyInventoryComponent(getEnergySize());
 	}
 
 	@Override
@@ -91,44 +82,43 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 		if (world == null) return;
 		if (world.isClient) return;
 
-		EnergyHandler.ofOptional(this).ifPresent(energies -> {
-				FluidHandler.ofOptional(this).ifPresent(fluids -> {
-					if (!optionalRecipe.isPresent() && shouldTry) {
-						optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(LiquidGeneratingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof LiquidGeneratingRecipe).filter(recipe -> ((LiquidGeneratingRecipe) recipe).matches(fluidComponent)).findFirst();
-						shouldTry = false;
-					}
+		FluidHandler.ofOptional(this).ifPresent(fluids -> {
+			EnergyVolume energyVolume = getEnergyComponent().getVolume();
+			if (!optionalRecipe.isPresent() && shouldTry) {
+				optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(LiquidGeneratingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof LiquidGeneratingRecipe).filter(recipe -> ((LiquidGeneratingRecipe) recipe).matches(fluidComponent)).findFirst();
+				shouldTry = false;
+			}
 
-					if (!optionalRecipe.isPresent()) {
+			if (!optionalRecipe.isPresent()) {
+				tickInactive();
+			}
+
+			optionalRecipe.ifPresent(recipe -> {
+				if (recipe.matches(fluidComponent)) {
+					limit = recipe.getTime();
+
+					double speed = Math.min(getMachineSpeed(), limit - progress);
+					double generated = recipe.getEnergyGenerated() * speed / limit;
+
+					if (energyVolume.hasAvailable(generated)) {
+						if (progress + speed >= limit) {
+							optionalRecipe = Optional.empty();
+
+							fluids.getFirst().minus(recipe.getAmount());
+
+							energyVolume.add(generated);
+						} else {
+							progress += speed;
+						}
+
+						tickActive();
+					} else {
 						tickInactive();
 					}
-
-					optionalRecipe.ifPresent(recipe -> {
-						if (recipe.matches(fluidComponent)) {
-							limit = recipe.getTime();
-
-							double speed = Math.min(getMachineSpeed(), limit - progress);
-							double generated = recipe.getEnergyGenerated() * speed / limit;
-
-							if (energies.getFirst().hasAvailable(generated)) {
-								if (progress + speed >= limit) {
-									optionalRecipe = Optional.empty();
-
-									fluids.getFirst().from(recipe.getAmount());
-
-									energies.getFirst().into(generated);
-								} else {
-									progress += speed;
-								}
-
-								tickActive();
-							} else {
-								tickInactive();
-							}
-						} else {
-							tickInactive();
-						}
-					});
-				});
+				} else {
+					tickInactive();
+				}
+			});
 		});
 	}
 
