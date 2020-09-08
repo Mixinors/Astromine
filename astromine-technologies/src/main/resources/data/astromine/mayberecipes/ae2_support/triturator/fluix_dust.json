@@ -5,7 +5,7 @@
   "recipe": {
     "type": "astromine:triturating",
     "input": {
-      "tag": "appliedenergistics2:fluix_crystal",
+      "item": "appliedenergistics2:fluix_crystal",
       "count": 1
     },
     "output": {

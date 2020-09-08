@@ -76,4 +76,7 @@ project.ext.setRuntimeTestMods = {
 
     // AE2
     useAsRuntime("appeng:appliedenergistics2-fabric:${ae2_version}")
+
+    // Disable Custom Worlds Advice
+    useAsRuntime("com.github.rdvdev2:DisableCustomWorldsAdvice:${disable_shit_version}")
 }

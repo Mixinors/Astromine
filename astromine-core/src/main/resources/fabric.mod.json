@@ -28,8 +28,7 @@
     "main": ["com.github.chainmailstudios.astromine.AstromineCommon"],
     "client": ["com.github.chainmailstudios.astromine.AstromineClient"],
     "server": ["com.github.chainmailstudios.astromine.AstromineDedicated"],
-    "modmenu": ["com.github.chainmailstudios.astromine.client.modmenu.AstromineModMenuSupport"],
-    "rei_plugins": ["com.github.chainmailstudios.astromine.client.rei.AstromineCoreRoughlyEnoughItemsPlugin"]
+    "modmenu": ["com.github.chainmailstudios.astromine.client.modmenu.AstromineModMenuSupport"]
   },
   "mixins": ["astromine.mixins.json"],
   "accessWidener": "astromine-core.accesswidener",

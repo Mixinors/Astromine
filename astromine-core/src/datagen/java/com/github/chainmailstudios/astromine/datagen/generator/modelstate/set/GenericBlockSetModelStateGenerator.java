@@ -6,7 +6,7 @@ import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.ModelStateData;
 
-public class GenericBlockSetModelStateGenerator extends GenericItemSetModelStateGenerator {
+public class GenericBlockSetModelStateGenerator extends GenericItemSetModelGenerator {
 
 	public GenericBlockSetModelStateGenerator(MaterialItemType type) {
 		super(type);

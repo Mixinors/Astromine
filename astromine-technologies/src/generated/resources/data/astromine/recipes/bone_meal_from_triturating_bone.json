@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "item": "minecraft:bone",
+    "count": 1
+  },
+  "output": {
+    "item": "minecraft:bone_meal",
+    "count": 5
+  },
+  "time": 10,
+  "energy_consumed": 50
+}

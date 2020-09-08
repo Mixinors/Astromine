@@ -8,6 +8,7 @@ import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.St
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.StonecuttingRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.WallCraftingRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.BlastingSetRecipeGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.Crafting2x2SetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.Crafting3x3SetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.ShapedCraftingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.ShapelessCraftingSetRecipeGenerator;
@@ -30,6 +31,10 @@ public class AstromineFoundationsRecipeGenerators extends AstromineRecipeGenerat
 	public final RecipeGenerator NUGGET_TO_INGOT = register(new Crafting3x3SetRecipeGenerator(NUGGET, INGOT));
 	public final RecipeGenerator FRAGMENT_TO_GEM = register(new Crafting3x3SetRecipeGenerator(FRAGMENT, GEM));
 	public final RecipeGenerator TINY_DUST_TO_DUST = register(new Crafting3x3SetRecipeGenerator(TINY_DUST, DUST));
+
+	public final RecipeGenerator INGOT_TO_BLOCK_2x2 = register(new Crafting2x2SetRecipeGenerator(INGOT, BLOCK_2x2));
+	public final RecipeGenerator GEM_TO_BLOCK_2x2 = register(new Crafting2x2SetRecipeGenerator(GEM, BLOCK_2x2));
+	public final RecipeGenerator MISC_TO_BLOCK_2x2 = register(new Crafting2x2SetRecipeGenerator(MISC_RESOURCE, BLOCK_2x2));
 
 	public final RecipeGenerator BLOCK_TO_INGOTS = register(new ShapelessCraftingSetRecipeGenerator(BLOCK, INGOT, 9));
 	public final RecipeGenerator BLOCK_TO_GEMS = register(new ShapelessCraftingSetRecipeGenerator(BLOCK, GEM, 9));

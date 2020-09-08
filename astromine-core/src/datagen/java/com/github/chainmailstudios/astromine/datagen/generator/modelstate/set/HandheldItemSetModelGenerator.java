@@ -4,9 +4,9 @@ import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.ModelStateData;
 
-public class HandheldItemSetModelStateGenerator extends GenericItemSetModelStateGenerator {
+public class HandheldItemSetModelGenerator extends GenericItemSetModelGenerator {
 
-	public HandheldItemSetModelStateGenerator(MaterialItemType type) {
+	public HandheldItemSetModelGenerator(MaterialItemType type) {
 		super(type);
 	}
 

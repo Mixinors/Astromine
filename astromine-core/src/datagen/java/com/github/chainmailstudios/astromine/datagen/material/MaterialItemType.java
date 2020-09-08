@@ -6,10 +6,10 @@ public enum MaterialItemType {
 	MISC_RESOURCE(""),
 	NUGGET,
 	FRAGMENT,
-	BLOCK,
-	ORE,
-	METEOR_ORE("meteor", "ore"),
-	ASTEROID_ORE("asteroid", "ore", true),
+	BLOCK(true),
+	ORE(true),
+	METEOR_ORE(true, "meteor", "ore"),
+	ASTEROID_ORE(true, "asteroid", "ore", true),
 	METEOR_CLUSTER("meteor", "cluster"),
 	ASTEROID_CLUSTER("asteroid", "cluster", true),
 	DUST,
@@ -31,30 +31,54 @@ public enum MaterialItemType {
 	LEGGINGS,
 	BOOTS,
 	WRENCH,
-	MOON_ORE("moon", "ore", true);
+	MOON_ORE(true, "moon", "ore", true),
+	BLOCK_2x2(true, "block");
 
+	final boolean block;
 	final String prefix;
 	final String suffix;
 	final boolean optionalInTag;
 
 	MaterialItemType() {
-		this.prefix = "";
-		this.suffix = this.getName();
-		this.optionalInTag = false;
+		this(false, "", false);
+	}
+
+	MaterialItemType(boolean block) {
+		this(block, "", false);
+	}
+
+	MaterialItemType(boolean block, String suffix) {
+		this(block, "", suffix, false);
 	}
 
 	MaterialItemType(String suffix) {
-		this("", suffix, false);
+		this(false, "", suffix, false);
 	}
 
-	MaterialItemType(String prefix, String suffix, boolean optionalInTag) {
+	MaterialItemType(boolean block, String prefix, boolean optionalInTag) {
+		this.block = block;
+		this.prefix = prefix;
+		this.suffix = this.getName();
+		this.optionalInTag = optionalInTag;
+	}
+
+	MaterialItemType(boolean block, String prefix, String suffix, boolean optionalInTag) {
+		this.block = block;
 		this.prefix = prefix;
 		this.suffix = suffix;
 		this.optionalInTag = optionalInTag;
 	}
 
+	MaterialItemType(String prefix, String suffix, boolean optionalInTag) {
+		this(false, prefix, suffix, optionalInTag);
+	}
+
 	MaterialItemType(String prefix, String suffix) {
-		this(prefix, suffix, false);
+		this(false, prefix, suffix, false);
+	}
+
+	MaterialItemType(boolean block, String prefix, String suffix) {
+		this(block, prefix, suffix, false);
 	}
 
 	public String getItemId(String materialName) {
@@ -66,7 +90,7 @@ public enum MaterialItemType {
 	}
 
 	public boolean isBlock() {
-		return this == BLOCK || this == ORE || this == METEOR_ORE || this == ASTEROID_ORE || this == MOON_ORE;
+		return this.block;
 	}
 
 	public boolean isOptionalInTag() {

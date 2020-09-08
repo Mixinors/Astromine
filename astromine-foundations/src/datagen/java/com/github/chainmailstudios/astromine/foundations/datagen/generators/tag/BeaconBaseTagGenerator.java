@@ -22,6 +22,6 @@ public class BeaconBaseTagGenerator extends GenericSetTagGenerator {
 
 	@Override
 	public boolean shouldGenerate(MaterialSet set) {
-		return super.shouldGenerate(set) && !set.equals(AstromineFoundationsMaterialSets.LAPIS) && !set.equals(AstromineFoundationsMaterialSets.COAL) && !set.equals(AstromineFoundationsMaterialSets.REDSTONE);
+		return super.shouldGenerate(set) && !set.isFromVanilla(MaterialItemType.BLOCK);
 	}
 }

@@ -8,7 +8,7 @@ import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetim
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.SimpleBlockItemModelStateGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.set.ColumnBlockSetModelStateGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.set.GenericBlockSetModelStateGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.modelstate.set.GenericItemSetModelStateGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.modelstate.set.GenericItemSetModelGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineModelStateGenerators;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
@@ -17,7 +17,7 @@ import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDisco
 public class AstromineDiscoveriesModelStateGenerators extends AstromineModelStateGenerators {
 	public final ModelStateGenerator ASTEROID_ORE = register(new ColumnBlockSetModelStateGenerator(MaterialItemType.ASTEROID_ORE, AstromineCommon.identifier("block/asteroid_stone")));
 
-	public final ModelStateGenerator ASTEROID_CLUSTER = register(new GenericItemSetModelStateGenerator(MaterialItemType.ASTEROID_CLUSTER));
+	public final ModelStateGenerator ASTEROID_CLUSTER = register(new GenericItemSetModelGenerator(MaterialItemType.ASTEROID_CLUSTER));
 
 	public final ModelStateGenerator MOON_ORE = register(new GenericBlockSetModelStateGenerator(MaterialItemType.MOON_ORE));
 

@@ -10,9 +10,7 @@ public class TricksPiglinsTagGenerator implements SetTagGenerator {
 	@Override
 	public void generate(TagData tags, MaterialSet set) {
 		set.getItems().forEach((type, entry) -> {
-			if (entry.hasItemTag()) {
-				tags.item(AstromineCommon.identifier("tricks_piglins")).append(entry.getItemId());
-			}
+			tags.item(AstromineCommon.identifier("tricks_piglins")).append(entry.getItemId());
 		});
 	}
 

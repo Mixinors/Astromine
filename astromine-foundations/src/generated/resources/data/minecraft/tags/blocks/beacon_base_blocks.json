@@ -1,11 +1,6 @@
 {
   "replace": false,
   "values": [
-    "#c:iron_blocks",
-    "#c:gold_blocks",
-    "#c:diamond_blocks",
-    "#c:emerald_blocks",
-    "#c:netherite_blocks",
     "#c:tin_blocks",
     "#c:copper_blocks",
     "#c:silver_blocks",

@@ -1,9 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["###", "#B#", "###"],
+  "pattern": ["$#$", "#B#", "$#$"],
   "key": {
     "#": {
       "tag": "c:tin_nuggets"
+    },
+    "$": {
+      "tag": "c:copper_nuggets"
     },
     "B": {
       "item": "minecraft:book"

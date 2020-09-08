@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "c:bronze_blocks",
+    "count": 1
+  },
+  "output": {
+    "item": "astromine:bronze_dust",
+    "count": 9
+  },
+  "time": 120,
+  "energy_consumed": 540
+}
