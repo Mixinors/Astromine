@@ -1,19 +1,15 @@
 package com.github.chainmailstudios.astromine.discoveries.common.screenhandler;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.entity.ComponentEntityFluidInventoryScreenHandler;
-import com.github.chainmailstudios.astromine.common.screenhandler.base.entity.ComponentEntityFluidScreenHandler;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.base.RocketEntity;
-import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesCommonPackets;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesItems;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesScreenHandlers;
 import com.github.vini2003.blade.common.data.Position;
 import com.github.vini2003.blade.common.data.Size;
-import com.github.vini2003.blade.common.utilities.Networks;
 import com.github.vini2003.blade.common.widget.base.ButtonWidget;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import com.github.vini2003.blade.common.widget.base.TextWidget;
-import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -36,14 +32,16 @@ public class RocketScreenHandler extends ComponentEntityFluidInventoryScreenHand
 		super.initialize(width, height);
 
 		ButtonWidget launchButtonWidget = new ButtonWidget((widget) -> {
-			entity.getDataTracker().set(RocketEntity.IS_RUNNING, true);
+			if (entity.getFluidComponent().getVolume(0).biggerThan(Fraction.empty()))
+				entity.getDataTracker().set(RocketEntity.IS_RUNNING, true);
 
 			return null;
 		});
 
 		launchButtonWidget.setPosition(Position.of(mainTab, 3 + 4, 11));
-		launchButtonWidget.setSize(Size.of(40, 18));
+		launchButtonWidget.setSize(Size.of(48, 18));
 		launchButtonWidget.setLabel(new TranslatableText("text.astromine.rocket.launch"));
+		launchButtonWidget.setDisabled(() -> entity.getDataTracker().get(RocketEntity.IS_RUNNING) || entity.getFluidComponent().getVolume(0).smallerOrEqualThan(Fraction.empty()));
 
 		ButtonWidget abortButtonWidget = new ButtonWidget((widget) -> {
 			((RocketEntity) entity).tryDisassemble();
@@ -52,10 +50,10 @@ public class RocketScreenHandler extends ComponentEntityFluidInventoryScreenHand
 		});
 
 		abortButtonWidget.setPosition(Position.of(mainTab, 3 + 4, 11 + fluidBar.getHeight() - 18));
-		abortButtonWidget.setSize(Size.of(40, 18));
-		abortButtonWidget.setLabel(new TranslatableText("text.astromine.rocket.abort"));
+		abortButtonWidget.setSize(Size.of(48, 18));
+		abortButtonWidget.setLabel(new TranslatableText("text.astromine.rocket.destroy"));
 
-		fluidBar.setPosition(Position.of(width / 2F - fluidBar.getWidth() / 2F, fluidBar.getY()));
+		fluidBar.setPosition(Position.of(width / 2F - fluidBar.getWidth() / 2F + 2, fluidBar.getY()));
 
 		SlotWidget input = new SlotWidget(0, entity);
 		input.setPosition(Position.of(fluidBar, -18 - 3, 0));

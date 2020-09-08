@@ -38,7 +38,7 @@
   "text.astromine.siding.north": "Front",
   "text.astromine.siding.south": "Back",
   "text.astromine.rocket.launch": "Launch",
-  "text.astromine.rocket.abort": "Abort",
+  "text.astromine.rocket.destroy": "§cDestory!!",
   "text.astromine.rocket.fuel_status": "Fuel sufficient for %s of flight time.",
   "item.astromine.primitive_machine_chassis": "Primitive Machine Chassis",
   "item.astromine.basic_machine_chassis": "Basic Machine Chassis",

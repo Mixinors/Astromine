@@ -24,19 +24,19 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.entity;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.utilities.FractionUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
-import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.base.RocketEntity;
 import com.github.chainmailstudios.astromine.discoveries.common.screenhandler.RocketScreenHandler;
-import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesItems;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFluids;
-import com.google.common.collect.Sets;
+import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
-
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -51,17 +51,12 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import io.netty.buffer.Unpooled;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -80,12 +75,12 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 
 	@Override
 	protected Function<RocketEntity, Fraction> createConsumptionFunction() {
-		return entity -> Fraction.of((long) (1024 - entity.getY()), 1024 * 32);
+		return entity -> Fraction.of((long) (1024 - entity.getY()), 1024 * 256);
 	}
 
 	@Override
 	protected Collection<ItemStack> createExplosionRemains() {
-		return Sets.newHashSet(new ItemStack(AstromineDiscoveriesItems.PRIMITIVE_ROCKET));
+		return Collections.emptyList();
 	}
 
 	@Override
@@ -100,7 +95,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 
 	@Override
 	public FluidInventoryComponent createFluidComponent() {
-		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1);;
+		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1);
 		FluidHandler.of(fluidComponent).getFirst().setSize(Fraction.of(128));
 		return fluidComponent;
 	}
@@ -121,7 +116,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 			return ActionResult.CONSUME;
 		}
 
-		if (player.isSneaking()) {
+		if (player.isSneaking() || !player.getStackInHand(hand).isEmpty()) {
 			player.openHandledScreen(this);
 		} else {
 			player.startRiding(this);

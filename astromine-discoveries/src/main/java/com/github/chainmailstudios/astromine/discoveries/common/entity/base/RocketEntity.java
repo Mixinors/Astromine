@@ -177,11 +177,11 @@ public abstract class RocketEntity extends ComponentFluidInventoryEntity {
 
 	public void tryDisassemble() {
 		this.tryExplode();
-		this.explosionRemains.forEach(stack -> ItemScatterer.spawn(world, getX(), getY(), getZ(), stack));
+		this.explosionRemains.forEach(stack -> ItemScatterer.spawn(world, getX(), getY(), getZ(), stack.copy()));
 		this.remove();
 	}
 
 	private void tryExplode() {
-		world.createExplosion(this, getX(), getY(), getZ(), getTank().getAmount().floatValue(), Explosion.DestructionType.BREAK);
+		world.createExplosion(this, getX(), getY(), getZ(), getTank().getAmount().floatValue() + 3f, Explosion.DestructionType.BREAK);
 	}
 }
