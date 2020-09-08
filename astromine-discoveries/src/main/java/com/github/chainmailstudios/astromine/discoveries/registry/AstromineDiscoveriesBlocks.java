@@ -99,6 +99,9 @@ public class AstromineDiscoveriesBlocks extends AstromineBlocks {
 	public static final Block ASTEROID_EMERALD_ORE = register("asteroid_emerald_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems
 		.getBasicSettings().fireproof());
 
+	public static final Block MOON_LUNUM_ORE = register("moon_lunum_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(5, 10).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems
+		.getBasicSettings());
+
 	public static final Block ALTAR_PEDESTAL = register("altar_pedestal", new AltarPedestalBlock(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5, 6).sounds(BlockSoundGroup.METAL).nonOpaque()),
 		AstromineFoundationsItems.getBasicSettings());
 	public static final Block ALTAR = register("altar", new AltarBlock(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5, 6).sounds(BlockSoundGroup.METAL).nonOpaque()), AstromineFoundationsItems

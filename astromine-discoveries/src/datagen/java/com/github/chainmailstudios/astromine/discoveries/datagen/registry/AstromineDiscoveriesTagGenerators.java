@@ -7,4 +7,5 @@ import com.github.chainmailstudios.astromine.foundations.datagen.generators.tag.
 
 public class AstromineDiscoveriesTagGenerators extends AstromineTagGenerators {
 	public final SetTagGenerator ASTEROID_ORES = register(new OreTagGenerator(MaterialItemType.ASTEROID_ORE));
+	public final SetTagGenerator MOON_ORES = register(new OreTagGenerator(MaterialItemType.MOON_ORE));
 }
