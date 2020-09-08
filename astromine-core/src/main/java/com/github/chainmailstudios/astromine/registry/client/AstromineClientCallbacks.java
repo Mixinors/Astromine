@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.registry.client;
 
-import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeBlockItem;
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
@@ -48,7 +47,7 @@ public class AstromineClientCallbacks {
 		});
 
 		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
-			if (stack.getItem() instanceof EnergyVolumeItem || stack.getItem() instanceof EnergyVolumeBlockItem) {
+			if (stack.getItem() instanceof EnergyVolumeItem) {
 				EnergyHandler handler = EnergyUtilities.ofNullable(stack);
 				if (handler != null) {
 					tooltip.add(EnergyUtilities.compoundDisplayColored(handler.getEnergy(), handler.getMaxStored()));
