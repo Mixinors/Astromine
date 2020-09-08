@@ -24,13 +24,16 @@
 
 package com.github.chainmailstudios.astromine.common.component.world;
 
+import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.google.common.collect.Lists;
 import nerdhub.cardinal.components.api.ComponentType;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import nerdhub.cardinal.components.api.component.extension.CopyableComponent;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Tickable;
@@ -39,12 +42,6 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-
-import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-
-import com.google.common.collect.Lists;
 import net.minecraft.world.chunk.Chunk;
 
 import java.util.Collections;
