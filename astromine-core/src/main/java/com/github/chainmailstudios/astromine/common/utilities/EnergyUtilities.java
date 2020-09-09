@@ -140,10 +140,6 @@ public class EnergyUtilities {
 		return compoundDisplay(energy, maxEnergy).formatted(Formatting.GRAY);
 	}
 
-	public static EnergyHandler of(Object object) {
-		return Objects.requireNonNull(ofNullable(object));
-	}
-
 	@Nullable
 	public static EnergyHandler ofNullable(Object object) {
 		return ofNullable(object, null);

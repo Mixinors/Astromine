@@ -27,16 +27,13 @@ package com.github.chainmailstudios.astromine.registry;
 import com.github.chainmailstudios.astromine.common.callback.ServerChunkTickCallback;
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
 import com.github.chainmailstudios.astromine.common.entity.base.*;
-import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
@@ -120,12 +117,6 @@ public class AstromineCommonCallbacks {
 					FluidInventoryComponent component = new SimpleFluidInventoryComponent(1);
 					component.setVolume(0, FluidVolume.of(Fraction.empty(), volumeItem.getSize(), Fluids.EMPTY));
 					return component;
-				});
-			} else if (item instanceof EnergyVolumeItem) {
-				EnergyVolumeItem volumeItem = (EnergyVolumeItem) item;
-
-				ItemComponentCallbackV2.register(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, item, (useless, stack) -> {
-					return new SimpleEnergyInventoryComponent(EnergyVolume.of(0.0D, volumeItem.getSize()));
 				});
 			}
 		};
