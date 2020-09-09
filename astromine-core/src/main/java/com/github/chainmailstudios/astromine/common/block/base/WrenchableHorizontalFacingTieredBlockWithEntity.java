@@ -59,7 +59,7 @@ public abstract class WrenchableHorizontalFacingTieredBlockWithEntity extends Wr
 		if (blockTier != null) {
 			ItemStack stack = player.getStackInHand(hand);
 			Identifier itemId = Registry.ITEM.getId(stack.getItem());
-			if (itemId.getNamespace().equals(AstromineCommon.MOD_ID) && itemId.getPath().endsWith("_machine_chassis")) {
+			if (itemId.getNamespace().equals(AstromineCommon.MOD_ID) && itemId.getPath().endsWith("_machine_upgrade_kit")) {
 				Tier itemTier = Tier.fromId(itemId);
 
 				if (itemTier != null && itemTier.ordinal() != 0 && Tier.values()[itemTier.ordinal() - 1] == blockTier) {
