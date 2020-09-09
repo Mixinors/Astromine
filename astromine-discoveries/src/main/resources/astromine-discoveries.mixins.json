@@ -4,9 +4,10 @@
   "package": "com.github.chainmailstudios.astromine.discoveries.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "ServerPlayNetworkHandlerMixin"
   ],
   "client": [
-    "BuiltinModelItemRendererMixin"
+    "client.BuiltinModelItemRendererMixin", "client.ClientPlayerInteractionManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

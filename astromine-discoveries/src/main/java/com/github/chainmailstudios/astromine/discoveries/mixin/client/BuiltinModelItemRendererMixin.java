@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.discoveries.mixin;
+package com.github.chainmailstudios.astromine.discoveries.mixin.client;
 
 import com.github.chainmailstudios.astromine.discoveries.client.model.PrimitiveRocketEntityModel;
 import org.spongepowered.asm.mixin.Mixin;
