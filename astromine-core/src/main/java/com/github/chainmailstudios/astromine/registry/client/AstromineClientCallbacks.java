@@ -39,7 +39,7 @@ public class AstromineClientCallbacks {
 				FluidHandler.ofOptional(stack).ifPresent(handler -> {
 					handler.withVolume(0, optionalVolume -> {
 						optionalVolume.ifPresent(volume -> {
-							tooltip.add(new LiteralText("" + volume.getAmount().doubleValue() + ":" + volume.getSize()));
+							tooltip.add(Math.min(tooltip.size(), 1), new LiteralText("" + volume.getAmount().doubleValue() + ":" + volume.getSize()));
 						});
 					});
 				});
@@ -49,9 +49,7 @@ public class AstromineClientCallbacks {
 		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof EnergyVolumeItem) {
 				EnergyHandler handler = EnergyUtilities.ofNullable(stack);
-				if (handler != null) {
-					tooltip.add(EnergyUtilities.compoundDisplayColored(handler.getEnergy(), handler.getMaxStored()));
-				}
+				tooltip.add(Math.min(tooltip.size(), 1), EnergyUtilities.compoundDisplayColored(handler == null ? 0 : handler.getEnergy(), ((EnergyVolumeItem) stack.getItem()).getMaxStoredPower()));
 			}
 		});
 	}

@@ -25,7 +25,6 @@
 package com.github.chainmailstudios.astromine.common.item;
 
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
@@ -44,6 +43,7 @@ import net.minecraft.item.Vanishable;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
 public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool, Vanishable, MagnaTool, DiggerTool {
@@ -73,10 +73,8 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	@Override
 	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		if (!target.world.isClient) {
-			EnergyHandler handler = EnergyUtilities.ofNullable(stack);
-			if (handler != null) {
-				handler.use(getEnergy() * AstromineConfig.get().drillEntityHitMultiplier);
-			}
+			EnergyHandler energy = Energy.of(stack);
+			energy.use(getEnergy() * AstromineConfig.get().drillEntityHitMultiplier);
 		}
 
 		return true;
@@ -85,11 +83,10 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	@Override
 	public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
 		if (!world.isClient && state.getHardness(world, pos) != 0.0F) {
-			EnergyHandler handler = EnergyUtilities.ofNullable(stack);
-			if (handler != null) {
-				handler.use(getEnergy());
-			}
+			EnergyHandler energy = Energy.of(stack);
+			energy.use(getEnergy());
 		}
+
 		return true;
 	}
 
@@ -110,12 +107,7 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 
 	@Override
 	public float postProcessMiningSpeed(Tag<Item> tag, BlockState state, ItemStack stack, LivingEntity user, float currentSpeed, boolean isEffective) {
-		EnergyHandler handler = EnergyUtilities.ofNullable(stack);
-		if (handler != null || handler.getEnergy() < getEnergy()) {
-			return 0F;
-		}
-
-		return currentSpeed;
+		return Energy.of(stack).getEnergy() <= getEnergy() ? 0F : currentSpeed;
 	}
 
 	@Override

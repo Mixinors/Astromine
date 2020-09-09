@@ -25,12 +25,16 @@
 package com.github.chainmailstudios.astromine.common.item.base;
 
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.energy.InfiniteEnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-
+import me.shedaniel.cloth.api.durability.bar.DurabilityBarItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.collection.DefaultedList;
+import team.reborn.energy.Energy;
+import team.reborn.energy.EnergyHolder;
+import team.reborn.energy.EnergyTier;
 
-public class EnergyVolumeItem extends BaseVolumeItem<EnergyVolume> {
+public class EnergyVolumeItem extends BaseVolumeItem<EnergyVolume> implements EnergyHolder, DurabilityBarItem {
 	private final double size;
 
 	public EnergyVolumeItem(Item.Settings settings, double size) {
@@ -49,5 +53,42 @@ public class EnergyVolumeItem extends BaseVolumeItem<EnergyVolume> {
 
 	public static EnergyVolumeItem of(Settings settings, double size) {
 		return new EnergyVolumeItem(settings, size);
+	}
+
+	@Override
+	public double getMaxStoredPower() {
+		return getSize();
+	}
+
+	@Override
+	public EnergyTier getTier() {
+		return EnergyTier.INSANE;
+	}
+
+	@Override
+	public double getDurabilityBarProgress(ItemStack itemStack) {
+		if (!Energy.valid(itemStack) || getMaxStoredPower() == 0)
+			return 0;
+		return 1 - Energy.of(itemStack).getEnergy() / getMaxStoredPower();
+	}
+
+	@Override
+	public boolean hasDurabilityBar(ItemStack itemStack) {
+		return true;
+	}
+
+	@Override
+	public int getDurabilityBarColor(ItemStack stack) {
+		return 0x91261f;
+	}
+
+	@Override
+	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
+		super.appendStacks(group, stacks);
+		if (this.isIn(group)) {
+			ItemStack itemStack = new ItemStack(this);
+			Energy.of(itemStack).set(getMaxStoredPower());
+			stacks.add(itemStack);
+		}
 	}
 }

@@ -47,7 +47,7 @@ project.ext.setDefaultApis = {
     useAsApi("net.earthcomputer:libstructure:${libstructure_version}")
 
     // Magna
-    useAsApi("com.github.Draylar:magna:${magna_version}")
+    useAsApi("com.github.shedaniel:magna:${magna_version}")
 
     // Wrenchable
     useAsApi("com.zundrel:wrenchable:${wrenchable_version}")
