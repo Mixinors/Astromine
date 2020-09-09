@@ -79,9 +79,12 @@ public abstract class WrenchableHorizontalFacingTieredBlockWithEntity extends Wr
 							return ActionResult.CONSUME;
 						}
 
-						ItemStack copy = stack.copy();
-						copy.decrement(1);
-						player.setStackInHand(hand, copy);
+						if(!player.isCreative()) {
+							ItemStack copy = stack.copy();
+							copy.decrement(1);
+							player.setStackInHand(hand, copy);
+						}
+
 						BlockEntity blockEntity = world.getBlockEntity(pos);
 						CompoundTag beTag = null;
 						if (blockEntity != null) {
