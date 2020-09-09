@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["020", "141", "030"],
+  "key": {
+    "0": {"tag": "c:bronze_plates"},
+    "1": {"tag": "c:iron_gears"},
+    "2": {"item": "astromine:basic_circuit"},
+    "3": {"item": "astromine:basic_battery"},
+    "4": {"item": "astromine:basic_machine_chassis"}
+  },
+  "result": {"item": "astromine:basic_machine_upgrade_kit", "count": 1}
+}

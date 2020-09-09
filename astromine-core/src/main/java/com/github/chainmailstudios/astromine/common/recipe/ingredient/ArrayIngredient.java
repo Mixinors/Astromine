@@ -136,7 +136,7 @@ public class ArrayIngredient implements Predicate<ItemStack> {
 
 	public Ingredient asIngredient() {
 		if (ingredient == null) {
-			ingredient = Ingredient.method_26964(Stream.of(getMatchingStacks()));
+			ingredient = Ingredient.ofStacks(Stream.of(getMatchingStacks()));
 		}
 		return ingredient;
 	}
