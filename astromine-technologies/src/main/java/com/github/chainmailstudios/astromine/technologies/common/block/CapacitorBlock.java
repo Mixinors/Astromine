@@ -34,14 +34,11 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingEnergyTieredBlockWithEntity;
-import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingTieredBlockWithEntity;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.CapacitorBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.CapacitorScreenHandler;
-import com.github.chainmailstudios.astromine.technologies.common.screenhandler.CreativeCapacitorScreenHandler;
 
-public abstract class CapacitorBlock extends WrenchableHorizontalFacingEnergyTieredBlockWithEntity {
+public abstract class CapacitorBlock extends WrenchableHorizontalFacingTieredBlockWithEntity {
 	public CapacitorBlock(Settings settings) {
 		super(settings);
 	}

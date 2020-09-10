@@ -36,7 +36,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingTieredBlockWithEntity;
-import com.github.chainmailstudios.astromine.technologies.common.block.entity.TankBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.TankScreenHandler;
 
 public abstract class TankBlock extends WrenchableHorizontalFacingTieredBlockWithEntity {

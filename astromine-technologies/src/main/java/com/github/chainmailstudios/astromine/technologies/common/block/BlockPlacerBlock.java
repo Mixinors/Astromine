@@ -24,7 +24,9 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block;
 
-import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingBlockWithEntity;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.BlockPlacerBlockEntity;
+import com.github.chainmailstudios.astromine.technologies.common.screenhandler.BlockPlacerScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -35,12 +37,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingTieredEnergyBlockWithEntity;
-import com.github.chainmailstudios.astromine.technologies.common.block.entity.BlockPlacerBlockEntity;
-import com.github.chainmailstudios.astromine.technologies.common.screenhandler.BlockPlacerScreenHandler;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-
-public class BlockPlacerBlock extends WrenchableHorizontalFacingTieredEnergyBlockWithEntity {
+public class BlockPlacerBlock extends WrenchableHorizontalFacingBlockWithEntity {
 	public BlockPlacerBlock(Settings settings) {
 		super(settings);
 	}

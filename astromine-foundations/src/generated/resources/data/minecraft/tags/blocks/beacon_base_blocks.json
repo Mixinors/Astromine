@@ -1,21 +1,21 @@
 {
   "replace": false,
   "values": [
-    "#c:tin_blocks",
-    "#c:copper_blocks",
-    "#c:silver_blocks",
-    "#c:lead_blocks",
-    "#c:steel_blocks",
-    "#c:bronze_blocks",
-    "#c:electrum_blocks",
-    "#c:rose_gold_blocks",
-    "#c:sterling_silver_blocks",
-    "#c:fools_gold_blocks",
-    "#c:metite_blocks",
     "#c:asterite_blocks",
-    "#c:stellum_blocks",
+    "#c:bronze_blocks",
+    "#c:copper_blocks",
+    "#c:electrum_blocks",
+    "#c:fools_gold_blocks",
     "#c:galaxium_blocks",
-    "#c:univite_blocks",
-    "#c:lunum_blocks"
+    "#c:lead_blocks",
+    "#c:lunum_blocks",
+    "#c:metite_blocks",
+    "#c:rose_gold_blocks",
+    "#c:silver_blocks",
+    "#c:steel_blocks",
+    "#c:stellum_blocks",
+    "#c:sterling_silver_blocks",
+    "#c:tin_blocks",
+    "#c:univite_blocks"
   ]
 }

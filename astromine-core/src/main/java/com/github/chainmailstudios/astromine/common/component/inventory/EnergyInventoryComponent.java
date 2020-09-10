@@ -170,14 +170,11 @@ public interface EnergyInventoryComponent extends NameableComponent {
 
 	default void write(CompoundTag tag) {
 		tag.putDouble("energy", getVolume().getAmount());
-		tag.putDouble("maxEnergy", getVolume().getSize());
 	}
 
 	default void read(CompoundTag tag) {
 		clear();
 		EnergyVolume volume = getVolume();
-		if (tag.contains("maxEnergy"))
-			volume.setSize(tag.getDouble("maxEnergy"));
 		if (tag.contains("energy", NbtType.COMPOUND)) {
 			EnergyVolume energy = EnergyVolume.fromTag(tag.getCompound("energy"));
 			volume.setAmount(energy.getAmount());

@@ -6,7 +6,7 @@
     "1": {"item": "astromine:advanced_circuit"},
     "3": {"tag": "c:sterling_silver_gears"},
     "4": {"item": "astromine:advanced_machine_chassis"},
-    "7": {"item": "astromine:advanced_battery"}
+    "7": {"item": "minecraft:smithing_table"}
   },
   "result": {
     "item": "astromine:advanced_alloy_smelter",

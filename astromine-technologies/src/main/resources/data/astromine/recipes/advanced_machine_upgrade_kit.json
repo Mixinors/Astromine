@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["020", "141", "030"],
+  "key": {
+    "0": {"tag": "c:steel_plates"},
+    "1": {"tag": "c:sterling_silver_gears"},
+    "2": {"item": "astromine:advanced_circuit"},
+    "3": {"item": "astromine:advanced_battery"},
+    "4": {"item": "astromine:advanced_machine_chassis"}
+  },
+  "result": {"item": "astromine:advanced_machine_upgrade_kit", "count": 1}
+}
