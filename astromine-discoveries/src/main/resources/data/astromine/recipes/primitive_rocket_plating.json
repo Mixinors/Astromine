@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["111", "222", "333"],
+  "key": {
+    "1": {
+      "tag": "c:steel_plates"
+    },
+    "2": {
+      "tag": "c:lead_plates"
+    },
+    "3": {
+      "tag": "c:silver_plates"
+    }
+  },
+  "result": {
+    "item": "astromine:primitive_rocket_plating"
+  }
+}

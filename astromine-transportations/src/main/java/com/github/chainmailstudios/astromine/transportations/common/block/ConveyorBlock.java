@@ -63,7 +63,7 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 		super(settings);
 
 		this.speed = speed;
-		setDefaultState(getDefaultState().with(ConveyorProperties.LEFT, false).with(ConveyorProperties.RIGHT, false).with(ConveyorProperties.BACK, false).with(ConveyorProperties.UP, false));
+		setDefaultState(getDefaultState().with(ConveyorProperties.LEFT, false).with(ConveyorProperties.RIGHT, false).with(ConveyorProperties.BACK, false).with(ConveyorProperties.UP, false).with(Properties.WATERLOGGED, false));
 	}
 
 	@Override

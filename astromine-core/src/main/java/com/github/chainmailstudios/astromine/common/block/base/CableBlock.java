@@ -88,6 +88,8 @@ public abstract class CableBlock extends Block implements Waterloggable, CableWr
 
 	public CableBlock(AbstractBlock.Settings settings) {
 		super(settings);
+
+		setDefaultState(getDefaultState().with(Properties.WATERLOGGED, false));
 	}
 
 	public abstract <T extends NetworkType> T getNetworkType();

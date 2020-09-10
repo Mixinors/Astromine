@@ -54,7 +54,7 @@ public class CatwalkBlock extends Block implements BlockWrenchable, Waterloggabl
 	public CatwalkBlock(Settings settings) {
 		super(settings);
 
-		setDefaultState(this.getDefaultState().with(ConveyorProperties.FLOOR, true).with(Properties.NORTH, false).with(Properties.EAST, false).with(Properties.SOUTH, false).with(Properties.WEST, false));
+		setDefaultState(this.getDefaultState().with(ConveyorProperties.FLOOR, true).with(Properties.NORTH, false).with(Properties.EAST, false).with(Properties.SOUTH, false).with(Properties.WEST, false).with(Properties.WATERLOGGED, false));
 	}
 
 	@Nullable
