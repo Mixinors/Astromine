@@ -70,7 +70,8 @@ public class AirlockBlock extends Block implements Waterloggable {
 
 	public AirlockBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(POWERED, false).with(HALF, DoubleBlockHalf.LOWER).with(LEFT, false).with(RIGHT, false));
+
+		this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.NORTH).with(POWERED, false).with(HALF, DoubleBlockHalf.LOWER).with(LEFT, false).with(RIGHT, false).with(Properties.WATERLOGGED, false));
 	}
 
 	@Override

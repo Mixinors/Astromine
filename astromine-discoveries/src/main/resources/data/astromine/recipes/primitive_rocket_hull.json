@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["1 1", " 2 ", "1 1"],
+  "key": {
+    "1": {
+      "tag": "c:steel_plates"
+    },
+    "2": {
+      "tag": "c:steel_gears"
+    }
+  },
+  "result": {
+    "item": "astromine:primitive_rocket_booster"
+  }
+}

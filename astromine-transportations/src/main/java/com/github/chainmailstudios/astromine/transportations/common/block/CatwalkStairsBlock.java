@@ -44,7 +44,7 @@ public class CatwalkStairsBlock extends HorizontalFacingBlock implements Waterlo
 	public CatwalkStairsBlock(Settings settings) {
 		super(settings);
 
-		this.setDefaultState(this.getDefaultState().with(FACING, Direction.NORTH).with(ConveyorProperties.LEFT, false).with(ConveyorProperties.RIGHT, false));
+		this.setDefaultState(this.getDefaultState().with(FACING, Direction.NORTH).with(ConveyorProperties.LEFT, false).with(ConveyorProperties.RIGHT, false).with(Properties.WATERLOGGED, false));
 	}
 
 	@Override

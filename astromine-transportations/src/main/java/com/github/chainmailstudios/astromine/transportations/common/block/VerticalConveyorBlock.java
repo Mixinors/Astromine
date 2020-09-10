@@ -64,7 +64,7 @@ public class VerticalConveyorBlock extends HorizontalFacingBlock implements Bloc
 		super(settings);
 
 		this.speed = speed;
-		setDefaultState(getDefaultState().with(ConveyorProperties.FRONT, false).with(ConveyorProperties.CONVEYOR, false));
+		setDefaultState(getDefaultState().with(ConveyorProperties.FRONT, false).with(ConveyorProperties.CONVEYOR, false).with(Properties.WATERLOGGED, false));
 	}
 
 	@Override

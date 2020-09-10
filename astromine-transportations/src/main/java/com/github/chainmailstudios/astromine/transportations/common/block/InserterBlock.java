@@ -55,6 +55,8 @@ public class InserterBlock extends HorizontalFacingBlock implements BlockEntityP
 
 		this.type = type;
 		this.speed = speed;
+
+		setDefaultState(getDefaultState().with(Properties.WATERLOGGED, false));
 	}
 
 	public String getType() {

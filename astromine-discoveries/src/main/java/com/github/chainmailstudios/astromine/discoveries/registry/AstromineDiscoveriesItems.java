@@ -54,12 +54,17 @@ public class AstromineDiscoveriesItems extends AstromineItems {
 	public static final Item ASTEROID_DIAMOND_CLUSTER = register("asteroid_diamond_cluster", new Item(AstromineDiscoveriesItems.getBasicSettings()));
 	public static final Item ASTEROID_EMERALD_CLUSTER = register("asteroid_emerald_cluster", new Item(AstromineDiscoveriesItems.getBasicSettings()));
 
-	public static final Item SPACE_SUIT_HELMET = register("space_suit_helmet", new SpaceSuitItem(AstromineDiscoveriesArmorMaterials.SPACE_SUIT, EquipmentSlot.HEAD, getBasicSettings()));
-	public static final Item SPACE_SUIT_CHESTPLATE = register("space_suit_chestplate", new SpaceSuitItem(AstromineDiscoveriesArmorMaterials.SPACE_SUIT, EquipmentSlot.CHEST, getBasicSettings()));
-	public static final Item SPACE_SUIT_LEGGINGS = register("space_suit_leggings", new SpaceSuitItem(AstromineDiscoveriesArmorMaterials.SPACE_SUIT, EquipmentSlot.LEGS, getBasicSettings()));
-	public static final Item SPACE_SUIT_BOOTS = register("space_suit_boots", new SpaceSuitItem(AstromineDiscoveriesArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, getBasicSettings()));
+	public static final Item PRIMITIVE_ROCKET_FUEL_TANK = register("primitive_rocket_fuel_tank", new Item(AstromineDiscoveriesItems.getBasicSettings().maxCount(1)));
+	public static final Item PRIMITIVE_ROCKET_PLATING = register("primitive_rocket_plating", new Item(AstromineDiscoveriesItems.getBasicSettings().maxCount(1)));
+	public static final Item PRIMITIVE_ROCKET_HULL = register("primitive_rocket_hull", new Item(AstromineDiscoveriesItems.getBasicSettings().maxCount(1)));
+	public static final Item PRIMITIVE_ROCKET_BOOSTER = register("primitive_rocket_booster", new Item(AstromineDiscoveriesItems.getBasicSettings().maxCount(1)));
 
-	public static final Item PRIMITIVE_ROCKET = register("rocket", new UncoloredSpawnEggItem(AstromineDiscoveriesEntityTypes.PRIMITIVE_ROCKET, getBasicSettings()));
+	public static final Item SPACE_SUIT_HELMET = register("space_suit_helmet", new SpaceSuitItem(AstromineDiscoveriesArmorMaterials.SPACE_SUIT, EquipmentSlot.HEAD, AstromineDiscoveriesItems.getBasicSettings()));
+	public static final Item SPACE_SUIT_CHESTPLATE = register("space_suit_chestplate", new SpaceSuitItem(AstromineDiscoveriesArmorMaterials.SPACE_SUIT, EquipmentSlot.CHEST, AstromineDiscoveriesItems.getBasicSettings()));
+	public static final Item SPACE_SUIT_LEGGINGS = register("space_suit_leggings", new SpaceSuitItem(AstromineDiscoveriesArmorMaterials.SPACE_SUIT, EquipmentSlot.LEGS, AstromineDiscoveriesItems.getBasicSettings()));
+	public static final Item SPACE_SUIT_BOOTS = register("space_suit_boots", new SpaceSuitItem(AstromineDiscoveriesArmorMaterials.SPACE_SUIT, EquipmentSlot.FEET, AstromineDiscoveriesItems.getBasicSettings()));
+
+	public static final Item PRIMITIVE_ROCKET = register("rocket", new UncoloredSpawnEggItem(AstromineDiscoveriesEntityTypes.PRIMITIVE_ROCKET, AstromineDiscoveriesItems.getBasicSettings()));
 
 	public static void initialize() {
 
