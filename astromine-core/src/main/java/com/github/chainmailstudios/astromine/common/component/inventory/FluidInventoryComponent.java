@@ -317,7 +317,6 @@ public interface FluidInventoryComponent extends NameableComponent {
 				if (target.getSize() >= position) {
 					if (target.getVolume(position) != null) {
 						target.getVolume(position).setAmount(volume.getAmount());
-						target.getVolume(position).setSize(volume.getSize());
 						target.getVolume(position).setFluid(volume.getFluid());
 					} else {
 						target.setVolume(position, volume);

@@ -52,7 +52,7 @@ public class PrimitiveRocketEntityRenderer extends EntityRenderer<PrimitiveRocke
 	public void render(PrimitiveRocketEntity rocket, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider provider, int light) {
 		matrices.push();
 
-		matrices.translate(0.0D, 0.375D, 0.0D);
+		matrices.translate(0.0D, 3.0D, 0.0D);
 
 		matrices.scale(-1.0F, -1.0F, 1.0F);
 

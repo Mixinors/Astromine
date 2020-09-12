@@ -69,6 +69,11 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 	}
 
 	@Override
+	public void openInventory(PlayerEntity player) {
+		player.openHandledScreen(this);
+	}
+
+	@Override
 	protected Predicate<FluidVolume> createFuelPredicate() {
 		return volume -> volume.getFluid() == AstromineFoundationsFluids.ROCKET_FUEL;
 	}
@@ -116,8 +121,8 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 			return ActionResult.CONSUME;
 		}
 
-		if (player.isSneaking() || !player.getStackInHand(hand).isEmpty()) {
-			player.openHandledScreen(this);
+		if (player.isSneaking()) {
+			this.openInventory(player);
 		} else {
 			player.startRiding(this);
 		}

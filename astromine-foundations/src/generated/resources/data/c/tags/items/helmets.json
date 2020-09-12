@@ -1,12 +1,12 @@
 {
   "replace": false,
   "values": [
-    "astromine:tin_helmet",
     "astromine:copper_helmet",
+    "astromine:tin_helmet",
     "astromine:silver_helmet",
     "astromine:lead_helmet",
-    "astromine:steel_helmet",
     "astromine:bronze_helmet",
+    "astromine:steel_helmet",
     "astromine:electrum_helmet",
     "astromine:rose_gold_helmet",
     "astromine:sterling_silver_helmet",

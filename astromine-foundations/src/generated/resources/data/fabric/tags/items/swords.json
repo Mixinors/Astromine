@@ -1,12 +1,12 @@
 {
   "replace": false,
   "values": [
-    "astromine:tin_sword",
     "astromine:copper_sword",
+    "astromine:tin_sword",
     "astromine:silver_sword",
     "astromine:lead_sword",
-    "astromine:steel_sword",
     "astromine:bronze_sword",
+    "astromine:steel_sword",
     "astromine:electrum_sword",
     "astromine:rose_gold_sword",
     "astromine:sterling_silver_sword",

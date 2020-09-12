@@ -1,12 +1,12 @@
 {
   "replace": false,
   "values": [
-    "astromine:tin_leggings",
     "astromine:copper_leggings",
+    "astromine:tin_leggings",
     "astromine:silver_leggings",
     "astromine:lead_leggings",
-    "astromine:steel_leggings",
     "astromine:bronze_leggings",
+    "astromine:steel_leggings",
     "astromine:electrum_leggings",
     "astromine:rose_gold_leggings",
     "astromine:sterling_silver_leggings",

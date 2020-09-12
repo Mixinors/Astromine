@@ -8,15 +8,18 @@ import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesParticles;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Arm;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
@@ -182,4 +185,11 @@ public abstract class RocketEntity extends ComponentFluidInventoryEntity {
 	private void tryExplode() {
 		world.createExplosion(this, getX(), getY(), getZ(), getTank().getAmount().floatValue() + 3f, Explosion.DestructionType.BREAK);
 	}
+
+	public Vec3d updatePassengerForDismount(LivingEntity passenger) {
+		Vec3d vec3d = getPassengerDismountOffset(this.getWidth(), passenger.getWidth(), this.yaw + (passenger.getMainArm() == Arm.RIGHT ? 90.0F : -90.0F));
+		return new Vec3d(vec3d.getX() + this.getX(), vec3d.getY() + this.getY(), vec3d.getZ() + this.getZ());
+	}
+
+	public abstract void openInventory(PlayerEntity player);
 }

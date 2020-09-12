@@ -1,12 +1,12 @@
 {
   "replace": false,
   "values": [
-    "astromine:tin_hoe",
     "astromine:copper_hoe",
+    "astromine:tin_hoe",
     "astromine:silver_hoe",
     "astromine:lead_hoe",
-    "astromine:steel_hoe",
     "astromine:bronze_hoe",
+    "astromine:steel_hoe",
     "astromine:electrum_hoe",
     "astromine:rose_gold_hoe",
     "astromine:sterling_silver_hoe",
