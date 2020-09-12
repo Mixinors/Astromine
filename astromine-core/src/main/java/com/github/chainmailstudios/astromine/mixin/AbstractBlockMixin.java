@@ -110,8 +110,6 @@ public class AbstractBlockMixin {
 														player.giveItemStack(new ItemStack(Items.BUCKET));
 													}
 												}
-
-
 											});
 										} else {
 											firstInsertable.moveFrom(stackVolume, Fraction.bucket());
