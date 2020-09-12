@@ -32,7 +32,7 @@ import java.util.Optional;
 public class AbstractBlockMixin {
 	@SuppressWarnings("all")
 	@Inject(at = @At("HEAD"), method = "onUse(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;", cancellable = true)
-	void astromine_onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult result, CallbackInfoReturnable<ActionResult> cir) {
+	void astromine_onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult result, CallbackInfoReturnable<ActionResult> cir) 	{
 		final ItemStack stack = player.getStackInHand(hand);
 
 		final Item stackItem = stack.getItem();
@@ -77,12 +77,17 @@ public class AbstractBlockMixin {
 									optionalFirstExtractable.ifPresent((firstExtractable) -> {
 										if (isBucket) {
 											firstExtractable.ifStored(Fraction.bucket(), () -> {
-												firstExtractable.add(stackVolume, Fraction.bucket());
-
-												player.setStackInHand(hand, new ItemStack(stackVolume.getFluid().getBucketItem()));
+												if (stack.getCount() == 1 || (player.inventory.getEmptySlot() == -1 && stack.getCount() == 1)) {
+													stackVolume.moveFrom(firstExtractable, Fraction.bucket());
+													player.setStackInHand(hand, new ItemStack(stackVolume.getFluid().getBucketItem()));
+												} else if (player.inventory.getEmptySlot() != -1 && stack.getCount() > 1) {
+													stackVolume.moveFrom(firstExtractable, Fraction.bucket());
+													stack.decrement(1);
+													player.giveItemStack(new ItemStack(stackVolume.getFluid().getBucketItem()));
+												}
 											});
 										} else {
-											firstExtractable.add(stackVolume, Fraction.bucket());
+											stackVolume.moveFrom(firstExtractable, Fraction.bucket());
 										}
 									});
 								});
@@ -91,11 +96,22 @@ public class AbstractBlockMixin {
 									optionalFirstInsertable.ifPresent((firstInsertable) -> {
 										if (isBucket) {
 											firstInsertable.ifAvailable(Fraction.bucket(), () -> {
-												firstInsertable.moveFrom(stackVolume, Fraction.bucket());
+												if (stack.getCount() == 1 || (player.inventory.getEmptySlot() == -1 && stack.getCount() == 1)) {
+													firstInsertable.moveFrom(stackVolume, Fraction.bucket());
 
-												if (!player.isCreative()) {
-													player.setStackInHand(hand, new ItemStack(Items.BUCKET));
+													if (!player.isCreative()) {
+														player.setStackInHand(hand, new ItemStack(Items.BUCKET));
+													}
+												} else if (player.inventory.getEmptySlot() != -1 && stack.getCount() > 1) {
+													firstInsertable.moveFrom(stackVolume, Fraction.bucket());
+
+													if (!player.isCreative()) {
+														stack.decrement(1);
+														player.giveItemStack(new ItemStack(Items.BUCKET));
+													}
 												}
+
+
 											});
 										} else {
 											firstInsertable.moveFrom(stackVolume, Fraction.bucket());
