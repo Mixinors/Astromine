@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "pattern": ["020", "141", "030"],
   "key": {
-    "0": {"tag": "c:metite_plates"},
+    "0": {"tag": "c:meteoric_steel_plates"},
     "1": {"tag": "c:electrum_gears"},
     "2": {"item": "astromine:elite_circuit"},
     "3": {"item": "astromine:elite_battery"},
