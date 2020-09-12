@@ -1,0 +1,13 @@
+{
+  "type": "astromine:triturating",
+  "input": {
+    "tag": "c:meteoric_steel_ingots",
+    "count": 1
+  },
+  "output": {
+    "item": "astromine:meteoric_steel_dust",
+    "count": 1
+  },
+  "time": 30,
+  "energy_consumed": 270
+}

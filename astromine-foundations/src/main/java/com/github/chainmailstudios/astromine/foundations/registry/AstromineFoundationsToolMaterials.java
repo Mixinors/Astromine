@@ -51,4 +51,6 @@ public class AstromineFoundationsToolMaterials extends AstromineToolMaterials {
 	public static final ToolMaterial GALAXIUM = register(6, 3072, 11f, 5.0f, 18, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:galaxiums"))));
 	public static final ToolMaterial UNIVITE = register(7, 3918, 12f, 6.0f, 22, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:univite_ingots"))));
 	public static final ToolMaterial LUNUM = register(4, 1382, 7f, 4.5f, 18, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:lunum_ingots"))));
+
+	public static final ToolMaterial METEORIC_STEEL = register(3, 949, 10.5f, 3.5f, 10, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:meteoric_steel_ingots"))));
 }
