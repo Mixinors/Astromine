@@ -75,9 +75,11 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 						return false;
 					}
 
-					FluidInventoryComponent inventory = new SimpleFluidInventoryComponent(1);
+					FluidInventoryComponent inventory = new SimpleFluidInventoryComponent(3);
 
 					inventory.setVolume(0, volume);
+					inventory.setVolume(1, FluidHandler.of(this).getSecond());
+					inventory.setVolume(2, FluidHandler.of(this).getThird());
 
 					if (world != null) {
 						optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof ElectrolyzingRecipe).filter(recipe -> ((ElectrolyzingRecipe) recipe).matches(inventory)).findFirst();

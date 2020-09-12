@@ -84,6 +84,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 					inventory.setVolume(0, volume);
 					inventory.setVolume(1, FluidHandler.of(this).getSecond());
+					inventory.setVolume(2, FluidHandler.of(this).getThird());
 
 					if (world != null) {
 						optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(FluidMixingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof FluidMixingRecipe).filter(recipe -> ((FluidMixingRecipe) recipe).matches(inventory)).findFirst();
