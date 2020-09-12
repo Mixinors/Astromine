@@ -3,7 +3,7 @@
   "pattern": [" 1 ", "343", "343"],
   "key": {
     "1": {"tag": "c:steel_plates"},
-    "3": {"tag": "c:metite_plates"},
+    "3": {"tag": "c:meteoric_steel_plates"},
     "4": {"tag": "c:electrum_dusts"}
   },
   "result": {"item": "astromine:elite_battery", "count": 1}

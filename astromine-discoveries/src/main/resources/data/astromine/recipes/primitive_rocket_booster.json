@@ -3,10 +3,10 @@
   "pattern": [" 1 ", "232", "2 2"],
   "key": {
     "1": {
-      "tag": "c:steel_gears"
+      "tag": "c:meteoric_steel_gears"
     },
     "2": {
-      "tag": "c:steel_plates"
+      "tag": "c:meteoric_steel_plates"
     },
     "3": {
       "item": "minecraft:flint_and_steel"

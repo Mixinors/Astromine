@@ -59,6 +59,7 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item ROSE_GOLD_NUGGET = register("rose_gold_nugget", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item STERLING_SILVER_NUGGET = register("sterling_silver_nugget", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item FOOLS_GOLD_NUGGET = register("fools_gold_nugget", new Item(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item METEORIC_STEEL_NUGGET = register("meteoric_steel_nugget", new Item(AstromineFoundationsItems.getBasicSettings()));
 
 	public static final Item NETHERITE_NUGGET = register("netherite_nugget", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
 
@@ -100,6 +101,7 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item ROSE_GOLD_INGOT = register("rose_gold_ingot", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item STERLING_SILVER_INGOT = register("sterling_silver_ingot", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item FOOLS_GOLD_INGOT = register("fools_gold_ingot", new Item(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item METEORIC_STEEL_INGOT = register("meteoric_steel_ingot", new Item(AstromineFoundationsItems.getBasicSettings()));
 
 	// Materials - Dusts
 	public static final Item METITE_DUST = register("metite_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
@@ -120,7 +122,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item ROSE_GOLD_DUST = register("rose_gold_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item STERLING_SILVER_DUST = register("sterling_silver_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item FOOLS_GOLD_DUST = register("fools_gold_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
-
+	public static final Item METEORIC_STEEL_DUST = register("meteoric_steel_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
+	
 	public static final Item IRON_DUST = register("iron_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item GOLD_DUST = register("gold_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item LAPIS_DUST = register("lapis_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
@@ -151,6 +154,7 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item ROSE_GOLD_TINY_DUST = register("rose_gold_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item STERLING_SILVER_TINY_DUST = register("sterling_silver_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item FOOLS_GOLD_TINY_DUST = register("fools_gold_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item METEORIC_STEEL_TINY_DUST = register("meteoric_steel_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 
 	public static final Item REDSTONE_TINY_DUST = register("redstone_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item IRON_TINY_DUST = register("iron_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
@@ -182,6 +186,7 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item ROSE_GOLD_PLATES = register("rose_gold_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item STERLING_SILVER_PLATES = register("sterling_silver_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item FOOLS_GOLD_PLATES = register("fools_gold_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item METEORIC_STEEL_PLATES = register("meteoric_steel_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
 
 	public static final Item IRON_PLATES = register("iron_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item GOLD_PLATES = register("gold_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
@@ -204,6 +209,7 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item ROSE_GOLD_GEAR = register("rose_gold_gear", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item STERLING_SILVER_GEAR = register("sterling_silver_gear", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item FOOLS_GOLD_GEAR = register("fools_gold_gear", new Item(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item METEORIC_STEEL_GEAR = register("meteoric_steel_gear", new Item(AstromineFoundationsItems.getBasicSettings()));
 
 	public static final Item IRON_GEAR = register("iron_gear", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item GOLD_GEAR = register("gold_gear", new Item(AstromineFoundationsItems.getBasicSettings()));
@@ -387,6 +393,16 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item LUNUM_MATTOCK = register("lunum_mattock", new DynamicToolItem(LUNUM_HOE, LUNUM_AXE, AstromineFoundationsToolMaterials.LUNUM, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item LUNUM_HAMMER = register("lunum_hammer", new HammerItem(AstromineFoundationsToolMaterials.LUNUM, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item LUNUM_EXCAVATOR = register("lunum_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.LUNUM, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
+
+	public static final PickaxeItem METEORIC_STEEL_PICKAXE = register("meteoric_steel_pickaxe", new PickaxeItem(AstromineFoundationsToolMaterials.METEORIC_STEEL, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
+	public static final AxeItem METEORIC_STEEL_AXE = register("meteoric_steel_axe", new AxeItem(AstromineFoundationsToolMaterials.METEORIC_STEEL, 5f, -3.0f, AstromineFoundationsItems.getBasicSettings()));
+	public static final ShovelItem METEORIC_STEEL_SHOVEL = register("meteoric_steel_shovel", new ShovelItem(AstromineFoundationsToolMaterials.METEORIC_STEEL, 1.5f, -3.0f, AstromineFoundationsItems.getBasicSettings()));
+	public static final HoeItem METEORIC_STEEL_HOE = register("meteoric_steel_hoe", new HoeItem(AstromineFoundationsToolMaterials.METEORIC_STEEL, -3, 0f, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item METEORIC_STEEL_SWORD = register("meteoric_steel_sword", new SwordItem(AstromineFoundationsToolMaterials.METEORIC_STEEL, 3, -2.4f, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item METEORIC_STEEL_MINING_TOOL = register("meteoric_steel_mining_tool", new DynamicToolItem(METEORIC_STEEL_SHOVEL, METEORIC_STEEL_PICKAXE, AstromineFoundationsToolMaterials.METEORIC_STEEL, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item METEORIC_STEEL_MATTOCK = register("meteoric_steel_mattock", new DynamicToolItem(METEORIC_STEEL_HOE, METEORIC_STEEL_AXE, AstromineFoundationsToolMaterials.METEORIC_STEEL, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item METEORIC_STEEL_HAMMER = register("meteoric_steel_hammer", new HammerItem(AstromineFoundationsToolMaterials.METEORIC_STEEL, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item METEORIC_STEEL_EXCAVATOR = register("meteoric_steel_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.METEORIC_STEEL, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 	
 	// Armors
 	public static final Item COPPER_HELMET = register("copper_helmet", new ArmorItem(AstromineFoundationsArmorMaterials.COPPER, EquipmentSlot.HEAD, AstromineFoundationsItems.getBasicSettings()));
@@ -468,6 +484,11 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item LUNUM_CHESTPLATE = register("lunum_chestplate", new ArmorItem(AstromineFoundationsArmorMaterials.LUNUM, EquipmentSlot.CHEST, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item LUNUM_LEGGINGS = register("lunum_leggings", new ArmorItem(AstromineFoundationsArmorMaterials.LUNUM, EquipmentSlot.LEGS, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item LUNUM_BOOTS = register("lunum_boots", new ArmorItem(AstromineFoundationsArmorMaterials.LUNUM, EquipmentSlot.FEET, AstromineFoundationsItems.getBasicSettings()));
+
+	public static final Item METEORIC_STEEL_HELMET = register("meteoric_steel_helmet", new ArmorItem(AstromineFoundationsArmorMaterials.METEORIC_STEEL, EquipmentSlot.HEAD, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item METEORIC_STEEL_CHESTPLATE = register("meteoric_steel_chestplate", new ArmorItem(AstromineFoundationsArmorMaterials.METEORIC_STEEL, EquipmentSlot.CHEST, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item METEORIC_STEEL_LEGGINGS = register("meteoric_steel_leggings", new ArmorItem(AstromineFoundationsArmorMaterials.METEORIC_STEEL, EquipmentSlot.LEGS, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item METEORIC_STEEL_BOOTS = register("meteoric_steel_boots", new ArmorItem(AstromineFoundationsArmorMaterials.METEORIC_STEEL, EquipmentSlot.FEET, AstromineFoundationsItems.getBasicSettings()));
 	
 	public static final Item METEOR_METITE_CLUSTER = register("meteor_metite_cluster", new Item(AstromineFoundationsItems.getBasicSettings()));
 

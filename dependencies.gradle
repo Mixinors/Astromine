@@ -61,7 +61,7 @@ project.ext.setDefaultApis = {
     useAsApi("org.joml:joml:${joml_version}")
 
     // Maybe Data
-    useAsApi("com.github.Draylar:maybe-data:${maybe_data_version}")
+    useAsApi("com.github.Shnupbups:maybe-data:${maybe_data_version}")
 }
 
 project.ext.setRuntimeTestMods = {
@@ -78,5 +78,5 @@ project.ext.setRuntimeTestMods = {
     useAsRuntime("appeng:appliedenergistics2-fabric:${ae2_version}")
 
     // Disable Custom Worlds Advice
-    useAsRuntime("com.github.rdvdev2:DisableCustomWorldsAdvice:${disable_shit_version}")
+    // useAsRuntime("com.github.rdvdev2:DisableCustomWorldsAdvice:${disable_shit_version}")
 }

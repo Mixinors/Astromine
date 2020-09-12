@@ -309,4 +309,9 @@ public class AstromineFoundationsMaterialSets extends AstromineMaterialSets {
 					.basics().metal().moonOre().allTools().armor()
 					.build()
 	);
+	public static final MaterialSet METEORIC_STEEL = register(
+			new MaterialSet.Builder("meteoric_steel")
+					.basics().metal().allTools().armor()
+					.build()
+	);
 }
