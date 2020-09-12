@@ -92,7 +92,7 @@ public class FluidNetworkType extends NetworkType {
 				Direction direction = outputPair.getRight();
 
 				component.getContents().forEach((slot, output) -> {
-					if (!input.isEmpty() && !output.isFull() && (input.canAccept(output.getFluid()))) {
+					if (!input.isEmpty() && !output.isFull() && (output.canAccept(input.getFluid()))) {
 						if (component.canInsert(direction, input, slot)) {
 							output.moveFrom(input, Fraction.bottle());
 						}
