@@ -153,6 +153,10 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 		return (V) of(getAmount().copy(), getSize().copy(), getFluid());
 	}
 
+	public boolean canAccept(Fluid fluid) {
+		return this.fluid == fluid || this.isEmpty();
+	}
+
 	@Override
 	public CompoundTag toTag() {
 		CompoundTag tag = new CompoundTag();
