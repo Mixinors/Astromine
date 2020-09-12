@@ -65,12 +65,15 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyInventoryBl
 
 	@Override
 	protected ItemInventoryComponent createItemComponent() {
-		return new SimpleItemInventoryComponent(3).withInsertPredicate((direction, itemStack, slot) -> {
+		return new SimpleItemInventoryComponent(3).withInsertPredicate((direction, stack, slot) -> {
 			return slot == 0 || slot == 1;
 		}).withExtractPredicate(((direction, stack, slot) -> {
 			return slot == 2;
 		})).withListener((inventory) -> {
 			shouldTry = true;
+			progress = 0;
+			limit = 100;
+			optionalRecipe = Optional.empty();
 		});
 	}
 
@@ -104,7 +107,9 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyInventoryBl
 				optionalRecipe = world.getRecipeManager().getFirstMatch(AlloySmeltingRecipe.Type.INSTANCE, inputInventory, world);
 			}
 
-			optionalRecipe.ifPresent(recipe -> {
+			if (optionalRecipe.isPresent()) {
+				AlloySmeltingRecipe recipe = optionalRecipe.get();
+
 				if (recipe.matches(inputInventory, world)) {
 					limit = recipe.getTime();
 
@@ -152,7 +157,9 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyInventoryBl
 				} else {
 					tickInactive();
 				}
-			});
+			} else {
+				tickInactive();
+			}
 		});
 	}
 

@@ -38,6 +38,7 @@ import com.github.chainmailstudios.astromine.technologies.common.block.entity.ma
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.FluidSizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.ElectrolyzingRecipe;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.LiquidGeneratingRecipe;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
@@ -67,11 +68,33 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 
 	@Override
 	protected FluidInventoryComponent createFluidComponent() {
-		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(3);
+		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1)
+				.withInsertPredicate((direction, volume, slot) -> {
+					if (slot != 0) {
+						return false;
+					}
+
+					FluidInventoryComponent inventory = new SimpleFluidInventoryComponent(1);
+
+					inventory.setVolume(0, volume);
+
+					if (world != null) {
+						optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(LiquidGeneratingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof LiquidGeneratingRecipe).filter(recipe -> ((LiquidGeneratingRecipe) recipe).matches(inventory)).findFirst();
+						return optionalRecipe.isPresent();
+					}
+
+					return false;
+				}).withExtractPredicate((direction, volume, slot) -> {
+					return false;
+				}).withListener((inventory) -> {
+					shouldTry = true;
+					progress = 0;
+					limit = 100;
+					optionalRecipe = Optional.empty();
+				});
+
 		FluidHandler.of(fluidComponent).getFirst().setSize(getFluidSize());
-		FluidHandler.of(fluidComponent).getSecond().setSize(getFluidSize());
-		FluidHandler.of(fluidComponent).getThird().setSize(getFluidSize());
-		fluidComponent.addListener(() -> shouldTry = true);
+
 		return fluidComponent;
 	}
 
@@ -93,7 +116,9 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 				tickInactive();
 			}
 
-			optionalRecipe.ifPresent(recipe -> {
+			if (optionalRecipe.isPresent()) {
+				LiquidGeneratingRecipe recipe = optionalRecipe.get();
+
 				if (recipe.matches(fluidComponent)) {
 					limit = recipe.getTime();
 
@@ -118,7 +143,9 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 				} else {
 					tickInactive();
 				}
-			});
+			} else {
+				tickInactive();
+			}
 		});
 	}
 

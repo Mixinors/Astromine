@@ -56,10 +56,10 @@ public class AltarPedestalBlockEntityRenderer extends BlockEntityRenderer<AltarP
 	@Override
 	public void render(AltarPedestalBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		matrices.push();
-		ItemStack itemStack = entity.getItemComponent().getStack(0);
-		int j = itemStack.isEmpty() ? 187 : Item.getRawId(itemStack.getItem()) + itemStack.getDamage();
+		ItemStack stack = entity.getItemComponent().getStack(0);
+		int j = stack.isEmpty() ? 187 : Item.getRawId(stack.getItem()) + stack.getDamage();
 		this.random.setSeed(j);
-		BakedModel bakedModel = this.itemRenderer.getHeldItemModel(itemStack, entity.getWorld(), null);
+		BakedModel bakedModel = this.itemRenderer.getHeldItemModel(stack, entity.getWorld(), null);
 		boolean bl = bakedModel.hasDepth();
 		int k = 1;
 		float h = 0.25F;
@@ -106,7 +106,7 @@ public class AltarPedestalBlockEntityRenderer extends BlockEntityRenderer<AltarP
 				}
 			}
 
-			this.itemRenderer.renderItem(itemStack, ModelTransformation.Mode.GROUND, false, matrices, vertexConsumers, light, OverlayTexture.DEFAULT_UV, bakedModel);
+			this.itemRenderer.renderItem(stack, ModelTransformation.Mode.GROUND, false, matrices, vertexConsumers, light, OverlayTexture.DEFAULT_UV, bakedModel);
 			matrices.pop();
 			if (!bl) {
 				matrices.translate(0.0F * o, 0.0F * p, 0.09375F * q);

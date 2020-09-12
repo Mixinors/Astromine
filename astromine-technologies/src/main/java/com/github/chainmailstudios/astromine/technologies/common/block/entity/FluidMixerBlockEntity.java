@@ -29,6 +29,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.EnergyIn
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.inventory.BaseInventory;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
@@ -40,12 +41,16 @@ import com.github.chainmailstudios.astromine.technologies.common.block.entity.ma
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.FluidMixingRecipe;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.LiquidGeneratingRecipe;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesRecipeSerializers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.recipe.SmeltingRecipe;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -69,11 +74,36 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 	@Override
 	protected FluidInventoryComponent createFluidComponent() {
-		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(3);
+		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(3)
+				.withInsertPredicate((direction, volume, slot) -> {
+					if (slot != 0 && slot != 1) {
+						return false;
+					}
+
+					FluidInventoryComponent inventory = new SimpleFluidInventoryComponent(2);
+
+					inventory.setVolume(0, volume);
+					inventory.setVolume(1, FluidHandler.of(this).getSecond());
+
+					if (world != null) {
+						optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(FluidMixingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof FluidMixingRecipe).filter(recipe -> ((FluidMixingRecipe) recipe).matches(inventory)).findFirst();
+						return optionalRecipe.isPresent();
+					}
+
+					return false;
+				}).withExtractPredicate((direction, volume, slot) -> {
+					return slot == 2;
+				}).withListener((inventory) -> {
+					shouldTry = true;
+					progress = 0;
+					limit = 100;
+					optionalRecipe = Optional.empty();
+				});
+
 		FluidHandler.of(fluidComponent).getFirst().setSize(getFluidSize());
 		FluidHandler.of(fluidComponent).getSecond().setSize(getFluidSize());
 		FluidHandler.of(fluidComponent).getThird().setSize(getFluidSize());
-		fluidComponent.addListener(() -> shouldTry = true);
+
 		return fluidComponent;
 	}
 
@@ -91,7 +121,9 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 				shouldTry = false;
 			}
 
-			optionalRecipe.ifPresent(recipe -> {
+			if (optionalRecipe.isPresent()) {
+				FluidMixingRecipe recipe = optionalRecipe.get();
+
 				if (recipe.matches(fluidComponent)) {
 					limit = recipe.getTime();
 
@@ -126,7 +158,9 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 				} else {
 					tickInactive();
 				}
-			});
+			} else {
+				tickInactive();
+			}
 		});
 	}
 

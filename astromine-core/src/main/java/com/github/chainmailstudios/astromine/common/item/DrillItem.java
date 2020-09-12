@@ -120,7 +120,7 @@ public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool,
 	}
 
 	@Override
-	public int getRadius(ItemStack itemStack) {
+	public int getRadius(ItemStack stack) {
 		return radius;
 	}
 

@@ -69,7 +69,6 @@ public class EnergyUtilities {
 		}
 	}
 
-	@Nullable
 	public static EnergySide toSide(Direction direction) {
 		switch (direction) {
 			case NORTH: {

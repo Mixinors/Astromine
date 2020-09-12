@@ -61,10 +61,10 @@ public class AltarRecipe implements AstromineRecipe<AltarBlockEntity> {
 	}
 
 	@Override
-	public boolean matches(AltarBlockEntity inv, World world) {
+	public boolean matches(AltarBlockEntity inventory, World world) {
 		List<Ingredient> ingredients = Lists.newArrayList(this.ingredients);
 		a:
-		for (ItemStack stack : inv.children.stream().map(blockEntity -> blockEntity.get().getStack(0)).collect(Collectors.toList())) {
+		for (ItemStack stack : inventory.children.stream().map(blockEntity -> blockEntity.get().getStack(0)).collect(Collectors.toList())) {
 			Iterator<Ingredient> iterator = ingredients.iterator();
 
 			while (iterator.hasNext()) {
@@ -81,7 +81,7 @@ public class AltarRecipe implements AstromineRecipe<AltarBlockEntity> {
 	}
 
 	@Override
-	public ItemStack craft(AltarBlockEntity inv) {
+	public ItemStack craft(AltarBlockEntity inventory) {
 		return null;
 	}
 

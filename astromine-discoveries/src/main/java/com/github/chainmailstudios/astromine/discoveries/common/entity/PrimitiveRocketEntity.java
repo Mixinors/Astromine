@@ -145,7 +145,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 
 	@Nullable
 	@Override
-	public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
+	public ScreenHandler createMenu(int syncId, PlayerInventory inventory, PlayerEntity player) {
 		return new RocketScreenHandler(syncId, player, getEntityId());
 	}
 }

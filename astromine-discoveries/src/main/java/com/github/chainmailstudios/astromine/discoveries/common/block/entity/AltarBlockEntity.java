@@ -72,7 +72,7 @@ public class AltarBlockEntity extends BlockEntity implements ItemInventoryFromIn
 	public float craftingTicksDelta = 0;
 	public AltarRecipe recipe;
 	public List<Supplier<AltarPedestalBlockEntity>> children = Lists.newArrayList();
-	private ItemInventoryComponent inventory = new SimpleItemInventoryComponent(1).withListener(component -> {
+	private ItemInventoryComponent inventory = new SimpleItemInventoryComponent(1).withListener(inventory -> {
 		if (hasWorld() && !world.isClient)
 			sync();
 	});

@@ -96,12 +96,12 @@ public class LiquidGeneratingRecipe implements Recipe<Inventory>, EnergyGenerati
 	}
 
 	@Override
-	public boolean matches(Inventory inv, World world) {
+	public boolean matches(Inventory inventory, World world) {
 		return false;
 	}
 
 	@Override
-	public ItemStack craft(Inventory inv) {
+	public ItemStack craft(Inventory inventory) {
 		return ItemStack.EMPTY;
 	}
 

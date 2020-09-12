@@ -209,7 +209,7 @@ public class AirlockBlock extends Block implements Waterloggable {
 	}
 
 	@Override
-	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
+	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		world.setBlockState(pos.up(), state.with(HALF, DoubleBlockHalf.UPPER), 3);
 	}
 

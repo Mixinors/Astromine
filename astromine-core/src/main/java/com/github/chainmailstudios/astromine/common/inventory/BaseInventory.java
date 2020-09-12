@@ -92,23 +92,23 @@ public class BaseInventory implements Inventory, RecipeInputProvider {
 
 	@Override
 	public ItemStack removeStack(int slot, int amount) {
-		ItemStack itemStack = Inventories.splitStack(this.stacks, slot, amount);
-		if (!itemStack.isEmpty()) {
+		ItemStack stack = Inventories.splitStack(this.stacks, slot, amount);
+		if (!stack.isEmpty()) {
 			this.markDirty();
 		}
 
-		return itemStack;
+		return stack;
 	}
 
 	@Override
 	public ItemStack removeStack(int slot) {
-		ItemStack itemStack = this.stacks.get(slot);
-		if (itemStack.isEmpty()) {
+		ItemStack stack = this.stacks.get(slot);
+		if (stack.isEmpty()) {
 			return ItemStack.EMPTY;
 		} else {
 			this.stacks.set(slot, ItemStack.EMPTY);
 			this.markDirty();
-			return itemStack;
+			return stack;
 		}
 	}
 
@@ -138,7 +138,7 @@ public class BaseInventory implements Inventory, RecipeInputProvider {
 	}
 
 	public String toString() {
-		return (this.stacks.stream().filter((itemStack) -> !itemStack.isEmpty()).collect(Collectors.toList())).toString();
+		return (this.stacks.stream().filter((stack) -> !stack.isEmpty()).collect(Collectors.toList())).toString();
 	}
 
 	@Override

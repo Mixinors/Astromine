@@ -47,6 +47,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
+
 public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventoryBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
 	public double progress = 0;
 	public int limit = 100;
@@ -57,7 +59,10 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 
 	@Override
 	protected ItemInventoryComponent createItemComponent() {
-		return new SimpleItemInventoryComponent(1);
+		return new SimpleItemInventoryComponent(1).withListener((inventory) -> {
+			progress = 0;
+			limit = 100;
+		});
 	}
 
 	@Override

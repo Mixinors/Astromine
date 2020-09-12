@@ -76,7 +76,7 @@ public class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 	}
 
 	@Override
-	public ItemStack craft(Inventory inv) {
+	public ItemStack craft(Inventory inventory) {
 		return output.copy();
 	}
 
