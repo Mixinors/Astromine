@@ -25,6 +25,8 @@
 package com.github.chainmailstudios.astromine.discoveries.client.render.sky.skybox;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.options.GameOptions;
+import net.minecraft.client.options.Option;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
@@ -143,10 +145,14 @@ public class SpaceSkybox extends Skybox {
 
 			buffer.begin(7, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
 
-			buffer.vertex(matrices.peek().getModel(), -100.0F, -100.0F, -100.0F).color(255, 255, 255, 255).texture(0.0F, 0.0F).light(vertexLight).next();
-			buffer.vertex(matrices.peek().getModel(), -100.0F, -100.0F, 100.0F).color(255, 255, 255, 255).texture(0.0F, 1.0F).light(vertexLight).next();
-			buffer.vertex(matrices.peek().getModel(), 100.0F, -100.0F, 100.0F).color(255, 255, 255, 255).texture(1.0F, 1.0F).light(vertexLight).next();
-			buffer.vertex(matrices.peek().getModel(), 100.0F, -100.0F, -100.0F).color(255, 255, 255, 255).texture(1.0F, 0.0F).light(vertexLight).next();
+			GameOptions options = MinecraftClient.getInstance().options;
+
+			float distance = 16F * (float) Option.RENDER_DISTANCE.get(options) - 8F;
+			
+			buffer.vertex(matrices.peek().getModel(), -distance, -distance, -distance).color(255, 255, 255, 255).texture(0.0F, 0.0F).light(vertexLight).next();
+			buffer.vertex(matrices.peek().getModel(), -distance, -distance, distance).color(255, 255, 255, 255).texture(0.0F, 1.0F).light(vertexLight).next();
+			buffer.vertex(matrices.peek().getModel(), distance, -distance, distance).color(255, 255, 255, 255).texture(1.0F, 1.0F).light(vertexLight).next();
+			buffer.vertex(matrices.peek().getModel(), distance, -distance, -distance).color(255, 255, 255, 255).texture(1.0F, 0.0F).light(vertexLight).next();
 
 			tessellator.draw();
 
