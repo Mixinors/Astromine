@@ -32,8 +32,8 @@ import com.github.chainmailstudios.astromine.common.screenhandler.base.block.Com
 import com.github.chainmailstudios.astromine.common.utilities.tier.BufferTier;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
-import com.github.vini2003.blade.common.data.Position;
-import com.github.vini2003.blade.common.data.Size;
+import com.github.vini2003.blade.common.miscellaneous.Position;
+import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.SlotListWidget;
 
 public class BufferScreenHandler extends ComponentBlockEntityItemScreenHandler {
@@ -51,7 +51,7 @@ public class BufferScreenHandler extends ComponentBlockEntityItemScreenHandler {
 		int leftPadding = 7;
 		int topPadding = 10;
 
-		SlotListWidget slotList = new SlotListWidget(ItemInventoryFromInventoryComponent.of(blockEntity.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)));
+		SlotListWidget slotList = new SlotListWidget(ItemInventoryFromInventoryComponent.of(blockEntity.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)), slotWidth, slotHeight, 0);
 		slotList.setPosition(Position.of(mainTab.getX() + leftPadding, mainTab.getY() + topPadding));
 		slotList.setSize(Size.of(slotWidth, slotHeight));
 

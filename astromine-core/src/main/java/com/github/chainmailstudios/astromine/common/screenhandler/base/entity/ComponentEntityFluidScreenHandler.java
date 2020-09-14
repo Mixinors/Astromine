@@ -29,8 +29,8 @@ import net.minecraft.screen.ScreenHandlerType;
 
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidEntity;
 import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBarWidget;
-import com.github.vini2003.blade.common.data.Position;
-import com.github.vini2003.blade.common.data.Size;
+import com.github.vini2003.blade.common.miscellaneous.Position;
+import com.github.vini2003.blade.common.miscellaneous.Size;
 
 public abstract class ComponentEntityFluidScreenHandler extends ComponentEntityScreenHandler {
 	public ComponentFluidEntity blockEntity;

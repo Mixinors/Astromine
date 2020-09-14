@@ -30,11 +30,11 @@ import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerType;
 
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentEntity;
-import com.github.vini2003.blade.common.data.Position;
-import com.github.vini2003.blade.common.data.Size;
-import com.github.vini2003.blade.common.data.Slots;
-import com.github.vini2003.blade.common.data.widget.TabCollection;
+import com.github.vini2003.blade.common.collection.TabWidgetCollection;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import com.github.vini2003.blade.common.miscellaneous.Position;
+import com.github.vini2003.blade.common.miscellaneous.Size;
+import com.github.vini2003.blade.common.utilities.Slots;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import com.github.vini2003.blade.common.widget.base.TabWidget;
 import com.github.vini2003.blade.common.widget.base.TextWidget;
@@ -45,7 +45,7 @@ import java.util.HashSet;
 public abstract class ComponentEntityScreenHandler extends BaseScreenHandler {
 	public ComponentEntity syncEntity;
 	public Collection<SlotWidget> playerSlots = new HashSet<>();
-	public TabCollection mainTab;
+	public TabWidgetCollection mainTab;
 	protected TabWidget tabs;
 
 	public ComponentEntityScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, int entityId) {
@@ -73,7 +73,7 @@ public abstract class ComponentEntityScreenHandler extends BaseScreenHandler {
 
 		addWidget(tabs);
 
-		mainTab = (TabCollection) tabs.addTab(getSymbol());
+		mainTab = (TabWidgetCollection) tabs.addTab(getSymbol());
 		mainTab.setPosition(Position.of(tabs, 0, 25F + 7F));
 		mainTab.setSize(Size.of(176F, 184F));
 

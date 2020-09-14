@@ -31,8 +31,8 @@ import com.github.chainmailstudios.astromine.common.screenhandler.base.block.Com
 import com.github.chainmailstudios.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.SolidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
-import com.github.vini2003.blade.common.data.Position;
-import com.github.vini2003.blade.common.data.Size;
+import com.github.vini2003.blade.common.miscellaneous.Position;
+import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 
 public class SolidGeneratorScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
@@ -49,7 +49,7 @@ public class SolidGeneratorScreenHandler extends ComponentBlockEntityEnergyItemS
 		super.initialize(width, height);
 
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
-		arrow.setPosition(Position.of(Position.absolute(energyBar), energyBar.getWidth() + 3, energyBar.getHeight() / 2F - 8));
+		arrow.setPosition(Position.of(Position.of(energyBar), energyBar.getWidth() + 3, energyBar.getHeight() / 2F - 8));
 		arrow.setSize(Size.of(22, 16));
 		arrow.setLimitSupplier(() -> generator.limit);
 		arrow.setProgressSupplier(() -> (int) generator.progress);

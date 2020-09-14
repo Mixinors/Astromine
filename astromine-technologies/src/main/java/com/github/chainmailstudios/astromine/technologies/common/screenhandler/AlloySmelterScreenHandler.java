@@ -32,8 +32,8 @@ import com.github.chainmailstudios.astromine.common.widget.blade.HorizontalArrow
 import com.github.chainmailstudios.astromine.common.widget.vanilla.ExtractionSlot;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.AlloySmelterBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
-import com.github.vini2003.blade.common.data.Position;
-import com.github.vini2003.blade.common.data.Size;
+import com.github.vini2003.blade.common.miscellaneous.Position;
+import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 
 public class AlloySmelterScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
