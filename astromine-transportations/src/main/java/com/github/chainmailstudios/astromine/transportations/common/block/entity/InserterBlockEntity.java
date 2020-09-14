@@ -121,42 +121,41 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 		}
 	}
 
-	private static boolean canExtract(Inventory inv, ItemStack stack, int slot, Direction facing) {
-		return !(inv instanceof SidedInventory) || ((SidedInventory) inv).canExtract(slot, stack, facing);
+	private static boolean canExtract(Inventory inventory, ItemStack stack, int slot, Direction facing) {
+		return !(inventory instanceof SidedInventory) || ((SidedInventory) inventory).canExtract(slot, stack, facing);
 	}
 
 	private static boolean extract(SingularStackInventory singularStackInventory, Inventory inventory, int slot, Direction side) {
-		ItemStack itemStack = inventory.getStack(slot);
-		if (!itemStack.isEmpty() && canExtract(inventory, itemStack, slot, side)) {
-			ItemStack itemStack2 = itemStack.copy();
-			ItemStack itemStack3 = transfer(inventory, singularStackInventory, inventory.removeStack(slot, inventory.getStack(slot).getCount()), (Direction) null);
-			if (itemStack3.isEmpty()) {
+		ItemStack stack = inventory.getStack(slot);
+		if (!stack.isEmpty() && canExtract(inventory, stack, slot, side)) {
+			ItemStack stackB = stack.copy();
+			ItemStack stackC = transfer(inventory, singularStackInventory, inventory.removeStack(slot, inventory.getStack(slot).getCount()), null);
+			if (stackC.isEmpty()) {
 				inventory.markDirty();
 				return true;
 			}
 
-			inventory.setStack(slot, itemStack2);
+			inventory.setStack(slot, stackB);
 		}
 
 		return false;
 	}
 
-	private static ItemStack transfer(Inventory from, Inventory to, ItemStack stack, int slot, Direction direction) {
-		ItemStack itemStack = to.getStack(slot);
-		if (canInsert(to, stack, slot, direction)) {
-			boolean bl2 = to.isEmpty();
-			if (itemStack.isEmpty()) {
-				to.setStack(slot, stack);
-				stack = ItemStack.EMPTY;
-			} else if (canMergeItems(itemStack, stack)) {
-				int i = stack.getMaxCount() - itemStack.getCount();
-				int j = Math.min(stack.getCount(), i);
-				stack.decrement(j);
-				itemStack.increment(j);
+	private static ItemStack transfer(Inventory from, Inventory to, ItemStack stackA, int slot, Direction direction) {
+		ItemStack stackB = to.getStack(slot);
+		if (canInsert(to, stackA, slot, direction)) {
+			if (stackB.isEmpty()) {
+				to.setStack(slot, stackA);
+				stackA = ItemStack.EMPTY;
+			} else if (canMergeItems(stackB, stackA)) {
+				int i = stackA.getMaxCount() - stackB.getCount();
+				int j = Math.min(stackA.getCount(), i);
+				stackA.decrement(j);
+				stackB.increment(j);
 			}
 		}
 
-		return stack;
+		return stackA;
 	}
 
 	@Override
@@ -255,10 +254,10 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 		}
 	}
 
-	private boolean isInventoryFull(Inventory inv, Direction direction) {
-		return getAvailableSlots(inv, direction).allMatch((i) -> {
-			ItemStack itemStack = inv.getStack(i);
-			return itemStack.getCount() >= itemStack.getMaxCount();
+	private boolean isInventoryFull(Inventory inventory, Direction direction) {
+		return getAvailableSlots(inventory, direction).allMatch((i) -> {
+			ItemStack stack = inventory.getStack(i);
+			return stack.getCount() >= stack.getMaxCount();
 		});
 	}
 

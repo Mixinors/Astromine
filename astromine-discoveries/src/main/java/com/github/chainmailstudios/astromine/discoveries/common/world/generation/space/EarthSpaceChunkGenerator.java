@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.generation.space;
 
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -105,7 +106,7 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 					double noise = this.noise.sample(x, y, z);
 					noise -= computeNoiseFalloff(y);
 
-					if (noise > 0.545) {
+					if (noise > AstromineConfig.get().asteroidNoiseThreshold) {
 						if (random.nextInt(64) != 0) {
 							chunk.setBlockState(mutable.set(x, y, z), AstromineDiscoveriesBlocks.ASTEROID_STONE.getDefaultState(), false);
 						}

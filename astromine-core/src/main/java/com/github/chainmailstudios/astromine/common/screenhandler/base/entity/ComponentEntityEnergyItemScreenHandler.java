@@ -28,11 +28,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentEnergyItemEntity;
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.widget.blade.EnergyVerticalBarWidget;
-import com.github.vini2003.blade.common.data.Position;
-import com.github.vini2003.blade.common.data.Size;
-import team.reborn.energy.EnergySide;
+import com.github.vini2003.blade.common.miscellaneous.Position;
+import com.github.vini2003.blade.common.miscellaneous.Size;
 
 public abstract class ComponentEntityEnergyItemScreenHandler extends ComponentEntityScreenHandler {
 	public ComponentEnergyItemEntity entity;

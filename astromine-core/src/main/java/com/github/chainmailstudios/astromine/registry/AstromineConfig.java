@@ -415,6 +415,9 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Denominator for the gas decay rate fraction. It will decay gas by this fraction every gas tick.")
 	public int gasDecayDenominator = 1024;
 
+	@Comment("Noise threshold for Asteroid generation.")
+	public float asteroidNoiseThreshold = 0.545F;
+
 	public static AstromineConfig get() {
 		if (instance == null) {
 			try {

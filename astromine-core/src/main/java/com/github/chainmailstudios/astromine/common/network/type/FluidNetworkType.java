@@ -28,6 +28,7 @@ import net.minecraft.block.FacingBlock;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.state.property.Property;
+import net.minecraft.util.Pair;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
@@ -50,7 +51,7 @@ public class FluidNetworkType extends NetworkType {
 	@Override
 	public void tick(NetworkInstance instance) {
 		List<FluidVolume> inputs = Lists.newArrayList();
-		List<FluidVolume> outputs = Lists.newArrayList();
+		List<Pair<FluidInventoryComponent, Direction>> outputs = Lists.newArrayList();
 
 		for (NetworkMemberNode memberNode : instance.members) {
 			BlockEntity blockEntity = instance.getWorld().getBlockEntity(memberNode.getBlockPos());
@@ -78,11 +79,7 @@ public class FluidNetworkType extends NetworkType {
 						}
 
 						if (type.canInsert() || networkMember.isRequester(this)) {
-							fluidComponent.getContents().forEach((key, volume) -> {
-								if (fluidComponent.canInsert(memberNode.getDirection(), volume, key)) {
-									outputs.add(volume);
-								}
-							});
+							outputs.add(new Pair<>(fluidComponent, memberNode.getDirection()));
 						}
 					}
 				}
@@ -90,12 +87,17 @@ public class FluidNetworkType extends NetworkType {
 		}
 
 		for (FluidVolume input : inputs) {
-			for (FluidVolume output : outputs) {
-				if (!input.isEmpty() && !output.isFull() && (input.getFluid() == output.getFluid() || output.isEmpty())) {
-					output.moveFrom(input, Fraction.bottle());
-				} else if (input.isEmpty()) {
-					break;
-				}
+			for (Pair<FluidInventoryComponent, Direction> outputPair : outputs) {
+				FluidInventoryComponent component = outputPair.getLeft();
+				Direction direction = outputPair.getRight();
+
+				component.getContents().forEach((slot, output) -> {
+					if (!input.isEmpty() && !output.isFull() && (output.canAccept(input.getFluid()))) {
+						if (component.canInsert(direction, input, slot)) {
+							output.moveFrom(input, Fraction.bottle());
+						}
+					}
+				});
 			}
 		}
 	}

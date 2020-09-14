@@ -59,6 +59,10 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 		this.fluid = fluid;
 	}
 
+	public Identifier getFluidId() {
+		return Registry.FLUID.getId(getFluid());
+	}
+
 	@Override
 	public <V extends Volume<Identifier, Fraction>> V add(V v, Fraction fraction) {
 		if (!(v instanceof FluidVolume)) return (V) this;
@@ -153,6 +157,10 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 		return (V) of(getAmount().copy(), getSize().copy(), getFluid());
 	}
 
+	public boolean canAccept(Fluid fluid) {
+		return this.fluid == fluid || this.isEmpty();
+	}
+
 	@Override
 	public CompoundTag toTag() {
 		CompoundTag tag = new CompoundTag();
@@ -187,5 +195,10 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 	@Override
 	public int hashCode() {
 		return Objects.hashCode(super.hashCode(), fluid);
+	}
+
+	@Override
+	public String toString() {
+		return getAmount().toDecimalString()+" / "+getSize().toDecimalString()+" "+getFluidId();
 	}
 }

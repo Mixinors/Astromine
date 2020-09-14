@@ -24,10 +24,14 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
+import com.github.chainmailstudios.astromine.common.utilities.data.predicate.TriPredicate;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import net.minecraft.util.math.Direction;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +44,9 @@ public class SimpleFluidInventoryComponent implements FluidInventoryComponent {
 
 	private final List<Runnable> listeners = new ArrayList<>();
 
+	private TriPredicate<@Nullable Direction, FluidVolume, Integer> insertPredicate = (direction, volume, slot) -> true;
+	private TriPredicate<@Nullable Direction, FluidVolume, Integer> extractPredicate = (direction, volume, integer) -> true;
+
 	private final int size;
 
 	public SimpleFluidInventoryComponent() {
@@ -51,6 +58,28 @@ public class SimpleFluidInventoryComponent implements FluidInventoryComponent {
 		for (int i = 0; i < size; ++i) {
 			contents.put(i, FluidVolume.attached(this));
 		}
+	}
+
+	@Override
+	public boolean canInsert(@Nullable Direction direction, FluidVolume volume, int slot) {
+		return insertPredicate.test(direction, volume, slot);
+	}
+
+	@Override
+	public boolean canExtract(@Nullable Direction direction, FluidVolume volume, int slot) {
+		return extractPredicate.test(direction, volume, slot);
+	}
+
+	public SimpleFluidInventoryComponent withInsertPredicate(TriPredicate<@Nullable Direction, FluidVolume, Integer> predicate) {
+		TriPredicate<Direction, FluidVolume, Integer> triPredicate = this.insertPredicate;
+		this.insertPredicate = (direction, volume, integer) -> triPredicate.test(direction, volume, integer) && predicate.test(direction, volume, integer);
+		return this;
+	}
+
+	public SimpleFluidInventoryComponent withExtractPredicate(TriPredicate<@Nullable Direction, FluidVolume, Integer> predicate) {
+		TriPredicate<Direction, FluidVolume, Integer> triPredicate = this.extractPredicate;
+		this.extractPredicate = (direction, volume, integer) -> triPredicate.test(direction, volume, integer) && predicate.test(direction, volume, integer);
+		return this;
 	}
 
 	@Override

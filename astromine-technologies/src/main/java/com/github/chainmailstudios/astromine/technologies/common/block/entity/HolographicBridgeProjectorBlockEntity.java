@@ -43,7 +43,7 @@ import com.github.chainmailstudios.astromine.common.utilities.VectorUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
-import com.github.vini2003.blade.common.data.Color;
+import com.github.vini2003.blade.common.miscellaneous.Color;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import org.jetbrains.annotations.NotNull;
 

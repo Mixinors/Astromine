@@ -142,18 +142,18 @@ public class ArrayIngredient implements Predicate<ItemStack> {
 	}
 
 	@Override
-	public boolean test(ItemStack itemStack) {
-		return testMatching(itemStack) != null;
+	public boolean test(ItemStack stack) {
+		return testMatching(stack) != null;
 	}
 
-	public ItemStack testMatching(ItemStack itemStack) {
-		if (itemStack == null)
+	public ItemStack testMatching(ItemStack stack) {
+		if (stack == null)
 			return null;
 		ItemStack[] matchingStacks = getMatchingStacks();
 		if (this.matchingStacks.length == 0)
 			return null;
 		for (ItemStack matchingStack : matchingStacks) {
-			if (ItemStack.areItemsEqual(matchingStack, itemStack) && itemStack.getCount() >= matchingStack.getCount())
+			if (ItemStack.areItemsEqual(matchingStack, stack) && stack.getCount() >= matchingStack.getCount())
 				return matchingStack.copy();
 		}
 		return null;
@@ -179,8 +179,8 @@ public class ArrayIngredient implements Predicate<ItemStack> {
 			this.stacks = stacks;
 		}
 
-		public SimpleEntry(ItemStack itemStack) {
-			this(Collections.singleton(itemStack));
+		public SimpleEntry(ItemStack stack) {
+			this(Collections.singleton(stack));
 		}
 
 		@Override

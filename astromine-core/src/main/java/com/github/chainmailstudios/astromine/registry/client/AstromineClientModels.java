@@ -39,6 +39,7 @@ import net.minecraft.util.Lazy;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 
 @Environment(EnvType.CLIENT)
@@ -46,7 +47,10 @@ public class AstromineClientModels {
 	public static final Lazy<ModelTransformation> ITEM_HANDHELD = new Lazy<>(() -> {
 		try {
 			Resource resource = MinecraftClient.getInstance().getResourceManager().getResource(new Identifier("minecraft:models/item/handheld.json"));
-			return JsonUnbakedModel.deserialize(new BufferedReader(new InputStreamReader(resource.getInputStream()))).getTransformations();
+			InputStream stream = resource.getInputStream();
+			ModelTransformation model = JsonUnbakedModel.deserialize(new BufferedReader(new InputStreamReader(stream))).getTransformations();
+			stream.close();
+			return model;
 		} catch (Throwable throwable) {
 			throw new RuntimeException(throwable);
 		}

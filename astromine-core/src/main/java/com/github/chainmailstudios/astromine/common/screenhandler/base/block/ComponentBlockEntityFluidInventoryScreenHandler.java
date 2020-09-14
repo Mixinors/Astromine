@@ -31,8 +31,8 @@ import net.minecraft.util.math.BlockPos;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidInventoryBlockEntity;
 import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBarWidget;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.github.vini2003.blade.common.data.Position;
-import com.github.vini2003.blade.common.data.Size;
+import com.github.vini2003.blade.common.miscellaneous.Position;
+import com.github.vini2003.blade.common.miscellaneous.Size;
 
 public class ComponentBlockEntityFluidInventoryScreenHandler extends ComponentBlockEntityScreenHandler {
 	public ComponentFluidInventoryBlockEntity blockEntity;

@@ -106,8 +106,8 @@ public abstract class CableBlock extends Block implements Waterloggable, CableWr
 	}
 
 	@Override
-	public void onPlaced(World world, BlockPos position, BlockState stateA, LivingEntity placer, ItemStack itemStack) {
-		super.onPlaced(world, position, stateA, placer, itemStack);
+	public void onPlaced(World world, BlockPos position, BlockState stateA, LivingEntity placer, ItemStack stack) {
+		super.onPlaced(world, position, stateA, placer, stack);
 
 		NetworkTracer.Tracer.INSTANCE.trace(getNetworkType(), WorldPos.of(world, position));
 

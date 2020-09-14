@@ -66,14 +66,14 @@ public class EnergyVolumeItem extends BaseVolumeItem<EnergyVolume> implements En
 	}
 
 	@Override
-	public double getDurabilityBarProgress(ItemStack itemStack) {
-		if (!Energy.valid(itemStack) || getMaxStoredPower() == 0)
+	public double getDurabilityBarProgress(ItemStack stack) {
+		if (!Energy.valid(stack) || getMaxStoredPower() == 0)
 			return 0;
-		return 1 - Energy.of(itemStack).getEnergy() / getMaxStoredPower();
+		return 1 - Energy.of(stack).getEnergy() / getMaxStoredPower();
 	}
 
 	@Override
-	public boolean hasDurabilityBar(ItemStack itemStack) {
+	public boolean hasDurabilityBar(ItemStack stack) {
 		return true;
 	}
 
@@ -86,9 +86,9 @@ public class EnergyVolumeItem extends BaseVolumeItem<EnergyVolume> implements En
 	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
 		super.appendStacks(group, stacks);
 		if (this.isIn(group)) {
-			ItemStack itemStack = new ItemStack(this);
-			Energy.of(itemStack).set(getMaxStoredPower());
-			stacks.add(itemStack);
+			ItemStack stack = new ItemStack(this);
+			Energy.of(stack).set(getMaxStoredPower());
+			stacks.add(stack);
 		}
 	}
 }

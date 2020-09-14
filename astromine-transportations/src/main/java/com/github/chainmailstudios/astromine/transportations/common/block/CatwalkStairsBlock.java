@@ -62,13 +62,13 @@ public class CatwalkStairsBlock extends HorizontalFacingBlock implements Waterlo
 		return this.getDefaultState().with(FACING, context.getPlayer().isSneaking() ? context.getPlayerFacing().getOpposite() : context.getPlayerFacing()).with(Properties.WATERLOGGED, context.getWorld().getBlockState(context.getBlockPos()).getBlock() == Blocks.WATER);
 	}
 
-	public boolean isAdjacentBlockOfMyType(WorldAccess world, BlockPos position, Direction facing) {
+	public boolean isAdjacentBlockOfMyType(WorldAccess world, BlockPos position, Direction direction) {
 
 		assert null != world : "world cannot be null";
 		assert null != position : "position cannot be null";
 		assert null != this : "type cannot be null";
 
-		BlockPos newPosition = position.offset(facing);
+		BlockPos newPosition = position.offset(direction);
 		BlockState blockState = world.getBlockState(newPosition);
 		Block block = (null == blockState) ? null : blockState.getBlock();
 

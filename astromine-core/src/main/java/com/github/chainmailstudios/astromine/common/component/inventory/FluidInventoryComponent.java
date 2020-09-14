@@ -84,7 +84,7 @@ public interface FluidInventoryComponent extends NameableComponent {
 		return true;
 	}
 
-	default boolean canInsert(@Nullable Direction direction, FluidVolume fluid, int slot) {
+	default boolean canInsert(@Nullable Direction direction, FluidVolume volume, int slot) {
 		return true;
 	}
 
@@ -92,7 +92,7 @@ public interface FluidInventoryComponent extends NameableComponent {
 		return true;
 	}
 
-	default boolean canExtract(@Nullable Direction direction, FluidVolume fluid, int slot) {
+	default boolean canExtract(@Nullable Direction direction, FluidVolume volume, int slot) {
 		return true;
 	}
 
@@ -179,7 +179,7 @@ public interface FluidInventoryComponent extends NameableComponent {
 
 	@Nullable
 	default FluidVolume getFirstInsertableVolume(Fluid fluid, Direction direction) {
-		return getContents().entrySet().stream().filter((entry)     -> canInsert(direction, entry.getValue(), entry.getKey()) && (entry.getValue().isEmpty() || (entry.getValue().getFluid() == fluid))).map(Map.Entry::getValue).findFirst().orElse(null);
+		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, entry.getValue(), entry.getKey()) && (entry.getValue().isEmpty() || (entry.getValue().getFluid() == fluid))).map(Map.Entry::getValue).findFirst().orElse(null);
 	}
 
 	default TypedActionResult<FluidVolume> extract(Direction direction, int slot, Fraction fraction) {

@@ -36,7 +36,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
 import com.github.vini2003.blade.client.utilities.Layers;
-import com.github.vini2003.blade.common.data.Color;
+import com.github.vini2003.blade.common.miscellaneous.Color;
 
 public class BaseRenderer {
 	public static void drawQuad(MatrixStack matrices, VertexConsumerProvider provider, RenderLayer layer, float x, float y, float sX, float sY, Color color) {

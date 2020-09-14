@@ -40,11 +40,11 @@ import com.github.chainmailstudios.astromine.common.component.block.entity.Block
 import com.github.chainmailstudios.astromine.common.component.inventory.NameableComponent;
 import com.github.chainmailstudios.astromine.common.utilities.WidgetUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.github.vini2003.blade.common.data.Position;
-import com.github.vini2003.blade.common.data.Size;
-import com.github.vini2003.blade.common.data.Slots;
-import com.github.vini2003.blade.common.data.widget.TabCollection;
+import com.github.vini2003.blade.common.miscellaneous.Position;
+import com.github.vini2003.blade.common.miscellaneous.Size;
+import com.github.vini2003.blade.common.collection.TabWidgetCollection;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import com.github.vini2003.blade.common.utilities.Slots;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import com.github.vini2003.blade.common.widget.base.TabWidget;
 import com.github.vini2003.blade.common.widget.base.TextWidget;
@@ -59,7 +59,7 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 	public BlockPos position;
 	public Block originalBlock;
 	public Collection<SlotWidget> playerSlots = new HashSet<>();
-	public TabCollection mainTab;
+	public TabWidgetCollection mainTab;
 	protected TabWidget tabs;
 
 	public ComponentBlockEntityScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
@@ -92,7 +92,7 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 
 		addWidget(tabs);
 
-		mainTab = (TabCollection) tabs.addTab(syncBlockEntity.getCachedState().getBlock().asItem());
+		mainTab = (TabWidgetCollection) tabs.addTab(syncBlockEntity.getCachedState().getBlock().asItem());
 		mainTab.setPosition(Position.of(tabs, 0, 25F + 7F));
 		mainTab.setSize(Size.of(176F, 184F));
 
@@ -128,7 +128,7 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 		transferComponent.get().forEach((type, entry) -> {
 			if (sidedComponentProvider.getComponent(type) instanceof NameableComponent) {
 				NameableComponent nameableComponent = (NameableComponent) sidedComponentProvider.getComponent(type);
-				TabCollection current = (TabCollection) tabs.addTab(nameableComponent.getSymbol(), () -> Collections.singletonList(nameableComponent.getName()));
+				TabWidgetCollection current = (TabWidgetCollection) tabs.addTab(nameableComponent.getSymbol(), () -> Collections.singletonList(nameableComponent.getName()));
 				WidgetUtilities.createTransferTab(current, Position.of(tabs, tabs.getWidth() / 2 - 38, getTabWidgetExtendedHeight() / 2), finalRotation, transferComponent, syncBlockEntity.getPos(), type);
 				TextWidget invTabTitle = new TextWidget();
 				invTabTitle.setPosition(Position.of(invPos, 0, -10));

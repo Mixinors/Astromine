@@ -40,6 +40,7 @@ import com.github.chainmailstudios.astromine.technologies.common.block.entity.ma
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.ElectrolyzingRecipe;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.FluidMixingRecipe;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.block.Block;
@@ -68,11 +69,37 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	@Override
 	protected FluidInventoryComponent createFluidComponent() {
-		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(3);
+		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(3)
+				.withInsertPredicate((direction, volume, slot) -> {
+					if (slot != 0) {
+						return false;
+					}
+
+					FluidInventoryComponent inventory = new SimpleFluidInventoryComponent(3);
+
+					inventory.setVolume(0, volume);
+					inventory.setVolume(1, FluidHandler.of(this).getSecond());
+					inventory.setVolume(2, FluidHandler.of(this).getThird());
+
+					if (world != null) {
+						optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof ElectrolyzingRecipe).filter(recipe -> ((ElectrolyzingRecipe) recipe).matches(inventory)).findFirst();
+						return optionalRecipe.isPresent();
+					}
+
+					return false;
+				}).withExtractPredicate((direction, volume, slot) -> {
+					return slot == 1 || slot == 2;
+				}).withListener((inventory) -> {
+					shouldTry = true;
+					progress = 0;
+					limit = 100;
+					optionalRecipe = Optional.empty();
+				});
+
 		FluidHandler.of(fluidComponent).getFirst().setSize(getFluidSize());
 		FluidHandler.of(fluidComponent).getSecond().setSize(getFluidSize());
 		FluidHandler.of(fluidComponent).getThird().setSize(getFluidSize());
-		fluidComponent.addListener(() -> shouldTry = true);
+
 		return fluidComponent;
 	}
 
@@ -89,7 +116,9 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 				optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof ElectrolyzingRecipe).filter(recipe -> ((ElectrolyzingRecipe) recipe).matches(fluidComponent)).findFirst();
 			}
 
-			optionalRecipe.ifPresent(recipe -> {
+			if (optionalRecipe.isPresent()) {
+				ElectrolyzingRecipe recipe = optionalRecipe.get();
+
 				if (recipe.matches(fluidComponent)) {
 					limit = recipe.getTime();
 
@@ -124,7 +153,9 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 				} else {
 					tickInactive();
 				}
-			});
+			} else {
+				tickInactive();
+			}
 		});
 	}
 

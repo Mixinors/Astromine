@@ -137,12 +137,12 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 	}
 
 	@Override
-	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
-		super.onPlaced(world, pos, state, placer, itemStack);
+	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		super.onPlaced(world, pos, state, placer, stack);
 
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 		if (blockEntity != null) {
-			blockEntity.fromTag(state, itemStack.getOrCreateTag());
+			blockEntity.fromTag(state, stack.getOrCreateTag());
 			blockEntity.setPos(pos);
 		}
 	}

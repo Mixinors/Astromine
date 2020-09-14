@@ -29,15 +29,15 @@ import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.widget.blade.TransferTypeSelectorButtonWidget;
-import com.github.vini2003.blade.common.data.Position;
-import com.github.vini2003.blade.common.data.Size;
-import com.github.vini2003.blade.common.data.widget.TabCollection;
+import com.github.vini2003.blade.common.collection.TabWidgetCollection;
+import com.github.vini2003.blade.common.miscellaneous.Position;
+import com.github.vini2003.blade.common.miscellaneous.Size;
 import nerdhub.cardinal.components.api.ComponentType;
 
 import com.google.common.collect.ImmutableMap;
 
 public class WidgetUtilities {
-	public static void createTransferTab(TabCollection tab, Position anchor, Direction rotation, BlockEntityTransferComponent component, BlockPos blockPos, ComponentType<?> type) {
+	public static void createTransferTab(TabWidgetCollection tab, Position anchor, Direction rotation, BlockEntityTransferComponent component, BlockPos blockPos, ComponentType<?> type) {
 		final Position finalNorth = Position.of(anchor, 7 + 22, 31 + 22);
 		final Position finalSouth = Position.of(anchor, 7 + 0, 31 + 44);
 		final Position finalUp = Position.of(anchor, 7 + 22, 31 + 0);

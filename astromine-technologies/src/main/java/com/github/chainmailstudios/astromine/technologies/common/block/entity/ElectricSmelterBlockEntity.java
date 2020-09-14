@@ -65,12 +65,12 @@ public abstract class ElectricSmelterBlockEntity extends ComponentEnergyInventor
 
 	@Override
 	protected ItemInventoryComponent createItemComponent() {
-		return new SimpleItemInventoryComponent(2).withInsertPredicate((direction, itemStack, slot) -> {
+		return new SimpleItemInventoryComponent(2).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 1) {
 				return false;
 			}
 
-			BaseInventory inputInventory = BaseInventory.of(itemStack);
+			BaseInventory inputInventory = BaseInventory.of(stack);
 
 			if (world != null) {
 				Optional<SmeltingRecipe> recipe = (Optional<SmeltingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) RecipeType.SMELTING, inputInventory, world);
@@ -80,8 +80,11 @@ public abstract class ElectricSmelterBlockEntity extends ComponentEnergyInventor
 			return false;
 		}).withExtractPredicate(((direction, stack, slot) -> {
 			return slot == 0;
-		})).withListener((inv) -> {
+		})).withListener((inventory) -> {
 			shouldTry = true;
+			progress = 0;
+			limit = 100;
+			optionalRecipe = Optional.empty();
 		});
 	}
 
@@ -116,7 +119,9 @@ public abstract class ElectricSmelterBlockEntity extends ComponentEnergyInventor
 				shouldTry = false;
 			}
 
-			optionalRecipe.ifPresent(recipe -> {
+			if (optionalRecipe.isPresent()) {
+				SmeltingRecipe recipe = optionalRecipe.get();
+
 				if (recipe.matches(inputInventory, world)) {
 					limit = recipe.getCookTime();
 
@@ -153,7 +158,9 @@ public abstract class ElectricSmelterBlockEntity extends ComponentEnergyInventor
 				} else {
 					tickInactive();
 				}
-			});
+			} else {
+				tickInactive();
+			}
 		});
 	}
 

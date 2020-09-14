@@ -66,13 +66,13 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyInventoryBloc
 
 	@Override
 	protected ItemInventoryComponent createItemComponent() {
-		return new SimpleItemInventoryComponent(2).withInsertPredicate((direction, itemStack, slot) -> {
+		return new SimpleItemInventoryComponent(2).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 1) {
 				return false;
 			}
 
 			SimpleItemInventoryComponent component = new SimpleItemInventoryComponent(1);
-			ItemHandler.of(component).setFirst(itemStack);
+			ItemHandler.of(component).setFirst(stack);
 
 			if (world != null) {
 				Optional<TrituratingRecipe> recipe = (Optional<TrituratingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) TrituratingRecipe.Type.INSTANCE, ItemInventoryFromInventoryComponent.of(component), world);
@@ -82,8 +82,11 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyInventoryBloc
 			return false;
 		}).withExtractPredicate(((direction, stack, slot) -> {
 			return slot == 0;
-		})).withListener((inv) -> {
+		})).withListener((inventory) -> {
 			shouldTry = true;
+			progress = 0;
+			limit = 100;
+			optionalRecipe = Optional.empty();
 		});
 	}
 
@@ -117,14 +120,16 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyInventoryBloc
 				optionalRecipe = (Optional<TrituratingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) TrituratingRecipe.Type.INSTANCE, ItemInventoryFromInventoryComponent.of(itemComponent), world);
 			}
 
-			optionalRecipe.ifPresent(recipe -> {
-				if (optionalRecipe.get().matches(inputInventory, world)) {
+			if (optionalRecipe.isPresent()) {
+				TrituratingRecipe recipe = optionalRecipe.get();
+
+				if (recipe.matches(inputInventory, world)) {
 					limit = recipe.getTime();
 
 					double speed = Math.min(getMachineSpeed(), limit - progress);
 					double consumed = recipe.getEnergyConsumed() * speed / limit;
 
-					ItemStack output = optionalRecipe.get().getOutput().copy();
+					ItemStack output = recipe.getOutput().copy();
 
 					boolean isEmpty = items.getFirst().isEmpty();
 					boolean isEqual = ItemStack.areItemsEqual(items.getFirst(), output) && ItemStack.areTagsEqual(items.getFirst(), output);
@@ -158,7 +163,9 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyInventoryBloc
 						tickInactive();
 					}
 				}
-			});
+			} else {
+				tickInactive();
+			}
 		});
 	}
 

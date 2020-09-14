@@ -45,7 +45,7 @@ public class AltarPedestalBlockEntity extends BlockEntity implements ItemInvento
 	private int spinAge;
 	private int lastSpinAddition;
 	private int yAge;
-	private ItemInventoryComponent inventory = new SimpleItemInventoryComponent(1).withListener(component -> {
+	private ItemInventoryComponent inventory = new SimpleItemInventoryComponent(1).withListener(inventory -> {
 		if (hasWorld() && !world.isClient) {
 			sync();
 			world.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1, 1);

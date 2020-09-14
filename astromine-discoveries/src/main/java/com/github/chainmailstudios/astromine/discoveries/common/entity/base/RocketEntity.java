@@ -135,7 +135,7 @@ public abstract class RocketEntity extends ComponentFluidInventoryEntity {
 					FluidVolume ourVolume = fluids.getFirst();
 					FluidVolume stackVolume = stackFluids.getFirst();
 
-					if (stackVolume.getFluid() == ourVolume.getFluid() || ourVolume.isEmpty()) {
+					if (ourVolume.canAccept(stackVolume.getFluid())) {
 						if (items.getFirst().getItem() instanceof BucketItem) {
 							if (items.getFirst().getItem() != Items.BUCKET && items.getFirst().getCount() == 1) {
 								if (ourVolume.hasAvailable(Fraction.bucket())) {
@@ -154,7 +154,7 @@ public abstract class RocketEntity extends ComponentFluidInventoryEntity {
 					FluidVolume ourVolume = fluids.getFirst();
 					FluidVolume stackVolume = stackFluids.getFirst();
 
-					if (stackVolume.getFluid() == ourVolume.getFluid() || stackVolume.isEmpty()) {
+					if (ourVolume.canAccept(stackVolume.getFluid())) {
 						if (items.getSecond().getItem() instanceof BucketItem) {
 							if (items.getSecond().getItem() == Items.BUCKET && items.getSecond().getCount() == 1) {
 								if (ourVolume.hasStored(Fraction.bucket())) {

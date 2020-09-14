@@ -113,8 +113,8 @@ public class FluidExtractorBlockEntity extends ComponentEnergyFluidBlockEntity i
 					if (targetFluidState.isStill()) {
 						FluidVolume toInsert = FluidVolume.of(Fraction.bucket(), targetFluidState.getFluid());
 
-						if (toInsert.getFluid() == fluidVolume.getFluid() && fluidVolume.hasAvailable(toInsert.getAmount())) {
-							toInsert.add(fluidVolume, toInsert.getAmount());
+						if ((fluidVolume.canAccept(toInsert.getFluid())) && fluidVolume.hasAvailable(toInsert.getAmount())) {
+							fluidVolume.moveFrom(toInsert, toInsert.getAmount());
 
 							energyVolume.minus(getEnergyConsumed());
 

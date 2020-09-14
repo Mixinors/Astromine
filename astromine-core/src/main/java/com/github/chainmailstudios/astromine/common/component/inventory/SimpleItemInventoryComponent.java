@@ -46,7 +46,8 @@ public class SimpleItemInventoryComponent implements ItemInventoryComponent {
 	private final Int2ObjectOpenHashMap<ItemStack> contents = new Int2ObjectOpenHashMap<>();
 
 	private final List<Runnable> listeners = new ArrayList<>();
-	private TriPredicate<@Nullable Direction, ItemStack, Integer> insertPredicate = (direction, itemStack, slot) -> true;
+
+	private TriPredicate<@Nullable Direction, ItemStack, Integer> insertPredicate = (direction, stack, slot) -> true;
 	private TriPredicate<@Nullable Direction, ItemStack, Integer> extractPredicate = (direction, stack, integer) -> true;
 
 	private int size;
@@ -82,13 +83,13 @@ public class SimpleItemInventoryComponent implements ItemInventoryComponent {
 
 	public SimpleItemInventoryComponent withInsertPredicate(TriPredicate<@Nullable Direction, ItemStack, Integer> predicate) {
 		TriPredicate<Direction, ItemStack, Integer> triPredicate = this.insertPredicate;
-		this.insertPredicate = (direction, itemStack, integer) -> triPredicate.test(direction, itemStack, integer) && predicate.test(direction, itemStack, integer);
+		this.insertPredicate = (direction, stack, integer) -> triPredicate.test(direction, stack, integer) && predicate.test(direction, stack, integer);
 		return this;
 	}
 
 	public SimpleItemInventoryComponent withExtractPredicate(TriPredicate<@Nullable Direction, ItemStack, Integer> predicate) {
 		TriPredicate<Direction, ItemStack, Integer> triPredicate = this.extractPredicate;
-		this.extractPredicate = (direction, itemStack, integer) -> triPredicate.test(direction, itemStack, integer) && predicate.test(direction, itemStack, integer);
+		this.extractPredicate = (direction, stack, integer) -> triPredicate.test(direction, stack, integer) && predicate.test(direction, stack, integer);
 		return this;
 	}
 
