@@ -10,3 +10,4 @@ accessible method net/minecraft/client/com.github.chainmailstudios.astromine.tec
 accessible field net/minecraft/block/EntityShapeContext heldItem Lnet/minecraft/item/Item;
 accessible method net/minecraft/block/TallPlantBlock method_30036 (Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/entity/player/PlayerEntity;)V
 accessible field net/minecraft/util/DyeColor color I
+accessible field net/minecraft/item/BucketItem fluid Lnet/minecraft/fluid/Fluid;
