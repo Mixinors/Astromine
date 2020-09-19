@@ -28,9 +28,12 @@ import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.*;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ItemScatterer;
+import net.minecraft.util.Rarity;
 
 import com.github.chainmailstudios.astromine.common.item.DynamicToolItem;
 import com.github.chainmailstudios.astromine.common.item.WrenchItem;
@@ -497,6 +500,14 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item STEEL_WRENCH = register("steel_wrench", new WrenchItem(AstromineFoundationsToolMaterials.STEEL, AstromineFoundationsItems.getBasicSettings()));
 
 	public static final Item FIRE_EXTINGUISHER = register("fire_extinguisher", new FireExtinguisherItem(AstromineFoundationsItems.getBasicSettings().maxCount(1)));
+
+	// Apples
+	public static final FoodComponent ROSE_GOLD_APPLE_COMPONENT = new FoodComponent.Builder().hunger(4).saturationModifier(1.4F).statusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 140, 1), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 1200, 1), 1.0F).alwaysEdible().build();
+	public static final Item ROSE_GOLD_APPLE = register("rose_gold_apple", new Item(AstromineFoundationsItems.getBasicSettings().food(ROSE_GOLD_APPLE_COMPONENT).rarity(Rarity.RARE)));
+	public static final FoodComponent FOOLS_GOLD_APPLE_COMPONENT = new FoodComponent.Builder().hunger(2).saturationModifier(0.4F).statusEffect(new StatusEffectInstance(StatusEffects.HASTE, 400, 1), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.LUCK, 4800, 0), 1.0F).alwaysEdible().build();
+	public static final Item FOOLS_GOLD_APPLE = register("fools_gold_apple", new Item(AstromineFoundationsItems.getBasicSettings().food(FOOLS_GOLD_APPLE_COMPONENT).rarity(Rarity.RARE)));
+	public static final FoodComponent LEAD_APPLE_COMPONENT = new FoodComponent.Builder().hunger(2).saturationModifier(0.4F).statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 40, 1), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 1000, 2), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.POISON, 500, 1), 1.0F).alwaysEdible().build();
+	public static final Item LEAD_APPLE = register("lead_apple", new Item(AstromineFoundationsItems.getBasicSettings().food(LEAD_APPLE_COMPONENT).rarity(Rarity.RARE)));
 
 	public static Item.Settings getBasicSettings() {
 		return AstromineItems.getBasicSettings().group(AstromineFoundationsItemGroups.FOUNDATIONS);

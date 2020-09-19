@@ -1,6 +1,12 @@
 {
   "replace": false,
   "values": [
+    "minecraft:wooden_hoe",
+    "minecraft:stone_hoe",
+    "minecraft:golden_hoe",
+    "minecraft:iron_hoe",
+    "minecraft:diamond_hoe",
+    "minecraft:netherite_hoe",
     "astromine:copper_hoe",
     "astromine:tin_hoe",
     "astromine:silver_hoe",

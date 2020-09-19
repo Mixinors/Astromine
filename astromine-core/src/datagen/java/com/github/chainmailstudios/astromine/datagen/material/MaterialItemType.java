@@ -32,7 +32,8 @@ public enum MaterialItemType {
 	BOOTS,
 	WRENCH,
 	MOON_ORE(true, "moon", "ore", true),
-	BLOCK_2x2(true, "block");
+	BLOCK_2x2(true, "block"),
+	APPLE;
 
 	final boolean block;
 	final String prefix;

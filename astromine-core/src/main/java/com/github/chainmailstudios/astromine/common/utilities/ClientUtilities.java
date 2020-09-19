@@ -39,6 +39,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceType;
+import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
@@ -62,7 +63,7 @@ public class ClientUtilities {
 
 		final Sprite[] fluidSprites = { null, null };
 
-		ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEX).register((atlasTexture, registry) -> {
+		ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
 			registry.register(stillSpriteIdentifier);
 			registry.register(flowingSpriteIdentifier);
 		});
@@ -75,7 +76,7 @@ public class ClientUtilities {
 
 			@Override
 			public void apply(ResourceManager resourceManager) {
-				final Function<Identifier, Sprite> atlas = MinecraftClient.getInstance().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
+				final Function<Identifier, Sprite> atlas = MinecraftClient.getInstance().getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 				fluidSprites[0] = atlas.apply(stillSpriteIdentifier);
 				fluidSprites[1] = atlas.apply(flowingSpriteIdentifier);
 			}

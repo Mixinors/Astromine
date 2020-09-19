@@ -13,6 +13,7 @@
     "minecraft:golden_chestplate",
     "minecraft:golden_leggings",
     "minecraft:golden_boots",
+    "minecraft:golden_apple",
     {
       "id": "astromine:asteroid_gold_cluster",
       "required": false
@@ -61,6 +62,8 @@
     "astromine:fools_gold_chestplate",
     "astromine:fools_gold_leggings",
     "astromine:fools_gold_boots",
+    "astromine:rose_gold_apple",
+    "astromine:fools_gold_apple",
     "astromine:rose_gold_block",
     "astromine:fools_gold_block"
   ]

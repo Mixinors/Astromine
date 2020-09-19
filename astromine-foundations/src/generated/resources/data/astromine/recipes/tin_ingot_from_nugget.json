@@ -1,13 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "###",
+    "I##",
     "###",
     "###"
   ],
   "key": {
     "#": {
       "tag": "c:tin_nuggets"
+    },
+    "I": {
+      "item": "astromine:tin_nugget"
     }
   },
   "result": {

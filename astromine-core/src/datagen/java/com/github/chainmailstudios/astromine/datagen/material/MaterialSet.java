@@ -132,7 +132,7 @@ public class MaterialSet {
 		}
 
 		public Builder addType(MaterialItemType type) {
-			return setType(type, new Identifier("c", type.getItemId(name)));
+			return setType(type, AstromineCommon.identifier(type.getItemId(name)));
 		}
 
 		public Builder basics() {
@@ -246,23 +246,23 @@ public class MaterialSet {
 		}
 
 		public Builder pickaxe() {
-			return addType(PICKAXE, new Identifier("fabric", "pickaxes"));
+			return addType(PICKAXE);
 		}
 
 		public Builder axe() {
-			return addType(AXE, new Identifier("fabric", "axes"));
+			return addType(AXE);
 		}
 
 		public Builder shovel() {
-			return addType(SHOVEL, new Identifier("fabric", "shovels"));
+			return addType(SHOVEL);
 		}
 
 		public Builder sword() {
-			return addType(SWORD, new Identifier("fabric", "swords"));
+			return addType(SWORD);
 		}
 
 		public Builder hoe() {
-			return addType(HOE, new Identifier("fabric", "hoes"));
+			return addType(HOE);
 		}
 
 		public Builder multiTools() {
@@ -271,19 +271,19 @@ public class MaterialSet {
 		}
 
 		public Builder mattock() {
-			return addType(MATTOCK, AstromineCommon.identifier("mattocks"));
+			return addType(MATTOCK);
 		}
 
 		public Builder mattock(Identifier id) {
-			return setType(MATTOCK, id, AstromineCommon.identifier("mattocks"));
+			return setType(MATTOCK, id);
 		}
 
 		public Builder miningTool() {
-			return addType(MINING_TOOL, AstromineCommon.identifier("mining_tools"));
+			return addType(MINING_TOOL);
 		}
 
 		public Builder miningTool(Identifier id) {
-			return setType(MINING_TOOL, id, AstromineCommon.identifier("mining_tools"));
+			return setType(MINING_TOOL, id);
 		}
 
 		public Builder magnaTools() {
@@ -292,11 +292,11 @@ public class MaterialSet {
 		}
 
 		public Builder hammer() {
-			return addType(HAMMER, AstromineCommon.identifier("hammers"));
+			return addType(HAMMER);
 		}
 
 		public Builder excavator() {
-			return addType(EXCAVATOR, AstromineCommon.identifier("excavators"));
+			return addType(EXCAVATOR);
 		}
 
 		public Builder armor() {
@@ -307,23 +307,27 @@ public class MaterialSet {
 		}
 
 		public Builder helmet() {
-			return addType(HELMET, new Identifier("c", "helmets"));
+			return addType(HELMET);
 		}
 
 		public Builder chestplate() {
-			return addType(CHESTPLATE, new Identifier("c", "chestplates"));
+			return addType(CHESTPLATE);
 		}
 
 		public Builder leggings() {
-			return addType(LEGGINGS, new Identifier("c", "leggings"));
+			return addType(LEGGINGS);
 		}
 
 		public Builder boots() {
-			return addType(BOOTS, new Identifier("c", "boots"));
+			return addType(BOOTS);
 		}
 
 		public Builder wrench() {
-			return addType(WRENCH, new Identifier("c", "wrenches"));
+			return addType(WRENCH);
+		}
+
+		public Builder apple() {
+			return addType(APPLE, new Identifier("c", name + "_apples"));
 		}
 
 		public Builder smithingBaseSet(MaterialSet set) {

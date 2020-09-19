@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import net.fabricmc.fabric.api.object.builder.v1.advancement.CriterionRegistry;
+
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.advancement.criterion.Criterion;
 
@@ -38,6 +40,6 @@ public class AstromineCriteria {
 	}
 
 	public static <T extends Criterion<?>> T register(Criterion<?> criterion) {
-		return (T) Criteria.register(criterion);
+		return (T) CriterionRegistry.register(criterion);
 	}
 }
