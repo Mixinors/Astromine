@@ -34,6 +34,7 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -100,7 +101,7 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 
 		if (getFluidVolume().getFluid() != Fluids.EMPTY) {
 			SpriteRenderer.beginPass().setup(provider, RenderLayer.getSolid()).sprite(FluidUtilities.texture(getFluidVolume().getFluid())[0]).color(FluidUtilities.color(MinecraftClient.getInstance().player, getFluidVolume().getFluid())).light(0x00f000f0).overlay(
-				OverlayTexture.DEFAULT_UV).alpha(0xff).normal(matrices.peek().getNormal(), 0, 0, 0).position(matrices.peek().getModel(), x + 1, y + 1 + Math.max(0, sY - ((int) (sBGY) + 1)), x + sX - 1, y + sY - 1, 0F).next(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
+				OverlayTexture.DEFAULT_UV).alpha(0xff).normal(matrices.peek().getNormal(), 0, 0, 0).position(matrices.peek().getModel(), x + 1, y + 1 + Math.max(0, sY - ((int) (sBGY) + 1)), x + sX - 1, y + sY - 1, 0F).next(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 		}
 	}
 }

@@ -14,7 +14,9 @@ import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.Shaped
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.ShapelessCraftingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.SmeltingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.SmithingSetRecipeGenerator;
+import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineRecipeGenerators;
+import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.AppleCraftingRecipeGenerator;
 import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.ArmorCraftingRecipeGenerators;
 import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.ToolCraftingRecipeGenerators;
 import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.WrenchCraftingRecipeGenerator;
@@ -140,6 +142,8 @@ public class AstromineFoundationsRecipeGenerators extends AstromineRecipeGenerat
 	public final RecipeGenerator BOOTS_SMITHING_FROM_GEM = register(new SmithingSetRecipeGenerator(BOOTS, GEM));
 
 	public final RecipeGenerator WRENCH = register(new WrenchCraftingRecipeGenerator());
+
+	public final RecipeGenerator APPLE = register(new AppleCraftingRecipeGenerator());
 
 	public final RecipeGenerator METEOR_STONE_SLAB = register(new SlabCraftingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_SLAB, Ingredient.ofItems(AstromineFoundationsBlocks.METEOR_STONE)));
 	public final RecipeGenerator METEOR_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_STAIRS, Ingredient.ofItems(AstromineFoundationsBlocks.METEOR_STONE)));

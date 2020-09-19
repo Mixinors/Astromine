@@ -1,6 +1,12 @@
 {
   "replace": false,
   "values": [
+    "minecraft:wooden_sword",
+    "minecraft:stone_sword",
+    "minecraft:golden_sword",
+    "minecraft:iron_sword",
+    "minecraft:diamond_sword",
+    "minecraft:netherite_sword",
     "astromine:copper_sword",
     "astromine:tin_sword",
     "astromine:silver_sword",

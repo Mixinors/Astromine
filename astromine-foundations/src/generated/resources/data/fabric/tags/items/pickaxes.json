@@ -1,6 +1,12 @@
 {
   "replace": false,
   "values": [
+    "minecraft:wooden_pickaxe",
+    "minecraft:stone_pickaxe",
+    "minecraft:golden_pickaxe",
+    "minecraft:iron_pickaxe",
+    "minecraft:diamond_pickaxe",
+    "minecraft:netherite_pickaxe",
     "astromine:copper_pickaxe",
     "astromine:tin_pickaxe",
     "astromine:silver_pickaxe",

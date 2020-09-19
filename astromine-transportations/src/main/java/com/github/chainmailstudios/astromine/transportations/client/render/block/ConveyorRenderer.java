@@ -45,6 +45,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.TallBlockItem;
+import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
@@ -96,7 +97,7 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 			matrixStack.translate(0, (position / (speed)) + (blockEntity.getCachedState().get(ConveyorProperties.CONVEYOR) ? 1 : 0), horizontalPosition / speed);
 		}
 
-		MinecraftClient.getInstance().getTextureManager().bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
+		MinecraftClient.getInstance().getTextureManager().bindTexture(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 
 		BakedModel model = MinecraftClient.getInstance().getBakedModelManager().getModel(new ModelIdentifier(new Identifier(AstromineCommon.MOD_ID, "conveyor_supports"), ""));
 

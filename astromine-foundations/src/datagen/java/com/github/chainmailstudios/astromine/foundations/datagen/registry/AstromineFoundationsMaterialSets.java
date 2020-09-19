@@ -57,6 +57,7 @@ public class AstromineFoundationsMaterialSets extends AstromineMaterialSets {
 					.setType(MaterialItemType.SWORD, new Identifier("golden_sword")).setType(MaterialItemType.HOE, new Identifier("golden_hoe"))
 					.setType(MaterialItemType.HELMET, new Identifier("golden_helmet")).setType(MaterialItemType.CHESTPLATE, new Identifier("golden_chestplate"))
 					.setType(MaterialItemType.LEGGINGS, new Identifier("golden_leggings")).setType(MaterialItemType.BOOTS, new Identifier("golden_boots"))
+					.setType(MaterialItemType.APPLE, new MaterialEntry(new Identifier("golden_apple"), "golden_apples"))
 					.dusts().asteroid()
 					.gear().plates().wire()
 					.mattock(AstromineCommon.identifier("golden_mattock")).miningTool(AstromineCommon.identifier("golden_mining_tool"))
@@ -244,6 +245,7 @@ public class AstromineFoundationsMaterialSets extends AstromineMaterialSets {
 	public static final MaterialSet LEAD = register(
 			new MaterialSet.Builder("lead")
 					.basics().metal().ore().asteroid().wire().allTools().armor()
+					.apple()
 					.build()
 	);
 	public static final MaterialSet STEEL = register(
@@ -264,7 +266,7 @@ public class AstromineFoundationsMaterialSets extends AstromineMaterialSets {
 	public static final MaterialSet ROSE_GOLD = register(
 			new MaterialSet.Builder("rose_gold")
 					.basics().metal().allTools().armor()
-					.piglinLoved()
+					.piglinLoved().apple()
 					.build()
 	);
 	public static final MaterialSet STERLING_SILVER = register(
@@ -275,7 +277,7 @@ public class AstromineFoundationsMaterialSets extends AstromineMaterialSets {
 	public static final MaterialSet FOOLS_GOLD = register(
 			new MaterialSet.Builder("fools_gold")
 					.basics().metal().allTools().armor()
-					.piglinLoved()
+					.piglinLoved().apple()
 					.build()
 	);
 	public static final MaterialSet METITE = register(
