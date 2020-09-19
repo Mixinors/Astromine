@@ -76,7 +76,8 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 	@Environment(EnvType.CLIENT)
 	@Override
 	public List<Text> getTooltip() {
-		return Lists.newArrayList(FluidUtilities.rawFraction(progressFraction.get(), limitFraction.get(), new TranslatableText("text.astromine.fluid")), new TranslatableText("text.astromine.tooltip.fractional_value", progressFraction.get().toDecimalString(), limitFraction.get()
+		Identifier fluidId = getFluidVolume().getFluidId();
+		return Lists.newArrayList(FluidUtilities.rawFraction(progressFraction.get(), limitFraction.get(), new TranslatableText(String.format("block.%s.%s", fluidId.getNamespace(), fluidId.getPath()))), new TranslatableText("text.astromine.tooltip.fractional_value", progressFraction.get().toDecimalString(), limitFraction.get()
 			.toDecimalString()));
 	}
 
