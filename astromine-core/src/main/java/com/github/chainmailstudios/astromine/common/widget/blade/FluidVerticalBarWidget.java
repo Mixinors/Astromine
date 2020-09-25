@@ -24,9 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.widget.blade;
 
+import com.github.chainmailstudios.astromine.common.utilities.NumberUtilities;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
@@ -35,8 +37,10 @@ import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.screen.PlayerScreenHandler;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
@@ -77,8 +81,11 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 	@Override
 	public List<Text> getTooltip() {
 		Identifier fluidId = getFluidVolume().getFluidId();
-		return Lists.newArrayList(FluidUtilities.rawFraction(progressFraction.get(), limitFraction.get(), new TranslatableText(String.format("block.%s.%s", fluidId.getNamespace(), fluidId.getPath()))), new TranslatableText("text.astromine.tooltip.fractional_value", progressFraction.get().toDecimalString(), limitFraction.get()
-			.toDecimalString()));
+		return Lists.newArrayList(
+				new TranslatableText(String.format("block.%s.%s", fluidId.getNamespace(), fluidId.getPath())),
+				new LiteralText(fluidId.toString()).formatted(Formatting.DARK_GRAY),
+				new LiteralText(NumberUtilities.shorten(progressFraction.get().longValue(), "") + "/" + NumberUtilities.shorten(limitFraction.get().longValue(), "")).formatted(Formatting.GRAY),
+				new LiteralText(FabricLoader.getInstance().getModContainer(fluidId.getNamespace()).get().getMetadata().getName()).formatted(Formatting.BLUE, Formatting.ITALIC));
 	}
 
 	@Environment(EnvType.CLIENT)
