@@ -105,7 +105,6 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 	public void setType(ComponentType<?> type) {
 		this.type = type;
 
-		setSalt(type.getClass().getName());
 	}
 
 	public BlockPos getBlockPos() {

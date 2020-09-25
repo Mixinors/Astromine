@@ -97,20 +97,12 @@ public interface FluidInventoryComponent extends NameableComponent {
 	}
 
 	default TypedActionResult<FluidVolume> insert(Direction direction, FluidVolume volume) {
-		if (this.canInsert()) {
-			return this.insert(direction, volume.getFluid(), volume.getAmount());
-		} else {
-			return new TypedActionResult<>(ActionResult.FAIL, volume);
-		}
-	}
-
-	default TypedActionResult<FluidVolume> insert(Direction direction, Fluid fluid, Fraction fraction) {
 		Optional<Map.Entry<Integer, FluidVolume>> matchingVolumeOptional = this.getContents().entrySet().stream().filter(entry -> {
-			return canInsert(direction, entry.getValue(), entry.getKey()) && entry.getValue().getFluid() == fluid;
+			return canInsert(direction, entry.getValue(), entry.getKey()) && entry.getValue().canAccept(volume.getFluid());
 		}).findFirst();
 
 		if (matchingVolumeOptional.isPresent()) {
-			matchingVolumeOptional.get().getValue().add(fraction);
+			matchingVolumeOptional.get().getValue().moveFrom(volume, Fraction.bottle());
 			return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().getValue());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, null);
