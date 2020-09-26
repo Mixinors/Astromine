@@ -138,6 +138,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 	public CompoundTag toTag(CompoundTag tag) {
 		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
+		tag.putDouble("available", available);
 		return super.toTag(tag);
 	}
 
@@ -145,6 +146,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
 		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
+		available = tag.getDouble("available");
 		super.fromTag(state, tag);
 	}
 
