@@ -71,8 +71,6 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyInventoryBl
 			return slot == 2;
 		})).withListener((inventory) -> {
 			shouldTry = true;
-			progress = 0;
-			limit = 100;
 			optionalRecipe = Optional.empty();
 		});
 	}
@@ -105,6 +103,12 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyInventoryBl
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
 				optionalRecipe = world.getRecipeManager().getFirstMatch(AlloySmeltingRecipe.Type.INSTANCE, inputInventory, world);
+				shouldTry = false;
+
+				if (!optionalRecipe.isPresent()) {
+					progress = 0;
+					limit = 100;
+				}
 			}
 
 			if (optionalRecipe.isPresent()) {

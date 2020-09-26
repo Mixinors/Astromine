@@ -84,8 +84,6 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyInventoryBloc
 			return slot == 0;
 		})).withListener((inventory) -> {
 			shouldTry = true;
-			progress = 0;
-			limit = 100;
 			optionalRecipe = Optional.empty();
 		});
 	}
@@ -118,6 +116,12 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyInventoryBloc
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
 				optionalRecipe = (Optional<TrituratingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) TrituratingRecipe.Type.INSTANCE, ItemInventoryFromInventoryComponent.of(itemComponent), world);
+				shouldTry = false;
+
+				if (!optionalRecipe.isPresent()) {
+					progress = 0;
+					limit = 100;
+				}
 			}
 
 			if (optionalRecipe.isPresent()) {

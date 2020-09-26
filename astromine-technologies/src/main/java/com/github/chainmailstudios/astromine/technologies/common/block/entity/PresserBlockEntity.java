@@ -84,8 +84,6 @@ public abstract class PresserBlockEntity extends ComponentEnergyInventoryBlockEn
 			return slot == 0;
 		}).withListener((inventory) -> {
 			shouldTry = true;
-			progress = 0;
-			limit = 100;
 			optionalRecipe = Optional.empty();
 		});
 	}
@@ -118,6 +116,12 @@ public abstract class PresserBlockEntity extends ComponentEnergyInventoryBlockEn
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
 				optionalRecipe = (Optional<PressingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) PressingRecipe.Type.INSTANCE, ItemInventoryFromInventoryComponent.of(itemComponent), world);
+				shouldTry = false;
+
+				if (!optionalRecipe.isPresent()) {
+					progress = 0;
+					limit = 100;
+				}
 			}
 
 			if (optionalRecipe.isPresent()) {

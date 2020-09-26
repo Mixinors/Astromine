@@ -82,8 +82,6 @@ public abstract class ElectricSmelterBlockEntity extends ComponentEnergyInventor
 			return slot == 0;
 		})).withListener((inventory) -> {
 			shouldTry = true;
-			progress = 0;
-			limit = 100;
 			optionalRecipe = Optional.empty();
 		});
 	}
@@ -117,6 +115,11 @@ public abstract class ElectricSmelterBlockEntity extends ComponentEnergyInventor
 			if (!optionalRecipe.isPresent() && shouldTry) {
 				optionalRecipe = (Optional<SmeltingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) RecipeType.SMELTING, inputInventory, world);
 				shouldTry = false;
+
+				if (!optionalRecipe.isPresent()) {
+					progress = 0;
+					limit = 100;
+				}
 			}
 
 			if (optionalRecipe.isPresent()) {
