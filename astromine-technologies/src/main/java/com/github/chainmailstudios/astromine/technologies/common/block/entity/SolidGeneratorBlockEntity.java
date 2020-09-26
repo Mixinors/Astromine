@@ -60,7 +60,15 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 
 	@Override
 	protected ItemInventoryComponent createItemComponent() {
-		return new SimpleItemInventoryComponent(1);
+		return new SimpleItemInventoryComponent(1).withInsertPredicate((direction, stack, slot) -> {
+			if (slot != 0) {
+				return false;
+			}
+
+			return FuelRegistry.INSTANCE.get(stack.getItem()) != null;
+		}).withExtractPredicate((direction, stack, slot) -> {
+			return false;
+		});
 	}
 
 	@Override

@@ -62,7 +62,11 @@ public abstract class TankBlockEntity extends ComponentFluidInventoryBlockEntity
 
 	@Override
 	protected ItemInventoryComponent createItemComponent() {
-		return new SimpleItemInventoryComponent(2);
+		return new SimpleItemInventoryComponent(2).withInsertPredicate((direction, stack, slot) -> {
+			return slot == 0;
+		}).withExtractPredicate((direction, stack, slot) -> {
+			return slot == 1;
+		});
 	}
 
 	// return true to consume bucket contents, false to not consume
