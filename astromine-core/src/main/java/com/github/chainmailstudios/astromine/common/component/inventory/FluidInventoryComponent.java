@@ -165,13 +165,15 @@ public interface FluidInventoryComponent extends NameableComponent {
 
 	@Nullable
 	default FluidVolume getFirstInsertableVolume(FluidVolume volume, Direction direction) {
-		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, entry.getValue(), entry.getKey()) && (entry.getValue().isEmpty() || (entry.getValue().getFluid() == volume.getFluid() && entry.getValue().hasAvailable(volume.getAmount())))).map(
-			Map.Entry::getValue).findFirst().orElse(null);
-	}
-
-	@Nullable
-	default FluidVolume getFirstInsertableVolume(Fluid fluid, Direction direction) {
-		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, entry.getValue(), entry.getKey()) && (entry.getValue().isEmpty() || (entry.getValue().getFluid() == fluid))).map(Map.Entry::getValue).findFirst().orElse(null);
+		return getContents()
+				.entrySet()
+				.stream()
+				.filter(
+						(entry) -> canInsert(direction, volume, entry.getKey()) &&
+						(entry.getValue().canAccept(volume.getFluid()) && entry.getValue().hasAvailable(volume.getAmount())))
+				.map(Map.Entry::getValue)
+				.findFirst()
+				.orElse(null);
 	}
 
 	default TypedActionResult<FluidVolume> extract(Direction direction, int slot, Fraction fraction) {

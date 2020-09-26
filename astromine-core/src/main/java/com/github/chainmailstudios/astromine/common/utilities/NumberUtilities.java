@@ -1,7 +1,7 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
 public class NumberUtilities {
-    public static String shorten(long value, String unit) {
+    public static String shorten(double value, String unit) {
         if (value < 1000) {
             return value + "";
         }

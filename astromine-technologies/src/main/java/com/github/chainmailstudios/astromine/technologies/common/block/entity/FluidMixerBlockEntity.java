@@ -68,98 +68,19 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 		return new SimpleEnergyInventoryComponent(getEnergySize());
 	}
 
-	/**
-	 * Determine whether the recipe matches the provided fluids.
-	 * The existing fluid may be null, indicating that the inserting fluid is the only one present in the system
-	 *
-	 * @param r
-	 *        the recipe to match against
-	 * @param existing
-	 *        the fluid already present in the machine. may be null.
-	 * @param inserting
-	 *        the newly inserted fluid.
-	 * @return truthy if a recipe matching the provided fluids exists, falsy if no such recipe exists
-	 */
-	private static boolean isRecipeValid(FluidMixingRecipe r, Fluid existing, Fluid inserting) {
-		if (r.getFirstInputFluid() == inserting)
-			return true;
-		else if (r.getFirstInputFluid() != existing)
-			return false;
-
-		if (r.getSecondInputFluid() == inserting)
-			return true;
-		else if (r.getSecondInputFluid() != existing)
-			return false;
-		return false;
-	}
-
-	/**
-	 * Determine whether a recipe exists such that its input criteria are fulfilled by the provided fluids.
-	 * The existing fluid may be null, indicating that the inserting fluid is the only one present in the system
-	 *
-	 * @param existing
-	 *        the fluid already present in the machine. may be null.
-	 * @param inserting
-	 *        the newly inserted fluid.
-	 * @return truthy if a recipe matching the provided fluids exists, falsy if no such recipe exists
-	 */
-	private boolean hasMatchingRecipe(Fluid existing, Fluid inserting) {
-		return world.getRecipeManager().getAllOfType(FluidMixingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof FluidMixingRecipe).anyMatch(recipe -> isRecipeValid((FluidMixingRecipe) recipe, existing, inserting));
-	}
-
-	/**
-	 * Find a slot already filled with the matching fluid
-	 *
-	 * @param target
-	 *        the fluid to find
-	 * @return -1 if no such slot exists, otherwise the 0-based index of the slot.
-	 */
-	private int findMergeableSlot(Fluid target) {
-		for (int i = 0; i < 2; i++) {
-			FluidVolume v = fluidComponent.getVolume(i);
-			if (v == null)
-				continue;
-			if (v.getFluid() == target) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
 	@Override
 	protected FluidInventoryComponent createFluidComponent() {
-		FluidInventoryComponent fC = new SimpleFluidInventoryComponent(3).withInsertPredicate((direction, volume, slot) -> {
+		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(3).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0 && slot != 1) {
 				return false;
 			}
 
-			Fluid insertedFluid = volume.getFluid();
-			int existingSlot = findMergeableSlot(insertedFluid);
+			Fluid firstExisting = this.fluidComponent.getVolume(0).getFluid();
+			Fluid secondExisting = this.fluidComponent.getVolume(1).getFluid();
 
-			// Allow merging into existing fluids, assuming a valid recipe
-			if (existingSlot == slot) {
-				return true;
-			}
+			Fluid inserting = volume.getFluid();
 
-			// Don't allow overflow in the second input, if the first input is full
-			if (existingSlot != -1) {
-				return false;
-			}
-
-			Fluid otherFluid = null;
-			for (int i = 0; i < 2; i++) {
-				FluidVolume v = fluidComponent.getVolume(i);
-				if (v == null)
-					continue;
-				if (!v.isEmpty()) {
-					// No space left
-					if (otherFluid != null)
-						return false;
-					otherFluid = v.getFluid();
-				}
-			}
-
-			return hasMatchingRecipe(otherFluid, insertedFluid);
+			return FluidMixingRecipe.allows(world, inserting, firstExisting) || FluidMixingRecipe.allows(world, inserting, secondExisting);
 		}).withExtractPredicate((direction, volume, slot) -> {
 			return slot == 2;
 		}).withListener((inventory) -> {
@@ -169,11 +90,11 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 			optionalRecipe = Optional.empty();
 		});
 
-		FluidHandler.of(fC).getFirst().setSize(getFluidSize());
-		FluidHandler.of(fC).getSecond().setSize(getFluidSize());
-		FluidHandler.of(fC).getThird().setSize(getFluidSize());
+		FluidHandler.of(fluidComponent).getFirst().setSize(getFluidSize());
+		FluidHandler.of(fluidComponent).getSecond().setSize(getFluidSize());
+		FluidHandler.of(fluidComponent).getThird().setSize(getFluidSize());
 
-		return fC;
+		return fluidComponent;
 	}
 
 	@Override

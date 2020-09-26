@@ -84,7 +84,7 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 		return Lists.newArrayList(
 				new TranslatableText(String.format("block.%s.%s", fluidId.getNamespace(), fluidId.getPath())),
 				new LiteralText(fluidId.toString()).formatted(Formatting.DARK_GRAY),
-				new LiteralText(NumberUtilities.shorten(progressFraction.get().longValue(), "") + "/" + NumberUtilities.shorten(limitFraction.get().longValue(), "")).formatted(Formatting.GRAY),
+				new LiteralText(NumberUtilities.shorten(progressFraction.get().doubleValue(), "") + "/" + NumberUtilities.shorten(limitFraction.get().doubleValue(), "")).formatted(Formatting.GRAY),
 				new LiteralText(FabricLoader.getInstance().getModContainer(fluidId.getNamespace()).get().getMetadata().getName()).formatted(Formatting.BLUE, Formatting.ITALIC));
 	}
 

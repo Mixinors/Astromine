@@ -46,7 +46,7 @@ public class FluidHandler {
 	}
 
 	public FluidHandler withFirstInsertable(@Nullable Direction direction, Fluid fluid, Consumer<Optional<FluidVolume>> consumer) {
-		consumer.accept(Optional.ofNullable(component.getFirstInsertableVolume(fluid, direction)));
+		consumer.accept(Optional.ofNullable(component.getFirstInsertableVolume(FluidVolume.of(Fraction.bucket(), fluid), direction)));
 
 		return this;
 	}

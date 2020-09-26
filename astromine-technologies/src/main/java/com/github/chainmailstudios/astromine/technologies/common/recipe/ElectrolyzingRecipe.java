@@ -92,19 +92,19 @@ public class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsumingRe
 		FluidVolume firstOutputVolume = fluidHandler.getSecond();
 		FluidVolume secondOutputVolume = fluidHandler.getThird();
 
-		if (!inputVolume.getFluid().matchesType(inputFluid.get())) {
+		if (!inputVolume.canAccept(inputFluid.get())) {
 			return false;
 		}
 		if (!inputVolume.hasStored(inputAmount)) {
 			return false;
 		}
-		if (!firstOutputVolume.getFluid().matchesType(firstOutputFluid.get()) && !firstOutputVolume.isEmpty()) {
+		if (!firstOutputVolume.canAccept(firstOutputFluid.get())) {
 			return false;
 		}
 		if (!firstOutputVolume.hasAvailable(firstOutputAmount)) {
 			return false;
 		}
-		if (!secondOutputVolume.getFluid().matchesType(secondOutputFluid.get()) && !secondOutputVolume.isEmpty()) {
+		if (!secondOutputVolume.canAccept(secondOutputFluid.get())) {
 			return false;
 		}
 
