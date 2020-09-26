@@ -7,6 +7,6 @@ public class NumberUtilities {
         }
         int exponent = (int) (Math.log(value) / Math.log(1000));
         String[] units = new String[]{ "k" + unit, "M" + unit, "G" + unit, "T" + unit, "P" + unit, "E" + unit, "Z" + unit, "Y" + unit };
-        return String.format("%.1f%s", value / Math.pow(1000, exponent), units[exponent - 1]);
+        return String.format("%.1f%s", value / Math.pow(1000, exponent), exponent - 1 > units.length - 1 ? "?" : units[exponent - 1]);
     }
 }

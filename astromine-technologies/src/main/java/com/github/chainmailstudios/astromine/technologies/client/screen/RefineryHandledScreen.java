@@ -22,17 +22,17 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.foundations.registry;
+package com.github.chainmailstudios.astromine.technologies.client.screen;
 
-import net.minecraft.fluid.Fluids;
+import com.github.chainmailstudios.astromine.client.screen.base.block.ComponentBlockEntityEnergyFluidHandledScreen;
+import com.github.chainmailstudios.astromine.technologies.common.screenhandler.ElectrolyzerScreenHandler;
+import com.github.chainmailstudios.astromine.technologies.common.screenhandler.RefineryScreenHandler;
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.text.Text;
 
-import com.github.chainmailstudios.astromine.common.registry.FluidEffectRegistry;
-import com.github.chainmailstudios.astromine.registry.AstromineFluidEffects;
-
-public class AstromineFoundationsFluidEffects extends AstromineFluidEffects {
-	public static void initialize() {
-		FluidEffectRegistry.INSTANCE.register(Fluids.LAVA, (entity) -> {
-			entity.setOnFireFor(1024);
-		});
+public class RefineryHandledScreen extends ComponentBlockEntityEnergyFluidHandledScreen<RefineryScreenHandler> {
+	public RefineryHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
+		super(handler, inventory, title);
 	}
 }

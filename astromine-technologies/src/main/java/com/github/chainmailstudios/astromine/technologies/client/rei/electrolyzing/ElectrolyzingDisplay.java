@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.technologies.client.rei.fluidmixing;
+package com.github.chainmailstudios.astromine.technologies.client.rei.electrolyzing;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;

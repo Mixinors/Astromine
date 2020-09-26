@@ -86,7 +86,7 @@ public class FluidHandler {
 		return getVolume(6);
 	}
 
-	public FluidVolume getEight() {
+	public FluidVolume getEighth() {
 		return getVolume(7);
 	}
 

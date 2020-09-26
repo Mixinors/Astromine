@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["010", "343", "070"],
+  "key": {
+    "0": {"tag": "c:steel_plates"},
+    "1": {"item": "astromine:advanced_circuit"},
+    "3": {"item": "minecraft:bucket"},
+    "4": {"item": "astromine:advanced_machine_chassis"},
+    "7": {"tag": "c:sterling_silver_gears"}
+  },
+  "result": {"item": "astromine:advanced_electrolyzer", "count": 1}
+}

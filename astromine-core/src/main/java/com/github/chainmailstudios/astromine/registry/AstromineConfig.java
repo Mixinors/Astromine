@@ -244,6 +244,42 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Fluid for the Elite Electrolyzer.")
 	public long eliteElectrolyzerFluid = 64L;
 
+	@Comment("Speed for the Primitive Refinery.")
+	public double primitiveRefinerySpeed = 0.5D;
+
+	@Comment("Speed for the Basic Refinery.")
+	public double basicRefinerySpeed = 1D;
+
+	@Comment("Speed for the Advanced Refinery.")
+	public double advancedRefinerySpeed = 2D;
+
+	@Comment("Speed for the Elite Refinery.")
+	public double eliteRefinerySpeed = 4D;
+
+	@Comment("Energy for the Primitive Refinery.")
+	public double primitiveRefineryEnergy = 2048D;
+
+	@Comment("Energy for the Basic Refinery.")
+	public double basicRefineryEnergy = 16384D;
+
+	@Comment("Energy for the Advanced Refinery.")
+	public double advancedRefineryEnergy = 32767D;
+
+	@Comment("Energy for the Elite Refinery.")
+	public double eliteRefineryEnergy = 65535D;
+
+	@Comment("Fluid for the Primitive Refinery.")
+	public long primitiveRefineryFluid = 4L;
+
+	@Comment("Fluid for the Basic Refinery.")
+	public long basicRefineryFluid = 8L;
+
+	@Comment("Fluid for the Advanced Refinery.")
+	public long advancedRefineryFluid = 16L;
+
+	@Comment("Fluid for the Elite Refinery.")
+	public long eliteRefineryFluid = 64L;
+
 	@Comment("Speed for the Primitive Electric Smelter.")
 	public double primitiveElectricSmelterSpeed = 0.5D;
 

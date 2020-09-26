@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei;
 
+import com.github.chainmailstudios.astromine.technologies.client.rei.refining.RefiningCategory;
+import com.github.chainmailstudios.astromine.technologies.client.rei.refining.RefiningDisplay;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -40,8 +42,8 @@ import com.github.chainmailstudios.astromine.technologies.client.rei.alloysmelti
 import com.github.chainmailstudios.astromine.technologies.client.rei.alloysmelting.AlloySmeltingDisplay;
 import com.github.chainmailstudios.astromine.technologies.client.rei.electricsmelting.ElectricSmeltingCategory;
 import com.github.chainmailstudios.astromine.technologies.client.rei.electricsmelting.ElectricSmeltingDisplay;
-import com.github.chainmailstudios.astromine.technologies.client.rei.fluidmixing.ElectrolyzingCategory;
-import com.github.chainmailstudios.astromine.technologies.client.rei.fluidmixing.ElectrolyzingDisplay;
+import com.github.chainmailstudios.astromine.technologies.client.rei.electrolyzing.ElectrolyzingCategory;
+import com.github.chainmailstudios.astromine.technologies.client.rei.electrolyzing.ElectrolyzingDisplay;
 import com.github.chainmailstudios.astromine.technologies.client.rei.fluidmixing.FluidMixingCategory;
 import com.github.chainmailstudios.astromine.technologies.client.rei.fluidmixing.FluidMixingDisplay;
 import com.github.chainmailstudios.astromine.technologies.client.rei.generating.LiquidGeneratingCategory;
@@ -68,6 +70,7 @@ public class AstromineTechnologiesRoughlyEnoughItemsPlugin extends AstromineRoug
 	public static final Identifier SOLID_GENERATING = AstromineCommon.identifier("solid_generating");
 	public static final Identifier FLUID_MIXING = AstromineCommon.identifier("fluid_mixing");
 	public static final Identifier ELECTROLYZING = AstromineCommon.identifier("electrolyzing");
+	public static final Identifier REFINING = AstromineCommon.identifier("refining");
 	public static final Identifier PRESSING = AstromineCommon.identifier("pressing");
 	public static final Identifier ALLOY_SMELTING = AstromineCommon.identifier("alloy_smelting");
 
@@ -78,8 +81,16 @@ public class AstromineTechnologiesRoughlyEnoughItemsPlugin extends AstromineRoug
 
 	@Override
 	public void registerPluginCategories(RecipeHelper recipeHelper) {
-		recipeHelper.registerCategories(new TrituratingCategory(), new ElectricSmeltingCategory(), new LiquidGeneratingCategory(), new SolidGeneratingCategory(), new PressingCategory(), new AlloySmeltingCategory(), new FluidMixingCategory(FLUID_MIXING,
-			"category.astromine.fluid_mixing", EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_FLUID_MIXER)), new ElectrolyzingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_ELECTROLYZER)));
+		recipeHelper.registerCategories(
+				new TrituratingCategory(),
+				new ElectricSmeltingCategory(),
+				new LiquidGeneratingCategory(),
+				new SolidGeneratingCategory(),
+				new PressingCategory(),
+				new AlloySmeltingCategory(),
+				new FluidMixingCategory(FLUID_MIXING, "category.astromine.fluid_mixing", EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_FLUID_MIXER)),
+				new ElectrolyzingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_ELECTROLYZER)),
+				new RefiningCategory(REFINING, "category.astromine.refining", EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_REFINERY)));
 	}
 
 	@Override
@@ -89,6 +100,7 @@ public class AstromineTechnologiesRoughlyEnoughItemsPlugin extends AstromineRoug
 		recipeHelper.registerRecipes(LIQUID_GENERATING, LiquidGeneratingRecipe.class, LiquidGeneratingDisplay::new);
 		recipeHelper.registerRecipes(FLUID_MIXING, FluidMixingRecipe.class, FluidMixingDisplay::new);
 		recipeHelper.registerRecipes(ELECTROLYZING, ElectrolyzingRecipe.class, ElectrolyzingDisplay::new);
+		recipeHelper.registerRecipes(REFINING, RefiningRecipe.class, RefiningDisplay::new);
 		recipeHelper.registerRecipes(PRESSING, PressingRecipe.class, PressingDisplay::new);
 		recipeHelper.registerRecipes(ALLOY_SMELTING, AlloySmeltingRecipe.class, AlloySmeltingDisplay::new);
 
@@ -113,14 +125,17 @@ public class AstromineTechnologiesRoughlyEnoughItemsPlugin extends AstromineRoug
 			.create(AstromineTechnologiesBlocks.ELITE_FLUID_MIXER));
 		recipeHelper.registerWorkingStations(ELECTROLYZING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_ELECTROLYZER), EntryStack.create(AstromineTechnologiesBlocks.BASIC_ELECTROLYZER), EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_ELECTROLYZER), EntryStack
 			.create(AstromineTechnologiesBlocks.ELITE_ELECTROLYZER));
+		recipeHelper.registerWorkingStations(REFINING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_REFINERY), EntryStack.create(AstromineTechnologiesBlocks.BASIC_REFINERY), EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_REFINERY), EntryStack
+				.create(AstromineTechnologiesBlocks.ELITE_REFINERY));
 		recipeHelper.registerWorkingStations(PRESSING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_PRESSER), EntryStack.create(AstromineTechnologiesBlocks.BASIC_PRESSER), EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_PRESSER), EntryStack.create(
 			AstromineTechnologiesBlocks.ELITE_PRESSER));
 		recipeHelper.registerWorkingStations(ALLOY_SMELTING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_ALLOY_SMELTER), EntryStack.create(AstromineTechnologiesBlocks.BASIC_ALLOY_SMELTER), EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_ALLOY_SMELTER),
 			EntryStack.create(AstromineTechnologiesBlocks.ELITE_ALLOY_SMELTER));
 
-		recipeHelper.registerAutoCraftButtonArea(LIQUID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
+		recipeHelper.registerAutoCraftButtonArea(LIQUID_GENERATING, bounds -> new Rectangle(0, 0, 0, 0));
 		recipeHelper.registerAutoCraftButtonArea(SOLID_GENERATING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16, bounds.getMaxY() - 16, 10, 10));
-		recipeHelper.registerAutoCraftButtonArea(FLUID_MIXING, bounds -> new Rectangle(bounds.getCenterX() - 65 + 130 - 16, bounds.getMaxY() - 16, 10, 10));
-		recipeHelper.registerAutoCraftButtonArea(ELECTROLYZING, bounds -> new Rectangle(bounds.getCenterX() - 55 + 110 - 16 - 29, bounds.getMaxY() - 16, 10, 10));
+		recipeHelper.registerAutoCraftButtonArea(FLUID_MIXING, bounds -> new Rectangle(0, 0, 0, 0));
+		recipeHelper.registerAutoCraftButtonArea(ELECTROLYZING, bounds -> new Rectangle(0, 0, 0, 0));
+		recipeHelper.registerAutoCraftButtonArea(REFINING, bounds -> new Rectangle(0, 0, 0, 0));
 	}
 }

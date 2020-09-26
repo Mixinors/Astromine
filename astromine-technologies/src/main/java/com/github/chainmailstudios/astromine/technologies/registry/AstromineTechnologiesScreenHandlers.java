@@ -106,6 +106,10 @@ public class AstromineTechnologiesScreenHandlers extends AstromineScreenHandlers
 		return new ElectrolyzerScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 
+	public static final ScreenHandlerType<RefineryScreenHandler> REFINERY = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("refinery"), ((syncId, inventory, buffer) -> {
+		return new RefineryScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+
 	public static final ScreenHandlerType<FluidMixerScreenHandler> FLUID_MIXER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("fluid_mixer"), ((syncId, inventory, buffer) -> {
 		return new FluidMixerScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));

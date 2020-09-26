@@ -83,6 +83,11 @@ public class AstromineTechnologiesBlocks extends AstromineBlocks {
 	public static final Block ADVANCED_ELECTROLYZER = register("advanced_electrolyzer", new ElectrolyzerBlock.Advanced(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block ELITE_ELECTROLYZER = register("elite_electrolyzer", new ElectrolyzerBlock.Elite(getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
 
+	public static final Block PRIMITIVE_REFINERY = register("primitive_refinery", new RefineryBlock.Primitive(getPrimitiveSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block BASIC_REFINERY = register("basic_refinery", new RefineryBlock.Basic(getBasicSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block ADVANCED_REFINERY = register("advanced_refinery", new RefineryBlock.Advanced(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block ELITE_REFINERY = register("elite_refinery", new RefineryBlock.Elite(getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
+
 	public static final Block PRIMITIVE_FLUID_MIXER = register("primitive_fluid_mixer", new FluidMixerBlock.Primitive(getPrimitiveSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block BASIC_FLUID_MIXER = register("basic_fluid_mixer", new FluidMixerBlock.Basic(getBasicSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block ADVANCED_FLUID_MIXER = register("advanced_fluid_mixer", new FluidMixerBlock.Advanced(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());

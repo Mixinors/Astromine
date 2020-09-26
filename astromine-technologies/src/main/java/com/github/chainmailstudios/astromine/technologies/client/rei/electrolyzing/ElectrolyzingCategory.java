@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.technologies.client.rei.fluidmixing;
+package com.github.chainmailstudios.astromine.technologies.client.rei.electrolyzing;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

@@ -81,6 +81,11 @@ public class AstromineTechnologiesBlockEntityTypes extends AstromineBlockEntityT
 	public static final BlockEntityType<ElectrolyzerBlockEntity.Advanced> ADVANCED_ELECTROLYZER = register("advanced_electrolyzer", ElectrolyzerBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_ELECTROLYZER);
 	public static final BlockEntityType<ElectrolyzerBlockEntity.Elite> ELITE_ELECTROLYZER = register("elite_electrolyzer", ElectrolyzerBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_ELECTROLYZER);
 
+	public static final BlockEntityType<RefineryBlockEntity.Primitive> PRIMITIVE_REFINERY = register("primitive_refinery", RefineryBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_REFINERY);
+	public static final BlockEntityType<RefineryBlockEntity.Basic> BASIC_REFINERY = register("basic_refinery", RefineryBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_REFINERY);
+	public static final BlockEntityType<RefineryBlockEntity.Advanced> ADVANCED_REFINERY = register("advanced_refinery", RefineryBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_REFINERY);
+	public static final BlockEntityType<RefineryBlockEntity.Elite> ELITE_REFINERY = register("elite_refinery", RefineryBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_REFINERY);
+
 	public static final BlockEntityType<FluidMixerBlockEntity.Primitive> PRIMITIVE_FLUID_MIXER = register("primitive_fluid_mixer", FluidMixerBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_FLUID_MIXER);
 	public static final BlockEntityType<FluidMixerBlockEntity.Basic> BASIC_FLUID_MIXER = register("basic_fluid_mixer", FluidMixerBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_FLUID_MIXER);
 	public static final BlockEntityType<FluidMixerBlockEntity.Advanced> ADVANCED_FLUID_MIXER = register("advanced_fluid_mixer", FluidMixerBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_FLUID_MIXER);

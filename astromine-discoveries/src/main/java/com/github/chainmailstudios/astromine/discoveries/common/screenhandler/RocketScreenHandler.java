@@ -14,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 
 public class RocketScreenHandler extends ComponentEntityFluidInventoryScreenHandler {
 	private TextWidget fuelTextWidget;
@@ -51,7 +52,7 @@ public class RocketScreenHandler extends ComponentEntityFluidInventoryScreenHand
 
 		abortButtonWidget.setPosition(Position.of(mainTab, 3 + 4, 11 + fluidBar.getHeight() - 18));
 		abortButtonWidget.setSize(Size.of(48, 18));
-		abortButtonWidget.setLabel(new TranslatableText("text.astromine.rocket.destroy"));
+		abortButtonWidget.setLabel(new TranslatableText("text.astromine.rocket.destroy").formatted(Formatting.RED));
 
 		fluidBar.setPosition(Position.of(width / 2F - fluidBar.getWidth() / 2F + 2, fluidBar.getY()));
 
