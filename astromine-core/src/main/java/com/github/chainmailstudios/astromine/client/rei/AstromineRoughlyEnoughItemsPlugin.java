@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.client.rei;
 
+import com.github.chainmailstudios.astromine.common.utilities.NumberUtilities;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -37,6 +38,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
@@ -80,11 +82,10 @@ public abstract class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
 
 			@Override
 			public @Nullable Tooltip getTooltip(Point mouse) {
-				if (generating)
-					return Tooltip.create(mouse, new TranslatableText("text.astromine.energy"), ClientHelper.getInstance().getFormattedModFromIdentifier(AstromineCommon.identifier("a")), new LiteralText(""), new TranslatableText("category.astromine.generating.energy",
-						EnergyUtilities.simpleDisplay(energy)));
-				else return Tooltip.create(mouse, new TranslatableText("text.astromine.energy"), ClientHelper.getInstance().getFormattedModFromIdentifier(AstromineCommon.identifier("a")), new LiteralText(""), new TranslatableText("category.astromine.consuming.energy",
-					EnergyUtilities.simpleDisplay(energy)));
+				return Tooltip.create(mouse,
+						new TranslatableText("text.astromine.energy"),
+						new LiteralText(NumberUtilities.shorten(energy, "")).formatted(Formatting.GRAY),
+						new LiteralText("Astromine").formatted(Formatting.BLUE, Formatting.ITALIC));
 			}
 		}).notFavoritesInteractable());
 	}
