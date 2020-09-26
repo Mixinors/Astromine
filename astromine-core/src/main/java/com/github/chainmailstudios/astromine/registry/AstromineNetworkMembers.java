@@ -30,7 +30,6 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 
@@ -39,10 +38,7 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
-import team.reborn.energy.Energy;
-import team.reborn.energy.EnergySide;
 import team.reborn.energy.EnergyStorage;
-import team.reborn.energy.EnergyTier;
 
 import com.google.common.collect.Maps;
 import java.util.Collection;

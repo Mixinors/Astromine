@@ -134,21 +134,24 @@ public interface EnergyInventoryComponent extends NameableComponent {
 	@Nullable
 	default EnergyVolume getFirstExtractableVolume(Direction direction) {
 		EnergyVolume volume = getVolume();
-		if (canExtract(direction) && !volume.isEmpty()) return volume;
+		if (canExtract(direction) && !volume.isEmpty())
+			return volume;
 		return null;
 	}
 
 	@Nullable
 	default EnergyVolume getFirstInsertableVolume(double amount, Direction direction) {
 		EnergyVolume volume = getVolume();
-		if (canInsert(direction) && volume.hasAvailable(amount)) return volume;
+		if (canInsert(direction) && volume.hasAvailable(amount))
+			return volume;
 		return null;
 	}
 
 	@Nullable
 	default EnergyVolume getFirstInsertableVolume(Direction direction) {
 		EnergyVolume volume = getVolume();
-		if (canInsert(direction) && !volume.isFull()) return volume;
+		if (canInsert(direction) && !volume.isFull())
+			return volume;
 		return null;
 	}
 
@@ -215,7 +218,7 @@ public interface EnergyInventoryComponent extends NameableComponent {
 	default void setAmount(double amount) {
 		getVolume().setAmount(amount);
 	}
-	
+
 	default double getAmount() {
 		return getVolume().getAmount();
 	}

@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
-import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -165,15 +164,7 @@ public interface FluidInventoryComponent extends NameableComponent {
 
 	@Nullable
 	default FluidVolume getFirstInsertableVolume(FluidVolume volume, Direction direction) {
-		return getContents()
-				.entrySet()
-				.stream()
-				.filter(
-						(entry) -> canInsert(direction, volume, entry.getKey()) &&
-						(entry.getValue().canAccept(volume.getFluid()) && entry.getValue().hasAvailable(volume.getAmount())))
-				.map(Map.Entry::getValue)
-				.findFirst()
-				.orElse(null);
+		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, volume, entry.getKey()) && (entry.getValue().canAccept(volume.getFluid()) && entry.getValue().hasAvailable(volume.getAmount()))).map(Map.Entry::getValue).findFirst().orElse(null);
 	}
 
 	default TypedActionResult<FluidVolume> extract(Direction direction, int slot, Fraction fraction) {

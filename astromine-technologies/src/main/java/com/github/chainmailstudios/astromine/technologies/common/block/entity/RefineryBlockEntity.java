@@ -39,7 +39,6 @@ import com.github.chainmailstudios.astromine.technologies.common.block.entity.ma
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.FluidSizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
-import com.github.chainmailstudios.astromine.technologies.common.recipe.ElectrolyzingRecipe;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.RefiningRecipe;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
@@ -70,25 +69,24 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 
 	@Override
 	protected FluidInventoryComponent createFluidComponent() {
-		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(8)
-				.withInsertPredicate((direction, volume, slot) -> {
-					if (slot != 0) {
-						return false;
-					}
+		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(8).withInsertPredicate((direction, volume, slot) -> {
+			if (slot != 0) {
+				return false;
+			}
 
-					Fluid existing = this.fluidComponent.getVolume(0).getFluid();
+			Fluid existing = this.fluidComponent.getVolume(0).getFluid();
 
-					Fluid inserting = volume.getFluid();
+			Fluid inserting = volume.getFluid();
 
-					return RefiningRecipe.allows(world, inserting, existing);
-				}).withExtractPredicate((direction, volume, slot) -> {
-					return slot == 1 || slot == 2 || slot == 3 || slot == 4 || slot == 5 || slot == 6 || slot == 7;
-				}).withListener((inventory) -> {
-					shouldTry = true;
-					progress = 0;
-					limit = 100;
-					optionalRecipe = Optional.empty();
-				});
+			return RefiningRecipe.allows(world, inserting, existing);
+		}).withExtractPredicate((direction, volume, slot) -> {
+			return slot == 1 || slot == 2 || slot == 3 || slot == 4 || slot == 5 || slot == 6 || slot == 7;
+		}).withListener((inventory) -> {
+			shouldTry = true;
+			progress = 0;
+			limit = 100;
+			optionalRecipe = Optional.empty();
+		});
 
 		FluidHandler.of(fluidComponent).getFirst().setSize(getFluidSize());
 		FluidHandler.of(fluidComponent).getSecond().setSize(getFluidSize());
@@ -106,8 +104,10 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 	public void tick() {
 		super.tick();
 
-		if (world == null) return;
-		if (world.isClient) return;
+		if (world == null)
+			return;
+		if (world.isClient)
+			return;
 
 		FluidHandler.ofOptional(this).ifPresent(fluids -> {
 			EnergyVolume volume = getEnergyComponent().getVolume();

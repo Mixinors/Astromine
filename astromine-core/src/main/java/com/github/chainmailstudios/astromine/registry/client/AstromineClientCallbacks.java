@@ -34,7 +34,6 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
 import team.reborn.energy.EnergyHandler;
 
 public class AstromineClientCallbacks {
@@ -43,9 +42,8 @@ public class AstromineClientCallbacks {
 			if (stack.getItem() instanceof FluidVolumeItem) {
 				FluidHandler.ofOptional(stack).ifPresent(handler -> {
 					handler.forEach((slot, volume) -> {
-						tooltip.add(
-							new LiteralText(slot + " - " + NumberUtilities.shorten(volume.getAmount().doubleValue(), "") + "/" + NumberUtilities.shorten(volume.getSize().doubleValue(), "") + " " + new TranslatableText(String.format("block.%s.%s", volume.getFluidId().getNamespace(), volume.getFluidId().getPath())).getString()).formatted(Formatting.GRAY)
-						);
+						tooltip.add(new LiteralText(slot + " - " + NumberUtilities.shorten(volume.getAmount().doubleValue(), "") + "/" + NumberUtilities.shorten(volume.getSize().doubleValue(), "") + " " + new TranslatableText(String.format("block.%s.%s", volume.getFluidId()
+							.getNamespace(), volume.getFluidId().getPath())).getString()).formatted(Formatting.GRAY));
 					});
 				});
 			}

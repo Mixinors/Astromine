@@ -33,7 +33,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.screen.PlayerScreenHandler;
@@ -81,11 +80,8 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 	@Override
 	public List<Text> getTooltip() {
 		Identifier fluidId = getFluidVolume().getFluidId();
-		return Lists.newArrayList(
-				new TranslatableText(String.format("block.%s.%s", fluidId.getNamespace(), fluidId.getPath())),
-				new LiteralText(fluidId.toString()).formatted(Formatting.DARK_GRAY),
-				new LiteralText(NumberUtilities.shorten(progressFraction.get().doubleValue(), "") + "/" + NumberUtilities.shorten(limitFraction.get().doubleValue(), "")).formatted(Formatting.GRAY),
-				new LiteralText(FabricLoader.getInstance().getModContainer(fluidId.getNamespace()).get().getMetadata().getName()).formatted(Formatting.BLUE, Formatting.ITALIC));
+		return Lists.newArrayList(new TranslatableText(String.format("block.%s.%s", fluidId.getNamespace(), fluidId.getPath())), new LiteralText(fluidId.toString()).formatted(Formatting.DARK_GRAY), new LiteralText(NumberUtilities.shorten(progressFraction.get().doubleValue(),
+			"") + "/" + NumberUtilities.shorten(limitFraction.get().doubleValue(), "")).formatted(Formatting.GRAY), new LiteralText(FabricLoader.getInstance().getModContainer(fluidId.getNamespace()).get().getMetadata().getName()).formatted(Formatting.BLUE, Formatting.ITALIC));
 	}
 
 	@Environment(EnvType.CLIENT)

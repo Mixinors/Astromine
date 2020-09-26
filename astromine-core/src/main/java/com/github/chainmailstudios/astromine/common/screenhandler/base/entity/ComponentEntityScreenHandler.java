@@ -26,7 +26,6 @@ package com.github.chainmailstudios.astromine.common.screenhandler.base.entity;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerType;
 
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentEntity;

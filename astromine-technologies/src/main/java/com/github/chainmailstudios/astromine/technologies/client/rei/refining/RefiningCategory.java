@@ -25,7 +25,6 @@
 package com.github.chainmailstudios.astromine.technologies.client.rei.refining;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
-import com.github.chainmailstudios.astromine.technologies.client.rei.electrolyzing.ElectrolyzingDisplay;
 import com.google.common.collect.Lists;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;

@@ -38,7 +38,6 @@ import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.BaseRenderer;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.vini2003.blade.client.utilities.Instances;
 import com.github.vini2003.blade.client.utilities.Layers;
@@ -59,11 +58,8 @@ public class EnergyVerticalBarWidget extends AbstractWidget {
 	@Environment(EnvType.CLIENT)
 	@Override
 	public @NotNull List<Text> getTooltip() {
-		return Lists.newArrayList(
-				new TranslatableText("text.astromine.energy"),
-				new LiteralText(NumberUtilities.shorten(volumeSupplier.get().getAmount().longValue(), "") + "/" + NumberUtilities.shorten(volumeSupplier.get().getSize().longValue(), "")).formatted(Formatting.GRAY),
-				new LiteralText("Astromine").formatted(Formatting.BLUE, Formatting.ITALIC)
-		);
+		return Lists.newArrayList(new TranslatableText("text.astromine.energy"), new LiteralText(NumberUtilities.shorten(volumeSupplier.get().getAmount().longValue(), "") + "/" + NumberUtilities.shorten(volumeSupplier.get().getSize().longValue(), "")).formatted(Formatting.GRAY),
+			new LiteralText("Astromine").formatted(Formatting.BLUE, Formatting.ITALIC));
 	}
 
 	public void setVolume(Supplier<EnergyVolume> volumeSupplier) {

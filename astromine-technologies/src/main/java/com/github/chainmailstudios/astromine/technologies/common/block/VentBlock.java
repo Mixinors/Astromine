@@ -35,7 +35,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableFacingEnergyBlockWithEntity;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.VentBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.VentScreenHandler;
 
@@ -63,6 +62,5 @@ public class VentBlock extends WrenchableFacingEnergyBlockWithEntity {
 	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
 		buffer.writeBlockPos(pos);
 	}
-
 
 }

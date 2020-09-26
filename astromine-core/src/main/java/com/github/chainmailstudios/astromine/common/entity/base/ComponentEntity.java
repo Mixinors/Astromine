@@ -24,26 +24,10 @@
 
 package com.github.chainmailstudios.astromine.common.entity.base;
 
-import com.github.chainmailstudios.astromine.common.component.SidedComponentProvider;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import nerdhub.cardinal.components.api.ComponentType;
-import nerdhub.cardinal.components.api.component.Component;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
-import net.minecraft.block.FacingBlock;
-import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Pair;
-import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public abstract class ComponentEntity extends Entity {
 	public ComponentEntity(EntityType<?> type, World world) {

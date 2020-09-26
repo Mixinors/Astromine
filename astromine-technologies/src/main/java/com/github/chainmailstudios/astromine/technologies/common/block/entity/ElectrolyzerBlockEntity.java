@@ -40,7 +40,6 @@ import com.github.chainmailstudios.astromine.technologies.common.block.entity.ma
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.ElectrolyzingRecipe;
-import com.github.chainmailstudios.astromine.technologies.common.recipe.FluidMixingRecipe;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.block.Block;
@@ -70,25 +69,24 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	@Override
 	protected FluidInventoryComponent createFluidComponent() {
-		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(3)
-				.withInsertPredicate((direction, volume, slot) -> {
-					if (slot != 0) {
-						return false;
-					}
+		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(3).withInsertPredicate((direction, volume, slot) -> {
+			if (slot != 0) {
+				return false;
+			}
 
-					Fluid existing = this.fluidComponent.getVolume(0).getFluid();
+			Fluid existing = this.fluidComponent.getVolume(0).getFluid();
 
-					Fluid inserting = volume.getFluid();
+			Fluid inserting = volume.getFluid();
 
-					return ElectrolyzingRecipe.allows(world, inserting, existing);
-				}).withExtractPredicate((direction, volume, slot) -> {
-					return slot == 1 || slot == 2;
-				}).withListener((inventory) -> {
-					shouldTry = true;
-					progress = 0;
-					limit = 100;
-					optionalRecipe = Optional.empty();
-				});
+			return ElectrolyzingRecipe.allows(world, inserting, existing);
+		}).withExtractPredicate((direction, volume, slot) -> {
+			return slot == 1 || slot == 2;
+		}).withListener((inventory) -> {
+			shouldTry = true;
+			progress = 0;
+			limit = 100;
+			optionalRecipe = Optional.empty();
+		});
 
 		FluidHandler.of(fluidComponent).getFirst().setSize(getFluidSize());
 		FluidHandler.of(fluidComponent).getSecond().setSize(getFluidSize());
@@ -101,8 +99,10 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 	public void tick() {
 		super.tick();
 
-		if (world == null) return;
-		if (world.isClient) return;
+		if (world == null)
+			return;
+		if (world.isClient)
+			return;
 
 		FluidHandler.ofOptional(this).ifPresent(fluids -> {
 			EnergyVolume volume = getEnergyComponent().getVolume();

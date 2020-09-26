@@ -65,7 +65,8 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 
 	@Override
 	public <V extends Volume<Identifier, Fraction>> V add(V v, Fraction fraction) {
-		if (!(v instanceof FluidVolume)) return (V) this;
+		if (!(v instanceof FluidVolume))
+			return (V) this;
 
 		if (((FluidVolume) v).getFluid() != getFluid()) {
 			if (v.isEmpty()) {
@@ -100,7 +101,8 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 
 	@Override
 	public <V extends Volume<Identifier, Fraction>> V moveFrom(V v, Fraction fraction) {
-		if (!(v instanceof FluidVolume)) return (V) this;
+		if (!(v instanceof FluidVolume))
+			return (V) this;
 
 		if (((FluidVolume) v).getFluid() != getFluid()) {
 			if (this.isEmpty()) {
@@ -181,11 +183,14 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 
 	@Override
 	public boolean equals(Object object) {
-		if (this == object) return true;
+		if (this == object)
+			return true;
 
-		if (!(object instanceof FluidVolume)) return false;
+		if (!(object instanceof FluidVolume))
+			return false;
 
-		if (!super.equals(object)) return false;
+		if (!super.equals(object))
+			return false;
 
 		FluidVolume volume = (FluidVolume) object;
 
@@ -199,6 +204,6 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 
 	@Override
 	public String toString() {
-		return getAmount().toDecimalString()+" / "+getSize().toDecimalString()+" "+getFluidId();
+		return getAmount().toDecimalString() + " / " + getSize().toDecimalString() + " " + getFluidId();
 	}
 }

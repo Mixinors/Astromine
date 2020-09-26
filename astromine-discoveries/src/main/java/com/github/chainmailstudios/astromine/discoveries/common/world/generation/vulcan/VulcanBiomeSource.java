@@ -36,10 +36,8 @@ import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDisco
 import com.google.common.collect.ImmutableList;
 
 public class VulcanBiomeSource extends BiomeSource {
-	public static final Codec<VulcanBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry),
-			Codec.LONG.fieldOf("seed").stable().forGetter((biomeSource) -> biomeSource.seed))
-			.apply(instance, instance.stable(VulcanBiomeSource::new)));
+	public static final Codec<VulcanBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter((biomeSource) -> biomeSource.registry), Codec.LONG.fieldOf("seed").stable().forGetter((
+		biomeSource) -> biomeSource.seed)).apply(instance, instance.stable(VulcanBiomeSource::new)));
 	private final long seed;
 	private final Registry<Biome> registry;
 

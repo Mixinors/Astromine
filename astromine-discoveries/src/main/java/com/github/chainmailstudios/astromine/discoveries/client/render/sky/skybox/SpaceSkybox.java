@@ -148,7 +148,7 @@ public class SpaceSkybox extends Skybox {
 			GameOptions options = MinecraftClient.getInstance().options;
 
 			float distance = 16F * (float) Option.RENDER_DISTANCE.get(options) - 8F;
-			
+
 			buffer.vertex(matrices.peek().getModel(), -distance, -distance, -distance).color(255, 255, 255, 255).texture(0.0F, 0.0F).light(vertexLight).next();
 			buffer.vertex(matrices.peek().getModel(), -distance, -distance, distance).color(255, 255, 255, 255).texture(0.0F, 1.0F).light(vertexLight).next();
 			buffer.vertex(matrices.peek().getModel(), distance, -distance, distance).color(255, 255, 255, 255).texture(1.0F, 1.0F).light(vertexLight).next();

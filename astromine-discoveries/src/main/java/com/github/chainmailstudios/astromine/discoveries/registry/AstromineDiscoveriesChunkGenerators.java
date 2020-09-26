@@ -31,8 +31,6 @@ import com.github.chainmailstudios.astromine.discoveries.common.world.generation
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.vulcan.VulcanChunkGenerator;
 import com.github.chainmailstudios.astromine.registry.AstromineChunkGenerators;
 
-import net.minecraft.util.registry.Registry;
-
 public class AstromineDiscoveriesChunkGenerators extends AstromineChunkGenerators {
 	public static void initialize() {
 		register(AstromineDiscoveriesDimensions.EARTH_SPACE_ID, EarthSpaceChunkGenerator.CODEC);

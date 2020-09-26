@@ -37,12 +37,13 @@ public class AstromineItems {
 
 	public static final Item MANUAL = register("manual", new ManualItem(getBasicSettings().maxCount(1)));
 
-	public static void initialize() {
-	}
+	public static void initialize() {}
 
 	/**
-	 * @param name Name of item instance to be registered
-	 * @param item Item instance to be registered
+	 * @param name
+	 *        Name of item instance to be registered
+	 * @param item
+	 *        Item instance to be registered
 	 * @return Item instance registered
 	 */
 	public static <T extends Item> T register(String name, T item) {
@@ -50,8 +51,10 @@ public class AstromineItems {
 	}
 
 	/**
-	 * @param name Identifier of item instance to be registered
-	 * @param item Item instance to be registered
+	 * @param name
+	 *        Identifier of item instance to be registered
+	 * @param item
+	 *        Item instance to be registered
 	 * @return Item instance registered
 	 */
 	public static <T extends Item> T register(Identifier name, T item) {

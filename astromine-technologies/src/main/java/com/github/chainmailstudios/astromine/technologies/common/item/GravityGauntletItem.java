@@ -41,7 +41,6 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 

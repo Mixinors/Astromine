@@ -49,7 +49,6 @@ import com.github.chainmailstudios.astromine.common.component.inventory.compatib
 import com.github.chainmailstudios.astromine.discoveries.common.recipe.AltarRecipe;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesSoundEvents;
-import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 
 import com.google.common.collect.Lists;
 import java.util.Iterator;

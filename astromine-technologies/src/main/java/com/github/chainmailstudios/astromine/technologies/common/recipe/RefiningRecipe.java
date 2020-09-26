@@ -83,7 +83,9 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 	final double energyConsumed;
 	final int time;
 
-	public RefiningRecipe(Identifier identifier, RegistryKey<Fluid> inputFluidKey, Fraction inputAmount, RegistryKey<Fluid> firstOutputFluidKey, Fraction firstOutputAmount, RegistryKey<Fluid> secondOutputFluidKey, Fraction secondOutputAmount, RegistryKey<Fluid> thirdOutputFluidKey, Fraction thirdOutputAmount, RegistryKey<Fluid> fourthOutputFluidKey, Fraction fourthOutputAmount, RegistryKey<Fluid> fifthOutputFluidKey, Fraction fifthOutputAmount, RegistryKey<Fluid> sixthOutputFluidKey, Fraction sixthOutputAmount, RegistryKey<Fluid> seventhOutputFluidKey, Fraction seventhOutputAmount, double energyConsumed, int time) {
+	public RefiningRecipe(Identifier identifier, RegistryKey<Fluid> inputFluidKey, Fraction inputAmount, RegistryKey<Fluid> firstOutputFluidKey, Fraction firstOutputAmount, RegistryKey<Fluid> secondOutputFluidKey, Fraction secondOutputAmount,
+		RegistryKey<Fluid> thirdOutputFluidKey, Fraction thirdOutputAmount, RegistryKey<Fluid> fourthOutputFluidKey, Fraction fourthOutputAmount, RegistryKey<Fluid> fifthOutputFluidKey, Fraction fifthOutputAmount, RegistryKey<Fluid> sixthOutputFluidKey,
+		Fraction sixthOutputAmount, RegistryKey<Fluid> seventhOutputFluidKey, Fraction seventhOutputAmount, double energyConsumed, int time) {
 		this.identifier = identifier;
 		this.inputFluidKey = inputFluidKey;
 		this.inputFluid = new Lazy<>(() -> Registry.FLUID.get(this.inputFluidKey));
@@ -301,7 +303,7 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 	public Fraction getSeventhOutputAmount() {
 		return seventhOutputAmount.copy();
 	}
-	
+
 	public double getEnergyConsumed() {
 		return energyConsumed;
 	}
@@ -323,50 +325,19 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 		public RefiningRecipe read(Identifier identifier, JsonObject object) {
 			RefiningRecipe.Format format = new Gson().fromJson(object, RefiningRecipe.Format.class);
 
-			return new RefiningRecipe(
-					identifier,
-					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.input)),
-					FractionUtilities.fromJson(format.inputAmount),
-					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.firstOutput)),
-					FractionUtilities.fromJson(format.firstOutputAmount),
-					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.secondOutput)),
-					FractionUtilities.fromJson(format.secondOutputAmount),
-					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.thirdOutput)),
-					FractionUtilities.fromJson(format.thirdOutputAmount),
-					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.fourthOutput)),
-					FractionUtilities.fromJson(format.fourthOutputAmount),
-					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.fifthOutput)),
-					FractionUtilities.fromJson(format.fifthOutputAmount),
-					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.sixthOutput)),
-					FractionUtilities.fromJson(format.sixthOutputAmount),
-					RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.seventhOutput)),
-					FractionUtilities.fromJson(format.seventhOutputAmount),
-					EnergyUtilities.fromJson(format.energyGenerated),
-					ParsingUtilities.fromJson(format.time, Integer.class));
+			return new RefiningRecipe(identifier, RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.input)), FractionUtilities.fromJson(format.inputAmount), RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.firstOutput)), FractionUtilities.fromJson(
+				format.firstOutputAmount), RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.secondOutput)), FractionUtilities.fromJson(format.secondOutputAmount), RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.thirdOutput)), FractionUtilities.fromJson(
+					format.thirdOutputAmount), RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.fourthOutput)), FractionUtilities.fromJson(format.fourthOutputAmount), RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.fifthOutput)), FractionUtilities.fromJson(
+						format.fifthOutputAmount), RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.sixthOutput)), FractionUtilities.fromJson(format.sixthOutputAmount), RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.seventhOutput)), FractionUtilities.fromJson(
+							format.seventhOutputAmount), EnergyUtilities.fromJson(format.energyGenerated), ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 
 		@Override
 		public RefiningRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new RefiningRecipe(
-					identifier,
-					RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()),
-					FractionUtilities.fromPacket(buffer),
-					RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()),
-					FractionUtilities.fromPacket(buffer),
-					RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()),
-					FractionUtilities.fromPacket(buffer),
-					RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()),
-					FractionUtilities.fromPacket(buffer),
-					RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()),
-					FractionUtilities.fromPacket(buffer),
-					RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()),
-					FractionUtilities.fromPacket(buffer),
-					RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()),
-					FractionUtilities.fromPacket(buffer),
-					RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()),
-					FractionUtilities.fromPacket(buffer),
-					EnergyUtilities.fromPacket(buffer),
-					PacketUtilities.fromPacket(buffer, Integer.class));
+			return new RefiningRecipe(identifier, RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), RegistryKey.of(
+				Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities
+					.fromPacket(buffer), RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), RegistryKey.of(Registry.FLUID_KEY, buffer
+						.readIdentifier()), FractionUtilities.fromPacket(buffer), EnergyUtilities.fromPacket(buffer), PacketUtilities.fromPacket(buffer, Integer.class));
 		}
 
 		@Override
@@ -454,26 +425,9 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 
 		@Override
 		public String toString() {
-			return "Format{" +
-					"input='" + input + '\'' +
-					", inputAmount=" + inputAmount +
-					", firstOutput='" + firstOutput + '\'' +
-					", firstOutputAmount=" + firstOutputAmount +
-					", secondOutput='" + secondOutput + '\'' +
-					", secondOutputAmount=" + secondOutputAmount +
-					", thirdOutput='" + thirdOutput + '\'' +
-					", thirdOutputAmount=" + thirdOutputAmount +
-					", fourthOutput='" + fourthOutput + '\'' +
-					", fourthOutputAmount=" + fourthOutputAmount +
-					", fifthOutput='" + fifthOutput + '\'' +
-					", fifthOutputAmount=" + fifthOutputAmount +
-					", sixthOutput='" + sixthOutput + '\'' +
-					", sixthOutputAmount=" + sixthOutputAmount +
-					", seventhOutput='" + seventhOutput + '\'' +
-					", seventhOutputAmount=" + seventhOutputAmount +
-					", energyGenerated=" + energyGenerated +
-					", time=" + time +
-					'}';
+			return "Format{" + "input='" + input + '\'' + ", inputAmount=" + inputAmount + ", firstOutput='" + firstOutput + '\'' + ", firstOutputAmount=" + firstOutputAmount + ", secondOutput='" + secondOutput + '\'' + ", secondOutputAmount=" + secondOutputAmount +
+				", thirdOutput='" + thirdOutput + '\'' + ", thirdOutputAmount=" + thirdOutputAmount + ", fourthOutput='" + fourthOutput + '\'' + ", fourthOutputAmount=" + fourthOutputAmount + ", fifthOutput='" + fifthOutput + '\'' + ", fifthOutputAmount=" + fifthOutputAmount +
+				", sixthOutput='" + sixthOutput + '\'' + ", sixthOutputAmount=" + sixthOutputAmount + ", seventhOutput='" + seventhOutput + '\'' + ", seventhOutputAmount=" + seventhOutputAmount + ", energyGenerated=" + energyGenerated + ", time=" + time + '}';
 		}
 	}
 }

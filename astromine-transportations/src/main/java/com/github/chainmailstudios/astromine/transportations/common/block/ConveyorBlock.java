@@ -270,7 +270,8 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 	public BlockState getPlacementState(ItemPlacementContext context) {
 		World world = context.getWorld();
 		BlockPos blockPos = context.getBlockPos();
-		BlockState newState = this.getDefaultState().with(FACING, context.getPlayer().isSneaking() ? context.getPlayerFacing().getOpposite() : context.getPlayerFacing()).with(Properties.WATERLOGGED, context.getWorld().getBlockState(context.getBlockPos()).getBlock() == Blocks.WATER);
+		BlockState newState = this.getDefaultState().with(FACING, context.getPlayer().isSneaking() ? context.getPlayerFacing().getOpposite() : context.getPlayerFacing()).with(Properties.WATERLOGGED, context.getWorld().getBlockState(context.getBlockPos()).getBlock() ==
+			Blocks.WATER);
 
 		newState = newState.getStateForNeighborUpdate(null, newState, world, blockPos, blockPos);
 

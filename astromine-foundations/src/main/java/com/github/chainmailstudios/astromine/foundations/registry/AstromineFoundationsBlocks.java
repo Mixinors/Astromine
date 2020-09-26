@@ -60,7 +60,7 @@ public class AstromineFoundationsBlocks extends AstromineBlocks {
 	public static final Block UNIVITE_BLOCK = register("univite_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.WHITE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 6).strength(80, 2000).sounds(BlockSoundGroup.METAL)), AstromineFoundationsItems
 		.getBasicSettings().fireproof());
 	public static final Block LUNUM_BLOCK = register("lunum_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.WHITE_TERRACOTTA).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(10, 75).sounds(BlockSoundGroup.METAL)), AstromineFoundationsItems
-			.getBasicSettings());
+		.getBasicSettings());
 
 	public static final Block COPPER_BLOCK = register("copper_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.ORANGE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(4, 6).sounds(BlockSoundGroup.METAL)), AstromineFoundationsItems
 		.getBasicSettings());
@@ -70,7 +70,7 @@ public class AstromineFoundationsBlocks extends AstromineBlocks {
 		.getBasicSettings());
 	public static final Block LEAD_BLOCK = register("lead_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.BLUE_TERRACOTTA).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(6, 8).sounds(BlockSoundGroup.METAL)), AstromineFoundationsItems
 		.getBasicSettings());
-	
+
 	public static final Block BRONZE_BLOCK = register("bronze_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.ORANGE_TERRACOTTA).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(6, 6).sounds(BlockSoundGroup.METAL)), AstromineFoundationsItems
 		.getBasicSettings());
 	public static final Block STEEL_BLOCK = register("steel_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.GRAY).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(8, 6).sounds(BlockSoundGroup.METAL)), AstromineFoundationsItems
@@ -83,8 +83,8 @@ public class AstromineFoundationsBlocks extends AstromineBlocks {
 		AstromineFoundationsItems.getBasicSettings());
 	public static final Block FOOLS_GOLD_BLOCK = register("fools_gold_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5, 6).sounds(BlockSoundGroup.METAL)), AstromineFoundationsItems
 		.getBasicSettings());
-	public static final Block METEORIC_STEEL_BLOCK = register("meteoric_steel_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5, 6).sounds(BlockSoundGroup.METAL)), AstromineFoundationsItems
-		.getBasicSettings());
+	public static final Block METEORIC_STEEL_BLOCK = register("meteoric_steel_block", new Block(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5, 6).sounds(BlockSoundGroup.METAL)),
+		AstromineFoundationsItems.getBasicSettings());
 
 	public static final Block METEOR_STONE = register("meteor_stone", new Block(FabricBlockSettings.of(Material.STONE, MaterialColor.BLACK).requiresTool().breakByTool(FabricToolTags.PICKAXES, 3).strength(30, 1500)), AstromineFoundationsItems.getBasicSettings().fireproof());
 	public static final Block METEOR_STONE_SLAB = register("meteor_stone_slab", new SlabBlock(FabricBlockSettings.copyOf(METEOR_STONE)), AstromineFoundationsItems.getBasicSettings().fireproof());

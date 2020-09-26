@@ -66,16 +66,9 @@ public class RefiningDisplay implements RecipeDisplay {
 	}
 
 	public RefiningDisplay(RefiningRecipe recipe) {
-		this(recipe.getEnergyConsumed(),
-			FluidVolume.of(recipe.getInputAmount(), recipe.getInputFluid()),
-			FluidVolume.of(recipe.getFirstOutputAmount(), recipe.getFirstOutputFluid()),
-			FluidVolume.of(recipe.getSecondOutputAmount(), recipe.getSecondOutputFluid()),
-			FluidVolume.of(recipe.getThirdOutputAmount(), recipe.getThirdOutputFluid()),
-			FluidVolume.of(recipe.getFourthOutputAmount(), recipe.getFourthOutputFluid()),
-			FluidVolume.of(recipe.getFifthOutputAmount(), recipe.getFifthOutputFluid()),
-			FluidVolume.of(recipe.getSixthOutputAmount(), recipe.getSixthOutputFluid()),
-			FluidVolume.of(recipe.getSeventhOutputAmount(), recipe.getSeventhOutputFluid()),
-			recipe.getId());
+		this(recipe.getEnergyConsumed(), FluidVolume.of(recipe.getInputAmount(), recipe.getInputFluid()), FluidVolume.of(recipe.getFirstOutputAmount(), recipe.getFirstOutputFluid()), FluidVolume.of(recipe.getSecondOutputAmount(), recipe.getSecondOutputFluid()), FluidVolume.of(
+			recipe.getThirdOutputAmount(), recipe.getThirdOutputFluid()), FluidVolume.of(recipe.getFourthOutputAmount(), recipe.getFourthOutputFluid()), FluidVolume.of(recipe.getFifthOutputAmount(), recipe.getFifthOutputFluid()), FluidVolume.of(recipe.getSixthOutputAmount(),
+				recipe.getSixthOutputFluid()), FluidVolume.of(recipe.getSeventhOutputAmount(), recipe.getSeventhOutputFluid()), recipe.getId());
 	}
 
 	@Override
@@ -100,14 +93,9 @@ public class RefiningDisplay implements RecipeDisplay {
 
 	@Override
 	public List<List<EntryStack>> getResultingEntries() {
-		return Arrays.asList(
-				Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertA2R(firstOutput)),
-				Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertA2R(secondOutput)),
-				Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertA2R(thirdOutput)),
-				Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertA2R(fourthOutput)),
-				Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertA2R(fifthOutput)),
-				Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertA2R(sixthOutput)),
-				Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertA2R(seventhOutput)));
+		return Arrays.asList(Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertA2R(firstOutput)), Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertA2R(secondOutput)), Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertA2R(
+			thirdOutput)), Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertA2R(fourthOutput)), Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertA2R(fifthOutput)), Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertA2R(
+				sixthOutput)), Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertA2R(seventhOutput)));
 	}
 
 	public double getEnergy() {

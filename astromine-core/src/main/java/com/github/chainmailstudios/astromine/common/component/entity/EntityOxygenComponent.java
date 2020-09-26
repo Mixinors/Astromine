@@ -43,7 +43,7 @@ public class EntityOxygenComponent implements Component {
 		this.oxygen = oxygen;
 		this.entity = entity;
 	}
-	
+
 	public static EntityOxygenComponent defaulted(Entity entity) {
 		return new EntityOxygenComponent(0, entity);
 	}

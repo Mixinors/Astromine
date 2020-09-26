@@ -48,7 +48,6 @@ import net.minecraft.world.World;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsCriteria;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsSoundEvents;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 
 public class FireExtinguisherItem extends Item {
 	public FireExtinguisherItem(Item.Settings settings) {

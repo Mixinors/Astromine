@@ -56,7 +56,8 @@ public abstract class Volume<T, N extends Number> {
 	public void setType(T t) {
 		this.t = t;
 
-		if (r != null) r.run();
+		if (r != null)
+			r.run();
 	}
 
 	public N getAmount() {
@@ -66,7 +67,8 @@ public abstract class Volume<T, N extends Number> {
 	public void setAmount(N n) {
 		this.n = n;
 
-		if (r != null) r.run();
+		if (r != null)
+			r.run();
 	}
 
 	public N getSize() {
@@ -76,7 +78,8 @@ public abstract class Volume<T, N extends Number> {
 	public void setSize(N s) {
 		this.s = s;
 
-		if (r != null) r.run();
+		if (r != null)
+			r.run();
 	}
 
 	public void setRunnable(Runnable r) {
@@ -245,14 +248,18 @@ public abstract class Volume<T, N extends Number> {
 
 	@Override
 	public boolean equals(Object object) {
-		if (this == object) return true;
+		if (this == object)
+			return true;
 
-		if (!(object instanceof Volume)) return false;
+		if (!(object instanceof Volume))
+			return false;
 
 		Volume<?, ?> volume = (Volume<?, ?>) object;
 
-		if (!Objects.equals(t, volume.t)) return false;
-		if (!Objects.equals(n, volume.n)) return false;
+		if (!Objects.equals(t, volume.t))
+			return false;
+		if (!Objects.equals(n, volume.n))
+			return false;
 
 		return Objects.equals(s, volume.s);
 	}

@@ -25,7 +25,6 @@
 package com.github.chainmailstudios.astromine.technologies.client.screen;
 
 import com.github.chainmailstudios.astromine.client.screen.base.block.ComponentBlockEntityEnergyFluidHandledScreen;
-import com.github.chainmailstudios.astromine.technologies.common.screenhandler.ElectrolyzerScreenHandler;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.RefineryScreenHandler;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import net.minecraft.entity.player.PlayerInventory;
