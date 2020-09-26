@@ -38,6 +38,7 @@ import com.github.chainmailstudios.astromine.technologies.common.block.entity.ma
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.FluidSizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.ElectrolyzingRecipe;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.LiquidGeneratingRecipe;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
@@ -66,15 +67,6 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 		return new SimpleEnergyInventoryComponent(getEnergySize());
 	}
 
-	public Optional<LiquidGeneratingRecipe> getBurningRecipeFor(Fluid f) {
-		return world.getRecipeManager()
-				.getAllOfType(LiquidGeneratingRecipe.Type.INSTANCE).values().stream()
-				.filter(recipe -> recipe instanceof LiquidGeneratingRecipe)
-				.map(recipe -> ((LiquidGeneratingRecipe) recipe))
-				.filter(recipe -> recipe.getFluid() == f)
-				.findAny();
-	}
-
 	@Override
 	protected FluidInventoryComponent createFluidComponent() {
 		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1)
@@ -83,8 +75,11 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 						return false;
 					}
 
-					if (world == null) return false;
-					return getBurningRecipeFor(volume.getFluid()).isPresent();
+					Fluid existing = this.fluidComponent.getVolume(0).getFluid();
+
+					Fluid inserting = volume.getFluid();
+
+					return LiquidGeneratingRecipe.allows(world, inserting, existing);
 				}).withExtractPredicate((direction, volume, slot) -> false)
 				.withListener((inventory) -> {
 					shouldTry = true;
@@ -108,7 +103,7 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 		FluidHandler.ofOptional(this).ifPresent(fluids -> {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = getBurningRecipeFor(fluidComponent.getVolume(0).getFluid());
+				optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(LiquidGeneratingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof LiquidGeneratingRecipe).filter(recipe -> ((LiquidGeneratingRecipe) recipe).matches(fluidComponent)).findFirst();
 				shouldTry = false;
 			}
 

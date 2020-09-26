@@ -52,27 +52,6 @@ public abstract class LiquidGeneratorBlock extends WrenchableHorizontalFacingTie
 		super(settings);
 	}
 
-	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		ItemStack stack = player.getStackInHand(hand);
-		Item item = stack.getItem();
-		if (item instanceof BucketItem && item != Items.BUCKET) {
-			BlockEntity blockEntity = world.getBlockEntity(pos);
-			if(blockEntity instanceof  LiquidGeneratorBlockEntity){
-				Fluid bucketFluid = ((BucketItem)item).fluid;
-				LiquidGeneratorBlockEntity generatorEntity = (LiquidGeneratorBlockEntity) blockEntity;
-				FluidVolume volume = generatorEntity.getFluidComponent().getVolume(0);
-				if(volume.canAccept(bucketFluid) && generatorEntity.getBurningRecipeFor(bucketFluid).isPresent()){
-					volume.setFluid(bucketFluid);
-					volume.add(Fraction.bucket());
-				}
-				player.setStackInHand(hand, new ItemStack(Items.BUCKET));
-				return ActionResult.SUCCESS;
-			}
-		}
-		return super.onUse(state, world, pos, player, hand, hit);
-	}
-
 	public abstract static class Base extends LiquidGeneratorBlock {
 		public Base(Settings settings) {
 			super(settings);
