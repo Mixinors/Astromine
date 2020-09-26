@@ -46,6 +46,7 @@ import com.github.chainmailstudios.astromine.technologies.registry.AstromineTech
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.NotNull;
 
@@ -75,18 +76,11 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 						return false;
 					}
 
-					FluidInventoryComponent inventory = new SimpleFluidInventoryComponent(3);
+					Fluid existing = this.fluidComponent.getVolume(0).getFluid();
 
-					inventory.setVolume(0, volume);
-					inventory.setVolume(1, FluidHandler.of(this).getSecond());
-					inventory.setVolume(2, FluidHandler.of(this).getThird());
+					Fluid inserting = volume.getFluid();
 
-					if (world != null) {
-						optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof ElectrolyzingRecipe).filter(recipe -> ((ElectrolyzingRecipe) recipe).matches(inventory)).findFirst();
-						return optionalRecipe.isPresent();
-					}
-
-					return false;
+					return ElectrolyzingRecipe.allows(world, inserting, existing);
 				}).withExtractPredicate((direction, volume, slot) -> {
 					return slot == 1 || slot == 2;
 				}).withListener((inventory) -> {
