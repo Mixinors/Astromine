@@ -86,9 +86,12 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 							--available;
 							++progress;
 							energyVolume.add(produced * getMachineSpeed());
+
+							tickActive();
+						} else {
+							tickInactive();
 						}
 
-						tickActive();
 					} else {
 						progress = 0;
 						limit = 0;
