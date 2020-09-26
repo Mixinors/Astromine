@@ -16,6 +16,7 @@ import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class FluidHandler {
@@ -31,6 +32,12 @@ public class FluidHandler {
 
 	public void setVolume(int slot, FluidVolume volume) {
 		component.setVolume(slot, volume);
+	}
+
+	public FluidHandler forEach(BiConsumer<Integer, FluidVolume> consumer) {
+		component.getContents().forEach(consumer);
+
+		return this;
 	}
 
 	public FluidHandler withVolume(int slot, Consumer<Optional<FluidVolume>> consumer) {

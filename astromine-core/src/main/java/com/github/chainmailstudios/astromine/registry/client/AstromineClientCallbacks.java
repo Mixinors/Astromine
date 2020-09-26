@@ -27,11 +27,14 @@ package com.github.chainmailstudios.astromine.registry.client;
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.NumberUtilities;
 import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 
+import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 import team.reborn.energy.EnergyHandler;
 
 public class AstromineClientCallbacks {
@@ -39,10 +42,10 @@ public class AstromineClientCallbacks {
 		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof FluidVolumeItem) {
 				FluidHandler.ofOptional(stack).ifPresent(handler -> {
-					handler.withVolume(0, optionalVolume -> {
-						optionalVolume.ifPresent(volume -> {
-							tooltip.add(Math.min(tooltip.size(), 1), new LiteralText(volume.toString()));
-						});
+					handler.forEach((slot, volume) -> {
+						tooltip.add(
+							new LiteralText(slot + " - " + NumberUtilities.shorten(volume.getAmount().doubleValue(), "") + "/" + NumberUtilities.shorten(volume.getSize().doubleValue(), "") + " " + new TranslatableText(String.format("block.%s.%s", volume.getFluidId().getNamespace(), volume.getFluidId().getPath())).getString()).formatted(Formatting.GRAY)
+						);
 					});
 				});
 			}
@@ -51,7 +54,7 @@ public class AstromineClientCallbacks {
 		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof EnergyVolumeItem) {
 				EnergyHandler handler = EnergyUtilities.ofNullable(stack);
-				tooltip.add(Math.min(tooltip.size(), 1), EnergyUtilities.compoundDisplayColored(handler == null ? 0 : handler.getEnergy(), ((EnergyVolumeItem) stack.getItem()).getMaxStoredPower()));
+				tooltip.add(Math.min(tooltip.size(), 1), new LiteralText(NumberUtilities.shorten(handler.getEnergy(), "") + "/" + NumberUtilities.shorten(((EnergyVolumeItem) stack.getItem()).getMaxStoredPower(), "")).formatted(Formatting.GRAY));
 			}
 		});
 	}
