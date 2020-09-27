@@ -151,17 +151,44 @@ public abstract class TankBlockEntity extends ComponentFluidInventoryBlockEntity
 			return;
 
 		FluidHandler.ofOptional(this).ifPresent(fluids -> {
-			FluidVolume ourVolume = fluids.getFirst();
 			ItemHandler.ofOptional(this).ifPresent(items -> {
-				ItemStack leftItem = items.getFirst();
-				ItemStack rightItem = items.getSecond();
-				ItemStack newLeftItem = handleLeftItem(ourVolume, leftItem);
-				ItemStack newRightItem = handleRightItem(ourVolume, rightItem);
-				if (newLeftItem != leftItem)
-					items.setFirst(newLeftItem);
-				if (newRightItem != rightItem)
-					items.setSecond(newRightItem);
+				FluidHandler.ofOptional(items.getFirst()).ifPresent(stackFluids -> {
+					FluidVolume ourVolume = fluids.getFirst();
+					FluidVolume stackVolume = stackFluids.getFirst();
 
+					if (ourVolume.canAccept(stackVolume.getFluid())) {
+						if (items.getFirst().getItem() instanceof BucketItem) {
+							if (items.getFirst().getItem() != Items.BUCKET && items.getFirst().getCount() == 1) {
+								if (ourVolume.hasAvailable(Fraction.bucket()) || ourVolume.isEmpty()) {
+									ourVolume.moveFrom(stackVolume, Fraction.bucket());
+
+									items.setFirst(new ItemStack(Items.BUCKET));
+								}
+							}
+						} else {
+							ourVolume.moveFrom(stackVolume, Fraction.bucket());
+						}
+					}
+				});
+
+				FluidHandler.ofOptional(items.getSecond()).ifPresent(stackFluids -> {
+					FluidVolume ourVolume = fluids.getFirst();
+					FluidVolume stackVolume = stackFluids.getFirst();
+
+					if (stackVolume.canAccept(ourVolume.getFluid())) {
+						if (items.getSecond().getItem() instanceof BucketItem) {
+							if (items.getSecond().getItem() == Items.BUCKET && items.getSecond().getCount() == 1) {
+								if (ourVolume.hasStored(Fraction.bucket())) {
+									ourVolume.add(stackVolume, Fraction.bucket());
+
+									items.setSecond(new ItemStack(stackVolume.getFluid().getBucketItem()));
+								}
+							}
+						} else {
+							ourVolume.add(stackVolume, Fraction.bucket());
+						}
+					}
+				});
 			});
 		});
 	}
