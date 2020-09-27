@@ -353,25 +353,25 @@ public class AstromineConfig implements ConfigData {
 	public long primitiveTankFluid = 16L;
 
 	@Comment("Speed for the Primitive Tank.")
-	public double primitiveTankSpeed = 0.5D;
+	public double primitiveTankSpeed = 1D;
 
 	@Comment("Fluid for the Basic Tank.")
 	public long basicTankFluid = 32L;
 
 	@Comment("Speed for the Basic Tank.")
-	public double basicTankSpeed = 1D;
+	public double basicTankSpeed = 2D;
 
 	@Comment("Fluid for the Advanced Tank.")
 	public long advancedTankFluid = 128L;
 
 	@Comment("Speed for the Advanced Tank.")
-	public double advancedTankSpeed = 2D;
+	public double advancedTankSpeed = 4D;
 
 	@Comment("Fluid for the Elite Tank.")
 	public long eliteTankFluid = 256L;
 
 	@Comment("Speed for the Elite Tank.")
-	public double eliteTankSpeed = 4D;
+	public double eliteTankSpeed = 16D;
 
 	@Comment("Speed for the Primitive Capacitor.")
 	public double primitiveCapacitorSpeed = 0.5D;

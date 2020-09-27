@@ -136,7 +136,7 @@ public abstract class TankBlockEntity extends ComponentFluidInventoryBlockEntity
 		FluidHandler stackFluids = opt.get();
 		FluidVolume stackVolume = stackFluids.getFirst();
 
-		stackVolume.moveFrom(currentTank, Fraction.ofDecimal(getMachineSpeed()));
+		stackVolume.moveFrom(currentTank, Fraction.of((long) getMachineSpeed()));
 
 		return outputStack;
 	}
