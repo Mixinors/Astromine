@@ -47,7 +47,7 @@ project.ext.setDefaultApis = {
     useAsApi("net.earthcomputer:libstructure:${libstructure_version}")
 
     // Magna
-    useAsApi("com.github.shedaniel:magna:${magna_version}")
+    useAsApi("com.github.Draylar:magna:${magna_version}")
 
     // Wrenchable
     useAsApi("com.zundrel:wrenchable:${wrenchable_version}")
@@ -76,7 +76,4 @@ project.ext.setRuntimeTestMods = {
 
     // AE2
     useAsRuntime("appeng:appliedenergistics2-fabric:${ae2_version}")
-
-    // Disable Custom Worlds Advice
-    // useAsRuntime("com.github.rdvdev2:DisableCustomWorldsAdvice:${disable_shit_version}")
 }
