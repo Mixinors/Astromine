@@ -58,7 +58,7 @@ public abstract class PresserBlockEntity extends ComponentEnergyInventoryBlockEn
 	public int limit = 100;
 	public boolean shouldTry = true;
 
-	Optional<PressingRecipe> optionalRecipe = Optional.empty();
+	private Optional<PressingRecipe> optionalRecipe = Optional.empty();
 
 	public PresserBlockEntity(Block energyBlock, BlockEntityType<?> type) {
 		super(energyBlock, type);
@@ -71,15 +71,7 @@ public abstract class PresserBlockEntity extends ComponentEnergyInventoryBlockEn
 				return false;
 			}
 
-			SimpleItemInventoryComponent component = new SimpleItemInventoryComponent(1);
-			ItemHandler.of(component).setFirst(stack);
-
-			if (world != null) {
-				Optional<PressingRecipe> recipe = (Optional<PressingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) PressingRecipe.Type.INSTANCE, ItemInventoryFromInventoryComponent.of(component), world);
-				return recipe.isPresent();
-			}
-
-			return false;
+			return PressingRecipe.allows(world, new SimpleItemInventoryComponent(stack).asInventory());
 		}).withExtractPredicate((direction, stack, slot) -> {
 			return slot == 0;
 		}).withListener((inventory) -> {

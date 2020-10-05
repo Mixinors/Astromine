@@ -71,15 +71,7 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyInventoryBloc
 				return false;
 			}
 
-			SimpleItemInventoryComponent component = new SimpleItemInventoryComponent(1);
-			ItemHandler.of(component).setFirst(stack);
-
-			if (world != null) {
-				Optional<TrituratingRecipe> recipe = (Optional<TrituratingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) TrituratingRecipe.Type.INSTANCE, ItemInventoryFromInventoryComponent.of(component), world);
-				return recipe.isPresent();
-			}
-
-			return false;
+			return TrituratingRecipe.allows(world, new SimpleItemInventoryComponent(stack).asInventory());
 		}).withExtractPredicate(((direction, stack, slot) -> {
 			return slot == 0;
 		})).withListener((inventory) -> {

@@ -63,6 +63,13 @@ public class SimpleItemInventoryComponent implements ItemInventoryComponent {
 		this.contents.defaultReturnValue(ItemStack.EMPTY);
 	}
 
+	public SimpleItemInventoryComponent(ItemStack... stacks) {
+		this(stacks.length);
+		for (int i = 0; i < stacks.length; ++i) {
+			setStack(i, stacks[i]);
+		}
+	}
+
 	public void resize(int size) {
 		this.size = size;
 		for (int i = 0; i < size; ++i) {

@@ -26,6 +26,8 @@ package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -69,6 +71,14 @@ public class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 	@Override
 	public boolean matches(Inventory inventory, World world) {
 		return ItemInventoryComponentFromItemInventory.of(inventory).getContents().values().stream().anyMatch(input);
+	}
+
+	public static boolean allows(World world, Inventory inventory) {
+		return world.getRecipeManager().getAllOfType(PressingRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
+			PressingRecipe recipe = ((PressingRecipe) it);
+
+			return recipe.matches(inventory, world);
+		});
 	}
 
 	@Override
