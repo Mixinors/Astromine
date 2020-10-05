@@ -145,7 +145,7 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 			return false;
 		}
 
-		if (secondOutputVolume.hasAvailable(secondOutputAmount)) {
+		if (!secondOutputVolume.hasAvailable(secondOutputAmount)) {
 			return false;
 		}
 
@@ -153,7 +153,7 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 			return false;
 		}
 
-		if (thirdOutputVolume.hasAvailable(thirdOutputAmount)) {
+		if (!thirdOutputVolume.hasAvailable(thirdOutputAmount)) {
 			return false;
 		}
 
@@ -161,7 +161,7 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 			return false;
 		}
 
-		if (fourthOutputVolume.hasAvailable(fourthOutputAmount)) {
+		if (!fourthOutputVolume.hasAvailable(fourthOutputAmount)) {
 			return false;
 		}
 
@@ -169,7 +169,7 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 			return false;
 		}
 
-		if (fifthOutputVolume.hasAvailable(fifthOutputAmount)) {
+		if (!fifthOutputVolume.hasAvailable(fifthOutputAmount)) {
 			return false;
 		}
 
@@ -177,7 +177,7 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 			return false;
 		}
 
-		if (sixthOutputVolume.hasAvailable(sixthOutputAmount)) {
+		if (!sixthOutputVolume.hasAvailable(sixthOutputAmount)) {
 			return false;
 		}
 
@@ -185,7 +185,7 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 			return false;
 		}
 
-		return !seventhOutputVolume.hasAvailable(seventhOutputAmount);
+		return seventhOutputVolume.hasAvailable(seventhOutputAmount);
 	}
 
 	public static boolean allows(World world, Fluid inserting, Fluid existing) {
