@@ -80,8 +80,6 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 			return LiquidGeneratingRecipe.allows(world, inserting, existing);
 		}).withExtractPredicate((direction, volume, slot) -> false).withListener((inventory) -> {
 			shouldTry = true;
-			progress = 0;
-			limit = 100;
 			optionalRecipe = Optional.empty();
 		});
 

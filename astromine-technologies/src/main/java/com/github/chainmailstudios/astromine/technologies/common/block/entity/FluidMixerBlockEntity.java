@@ -85,8 +85,6 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 			return slot == 2;
 		}).withListener((inventory) -> {
 			shouldTry = true;
-			progress = 0;
-			limit = 100;
 			optionalRecipe = Optional.empty();
 		});
 

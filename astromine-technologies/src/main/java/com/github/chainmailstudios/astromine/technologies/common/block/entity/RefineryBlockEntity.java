@@ -83,8 +83,6 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 			return slot == 1 || slot == 2 || slot == 3 || slot == 4 || slot == 5 || slot == 6 || slot == 7;
 		}).withListener((inventory) -> {
 			shouldTry = true;
-			progress = 0;
-			limit = 100;
 			optionalRecipe = Optional.empty();
 		});
 

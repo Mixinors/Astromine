@@ -83,8 +83,6 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 			return slot == 1 || slot == 2;
 		}).withListener((inventory) -> {
 			shouldTry = true;
-			progress = 0;
-			limit = 100;
 			optionalRecipe = Optional.empty();
 		});
 
