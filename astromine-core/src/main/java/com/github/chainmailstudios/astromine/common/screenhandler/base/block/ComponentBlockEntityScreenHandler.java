@@ -62,6 +62,14 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 	public TabWidgetCollection mainTab;
 	protected TabWidget tabs;
 
+	public Position getTabsPosition(int width, int height) {
+		return Position.of(width / 2 - tabs.getWidth() / 2, height / 2 - tabs.getHeight() / 2);
+	}
+
+	public Size getTabsSize(int width, int height) {
+		return Size.of(176F, 188F + getTabWidgetExtendedHeight());
+	}
+
 	public ComponentBlockEntityScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player);
 
@@ -87,8 +95,8 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 	@Override
 	public void initialize(int width, int height) {
 		tabs = new TabWidget();
-		tabs.setSize(Size.of(176F, 188F + getTabWidgetExtendedHeight()));
-		tabs.setPosition(Position.of(width / 2 - tabs.getWidth() / 2, height / 2 - tabs.getHeight() / 2));
+		tabs.setSize(getTabsSize(width, height));
+		tabs.setPosition(getTabsPosition(width, height));
 
 		addWidget(tabs);
 
@@ -102,7 +110,7 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 		title.setColor(4210752);
 		mainTab.addWidget(title);
 
-		Position invPos = Position.of(tabs, 7F, 25F + 7F + (184 - 18 - 18 - (18 * 4) - 3 + getTabWidgetExtendedHeight()));
+		Position invPos = Position.of(tabs, 7F + (tabs.getWidth() / 2 - ((9 * 18F) / 2) - 7F), 25F + 7F + (184 - 18 - 18 - (18 * 4) - 3 + getTabWidgetExtendedHeight()));
 		TextWidget invTitle = new TextWidget();
 		invTitle.setPosition(Position.of(invPos, 0, -10));
 		invTitle.setText(getPlayer().inventory.getName());

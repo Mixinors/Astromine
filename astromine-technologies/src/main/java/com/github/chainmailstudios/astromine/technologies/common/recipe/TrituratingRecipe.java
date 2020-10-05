@@ -75,6 +75,14 @@ public class TrituratingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return ItemInventoryComponentFromItemInventory.of(inventory).getContents().values().stream().anyMatch(input);
 	}
 
+	public static boolean allows(World world, Inventory inventory) {
+		return world.getRecipeManager().getAllOfType(TrituratingRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
+			TrituratingRecipe recipe = ((TrituratingRecipe) it);
+
+			return recipe.matches(inventory, world);
+		});
+	}
+
 	@Override
 	public ItemStack craft(Inventory inventory) {
 		ItemInventoryComponent component = ItemInventoryComponentFromItemInventory.of(inventory);

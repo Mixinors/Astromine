@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["010", "343", "070"],
+  "key": {
+    "0": {"tag": "c:steel_plates"},
+    "1": {"item": "astromine:advanced_circuit"},
+    "3": {"item": "astromine:pressurized_gas_canister"},
+    "4": {"item": "astromine:advanced_machine_chassis"},
+    "7": {"item": "minecraft:magma_block"}
+  },
+  "result": {"item": "astromine:advanced_refinery", "count": 1}
+}

@@ -30,11 +30,27 @@ import com.github.chainmailstudios.astromine.common.fluid.ExtendedFluid;
 import com.github.chainmailstudios.astromine.registry.AstromineFluids;
 
 public class AstromineFoundationsFluids extends AstromineFluids {
+	public static final Fluid CRUDE_OIL = ExtendedFluid.builder().fog(0x7e675005).tint(0x7e675005).damage(0).toxic(false).infinite(false).name("crude_oil").group(AstromineFoundationsItemGroups.FOUNDATIONS).build();
+
+	public static final Fluid RESIDUAL_FUEL_OIL = ExtendedFluid.builder().fog(0x7e675005).tint(0x7e675005).damage(0).toxic(false).infinite(false).name("residual_fuel_oil").group(AstromineFoundationsItemGroups.FOUNDATIONS).build();
+
+	public static final Fluid HEAVY_GAS_OIL = ExtendedFluid.builder().fog(0x7e675005).tint(0x7e675005).damage(0).toxic(false).infinite(false).name("heavy_gas_oil").group(AstromineFoundationsItemGroups.FOUNDATIONS).build();
+
+	public static final Fluid DIESEL = ExtendedFluid.builder().fog(0x7e7B6522).tint(0x7e7B6522).damage(0).toxic(false).infinite(false).name("diesel").group(AstromineFoundationsItemGroups.FOUNDATIONS).build();
+
+	public static final Fluid KEROSENE = ExtendedFluid.builder().fog(0x7e968048).tint(0x7e968048).damage(0).toxic(false).infinite(false).name("kerosene").group(AstromineFoundationsItemGroups.FOUNDATIONS).build();
+
+	public static final Fluid NAPHTHA = ExtendedFluid.builder().fog(0x7eB19D6F).tint(0x7eB19D6F).damage(0).toxic(false).infinite(false).name("naphtha").group(AstromineFoundationsItemGroups.FOUNDATIONS).build();
+
+	public static final Fluid GASOLINE = ExtendedFluid.builder().fog(0x7eCBB794).tint(0x7eCBB794).damage(0).toxic(false).infinite(false).name("gasoline").group(AstromineFoundationsItemGroups.FOUNDATIONS).build();
+
+	public static final Fluid BUTANE = ExtendedFluid.builder().fog(0x7eE4D2B9).tint(0x7eE4D2B9).damage(0).toxic(false).infinite(false).name("butane").group(AstromineFoundationsItemGroups.FOUNDATIONS).build();
+
+	public static final Fluid KEROSENE_OXYGEN_FUEL = ExtendedFluid.builder().fog(0x7e6F855C).tint(0x7e6F855C).damage(0).toxic(false).infinite(false).name("kerosene_oxygen_fuel").group(AstromineFoundationsItemGroups.FOUNDATIONS).build();
+
 	public static final Fluid OXYGEN = ExtendedFluid.builder().fog(0x7e159ef9).tint(0xff159ef9).damage(0).toxic(false).infinite(false).name("oxygen").group(AstromineFoundationsItemGroups.FOUNDATIONS).build();
 
 	public static final Fluid HYDROGEN = ExtendedFluid.builder().fog(0x7eff0019).tint(0xffff0019).damage(0).toxic(false).infinite(false).name("hydrogen").group(AstromineFoundationsItemGroups.FOUNDATIONS).build();
-
-	public static final Fluid ROCKET_FUEL = ExtendedFluid.builder().fog(0x7e9ed5f7).tint(0xff9ed5f7).damage(4).toxic(true).infinite(false).name("rocket_fuel").group(AstromineFoundationsItemGroups.FOUNDATIONS).build();
 
 	public static void initialize() {
 

@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.utilities.capability.inventory;
 
-import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.entity.BlockEntity;

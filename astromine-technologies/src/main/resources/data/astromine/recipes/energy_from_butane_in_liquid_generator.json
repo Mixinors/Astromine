@@ -1,0 +1,10 @@
+{
+  "type": "astromine:liquid_generating",
+  "input": "astromine:butane",
+  "amount": {
+    "numerator": 1,
+    "denominator": 160
+  },
+  "energy_generated": 256,
+  "time": 1
+}

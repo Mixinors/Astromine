@@ -28,6 +28,7 @@ import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -93,7 +94,7 @@ public class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumingReci
 		FluidVolume secondInputVolume = fluidHandler.getSecond();
 		FluidVolume outputVolume = fluidHandler.getThird();
 
-		if (!firstInputVolume.getFluid().matchesType(firstInputFluid.get()) && !secondInputVolume.getFluid().matchesType(firstInputFluid.get())) {
+		if (!firstInputVolume.canAccept(firstInputFluid.get()) && !secondInputVolume.canAccept(firstInputFluid.get())) {
 			return false;
 		}
 
@@ -101,7 +102,7 @@ public class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumingReci
 			return false;
 		}
 
-		if (!secondInputVolume.getFluid().matchesType(secondInputFluid.get()) && !firstInputVolume.getFluid().matchesType(secondInputFluid.get())) {
+		if (!secondInputVolume.canAccept(secondInputFluid.get()) && !firstInputVolume.canAccept(secondInputFluid.get())) {
 			return false;
 		}
 
@@ -109,11 +110,19 @@ public class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumingReci
 			return false;
 		}
 
-		if (!outputVolume.getFluid().matchesType(outputFluid.get()) && !outputVolume.isEmpty()) {
+		if (!outputVolume.canAccept(outputFluid.get())) {
 			return false;
 		}
 
 		return outputVolume.hasAvailable(outputAmount);
+	}
+
+	public static boolean allows(World world, Fluid inserting, Fluid existing) {
+		return world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().anyMatch(it -> {
+			FluidMixingRecipe recipe = ((FluidMixingRecipe) it);
+
+			return (existing == inserting || existing == Fluids.EMPTY) && (recipe.firstInputFluid.get() == inserting || recipe.secondInputFluid.get() == inserting);
+		});
 	}
 
 	@Override

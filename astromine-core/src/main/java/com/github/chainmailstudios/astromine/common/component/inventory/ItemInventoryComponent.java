@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -527,5 +529,9 @@ public interface ItemInventoryComponent extends NameableComponent {
 	@Override
 	default @NotNull ComponentType<?> getComponentType() {
 		return AstromineComponentTypes.ITEM_INVENTORY_COMPONENT;
+	}
+
+	default Inventory asInventory() {
+		return ItemInventoryFromInventoryComponent.of(this);
 	}
 }

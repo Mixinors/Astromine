@@ -50,7 +50,11 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyInventoryBlock
 
 	@Override
 	protected ItemInventoryComponent createItemComponent() {
-		return new SimpleItemInventoryComponent(2);
+		return new SimpleItemInventoryComponent(2).withInsertPredicate((direction, stack, slot) -> {
+			return slot == 0;
+		}).withExtractPredicate((direction, stack, slot) -> {
+			return slot == 1;
+		});
 	}
 
 	@Override
@@ -62,8 +66,10 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyInventoryBlock
 	public void tick() {
 		super.tick();
 
-		if (world == null) return;
-		if (world.isClient) return;
+		if (world == null)
+			return;
+		if (world.isClient)
+			return;
 
 		ItemStack inputStack = itemComponent.getStack(0);
 		if (Energy.valid(inputStack)) {

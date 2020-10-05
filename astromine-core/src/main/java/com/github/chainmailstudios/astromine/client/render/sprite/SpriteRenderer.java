@@ -235,7 +235,7 @@ public class SpriteRenderer {
 					}
 
 					if (isOverY) {
-						dY = (uEnd - uStart) * (1 - (nSY / sY));
+						dY = (vEnd - vStart) * (1 - (nSY / sY));
 					}
 
 					this.consumer = consumers.getBuffer(RenderLayer.getSolid());

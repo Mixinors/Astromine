@@ -78,7 +78,6 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 
 	public void setComponent(BlockEntityTransferComponent component) {
 		this.component = component;
-
 	}
 
 	public Direction getDirection() {
@@ -120,14 +119,14 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 	@Override
 	public void onMouseClicked(float mouseX, float mouseY, int mouseButton) {
 		super.onMouseClicked(mouseX, mouseY, mouseButton);
-		if (getFocused()) {
+		if (getFocused() && getHandler().getClient()) {
 			wasClicked = true;
 		}
 	}
 
 	@Override
 	public void onMouseReleased(float mouseX, float mouseY, int mouseButton) {
-		if (getFocused() && wasClicked) {
+		if (getFocused() && !getHidden() && wasClicked) {
 			if (getHandler().getClient()) {
 				PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
 

@@ -66,7 +66,7 @@ public final class LibBlockAttributesCompatibility {
 		if (blockEntity != null) {
 			SidedComponentProvider sidedComponentProvider = SidedComponentProvider.fromBlockEntity(blockEntity);
 
-			if(sidedComponentProvider != null) {
+			if (sidedComponentProvider != null) {
 				@Nullable
 				Direction direction = list.getTargetSide();
 

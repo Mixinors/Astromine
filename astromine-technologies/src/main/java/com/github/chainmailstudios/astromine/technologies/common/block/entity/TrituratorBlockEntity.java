@@ -71,21 +71,11 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyInventoryBloc
 				return false;
 			}
 
-			SimpleItemInventoryComponent component = new SimpleItemInventoryComponent(1);
-			ItemHandler.of(component).setFirst(stack);
-
-			if (world != null) {
-				Optional<TrituratingRecipe> recipe = (Optional<TrituratingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) TrituratingRecipe.Type.INSTANCE, ItemInventoryFromInventoryComponent.of(component), world);
-				return recipe.isPresent();
-			}
-
-			return false;
+			return TrituratingRecipe.allows(world, new SimpleItemInventoryComponent(stack).asInventory());
 		}).withExtractPredicate(((direction, stack, slot) -> {
 			return slot == 0;
 		})).withListener((inventory) -> {
 			shouldTry = true;
-			progress = 0;
-			limit = 100;
 			optionalRecipe = Optional.empty();
 		});
 	}
@@ -109,8 +99,10 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyInventoryBloc
 	public void tick() {
 		super.tick();
 
-		if (world == null) return;
-		if (world.isClient) return;
+		if (world == null)
+			return;
+		if (world.isClient)
+			return;
 
 		ItemHandler.ofOptional(this).ifPresent(items -> {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();
@@ -118,6 +110,12 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyInventoryBloc
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
 				optionalRecipe = (Optional<TrituratingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) TrituratingRecipe.Type.INSTANCE, ItemInventoryFromInventoryComponent.of(itemComponent), world);
+				shouldTry = false;
+
+				if (!optionalRecipe.isPresent()) {
+					progress = 0;
+					limit = 100;
+				}
 			}
 
 			if (optionalRecipe.isPresent()) {

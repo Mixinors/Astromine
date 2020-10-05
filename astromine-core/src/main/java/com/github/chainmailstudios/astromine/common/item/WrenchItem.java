@@ -25,7 +25,6 @@
 package com.github.chainmailstudios.astromine.common.item;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
 import net.minecraft.item.ToolMaterial;
@@ -44,15 +43,15 @@ public class WrenchItem extends ToolItem implements Wrench {
 
 	@Override
 	public void onBlockWrenched(World world, ItemStack stack, PlayerEntity player, Hand hand, BlockHitResult result) {
-		if(player instanceof ServerPlayerEntity) {
-			stack.damage(1, world.getRandom(), (ServerPlayerEntity)player);
+		if (player instanceof ServerPlayerEntity) {
+			stack.damage(1, world.getRandom(), (ServerPlayerEntity) player);
 		}
 	}
 
 	@Override
 	public void onEntityWrenched(World world, ItemStack stack, PlayerEntity player, Hand hand, EntityHitResult result) {
-		if(player instanceof ServerPlayerEntity) {
-			stack.damage(1, world.getRandom(), (ServerPlayerEntity)player);
+		if (player instanceof ServerPlayerEntity) {
+			stack.damage(1, world.getRandom(), (ServerPlayerEntity) player);
 		}
 	}
 }

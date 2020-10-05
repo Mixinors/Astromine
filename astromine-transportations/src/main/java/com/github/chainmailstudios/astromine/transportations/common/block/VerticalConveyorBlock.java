@@ -55,8 +55,6 @@ import com.github.chainmailstudios.astromine.transportations.common.conveyor.Con
 import com.github.chainmailstudios.astromine.common.utilities.capability.block.FacingBlockWrenchable;
 import com.github.chainmailstudios.astromine.common.utilities.RotationUtilities;
 
-import javax.annotation.Nullable;
-
 public class VerticalConveyorBlock extends HorizontalFacingBlock implements BlockEntityProvider, Conveyor, FacingBlockWrenchable, Waterloggable {
 	private int speed;
 

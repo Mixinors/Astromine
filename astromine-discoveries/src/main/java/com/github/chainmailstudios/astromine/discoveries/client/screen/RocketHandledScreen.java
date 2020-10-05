@@ -29,7 +29,6 @@ import com.github.chainmailstudios.astromine.discoveries.common.screenhandler.Ro
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
-import com.github.chainmailstudios.astromine.client.screen.base.entity.ComponentEntityFluidHandledScreen;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 
 public class RocketHandledScreen extends ComponentEntityFluidInventoryHandledScreen<RocketScreenHandler> {

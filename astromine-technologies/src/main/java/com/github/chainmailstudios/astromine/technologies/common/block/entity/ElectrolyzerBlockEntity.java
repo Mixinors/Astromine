@@ -40,12 +40,12 @@ import com.github.chainmailstudios.astromine.technologies.common.block.entity.ma
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.ElectrolyzingRecipe;
-import com.github.chainmailstudios.astromine.technologies.common.recipe.FluidMixingRecipe;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.NotNull;
 
@@ -69,32 +69,22 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	@Override
 	protected FluidInventoryComponent createFluidComponent() {
-		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(3)
-				.withInsertPredicate((direction, volume, slot) -> {
-					if (slot != 0) {
-						return false;
-					}
+		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(3).withInsertPredicate((direction, volume, slot) -> {
+			if (slot != 0) {
+				return false;
+			}
 
-					FluidInventoryComponent inventory = new SimpleFluidInventoryComponent(3);
+			Fluid existing = this.fluidComponent.getVolume(0).getFluid();
 
-					inventory.setVolume(0, volume);
-					inventory.setVolume(1, FluidHandler.of(this).getSecond());
-					inventory.setVolume(2, FluidHandler.of(this).getThird());
+			Fluid inserting = volume.getFluid();
 
-					if (world != null) {
-						optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof ElectrolyzingRecipe).filter(recipe -> ((ElectrolyzingRecipe) recipe).matches(inventory)).findFirst();
-						return optionalRecipe.isPresent();
-					}
-
-					return false;
-				}).withExtractPredicate((direction, volume, slot) -> {
-					return slot == 1 || slot == 2;
-				}).withListener((inventory) -> {
-					shouldTry = true;
-					progress = 0;
-					limit = 100;
-					optionalRecipe = Optional.empty();
-				});
+			return ElectrolyzingRecipe.allows(world, inserting, existing);
+		}).withExtractPredicate((direction, volume, slot) -> {
+			return slot == 1 || slot == 2;
+		}).withListener((inventory) -> {
+			shouldTry = true;
+			optionalRecipe = Optional.empty();
+		});
 
 		FluidHandler.of(fluidComponent).getFirst().setSize(getFluidSize());
 		FluidHandler.of(fluidComponent).getSecond().setSize(getFluidSize());
@@ -107,13 +97,21 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 	public void tick() {
 		super.tick();
 
-		if (world == null) return;
-		if (world.isClient) return;
+		if (world == null)
+			return;
+		if (world.isClient)
+			return;
 
 		FluidHandler.ofOptional(this).ifPresent(fluids -> {
 			EnergyVolume volume = getEnergyComponent().getVolume();
 			if (!optionalRecipe.isPresent() && shouldTry) {
 				optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof ElectrolyzingRecipe).filter(recipe -> ((ElectrolyzingRecipe) recipe).matches(fluidComponent)).findFirst();
+				shouldTry = false;
+
+				if (!optionalRecipe.isPresent()) {
+					progress = 0;
+					limit = 100;
+				}
 			}
 
 			if (optionalRecipe.isPresent()) {

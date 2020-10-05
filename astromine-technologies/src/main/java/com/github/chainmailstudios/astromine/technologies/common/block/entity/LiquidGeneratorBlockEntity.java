@@ -66,32 +66,22 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 		return new SimpleEnergyInventoryComponent(getEnergySize());
 	}
 
-	public Optional<LiquidGeneratingRecipe> getBurningRecipeFor(Fluid f) {
-		return world.getRecipeManager()
-				.getAllOfType(LiquidGeneratingRecipe.Type.INSTANCE).values().stream()
-				.filter(recipe -> recipe instanceof LiquidGeneratingRecipe)
-				.map(recipe -> ((LiquidGeneratingRecipe) recipe))
-				.filter(recipe -> recipe.getFluid() == f)
-				.findAny();
-	}
-
 	@Override
 	protected FluidInventoryComponent createFluidComponent() {
-		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1)
-				.withInsertPredicate((direction, volume, slot) -> {
-					if (slot != 0) {
-						return false;
-					}
+		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1).withInsertPredicate((direction, volume, slot) -> {
+			if (slot != 0) {
+				return false;
+			}
 
-					if (world == null) return false;
-					return getBurningRecipeFor(volume.getFluid()).isPresent();
-				}).withExtractPredicate((direction, volume, slot) -> false)
-				.withListener((inventory) -> {
-					shouldTry = true;
-					progress = 0;
-					limit = 100;
-					optionalRecipe = Optional.empty();
-				});
+			Fluid existing = this.fluidComponent.getVolume(0).getFluid();
+
+			Fluid inserting = volume.getFluid();
+
+			return LiquidGeneratingRecipe.allows(world, inserting, existing);
+		}).withExtractPredicate((direction, volume, slot) -> false).withListener((inventory) -> {
+			shouldTry = true;
+			optionalRecipe = Optional.empty();
+		});
 
 		FluidHandler.of(fluidComponent).getFirst().setSize(getFluidSize());
 
@@ -102,14 +92,21 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 	public void tick() {
 		super.tick();
 
-		if (world == null) return;
-		if (world.isClient) return;
+		if (world == null)
+			return;
+		if (world.isClient)
+			return;
 
 		FluidHandler.ofOptional(this).ifPresent(fluids -> {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = getBurningRecipeFor(fluidComponent.getVolume(0).getFluid());
+				optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(LiquidGeneratingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof LiquidGeneratingRecipe).filter(recipe -> ((LiquidGeneratingRecipe) recipe).matches(fluidComponent)).findFirst();
 				shouldTry = false;
+
+				if (!optionalRecipe.isPresent()) {
+					progress = 0;
+					limit = 100;
+				}
 			}
 
 			if (!optionalRecipe.isPresent()) {

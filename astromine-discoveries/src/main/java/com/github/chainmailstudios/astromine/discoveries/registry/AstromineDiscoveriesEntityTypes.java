@@ -37,7 +37,6 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.world.Heightmap;
 
-import com.github.chainmailstudios.astromine.discoveries.common.entity.base.RocketEntity;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.SpaceSlimeEntity;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.SuperSpaceSlimeEntity;
 import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;

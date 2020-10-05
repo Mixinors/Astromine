@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["010", "343", "070"],
+  "key": {
+    "0": {"tag": "c:copper_plates"},
+    "1": {"item": "astromine:basic_circuit"},
+    "3": {"item": "astromine:pressurized_gas_canister"},
+    "4": {"item": "astromine:primitive_machine_chassis"},
+    "7": {"item": "minecraft:magma_block"}
+  },
+  "result": {"item": "astromine:primitive_refinery", "count": 1}
+}

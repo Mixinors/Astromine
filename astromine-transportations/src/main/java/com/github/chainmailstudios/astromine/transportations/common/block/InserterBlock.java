@@ -43,7 +43,6 @@ import net.minecraft.world.World;
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.InserterBlockEntity;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyableBlock;
 
-import javax.annotation.Nullable;
 import java.util.Random;
 
 public class InserterBlock extends HorizontalFacingBlock implements BlockEntityProvider, ConveyableBlock, FacingBlockWrenchable, Waterloggable {
@@ -79,9 +78,9 @@ public class InserterBlock extends HorizontalFacingBlock implements BlockEntityP
 
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
-		return this.getDefaultState().with(Properties.POWERED, false).with(FACING, context.getPlayer().isSneaking() ? context.getPlayerFacing().getOpposite() : context.getPlayerFacing()).with(Properties.WATERLOGGED, context.getWorld().getBlockState(context.getBlockPos()).getBlock() == Blocks.WATER);
+		return this.getDefaultState().with(Properties.POWERED, false).with(FACING, context.getPlayer().isSneaking() ? context.getPlayerFacing().getOpposite() : context.getPlayerFacing()).with(Properties.WATERLOGGED, context.getWorld().getBlockState(context.getBlockPos())
+			.getBlock() == Blocks.WATER);
 	}
-
 
 	@Override
 	public FluidState getFluidState(BlockState state) {

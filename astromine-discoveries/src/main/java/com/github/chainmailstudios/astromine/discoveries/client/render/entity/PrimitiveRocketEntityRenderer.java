@@ -26,7 +26,6 @@ package com.github.chainmailstudios.astromine.discoveries.client.render.entity;
 
 import com.github.chainmailstudios.astromine.discoveries.client.model.PrimitiveRocketEntityModel;
 
-
 import com.github.chainmailstudios.astromine.discoveries.common.entity.PrimitiveRocketEntity;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumer;

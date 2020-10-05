@@ -84,8 +84,10 @@ public class FluidInserterBlockEntity extends ComponentEnergyFluidBlockEntity im
 	public void tick() {
 		super.tick();
 
-		if (world == null) return;
-		if (world.isClient) return;
+		if (world == null)
+			return;
+		if (world.isClient)
+			return;
 
 		FluidHandler.ofOptional(this).ifPresent(fluids -> {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();

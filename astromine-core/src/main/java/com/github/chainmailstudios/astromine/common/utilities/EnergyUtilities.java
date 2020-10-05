@@ -37,7 +37,6 @@ import team.reborn.energy.EnergyHandler;
 import team.reborn.energy.EnergySide;
 
 import java.text.DecimalFormat;
-import java.util.Objects;
 
 public class EnergyUtilities {
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###");

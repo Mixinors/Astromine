@@ -26,6 +26,8 @@ package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -37,7 +39,6 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
@@ -46,14 +47,11 @@ import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 
-import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.annotations.SerializedName;
-import java.util.List;
-import java.util.Map;
 
 public class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 	final Identifier identifier;
@@ -73,6 +71,14 @@ public class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 	@Override
 	public boolean matches(Inventory inventory, World world) {
 		return ItemInventoryComponentFromItemInventory.of(inventory).getContents().values().stream().anyMatch(input);
+	}
+
+	public static boolean allows(World world, Inventory inventory) {
+		return world.getRecipeManager().getAllOfType(PressingRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
+			PressingRecipe recipe = ((PressingRecipe) it);
+
+			return recipe.matches(inventory, world);
+		});
 	}
 
 	@Override

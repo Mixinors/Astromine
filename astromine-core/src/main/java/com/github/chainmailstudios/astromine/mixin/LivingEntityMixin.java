@@ -25,7 +25,6 @@
 package com.github.chainmailstudios.astromine.mixin;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.registry.BreathableRegistry;
 import com.github.chainmailstudios.astromine.common.registry.FluidEffectRegistry;
 import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
@@ -55,7 +54,6 @@ import net.minecraft.util.math.Direction;
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
 import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
-import com.github.chainmailstudios.astromine.common.registry.AtmosphereRegistry;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineAttributes;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
@@ -64,7 +62,6 @@ import com.github.chainmailstudios.astromine.registry.AstromineTags;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin implements GravityEntity {
@@ -75,9 +72,11 @@ public abstract class LivingEntityMixin implements GravityEntity {
 	@Shadow
 	public abstract double getAttributeValue(EntityAttribute attribute);
 
-	@Shadow public abstract Iterable<ItemStack> getArmorItems();
+	@Shadow
+	public abstract Iterable<ItemStack> getArmorItems();
 
-	@Shadow public float flyingSpeed;
+	@Shadow
+	public float flyingSpeed;
 
 	@ModifyConstant(method = "travel(Lnet/minecraft/util/math/Vec3d;)V", constant = @Constant(doubleValue = 0.08D, ordinal = 0))
 	private double modifyGravity(double original) {
@@ -91,7 +90,8 @@ public abstract class LivingEntityMixin implements GravityEntity {
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	void onTick(CallbackInfo callbackInformation) {
 		Entity entity = (Entity) (Object) this;
-		if (entity.world.isClient) return;
+		if (entity.world.isClient)
+			return;
 
 		if (!entity.getType().isIn(AstromineTags.DOES_NOT_BREATHE)) {
 			ComponentProvider chunkProvider = ComponentProvider.fromChunk(entity.world.getChunk(entity.getBlockPos()));

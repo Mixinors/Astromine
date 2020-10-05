@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["010", "343", "070"],
+  "key": {
+    "0": {"tag": "c:meteoric_steel_plates"},
+    "1": {"item": "astromine:elite_circuit"},
+    "3": {"item": "astromine:pressurized_gas_canister"},
+    "4": {"item": "astromine:elite_machine_chassis"},
+    "7": {"item": "minecraft:magma_block"}
+  },
+  "result": {"item": "astromine:elite_refinery", "count": 1}
+}

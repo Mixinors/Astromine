@@ -347,7 +347,7 @@ public final class Fraction extends Number implements Comparable<Fraction> {
 	/**
 	 * Iterative version of Stein's Algorithm for greatest common divisor.
 	 */
-		private static long greatestCommonDivisor(long a, long b) {
+	private static long greatestCommonDivisor(long a, long b) {
 		long shift = 0;
 
 		if (a == 0) {

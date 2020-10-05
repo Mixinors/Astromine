@@ -28,6 +28,7 @@ import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -79,11 +80,19 @@ public class LiquidGeneratingRecipe implements Recipe<Inventory>, EnergyGenerati
 
 		FluidVolume fluidVolume = handler.getFirst();
 
-		if (!fluidVolume.getFluid().matchesType(fluid.get())) {
+		if (!fluidVolume.canAccept(fluid.get())) {
 			return false;
 		}
 
 		return fluidVolume.hasStored(amount);
+	}
+
+	public static boolean allows(World world, Fluid inserting, Fluid existing) {
+		return world.getRecipeManager().getAllOfType(LiquidGeneratingRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
+			LiquidGeneratingRecipe recipe = ((LiquidGeneratingRecipe) it);
+
+			return (existing == inserting || existing == Fluids.EMPTY) && (recipe.fluid.get() == inserting);
+		});
 	}
 
 	@Override

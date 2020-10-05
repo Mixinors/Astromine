@@ -33,7 +33,6 @@ import com.github.chainmailstudios.astromine.common.utilities.data.predicate.Tri
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -62,6 +61,13 @@ public class SimpleItemInventoryComponent implements ItemInventoryComponent {
 			contents.put(i, ItemStack.EMPTY);
 		}
 		this.contents.defaultReturnValue(ItemStack.EMPTY);
+	}
+
+	public SimpleItemInventoryComponent(ItemStack... stacks) {
+		this(stacks.length);
+		for (int i = 0; i < stacks.length; ++i) {
+			setStack(i, stacks[i]);
+		}
 	}
 
 	public void resize(int size) {

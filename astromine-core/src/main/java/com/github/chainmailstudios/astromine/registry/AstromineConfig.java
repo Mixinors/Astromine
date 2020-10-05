@@ -244,6 +244,42 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Fluid for the Elite Electrolyzer.")
 	public long eliteElectrolyzerFluid = 64L;
 
+	@Comment("Speed for the Primitive Refinery.")
+	public double primitiveRefinerySpeed = 0.5D;
+
+	@Comment("Speed for the Basic Refinery.")
+	public double basicRefinerySpeed = 1D;
+
+	@Comment("Speed for the Advanced Refinery.")
+	public double advancedRefinerySpeed = 2D;
+
+	@Comment("Speed for the Elite Refinery.")
+	public double eliteRefinerySpeed = 4D;
+
+	@Comment("Energy for the Primitive Refinery.")
+	public double primitiveRefineryEnergy = 2048D;
+
+	@Comment("Energy for the Basic Refinery.")
+	public double basicRefineryEnergy = 16384D;
+
+	@Comment("Energy for the Advanced Refinery.")
+	public double advancedRefineryEnergy = 32767D;
+
+	@Comment("Energy for the Elite Refinery.")
+	public double eliteRefineryEnergy = 65535D;
+
+	@Comment("Fluid for the Primitive Refinery.")
+	public long primitiveRefineryFluid = 4L;
+
+	@Comment("Fluid for the Basic Refinery.")
+	public long basicRefineryFluid = 8L;
+
+	@Comment("Fluid for the Advanced Refinery.")
+	public long advancedRefineryFluid = 16L;
+
+	@Comment("Fluid for the Elite Refinery.")
+	public long eliteRefineryFluid = 64L;
+
 	@Comment("Speed for the Primitive Electric Smelter.")
 	public double primitiveElectricSmelterSpeed = 0.5D;
 
@@ -317,25 +353,25 @@ public class AstromineConfig implements ConfigData {
 	public long primitiveTankFluid = 16L;
 
 	@Comment("Speed for the Primitive Tank.")
-	public double primitiveTankSpeed = 0.5D;
+	public double primitiveTankSpeed = 1D;
 
 	@Comment("Fluid for the Basic Tank.")
 	public long basicTankFluid = 32L;
 
 	@Comment("Speed for the Basic Tank.")
-	public double basicTankSpeed = 1D;
+	public double basicTankSpeed = 2D;
 
 	@Comment("Fluid for the Advanced Tank.")
 	public long advancedTankFluid = 128L;
 
 	@Comment("Speed for the Advanced Tank.")
-	public double advancedTankSpeed = 2D;
+	public double advancedTankSpeed = 4D;
 
 	@Comment("Fluid for the Elite Tank.")
 	public long eliteTankFluid = 256L;
 
 	@Comment("Speed for the Elite Tank.")
-	public double eliteTankSpeed = 4D;
+	public double eliteTankSpeed = 16D;
 
 	@Comment("Speed for the Primitive Capacitor.")
 	public double primitiveCapacitorSpeed = 0.5D;

@@ -28,6 +28,7 @@ import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -92,23 +93,31 @@ public class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsumingRe
 		FluidVolume firstOutputVolume = fluidHandler.getSecond();
 		FluidVolume secondOutputVolume = fluidHandler.getThird();
 
-		if (!inputVolume.getFluid().matchesType(inputFluid.get())) {
+		if (!inputVolume.canAccept(inputFluid.get())) {
 			return false;
 		}
 		if (!inputVolume.hasStored(inputAmount)) {
 			return false;
 		}
-		if (!firstOutputVolume.getFluid().matchesType(firstOutputFluid.get()) && !firstOutputVolume.isEmpty()) {
+		if (!firstOutputVolume.canAccept(firstOutputFluid.get())) {
 			return false;
 		}
 		if (!firstOutputVolume.hasAvailable(firstOutputAmount)) {
 			return false;
 		}
-		if (!secondOutputVolume.getFluid().matchesType(secondOutputFluid.get()) && !secondOutputVolume.isEmpty()) {
+		if (!secondOutputVolume.canAccept(secondOutputFluid.get())) {
 			return false;
 		}
 
 		return secondOutputVolume.hasAvailable(secondOutputAmount);
+	}
+
+	public static boolean allows(World world, Fluid inserting, Fluid existing) {
+		return world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
+			ElectrolyzingRecipe recipe = ((ElectrolyzingRecipe) it);
+
+			return (existing == inserting || existing == Fluids.EMPTY) && (recipe.inputFluid.get() == inserting);
+		});
 	}
 
 	@Override

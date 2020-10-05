@@ -47,9 +47,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
-
 public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventoryBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+	public double available = 0;
 	public double progress = 0;
 	public int limit = 100;
 
@@ -59,9 +58,14 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 
 	@Override
 	protected ItemInventoryComponent createItemComponent() {
-		return new SimpleItemInventoryComponent(1).withListener((inventory) -> {
-			progress = 0;
-			limit = 100;
+		return new SimpleItemInventoryComponent(1).withInsertPredicate((direction, stack, slot) -> {
+			if (slot != 0) {
+				return false;
+			}
+
+			return FuelRegistry.INSTANCE.get(stack.getItem()) != null;
+		}).withExtractPredicate((direction, stack, slot) -> {
+			return false;
 		});
 	}
 
@@ -74,48 +78,58 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 	public void tick() {
 		super.tick();
 
-		if (world == null) return;
-		if (world.isClient) return;
+		if (world == null)
+			return;
+		if (world.isClient)
+			return;
 
 		ItemHandler.ofOptional(this).ifPresent(items -> {
-			EnergyVolume energyVolume = getEnergyComponent().getVolume();
-			ItemStack burnStack = items.getFirst();
+			EnergyVolume energyVolume = energyComponent.getVolume();
 
-			Integer value = FuelRegistry.INSTANCE.get(burnStack.getItem());
-
-			if (value != null) {
-				boolean isFuel = !(burnStack.getItem() instanceof BucketItem) && value > 0;
-
-				if (isFuel) {
-					if (progress == 0) {
-						limit = value / 2;
-						progress++;
-					}
-				}
-
+			if (available > 0) {
 				double produced = 5;
 				for (int i = 0; i < 3 * getMachineSpeed(); i++) {
-					if (progress > 0 && progress <= limit) {
+					if (progress <= limit) {
 						if (energyVolume.hasAvailable(produced)) {
-							progress++;
+							--available;
+							++progress;
 							energyVolume.add(produced * getMachineSpeed());
-						}
-					} else {
-						burnStack.decrement(1);
 
+							tickActive();
+						} else {
+							tickInactive();
+						}
+
+					} else {
 						progress = 0;
-						limit = 100;
-						break;
+						limit = 0;
+
+						tickInactive();
 					}
 				}
+			} else {
+				ItemStack burnStack = items.getFirst();
 
-				if (isFuel || progress != 0) {
-					tickActive();
+				Integer value = FuelRegistry.INSTANCE.get(burnStack.getItem());
+
+				if (value != null) {
+					boolean isFuel = !(burnStack.getItem() instanceof BucketItem) && value > 0;
+
+					if (isFuel) {
+						available = value;
+						limit = value;
+
+						burnStack.decrement(1);
+					}
+
+					if (isFuel || progress != 0) {
+						tickActive();
+					} else {
+						tickInactive();
+					}
 				} else {
 					tickInactive();
 				}
-			} else {
-				tickInactive();
 			}
 		});
 	}
@@ -124,6 +138,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 	public CompoundTag toTag(CompoundTag tag) {
 		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
+		tag.putDouble("available", available);
 		return super.toTag(tag);
 	}
 
@@ -131,6 +146,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
 		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
+		available = tag.getDouble("available");
 		super.fromTag(state, tag);
 	}
 

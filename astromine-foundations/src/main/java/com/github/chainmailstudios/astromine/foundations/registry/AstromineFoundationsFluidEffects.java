@@ -31,10 +31,6 @@ import com.github.chainmailstudios.astromine.registry.AstromineFluidEffects;
 
 public class AstromineFoundationsFluidEffects extends AstromineFluidEffects {
 	public static void initialize() {
-		FluidEffectRegistry.INSTANCE.register(AstromineFoundationsFluids.ROCKET_FUEL, (entity) -> {
-			entity.setOnFireFor(1024);
-		});
-
 		FluidEffectRegistry.INSTANCE.register(Fluids.LAVA, (entity) -> {
 			entity.setOnFireFor(1024);
 		});

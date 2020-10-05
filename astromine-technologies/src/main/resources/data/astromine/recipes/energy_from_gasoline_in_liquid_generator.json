@@ -1,0 +1,10 @@
+{
+  "type": "astromine:liquid_generating",
+  "input": "astromine:gasoline",
+  "amount": {
+    "numerator": 1,
+    "denominator": 720
+  },
+  "energy_generated": 56,
+  "time": 1
+}

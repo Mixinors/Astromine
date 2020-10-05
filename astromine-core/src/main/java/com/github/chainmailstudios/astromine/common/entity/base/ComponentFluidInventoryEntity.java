@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.entity.base;
 
-import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedComponentSidedInventoryProvider;
 import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedInventoryProvider;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;

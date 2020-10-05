@@ -27,7 +27,6 @@ package com.github.chainmailstudios.astromine.transportations.registry.client;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 
 import net.minecraft.item.BlockItem;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 

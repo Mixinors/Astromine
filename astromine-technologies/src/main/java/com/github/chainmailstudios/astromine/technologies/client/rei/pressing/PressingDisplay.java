@@ -30,7 +30,8 @@ import net.fabricmc.api.Environment;
 
 import net.minecraft.util.Identifier;
 
-import com.github.chainmailstudios.astromine.technologies.common.recipe.PressingRecipe;import me.shedaniel.rei.api.EntryStack;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.PressingRecipe;
+import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeDisplay;
 
 import java.util.Collections;

@@ -24,21 +24,14 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
-import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.*;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.Rarity;
 
 import com.github.chainmailstudios.astromine.common.item.DynamicToolItem;
 import com.github.chainmailstudios.astromine.common.item.WrenchItem;
-import com.github.chainmailstudios.astromine.common.utilities.ToolUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
 import com.github.chainmailstudios.astromine.foundations.common.item.FireExtinguisherItem;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import draylar.magna.item.ExcavatorItem;
@@ -126,7 +119,7 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item STERLING_SILVER_DUST = register("sterling_silver_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item FOOLS_GOLD_DUST = register("fools_gold_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item METEORIC_STEEL_DUST = register("meteoric_steel_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
-	
+
 	public static final Item IRON_DUST = register("iron_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item GOLD_DUST = register("gold_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item LAPIS_DUST = register("lapis_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
@@ -145,7 +138,7 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item GALAXIUM_TINY_DUST = register("galaxium_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item UNIVITE_TINY_DUST = register("univite_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final Item LUNUM_TINY_DUST = register("lunum_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
-	
+
 	public static final Item COPPER_TINY_DUST = register("copper_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item TIN_TINY_DUST = register("tin_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item SILVER_TINY_DUST = register("silver_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
@@ -200,7 +193,7 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item STELLUM_GEAR = register("stellum_gear", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final Item UNIVITE_GEAR = register("univite_gear", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final Item LUNUM_GEAR = register("lunum_gear", new Item(AstromineFoundationsItems.getBasicSettings()));
-	
+
 	public static final Item COPPER_GEAR = register("copper_gear", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item TIN_GEAR = register("tin_gear", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item SILVER_GEAR = register("silver_gear", new Item(AstromineFoundationsItems.getBasicSettings()));
@@ -406,7 +399,7 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item METEORIC_STEEL_MATTOCK = register("meteoric_steel_mattock", new DynamicToolItem(METEORIC_STEEL_HOE, METEORIC_STEEL_AXE, AstromineFoundationsToolMaterials.METEORIC_STEEL, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item METEORIC_STEEL_HAMMER = register("meteoric_steel_hammer", new HammerItem(AstromineFoundationsToolMaterials.METEORIC_STEEL, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item METEORIC_STEEL_EXCAVATOR = register("meteoric_steel_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.METEORIC_STEEL, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
-	
+
 	// Armors
 	public static final Item COPPER_HELMET = register("copper_helmet", new ArmorItem(AstromineFoundationsArmorMaterials.COPPER, EquipmentSlot.HEAD, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item COPPER_CHESTPLATE = register("copper_chestplate", new ArmorItem(AstromineFoundationsArmorMaterials.COPPER, EquipmentSlot.CHEST, AstromineFoundationsItems.getBasicSettings()));
@@ -492,7 +485,7 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item METEORIC_STEEL_CHESTPLATE = register("meteoric_steel_chestplate", new ArmorItem(AstromineFoundationsArmorMaterials.METEORIC_STEEL, EquipmentSlot.CHEST, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item METEORIC_STEEL_LEGGINGS = register("meteoric_steel_leggings", new ArmorItem(AstromineFoundationsArmorMaterials.METEORIC_STEEL, EquipmentSlot.LEGS, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item METEORIC_STEEL_BOOTS = register("meteoric_steel_boots", new ArmorItem(AstromineFoundationsArmorMaterials.METEORIC_STEEL, EquipmentSlot.FEET, AstromineFoundationsItems.getBasicSettings()));
-	
+
 	public static final Item METEOR_METITE_CLUSTER = register("meteor_metite_cluster", new Item(AstromineFoundationsItems.getBasicSettings()));
 
 	public static final Item COPPER_WRENCH = register("copper_wrench", new WrenchItem(AstromineFoundationsToolMaterials.COPPER, AstromineFoundationsItems.getBasicSettings()));
@@ -502,11 +495,14 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item FIRE_EXTINGUISHER = register("fire_extinguisher", new FireExtinguisherItem(AstromineFoundationsItems.getBasicSettings().maxCount(1)));
 
 	// Apples
-	public static final FoodComponent ROSE_GOLD_APPLE_COMPONENT = new FoodComponent.Builder().hunger(4).saturationModifier(1.4F).statusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 140, 1), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 1200, 1), 1.0F).alwaysEdible().build();
+	public static final FoodComponent ROSE_GOLD_APPLE_COMPONENT = new FoodComponent.Builder().hunger(4).saturationModifier(1.4F).statusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 140, 1), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 1200,
+		1), 1.0F).alwaysEdible().build();
 	public static final Item ROSE_GOLD_APPLE = register("rose_gold_apple", new Item(AstromineFoundationsItems.getBasicSettings().food(ROSE_GOLD_APPLE_COMPONENT).rarity(Rarity.RARE)));
-	public static final FoodComponent FOOLS_GOLD_APPLE_COMPONENT = new FoodComponent.Builder().hunger(2).saturationModifier(0.4F).statusEffect(new StatusEffectInstance(StatusEffects.HASTE, 400, 1), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.LUCK, 4800, 0), 1.0F).alwaysEdible().build();
+	public static final FoodComponent FOOLS_GOLD_APPLE_COMPONENT = new FoodComponent.Builder().hunger(2).saturationModifier(0.4F).statusEffect(new StatusEffectInstance(StatusEffects.HASTE, 400, 1), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.LUCK, 4800, 0), 1.0F)
+		.alwaysEdible().build();
 	public static final Item FOOLS_GOLD_APPLE = register("fools_gold_apple", new Item(AstromineFoundationsItems.getBasicSettings().food(FOOLS_GOLD_APPLE_COMPONENT).rarity(Rarity.RARE)));
-	public static final FoodComponent LEAD_APPLE_COMPONENT = new FoodComponent.Builder().hunger(2).saturationModifier(0.4F).statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 40, 1), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 1000, 2), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.POISON, 500, 1), 1.0F).alwaysEdible().build();
+	public static final FoodComponent LEAD_APPLE_COMPONENT = new FoodComponent.Builder().hunger(2).saturationModifier(0.4F).statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 40, 1), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 1000, 2), 1.0F)
+		.statusEffect(new StatusEffectInstance(StatusEffects.POISON, 500, 1), 1.0F).alwaysEdible().build();
 	public static final Item LEAD_APPLE = register("lead_apple", new Item(AstromineFoundationsItems.getBasicSettings().food(LEAD_APPLE_COMPONENT).rarity(Rarity.RARE)));
 
 	public static Item.Settings getBasicSettings() {

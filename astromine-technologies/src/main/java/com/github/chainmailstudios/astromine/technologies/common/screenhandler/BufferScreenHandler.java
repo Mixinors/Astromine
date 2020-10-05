@@ -29,7 +29,6 @@ import net.minecraft.util.math.BlockPos;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityItemScreenHandler;
-import com.github.chainmailstudios.astromine.common.utilities.tier.BufferTier;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
 import com.github.vini2003.blade.common.miscellaneous.Position;

@@ -29,7 +29,6 @@ import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.screen.ScreenHandlerType;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.utilities.tier.BufferTier;
 import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.*;
 
@@ -104,6 +103,10 @@ public class AstromineTechnologiesScreenHandlers extends AstromineScreenHandlers
 
 	public static final ScreenHandlerType<ElectrolyzerScreenHandler> ELECTROLYZER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("electrolyzer"), ((syncId, inventory, buffer) -> {
 		return new ElectrolyzerScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+
+	public static final ScreenHandlerType<RefineryScreenHandler> REFINERY = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("refinery"), ((syncId, inventory, buffer) -> {
+		return new RefineryScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 
 	public static final ScreenHandlerType<FluidMixerScreenHandler> FLUID_MIXER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("fluid_mixer"), ((syncId, inventory, buffer) -> {

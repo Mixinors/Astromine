@@ -75,7 +75,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 
 	@Override
 	protected Predicate<FluidVolume> createFuelPredicate() {
-		return volume -> volume.getFluid() == AstromineFoundationsFluids.ROCKET_FUEL;
+		return volume -> volume.getFluid() == AstromineFoundationsFluids.KEROSENE_OXYGEN_FUEL;
 	}
 
 	@Override

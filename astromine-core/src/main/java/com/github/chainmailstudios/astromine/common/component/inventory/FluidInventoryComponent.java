@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
-import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -97,20 +96,12 @@ public interface FluidInventoryComponent extends NameableComponent {
 	}
 
 	default TypedActionResult<FluidVolume> insert(Direction direction, FluidVolume volume) {
-		if (this.canInsert()) {
-			return this.insert(direction, volume.getFluid(), volume.getAmount());
-		} else {
-			return new TypedActionResult<>(ActionResult.FAIL, volume);
-		}
-	}
-
-	default TypedActionResult<FluidVolume> insert(Direction direction, Fluid fluid, Fraction fraction) {
 		Optional<Map.Entry<Integer, FluidVolume>> matchingVolumeOptional = this.getContents().entrySet().stream().filter(entry -> {
-			return canInsert(direction, entry.getValue(), entry.getKey()) && entry.getValue().getFluid() == fluid;
+			return canInsert(direction, entry.getValue(), entry.getKey()) && entry.getValue().canAccept(volume.getFluid());
 		}).findFirst();
 
 		if (matchingVolumeOptional.isPresent()) {
-			matchingVolumeOptional.get().getValue().add(fraction);
+			matchingVolumeOptional.get().getValue().moveFrom(volume, Fraction.bottle());
 			return new TypedActionResult<>(ActionResult.SUCCESS, matchingVolumeOptional.get().getValue());
 		} else {
 			return new TypedActionResult<>(ActionResult.FAIL, null);
@@ -173,13 +164,7 @@ public interface FluidInventoryComponent extends NameableComponent {
 
 	@Nullable
 	default FluidVolume getFirstInsertableVolume(FluidVolume volume, Direction direction) {
-		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, entry.getValue(), entry.getKey()) && (entry.getValue().isEmpty() || (entry.getValue().getFluid() == volume.getFluid() && entry.getValue().hasAvailable(volume.getAmount())))).map(
-			Map.Entry::getValue).findFirst().orElse(null);
-	}
-
-	@Nullable
-	default FluidVolume getFirstInsertableVolume(Fluid fluid, Direction direction) {
-		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, entry.getValue(), entry.getKey()) && (entry.getValue().isEmpty() || (entry.getValue().getFluid() == fluid))).map(Map.Entry::getValue).findFirst().orElse(null);
+		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, volume, entry.getKey()) && (entry.getValue().canAccept(volume.getFluid()) && entry.getValue().hasAvailable(volume.getAmount()))).map(Map.Entry::getValue).findFirst().orElse(null);
 	}
 
 	default TypedActionResult<FluidVolume> extract(Direction direction, int slot, Fraction fraction) {

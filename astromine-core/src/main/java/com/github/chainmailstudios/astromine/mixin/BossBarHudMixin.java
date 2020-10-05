@@ -72,7 +72,7 @@ public abstract class BossBarHudMixin extends DrawableHelper {
 			this.drawTexture(matrices, i, j, 0, 12, overlayBarWidth, 12);
 
 			ci.cancel();
-			
+
 			this.client.getTextureManager().bindTexture(BARS_TEXTURE);
 		}
 	}

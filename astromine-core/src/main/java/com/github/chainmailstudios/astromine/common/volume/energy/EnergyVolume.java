@@ -43,7 +43,8 @@ public class EnergyVolume extends Volume<Identifier, Double> {
 
 	@Override
 	public <V extends Volume<Identifier, Double>> V add(V v, Double doubleA) {
-		if (!(v instanceof EnergyVolume)) return (V) this;
+		if (!(v instanceof EnergyVolume))
+			return (V) this;
 
 		double amount = Math.min(v.getSize() - v.getAmount(), Math.min(getAmount(), doubleA));
 
@@ -66,7 +67,8 @@ public class EnergyVolume extends Volume<Identifier, Double> {
 
 	@Override
 	public <V extends Volume<Identifier, Double>> V moveFrom(V v, Double doubleA) {
-		if (!(v instanceof EnergyVolume)) return (V) this;
+		if (!(v instanceof EnergyVolume))
+			return (V) this;
 
 		v.add(this, doubleA);
 
