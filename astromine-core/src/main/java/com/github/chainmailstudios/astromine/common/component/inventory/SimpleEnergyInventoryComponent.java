@@ -24,8 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import net.minecraft.nbt.CompoundTag;
+
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 
 import java.util.ArrayList;
 import java.util.List;

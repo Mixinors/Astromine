@@ -24,11 +24,14 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.feature;
 
-import java.util.Random;
-import java.util.stream.Collectors;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.StructureWorldAccess;
+import net.minecraft.world.gen.chunk.ChunkGenerator;
+import net.minecraft.world.gen.feature.DefaultFeatureConfig;
+import net.minecraft.world.gen.feature.Feature;
+import com.mojang.serialization.Codec;
 
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
-import com.mojang.serialization.Codec;
 import com.terraformersmc.shapes.api.Position;
 import com.terraformersmc.shapes.api.Quaternion;
 import com.terraformersmc.shapes.api.Shape;
@@ -36,11 +39,8 @@ import com.terraformersmc.shapes.impl.Shapes;
 import com.terraformersmc.shapes.impl.layer.transform.RotateLayer;
 import com.terraformersmc.shapes.impl.layer.transform.TranslateLayer;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 public class MoonOreFeature extends Feature<DefaultFeatureConfig> {
 	public MoonOreFeature(Codec<DefaultFeatureConfig> configCodec) {

@@ -24,13 +24,13 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.discoveries.common.world.decorator.MoonOreDecorator;
-
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.CountConfig;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.DecoratorConfig;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.discoveries.common.world.decorator.MoonOreDecorator;
 
 public class AstromineDiscoveriesDecorators {
 	public static Decorator<CountConfig> MOON_ORE = register("moon_ore_decorator", new MoonOreDecorator(CountConfig.CODEC));

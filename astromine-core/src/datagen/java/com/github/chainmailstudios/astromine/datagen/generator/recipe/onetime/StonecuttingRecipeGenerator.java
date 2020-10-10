@@ -4,9 +4,7 @@ import net.minecraft.advancement.criterion.ImpossibleCriterion;
 import net.minecraft.data.server.recipe.SingleItemRecipeJsonFactory;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.StonecuttingRecipe;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.base.OneTimeRecipeGenerator;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
@@ -31,7 +29,7 @@ public class StonecuttingRecipeGenerator extends OneTimeRecipeGenerator {
 	@Override
 	public Identifier getRecipeId() {
 		Identifier id = super.getRecipeId();
-		return new Identifier(id.getNamespace(), id.getPath()+"_from_stonecutting");
+		return new Identifier(id.getNamespace(), id.getPath() + "_from_stonecutting");
 	}
 
 	@Override

@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry.client;
 
-import com.github.chainmailstudios.astromine.discoveries.common.entity.PrimitiveRocketEntity;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 
@@ -39,6 +38,7 @@ import com.github.chainmailstudios.astromine.discoveries.client.render.sky.MarsS
 import com.github.chainmailstudios.astromine.discoveries.client.render.sky.MoonSkyProperties;
 import com.github.chainmailstudios.astromine.discoveries.client.render.sky.SpaceSkyProperties;
 import com.github.chainmailstudios.astromine.discoveries.client.render.sky.VulcanSkyProperties;
+import com.github.chainmailstudios.astromine.discoveries.common.entity.PrimitiveRocketEntity;
 import com.github.chainmailstudios.astromine.discoveries.common.item.SpaceSuitItem;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesDimensions;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesEntityTypes;

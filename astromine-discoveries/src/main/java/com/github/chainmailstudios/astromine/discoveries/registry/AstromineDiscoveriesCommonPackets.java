@@ -24,13 +24,15 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry;
 
+import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.util.Identifier;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.PrimitiveRocketEntity;
 import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
 import io.netty.buffer.Unpooled;
-import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Identifier;
 
 public class AstromineDiscoveriesCommonPackets extends AstromineCommonPackets {
 	public static final Identifier ROCKET_LAUNCH = AstromineCommon.identifier("rocket_launch");

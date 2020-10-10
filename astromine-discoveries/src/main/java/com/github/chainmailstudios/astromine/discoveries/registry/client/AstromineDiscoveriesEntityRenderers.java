@@ -24,9 +24,9 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry.client;
 
-import com.github.chainmailstudios.astromine.discoveries.client.render.entity.PrimitiveRocketEntityRenderer;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 
+import com.github.chainmailstudios.astromine.discoveries.client.render.entity.PrimitiveRocketEntityRenderer;
 import com.github.chainmailstudios.astromine.discoveries.client.render.entity.SpaceSlimeEntityRenderer;
 import com.github.chainmailstudios.astromine.discoveries.client.render.entity.SuperSpaceSlimeEntityRenderer;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesEntityTypes;

@@ -40,14 +40,6 @@ public final class Fraction extends Number implements Comparable<Fraction> {
 		this.denominator = Math.max(1, denominator);
 	}
 
-	public long getNumerator() {
-		return this.numerator;
-	}
-
-	public long getDenominator() {
-		return this.denominator;
-	}
-
 	public static Fraction empty() {
 		return new Fraction(0, 1);
 	}
@@ -92,66 +84,34 @@ public final class Fraction extends Number implements Comparable<Fraction> {
 		return new Fraction(fractionA.numerator * (denominator / fractionA.denominator) + fractionB.numerator * (denominator / fractionB.denominator), denominator);
 	}
 
-	public Fraction add(Fraction fractionB) {
-		return Fraction.add(this, fractionB);
-	}
-
 	public static Fraction subtract(Fraction fractionA, Fraction fractionB) {
 		long denominator = lowestCommonDenominator(fractionA.denominator, fractionB.denominator);
 
 		return new Fraction(fractionA.numerator * (denominator / fractionA.denominator) - fractionB.numerator * (denominator / fractionB.denominator), denominator);
 	}
 
-	public Fraction subtract(Fraction fractionB) {
-		return Fraction.subtract(this, fractionB);
-	}
-
 	public static Fraction divide(Fraction fractionA, Fraction fractionB) {
 		return multiply(fractionA, Fraction.inverse(fractionB));
-	}
-
-	public Fraction divide(Fraction fractionB) {
-		return Fraction.divide(this, fractionB);
 	}
 
 	public static Fraction multiply(Fraction fractionA, Fraction fractionB) {
 		return new Fraction(fractionA.numerator * fractionB.numerator, fractionA.denominator * fractionB.denominator);
 	}
 
-	public Fraction multiply(Fraction fractionB) {
-		return Fraction.multiply(this, fractionB);
-	}
-
 	public static Fraction inverse(Fraction fraction) {
 		return new Fraction(fraction.denominator, fraction.numerator);
-	}
-
-	public Fraction inverse() {
-		return Fraction.inverse(this);
 	}
 
 	public static Fraction limit(Fraction source, Fraction target) {
 		return new Fraction(source.numerator * (target.denominator / source.denominator), target.denominator);
 	}
 
-	public Fraction limit(Fraction target) {
-		return Fraction.limit(this, target);
-	}
-
 	public static Fraction minimum(Fraction fractionA, Fraction fractionB) {
 		return (fractionA.smallerThan(fractionB) ? fractionA : fractionB);
 	}
 
-	public Fraction minimum(Fraction fractionB) {
-		return Fraction.minimum(this, fractionB);
-	}
-
 	public static Fraction maximum(Fraction fractionA, Fraction fractionB) {
 		return (fractionA.biggerThan(fractionB) ? fractionA : fractionB);
-	}
-
-	public Fraction maximum(Fraction fractionB) {
-		return Fraction.maximum(this, fractionB);
 	}
 
 	public static Fraction simplify(Fraction fraction) {
@@ -164,6 +124,98 @@ public final class Fraction extends Number implements Comparable<Fraction> {
 		long divisor = greatestCommonDivisor(fraction.numerator, fraction.denominator);
 
 		return new Fraction(fraction.numerator / divisor, fraction.denominator / divisor);
+	}
+
+	public static Fraction fromTag(CompoundTag tag) {
+		long[] values = tag.getLongArray("values");
+
+		if (values.length != 2)
+			values = new long[]{ 0, 0 };
+
+		return new Fraction(values[0], values[1]);
+	}
+
+	private static long lowestCommonDenominator(long a, long b) {
+		return a == b ? a : a == 1 ? b : b == 1 ? a : (a * b) / greatestCommonDivisor(a, b);
+	}
+
+	/**
+	 * Iterative version of Stein's Algorithm for greatest common divisor.
+	 */
+	private static long greatestCommonDivisor(long a, long b) {
+		long shift = 0;
+
+		if (a == 0) {
+			return b;
+		}
+		if (b == 0) {
+			return a;
+		}
+
+		while (((a | b) & 1) == 0) {
+			++shift;
+			a >>= 1;
+			b >>= 1;
+		}
+
+		while ((a & 1) == 0) {
+			a >>= 1;
+		}
+
+		do {
+			while ((b & 1) == 0) {
+				b >>= 1;
+			}
+			if (a > b) {
+				long t = b;
+				b = a;
+				a = t;
+			}
+
+			b -= a;
+		} while (b != 0);
+
+		return a << shift;
+	}
+
+	public long getNumerator() {
+		return this.numerator;
+	}
+
+	public long getDenominator() {
+		return this.denominator;
+	}
+
+	public Fraction add(Fraction fractionB) {
+		return Fraction.add(this, fractionB);
+	}
+
+	public Fraction subtract(Fraction fractionB) {
+		return Fraction.subtract(this, fractionB);
+	}
+
+	public Fraction divide(Fraction fractionB) {
+		return Fraction.divide(this, fractionB);
+	}
+
+	public Fraction multiply(Fraction fractionB) {
+		return Fraction.multiply(this, fractionB);
+	}
+
+	public Fraction inverse() {
+		return Fraction.inverse(this);
+	}
+
+	public Fraction limit(Fraction target) {
+		return Fraction.limit(this, target);
+	}
+
+	public Fraction minimum(Fraction fractionB) {
+		return Fraction.minimum(this, fractionB);
+	}
+
+	public Fraction maximum(Fraction fractionB) {
+		return Fraction.maximum(this, fractionB);
 	}
 
 	public Fraction simplify() {
@@ -259,15 +311,6 @@ public final class Fraction extends Number implements Comparable<Fraction> {
 		return this;
 	}
 
-	public static Fraction fromTag(CompoundTag tag) {
-		long[] values = tag.getLongArray("values");
-
-		if (values.length != 2)
-			values = new long[]{ 0, 0 };
-
-		return new Fraction(values[0], values[1]);
-	}
-
 	public CompoundTag toTag() {
 		CompoundTag tag = new CompoundTag();
 
@@ -338,48 +381,5 @@ public final class Fraction extends Number implements Comparable<Fraction> {
 	@Override
 	public double doubleValue() {
 		return (double) this.numerator / (double) this.denominator;
-	}
-
-	private static long lowestCommonDenominator(long a, long b) {
-		return a == b ? a : a == 1 ? b : b == 1 ? a : (a * b) / greatestCommonDivisor(a, b);
-	}
-
-	/**
-	 * Iterative version of Stein's Algorithm for greatest common divisor.
-	 */
-	private static long greatestCommonDivisor(long a, long b) {
-		long shift = 0;
-
-		if (a == 0) {
-			return b;
-		}
-		if (b == 0) {
-			return a;
-		}
-
-		while (((a | b) & 1) == 0) {
-			++shift;
-			a >>= 1;
-			b >>= 1;
-		}
-
-		while ((a & 1) == 0) {
-			a >>= 1;
-		}
-
-		do {
-			while ((b & 1) == 0) {
-				b >>= 1;
-			}
-			if (a > b) {
-				long t = b;
-				b = a;
-				a = t;
-			}
-
-			b -= a;
-		} while (b != 0);
-
-		return a << shift;
 	}
 }

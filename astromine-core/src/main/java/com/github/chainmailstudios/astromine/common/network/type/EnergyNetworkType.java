@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.network.type;
 
+import net.minecraft.block.entity.BlockEntity;
+
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
@@ -33,13 +35,12 @@ import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegist
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
 import com.github.chainmailstudios.astromine.common.volume.handler.TransferHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.google.common.collect.Lists;
 import it.unimi.dsi.fastutil.objects.Reference2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Reference2DoubleOpenHashMap;
-import net.minecraft.block.entity.BlockEntity;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
+import com.google.common.collect.Lists;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;

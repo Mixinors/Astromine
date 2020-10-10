@@ -40,10 +40,10 @@ import com.github.chainmailstudios.astromine.common.component.block.entity.Block
 import com.github.chainmailstudios.astromine.common.component.inventory.NameableComponent;
 import com.github.chainmailstudios.astromine.common.utilities.WidgetUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.github.vini2003.blade.common.miscellaneous.Position;
-import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.collection.TabWidgetCollection;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import com.github.vini2003.blade.common.miscellaneous.Position;
+import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.utilities.Slots;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import com.github.vini2003.blade.common.widget.base.TabWidget;
@@ -62,14 +62,6 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 	public TabWidgetCollection mainTab;
 	protected TabWidget tabs;
 
-	public Position getTabsPosition(int width, int height) {
-		return Position.of(width / 2 - tabs.getWidth() / 2, height / 2 - tabs.getHeight() / 2);
-	}
-
-	public Size getTabsSize(int width, int height) {
-		return Size.of(176F, 188F + getTabWidgetExtendedHeight());
-	}
-
 	public ComponentBlockEntityScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player);
 
@@ -81,6 +73,14 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 			syncBlockEntity.doNotSkipInventory();
 			syncBlockEntity.sync();
 		}
+	}
+
+	public Position getTabsPosition(int width, int height) {
+		return Position.of(width / 2 - tabs.getWidth() / 2, height / 2 - tabs.getHeight() / 2);
+	}
+
+	public Size getTabsSize(int width, int height) {
+		return Size.of(176F, 188F + getTabWidgetExtendedHeight());
 	}
 
 	public int getTabWidgetExtendedHeight() {

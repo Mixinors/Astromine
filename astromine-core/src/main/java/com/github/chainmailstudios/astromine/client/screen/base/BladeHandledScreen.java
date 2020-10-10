@@ -24,11 +24,12 @@
 
 package com.github.chainmailstudios.astromine.client.screen.base;
 
-import com.github.vini2003.blade.client.handler.BaseHandledScreen;
-import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
+
+import com.github.vini2003.blade.client.handler.BaseHandledScreen;
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

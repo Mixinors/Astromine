@@ -25,7 +25,13 @@
 package com.github.chainmailstudios.astromine.foundations;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.foundations.registry.*;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsCriteria;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFeatures;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFluidEffects;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFluids;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsItems;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsOres;
 
 public class AstromineFoundationsCommon extends AstromineCommon {
 	public static String appendId(String id) {

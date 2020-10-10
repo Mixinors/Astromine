@@ -24,11 +24,12 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.item.ManualItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.item.ManualItem;
 
 public class AstromineItems {
 	public static final Item ENERGY = register("energy", new Item(new Item.Settings()));
@@ -44,6 +45,7 @@ public class AstromineItems {
 	 *        Name of item instance to be registered
 	 * @param item
 	 *        Item instance to be registered
+	 *
 	 * @return Item instance registered
 	 */
 	public static <T extends Item> T register(String name, T item) {
@@ -55,6 +57,7 @@ public class AstromineItems {
 	 *        Identifier of item instance to be registered
 	 * @param item
 	 *        Item instance to be registered
+	 *
 	 * @return Item instance registered
 	 */
 	public static <T extends Item> T register(Identifier name, T item) {

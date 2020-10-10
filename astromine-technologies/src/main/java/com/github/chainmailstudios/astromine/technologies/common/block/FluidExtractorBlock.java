@@ -24,9 +24,6 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block;
 
-import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingBlockWithEntity;
-import com.github.chainmailstudios.astromine.technologies.common.block.entity.FluidExtractorBlockEntity;
-import com.github.chainmailstudios.astromine.technologies.common.screenhandler.FluidExtractorScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -36,6 +33,10 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingBlockWithEntity;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.FluidExtractorBlockEntity;
+import com.github.chainmailstudios.astromine.technologies.common.screenhandler.FluidExtractorScreenHandler;
 
 public class FluidExtractorBlock extends WrenchableHorizontalFacingBlockWithEntity {
 	public FluidExtractorBlock(Settings settings) {

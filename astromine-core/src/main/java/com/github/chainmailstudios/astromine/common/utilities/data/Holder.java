@@ -33,6 +33,10 @@ public class Holder<T> {
 		this.t = t;
 	}
 
+	public static <Y> Holder<Y> of(Y y) {
+		return new Holder<>(y);
+	}
+
 	public Holder<T> with(Consumer<T> consumer) {
 		consumer.accept(t);
 
@@ -45,9 +49,5 @@ public class Holder<T> {
 
 	public void set(T t) {
 		this.t = t;
-	}
-
-	public static <Y> Holder<Y> of(Y y) {
-		return new Holder<>(y);
 	}
 }

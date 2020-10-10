@@ -56,10 +56,10 @@ public class AstromineDiscoveriesModelStateGenerators extends AstromineModelStat
 	));
 
 	public final ModelStateGenerator SPACE_SUIT = register(new GenericItemModelGenerator(
-		AstromineDiscoveriesItems.SPACE_SUIT_HELMET,
-		AstromineDiscoveriesItems.SPACE_SUIT_CHESTPLATE,
-		AstromineDiscoveriesItems.SPACE_SUIT_LEGGINGS,
-		AstromineDiscoveriesItems.SPACE_SUIT_BOOTS
+			AstromineDiscoveriesItems.SPACE_SUIT_HELMET,
+			AstromineDiscoveriesItems.SPACE_SUIT_CHESTPLATE,
+			AstromineDiscoveriesItems.SPACE_SUIT_LEGGINGS,
+			AstromineDiscoveriesItems.SPACE_SUIT_BOOTS
 	));
 
 	public final ModelStateGenerator ROCKET_PARTS = register(new GenericItemModelGenerator(

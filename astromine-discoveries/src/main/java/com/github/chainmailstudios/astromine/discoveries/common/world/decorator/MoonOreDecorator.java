@@ -24,19 +24,18 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.decorator;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Stream;
-
-import com.mojang.serialization.Codec;
-
 import net.minecraft.util.collection.WeightedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.gen.CountConfig;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.DecoratorContext;
+import com.mojang.serialization.Codec;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Stream;
 
 public class MoonOreDecorator extends Decorator<CountConfig> {
 	public MoonOreDecorator(Codec<CountConfig> configCodec) {

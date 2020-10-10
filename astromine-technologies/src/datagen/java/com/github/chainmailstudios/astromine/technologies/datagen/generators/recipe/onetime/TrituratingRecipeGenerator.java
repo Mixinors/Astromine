@@ -8,8 +8,6 @@ import net.minecraft.util.registry.Registry;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.utilities.GeneratorUtilities;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.base.EnergyProcessingRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
-import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.TrituratingRecipe;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
 
