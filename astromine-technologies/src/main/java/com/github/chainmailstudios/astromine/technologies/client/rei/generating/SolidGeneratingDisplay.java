@@ -24,12 +24,12 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei.generating;
 
-import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import net.minecraft.util.Identifier;
 
+import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import me.shedaniel.rei.api.EntryStack;
 
 import java.util.Collections;

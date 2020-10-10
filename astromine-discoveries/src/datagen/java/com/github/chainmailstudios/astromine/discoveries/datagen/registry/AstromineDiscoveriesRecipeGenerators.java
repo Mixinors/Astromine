@@ -10,8 +10,8 @@ import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.Wa
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.BlastingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.SmeltingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineRecipeGenerators;
-import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
 import com.github.chainmailstudios.astromine.discoveries.datagen.generators.recipe.TrituratingRecipeGenerator;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
 
 import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.ASTEROID_CLUSTER;
 import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.ASTEROID_ORE;

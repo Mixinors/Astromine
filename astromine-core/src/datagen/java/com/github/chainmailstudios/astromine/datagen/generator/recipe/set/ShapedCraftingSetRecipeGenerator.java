@@ -9,7 +9,6 @@ import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +38,7 @@ public class ShapedCraftingSetRecipeGenerator extends CraftingSetRecipeGenerator
 
 	@Override
 	public void generate(RecipeData recipes, MaterialSet set) {
-		if(pattern.length == 0) throw new IllegalStateException("recipe must have a pattern");
+		if (pattern.length == 0) throw new IllegalStateException("recipe must have a pattern");
 		else {
 			ShapedRecipeJsonFactory factory = ShapedRecipeJsonFactory
 					.create(set.getItem(output), outputCount)
@@ -47,8 +46,8 @@ public class ShapedCraftingSetRecipeGenerator extends CraftingSetRecipeGenerator
 			for (String s : pattern) {
 				factory.pattern(s);
 			}
-			if(patternContains('#')) factory.input('#', set.getIngredient(input));
-			if(patternContains('I')) factory.input('I', set.getItem(input));
+			if (patternContains('#')) factory.input('#', set.getIngredient(input));
+			if (patternContains('I')) factory.input('I', set.getItem(input));
 			ingredients.forEach(factory::input);
 			types.forEach((c, type) -> factory.input(c, set.getIngredient(type)));
 			factory.offerTo(recipes, getRecipeId(set));
@@ -56,9 +55,10 @@ public class ShapedCraftingSetRecipeGenerator extends CraftingSetRecipeGenerator
 	}
 
 	public boolean patternContains(char c) {
-		for(String s:pattern) {
-			if(s.contains(String.valueOf(c))) return true;
-		} return false;
+		for (String s : pattern) {
+			if (s.contains(String.valueOf(c))) return true;
+		}
+		return false;
 	}
 
 	@Override

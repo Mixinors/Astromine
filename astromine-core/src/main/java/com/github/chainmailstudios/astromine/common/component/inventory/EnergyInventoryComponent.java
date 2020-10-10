@@ -24,17 +24,19 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineItems;
-import nerdhub.cardinal.components.api.ComponentType;
 import net.fabricmc.fabric.api.util.NbtType;
+
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Direction;
+
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import nerdhub.cardinal.components.api.ComponentType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,6 +48,11 @@ import java.util.function.Predicate;
 
 public interface EnergyInventoryComponent extends NameableComponent {
 	EnergyVolume getVolume();
+
+	default void setVolume(EnergyVolume volume) {
+		getVolume().setSize(volume.getSize());
+		getVolume().setAmount(volume.getAmount());
+	}
 
 	default Item getSymbol() {
 		return AstromineItems.ENERGY.asItem();
@@ -90,11 +97,6 @@ public interface EnergyInventoryComponent extends NameableComponent {
 			return new TypedActionResult<>(ActionResult.SUCCESS, volume);
 		}
 		return new TypedActionResult<>(ActionResult.FAIL, null);
-	}
-
-	default void setVolume(EnergyVolume volume) {
-		getVolume().setSize(volume.getSize());
-		getVolume().setAmount(volume.getAmount());
 	}
 
 	default void dispatchConsumers() {
@@ -215,19 +217,19 @@ public interface EnergyInventoryComponent extends NameableComponent {
 		return AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT;
 	}
 
-	default void setAmount(double amount) {
-		getVolume().setAmount(amount);
-	}
-
 	default double getAmount() {
 		return getVolume().getAmount();
 	}
 
-	default void setSize(double amount) {
-		getVolume().setSize(amount);
+	default void setAmount(double amount) {
+		getVolume().setAmount(amount);
 	}
 
 	default double getSize() {
 		return getVolume().getSize();
+	}
+
+	default void setSize(double amount) {
+		getVolume().setSize(amount);
 	}
 }

@@ -24,14 +24,19 @@
 
 package com.github.chainmailstudios.astromine.common.volume.fluid;
 
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.base.Volume;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.Identifier;
+
+import com.github.chainmailstudios.astromine.common.volume.base.Volume;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 
 public class InfiniteFluidVolume extends FluidVolume {
 	public InfiniteFluidVolume(Fluid fluid) {
 		super(Fraction.of(Long.MAX_VALUE), Fraction.of(Long.MAX_VALUE), fluid);
+	}
+
+	public static InfiniteFluidVolume of(Fluid fluid) {
+		return new InfiniteFluidVolume(fluid);
 	}
 
 	@Override
@@ -42,10 +47,6 @@ public class InfiniteFluidVolume extends FluidVolume {
 	@Override
 	public Fraction getSize() {
 		return Fraction.of(Long.MAX_VALUE);
-	}
-
-	public static InfiniteFluidVolume of(Fluid fluid) {
-		return new InfiniteFluidVolume(fluid);
 	}
 
 	@Override

@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
-import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
-import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedComponentSidedInventoryProvider;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.PacketContext;
 
@@ -46,12 +44,14 @@ import alexiil.mc.lib.attributes.item.ItemAttributes;
 import alexiil.mc.lib.attributes.item.ItemExtractable;
 import alexiil.mc.lib.attributes.item.ItemInsertable;
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.SidedComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
 import com.github.chainmailstudios.astromine.common.utilities.TransportUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedComponentSidedInventoryProvider;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import nerdhub.cardinal.components.api.ComponentRegistry;
@@ -72,19 +72,14 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 public abstract class ComponentBlockEntity extends net.minecraft.block.entity.BlockEntity implements SidedComponentProvider, PacketConsumer, BlockEntityClientSerializable, Tickable {
+	public static final Identifier TRANSFER_UPDATE_PACKET = AstromineCommon.identifier("transfer_update_packet");
 	protected final BlockEntityTransferComponent transferComponent = new BlockEntityTransferComponent();
-
 	protected final Map<ComponentType<?>, Component> allComponents = Maps.newHashMap();
-
 	protected final Map<Identifier, BiConsumer<PacketByteBuf, PacketContext>> allHandlers = Maps.newHashMap();
-
-	protected boolean skipInventory = true;
-
 	public boolean isActive = false;
 
 	public boolean[] activity = { false, false, false, false, false };
-
-	public static final Identifier TRANSFER_UPDATE_PACKET = AstromineCommon.identifier("transfer_update_packet");
+	protected boolean skipInventory = true;
 
 	public ComponentBlockEntity(BlockEntityType<?> type) {
 		super(type);

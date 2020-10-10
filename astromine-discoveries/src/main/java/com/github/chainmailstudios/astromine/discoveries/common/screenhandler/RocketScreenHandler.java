@@ -24,6 +24,12 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.screenhandler;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
+
 import com.github.chainmailstudios.astromine.common.screenhandler.base.entity.ComponentEntityFluidInventoryScreenHandler;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.base.RocketEntity;
@@ -34,11 +40,6 @@ import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.ButtonWidget;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import com.github.vini2003.blade.common.widget.base.TextWidget;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 
 public class RocketScreenHandler extends ComponentEntityFluidInventoryScreenHandler {
 	private TextWidget fuelTextWidget;

@@ -24,16 +24,18 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei.alloysmelting;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import net.minecraft.util.Identifier;
+
 import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.technologies.client.rei.SimpleTransferRecipeDisplay;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.AlloySmeltingRecipe;
-import com.google.common.collect.Lists;
 import me.shedaniel.rei.api.EntryStack;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.Lists;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

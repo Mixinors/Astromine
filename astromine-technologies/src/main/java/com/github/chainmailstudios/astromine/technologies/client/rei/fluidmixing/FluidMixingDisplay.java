@@ -24,11 +24,11 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei.fluidmixing;
 
-import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
-import com.github.chainmailstudios.astromine.technologies.common.recipe.FluidMixingRecipe;
 import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.FluidMixingRecipe;
 
 public class FluidMixingDisplay extends AbstractFluidMixingDisplay {
 	public FluidMixingDisplay(FluidMixingRecipe recipe) {

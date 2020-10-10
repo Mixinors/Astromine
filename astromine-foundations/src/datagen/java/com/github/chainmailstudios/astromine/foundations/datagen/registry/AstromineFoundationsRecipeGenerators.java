@@ -14,14 +14,12 @@ import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.Shaped
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.ShapelessCraftingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.SmeltingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.SmithingSetRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineRecipeGenerators;
 import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.AppleCraftingRecipeGenerator;
 import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.ArmorCraftingRecipeGenerators;
 import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.ToolCraftingRecipeGenerators;
 import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.WrenchCraftingRecipeGenerator;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
-import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsItems;
 
 import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.*;
 

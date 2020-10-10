@@ -24,15 +24,24 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.rei;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
-import com.github.chainmailstudios.astromine.technologies.common.screenhandler.*;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
-import it.unimi.dsi.fastutil.ints.IntList;
-import me.shedaniel.rei.server.*;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.Identifier;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
+import com.github.chainmailstudios.astromine.technologies.common.screenhandler.AlloySmelterScreenHandler;
+import com.github.chainmailstudios.astromine.technologies.common.screenhandler.ElectricSmelterScreenHandler;
+import com.github.chainmailstudios.astromine.technologies.common.screenhandler.PresserScreenHandler;
+import com.github.chainmailstudios.astromine.technologies.common.screenhandler.SolidGeneratorScreenHandler;
+import com.github.chainmailstudios.astromine.technologies.common.screenhandler.TrituratorScreenHandler;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
+import me.shedaniel.rei.server.ContainerContext;
+import me.shedaniel.rei.server.ContainerInfo;
+import me.shedaniel.rei.server.ContainerInfoHandler;
+import me.shedaniel.rei.server.InventoryStackAccessor;
+import me.shedaniel.rei.server.StackAccessor;
 
 import java.util.List;
 import java.util.stream.Collectors;

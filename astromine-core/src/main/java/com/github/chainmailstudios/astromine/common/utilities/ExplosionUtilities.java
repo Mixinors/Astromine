@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
@@ -35,6 +34,8 @@ import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.chunk.WorldChunk;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
 
 public class ExplosionUtilities {
 	private static final BlockState AIR = Blocks.AIR.getDefaultState();

@@ -2,7 +2,6 @@ package com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.b
 
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.util.Identifier;
 
 public abstract class SimpleProcessingRecipeGenerator extends OneTimeRecipeGenerator {
 	public final Ingredient input;

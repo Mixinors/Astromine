@@ -24,6 +24,9 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.screenhandler;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.BlockPos;
+
 import com.github.chainmailstudios.astromine.common.component.SidedComponentProvider;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyFluidScreenHandler;
 import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBarWidget;
@@ -33,8 +36,6 @@ import com.github.chainmailstudios.astromine.technologies.common.block.entity.Re
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
 
 public class RefineryScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
 	private RefineryBlockEntity refinery;

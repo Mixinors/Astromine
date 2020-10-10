@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.volume.fluid;
 
-import com.google.common.base.Objects;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
@@ -33,8 +32,10 @@ import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+
+import com.google.common.base.Objects;
 
 public class FluidVolume extends Volume<Identifier, Fraction> {
 	public static final Identifier ID = AstromineCommon.identifier("fluid");
@@ -49,6 +50,38 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 	public FluidVolume(Fraction amount, Fraction size, Fluid fluid, Runnable runnable) {
 		super(ID, amount, size, runnable);
 		this.fluid = fluid;
+	}
+
+	public static FluidVolume empty() {
+		return new FluidVolume(Fraction.empty(), Fraction.bucket(), Fluids.EMPTY);
+	}
+
+	public static FluidVolume oxygen() {
+		return new FluidVolume(Fraction.bucket(), Fraction.bucket(), Registry.FLUID.get(AstromineCommon.identifier("oxygen")));
+	}
+
+	public static FluidVolume attached(SimpleFluidInventoryComponent component) {
+		return new FluidVolume(Fraction.empty(), Fraction.bucket(), Fluids.EMPTY, component::dispatchConsumers);
+	}
+
+	public static FluidVolume of(Fraction amount, Fluid fluid) {
+		return new FluidVolume(amount, Fraction.of(128L), fluid);
+	}
+
+	public static FluidVolume of(Fraction amount, Fraction size, Fluid fluid) {
+		return new FluidVolume(amount, size, fluid);
+	}
+
+	public static FluidVolume of(Fraction amount, Fluid fluid, Runnable runnable) {
+		return new FluidVolume(amount, Fraction.of(128L), fluid, runnable);
+	}
+
+	public static FluidVolume of(Fraction amount, Fraction size, Fluid fluid, Runnable runnable) {
+		return new FluidVolume(amount, size, fluid, runnable);
+	}
+
+	public static FluidVolume fromTag(CompoundTag tag) {
+		return new FluidVolume(Fraction.fromTag(tag.getCompound("amount")), Fraction.fromTag(tag.getCompound("size")), Registry.FLUID.get(new Identifier(tag.getString("fluid"))));
 	}
 
 	public Fluid getFluid() {
@@ -126,34 +159,6 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 		return (V) this;
 	}
 
-	public static FluidVolume empty() {
-		return new FluidVolume(Fraction.empty(), Fraction.bucket(), Fluids.EMPTY);
-	}
-
-	public static FluidVolume oxygen() {
-		return new FluidVolume(Fraction.bucket(), Fraction.bucket(), Registry.FLUID.get(AstromineCommon.identifier("oxygen")));
-	}
-
-	public static FluidVolume attached(SimpleFluidInventoryComponent component) {
-		return new FluidVolume(Fraction.empty(), Fraction.bucket(), Fluids.EMPTY, component::dispatchConsumers);
-	}
-
-	public static FluidVolume of(Fraction amount, Fluid fluid) {
-		return new FluidVolume(amount, Fraction.of(128L), fluid);
-	}
-
-	public static FluidVolume of(Fraction amount, Fraction size, Fluid fluid) {
-		return new FluidVolume(amount, size, fluid);
-	}
-
-	public static FluidVolume of(Fraction amount, Fluid fluid, Runnable runnable) {
-		return new FluidVolume(amount, Fraction.of(128L), fluid, runnable);
-	}
-
-	public static FluidVolume of(Fraction amount, Fraction size, Fluid fluid, Runnable runnable) {
-		return new FluidVolume(amount, size, fluid, runnable);
-	}
-
 	@Override
 	public <V extends Volume<Identifier, Fraction>> V copy() {
 		return (V) of(getAmount().copy(), getSize().copy(), getFluid());
@@ -170,10 +175,6 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 		tag.put("size", getSize().toTag());
 		tag.putString("fluid", Registry.FLUID.getId(getFluid()).toString());
 		return tag;
-	}
-
-	public static FluidVolume fromTag(CompoundTag tag) {
-		return new FluidVolume(Fraction.fromTag(tag.getCompound("amount")), Fraction.fromTag(tag.getCompound("size")), Registry.FLUID.get(new Identifier(tag.getString("fluid"))));
 	}
 
 	@Override

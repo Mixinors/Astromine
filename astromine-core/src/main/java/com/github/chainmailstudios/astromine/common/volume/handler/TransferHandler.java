@@ -24,12 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.volume.handler;
 
+import net.minecraft.util.math.Direction;
+
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import nerdhub.cardinal.components.api.ComponentType;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
-import net.minecraft.util.math.Direction;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -39,12 +40,6 @@ public class TransferHandler {
 
 	public TransferHandler(BlockEntityTransferComponent transferComponent) {
 		this.transferComponent = transferComponent;
-	}
-
-	public TransferHandler withDirection(ComponentType<?> type, Direction direction, Consumer<TransferType> consumer) {
-		Optional.ofNullable(transferComponent.get(type).get(direction)).ifPresent(consumer);
-
-		return this;
 	}
 
 	public static Optional<TransferHandler> of(Object object) {
@@ -61,5 +56,11 @@ public class TransferHandler {
 		}
 
 		return Optional.empty();
+	}
+
+	public TransferHandler withDirection(ComponentType<?> type, Direction direction, Consumer<TransferType> consumer) {
+		Optional.ofNullable(transferComponent.get(type).get(direction)).ifPresent(consumer);
+
+		return this;
 	}
 }

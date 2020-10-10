@@ -24,11 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.volume.energy;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Identifier;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Identifier;
 
 public class EnergyVolume extends Volume<Identifier, Double> {
 	public static final Identifier ID = AstromineCommon.identifier("energy");
@@ -39,6 +40,30 @@ public class EnergyVolume extends Volume<Identifier, Double> {
 
 	public EnergyVolume(double amount, double size, Runnable runnable) {
 		super(ID, amount, size, runnable);
+	}
+
+	public static EnergyVolume empty() {
+		return new EnergyVolume(0.0D, 0.0D);
+	}
+
+	public static EnergyVolume attached(SimpleEnergyInventoryComponent component) {
+		return new EnergyVolume(0.0D, 0.0D, component::dispatchConsumers);
+	}
+
+	public static EnergyVolume attached(double size, SimpleEnergyInventoryComponent component) {
+		return new EnergyVolume(0.0D, size, component::dispatchConsumers);
+	}
+
+	public static EnergyVolume of(double amount) {
+		return new EnergyVolume(amount, Long.MAX_VALUE);
+	}
+
+	public static EnergyVolume of(double amount, double size) {
+		return new EnergyVolume(amount, size);
+	}
+
+	public static EnergyVolume fromTag(CompoundTag tag) {
+		return of(tag.getDouble("amount"), tag.getDouble("size"));
 	}
 
 	@Override
@@ -84,36 +109,12 @@ public class EnergyVolume extends Volume<Identifier, Double> {
 		return (V) this;
 	}
 
-	public static EnergyVolume empty() {
-		return new EnergyVolume(0.0D, 0.0D);
-	}
-
-	public static EnergyVolume attached(SimpleEnergyInventoryComponent component) {
-		return new EnergyVolume(0.0D, 0.0D, component::dispatchConsumers);
-	}
-
-	public static EnergyVolume attached(double size, SimpleEnergyInventoryComponent component) {
-		return new EnergyVolume(0.0D, size, component::dispatchConsumers);
-	}
-
-	public static EnergyVolume of(double amount) {
-		return new EnergyVolume(amount, Long.MAX_VALUE);
-	}
-
-	public static EnergyVolume of(double amount, double size) {
-		return new EnergyVolume(amount, size);
-	}
-
 	@Override
 	public CompoundTag toTag() {
 		CompoundTag tag = new CompoundTag();
 		tag.putDouble("amount", getAmount());
 		tag.putDouble("size", getSize());
 		return tag;
-	}
-
-	public static EnergyVolume fromTag(CompoundTag tag) {
-		return of(tag.getDouble("amount"), tag.getDouble("size"));
 	}
 
 	@Override

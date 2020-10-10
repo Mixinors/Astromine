@@ -24,12 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.item;
 
-import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
-import draylar.magna.api.MagnaTool;
 import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -43,8 +39,15 @@ import net.minecraft.item.Vanishable;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import draylar.magna.api.MagnaTool;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
+
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 
 public class DrillItem extends EnergyVolumeItem implements DynamicAttributeTool, Vanishable, MagnaTool, DiggerTool {
 	private final int radius;

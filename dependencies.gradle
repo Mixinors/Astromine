@@ -62,6 +62,9 @@ project.ext.setDefaultApis = {
 
     // Maybe Data
     useAsApi("com.github.Draylar:maybe-data:${maybe_data_version}")
+
+    // Piglib
+    useAsApi("com.github.Shnupbups:Piglib:${piglib_version}")
 }
 
 project.ext.setRuntimeTestMods = {
@@ -73,7 +76,4 @@ project.ext.setRuntimeTestMods = {
 
     // DataBreaker
     useAsRuntime("com.github.SuperCoder7979:databreaker:${databreaker_version}")
-
-    // AE2
-    useAsRuntime("appeng:appliedenergistics2-fabric:${ae2_version}")
 }

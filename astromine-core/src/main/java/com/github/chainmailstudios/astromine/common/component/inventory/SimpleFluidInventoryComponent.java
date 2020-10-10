@@ -24,12 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
-import com.github.chainmailstudios.astromine.common.utilities.data.predicate.TriPredicate;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.nbt.CompoundTag;
-
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import net.minecraft.util.math.Direction;
+
+import com.github.chainmailstudios.astromine.common.utilities.data.predicate.TriPredicate;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -41,11 +41,9 @@ public class SimpleFluidInventoryComponent implements FluidInventoryComponent {
 	private final Map<Integer, FluidVolume> contents = new Int2ObjectOpenHashMap<>();
 
 	private final List<Runnable> listeners = new ArrayList<>();
-
+	private final int size;
 	private TriPredicate<@Nullable Direction, FluidVolume, Integer> insertPredicate = (direction, volume, slot) -> true;
 	private TriPredicate<@Nullable Direction, FluidVolume, Integer> extractPredicate = (direction, volume, integer) -> true;
-
-	private final int size;
 
 	public SimpleFluidInventoryComponent() {
 		this(0);

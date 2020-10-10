@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
-import com.github.chainmailstudios.astromine.foundations.common.world.feature.CrudeOilFeature;
 import net.minecraft.structure.StructurePieceType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -32,9 +31,14 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.chunk.StructureConfig;
-import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
+import net.minecraft.world.gen.feature.DefaultFeatureConfig;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.StructureFeature;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.foundations.common.world.feature.CrudeOilFeature;
 import com.github.chainmailstudios.astromine.foundations.common.world.feature.MeteorFeature;
 import com.github.chainmailstudios.astromine.foundations.common.world.feature.MeteorGenerator;
 import com.github.chainmailstudios.astromine.registry.AstromineFeatures;

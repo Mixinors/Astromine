@@ -24,18 +24,19 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.Direction;
+
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 import team.reborn.energy.EnergySide;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
 import java.text.DecimalFormat;
 
 public class EnergyUtilities {

@@ -24,11 +24,12 @@
 
 package com.github.chainmailstudios.astromine.discoveries.client.model;
 
-import com.github.chainmailstudios.astromine.discoveries.common.entity.PrimitiveRocketEntity;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
+
+import com.github.chainmailstudios.astromine.discoveries.common.entity.PrimitiveRocketEntity;
 
 public class PrimitiveRocketEntityModel extends EntityModel<PrimitiveRocketEntity> {
 	private final ModelPart model;
