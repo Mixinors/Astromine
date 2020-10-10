@@ -29,13 +29,13 @@ import net.minecraft.world.World;
 import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
 
 public interface GravityEntity {
-	default double getGravityMultiplier() {
+	default double astromine_getGravityMultiplier() {
 		return 1.0d;
 	}
 
-	double getGravity();
+	double astromine_getGravity();
 
-	default double getGravity(World world) {
-		return GravityRegistry.INSTANCE.get(world.getRegistryKey()) * getGravityMultiplier();
+	default double astromine_getGravity(World world) {
+		return GravityRegistry.INSTANCE.get(world.getRegistryKey()) * astromine_getGravityMultiplier();
 	}
 }

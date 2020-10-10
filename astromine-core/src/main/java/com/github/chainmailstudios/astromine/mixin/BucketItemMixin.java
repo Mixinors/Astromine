@@ -57,8 +57,8 @@ public class BucketItemMixin {
 	public Fluid fluid;
 
 	@Inject(at = @At("HEAD"), method = "use(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/TypedActionResult;", cancellable = true)
-	void onUse(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
-		BlockHitResult result = raycast(world, user, fluid == Fluids.EMPTY ? RaycastContext.FluidHandling.SOURCE_ONLY : RaycastContext.FluidHandling.NONE);
+	void astromine_use(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
+		BlockHitResult result = astromine_Raycast(world, user, fluid == Fluids.EMPTY ? RaycastContext.FluidHandling.SOURCE_ONLY : RaycastContext.FluidHandling.NONE);
 
 		if (result.getType() == HitResult.Type.BLOCK) {
 			BlockState state = world.getBlockState(result.getBlockPos());
@@ -78,7 +78,7 @@ public class BucketItemMixin {
 		}
 	}
 
-	private static BlockHitResult raycast(World world, PlayerEntity player, RaycastContext.FluidHandling fluidHandling) {
+	private static BlockHitResult astromine_Raycast(World world, PlayerEntity player, RaycastContext.FluidHandling fluidHandling) {
 		float f = player.pitch;
 		float g = player.yaw;
 

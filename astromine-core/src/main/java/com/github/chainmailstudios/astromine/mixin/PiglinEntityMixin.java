@@ -39,7 +39,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineTags;
 @Mixin(PiglinEntity.class)
 public class PiglinEntityMixin {
 	@Inject(method = "equipToOffHand(Lnet/minecraft/item/ItemStack;)V", at = @At("HEAD"), cancellable = true)
-	public void equipToOffHandInject(ItemStack stack, CallbackInfo ci) {
+	public void astromine_equipToOffHand(ItemStack stack, CallbackInfo ci) {
 		if (stack.getItem().isIn(AstromineTags.PIGLIN_BARTERING_ITEMS)) {
 			((MobEntity) (Object) this).equipStack(EquipmentSlot.OFFHAND, stack);
 			((MobEntity) (Object) this).updateDropChances(EquipmentSlot.OFFHAND);

@@ -43,6 +43,6 @@ public class StepAndDestroyBlockGoalMixin {
 
 	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = 0.08D))
 	double getGravity(double original) {
-		return ((GravityEntity) stepAndDestroyMob).getGravity();
+		return ((GravityEntity) stepAndDestroyMob).astromine_getGravity();
 	}
 }

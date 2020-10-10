@@ -51,27 +51,27 @@ import java.util.Optional;
 @Mixin(PiglinBrain.class)
 public abstract class PiglinBrainMixin {
 	@Inject(method = "acceptsForBarter(Lnet/minecraft/item/Item;)Z", at = @At("RETURN"), cancellable = true)
-	private static void acceptsForBarterInject(Item item, CallbackInfoReturnable<Boolean> cir) {
+	private static void astromine_acceptsForBarter(Item item, CallbackInfoReturnable<Boolean> cir) {
 		if (item.isIn(AstromineTags.PIGLIN_BARTERING_ITEMS)) {
 			cir.setReturnValue(true);
 		}
 	}
 
 	@Inject(method = "wearsGoldArmor(Lnet/minecraft/entity/LivingEntity;)Z", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
-	private static void wearsGoldArmorInject(LivingEntity entity, CallbackInfoReturnable<Boolean> cir, Iterable<ItemStack> iterable, Iterator iterator, ItemStack stack, Item item) {
+	private static void astromine_wearsGoldArmor(LivingEntity entity, CallbackInfoReturnable<Boolean> cir, Iterable<ItemStack> iterable, Iterator iterator, ItemStack stack, Item item) {
 		if (item.isIn(AstromineTags.PIGLIN_SAFE_ARMOR)) {
 			cir.setReturnValue(true);
 		}
 	}
 
 	@Redirect(method = "loot(Lnet/minecraft/entity/mob/PiglinEntity;Lnet/minecraft/entity/ItemEntity;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
-	private static Item lootRedirect(ItemStack stack) {
+	private static Item astromine_loot(ItemStack stack) {
 		Item item = stack.getItem();
 		return item.isIn(AstromineTags.PIGLIN_LOVED_NUGGETS) ? Items.GOLD_NUGGET : item;
 	}
 
 	@Inject(method = "consumeOffHandItem(Lnet/minecraft/entity/mob/PiglinEntity;Z)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/mob/PiglinBrain;acceptsForBarter(Lnet/minecraft/item/Item;)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
-	private static void triggerCriterion(PiglinEntity entity, boolean bl, CallbackInfo ci, ItemStack stack, boolean bl2) {
+	private static void astromine_consumeOffHandItem(PiglinEntity entity, boolean bl, CallbackInfo ci, ItemStack stack, boolean bl2) {
 		if (bl && bl2 && stack.getItem().isIn(AstromineTags.TRICKS_PIGLINS)) {
 			Optional<PlayerEntity> optional = entity.getBrain().getOptionalMemory(MemoryModuleType.NEAREST_VISIBLE_PLAYER);
 			if (optional.isPresent() && optional.get() instanceof ServerPlayerEntity) {

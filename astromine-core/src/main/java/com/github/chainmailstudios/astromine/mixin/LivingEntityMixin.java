@@ -80,15 +80,15 @@ public abstract class LivingEntityMixin implements GravityEntity {
 
 	@ModifyConstant(method = "travel(Lnet/minecraft/util/math/Vec3d;)V", constant = @Constant(doubleValue = 0.08D, ordinal = 0))
 	private double modifyGravity(double original) {
-		return getGravity();
+		return astromine_getGravity();
 	}
 
-	public double getGravityMultiplier() {
+	public double astromine_getGravityMultiplier() {
 		return getAttributeValue(AstromineAttributes.GRAVITY_MULTIPLIER);
 	}
 
 	@Inject(at = @At("HEAD"), method = "tick()V")
-	void onTick(CallbackInfo callbackInformation) {
+	void astromine_tick(CallbackInfo callbackInformation) {
 		Entity entity = (Entity) (Object) this;
 		if (entity.world.isClient)
 			return;
@@ -203,7 +203,7 @@ public abstract class LivingEntityMixin implements GravityEntity {
 	}
 
 	@Inject(at = @At("RETURN"), method = "createLivingAttributes()Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;")
-	private static void createLivingAttributesInject(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
+	private static void astromine_createLivingAttributes(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
 		cir.getReturnValue().add(AstromineAttributes.GRAVITY_MULTIPLIER);
 	}
 }
