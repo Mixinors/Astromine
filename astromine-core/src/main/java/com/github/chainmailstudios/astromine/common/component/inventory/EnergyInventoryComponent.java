@@ -27,6 +27,7 @@ package com.github.chainmailstudios.astromine.common.component.inventory;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import dev.onyxstudios.cca.api.v3.component.AutoSyncedComponent;
 import nerdhub.cardinal.components.api.ComponentType;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.item.Item;
@@ -41,10 +42,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public interface EnergyInventoryComponent extends NameableComponent {
+public interface EnergyInventoryComponent extends NameableComponent, AutoSyncedComponent {
 	EnergyVolume getVolume();
 
 	default Item getSymbol() {
@@ -194,6 +196,16 @@ public interface EnergyInventoryComponent extends NameableComponent {
 	default EnergyInventoryComponent withListener(Consumer<EnergyInventoryComponent> listener) {
 		addListener(() -> listener.accept(this));
 		return this;
+	}
+
+	@Override
+	default void readFromNbt(CompoundTag compoundTag) {
+		read(compoundTag.getCompound(getComponentType().getId().toString()));
+	}
+
+	@Override
+	default void writeToNbt(CompoundTag compoundTag) {
+		compoundTag.put(getComponentType().getId().toString(), write());
 	}
 
 	default void removeListener(Runnable listener) {

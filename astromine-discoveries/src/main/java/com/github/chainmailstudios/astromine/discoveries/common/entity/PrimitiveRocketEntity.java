@@ -34,7 +34,9 @@ import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.base.RocketEntity;
 import com.github.chainmailstudios.astromine.discoveries.common.screenhandler.RocketScreenHandler;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesDimensions;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFluids;
+import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
@@ -50,6 +52,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
@@ -152,5 +155,16 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 	@Override
 	public ScreenHandler createMenu(int syncId, PlayerInventory inventory, PlayerEntity player) {
 		return new RocketScreenHandler(syncId, player, getEntityId());
+	}
+
+	@Override
+	public void tick() {
+		if (world.getRegistryKey().equals(AstromineDiscoveriesDimensions.EARTH_SPACE_WORLD)) {
+			setVelocity(0, 0, 0);
+
+			getDataTracker().set(IS_RUNNING, false);
+		}
+
+		super.tick();
 	}
 }
