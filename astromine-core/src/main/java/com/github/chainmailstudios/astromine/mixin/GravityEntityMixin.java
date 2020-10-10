@@ -38,11 +38,11 @@ import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
 public abstract class GravityEntityMixin implements GravityEntity {
 	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = -0.04D))
 	double getGravity(double original) {
-		return -this.getGravity();
+		return -this.astromine_getGravity();
 	}
 
 	@Override
-	public double getGravityMultiplier() {
+	public double astromine_getGravityMultiplier() {
 		return 0.5d;
 	}
 }

@@ -42,7 +42,7 @@ import com.github.chainmailstudios.astromine.common.item.DiggerTool;
 @Mixin(targets = { "net/minecraft/enchantment/EnchantmentTarget$12" })
 public class DiggerEnchantmentTargetMixin {
 	@Inject(at = @At("HEAD"), method = "isAcceptableItem(Lnet/minecraft/item/Item;)Z", cancellable = true)
-	public void makeMultiToolEnchantable(Item item, CallbackInfoReturnable<Boolean> cir) {
+	public void astromine_makeMultiToolEnchantable(Item item, CallbackInfoReturnable<Boolean> cir) {
 		if (item instanceof DiggerTool)
 			cir.setReturnValue(true);
 	}

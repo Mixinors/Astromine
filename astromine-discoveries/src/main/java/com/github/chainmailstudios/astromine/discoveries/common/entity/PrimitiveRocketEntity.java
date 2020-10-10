@@ -92,7 +92,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 
 	@Override
 	protected Function<RocketEntity, Vector3d> createAccelerationFunction() {
-		return entity -> new Vector3d(0D, getY() / 1024D / 4D / 3D, 0D);
+		return entity -> new Vector3d(0D, 0.000025 / (getY() / 1024D), 0D);
 	}
 
 	@Override

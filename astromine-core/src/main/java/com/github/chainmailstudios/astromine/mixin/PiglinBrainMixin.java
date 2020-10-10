@@ -45,7 +45,7 @@ import java.util.Optional;
 @Mixin(PiglinBrain.class)
 public abstract class PiglinBrainMixin {
 	@Inject(method = "consumeOffHandItem(Lnet/minecraft/entity/mob/PiglinEntity;Z)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/mob/PiglinBrain;acceptsForBarter(Lnet/minecraft/item/Item;)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
-	private static void triggerCriterion(PiglinEntity entity, boolean bl, CallbackInfo ci, ItemStack stack, boolean bl2) {
+	private static void astromine_consumeOffHandItem(PiglinEntity entity, boolean bl, CallbackInfo ci, ItemStack stack, boolean bl2) {
 		if (bl && bl2 && stack.getItem().isIn(AstromineTags.TRICKS_PIGLINS)) {
 			Optional<PlayerEntity> optional = entity.getBrain().getOptionalMemory(MemoryModuleType.NEAREST_VISIBLE_PLAYER);
 			if (optional.isPresent() && optional.get() instanceof ServerPlayerEntity) {

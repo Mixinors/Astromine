@@ -26,9 +26,9 @@ package com.github.chainmailstudios.astromine.mixin;
 
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 
+import net.minecraft.nbt.CompoundTag;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -62,11 +62,10 @@ import java.util.List;
 public abstract class EntityMixin implements GravityEntity {
 	@Shadow
 	public World world;
-	int lastY = 0;
-	@Unique
-	Entity lastVehicle = null;
-	@Unique
-	TeleportTarget nextTeleportTarget = null;
+
+	private int astromine_lastY = 0;
+	private Entity astromine_lastVehicle = null;
+	private TeleportTarget astromine_nextTeleportTarget = null;
 	private World astromine_lastWorld = null;
 
 	@Shadow
@@ -74,30 +73,30 @@ public abstract class EntityMixin implements GravityEntity {
 
 	@ModifyVariable(at = @At("HEAD"), method = "handleFallDamage(FF)Z", index = 1)
 	float getDamageMultiplier(float damageMultiplier) {
-		return (float) (damageMultiplier * getGravity() * getGravity());
+		return (float) (damageMultiplier * astromine_getGravity() * astromine_getGravity());
 	}
 
 	@Override
-	public double getGravity() {
+	public double astromine_getGravity() {
 		World world = ((Entity) (Object) this).world;
-		return getGravity(world);
+		return astromine_getGravity(world);
 	}
 
 	@Inject(at = @At("HEAD"), method = "tickNetherPortal()V")
-	void onTick(CallbackInfo callbackInformation) {
+	void astromine_tickNetherPortal(CallbackInfo callbackInformation) {
 		Entity entity = (Entity) (Object) this;
 
-		if ((int) entity.getPos().getY() != lastY && !entity.world.isClient && entity.getVehicle() == null) {
-			lastY = (int) entity.getPos().getY();
+		if ((int) entity.getPos().getY() != astromine_lastY && !entity.world.isClient && entity.getVehicle() == null) {
+			astromine_lastY = (int) entity.getPos().getY();
 
 			int bottomPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey());
 			int topPortal = DimensionLayerRegistry.INSTANCE.getLevel(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey());
 
-			if (lastY <= bottomPortal && bottomPortal != Integer.MIN_VALUE) {
+			if (astromine_lastY <= bottomPortal && bottomPortal != Integer.MIN_VALUE) {
 				RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.BOTTOM, entity.world.getRegistryKey()).getValue());
 
 				astromine_teleport(entity, worldKey, DimensionLayerRegistry.Type.BOTTOM);
-			} else if (lastY >= topPortal && topPortal != Integer.MIN_VALUE) {
+			} else if (astromine_lastY >= topPortal && topPortal != Integer.MIN_VALUE) {
 				RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, DimensionLayerRegistry.INSTANCE.getDimension(DimensionLayerRegistry.Type.TOP, entity.world.getRegistryKey()).getValue());
 
 				astromine_teleport(entity, worldKey, DimensionLayerRegistry.Type.TOP);
@@ -105,12 +104,10 @@ public abstract class EntityMixin implements GravityEntity {
 		}
 
 		if (entity.getVehicle() != null)
-			lastVehicle = null;
-		if (lastVehicle != null) {
-			if (lastVehicle.getEntityWorld().getRegistryKey().equals(entity.getEntityWorld().getRegistryKey())) {
-				entity.startRiding(lastVehicle);
-				lastVehicle = null;
-			}
+			astromine_lastVehicle = null;
+		if (astromine_lastVehicle != null) {
+			entity.startRiding(astromine_lastVehicle);
+			astromine_lastVehicle = null;
 		}
 	}
 
@@ -124,7 +121,7 @@ public abstract class EntityMixin implements GravityEntity {
 			entries.add(entry.copy());
 		}
 
-		nextTeleportTarget = DimensionLayerRegistry.INSTANCE.getPlacer(type, entity.world.getRegistryKey()).placeEntity(entity);
+		astromine_nextTeleportTarget = DimensionLayerRegistry.INSTANCE.getPlacer(type, entity.world.getRegistryKey()).placeEntity(entity);
 		Entity newEntity = entity.moveToWorld(serverWorld);
 
 		for (DataTracker.Entry entry : entries) {
@@ -132,20 +129,20 @@ public abstract class EntityMixin implements GravityEntity {
 		}
 
 		for (Entity existingEntity : existingPassengers) {
-			((EntityMixin) (Object) existingEntity).lastVehicle = newEntity;
+			((EntityMixin) (Object) existingEntity).astromine_lastVehicle = newEntity;
 		}
 	}
 
 	@Inject(method = "getTeleportTarget", at = @At("HEAD"), cancellable = true)
-	protected void getTeleportTarget(ServerWorld destination, CallbackInfoReturnable<TeleportTarget> cir) {
-		if (nextTeleportTarget != null) {
-			cir.setReturnValue(nextTeleportTarget);
-			nextTeleportTarget = null;
+	protected void astromine_getTeleportTarget(ServerWorld destination, CallbackInfoReturnable<TeleportTarget> cir) {
+		if (astromine_nextTeleportTarget != null) {
+			cir.setReturnValue(astromine_nextTeleportTarget);
+			astromine_nextTeleportTarget = null;
 		}
 	}
 
 	@Inject(at = @At("HEAD"), method = "tick()V")
-	void onThing(CallbackInfo ci) {
+	void astromine_tick(CallbackInfo ci) {
 		// TODO Make this sync all visible chunks around the player.
 		if (AstromineCommonCallbacks.atmosphereTickCounter == AstromineConfig.get().gasTickRate && ((Entity) (Object) this) instanceof ServerPlayerEntity && world != astromine_lastWorld) {
 			astromine_lastWorld = world;

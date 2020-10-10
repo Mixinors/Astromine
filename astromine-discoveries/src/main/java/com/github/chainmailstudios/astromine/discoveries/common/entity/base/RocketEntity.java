@@ -105,10 +105,8 @@ public abstract class RocketEntity extends ComponentFluidInventoryEntity {
 			if (fuelPredicate.test(tank) || tank.isEmpty()) {
 				tank.minus(consumptionFunction.apply(this));
 
-				if (tank.isEmpty()) {
-					if (world.isClient) {
-						this.world.getPlayers().forEach(player -> player.sendMessage(new TranslatableText("text.astromine.rocket.disassemble_empty_fuel").formatted(Formatting.RED), false));
-					}
+				if (tank.isEmpty() && !world.isClient) {
+					this.world.getPlayers().forEach(player -> player.sendMessage(new TranslatableText("text.astromine.rocket.disassemble_empty_fuel").formatted(Formatting.RED), false));
 
 					this.tryDisassemble();
 				} else {
@@ -130,17 +128,13 @@ public abstract class RocketEntity extends ComponentFluidInventoryEntity {
 					}
 				}
 
-				if (BlockPos.Mutable.method_29715(getBoundingBox()).anyMatch(pos -> world.getBlockState(pos).isFullCube(world, pos))) {
-					if (world.isClient) {
-						this.world.getPlayers().forEach(player -> player.sendMessage(new TranslatableText("text.astromine.rocket.disassemble_collision").formatted(Formatting.RED), false));
-					}
+				if (BlockPos.Mutable.method_29715(getBoundingBox()).anyMatch(pos -> world.getBlockState(pos).isFullCube(world, pos)) && !world.isClient) {
+					this.world.getPlayers().forEach(player -> player.sendMessage(new TranslatableText("text.astromine.rocket.disassemble_collision").formatted(Formatting.RED), false));
 
 					this.tryDisassemble();
 				}
-			} else {
-				if (world.isClient) {
-					this.world.getPlayers().forEach(player -> player.sendMessage(new TranslatableText("text.astromine.rocket.disassemble_invalid_fuel").formatted(Formatting.RED), false));
-				}
+			} else if (!world.isClient) {
+				this.world.getPlayers().forEach(player -> player.sendMessage(new TranslatableText("text.astromine.rocket.disassemble_invalid_fuel").formatted(Formatting.RED), false));
 
 				this.tryDisassemble();
 			}
@@ -199,6 +193,7 @@ public abstract class RocketEntity extends ComponentFluidInventoryEntity {
 	public void tryDisassemble() {
 		this.tryExplode();
 		this.explosionRemains.forEach(stack -> ItemScatterer.spawn(world, getX(), getY(), getZ(), stack.copy()));
+		this.getPassengersDeep().forEach(Entity::stopRiding);
 		this.remove();
 	}
 

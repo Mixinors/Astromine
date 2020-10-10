@@ -47,7 +47,7 @@ public class BiomeLayerSamplerMixin {
 	private int storedLastBiomeId;
 
 	@Inject(method = "sample", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/BuiltinBiomes;fromRawId(I)Lnet/minecraft/util/registry/RegistryKey;", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
-	private void storeVariables(Registry<Biome> registry, int i, int j, CallbackInfoReturnable<Biome> cir, int k) {
+	private void astromine_storeVariables(Registry<Biome> registry, int i, int j, CallbackInfoReturnable<Biome> cir, int k) {
 		this.registry = registry;
 		storedLastBiomeId = k;
 	}
@@ -63,7 +63,7 @@ public class BiomeLayerSamplerMixin {
 	}
 
 	@Inject(method = "sample", at = @At("RETURN"))
-	private void removeStoredVariables(Registry<Biome> registry, int i, int j, CallbackInfoReturnable<Biome> cir) {
+	private void astromine_removeStoredVariables(Registry<Biome> registry, int i, int j, CallbackInfoReturnable<Biome> cir) {
 		this.registry = null;
 	}
 }

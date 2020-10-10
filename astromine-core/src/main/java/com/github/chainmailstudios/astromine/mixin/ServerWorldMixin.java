@@ -37,7 +37,7 @@ import com.github.chainmailstudios.astromine.common.callback.ServerChunkTickCall
 @Mixin(ServerWorld.class)
 public class ServerWorldMixin {
 	@Inject(method = "tickChunk", at = @At("HEAD"))
-	private void tickChunk(WorldChunk chunk, int randomTickSpeed, CallbackInfo ci) {
+	private void astromine_tickChunk(WorldChunk chunk, int randomTickSpeed, CallbackInfo ci) {
 		ServerChunkTickCallback.EVENT.invoker().tickChunk((ServerWorld) (Object) this, chunk);
 	}
 }

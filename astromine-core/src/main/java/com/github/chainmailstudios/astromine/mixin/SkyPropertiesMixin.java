@@ -49,7 +49,7 @@ public class SkyPropertiesMixin {
 	private static Object2ObjectMap<Identifier, SkyProperties> BY_IDENTIFIER;
 
 	@Inject(method = "<clinit>", at = @At("RETURN"))
-	private static void init(CallbackInfo info) {
+	private static void astromine_init(CallbackInfo info) {
 		SkyPropertiesCallback.EVENT.invoker().handle(BY_IDENTIFIER);
 	}
 }
