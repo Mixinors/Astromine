@@ -958,7 +958,7 @@
   "text.astromine.world.meteor_ores.page_one.text": "Veins of ores found in $(thing)$(l:world/meteors)meteors$(), which may be harvested for resources.$(p)When mined, will drop their respective $(thing)$(l:world/ore_clusters)ore clusters$().",
   "text.astromine.world.meteors.title": "Meteors",
   "text.astromine.world.meteors.page_one.title": "Meteors",
-  "text.astromine.world.meteors.page_one.text": "Foreign bodies that, cruising through the stairs, collided with a planetary body; said to contain $(thing)$(l:world/meteor_ores)extraterrestrial ores$().",
+  "text.astromine.world.meteors.page_one.text": "Foreign bodies that, cruising through the stars, collided with a planetary body; said to contain $(thing)$(l:world/meteor_ores)extraterrestrial ores$().",
   "text.astromine.world.ore_clusters.title": "Ore Clusters",
   "text.astromine.world.ore_clusters.page_one.title": "Ore Clusters",
   "text.astromine.world.ore_clusters.page_one.text": "Clusters of ores obtained from $(thing)$(l:world/asteroid_ores)asteroid ores$() or $(thing)$(l:world/meteor_ores)meteor ores$(), which may be processed for resources.",
