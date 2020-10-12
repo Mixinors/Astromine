@@ -24,16 +24,16 @@
 
 package com.github.chainmailstudios.astromine.common.utilities.capability.energy;
 
-import com.github.chainmailstudios.astromine.common.component.SidedComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.common.volume.handler.TransferHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 import team.reborn.energy.EnergySide;
 import team.reborn.energy.EnergyStorage;
 import team.reborn.energy.EnergyTier;
 
-public interface ExtendedEnergyProvider extends EnergyStorage, SidedComponentProvider {
+public interface ExtendedEnergyProvider extends EnergyStorage, ComponentProvider {
 	@Override
 	default double getStored(EnergySide side) {
 		return getEnergyComponent().getAmount();

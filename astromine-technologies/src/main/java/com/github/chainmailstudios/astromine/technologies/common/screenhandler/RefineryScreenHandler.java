@@ -27,7 +27,6 @@ package com.github.chainmailstudios.astromine.technologies.common.screenhandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.chainmailstudios.astromine.common.component.SidedComponentProvider;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyFluidScreenHandler;
 import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBarWidget;
 import com.github.chainmailstudios.astromine.common.widget.blade.HorizontalArrowWidget;
@@ -60,35 +59,33 @@ public class RefineryScreenHandler extends ComponentBlockEntityEnergyFluidScreen
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		SidedComponentProvider sidedComponentProvider = blockEntity;
-
 		FluidVerticalBarWidget firstOutputFluidBar = new FluidVerticalBarWidget();
 		firstOutputFluidBar.setSize(Size.absolute(fluidBar));
-		firstOutputFluidBar.setVolume(() -> sidedComponentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(1));
+		firstOutputFluidBar.setVolume(() -> blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(1));
 
 		FluidVerticalBarWidget secondOutputFluidBar = new FluidVerticalBarWidget();
 		secondOutputFluidBar.setSize(Size.absolute(fluidBar));
-		secondOutputFluidBar.setVolume(() -> sidedComponentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(2));
+		secondOutputFluidBar.setVolume(() -> blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(2));
 
 		FluidVerticalBarWidget thirdOutputFluidBar = new FluidVerticalBarWidget();
 		thirdOutputFluidBar.setSize(Size.absolute(fluidBar));
-		thirdOutputFluidBar.setVolume(() -> sidedComponentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(3));
+		thirdOutputFluidBar.setVolume(() -> blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(3));
 
 		FluidVerticalBarWidget fourthOutputFluidBar = new FluidVerticalBarWidget();
 		fourthOutputFluidBar.setSize(Size.absolute(fluidBar));
-		fourthOutputFluidBar.setVolume(() -> sidedComponentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(4));
+		fourthOutputFluidBar.setVolume(() -> blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(4));
 
 		FluidVerticalBarWidget fifthOutputFluidBar = new FluidVerticalBarWidget();
 		fifthOutputFluidBar.setSize(Size.absolute(fluidBar));
-		fifthOutputFluidBar.setVolume(() -> sidedComponentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(5));
+		fifthOutputFluidBar.setVolume(() -> blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(5));
 
 		FluidVerticalBarWidget sixthOutputFluidBar = new FluidVerticalBarWidget();
 		sixthOutputFluidBar.setSize(Size.absolute(fluidBar));
-		sixthOutputFluidBar.setVolume(() -> sidedComponentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(6));
+		sixthOutputFluidBar.setVolume(() -> blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(6));
 
 		FluidVerticalBarWidget seventhOutputFluidBar = new FluidVerticalBarWidget();
 		seventhOutputFluidBar.setSize(Size.absolute(fluidBar));
-		seventhOutputFluidBar.setVolume(() -> sidedComponentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(7));
+		seventhOutputFluidBar.setVolume(() -> blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(7));
 
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight() / 2 - 8));

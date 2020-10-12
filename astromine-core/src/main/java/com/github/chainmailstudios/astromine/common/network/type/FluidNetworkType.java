@@ -25,15 +25,11 @@
 package com.github.chainmailstudios.astromine.common.network.type;
 
 import nerdhub.cardinal.components.api.component.ComponentProvider;
-import net.minecraft.block.FacingBlock;
-import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.state.property.Property;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
-import com.github.chainmailstudios.astromine.common.component.SidedComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;

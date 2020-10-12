@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.utilities.capability.inventory;
 
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.entity.BlockEntity;
@@ -33,7 +34,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.WorldAccess;
 
-import com.github.chainmailstudios.astromine.common.component.SidedComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
 import com.github.chainmailstudios.astromine.common.utilities.TransportUtilities;
@@ -43,7 +43,7 @@ import it.unimi.dsi.fastutil.ints.IntSet;
 
 import java.util.stream.IntStream;
 
-public interface ExtendedComponentSidedInventoryProvider extends SidedComponentProvider, InventoryProvider, SidedInventory, ItemInventoryFromInventoryComponent {
+public interface ExtendedComponentSidedInventoryProvider extends ComponentProvider, InventoryProvider, SidedInventory, ItemInventoryFromInventoryComponent {
 	@Override
 	default SidedInventory getInventory(BlockState state, WorldAccess world, BlockPos pos) {
 		return this;
