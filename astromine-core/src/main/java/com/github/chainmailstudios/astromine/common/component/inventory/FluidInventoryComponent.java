@@ -98,7 +98,7 @@ public interface FluidInventoryComponent extends NameableComponent, AutoSyncedCo
 
 	default TypedActionResult<FluidVolume> insert(Direction direction, FluidVolume volume) {
 		Optional<Map.Entry<Integer, FluidVolume>> matchingVolumeOptional = this.getContents().entrySet().stream().filter(entry -> {
-			return canInsert(direction, entry.getValue(), entry.getKey()) && entry.getValue().canAccept(volume.getFluid());
+			return canInsert(direction, volume, entry.getKey()) && entry.getValue().canAccept(volume.getFluid());
 		}).findFirst();
 
 		if (matchingVolumeOptional.isPresent()) {
