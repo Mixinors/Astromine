@@ -58,8 +58,7 @@ public class RocketScreenHandler extends ComponentEntityFluidInventoryScreenHand
 		super.initialize(width, height);
 
 		ButtonWidget launchButtonWidget = new ButtonWidget(() -> {
-			if (entity.getFluidComponent().getVolume(0).biggerThan(Fraction.empty()))
-				entity.getDataTracker().set(RocketEntity.IS_RUNNING, true);
+			((RocketEntity) entity).tryLaunch(this.getPlayer());
 
 			return null;
 		});
@@ -70,7 +69,7 @@ public class RocketScreenHandler extends ComponentEntityFluidInventoryScreenHand
 		launchButtonWidget.setDisabled(() -> entity.getDataTracker().get(RocketEntity.IS_RUNNING) || entity.getFluidComponent().getVolume(0).smallerOrEqualThan(Fraction.empty()));
 
 		ButtonWidget abortButtonWidget = new ButtonWidget(() -> {
-			((RocketEntity) entity).tryDisassemble();
+			((RocketEntity) entity).tryDisassemble(true);
 
 			return null;
 		});

@@ -35,6 +35,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Arm;
@@ -51,6 +52,7 @@ import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesCriteria;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesParticles;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
@@ -108,7 +110,7 @@ public abstract class RocketEntity extends ComponentFluidInventoryEntity {
 				if (tank.isEmpty() && !world.isClient) {
 					this.world.getPlayers().forEach(player -> player.sendMessage(new TranslatableText("text.astromine.rocket.disassemble_empty_fuel").formatted(Formatting.RED), false));
 
-					this.tryDisassemble();
+					this.tryDisassemble(false);
 				} else {
 					Vector3d acceleration = accelerationFunction.apply(this);
 
@@ -131,12 +133,12 @@ public abstract class RocketEntity extends ComponentFluidInventoryEntity {
 				if (BlockPos.Mutable.method_29715(getBoundingBox()).anyMatch(pos -> world.getBlockState(pos).isFullCube(world, pos)) && !world.isClient) {
 					this.world.getPlayers().forEach(player -> player.sendMessage(new TranslatableText("text.astromine.rocket.disassemble_collision").formatted(Formatting.RED), false));
 
-					this.tryDisassemble();
+					this.tryDisassemble(false);
 				}
 			} else if (!world.isClient) {
 				this.world.getPlayers().forEach(player -> player.sendMessage(new TranslatableText("text.astromine.rocket.disassemble_invalid_fuel").formatted(Formatting.RED), false));
 
-				this.tryDisassemble();
+				this.tryDisassemble(false);
 			}
 		} else {
 			setVelocity(Vec3d.ZERO);
@@ -190,10 +192,16 @@ public abstract class RocketEntity extends ComponentFluidInventoryEntity {
 		return getFluidComponent().getVolume(0);
 	}
 
-	public void tryDisassemble() {
+	public void tryDisassemble(boolean intentional) {
 		this.tryExplode();
 		this.explosionRemains.forEach(stack -> ItemScatterer.spawn(world, getX(), getY(), getZ(), stack.copy()));
-		this.getPassengersDeep().forEach(Entity::stopRiding);
+		Collection<Entity> passengers = this.getPassengersDeep();
+		for(Entity passenger:passengers) {
+			if (passenger instanceof ServerPlayerEntity) {
+				AstromineDiscoveriesCriteria.DESTROY_ROCKET.trigger((ServerPlayerEntity) passenger, intentional);
+			}
+			passenger.stopRiding();
+		}
 		this.remove();
 	}
 
@@ -207,4 +215,13 @@ public abstract class RocketEntity extends ComponentFluidInventoryEntity {
 	}
 
 	public abstract void openInventory(PlayerEntity player);
+
+	public void tryLaunch(PlayerEntity launcher) {
+		if (this.getFluidComponent().getVolume(0).biggerThan(Fraction.empty())) {
+			this.getDataTracker().set(RocketEntity.IS_RUNNING, true);
+			if(launcher instanceof ServerPlayerEntity) {
+				AstromineDiscoveriesCriteria.LAUNCH_ROCKET.trigger((ServerPlayerEntity) launcher);
+			}
+		}
+	}
 }
