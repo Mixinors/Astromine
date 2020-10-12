@@ -24,12 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.item.base;
 
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import me.shedaniel.cloth.api.durability.bar.DurabilityBarItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
+
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import me.shedaniel.cloth.api.durability.bar.DurabilityBarItem;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHolder;
 import team.reborn.energy.EnergyTier;
@@ -43,16 +44,16 @@ public class EnergyVolumeItem extends BaseVolumeItem<EnergyVolume> implements En
 		this.size = size;
 	}
 
-	public double getSize() {
-		return size;
-	}
-
 	public static EnergyVolumeItem ofCreative(Item.Settings settings) {
 		return new EnergyVolumeItem(settings, Double.MAX_VALUE);
 	}
 
 	public static EnergyVolumeItem of(Settings settings, double size) {
 		return new EnergyVolumeItem(settings, size);
+	}
+
+	public double getSize() {
+		return size;
 	}
 
 	@Override

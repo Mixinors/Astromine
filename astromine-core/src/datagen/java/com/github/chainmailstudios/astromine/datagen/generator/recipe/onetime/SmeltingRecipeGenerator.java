@@ -5,7 +5,6 @@ import net.minecraft.data.server.recipe.CookingRecipeJsonFactory;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.base.CookingRecipeGenerator;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
@@ -26,7 +25,7 @@ public class SmeltingRecipeGenerator extends CookingRecipeGenerator {
 	@Override
 	public Identifier getRecipeId() {
 		Identifier id = super.getRecipeId();
-		return new Identifier(id.getNamespace(), id.getPath()+"_from_smelting");
+		return new Identifier(id.getNamespace(), id.getPath() + "_from_smelting");
 	}
 
 	@Override

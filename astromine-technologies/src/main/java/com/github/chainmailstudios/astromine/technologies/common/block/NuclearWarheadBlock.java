@@ -24,12 +24,13 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block;
 
-import com.github.chainmailstudios.astromine.common.utilities.ExplosionUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.common.utilities.ExplosionUtilities;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 public class NuclearWarheadBlock extends Block {
 	public NuclearWarheadBlock(Settings settings) {

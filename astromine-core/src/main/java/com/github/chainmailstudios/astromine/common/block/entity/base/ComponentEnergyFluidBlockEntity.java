@@ -36,14 +36,14 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 public abstract class ComponentEnergyFluidBlockEntity extends ComponentEnergyBlockEntity implements SidedComponentProvider, BlockEntityClientSerializable {
 	protected final FluidInventoryComponent fluidComponent = createFluidComponent();
 
-	protected abstract FluidInventoryComponent createFluidComponent();
-
 	public ComponentEnergyFluidBlockEntity(Block energyBlock, BlockEntityType<?> type) {
 		super(energyBlock, type);
 
 		addComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, fluidComponent);
 		fluidComponent.dispatchConsumers();
 	}
+
+	protected abstract FluidInventoryComponent createFluidComponent();
 
 	public FluidInventoryComponent getFluidComponent() {
 		return fluidComponent;

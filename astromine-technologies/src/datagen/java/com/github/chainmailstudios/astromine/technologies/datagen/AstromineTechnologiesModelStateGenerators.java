@@ -114,16 +114,16 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 	));
 
 	public final ModelStateGenerator UPGRADE_KIT = register(new GenericItemModelGenerator(
-		AstromineTechnologiesItems.BASIC_MACHINE_UPGRADE_KIT,
-		AstromineTechnologiesItems.ADVANCED_MACHINE_UPGRADE_KIT,
-		AstromineTechnologiesItems.ELITE_MACHINE_UPGRADE_KIT
+			AstromineTechnologiesItems.BASIC_MACHINE_UPGRADE_KIT,
+			AstromineTechnologiesItems.ADVANCED_MACHINE_UPGRADE_KIT,
+			AstromineTechnologiesItems.ELITE_MACHINE_UPGRADE_KIT
 	));
 
 	public final ModelStateGenerator CANISTERS = register(new GenericItemModelGenerator(
 			AstromineTechnologiesItems.GAS_CANISTER,
 			AstromineTechnologiesItems.PRESSURIZED_GAS_CANISTER
 	));
-  
+
 	public final ModelStateGenerator CIRCUITS = register(new GenericItemModelGenerator(
 			AstromineTechnologiesItems.BASIC_CIRCUIT,
 			AstromineTechnologiesItems.ADVANCED_CIRCUIT,

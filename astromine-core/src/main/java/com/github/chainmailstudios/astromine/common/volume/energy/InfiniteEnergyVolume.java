@@ -24,8 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.volume.energy;
 
-import com.github.chainmailstudios.astromine.common.volume.base.Volume;
 import net.minecraft.util.Identifier;
+
+import com.github.chainmailstudios.astromine.common.volume.base.Volume;
 
 public class InfiniteEnergyVolume extends EnergyVolume {
 	public InfiniteEnergyVolume() {

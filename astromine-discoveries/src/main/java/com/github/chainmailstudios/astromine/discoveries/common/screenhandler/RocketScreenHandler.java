@@ -24,6 +24,12 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.screenhandler;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
+
 import com.github.chainmailstudios.astromine.common.screenhandler.base.entity.ComponentEntityFluidInventoryScreenHandler;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.base.RocketEntity;
@@ -34,11 +40,6 @@ import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.ButtonWidget;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import com.github.vini2003.blade.common.widget.base.TextWidget;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 
 public class RocketScreenHandler extends ComponentEntityFluidInventoryScreenHandler {
 	private TextWidget fuelTextWidget;
@@ -57,8 +58,7 @@ public class RocketScreenHandler extends ComponentEntityFluidInventoryScreenHand
 		super.initialize(width, height);
 
 		ButtonWidget launchButtonWidget = new ButtonWidget(() -> {
-			if (entity.getFluidComponent().getVolume(0).biggerThan(Fraction.empty()))
-				entity.getDataTracker().set(RocketEntity.IS_RUNNING, true);
+			((RocketEntity) entity).tryLaunch(this.getPlayer());
 
 			return null;
 		});
@@ -69,7 +69,7 @@ public class RocketScreenHandler extends ComponentEntityFluidInventoryScreenHand
 		launchButtonWidget.setDisabled(() -> entity.getDataTracker().get(RocketEntity.IS_RUNNING) || entity.getFluidComponent().getVolume(0).smallerOrEqualThan(Fraction.empty()));
 
 		ButtonWidget abortButtonWidget = new ButtonWidget(() -> {
-			((RocketEntity) entity).tryDisassemble();
+			((RocketEntity) entity).tryDisassemble(true);
 
 			return null;
 		});

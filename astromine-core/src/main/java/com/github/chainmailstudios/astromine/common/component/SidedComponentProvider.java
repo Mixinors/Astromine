@@ -36,14 +36,14 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface SidedComponentProvider extends nerdhub.cardinal.components.api.component.ComponentProvider {
+	static SidedComponentProvider fromBlockEntity(BlockEntity blockEntity) {
+		return blockEntity instanceof SidedComponentProvider ? (SidedComponentProvider) blockEntity : null;
+	}
+
 	<T extends Component> Collection<T> getSidedComponents(@Nullable Direction direction);
 
 	default <T extends Component> T getSidedComponent(@Nullable Direction direction, @NotNull ComponentType<T> type) {
 		Optional<T> optional = (Optional<T>) getSidedComponents(direction).stream().filter(component -> type.getComponentClass().isInstance(component)).findFirst();
 		return optional.orElse(null);
-	}
-
-	static SidedComponentProvider fromBlockEntity(BlockEntity blockEntity) {
-		return blockEntity instanceof SidedComponentProvider ? (SidedComponentProvider) blockEntity : null;
 	}
 }

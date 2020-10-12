@@ -46,7 +46,7 @@ import java.util.function.Supplier;
 @Mixin(ServerChunkManager.class)
 public class ServerChunkManagerMixin {
 	@Inject(method = "<init>", at = @At("RETURN"))
-	private void handleConstructor(ServerWorld world, LevelStorage.Session session, DataFixer dataFixer, StructureManager structureManager, Executor workerExecutor, ChunkGenerator chunkGenerator, int viewDistance, boolean bl,
+	private void astromine_init(ServerWorld world, LevelStorage.Session session, DataFixer dataFixer, StructureManager structureManager, Executor workerExecutor, ChunkGenerator chunkGenerator, int viewDistance, boolean bl,
 		WorldGenerationProgressListener worldGenerationProgressListener, Supplier<PersistentStateManager> supplier, CallbackInfo ci) {
 		ServerChunkManagerCallback.EVENT.invoker().handle((ServerChunkManager) (Object) this);
 	}

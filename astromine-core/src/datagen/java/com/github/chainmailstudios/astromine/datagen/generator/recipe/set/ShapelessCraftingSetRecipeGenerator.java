@@ -11,9 +11,7 @@ import me.shedaniel.cloth.api.datagen.v1.RecipeData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ShapelessCraftingSetRecipeGenerator extends CraftingSetRecipeGenerator {
 	public final List<Ingredient> ingredients;

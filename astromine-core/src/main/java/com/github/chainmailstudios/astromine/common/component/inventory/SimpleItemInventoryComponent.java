@@ -24,12 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.utilities.data.predicate.TriPredicate;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;

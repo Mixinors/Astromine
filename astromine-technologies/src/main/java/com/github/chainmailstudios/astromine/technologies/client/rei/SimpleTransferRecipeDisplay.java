@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei;
 
+import net.minecraft.screen.ScreenHandler;
+
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.TransferRecipeDisplay;
 import me.shedaniel.rei.server.ContainerInfo;
-import net.minecraft.screen.ScreenHandler;
 
 import java.util.List;
 

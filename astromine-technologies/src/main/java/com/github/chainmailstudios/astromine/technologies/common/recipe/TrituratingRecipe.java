@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
-import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -39,12 +37,14 @@ import net.minecraft.world.World;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
+import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.IngredientUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
@@ -70,17 +70,17 @@ public class TrituratingRecipe implements EnergyConsumingRecipe<Inventory> {
 		this.time = time;
 	}
 
-	@Override
-	public boolean matches(Inventory inventory, World world) {
-		return ItemInventoryComponentFromItemInventory.of(inventory).getContents().values().stream().anyMatch(input);
-	}
-
 	public static boolean allows(World world, Inventory inventory) {
 		return world.getRecipeManager().getAllOfType(TrituratingRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
 			TrituratingRecipe recipe = ((TrituratingRecipe) it);
 
 			return recipe.matches(inventory, world);
 		});
+	}
+
+	@Override
+	public boolean matches(Inventory inventory, World world) {
+		return ItemInventoryComponentFromItemInventory.of(inventory).getContents().values().stream().anyMatch(input);
 	}
 
 	@Override

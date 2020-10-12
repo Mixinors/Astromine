@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
+import dev.onyxstudios.cca.api.v3.component.AutoSyncedComponent;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,6 +37,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
@@ -54,7 +56,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public interface ItemInventoryComponent extends NameableComponent {
+public interface ItemInventoryComponent extends NameableComponent, AutoSyncedComponent {
 	default Item getSymbol() {
 		return AstromineItems.ITEM;
 	}
@@ -493,6 +495,16 @@ public interface ItemInventoryComponent extends NameableComponent {
 	default ItemInventoryComponent withListener(Consumer<ItemInventoryComponent> listener) {
 		addListener(() -> listener.accept(this));
 		return this;
+	}
+
+	@Override
+	default void readFromNbt(CompoundTag compoundTag) {
+		read(this, compoundTag.getCompound(getComponentType().getId().toString()), Optional.empty(), Optional.empty());
+	}
+
+	@Override
+	default void writeToNbt(CompoundTag compoundTag) {
+		compoundTag.put(getComponentType().getId().toString(), write(this, Optional.empty(), Optional.empty()));
 	}
 
 	/**

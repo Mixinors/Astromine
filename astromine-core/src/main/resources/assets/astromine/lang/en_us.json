@@ -471,7 +471,7 @@
   "item.astromine.rose_gold_hammer": "Rose Gold Hammer",
   "item.astromine.rose_gold_excavator": "Rose Gold Excavator",
   "item.astromine.sterling_silver_pickaxe": "Sterling Silver Pickaxe",
-  "item.astromine.sterling_silver_axe": "Sterling Silver Silverver Axe",
+  "item.astromine.sterling_silver_axe": "Sterling Silver Axe",
   "item.astromine.sterling_silver_shovel": "Sterling Silver Shovel",
   "item.astromine.sterling_silver_hoe": "Sterling Silver Hoe",
   "item.astromine.sterling_silver_sword": "Sterling Silver Sword",
@@ -626,7 +626,7 @@
   "item.astromine.lunum_helmet": "Lunum Helmet",
   "item.astromine.lunum_chestplate": "Lunum Chestplate",
   "item.astromine.lunum_leggings": "Lunum Leggings",
-  "item.astromine.lunum_boots": "Lunum Boots",  
+  "item.astromine.lunum_boots": "Lunum Boots",
   "item.astromine.meteoric_steel_helmet": "Meteoric Steel Helmet",
   "item.astromine.meteoric_steel_chestplate": "Meteoric Steel Chestplate",
   "item.astromine.meteoric_steel_leggings": "Meteoric Steel Leggings",
@@ -958,7 +958,7 @@
   "text.astromine.world.meteor_ores.page_one.text": "Veins of ores found in $(thing)$(l:world/meteors)meteors$(), which may be harvested for resources.$(p)When mined, will drop their respective $(thing)$(l:world/ore_clusters)ore clusters$().",
   "text.astromine.world.meteors.title": "Meteors",
   "text.astromine.world.meteors.page_one.title": "Meteors",
-  "text.astromine.world.meteors.page_one.text": "Foreign bodies that, cruising through the stairs, collided with a planetary body; said to contain $(thing)$(l:world/meteor_ores)extraterrestrial ores$().",
+  "text.astromine.world.meteors.page_one.text": "Foreign bodies that, cruising through the stars, collided with a planetary body; said to contain $(thing)$(l:world/meteor_ores)extraterrestrial ores$().",
   "text.astromine.world.ore_clusters.title": "Ore Clusters",
   "text.astromine.world.ore_clusters.page_one.title": "Ore Clusters",
   "text.astromine.world.ore_clusters.page_one.text": "Clusters of ores obtained from $(thing)$(l:world/asteroid_ores)asteroid ores$() or $(thing)$(l:world/meteor_ores)meteor ores$(), which may be processed for resources.",
@@ -1026,5 +1026,9 @@
   "advancements.astromine.get_advanced_circuit.title": "Super Circuit Maker",
   "advancements.astromine.get_advanced_circuit.description": "Craft an Advanced Circuit",
   "advancements.astromine.get_elite_circuit.title": "New Super Circuit Maker U Deluxe",
-  "advancements.astromine.get_elite_circuit.description": "Craft an Elite Circuit"
+  "advancements.astromine.get_elite_circuit.description": "Craft an Elite Circuit",
+  "advancements.astromine.destroy_rocket.title": "We Have a Problem",
+  "advancements.astromine.destroy_rocket.description": "Have a Rocket you're riding experience rapid unscheduled disassembly",
+  "advancements.astromine.eat_lead_apple.title": "Why Would You Do That?",
+  "advancements.astromine.eat_lead_apple.description": "Get lead poisoning by ingesting a Lead Apple"
 }

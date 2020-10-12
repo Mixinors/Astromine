@@ -98,7 +98,7 @@ allprojects {
                 includeGroup "net.earthcomputer"
             }
         }
-		maven {
+        maven {
             name = "BlameJared"
             url = "https://maven.blamejared.com"
             content {
@@ -106,8 +106,8 @@ allprojects {
             }
         }
         maven {
-            name = "Modmaven"
-            url = "https://modmaven.k-4u.nl"
+            name = "dblsaiko"
+            url = "https://maven.dblsaiko.net/"
         }
     }
 

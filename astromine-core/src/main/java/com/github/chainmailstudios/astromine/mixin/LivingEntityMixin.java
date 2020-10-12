@@ -24,12 +24,6 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.registry.BreathableRegistry;
-import com.github.chainmailstudios.astromine.common.registry.FluidEffectRegistry;
-import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
-import net.minecraft.util.registry.Registry;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -46,15 +40,19 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
+import com.github.chainmailstudios.astromine.common.registry.BreathableRegistry;
+import com.github.chainmailstudios.astromine.common.registry.FluidEffectRegistry;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineAttributes;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
@@ -66,8 +64,12 @@ import java.util.Optional;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin implements GravityEntity {
 	@Shadow
-	@Final
-	private DefaultedList<ItemStack> equippedArmor;
+	public float flyingSpeed;
+
+	@Inject(at = @At("RETURN"), method = "createLivingAttributes()Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;")
+	private static void createLivingAttributesInject(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
+		cir.getReturnValue().add(AstromineAttributes.GRAVITY_MULTIPLIER);
+	}
 
 	@Shadow
 	public abstract double getAttributeValue(EntityAttribute attribute);
@@ -75,12 +77,9 @@ public abstract class LivingEntityMixin implements GravityEntity {
 	@Shadow
 	public abstract Iterable<ItemStack> getArmorItems();
 
-	@Shadow
-	public float flyingSpeed;
-
 	@ModifyConstant(method = "travel(Lnet/minecraft/util/math/Vec3d;)V", constant = @Constant(doubleValue = 0.08D, ordinal = 0))
 	private double modifyGravity(double original) {
-		return getGravity();
+		return astromine_getGravity();
 	}
 
 	public double getGravityMultiplier() {
@@ -200,10 +199,5 @@ public abstract class LivingEntityMixin implements GravityEntity {
 				}
 			}
 		}
-	}
-
-	@Inject(at = @At("RETURN"), method = "createLivingAttributes()Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;")
-	private static void createLivingAttributesInject(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
-		cir.getReturnValue().add(AstromineAttributes.GRAVITY_MULTIPLIER);
 	}
 }

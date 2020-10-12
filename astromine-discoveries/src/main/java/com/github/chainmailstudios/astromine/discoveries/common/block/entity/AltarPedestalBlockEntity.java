@@ -80,13 +80,17 @@ public class AltarPedestalBlockEntity extends BlockEntity implements ItemInvento
 
 		if (parent != null) {
 			AltarBlockEntity blockEntity = (AltarBlockEntity) world.getBlockEntity(parent);
-			spinAge += blockEntity.craftingTicks / 5;
-			lastSpinAddition += blockEntity.craftingTicks / 5;
+			if (blockEntity == null)
+				onRemove();
+			else {
+				spinAge += blockEntity.craftingTicks / 5;
+				lastSpinAddition += blockEntity.craftingTicks / 5;
 
-			int velX = pos.getX() - parent.getX();
-			int velY = pos.getY() - parent.getY();
-			int velZ = pos.getZ() - parent.getZ();
-			world.addParticle(ParticleTypes.ENCHANT, parent.getX() + 0.5, parent.getY() + 1.8, parent.getZ() + 0.5, velX, velY - 1.3, velZ);
+				int velX = pos.getX() - parent.getX();
+				int velY = pos.getY() - parent.getY();
+				int velZ = pos.getZ() - parent.getZ();
+				world.addParticle(ParticleTypes.ENCHANT, parent.getX() + 0.5, parent.getY() + 1.8, parent.getZ() + 0.5, velX, velY - 1.3, velZ);
+			}
 		}
 	}
 
@@ -132,7 +136,10 @@ public class AltarPedestalBlockEntity extends BlockEntity implements ItemInvento
 	public void onRemove() {
 		if (parent != null) {
 			AltarBlockEntity blockEntity = (AltarBlockEntity) world.getBlockEntity(parent);
-			blockEntity.onRemove();
+			if (blockEntity != null) {
+				blockEntity.onRemove();
+			}
 		}
+		parent = null;
 	}
 }

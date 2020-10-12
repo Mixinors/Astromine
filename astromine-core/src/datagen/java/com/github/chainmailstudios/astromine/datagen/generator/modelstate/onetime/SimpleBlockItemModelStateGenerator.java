@@ -5,9 +5,6 @@ import net.minecraft.data.client.model.ModelIds;
 
 import me.shedaniel.cloth.api.datagen.v1.ModelStateData;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class SimpleBlockItemModelStateGenerator extends GenericBlockModelStateGenerator {
 	public SimpleBlockItemModelStateGenerator(Block... blocks) {
 		super(blocks);

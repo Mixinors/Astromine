@@ -24,9 +24,6 @@
 
 package com.github.chainmailstudios.astromine.discoveries.client.render.entity;
 
-import com.github.chainmailstudios.astromine.discoveries.client.model.PrimitiveRocketEntityModel;
-
-import com.github.chainmailstudios.astromine.discoveries.common.entity.PrimitiveRocketEntity;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -37,6 +34,8 @@ import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.discoveries.client.model.PrimitiveRocketEntityModel;
+import com.github.chainmailstudios.astromine.discoveries.common.entity.PrimitiveRocketEntity;
 
 public class PrimitiveRocketEntityRenderer extends EntityRenderer<PrimitiveRocketEntity> {
 	public static final Identifier ID = AstromineCommon.identifier("textures/entity/rocket/primitive_rocket.png");

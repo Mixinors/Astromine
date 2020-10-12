@@ -24,9 +24,6 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
-import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
-import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.Inventory;
@@ -39,17 +36,20 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Lazy;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.FractionUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import net.minecraft.world.World;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -86,6 +86,14 @@ public class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsumingRe
 		this.time = time;
 	}
 
+	public static boolean allows(World world, Fluid inserting, Fluid existing) {
+		return world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
+			ElectrolyzingRecipe recipe = ((ElectrolyzingRecipe) it);
+
+			return (existing == inserting || existing == Fluids.EMPTY) && (recipe.inputFluid.get() == inserting);
+		});
+	}
+
 	public boolean matches(FluidInventoryComponent fluidComponent) {
 		FluidHandler fluidHandler = FluidHandler.of(fluidComponent);
 
@@ -110,14 +118,6 @@ public class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsumingRe
 		}
 
 		return secondOutputVolume.hasAvailable(secondOutputAmount);
-	}
-
-	public static boolean allows(World world, Fluid inserting, Fluid existing) {
-		return world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
-			ElectrolyzingRecipe recipe = ((ElectrolyzingRecipe) it);
-
-			return (existing == inserting || existing == Fluids.EMPTY) && (recipe.inputFluid.get() == inserting);
-		});
 	}
 
 	@Override

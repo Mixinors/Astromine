@@ -24,16 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.component.world;
 
-import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.google.common.collect.Lists;
-import nerdhub.cardinal.components.api.ComponentType;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
-import nerdhub.cardinal.components.api.component.extension.CopyableComponent;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Tickable;
@@ -44,6 +36,16 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
+import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import nerdhub.cardinal.components.api.ComponentType;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
+import nerdhub.cardinal.components.api.component.extension.CopyableComponent;
+
+import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +62,23 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 	public ChunkAtmosphereComponent(World world, Chunk chunk) {
 		this.world = world;
 		this.chunk = chunk;
+	}
+
+	public static boolean isInChunk(ChunkPos chunkPos, BlockPos pos) {
+		return pos.getX() >= chunkPos.getStartX() && pos.getX() <= chunkPos.getEndX() && pos.getZ() >= chunkPos.getStartZ() && pos.getZ() <= chunkPos.getEndZ();
+	}
+
+	public static ChunkPos getNeighborFromPos(ChunkPos chunkPos, BlockPos pos) {
+		if (pos.getX() < chunkPos.getStartX()) {
+			return new ChunkPos(chunkPos.x - 1, chunkPos.z);
+		} else if (pos.getX() > chunkPos.getEndX()) {
+			return new ChunkPos(chunkPos.x + 1, chunkPos.z);
+		} else if (pos.getZ() < chunkPos.getStartZ()) {
+			return new ChunkPos(chunkPos.x, chunkPos.z - 1);
+		} else if (pos.getZ() > chunkPos.getEndZ()) {
+			return new ChunkPos(chunkPos.x, chunkPos.z + 1);
+		}
+		return chunkPos;
 	}
 
 	public World getWorld() {
@@ -166,23 +185,6 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 
 	public ChunkPos getNeighborFromPos(BlockPos pos) {
 		return getNeighborFromPos(chunk.getPos(), pos);
-	}
-
-	public static boolean isInChunk(ChunkPos chunkPos, BlockPos pos) {
-		return pos.getX() >= chunkPos.getStartX() && pos.getX() <= chunkPos.getEndX() && pos.getZ() >= chunkPos.getStartZ() && pos.getZ() <= chunkPos.getEndZ();
-	}
-
-	public static ChunkPos getNeighborFromPos(ChunkPos chunkPos, BlockPos pos) {
-		if (pos.getX() < chunkPos.getStartX()) {
-			return new ChunkPos(chunkPos.x - 1, chunkPos.z);
-		} else if (pos.getX() > chunkPos.getEndX()) {
-			return new ChunkPos(chunkPos.x + 1, chunkPos.z);
-		} else if (pos.getZ() < chunkPos.getStartZ()) {
-			return new ChunkPos(chunkPos.x, chunkPos.z - 1);
-		} else if (pos.getZ() > chunkPos.getEndZ()) {
-			return new ChunkPos(chunkPos.x, chunkPos.z + 1);
-		}
-		return chunkPos;
 	}
 
 	@Override

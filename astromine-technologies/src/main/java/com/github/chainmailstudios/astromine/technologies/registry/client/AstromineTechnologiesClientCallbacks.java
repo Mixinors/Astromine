@@ -24,9 +24,8 @@
 
 package com.github.chainmailstudios.astromine.technologies.registry.client;
 
-import com.github.chainmailstudios.astromine.registry.client.AstromineClientCallbacks;
-import com.github.chainmailstudios.astromine.technologies.common.item.HolographicConnectorItem;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -34,6 +33,9 @@ import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.registry.client.AstromineClientCallbacks;
+import com.github.chainmailstudios.astromine.technologies.common.item.HolographicConnectorItem;
 
 public class AstromineTechnologiesClientCallbacks extends AstromineClientCallbacks {
 	public static void initialize() {

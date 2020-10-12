@@ -36,6 +36,6 @@ import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
 public abstract class FishingBobberEntityMixin implements GravityEntity {
 	@ModifyConstant(method = "use(Lnet/minecraft/item/ItemStack;)I", constant = @Constant(doubleValue = 0.08D))
 	double getGravity(double original) {
-		return this.getGravity();
+		return this.astromine_getGravity();
 	}
 }

@@ -41,7 +41,7 @@ public class ClientRecipeBookMixin {
 	 * @reason We are doing this to tell minecraft to shut up
 	 */
 	@Inject(method = "getGroupForRecipe", cancellable = true, at = @At("HEAD"))
-	private static void getGroupForRecipe(Recipe<?> recipe, CallbackInfoReturnable<RecipeBookGroup> cir) {
+	private static void astromine_getGroupForRecipe(Recipe<?> recipe, CallbackInfoReturnable<RecipeBookGroup> cir) {
 		if (recipe.getType() instanceof AstromineRecipeType)
 			cir.setReturnValue(RecipeBookGroup.UNKNOWN);
 	}

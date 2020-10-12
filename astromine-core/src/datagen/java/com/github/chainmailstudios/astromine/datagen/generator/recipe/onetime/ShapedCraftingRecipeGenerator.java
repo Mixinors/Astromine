@@ -4,8 +4,6 @@ import net.minecraft.advancement.criterion.ImpossibleCriterion;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonFactory;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.base.OneTimeRecipeGenerator;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
@@ -35,7 +33,7 @@ public class ShapedCraftingRecipeGenerator extends OneTimeRecipeGenerator {
 	@Override
 	public void generate(RecipeData recipes) {
 		if (ingredients.size() == 0) throw new IllegalStateException("recipe must have at least one ingredient");
-		else if(pattern.length == 0) throw new IllegalStateException("recipe must have a pattern");
+		else if (pattern.length == 0) throw new IllegalStateException("recipe must have a pattern");
 		else {
 			ShapedRecipeJsonFactory factory = ShapedRecipeJsonFactory
 					.create(output, outputCount)

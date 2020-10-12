@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.discoveries.mixin.client;
 
-import com.github.chainmailstudios.astromine.discoveries.client.model.PrimitiveRocketEntityModel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,6 +36,7 @@ import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 
+import com.github.chainmailstudios.astromine.discoveries.client.model.PrimitiveRocketEntityModel;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesItems;
 import com.github.chainmailstudios.astromine.discoveries.registry.client.AstromineDiscoveriesClientModels;
 

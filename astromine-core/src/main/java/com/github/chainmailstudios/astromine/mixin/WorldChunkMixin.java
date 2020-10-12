@@ -49,16 +49,21 @@ public class WorldChunkMixin implements WorldChunkAccess {
 	@Shadow
 	@Final
 	private ChunkSection[] sections;
-	private WorldChunk east, west, north, south;
-	private Runnable unload;
+
+	private WorldChunk astromine_east;
+	private WorldChunk astromine_west;
+	private WorldChunk astromine_north;
+	private WorldChunk astromine_south;
+
+	private Runnable astromine_unload;
 
 	@Override
 	public void astromine_addUnloadListener(Runnable runnable) {
-		if (this.unload == null) {
-			this.unload = runnable;
+		if (this.astromine_unload == null) {
+			this.astromine_unload = runnable;
 		} else {
-			Runnable run = this.unload;
-			this.unload = () -> {
+			Runnable run = this.astromine_unload;
+			this.astromine_unload = () -> {
 				run.run();
 				runnable.run();
 			};
@@ -67,33 +72,33 @@ public class WorldChunkMixin implements WorldChunkAccess {
 
 	@Override
 	public void astromine_runUnloadListeners() {
-		if (this.unload != null) {
-			this.unload.run();
+		if (this.astromine_unload != null) {
+			this.astromine_unload.run();
 		}
 	}
 
 	@Override
 	public void astromine_attachEast(WorldChunk chunk) {
-		this.east = chunk;
-		((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.east = null);
+		this.astromine_east = chunk;
+		((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_east = null);
 	}
 
 	@Override
 	public void astromine_attachWest(WorldChunk chunk) {
-		this.west = chunk;
-		((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.west = null);
+		this.astromine_west = chunk;
+		((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_west = null);
 	}
 
 	@Override
 	public void astromine_attachNorth(WorldChunk chunk) {
-		this.north = chunk;
-		((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.north = null);
+		this.astromine_north = chunk;
+		((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_north = null);
 	}
 
 	@Override
 	public void astromine_attachSouth(WorldChunk chunk) {
-		this.south = chunk;
-		((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.south = null);
+		this.astromine_south = chunk;
+		((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_south = null);
 	}
 
 	@Override
@@ -104,11 +109,11 @@ public class WorldChunkMixin implements WorldChunkAccess {
 
 	@Override
 	public WorldChunk astromine_east() {
-		WorldChunk chunk = this.east;
+		WorldChunk chunk = this.astromine_east;
 		if (chunk == null) {
 			ChunkPos pos = this.pos;
-			chunk = this.east = this.world.getChunk(pos.x + 1, pos.z);
-			((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.east = null);
+			chunk = this.astromine_east = this.world.getChunk(pos.x + 1, pos.z);
+			((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_east = null);
 			((WorldChunkAccess) chunk).astromine_attachWest((WorldChunk) (Object) this);
 		}
 
@@ -117,11 +122,11 @@ public class WorldChunkMixin implements WorldChunkAccess {
 
 	@Override
 	public WorldChunk astromine_west() {
-		WorldChunk chunk = this.west;
+		WorldChunk chunk = this.astromine_west;
 		if (chunk == null) {
 			ChunkPos pos = this.pos;
-			chunk = this.west = this.world.getChunk(pos.x - 1, pos.z);
-			((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.west = null);
+			chunk = this.astromine_west = this.world.getChunk(pos.x - 1, pos.z);
+			((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_west = null);
 			((WorldChunkAccess) chunk).astromine_attachEast((WorldChunk) (Object) this);
 		}
 
@@ -130,11 +135,11 @@ public class WorldChunkMixin implements WorldChunkAccess {
 
 	@Override
 	public WorldChunk astromine_north() {
-		WorldChunk chunk = this.north;
+		WorldChunk chunk = this.astromine_north;
 		if (chunk == null) {
 			ChunkPos pos = this.pos;
-			chunk = this.north = this.world.getChunk(pos.x, pos.z - 1);
-			((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.north = null);
+			chunk = this.astromine_north = this.world.getChunk(pos.x, pos.z - 1);
+			((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_north = null);
 			((WorldChunkAccess) chunk).astromine_attachSouth((WorldChunk) (Object) this);
 		}
 
@@ -143,11 +148,11 @@ public class WorldChunkMixin implements WorldChunkAccess {
 
 	@Override
 	public WorldChunk astromine_south() {
-		WorldChunk chunk = this.south;
+		WorldChunk chunk = this.astromine_south;
 		if (chunk == null) {
 			ChunkPos pos = this.pos;
-			chunk = this.south = this.world.getChunk(pos.x, pos.z + 1);
-			((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.south = null);
+			chunk = this.astromine_south = this.world.getChunk(pos.x, pos.z + 1);
+			((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_south = null);
 			((WorldChunkAccess) chunk).astromine_attachNorth((WorldChunk) (Object) this);
 		}
 
@@ -155,7 +160,7 @@ public class WorldChunkMixin implements WorldChunkAccess {
 	}
 
 	@Inject(method = "setLoadedToWorld", at = @At("RETURN"))
-	private void serialize(boolean loaded, CallbackInfo ci) {
+	private void astromine_setLoadedToWorld(boolean loaded, CallbackInfo ci) {
 		if (!loaded) { // if unloading
 			this.astromine_runUnloadListeners();
 		}

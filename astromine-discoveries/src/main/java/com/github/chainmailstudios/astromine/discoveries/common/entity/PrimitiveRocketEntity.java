@@ -34,10 +34,13 @@ import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.base.RocketEntity;
 import com.github.chainmailstudios.astromine.discoveries.common.screenhandler.RocketScreenHandler;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesDimensions;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFluids;
+import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -50,7 +53,21 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
+import com.github.chainmailstudios.astromine.discoveries.common.entity.base.RocketEntity;
+import com.github.chainmailstudios.astromine.discoveries.common.screenhandler.RocketScreenHandler;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFluids;
+import io.netty.buffer.Unpooled;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 
@@ -90,7 +107,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 
 	@Override
 	protected Function<RocketEntity, Vector3d> createAccelerationFunction() {
-		return entity -> new Vector3d(0D, getY() / 1024D / 4D / 3D, 0D);
+		return entity -> new Vector3d(0D, 0.000025 / (getY() / 1024D), 0D);
 	}
 
 	@Override
@@ -152,5 +169,16 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 	@Override
 	public ScreenHandler createMenu(int syncId, PlayerInventory inventory, PlayerEntity player) {
 		return new RocketScreenHandler(syncId, player, getEntityId());
+	}
+
+	@Override
+	public void tick() {
+		if (world.getRegistryKey().equals(AstromineDiscoveriesDimensions.EARTH_SPACE_WORLD)) {
+			setVelocity(0, 0, 0);
+
+			getDataTracker().set(IS_RUNNING, false);
+		}
+
+		super.tick();
 	}
 }

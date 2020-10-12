@@ -61,7 +61,8 @@ public class MaterialEntry implements ItemConvertible {
 	@Override
 	public Item asItem() {
 		Item item = Registry.ITEM.get(itemId);
-		if(item.equals(Items.AIR)) throw new InvalidIdentifierException("oh fuck entry "+this.getItemId()+" returned air");
+		if (item.equals(Items.AIR))
+			throw new InvalidIdentifierException("oh fuck entry " + this.getItemId() + " returned air");
 		return item;
 	}
 

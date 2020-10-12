@@ -24,10 +24,17 @@
 
 package com.github.chainmailstudios.astromine.technologies.registry;
 
-import com.github.chainmailstudios.astromine.technologies.common.recipe.*;
-import com.github.chainmailstudios.astromine.registry.AstromineRecipeSerializers;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.registry.Registry;
+
+import com.github.chainmailstudios.astromine.registry.AstromineRecipeSerializers;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.AlloySmeltingRecipe;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.ElectrolyzingRecipe;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.FluidMixingRecipe;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.LiquidGeneratingRecipe;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.PressingRecipe;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.RefiningRecipe;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.TrituratingRecipe;
 
 public class AstromineTechnologiesRecipeSerializers extends AstromineRecipeSerializers {
 	public static final RecipeSerializer<TrituratingRecipe> TRITURATING = Registry.register(Registry.RECIPE_SERIALIZER, TrituratingRecipe.Serializer.ID, TrituratingRecipe.Serializer.INSTANCE);

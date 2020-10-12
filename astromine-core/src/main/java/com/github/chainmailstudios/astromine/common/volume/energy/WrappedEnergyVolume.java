@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.common.volume.energy;
 
 import net.minecraft.util.math.Direction;
+
 import team.reborn.energy.EnergyHandler;
 
 public class WrappedEnergyVolume extends EnergyVolume {

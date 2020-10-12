@@ -1,11 +1,8 @@
 package com.github.chainmailstudios.astromine.technologies.datagen;
 
-import net.fabricmc.fabric.api.tag.TagRegistry;
-
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.RecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineRecipeGenerators;
@@ -62,7 +59,7 @@ public class AstromineTechnologiesRecipeGenerators extends AstromineRecipeGenera
 	public final RecipeGenerator GREEN_CONCRETE_POWDER_FROM_CONCRETE = register(new TrituratingRecipeGenerator("green_concrete_powder_from_triturating_concrete", Ingredient.ofItems(Blocks.GREEN_CONCRETE), Blocks.GREEN_CONCRETE_POWDER, 10, 50));
 	public final RecipeGenerator RED_CONCRETE_POWDER_FROM_CONCRETE = register(new TrituratingRecipeGenerator("red_concrete_powder_from_triturating_concrete", Ingredient.ofItems(Blocks.RED_CONCRETE), Blocks.RED_CONCRETE_POWDER, 10, 50));
 	public final RecipeGenerator BLACK_CONCRETE_POWDER_FROM_CONCRETE = register(new TrituratingRecipeGenerator("black_concrete_powder_from_triturating_concrete", Ingredient.ofItems(Blocks.BLACK_CONCRETE), Blocks.BLACK_CONCRETE_POWDER, 10, 50));
-	
+
 	public final RecipeGenerator SUGAR_FROM_SUGAR_CANE = register(new TrituratingRecipeGenerator("sugar_from_triturating_sugar_cane", Ingredient.ofItems(Items.SUGAR_CANE), Items.SUGAR, 2, 10, 50));
 	public final RecipeGenerator BLAZE_POWDER_FROM_ROD = register(new TrituratingRecipeGenerator("blaze_powder_from_triturating_rod", Ingredient.ofItems(Items.BLAZE_ROD), Items.BLAZE_POWDER, 4, 15, 60));
 	public final RecipeGenerator BONE_MEAL_FROM_BONE = register(new TrituratingRecipeGenerator("bone_meal_from_triturating_bone", Ingredient.ofItems(Items.BONE), Items.BONE_MEAL, 5, 10, 50));

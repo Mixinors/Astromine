@@ -75,6 +75,10 @@ public class MoonChunkGenerator extends ChunkGenerator {
 		this.cache = ThreadLocal.withInitial(() -> new BiomeGeneratorCache(biomeSource));
 	}
 
+	private static double computeNoiseFalloff(int y) {
+		return Math.max(((10.0) / (y + 0.1)) - 1, 0);
+	}
+
 	@Override
 	protected Codec<? extends ChunkGenerator> getCodec() {
 		return CODEC;
@@ -154,10 +158,6 @@ public class MoonChunkGenerator extends ChunkGenerator {
 				}
 			}
 		}
-	}
-
-	private static double computeNoiseFalloff(int y) {
-		return Math.max(((10.0) / (y + 0.1)) - 1, 0);
 	}
 
 	@Override

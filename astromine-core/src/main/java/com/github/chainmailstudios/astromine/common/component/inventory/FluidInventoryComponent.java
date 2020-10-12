@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
+import dev.onyxstudios.cca.api.v3.component.AutoSyncedComponent;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -33,9 +34,9 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import nerdhub.cardinal.components.api.ComponentType;
@@ -52,7 +53,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public interface FluidInventoryComponent extends NameableComponent {
+public interface FluidInventoryComponent extends NameableComponent, AutoSyncedComponent {
 	Map<Integer, FluidVolume> getContents();
 
 	default Item getSymbol() {
@@ -318,6 +319,16 @@ public interface FluidInventoryComponent extends NameableComponent {
 	default FluidInventoryComponent withListener(Consumer<FluidInventoryComponent> listener) {
 		addListener(() -> listener.accept(this));
 		return this;
+	}
+
+	@Override
+	default void readFromNbt(CompoundTag compoundTag) {
+		read(this, compoundTag.getCompound(getComponentType().getId().toString()), Optional.empty(), Optional.empty());
+	}
+
+	@Override
+	default void writeToNbt(CompoundTag compoundTag) {
+		compoundTag.put(getComponentType().getId().toString(), write(this, Optional.empty(), Optional.empty()));
 	}
 
 	default void removeListener(Runnable listener) {

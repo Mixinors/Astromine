@@ -24,12 +24,12 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry;
 
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import net.minecraft.server.world.ServerWorld;
 
 import com.github.chainmailstudios.astromine.common.callback.ServerChunkManagerCallback;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.glacios.GlaciosChunkGenerator;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.mars.MarsChunkGenerator;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.moon.MoonChunkGenerator;
