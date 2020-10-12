@@ -89,7 +89,7 @@ public class FireExtinguisherItem extends Item {
 
 		BlockHitResult result = (BlockHitResult) user.raycast(6, 0, false);
 
-		BlockPos.Mutable.method_29715(new Box(result.getBlockPos()).expand(2)).forEach(position -> {
+		BlockPos.Mutable.stream(new Box(result.getBlockPos()).expand(2)).forEach(position -> {
 			BlockState state = world.getBlockState(position);
 
 			if (state.getBlock() instanceof FireBlock) {

@@ -130,7 +130,7 @@ public abstract class RocketEntity extends ComponentFluidInventoryEntity {
 					}
 				}
 
-				if (BlockPos.Mutable.method_29715(getBoundingBox()).anyMatch(pos -> world.getBlockState(pos).isFullCube(world, pos)) && !world.isClient) {
+				if (BlockPos.Mutable.stream(getBoundingBox()).anyMatch(pos -> world.getBlockState(pos).isFullCube(world, pos)) && !world.isClient) {
 					this.world.getPlayers().forEach(player -> player.sendMessage(new TranslatableText("text.astromine.rocket.disassemble_collision").formatted(Formatting.RED), false));
 
 					this.tryDisassemble(false);

@@ -114,7 +114,7 @@ public abstract class LivingEntityMixin implements GravityEntity {
 
 				Box collisionBox = entity.getBoundingBox();
 
-				for (BlockPos blockPos : (Iterable<BlockPos>) () -> BlockPos.method_29715(collisionBox).iterator()) {
+				for (BlockPos blockPos : (Iterable<BlockPos>) () -> BlockPos.stream(collisionBox).iterator()) {
 					BlockState blockState = entity.world.getBlockState(blockPos);
 
 					if (blockState.getBlock() instanceof FluidBlock) {
