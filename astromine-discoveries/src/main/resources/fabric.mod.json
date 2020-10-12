@@ -23,7 +23,7 @@
   },
   "license": "MIT",
   "icon": "assets/astromine-discoveries/icon.png",
-  "environxment": "*",
+  "environment": "*",
   "entrypoints": {
     "main": ["com.github.chainmailstudios.astromine.discoveries.AstromineDiscoveriesCommon"],
     "client": ["com.github.chainmailstudios.astromine.discoveries.AstromineDiscoveriesClient"],
