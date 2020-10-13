@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "astromine:block/advanced_machine_bottom",
+    "down": "astromine:block/advanced_machine_bottom",
+    "up": "astromine:block/advanced_machine_top",
+    "north": "astromine:block/drain",
+    "east": "astromine:block/drain",
+    "south": "astromine:block/drain",
+    "west": "astromine:block/drain"
+  }
+}

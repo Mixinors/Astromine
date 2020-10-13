@@ -24,15 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.network.type;
 
-import net.minecraft.block.FacingBlock;
-import net.minecraft.block.HorizontalFacingBlock;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.state.property.Property;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
-import com.github.chainmailstudios.astromine.common.component.SidedComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
@@ -57,20 +54,14 @@ public class FluidNetworkType extends NetworkType {
 			BlockEntity blockEntity = instance.getWorld().getBlockEntity(memberNode.getBlockPos());
 			NetworkMember networkMember = NetworkMemberRegistry.get(blockEntity);
 
-			if (blockEntity instanceof SidedComponentProvider && networkMember.acceptsType(this)) {
-				SidedComponentProvider provider = SidedComponentProvider.fromBlockEntity(blockEntity);
+			if (blockEntity instanceof ComponentProvider && networkMember.acceptsType(this)) {
+				ComponentProvider provider = (ComponentProvider) blockEntity;
 
-				FluidInventoryComponent fluidComponent = provider.getSidedComponent(memberNode.getDirection(), AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+				FluidInventoryComponent fluidComponent = provider.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
 
 				BlockEntityTransferComponent transferComponent = provider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
 
-				before:
 				if (fluidComponent != null && transferComponent != null) {
-					Property<Direction> property = blockEntity.getCachedState().contains(HorizontalFacingBlock.FACING) ? HorizontalFacingBlock.FACING : blockEntity.getCachedState().contains(FacingBlock.FACING) ? FacingBlock.FACING : null;
-
-					if (!blockEntity.getCachedState().contains(property))
-						break before;
-
 					TransferType type = transferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).get(memberNode.getDirection());
 
 					if (!type.isDisabled()) {

@@ -43,7 +43,7 @@ import com.github.chainmailstudios.astromine.foundations.registry.AstromineFound
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 
 public class AstromineDiscoveriesBlocks extends AstromineBlocks {
-	public static final Block ASTEROID_STONE = register("asteroid_stone", new Block(FabricBlockSettings.of(Material.STONE, MaterialColor.GRAY).requiresTool().breakByTool(FabricToolTags.PICKAXES, 3).strength(50, 1500)), AstromineDiscoveriesItems.getBasicSettings().fireproof());
+	public static final Block ASTEROID_STONE = register("asteroid_stone", new Block(FabricBlockSettings.of(Material.STONE, MaterialColor.GRAY).requiresTool().breakByTool(FabricToolTags.PICKAXES, 3).strength(1.5F, 3F)), AstromineDiscoveriesItems.getBasicSettings().fireproof());
 	public static final Block MOON_STONE = register("moon_stone", new Block(FabricBlockSettings.of(Material.STONE, MaterialColor.GRAY).requiresTool().breakByTool(FabricToolTags.PICKAXES, 0).strength(1, 3)), AstromineDiscoveriesItems.getBasicSettings());
 	public static final Block VULCAN_STONE = register("vulcan_stone", new Block(FabricBlockSettings.of(Material.STONE, MaterialColor.GRAY).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(3, 4)), AstromineDiscoveriesItems.getBasicSettings());
 	public static final Block MARTIAN_SOIL = register("martian_soil", new Block(FabricBlockSettings.of(Material.SOIL, MaterialColor.RED).requiresTool().breakByTool(FabricToolTags.SHOVELS, 0).strength(0.5f, 0.75f)), AstromineDiscoveriesItems.getBasicSettings());

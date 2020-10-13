@@ -213,6 +213,7 @@
   "block.astromine.alternator": "Alternator",
   "block.astromine.splitter": "Splitter",
   "block.astromine.incinerator": "Incinerator",
+  "block.astromine.drain": "Drain",
   "block.astromine.inserter": "Inserter",
   "block.astromine.fast_inserter": "Fast Inserter",
   "block.astromine.basic_conveyor": "Basic Conveyor",

@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.PacketContext;
 
@@ -46,7 +47,6 @@ import alexiil.mc.lib.attributes.item.ItemInsertable;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
-import com.github.chainmailstudios.astromine.common.component.SidedComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
@@ -71,7 +71,7 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-public abstract class ComponentBlockEntity extends net.minecraft.block.entity.BlockEntity implements SidedComponentProvider, PacketConsumer, BlockEntityClientSerializable, Tickable {
+public abstract class ComponentBlockEntity extends net.minecraft.block.entity.BlockEntity implements ComponentProvider, PacketConsumer, BlockEntityClientSerializable, Tickable {
 	public static final Identifier TRANSFER_UPDATE_PACKET = AstromineCommon.identifier("transfer_update_packet");
 	protected final BlockEntityTransferComponent transferComponent = new BlockEntityTransferComponent();
 	protected final Map<ComponentType<?>, Component> allComponents = Maps.newHashMap();
@@ -111,21 +111,6 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 	@Override
 	public void consumePacket(Identifier identifier, PacketByteBuf buffer, PacketContext context) {
 		allHandlers.get(identifier).accept(buffer, context);
-	}
-
-	@Override
-	public <T extends Component> Collection<T> getSidedComponents(Direction direction) {
-		if (direction == null) {
-			return (Collection<T>) allComponents.values();
-		} else {
-			if (getCachedState().contains(HorizontalFacingBlock.FACING)) {
-				return (Collection<T>) getComponentTypes().stream().map(type -> new Pair<>((ComponentType) type, (Component) getComponent(type))).filter(pair -> !transferComponent.get(pair.getLeft()).get(direction).isNone()).map(Pair::getRight).collect(Collectors.toList());
-			} else if (getCachedState().contains(FacingBlock.FACING)) {
-				return (Collection<T>) getComponentTypes().stream().map(type -> new Pair<>((ComponentType) type, (Component) getComponent(type))).filter(pair -> !transferComponent.get(pair.getLeft()).get(direction).isNone()).map(Pair::getRight).collect(Collectors.toList());
-			} else {
-				return Lists.newArrayList();
-			}
-		}
 	}
 
 	@Override
@@ -194,11 +179,10 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 
 		for (Direction offsetDirection : Direction.values()) {
 			BlockPos neighborPos = getPos().offset(offsetDirection);
-			BlockState neighborState = world.getBlockState(neighborPos);
 
 			net.minecraft.block.entity.BlockEntity neighborBlockEntity = world.getBlockEntity(neighborPos);
-			if (neighborBlockEntity != null) {
-				SidedComponentProvider neighborProvider = SidedComponentProvider.fromBlockEntity(neighborBlockEntity);
+			if (neighborBlockEntity instanceof ComponentProvider) {
+				ComponentProvider neighborProvider = (ComponentProvider) neighborBlockEntity;
 				Direction neighborDirection = offsetDirection.getOpposite();
 				BlockEntityTransferComponent neighborTransferComponent = neighborProvider != null ? neighborProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT) : null;
 
