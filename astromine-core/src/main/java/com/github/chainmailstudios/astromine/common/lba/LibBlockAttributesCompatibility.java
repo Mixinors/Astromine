@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.lba;
 
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.fluid.Fluid;
@@ -42,7 +44,6 @@ import alexiil.mc.lib.attributes.fluid.FluidInvTankChangeListener;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKey;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKeys;
-import com.github.chainmailstudios.astromine.common.component.SidedComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
@@ -63,17 +64,22 @@ public final class LibBlockAttributesCompatibility {
 	private static <T> void append(World world, BlockPos blockPos, BlockState state, AttributeList<T> list) {
 		BlockEntity blockEntity = world.getBlockEntity(blockPos);
 
-		if (blockEntity != null) {
-			SidedComponentProvider sidedComponentProvider = SidedComponentProvider.fromBlockEntity(blockEntity);
+		if (blockEntity instanceof ComponentProvider) {
+			ComponentProvider componentProvider = (ComponentProvider) blockEntity;
 
-			if (sidedComponentProvider != null) {
-				@Nullable
-				Direction direction = list.getTargetSide();
+			@Nullable
+			Direction direction = list.getTargetSide();
 
-				FluidInventoryComponent component = sidedComponentProvider.getSidedComponent(direction, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+			if (direction != null) {
+				BlockEntityTransferComponent transferComponent = componentProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
 
-				if (component != null) {
-					list.offer(new LibBlockAttributesWrapper(component));
+				// This does not check canInsert or canExtract; because I do not know how the hell to do that with LBA.
+				if (transferComponent != null && !transferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).get(direction).isNone()) {
+					FluidInventoryComponent component = componentProvider.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+
+					if (component != null) {
+						list.offer(new LibBlockAttributesWrapper(component));
+					}
 				}
 			}
 		}

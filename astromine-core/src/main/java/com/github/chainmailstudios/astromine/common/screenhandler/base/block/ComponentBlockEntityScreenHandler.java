@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.block;
 
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerContext;
@@ -35,7 +36,6 @@ import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.SidedComponentProvider;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.NameableComponent;
 import com.github.chainmailstudios.astromine.common.utilities.WidgetUtilities;
@@ -118,8 +118,6 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 		mainTab.addWidget(invTitle);
 		playerSlots = Slots.addPlayerInventory(invPos, Size.of(18F, 18F), mainTab, getPlayer().inventory);
 
-		SidedComponentProvider sidedComponentProvider = SidedComponentProvider.fromBlockEntity(syncBlockEntity);
-
 		Direction rotation = Direction.NORTH;
 		Block block = syncBlockEntity.getCachedState().getBlock();
 
@@ -131,11 +129,11 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 
 		final Direction finalRotation = rotation;
 
-		BlockEntityTransferComponent transferComponent = sidedComponentProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
+		BlockEntityTransferComponent transferComponent = syncBlockEntity.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
 
 		transferComponent.get().forEach((type, entry) -> {
-			if (sidedComponentProvider.getComponent(type) instanceof NameableComponent) {
-				NameableComponent nameableComponent = (NameableComponent) sidedComponentProvider.getComponent(type);
+			if (syncBlockEntity.getComponent(type) instanceof NameableComponent) {
+				NameableComponent nameableComponent = (NameableComponent) syncBlockEntity.getComponent(type);
 				TabWidgetCollection current = (TabWidgetCollection) tabs.addTab(nameableComponent.getSymbol(), () -> Collections.singletonList(nameableComponent.getName()));
 				WidgetUtilities.createTransferTab(current, Position.of(tabs, tabs.getWidth() / 2 - 38, getTabWidgetExtendedHeight() / 2), finalRotation, transferComponent, syncBlockEntity.getPos(), type);
 				TextWidget invTabTitle = new TextWidget();

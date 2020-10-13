@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.screenhandler;
 
+import com.github.chainmailstudios.astromine.common.widget.blade.FluidFilterWidget;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.TankBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
@@ -42,12 +44,16 @@ import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 
 public class TankScreenHandler extends ComponentBlockEntityFluidInventoryScreenHandler {
+	private TankBlockEntity tank;
+
 	public TankScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AstromineTechnologiesScreenHandlers.TANK, syncId, player, position);
+		tank = (TankBlockEntity) blockEntity;
 	}
 
 	public TankScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
+		tank = (TankBlockEntity) blockEntity;
 	}
 
 	@Override
@@ -96,9 +102,18 @@ public class TankScreenHandler extends ComponentBlockEntityFluidInventoryScreenH
 			}
 		});
 
+		FluidFilterWidget filter = new FluidFilterWidget();
+		filter.setPosition(Position.of(input, 5, -9 - 5));
+		filter.setSize(Size.of(8, 8));
+		filter.setFluidConsumer(fluid -> {
+			tank.setFilter(fluid);
+		});
+		filter.setFluidSupplier(() -> tank.getFilter());
+
 		mainTab.addWidget(input);
 		mainTab.addWidget(output);
 		mainTab.addWidget(leftArrow);
 		mainTab.addWidget(rightArrow);
+		mainTab.addWidget(filter);
 	}
 }

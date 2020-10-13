@@ -35,6 +35,7 @@ import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.base.RocketEntity;
 import com.github.chainmailstudios.astromine.discoveries.common.screenhandler.RocketScreenHandler;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesDimensions;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesTags;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFluids;
 import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
 import io.netty.buffer.Unpooled;
@@ -92,7 +93,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 
 	@Override
 	protected Predicate<FluidVolume> createFuelPredicate() {
-		return volume -> volume.getFluid() == AstromineFoundationsFluids.KEROSENE_OXYGEN_FUEL;
+		return volume -> volume.getFluid().isIn(AstromineDiscoveriesTags.ROCKET_FUELS);
 	}
 
 	@Override

@@ -24,8 +24,10 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -46,6 +48,10 @@ import com.github.chainmailstudios.astromine.technologies.common.block.entity.ma
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -54,9 +60,14 @@ public abstract class TankBlockEntity extends ComponentFluidInventoryBlockEntity
 		super(type);
 	}
 
+	private Fluid filter = Fluids.EMPTY;
+
 	@Override
 	protected FluidInventoryComponent createFluidComponent() {
-		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1);
+		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1).withInsertPredicate((direction, volume, slot) -> {
+			return slot == 0 && (filter == Fluids.EMPTY || volume.getFluid() == filter);
+		});
+
 		FluidHandler.of(fluidComponent).getFirst().setSize(getFluidSize());
 		return fluidComponent;
 	}
@@ -70,76 +81,12 @@ public abstract class TankBlockEntity extends ComponentFluidInventoryBlockEntity
 		});
 	}
 
-	// return true to consume bucket contents, false to not consume
-	private boolean handleBucketInput(FluidVolume currentTank, Fluid bucketFluid) {
-		if (getMachineTier() == MachineTier.CREATIVE) {
-			currentTank.setFluid(bucketFluid);
-		} else if (currentTank.canAccept(bucketFluid) && currentTank.hasAvailable(Fraction.bucket())) {
-			currentTank.setFluid(bucketFluid);
-			currentTank.add(Fraction.bucket());
-			return true;
-		}
-		return false;
+	public Fluid getFilter() {
+		return filter;
 	}
 
-	private ItemStack handleLeftItem(FluidVolume currentTank, ItemStack inputStack) {
-		Item inputItem = inputStack.getItem();
-		if (inputItem == Items.BUCKET)
-			return inputStack; // Do not pull from empty buckets
-		if (inputStack.getCount() != 1)
-			return inputStack; // Do not operate on multiple items at once (per slot)
-		if (inputItem instanceof BucketItem) {
-			// Handle fluid items manually, since operations have to be exactly one Fraction.bucket() at a time.
-			Fluid f = ((BucketItem) inputItem).fluid;
-			if (handleBucketInput(currentTank, f))
-				return new ItemStack(Items.BUCKET);
-			else return inputStack;
-		}
-		Optional<FluidHandler> opt = FluidHandler.ofOptional(inputStack);
-		if (!opt.isPresent())
-			return inputStack; // Reject non fluid container items
-		FluidHandler stackFluids = opt.get();
-		FluidVolume stackVolume = stackFluids.getFirst();
-		if (stackVolume == null)
-			return inputStack; // Do not operate on null fluids
-		if (stackVolume.isEmpty())
-			return inputStack; // Do not operate on empty fluid containers
-
-		if (getMachineTier() == MachineTier.CREATIVE) {
-			// Creative tanks just copy the fluid without consuming or space checks
-			currentTank.setFluid(stackVolume.getFluid());
-			return inputStack;
-		}
-
-		// Fluid type is already checked in moveFrom
-		currentTank.moveFrom(stackVolume, Fraction.ofDecimal(getMachineSpeed()));
-		return inputStack;
-	}
-
-	private ItemStack handleRightItem(FluidVolume currentTank, ItemStack outputStack) {
-		Item outputItem = outputStack.getItem();
-		if (currentTank.isEmpty())
-			return outputStack; // Do not operate if we are empty
-		if (outputStack.getCount() != 1)
-			return outputStack; // Do not operate on multiple Items
-		if (outputItem instanceof BucketItem) {
-			if (outputItem != Items.BUCKET)
-				return outputStack; // Do not insert into filled buckets
-			if (currentTank.hasStored(Fraction.bucket())) {
-				currentTank.minus(Fraction.bucket());
-				return new ItemStack(currentTank.getFluid().getBucketItem());
-			}
-			return outputStack;
-		}
-		Optional<FluidHandler> opt = FluidHandler.ofOptional(outputStack);
-		if (!opt.isPresent())
-			return outputStack; // Reject non fluid container items
-		FluidHandler stackFluids = opt.get();
-		FluidVolume stackVolume = stackFluids.getFirst();
-
-		stackVolume.moveFrom(currentTank, Fraction.of((long) getMachineSpeed()));
-
-		return outputStack;
+	public void setFilter(Fluid filter) {
+		this.filter = filter;
 	}
 
 	@Override
@@ -192,6 +139,19 @@ public abstract class TankBlockEntity extends ComponentFluidInventoryBlockEntity
 				});
 			});
 		});
+	}
+
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		tag.putString("fluid", Registry.FLUID.getId(filter).toString());
+		return super.toTag(tag);
+	}
+
+	@Override
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+		Registry.FLUID.getOrEmpty(new Identifier(tag.getString("fluid"))).ifPresent(filter -> this.filter = filter);
+
+		super.fromTag(state, tag);
 	}
 
 	public static class Primitive extends TankBlockEntity {

@@ -24,14 +24,17 @@
 
 package com.github.chainmailstudios.astromine.transportations.registry;
 
+import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkMembers;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
+import com.github.chainmailstudios.astromine.transportations.common.block.DrainBlock;
 import com.github.chainmailstudios.astromine.transportations.common.block.EnergyCableBlock;
 import com.github.chainmailstudios.astromine.transportations.common.block.FluidCableBlock;
 
 import static com.github.chainmailstudios.astromine.common.network.NetworkMemberType.NODE;
+import static com.github.chainmailstudios.astromine.common.network.NetworkMemberType.REQUESTER;
 
 public class AstromineTransportationsNetworkMembers extends AstromineNetworkMembers {
 	public static void initialize() {
@@ -43,6 +46,9 @@ public class AstromineTransportationsNetworkMembers extends AstromineNetworkMemb
 		});
 		BLOCK_CONSUMER.put(block -> block instanceof FluidCableBlock, block -> {
 			fluid.register(block, NODE);
+		});
+		BLOCK_CONSUMER.put(block -> block instanceof DrainBlock, block -> {
+			fluid.register(block, REQUESTER);
 		});
 	}
 }

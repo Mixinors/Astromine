@@ -27,6 +27,7 @@ package com.github.chainmailstudios.astromine.common.volume.fluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -42,6 +43,8 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 
 	private Fluid fluid;
 
+	private static final FluidVolume EMPTY = new FluidVolume(Fraction.empty(), Fraction.bucket(), Fluids.EMPTY);
+
 	public FluidVolume(Fraction amount, Fraction size, Fluid fluid) {
 		super(ID, amount, size);
 		this.fluid = fluid;
@@ -53,7 +56,7 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 	}
 
 	public static FluidVolume empty() {
-		return new FluidVolume(Fraction.empty(), Fraction.bucket(), Fluids.EMPTY);
+		return EMPTY;
 	}
 
 	public static FluidVolume oxygen() {
@@ -82,6 +85,14 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 
 	public static FluidVolume fromTag(CompoundTag tag) {
 		return new FluidVolume(Fraction.fromTag(tag.getCompound("amount")), Fraction.fromTag(tag.getCompound("size")), Registry.FLUID.get(new Identifier(tag.getString("fluid"))));
+	}
+
+	public static boolean areFluidsEqual(FluidVolume volume1, FluidVolume volume2) {
+		return Objects.equal(volume1.getFluid(), volume2.getFluid());
+	}
+
+	public boolean fluidEquals(FluidVolume volume) {
+		return Objects.equal(this.getFluid(), volume.getFluid());
 	}
 
 	public Fluid getFluid() {
@@ -164,8 +175,41 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 		return (V) of(getAmount().copy(), getSize().copy(), getFluid());
 	}
 
+	public PacketByteBuf writeToBuffer(PacketByteBuf buffer) {
+		if (this.isEmpty()) {
+			buffer.writeBoolean(false);
+		} else {
+			buffer.writeBoolean(true);
+			Fluid fluid = this.getFluid();
+			buffer.writeVarInt(Registry.FLUID.getRawId(fluid));
+			Fraction amount = this.getAmount();
+			buffer.writeLong(amount.getNumerator());
+			buffer.writeLong(amount.getDenominator());
+			Fraction size = this.getSize();
+			buffer.writeLong(size.getNumerator());
+			buffer.writeLong(size.getDenominator());
+		}
+
+		return buffer;
+	}
+
+	public static FluidVolume readFromBuffer(PacketByteBuf buffer) {
+		if (!buffer.readBoolean()) {
+			return empty();
+		} else {
+			int id = buffer.readVarInt();
+			Fraction amount = new Fraction(buffer.readLong(), buffer.readLong());
+			Fraction size = new Fraction(buffer.readLong(), buffer.readLong());
+			return new FluidVolume(amount, size, Registry.FLUID.get(id));
+		}
+	}
+
 	public boolean canAccept(Fluid fluid) {
 		return this.fluid == fluid || this.isEmpty();
+	}
+
+	public boolean canAcceptFrom(FluidVolume volume) {
+		return this.fluidEquals(volume) || this.isEmpty();
 	}
 
 	@Override
@@ -195,7 +239,7 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 
 		FluidVolume volume = (FluidVolume) object;
 
-		return Objects.equal(fluid, volume.fluid);
+		return FluidVolume.areFluidsEqual(this, volume);
 	}
 
 	@Override

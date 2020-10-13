@@ -30,7 +30,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.github.chainmailstudios.astromine.transportations.registry.client.AstromineTransportationsItemGroups;
 
 public class AstromineTransportationsItems extends AstromineItems {
-	public static Item.Settings getTransportationsBasicSettings() {
+	public static Item.Settings getBasicSettings() {
 		return new Item.Settings().group(AstromineTransportationsItemGroups.TRANSPORTATIONS);
 	}
 

@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
+import net.fabricmc.fabric.impl.content.registry.FuelRegistryImpl;
+
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -510,7 +512,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	}
 
 	public static void initialize() {
-
+		FuelRegistryImpl.INSTANCE.add(WOODEN_MATTOCK, 200);
+		FuelRegistryImpl.INSTANCE.add(WOODEN_MINING_TOOL, 200);
 	}
 
 	public static <T extends Item> T register(String name, T item) {

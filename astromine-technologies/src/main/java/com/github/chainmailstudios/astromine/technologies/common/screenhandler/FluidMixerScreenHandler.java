@@ -24,10 +24,10 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.screenhandler;
 
+import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.chainmailstudios.astromine.common.component.SidedComponentProvider;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyFluidScreenHandler;
 import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBarWidget;
 import com.github.chainmailstudios.astromine.common.widget.blade.HorizontalArrowWidget;
@@ -50,12 +50,10 @@ public class FluidMixerScreenHandler extends ComponentBlockEntityEnergyFluidScre
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		SidedComponentProvider sidedComponentProvider = blockEntity;
-
 		FluidVerticalBarWidget secondInputFluidBar = new FluidVerticalBarWidget();
 		secondInputFluidBar.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, 0));
 		secondInputFluidBar.setSize(Size.absolute(fluidBar));
-		secondInputFluidBar.setVolume(() -> sidedComponentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(1));
+		secondInputFluidBar.setVolume(() -> blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(1));
 
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9, secondInputFluidBar.getHeight() / 2F - 8));
@@ -66,7 +64,7 @@ public class FluidMixerScreenHandler extends ComponentBlockEntityEnergyFluidScre
 		FluidVerticalBarWidget outputFluidBar = new FluidVerticalBarWidget();
 		outputFluidBar.setPosition(Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9 + arrow.getWidth() + 7, 0));
 		outputFluidBar.setSize(Size.absolute(fluidBar));
-		outputFluidBar.setVolume(() -> sidedComponentProvider.getSidedComponent(null, AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(2));
+		outputFluidBar.setVolume(() -> blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(2));
 
 		mainTab.addWidget(secondInputFluidBar);
 		mainTab.addWidget(arrow);

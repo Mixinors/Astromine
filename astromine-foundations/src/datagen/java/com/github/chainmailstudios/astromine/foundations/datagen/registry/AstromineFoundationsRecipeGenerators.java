@@ -17,6 +17,8 @@ import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.Smithi
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineRecipeGenerators;
 import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.AppleCraftingRecipeGenerator;
 import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.ArmorCraftingRecipeGenerators;
+import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.SalvageBlastingRecipeGenerator;
+import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.SalvageSmeltingRecipeGenerator;
 import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.ToolCraftingRecipeGenerators;
 import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.WrenchCraftingRecipeGenerator;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
@@ -138,6 +140,11 @@ public class AstromineFoundationsRecipeGenerators extends AstromineRecipeGenerat
 	public final RecipeGenerator LEGGINGS_SMITHING_FROM_GEM = register(new SmithingSetRecipeGenerator(LEGGINGS, GEM));
 	public final RecipeGenerator BOOTS_SMITHING_FROM_INGOT = register(new SmithingSetRecipeGenerator(BOOTS, INGOT));
 	public final RecipeGenerator BOOTS_SMITHING_FROM_GEM = register(new SmithingSetRecipeGenerator(BOOTS, GEM));
+
+	public final RecipeGenerator SALVAGE_SMELTING_TO_NUGGET = register(new SalvageSmeltingRecipeGenerator(NUGGET));
+	public final RecipeGenerator SALVAGE_SMELTING_TO_FRAGMENT = register(new SalvageSmeltingRecipeGenerator(FRAGMENT));
+	public final RecipeGenerator SALVAGE_BLASTING_TO_NUGGET = register(new SalvageBlastingRecipeGenerator(NUGGET));
+	public final RecipeGenerator SALVAGE_BLASTING_TO_FRAGMENT = register(new SalvageBlastingRecipeGenerator(FRAGMENT));
 
 	public final RecipeGenerator WRENCH = register(new WrenchCraftingRecipeGenerator());
 

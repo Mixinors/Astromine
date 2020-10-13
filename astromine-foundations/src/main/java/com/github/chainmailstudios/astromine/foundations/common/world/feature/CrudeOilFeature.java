@@ -55,7 +55,7 @@ public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
 
 	@Override
 	public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos pos, DefaultFeatureConfig config) {
-		if (random.nextInt(500) > 1)
+		if (random.nextInt(1000) > 1)
 			return false;
 
 		int offsetY = MathHelper.clamp(random.nextInt(20), 8, 20);
