@@ -165,7 +165,7 @@ public class AirlockBlock extends Block implements Waterloggable {
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		if (!world.isClient && player.isCreative()) {
-			TallPlantBlock.method_30036(world, pos, state, player);
+			TallPlantBlock.onBreakInCreative(world, pos, state, player);
 		}
 
 		super.onBreak(world, pos, state, player);
