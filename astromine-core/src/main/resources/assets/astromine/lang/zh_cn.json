@@ -3,9 +3,9 @@
   "entity.astromine.super_space_slime": "啫喱子：超级太空史莱姆",
   "entity.astromine.space_slime": "太空史莱姆",
   "entity.astromine.primitive_rocket": "原始火箭",
-  "text.astromine.rocket.disassemble_empty_fuel": "火箭一瞬意外解体：没加燃料！",
-  "text.astromine.rocket.disassemble_collision": "火箭一瞬意外解体：受到遮挡！",
-  "text.astromine.rocket.disassemble_invalid_fuel": "火箭一瞬意外解体：燃料错了！",
+  "text.astromine.rocket.disassemble_empty_fuel": "火箭快速意外解体：没加燃料！",
+  "text.astromine.rocket.disassemble_collision": "火箭快速意外解体：轨道受阻！",
+  "text.astromine.rocket.disassemble_invalid_fuel": "火箭快速意外解体：燃料有误！",
   "text.astromine.message.holographic_connection_successful": "已成功连接 %s 与 %s 的投影机。",
   "text.astromine.message.holographic_connection_failed": "在 %s 和 %s 的投影机连接失败。",
   "text.astromine.message.holographic_connection_clear": "已清除选定的投影器 ！",
@@ -213,6 +213,7 @@
   "block.astromine.alternator": "交流发电机",
   "block.astromine.splitter": "分离器",
   "block.astromine.incinerator": "焚化炉",
+  "block.astromine.drain": "排液口",
   "block.astromine.inserter": "输送器",
   "block.astromine.fast_inserter": "快速输送器",
   "block.astromine.basic_conveyor": "基础传动带",
@@ -1026,5 +1027,9 @@
   "advancements.astromine.get_advanced_circuit.title": "超级电路创作家",
   "advancements.astromine.get_advanced_circuit.description": "制作一块高级芯片",
   "advancements.astromine.get_elite_circuit.title": "新 超级电路创作家U 豪华版",
-  "advancements.astromine.get_elite_circuit.description": "制作一块精良芯片"
+  "advancements.astromine.get_elite_circuit.description": "制作一块精良芯片",
+  "advancements.astromine.destroy_rocket.title": "出了点问题…",
+  "advancements.astromine.destroy_rocket.description": "亲历一次火箭的快速意外解体",
+  "advancements.astromine.eat_lead_apple.title": "人不能……至少不应该……",
+  "advancements.astromine.eat_lead_apple.description": "通过摄入铅苹果来获取铅中毒"
 }
