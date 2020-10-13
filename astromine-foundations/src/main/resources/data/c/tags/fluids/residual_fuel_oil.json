@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:residual_fuel_oil",
+    "astromine:residual_fuel_oil_flowing"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "astromine:diesel",
+    "astromine:diesel_flowing"
+  ]
+}
