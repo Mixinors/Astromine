@@ -19,7 +19,7 @@
     "eat_lead_apple": {
       "trigger": "minecraft:consume_item",
       "conditions": {
-        "items": [
+        "item": [
           {
             "item": "astromine:lead_apple"
           }
