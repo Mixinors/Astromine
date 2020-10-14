@@ -1,9 +1,16 @@
 package com.github.chainmailstudios.astromine.foundations.registry;
 
 import com.github.chainmailstudios.astromine.registry.AstromineIdentifierFixes;
+import org.jetbrains.annotations.ApiStatus;
+
 
 public class AstromineFoundationsIdentifierFixes extends AstromineIdentifierFixes {
 	public static void initialize() {
+		initializePlateFix();
+	}
+
+	@ApiStatus.AvailableSince("1.11.4")
+	public static void initializePlateFix() {
 		register("metite_plates", "metite_plate");
 		register("stellum_plates", "stellum_plate");
 		register("univite_plates", "univite_plate");
