@@ -56,7 +56,7 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 	}
 
 	public static FluidVolume empty() {
-		return EMPTY;
+		return FluidVolume.of(Fraction.empty(), Fluids.EMPTY);
 	}
 
 	public static FluidVolume oxygen() {

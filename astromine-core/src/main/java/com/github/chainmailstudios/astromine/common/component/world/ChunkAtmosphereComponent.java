@@ -26,6 +26,7 @@ package com.github.chainmailstudios.astromine.common.component.world;
 
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Tickable;
@@ -134,15 +135,21 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 
 			for (Direction direction : directions) {
 				BlockPos sidePos = centerPos.offset(direction);
+
 				if (isInChunk(sidePos)) {
 					FluidVolume sideVolume = get(sidePos);
 
-					if (!(Registry.BLOCK.getId(world.getBlockState(sidePos).getBlock()).toString().equals("astromine:airlock") && !world.getBlockState(sidePos).get(Properties.POWERED)) && (world.getBlockState(sidePos).isAir() || !world.getBlockState(sidePos)
-						.isSideSolidFullSquare(world, sidePos, direction.getOpposite())) && (world.getBlockState(centerPos).isAir() || !world.getBlockState(centerPos).isSideSolidFullSquare(world, centerPos, direction)) && (sideVolume.isEmpty() || sideVolume.getFluid() ==
-							centerVolume.getFluid()) && (centerVolume.hasStored(Fraction.bottle()) || !world.isAir(centerPos) && world.getBlockState(sidePos).isOpaqueFullCube(world, centerPos)) && sideVolume.smallerThan(centerVolume.getAmount())) {
+					BlockState sideState = world.getBlockState(sidePos);
+					BlockState centerState = world.getBlockState(centerPos);
+
+					if (!(Registry.BLOCK.getId(sideState.getBlock()).toString().equals("astromine:airlock") && !sideState.get(Properties.POWERED))
+							&& (sideState.isAir() || !sideState.isSideSolidFullSquare(world, sidePos, direction.getOpposite()))
+							&& (centerState.isAir() || !centerState.isSideSolidFullSquare(world, centerPos, direction)) && (sideVolume.isEmpty() || sideVolume.canAccept(centerVolume.getFluid()))
+							&& (centerVolume.hasStored(Fraction.bottle()) && !sideState.isOpaqueFullCube(world, centerPos))
+							&& sideVolume.smallerThan(centerVolume.getAmount())) {
 						if (world.isAir(centerPos)) {
 							centerVolume.add(sideVolume, Fraction.bottle());
-						} else if (!world.getBlockState(centerPos).isSideSolidFullSquare(world, centerPos, direction)) {
+						} else if (!centerState.isSideSolidFullSquare(world, centerPos, direction)) {
 							centerVolume.add(sideVolume, Fraction.bottle());
 						} else {
 							centerVolume.add(sideVolume, centerVolume.getAmount());
@@ -152,18 +159,21 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 					}
 				} else {
 					ChunkPos neighborPos = getNeighborFromPos(sidePos);
+
 					ComponentProvider provider = ComponentProvider.fromChunk(world.getChunk(neighborPos.x, neighborPos.z));
+
 					ChunkAtmosphereComponent chunkAtmosphereComponent = provider.getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);
 
 					FluidVolume sideVolume = chunkAtmosphereComponent.get(sidePos);
 
-					if (!(Registry.BLOCK.getId(world.getBlockState(sidePos).getBlock()).toString().equals("astromine:airlock") && !world.getBlockState(sidePos).get(Properties.POWERED)) && (world.getBlockState(sidePos).isAir() || !world.getBlockState(sidePos)
-						.isSideSolidFullSquare(world, sidePos, direction.getOpposite())) && (world.getBlockState(centerPos).isAir() || !world.getBlockState(centerPos).isSideSolidFullSquare(world, centerPos, direction)) && (sideVolume.isEmpty() || sideVolume.getFluid() ==
-							centerVolume.getFluid()) && (centerVolume.hasStored(Fraction.bottle()) || !world.isAir(centerPos) && world.getBlockState(sidePos).isOpaqueFullCube(world, centerPos)) && sideVolume.smallerThan(centerVolume.getAmount())) {
-						// Keeping these here just in case I need them for debugging in the future.
-						// AstromineCommon.LOGGER.info("Step 1: Moving from ChunkPos(" + chunk.getPos().x + "," + chunk.getPos().z + ") to ChunkPos(" + neighborPos.x + "," + neighborPos.z + ")");
-						// AstromineCommon.LOGGER.info("Step 2: Moving from " + centerPos + " to " + sidePos);
+					BlockState sideState = world.getBlockState(sidePos);
+					BlockState centerState = world.getBlockState(centerPos);
 
+					if (!(Registry.BLOCK.getId(sideState.getBlock()).toString().equals("astromine:airlock") && !sideState.get(Properties.POWERED))
+							&& (sideState.isAir() || !sideState.isSideSolidFullSquare(world, sidePos, direction.getOpposite()))
+							&& (centerState.isAir() || !centerState.isSideSolidFullSquare(world, centerPos, direction)) && (sideVolume.isEmpty() || sideVolume.canAccept(centerVolume.getFluid()))
+							&& (centerVolume.hasStored(Fraction.bottle()) && !sideState.isOpaqueFullCube(world, centerPos))
+							&& sideVolume.smallerThan(centerVolume.getAmount())) {
 						if (world.isAir(centerPos)) {
 							centerVolume.add(sideVolume, Fraction.bottle());
 						} else if (!world.getBlockState(centerPos).isSideSolidFullSquare(world, centerPos, direction)) {
