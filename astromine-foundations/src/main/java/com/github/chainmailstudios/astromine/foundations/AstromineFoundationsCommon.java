@@ -30,6 +30,7 @@ import com.github.chainmailstudios.astromine.foundations.registry.AstromineFound
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFeatures;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFluidEffects;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFluids;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsIdentifierFixes;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsItems;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsOres;
 
@@ -47,5 +48,6 @@ public class AstromineFoundationsCommon extends AstromineCommon {
 		AstromineFoundationsCriteria.initialize();
 		AstromineFoundationsFluidEffects.initialize();
 		AstromineFoundationsFeatures.initialize();
+		AstromineFoundationsIdentifierFixes.initialize();
 	}
 }

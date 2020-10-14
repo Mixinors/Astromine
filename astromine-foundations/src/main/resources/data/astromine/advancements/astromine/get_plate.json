@@ -1,0 +1,30 @@
+{
+  "parent": "astromine:astromine/root",
+  "display": {
+    "icon": {
+      "item": "astromine:iron_plate"
+    },
+    "title": {
+      "translate": "advancements.astromine.get_plate.title"
+    },
+    "description": {
+      "translate": "advancements.astromine.get_plate.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_plate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "astromine:plates"
+          }
+        ]
+      }
+    }
+  }
+}

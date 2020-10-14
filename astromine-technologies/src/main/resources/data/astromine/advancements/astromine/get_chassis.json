@@ -1,5 +1,5 @@
 {
-  "parent": "astromine:astromine/get_plates",
+  "parent": "astromine:astromine/get_plate",
   "display": {
     "icon": {
       "item": "astromine:primitive_machine_chassis"

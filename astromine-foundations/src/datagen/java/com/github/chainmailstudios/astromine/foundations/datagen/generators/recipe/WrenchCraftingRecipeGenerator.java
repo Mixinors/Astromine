@@ -7,6 +7,6 @@ public class WrenchCraftingRecipeGenerator extends ShapedCraftingSetRecipeGenera
 	public WrenchCraftingRecipeGenerator() {
 		super(MaterialItemType.INGOT, MaterialItemType.WRENCH, "# #", " G ", " P ");
 		this.addType('G', MaterialItemType.GEAR);
-		this.addType('P', MaterialItemType.PLATES);
+		this.addType('P', MaterialItemType.PLATE);
 	}
 }

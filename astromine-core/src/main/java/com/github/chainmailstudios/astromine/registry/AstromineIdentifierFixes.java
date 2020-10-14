@@ -24,8 +24,14 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.common.registry.IdentifierFixRegistry;
+
 public class AstromineIdentifierFixes {
 	public static void initialize() {
 
+	}
+
+	public static void register(String oldPath, String newPath) {
+		IdentifierFixRegistry.INSTANCE.register(oldPath, newPath);
 	}
 }

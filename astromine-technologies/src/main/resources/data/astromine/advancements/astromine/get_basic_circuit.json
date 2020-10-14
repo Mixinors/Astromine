@@ -1,5 +1,5 @@
 {
-  "parent": "astromine:astromine/get_plates",
+  "parent": "astromine:astromine/get_plate",
   "display": {
     "icon": {
       "item": "astromine:basic_circuit"
