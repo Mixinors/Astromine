@@ -7,6 +7,8 @@ import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
 import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import com.github.vini2003.blade.client.utilities.Layers;
 import com.github.vini2003.blade.common.widget.base.ButtonWidget;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
@@ -62,6 +64,7 @@ public class FluidFilterWidget extends ButtonWidget {
 		return Collections.singletonList(new TranslatableText(String.format("block.%s.%s", fluidId.getNamespace(), fluidId.getPath())));
 	}
 
+	@Environment(EnvType.CLIENT)
 	@Override
 	public void onMouseClicked(float x, float y, int button) {
 		super.onMouseClicked(x, y, button);
@@ -81,6 +84,7 @@ public class FluidFilterWidget extends ButtonWidget {
 		}
 	}
 
+	@Environment(EnvType.CLIENT)
 	@Override
 	public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider) {
 		if (getHidden()) {
