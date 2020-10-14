@@ -168,27 +168,27 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item GLOWSTONE_TINY_DUST = register("glowstone_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 
 	// Materials - Plates
-	public static final Item METITE_PLATES = register("metite_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
-	public static final Item STELLUM_PLATES = register("stellum_plates", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
-	public static final Item UNIVITE_PLATES = register("univite_plates", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
-	public static final Item LUNUM_PLATES = register("lunum_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item METITE_PLATE = register("metite_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item STELLUM_PLATE = register("stellum_plate", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item UNIVITE_PLATE = register("univite_plate", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item LUNUM_PLATE = register("lunum_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
 
-	public static final Item COPPER_PLATES = register("copper_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
-	public static final Item TIN_PLATES = register("tin_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
-	public static final Item SILVER_PLATES = register("silver_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
-	public static final Item LEAD_PLATES = register("lead_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item COPPER_PLATE = register("copper_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item TIN_PLATE = register("tin_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item SILVER_PLATE = register("silver_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item LEAD_PLATE = register("lead_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
 
-	public static final Item STEEL_PLATES = register("steel_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
-	public static final Item BRONZE_PLATES = register("bronze_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
-	public static final Item ELECTRUM_PLATES = register("electrum_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
-	public static final Item ROSE_GOLD_PLATES = register("rose_gold_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
-	public static final Item STERLING_SILVER_PLATES = register("sterling_silver_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
-	public static final Item FOOLS_GOLD_PLATES = register("fools_gold_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
-	public static final Item METEORIC_STEEL_PLATES = register("meteoric_steel_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item STEEL_PLATE = register("steel_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item BRONZE_PLATE = register("bronze_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item ELECTRUM_PLATE = register("electrum_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item ROSE_GOLD_PLATE = register("rose_gold_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item STERLING_SILVER_PLATE = register("sterling_silver_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item FOOLS_GOLD_PLATE = register("fools_gold_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item METEORIC_STEEL_PLATE = register("meteoric_steel_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
 
-	public static final Item IRON_PLATES = register("iron_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
-	public static final Item GOLD_PLATES = register("gold_plates", new Item(AstromineFoundationsItems.getBasicSettings()));
-	public static final Item NETHERITE_PLATES = register("netherite_plates", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item IRON_PLATE = register("iron_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item GOLD_PLATE = register("gold_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item NETHERITE_PLATE = register("netherite_plate", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
 
 	// Materials - Gears
 	public static final Item METITE_GEAR = register("metite_gear", new Item(AstromineFoundationsItems.getBasicSettings()));

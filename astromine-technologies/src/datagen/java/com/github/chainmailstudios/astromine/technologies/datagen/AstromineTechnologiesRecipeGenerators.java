@@ -21,7 +21,7 @@ import static com.github.chainmailstudios.astromine.datagen.material.MaterialIte
 import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.MISC_RESOURCE;
 import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.NUGGET;
 import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.ORE;
-import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.PLATES;
+import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.PLATE;
 import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.TINY_DUST;
 
 
@@ -37,7 +37,7 @@ public class AstromineTechnologiesRecipeGenerators extends AstromineRecipeGenera
 	public final RecipeGenerator NUGGET_TO_TINY_DUST = register(new TrituratingSetRecipeGenerator(NUGGET, TINY_DUST, 15, 200));
 	public final RecipeGenerator FRAGMENT_TO_TINY_DUST = register(new TrituratingSetRecipeGenerator(FRAGMENT, TINY_DUST, 15, 200));
 
-	public final RecipeGenerator INGOT_TO_PLATES_PRESSING = register(new PressingSetRecipeGenerator(INGOT, PLATES, 60, 340));
+	public final RecipeGenerator INGOT_TO_PLATES_PRESSING = register(new PressingSetRecipeGenerator(INGOT, PLATE, 60, 340));
 
 	public final RecipeGenerator GRAVEL_FROM_COBBLESTONE = register(new TrituratingRecipeGenerator("gravel_from_triturating_cobblestone", Ingredient.ofItems(Blocks.COBBLESTONE), Blocks.GRAVEL, 20, 120));
 	public final RecipeGenerator SAND_FROM_GRAVEL = register(new TrituratingRecipeGenerator("sand_from_triturating_gravel", Ingredient.ofItems(Blocks.GRAVEL), Blocks.SAND, 20, 120));

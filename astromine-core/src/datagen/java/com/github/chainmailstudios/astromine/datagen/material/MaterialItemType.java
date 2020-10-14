@@ -15,7 +15,7 @@ public enum MaterialItemType {
 	DUST,
 	TINY_DUST,
 	GEAR,
-	PLATES,
+	PLATE,
 	WIRE,
 	PICKAXE,
 	AXE,

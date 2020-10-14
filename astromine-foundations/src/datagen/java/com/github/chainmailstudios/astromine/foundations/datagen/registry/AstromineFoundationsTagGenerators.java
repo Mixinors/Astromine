@@ -48,7 +48,7 @@ public class AstromineFoundationsTagGenerators extends AstromineTagGenerators {
 	public final SetTagGenerator PIGLIN_LOVED_ORES = register(new PiglinLovedTagGenerator(MaterialItemType.ORE));
 	public final SetTagGenerator PIGLIN_LOVED_GEMS = register(new PiglinLovedTagGenerator(MaterialItemType.GEM));
 	public final SetTagGenerator PIGLIN_LOVED_GEARS = register(new PiglinLovedTagGenerator(MaterialItemType.GEAR));
-	public final SetTagGenerator PIGLIN_LOVED_PLATES = register(new PiglinLovedTagGenerator(MaterialItemType.PLATES));
+	public final SetTagGenerator PIGLIN_LOVED_PLATES = register(new PiglinLovedTagGenerator(MaterialItemType.PLATE));
 	public final SetTagGenerator PIGLIN_LOVED_WIRES = register(new PiglinLovedTagGenerator(MaterialItemType.WIRE));
 	public final SetTagGenerator PIGLIN_LOVED_DUSTS = register(new PiglinLovedTagGenerator(MaterialItemType.DUST));
 	public final SetTagGenerator PIGLIN_LOVED_METEOR_CLUSTERS = register(new PiglinLovedTagGenerator(MaterialItemType.METEOR_CLUSTER));
@@ -91,5 +91,5 @@ public class AstromineFoundationsTagGenerators extends AstromineTagGenerators {
 	public final OneTimeTagGenerator ENCHANTED_GOLDEN_APPLE = register(new ItemInTagGenerator(new Identifier("c", "golden_apples"), new Identifier("enchanted_golden_apple")));
 
 	public final SetTagGenerator GEARS = register(new GenericSetTagGenerator("gears", AstromineCommon.identifier("gears"), MaterialItemType.GEAR));
-	public final SetTagGenerator PLATES = register(new GenericSetTagGenerator("plates", AstromineCommon.identifier("plates"), MaterialItemType.PLATES));
+	public final SetTagGenerator PLATES = register(new GenericSetTagGenerator("plates", AstromineCommon.identifier("plates"), MaterialItemType.PLATE));
 }

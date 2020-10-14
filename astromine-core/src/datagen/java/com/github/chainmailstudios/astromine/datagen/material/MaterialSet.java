@@ -144,7 +144,7 @@ public class MaterialSet {
 			ingot();
 			nugget();
 			block();
-			plates();
+			plate();
 			return gear();
 		}
 
@@ -223,8 +223,8 @@ public class MaterialSet {
 			return addType(GEAR, new Identifier("c", name + "_gears"));
 		}
 
-		public Builder plates() {
-			return addType(PLATES, new Identifier("c", name + "_plates"));
+		public Builder plate() {
+			return addType(PLATE, new Identifier("c", name + "_plates"));
 		}
 
 		public Builder wire() {

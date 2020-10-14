@@ -50,7 +50,7 @@ public class IdentifierMixin {
 
 	@Inject(method = "<init>([Ljava/lang/String;)V", at = @At("RETURN"))
 	private void init(String[] strings, CallbackInfo ci) {
-		if (AstromineConfig.get().compatibilityMode && namespace.equals(AstromineCommon.MOD_ID) && IdentifierFixRegistry.INSTANCE.containsKey(path)) {
+		if (namespace.equals(AstromineCommon.MOD_ID) && AstromineConfig.get().compatibilityMode && IdentifierFixRegistry.INSTANCE.containsKey(path)) {
 			String oldPath = path;
 			path = IdentifierFixRegistry.INSTANCE.get(path);
 			AstromineCommon.LOGGER.info("Fixed identifier path from " + oldPath + " to " + path);

@@ -31,7 +31,7 @@ public class AstromineFoundationsModelStateGenerators extends AstromineModelStat
 	public final ModelStateGenerator TINY_DUST = register(new GenericItemSetModelGenerator(MaterialItemType.TINY_DUST));
 
 	public final ModelStateGenerator GEAR = register(new GenericItemSetModelGenerator(MaterialItemType.GEAR));
-	public final ModelStateGenerator PLATES = register(new GenericItemSetModelGenerator(MaterialItemType.PLATES));
+	public final ModelStateGenerator PLATES = register(new GenericItemSetModelGenerator(MaterialItemType.PLATE));
 	public final ModelStateGenerator WIRE = register(new GenericItemSetModelGenerator(MaterialItemType.WIRE));
 
 	public final ModelStateGenerator PICKAXE = register(new HandheldItemSetModelGenerator(MaterialItemType.PICKAXE));
