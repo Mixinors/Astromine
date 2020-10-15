@@ -52,7 +52,7 @@ public class AnimatedArmorItem extends ArmorItem {
 					_texture = new AnimatedTexture(id, count);
 					textureManager.registerTexture(id, _texture);
 				}
-				
+
 				_texture.bindTexture();
 			};
 			endAction = () -> {};
@@ -140,7 +140,7 @@ public class AnimatedArmorItem extends ArmorItem {
 				bindTexture();
 				int yOffset = (i % count) * _image.getHeight();
 				for (int x = 0; x < _image.getWidth(); x++) {
-					for (int y = 0; y < count; y++) {
+					for (int y = 0; y < _image.getHeight(); y++) {
 						_image.setPixelColor(x, y, image.getPixelColor(x, y + yOffset));
 					}
 				}
