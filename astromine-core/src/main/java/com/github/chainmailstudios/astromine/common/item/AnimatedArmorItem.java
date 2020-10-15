@@ -33,27 +33,27 @@ public class AnimatedArmorItem extends ArmorItem {
 	public static class Texture extends RenderPhase.Texture {
 		private final Optional<Identifier> id;
 
-		public Texture(Identifier id, int count) {
+		public Texture(Identifier id, int frames) {
 			beginAction = () -> {
 				RenderSystem.enableTexture();
 				TextureManager textureManager = MinecraftClient.getInstance().getTextureManager();
-				AbstractTexture _texture = textureManager.getTexture(id);
-				if (!(_texture instanceof AnimatedTexture)) {
-					if (_texture != null) {
+				AbstractTexture texture = textureManager.getTexture(id);
+				if (!(texture instanceof AnimatedTexture)) {
+					if (texture != null) {
 						try {
-							_texture.close();
+							texture.close();
 						} catch (Exception e) {
 							LogManager.getLogger().warn("Failed to close texture {}", id, e);
 						}
 
-						_texture.clearGlId();
+						texture.clearGlId();
 					}
 
-					_texture = new AnimatedTexture(id, count);
-					textureManager.registerTexture(id, _texture);
+					texture = new AnimatedTexture(id, frames);
+					textureManager.registerTexture(id, texture);
 				}
 
-				_texture.bindTexture();
+				texture.bindTexture();
 			};
 			endAction = () -> {};
 			this.id = Optional.of(id);
@@ -91,14 +91,14 @@ public class AnimatedArmorItem extends ArmorItem {
 
 		private static final class AnimatedTexture extends AbstractTexture implements TextureTickListener {
 			private final Identifier id;
-			private final int count;
+			private final int frames;
 			private int i;
 			private NativeImage image;
-			private NativeImage _image;
+			private NativeImage tmpTexture;
 
-			public AnimatedTexture(Identifier id, int count) {
+			public AnimatedTexture(Identifier id, int frames) {
 				this.id = id;
-				this.count = count;
+				this.frames = frames;
 			}
 
 			@Override
@@ -108,8 +108,8 @@ public class AnimatedArmorItem extends ArmorItem {
 				try (Resource resource = manager.getResource(id)) {
 					image = NativeImage.read(resource.getInputStream());
 				}
-				this._image = new NativeImage(this.image.getFormat(), image.getWidth(), image.getHeight() / count, false);
-				TextureUtil.allocate(this.getGlId(), _image.getWidth(), _image.getHeight());
+				this.tmpTexture = new NativeImage(this.image.getFormat(), image.getWidth(), image.getHeight() / frames, false);
+				TextureUtil.allocate(this.getGlId(), tmpTexture.getWidth(), tmpTexture.getHeight());
 			}
 
 			@Override
@@ -120,9 +120,9 @@ public class AnimatedArmorItem extends ArmorItem {
 					this.clearGlId();
 					this.image = null;
 				}
-				if (this._image != null) {
-					this._image.close();
-					this._image = null;
+				if (this.tmpTexture != null) {
+					this.tmpTexture.close();
+					this.tmpTexture = null;
 				}
 			}
 
@@ -138,13 +138,13 @@ public class AnimatedArmorItem extends ArmorItem {
 			private void _tick() {
 				i++;
 				bindTexture();
-				int yOffset = (i % count) * _image.getHeight();
-				for (int x = 0; x < _image.getWidth(); x++) {
-					for (int y = 0; y < _image.getHeight(); y++) {
-						_image.setPixelColor(x, y, image.getPixelColor(x, y + yOffset));
+				int yOffset = (i % frames) * tmpTexture.getHeight();
+				for (int x = 0; x < tmpTexture.getWidth(); x++) {
+					for (int y = 0; y < tmpTexture.getHeight(); y++) {
+						tmpTexture.setPixelColor(x, y, image.getPixelColor(x, y + yOffset));
 					}
 				}
-				_image.upload(0, 0, 0, false);
+				tmpTexture.upload(0, 0, 0, false);
 			}
 		}
 	}
