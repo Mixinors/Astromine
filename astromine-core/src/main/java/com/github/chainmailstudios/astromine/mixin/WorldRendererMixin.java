@@ -68,7 +68,7 @@ public abstract class WorldRendererMixin {
 
 	@Shadow public abstract void render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f);
 
-	@Inject(at = @At("HEAD"), method = "renderSky(Lnet/minecraft/client/util/math/MatrixStack;F)V", cancellable = true)
+	@Inject(at = @At("HEAD"), method = "renderSky(Lnet/minecraft/client/util/math/Matrix" + "Stack;F)V", cancellable = true)
 	void astromine_renderSky(MatrixStack matrices, float tickDelta, CallbackInfo callbackInformation) {
 		Skybox skybox = SkyboxRegistry.INSTANCE.get(this.client.world.getRegistryKey());
 
@@ -94,6 +94,7 @@ public abstract class WorldRendererMixin {
 
 		for (Long2ObjectMap.Entry<FluidVolume> entry : ClientAtmosphereManager.getVolumes().long2ObjectEntrySet()) {
 			long blockPos = entry.getLongKey();
+
 			FluidVolume volume = entry.getValue();
 
 			float r = 255;

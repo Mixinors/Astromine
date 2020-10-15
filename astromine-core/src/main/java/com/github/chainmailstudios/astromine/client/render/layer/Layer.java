@@ -36,9 +36,9 @@ import java.util.Map;
 public class Layer extends RenderLayer {
 	private static final Map<Identifier, RenderLayer> LAYERS = new HashMap<>();
 
-	private static final RenderLayer HOLOGRAPHIC_BRIDGE = of("holographic_bridge", VertexFormats.POSITION_COLOR_LIGHT, 7, 256, false, true, RenderLayer.MultiPhaseParameters.builder().cull(RenderPhase.DISABLE_CULLING).lightmap(ENABLE_LIGHTMAP).shadeModel(RenderLayer.SMOOTH_SHADE_MODEL).transparency(RenderLayer.TRANSLUCENT_TRANSPARENCY).alpha(RenderLayer.ONE_TENTH_ALPHA).layering(RenderLayer.VIEW_OFFSET_Z_LAYERING).build(false));
+	private static final RenderLayer HOLOGRAPHIC_BRIDGE = of("holographic_bridge", VertexFormats.POSITION_COLOR_LIGHT, 7, 256, false, true, RenderLayer.MultiPhaseParameters.builder().cull(DISABLE_CULLING).lightmap(ENABLE_LIGHTMAP).shadeModel(SMOOTH_SHADE_MODEL).transparency(TRANSLUCENT_TRANSPARENCY).alpha(ONE_TENTH_ALPHA).layering(VIEW_OFFSET_Z_LAYERING).build(false));
 
-	private static final RenderLayer GAS = of("gas", VertexFormats.POSITION_COLOR_LIGHT, 7, 2097152, true, true, RenderLayer.MultiPhaseParameters.builder().cull(RenderLayer.DISABLE_CULLING).layering(RenderLayer.VIEW_OFFSET_Z_LAYERING).shadeModel(SMOOTH_SHADE_MODEL).transparency(TRANSLUCENT_TRANSPARENCY).build(true));
+	private static final RenderLayer GAS = of("gas", VertexFormats.POSITION_COLOR_LIGHT, 7, 2097152, true, true, RenderLayer.MultiPhaseParameters.builder().cull(DISABLE_CULLING).layering(VIEW_OFFSET_Z_LAYERING).shadeModel(SMOOTH_SHADE_MODEL).transparency(TRANSLUCENT_TRANSPARENCY).build(true));
 
 	public Layer(String name, VertexFormat vertexFormat, int drawMode, int expectedBufferSize, boolean hasCrumbling, boolean translucent, Runnable startAction, Runnable endAction) {
 		super(name, vertexFormat, drawMode, expectedBufferSize, hasCrumbling, translucent, startAction, endAction);
