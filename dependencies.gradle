@@ -33,6 +33,7 @@ project.ext.setDefaultApis = {
     useAsApi("teamreborn:energy:${tr_energy_version}")
 
     // Cloth API
+    useAsApi("me.shedaniel.cloth.api:cloth-common-events-v1:${cloth_api_version}")
     useAsApi("me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${cloth_api_version}")
     useAsApi("me.shedaniel.cloth.api:cloth-dynamic-registry-api-v1:${cloth_api_version}")
     useAsApi("me.shedaniel.cloth.api:cloth-datagen-api-v1:${cloth_api_version}")
