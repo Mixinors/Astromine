@@ -11,7 +11,7 @@
     "ServerChunkManagerMixin", "ServerWorldMixin", "SquidEntityMixin", "StepAndDestroyBlockGoalMixin", "WorldChunkMixin"
   ],
   "client": [
-    "BossBarHudMixin", "ClientRecipeBookMixin", "CurrentDownParticleMixin",
+    "ArmorFeatureRendererMixin", "BossBarHudMixin", "ClientRecipeBookMixin", "CurrentDownParticleMixin",
     "EggEntityMixin", "SkyPropertiesMixin", "WorldRendererMixin"
   ],
   "injectors": {
