@@ -24,19 +24,17 @@
 
 package com.github.chainmailstudios.astromine.common.registry;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
+import com.google.common.collect.Sets;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
+import net.minecraft.block.Block;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 
-import com.google.common.collect.Sets;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -49,16 +47,12 @@ public class NetworkMemberRegistry {
 
 	private NetworkMemberRegistry() {}
 
-	public static NetworkMember get(@Nullable WorldPos pos) {
-		return INSTANCE.new NetworkMemberImpl(pos);
+	public static NetworkMember get(@Nullable WorldPos pos, @Nullable Direction direction) {
+		return INSTANCE.new NetworkMemberImpl(pos, direction);
 	}
 
-	public static NetworkMember get(@Nullable World world, @Nullable BlockPos pos) {
-		return get(world != null && pos != null ? WorldPos.of(world, pos) : null);
-	}
-
-	public static NetworkMember get(@Nullable BlockEntity blockEntity) {
-		return blockEntity != null ? get(blockEntity.getWorld(), blockEntity.getPos()) : get(null, null);
+	public static NetworkMember get(@Nullable BlockEntity blockEntity, @Nullable Direction direction) {
+		return blockEntity != null ? get(WorldPos.of(blockEntity.getWorld(), blockEntity.getPos()), null) : get((WorldPos) null, null);
 	}
 
 	public <T extends NetworkType, R extends NetworkTypeRegistry<?>> void register(T t, R r) {
@@ -72,7 +66,7 @@ public class NetworkMemberRegistry {
 	public interface NetworkTypeRegistry<T extends NetworkType> {
 		void register(Block block, NetworkMemberType... types);
 
-		Collection<NetworkMemberType> get(WorldPos pos);
+		Collection<NetworkMemberType> get(WorldPos pos, @Nullable Direction direction);
 	}
 
 	public static class NetworkTypeRegistryImpl<T extends NetworkType> implements NetworkTypeRegistry<T> {
@@ -88,7 +82,7 @@ public class NetworkMemberRegistry {
 		}
 
 		@Override
-		public Collection<NetworkMemberType> get(WorldPos pos) {
+		public Collection<NetworkMemberType> get(WorldPos pos, @Nullable Direction direction) {
 			return this.types.getOrDefault(pos.getBlock(), Collections.emptySet());
 		}
 	}
@@ -96,16 +90,19 @@ public class NetworkMemberRegistry {
 	public class NetworkMemberImpl implements NetworkMember {
 		@Nullable
 		private final WorldPos pos;
+		@Nullable
+		private final Direction direction;
 
-		public NetworkMemberImpl(@Nullable WorldPos pos) {
+		public NetworkMemberImpl(@Nullable WorldPos pos, @Nullable Direction direction) {
 			this.pos = pos;
+			this.direction = direction;
 		}
 
 		@Override
 		public Collection<NetworkMemberType> getMemberNetworkTypeProperties(NetworkType type) {
 			if (pos == null)
 				return Collections.emptySet();
-			return get(type).get(pos);
+			return get(type).get(pos, direction);
 		}
 	}
 }

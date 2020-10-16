@@ -24,10 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+
 public class NumberUtilities {
 	public static String shorten(double value, String unit) {
 		if (value < 1000) {
-			return value + "";
+			return Fraction.DECIMAL_FORMAT.format(value);
 		}
 		int exponent = (int) (Math.log(value) / Math.log(1000));
 		String[] units = new String[]{ "k" + unit, "M" + unit, "G" + unit, "T" + unit, "P" + unit, "E" + unit, "Z" + unit, "Y" + unit };
