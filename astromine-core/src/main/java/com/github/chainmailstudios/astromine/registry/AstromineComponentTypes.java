@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
@@ -46,6 +47,7 @@ public class AstromineComponentTypes {
 	public static final ComponentType<EnergyInventoryComponent> ENERGY_INVENTORY_COMPONENT = ComponentRegistry.INSTANCE.registerIfAbsent(AstromineCommon.identifier("energy_inventory_component"), EnergyInventoryComponent.class);
 
 	public static final ComponentType<BlockEntityTransferComponent> BLOCK_ENTITY_TRANSFER_COMPONENT = ComponentRegistry.INSTANCE.registerIfAbsent(AstromineCommon.identifier("block_entity_transfer_component"), BlockEntityTransferComponent.class);
+	public static final ComponentType<BlockEntityRedstoneComponent> BLOCK_ENTITY_REDSTONE_COMPONENT = ComponentRegistry.INSTANCE.registerIfAbsent(AstromineCommon.identifier("block_entity_redstone_component"), BlockEntityRedstoneComponent.class);
 
 	public static final ComponentType<EntityOxygenComponent> ENTITY_OXYGEN_COMPONENT = ComponentRegistry.INSTANCE.registerIfAbsent(AstromineCommon.identifier("entity_oxygen_component"), EntityOxygenComponent.class);
 

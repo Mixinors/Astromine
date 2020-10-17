@@ -24,19 +24,17 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block.entity.base;
 
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -47,7 +45,7 @@ import com.github.chainmailstudios.astromine.transportations.common.conveyor.Con
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorConveyable;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorTypes;
 
-public class AbstractConveyableBlockEntity extends BlockEntity implements Conveyable, DoubleStackInventory, BlockEntityClientSerializable, RenderAttachmentBlockEntity, Tickable {
+public class AbstractConveyableBlockEntity extends ComponentBlockEntity implements Conveyable, DoubleStackInventory, RenderAttachmentBlockEntity {
 	int leftPosition = 0;
 	int prevLeftPosition = 0;
 	int rightPosition = 0;
@@ -63,6 +61,9 @@ public class AbstractConveyableBlockEntity extends BlockEntity implements Convey
 
 	@Override
 	public void tick() {
+		if (world == null || !tickRedstone())
+			return;
+
 		Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
 		int speed = 16;
 

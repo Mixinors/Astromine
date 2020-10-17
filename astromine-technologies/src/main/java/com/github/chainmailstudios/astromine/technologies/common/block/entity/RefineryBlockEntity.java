@@ -103,9 +103,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 	public void tick() {
 		super.tick();
 
-		if (world == null)
-			return;
-		if (world.isClient)
+		if (world == null || world.isClient || !tickRedstone())
 			return;
 
 		FluidHandler.ofOptional(this).ifPresent(fluids -> {

@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.PacketContext;
@@ -34,6 +35,7 @@ import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.Tickable;
@@ -74,12 +76,16 @@ import java.util.stream.Collectors;
 public abstract class ComponentBlockEntity extends net.minecraft.block.entity.BlockEntity implements ComponentProvider, PacketConsumer, BlockEntityClientSerializable, Tickable {
 	public static final Identifier TRANSFER_UPDATE_PACKET = AstromineCommon.identifier("transfer_update_packet");
 	protected final BlockEntityTransferComponent transferComponent = new BlockEntityTransferComponent();
+	protected final BlockEntityRedstoneComponent redstoneComponent = new BlockEntityRedstoneComponent();
 	protected final Map<ComponentType<?>, Component> allComponents = Maps.newHashMap();
 	protected final Map<Identifier, BiConsumer<PacketByteBuf, PacketContext>> allHandlers = Maps.newHashMap();
-	public boolean isActive = false;
 
+	public boolean isActive = false;
 	public boolean[] activity = { false, false, false, false, false };
+
 	protected boolean skipInventory = true;
+
+	protected int redstoneMode = 0;
 
 	public ComponentBlockEntity(BlockEntityType<?> type) {
 		super(type);
@@ -115,12 +121,12 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 
 	@Override
 	public boolean hasComponent(ComponentType<?> componentType) {
-		return allComponents.containsKey(componentType) || componentType == AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT;
+		return allComponents.containsKey(componentType) || componentType == AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT || componentType == AstromineComponentTypes.BLOCK_ENTITY_REDSTONE_COMPONENT;
 	}
 
 	@Override
 	public <C extends Component> C getComponent(ComponentType<C> componentType) {
-		return componentType == AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT ? (C) transferComponent : (C) allComponents.get(componentType);
+		return componentType == AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT ? (C) transferComponent : componentType == AstromineComponentTypes.BLOCK_ENTITY_REDSTONE_COMPONENT ? (C) redstoneComponent : (C) allComponents.get(componentType);
 	}
 
 	@Override
@@ -131,6 +137,7 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
 		tag.put("transfer", transferComponent.toTag(new CompoundTag()));
+		tag.put("redstone", redstoneComponent.toTag(new CompoundTag()));
 
 		allComponents.forEach((type, component) -> {
 			tag.put(type.getId().toString(), component.toTag(new CompoundTag()));
@@ -142,6 +149,7 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
 		transferComponent.fromTag(tag.getCompound("transfer"));
+		redstoneComponent.fromTag(tag.getCompound("redstone"));
 
 		allComponents.forEach((type, component) -> {
 			if (tag.contains(type.getId().toString())) {
@@ -259,5 +267,26 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 
 	public void tickInactive() {
 		isActive = false;
+	}
+
+	public boolean tickRedstone() {
+		boolean powered = world.getReceivedRedstonePower(getPos()) > 0;
+
+		switch (redstoneComponent.getType()) {
+			case WORK_WHEN_ON: {
+				if (powered) tickActive(); else tickInactive();
+				return powered;
+			}
+
+			case WORK_WHEN_OFF: {
+				if (!powered) tickActive(); else tickInactive();
+				return !powered;
+			}
+
+			default: {
+				tickActive();
+				return true;
+			}
+		}
 	}
 }

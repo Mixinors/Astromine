@@ -106,9 +106,7 @@ public abstract class ElectricSmelterBlockEntity extends ComponentEnergyInventor
 	public void tick() {
 		super.tick();
 
-		if (world == null)
-			return;
-		if (world.isClient)
+		if (world == null || world.isClient || !tickRedstone())
 			return;
 
 		ItemHandler.ofOptional(this).ifPresent(items -> {

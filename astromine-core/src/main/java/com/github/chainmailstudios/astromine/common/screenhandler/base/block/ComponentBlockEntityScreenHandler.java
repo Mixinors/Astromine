@@ -24,9 +24,15 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.block;
 
+import com.github.chainmailstudios.astromine.common.block.redstone.RedstoneType;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
+import com.github.vini2003.blade.common.collection.base.WidgetCollection;
+import com.github.vini2003.blade.common.widget.base.ButtonWidget;
+import kotlin.Unit;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.state.property.DirectionProperty;
@@ -150,5 +156,41 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 				current.addWidget(tabTitle);
 			}
 		});
+
+		BlockEntityRedstoneComponent redstoneComponent = syncBlockEntity.getComponent(AstromineComponentTypes.BLOCK_ENTITY_REDSTONE_COMPONENT);
+
+		WidgetCollection redstoneTab = tabs.addTab(Items.REDSTONE, () -> Collections.singletonList(new TranslatableText("text.astromine.redstone")));
+
+		ButtonWidget[] redstoneButtons = new ButtonWidget[]{new ButtonWidget(), new ButtonWidget(), new ButtonWidget()};
+
+		for (int i : new int[] {0, 1, 2}) {
+			ButtonWidget redstoneButton = redstoneButtons[i];
+			redstoneButton.setPosition(Position.of(mainTab.getX() + mainTab.getWidth() / 2 - 84 / 2, mainTab.getY() + mainTab.getHeight() / 2 - 36 - 9 + (i * 18)));
+			redstoneButton.setSize(Size.of(84, 18));
+			redstoneButton.setLabel(RedstoneType.byNumber(i).asText());
+			redstoneButton.setClickAction(() -> {
+				RedstoneType type = RedstoneType.byNumber(i);
+
+				redstoneButton.setLabel(type.asText());
+
+				redstoneComponent.setType(type);
+
+				for (int k : new int[] {0, 1, 2}) {
+					if (k != i) {
+						redstoneButtons[k].setDisabled(() -> false);
+					} else {
+						redstoneButtons[k].setDisabled(() -> true);
+					}
+				}
+
+				return null;
+			});
+
+			if (RedstoneType.byNumber(i) == redstoneComponent.getType()) {
+				redstoneButton.setDisabled(() -> true);
+			}
+
+			redstoneTab.addWidget(redstoneButton);
+		}
 	}
 }

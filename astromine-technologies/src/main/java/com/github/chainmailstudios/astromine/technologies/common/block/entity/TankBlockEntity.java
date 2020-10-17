@@ -29,7 +29,6 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
@@ -52,8 +51,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Optional;
 
 public abstract class TankBlockEntity extends ComponentFluidInventoryBlockEntity implements TierProvider, FluidSizeProvider, SpeedProvider {
 	public TankBlockEntity(BlockEntityType<?> type) {
@@ -93,9 +90,7 @@ public abstract class TankBlockEntity extends ComponentFluidInventoryBlockEntity
 	public void tick() {
 		super.tick();
 
-		if (world == null)
-			return;
-		if (world.isClient)
+		if (world == null || world.isClient || !tickRedstone())
 			return;
 
 		FluidHandler.ofOptional(this).ifPresent(fluids -> {

@@ -24,8 +24,8 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
 import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
@@ -36,7 +36,7 @@ import com.github.chainmailstudios.astromine.transportations.common.conveyor.Con
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsSoundEvents;
 
-public class IncineratorBlockEntity extends BlockEntity implements Conveyable {
+public class IncineratorBlockEntity extends ComponentBlockEntity implements Conveyable {
 	public boolean hasBeenRemoved = false;
 
 	public IncineratorBlockEntity() {
@@ -59,7 +59,7 @@ public class IncineratorBlockEntity extends BlockEntity implements Conveyable {
 
 	@Override
 	public boolean accepts(ItemStack stack) {
-		return true;
+		return tickRedstone();
 	}
 
 	@Override

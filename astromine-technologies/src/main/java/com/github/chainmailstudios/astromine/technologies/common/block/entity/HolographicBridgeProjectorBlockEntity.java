@@ -73,6 +73,7 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 	public void tick() {
 		if (this.world == null || this.world.isClient)
 			return;
+
 		if (!this.hasCheckedChild && this.childPosition != null) {
 			BlockEntity childEntity = this.world.getBlockEntity(this.childPosition);
 

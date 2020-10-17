@@ -92,9 +92,7 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 	public void tick() {
 		super.tick();
 
-		if (world == null)
-			return;
-		if (world.isClient)
+		if (world == null || world.isClient || !tickRedstone())
 			return;
 
 		FluidHandler.ofOptional(this).ifPresent(fluids -> {

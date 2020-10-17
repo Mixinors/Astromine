@@ -122,29 +122,4 @@ public class BlockEntityTransferComponent implements Component {
 			return true;
 		}
 	}
-
-	private static class ImmutableTransferEntry extends TransferEntry {
-		private static final TransferEntry INSTANCE = new ImmutableTransferEntry();
-
-		@Override
-		public void set(Direction direction, TransferType type) {}
-
-		@Override
-		public TransferType get(Direction origin) {
-			return TransferType.NONE;
-		}
-
-		@Override
-		public void fromTag(CompoundTag tag) {}
-
-		@Override
-		public CompoundTag toTag(CompoundTag tag) {
-			return tag;
-		}
-
-		@Override
-		public boolean areAllNone() {
-			return true;
-		}
-	}
 }
