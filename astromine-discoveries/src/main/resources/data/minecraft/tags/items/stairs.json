@@ -1,10 +1,18 @@
 {
   "replace": false,
   "values": [
-    "astromine:meteor_stone_stairs",
     "astromine:asteroid_stone_stairs",
+    "astromine:smooth_asteroid_stone_stairs",
+    "astromine:polished_asteroid_stone_stairs",
+    "astromine:asteroid_stone_brick_stairs",
     "astromine:moon_stone_stairs",
     "astromine:vulcan_stone_stairs",
-    "astromine:martian_stone_stairs"
+    "astromine:smooth_vulcan_stone_stairs",
+    "astromine:polished_vulcan_stone_stairs",
+    "astromine:vulcan_stone_brick_stairs",
+    "astromine:martian_stone_stairs",
+    "astromine:smooth_martian_stone_stairs",
+    "astromine:polished_martian_stone_stairs",
+    "astromine:martian_stone_brick_stairs"
   ]
 }

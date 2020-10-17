@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "astromine:block/polished_vulcan_stone",
+    "top": "astromine:block/polished_vulcan_stone",
+    "side": "astromine:block/polished_vulcan_stone"
+  }
+}

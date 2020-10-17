@@ -5,7 +5,11 @@ import net.minecraft.recipe.Ingredient;
 
 public class Crafting2x2RecipeGenerator extends ShapedCraftingRecipeGenerator {
 	public Crafting2x2RecipeGenerator(ItemConvertible output, Ingredient input) {
-		super(output, "##", "##");
+		this(output, input, 1);
+	}
+
+	public Crafting2x2RecipeGenerator(ItemConvertible output, Ingredient input, int outputCount) {
+		super(output, outputCount, "##", "##");
 		this.addIngredient('#', input);
 	}
 }

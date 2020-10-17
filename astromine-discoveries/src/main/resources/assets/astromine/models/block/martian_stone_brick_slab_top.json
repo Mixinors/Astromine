@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "astromine:block/martian_stone_bricks",
+    "top": "astromine:block/martian_stone_bricks",
+    "side": "astromine:block/martian_stone_bricks"
+  }
+}

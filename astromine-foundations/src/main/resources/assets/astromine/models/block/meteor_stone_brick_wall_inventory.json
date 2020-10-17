@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "astromine:block/meteor_stone_bricks"
+  }
+}
