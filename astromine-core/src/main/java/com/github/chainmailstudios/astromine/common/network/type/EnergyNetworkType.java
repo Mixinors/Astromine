@@ -54,7 +54,7 @@ public class EnergyNetworkType extends NetworkType {
 
 		for (NetworkMemberNode memberNode : instance.members) {
 			WorldPos memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPos());
-			NetworkMember networkMember = NetworkMemberRegistry.get(memberPos);
+			NetworkMember networkMember = NetworkMemberRegistry.get(memberPos, memberNode.getDirection());
 			BlockEntity blockEntity = memberPos.getBlockEntity();
 
 			WorldPos nodePosition = memberPos.offset(memberNode.getDirection());

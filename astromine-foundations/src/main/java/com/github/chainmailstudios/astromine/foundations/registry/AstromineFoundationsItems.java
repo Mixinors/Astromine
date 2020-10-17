@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
+import com.github.chainmailstudios.astromine.common.item.AnimatedArmorItem;
 import net.fabricmc.fabric.impl.content.registry.FuelRegistryImpl;
 
 import net.minecraft.entity.EquipmentSlot;
@@ -473,10 +474,10 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item GALAXIUM_LEGGINGS = register("galaxium_leggings", new ArmorItem(AstromineFoundationsArmorMaterials.GALAXIUM, EquipmentSlot.LEGS, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item GALAXIUM_BOOTS = register("galaxium_boots", new ArmorItem(AstromineFoundationsArmorMaterials.GALAXIUM, EquipmentSlot.FEET, AstromineFoundationsItems.getBasicSettings()));
 
-	public static final Item UNIVITE_HELMET = register("univite_helmet", new ArmorItem(AstromineFoundationsArmorMaterials.UNIVITE, EquipmentSlot.HEAD, AstromineFoundationsItems.getBasicSettings().fireproof()));
-	public static final Item UNIVITE_CHESTPLATE = register("univite_chestplate", new ArmorItem(AstromineFoundationsArmorMaterials.UNIVITE, EquipmentSlot.CHEST, AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item UNIVITE_HELMET = register("univite_helmet", new AnimatedArmorItem(AstromineFoundationsArmorMaterials.UNIVITE, EquipmentSlot.HEAD, AstromineFoundationsItems.getBasicSettings().fireproof(), 18));
+	public static final Item UNIVITE_CHESTPLATE = register("univite_chestplate", new AnimatedArmorItem(AstromineFoundationsArmorMaterials.UNIVITE, EquipmentSlot.CHEST, AstromineFoundationsItems.getBasicSettings().fireproof(), 18));
 	public static final Item UNIVITE_LEGGINGS = register("univite_leggings", new ArmorItem(AstromineFoundationsArmorMaterials.UNIVITE, EquipmentSlot.LEGS, AstromineFoundationsItems.getBasicSettings().fireproof()));
-	public static final Item UNIVITE_BOOTS = register("univite_boots", new ArmorItem(AstromineFoundationsArmorMaterials.UNIVITE, EquipmentSlot.FEET, AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item UNIVITE_BOOTS = register("univite_boots", new AnimatedArmorItem(AstromineFoundationsArmorMaterials.UNIVITE, EquipmentSlot.FEET, AstromineFoundationsItems.getBasicSettings().fireproof(), 18));
 
 	public static final Item LUNUM_HELMET = register("lunum_helmet", new ArmorItem(AstromineFoundationsArmorMaterials.LUNUM, EquipmentSlot.HEAD, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item LUNUM_CHESTPLATE = register("lunum_chestplate", new ArmorItem(AstromineFoundationsArmorMaterials.LUNUM, EquipmentSlot.CHEST, AstromineFoundationsItems.getBasicSettings()));

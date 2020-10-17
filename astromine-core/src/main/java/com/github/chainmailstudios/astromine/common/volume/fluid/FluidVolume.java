@@ -43,8 +43,6 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 
 	private Fluid fluid;
 
-	private static final FluidVolume EMPTY = new FluidVolume(Fraction.empty(), Fraction.bucket(), Fluids.EMPTY);
-
 	public FluidVolume(Fraction amount, Fraction size, Fluid fluid) {
 		super(ID, amount, size);
 		this.fluid = fluid;
@@ -56,7 +54,7 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 	}
 
 	public static FluidVolume empty() {
-		return EMPTY;
+		return FluidVolume.of(Fraction.empty(), Fluids.EMPTY);
 	}
 
 	public static FluidVolume oxygen() {

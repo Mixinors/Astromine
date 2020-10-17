@@ -129,10 +129,14 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 						}
 					} else {
 						ChunkPos neighborPos = ChunkAtmosphereComponent.getNeighborFromPos(world.getChunk(output).getPos(), output);
+
 						ComponentProvider provider = ComponentProvider.fromChunk(world.getChunk(neighborPos.x, neighborPos.z));
+
 						ChunkAtmosphereComponent neighborAtmosphereComponent = provider.getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);
 
+
 						FluidVolume sideVolume = neighborAtmosphereComponent.get(output);
+
 						if ((centerVolume.canAccept(sideVolume.getFluid())) && sideVolume.smallerThan(centerVolume.getAmount())) {
 							centerVolume.add(sideVolume, Fraction.of(1, 8));
 

@@ -6,3 +6,14 @@ accessible method net/minecraft/item/Item rayTrace (Lnet/minecraft/world/World;L
 accessible method net/minecraft/recipe/RecipeManager getAllOfType (Lnet/minecraft/recipe/RecipeType;)Ljava/util/Map;
 accessible field net/minecraft/block/EntityShapeContext heldItem Lnet/minecraft/item/Item;
 accessible field net/minecraft/item/BucketItem fluid Lnet/minecraft/fluid/Fluid;
+accessible field net/minecraft/client/render/RenderPhase NO_TRANSPARENCY Lnet/minecraft/client/render/RenderPhase$Transparency;
+accessible field net/minecraft/client/render/RenderPhase ENABLE_DIFFUSE_LIGHTING Lnet/minecraft/client/render/RenderPhase$DiffuseLighting;
+accessible field net/minecraft/client/render/RenderPhase ONE_TENTH_ALPHA Lnet/minecraft/client/render/RenderPhase$Alpha;
+accessible field net/minecraft/client/render/RenderPhase DISABLE_CULLING Lnet/minecraft/client/render/RenderPhase$Cull;
+accessible field net/minecraft/client/render/RenderPhase ENABLE_LIGHTMAP Lnet/minecraft/client/render/RenderPhase$Lightmap;
+accessible field net/minecraft/client/render/RenderPhase ENABLE_OVERLAY_COLOR Lnet/minecraft/client/render/RenderPhase$Overlay;
+accessible field net/minecraft/client/render/RenderPhase VIEW_OFFSET_Z_LAYERING Lnet/minecraft/client/render/RenderPhase$Layering;
+accessible field net/minecraft/client/render/RenderPhase beginAction Ljava/lang/Runnable;
+mutable field net/minecraft/client/render/RenderPhase beginAction Ljava/lang/Runnable;
+accessible field net/minecraft/client/render/RenderPhase endAction Ljava/lang/Runnable;
+mutable field net/minecraft/client/render/RenderPhase endAction Ljava/lang/Runnable;
