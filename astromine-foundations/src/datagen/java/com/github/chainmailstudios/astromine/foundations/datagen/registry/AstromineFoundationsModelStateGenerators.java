@@ -56,11 +56,20 @@ public class AstromineFoundationsModelStateGenerators extends AstromineModelStat
 	public final ModelStateGenerator APPLE = register(new GenericItemSetModelGenerator(MaterialItemType.APPLE));
 
 	public final ModelStateGenerator STANDARD_BLOCKS = register(new GenericBlockModelStateGenerator(
-			AstromineFoundationsBlocks.METEOR_STONE
+			AstromineFoundationsBlocks.METEOR_STONE,
+			AstromineFoundationsBlocks.SMOOTH_METEOR_STONE,
+			AstromineFoundationsBlocks.POLISHED_METEOR_STONE,
+			AstromineFoundationsBlocks.METEOR_STONE_BRICKS
 	));
 
 	public final ModelStateGenerator CUSTOM_MODEL_AND_STATE_BLOCKS = register(new SimpleBlockItemModelGenerator(
 			AstromineFoundationsBlocks.METEOR_STONE_SLAB,
-			AstromineFoundationsBlocks.METEOR_STONE_STAIRS
+			AstromineFoundationsBlocks.METEOR_STONE_STAIRS,
+			AstromineFoundationsBlocks.SMOOTH_METEOR_STONE_SLAB,
+			AstromineFoundationsBlocks.SMOOTH_METEOR_STONE_STAIRS,
+			AstromineFoundationsBlocks.POLISHED_METEOR_STONE_SLAB,
+			AstromineFoundationsBlocks.POLISHED_METEOR_STONE_STAIRS,
+			AstromineFoundationsBlocks.METEOR_STONE_BRICK_SLAB,
+			AstromineFoundationsBlocks.METEOR_STONE_BRICK_STAIRS
 	));
 }

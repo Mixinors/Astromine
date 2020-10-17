@@ -127,7 +127,7 @@ public abstract class CableBlock extends Block implements Waterloggable, CableWr
 
 			if (!(offsetBlock.getBlock() instanceof CableBlock))
 				continue;
-			NetworkMember member = NetworkMemberRegistry.get(offsetBlock);
+			NetworkMember member = NetworkMemberRegistry.get(offsetBlock, direction.getOpposite());
 			if (member.acceptsType(getNetworkType()))
 				continue;
 

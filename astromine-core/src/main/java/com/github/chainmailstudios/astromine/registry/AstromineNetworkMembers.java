@@ -24,23 +24,28 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
-import net.fabricmc.loader.api.FabricLoader;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.InventoryProvider;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
-
+import alexiil.mc.lib.attributes.SearchOption;
+import alexiil.mc.lib.attributes.SearchOptions;
+import alexiil.mc.lib.attributes.fluid.FluidAttributes;
+import alexiil.mc.lib.attributes.fluid.GroupedFluidInv;
+import alexiil.mc.lib.attributes.misc.NullVariant;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
+import com.google.common.collect.Maps;
+import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.block.Block;
+import net.minecraft.block.InventoryProvider;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.EnergyStorage;
 
-import com.google.common.collect.Maps;
 import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -52,27 +57,44 @@ public class AstromineNetworkMembers {
 	public static void initialize() {
 		NetworkMemberRegistry.INSTANCE.register(AstromineNetworkTypes.ENERGY, new NetworkMemberRegistry.NetworkTypeRegistryImpl<NetworkType>() {
 			@Override
-			public Collection<NetworkMemberType> get(WorldPos pos) {
+			public Collection<NetworkMemberType> get(WorldPos pos, @Nullable Direction direction) {
 				if (!this.types.containsKey(pos.getBlock())) {
 					BlockEntity blockEntity = pos.getBlockEntity();
 					if (blockEntity instanceof EnergyStorage) {
 						return NetworkMember.REQUESTER_PROVIDER;
 					}
 				}
-				return super.get(pos);
+				return super.get(pos, direction);
 			}
 		});
 
 		NetworkMemberRegistry.INSTANCE.register(AstromineNetworkTypes.ITEM, new NetworkMemberRegistry.NetworkTypeRegistryImpl<NetworkType>() {
 			@Override
-			public Collection<NetworkMemberType> get(WorldPos pos) {
+			public Collection<NetworkMemberType> get(WorldPos pos, @Nullable Direction direction) {
 				if (!this.types.containsKey(pos.getBlock())) {
 					BlockEntity blockEntity = pos.getBlockEntity();
 					if (blockEntity instanceof InventoryProvider) {
 						return NetworkMember.REQUESTER_PROVIDER;
 					}
 				}
-				return super.get(pos);
+				return super.get(pos, direction);
+			}
+		});
+
+		NetworkMemberRegistry.INSTANCE.register(AstromineNetworkTypes.FLUID, new NetworkMemberRegistry.NetworkTypeRegistryImpl<NetworkType>() {
+			@Override
+			public Collection<NetworkMemberType> get(WorldPos pos, @Nullable Direction direction) {
+				if (!this.types.containsKey(pos.getBlock())) {
+					SearchOption option = null;
+					if (direction != null) {
+						option = SearchOptions.inDirection(direction.getOpposite());
+					}
+					GroupedFluidInv inv = FluidAttributes.GROUPED_INV.get(pos.getWorld(), pos.getBlockPos(), option);
+					if (inv != null && !(inv instanceof NullVariant)) {
+						return NetworkMember.REQUESTER_PROVIDER;
+					}
+				}
+				return super.get(pos, direction);
 			}
 		});
 

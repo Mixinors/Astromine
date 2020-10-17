@@ -4,7 +4,7 @@ import net.fabricmc.loom.task.RunClientTask
 plugins {
     id 'maven-publish'
     id 'com.diffplug.spotless' version '5.1.0' apply false
-    id 'fabric-loom' version '0.5.22'
+    id 'fabric-loom' version '0.5-SNAPSHOT'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
     id("net.corda.plugins.jar-filter") version("5.0.8") apply false
 }

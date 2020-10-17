@@ -58,7 +58,7 @@ public class NetworkTracer {
 			World world = initialPosition.getWorld();
 			ComponentProvider provider = ComponentProvider.fromWorld(world);
 			WorldNetworkComponent networkComponent = provider.getComponent(AstromineComponentTypes.WORLD_NETWORK_COMPONENT);
-			NetworkMember initialMember = NetworkMemberRegistry.get(initialPosition);
+			NetworkMember initialMember = NetworkMemberRegistry.get(initialPosition, null);
 
 			if (!initialMember.acceptsType(type) || !initialMember.isNode(type) || networkComponent.containsInstance(type, initialPosition.getBlockPos())) {
 				return;
@@ -85,7 +85,7 @@ public class NetworkTracer {
 					}
 
 					WorldPos offsetObject = WorldPos.of(world, offsetPosition);
-					NetworkMember offsetMember = NetworkMemberRegistry.get(offsetObject);
+					NetworkMember offsetMember = NetworkMemberRegistry.get(offsetObject, direction.getOpposite());
 
 					NetworkInstance existingInstance = networkComponent.getInstance(type, offsetPosition);
 
@@ -135,7 +135,7 @@ public class NetworkTracer {
 			WorldPos initialObject = WorldPos.of(world, initialPosition);
 			for (Direction direction : Direction.values()) {
 				WorldPos pos = WorldPos.of(world, initialPosition.offset(direction));
-				NetworkMember offsetMember = NetworkMemberRegistry.get(pos);
+				NetworkMember offsetMember = NetworkMemberRegistry.get(pos, direction.getOpposite());
 
 				if (offsetMember.acceptsType(type) && (!offsetMember.isNode(type) || pos.getBlock() == initialObject.getBlock())) {
 					directions.add(direction);

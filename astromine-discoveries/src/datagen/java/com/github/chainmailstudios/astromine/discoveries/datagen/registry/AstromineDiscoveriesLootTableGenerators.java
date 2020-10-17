@@ -19,6 +19,14 @@ public class AstromineDiscoveriesLootTableGenerators extends AstromineLootTableG
 			AstromineDiscoveriesBlocks.ASTEROID_STONE,
 			AstromineDiscoveriesBlocks.ASTEROID_STONE_STAIRS,
 			AstromineDiscoveriesBlocks.ASTEROID_STONE_WALL,
+			AstromineDiscoveriesBlocks.SMOOTH_ASTEROID_STONE,
+			AstromineDiscoveriesBlocks.SMOOTH_ASTEROID_STONE_STAIRS,
+			AstromineDiscoveriesBlocks.SMOOTH_ASTEROID_STONE_WALL,
+			AstromineDiscoveriesBlocks.POLISHED_ASTEROID_STONE,
+			AstromineDiscoveriesBlocks.POLISHED_ASTEROID_STONE_STAIRS,
+			AstromineDiscoveriesBlocks.ASTEROID_STONE_BRICKS,
+			AstromineDiscoveriesBlocks.ASTEROID_STONE_BRICK_STAIRS,
+			AstromineDiscoveriesBlocks.ASTEROID_STONE_BRICK_WALL,
 			AstromineDiscoveriesBlocks.BLAZING_ASTEROID_STONE,
 			AstromineDiscoveriesBlocks.MOON_STONE,
 			AstromineDiscoveriesBlocks.MOON_STONE_STAIRS,
@@ -27,16 +35,41 @@ public class AstromineDiscoveriesLootTableGenerators extends AstromineLootTableG
 			AstromineDiscoveriesBlocks.MARTIAN_STONE,
 			AstromineDiscoveriesBlocks.MARTIAN_STONE_STAIRS,
 			AstromineDiscoveriesBlocks.MARTIAN_STONE_WALL,
+			AstromineDiscoveriesBlocks.SMOOTH_MARTIAN_STONE,
+			AstromineDiscoveriesBlocks.SMOOTH_MARTIAN_STONE_STAIRS,
+			AstromineDiscoveriesBlocks.SMOOTH_MARTIAN_STONE_WALL,
+			AstromineDiscoveriesBlocks.POLISHED_MARTIAN_STONE,
+			AstromineDiscoveriesBlocks.POLISHED_MARTIAN_STONE_STAIRS,
+			AstromineDiscoveriesBlocks.MARTIAN_STONE_BRICKS,
+			AstromineDiscoveriesBlocks.MARTIAN_STONE_BRICK_STAIRS,
+			AstromineDiscoveriesBlocks.MARTIAN_STONE_BRICK_WALL,
 			AstromineDiscoveriesBlocks.VULCAN_STONE,
 			AstromineDiscoveriesBlocks.VULCAN_STONE_STAIRS,
-			AstromineDiscoveriesBlocks.VULCAN_STONE_WALL
+			AstromineDiscoveriesBlocks.VULCAN_STONE_WALL,
+			AstromineDiscoveriesBlocks.SMOOTH_VULCAN_STONE,
+			AstromineDiscoveriesBlocks.SMOOTH_VULCAN_STONE_STAIRS,
+			AstromineDiscoveriesBlocks.SMOOTH_VULCAN_STONE_WALL,
+			AstromineDiscoveriesBlocks.POLISHED_VULCAN_STONE,
+			AstromineDiscoveriesBlocks.POLISHED_VULCAN_STONE_STAIRS,
+			AstromineDiscoveriesBlocks.VULCAN_STONE_BRICKS,
+			AstromineDiscoveriesBlocks.VULCAN_STONE_BRICK_STAIRS,
+			AstromineDiscoveriesBlocks.VULCAN_STONE_BRICK_WALL
 	));
 
 	public final LootTableGenerator SLABS = register(new SlabLootTableGenerator(
 			AstromineDiscoveriesBlocks.ASTEROID_STONE_SLAB,
+			AstromineDiscoveriesBlocks.SMOOTH_ASTEROID_STONE_SLAB,
+			AstromineDiscoveriesBlocks.POLISHED_ASTEROID_STONE_SLAB,
+			AstromineDiscoveriesBlocks.ASTEROID_STONE_BRICK_SLAB,
 			AstromineDiscoveriesBlocks.MOON_STONE_SLAB,
 			AstromineDiscoveriesBlocks.MARTIAN_STONE_SLAB,
-			AstromineDiscoveriesBlocks.VULCAN_STONE_SLAB
+			AstromineDiscoveriesBlocks.SMOOTH_MARTIAN_STONE_SLAB,
+			AstromineDiscoveriesBlocks.POLISHED_MARTIAN_STONE_SLAB,
+			AstromineDiscoveriesBlocks.MARTIAN_STONE_BRICK_SLAB,
+			AstromineDiscoveriesBlocks.VULCAN_STONE_SLAB,
+			AstromineDiscoveriesBlocks.SMOOTH_VULCAN_STONE_SLAB,
+			AstromineDiscoveriesBlocks.POLISHED_VULCAN_STONE_SLAB,
+			AstromineDiscoveriesBlocks.VULCAN_STONE_BRICK_SLAB
 	));
 
 	public static void initialize() {

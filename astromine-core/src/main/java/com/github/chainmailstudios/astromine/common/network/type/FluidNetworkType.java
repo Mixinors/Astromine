@@ -24,72 +24,102 @@
 
 package com.github.chainmailstudios.astromine.common.network.type;
 
-import nerdhub.cardinal.components.api.component.ComponentProvider;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.util.Pair;
-import net.minecraft.util.math.Direction;
-
+import alexiil.mc.lib.attributes.SearchOptions;
+import alexiil.mc.lib.attributes.Simulation;
+import alexiil.mc.lib.attributes.fluid.*;
+import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
+import alexiil.mc.lib.attributes.fluid.filter.ExactFluidFilter;
+import alexiil.mc.lib.attributes.fluid.filter.ReadableFluidFilter;
+import alexiil.mc.lib.attributes.fluid.volume.FluidKey;
+import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
+import alexiil.mc.lib.attributes.misc.NullVariant;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
+import com.github.chainmailstudios.astromine.common.volume.handler.TransferHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-
 import com.google.common.collect.Lists;
+import net.minecraft.block.entity.BlockEntity;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FluidNetworkType extends NetworkType {
+	private FluidAmount inputSpeed = FluidAmount.of(1, 20);
+	private FluidAmount outputSpeed = FluidAmount.of(1, 20);
+
 	@Override
 	public void tick(NetworkInstance instance) {
-		List<FluidVolume> inputs = Lists.newArrayList();
-		List<Pair<FluidInventoryComponent, Direction>> outputs = Lists.newArrayList();
+		List<GroupedFluidInv> providers = Lists.newArrayList();
+		List<GroupedFluidInv> requesters = Lists.newArrayList();
 
 		for (NetworkMemberNode memberNode : instance.members) {
-			BlockEntity blockEntity = instance.getWorld().getBlockEntity(memberNode.getBlockPos());
-			NetworkMember networkMember = NetworkMemberRegistry.get(blockEntity);
+			WorldPos memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPos());
+			NetworkMember networkMember = NetworkMemberRegistry.get(memberPos, memberNode.getDirection());
 
-			if (blockEntity instanceof ComponentProvider && networkMember.acceptsType(this)) {
-				ComponentProvider provider = (ComponentProvider) blockEntity;
+			if (networkMember.acceptsType(this)) {
+				GroupedFluidInv inv = FluidAttributes.GROUPED_INV.get(memberPos.getWorld(), memberPos.getBlockPos(), SearchOptions.inDirection(memberNode.getDirection().getOpposite()));
+				if (inv == null || inv instanceof NullVariant)
+					continue;
 
-				FluidInventoryComponent fluidComponent = provider.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+				@Nullable
+				BlockEntity blockEntity = memberPos.getBlockEntity();
+				TransferType[] type = { TransferType.NONE };
 
-				BlockEntityTransferComponent transferComponent = provider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
+				TransferHandler.of(blockEntity).ifPresent(handler -> {
+					handler.withDirection(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, memberNode.getDirection(), transferType -> {
+						type[0] = transferType;
+					});
+				});
 
-				if (fluidComponent != null && transferComponent != null) {
-					TransferType type = transferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).get(memberNode.getDirection());
+				if (!type[0].isDisabled()) {
+					if (type[0].canExtract() || networkMember.isProvider(this)) {
+						providers.add(inv);
+					}
 
-					if (!type.isDisabled()) {
-						if (type.canExtract() || networkMember.isProvider(this)) {
-							inputs.addAll(fluidComponent.getExtractableContentsMatching(memberNode.getDirection(), (volume -> !volume.isEmpty())));
-						}
-
-						if (type.canInsert() || networkMember.isRequester(this)) {
-							outputs.add(new Pair<>(fluidComponent, memberNode.getDirection()));
-						}
+					if (type[0].canInsert() || networkMember.isRequester(this)) {
+						requesters.add(inv);
 					}
 				}
 			}
 		}
 
-		for (FluidVolume input : inputs) {
-			for (Pair<FluidInventoryComponent, Direction> outputPair : outputs) {
-				FluidInventoryComponent component = outputPair.getLeft();
-				Direction direction = outputPair.getRight();
+		for (GroupedFluidInv provider : providers) {
+			for (FluidKey providerStoredFluid : provider.getStoredFluids()) {
+				if (providerStoredFluid.getRawFluid() == null) continue;
+				ReadableFluidFilter fluidFilter = ExactFluidFilter.of(providerStoredFluid);
+				GroupedFluidInv filteredProvider = provider.filtered(fluidFilter);
 
-				component.getContents().forEach((slot, output) -> {
-					if (!input.isEmpty() && !output.isFull() && (output.canAccept(input.getFluid()))) {
-						if (component.canInsert(direction, input, slot)) {
-							output.moveFrom(input, Fraction.bottle());
-						}
-					}
-				});
+				List<GroupedFluidInv> requestersFiltered = requesters.stream()
+					.map(inv -> inv.filtered(fluidFilter))
+					.filter(inv -> !inv.attemptInsertion(providerStoredFluid.withAmount(FluidAmount.ABSOLUTE_MAXIMUM), Simulation.SIMULATE).isEmpty())
+					.sorted(Comparator.comparing(inv -> inv.getAmount_F(providerStoredFluid)))
+					.collect(Collectors.toList());
+
+				for (int i = requestersFiltered.size() - 1; i >= 0; i--) {
+					GroupedFluidInv inv = requestersFiltered.get(i);
+					FluidAmount speed = Collections.min(Arrays.asList(
+						inputSpeed.div(requestersFiltered.size()),
+						outputSpeed.div(requestersFiltered.size()),
+						provider.getAmount_F(providerStoredFluid).div(i + 1),
+						inv.getCapacity_F(providerStoredFluid).sub(inv.getAmount_F(providerStoredFluid))
+					));
+
+					move(provider, inv, speed);
+				}
 			}
 		}
+	}
+
+	public static void move(FluidExtractable extractable, FluidInsertable insertable, FluidAmount amount) {
+		FluidVolumeUtil.move(extractable, insertable, amount);
 	}
 }

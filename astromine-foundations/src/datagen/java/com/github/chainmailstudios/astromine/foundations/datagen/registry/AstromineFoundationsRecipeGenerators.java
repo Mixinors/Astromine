@@ -3,7 +3,9 @@ package com.github.chainmailstudios.astromine.foundations.datagen.registry;
 import net.minecraft.recipe.Ingredient;
 
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.RecipeGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.Crafting2x2RecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.SlabCraftingRecipeGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.SmeltingRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.StairsCraftingRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.StonecuttingRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.WallCraftingRecipeGenerator;
@@ -150,11 +152,53 @@ public class AstromineFoundationsRecipeGenerators extends AstromineRecipeGenerat
 
 	public final RecipeGenerator APPLE = register(new AppleCraftingRecipeGenerator());
 
+	public final RecipeGenerator SMOOTH_METEOR_STONE = register(new SmeltingRecipeGenerator(Ingredient.ofItems(AstromineFoundationsBlocks.METEOR_STONE), AstromineFoundationsBlocks.SMOOTH_METEOR_STONE));
+
+	public final RecipeGenerator POLISHED_METEOR_STONE = register(new Crafting2x2RecipeGenerator(AstromineFoundationsBlocks.POLISHED_METEOR_STONE, Ingredient.ofItems(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE), 4));
+	public final RecipeGenerator METEOR_STONE_BRICKS = register(new Crafting2x2RecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_BRICKS, Ingredient.ofItems(AstromineFoundationsBlocks.POLISHED_METEOR_STONE), 4));
+
+	public final RecipeGenerator POLISHED_METEOR_STONE_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.POLISHED_METEOR_STONE, Ingredient.ofItems(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE)));
+	public final RecipeGenerator METEOR_STONE_BRICKS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_BRICKS, Ingredient.ofItems(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE), "smooth"));
+	public final RecipeGenerator METEOR_STONE_BRICKS_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_BRICKS, Ingredient.ofItems(AstromineFoundationsBlocks.POLISHED_METEOR_STONE), "polished"));
+
 	public final RecipeGenerator METEOR_STONE_SLAB = register(new SlabCraftingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_SLAB, Ingredient.ofItems(AstromineFoundationsBlocks.METEOR_STONE)));
 	public final RecipeGenerator METEOR_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_STAIRS, Ingredient.ofItems(AstromineFoundationsBlocks.METEOR_STONE)));
 	public final RecipeGenerator METEOR_STONE_WALL = register(new WallCraftingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_WALL, Ingredient.ofItems(AstromineFoundationsBlocks.METEOR_STONE)));
 
+	public final RecipeGenerator SMOOTH_METEOR_STONE_SLAB = register(new SlabCraftingRecipeGenerator(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE_SLAB, Ingredient.ofItems(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE)));
+	public final RecipeGenerator SMOOTH_METEOR_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE_STAIRS, Ingredient.ofItems(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE)));
+	public final RecipeGenerator SMOOTH_METEOR_STONE_WALL = register(new WallCraftingRecipeGenerator(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE_WALL, Ingredient.ofItems(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE)));
+	
+	public final RecipeGenerator POLISHED_METEOR_STONE_SLAB = register(new SlabCraftingRecipeGenerator(AstromineFoundationsBlocks.POLISHED_METEOR_STONE_SLAB, Ingredient.ofItems(AstromineFoundationsBlocks.POLISHED_METEOR_STONE)));
+	public final RecipeGenerator POLISHED_METEOR_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AstromineFoundationsBlocks.POLISHED_METEOR_STONE_STAIRS, Ingredient.ofItems(AstromineFoundationsBlocks.POLISHED_METEOR_STONE)));
+	
+	public final RecipeGenerator METEOR_STONE_BRICK_SLAB = register(new SlabCraftingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_BRICK_SLAB, Ingredient.ofItems(AstromineFoundationsBlocks.METEOR_STONE_BRICKS)));
+	public final RecipeGenerator METEOR_STONE_BRICK_STAIRS = register(new StairsCraftingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_BRICK_STAIRS, Ingredient.ofItems(AstromineFoundationsBlocks.METEOR_STONE_BRICKS)));
+	public final RecipeGenerator METEOR_STONE_BRICK_WALL = register(new WallCraftingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_BRICK_WALL, Ingredient.ofItems(AstromineFoundationsBlocks.METEOR_STONE_BRICKS)));
+	
 	public final RecipeGenerator METEOR_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_SLAB, Ingredient.ofItems(AstromineFoundationsBlocks.METEOR_STONE), 2));
 	public final RecipeGenerator METEOR_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_STAIRS, Ingredient.ofItems(AstromineFoundationsBlocks.METEOR_STONE)));
 	public final RecipeGenerator METEOR_STONE_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_WALL, Ingredient.ofItems(AstromineFoundationsBlocks.METEOR_STONE)));
+	
+	public final RecipeGenerator SMOOTH_METEOR_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE_SLAB, Ingredient.ofItems(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE), 2));
+	public final RecipeGenerator SMOOTH_METEOR_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE_STAIRS, Ingredient.ofItems(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE)));
+	public final RecipeGenerator SMOOTH_METEOR_STONE_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE_WALL, Ingredient.ofItems(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE)));
+
+	public final RecipeGenerator POLISHED_METEOR_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.POLISHED_METEOR_STONE_SLAB, Ingredient.ofItems(AstromineFoundationsBlocks.POLISHED_METEOR_STONE), 2));
+	public final RecipeGenerator POLISHED_METEOR_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.POLISHED_METEOR_STONE_STAIRS, Ingredient.ofItems(AstromineFoundationsBlocks.POLISHED_METEOR_STONE)));
+
+	public final RecipeGenerator POLISHED_METEOR_STONE_SLAB_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.POLISHED_METEOR_STONE_SLAB, Ingredient.ofItems(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE), 2, "smooth"));
+	public final RecipeGenerator POLISHED_METEOR_STONE_STAIRS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.POLISHED_METEOR_STONE_STAIRS, Ingredient.ofItems(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE), "smooth"));
+
+	public final RecipeGenerator METEOR_STONE_BRICK_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_BRICK_SLAB, Ingredient.ofItems(AstromineFoundationsBlocks.METEOR_STONE_BRICKS), 2));
+	public final RecipeGenerator METEOR_STONE_BRICK_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_BRICK_STAIRS, Ingredient.ofItems(AstromineFoundationsBlocks.METEOR_STONE_BRICKS)));
+	public final RecipeGenerator METEOR_STONE_BRICK_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_BRICK_WALL, Ingredient.ofItems(AstromineFoundationsBlocks.METEOR_STONE_BRICKS)));
+
+	public final RecipeGenerator METEOR_STONE_BRICK_SLAB_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_BRICK_SLAB, Ingredient.ofItems(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE), 2, "smooth"));
+	public final RecipeGenerator METEOR_STONE_BRICK_STAIRS_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_BRICK_STAIRS, Ingredient.ofItems(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE), "smooth"));
+	public final RecipeGenerator METEOR_STONE_BRICK_WALL_FROM_SMOOTH_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_BRICK_WALL, Ingredient.ofItems(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE), "smooth"));
+
+	public final RecipeGenerator METEOR_STONE_BRICK_SLAB_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_BRICK_SLAB, Ingredient.ofItems(AstromineFoundationsBlocks.POLISHED_METEOR_STONE), 2, "polished"));
+	public final RecipeGenerator METEOR_STONE_BRICK_STAIRS_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_BRICK_STAIRS, Ingredient.ofItems(AstromineFoundationsBlocks.POLISHED_METEOR_STONE), "polished"));
+	public final RecipeGenerator METEOR_STONE_BRICK_WALL_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_BRICK_WALL, Ingredient.ofItems(AstromineFoundationsBlocks.POLISHED_METEOR_STONE), "polished"));
 }
