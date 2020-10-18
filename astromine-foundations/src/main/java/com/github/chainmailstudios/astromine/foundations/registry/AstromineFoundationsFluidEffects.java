@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.fluid.Fluids;
 
 import com.github.chainmailstudios.astromine.common.registry.FluidEffectRegistry;
@@ -32,7 +34,16 @@ import com.github.chainmailstudios.astromine.registry.AstromineFluidEffects;
 public class AstromineFoundationsFluidEffects extends AstromineFluidEffects {
 	public static void initialize() {
 		FluidEffectRegistry.INSTANCE.register(Fluids.LAVA, (entity) -> {
-			entity.setOnFireFor(1024);
+			entity.setOnFireFor(15);
+		});
+
+		AstromineFoundationsFluids.OIL_DERIVATIVES.forEach(fluid -> {
+			FluidEffectRegistry.INSTANCE.register(fluid, (entity) -> {
+				entity.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 30 * 20, 3));
+				entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 30 * 20, 3));
+				entity.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 30 * 20, 1));
+				entity.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 30 * 20, 1));
+			});
 		});
 	}
 }

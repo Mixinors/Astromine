@@ -24,10 +24,13 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
+import com.google.common.collect.Lists;
 import net.minecraft.fluid.Fluid;
 
 import com.github.chainmailstudios.astromine.common.fluid.ExtendedFluid;
 import com.github.chainmailstudios.astromine.registry.AstromineFluids;
+
+import java.util.List;
 
 public class AstromineFoundationsFluids extends AstromineFluids {
 	public static final Fluid CRUDE_OIL = ExtendedFluid.builder().fog(0x7e675005).tint(0x7e675005).damage(0).toxic(false).infinite(false).name("crude_oil").group(AstromineFoundationsItemGroups.FOUNDATIONS).build();
@@ -51,6 +54,8 @@ public class AstromineFoundationsFluids extends AstromineFluids {
 	public static final Fluid OXYGEN = ExtendedFluid.builder().fog(0x7e159ef9).tint(0xff159ef9).damage(0).toxic(false).infinite(false).name("oxygen").group(AstromineFoundationsItemGroups.FOUNDATIONS).build();
 
 	public static final Fluid HYDROGEN = ExtendedFluid.builder().fog(0x7eff0019).tint(0xffff0019).damage(0).toxic(false).infinite(false).name("hydrogen").group(AstromineFoundationsItemGroups.FOUNDATIONS).build();
+
+	public static final List<Fluid> OIL_DERIVATIVES = Lists.newArrayList(CRUDE_OIL, RESIDUAL_FUEL_OIL, HEAVY_GAS_OIL, DIESEL, KEROSENE, NAPHTHA, GASOLINE, BUTANE, KEROSENE_OXYGEN_FUEL);
 
 	public static void initialize() {
 
