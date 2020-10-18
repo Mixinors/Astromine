@@ -159,7 +159,7 @@ public class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsumingRe
 	}
 
 	@Override
-	public double getEnergyConsumed() {
+	public double getEnergy() {
 		return energy.getAmount();
 	}
 

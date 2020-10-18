@@ -108,10 +108,6 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 				}
 			}
 
-			if (!optionalRecipe.isPresent()) {
-				tickInactive();
-			}
-
 			if (optionalRecipe.isPresent()) {
 				LiquidGeneratingRecipe recipe = optionalRecipe.get();
 

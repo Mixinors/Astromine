@@ -68,7 +68,7 @@ public class RefiningDisplay implements RecipeDisplay {
 	}
 
 	public RefiningDisplay(RefiningRecipe recipe) {
-		this(recipe.getEnergyConsumed(), FluidVolume.of(recipe.getInputAmount(), recipe.getInputFluid()), FluidVolume.of(recipe.getFirstOutputAmount(), recipe.getFirstOutputFluid()), FluidVolume.of(recipe.getSecondOutputAmount(), recipe.getSecondOutputFluid()), FluidVolume.of(
+		this(recipe.getEnergy(), FluidVolume.of(recipe.getInputAmount(), recipe.getInputFluid()), FluidVolume.of(recipe.getFirstOutputAmount(), recipe.getFirstOutputFluid()), FluidVolume.of(recipe.getSecondOutputAmount(), recipe.getSecondOutputFluid()), FluidVolume.of(
 			recipe.getThirdOutputAmount(), recipe.getThirdOutputFluid()), FluidVolume.of(recipe.getFourthOutputAmount(), recipe.getFourthOutputFluid()), FluidVolume.of(recipe.getFifthOutputAmount(), recipe.getFifthOutputFluid()), FluidVolume.of(recipe.getSixthOutputAmount(),
 				recipe.getSixthOutputFluid()), FluidVolume.of(recipe.getSeventhOutputAmount(), recipe.getSeventhOutputFluid()), recipe.getId());
 	}

@@ -119,7 +119,7 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyInventoryBl
 					limit = recipe.getTime();
 
 					double speed = Math.min(getMachineSpeed(), limit - progress);
-					double consumed = recipe.getEnergyConsumed() * speed / limit;
+					double consumed = recipe.getEnergy() * speed / limit;
 
 					ItemStack output = recipe.getOutput().copy();
 

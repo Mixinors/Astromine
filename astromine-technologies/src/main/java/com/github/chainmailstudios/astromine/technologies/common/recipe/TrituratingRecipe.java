@@ -142,7 +142,7 @@ public class TrituratingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return time;
 	}
 
-	public double getEnergyConsumed() {
+	public double getEnergy() {
 		return energyConsumed;
 	}
 

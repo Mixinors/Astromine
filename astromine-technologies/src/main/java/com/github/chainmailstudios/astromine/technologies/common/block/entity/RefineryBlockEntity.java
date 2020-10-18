@@ -120,7 +120,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 					limit = recipe.getTime();
 
 					double speed = Math.min(getMachineSpeed(), limit - progress);
-					double consumed = recipe.getEnergyConsumed() * speed / limit;
+					double consumed = recipe.getEnergy() * speed / limit;
 
 					if (volume.hasStored(consumed)) {
 						volume.minus(consumed);
@@ -128,23 +128,14 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
 
-							FluidVolume inputVolume = fluids.getFirst();
-							FluidVolume firstOutputVolume = fluids.getSecond();
-							FluidVolume secondOutputVolume = fluids.getThird();
-							FluidVolume thirdOutputVolume = fluids.getFourth();
-							FluidVolume fourthOutputVolume = fluids.getFifth();
-							FluidVolume fifthOutputVolume = fluids.getSixth();
-							FluidVolume sixthOutputVolume = fluids.getSeventh();
-							FluidVolume seventhOutputVolume = fluids.getEighth();
-
-							inputVolume.minus(recipe.getInputAmount());
-							firstOutputVolume.moveFrom(FluidVolume.of(recipe.getFirstOutputAmount(), recipe.getFirstOutputFluid()), recipe.getFirstOutputAmount());
-							secondOutputVolume.moveFrom(FluidVolume.of(recipe.getSecondOutputAmount(), recipe.getSecondOutputFluid()), recipe.getSecondOutputAmount());
-							thirdOutputVolume.moveFrom(FluidVolume.of(recipe.getThirdOutputAmount(), recipe.getThirdOutputFluid()), recipe.getThirdOutputAmount());
-							fourthOutputVolume.moveFrom(FluidVolume.of(recipe.getFourthOutputAmount(), recipe.getFourthOutputFluid()), recipe.getFourthOutputAmount());
-							fifthOutputVolume.moveFrom(FluidVolume.of(recipe.getFifthOutputAmount(), recipe.getFifthOutputFluid()), recipe.getFifthOutputAmount());
-							sixthOutputVolume.moveFrom(FluidVolume.of(recipe.getSixthOutputAmount(), recipe.getSixthOutputFluid()), recipe.getSixthOutputAmount());
-							seventhOutputVolume.moveFrom(FluidVolume.of(recipe.getSeventhOutputAmount(), recipe.getSeventhOutputFluid()), recipe.getSeventhOutputAmount());
+							fluids.getFirst().minus(recipe.getIngredient().getMatchingVolumes()[0].getAmount());
+							fluids.getSecond().moveFrom(recipe.getFirstOutputVolume());
+							fluids.getThird().moveFrom(recipe.getSecondOutputVolume());
+							fluids.getFourth().moveFrom(recipe.getThirdOutputVolume());
+							fluids.getFifth().moveFrom(recipe.getFourthOutputVolume());
+							fluids.getSixth().moveFrom(recipe.getFifthOutputVolume());
+							fluids.getSeventh().moveFrom(recipe.getSixthOutputVolume());
+							fluids.getEighth().moveFrom(recipe.getSeventhOutputVolume());
 
 							progress = 0;
 						} else {

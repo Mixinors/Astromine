@@ -32,7 +32,7 @@ import com.github.chainmailstudios.astromine.technologies.common.recipe.FluidMix
 
 public class FluidMixingDisplay extends AbstractFluidMixingDisplay {
 	public FluidMixingDisplay(FluidMixingRecipe recipe) {
-		super(recipe.getEnergyConsumed(), FluidVolume.of(recipe.getFirstInputAmount(), recipe.getFirstInputFluid()), FluidVolume.of(recipe.getSecondInputAmount(), recipe.getSecondInputFluid()), FluidVolume.of(recipe.getOutputAmount(), recipe.getOutputFluid()), recipe.getId());
+		super(recipe.getEnergy(), FluidVolume.of(recipe.getFirstInputAmount(), recipe.getFirstInputFluid()), FluidVolume.of(recipe.getSecondInputAmount(), recipe.getSecondInputFluid()), FluidVolume.of(recipe.getOutputAmount(), recipe.getOutputFluid()), recipe.getId());
 	}
 
 	@Override

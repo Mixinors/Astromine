@@ -170,7 +170,7 @@ public class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumingReci
 	}
 
 	@Override
-	public double getEnergyConsumed() {
+	public double getEnergy() {
 		return energy.getAmount();
 	}
 

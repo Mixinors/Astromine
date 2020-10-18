@@ -37,7 +37,6 @@ import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEn
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
@@ -123,7 +122,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 					limit = recipe.getTime();
 
 					double speed = Math.min(getMachineSpeed(), limit - progress);
-					double consumed = recipe.getEnergyConsumed() * speed / limit;
+					double consumed = recipe.getEnergy() * speed / limit;
 
 					if (energyVolume.hasStored(consumed)) {
 						energyVolume.minus(consumed);
