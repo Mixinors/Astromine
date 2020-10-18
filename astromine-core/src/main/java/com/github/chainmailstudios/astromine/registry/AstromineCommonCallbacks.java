@@ -24,13 +24,19 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import com.google.common.collect.Lists;
+import me.shedaniel.cloth.api.common.events.v1.BlockPlaceCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.chunk.WorldChunk;
 
@@ -56,6 +62,8 @@ import nerdhub.cardinal.components.api.event.EntityComponentCallback;
 import nerdhub.cardinal.components.api.event.ItemComponentCallbackV2;
 import nerdhub.cardinal.components.api.event.WorldComponentCallback;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class AstromineCommonCallbacks {
@@ -63,6 +71,40 @@ public class AstromineCommonCallbacks {
 
 	@SuppressWarnings("UnstableApiUsage")
 	public static void initialize() {
+		BlockPlaceCallback.EVENT.register(((world, pos, state, entity, stack) -> {
+			ComponentProvider componentProvider = ComponentProvider.fromChunk(world.getChunk(pos));
+
+			ChunkAtmosphereComponent atmosphereComponent = componentProvider.getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);
+
+			if (atmosphereComponent != null) {
+				BlockPos centerPos = pos;
+				BlockState centerState = world.getBlockState(centerPos);
+				FluidVolume centerVolume = atmosphereComponent.get(centerPos);
+
+				List<Direction> directions = Lists.newArrayList(Direction.values());
+
+				Collections.shuffle(directions);
+
+				for (Direction direction : directions) {
+					BlockPos sidePos = pos.offset(direction);
+					BlockState sideState = world.getBlockState(sidePos);
+					FluidVolume sideVolume = atmosphereComponent.get(sidePos);
+
+					if (atmosphereComponent.isTraversableForDisplacement(centerState, centerPos, sideState, sidePos, centerVolume, sideVolume, direction)) {
+						sideVolume.moveFrom(centerVolume);
+						atmosphereComponent.add(sidePos, sideVolume);
+
+						break;
+
+					}
+				}
+
+				atmosphereComponent.remove(centerPos);
+			}
+
+			return ActionResult.PASS;
+		}));
+
 		ServerTickEvents.START_SERVER_TICK.register(server -> {
 			if (atmosphereTickCounter < AstromineConfig.get().gasTickRate) {
 				atmosphereTickCounter++;

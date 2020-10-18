@@ -142,11 +142,7 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 					BlockState sideState = world.getBlockState(sidePos);
 					BlockState centerState = world.getBlockState(centerPos);
 
-					if (!(Registry.BLOCK.getId(sideState.getBlock()).toString().equals("astromine:airlock") && !sideState.get(Properties.POWERED))
-							&& (sideState.isAir() || !sideState.isSideSolidFullSquare(world, sidePos, direction.getOpposite()))
-							&& (centerState.isAir() || !centerState.isSideSolidFullSquare(world, centerPos, direction)) && (sideVolume.isEmpty() || sideVolume.test(centerVolume.getFluid()))
-							&& (centerVolume.hasStored(Fraction.bottle()) && !sideState.isOpaqueFullCube(world, centerPos))
-							&& sideVolume.smallerThan(centerVolume.getAmount())) {
+					if (isTraversableForPropagation(centerState, centerPos, sideState, sidePos, centerVolume, sideVolume, direction)) {
 						if (world.isAir(centerPos)) {
 							centerVolume.add(sideVolume, Fraction.bottle());
 						} else if (!centerState.isSideSolidFullSquare(world, centerPos, direction)) {
@@ -169,11 +165,7 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 					BlockState sideState = world.getBlockState(sidePos);
 					BlockState centerState = world.getBlockState(centerPos);
 
-					if (!(Registry.BLOCK.getId(sideState.getBlock()).toString().equals("astromine:airlock") && !sideState.get(Properties.POWERED))
-							&& (sideState.isAir() || !sideState.isSideSolidFullSquare(world, sidePos, direction.getOpposite()))
-							&& (centerState.isAir() || !centerState.isSideSolidFullSquare(world, centerPos, direction)) && (sideVolume.isEmpty() || sideVolume.test(centerVolume.getFluid()))
-							&& (centerVolume.hasStored(Fraction.bottle()) && !sideState.isOpaqueFullCube(world, centerPos))
-							&& sideVolume.smallerThan(centerVolume.getAmount())) {
+					if (isTraversableForPropagation(centerState, centerPos, sideState, sidePos, centerVolume, sideVolume, direction)) {
 						if (world.isAir(centerPos)) {
 							centerVolume.add(sideVolume, Fraction.bottle());
 						} else if (!world.getBlockState(centerPos).isSideSolidFullSquare(world, centerPos, direction)) {
@@ -231,5 +223,20 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 	@Override
 	public ComponentType<?> getComponentType() {
 		return AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT;
+	}
+
+	public boolean isTraversableForPropagation(BlockState centerState, BlockPos centerPos, BlockState sideState, BlockPos sidePos, FluidVolume centerVolume, FluidVolume sideVolume, Direction direction) {
+		return !(Registry.BLOCK.getId(sideState.getBlock()).toString().equals("astromine:airlock") && !sideState.get(Properties.POWERED))
+				&& (sideState.isAir() || !sideState.isSideSolidFullSquare(world, sidePos, direction.getOpposite()))
+				&& (centerState.isAir() || !centerState.isSideSolidFullSquare(world, centerPos, direction)) && (sideVolume.isEmpty() || sideVolume.test(centerVolume.getFluid()))
+				&& (centerVolume.hasStored(Fraction.bottle()) && !sideState.isOpaqueFullCube(world, centerPos))
+				&& sideVolume.smallerThan(centerVolume.getAmount());
+	}
+
+	public boolean isTraversableForDisplacement(BlockState centerState, BlockPos centerPos, BlockState sideState, BlockPos sidePos, FluidVolume centerVolume, FluidVolume sideVolume, Direction direction) {
+		return !(Registry.BLOCK.getId(sideState.getBlock()).toString().equals("astromine:airlock") && !sideState.get(Properties.POWERED))
+				&& (sideState.isAir() || !sideState.isSideSolidFullSquare(world, sidePos, direction.getOpposite()))
+				&& (centerState.isAir() || !centerState.isSideSolidFullSquare(world, centerPos, direction)) && (sideVolume.isEmpty() || sideVolume.test(centerVolume.getFluid()))
+				&& (!sideState.isOpaqueFullCube(world, centerPos));
 	}
 }
