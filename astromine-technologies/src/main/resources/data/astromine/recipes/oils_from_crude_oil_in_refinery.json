@@ -5,41 +5,56 @@
     "numerator": 100,
     "denominator": 100
   },
-  "first_output": "astromine:residual_fuel_oil",
-  "first_output_amount": {
-    "numerator": 14,
-    "denominator": 100
+  "first_output": {
+    "fluid": "astromine:residual_fuel_oil",
+    "amount": {
+      "numerator": 14,
+      "denominator": 100
+    }
   },
-  "second_output": "astromine:heavy_gas_oil",
-  "second_output_amount": {
-    "numerator": 14,
-    "denominator": 100
+  "second_output": {
+    "fluid": "astromine:heavy_gas_oil",
+    "amount": {
+      "numerator": 14,
+      "denominator": 100
+    }
   },
-  "third_output": "astromine:diesel",
-  "third_output_amount": {
-    "numerator": 12,
-    "denominator": 100
+  "third_output": {
+    "fluid": "astromine:diesel",
+    "amount": {
+      "numerator": 12,
+      "denominator": 100
+    }
   },
-  "fourth_output": "astromine:kerosene",
-  "fourth_output_amount": {
-    "numerator": 27,
-    "denominator": 100
+  "fourth_output": {
+    "fluid": "astromine:kerosene",
+    "amount": {
+      "numerator": 27,
+      "denominator": 100
+    }
   },
-  "fifth_output": "astromine:naphtha",
-  "fifth_output_amount": {
-    "numerator": 11,
-    "denominator": 100
+  "fifth_output": {
+    "fluid": "astromine:naphtha",
+    "amount": {
+      "numerator": 11,
+      "denominator": 100
+    }
   },
-  "sixth_output": "astromine:gasoline",
-  "sixth_output_amount": {
-    "numerator": 18,
-    "denominator": 100
+
+  "sixth_output": {
+    "fluid": "astromine:gasoline",
+    "amount": {
+      "numerator": 18,
+      "denominator": 100
+    }
   },
-  "seventh_output": "astromine:butane",
-  "seventh_output_amount": {
-    "numerator": 4,
-    "denominator": 100
+  "seventh_output": {
+    "fluid": "astromine:butane",
+    "amount": {
+      "numerator": 4,
+      "denominator": 100
+    }
   },
-  "energy_consumed": 1340,
+  "energy": 1340,
   "time": 30
 }

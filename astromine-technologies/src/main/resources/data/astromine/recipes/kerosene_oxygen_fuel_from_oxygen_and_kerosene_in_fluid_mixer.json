@@ -1,19 +1,13 @@
 {
   "type": "astromine:fluid_mixing",
-  "first_input": "astromine:kerosene",
-  "first_input_amount": {
-    "numerator": 1,
-    "denominator": 1
+  "first_input": {
+    "tag": "c:kerosene"
   },
-  "second_input": "astromine:oxygen",
-  "second_input_amount": {
-    "numerator": 1,
-    "denominator": 1
+  "second_input": {
+    "tag": "c:oxygen"
   },
-  "output": "astromine:kerosene_oxygen_fuel",
-  "output_amount": {
-    "numerator": 1,
-    "denominator": 1
+  "output": {
+    "fluid": "astromine:kerosene_oxygen_fuel"
   },
   "energy_consumed": 39960,
   "time": 540

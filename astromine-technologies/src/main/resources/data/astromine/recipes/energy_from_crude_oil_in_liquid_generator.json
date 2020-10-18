@@ -1,10 +1,12 @@
 {
   "type": "astromine:liquid_generating",
-  "input": "astromine:crude_oil",
-  "amount": {
-    "numerator": 1,
-    "denominator": 540
+  "input":  {
+    "tag": "c:crude_oil",
+    "amount": {
+      "numerator": 1,
+      "denominator": 540
+    }
   },
-  "energy_generated": 73,
+  "energy": 73,
   "time": 1
 }

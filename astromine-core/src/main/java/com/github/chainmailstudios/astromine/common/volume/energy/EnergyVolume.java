@@ -43,11 +43,11 @@ import net.minecraft.util.registry.Registry;
 public class EnergyVolume extends Volume<Identifier, Double> {
 	public static final Identifier ID = AstromineCommon.identifier("energy");
 
-	private EnergyVolume(double amount, double size) {
+	protected EnergyVolume(double amount, double size) {
 		super(ID, amount, size);
 	}
 
-	private EnergyVolume(double amount, double size, Runnable runnable) {
+	protected EnergyVolume(double amount, double size, Runnable runnable) {
 		super(ID, amount, size, runnable);
 	}
 
@@ -147,7 +147,7 @@ public class EnergyVolume extends Volume<Identifier, Double> {
 	}
 
 	public static EnergyVolume fromJson(JsonElement jsonElement) {
-		if (!jsonElement.isJsonObject()) return null;
+		if (!jsonElement.isJsonObject()) return EnergyVolume.of(jsonElement.getAsDouble());
 		else {
 			JsonObject jsonObject = jsonElement.getAsJsonObject();
 

@@ -46,12 +46,12 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 
 	private Fluid fluid;
 
-	private FluidVolume(Fraction amount, Fraction size, Fluid fluid) {
+	protected FluidVolume(Fraction amount, Fraction size, Fluid fluid) {
 		super(ID, amount, size);
 		this.fluid = fluid;
 	}
 
-	private FluidVolume(Fraction amount, Fraction size, Fluid fluid, Runnable runnable) {
+	protected FluidVolume(Fraction amount, Fraction size, Fluid fluid, Runnable runnable) {
 		super(ID, amount, size, runnable);
 		this.fluid = fluid;
 	}

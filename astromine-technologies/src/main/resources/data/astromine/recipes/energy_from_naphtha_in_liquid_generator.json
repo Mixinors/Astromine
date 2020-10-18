@@ -1,10 +1,12 @@
 {
   "type": "astromine:liquid_generating",
-  "input": "astromine:naphtha",
-  "amount": {
-    "numerator": 1,
-    "denominator": 440
+  "input": {
+    "tag": "c:naphtha",
+    "amount": {
+      "numerator": 1,
+      "denominator": 440
+    }
   },
-  "energy_generated": 93,
+  "energy": 93,
   "time": 1
 }

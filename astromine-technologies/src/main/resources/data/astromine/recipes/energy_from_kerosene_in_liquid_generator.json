@@ -1,10 +1,12 @@
 {
   "type": "astromine:liquid_generating",
-  "input": "astromine:kerosene",
-  "amount": {
-    "numerator": 1,
-    "denominator": 1080
+  "input": {
+    "tag": "c:kerosene",
+    "amount": {
+      "numerator": 1,
+      "denominator": 1080
+    }
   },
-  "energy_generated": 37,
+  "energy": 37,
   "time": 1
 }
