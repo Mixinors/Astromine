@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei.fluidmixing;
 
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -38,19 +39,20 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Environment(EnvType.CLIENT)
 public abstract class AbstractFluidMixingDisplay implements RecipeDisplay {
 	private final double energy;
-	private final FluidVolume firstInput;
-	private final FluidVolume secondInput;
+	private final FluidIngredient firstIngredient;
+	private final FluidIngredient secondIngredient;
 	private final FluidVolume output;
 	private final Identifier id;
 
-	public AbstractFluidMixingDisplay(double energy, FluidVolume firstInput, FluidVolume secondInput, FluidVolume output, Identifier id) {
+	public AbstractFluidMixingDisplay(double energy, FluidIngredient firstIngredient, FluidIngredient secondIngredient, FluidVolume output, Identifier id) {
 		this.energy = energy;
-		this.firstInput = firstInput;
-		this.secondInput = secondInput;
+		this.firstIngredient = firstIngredient;
+		this.secondIngredient = secondIngredient;
 		this.output = output;
 		this.id = id;
 	}
@@ -62,7 +64,7 @@ public abstract class AbstractFluidMixingDisplay implements RecipeDisplay {
 
 	@Override
 	public List<List<EntryStack>> getInputEntries() {
-		return Arrays.asList(Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertA2R(firstInput)), Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertA2R(secondInput)));
+		return Arrays.asList(Arrays.stream(firstIngredient.getMatchingVolumes()).map(AstromineRoughlyEnoughItemsPlugin::convertA2R).collect(Collectors.toList()), Arrays.stream(secondIngredient.getMatchingVolumes()).map(AstromineRoughlyEnoughItemsPlugin::convertA2R).collect(Collectors.toList()));
 	}
 
 	@Override

@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei.electrolyzing;
 
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -40,16 +41,19 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin.convertA2R;
 
 @Environment(EnvType.CLIENT)
 public class ElectrolyzingDisplay implements RecipeDisplay {
 	private final double energy;
-	private final FluidVolume input;
+	private final FluidIngredient input;
 	private final FluidVolume firstOutput;
 	private final FluidVolume secondOutput;
 	private final Identifier id;
 
-	public ElectrolyzingDisplay(double energy, FluidVolume input, FluidVolume firstOutput, FluidVolume secondOutput, Identifier id) {
+	public ElectrolyzingDisplay(double energy, FluidIngredient input, FluidVolume firstOutput, FluidVolume secondOutput, Identifier id) {
 		this.energy = energy;
 		this.input = input;
 		this.firstOutput = firstOutput;
@@ -58,7 +62,7 @@ public class ElectrolyzingDisplay implements RecipeDisplay {
 	}
 
 	public ElectrolyzingDisplay(ElectrolyzingRecipe recipe) {
-		this(recipe.getEnergy(), FluidVolume.of(recipe.getInputAmount(), recipe.getInputFluid()), FluidVolume.of(recipe.getFirstOutputAmount(), recipe.getFirstOutputFluid()), FluidVolume.of(recipe.getSecondOutputAmount(), recipe.getSecondOutputFluid()), recipe.getId());
+		this(recipe.getEnergy(), recipe.getIngredient(), recipe.getFirstOutputVolume(), recipe.getSecondOutputVolume(), recipe.getId());
 	}
 
 	@Override
@@ -68,7 +72,7 @@ public class ElectrolyzingDisplay implements RecipeDisplay {
 
 	@Override
 	public List<List<EntryStack>> getInputEntries() {
-		return Collections.singletonList(Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertA2R(input)));
+		return Collections.singletonList(Arrays.stream(input.getMatchingVolumes()).map(AstromineRoughlyEnoughItemsPlugin::convertA2R).collect(Collectors.toList()));
 	}
 
 	@Override
@@ -83,7 +87,7 @@ public class ElectrolyzingDisplay implements RecipeDisplay {
 
 	@Override
 	public List<List<EntryStack>> getResultingEntries() {
-		return Arrays.asList(Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertA2R(firstOutput)), Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertA2R(secondOutput)));
+		return Arrays.asList(Collections.singletonList(convertA2R(firstOutput)), Collections.singletonList(convertA2R(secondOutput)));
 	}
 
 	public double getEnergy() {

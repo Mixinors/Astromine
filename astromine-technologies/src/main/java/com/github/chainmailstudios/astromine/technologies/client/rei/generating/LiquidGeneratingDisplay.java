@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei.generating;
 
+import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -35,26 +37,26 @@ import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTe
 import com.github.chainmailstudios.astromine.technologies.common.recipe.LiquidGeneratingRecipe;
 import me.shedaniel.rei.api.EntryStack;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Environment(EnvType.CLIENT)
 public class LiquidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
-	private final Fluid fluid;
-	private final Fraction amount;
+	private final FluidIngredient input;
 	private final Identifier id;
 
 	public LiquidGeneratingDisplay(LiquidGeneratingRecipe recipe) {
 		super(recipe.getEnergyGenerated());
-		this.fluid = recipe.getFluid();
-		this.amount = recipe.getAmount();
+		this.input = recipe.getIngredient();
 		this.id = recipe.getId();
 	}
 
 	@Override
 	public List<List<EntryStack>> getInputEntries() {
-		return Collections.singletonList(Collections.singletonList(EntryStack.create(fluid, amount.floatValue())));
+		return Collections.singletonList(Arrays.stream(input.getMatchingVolumes()).map(AstromineRoughlyEnoughItemsPlugin::convertA2R).collect(Collectors.toList()));
 	}
 
 	@Override
@@ -68,11 +70,11 @@ public class LiquidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
 	}
 
 	public Fluid getFluid() {
-		return fluid;
+		return input.getMatchingVolumes()[0].getFluid();
 	}
 
 	public Fraction getAmount() {
-		return amount;
+		return input.getMatchingVolumes()[0].getAmount();
 	}
 
 	@Override
