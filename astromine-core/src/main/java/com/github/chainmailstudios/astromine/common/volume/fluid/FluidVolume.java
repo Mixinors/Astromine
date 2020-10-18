@@ -109,7 +109,7 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 	}
 
 	public boolean test(FluidVolume volume) {
-		return test(volume.getFluid()) && hasAvailable(volume.getAmount());
+		return test(volume.getFluid()) && volume.hasAvailable(getAmount());
 	}
 
 	@Override
