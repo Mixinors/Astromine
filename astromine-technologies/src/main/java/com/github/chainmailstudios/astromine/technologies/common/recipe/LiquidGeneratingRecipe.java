@@ -24,6 +24,9 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
+import com.github.chainmailstudios.astromine.common.utilities.*;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.Inventory;
@@ -34,22 +37,14 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Lazy;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyGeneratingRecipe;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.FractionUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 
@@ -60,18 +55,14 @@ import com.google.gson.annotations.SerializedName;
 
 public class LiquidGeneratingRecipe implements Recipe<Inventory>, EnergyGeneratingRecipe<Inventory> {
 	final Identifier identifier;
-	final RegistryKey<Fluid> fluidKey;
-	final Lazy<Fluid> fluid;
-	final Fraction amount;
-	final double energyGenerated;
+	final FluidIngredient input;
+	final EnergyVolume energy;
 	final int time;
 
-	public LiquidGeneratingRecipe(Identifier identifier, RegistryKey<Fluid> fluidKey, Fraction amount, double energyGenerated, int time) {
+	public LiquidGeneratingRecipe(Identifier identifier, FluidIngredient input, EnergyVolume energy, int time) {
 		this.identifier = identifier;
-		this.fluidKey = fluidKey;
-		this.fluid = new Lazy<>(() -> Registry.FLUID.get(this.fluidKey));
-		this.amount = amount;
-		this.energyGenerated = energyGenerated;
+		this.input = input;
+		this.energy = energy;
 		this.time = time;
 	}
 
@@ -79,20 +70,16 @@ public class LiquidGeneratingRecipe implements Recipe<Inventory>, EnergyGenerati
 		return world.getRecipeManager().getAllOfType(LiquidGeneratingRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
 			LiquidGeneratingRecipe recipe = ((LiquidGeneratingRecipe) it);
 
-			return (existing == inserting || existing == Fluids.EMPTY) && (recipe.fluid.get() == inserting);
+			return (existing == inserting || existing == Fluids.EMPTY) && (recipe.input.test(inserting));
 		});
 	}
 
 	public boolean matches(FluidInventoryComponent fluidComponent) {
 		FluidHandler handler = FluidHandler.of(fluidComponent);
 
-		FluidVolume fluidVolume = handler.getFirst();
+		FluidVolume inputVolume = handler.getFirst();
 
-		if (!fluidVolume.test(fluid.get())) {
-			return false;
-		}
-
-		return fluidVolume.hasStored(amount);
+		return input.test(inputVolume);
 	}
 
 	@Override
@@ -140,20 +127,21 @@ public class LiquidGeneratingRecipe implements Recipe<Inventory>, EnergyGenerati
 		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_LIQUID_GENERATOR);
 	}
 
-	public Fluid getFluid() {
-		return fluid.get();
+	public FluidIngredient getIngredient() {
+		return input;
 	}
 
-	public Fraction getAmount() {
-		return amount;
-	}
-
-	public double getEnergyGenerated() {
-		return energyGenerated;
+	public EnergyVolume getEnergyVolume() {
+		return energy;
 	}
 
 	public int getTime() {
 		return time;
+	}
+
+	@Override
+	public double getEnergyGenerated() {
+		return energy.getAmount();
 	}
 
 	public static final class Serializer implements RecipeSerializer<LiquidGeneratingRecipe> {
@@ -169,20 +157,27 @@ public class LiquidGeneratingRecipe implements Recipe<Inventory>, EnergyGenerati
 		public LiquidGeneratingRecipe read(Identifier identifier, JsonObject object) {
 			LiquidGeneratingRecipe.Format format = new Gson().fromJson(object, LiquidGeneratingRecipe.Format.class);
 
-			return new LiquidGeneratingRecipe(identifier, RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.input)), FractionUtilities.fromJson(format.amount), EnergyUtilities.fromJson(format.energyGenerated), ParsingUtilities.fromJson(format.time, Integer.class));
+			return new LiquidGeneratingRecipe(
+					identifier,
+					IngredientUtilities.fromFluidIngredientJson(format.input),
+					VolumeUtilities.fromEnergyVolumeJson(format.energy),
+					ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 
 		@Override
 		public LiquidGeneratingRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new LiquidGeneratingRecipe(identifier, RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), EnergyUtilities.fromPacket(buffer), PacketUtilities.fromPacket(buffer, Integer.class));
+			return new LiquidGeneratingRecipe(
+					identifier,
+					IngredientUtilities.fromFluidIngredientPacket(buffer),
+					VolumeUtilities.fromEnergyVolumePacket(buffer),
+					PacketUtilities.fromPacket(buffer, Integer.class));
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, LiquidGeneratingRecipe recipe) {
-			buffer.writeIdentifier(recipe.fluidKey.getValue());
-			FractionUtilities.toPacket(buffer, recipe.amount);
-			EnergyUtilities.toPacket(buffer, recipe.energyGenerated);
-			buffer.writeInt(recipe.time);
+			IngredientUtilities.toFluidIngredientPacket(buffer, recipe.getIngredient());
+			VolumeUtilities.toEnergyVolumePacket(buffer, recipe.getEnergyVolume());
+			PacketUtilities.toPacket(buffer, recipe.getTime());
 		}
 	}
 
@@ -195,19 +190,19 @@ public class LiquidGeneratingRecipe implements Recipe<Inventory>, EnergyGenerati
 	}
 
 	public static final class Format {
-		String input;
+		JsonElement input;
 
-		@SerializedName("amount")
-		JsonElement amount;
-
-		@SerializedName("energy_generated")
-		JsonElement energyGenerated;
+		JsonElement energy;
 
 		JsonElement time;
 
 		@Override
 		public String toString() {
-			return "Format{" + "input='" + input + '\'' + ", amount=" + amount + ", energyGenerated=" + energyGenerated + ", time=" + time + '}';
+			return "Format{" +
+					"input=" + input +
+					", energy=" + energy +
+					", time=" + time +
+					'}';
 		}
 	}
 }

@@ -99,8 +99,7 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 		FluidHandler.ofOptional(this).ifPresent(fluids -> {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(LiquidGeneratingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof LiquidGeneratingRecipe).filter(recipe -> ((LiquidGeneratingRecipe) recipe).matches(fluidComponent))
-					.findFirst();
+				optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(LiquidGeneratingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof LiquidGeneratingRecipe).filter(recipe -> ((LiquidGeneratingRecipe) recipe).matches(fluidComponent)).findFirst();
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -126,7 +125,7 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
 
-							fluids.getFirst().minus(recipe.getAmount());
+							fluids.getFirst().minus(recipe.getIngredient().getMatchingVolumes()[0].getAmount());
 
 							energyVolume.add(generated);
 						} else {
