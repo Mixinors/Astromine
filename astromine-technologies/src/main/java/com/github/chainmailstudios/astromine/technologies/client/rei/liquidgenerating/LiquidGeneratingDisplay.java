@@ -22,10 +22,11 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.technologies.client.rei.generating;
+package com.github.chainmailstudios.astromine.technologies.client.rei.liquidgenerating;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
+import com.github.chainmailstudios.astromine.technologies.client.rei.generating.AbstractEnergyGeneratingDisplay;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 

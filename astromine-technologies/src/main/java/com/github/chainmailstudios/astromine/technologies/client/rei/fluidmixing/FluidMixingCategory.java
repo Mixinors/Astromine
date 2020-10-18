@@ -42,7 +42,7 @@ import com.google.common.collect.Lists;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class FluidMixingCategory implements RecipeCategory<AbstractFluidMixingDisplay> {
+public class FluidMixingCategory implements RecipeCategory<FluidMixingDisplay> {
 	private final Identifier id;
 	private final String translationKey;
 	private final EntryStack logo;
@@ -69,7 +69,7 @@ public class FluidMixingCategory implements RecipeCategory<AbstractFluidMixingDi
 	}
 
 	@Override
-	public List<Widget> setupDisplay(AbstractFluidMixingDisplay recipeDisplay, Rectangle bounds) {
+	public List<Widget> setupDisplay(FluidMixingDisplay recipeDisplay, Rectangle bounds) {
 		List<Widget> widgets = Lists.newArrayList();
 		Rectangle innerBounds = new Rectangle(bounds.getCenterX() - 65, bounds.y, 130, bounds.height);
 		widgets.add(Widgets.createRecipeBase(innerBounds));

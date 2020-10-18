@@ -22,8 +22,9 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.technologies.client.rei.generating;
+package com.github.chainmailstudios.astromine.technologies.client.rei.solidgenerating;
 
+import com.github.chainmailstudios.astromine.technologies.client.rei.generating.AbstractEnergyGeneratingCategory;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 

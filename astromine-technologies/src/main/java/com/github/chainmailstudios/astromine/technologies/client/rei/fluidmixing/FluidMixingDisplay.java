@@ -24,19 +24,67 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei.fluidmixing;
 
-import net.minecraft.util.Identifier;
-
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.FluidMixingRecipe;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
-public class FluidMixingDisplay extends AbstractFluidMixingDisplay {
+import net.minecraft.util.Identifier;
+
+import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import me.shedaniel.rei.api.EntryStack;
+import me.shedaniel.rei.api.RecipeDisplay;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Environment(EnvType.CLIENT)
+public class FluidMixingDisplay implements RecipeDisplay {
+	private final double energy;
+	private final FluidIngredient firstIngredient;
+	private final FluidIngredient secondIngredient;
+	private final FluidVolume output;
+	private final Identifier id;
+
 	public FluidMixingDisplay(FluidMixingRecipe recipe) {
-		super(recipe.getEnergy(), recipe.getFirstIngredient(), recipe.getSecondIngredient(), recipe.getOutputVolume(), recipe.getId());
+		this.energy = recipe.getEnergy();
+		this.firstIngredient = recipe.getFirstIngredient();
+		this.secondIngredient = recipe.getSecondIngredient();
+		this.output = recipe.getOutputVolume();
+		this.id = recipe.getId();
 	}
 
 	@Override
 	public Identifier getRecipeCategory() {
 		return AstromineTechnologiesRoughlyEnoughItemsPlugin.FLUID_MIXING;
+	}
+
+	@Override
+	public Optional<Identifier> getRecipeLocation() {
+		return Optional.ofNullable(id);
+	}
+
+	@Override
+	public List<List<EntryStack>> getInputEntries() {
+		return Arrays.asList(Arrays.stream(firstIngredient.getMatchingVolumes()).map(AstromineRoughlyEnoughItemsPlugin::convertA2R).collect(Collectors.toList()), Arrays.stream(secondIngredient.getMatchingVolumes()).map(AstromineRoughlyEnoughItemsPlugin::convertA2R).collect(Collectors.toList()));
+	}
+
+	@Override
+	public List<List<EntryStack>> getRequiredEntries() {
+		return getInputEntries();
+	}
+
+	@Override
+	public List<List<EntryStack>> getResultingEntries() {
+		return Collections.singletonList(Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertA2R(output)));
+	}
+
+	public double getEnergy() {
+		return energy;
 	}
 }

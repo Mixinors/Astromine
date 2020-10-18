@@ -22,8 +22,9 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.technologies.client.rei.fluidmixing;
+package com.github.chainmailstudios.astromine.technologies.client.rei.liquidgenerating;
 
+import com.github.chainmailstudios.astromine.technologies.client.rei.generating.AbstractEnergyGeneratingCategory;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -31,52 +32,41 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.EntryStack;
-import me.shedaniel.rei.api.RecipeCategory;
 import me.shedaniel.rei.api.widgets.Widgets;
 import me.shedaniel.rei.gui.widget.Widget;
 
-import com.google.common.collect.Lists;
+import java.util.Collections;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class FluidRecipeCategory implements RecipeCategory<AbstractFluidRecipeDisplay> {
-	private final Identifier id;
-	private final String translationKey;
-	private final EntryStack logo;
-
-	public FluidRecipeCategory(Identifier id, String translationKey, EntryStack logo) {
-		this.id = id;
-		this.translationKey = translationKey;
-		this.logo = logo;
-	}
-
+public class LiquidGeneratingCategory extends AbstractEnergyGeneratingCategory<LiquidGeneratingDisplay> {
 	@Override
 	public Identifier getIdentifier() {
-		return id;
+		return AstromineTechnologiesRoughlyEnoughItemsPlugin.LIQUID_GENERATING;
 	}
 
 	@Override
 	public String getCategoryName() {
-		return I18n.translate(translationKey);
+		return I18n.translate("category.astromine.liquid_generating");
 	}
 
 	@Override
 	public EntryStack getLogo() {
-		return logo;
+		return EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_LIQUID_GENERATOR);
 	}
 
 	@Override
-	public List<Widget> setupDisplay(AbstractFluidRecipeDisplay recipeDisplay, Rectangle bounds) {
-		List<Widget> widgets = Lists.newArrayList();
+	public List<Widget> setupDisplay(LiquidGeneratingDisplay recipeDisplay, Rectangle bounds) {
+		List<Widget> widgets = super.setupDisplay(recipeDisplay, bounds);
 		Rectangle innerBounds = new Rectangle(bounds.getCenterX() - 55, bounds.y, 110, bounds.height);
-		widgets.add(Widgets.createRecipeBase(innerBounds));
-		widgets.addAll(AstromineRoughlyEnoughItemsPlugin.createEnergyDisplay(new Rectangle(innerBounds.x + 10, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getEnergy(), false, 12500));
-		widgets.addAll(AstromineRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.x + 24, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getInputEntries().get(0), false, 5000));
+		widgets.addAll(AstromineRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getX() + 24, innerBounds.getCenterY() - 23, 12, 48), Collections.singletonList(EntryStack.create(recipeDisplay.getFluid(), AstromineRoughlyEnoughItemsPlugin.convertA2R(
+			recipeDisplay.getAmount()))), false, 5000));
 		widgets.add(Widgets.createArrow(new Point(innerBounds.getX() + 45, innerBounds.getY() + 26)));
-		widgets.addAll(AstromineRoughlyEnoughItemsPlugin.createFluidDisplay(new Rectangle(innerBounds.getMaxX() - 32, bounds.getCenterY() - 23, 12, 48), recipeDisplay.getOutputEntries(), true, 5000));
 		return widgets;
 	}
 }
