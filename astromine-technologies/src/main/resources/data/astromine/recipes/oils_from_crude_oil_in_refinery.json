@@ -1,9 +1,11 @@
 {
   "type": "astromine:refining",
-  "input": "astromine:crude_oil",
-  "input_amount": {
-    "numerator": 100,
-    "denominator": 100
+  "input": {
+    "tag": "c:crude_oil",
+    "amount": {
+      "numerator": 100,
+      "denominator": 100
+    }
   },
   "first_output": {
     "fluid": "astromine:residual_fuel_oil",

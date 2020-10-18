@@ -91,7 +91,7 @@ public class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsumingRe
 			return false;
 		}
 
-		return !secondOutput.test(secondOutputVolume);
+		return secondOutput.test(secondOutputVolume);
 	}
 
 	@Override
@@ -143,15 +143,15 @@ public class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsumingRe
 	}
 
 	public FluidVolume getFirstOutputVolume() {
-		return firstOutput;
+		return firstOutput.copy();
 	}
 
 	public FluidVolume getSecondOutputVolume() {
-		return secondOutput;
+		return secondOutput.copy();
 	}
 
 	public EnergyVolume getEnergyVolume() {
-		return energy;
+		return energy.copy();
 	}
 
 	public int getTime() {

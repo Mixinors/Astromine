@@ -178,35 +178,35 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 	}
 
 	public FluidVolume getFirstOutputVolume() {
-		return firstOutput;
+		return firstOutput.copy();
 	}
 
 	public FluidVolume getSecondOutputVolume() {
-		return secondOutput;
+		return secondOutput.copy();
 	}
 
 	public FluidVolume getThirdOutputVolume() {
-		return thirdOutput;
+		return thirdOutput.copy();
 	}
 
 	public FluidVolume getFourthOutputVolume() {
-		return fourthOutput;
+		return fourthOutput.copy();
 	}
 
 	public FluidVolume getFifthOutputVolume() {
-		return fifthOutput;
+		return fifthOutput.copy();
 	}
 
 	public FluidVolume getSixthOutputVolume() {
-		return sixthOutput;
+		return sixthOutput.copy();
 	}
 
 	public FluidVolume getSeventhOutputVolume() {
-		return seventhOutput;
+		return seventhOutput.copy();
 	}
 
 	public EnergyVolume getEnergyVolume() {
-		return energy;
+		return energy.copy();
 	}
 
 	public int getTime() {

@@ -131,8 +131,8 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 							optionalRecipe = Optional.empty();
 
 							if (energyVolume.hasAvailable(consumed)) {
-								fluids.getFirst().minus(recipe.getFirstIngredient().getMatchingVolumes()[0].getAmount());
-								fluids.getSecond().minus(recipe.getSecondIngredient().getMatchingVolumes()[0].getAmount());
+								fluids.getFirst().minus(recipe.getFirstIngredient().getFirstMatchingVolume().getAmount());
+								fluids.getSecond().minus(recipe.getSecondIngredient().getFirstMatchingVolume().getAmount());
 								fluids.getThird().moveFrom(recipe.getOutputVolume());
 							}
 

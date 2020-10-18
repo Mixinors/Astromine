@@ -132,7 +132,7 @@ public class LiquidGeneratingRecipe implements Recipe<Inventory>, EnergyGenerati
 	}
 
 	public EnergyVolume getEnergyVolume() {
-		return energy;
+		return energy.copy();
 	}
 
 	public int getTime() {

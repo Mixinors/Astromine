@@ -121,7 +121,7 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
 
-							fluids.getFirst().minus(recipe.getIngredient().getMatchingVolumes()[0].getAmount());
+							fluids.getFirst().minus(recipe.getIngredient().getFirstMatchingVolume().getAmount());
 
 							energyVolume.add(generated);
 						} else {

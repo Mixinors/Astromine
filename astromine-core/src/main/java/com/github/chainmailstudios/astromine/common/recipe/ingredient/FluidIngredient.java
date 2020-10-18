@@ -124,6 +124,10 @@ public class FluidIngredient implements Predicate<FluidVolume> {
 		return ofEntries(Stream.generate(() -> new SimpleEntry(FluidVolume.fromPacket(buffer))).limit(i));
 	}
 
+	public FluidVolume getFirstMatchingVolume() {
+		return getMatchingVolumes()[0].copy();
+	}
+
 	public FluidVolume[] getMatchingVolumes() {
 		this.cacheMatchingVolumes();
 		return this.matchingVolumes;

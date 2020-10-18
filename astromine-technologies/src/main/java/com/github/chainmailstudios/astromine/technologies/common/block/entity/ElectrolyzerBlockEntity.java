@@ -128,7 +128,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 							optionalRecipe = Optional.empty();
 
 							if (volume.hasAvailable(consumed)) {
-								fluids.getFirst().minus(recipe.getIngredient().getMatchingVolumes()[0].getAmount());
+								fluids.getFirst().minus(recipe.getIngredient().getFirstMatchingVolume().getAmount());
 								fluids.getSecond().moveFrom(recipe.getFirstOutputVolume());
 								fluids.getThird().moveFrom(recipe.getSecondOutputVolume());
 							}

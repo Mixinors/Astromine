@@ -128,7 +128,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
 
-							fluids.getFirst().minus(recipe.getIngredient().getMatchingVolumes()[0].getAmount());
+							fluids.getFirst().minus(recipe.getIngredient().getFirstMatchingVolume().getAmount());
 							fluids.getSecond().moveFrom(recipe.getFirstOutputVolume());
 							fluids.getThird().moveFrom(recipe.getSecondOutputVolume());
 							fluids.getFourth().moveFrom(recipe.getThirdOutputVolume());
