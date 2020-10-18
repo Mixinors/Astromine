@@ -184,6 +184,10 @@ public abstract class LivingEntityMixin implements GravityEntity {
 							}
 						}
 
+						if (!hasSuit && FluidEffectRegistry.INSTANCE.contains(atmosphereVolume.getFluid())) {
+							FluidEffectRegistry.INSTANCE.get(atmosphereVolume.getFluid()).accept((LivingEntity) entity);
+						}
+
 						if (!isBreathing) {
 							oxygenComponent.simulate(false);
 						} else {

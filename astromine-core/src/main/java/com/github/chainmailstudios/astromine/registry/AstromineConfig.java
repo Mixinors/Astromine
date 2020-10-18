@@ -442,13 +442,13 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Delay for the Fire Extinguisher standing actions.")
 	public int fireExtinguisherStandingDelay = 10;
 
-	@Comment("Tick rate for gas movement in the atmosphere. This is inversely correlated to gas movement speed, higher means slower. Lower numbers are also less performant, so choose wisely.")
+	@Comment("Tick rate for gas movement in the atmosphere. This is inversely correlated to gas movement speed - higher means slower. Lower numbers are also less performant, so choose wisely.")
 	public int gasTickRate = 10;
 
-	@Comment("Numerator for the gas decay rate fraction. It will decay gas by this fraction every gas tick.")
+	@Comment("Numerator for the gas decay rate fraction. It will decay gases by this fraction every gas tick.")
 	public int gasDecayNumerator = 5;
 
-	@Comment("Denominator for the gas decay rate fraction. It will decay gas by this fraction every gas tick.")
+	@Comment("Denominator for the gas decay rate fraction. It will decay gases by this fraction every gas tick.")
 	public int gasDecayDenominator = 1024;
 
 	@Comment("Noise threshold for Asteroid generation.")
@@ -474,6 +474,60 @@ public class AstromineConfig implements ConfigData {
 
 	@Comment("Whether to enable Meteor generation in The End.")
 	public boolean endMeteorGeneration = true;
+
+	@Comment("Energy for the Basic Battery.")
+	public double basicBatteryEnergy = 9000;
+
+	@Comment("Energy for the Advanced Battery.")
+	public double advancedBatteryEnergy = 24000;
+
+	@Comment("Energy for the Elite Battery.")
+	public double eliteBatteryEnergy = 64000;
+
+	@Comment("Energy for the Basic Drill.")
+	public double basicDrillEnergy = 90000;
+
+	@Comment("Energy for the Advanced Drill.")
+	public double advancedDrillEnergy = 240000;
+
+	@Comment("Energy for the Elite Drill.")
+	public double eliteDrillEnergy = 640000;
+	
+	@Comment("Fluid for the Gas Canister.")
+	public long gasCanisterFluid = 8L;
+
+	@Comment("Fluid for the Pressurized Gas Canister.")
+	public long pressurizedGasCanisterFluid = 32L;
+
+	@Comment("Energy rate for the Primitive Energy Cable.")
+	public double primitiveEnergyCableEnergy = 64D;
+
+	@Comment("Energy for the Basic Energy Cable.")
+	public double basicEnergyCableEnergy = 256D;
+
+	@Comment("Energy for the Advanced Energy Cable.")
+	public double advancedEnergyCableEnergy = 1024D;
+
+	@Comment("Energy for the Elite Energy Cable.")
+	public double eliteEnergyCableEnergy = 4096D;
+
+	@Comment("Delay for the Inserter actions (smaller is faster).")
+	public int inserterSpeed = 16;
+
+	@Comment("Delay for the Fast Inserter actions (smaller is faster).")
+	public int fastInserterSpeed = 8;
+
+	@Comment("Delay for the Basic Conveyor actions (smaller is faster).")
+	public int basicConveyorSpeed = 16;
+
+	@Comment("Delay for the Advanced Conveyor actions (smaller is faster).")
+	public int advancedConveyorSpeed = 8;
+
+	@Comment("Delay for the Elite Conveyor actions (smaller is faster).")
+	public int eliteConveyorSpeed = 8;
+
+	@Comment("Fluid for the Space Suit.")
+	public long spaceSuitFluid = 64L;
 
 	public static AstromineConfig get() {
 		if (instance == null) {

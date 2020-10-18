@@ -38,13 +38,13 @@ public class AstromineTechnologiesBlockEntityTypes extends AstromineBlockEntityT
 	public static final BlockEntityType<TankBlockEntity.Basic> BASIC_TANK = register("basic_tank", TankBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_TANK);
 	public static final BlockEntityType<TankBlockEntity.Advanced> ADVANCED_TANK = register("advanced_tank", TankBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_TANK);
 	public static final BlockEntityType<TankBlockEntity.Elite> ELITE_TANK = register("elite_tank", TankBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_TANK);
-	public static final BlockEntityType<TankBlockEntity.Elite> CREATIVE_TANK = register("creative_tank", TankBlockEntity.Elite::new, AstromineTechnologiesBlocks.CREATIVE_TANK);
+	public static final BlockEntityType<TankBlockEntity.Creative> CREATIVE_TANK = register("creative_tank", TankBlockEntity.Creative::new, AstromineTechnologiesBlocks.CREATIVE_TANK);
 
 	public static final BlockEntityType<BufferBlockEntity.Primitive> PRIMITIVE_BUFFER = register("primitive_buffer", BufferBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_BUFFER);
 	public static final BlockEntityType<BufferBlockEntity.Basic> BASIC_BUFFER = register("basic_buffer", BufferBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_BUFFER);
 	public static final BlockEntityType<BufferBlockEntity.Advanced> ADVANCED_BUFFER = register("advanced_buffer", BufferBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_BUFFER);
 	public static final BlockEntityType<BufferBlockEntity.Elite> ELITE_BUFFER = register("elite_buffer", BufferBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_BUFFER);
-	public static final BlockEntityType<BufferBlockEntity.Elite> CREATIVE_BUFFER = register("creative_buffer", BufferBlockEntity.Elite::new, AstromineTechnologiesBlocks.CREATIVE_BUFFER);
+	public static final BlockEntityType<BufferBlockEntity.Creative> CREATIVE_BUFFER = register("creative_buffer", BufferBlockEntity.Creative::new, AstromineTechnologiesBlocks.CREATIVE_BUFFER);
 
 	public static final BlockEntityType<SolidGeneratorBlockEntity.Primitive> PRIMITIVE_SOLID_GENERATOR = register("primitive_solid_generator", SolidGeneratorBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_SOLID_GENERATOR);
 	public static final BlockEntityType<SolidGeneratorBlockEntity.Basic> BASIC_SOLID_GENERATOR = register("basic_solid_generator", SolidGeneratorBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_SOLID_GENERATOR);

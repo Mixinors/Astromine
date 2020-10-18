@@ -45,21 +45,21 @@ public class AstromineTechnologiesItems extends AstromineItems {
 	public static final Item ADVANCED_MACHINE_UPGRADE_KIT = register("advanced_machine_upgrade_kit", new Item(getBasicSettings()));
 	public static final Item ELITE_MACHINE_UPGRADE_KIT = register("elite_machine_upgrade_kit", new Item(getBasicSettings()));
 
-	public static final Item GAS_CANISTER = register("gas_canister", FluidVolumeItem.of(getBasicSettings().maxCount(1), Fraction.of(8, 1)));
-	public static final Item PRESSURIZED_GAS_CANISTER = register("pressurized_gas_canister", FluidVolumeItem.of(getBasicSettings().maxCount(1), Fraction.of(32, 1)));
+	public static final Item GAS_CANISTER = register("gas_canister", FluidVolumeItem.of(getBasicSettings().maxCount(1), Fraction.of(AstromineConfig.get().gasCanisterFluid, 1)));
+	public static final Item PRESSURIZED_GAS_CANISTER = register("pressurized_gas_canister", FluidVolumeItem.of(getBasicSettings().maxCount(1), Fraction.of(AstromineConfig.get().pressurizedGasCanisterFluid, 1)));
 
 	public static final Item BASIC_CIRCUIT = register("basic_circuit", new Item(getBasicSettings()));
 	public static final Item ADVANCED_CIRCUIT = register("advanced_circuit", new Item(getBasicSettings()));
 	public static final Item ELITE_CIRCUIT = register("elite_circuit", new Item(getBasicSettings()));
 
-	public static final Item BASIC_BATTERY = register("basic_battery", EnergyVolumeItem.of(getBasicSettings().maxCount(1), 9000));
-	public static final Item ADVANCED_BATTERY = register("advanced_battery", EnergyVolumeItem.of(getBasicSettings().maxCount(1), 24000));
-	public static final Item ELITE_BATTERY = register("elite_battery", EnergyVolumeItem.of(getBasicSettings().maxCount(1), 64000));
+	public static final Item BASIC_BATTERY = register("basic_battery", EnergyVolumeItem.of(getBasicSettings().maxCount(1), AstromineConfig.get().basicBatteryEnergy));
+	public static final Item ADVANCED_BATTERY = register("advanced_battery", EnergyVolumeItem.of(getBasicSettings().maxCount(1), AstromineConfig.get().advancedBatteryEnergy));
+	public static final Item ELITE_BATTERY = register("elite_battery", EnergyVolumeItem.of(getBasicSettings().maxCount(1), AstromineConfig.get().eliteBatteryEnergy));
 	public static final Item CREATIVE_BATTERY = register("creative_battery", EnergyVolumeItem.ofCreative(getBasicSettings().maxCount(1)));
 
-	public static final Item BASIC_DRILL = register("basic_drill", new DrillItem(AstromineTechnologiesToolMaterials.BASIC_DRILL, 1, -2.8F, 1, 90000, getBasicSettings().maxCount(1)));
-	public static final Item ADVANCED_DRILL = register("advanced_drill", new DrillItem(AstromineTechnologiesToolMaterials.ADVANCED_DRILL, 1, -2.8F, 1, 240000, getBasicSettings().maxCount(1)));
-	public static final Item ELITE_DRILL = register("elite_drill", new DrillItem(AstromineTechnologiesToolMaterials.ELITE_DRILL, 1, -2.8F, 1, 640000, getBasicSettings().maxCount(1)));
+	public static final Item BASIC_DRILL = register("basic_drill", new DrillItem(AstromineTechnologiesToolMaterials.BASIC_DRILL, 1, -2.8F, 1, AstromineConfig.get().basicDrillEnergy, getBasicSettings().maxCount(1)));
+	public static final Item ADVANCED_DRILL = register("advanced_drill", new DrillItem(AstromineTechnologiesToolMaterials.ADVANCED_DRILL, 1, -2.8F, 1, AstromineConfig.get().advancedDrillEnergy, getBasicSettings().maxCount(1)));
+	public static final Item ELITE_DRILL = register("elite_drill", new DrillItem(AstromineTechnologiesToolMaterials.ELITE_DRILL, 1, -2.8F, 1, AstromineConfig.get().eliteDrillEnergy, getBasicSettings().maxCount(1)));
 
 	public static final Item HOLOGRAPHIC_CONNECTOR = register("holographic_connector", new HolographicConnectorItem(getBasicSettings().maxCount(1)));
 

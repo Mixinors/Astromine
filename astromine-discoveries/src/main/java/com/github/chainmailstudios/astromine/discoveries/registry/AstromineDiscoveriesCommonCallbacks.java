@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry;
 
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.minecraft.server.world.ServerWorld;
 
 import com.github.chainmailstudios.astromine.common.callback.ServerChunkManagerCallback;
@@ -73,7 +74,7 @@ public class AstromineDiscoveriesCommonCallbacks extends AstromineCommonCallback
 
 		ItemComponentCallbackV2.register(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, AstromineDiscoveriesItems.SPACE_SUIT_CHESTPLATE, (useless, stack) -> {
 			FluidInventoryComponent component = new SimpleFluidInventoryComponent(1);
-			component.getVolume(0).setSize(Fraction.of(64));
+			component.getVolume(0).setSize(Fraction.of(AstromineConfig.get().spaceSuitFluid));
 			return component;
 		});
 	}
