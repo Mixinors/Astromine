@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.minecraft.structure.StructurePieceType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -56,20 +57,24 @@ public class AstromineFoundationsFeatures extends AstromineFeatures {
 	public static final RegistryKey<ConfiguredFeature<?, ?>> CRUDE_OIL_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, CRUDE_OIL_ID);
 
 	public static void initialize() {
-		MeteorFeature meteor = new MeteorFeature(DefaultFeatureConfig.CODEC);
-		ConfiguredStructureFeature<DefaultFeatureConfig, ? extends StructureFeature<DefaultFeatureConfig>> meteorStructure = meteor.configure(new DefaultFeatureConfig());
-		LibStructure.registerStructure(METEOR_ID, meteor, GenerationStep.Feature.RAW_GENERATION, new StructureConfig(32, 8, 12345), meteorStructure);
+		if (AstromineConfig.get().meteorGeneration) {
+			MeteorFeature meteor = new MeteorFeature(DefaultFeatureConfig.CODEC);
+			ConfiguredStructureFeature<DefaultFeatureConfig, ? extends StructureFeature<DefaultFeatureConfig>> meteorStructure = meteor.configure(new DefaultFeatureConfig());
+			LibStructure.registerStructure(METEOR_ID, meteor, GenerationStep.Feature.RAW_GENERATION, new StructureConfig(32, 8, 12345), meteorStructure);
 
-		DynamicRegistryCallback.callback(Registry.BIOME_KEY).register((manager, key, biome) -> {
-			if (biome.getCategory() != Biome.Category.NETHER && biome.getCategory() != Biome.Category.THEEND) {
-				BiomesRegistry.registerStructure(manager, biome, () -> meteorStructure);
-			}
-		});
+			DynamicRegistryCallback.callback(Registry.BIOME_KEY).register((manager, key, biome) -> {
+				if ((AstromineConfig.get().netherMeteorGeneration || biome.getCategory() != Biome.Category.NETHER) && (AstromineConfig.get().endMeteorGeneration || biome.getCategory() != Biome.Category.THEEND)) {
+					BiomesRegistry.registerStructure(manager, biome, () -> meteorStructure);
+				}
+			});
+		}
 
-		DynamicRegistryCallback.callback(Registry.BIOME_KEY).register((manager, key, biome) -> {
-			if (biome.getCategory() == Biome.Category.OCEAN || biome.getCategory() == Biome.Category.DESERT) {
-				BiomesRegistry.registerFeature(manager, biome, GenerationStep.Feature.LAKES, CRUDE_OIL_KEY);
-			}
-		});
+		if (AstromineConfig.get().crudeOilWells) {
+			DynamicRegistryCallback.callback(Registry.BIOME_KEY).register((manager, key, biome) -> {
+				if ((biome.getCategory() == Biome.Category.OCEAN && AstromineConfig.get().oceanicCrudeOilWells) || (biome.getCategory() == Biome.Category.DESERT && AstromineConfig.get().desertCrudeOilWells)) {
+					BiomesRegistry.registerFeature(manager, biome, GenerationStep.Feature.LAKES, CRUDE_OIL_KEY);
+				}
+			});
+		}
 	}
 }

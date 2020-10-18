@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.foundations.common.world.feature;
 
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.util.Lazy;
@@ -55,7 +56,7 @@ public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
 
 	@Override
 	public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos pos, DefaultFeatureConfig config) {
-		if (random.nextInt(1000) > 1)
+		if (random.nextInt(AstromineConfig.get().crudeOilThreshold) > 1)
 			return false;
 
 		int offsetY = MathHelper.clamp(random.nextInt(20), 8, 20);

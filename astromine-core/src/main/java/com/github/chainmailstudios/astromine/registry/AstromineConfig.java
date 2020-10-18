@@ -454,6 +454,27 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Noise threshold for Asteroid generation.")
 	public float asteroidNoiseThreshold = 0.545F;
 
+	@Comment("Threshold for Crude Oil wells.")
+	public int crudeOilThreshold = 2000;
+
+	@Comment("Whether to enable Crude Oil well generation.")
+	public boolean crudeOilWells = true;
+
+	@Comment("Whether to enable Crude Oil well generation in the Ocean biome.")
+	public boolean oceanicCrudeOilWells = true;
+
+	@Comment("Whether to enable Crude Oil well generation in the Desert biome.")
+	public boolean desertCrudeOilWells = true;
+
+	@Comment("Whether to enable Meteor generation in all dimensions, except The Nether and The End.")
+	public boolean meteorGeneration = true;
+
+	@Comment("Whether to enable Meteor generation in The Nether.")
+	public boolean netherMeteorGeneration = true;
+
+	@Comment("Whether to enable Meteor generation in The End.")
+	public boolean endMeteorGeneration = true;
+
 	public static AstromineConfig get() {
 		if (instance == null) {
 			try {
