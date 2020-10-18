@@ -156,19 +156,19 @@ public class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		public AlloySmeltingRecipe read(Identifier identifier, JsonObject object) {
 			AlloySmeltingRecipe.Format format = new Gson().fromJson(object, AlloySmeltingRecipe.Format.class);
 
-			return new AlloySmeltingRecipe(identifier, IngredientUtilities.fromBetterJson(format.firstInput), IngredientUtilities.fromBetterJson(format.secondInput), StackUtilities.fromJson(format.output), EnergyUtilities.fromJson(format.energyConsumed), ParsingUtilities
+			return new AlloySmeltingRecipe(identifier, IngredientUtilities.fromArrayIngredientJson(format.firstInput), IngredientUtilities.fromArrayIngredientJson(format.secondInput), StackUtilities.fromJson(format.output), EnergyUtilities.fromJson(format.energyConsumed), ParsingUtilities
 				.fromJson(format.time, Integer.class));
 		}
 
 		@Override
 		public AlloySmeltingRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new AlloySmeltingRecipe(identifier, IngredientUtilities.fromBetterPacket(buffer), IngredientUtilities.fromBetterPacket(buffer), StackUtilities.fromPacket(buffer), EnergyUtilities.fromPacket(buffer), PacketUtilities.fromPacket(buffer, Integer.class));
+			return new AlloySmeltingRecipe(identifier, IngredientUtilities.fromArrayIngredientPacket(buffer), IngredientUtilities.fromArrayIngredientPacket(buffer), StackUtilities.fromPacket(buffer), EnergyUtilities.fromPacket(buffer), PacketUtilities.fromPacket(buffer, Integer.class));
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, AlloySmeltingRecipe recipe) {
-			IngredientUtilities.toBetterPacket(buffer, recipe.firstInput);
-			IngredientUtilities.toBetterPacket(buffer, recipe.secondInput);
+			IngredientUtilities.toArrayIngredientPacket(buffer, recipe.firstInput);
+			IngredientUtilities.toArrayIngredientPacket(buffer, recipe.secondInput);
 			StackUtilities.toPacket(buffer, recipe.output);
 			EnergyUtilities.toPacket(buffer, recipe.energyConsumed);
 			PacketUtilities.toPacket(buffer, recipe.time);

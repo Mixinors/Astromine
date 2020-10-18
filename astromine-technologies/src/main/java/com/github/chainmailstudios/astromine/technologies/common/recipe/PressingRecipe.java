@@ -142,17 +142,17 @@ public class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 		public PressingRecipe read(Identifier identifier, JsonObject object) {
 			PressingRecipe.Format format = new Gson().fromJson(object, PressingRecipe.Format.class);
 
-			return new PressingRecipe(identifier, IngredientUtilities.fromJson(format.input), StackUtilities.fromJson(format.output), EnergyUtilities.fromJson(format.energyConsumed), ParsingUtilities.fromJson(format.time, Integer.class));
+			return new PressingRecipe(identifier, IngredientUtilities.fromIngredientJson(format.input), StackUtilities.fromJson(format.output), EnergyUtilities.fromJson(format.energyConsumed), ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 
 		@Override
 		public PressingRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new PressingRecipe(identifier, IngredientUtilities.fromPacket(buffer), StackUtilities.fromPacket(buffer), EnergyUtilities.fromPacket(buffer), PacketUtilities.fromPacket(buffer, Integer.class));
+			return new PressingRecipe(identifier, IngredientUtilities.fromIngredientPacket(buffer), StackUtilities.fromPacket(buffer), EnergyUtilities.fromPacket(buffer), PacketUtilities.fromPacket(buffer, Integer.class));
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, PressingRecipe recipe) {
-			IngredientUtilities.toPacket(buffer, recipe.input);
+			IngredientUtilities.toIngredientPacket(buffer, recipe.input);
 			StackUtilities.toPacket(buffer, recipe.output);
 			EnergyUtilities.toPacket(buffer, recipe.energyConsumed);
 			PacketUtilities.toPacket(buffer, recipe.time);

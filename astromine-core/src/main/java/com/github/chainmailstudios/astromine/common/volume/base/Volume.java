@@ -280,6 +280,8 @@ public abstract class Volume<T, N extends Number> {
 
 	public abstract <V extends Volume<T, N>> V moveFrom(V v, N n);
 
+	public abstract <V extends Volume<T, N>> V moveFrom(V v);
+
 	public abstract <V extends Volume<T, N>> V minus(N n);
 
 	public abstract <V extends Volume<T, N>> V copy();

@@ -37,11 +37,11 @@ public class SimpleEnergyInventoryComponent implements EnergyInventoryComponent 
 	private final List<Runnable> listeners = new ArrayList<>();
 
 	public SimpleEnergyInventoryComponent() {
-		this.content = EnergyVolume.attached(this);
+		this.content = EnergyVolume.of(this);
 	}
 
 	public SimpleEnergyInventoryComponent(double size) {
-		this.content = EnergyVolume.attached(size, this);
+		this.content = EnergyVolume.of(size, this);
 	}
 
 	public SimpleEnergyInventoryComponent(EnergyVolume volume) {

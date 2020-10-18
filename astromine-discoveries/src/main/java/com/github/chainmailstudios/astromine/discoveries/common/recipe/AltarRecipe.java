@@ -133,7 +133,7 @@ public class AltarRecipe implements AstromineRecipe<AltarBlockEntity> {
 		public AltarRecipe read(Identifier identifier, JsonObject object) {
 			AltarRecipe.Format format = new Gson().fromJson(object, AltarRecipe.Format.class);
 
-			return new AltarRecipe(identifier, format.inputs.stream().map(IngredientUtilities::fromJson).collect(Collectors.toList()), StackUtilities.fromJson(format.output));
+			return new AltarRecipe(identifier, format.inputs.stream().map(IngredientUtilities::fromIngredientJson).collect(Collectors.toList()), StackUtilities.fromJson(format.output));
 		}
 
 		@Override
@@ -141,7 +141,7 @@ public class AltarRecipe implements AstromineRecipe<AltarBlockEntity> {
 			int size = buffer.readInt();
 			List<Ingredient> inputs = new ArrayList<>(size);
 			for (int i = 0; i < size; i++) {
-				inputs.add(IngredientUtilities.fromPacket(buffer));
+				inputs.add(IngredientUtilities.fromIngredientPacket(buffer));
 			}
 			return new AltarRecipe(identifier, inputs, StackUtilities.fromPacket(buffer));
 		}
@@ -150,7 +150,7 @@ public class AltarRecipe implements AstromineRecipe<AltarBlockEntity> {
 		public void write(PacketByteBuf buffer, AltarRecipe recipe) {
 			buffer.writeInt(recipe.ingredients.size());
 			for (Ingredient ingredient : recipe.ingredients) {
-				IngredientUtilities.toPacket(buffer, ingredient);
+				IngredientUtilities.toIngredientPacket(buffer, ingredient);
 			}
 			StackUtilities.toPacket(buffer, recipe.output);
 		}

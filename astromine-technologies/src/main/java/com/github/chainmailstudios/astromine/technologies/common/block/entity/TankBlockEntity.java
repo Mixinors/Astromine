@@ -99,7 +99,7 @@ public abstract class TankBlockEntity extends ComponentFluidInventoryBlockEntity
 					FluidVolume ourVolume = fluids.getFirst();
 					FluidVolume stackVolume = stackFluids.getFirst();
 
-					if (ourVolume.canAccept(stackVolume.getFluid())) {
+					if (ourVolume.test(stackVolume.getFluid())) {
 						if (items.getFirst().getItem() instanceof BucketItem) {
 							if (items.getFirst().getItem() != Items.BUCKET && items.getFirst().getCount() == 1) {
 								if (ourVolume.hasAvailable(Fraction.bucket()) || ourVolume.isEmpty()) {
@@ -118,7 +118,7 @@ public abstract class TankBlockEntity extends ComponentFluidInventoryBlockEntity
 					FluidVolume ourVolume = fluids.getFirst();
 					FluidVolume stackVolume = stackFluids.getFirst();
 
-					if (stackVolume.canAccept(ourVolume.getFluid())) {
+					if (stackVolume.test(ourVolume.getFluid())) {
 						if (items.getSecond().getItem() instanceof BucketItem) {
 							if (items.getSecond().getItem() == Items.BUCKET && items.getSecond().getCount() == 1) {
 								if (ourVolume.hasStored(Fraction.bucket())) {

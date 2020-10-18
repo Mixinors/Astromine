@@ -98,7 +98,7 @@ public interface FluidInventoryComponent extends NameableComponent, AutoSyncedCo
 
 	default TypedActionResult<FluidVolume> insert(Direction direction, FluidVolume volume) {
 		Optional<Map.Entry<Integer, FluidVolume>> matchingVolumeOptional = this.getContents().entrySet().stream().filter(entry -> {
-			return canInsert(direction, volume, entry.getKey()) && entry.getValue().canAccept(volume.getFluid());
+			return canInsert(direction, volume, entry.getKey()) && entry.getValue().test(volume.getFluid());
 		}).findFirst();
 
 		if (matchingVolumeOptional.isPresent()) {
@@ -165,7 +165,7 @@ public interface FluidInventoryComponent extends NameableComponent, AutoSyncedCo
 
 	@Nullable
 	default FluidVolume getFirstInsertableVolume(FluidVolume volume, Direction direction) {
-		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, volume, entry.getKey()) && (entry.getValue().canAccept(volume.getFluid()) && entry.getValue().hasAvailable(volume.getAmount()))).map(Map.Entry::getValue).findFirst().orElse(null);
+		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, volume, entry.getKey()) && (entry.getValue().test(volume.getFluid()) && entry.getValue().hasAvailable(volume.getAmount()))).map(Map.Entry::getValue).findFirst().orElse(null);
 	}
 
 	default TypedActionResult<FluidVolume> extract(Direction direction, int slot, Fraction fraction) {

@@ -88,7 +88,7 @@ public class LiquidGeneratingRecipe implements Recipe<Inventory>, EnergyGenerati
 
 		FluidVolume fluidVolume = handler.getFirst();
 
-		if (!fluidVolume.canAccept(fluid.get())) {
+		if (!fluidVolume.test(fluid.get())) {
 			return false;
 		}
 

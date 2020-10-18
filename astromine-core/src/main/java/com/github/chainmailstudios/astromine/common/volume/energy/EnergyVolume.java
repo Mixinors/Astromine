@@ -24,21 +24,30 @@
 
 package com.github.chainmailstudios.astromine.common.volume.energy;
 
+import com.github.chainmailstudios.astromine.common.utilities.FractionUtilities;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.google.common.base.Objects;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
+import net.minecraft.util.registry.Registry;
 
 public class EnergyVolume extends Volume<Identifier, Double> {
 	public static final Identifier ID = AstromineCommon.identifier("energy");
 
-	public EnergyVolume(double amount, double size) {
+	private EnergyVolume(double amount, double size) {
 		super(ID, amount, size);
 	}
 
-	public EnergyVolume(double amount, double size, Runnable runnable) {
+	private EnergyVolume(double amount, double size, Runnable runnable) {
 		super(ID, amount, size, runnable);
 	}
 
@@ -46,11 +55,11 @@ public class EnergyVolume extends Volume<Identifier, Double> {
 		return new EnergyVolume(0.0D, 0.0D);
 	}
 
-	public static EnergyVolume attached(SimpleEnergyInventoryComponent component) {
+	public static EnergyVolume of(SimpleEnergyInventoryComponent component) {
 		return new EnergyVolume(0.0D, 0.0D, component::dispatchConsumers);
 	}
 
-	public static EnergyVolume attached(double size, SimpleEnergyInventoryComponent component) {
+	public static EnergyVolume of(double size, SimpleEnergyInventoryComponent component) {
 		return new EnergyVolume(0.0D, size, component::dispatchConsumers);
 	}
 
@@ -60,10 +69,6 @@ public class EnergyVolume extends Volume<Identifier, Double> {
 
 	public static EnergyVolume of(double amount, double size) {
 		return new EnergyVolume(amount, size);
-	}
-
-	public static EnergyVolume fromTag(CompoundTag tag) {
-		return of(tag.getDouble("amount"), tag.getDouble("size"));
 	}
 
 	@Override
@@ -91,6 +96,15 @@ public class EnergyVolume extends Volume<Identifier, Double> {
 	}
 
 	@Override
+	public <V extends Volume<Identifier, Double>> V minus(Double aDouble) {
+		double amount = Math.min(getAmount(), aDouble);
+
+		setAmount(getAmount() - amount);
+
+		return (V) this;
+	}
+
+	@Override
 	public <V extends Volume<Identifier, Double>> V moveFrom(V v, Double doubleA) {
 		if (!(v instanceof EnergyVolume))
 			return (V) this;
@@ -101,12 +115,27 @@ public class EnergyVolume extends Volume<Identifier, Double> {
 	}
 
 	@Override
-	public <V extends Volume<Identifier, Double>> V minus(Double aDouble) {
-		double amount = Math.min(getAmount(), aDouble);
+	public <V extends Volume<Identifier, Double>> V moveFrom(V v) {
+		return moveFrom(v, v.getAmount());
+	}
 
-		setAmount(getAmount() - amount);
+	@Override
+	public <V extends Volume<Identifier, Double>> V copy() {
+		return (V) of(getAmount(), getSize());
+	}
 
-		return (V) this;
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(super.hashCode(), getAmount(), getSize());
+	}
+
+	@Override
+	public String toString() {
+		return getAmount() + " / " + getSize();
+	}
+
+	public static EnergyVolume fromTag(CompoundTag tag) {
+		return of(tag.getDouble("amount"), tag.getDouble("size"));
 	}
 
 	@Override
@@ -117,8 +146,41 @@ public class EnergyVolume extends Volume<Identifier, Double> {
 		return tag;
 	}
 
-	@Override
-	public <V extends Volume<Identifier, Double>> V copy() {
-		return (V) of(getAmount(), getSize());
+	public static EnergyVolume fromJson(JsonElement jsonElement) {
+		if (!jsonElement.isJsonObject()) return null;
+		else {
+			JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+			if (!jsonObject.has("amount")) {
+				return null;
+			} else {
+				if (!jsonObject.has("size")) {
+					return EnergyVolume.of(jsonObject.get("amount").getAsDouble());
+				} else {
+					return EnergyVolume.of(jsonObject.get("amount").getAsDouble(), jsonObject.get("size").getAsDouble());
+				}
+			}
+		}
+	}
+
+	public PacketByteBuf toPacket(PacketByteBuf buffer) {
+		if (this.isEmpty()) {
+			buffer.writeBoolean(false);
+		} else {
+			buffer.writeBoolean(true);
+
+			buffer.writeDouble(getAmount());
+			buffer.writeDouble(getSize());
+		}
+
+		return buffer;
+	}
+
+	public static EnergyVolume fromPacket(PacketByteBuf buffer) {
+		if (!buffer.readBoolean()) {
+			return empty();
+		} else {
+			return EnergyVolume.of(buffer.readDouble(), buffer.readDouble());
+		}
 	}
 }

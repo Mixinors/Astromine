@@ -105,6 +105,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 		FluidHandler.ofOptional(this).ifPresent(fluids -> {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();
+
 			if (!optionalRecipe.isPresent() && shouldTry) {
 				optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(FluidMixingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof FluidMixingRecipe).filter(recipe -> ((FluidMixingRecipe) recipe).matches(fluidComponent)).findFirst();
 				shouldTry = false;
@@ -131,13 +132,9 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 							optionalRecipe = Optional.empty();
 
 							if (energyVolume.hasAvailable(consumed)) {
-								FluidVolume firstInputFluidVolume = fluids.getFirst();
-								FluidVolume secondInputFluidVolume = fluids.getSecond();
-								FluidVolume outputVolume = fluids.getThird();
-
-								firstInputFluidVolume.minus(recipe.getFirstInputAmount());
-								secondInputFluidVolume.minus(recipe.getSecondInputAmount());
-								outputVolume.moveFrom(FluidVolume.of(recipe.getOutputAmount(), recipe.getOutputFluid()), recipe.getOutputAmount());
+								fluids.getFirst().minus(recipe.getFirstIngredient().getMatchingVolumes()[0].getAmount());
+								fluids.getSecond().minus(recipe.getSecondIngredient().getMatchingVolumes()[0].getAmount());
+								fluids.getThird().moveFrom(recipe.getOutputVolume());
 							}
 
 							progress = 0;

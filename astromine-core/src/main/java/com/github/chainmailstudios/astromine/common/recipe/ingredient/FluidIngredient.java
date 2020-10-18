@@ -25,10 +25,7 @@
 package com.github.chainmailstudios.astromine.common.recipe.ingredient;
 
 import net.minecraft.fluid.Fluid;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
 import net.minecraft.tag.ServerTagManagerHolder;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
@@ -91,7 +88,7 @@ public class FluidIngredient implements Predicate<FluidVolume> {
 
 	private static Entry entryFromJson(JsonObject json) {
 		if (json.has("fluid") && json.has("tag")) {
-			throw new JsonParseException("A fluid ingredient entry is either a tag or a fluid, not both");
+			throw new JsonParseException("A fluid ingredient entry is either a tag or a fluid, not both!");
 		} else {
 			int numerator = 1;
 			int denominator = 1;
@@ -106,25 +103,25 @@ public class FluidIngredient implements Predicate<FluidVolume> {
 			}
 			if (json.has("fluid")) {
 				Identifier fluidId = new Identifier(JsonHelper.getString(json, "fluid"));
-				Fluid fluid = Registry.FLUID.getOrEmpty(fluidId).orElseThrow(() -> new JsonSyntaxException("Unknown fluid '" + fluidId + "'"));
+				Fluid fluid = Registry.FLUID.getOrEmpty(fluidId).orElseThrow(() -> new JsonSyntaxException("Unknown fluid '" + fluidId + "'!"));
 				return new SimpleEntry(FluidVolume.of(new Fraction(numerator, denominator), fluid));
 			} else if (json.has("tag")) {
 				Identifier tagId = new Identifier(JsonHelper.getString(json, "tag"));
 				Tag<Fluid> tag = ServerTagManagerHolder.getTagManager().getFluids().getTag(tagId);
 				if (tag == null) {
-					throw new JsonSyntaxException("Unknown fluid tag '" + tagId + "'");
+					throw new JsonSyntaxException("Unknown fluid tag '" + tagId + "'!");
 				} else {
 					return new TagEntry(tag, numerator, denominator);
 				}
 			} else {
-				throw new JsonParseException("A fluid ingredient entry needs either a tag or a fluid");
+				throw new JsonParseException("A fluid ingredient entry needs either a tag or a fluid!");
 			}
 		}
 	}
 
 	public static FluidIngredient fromPacket(PacketByteBuf buffer) {
 		int i = buffer.readVarInt();
-		return ofEntries(Stream.generate(() -> new SimpleEntry(FluidVolume.readFromBuffer(buffer))).limit(i));
+		return ofEntries(Stream.generate(() -> new SimpleEntry(FluidVolume.fromPacket(buffer))).limit(i));
 	}
 
 	public FluidVolume[] getMatchingVolumes() {
@@ -171,7 +168,7 @@ public class FluidIngredient implements Predicate<FluidVolume> {
 		buffer.writeVarInt(this.matchingVolumes.length);
 
 		for (FluidVolume matchingVolume : this.matchingVolumes) {
-			matchingVolume.writeToBuffer(buffer);
+			matchingVolume.toPacket(buffer);
 		}
 	}
 

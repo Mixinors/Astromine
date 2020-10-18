@@ -137,21 +137,21 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 		FluidVolume sixthOutputVolume = fluidHandler.getSeventh();
 		FluidVolume seventhOutputVolume = fluidHandler.getEighth();
 
-		if (!inputVolume.canAccept(inputFluid.get())) {
+		if (!inputVolume.test(inputFluid.get())) {
 			return false;
 		}
 		if (!inputVolume.hasStored(inputAmount)) {
 			return false;
 		}
 
-		if (!firstOutputVolume.canAccept(firstOutputFluid.get())) {
+		if (!firstOutputVolume.test(firstOutputFluid.get())) {
 			return false;
 		}
 		if (!firstOutputVolume.hasAvailable(firstOutputAmount)) {
 			return false;
 		}
 
-		if (!secondOutputVolume.canAccept(secondOutputFluid.get())) {
+		if (!secondOutputVolume.test(secondOutputFluid.get())) {
 			return false;
 		}
 
@@ -159,7 +159,7 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 			return false;
 		}
 
-		if (!thirdOutputVolume.canAccept(thirdOutputFluid.get())) {
+		if (!thirdOutputVolume.test(thirdOutputFluid.get())) {
 			return false;
 		}
 
@@ -167,7 +167,7 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 			return false;
 		}
 
-		if (!fourthOutputVolume.canAccept(fourthOutputFluid.get())) {
+		if (!fourthOutputVolume.test(fourthOutputFluid.get())) {
 			return false;
 		}
 
@@ -175,7 +175,7 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 			return false;
 		}
 
-		if (!fifthOutputVolume.canAccept(fifthOutputFluid.get())) {
+		if (!fifthOutputVolume.test(fifthOutputFluid.get())) {
 			return false;
 		}
 
@@ -183,7 +183,7 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 			return false;
 		}
 
-		if (!sixthOutputVolume.canAccept(sixthOutputFluid.get())) {
+		if (!sixthOutputVolume.test(sixthOutputFluid.get())) {
 			return false;
 		}
 
@@ -191,7 +191,7 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 			return false;
 		}
 
-		if (!seventhOutputVolume.canAccept(seventhOutputFluid.get())) {
+		if (!seventhOutputVolume.test(seventhOutputFluid.get())) {
 			return false;
 		}
 
