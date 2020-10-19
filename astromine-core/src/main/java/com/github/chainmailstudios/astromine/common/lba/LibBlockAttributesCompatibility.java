@@ -86,7 +86,11 @@ public final class LibBlockAttributesCompatibility {
 	}
 
 	private static alexiil.mc.lib.attributes.fluid.volume.FluidVolume wrapLibBlockAttributes(FluidVolume volume) {
-		return FluidKeys.get(volume.getFluid()).withAmount(wrapLibBlockAttributes(volume.getAmount().copy()));
+		if (FluidKeys.get(volume.getFluid()).isEmpty()) {
+			return FluidKeys.get(volume.getFluid()).withAmount(FluidAmount.ofWhole(0));
+		} else {
+			return FluidKeys.get(volume.getFluid()).withAmount(wrapLibBlockAttributes(volume.getAmount().copy()));
+		}
 	}
 
 	private static Optional<FluidVolume> wrapVolumeToAstromine(alexiil.mc.lib.attributes.fluid.volume.FluidVolume volume) {
