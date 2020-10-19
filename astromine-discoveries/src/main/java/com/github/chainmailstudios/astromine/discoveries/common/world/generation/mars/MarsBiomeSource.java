@@ -46,7 +46,7 @@ import com.google.common.collect.ImmutableList;
 import java.util.function.LongFunction;
 
 public class MarsBiomeSource extends BiomeSource {
-	public static Codec<MarsBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").stable().forGetter(source -> source.seed), RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)).apply(instance,
+	public static final Codec<MarsBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").stable().forGetter(source -> source.seed), RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)).apply(instance,
 		instance.stable(MarsBiomeSource::new)));
 	private final long seed;
 	private final Registry<Biome> biomeRegistry;

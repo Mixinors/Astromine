@@ -26,12 +26,13 @@ package com.github.chainmailstudios.astromine.common.network.type;
 
 import alexiil.mc.lib.attributes.SearchOptions;
 import alexiil.mc.lib.attributes.Simulation;
-import alexiil.mc.lib.attributes.fluid.*;
+import alexiil.mc.lib.attributes.fluid.FluidAttributes;
+import alexiil.mc.lib.attributes.fluid.FluidVolumeUtil;
+import alexiil.mc.lib.attributes.fluid.GroupedFluidInv;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.filter.ExactFluidFilter;
 import alexiil.mc.lib.attributes.fluid.filter.ReadableFluidFilter;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKey;
-import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import alexiil.mc.lib.attributes.misc.NullVariant;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
@@ -100,7 +101,7 @@ public class FluidNetworkType extends NetworkType {
 
 				List<GroupedFluidInv> requestersFiltered = requesters.stream()
 					.map(inv -> inv.filtered(fluidFilter))
-					.filter(inv -> !inv.attemptInsertion(providerStoredFluid.withAmount(FluidAmount.ABSOLUTE_MAXIMUM), Simulation.SIMULATE).isEmpty())
+					.filter(inv -> !inv.attemptInsertion(providerStoredFluid.withAmount(provider.getAmount_F(providerStoredFluid)), Simulation.SIMULATE).isEmpty())
 					.sorted(Comparator.comparing(inv -> inv.getAmount_F(providerStoredFluid)))
 					.collect(Collectors.toList());
 
@@ -113,13 +114,9 @@ public class FluidNetworkType extends NetworkType {
 						inv.getCapacity_F(providerStoredFluid).sub(inv.getAmount_F(providerStoredFluid))
 					));
 
-					move(provider, inv, speed);
+					FluidVolumeUtil.move(provider, inv, speed);
 				}
 			}
 		}
-	}
-
-	public static void move(FluidExtractable extractable, FluidInsertable insertable, FluidAmount amount) {
-		FluidVolumeUtil.move(extractable, insertable, amount);
 	}
 }

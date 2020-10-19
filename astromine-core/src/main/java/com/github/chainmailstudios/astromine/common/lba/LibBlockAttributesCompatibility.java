@@ -87,7 +87,7 @@ public final class LibBlockAttributesCompatibility {
 
 	private static alexiil.mc.lib.attributes.fluid.volume.FluidVolume wrapLibBlockAttributes(FluidVolume volume) {
 		if (FluidKeys.get(volume.getFluid()).isEmpty()) {
-			return FluidKeys.get(volume.getFluid()).withAmount(FluidAmount.ofWhole(0));
+			return FluidKeys.EMPTY.withAmount(FluidAmount.ZERO);
 		} else {
 			return FluidKeys.get(volume.getFluid()).withAmount(wrapLibBlockAttributes(volume.getAmount().copy()));
 		}
