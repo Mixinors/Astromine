@@ -88,11 +88,18 @@ public class AstromineCommonCallbacks {
 				for (Direction direction : directions) {
 					BlockPos sidePos = pos.offset(direction);
 					BlockState sideState = world.getBlockState(sidePos);
-					FluidVolume sideVolume = atmosphereComponent.get(sidePos);
+
+					ChunkAtmosphereComponent sideAtmosphereComponent = atmosphereComponent;
+
+					if (!atmosphereComponent.isInChunk(sidePos)) {
+						sideAtmosphereComponent = ComponentProvider.fromChunk(world.getChunk(sidePos)).getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);
+					}
+
+					FluidVolume sideVolume = sideAtmosphereComponent.get(sidePos);
 
 					if (atmosphereComponent.isTraversableForDisplacement(centerState, centerPos, sideState, sidePos, centerVolume, sideVolume, direction)) {
 						sideVolume.moveFrom(centerVolume);
-						atmosphereComponent.add(sidePos, sideVolume);
+						sideAtmosphereComponent.add(sidePos, sideVolume);
 
 						break;
 
