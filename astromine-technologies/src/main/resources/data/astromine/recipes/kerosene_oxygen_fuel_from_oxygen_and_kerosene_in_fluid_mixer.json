@@ -1,10 +1,18 @@
 {
   "type": "astromine:fluid_mixing",
   "first_input": {
-    "tag": "c:kerosene"
+    "tag": "c:kerosene",
+    "amount": {
+      "numerator": 1,
+      "denominator": 2
+    }
   },
   "second_input": {
-    "tag": "c:oxygen"
+    "tag": "c:oxygen",
+    "amount": {
+      "numerator": 1,
+      "denominator": 2
+    }
   },
   "output": {
     "fluid": "astromine:kerosene_oxygen_fuel"
