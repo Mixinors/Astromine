@@ -27,15 +27,16 @@ package com.github.chainmailstudios.astromine.common.component.block.entity;
 import com.github.chainmailstudios.astromine.common.block.redstone.RedstoneType;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.utilities.DirectionUtilities;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import dev.onyxstudios.cca.api.v3.component.Component;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import nerdhub.cardinal.components.api.ComponentRegistry;
-import nerdhub.cardinal.components.api.ComponentType;
-import nerdhub.cardinal.components.api.component.Component;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
@@ -51,20 +52,27 @@ public class BlockEntityRedstoneComponent implements Component {
 	}
 
 	@Override
-	public void fromTag(CompoundTag tag) {
+	public void readFromNbt(CompoundTag tag) {
 		CompoundTag dataTag = tag.getCompound("data");
 
 		type = RedstoneType.byNumber(dataTag.getInt("number"));
 	}
 
 	@Override
-	public @NotNull CompoundTag toTag(CompoundTag tag) {
+	public void writeToNbt(CompoundTag tag) {
 		CompoundTag dataTag = new CompoundTag();
 
 		dataTag.putInt("number", type.asNumber());
 
 		tag.put("data", dataTag);
+	}
 
-		return tag;
+	@Nullable
+	public static <V> BlockEntityRedstoneComponent get(V v) {
+		try {
+			return AstromineComponents.BLOCK_ENTITY_REDSTONE_COMPONENT.get(v);
+		} catch (Exception justShutUpAlready) {
+			return null;
+		}
 	}
 }

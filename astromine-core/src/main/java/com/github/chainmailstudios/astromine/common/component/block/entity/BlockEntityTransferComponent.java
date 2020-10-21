@@ -24,6 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.component.block.entity;
 
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import dev.onyxstudios.cca.api.v3.component.Component;
+import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
@@ -33,29 +36,30 @@ import com.github.chainmailstudios.astromine.common.utilities.DirectionUtilities
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import nerdhub.cardinal.components.api.ComponentRegistry;
-import nerdhub.cardinal.components.api.ComponentType;
-import nerdhub.cardinal.components.api.component.Component;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 public class BlockEntityTransferComponent implements Component {
-	private final Reference2ReferenceMap<ComponentType<?>, TransferEntry> components = new Reference2ReferenceOpenHashMap<>();
+	private final Reference2ReferenceMap<ComponentKey<?>, TransferEntry> components = new Reference2ReferenceOpenHashMap<>();
 
-	public TransferEntry get(ComponentType<?> type) {
+	public TransferEntry get(ComponentKey<?> type) {
 		return components.computeIfAbsent(type, t -> new TransferEntry());
 	}
 
-	public Map<ComponentType<?>, TransferEntry> get() {
+	public Map<ComponentKey<?>, TransferEntry> get() {
 		return components;
 	}
 
-	public void add(ComponentType<?> type) {
+	public void add(ComponentKey<?> type) {
 		components.put(type, new TransferEntry());
 	}
 
 	@Override
-	public void fromTag(CompoundTag tag) {
+	public void readFromNbt(CompoundTag tag) {
 		CompoundTag dataTag = tag.getCompound("data");
 
 		for (String key : dataTag.getKeys()) {
@@ -67,16 +71,14 @@ public class BlockEntityTransferComponent implements Component {
 	}
 
 	@Override
-	public @NotNull CompoundTag toTag(CompoundTag tag) {
+	public void writeToNbt(CompoundTag tag) {
 		CompoundTag dataTag = new CompoundTag();
 
-		for (Map.Entry<ComponentType<?>, TransferEntry> entry : components.entrySet()) {
+		for (Map.Entry<ComponentKey<?>, TransferEntry> entry : components.entrySet()) {
 			dataTag.put(entry.getKey().getId().toString(), entry.getValue().toTag(new CompoundTag()));
 		}
 
 		tag.put("data", dataTag);
-
-		return tag;
 	}
 
 	public static class TransferEntry {
@@ -120,6 +122,23 @@ public class BlockEntityTransferComponent implements Component {
 					return false;
 			}
 			return true;
+		}
+	}
+
+	public void withDirection(ComponentKey<?> type, Direction direction, Consumer<TransferType> consumer) {
+		TransferType transferType = get(type).get(direction);
+
+		if (transferType != null) {
+			consumer.accept(transferType);
+		}
+	}
+
+	@Nullable
+	public static <V> BlockEntityTransferComponent get(V v) {
+		try {
+			return AstromineComponents.BLOCK_ENTITY_TRANSFER_COMPONENT.get(v);
+		} catch (Exception justShutUpAlready) {
+			return null;
 		}
 	}
 }

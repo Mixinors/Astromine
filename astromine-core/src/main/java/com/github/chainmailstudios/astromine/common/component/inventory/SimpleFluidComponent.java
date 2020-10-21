@@ -24,36 +24,47 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.math.Direction;
-
 import com.github.chainmailstudios.astromine.common.utilities.data.predicate.TriPredicate;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-public class SimpleFluidInventoryComponent implements FluidInventoryComponent {
-	private final Map<Integer, FluidVolume> contents = new Int2ObjectOpenHashMap<>();
+public class SimpleFluidComponent implements FluidComponent {
+	private final Int2ObjectOpenHashMap<FluidVolume> contents = new Int2ObjectOpenHashMap<>();
 
 	private final List<Runnable> listeners = new ArrayList<>();
-	private final int size;
+
 	private TriPredicate<@Nullable Direction, FluidVolume, Integer> insertPredicate = (direction, volume, slot) -> true;
 	private TriPredicate<@Nullable Direction, FluidVolume, Integer> extractPredicate = (direction, volume, integer) -> true;
 
-	public SimpleFluidInventoryComponent() {
-		this(0);
-	}
+	private final int size;
 
-	public SimpleFluidInventoryComponent(int size) {
+	protected SimpleFluidComponent(int size) {
 		this.size = size;
 		for (int i = 0; i < size; ++i) {
-			contents.put(i, FluidVolume.attached(this));
+			contents.put(i, FluidVolume.empty());
 		}
+		this.contents.defaultReturnValue(FluidVolume.empty());
+	}
+
+	protected SimpleFluidComponent(FluidVolume... volumes) {
+		this(volumes.length);
+		for (int i = 0; i < volumes.length; ++i) {
+			setVolume(i, volumes[i]);
+		}
+	}
+
+	public static SimpleFluidComponent of(int size) {
+		return new SimpleFluidComponent(size);
+	}
+
+	public static SimpleFluidComponent of(FluidVolume... volumes) {
+		return new SimpleFluidComponent(volumes);
 	}
 
 	@Override
@@ -66,13 +77,13 @@ public class SimpleFluidInventoryComponent implements FluidInventoryComponent {
 		return extractPredicate.test(direction, volume, slot);
 	}
 
-	public SimpleFluidInventoryComponent withInsertPredicate(TriPredicate<@Nullable Direction, FluidVolume, Integer> predicate) {
+	public SimpleFluidComponent withInsertPredicate(TriPredicate<@Nullable Direction, FluidVolume, Integer> predicate) {
 		TriPredicate<Direction, FluidVolume, Integer> triPredicate = this.insertPredicate;
 		this.insertPredicate = (direction, volume, integer) -> triPredicate.test(direction, volume, integer) && predicate.test(direction, volume, integer);
 		return this;
 	}
 
-	public SimpleFluidInventoryComponent withExtractPredicate(TriPredicate<@Nullable Direction, FluidVolume, Integer> predicate) {
+	public SimpleFluidComponent withExtractPredicate(TriPredicate<@Nullable Direction, FluidVolume, Integer> predicate) {
 		TriPredicate<Direction, FluidVolume, Integer> triPredicate = this.extractPredicate;
 		this.extractPredicate = (direction, volume, integer) -> triPredicate.test(direction, volume, integer) && predicate.test(direction, volume, integer);
 		return this;
@@ -84,30 +95,12 @@ public class SimpleFluidInventoryComponent implements FluidInventoryComponent {
 	}
 
 	@Override
-	public int getSize() {
-		return size;
-	}
-
-	@Override
 	public List<Runnable> getListeners() {
 		return listeners;
 	}
 
 	@Override
-	public void fromTag(CompoundTag compoundTag) {
-		read(this, compoundTag, Optional.empty(), Optional.empty());
-	}
-
-	@Override
-	public CompoundTag toTag(CompoundTag compoundTag) {
-		write(this, compoundTag, Optional.empty(), Optional.empty());
-		return compoundTag;
-	}
-
-	@Override
-	public SimpleFluidInventoryComponent copy() {
-		SimpleFluidInventoryComponent component = new SimpleFluidInventoryComponent(getSize());
-		component.fromTag(toTag(new CompoundTag()));
-		return component;
+	public int getSize() {
+		return size;
 	}
 }

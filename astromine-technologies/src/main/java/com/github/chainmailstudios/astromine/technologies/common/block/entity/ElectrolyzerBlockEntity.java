@@ -31,14 +31,13 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.CompoundTag;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.FluidSizeProvider;
@@ -63,13 +62,13 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 	}
 
 	@Override
-	protected EnergyInventoryComponent createEnergyComponent() {
-		return new SimpleEnergyInventoryComponent(getEnergySize());
+	protected EnergyComponent createEnergyComponent() {
+		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
 	@Override
-	protected FluidInventoryComponent createFluidComponent() {
-		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(3).withInsertPredicate((direction, volume, slot) -> {
+	protected FluidComponent createFluidComponent() {
+		FluidComponent fluidComponent = SimpleFluidComponent.of(3).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0) {
 				return false;
 			}
@@ -86,9 +85,9 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 			optionalRecipe = Optional.empty();
 		});
 
-		FluidHandler.of(fluidComponent).getFirst().setSize(getFluidSize());
-		FluidHandler.of(fluidComponent).getSecond().setSize(getFluidSize());
-		FluidHandler.of(fluidComponent).getThird().setSize(getFluidSize());
+		fluidComponent.getFirst().setSize(getFluidSize());
+		fluidComponent.getSecond().setSize(getFluidSize());
+		fluidComponent.getThird().setSize(getFluidSize());
 
 		return fluidComponent;
 	}
@@ -100,7 +99,9 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		FluidHandler.ofOptional(this).ifPresent(fluids -> {
+
+
+		if (fluidComponent != null) {
 			EnergyVolume volume = getEnergyComponent().getVolume();
 			if (!optionalRecipe.isPresent() && shouldTry) {
 				optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof ElectrolyzingRecipe).filter(recipe -> ((ElectrolyzingRecipe) recipe).matches(fluidComponent)).findFirst();
@@ -128,9 +129,9 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 							optionalRecipe = Optional.empty();
 
 							if (volume.hasAvailable(consumed)) {
-								fluids.getFirst().minus(recipe.getIngredient().getFirstMatchingVolume().getAmount());
-								fluids.getSecond().moveFrom(recipe.getFirstOutputVolume());
-								fluids.getThird().moveFrom(recipe.getSecondOutputVolume());
+								fluidComponent.getFirst().minus(recipe.getIngredient().getFirstMatchingVolume().getAmount());
+								fluidComponent.getSecond().moveFrom(recipe.getFirstOutputVolume());
+								fluidComponent.getThird().moveFrom(recipe.getSecondOutputVolume());
 							}
 
 							progress = 0;
@@ -148,7 +149,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 			} else {
 				tickInactive();
 			}
-		});
+		}
 	}
 
 	@Override

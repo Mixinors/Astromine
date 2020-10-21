@@ -28,8 +28,6 @@ import com.github.chainmailstudios.astromine.common.block.redstone.RedstoneType;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
 import com.github.vini2003.blade.common.collection.base.WidgetCollection;
 import com.github.vini2003.blade.common.widget.base.ButtonWidget;
-import kotlin.Unit;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
@@ -45,7 +43,7 @@ import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentB
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.NameableComponent;
 import com.github.chainmailstudios.astromine.common.utilities.WidgetUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.vini2003.blade.common.collection.TabWidgetCollection;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import com.github.vini2003.blade.common.miscellaneous.Position;
@@ -135,13 +133,13 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 
 		final Direction finalRotation = rotation;
 
-		BlockEntityTransferComponent transferComponent = syncBlockEntity.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
+		BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(syncBlockEntity);
 
-		transferComponent.get().forEach((type, entry) -> {
-			if (syncBlockEntity.getComponent(type) instanceof NameableComponent) {
-				NameableComponent nameableComponent = (NameableComponent) syncBlockEntity.getComponent(type);
+		transferComponent.get().forEach((key, entry) -> {
+			if (key.get(syncBlockEntity) instanceof NameableComponent) {
+				NameableComponent nameableComponent = (NameableComponent) key.get(syncBlockEntity);
 				TabWidgetCollection current = (TabWidgetCollection) tabs.addTab(nameableComponent.getSymbol(), () -> Collections.singletonList(nameableComponent.getName()));
-				WidgetUtilities.createTransferTab(current, Position.of(tabs, tabs.getWidth() / 2 - 38, getTabWidgetExtendedHeight() / 2), finalRotation, transferComponent, syncBlockEntity.getPos(), type);
+				WidgetUtilities.createTransferTab(current, Position.of(tabs, tabs.getWidth() / 2 - 38, getTabWidgetExtendedHeight() / 2), finalRotation, transferComponent, syncBlockEntity.getPos(), key);
 				TextWidget invTabTitle = new TextWidget();
 				invTabTitle.setPosition(Position.of(invPos, 0, -10));
 				invTabTitle.setText(getPlayer().inventory.getName());
@@ -157,7 +155,7 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 			}
 		});
 
-		BlockEntityRedstoneComponent redstoneComponent = syncBlockEntity.getComponent(AstromineComponentTypes.BLOCK_ENTITY_REDSTONE_COMPONENT);
+		BlockEntityRedstoneComponent redstoneComponent = BlockEntityRedstoneComponent.get(syncBlockEntity);
 
 		WidgetCollection redstoneTab = tabs.addTab(Items.REDSTONE, () -> Collections.singletonList(new TranslatableText("text.astromine.redstone")));
 

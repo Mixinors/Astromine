@@ -24,11 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory.compatibility;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
+import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
-
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -36,29 +36,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * An InventoryComponentFromInventory is a wrapper over an Inventory that provides the functions and utilities of an
- * InventoryComponent.
- */
-public class ItemInventoryComponentFromItemInventory extends SimpleItemInventoryComponent {
+public class ItemComponentFromInventory extends SimpleItemComponent {
 	Inventory inventory;
 	List<Runnable> listeners = new ArrayList<>();
 
-	private ItemInventoryComponentFromItemInventory(Inventory inventory) {
+	private ItemComponentFromInventory(Inventory inventory) {
 		super(inventory.size());
 		this.inventory = inventory;
 	}
 
-	public static ItemInventoryComponentFromItemInventory of(Inventory inventory) {
-		return new ItemInventoryComponentFromItemInventory(inventory);
+	public static ItemComponentFromInventory of(Inventory inventory) {
+		return new ItemComponentFromInventory(inventory);
 	}
 
 	@Override
 	public Map<Integer, ItemStack> getContents() {
-		HashMap<Integer, ItemStack> contents = new HashMap<>();
+		Int2ObjectArrayMap<ItemStack> contents = new Int2ObjectArrayMap<>();
 		for (int i = 0; i < this.inventory.size(); ++i) {
 			contents.put(i, this.inventory.getStack(i));
 		}
+		contents.defaultReturnValue(ItemStack.EMPTY);
 		return contents;
 	}
 
@@ -68,12 +65,12 @@ public class ItemInventoryComponentFromItemInventory extends SimpleItemInventory
 	}
 
 	@Override
-	public int getItemSize() {
+	public int getSize() {
 		return this.inventory.size();
 	}
 
 	@Override
-	public List<Runnable> getItemListeners() {
+	public List<Runnable> getListeners() {
 		return this.listeners;
 	}
 

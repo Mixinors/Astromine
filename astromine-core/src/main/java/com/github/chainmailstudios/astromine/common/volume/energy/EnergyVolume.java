@@ -24,21 +24,16 @@
 
 package com.github.chainmailstudios.astromine.common.volume.energy;
 
-import com.github.chainmailstudios.astromine.common.utilities.FractionUtilities;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.google.common.base.Objects;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
-import net.minecraft.util.registry.Registry;
 
 public class EnergyVolume extends Volume<Identifier, Double> {
 	public static final Identifier ID = AstromineCommon.identifier("energy");
@@ -55,12 +50,12 @@ public class EnergyVolume extends Volume<Identifier, Double> {
 		return new EnergyVolume(0.0D, 0.0D);
 	}
 
-	public static EnergyVolume of(SimpleEnergyInventoryComponent component) {
-		return new EnergyVolume(0.0D, 0.0D, component::dispatchConsumers);
+	public static EnergyVolume of(SimpleEnergyComponent component) {
+		return new EnergyVolume(0.0D, 0.0D, component::updateListeners);
 	}
 
-	public static EnergyVolume of(double size, SimpleEnergyInventoryComponent component) {
-		return new EnergyVolume(0.0D, size, component::dispatchConsumers);
+	public static EnergyVolume of(double size, SimpleEnergyComponent component) {
+		return new EnergyVolume(0.0D, size, component::updateListeners);
 	}
 
 	public static EnergyVolume of(double amount) {

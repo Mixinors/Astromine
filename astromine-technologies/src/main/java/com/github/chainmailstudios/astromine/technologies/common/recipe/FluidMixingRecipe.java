@@ -37,19 +37,14 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Lazy;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 
 import com.google.gson.Gson;
@@ -82,12 +77,10 @@ public class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumingReci
 		});
 	}
 
-	public boolean matches(FluidInventoryComponent fluidComponent) {
-		FluidHandler fluidHandler = FluidHandler.of(fluidComponent);
-
-		FluidVolume firstInputVolume = fluidHandler.getFirst();
-		FluidVolume secondInputVolume = fluidHandler.getSecond();
-		FluidVolume outputVolume = fluidHandler.getThird();
+	public boolean matches(FluidComponent fluidComponent) {
+		FluidVolume firstInputVolume = fluidComponent.getFirst();
+		FluidVolume secondInputVolume = fluidComponent.getSecond();
+		FluidVolume outputVolume = fluidComponent.getThird();
 
 		if (!firstIngredient.test(firstInputVolume) && !secondIngredient.test(firstInputVolume)) {
 			return false;

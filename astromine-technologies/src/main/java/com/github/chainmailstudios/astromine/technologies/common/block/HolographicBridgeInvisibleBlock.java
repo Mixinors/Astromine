@@ -42,7 +42,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 
 public class HolographicBridgeInvisibleBlock extends Block {
@@ -78,9 +78,7 @@ public class HolographicBridgeInvisibleBlock extends Block {
 		if (!(world instanceof World)) {
 			return VoxelShapes.empty();
 		} else {
-			ComponentProvider componentProvider = ComponentProvider.fromWorld((World) world);
-
-			WorldBridgeComponent bridgeComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_BRIDGE_COMPONENT);
+			WorldBridgeComponent bridgeComponent = WorldBridgeComponent.get(world);
 
 			return bridgeComponent.getShape(position);
 		}

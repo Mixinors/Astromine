@@ -37,7 +37,7 @@ import com.github.chainmailstudios.astromine.common.component.world.WorldNetwork
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
@@ -56,8 +56,7 @@ public class NetworkTracer {
 
 		public void trace(NetworkType type, WorldPos initialPosition) {
 			World world = initialPosition.getWorld();
-			ComponentProvider provider = ComponentProvider.fromWorld(world);
-			WorldNetworkComponent networkComponent = provider.getComponent(AstromineComponentTypes.WORLD_NETWORK_COMPONENT);
+			WorldNetworkComponent networkComponent = WorldNetworkComponent.get(world);
 			NetworkMember initialMember = NetworkMemberRegistry.get(initialPosition, null);
 
 			if (!initialMember.acceptsType(type) || !initialMember.isNode(type) || networkComponent.containsInstance(type, initialPosition.getBlockPos())) {

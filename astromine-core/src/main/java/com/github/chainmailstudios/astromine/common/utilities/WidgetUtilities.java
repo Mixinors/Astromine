@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
+import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -32,12 +33,10 @@ import com.github.chainmailstudios.astromine.common.widget.blade.TransferTypeSel
 import com.github.vini2003.blade.common.collection.TabWidgetCollection;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
-import nerdhub.cardinal.components.api.ComponentType;
-
 import com.google.common.collect.ImmutableMap;
 
 public class WidgetUtilities {
-	public static void createTransferTab(TabWidgetCollection tab, Position anchor, Direction rotation, BlockEntityTransferComponent component, BlockPos blockPos, ComponentType<?> type) {
+	public static void createTransferTab(TabWidgetCollection tab, Position anchor, Direction rotation, BlockEntityTransferComponent component, BlockPos blockPos, ComponentKey<?> type) {
 		final Position finalNorth = Position.of(anchor, 7 + 22, 31 + 22);
 		final Position finalSouth = Position.of(anchor, 7 + 0, 31 + 44);
 		final Position finalUp = Position.of(anchor, 7 + 22, 31 + 0);

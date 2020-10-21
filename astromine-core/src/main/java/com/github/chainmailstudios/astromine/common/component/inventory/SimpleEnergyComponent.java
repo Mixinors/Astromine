@@ -22,57 +22,42 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.volume.energy;
+package com.github.chainmailstudios.astromine.common.component.inventory;
 
-import net.minecraft.util.math.Direction;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 
-import team.reborn.energy.EnergyHandler;
+import java.util.ArrayList;
+import java.util.List;
 
-public class WrappedEnergyVolume extends EnergyVolume {
-	private final EnergyHandler storage;
+public class SimpleEnergyComponent implements EnergyComponent {
+	private final EnergyVolume content;
 
-	public WrappedEnergyVolume(EnergyHandler storage, Direction direction) {
-		this(storage.side(direction));
+	private final List<Runnable> listeners = new ArrayList<>();
+
+	protected SimpleEnergyComponent(double size) {
+		this.content = EnergyVolume.of(size, this);
 	}
 
-	public WrappedEnergyVolume(EnergyHandler storage) {
-		super(storage.getEnergy(), storage.getMaxStored());
-		this.storage = storage;
+	protected SimpleEnergyComponent(EnergyVolume volume) {
+		this.content = volume;
+		this.content.setRunnable(this::updateListeners);
 	}
 
-	public static WrappedEnergyVolume of(EnergyHandler storage) {
-		return new WrappedEnergyVolume(storage);
+	public static SimpleEnergyComponent of(double size) {
+		return new SimpleEnergyComponent(size);
 	}
 
-	public static WrappedEnergyVolume of(EnergyHandler storage, Direction direction) {
-		return new WrappedEnergyVolume(storage, direction);
-	}
-
-	@Override
-	public Double getAmount() {
-		return storage.getEnergy();
-	}
-
-	@Override
-	public void setAmount(Double aDouble) {
-		storage.set(aDouble);
+	public static SimpleEnergyComponent of(EnergyVolume volume) {
+		return new SimpleEnergyComponent(volume);
 	}
 
 	@Override
-	public Double getSize() {
-		return storage.getMaxStored();
+	public EnergyVolume getVolume() {
+		return content;
 	}
 
 	@Override
-	public void setSize(Double s) {
-		// Not feasible to implement.
-	}
-
-	public double getMaximumInput() {
-		return storage.getMaxInput();
-	}
-
-	public double getMaximumOutput() {
-		return storage.getMaxOutput();
+	public List<Runnable> getListeners() {
+		return listeners;
 	}
 }

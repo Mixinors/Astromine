@@ -24,6 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.utilities.capability.inventory;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.InventoryFromItemComponent;
 
-public interface ExtendedInventoryProvider extends ItemInventoryFromInventoryComponent {}
+public interface ExtendedInventoryProvider extends InventoryFromItemComponent {}

@@ -27,8 +27,8 @@ package com.github.chainmailstudios.astromine.common.entity.base;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 
 public abstract class ComponentEnergyEntity extends ComponentEntity {
@@ -36,9 +36,9 @@ public abstract class ComponentEnergyEntity extends ComponentEntity {
 		super(type, world);
 	}
 
-	public abstract EnergyInventoryComponent createEnergyComponent();
+	public abstract EnergyComponent createEnergyComponent();
 
-	public EnergyInventoryComponent getEnergyComponent() {
-		return ComponentProvider.fromEntity(this).getComponent(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
+	public EnergyComponent getEnergyComponent() {
+		return EnergyComponent.get(this);
 	}
 }

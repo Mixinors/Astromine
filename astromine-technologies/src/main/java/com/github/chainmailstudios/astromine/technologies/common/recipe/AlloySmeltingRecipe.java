@@ -35,8 +35,8 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemComponentFromInventory;
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.ingredient.ArrayIngredient;
@@ -72,8 +72,8 @@ public class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 
 	@Override
 	public boolean matches(Inventory inventory, World world) {
-		ItemInventoryComponent component = ItemInventoryComponentFromItemInventory.of(inventory);
-		if (component.getItemSize() < 2)
+		ItemComponent component = ItemComponentFromInventory.of(inventory);
+		if (component.getSize() < 2)
 			return false;
 		ItemStack stack1 = component.getStack(0);
 		ItemStack stack2 = component.getStack(1);

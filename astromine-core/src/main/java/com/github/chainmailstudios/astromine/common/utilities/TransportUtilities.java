@@ -27,7 +27,7 @@ package com.github.chainmailstudios.astromine.common.utilities;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.Direction;
@@ -38,28 +38,28 @@ public class TransportUtilities {
 	public static boolean isExtractingEnergy(BlockEntity entity, @Nullable BlockEntityTransferComponent transferComponent, Direction direction) {
 		if (!(entity instanceof EnergyStorage))
 			return false;
-		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).get(direction) : TransferType.NONE;
+		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponents.ENERGY_INVENTORY_COMPONENT).get(direction) : TransferType.NONE;
 		return transferType.canExtract() || (!transferType.isDisabled() && NetworkMemberRegistry.get(entity, direction).isProvider(AstromineNetworkTypes.ENERGY));
 	}
 
 	public static boolean isInsertingEnergy(BlockEntity entity, @Nullable BlockEntityTransferComponent transferComponent, Direction direction) {
 		if (!(entity instanceof EnergyStorage))
 			return false;
-		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT).get(direction) : TransferType.NONE;
+		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponents.ENERGY_INVENTORY_COMPONENT).get(direction) : TransferType.NONE;
 		return transferType.canInsert() || (!transferType.isDisabled() && NetworkMemberRegistry.get(entity, direction).isRequester(AstromineNetworkTypes.ENERGY));
 	}
 
 	public static boolean isExtractingItem(BlockEntity entity, @Nullable BlockEntityTransferComponent transferComponent, Direction direction, boolean defaultValue) {
 		if (!(entity instanceof EnergyStorage))
 			return false;
-		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(direction) : TransferType.DISABLED;
+		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(direction) : TransferType.DISABLED;
 		return transferType.canExtract() || (defaultValue && transferType.isDefault());
 	}
 
 	public static boolean isInsertingItem(BlockEntity entity, @Nullable BlockEntityTransferComponent transferComponent, Direction direction, boolean defaultValue) {
 		if (!(entity instanceof EnergyStorage))
 			return false;
-		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(direction) : TransferType.DISABLED;
+		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(direction) : TransferType.DISABLED;
 		return transferType.canInsert() || (defaultValue && transferType.isDefault());
 	}
 }

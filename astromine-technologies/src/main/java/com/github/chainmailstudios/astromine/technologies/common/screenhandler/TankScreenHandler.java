@@ -24,13 +24,14 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.screenhandler;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityFluidInventoryScreenHandler;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.widget.blade.FluidFilterWidget;
 import com.github.chainmailstudios.astromine.common.widget.blade.HorizontalArrowWidget;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.TankBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
 import com.github.vini2003.blade.common.miscellaneous.Position;
@@ -72,14 +73,20 @@ public class TankScreenHandler extends ComponentBlockEntityFluidInventoryScreenH
 		HorizontalArrowWidget leftArrow = new HorizontalArrowWidget();
 		leftArrow.setPosition(Position.of(input, 28, 0));
 		leftArrow.setSize(Size.of(22, 16));
-		leftArrow.setLimitSupplier(() -> 1);
-		leftArrow.setProgressSupplier(() -> {
-			ItemStack stack = blockEntity.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).getStack(0);
+		leftArrow.setLimitSupplier(() -> {
+			ItemStack stack = blockEntity.getItemComponent().getFirst();
+
 			if (stack.getItem() instanceof FluidVolumeItem) {
-				FluidInventoryComponent fluidComponent = ComponentProvider.fromItemStack(stack).getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+				return (((FluidVolumeItem) stack.getItem()).getSize().intValue());
+			} else {
+				return 0;
+			}
+ 		});
+		leftArrow.setProgressSupplier(() -> {
+			ItemStack stack = blockEntity.getItemComponent().getFirst();
 
-				return !fluidComponent.isEmpty() ? 1 : 0;
-
+			if (stack.getItem() instanceof FluidVolumeItem) {
+				return FluidComponent.get(stack.getItem()).getFirst().getAmount().intValue();
 			} else {
 				return 0;
 			}
@@ -88,14 +95,20 @@ public class TankScreenHandler extends ComponentBlockEntityFluidInventoryScreenH
 		HorizontalArrowWidget rightArrow = new HorizontalArrowWidget();
 		rightArrow.setPosition(Position.of(output, -34, 0));
 		rightArrow.setSize(Size.of(22, 16));
-		rightArrow.setLimitSupplier(() -> 1);
-		rightArrow.setProgressSupplier(() -> {
-			ItemStack stack = blockEntity.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).getStack(0);
-			FluidVolume blockEntityVolume = blockEntity.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).getVolume(0);
-			if (stack.getItem() instanceof FluidVolumeItem) {
-				FluidInventoryComponent fluidComponent = ComponentProvider.fromItemStack(stack).getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+		rightArrow.setLimitSupplier(() -> {
+			ItemStack stack = blockEntity.getItemComponent().getSecond();
 
-				return !fluidComponent.isEmpty() && !blockEntityVolume.isEmpty() ? 1 : 0;
+			if (stack.getItem() instanceof FluidVolumeItem) {
+				return (((FluidVolumeItem) stack.getItem()).getSize().intValue());
+			} else {
+				return 0;
+			}
+		});
+		rightArrow.setProgressSupplier(() -> {
+			ItemStack stack = blockEntity.getItemComponent().getSecond();
+
+			if (stack.getItem() instanceof FluidVolumeItem) {
+				return FluidComponent.get(stack.getItem()).getFirst().getAmount().intValue();
 			} else {
 				return 0;
 			}

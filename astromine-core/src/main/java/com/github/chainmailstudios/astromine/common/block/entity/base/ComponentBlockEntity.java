@@ -26,14 +26,17 @@ package com.github.chainmailstudios.astromine.common.block.entity.base;
 
 import alexiil.mc.lib.attributes.item.ItemInvUtil;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import dev.onyxstudios.cca.api.v3.component.*;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.PacketContext;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.Tickable;
@@ -48,34 +51,27 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
 import com.github.chainmailstudios.astromine.common.utilities.TransportUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedComponentSidedInventoryProvider;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import nerdhub.cardinal.components.api.ComponentRegistry;
-import nerdhub.cardinal.components.api.ComponentType;
-import nerdhub.cardinal.components.api.component.Component;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 
-public abstract class ComponentBlockEntity extends net.minecraft.block.entity.BlockEntity implements ComponentProvider, PacketConsumer, BlockEntityClientSerializable, Tickable {
+import java.util.*;
+import java.util.function.BiConsumer;
+
+public abstract class ComponentBlockEntity extends net.minecraft.block.entity.BlockEntity implements dev.onyxstudios.cca.api.v3.component.ComponentProvider, PacketConsumer, BlockEntityClientSerializable, Tickable {
 	public static final Identifier TRANSFER_UPDATE_PACKET = AstromineCommon.identifier("transfer_update_packet");
 	protected final BlockEntityTransferComponent transferComponent = new BlockEntityTransferComponent();
 	protected final BlockEntityRedstoneComponent redstoneComponent = new BlockEntityRedstoneComponent();
-	protected final Map<ComponentType<?>, Component> allComponents = Maps.newHashMap();
+	protected final Map<ComponentKey<?>, Component> allComponents = Maps.newHashMap();
 	protected final Map<Identifier, BiConsumer<PacketByteBuf, PacketContext>> allHandlers = Maps.newHashMap();
 
 	public boolean isActive = false;
@@ -93,7 +89,7 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 			Direction packetDirection = buffer.readEnumConstant(Direction.class);
 			TransferType packetTransferType = buffer.readEnumConstant(TransferType.class);
 
-			transferComponent.get(ComponentRegistry.INSTANCE.get(packetIdentifier)).set(packetDirection, packetTransferType);
+			transferComponent.get(ComponentRegistry.get(packetIdentifier)).set(packetDirection, packetTransferType);
 			markDirty();
 			sync();
 		}));
@@ -103,7 +99,7 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 		this.skipInventory = false;
 	}
 
-	public void addComponent(ComponentType<?> type, Component component) {
+	public void addComponent(ComponentKey<?> type, Component component) {
 		allComponents.put(type, component);
 		transferComponent.add(type);
 	}
@@ -118,27 +114,21 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 	}
 
 	@Override
-	public boolean hasComponent(ComponentType<?> componentType) {
-		return allComponents.containsKey(componentType) || componentType == AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT || componentType == AstromineComponentTypes.BLOCK_ENTITY_REDSTONE_COMPONENT;
-	}
-
-	@Override
-	public <C extends Component> C getComponent(ComponentType<C> componentType) {
-		return componentType == AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT ? (C) transferComponent : componentType == AstromineComponentTypes.BLOCK_ENTITY_REDSTONE_COMPONENT ? (C) redstoneComponent : (C) allComponents.get(componentType);
-	}
-
-	@Override
-	public Set<ComponentType<?>> getComponentTypes() {
-		return allComponents.keySet();
-	}
-
-	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag.put("transfer", transferComponent.toTag(new CompoundTag()));
-		tag.put("redstone", redstoneComponent.toTag(new CompoundTag()));
+		CompoundTag transferTag = new CompoundTag();
+		transferComponent.writeToNbt(transferTag);
+
+		CompoundTag redstoneTag = new CompoundTag();
+		redstoneComponent.writeToNbt(redstoneTag);
+
+		tag.put("transfer", transferTag);
+		tag.put("redstone", redstoneTag);
 
 		allComponents.forEach((type, component) -> {
-			tag.put(type.getId().toString(), component.toTag(new CompoundTag()));
+			CompoundTag componentTag = new CompoundTag();
+			component.writeToNbt(componentTag);
+
+			tag.put(type.getId().toString(), componentTag);
 		});
 
 		return super.toTag(tag);
@@ -146,12 +136,12 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		transferComponent.fromTag(tag.getCompound("transfer"));
-		redstoneComponent.fromTag(tag.getCompound("redstone"));
+		transferComponent.readFromNbt(tag.getCompound("transfer"));
+		redstoneComponent.readFromNbt(tag.getCompound("redstone"));
 
 		allComponents.forEach((type, component) -> {
 			if (tag.contains(type.getId().toString())) {
-				component.fromTag(tag.getCompound(type.getId().toString()));
+				component.readFromNbt(tag.getCompound(type.getId().toString()));
 			}
 		});
 
@@ -162,7 +152,7 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 	public CompoundTag toClientTag(CompoundTag compoundTag) {
 		compoundTag = toTag(compoundTag);
 		if (skipInventory) {
-			compoundTag.remove(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT.getId().toString());
+			compoundTag.remove(AstromineComponents.ITEM_INVENTORY_COMPONENT.getId().toString());
 		} else {
 			skipInventory = true;
 		}
@@ -179,29 +169,28 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 		if (!hasWorld() || world.isClient())
 			return;
 
-		FluidInventoryComponent fluidComponent = getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+		FluidComponent fluidComponent = FluidComponent.get(this);
 
 		List<Pair<EnergyHandler, EnergyHandler>> energyTransfers = Lists.newArrayList();
 
 		for (Direction offsetDirection : Direction.values()) {
 			BlockPos neighborPos = getPos().offset(offsetDirection);
 
-			net.minecraft.block.entity.BlockEntity neighborBlockEntity = world.getBlockEntity(neighborPos);
+			BlockEntity neighborBlockEntity = world.getBlockEntity(neighborPos);
 			if (neighborBlockEntity instanceof ComponentProvider) {
-				ComponentProvider neighborProvider = (ComponentProvider) neighborBlockEntity;
 				Direction neighborDirection = offsetDirection.getOpposite();
-				BlockEntityTransferComponent neighborTransferComponent = neighborProvider != null ? neighborProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT) : null;
+				BlockEntityTransferComponent neighborTransferComponent = BlockEntityTransferComponent.get(neighborBlockEntity);
 
 				// Handle Item Siding
 				if (this instanceof ExtendedComponentSidedInventoryProvider) {
-					if (!transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(offsetDirection).isDefault()) {
+					if (!transferComponent.get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(offsetDirection).isDefault()) {
 						// input
 						ItemExtractable neighbor = ItemAttributes.EXTRACTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
 						ItemInsertable self = ItemAttributes.INSERTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
 
 						ItemInvUtil.move(neighbor, self, 1);
 					}
-					if (!transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(offsetDirection).isDefault()) {
+					if (!transferComponent.get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(offsetDirection).isDefault()) {
 						// output
 						ItemExtractable self = ItemAttributes.EXTRACTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
 						ItemInsertable neighbor = ItemAttributes.INSERTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
@@ -211,19 +200,21 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 				}
 
 				// Handle fluid siding
-				if (fluidComponent != null && transferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).get(offsetDirection).canExtract()) {
-					FluidInventoryComponent neighborFluidComponent = null;
+				if (fluidComponent != null && transferComponent.get(AstromineComponents.FLUID_INVENTORY_COMPONENT).get(offsetDirection).canExtract()) {
+					FluidComponent neighborFluidComponent = null;
 					if (neighborTransferComponent != null) {
 						// Get via astromine siding
-						if (neighborTransferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).get(neighborDirection).canInsert())
-							neighborFluidComponent = neighborProvider.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+						if (neighborTransferComponent.get(AstromineComponents.FLUID_INVENTORY_COMPONENT).get(neighborDirection).canInsert())
+							neighborFluidComponent = FluidComponent.get(neighborBlockEntity);
 					}
 
 					if (neighborFluidComponent != null) {
-						List<FluidVolume> matching = (List<FluidVolume>) fluidComponent.getExtractableContentsMatching(offsetDirection, (volume -> !volume.isEmpty()));
+						FluidVolume extractable = fluidComponent.getFirstExtractableVolume(offsetDirection, (volume -> !volume.isEmpty()));
 
-						if (!matching.isEmpty()) {
-							neighborFluidComponent.insert(neighborDirection, matching.get(0));
+						if (extractable != null && !extractable.isEmpty()) {
+							FluidVolume insertable = neighborFluidComponent.getFirstInsertableVolume(neighborDirection, extractable);
+
+							insertable.moveFrom(extractable);
 						}
 					}
 				}
@@ -286,5 +277,28 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 				return true;
 			}
 		}
+	}
+
+	@Nullable
+	@Override
+	public ComponentContainer getComponentContainer() {
+		ComponentContainer.Factory.Builder builder = ComponentContainer.Factory.builder(ComponentBlockEntity.class);
+
+		builder.component(AstromineComponents.BLOCK_ENTITY_TRANSFER_COMPONENT, (it) -> transferComponent);
+		builder.component(AstromineComponents.BLOCK_ENTITY_REDSTONE_COMPONENT, (it) -> redstoneComponent);
+
+		allComponents.forEach((key, component) -> builder.component(key, (it) -> component));
+
+		return builder.build().createContainer(this);
+	}
+
+	@Override
+	public Iterator<ServerPlayerEntity> getRecipientsForComponentSync() {
+		return Collections.emptyIterator();
+	}
+
+	@Override
+	public boolean supportsCustomComponentPacketWriters() {
+		return false;
 	}
 }

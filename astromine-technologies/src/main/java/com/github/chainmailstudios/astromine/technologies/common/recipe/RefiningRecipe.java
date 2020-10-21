@@ -39,11 +39,10 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 
 import com.google.gson.Gson;
@@ -86,17 +85,15 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 		});
 	}
 
-	public boolean matches(FluidInventoryComponent fluidComponent) {
-		FluidHandler fluidHandler = FluidHandler.of(fluidComponent);
-
-		FluidVolume inputVolume = fluidHandler.getFirst();
-		FluidVolume firstOutputVolume = fluidHandler.getSecond();
-		FluidVolume secondOutputVolume = fluidHandler.getThird();
-		FluidVolume thirdOutputVolume = fluidHandler.getFourth();
-		FluidVolume fourthOutputVolume = fluidHandler.getFifth();
-		FluidVolume fifthOutputVolume = fluidHandler.getSixth();
-		FluidVolume sixthOutputVolume = fluidHandler.getSeventh();
-		FluidVolume seventhOutputVolume = fluidHandler.getEighth();
+	public boolean matches(FluidComponent fluidComponent) {
+		FluidVolume inputVolume = fluidComponent.getFirst();
+		FluidVolume firstOutputVolume = fluidComponent.getSecond();
+		FluidVolume secondOutputVolume = fluidComponent.getThird();
+		FluidVolume thirdOutputVolume = fluidComponent.getFourth();
+		FluidVolume fourthOutputVolume = fluidComponent.getFifth();
+		FluidVolume fifthOutputVolume = fluidComponent.getSixth();
+		FluidVolume sixthOutputVolume = fluidComponent.getSeventh();
+		FluidVolume seventhOutputVolume = fluidComponent.getEighth();
 
 		if (!input.test(inputVolume)) {
 			return false;

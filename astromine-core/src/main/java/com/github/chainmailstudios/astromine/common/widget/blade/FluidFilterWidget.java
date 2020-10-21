@@ -3,8 +3,8 @@ package com.github.chainmailstudios.astromine.common.widget.blade;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.BaseRenderer;
 import com.github.chainmailstudios.astromine.client.render.sprite.SpriteRenderer;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
-import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import com.github.vini2003.blade.client.utilities.Layers;
 import com.github.vini2003.blade.common.widget.base.ButtonWidget;
 import net.fabricmc.api.EnvType;
@@ -73,10 +73,10 @@ public class FluidFilterWidget extends ButtonWidget {
 
 		if (isWithin(x, y)) {
 			if (!stack.isEmpty()) {
-				FluidHandler.ofOptional(stack).ifPresent(fluids -> {
-					fluidSupplier = () -> fluids.getFirst().getFluid();
-					fluidConsumer.accept(fluidSupplier.get());
-				});
+				FluidComponent fluidComponent = FluidComponent.get(stack);
+
+				fluidSupplier = () -> fluidComponent.getFirst().getFluid();
+				fluidConsumer.accept(fluidSupplier.get());
 			} else if (button == 2) {
 				fluidSupplier = () -> Fluids.EMPTY;
 				fluidConsumer.accept(fluidSupplier.get());

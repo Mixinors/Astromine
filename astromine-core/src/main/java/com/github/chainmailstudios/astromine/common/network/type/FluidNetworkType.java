@@ -35,14 +35,14 @@ import alexiil.mc.lib.attributes.fluid.filter.ReadableFluidFilter;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKey;
 import alexiil.mc.lib.attributes.misc.NullVariant;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
-import com.github.chainmailstudios.astromine.common.volume.handler.TransferHandler;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.google.common.collect.Lists;
 import net.minecraft.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
@@ -75,11 +75,14 @@ public class FluidNetworkType extends NetworkType {
 				BlockEntity blockEntity = memberPos.getBlockEntity();
 				TransferType[] type = { TransferType.NONE };
 
-				TransferHandler.of(blockEntity).ifPresent(handler -> {
-					handler.withDirection(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, memberNode.getDirection(), transferType -> {
+
+				BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(blockEntity);
+
+				if (transferComponent != null) {
+					transferComponent.withDirection(AstromineComponents.FLUID_INVENTORY_COMPONENT, memberNode.getDirection(), transferType -> {
 						type[0] = transferType;
 					});
-				});
+				}
 
 				if (!type[0].isDisabled()) {
 					if (type[0].canExtract() || networkMember.isProvider(this)) {

@@ -44,7 +44,7 @@ import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
 import com.github.vini2003.blade.common.widget.base.AbstractWidget;
 import io.netty.buffer.Unpooled;
-import nerdhub.cardinal.components.api.ComponentType;
+import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -54,7 +54,7 @@ import java.util.Locale;
 public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 	private BlockEntityTransferComponent component;
 
-	private ComponentType<?> type;
+	private ComponentKey<?> type;
 
 	private Direction direction;
 
@@ -98,11 +98,11 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 
 	}
 
-	public ComponentType<?> getType() {
+	public ComponentKey<?> getType() {
 		return type;
 	}
 
-	public void setType(ComponentType<?> type) {
+	public void setType(ComponentKey<?> type) {
 		this.type = type;
 
 	}

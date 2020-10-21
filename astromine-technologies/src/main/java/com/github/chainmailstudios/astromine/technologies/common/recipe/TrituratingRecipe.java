@@ -35,8 +35,8 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemComponentFromInventory;
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
@@ -80,13 +80,13 @@ public class TrituratingRecipe implements EnergyConsumingRecipe<Inventory> {
 
 	@Override
 	public boolean matches(Inventory inventory, World world) {
-		return ItemInventoryComponentFromItemInventory.of(inventory).getContents().values().stream().anyMatch(input);
+		return ItemComponentFromInventory.of(inventory).getContents().values().stream().anyMatch(input);
 	}
 
 	@Override
 	public ItemStack craft(Inventory inventory) {
-		ItemInventoryComponent component = ItemInventoryComponentFromItemInventory.of(inventory);
-		List<ItemStack> matching = Lists.newArrayList(component.getContentsMatching(input));
+		ItemComponent component = ItemComponentFromInventory.of(inventory);
+		List<ItemStack> matching = Lists.newArrayList(component.getStacks(input));
 
 		ItemStack stack = matching.isEmpty() ? ItemStack.EMPTY : matching.get(0);
 

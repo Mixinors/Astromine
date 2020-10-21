@@ -51,7 +51,7 @@ import com.github.chainmailstudios.astromine.common.network.type.base.NetworkTyp
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.capability.block.CableWrenchable;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 
 import javax.annotation.Nullable;
@@ -145,9 +145,7 @@ public abstract class CableBlock extends Block implements Waterloggable, CableWr
 		if (state.getBlock() == newState.getBlock())
 			return;
 
-		ComponentProvider provider = ComponentProvider.fromWorld(world);
-
-		WorldNetworkComponent networkComponent = provider.getComponent(AstromineComponentTypes.WORLD_NETWORK_COMPONENT);
+		WorldNetworkComponent networkComponent = WorldNetworkComponent.get(world);
 
 		networkComponent.removeInstance(networkComponent.getInstance(getNetworkType(), position));
 
@@ -173,9 +171,7 @@ public abstract class CableBlock extends Block implements Waterloggable, CableWr
 	public void neighborUpdate(BlockState state, World world, BlockPos position, Block block, BlockPos neighborPosition, boolean moved) {
 		super.neighborUpdate(state, world, position, block, neighborPosition, moved);
 
-		ComponentProvider provider = ComponentProvider.fromWorld(world);
-
-		WorldNetworkComponent networkComponent = provider.getComponent(AstromineComponentTypes.WORLD_NETWORK_COMPONENT);
+		WorldNetworkComponent networkComponent = WorldNetworkComponent.get(world);
 
 		networkComponent.removeInstance(networkComponent.getInstance(getNetworkType(), position));
 		NetworkTracer.Tracer.INSTANCE.trace(getNetworkType(), WorldPos.of(world, position));

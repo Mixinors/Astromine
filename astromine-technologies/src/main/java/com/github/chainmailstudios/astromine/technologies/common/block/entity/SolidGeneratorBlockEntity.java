@@ -34,13 +34,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
@@ -59,8 +58,8 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 	}
 
 	@Override
-	protected ItemInventoryComponent createItemComponent() {
-		return new SimpleItemInventoryComponent(1).withInsertPredicate((direction, stack, slot) -> {
+	protected ItemComponent createItemComponent() {
+		return SimpleItemComponent.of(1).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 0) {
 				return false;
 			}
@@ -72,8 +71,8 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 	}
 
 	@Override
-	protected EnergyInventoryComponent createEnergyComponent() {
-		return new SimpleEnergyInventoryComponent(getEnergySize());
+	protected EnergyComponent createEnergyComponent() {
+		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
 	@Override
@@ -83,7 +82,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		ItemHandler.ofOptional(this).ifPresent(items -> {
+		if (itemComponent != null) {
 			EnergyVolume energyVolume = energyComponent.getVolume();
 
 			if (available > 0) {
@@ -108,7 +107,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 					}
 				}
 			} else {
-				ItemStack burnStack = items.getFirst();
+				ItemStack burnStack = itemComponent.getFirst();
 
 				Integer value = FuelRegistry.INSTANCE.get(burnStack.getItem());
 
@@ -131,7 +130,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 					tickInactive();
 				}
 			}
-		});
+		}
 	}
 
 	@Override

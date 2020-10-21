@@ -37,14 +37,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergyConsumedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
@@ -64,13 +63,13 @@ public class BlockBreakerBlockEntity extends ComponentEnergyInventoryBlockEntity
 	}
 
 	@Override
-	protected ItemInventoryComponent createItemComponent() {
-		return new SimpleItemInventoryComponent(1);
+	protected ItemComponent createItemComponent() {
+		return SimpleItemComponent.of(1);
 	}
 
 	@Override
-	protected EnergyInventoryComponent createEnergyComponent() {
-		return new SimpleEnergyInventoryComponent(getEnergySize());
+	protected EnergyComponent createEnergyComponent() {
+		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
 	@Override
@@ -95,7 +94,9 @@ public class BlockBreakerBlockEntity extends ComponentEnergyInventoryBlockEntity
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		ItemHandler.ofOptional(this).ifPresent(items -> {
+
+
+		if (itemComponent != null) {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();
 			if (energyVolume.getAmount() < getEnergyConsumed()) {
 				cooldown = Fraction.empty();
@@ -109,7 +110,7 @@ public class BlockBreakerBlockEntity extends ComponentEnergyInventoryBlockEntity
 				cooldown.ifBiggerOrEqualThan(Fraction.of(1), () -> {
 					cooldown = Fraction.empty();
 
-					ItemStack stored = items.getFirst();
+					ItemStack stored = itemComponent.getFirst();
 
 					Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
 
@@ -130,7 +131,7 @@ public class BlockBreakerBlockEntity extends ComponentEnergyInventoryBlockEntity
 
 						matching.ifPresent(match -> {
 							Pair<ItemStack, ItemStack> pair = StackUtilities.merge(match, stored, match.getMaxCount(), stored.getMaxCount());
-							items.setFirst(pair.getRight());
+							itemComponent.setFirst(pair.getRight());
 							drops.remove(match);
 							drops.add(pair.getLeft());
 						});
@@ -147,7 +148,7 @@ public class BlockBreakerBlockEntity extends ComponentEnergyInventoryBlockEntity
 					}
 				});
 			}
-		});
+		}
 	}
 
 	@Override

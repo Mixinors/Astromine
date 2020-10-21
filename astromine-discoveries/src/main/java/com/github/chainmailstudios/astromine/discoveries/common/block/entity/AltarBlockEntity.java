@@ -43,9 +43,9 @@ import net.minecraft.util.Lazy;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.InventoryFromItemComponent;
 import com.github.chainmailstudios.astromine.discoveries.common.recipe.AltarRecipe;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesSoundEvents;
@@ -58,7 +58,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class AltarBlockEntity extends BlockEntity implements ItemInventoryFromInventoryComponent, Tickable, BlockEntityClientSerializable {
+public class AltarBlockEntity extends BlockEntity implements InventoryFromItemComponent, Tickable, BlockEntityClientSerializable {
 	public static final int CRAFTING_TIME = 100;
 	public static final int CRAFTING_TIME_SPIN = 80;
 	public static final int CRAFTING_TIME_FALL = 60;
@@ -71,7 +71,7 @@ public class AltarBlockEntity extends BlockEntity implements ItemInventoryFromIn
 	public float craftingTicksDelta = 0;
 	public AltarRecipe recipe;
 	public List<Supplier<AltarPedestalBlockEntity>> children = Lists.newArrayList();
-	private ItemInventoryComponent inventory = new SimpleItemInventoryComponent(1).withListener(inventory -> {
+	private ItemComponent inventory = SimpleItemComponent.of(1).withListener(inventory -> {
 		if (hasWorld() && !world.isClient)
 			sync();
 	});
@@ -81,7 +81,7 @@ public class AltarBlockEntity extends BlockEntity implements ItemInventoryFromIn
 	}
 
 	@Override
-	public ItemInventoryComponent getItemComponent() {
+	public ItemComponent getItemComponent() {
 		return inventory;
 	}
 
@@ -95,7 +95,7 @@ public class AltarBlockEntity extends BlockEntity implements ItemInventoryFromIn
 		if (craftingTicks > 0 && craftingTicks <= CRAFTING_TIME + CRAFTING_TIME_SPIN + CRAFTING_TIME_FALL) {
 			return ItemStack.EMPTY;
 		}
-		return ItemInventoryFromInventoryComponent.super.getStack(slot);
+		return InventoryFromItemComponent.super.getStack(slot);
 	}
 
 	@Override
@@ -222,7 +222,7 @@ public class AltarBlockEntity extends BlockEntity implements ItemInventoryFromIn
 	@Override
 	public void fromTag(BlockState state, CompoundTag tag) {
 		super.fromTag(state, tag);
-		inventory.fromTag(tag);
+		inventory.readFromNbt(tag);
 		craftingTicks = tag.getInt("craftingTicks");
 		if (craftingTicksDelta == 0 || craftingTicks == 0 || craftingTicks == 1)
 			craftingTicksDelta = craftingTicks;
@@ -237,7 +237,7 @@ public class AltarBlockEntity extends BlockEntity implements ItemInventoryFromIn
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		inventory.toTag(tag);
+		inventory.writeToNbt(tag);
 		tag.putInt("craftingTicks", craftingTicks);
 		ListTag childrenTag = new ListTag();
 		for (Supplier<AltarPedestalBlockEntity> child : children) {

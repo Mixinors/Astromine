@@ -46,15 +46,14 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
 import com.github.chainmailstudios.astromine.common.registry.BreathableRegistry;
 import com.github.chainmailstudios.astromine.common.registry.FluidEffectRegistry;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineAttributes;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
 import com.github.chainmailstudios.astromine.registry.AstromineTags;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
@@ -93,9 +92,7 @@ public abstract class LivingEntityMixin implements GravityEntity {
 			return;
 
 		if (!entity.getType().isIn(AstromineTags.DOES_NOT_BREATHE)) {
-			ComponentProvider chunkProvider = ComponentProvider.fromChunk(entity.world.getChunk(entity.getBlockPos()));
-
-			ChunkAtmosphereComponent atmosphereComponent = chunkProvider.getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);
+			ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(entity.world.getChunk(entity.getBlockPos()));
 
 			if (atmosphereComponent != null) {
 				FluidVolume atmosphereVolume;
@@ -127,9 +124,7 @@ public abstract class LivingEntityMixin implements GravityEntity {
 				if (!isSubmerged) {
 					boolean isBreathing = true;
 
-					ComponentProvider entityProvider = ComponentProvider.fromEntity(entity);
-
-					EntityOxygenComponent oxygenComponent = entityProvider.getComponent(AstromineComponentTypes.ENTITY_OXYGEN_COMPONENT);
+					EntityOxygenComponent oxygenComponent = EntityOxygenComponent.get(entity);
 
 					if (oxygenComponent != null) {
 						boolean hasHelmet = false;
@@ -159,12 +154,10 @@ public abstract class LivingEntityMixin implements GravityEntity {
 						for (ItemStack stack : getArmorItems()) {
 							if (!stack.isEmpty()) {
 								if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_chestplate")) { // TODO: Properly verify for Space Suit.
-									ComponentProvider provider = ComponentProvider.fromItemStack(stack);
-
-									FluidInventoryComponent fluidComponent = provider.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+									FluidComponent fluidComponent = FluidComponent.get(stack);
 
 									if (fluidComponent != null) {
-										FluidVolume volume = FluidHandler.of(fluidComponent).getFirst();
+										FluidVolume volume = fluidComponent.getFirst();
 
 										if (volume != null) {
 											boolean canBreathe = BreathableRegistry.INSTANCE.canBreathe(entity.getType(), volume.getFluid());

@@ -40,7 +40,7 @@ import net.minecraft.util.math.Vec3i;
 import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
 import com.github.chainmailstudios.astromine.common.utilities.LineUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.VectorUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import com.github.vini2003.blade.common.miscellaneous.Color;
@@ -121,9 +121,7 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 				this.world.setBlockState(nP, AstromineTechnologiesBlocks.HOLOGRAPHIC_BRIDGE_INVISIBLE_BLOCK.getDefaultState());
 			}
 
-			ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
-
-			WorldBridgeComponent bridgeComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_BRIDGE_COMPONENT);
+			WorldBridgeComponent bridgeComponent = WorldBridgeComponent.get(world);
 
 			bridgeComponent.add(nP, new Vec3i((v.getX() - (int) v.getX()) * 16f, (v.getY() - (int) v.getY()) * 16f, (v.getZ() - (int) v.getZ()) * 16f));
 		}
@@ -177,9 +175,7 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 
 	public void destroyBridge() {
 		if (this.segments != null && this.world != null) {
-			ComponentProvider componentProvider = ComponentProvider.fromWorld(world);
-
-			WorldBridgeComponent bridgeComponent = componentProvider.getComponent(AstromineComponentTypes.WORLD_BRIDGE_COMPONENT);
+			WorldBridgeComponent bridgeComponent = WorldBridgeComponent.get(world);
 
 			for (Vector3f vec : this.segments) {
 				BlockPos pos = new BlockPos(vec.getX(), vec.getY(), vec.getZ());

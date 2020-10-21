@@ -33,14 +33,13 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SmeltingRecipe;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import com.github.chainmailstudios.astromine.common.inventory.BaseInventory;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
@@ -65,8 +64,8 @@ public abstract class ElectricSmelterBlockEntity extends ComponentEnergyInventor
 	}
 
 	@Override
-	protected ItemInventoryComponent createItemComponent() {
-		return new SimpleItemInventoryComponent(2).withInsertPredicate((direction, stack, slot) -> {
+	protected ItemComponent createItemComponent() {
+		return SimpleItemComponent.of(2).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 1) {
 				return false;
 			}
@@ -88,8 +87,8 @@ public abstract class ElectricSmelterBlockEntity extends ComponentEnergyInventor
 	}
 
 	@Override
-	protected EnergyInventoryComponent createEnergyComponent() {
-		return new SimpleEnergyInventoryComponent(getEnergySize());
+	protected EnergyComponent createEnergyComponent() {
+		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
 	@Override
@@ -109,9 +108,11 @@ public abstract class ElectricSmelterBlockEntity extends ComponentEnergyInventor
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		ItemHandler.ofOptional(this).ifPresent(items -> {
+
+
+		if (itemComponent != null) {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();
-			BaseInventory inputInventory = BaseInventory.of(items.getSecond());
+			BaseInventory inputInventory = BaseInventory.of(itemComponent.getSecond());
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
 				optionalRecipe = (Optional<SmeltingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) RecipeType.SMELTING, inputInventory, world);
@@ -133,19 +134,19 @@ public abstract class ElectricSmelterBlockEntity extends ComponentEnergyInventor
 
 					ItemStack output = recipe.getOutput().copy();
 
-					boolean isEmpty = items.getFirst().isEmpty();
-					boolean isEqual = ItemStack.areItemsEqual(items.getFirst(), output) && ItemStack.areTagsEqual(items.getFirst(), output);
+					boolean isEmpty = itemComponent.getFirst().isEmpty();
+					boolean isEqual = ItemStack.areItemsEqual(itemComponent.getFirst(), output) && ItemStack.areTagsEqual(itemComponent.getFirst(), output);
 
-					if ((isEmpty || isEqual) && items.getFirst().getCount() + output.getCount() <= items.getFirst().getMaxCount() && energyVolume.use(500.0D / limit * speed)) {
+					if ((isEmpty || isEqual) && itemComponent.getFirst().getCount() + output.getCount() <= itemComponent.getFirst().getMaxCount() && energyVolume.use(500.0D / limit * speed)) {
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
 
-							items.getSecond().decrement(1);
+							itemComponent.getSecond().decrement(1);
 
 							if (isEmpty) {
-								items.setFirst(output);
+								itemComponent.setFirst(output);
 							} else {
-								items.getFirst().increment(output.getCount());
+								itemComponent.getFirst().increment(output.getCount());
 
 								shouldTry = true; // Vanilla is garbage; if we don't do it here, it only triggers the listener on #setStack.
 							}
@@ -165,7 +166,7 @@ public abstract class ElectricSmelterBlockEntity extends ComponentEnergyInventor
 			} else {
 				tickInactive();
 			}
-		});
+		}
 	}
 
 	@Override

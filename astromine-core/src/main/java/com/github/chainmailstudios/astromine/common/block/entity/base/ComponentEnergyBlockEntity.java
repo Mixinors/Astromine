@@ -27,24 +27,24 @@ package com.github.chainmailstudios.astromine.common.block.entity.base;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.utilities.capability.energy.ExtendedEnergyProvider;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 
 public abstract class ComponentEnergyBlockEntity extends ComponentBlockEntity implements ExtendedEnergyProvider {
-	protected final EnergyInventoryComponent energyComponent = createEnergyComponent();
+	protected final EnergyComponent energyComponent = createEnergyComponent();
 
 	public ComponentEnergyBlockEntity(Block energyBlock, BlockEntityType<?> type) {
 		super(type);
 
-		transferComponent.add(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
-		addComponent(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, energyComponent);
+		transferComponent.add(AstromineComponents.ENERGY_INVENTORY_COMPONENT);
+		addComponent(AstromineComponents.ENERGY_INVENTORY_COMPONENT, energyComponent);
 	}
 
-	protected abstract EnergyInventoryComponent createEnergyComponent();
+	protected abstract EnergyComponent createEnergyComponent();
 
 	@Override
-	public EnergyInventoryComponent getEnergyComponent() {
+	public EnergyComponent getEnergyComponent() {
 		return energyComponent;
 	}
 }

@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.network.type;
 
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import net.minecraft.block.entity.BlockEntity;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
@@ -33,8 +34,7 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
-import com.github.chainmailstudios.astromine.common.volume.handler.TransferHandler;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import it.unimi.dsi.fastutil.objects.Reference2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Reference2DoubleOpenHashMap;
 import team.reborn.energy.Energy;
@@ -67,11 +67,13 @@ public class EnergyNetworkType extends NetworkType {
 			if (networkMember.acceptsType(this)) {
 				TransferType[] type = { TransferType.NONE };
 
-				TransferHandler.of(blockEntity).ifPresent(handler -> {
-					handler.withDirection(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, memberNode.getDirection(), transferType -> {
+				BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(blockEntity);
+
+				if (transferComponent != null) {
+					transferComponent.withDirection(AstromineComponents.ENERGY_INVENTORY_COMPONENT, memberNode.getDirection(), transferType -> {
 						type[0] = transferType;
 					});
-				});
+				}
 
 				EnergyHandler volume = Energy.of(blockEntity).side(memberNode.getDirection());
 				if (!type[0].isDisabled()) {

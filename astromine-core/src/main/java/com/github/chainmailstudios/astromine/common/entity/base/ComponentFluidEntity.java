@@ -24,11 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.entity.base;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 
 public abstract class ComponentFluidEntity extends ComponentEntity {
@@ -36,9 +36,9 @@ public abstract class ComponentFluidEntity extends ComponentEntity {
 		super(type, world);
 	}
 
-	public abstract FluidInventoryComponent createFluidComponent();
+	public abstract FluidComponent createFluidComponent();
 
-	public FluidInventoryComponent getFluidComponent() {
-		return ComponentProvider.fromEntity(this).getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+	public FluidComponent getFluidComponent() {
+		return FluidComponent.get(this);
 	}
 }

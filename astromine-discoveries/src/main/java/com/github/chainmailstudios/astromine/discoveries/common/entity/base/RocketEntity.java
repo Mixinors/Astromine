@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.entity.base;
 
+import com.github.chainmailstudios.astromine.common.utilities.VolumeUtilities;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -50,8 +51,6 @@ import net.minecraft.world.explosion.Explosion;
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidInventoryEntity;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
-import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesCriteria;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesParticles;
 import org.joml.Vector3d;
@@ -145,47 +144,7 @@ public abstract class RocketEntity extends ComponentFluidInventoryEntity {
 			this.velocityDirty = true;
 		}
 
-		FluidHandler.ofOptional(this).ifPresent(fluids -> {
-			ItemHandler.ofOptional(this).ifPresent(items -> {
-				FluidHandler.ofOptional(items.getFirst()).ifPresent(stackFluids -> {
-					FluidVolume ourVolume = fluids.getFirst();
-					FluidVolume stackVolume = stackFluids.getFirst();
-
-					if (ourVolume.test(stackVolume.getFluid())) {
-						if (items.getFirst().getItem() instanceof BucketItem) {
-							if (items.getFirst().getItem() != Items.BUCKET && items.getFirst().getCount() == 1) {
-								if (ourVolume.hasAvailable(Fraction.bucket()) || ourVolume.isEmpty()) {
-									ourVolume.moveFrom(stackVolume, Fraction.bucket());
-
-									items.setFirst(new ItemStack(Items.BUCKET));
-								}
-							}
-						} else {
-							ourVolume.moveFrom(stackVolume, Fraction.bucket());
-						}
-					}
-				});
-
-				FluidHandler.ofOptional(items.getSecond()).ifPresent(stackFluids -> {
-					FluidVolume ourVolume = fluids.getFirst();
-					FluidVolume stackVolume = stackFluids.getFirst();
-
-					if (stackVolume.test(ourVolume.getFluid())) {
-						if (items.getSecond().getItem() instanceof BucketItem) {
-							if (items.getSecond().getItem() == Items.BUCKET && items.getSecond().getCount() == 1) {
-								if (ourVolume.hasStored(Fraction.bucket())) {
-									ourVolume.add(stackVolume, Fraction.bucket());
-
-									items.setSecond(new ItemStack(stackVolume.getFluid().getBucketItem()));
-								}
-							}
-						} else {
-							ourVolume.add(stackVolume, Fraction.bucket());
-						}
-					}
-				});
-			});
-		});
+		VolumeUtilities.transferBetweenFirstAndSecond(getFluidComponent(), getItemComponent());
 	}
 
 	private FluidVolume getTank() {

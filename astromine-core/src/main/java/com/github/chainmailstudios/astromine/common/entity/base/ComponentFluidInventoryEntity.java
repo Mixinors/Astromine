@@ -24,13 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.entity.base;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedInventoryProvider;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 
 public abstract class ComponentFluidInventoryEntity extends ComponentEntity implements ExtendedInventoryProvider {
@@ -38,15 +38,15 @@ public abstract class ComponentFluidInventoryEntity extends ComponentEntity impl
 		super(type, world);
 	}
 
-	public abstract ItemInventoryComponent createItemComponent();
+	public abstract ItemComponent createItemComponent();
 
-	public abstract FluidInventoryComponent createFluidComponent();
+	public abstract FluidComponent createFluidComponent();
 
-	public ItemInventoryComponent getItemComponent() {
-		return ComponentProvider.fromEntity(this).getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
+	public ItemComponent getItemComponent() {
+		return ItemComponent.get(this);
 	}
 
-	public FluidInventoryComponent getFluidComponent() {
-		return ComponentProvider.fromEntity(this).getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+	public FluidComponent getFluidComponent() {
+		return FluidComponent.get(this);
 	}
 }

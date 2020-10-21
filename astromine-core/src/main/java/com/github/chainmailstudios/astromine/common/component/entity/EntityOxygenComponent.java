@@ -24,39 +24,39 @@
 
 package com.github.chainmailstudios.astromine.common.component.entity;
 
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import dev.onyxstudios.cca.api.v3.component.Component;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
-
-import nerdhub.cardinal.components.api.component.Component;
+import org.jetbrains.annotations.Nullable;
 
 public class EntityOxygenComponent implements Component {
-	int oxygen;
+	int oxygen = 0;
 
 	int minimumOxygen = -20;
 	int maximumOxygen = -180;
 
 	Entity entity;
 
-	public EntityOxygenComponent(int oxygen, Entity entity) {
-		this.oxygen = oxygen;
+	public EntityOxygenComponent(Entity entity) {
 		this.entity = entity;
 	}
 
 	public static EntityOxygenComponent defaulted(Entity entity) {
-		return new EntityOxygenComponent(0, entity);
+		return new EntityOxygenComponent(entity);
 	}
 
 	@Override
-	public void fromTag(CompoundTag tag) {
+	public void readFromNbt(CompoundTag tag) {
 		this.oxygen = tag.getInt("oxygen");
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public void writeToNbt(CompoundTag tag) {
 		tag.putInt("oxygen", oxygen);
-		return tag;
 	}
 
 	public void simulate(boolean isBreathing) {
@@ -109,5 +109,14 @@ public class EntityOxygenComponent implements Component {
 
 	public void setEntity(Entity entity) {
 		this.entity = entity;
+	}
+
+	@Nullable
+	public static <V> EntityOxygenComponent get(V v) {
+		try {
+			return AstromineComponents.ENTITY_OXYGEN_COMPONENT.get(v);
+		} catch (Exception justShutUpAlready) {
+			return null;
+		}
 	}
 }

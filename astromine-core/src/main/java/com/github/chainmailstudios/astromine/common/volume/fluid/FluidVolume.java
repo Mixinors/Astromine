@@ -35,7 +35,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 
@@ -64,8 +64,8 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 		return new FluidVolume(Fraction.bucket(), Fraction.bucket(), Registry.FLUID.get(AstromineCommon.identifier("oxygen")));
 	}
 
-	public static FluidVolume attached(SimpleFluidInventoryComponent component) {
-		return new FluidVolume(Fraction.empty(), Fraction.bucket(), Fluids.EMPTY, component::dispatchConsumers);
+	public static FluidVolume attached(SimpleFluidComponent component) {
+		return new FluidVolume(Fraction.empty(), Fraction.bucket(), Fluids.EMPTY, component::updateListeners);
 	}
 
 	public static FluidVolume of(Fraction amount, Fluid fluid) {

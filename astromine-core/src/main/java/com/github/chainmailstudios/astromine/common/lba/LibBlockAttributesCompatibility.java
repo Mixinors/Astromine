@@ -25,7 +25,8 @@
 package com.github.chainmailstudios.astromine.common.lba;
 
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.fluid.Fluid;
@@ -44,10 +45,9 @@ import alexiil.mc.lib.attributes.fluid.FluidInvTankChangeListener;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKey;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKeys;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -65,17 +65,15 @@ public final class LibBlockAttributesCompatibility {
 		BlockEntity blockEntity = world.getBlockEntity(blockPos);
 
 		if (blockEntity instanceof ComponentProvider) {
-			ComponentProvider componentProvider = (ComponentProvider) blockEntity;
-
 			@Nullable
 			Direction direction = list.getTargetSide();
 
 			if (direction != null) {
-				BlockEntityTransferComponent transferComponent = componentProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
+				BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(blockEntity);
 
 				// This does not check canInsert or canExtract; because I do not know how the hell to do that with LBA.
-				if (transferComponent != null && !transferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).get(direction).isNone()) {
-					FluidInventoryComponent component = componentProvider.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+				if (transferComponent != null && !transferComponent.get(AstromineComponents.FLUID_INVENTORY_COMPONENT).get(direction).isNone()) {
+					FluidComponent component = FluidComponent.get(blockEntity);
 
 					if (component != null) {
 						list.offer(new LibBlockAttributesWrapper(component));
@@ -109,9 +107,9 @@ public final class LibBlockAttributesCompatibility {
 	}
 
 	private static class LibBlockAttributesWrapper implements FixedFluidInv {
-		private final FluidInventoryComponent component;
+		private final FluidComponent component;
 
-		public LibBlockAttributesWrapper(FluidInventoryComponent component) {
+		public LibBlockAttributesWrapper(FluidComponent component) {
 			this.component = component;
 		}
 

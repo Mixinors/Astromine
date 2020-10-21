@@ -31,14 +31,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import com.github.chainmailstudios.astromine.common.inventory.BaseInventory;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
@@ -65,8 +64,8 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyInventoryBl
 	}
 
 	@Override
-	protected ItemInventoryComponent createItemComponent() {
-		return new SimpleItemInventoryComponent(3).withInsertPredicate((direction, stack, slot) -> {
+	protected ItemComponent createItemComponent() {
+		return SimpleItemComponent.of(3).withInsertPredicate((direction, stack, slot) -> {
 			return slot == 0 || slot == 1;
 		}).withExtractPredicate(((direction, stack, slot) -> {
 			return slot == 2;
@@ -77,8 +76,8 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyInventoryBl
 	}
 
 	@Override
-	protected EnergyInventoryComponent createEnergyComponent() {
-		return new SimpleEnergyInventoryComponent(getEnergySize());
+	protected EnergyComponent createEnergyComponent() {
+		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
 	@Override
@@ -98,9 +97,11 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyInventoryBl
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		ItemHandler.ofOptional(this).ifPresent(items -> {
+
+
+		if (itemComponent != null) {
 			EnergyVolume volume = getEnergyComponent().getVolume();
-			BaseInventory inputInventory = BaseInventory.of(items.getFirst(), items.getSecond());
+			BaseInventory inputInventory = BaseInventory.of(itemComponent.getFirst(), itemComponent.getSecond());
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
 				optionalRecipe = world.getRecipeManager().getFirstMatch(AlloySmeltingRecipe.Type.INSTANCE, inputInventory, world);
@@ -123,17 +124,17 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyInventoryBl
 
 					ItemStack output = recipe.getOutput().copy();
 
-					boolean isEmpty = items.getThird().isEmpty();
-					boolean isEqual = ItemStack.areItemsEqual(items.getThird(), output) && ItemStack.areTagsEqual(items.getThird(), output);
+					boolean isEmpty = itemComponent.getThird().isEmpty();
+					boolean isEqual = ItemStack.areItemsEqual(itemComponent.getThird(), output) && ItemStack.areTagsEqual(itemComponent.getThird(), output);
 
-					if (volume.hasStored(consumed) && (isEmpty || isEqual) && items.getThird().getCount() + output.getCount() <= items.getThird().getMaxCount()) {
+					if (volume.hasStored(consumed) && (isEmpty || isEqual) && itemComponent.getThird().getCount() + output.getCount() <= itemComponent.getThird().getMaxCount()) {
 						volume.minus(consumed);
 
 						if (progress + speed >= limit) {
 							optionalRecipe = Optional.empty();
 
-							ItemStack first = items.getFirst();
-							ItemStack second = items.getSecond();
+							ItemStack first = itemComponent.getFirst();
+							ItemStack second = itemComponent.getSecond();
 
 							if (recipe.getFirstInput().test(first) && recipe.getSecondInput().test(second)) {
 								first.decrement(recipe.getFirstInput().testMatching(first).getCount());
@@ -144,9 +145,9 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyInventoryBl
 							}
 
 							if (isEmpty) {
-								items.setThird(output);
+								itemComponent.setThird(output);
 							} else {
-								items.getThird().increment(output.getCount());
+								itemComponent.getThird().increment(output.getCount());
 								shouldTry = true;
 							}
 
@@ -165,7 +166,7 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyInventoryBl
 			} else {
 				tickInactive();
 			}
-		});
+		}
 	}
 
 	@Override

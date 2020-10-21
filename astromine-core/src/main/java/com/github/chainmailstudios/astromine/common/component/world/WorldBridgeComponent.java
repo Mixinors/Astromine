@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.component.world;
 
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import dev.onyxstudios.cca.api.v3.component.Component;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
@@ -35,9 +37,10 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.utilities.VoxelShapeUtilities;
 import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
-import nerdhub.cardinal.components.api.component.Component;
 
 import com.google.common.collect.Sets;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Map;
 import java.util.Set;
 
@@ -115,7 +118,7 @@ public class WorldBridgeComponent implements Component {
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public void writeToNbt(CompoundTag tag) {
 		CompoundTag dataTag = new CompoundTag();
 
 		int k = 0;
@@ -142,12 +145,10 @@ public class WorldBridgeComponent implements Component {
 		}
 
 		tag.put("data", dataTag);
-
-		return tag;
 	}
 
 	@Override
-	public void fromTag(CompoundTag tag) {
+	public void readFromNbt(CompoundTag tag) {
 		CompoundTag dataTag = tag.getCompound("data");
 
 		for (String key : dataTag.getKeys()) {
@@ -159,6 +160,15 @@ public class WorldBridgeComponent implements Component {
 			for (String vecKey : vecTag.getKeys()) {
 				add(pos, BlockPos.fromLong(vecTag.getLong(vecKey)));
 			}
+		}
+	}
+
+	@Nullable
+	public static <V> WorldBridgeComponent get(V v) {
+		try {
+			return AstromineComponents.WORLD_BRIDGE_COMPONENT.get(v);
+		} catch (Exception justShutUpAlready) {
+			return null;
 		}
 	}
 }

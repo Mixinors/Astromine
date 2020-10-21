@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.chainmailstudios.astromine.common.utilities.*;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
@@ -39,11 +40,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 
 import com.google.gson.Gson;
@@ -76,12 +75,10 @@ public class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsumingRe
 		});
 	}
 
-	public boolean matches(FluidInventoryComponent fluidComponent) {
-		FluidHandler fluidHandler = FluidHandler.of(fluidComponent);
-
-		FluidVolume inputVolume = fluidHandler.getFirst();
-		FluidVolume firstOutputVolume = fluidHandler.getSecond();
-		FluidVolume secondOutputVolume = fluidHandler.getThird();
+	public boolean matches(FluidComponent fluidComponent) {
+		FluidVolume inputVolume = fluidComponent.getFirst();
+		FluidVolume firstOutputVolume = fluidComponent.getSecond();
+		FluidVolume secondOutputVolume = fluidComponent.getThird();
 
 		if (!input.test(inputVolume)) {
 			return false;

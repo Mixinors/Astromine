@@ -31,7 +31,7 @@ import net.minecraft.util.math.BlockPos;
 
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyItemScreenHandler;
 import com.github.chainmailstudios.astromine.common.widget.blade.HorizontalArrowWidget;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
@@ -67,7 +67,7 @@ public class CapacitorScreenHandler extends ComponentBlockEntityEnergyItemScreen
 		leftArrow.setSize(Size.of(22, 16));
 		leftArrow.setLimitSupplier(() -> 1);
 		leftArrow.setProgressSupplier(() -> {
-			ItemStack stack = blockEntity.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).getStack(0);
+			ItemStack stack = blockEntity.getItemComponent().getFirst();
 			if (!Energy.valid(stack))
 				return 0;
 			EnergyHandler handler = Energy.of(stack);
@@ -79,7 +79,7 @@ public class CapacitorScreenHandler extends ComponentBlockEntityEnergyItemScreen
 		rightArrow.setSize(Size.of(22, 16));
 		rightArrow.setLimitSupplier(() -> 1);
 		rightArrow.setProgressSupplier(() -> {
-			ItemStack stack = blockEntity.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).getStack(1);
+			ItemStack stack = blockEntity.getItemComponent().getSecond();
 			if (!Energy.valid(stack))
 				return 0;
 			EnergyHandler handler = Energy.of(stack);

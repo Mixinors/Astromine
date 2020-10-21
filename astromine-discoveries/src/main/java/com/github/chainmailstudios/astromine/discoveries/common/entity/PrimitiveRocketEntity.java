@@ -25,19 +25,16 @@
 package com.github.chainmailstudios.astromine.discoveries.common.entity;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.base.RocketEntity;
 import com.github.chainmailstudios.astromine.discoveries.common.screenhandler.RocketScreenHandler;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesDimensions;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesTags;
-import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFluids;
-import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
@@ -54,21 +51,8 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
-import com.github.chainmailstudios.astromine.discoveries.common.entity.base.RocketEntity;
-import com.github.chainmailstudios.astromine.discoveries.common.screenhandler.RocketScreenHandler;
-import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFluids;
-import io.netty.buffer.Unpooled;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 
@@ -117,15 +101,15 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 	}
 
 	@Override
-	public FluidInventoryComponent createFluidComponent() {
-		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1);
-		FluidHandler.of(fluidComponent).getFirst().setSize(Fraction.of(128));
+	public FluidComponent createFluidComponent() {
+		FluidComponent fluidComponent = SimpleFluidComponent.of(1);
+		fluidComponent.getFirst().setSize(Fraction.of(128));
 		return fluidComponent;
 	}
 
 	@Override
-	public ItemInventoryComponent createItemComponent() {
-		return new SimpleItemInventoryComponent(2);
+	public ItemComponent createItemComponent() {
+		return SimpleItemComponent.of(2);
 	}
 
 	@Override

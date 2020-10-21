@@ -24,24 +24,19 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.utilities.VolumeUtilities;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidInventoryBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
-import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.FluidSizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
@@ -60,18 +55,18 @@ public abstract class TankBlockEntity extends ComponentFluidInventoryBlockEntity
 	private Fluid filter = Fluids.EMPTY;
 
 	@Override
-	protected FluidInventoryComponent createFluidComponent() {
-		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(1).withInsertPredicate((direction, volume, slot) -> {
+	protected FluidComponent createFluidComponent() {
+		FluidComponent fluidComponent = SimpleFluidComponent.of(1).withInsertPredicate((direction, volume, slot) -> {
 			return slot == 0 && (filter == Fluids.EMPTY || volume.getFluid() == filter);
 		});
 
-		FluidHandler.of(fluidComponent).getFirst().setSize(getFluidSize());
+		fluidComponent.getFirst().setSize(getFluidSize());
 		return fluidComponent;
 	}
 
 	@Override
-	protected ItemInventoryComponent createItemComponent() {
-		return new SimpleItemInventoryComponent(2).withInsertPredicate((direction, stack, slot) -> {
+	protected ItemComponent createItemComponent() {
+		return SimpleItemComponent.of(2).withInsertPredicate((direction, stack, slot) -> {
 			return slot == 0;
 		}).withExtractPredicate((direction, stack, slot) -> {
 			return slot == 1;
@@ -93,47 +88,7 @@ public abstract class TankBlockEntity extends ComponentFluidInventoryBlockEntity
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		FluidHandler.ofOptional(this).ifPresent(fluids -> {
-			ItemHandler.ofOptional(this).ifPresent(items -> {
-				FluidHandler.ofOptional(items.getFirst()).ifPresent(stackFluids -> {
-					FluidVolume ourVolume = fluids.getFirst();
-					FluidVolume stackVolume = stackFluids.getFirst();
-
-					if (ourVolume.test(stackVolume.getFluid())) {
-						if (items.getFirst().getItem() instanceof BucketItem) {
-							if (items.getFirst().getItem() != Items.BUCKET && items.getFirst().getCount() == 1) {
-								if (ourVolume.hasAvailable(Fraction.bucket()) || ourVolume.isEmpty()) {
-									ourVolume.moveFrom(stackVolume, Fraction.bucket());
-
-									items.setFirst(new ItemStack(Items.BUCKET));
-								}
-							}
-						} else {
-							ourVolume.moveFrom(stackVolume, Fraction.bucket());
-						}
-					}
-				});
-
-				FluidHandler.ofOptional(items.getSecond()).ifPresent(stackFluids -> {
-					FluidVolume ourVolume = fluids.getFirst();
-					FluidVolume stackVolume = stackFluids.getFirst();
-
-					if (stackVolume.test(ourVolume.getFluid())) {
-						if (items.getSecond().getItem() instanceof BucketItem) {
-							if (items.getSecond().getItem() == Items.BUCKET && items.getSecond().getCount() == 1) {
-								if (ourVolume.hasStored(Fraction.bucket())) {
-									ourVolume.add(stackVolume, Fraction.bucket());
-
-									items.setSecond(new ItemStack(stackVolume.getFluid().getBucketItem()));
-								}
-							}
-						} else {
-							ourVolume.add(stackVolume, Fraction.bucket());
-						}
-					}
-				});
-			});
-		});
+		VolumeUtilities.transferBetweenFirstAndSecond(fluidComponent, itemComponent);
 	}
 
 	@Override
@@ -257,10 +212,8 @@ public abstract class TankBlockEntity extends ComponentFluidInventoryBlockEntity
 		public void tick() {
 			super.tick();
 
-			FluidHandler.ofOptional(fluidComponent).ifPresent(fluids -> {
-				fluids.getFirst().setAmount(Fraction.of(Long.MAX_VALUE));
-				fluids.getFirst().setSize(Fraction.of(Long.MAX_VALUE));
-			});
+			fluidComponent.getFirst().setAmount(Fraction.of(Long.MAX_VALUE));
+			fluidComponent.getFirst().setSize(Fraction.of(Long.MAX_VALUE));
 		}
 	}
 }

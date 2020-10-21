@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.component.world;
 
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import dev.onyxstudios.cca.api.v3.component.Component;
 import net.fabricmc.fabric.api.util.NbtType;
 
 import net.minecraft.nbt.CompoundTag;
@@ -40,10 +42,10 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
 import com.github.chainmailstudios.astromine.common.network.NetworkNode;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkTypeRegistry;
-import nerdhub.cardinal.components.api.component.Component;
-import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.Sets;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Set;
 
 public class WorldNetworkComponent implements Component, Tickable {
@@ -77,8 +79,7 @@ public class WorldNetworkComponent implements Component, Tickable {
 	}
 
 	@Override
-	@NotNull
-	public CompoundTag toTag(CompoundTag tag) {
+	public void writeToNbt(CompoundTag tag) {
 		ListTag instanceTags = new ListTag();
 
 		for (NetworkInstance instance : instances) {
@@ -103,12 +104,10 @@ public class WorldNetworkComponent implements Component, Tickable {
 		}
 
 		tag.put("instanceTags", instanceTags);
-
-		return tag;
 	}
 
 	@Override
-	public void fromTag(CompoundTag tag) {
+	public void readFromNbt(CompoundTag tag) {
 		ListTag instanceTags = tag.getList("instanceTags", NbtType.COMPOUND);
 		for (Tag instanceTag : instanceTags) {
 			CompoundTag dataTag = (CompoundTag) instanceTag;
@@ -138,5 +137,14 @@ public class WorldNetworkComponent implements Component, Tickable {
 	public void tick() {
 		this.instances.removeIf(NetworkInstance::isStupidlyEmpty);
 		this.instances.forEach(NetworkInstance::tick);
+	}
+
+	@Nullable
+	public static <V> WorldNetworkComponent get(V v) {
+		try {
+			return AstromineComponents.WORLD_NETWORK_COMPONENT.get(v);
+		} catch (Exception justShutUpAlready) {
+			return null;
+		}
 	}
 }

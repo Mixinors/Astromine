@@ -24,6 +24,10 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry.client;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import dev.onyxstudios.cca.api.v3.component.ComponentContainer;
+import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 
@@ -33,7 +37,6 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
 import com.github.chainmailstudios.astromine.common.callback.SkyPropertiesCallback;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
 import com.github.chainmailstudios.astromine.discoveries.client.render.sky.MarsSkyProperties;
 import com.github.chainmailstudios.astromine.discoveries.client.render.sky.MoonSkyProperties;
 import com.github.chainmailstudios.astromine.discoveries.client.render.sky.SpaceSkyProperties;
@@ -43,9 +46,8 @@ import com.github.chainmailstudios.astromine.discoveries.common.item.SpaceSuitIt
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesDimensions;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesEntityTypes;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesItems;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.client.AstromineClientCallbacks;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
 
 import java.util.UUID;
 
@@ -60,10 +62,14 @@ public class AstromineDiscoveriesClientCallbacks extends AstromineClientCallback
 		ItemTooltipCallback.EVENT.register(((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof SpaceSuitItem) {
 				if (stack.getItem() == AstromineDiscoveriesItems.SPACE_SUIT_CHESTPLATE) {
-					FluidInventoryComponent fluidComponent = ComponentProvider.fromItemStack(stack).getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+					FluidComponent fluidComponent = FluidComponent.get(stack);
 
-					fluidComponent.getContents().forEach((key, value) -> {
-						tooltip.add(new LiteralText(value.getAmount().toFractionalString() + " | " + new TranslatableText(value.getFluid().getDefaultState().getBlockState().getBlock().getTranslationKey()).getString()).formatted(Formatting.GRAY));
+					fluidComponent.forEach((entry) -> {
+						int slot = entry.getKey();
+
+						FluidVolume volume = entry.getValue();
+
+						tooltip.add(new LiteralText(volume.getAmount().toFractionalString() + " | " + new TranslatableText(volume.getFluid().getDefaultState().getBlockState().getBlock().getTranslationKey()).getString()).formatted(Formatting.GRAY));
 					});
 				}
 			}

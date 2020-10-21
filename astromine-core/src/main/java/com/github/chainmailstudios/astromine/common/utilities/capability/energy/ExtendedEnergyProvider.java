@@ -24,11 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.utilities.capability.energy;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
-import com.github.chainmailstudios.astromine.common.volume.handler.TransferHandler;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import team.reborn.energy.EnergySide;
 import team.reborn.energy.EnergyStorage;
 import team.reborn.energy.EnergyTier;
@@ -48,13 +48,15 @@ public interface ExtendedEnergyProvider extends EnergyStorage, ComponentProvider
 	default double getMaxInput(EnergySide side) {
 		boolean[] allow = { true };
 
-		TransferHandler.of(this).ifPresent(transferHandler -> {
-			transferHandler.withDirection(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, EnergyUtilities.toDirection(side), type -> {
+		BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(this);
+
+		if (transferComponent != null) {
+			transferComponent.withDirection(AstromineComponents.ENERGY_INVENTORY_COMPONENT, EnergyUtilities.toDirection(side), type -> {
 				if (type.isDisabled() || (!type.canInsert() && !type.isNone())) {
 					allow[0] = false;
 				}
 			});
-		});
+		}
 
 		if (!allow[0]) {
 			return 0;
@@ -67,13 +69,15 @@ public interface ExtendedEnergyProvider extends EnergyStorage, ComponentProvider
 	default double getMaxOutput(EnergySide side) {
 		boolean[] allow = { true };
 
-		TransferHandler.of(this).ifPresent(transferHandler -> {
-			transferHandler.withDirection(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, EnergyUtilities.toDirection(side), type -> {
+		BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(this);
+
+		if (transferComponent != null) {
+			transferComponent.withDirection(AstromineComponents.ENERGY_INVENTORY_COMPONENT, EnergyUtilities.toDirection(side), type -> {
 				if (type.isDisabled() || (!type.canExtract() && !type.isNone())) {
 					allow[0] = false;
 				}
 			});
-		});
+		}
 
 		if (!allow[0]) {
 			return 0;
@@ -92,5 +96,5 @@ public interface ExtendedEnergyProvider extends EnergyStorage, ComponentProvider
 		return EnergyTier.INSANE;
 	}
 
-	EnergyInventoryComponent getEnergyComponent();
+	EnergyComponent getEnergyComponent();
 }

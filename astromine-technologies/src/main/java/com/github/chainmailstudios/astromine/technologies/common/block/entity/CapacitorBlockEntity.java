@@ -29,10 +29,10 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.InfiniteEnergyVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
@@ -50,8 +50,8 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyInventoryBlock
 	}
 
 	@Override
-	protected ItemInventoryComponent createItemComponent() {
-		return new SimpleItemInventoryComponent(2).withInsertPredicate((direction, stack, slot) -> {
+	protected ItemComponent createItemComponent() {
+		return SimpleItemComponent.of(2).withInsertPredicate((direction, stack, slot) -> {
 			return slot == 0;
 		}).withExtractPredicate((direction, stack, slot) -> {
 			return slot == 1;
@@ -59,8 +59,8 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyInventoryBlock
 	}
 
 	@Override
-	protected EnergyInventoryComponent createEnergyComponent() {
-		return new SimpleEnergyInventoryComponent(getEnergySize());
+	protected EnergyComponent createEnergyComponent() {
+		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
 	@Override
@@ -173,8 +173,8 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyInventoryBlock
 		}
 
 		@Override
-		protected EnergyInventoryComponent createEnergyComponent() {
-			return new SimpleEnergyInventoryComponent(InfiniteEnergyVolume.of());
+		protected EnergyComponent createEnergyComponent() {
+			return SimpleEnergyComponent.of(InfiniteEnergyVolume.of());
 		}
 
 		@Override

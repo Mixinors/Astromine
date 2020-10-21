@@ -35,17 +35,17 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.InventoryFromItemComponent;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlockEntityTypes;
 
-public class AltarPedestalBlockEntity extends BlockEntity implements ItemInventoryFromInventoryComponent, Tickable, BlockEntityClientSerializable {
+public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFromItemComponent, Tickable, BlockEntityClientSerializable {
 	public BlockPos parent;
 	private int spinAge;
 	private int lastSpinAddition;
 	private int yAge;
-	private ItemInventoryComponent inventory = new SimpleItemInventoryComponent(1).withListener(inventory -> {
+	private ItemComponent inventory = SimpleItemComponent.of(1).withListener(inventory -> {
 		if (hasWorld() && !world.isClient) {
 			sync();
 			world.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1, 1);
@@ -57,7 +57,7 @@ public class AltarPedestalBlockEntity extends BlockEntity implements ItemInvento
 	}
 
 	@Override
-	public ItemInventoryComponent getItemComponent() {
+	public ItemComponent getItemComponent() {
 		return inventory;
 	}
 
@@ -119,7 +119,7 @@ public class AltarPedestalBlockEntity extends BlockEntity implements ItemInvento
 	@Override
 	public void fromTag(BlockState state, CompoundTag tag) {
 		super.fromTag(state, tag);
-		inventory.fromTag(tag);
+		inventory.readFromNbt(tag);
 		if (tag.contains("parent"))
 			parent = BlockPos.fromLong(tag.getLong("parent"));
 		else parent = null;
@@ -127,7 +127,7 @@ public class AltarPedestalBlockEntity extends BlockEntity implements ItemInvento
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		inventory.toTag(tag);
+		inventory.writeToNbt(tag);
 		if (parent != null)
 			tag.putLong("parent", parent.asLong());
 		return super.toTag(tag);

@@ -27,8 +27,8 @@ package com.github.chainmailstudios.astromine.common.entity.base;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 
 public abstract class ComponentItemEntity extends ComponentEntity {
@@ -36,9 +36,9 @@ public abstract class ComponentItemEntity extends ComponentEntity {
 		super(type, world);
 	}
 
-	public abstract ItemInventoryComponent createItemComponent();
+	public abstract ItemComponent createItemComponent();
 
-	public ItemInventoryComponent getItemComponent() {
-		return ComponentProvider.fromEntity(this).getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT);
+	public ItemComponent getItemComponent() {
+		return ItemComponent.get(this);
 	}
 }

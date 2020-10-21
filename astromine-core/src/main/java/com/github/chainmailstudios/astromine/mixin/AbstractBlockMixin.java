@@ -24,6 +24,10 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -48,9 +52,7 @@ import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.utilities.data.Holder;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
-import com.github.chainmailstudios.astromine.common.volume.handler.TransferHandler;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 
 import java.util.Optional;
 
@@ -68,17 +70,15 @@ public class AbstractBlockMixin {
 
 		final boolean isFluidVolumeItem = stackItem instanceof FluidVolumeItem;
 
-		final Optional<FluidHandler> handler = FluidHandler.ofOptional(stack);
+		final FluidComponent stackFluidComponent = FluidComponent.get(stack);
 
 		if (state.getBlock().hasBlockEntity()) {
-			final Optional<TransferHandler> optionalTransferHandler = TransferHandler.of(world.getBlockEntity(pos));
+			BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(world.getBlockEntity(pos));
 
-			if (optionalTransferHandler.isPresent()) {
-				TransferHandler transferHandler = optionalTransferHandler.get();
-
+			if (transferComponent != null) {
 				Holder<TransferType> typeHolder = Holder.of(null);
 
-				transferHandler.withDirection(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, result.getSide(), (type) -> {
+				transferComponent.withDirection(AstromineComponents.FLUID_INVENTORY_COMPONENT, result.getSide(), (type) -> {
 					typeHolder.set(type);
 				});
 
@@ -90,67 +90,64 @@ public class AbstractBlockMixin {
 
 		final Holder<Boolean> shouldSkip = Holder.of(false);
 
-		handler.ifPresent(stackHandler -> {
+		if (stackFluidComponent != null) {
 			final Block block = state.getBlock();
 
 			if (block.hasBlockEntity()) {
 				final BlockEntity blockEntity = world.getBlockEntity(pos);
 
-				FluidHandler.ofOptional(blockEntity).ifPresent(blockEntityHandler -> {
-					stackHandler.withVolume(0, (optionalStackVolume) -> {
-						optionalStackVolume.ifPresent((stackVolume) -> {
-							if (stackVolume.isEmpty()) {
-								blockEntityHandler.withFirstExtractable(result.getSide(), (optionalFirstExtractable) -> {
-									optionalFirstExtractable.ifPresent((firstExtractable) -> {
-										if (isBucket) {
-											firstExtractable.ifStored(Fraction.bucket(), () -> {
-												if (stack.getCount() == 1 || (player.inventory.getEmptySlot() == -1 && stack.getCount() == 1)) {
-													stackVolume.moveFrom(firstExtractable, Fraction.bucket());
-													player.setStackInHand(hand, new ItemStack(stackVolume.getFluid().getBucketItem()));
-												} else if (player.inventory.getEmptySlot() != -1 && stack.getCount() > 1) {
-													stackVolume.moveFrom(firstExtractable, Fraction.bucket());
-													stack.decrement(1);
-													player.giveItemStack(new ItemStack(stackVolume.getFluid().getBucketItem()));
-												}
-											});
-										} else {
-											stackVolume.moveFrom(firstExtractable, Fraction.bucket());
-										}
-									});
-								});
-							} else {
-								blockEntityHandler.withFirstInsertable(result.getSide(), stackVolume.getFluid(), (optionalFirstInsertable) -> {
-									optionalFirstInsertable.ifPresent((firstInsertable) -> {
-										if (isBucket) {
-											firstInsertable.ifAvailable(Fraction.bucket(), () -> {
-												if (stack.getCount() == 1 || (player.inventory.getEmptySlot() == -1 && stack.getCount() == 1)) {
-													firstInsertable.moveFrom(stackVolume, Fraction.bucket());
+				FluidComponent blockEntityFluidComponent = FluidComponent.get(blockEntity);
 
-													if (!player.isCreative()) {
-														player.setStackInHand(hand, new ItemStack(Items.BUCKET));
-													}
-												} else if (player.inventory.getEmptySlot() != -1 && stack.getCount() > 1) {
-													firstInsertable.moveFrom(stackVolume, Fraction.bucket());
+				ItemComponent blockEntityItemComponent = ItemComponent.get(blockEntity);
 
-													if (!player.isCreative()) {
-														stack.decrement(1);
-														player.giveItemStack(new ItemStack(Items.BUCKET));
-													}
-												}
-											});
-										} else {
-											firstInsertable.moveFrom(stackVolume, Fraction.bucket());
-										}
-									});
-								});
+				if (blockEntityFluidComponent != null) {
+					FluidVolume stackVolume = blockEntityFluidComponent.getFirst();
+
+					if (stackVolume.isEmpty()) {
+						FluidVolume extractable = blockEntityFluidComponent.getFirstExtractableVolume(result.getSide());
+
+						if (isBucket) {
+							if (extractable.hasStored(Fraction.bucket())) {
+								if (stack.getCount() == 1 || (player.inventory.getEmptySlot() == -1 && stack.getCount() == 1)) {
+									stackVolume.moveFrom(extractable, Fraction.bucket());
+									player.setStackInHand(hand, new ItemStack(stackVolume.getFluid().getBucketItem()));
+								} else if (player.inventory.getEmptySlot() != -1 && stack.getCount() > 1) {
+									stackVolume.moveFrom(extractable, Fraction.bucket());
+									stack.decrement(1);
+									player.giveItemStack(new ItemStack(stackVolume.getFluid().getBucketItem()));
+								}
 							}
+						} else {
+							stackVolume.moveFrom(extractable, Fraction.bucket());
+						}
+					} else {
+						FluidVolume insertable = blockEntityFluidComponent.getFirstInsertableVolume(result.getSide(), stackVolume);
 
-							shouldSkip.set(true);
-						});
-					});
-				});
+						if (isBucket) {
+							if (insertable.hasAvailable(Fraction.bucket())) {
+								if (stack.getCount() == 1 || (player.inventory.getEmptySlot() == -1 && stack.getCount() == 1)) {
+									insertable.moveFrom(stackVolume, Fraction.bucket());
+									if (!player.isCreative()) {
+										player.setStackInHand(hand, new ItemStack(Items.BUCKET));
+									}
+								} else if (player.inventory.getEmptySlot() != -1 && stack.getCount() > 1) {
+									insertable.moveFrom(stackVolume, Fraction.bucket());
+									if (!player.isCreative()) {
+										stack.decrement(1);
+										player.giveItemStack(new ItemStack(Items.BUCKET));
+									}
+								}
+							} else {
+								insertable.moveFrom(stackVolume, Fraction.bucket());
+							}
+						} else {
+						}
+					}
+
+					shouldSkip.set(true);
+				}
 			}
-		});
+		}
 
 		if (shouldSkip.get()) {
 			cir.setReturnValue(ActionResult.SUCCESS);

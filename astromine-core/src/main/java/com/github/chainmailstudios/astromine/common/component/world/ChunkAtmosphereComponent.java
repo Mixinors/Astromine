@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.component.world;
 
+import dev.onyxstudios.cca.api.v3.component.Component;
+import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 
 import net.minecraft.block.BlockState;
@@ -40,19 +42,20 @@ import net.minecraft.world.chunk.Chunk;
 import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import nerdhub.cardinal.components.api.ComponentType;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
-import nerdhub.cardinal.components.api.component.extension.CopyableComponent;
 
 import com.google.common.collect.Lists;
+import net.minecraft.world.chunk.ReadOnlyChunk;
+import net.minecraft.world.chunk.WorldChunk;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
+public class ChunkAtmosphereComponent implements Component, ServerTickingComponent {
 	private final List<Direction> directions = Lists.newArrayList(Direction.values());
 
 	private final Map<BlockPos, FluidVolume> volumes = new ConcurrentHashMap<>();
@@ -60,9 +63,16 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 	private final World world;
 	private final Chunk chunk;
 
-	public ChunkAtmosphereComponent(World world, Chunk chunk) {
-		this.world = world;
-		this.chunk = chunk;
+	public int atmosphereTickCounter = 0;
+
+	public ChunkAtmosphereComponent(Chunk chunk) {
+		if (chunk instanceof WorldChunk) {
+			this.world = ((WorldChunk) chunk).getWorld();
+			this.chunk = chunk;
+		} else {
+			this.world = null;
+			this.chunk = null;
+		}
 	}
 
 	public static boolean isInChunk(ChunkPos chunkPos, BlockPos pos) {
@@ -95,10 +105,14 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 	}
 
 	public FluidVolume get(BlockPos position) {
+		if (world == null) return FluidVolume.empty();
+
 		return volumes.getOrDefault(position, FluidVolume.empty());
 	}
 
 	public void add(BlockPos blockPos, FluidVolume volume) {
+		if (world == null) return;
+
 		volumes.put(blockPos, volume);
 
 		if (!world.isClient) {
@@ -109,6 +123,8 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 	}
 
 	public void remove(BlockPos blockPos) {
+		if (world == null) return;
+
 		volumes.remove(blockPos);
 
 		if (!world.isClient) {
@@ -119,7 +135,17 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 	}
 
 	@Override
-	public void tick() {
+	public void serverTick() {
+		if (world == null) return;
+
+		if (atmosphereTickCounter < AstromineConfig.get().gasTickRate) {
+			atmosphereTickCounter++;
+		} else {
+			atmosphereTickCounter = 0;
+		}
+
+		if (!(atmosphereTickCounter == AstromineConfig.get().gasTickRate && world.isChunkLoaded(chunk.getPos().x, chunk.getPos().z))) return;
+
 		for (Map.Entry<BlockPos, FluidVolume> pair : volumes.entrySet()) {
 			BlockPos centerPos = pair.getKey();
 
@@ -156,9 +182,7 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 				} else {
 					ChunkPos neighborPos = getNeighborFromPos(sidePos);
 
-					ComponentProvider provider = ComponentProvider.fromChunk(world.getChunk(neighborPos.x, neighborPos.z));
-
-					ChunkAtmosphereComponent chunkAtmosphereComponent = provider.getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);
+					ChunkAtmosphereComponent chunkAtmosphereComponent = AstromineComponents.CHUNK_ATMOSPHERE_COMPONENT.get(world.getChunk(neighborPos.x, neighborPos.z));
 
 					FluidVolume sideVolume = chunkAtmosphereComponent.get(sidePos);
 
@@ -182,15 +206,21 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 	}
 
 	public boolean isInChunk(BlockPos pos) {
+		if (world == null) return false;
+
 		return isInChunk(chunk.getPos(), pos);
 	}
 
 	public ChunkPos getNeighborFromPos(BlockPos pos) {
+		if (world == null) return new ChunkPos(0, 0);
+
 		return getNeighborFromPos(chunk.getPos(), pos);
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public void writeToNbt(CompoundTag tag) {
+		if (world == null) return;
+
 		CompoundTag dataTag = new CompoundTag();
 
 		int i = 0;
@@ -205,12 +235,12 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 		}
 
 		tag.put("data", dataTag);
-
-		return tag;
 	}
 
 	@Override
-	public void fromTag(CompoundTag tag) {
+	public void readFromNbt(CompoundTag tag) {
+		if (world == null) return;
+
 		CompoundTag dataTag = tag.getCompound("data");
 
 		for (String key : dataTag.getKeys()) {
@@ -220,12 +250,9 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 		}
 	}
 
-	@Override
-	public ComponentType<?> getComponentType() {
-		return AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT;
-	}
-
 	public boolean isTraversableForPropagation(BlockState centerState, BlockPos centerPos, BlockState sideState, BlockPos sidePos, FluidVolume centerVolume, FluidVolume sideVolume, Direction direction) {
+		if (world == null) return false;
+
 		return !(Registry.BLOCK.getId(sideState.getBlock()).toString().equals("astromine:airlock") && !sideState.get(Properties.POWERED))
 				&& (sideState.isAir() || !sideState.isSideSolidFullSquare(world, sidePos, direction.getOpposite()))
 				&& (centerState.isAir() || !centerState.isSideSolidFullSquare(world, centerPos, direction)) && (sideVolume.isEmpty() || sideVolume.test(centerVolume.getFluid()))
@@ -234,9 +261,20 @@ public class ChunkAtmosphereComponent implements CopyableComponent, Tickable {
 	}
 
 	public boolean isTraversableForDisplacement(BlockState centerState, BlockPos centerPos, BlockState sideState, BlockPos sidePos, FluidVolume centerVolume, FluidVolume sideVolume, Direction direction) {
+		if (world == null) return false;
+
 		return !(Registry.BLOCK.getId(sideState.getBlock()).toString().equals("astromine:airlock") && !sideState.get(Properties.POWERED))
 				&& (sideState.isAir() || !sideState.isSideSolidFullSquare(world, sidePos, direction.getOpposite()))
 				&& (centerState.isAir() || !centerState.isSideSolidFullSquare(world, centerPos, direction)) && (sideVolume.isEmpty() || sideVolume.test(centerVolume.getFluid()))
 				&& (!sideState.isOpaqueFullCube(world, centerPos));
+	}
+
+	@Nullable
+	public static <V> ChunkAtmosphereComponent get(V v) {
+		try {
+			return AstromineComponents.CHUNK_ATMOSPHERE_COMPONENT.get(v);
+		} catch (Exception justShutUpAlready) {
+			return null;
+		}
 	}
 }
