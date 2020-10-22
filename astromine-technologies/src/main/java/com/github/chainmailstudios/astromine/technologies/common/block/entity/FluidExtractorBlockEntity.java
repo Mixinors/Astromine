@@ -55,14 +55,14 @@ public class FluidExtractorBlockEntity extends ComponentEnergyFluidBlockEntity i
 	}
 
 	@Override
-	protected FluidComponent createFluidComponent() {
+	public FluidComponent createFluidComponent() {
 		FluidComponent fluidComponent = SimpleFluidComponent.of(1);
 		fluidComponent.getFirst().setSize(Fraction.of(8));
 		return fluidComponent;
 	}
 
 	@Override
-	protected EnergyComponent createEnergyComponent() {
+	public EnergyComponent createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
@@ -88,7 +88,7 @@ public class FluidExtractorBlockEntity extends ComponentEnergyFluidBlockEntity i
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-
+		FluidComponent fluidComponent = getFluidComponent();
 
 		if (fluidComponent != null) {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();

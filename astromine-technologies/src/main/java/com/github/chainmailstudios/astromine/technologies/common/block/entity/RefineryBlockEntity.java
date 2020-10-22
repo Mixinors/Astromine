@@ -62,18 +62,18 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 	}
 
 	@Override
-	protected EnergyComponent createEnergyComponent() {
+	public EnergyComponent createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
 	@Override
-	protected FluidComponent createFluidComponent() {
+	public FluidComponent createFluidComponent() {
 		FluidComponent fluidComponent = SimpleFluidComponent.of(8).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0) {
 				return false;
 			}
 
-			Fluid existing = this.fluidComponent.getVolume(0).getFluid();
+			Fluid existing = getFluidComponent().getFirst().getFluid();
 
 			Fluid inserting = volume.getFluid();
 
@@ -103,6 +103,8 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 
 		if (world == null || world.isClient || !tickRedstone())
 			return;
+
+		FluidComponent fluidComponent = getFluidComponent();
 
 		if (fluidComponent != null) {
 			EnergyVolume volume = getEnergyComponent().getVolume();

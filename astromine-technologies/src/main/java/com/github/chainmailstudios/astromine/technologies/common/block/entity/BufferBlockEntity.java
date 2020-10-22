@@ -43,7 +43,7 @@ public abstract class BufferBlockEntity extends ComponentInventoryBlockEntity {
 		}
 
 		@Override
-		protected ItemComponent createItemComponent() {
+		public ItemComponent createItemComponent() {
 			return SimpleItemComponent.of(6 * 9);
 		}
 	}
@@ -54,7 +54,7 @@ public abstract class BufferBlockEntity extends ComponentInventoryBlockEntity {
 		}
 
 		@Override
-		protected ItemComponent createItemComponent() {
+		public ItemComponent createItemComponent() {
 			return SimpleItemComponent.of(12 * 9);
 		}
 	}
@@ -65,7 +65,7 @@ public abstract class BufferBlockEntity extends ComponentInventoryBlockEntity {
 		}
 
 		@Override
-		protected ItemComponent createItemComponent() {
+		public ItemComponent createItemComponent() {
 			return SimpleItemComponent.of(18 * 9);
 		}
 	}
@@ -76,7 +76,7 @@ public abstract class BufferBlockEntity extends ComponentInventoryBlockEntity {
 		}
 
 		@Override
-		protected ItemComponent createItemComponent() {
+		public ItemComponent createItemComponent() {
 			return SimpleItemComponent.of(24 * 9);
 		}
 	}
@@ -87,12 +87,14 @@ public abstract class BufferBlockEntity extends ComponentInventoryBlockEntity {
 		}
 
 		@Override
-		protected ItemComponent createItemComponent() {
+		public ItemComponent createItemComponent() {
 			return SimpleItemComponent.of(6 * 9);
 		}
 
 		@Override
 		public void tick() {
+			ItemComponent itemComponent = getItemComponent();
+
 			if (itemComponent != null) {
 				itemComponent.forEach(entry -> {
 					ItemStack stack = entry.getValue();

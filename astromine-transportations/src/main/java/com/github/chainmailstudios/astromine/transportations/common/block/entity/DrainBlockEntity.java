@@ -16,12 +16,12 @@ public class DrainBlockEntity extends ComponentFluidBlockEntity implements Ticka
         super(AstromineTransportationsBlockEntityTypes.DRAIN);
 
         for (Direction direction : Direction.values()) {
-            transferComponent.get(AstromineComponents.FLUID_INVENTORY_COMPONENT).set(direction, TransferType.INPUT);
+            getTransferComponent().get(AstromineComponents.FLUID_INVENTORY_COMPONENT).set(direction, TransferType.INPUT);
         }
     }
 
     @Override
-    protected FluidComponent createFluidComponent() {
+    public FluidComponent createFluidComponent() {
         FluidComponent fluidComponent = SimpleFluidComponent.of(1).withInsertPredicate((direction, volume, slot) -> {
             return tickRedstone();
         });

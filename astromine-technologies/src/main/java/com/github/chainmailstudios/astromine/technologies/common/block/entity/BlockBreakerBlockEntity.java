@@ -36,7 +36,7 @@ import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
@@ -55,7 +55,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Optional;
 
-public class BlockBreakerBlockEntity extends ComponentEnergyInventoryBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
+public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	private Fraction cooldown = Fraction.empty();
 
 	public BlockBreakerBlockEntity() {
@@ -63,12 +63,12 @@ public class BlockBreakerBlockEntity extends ComponentEnergyInventoryBlockEntity
 	}
 
 	@Override
-	protected ItemComponent createItemComponent() {
+	public ItemComponent createItemComponent() {
 		return SimpleItemComponent.of(1);
 	}
 
 	@Override
-	protected EnergyComponent createEnergyComponent() {
+	public EnergyComponent createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
@@ -94,7 +94,7 @@ public class BlockBreakerBlockEntity extends ComponentEnergyInventoryBlockEntity
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-
+		ItemComponent itemComponent = getItemComponent();
 
 		if (itemComponent != null) {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();

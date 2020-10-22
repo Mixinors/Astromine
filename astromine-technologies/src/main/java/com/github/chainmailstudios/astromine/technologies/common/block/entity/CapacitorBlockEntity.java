@@ -28,7 +28,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
@@ -44,13 +44,13 @@ import com.github.chainmailstudios.astromine.technologies.registry.AstromineTech
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
-public abstract class CapacitorBlockEntity extends ComponentEnergyInventoryBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
 	public CapacitorBlockEntity(Block energyBlock, BlockEntityType<?> type) {
 		super(energyBlock, type);
 	}
 
 	@Override
-	protected ItemComponent createItemComponent() {
+	public ItemComponent createItemComponent() {
 		return SimpleItemComponent.of(2).withInsertPredicate((direction, stack, slot) -> {
 			return slot == 0;
 		}).withExtractPredicate((direction, stack, slot) -> {
@@ -59,7 +59,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyInventoryBlock
 	}
 
 	@Override
-	protected EnergyComponent createEnergyComponent() {
+	public EnergyComponent createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
@@ -69,6 +69,8 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyInventoryBlock
 
 		if (world == null || world.isClient || !tickRedstone())
 			return;
+
+		ItemComponent itemComponent = getItemComponent();
 
 		ItemStack inputStack = itemComponent.getStack(0);
 		if (Energy.valid(inputStack)) {
@@ -173,7 +175,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyInventoryBlock
 		}
 
 		@Override
-		protected EnergyComponent createEnergyComponent() {
+		public EnergyComponent createEnergyComponent() {
 			return SimpleEnergyComponent.of(InfiniteEnergyVolume.of());
 		}
 

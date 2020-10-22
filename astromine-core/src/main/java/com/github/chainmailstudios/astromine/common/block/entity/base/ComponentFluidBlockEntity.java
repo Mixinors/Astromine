@@ -30,18 +30,16 @@ import com.github.chainmailstudios.astromine.common.component.inventory.FluidCom
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 
 public abstract class ComponentFluidBlockEntity extends ComponentBlockEntity {
-	protected final FluidComponent fluidComponent = createFluidComponent();
-
 	public ComponentFluidBlockEntity(BlockEntityType<?> type) {
 		super(type);
 
-		addComponent(AstromineComponents.FLUID_INVENTORY_COMPONENT, fluidComponent);
-		fluidComponent.updateListeners();
+		addComponent(AstromineComponents.FLUID_INVENTORY_COMPONENT, getFluidComponent());
+		getFluidComponent().updateListeners();
 	}
 
-	protected abstract FluidComponent createFluidComponent();
+	public abstract FluidComponent createFluidComponent();
 
 	public FluidComponent getFluidComponent() {
-		return fluidComponent;
+		return FluidComponent.get(this);
 	}
 }

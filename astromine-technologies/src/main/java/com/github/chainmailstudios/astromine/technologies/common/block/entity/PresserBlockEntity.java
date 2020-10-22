@@ -31,7 +31,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.RecipeType;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
@@ -53,7 +53,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public abstract class PresserBlockEntity extends ComponentEnergyInventoryBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+public abstract class PresserBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
 	public double progress = 0;
 	public int limit = 100;
 	public boolean shouldTry = true;
@@ -65,7 +65,7 @@ public abstract class PresserBlockEntity extends ComponentEnergyInventoryBlockEn
 	}
 
 	@Override
-	protected ItemComponent createItemComponent() {
+	public ItemComponent createItemComponent() {
 		return SimpleItemComponent.of(2).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 1) {
 				return false;
@@ -81,7 +81,7 @@ public abstract class PresserBlockEntity extends ComponentEnergyInventoryBlockEn
 	}
 
 	@Override
-	protected EnergyComponent createEnergyComponent() {
+	public EnergyComponent createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
@@ -101,6 +101,8 @@ public abstract class PresserBlockEntity extends ComponentEnergyInventoryBlockEn
 
 		if (world == null || world.isClient || !tickRedstone())
 			return;
+
+		ItemComponent itemComponent = getItemComponent();
 
 		if (itemComponent != null) {
 			EnergyVolume volume = getEnergyComponent().getVolume();

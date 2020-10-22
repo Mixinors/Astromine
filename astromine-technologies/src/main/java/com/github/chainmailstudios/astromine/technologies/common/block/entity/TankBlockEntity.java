@@ -31,7 +31,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidInventoryBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
@@ -47,7 +47,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class TankBlockEntity extends ComponentFluidInventoryBlockEntity implements TierProvider, FluidSizeProvider, SpeedProvider {
+public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity implements TierProvider, FluidSizeProvider, SpeedProvider {
 	public TankBlockEntity(BlockEntityType<?> type) {
 		super(type);
 	}
@@ -55,7 +55,7 @@ public abstract class TankBlockEntity extends ComponentFluidInventoryBlockEntity
 	private Fluid filter = Fluids.EMPTY;
 
 	@Override
-	protected FluidComponent createFluidComponent() {
+	public FluidComponent createFluidComponent() {
 		FluidComponent fluidComponent = SimpleFluidComponent.of(1).withInsertPredicate((direction, volume, slot) -> {
 			return slot == 0 && (filter == Fluids.EMPTY || volume.getFluid() == filter);
 		});
@@ -65,7 +65,7 @@ public abstract class TankBlockEntity extends ComponentFluidInventoryBlockEntity
 	}
 
 	@Override
-	protected ItemComponent createItemComponent() {
+	public ItemComponent createItemComponent() {
 		return SimpleItemComponent.of(2).withInsertPredicate((direction, stack, slot) -> {
 			return slot == 0;
 		}).withExtractPredicate((direction, stack, slot) -> {
@@ -88,7 +88,7 @@ public abstract class TankBlockEntity extends ComponentFluidInventoryBlockEntity
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		VolumeUtilities.transferBetweenFirstAndSecond(fluidComponent, itemComponent);
+		VolumeUtilities.transferBetweenFirstAndSecond(getFluidComponent(), getItemComponent());
 	}
 
 	@Override
@@ -212,8 +212,8 @@ public abstract class TankBlockEntity extends ComponentFluidInventoryBlockEntity
 		public void tick() {
 			super.tick();
 
-			fluidComponent.getFirst().setAmount(Fraction.of(Long.MAX_VALUE));
-			fluidComponent.getFirst().setSize(Fraction.of(Long.MAX_VALUE));
+			getFluidComponent().getFirst().setAmount(Fraction.of(Long.MAX_VALUE));
+			getFluidComponent().getFirst().setSize(Fraction.of(Long.MAX_VALUE));
 		}
 	}
 }

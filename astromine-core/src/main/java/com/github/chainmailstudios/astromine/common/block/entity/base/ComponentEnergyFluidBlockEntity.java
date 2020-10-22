@@ -31,18 +31,16 @@ import net.minecraft.block.entity.BlockEntityType;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 
 public abstract class ComponentEnergyFluidBlockEntity extends ComponentEnergyBlockEntity {
-	protected final FluidComponent fluidComponent = createFluidComponent();
-
 	public ComponentEnergyFluidBlockEntity(Block energyBlock, BlockEntityType<?> type) {
 		super(energyBlock, type);
 
-		addComponent(AstromineComponents.FLUID_INVENTORY_COMPONENT, fluidComponent);
-		fluidComponent.updateListeners();
+		addComponent(AstromineComponents.FLUID_INVENTORY_COMPONENT, getFluidComponent());
+		getFluidComponent().updateListeners();
 	}
 
-	protected abstract FluidComponent createFluidComponent();
+	public abstract FluidComponent createFluidComponent();
 
 	public FluidComponent getFluidComponent() {
-		return fluidComponent;
+		return FluidComponent.get(this);
 	}
 }

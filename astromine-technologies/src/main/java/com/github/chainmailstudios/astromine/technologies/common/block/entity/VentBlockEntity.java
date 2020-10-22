@@ -50,18 +50,18 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 	public VentBlockEntity() {
 		super(AstromineTechnologiesBlocks.VENT, AstromineTechnologiesBlockEntityTypes.VENT);
 
-		fluidComponent.getVolume(0).setSize(new Fraction(AstromineConfig.get().ventFluid, 1));
+		getFluidComponent().getFirst().setSize(new Fraction(AstromineConfig.get().ventFluid, 1));
 	}
 
 	@Override
-	protected FluidComponent createFluidComponent() {
+	public FluidComponent createFluidComponent() {
 		FluidComponent fluidComponent = SimpleFluidComponent.of(1);
 		fluidComponent.getFirst().setSize(getFluidSize());
 		return fluidComponent;
 	}
 
 	@Override
-	protected EnergyComponent createEnergyComponent() {
+	public EnergyComponent createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
@@ -91,6 +91,8 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 
 		if (world == null || world.isClient || !tickRedstone())
 			return;
+
+		FluidComponent fluidComponent = getFluidComponent();
 
 		if (fluidComponent != null) {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();

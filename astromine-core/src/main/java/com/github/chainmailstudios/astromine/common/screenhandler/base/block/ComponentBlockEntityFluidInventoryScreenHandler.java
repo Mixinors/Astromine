@@ -28,21 +28,20 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidInventoryBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBarWidget;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 
 public class ComponentBlockEntityFluidInventoryScreenHandler extends ComponentBlockEntityScreenHandler {
-	public ComponentFluidInventoryBlockEntity blockEntity;
+	public ComponentFluidItemBlockEntity blockEntity;
 
 	public FluidVerticalBarWidget fluidBar;
 
 	public ComponentBlockEntityFluidInventoryScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 
-		blockEntity = (ComponentFluidInventoryBlockEntity) player.world.getBlockEntity(position);
+		blockEntity = (ComponentFluidItemBlockEntity) player.world.getBlockEntity(position);
 	}
 
 	@Override

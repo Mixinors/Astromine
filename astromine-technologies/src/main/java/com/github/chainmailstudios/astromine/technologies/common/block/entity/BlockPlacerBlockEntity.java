@@ -32,7 +32,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
@@ -47,7 +47,7 @@ import com.github.chainmailstudios.astromine.technologies.registry.AstromineTech
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import org.jetbrains.annotations.NotNull;
 
-public class BlockPlacerBlockEntity extends ComponentEnergyInventoryBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
+public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	private Fraction cooldown = Fraction.empty();
 
 	public BlockPlacerBlockEntity() {
@@ -55,12 +55,12 @@ public class BlockPlacerBlockEntity extends ComponentEnergyInventoryBlockEntity 
 	}
 
 	@Override
-	protected ItemComponent createItemComponent() {
+	public ItemComponent createItemComponent() {
 		return SimpleItemComponent.of(1);
 	}
 
 	@Override
-	protected EnergyComponent createEnergyComponent() {
+	public EnergyComponent createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
@@ -86,7 +86,7 @@ public class BlockPlacerBlockEntity extends ComponentEnergyInventoryBlockEntity 
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-
+		ItemComponent itemComponent = getItemComponent();
 
 		if (itemComponent != null) {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();

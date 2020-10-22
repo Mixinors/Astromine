@@ -59,23 +59,23 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 	public FluidMixerBlockEntity(Block energyBlock, BlockEntityType<?> type) {
 		super(energyBlock, type);
-		fluidComponent.addListener(() -> shouldTry = true);
+		getFluidComponent().addListener(() -> shouldTry = true);
 	}
 
 	@Override
-	protected EnergyComponent createEnergyComponent() {
+	public EnergyComponent createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
 	@Override
-	protected FluidComponent createFluidComponent() {
+	public FluidComponent createFluidComponent() {
 		FluidComponent fluidComponent = SimpleFluidComponent.of(3).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0 && slot != 1) {
 				return false;
 			}
 
-			Fluid firstExisting = this.fluidComponent.getVolume(0).getFluid();
-			Fluid secondExisting = this.fluidComponent.getVolume(1).getFluid();
+			Fluid firstExisting = getFluidComponent().getFirst().getFluid();
+			Fluid secondExisting = getFluidComponent().getSecond().getFluid();
 
 			Fluid inserting = volume.getFluid();
 
@@ -101,13 +101,13 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-
+		FluidComponent fluidComponent = getFluidComponent();
 
 		if (fluidComponent != null) {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(FluidMixingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof FluidMixingRecipe).filter(recipe -> ((FluidMixingRecipe) recipe).matches(this.fluidComponent)).findFirst();
+				optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(FluidMixingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof FluidMixingRecipe).filter(recipe -> ((FluidMixingRecipe) recipe).matches(fluidComponent)).findFirst();
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -119,7 +119,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 			if (optionalRecipe.isPresent()) {
 				FluidMixingRecipe recipe = optionalRecipe.get();
 
-				if (recipe.matches(this.fluidComponent)) {
+				if (recipe.matches(fluidComponent)) {
 					limit = recipe.getTime();
 
 					double speed = Math.min(getMachineSpeed(), limit - progress);

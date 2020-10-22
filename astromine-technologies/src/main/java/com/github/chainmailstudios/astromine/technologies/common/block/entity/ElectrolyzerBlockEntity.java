@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -31,10 +32,6 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.CompoundTag;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
@@ -62,18 +59,18 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 	}
 
 	@Override
-	protected EnergyComponent createEnergyComponent() {
+	public EnergyComponent createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
 	@Override
-	protected FluidComponent createFluidComponent() {
+	public FluidComponent createFluidComponent() {
 		FluidComponent fluidComponent = SimpleFluidComponent.of(3).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0) {
 				return false;
 			}
 
-			Fluid existing = this.fluidComponent.getVolume(0).getFluid();
+			Fluid existing = getFluidComponent().getFirst().getFluid();
 
 			Fluid inserting = volume.getFluid();
 
@@ -99,7 +96,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-
+		FluidComponent fluidComponent = getFluidComponent();
 
 		if (fluidComponent != null) {
 			EnergyVolume volume = getEnergyComponent().getVolume();

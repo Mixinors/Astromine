@@ -28,20 +28,20 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.widget.blade.EnergyVerticalBarWidget;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 
 public class ComponentBlockEntityEnergyItemScreenHandler extends ComponentBlockEntityScreenHandler {
-	public ComponentEnergyInventoryBlockEntity blockEntity;
+	public ComponentEnergyItemBlockEntity blockEntity;
 
 	public EnergyVerticalBarWidget energyBar;
 
 	public ComponentBlockEntityEnergyItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 
-		blockEntity = (ComponentEnergyInventoryBlockEntity) player.world.getBlockEntity(position);
+		blockEntity = (ComponentEnergyItemBlockEntity) player.world.getBlockEntity(position);
 	}
 
 	@Override

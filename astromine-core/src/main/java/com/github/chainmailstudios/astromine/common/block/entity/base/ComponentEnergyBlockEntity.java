@@ -32,19 +32,17 @@ import com.github.chainmailstudios.astromine.common.utilities.capability.energy.
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 
 public abstract class ComponentEnergyBlockEntity extends ComponentBlockEntity implements ExtendedEnergyProvider {
-	protected final EnergyComponent energyComponent = createEnergyComponent();
-
 	public ComponentEnergyBlockEntity(Block energyBlock, BlockEntityType<?> type) {
 		super(type);
 
-		transferComponent.add(AstromineComponents.ENERGY_INVENTORY_COMPONENT);
-		addComponent(AstromineComponents.ENERGY_INVENTORY_COMPONENT, energyComponent);
+		addComponent(AstromineComponents.ENERGY_INVENTORY_COMPONENT, getEnergyComponent());
+		getEnergyComponent().updateListeners();
 	}
 
-	protected abstract EnergyComponent createEnergyComponent();
+	public abstract EnergyComponent createEnergyComponent();
 
 	@Override
 	public EnergyComponent getEnergyComponent() {
-		return energyComponent;
+		return EnergyComponent.get(this);
 	}
 }

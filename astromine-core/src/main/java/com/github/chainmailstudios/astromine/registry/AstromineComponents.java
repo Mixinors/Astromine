@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.entity.base.*;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
@@ -39,6 +40,8 @@ import com.github.chainmailstudios.astromine.common.entity.base.*;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import dev.onyxstudios.cca.api.v3.block.BlockComponentFactoryRegistry;
+import dev.onyxstudios.cca.api.v3.block.BlockComponentInitializer;
 import dev.onyxstudios.cca.api.v3.chunk.ChunkComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.chunk.ChunkComponentInitializer;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
@@ -49,14 +52,10 @@ import dev.onyxstudios.cca.api.v3.item.ItemComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.item.ItemComponentInitializer;
 import dev.onyxstudios.cca.api.v3.world.WorldComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.world.WorldComponentInitializer;
-import nerdhub.cardinal.components.api.event.ChunkComponentCallback;
-import nerdhub.cardinal.components.api.event.EntityComponentCallback;
-import nerdhub.cardinal.components.api.event.WorldComponentCallback;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.world.chunk.WorldChunk;
 
-public class AstromineComponents implements WorldComponentInitializer, ChunkComponentInitializer, ItemComponentInitializer, EntityComponentInitializer {
+public class AstromineComponents implements WorldComponentInitializer, ChunkComponentInitializer, ItemComponentInitializer, EntityComponentInitializer, BlockComponentInitializer {
 	public static final ComponentKey<WorldNetworkComponent> WORLD_NETWORK_COMPONENT = ComponentRegistry.getOrCreate(AstromineCommon.identifier("world_network_component"), WorldNetworkComponent.class);
 	public static final ComponentKey<ChunkAtmosphereComponent> CHUNK_ATMOSPHERE_COMPONENT = ComponentRegistry.getOrCreate(AstromineCommon.identifier("chunk_atmosphere_component"), ChunkAtmosphereComponent.class);
 	public static final ComponentKey<WorldBridgeComponent> WORLD_BRIDGE_COMPONENT = ComponentRegistry.getOrCreate(AstromineCommon.identifier("world_bridge_component"), WorldBridgeComponent.class);
@@ -96,8 +95,8 @@ public class AstromineComponents implements WorldComponentInitializer, ChunkComp
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
 		registry.registerFor(LivingEntity.class, ENTITY_OXYGEN_COMPONENT, EntityOxygenComponent::new);
 
-		registry.registerFor(ComponentFluidInventoryEntity.class, FLUID_INVENTORY_COMPONENT, ComponentFluidInventoryEntity::createFluidComponent);
-		registry.registerFor(ComponentFluidInventoryEntity.class, ITEM_INVENTORY_COMPONENT, ComponentFluidInventoryEntity::createItemComponent);
+		registry.registerFor(ComponentFluidItemEntity.class, FLUID_INVENTORY_COMPONENT, ComponentFluidItemEntity::createFluidComponent);
+		registry.registerFor(ComponentFluidItemEntity.class, ITEM_INVENTORY_COMPONENT, ComponentFluidItemEntity::createItemComponent);
 
 		registry.registerFor(ComponentEnergyItemEntity.class, ITEM_INVENTORY_COMPONENT, ComponentEnergyItemEntity::createItemComponent);
 		registry.registerFor(ComponentEnergyItemEntity.class, ENERGY_INVENTORY_COMPONENT, ComponentEnergyItemEntity::createEnergyComponent);
@@ -107,5 +106,21 @@ public class AstromineComponents implements WorldComponentInitializer, ChunkComp
 		registry.registerFor(ComponentFluidEntity.class, FLUID_INVENTORY_COMPONENT, ComponentFluidEntity::createFluidComponent);
 
 		registry.registerFor(ComponentEnergyEntity.class, ENERGY_INVENTORY_COMPONENT, ComponentEnergyEntity::createEnergyComponent);
+	}
+
+	@Override
+	public void registerBlockComponentFactories(BlockComponentFactoryRegistry registry) {
+		registry.registerFor(ComponentBlockEntity.class, BLOCK_ENTITY_REDSTONE_COMPONENT, ComponentBlockEntity::createRedstoneComponent);
+		registry.registerFor(ComponentBlockEntity.class, BLOCK_ENTITY_TRANSFER_COMPONENT, ComponentBlockEntity::createTransferComponent);
+
+		registry.registerFor(ComponentFluidItemBlockEntity.class, FLUID_INVENTORY_COMPONENT, ComponentFluidBlockEntity::createFluidComponent);
+		registry.registerFor(ComponentFluidItemBlockEntity.class, ITEM_INVENTORY_COMPONENT, ComponentFluidItemBlockEntity::createItemComponent);
+
+		registry.registerFor(ComponentEnergyItemBlockEntity.class, ITEM_INVENTORY_COMPONENT, ComponentEnergyItemBlockEntity::createItemComponent);
+		registry.registerFor(ComponentEnergyItemBlockEntity.class, ENERGY_INVENTORY_COMPONENT, ComponentEnergyItemBlockEntity::createEnergyComponent);
+
+		registry.registerFor(ComponentFluidBlockEntity.class, FLUID_INVENTORY_COMPONENT, ComponentFluidBlockEntity::createFluidComponent);
+
+		registry.registerFor(ComponentEnergyBlockEntity.class, ENERGY_INVENTORY_COMPONENT, ComponentEnergyBlockEntity::createEnergyComponent);
 	}
 }

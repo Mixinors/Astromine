@@ -27,6 +27,7 @@ package com.github.chainmailstudios.astromine.common.block.entity.base;
 import alexiil.mc.lib.attributes.item.ItemInvUtil;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import dev.onyxstudios.cca.api.v3.block.BlockComponentProvider;
 import dev.onyxstudios.cca.api.v3.component.*;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.PacketContext;
@@ -67,11 +68,11 @@ import com.google.common.collect.Maps;
 import java.util.*;
 import java.util.function.BiConsumer;
 
-public abstract class ComponentBlockEntity extends net.minecraft.block.entity.BlockEntity implements dev.onyxstudios.cca.api.v3.component.ComponentProvider, PacketConsumer, BlockEntityClientSerializable, Tickable {
+public abstract class ComponentBlockEntity extends net.minecraft.block.entity.BlockEntity implements PacketConsumer, BlockEntityClientSerializable, Tickable {
 	public static final Identifier TRANSFER_UPDATE_PACKET = AstromineCommon.identifier("transfer_update_packet");
-	protected final BlockEntityTransferComponent transferComponent = new BlockEntityTransferComponent();
-	protected final BlockEntityRedstoneComponent redstoneComponent = new BlockEntityRedstoneComponent();
+
 	protected final Map<ComponentKey<?>, Component> allComponents = Maps.newHashMap();
+
 	protected final Map<Identifier, BiConsumer<PacketByteBuf, PacketContext>> allHandlers = Maps.newHashMap();
 
 	public boolean isActive = false;
@@ -89,7 +90,7 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 			Direction packetDirection = buffer.readEnumConstant(Direction.class);
 			TransferType packetTransferType = buffer.readEnumConstant(TransferType.class);
 
-			transferComponent.get(ComponentRegistry.get(packetIdentifier)).set(packetDirection, packetTransferType);
+			getTransferComponent().get(ComponentRegistry.get(packetIdentifier)).set(packetDirection, packetTransferType);
 			markDirty();
 			sync();
 		}));
@@ -101,7 +102,7 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 
 	public void addComponent(ComponentKey<?> type, Component component) {
 		allComponents.put(type, component);
-		transferComponent.add(type);
+		getTransferComponent().add(type);
 	}
 
 	public void addConsumer(Identifier identifier, BiConsumer<PacketByteBuf, PacketContext> consumer) {
@@ -116,10 +117,10 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
 		CompoundTag transferTag = new CompoundTag();
-		transferComponent.writeToNbt(transferTag);
+		getTransferComponent().writeToNbt(transferTag);
 
 		CompoundTag redstoneTag = new CompoundTag();
-		redstoneComponent.writeToNbt(redstoneTag);
+		getRedstoneComponent().writeToNbt(redstoneTag);
 
 		tag.put("transfer", transferTag);
 		tag.put("redstone", redstoneTag);
@@ -136,8 +137,8 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 
 	@Override
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		transferComponent.readFromNbt(tag.getCompound("transfer"));
-		redstoneComponent.readFromNbt(tag.getCompound("redstone"));
+		getTransferComponent().readFromNbt(tag.getCompound("transfer"));
+		getRedstoneComponent().readFromNbt(tag.getCompound("redstone"));
 
 		allComponents.forEach((type, component) -> {
 			if (tag.contains(type.getId().toString())) {
@@ -183,14 +184,14 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 
 				// Handle Item Siding
 				if (this instanceof ExtendedComponentSidedInventoryProvider) {
-					if (!transferComponent.get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(offsetDirection).isDefault()) {
+					if (!getTransferComponent().get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(offsetDirection).isDefault()) {
 						// input
 						ItemExtractable neighbor = ItemAttributes.EXTRACTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
 						ItemInsertable self = ItemAttributes.INSERTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
 
 						ItemInvUtil.move(neighbor, self, 1);
 					}
-					if (!transferComponent.get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(offsetDirection).isDefault()) {
+					if (!getTransferComponent().get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(offsetDirection).isDefault()) {
 						// output
 						ItemExtractable self = ItemAttributes.EXTRACTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
 						ItemInsertable neighbor = ItemAttributes.INSERTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
@@ -200,7 +201,7 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 				}
 
 				// Handle fluid siding
-				if (fluidComponent != null && transferComponent.get(AstromineComponents.FLUID_INVENTORY_COMPONENT).get(offsetDirection).canExtract()) {
+				if (fluidComponent != null && getTransferComponent().get(AstromineComponents.FLUID_INVENTORY_COMPONENT).get(offsetDirection).canExtract()) {
 					FluidComponent neighborFluidComponent = null;
 					if (neighborTransferComponent != null) {
 						// Get via astromine siding
@@ -220,7 +221,7 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 				}
 
 				// Handle energy siding
-				if (TransportUtilities.isExtractingEnergy(this, transferComponent, offsetDirection)) {
+				if (TransportUtilities.isExtractingEnergy(this, getTransferComponent(), offsetDirection)) {
 					if (TransportUtilities.isInsertingEnergy(neighborBlockEntity, neighborTransferComponent, neighborDirection)) {
 						energyTransfers.add(new Pair<>(Energy.of(this).side(offsetDirection), Energy.of(neighborBlockEntity).side(neighborDirection)));
 					}
@@ -261,7 +262,7 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 	public boolean tickRedstone() {
 		boolean powered = world.getReceivedRedstonePower(getPos()) > 0;
 
-		switch (redstoneComponent.getType()) {
+		switch (getRedstoneComponent().getType()) {
 			case WORK_WHEN_ON: {
 				if (powered) tickActive(); else tickInactive();
 				return powered;
@@ -279,26 +280,19 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 		}
 	}
 
-	@Nullable
-	@Override
-	public ComponentContainer getComponentContainer() {
-		ComponentContainer.Factory.Builder builder = ComponentContainer.Factory.builder(ComponentBlockEntity.class);
-
-		builder.component(AstromineComponents.BLOCK_ENTITY_TRANSFER_COMPONENT, (it) -> transferComponent);
-		builder.component(AstromineComponents.BLOCK_ENTITY_REDSTONE_COMPONENT, (it) -> redstoneComponent);
-
-		allComponents.forEach((key, component) -> builder.component(key, (it) -> component));
-
-		return builder.build().createContainer(this);
+	public BlockEntityTransferComponent createTransferComponent() {
+		return new BlockEntityTransferComponent();
 	}
 
-	@Override
-	public Iterator<ServerPlayerEntity> getRecipientsForComponentSync() {
-		return Collections.emptyIterator();
+	public BlockEntityRedstoneComponent createRedstoneComponent() {
+		return new BlockEntityRedstoneComponent();
 	}
 
-	@Override
-	public boolean supportsCustomComponentPacketWriters() {
-		return false;
+	public BlockEntityTransferComponent getTransferComponent() {
+		return BlockEntityTransferComponent.get(this);
+	}
+
+	public BlockEntityRedstoneComponent getRedstoneComponent() {
+		return BlockEntityRedstoneComponent.get(this);
 	}
 }

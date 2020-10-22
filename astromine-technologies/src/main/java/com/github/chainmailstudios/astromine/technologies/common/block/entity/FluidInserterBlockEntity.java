@@ -53,14 +53,14 @@ public class FluidInserterBlockEntity extends ComponentEnergyFluidBlockEntity im
 	}
 
 	@Override
-	protected FluidComponent createFluidComponent() {
+	public FluidComponent createFluidComponent() {
 		FluidComponent fluidComponent = SimpleFluidComponent.of(1);
 		fluidComponent.getFirst().setSize(Fraction.of(8));
 		return fluidComponent;
 	}
 
 	@Override
-	protected EnergyComponent createEnergyComponent() {
+	public EnergyComponent createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
@@ -86,7 +86,7 @@ public class FluidInserterBlockEntity extends ComponentEnergyFluidBlockEntity im
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-
+		FluidComponent fluidComponent = getFluidComponent();
 
 		if (fluidComponent != null) {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();

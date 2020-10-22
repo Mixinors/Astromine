@@ -33,9 +33,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.TranslatableText;
@@ -48,7 +46,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidInventoryEntity;
+import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidItemEntity;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesCriteria;
@@ -61,7 +59,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public abstract class RocketEntity extends ComponentFluidInventoryEntity {
+public abstract class RocketEntity extends ComponentFluidItemEntity {
 	public static final TrackedData<Boolean> IS_RUNNING = DataTracker.registerData(RocketEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	private final Predicate<FluidVolume> fuelPredicate = createFuelPredicate();
 	private final Function<RocketEntity, Fraction> consumptionFunction = createConsumptionFunction();

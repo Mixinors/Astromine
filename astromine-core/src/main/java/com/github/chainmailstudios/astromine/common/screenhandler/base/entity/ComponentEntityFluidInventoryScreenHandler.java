@@ -27,20 +27,20 @@ package com.github.chainmailstudios.astromine.common.screenhandler.base.entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidInventoryEntity;
+import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidItemEntity;
 import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBarWidget;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 
 public abstract class ComponentEntityFluidInventoryScreenHandler extends ComponentEntityScreenHandler {
-	public ComponentFluidInventoryEntity entity;
+	public ComponentFluidItemEntity entity;
 
 	public FluidVerticalBarWidget fluidBar;
 
 	public ComponentEntityFluidInventoryScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, int entityId) {
 		super(type, syncId, player, entityId);
 
-		entity = (ComponentFluidInventoryEntity) player.world.getEntityById(entityId);
+		entity = (ComponentFluidItemEntity) player.world.getEntityById(entityId);
 	}
 
 	@Override

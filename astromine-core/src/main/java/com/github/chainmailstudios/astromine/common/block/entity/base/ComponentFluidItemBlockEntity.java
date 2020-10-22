@@ -22,31 +22,25 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.entity.base;
+package com.github.chainmailstudios.astromine.common.block.entity.base;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
-import net.minecraft.entity.EntityType;
-import net.minecraft.world.World;
+import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
-import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedInventoryProvider;
+import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedComponentSidedInventoryProvider;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
 
-public abstract class ComponentFluidInventoryEntity extends ComponentEntity implements ExtendedInventoryProvider {
-	public ComponentFluidInventoryEntity(EntityType<?> type, World world) {
-		super(type, world);
+public abstract class ComponentFluidItemBlockEntity extends ComponentFluidBlockEntity implements ExtendedComponentSidedInventoryProvider {
+	public ComponentFluidItemBlockEntity(BlockEntityType<?> type) {
+		super(type);
+
+		addComponent(AstromineComponents.ITEM_INVENTORY_COMPONENT, getItemComponent());
+		getItemComponent().updateListeners();
 	}
 
 	public abstract ItemComponent createItemComponent();
 
-	public abstract FluidComponent createFluidComponent();
-
 	public ItemComponent getItemComponent() {
 		return ItemComponent.get(this);
-	}
-
-	public FluidComponent getFluidComponent() {
-		return FluidComponent.get(this);
 	}
 }

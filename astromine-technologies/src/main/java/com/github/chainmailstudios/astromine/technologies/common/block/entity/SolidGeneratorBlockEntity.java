@@ -33,7 +33,7 @@ import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
@@ -48,7 +48,7 @@ import com.github.chainmailstudios.astromine.technologies.registry.AstromineTech
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventoryBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
 	public double available = 0;
 	public double progress = 0;
 	public int limit = 100;
@@ -58,7 +58,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 	}
 
 	@Override
-	protected ItemComponent createItemComponent() {
+	public ItemComponent createItemComponent() {
 		return SimpleItemComponent.of(1).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 0) {
 				return false;
@@ -71,7 +71,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 	}
 
 	@Override
-	protected EnergyComponent createEnergyComponent() {
+	public EnergyComponent createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
@@ -82,8 +82,10 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
+		ItemComponent itemComponent = getItemComponent();
+
 		if (itemComponent != null) {
-			EnergyVolume energyVolume = energyComponent.getVolume();
+			EnergyVolume energyVolume = getEnergyComponent().getVolume();
 
 			if (available > 0) {
 				double produced = 5;

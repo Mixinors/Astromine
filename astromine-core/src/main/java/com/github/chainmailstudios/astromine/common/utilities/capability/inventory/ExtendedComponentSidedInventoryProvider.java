@@ -44,7 +44,7 @@ import it.unimi.dsi.fastutil.ints.IntSet;
 
 import java.util.stream.IntStream;
 
-public interface ExtendedComponentSidedInventoryProvider extends ComponentProvider, InventoryProvider, SidedInventory, InventoryFromItemComponent {
+public interface ExtendedComponentSidedInventoryProvider extends InventoryProvider, SidedInventory, InventoryFromItemComponent {
 	@Override
 	default SidedInventory getInventory(BlockState state, WorldAccess world, BlockPos pos) {
 		return this;

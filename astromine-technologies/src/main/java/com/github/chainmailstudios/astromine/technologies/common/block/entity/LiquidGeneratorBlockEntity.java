@@ -62,18 +62,18 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 	}
 
 	@Override
-	protected EnergyComponent createEnergyComponent() {
+	public EnergyComponent createEnergyComponent() {
 		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
 	@Override
-	protected FluidComponent createFluidComponent() {
+	public FluidComponent createFluidComponent() {
 		FluidComponent fluidComponent = SimpleFluidComponent.of(1).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0) {
 				return false;
 			}
 
-			Fluid existing = this.fluidComponent.getVolume(0).getFluid();
+			Fluid existing = getFluidComponent().getFirst().getFluid();
 
 			Fluid inserting = volume.getFluid();
 
@@ -95,7 +95,7 @@ public abstract class LiquidGeneratorBlockEntity extends ComponentEnergyFluidBlo
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-
+		FluidComponent fluidComponent = getFluidComponent();
 
 		if (fluidComponent != null) {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();

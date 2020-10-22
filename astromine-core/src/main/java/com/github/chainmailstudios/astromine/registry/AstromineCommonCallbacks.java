@@ -24,47 +24,23 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.google.common.collect.Lists;
 import me.shedaniel.cloth.api.common.events.v1.BlockPlaceCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.Item;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.chunk.WorldChunk;
 
-import com.github.chainmailstudios.astromine.common.callback.ServerChunkTickCallback;
-import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
-import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentEnergyEntity;
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentEnergyItemEntity;
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidEntity;
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidInventoryEntity;
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentItemEntity;
-import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
-import nerdhub.cardinal.components.api.event.ChunkComponentCallback;
-import nerdhub.cardinal.components.api.event.EntityComponentCallback;
-import nerdhub.cardinal.components.api.event.ItemComponentCallbackV2;
-import nerdhub.cardinal.components.api.event.WorldComponentCallback;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class AstromineCommonCallbacks {
 	public static void initialize() {

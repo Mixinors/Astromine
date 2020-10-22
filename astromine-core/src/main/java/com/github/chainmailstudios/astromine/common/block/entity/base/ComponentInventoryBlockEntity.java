@@ -31,17 +31,16 @@ import com.github.chainmailstudios.astromine.common.utilities.capability.invento
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 
 public abstract class ComponentInventoryBlockEntity extends ComponentBlockEntity implements ExtendedComponentSidedInventoryProvider {
-	protected final ItemComponent itemComponent = createItemComponent();
-
 	public ComponentInventoryBlockEntity(BlockEntityType<?> type) {
 		super(type);
 
-		addComponent(AstromineComponents.ITEM_INVENTORY_COMPONENT, itemComponent);
+		addComponent(AstromineComponents.ITEM_INVENTORY_COMPONENT, getItemComponent());
+		getItemComponent().updateListeners();
 	}
 
-	protected abstract ItemComponent createItemComponent();
+	public abstract ItemComponent createItemComponent();
 
 	public ItemComponent getItemComponent() {
-		return itemComponent;
+		return ItemComponent.get(this);
 	}
 }
