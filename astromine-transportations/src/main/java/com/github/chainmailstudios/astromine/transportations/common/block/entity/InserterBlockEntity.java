@@ -230,7 +230,7 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 					if (minecartEntities.size() >= 1) {
 						ChestMinecartEntity minecartEntity = minecartEntities.get(0);
 						if (minecartEntity instanceof Inventory) {
-							FixedInventoryVanillaWrapper wrapper = new FixedInventoryVanillaWrapper((Inventory) minecartEntity);
+							FixedInventoryVanillaWrapper wrapper = new FixedInventoryVanillaWrapper(minecartEntity);
 							ItemInsertable insertableMinecart = wrapper.getInsertable();
 
 							ItemStack stackMinecart = insertableMinecart.attemptInsertion(getStack(), Simulation.SIMULATE);
