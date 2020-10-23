@@ -167,17 +167,19 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 			redstoneButton.setSize(Size.of(84, 18));
 			redstoneButton.setLabel(RedstoneType.byNumber(i).asText());
 			redstoneButton.setClickAction(() -> {
-				RedstoneType type = RedstoneType.byNumber(i);
+				if (redstoneButton.getFocused() && !redstoneButton.getHidden()) {
+					RedstoneType type = RedstoneType.byNumber(i);
 
-				redstoneButton.setLabel(type.asText());
+					redstoneButton.setLabel(type.asText());
 
-				redstoneComponent.setType(type);
+					redstoneComponent.setType(type);
 
-				for (int k : new int[] {0, 1, 2}) {
-					if (k != i) {
-						redstoneButtons[k].setDisabled(() -> false);
-					} else {
-						redstoneButtons[k].setDisabled(() -> true);
+					for (int k : new int[] {0, 1, 2}) {
+						if (k != i) {
+							redstoneButtons[k].setDisabled(() -> false);
+						} else {
+							redstoneButtons[k].setDisabled(() -> true);
+						}
 					}
 				}
 
