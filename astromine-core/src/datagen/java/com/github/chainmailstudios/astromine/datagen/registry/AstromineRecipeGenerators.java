@@ -43,6 +43,13 @@ public abstract class AstromineRecipeGenerators {
 	}
 
 	private void generateOneTimeRecipes(RecipeData recipes) {
-		ONE_TIME_GENERATORS.forEach((generator) -> generator.generate(recipes));
+		ONE_TIME_GENERATORS.forEach((generator) -> {
+			try {
+				generator.generate(recipes);
+			} catch (Exception exception) {
+				AstromineCommon.LOGGER.error("Recipe generation failed, with generator " + generator.getGeneratorName() + ".");
+				AstromineCommon.LOGGER.error(exception.getMessage());
+			}
+		});
 	}
 }

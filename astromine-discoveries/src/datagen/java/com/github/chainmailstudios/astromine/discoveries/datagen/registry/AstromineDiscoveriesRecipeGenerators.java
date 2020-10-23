@@ -4,6 +4,7 @@ import net.minecraft.recipe.Ingredient;
 
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.RecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.Crafting2x2RecipeGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.Crafting3x3RecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.SlabCraftingRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.SmeltingRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.StairsCraftingRecipeGenerator;
@@ -14,6 +15,7 @@ import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.Smelti
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineRecipeGenerators;
 import com.github.chainmailstudios.astromine.discoveries.datagen.generators.recipe.TrituratingRecipeGenerator;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesItems;
 
 import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.ASTEROID_CLUSTER;
 import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.ASTEROID_ORE;
@@ -189,7 +191,9 @@ public class AstromineDiscoveriesRecipeGenerators extends AstromineRecipeGenerat
 	public final RecipeGenerator ASTEROID_STONE_BRICK_WALL_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineDiscoveriesBlocks.ASTEROID_STONE_BRICK_WALL, Ingredient.ofItems(AstromineDiscoveriesBlocks.POLISHED_ASTEROID_STONE), "polished"));
 	public final RecipeGenerator MARTIAN_STONE_BRICK_WALL_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineDiscoveriesBlocks.MARTIAN_STONE_BRICK_WALL, Ingredient.ofItems(AstromineDiscoveriesBlocks.POLISHED_MARTIAN_STONE), "polished"));
 	public final RecipeGenerator VULCAN_STONE_BRICK_WALL_FROM_POLISHED_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineDiscoveriesBlocks.VULCAN_STONE_BRICK_WALL, Ingredient.ofItems(AstromineDiscoveriesBlocks.POLISHED_VULCAN_STONE), "polished"));
-	
+
+	public final RecipeGenerator SPACE_SLIME_BLOCK = register(new Crafting3x3RecipeGenerator(AstromineDiscoveriesBlocks.SPACE_SLIME_BLOCK, Ingredient.ofItems(AstromineDiscoveriesItems.SPACE_SLIME_BALL)));
+
 	public static void initialize() {
 
 	}

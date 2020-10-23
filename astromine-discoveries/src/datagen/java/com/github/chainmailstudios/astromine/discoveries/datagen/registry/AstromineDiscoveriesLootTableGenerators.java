@@ -53,7 +53,8 @@ public class AstromineDiscoveriesLootTableGenerators extends AstromineLootTableG
 			AstromineDiscoveriesBlocks.POLISHED_VULCAN_STONE_STAIRS,
 			AstromineDiscoveriesBlocks.VULCAN_STONE_BRICKS,
 			AstromineDiscoveriesBlocks.VULCAN_STONE_BRICK_STAIRS,
-			AstromineDiscoveriesBlocks.VULCAN_STONE_BRICK_WALL
+			AstromineDiscoveriesBlocks.VULCAN_STONE_BRICK_WALL,
+			AstromineDiscoveriesBlocks.SPACE_SLIME_BLOCK
 	));
 
 	public final LootTableGenerator SLABS = register(new SlabLootTableGenerator(

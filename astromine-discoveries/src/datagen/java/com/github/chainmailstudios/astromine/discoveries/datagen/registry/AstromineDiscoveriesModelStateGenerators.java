@@ -54,7 +54,8 @@ public class AstromineDiscoveriesModelStateGenerators extends AstromineModelStat
 			AstromineDiscoveriesBlocks.ALTAR_PEDESTAL,
 			AstromineDiscoveriesBlocks.MARTIAN_SOIL,
 			AstromineDiscoveriesBlocks.MARTIAN_STONE,
-			AstromineDiscoveriesBlocks.SMOOTH_MARTIAN_STONE
+			AstromineDiscoveriesBlocks.SMOOTH_MARTIAN_STONE,
+			AstromineDiscoveriesBlocks.SPACE_SLIME_BLOCK
 	));
 
 	public final ModelStateGenerator CUSTOM_MODEL_AND_STATE_BLOCKS = register(new SimpleBlockItemModelGenerator(
