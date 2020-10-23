@@ -28,14 +28,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentInventoryBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentItemBlockEntity;
 
 public class ComponentBlockEntityItemScreenHandler extends ComponentBlockEntityScreenHandler {
-	public ComponentInventoryBlockEntity blockEntity;
+	public ComponentItemBlockEntity blockEntity;
 
 	public ComponentBlockEntityItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 
-		blockEntity = (ComponentInventoryBlockEntity) player.world.getBlockEntity(position);
+		blockEntity = (ComponentItemBlockEntity) player.world.getBlockEntity(position);
 	}
 }

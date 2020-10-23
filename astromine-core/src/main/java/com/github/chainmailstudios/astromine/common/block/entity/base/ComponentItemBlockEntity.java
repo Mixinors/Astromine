@@ -30,8 +30,8 @@ import com.github.chainmailstudios.astromine.common.component.inventory.ItemComp
 import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedComponentSidedInventoryProvider;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 
-public abstract class ComponentInventoryBlockEntity extends ComponentBlockEntity implements ExtendedComponentSidedInventoryProvider {
-	public ComponentInventoryBlockEntity(BlockEntityType<?> type) {
+public abstract class ComponentItemBlockEntity extends ComponentBlockEntity implements ExtendedComponentSidedInventoryProvider {
+	public ComponentItemBlockEntity(BlockEntityType<?> type) {
 		super(type);
 
 		addComponent(AstromineComponents.ITEM_INVENTORY_COMPONENT, getItemComponent());

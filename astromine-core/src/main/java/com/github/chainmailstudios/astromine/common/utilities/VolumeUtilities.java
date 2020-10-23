@@ -63,7 +63,7 @@ public class VolumeUtilities {
                     }
                 }
 
-                FluidComponent secondStackFluidComponent = FluidComponent.get(itemComponent.getFirst());
+                FluidComponent secondStackFluidComponent = FluidComponent.get(itemComponent.getSecond());
 
                 if (secondStackFluidComponent != null) {
                     FluidVolume ourVolume = fluidComponent.getFirst();

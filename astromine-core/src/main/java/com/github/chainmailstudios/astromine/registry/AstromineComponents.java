@@ -119,6 +119,11 @@ public class AstromineComponents implements WorldComponentInitializer, ChunkComp
 		registry.registerFor(ComponentEnergyItemBlockEntity.class, ITEM_INVENTORY_COMPONENT, ComponentEnergyItemBlockEntity::createItemComponent);
 		registry.registerFor(ComponentEnergyItemBlockEntity.class, ENERGY_INVENTORY_COMPONENT, ComponentEnergyItemBlockEntity::createEnergyComponent);
 
+		registry.registerFor(ComponentEnergyFluidBlockEntity.class, ENERGY_INVENTORY_COMPONENT, ComponentEnergyFluidBlockEntity::createEnergyComponent);
+		registry.registerFor(ComponentEnergyFluidBlockEntity.class, FLUID_INVENTORY_COMPONENT, ComponentEnergyFluidBlockEntity::createFluidComponent);
+
+		registry.registerFor(ComponentItemBlockEntity.class, ITEM_INVENTORY_COMPONENT, ComponentItemBlockEntity::createItemComponent);
+
 		registry.registerFor(ComponentFluidBlockEntity.class, FLUID_INVENTORY_COMPONENT, ComponentFluidBlockEntity::createFluidComponent);
 
 		registry.registerFor(ComponentEnergyBlockEntity.class, ENERGY_INVENTORY_COMPONENT, ComponentEnergyBlockEntity::createEnergyComponent);

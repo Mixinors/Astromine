@@ -28,6 +28,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.compatib
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import dev.onyxstudios.cca.api.v3.component.Component;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
@@ -46,7 +47,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public interface ItemComponent extends Iterable<Map.Entry<Integer, ItemStack>>, NameableComponent, AutoSyncedComponent {
+public interface ItemComponent extends Iterable<Map.Entry<Integer, ItemStack>>, AutoSyncedComponent, NameableComponent {
 	default Item getSymbol() {
 		return AstromineItems.ITEM;
 	}
@@ -153,6 +154,7 @@ public interface ItemComponent extends Iterable<Map.Entry<Integer, ItemStack>>, 
 
 	int getSize();
 
+	@Override
 	default void writeToNbt(CompoundTag tag) {
 		ListTag listTag = new ListTag();
 
@@ -170,13 +172,12 @@ public interface ItemComponent extends Iterable<Map.Entry<Integer, ItemStack>>, 
 		tag.put(AstromineComponents.ITEM_INVENTORY_COMPONENT.getId().toString(), dataTag);
 	}
 
-	@Override
 	default void readFromNbt(CompoundTag tag) {
 		CompoundTag dataTag = tag.getCompound(AstromineComponents.ITEM_INVENTORY_COMPONENT.getId().toString());
 
 		int size = dataTag.getInt("size");
 
-		ListTag stacksTag = dataTag.getList("stacks", 9);
+		ListTag stacksTag = dataTag.getList("stacks", 10);
 
 		for (int i = 0; i < size; ++i) {
 			CompoundTag stackTag = stacksTag.getCompound(i);

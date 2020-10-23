@@ -171,7 +171,7 @@ public interface FluidComponent extends Iterable<Map.Entry<Integer, FluidVolume>
 
 		int size = dataTag.getInt("size");
 
-		ListTag volumesTag = dataTag.getList("volumes", 9);
+		ListTag volumesTag = dataTag.getList("volumes", 10);
 
 		for (int i = 0; i < size; ++i) {
 			CompoundTag volumeTag = volumesTag.getCompound(i);

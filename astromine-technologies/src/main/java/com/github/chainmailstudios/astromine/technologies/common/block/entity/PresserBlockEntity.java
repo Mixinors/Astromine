@@ -109,7 +109,7 @@ public abstract class PresserBlockEntity extends ComponentEnergyItemBlockEntity 
 			BaseInventory inputInventory = BaseInventory.of(itemComponent.getFirst(), itemComponent.getSecond());
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = (Optional<PressingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) PressingRecipe.Type.INSTANCE, InventoryFromItemComponent.of(itemComponent), world);
+				optionalRecipe = (Optional<PressingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) PressingRecipe.Type.INSTANCE, InventoryFromItemComponent.of(getItemComponent()), world);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
