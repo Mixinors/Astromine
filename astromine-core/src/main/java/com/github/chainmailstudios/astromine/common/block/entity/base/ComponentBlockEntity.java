@@ -68,7 +68,7 @@ import com.google.common.collect.Maps;
 import java.util.*;
 import java.util.function.BiConsumer;
 
-public abstract class ComponentBlockEntity extends net.minecraft.block.entity.BlockEntity implements PacketConsumer, BlockEntityClientSerializable, Tickable {
+public abstract class ComponentBlockEntity extends BlockEntity implements PacketConsumer, BlockEntityClientSerializable, Tickable {
 	public static final Identifier TRANSFER_UPDATE_PACKET = AstromineCommon.identifier("transfer_update_packet");
 
 	protected final Map<ComponentKey<?>, Component> allComponents = Maps.newHashMap();

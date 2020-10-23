@@ -33,5 +33,6 @@ public class AstromineDiscoveriesRenderLayers {
 	public static void initialize() {
 		AstromineRenderLayers.register(AstromineDiscoveriesBlocks.ALTAR, RenderLayer.getCutout());
 		AstromineRenderLayers.register(AstromineDiscoveriesBlocks.ALTAR_PEDESTAL, RenderLayer.getCutout());
+		AstromineRenderLayers.register(AstromineDiscoveriesBlocks.SPACE_SLIME_BLOCK, RenderLayer.getTranslucent());
 	}
 }
