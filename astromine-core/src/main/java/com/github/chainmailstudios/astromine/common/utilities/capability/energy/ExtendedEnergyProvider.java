@@ -28,7 +28,6 @@ import com.github.chainmailstudios.astromine.common.component.block.entity.Block
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
-import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import team.reborn.energy.EnergySide;
 import team.reborn.energy.EnergyStorage;
 import team.reborn.energy.EnergyTier;
@@ -52,7 +51,7 @@ public interface ExtendedEnergyProvider extends EnergyStorage {
 
 		if (transferComponent != null) {
 			transferComponent.withDirection(AstromineComponents.ENERGY_INVENTORY_COMPONENT, EnergyUtilities.toDirection(side), type -> {
-				if (type.isDisabled() || (!type.canInsert() && !type.isNone())) {
+				if (type.isNone() || (!type.canInsert() && !type.isNone())) {
 					allow[0] = false;
 				}
 			});
@@ -73,7 +72,7 @@ public interface ExtendedEnergyProvider extends EnergyStorage {
 
 		if (transferComponent != null) {
 			transferComponent.withDirection(AstromineComponents.ENERGY_INVENTORY_COMPONENT, EnergyUtilities.toDirection(side), type -> {
-				if (type.isDisabled() || (!type.canExtract() && !type.isNone())) {
+				if (type.isNone() || (!type.canExtract() && !type.isNone())) {
 					allow[0] = false;
 				}
 			});

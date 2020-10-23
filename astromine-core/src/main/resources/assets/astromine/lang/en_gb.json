@@ -29,7 +29,7 @@
   "text.astromine.back": "Back",
   "text.astromine.siding.input": "§bInput",
   "text.astromine.siding.output": "§6Output",
-  "text.astromine.siding.input_output": "§bInput §7/ §6Output",
+  "text.astromine.siding.input_output": "§5Input §7/ §5Output",
   "text.astromine.siding.none": "§7None",
   "text.astromine.siding.disabled": "§7§mDisabled",
   "text.astromine.siding.west": "Right",

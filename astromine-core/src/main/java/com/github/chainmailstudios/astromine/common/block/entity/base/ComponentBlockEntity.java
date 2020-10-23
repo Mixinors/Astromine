@@ -184,14 +184,14 @@ public abstract class ComponentBlockEntity extends BlockEntity implements Packet
 
 				// Handle Item Siding
 				if (this instanceof ExtendedComponentSidedInventoryProvider) {
-					if (!getTransferComponent().get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(offsetDirection).isDefault()) {
+					if (!getTransferComponent().get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(offsetDirection).isNone()) {
 						// input
 						ItemExtractable neighbor = ItemAttributes.EXTRACTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
 						ItemInsertable self = ItemAttributes.INSERTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
 
 						ItemInvUtil.move(neighbor, self, 1);
 					}
-					if (!getTransferComponent().get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(offsetDirection).isDefault()) {
+					if (!getTransferComponent().get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(offsetDirection).isNone()) {
 						// output
 						ItemExtractable self = ItemAttributes.EXTRACTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
 						ItemInsertable neighbor = ItemAttributes.INSERTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));

@@ -39,27 +39,27 @@ public class TransportUtilities {
 		if (!(entity instanceof EnergyStorage))
 			return false;
 		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponents.ENERGY_INVENTORY_COMPONENT).get(direction) : TransferType.NONE;
-		return transferType.canExtract() || (!transferType.isDisabled() && NetworkMemberRegistry.get(entity, direction).isProvider(AstromineNetworkTypes.ENERGY));
+		return transferType.canExtract() || (!transferType.isNone() && NetworkMemberRegistry.get(entity, direction).isProvider(AstromineNetworkTypes.ENERGY));
 	}
 
 	public static boolean isInsertingEnergy(BlockEntity entity, @Nullable BlockEntityTransferComponent transferComponent, Direction direction) {
 		if (!(entity instanceof EnergyStorage))
 			return false;
 		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponents.ENERGY_INVENTORY_COMPONENT).get(direction) : TransferType.NONE;
-		return transferType.canInsert() || (!transferType.isDisabled() && NetworkMemberRegistry.get(entity, direction).isRequester(AstromineNetworkTypes.ENERGY));
+		return transferType.canInsert() || (!transferType.isNone() && NetworkMemberRegistry.get(entity, direction).isRequester(AstromineNetworkTypes.ENERGY));
 	}
 
 	public static boolean isExtractingItem(BlockEntity entity, @Nullable BlockEntityTransferComponent transferComponent, Direction direction, boolean defaultValue) {
 		if (!(entity instanceof EnergyStorage))
 			return false;
-		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(direction) : TransferType.DISABLED;
-		return transferType.canExtract() || (defaultValue && transferType.isDefault());
+		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(direction) : TransferType.NONE;
+		return transferType.canExtract() || (defaultValue && transferType.isNone());
 	}
 
 	public static boolean isInsertingItem(BlockEntity entity, @Nullable BlockEntityTransferComponent transferComponent, Direction direction, boolean defaultValue) {
 		if (!(entity instanceof EnergyStorage))
 			return false;
-		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(direction) : TransferType.DISABLED;
-		return transferType.canInsert() || (defaultValue && transferType.isDefault());
+		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(direction) : TransferType.NONE;
+		return transferType.canInsert() || (defaultValue && transferType.isNone());
 	}
 }

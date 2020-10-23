@@ -32,8 +32,7 @@ public enum TransferType {
 	NONE(AstromineCommon.identifier("textures/widget/none.png")),
 	INPUT(AstromineCommon.identifier("textures/widget/input.png")),
 	OUTPUT(AstromineCommon.identifier("textures/widget/output.png")),
-	INPUT_OUTPUT(AstromineCommon.identifier("textures/widget/input_output.png")),
-	DISABLED(AstromineCommon.identifier("textures/widget/disabled.png"));
+	INPUT_OUTPUT(AstromineCommon.identifier("textures/widget/input_output.png"));
 
 	private final Identifier texture;
 
@@ -60,14 +59,6 @@ public enum TransferType {
 	}
 
 	public boolean isNone() {
-		return isDefault() || isDisabled();
-	}
-
-	public boolean isDefault() {
 		return this == NONE;
-	}
-
-	public boolean isDisabled() {
-		return this == DISABLED;
 	}
 }
