@@ -24,9 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.component.block.entity;
 
+import com.github.chainmailstudios.astromine.common.callback.TransferEntryCallback;
+import com.github.chainmailstudios.astromine.common.network.type.EnergyNetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
+import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
@@ -35,7 +38,6 @@ import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.utilities.DirectionUtilities;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
-import nerdhub.cardinal.components.api.ComponentRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,7 +49,7 @@ public class BlockEntityTransferComponent implements Component {
 	private final Reference2ReferenceMap<ComponentKey<?>, TransferEntry> components = new Reference2ReferenceOpenHashMap<>();
 
 	public TransferEntry get(ComponentKey<?> type) {
-		return components.computeIfAbsent(type, t -> new TransferEntry());
+		return components.computeIfAbsent(type, t -> new TransferEntry(type));
 	}
 
 	public Map<ComponentKey<?>, TransferEntry> get() {
@@ -55,7 +57,11 @@ public class BlockEntityTransferComponent implements Component {
 	}
 
 	public void add(ComponentKey<?> type) {
-		components.put(type, new TransferEntry());
+		TransferEntry entry = new TransferEntry(type);
+
+		TransferEntryCallback.EVENT.invoker().handle(entry);
+
+		components.put(type, entry);
 	}
 
 	@Override
@@ -64,9 +70,9 @@ public class BlockEntityTransferComponent implements Component {
 
 		for (String key : dataTag.getKeys()) {
 			Identifier keyId = new Identifier(key);
-			TransferEntry entry = new TransferEntry();
+			TransferEntry entry = new TransferEntry(ComponentRegistry.get(keyId));
 			entry.fromTag(dataTag.getCompound(key));
-			components.put(ComponentRegistry.INSTANCE.get(keyId), entry);
+			components.put(ComponentRegistry.get(keyId), entry);
 		}
 	}
 
@@ -85,10 +91,14 @@ public class BlockEntityTransferComponent implements Component {
 		public static final Direction[] DIRECTIONS = Direction.values();
 		private final Reference2ReferenceMap<Direction, TransferType> types = new Reference2ReferenceOpenHashMap<>(6, 1);
 
-		public TransferEntry() {
+		private final ComponentKey<?> componentKey;
+
+		public TransferEntry(ComponentKey<?> componentKey) {
 			for (Direction direction : DIRECTIONS) {
 				this.set(direction, TransferType.NONE);
 			}
+
+			this.componentKey = componentKey;
 		}
 
 		public void set(Direction direction, TransferType type) {
@@ -122,6 +132,10 @@ public class BlockEntityTransferComponent implements Component {
 					return false;
 			}
 			return true;
+		}
+
+		public ComponentKey<?> getComponentKey() {
+			return componentKey;
 		}
 	}
 

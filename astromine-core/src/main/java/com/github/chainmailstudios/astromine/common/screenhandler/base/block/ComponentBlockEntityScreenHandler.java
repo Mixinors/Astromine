@@ -34,7 +34,9 @@ import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -52,11 +54,13 @@ import com.github.vini2003.blade.common.utilities.Slots;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import com.github.vini2003.blade.common.widget.base.TabWidget;
 import com.github.vini2003.blade.common.widget.base.TextWidget;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
 public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandler {
 	public ComponentBlockEntity syncBlockEntity;
@@ -159,12 +163,33 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 
 		WidgetCollection redstoneTab = tabs.addTab(Items.REDSTONE, () -> Collections.singletonList(new TranslatableText("text.astromine.redstone")));
 
-		ButtonWidget[] redstoneButtons = new ButtonWidget[]{new ButtonWidget(), new ButtonWidget(), new ButtonWidget()};
+		ButtonWidget[] redstoneButtons = new ButtonWidget[]{new ButtonWidget() {
+			@NotNull
+			@Override
+			public List<Text> getTooltip() {
+				return Collections.singletonList(new TranslatableText("tooltip.astromine.work_when_off").formatted(Formatting.RED));
+			}
+		}, new ButtonWidget() {
+			@NotNull
+			@Override
+			public List<Text> getTooltip() {
+				return Collections.singletonList(new TranslatableText("tooltip.astromine.work_when_on").formatted(Formatting.GREEN));
+			}
+		}, new ButtonWidget() {
+			@NotNull
+			@Override
+			public List<Text> getTooltip() {
+				return Collections.singletonList(new TranslatableText("tooltip.astromine.work_always").formatted(Formatting.YELLOW));
+			}
+		}};
 
 		for (int i : new int[] {0, 1, 2}) {
 			ButtonWidget redstoneButton = redstoneButtons[i];
-			redstoneButton.setPosition(Position.of(mainTab.getX() + mainTab.getWidth() / 2 - 84 / 2, mainTab.getY() + mainTab.getHeight() / 2 - 36 - 9 + (i * 18)));
-			redstoneButton.setSize(Size.of(84, 18));
+
+			int buttonOffset = (i * 18) + i * 9 + 9;
+
+			redstoneButton.setPosition(Position.of(mainTab.getX() + mainTab.getWidth() / 2 - 64 / 2, mainTab.getY() + mainTab.getHeight() / 2 - buttonOffset + 9));
+			redstoneButton.setSize(Size.of(64, 18));
 			redstoneButton.setLabel(RedstoneType.byNumber(i).asText());
 			redstoneButton.setClickAction(() -> {
 				if (!redstoneButton.getHidden()) {

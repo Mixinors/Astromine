@@ -77,11 +77,11 @@ public class EnergyNetworkType extends NetworkType {
 
 				EnergyHandler volume = Energy.of(blockEntity).side(memberNode.getDirection());
 				if (!type[0].isDisabled()) {
-					if (type[0].canExtract() || networkMember.isProvider(this)) {
+					if (type[0].canExtract() && (networkMember.isProvider(this) || networkMember.isBuffer(this))) {
 						providers.put(volume, speedOfMovement);
 					}
 
-					if (type[0].canInsert() || networkMember.isRequester(this)) {
+					if (type[0].canInsert() && (networkMember.isRequester(this) || networkMember.isBuffer(this))) {
 						requesters.put(volume, speedOfMovement);
 					}
 				}

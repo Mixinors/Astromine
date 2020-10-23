@@ -85,11 +85,11 @@ public class FluidNetworkType extends NetworkType {
 				}
 
 				if (!type[0].isDisabled()) {
-					if (type[0].canExtract() || networkMember.isProvider(this)) {
+					if (type[0].canExtract() && (networkMember.isProvider(this) || networkMember.isBuffer(this))) {
 						providers.add(inv);
 					}
 
-					if (type[0].canInsert() || networkMember.isRequester(this)) {
+					if (type[0].canInsert() && (networkMember.isRequester(this) || networkMember.isBuffer(this))) {
 						requesters.add(inv);
 					}
 				}

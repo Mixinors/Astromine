@@ -24,6 +24,9 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
+import com.github.chainmailstudios.astromine.common.callback.TransferEntryCallback;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.google.common.collect.Lists;
 import me.shedaniel.cloth.api.common.events.v1.BlockPlaceCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -103,5 +106,13 @@ public class AstromineCommonCallbacks {
 				component.tick();
 			}
 		}));
+
+		TransferEntryCallback.EVENT.register((entry) -> {
+			if (entry.getComponentKey() == AstromineComponents.ENERGY_INVENTORY_COMPONENT) {
+				for (Direction direction : Direction.values()) {
+					entry.set(direction, TransferType.INPUT_OUTPUT);
+				}
+			}
+		});
 	}
 }
