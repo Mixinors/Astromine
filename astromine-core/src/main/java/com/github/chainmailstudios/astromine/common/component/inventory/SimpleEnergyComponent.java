@@ -28,6 +28,7 @@ import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 public class SimpleEnergyComponent implements EnergyComponent {
 	private final EnergyVolume content;

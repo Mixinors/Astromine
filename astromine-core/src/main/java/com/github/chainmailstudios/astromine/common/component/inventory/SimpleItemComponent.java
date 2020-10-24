@@ -33,6 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 
 public class SimpleItemComponent implements ItemComponent {
 	private final Int2ObjectOpenHashMap<ItemStack> contents = new Int2ObjectOpenHashMap<>();

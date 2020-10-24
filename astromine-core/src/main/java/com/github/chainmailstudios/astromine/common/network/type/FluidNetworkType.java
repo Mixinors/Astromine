@@ -33,6 +33,7 @@ import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.filter.ExactFluidFilter;
 import alexiil.mc.lib.attributes.fluid.filter.ReadableFluidFilter;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKey;
+import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import alexiil.mc.lib.attributes.misc.NullVariant;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
@@ -100,11 +101,15 @@ public class FluidNetworkType extends NetworkType {
 			for (FluidKey providerStoredFluid : provider.getStoredFluids()) {
 				if (providerStoredFluid.getRawFluid() == null) continue;
 				ReadableFluidFilter fluidFilter = ExactFluidFilter.of(providerStoredFluid);
-				GroupedFluidInv filteredProvider = provider.filtered(fluidFilter);
 
 				List<GroupedFluidInv> requestersFiltered = requesters.stream()
-					.map(inv -> inv.filtered(fluidFilter))
-					.filter(inv -> !inv.attemptInsertion(providerStoredFluid.withAmount(provider.getAmount_F(providerStoredFluid)), Simulation.SIMULATE).isEmpty())
+					.filter(inv -> {
+						FluidVolume fluidVolume = providerStoredFluid.withAmount(provider.getAmount_F(providerStoredFluid));
+
+
+						return !inv.attemptInsertion(fluidVolume, Simulation.SIMULATE).equals(fluidVolume);
+
+					})
 					.sorted(Comparator.comparing(inv -> inv.getAmount_F(providerStoredFluid)))
 					.collect(Collectors.toList());
 
