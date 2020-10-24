@@ -59,30 +59,29 @@ public class EnergyNetworkType extends NetworkType {
 
 			WorldPos nodePosition = memberPos.offset(memberNode.getDirection());
 
-			double speedOfMovement = nodePosition.getBlock() instanceof NodeSpeedProvider ? ((NodeSpeedProvider) nodePosition.getBlock()).getNodeSpeed() : 0.0D;
+			double speed = nodePosition.getBlock() instanceof NodeSpeedProvider ? ((NodeSpeedProvider) nodePosition.getBlock()).getNodeSpeed() : 0.0D;
 
-			if (speedOfMovement <= 0)
+			if (speed <= 0)
 				continue;
 
 			if (networkMember.acceptsType(this)) {
-				TransferType[] type = { TransferType.NONE };
+				TransferType type = TransferType.NONE;
 
 				BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(blockEntity);
 
 				if (transferComponent != null) {
-					transferComponent.withDirection(AstromineComponents.ENERGY_INVENTORY_COMPONENT, memberNode.getDirection(), transferType -> {
-						type[0] = transferType;
-					});
+					type = transferComponent.get(AstromineComponents.FLUID_INVENTORY_COMPONENT).get(memberNode.getDirection());
 				}
 
 				EnergyHandler volume = Energy.of(blockEntity).side(memberNode.getDirection());
-				if (!type[0].isNone()) {
-					if (type[0].canExtract() && (networkMember.isProvider(this) || networkMember.isBuffer(this))) {
-						providers.put(volume, speedOfMovement);
+
+				if (!type.isNone()) {
+					if (type.canExtract() && (networkMember.isProvider(this) || networkMember.isBuffer(this))) {
+						providers.put(volume, speed);
 					}
 
-					if (type[0].canInsert() && (networkMember.isRequester(this) || networkMember.isBuffer(this))) {
-						requesters.put(volume, speedOfMovement);
+					if (type.canInsert() && (networkMember.isRequester(this) || networkMember.isBuffer(this))) {
+						requesters.put(volume, speed);
 					}
 				}
 			}

@@ -76,13 +76,9 @@ public class AbstractBlockMixin {
 			BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(world.getBlockEntity(pos));
 
 			if (transferComponent != null) {
-				Holder<TransferType> typeHolder = Holder.of(null);
+				TransferType type = transferComponent.get(AstromineComponents.FLUID_INVENTORY_COMPONENT).get(result.getSide());
 
-				transferComponent.withDirection(AstromineComponents.FLUID_INVENTORY_COMPONENT, result.getSide(), (type) -> {
-					typeHolder.set(type);
-				});
-
-				if (typeHolder.get() == null || (!typeHolder.get().canInsert() && !typeHolder.get().canExtract())) {
+				if  (!type.canInsert() && !type.canExtract()) {
 					return;
 				}
 			}

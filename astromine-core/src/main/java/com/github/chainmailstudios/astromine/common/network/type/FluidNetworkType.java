@@ -69,28 +69,25 @@ public class FluidNetworkType extends NetworkType {
 
 			if (networkMember.acceptsType(this)) {
 				GroupedFluidInv inv = FluidAttributes.GROUPED_INV.get(memberPos.getWorld(), memberPos.getBlockPos(), SearchOptions.inDirection(memberNode.getDirection().getOpposite()));
-				if (inv == null || inv instanceof NullVariant)
+				if (inv instanceof NullVariant)
 					continue;
 
 				@Nullable
 				BlockEntity blockEntity = memberPos.getBlockEntity();
-				TransferType[] type = { TransferType.NONE };
-
+				TransferType type = TransferType.NONE;
 
 				BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(blockEntity);
 
 				if (transferComponent != null) {
-					transferComponent.withDirection(AstromineComponents.FLUID_INVENTORY_COMPONENT, memberNode.getDirection(), transferType -> {
-						type[0] = transferType;
-					});
+					type = transferComponent.get(AstromineComponents.FLUID_INVENTORY_COMPONENT).get(memberNode.getDirection());
 				}
 
-				if (!type[0].isNone()) {
-					if (type[0].canExtract() && (networkMember.isProvider(this) || networkMember.isBuffer(this))) {
+				if (!type.isNone()) {
+					if (type.canExtract() && (networkMember.isProvider(this) || networkMember.isBuffer(this))) {
 						providers.add(inv);
 					}
 
-					if (type[0].canInsert() && (networkMember.isRequester(this) || networkMember.isBuffer(this))) {
+					if (type.canInsert() && (networkMember.isRequester(this) || networkMember.isBuffer(this))) {
 						requesters.add(inv);
 					}
 				}
@@ -100,21 +97,19 @@ public class FluidNetworkType extends NetworkType {
 		for (GroupedFluidInv provider : providers) {
 			for (FluidKey providerStoredFluid : provider.getStoredFluids()) {
 				if (providerStoredFluid.getRawFluid() == null) continue;
-				ReadableFluidFilter fluidFilter = ExactFluidFilter.of(providerStoredFluid);
 
 				List<GroupedFluidInv> requestersFiltered = requesters.stream()
-					.filter(inv -> {
+					.filter(inventory -> {
 						FluidVolume fluidVolume = providerStoredFluid.withAmount(provider.getAmount_F(providerStoredFluid));
 
-
-						return !inv.attemptInsertion(fluidVolume, Simulation.SIMULATE).equals(fluidVolume);
-
+						return !inventory.attemptInsertion(fluidVolume, Simulation.SIMULATE).equals(fluidVolume);
 					})
-					.sorted(Comparator.comparing(inv -> inv.getAmount_F(providerStoredFluid)))
+					.sorted(Comparator.comparing(inventory -> inventory.getAmount_F(providerStoredFluid)))
 					.collect(Collectors.toList());
 
 				for (int i = requestersFiltered.size() - 1; i >= 0; i--) {
 					GroupedFluidInv inv = requestersFiltered.get(i);
+
 					FluidAmount speed = Collections.min(Arrays.asList(
 						inputSpeed.div(requestersFiltered.size()),
 						outputSpeed.div(requestersFiltered.size()),

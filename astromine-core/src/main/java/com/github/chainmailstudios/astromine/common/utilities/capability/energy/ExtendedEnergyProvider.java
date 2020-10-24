@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.utilities.capability.energy;
 
+import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
@@ -45,19 +46,17 @@ public interface ExtendedEnergyProvider extends EnergyStorage {
 
 	@Override
 	default double getMaxInput(EnergySide side) {
-		boolean[] allow = { true };
+		boolean allow = true;
 
 		BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(this);
 
 		if (transferComponent != null) {
-			transferComponent.withDirection(AstromineComponents.ENERGY_INVENTORY_COMPONENT, EnergyUtilities.toDirection(side), type -> {
-				if (type.isNone() || (!type.canInsert() && !type.isNone())) {
-					allow[0] = false;
-				}
-			});
+			TransferType type = transferComponent.get(AstromineComponents.ENERGY_INVENTORY_COMPONENT).get(EnergyUtilities.toDirection(side));
+
+			allow = !type.canInsert();
 		}
 
-		if (!allow[0]) {
+		if (!allow) {
 			return 0;
 		} else {
 			return EnergyStorage.super.getMaxInput(side);
@@ -66,19 +65,17 @@ public interface ExtendedEnergyProvider extends EnergyStorage {
 
 	@Override
 	default double getMaxOutput(EnergySide side) {
-		boolean[] allow = { true };
+		boolean allow = true;
 
 		BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(this);
 
 		if (transferComponent != null) {
-			transferComponent.withDirection(AstromineComponents.ENERGY_INVENTORY_COMPONENT, EnergyUtilities.toDirection(side), type -> {
-				if (type.isNone() || (!type.canExtract() && !type.isNone())) {
-					allow[0] = false;
-				}
-			});
+			TransferType type = transferComponent.get(AstromineComponents.ENERGY_INVENTORY_COMPONENT).get(EnergyUtilities.toDirection(side));
+
+			allow = !type.canInsert();
 		}
 
-		if (!allow[0]) {
+		if (!allow) {
 			return 0;
 		} else {
 			return EnergyStorage.super.getMaxOutput(side);

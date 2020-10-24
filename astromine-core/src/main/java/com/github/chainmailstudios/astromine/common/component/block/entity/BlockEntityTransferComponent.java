@@ -139,14 +139,6 @@ public class BlockEntityTransferComponent implements Component {
 		}
 	}
 
-	public void withDirection(ComponentKey<?> type, Direction direction, Consumer<TransferType> consumer) {
-		TransferType transferType = get(type).get(direction);
-
-		if (transferType != null) {
-			consumer.accept(transferType);
-		}
-	}
-
 	@Nullable
 	public static <V> BlockEntityTransferComponent get(V v) {
 		try {
