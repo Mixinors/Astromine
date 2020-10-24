@@ -58,8 +58,6 @@ import java.util.function.Supplier;
 public class FluidVerticalBarWidget extends AbstractWidget {
 	private final Identifier FLUID_BACKGROUND = AstromineCommon.identifier("textures/widget/fluid_volume_fractional_vertical_bar_background.png");
 	private Supplier<FluidVolume> volume;
-	private Supplier<Fraction> progressFraction;
-	private Supplier<Fraction> limitFraction;
 
 	public Identifier getBackgroundTexture() {
 		return FLUID_BACKGROUND;
@@ -70,9 +68,6 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 	}
 
 	public void setVolume(Supplier<FluidVolume> volume) {
-		this.progressFraction = volume.get()::getAmount;
-		this.limitFraction = volume.get()::getSize;
-
 		this.volume = volume;
 	}
 
@@ -80,8 +75,8 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 	@Override
 	public List<Text> getTooltip() {
 		Identifier fluidId = getFluidVolume().getFluidId();
-		return Lists.newArrayList(new TranslatableText(String.format("block.%s.%s", fluidId.getNamespace(), fluidId.getPath())), new LiteralText(fluidId.toString()).formatted(Formatting.DARK_GRAY), new LiteralText(NumberUtilities.shorten(progressFraction.get().doubleValue(),
-			"") + "/" + NumberUtilities.shorten(limitFraction.get().doubleValue(), "")).formatted(Formatting.GRAY), new LiteralText(FabricLoader.getInstance().getModContainer(fluidId.getNamespace()).get().getMetadata().getName()).formatted(Formatting.BLUE, Formatting.ITALIC));
+		return Lists.newArrayList(new TranslatableText(String.format("block.%s.%s", fluidId.getNamespace(), fluidId.getPath())), new LiteralText(fluidId.toString()).formatted(Formatting.DARK_GRAY), new LiteralText(NumberUtilities.shorten(volume.get().getAmount().doubleValue(),
+			"") + "/" + NumberUtilities.shorten(volume.get().getSize().doubleValue(), "")).formatted(Formatting.GRAY), new LiteralText(FabricLoader.getInstance().getModContainer(fluidId.getNamespace()).get().getMetadata().getName()).formatted(Formatting.BLUE, Formatting.ITALIC));
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -97,7 +92,7 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 		float sX = getSize().getWidth();
 		float sY = getSize().getHeight();
 
-		float sBGY = (((sY / limitFraction.get().floatValue()) * progressFraction.get().floatValue()));
+		float sBGY = (((sY / volume.get().getSize().floatValue()) * volume.get().getAmount().floatValue()));
 
 		RenderLayer layer = Layers.get(getBackgroundTexture());
 

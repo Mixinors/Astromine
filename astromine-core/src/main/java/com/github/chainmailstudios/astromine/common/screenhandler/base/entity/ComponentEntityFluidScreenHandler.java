@@ -50,7 +50,7 @@ public abstract class ComponentEntityFluidScreenHandler extends ComponentEntityS
 		fluidBar = new FluidVerticalBarWidget();
 		fluidBar.setPosition(Position.of(mainTab, 7, 11));
 		fluidBar.setSize(Size.of(24F, 48F));
-		fluidBar.setVolume(() -> blockEntity.getFluidComponent().getVolume(0));
+		fluidBar.setVolume(() -> blockEntity.getFluidComponent().getFirst());
 
 		mainTab.addWidget(fluidBar);
 	}

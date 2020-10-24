@@ -146,7 +146,7 @@ public abstract class RocketEntity extends ComponentFluidItemEntity {
 	}
 
 	private FluidVolume getTank() {
-		return getFluidComponent().getVolume(0);
+		return getFluidComponent().getFirst();
 	}
 
 	public void tryDisassemble(boolean intentional) {
@@ -174,7 +174,7 @@ public abstract class RocketEntity extends ComponentFluidItemEntity {
 	public abstract void openInventory(PlayerEntity player);
 
 	public void tryLaunch(PlayerEntity launcher) {
-		if (this.getFluidComponent().getVolume(0).biggerThan(Fraction.empty())) {
+		if (this.getFluidComponent().getFirst().biggerThan(Fraction.empty())) {
 			this.getDataTracker().set(RocketEntity.IS_RUNNING, true);
 			if(launcher instanceof ServerPlayerEntity) {
 				AstromineDiscoveriesCriteria.LAUNCH_ROCKET.trigger((ServerPlayerEntity) launcher);

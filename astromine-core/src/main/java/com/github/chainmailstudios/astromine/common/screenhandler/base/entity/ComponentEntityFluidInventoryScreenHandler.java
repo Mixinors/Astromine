@@ -50,7 +50,7 @@ public abstract class ComponentEntityFluidInventoryScreenHandler extends Compone
 		fluidBar = new FluidVerticalBarWidget();
 		fluidBar.setPosition(Position.of(mainTab, 7, 11));
 		fluidBar.setSize(Size.of(24F, 48F));
-		fluidBar.setVolume(() -> entity.getFluidComponent().getVolume(0));
+		fluidBar.setVolume(() -> entity.getFluidComponent().getFirst());
 
 		mainTab.addWidget(fluidBar);
 	}

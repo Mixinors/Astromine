@@ -136,14 +136,13 @@ public interface FluidComponent extends Iterable<Map.Entry<Integer, FluidVolume>
 
 	@Nullable
 	default FluidVolume getVolume(int slot) {
-		return this.getContents().getOrDefault(slot, null);
+		return getContents().getOrDefault(slot, null);
 	}
 
 	default void setVolume(int slot, FluidVolume volume) {
-		if (slot <= this.getSize()) {
-			this.getContents().put(slot, volume);
-			this.updateListeners();
-		}
+		getContents().put(slot, volume);
+
+		updateListeners();
 	}
 
 	int getSize();
@@ -185,7 +184,7 @@ public interface FluidComponent extends Iterable<Map.Entry<Integer, FluidVolume>
 	}
 
 	default boolean isEmpty() {
-		return this.getContents().values().stream().allMatch(FluidVolume::isEmpty);
+		return getContents().values().stream().allMatch(FluidVolume::isEmpty);
 	}
 
 	default boolean isNotEmpty() {

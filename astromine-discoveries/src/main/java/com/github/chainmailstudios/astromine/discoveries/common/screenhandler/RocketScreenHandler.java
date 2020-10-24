@@ -66,7 +66,7 @@ public class RocketScreenHandler extends ComponentEntityFluidInventoryScreenHand
 		launchButtonWidget.setPosition(Position.of(mainTab, 3 + 4, 11));
 		launchButtonWidget.setSize(Size.of(48, 18));
 		launchButtonWidget.setLabel(new TranslatableText("text.astromine.rocket.launch"));
-		launchButtonWidget.setDisabled(() -> entity.getDataTracker().get(RocketEntity.IS_RUNNING) || entity.getFluidComponent().getVolume(0).smallerOrEqualThan(Fraction.empty()));
+		launchButtonWidget.setDisabled(() -> entity.getDataTracker().get(RocketEntity.IS_RUNNING) || entity.getFluidComponent().getFirst().smallerOrEqualThan(Fraction.empty()));
 
 		ButtonWidget abortButtonWidget = new ButtonWidget(() -> {
 			((RocketEntity) entity).tryDisassemble(true);
