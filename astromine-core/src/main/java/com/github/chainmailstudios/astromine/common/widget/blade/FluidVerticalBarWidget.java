@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.widget.blade;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
@@ -34,6 +36,10 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.item.BucketItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -69,6 +75,37 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 
 	public void setVolume(Supplier<FluidVolume> volume) {
 		this.volume = volume;
+	}
+
+	@Override
+	public void onMouseClicked(float x, float y, int button) {
+		super.onMouseClicked(x, y, button);
+
+		if (button == 3) {
+			ItemStack stack = getHandler().getPlayer().inventory.getCursorStack();
+
+			Item item = stack.getItem();
+
+			if (item instanceof BucketItem && stack.getCount() == 1 ) {
+				FluidComponent fluidComponent = FluidComponent.get(stack);
+
+				if (volume.get().hasStored(Fraction.bucket())) {
+					FluidVolume insertable = fluidComponent.getFirstInsertableVolume(null, volume.get().withAmount(Fraction.minimum()));
+
+					if (insertable != null && insertable.isEmpty()) {
+						insertable.moveFrom(volume.get());
+
+						getHandler().getPlayer().inventory.setCursorStack(new ItemStack(insertable.getFluid().getBucketItem()));
+					}
+				}
+			} else if (item instanceof FluidVolumeItem) {
+				FluidComponent fluidComponent = FluidComponent.get(stack);
+
+				FluidVolume insertable = fluidComponent.getFirstInsertableVolume(null, volume.get().withAmount(Fraction.minimum()));
+
+				insertable.moveFrom(volume.get());
+			}
+		}
 	}
 
 	@Environment(EnvType.CLIENT)

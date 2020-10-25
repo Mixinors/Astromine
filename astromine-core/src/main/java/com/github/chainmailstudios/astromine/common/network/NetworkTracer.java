@@ -24,7 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.network;
 
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;

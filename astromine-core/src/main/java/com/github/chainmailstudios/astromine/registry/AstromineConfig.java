@@ -529,6 +529,12 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Fluid for the Space Suit.")
 	public long spaceSuitFluid = 64L;
 
+	@Comment("Threshold for Asteroid Ores.")
+	public int asteroidOreThreshold = 6;
+
+	@Comment("Whether AK9 should asphyxiate.")
+	public boolean asphyxiateAK9 = true;
+
 	public static AstromineConfig get() {
 		if (instance == null) {
 			try {

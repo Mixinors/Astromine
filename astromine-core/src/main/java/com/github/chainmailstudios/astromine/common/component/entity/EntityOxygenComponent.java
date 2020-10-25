@@ -26,6 +26,7 @@ package com.github.chainmailstudios.astromine.common.component.entity;
 
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
@@ -71,7 +72,15 @@ public class EntityOxygenComponent implements Component {
 		oxygen = nextOxygen(isBreathing, oxygen);
 
 		if (oxygen == getMinimumOxygen()) {
-			entity.damage(DamageSource.GENERIC, 1.0F);
+			boolean isAK9 = false;
+
+			if (entity instanceof PlayerEntity) {
+				isAK9 = ((PlayerEntity) entity).getGameProfile().getId().toString().equals("38113444-0bc0-4502-9a4c-17903067907c");
+			}
+
+			if (!isAK9 || AstromineConfig.get().asphyxiateAK9) {
+				entity.damage(DamageSource.DROWN, 1.0F);
+			}
 		}
 	}
 
