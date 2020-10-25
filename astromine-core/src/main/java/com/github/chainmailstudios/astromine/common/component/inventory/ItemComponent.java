@@ -130,7 +130,7 @@ public interface ItemComponent extends Iterable<Map.Entry<Integer, ItemStack>>, 
 	}
 
 	default boolean canInsert(@Nullable Direction direction, ItemStack stack, int slot) {
-		return getStack(slot).isEmpty() || (ItemStack.areEqual(stack, getStack(slot)) && getStack(slot).getMaxCount() - getStack(slot).getCount() >= stack.getCount());
+		return getStack(slot).isEmpty() || (ItemStack.areItemsEqual(stack, getStack(slot)) && ItemStack.areTagsEqual(stack, getStack(slot)) && getStack(slot).getMaxCount() - getStack(slot).getCount() >= stack.getCount());
 	}
 
 	default boolean canExtract(Direction direction, ItemStack stack, int slot) {

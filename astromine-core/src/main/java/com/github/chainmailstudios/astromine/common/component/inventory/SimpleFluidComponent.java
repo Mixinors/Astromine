@@ -48,7 +48,7 @@ public class SimpleFluidComponent implements FluidComponent {
 	protected SimpleFluidComponent(int size) {
 		this.size = size;
 		for (int i = 0; i < size; ++i) {
-			contents.put(i, FluidVolume.empty());
+			setVolume(i, FluidVolume.empty());
 		}
 		this.contents.defaultReturnValue(FluidVolume.empty());
 	}

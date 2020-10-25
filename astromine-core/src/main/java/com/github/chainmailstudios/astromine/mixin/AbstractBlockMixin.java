@@ -94,15 +94,13 @@ public class AbstractBlockMixin {
 
 				FluidComponent blockEntityFluidComponent = FluidComponent.get(blockEntity);
 
-				ItemComponent blockEntityItemComponent = ItemComponent.get(blockEntity);
-
 				if (blockEntityFluidComponent != null) {
 					FluidVolume stackVolume = blockEntityFluidComponent.getFirst();
 
 					if (stackVolume.isEmpty()) {
 						FluidVolume extractable = blockEntityFluidComponent.getFirstExtractableVolume(result.getSide());
 
-						if (isBucket) {
+						if (isBucket && extractable != null) {
 							if (extractable.hasStored(Fraction.bucket())) {
 								if (stack.getCount() == 1 || (player.inventory.getEmptySlot() == -1 && stack.getCount() == 1)) {
 									stackVolume.moveFrom(extractable, Fraction.bucket());
@@ -113,13 +111,13 @@ public class AbstractBlockMixin {
 									player.giveItemStack(new ItemStack(stackVolume.getFluid().getBucketItem()));
 								}
 							}
-						} else {
+						} else if (extractable != null) {
 							stackVolume.moveFrom(extractable, Fraction.bucket());
 						}
 					} else {
 						FluidVolume insertable = blockEntityFluidComponent.getFirstInsertableVolume(result.getSide(), stackVolume);
 
-						if (isBucket) {
+						if (isBucket && insertable != null) {
 							if (insertable.hasAvailable(Fraction.bucket())) {
 								if (stack.getCount() == 1 || (player.inventory.getEmptySlot() == -1 && stack.getCount() == 1)) {
 									insertable.moveFrom(stackVolume, Fraction.bucket());
@@ -133,7 +131,7 @@ public class AbstractBlockMixin {
 										player.giveItemStack(new ItemStack(Items.BUCKET));
 									}
 								}
-							} else {
+							} else if (insertable != null) {
 								insertable.moveFrom(stackVolume, Fraction.bucket());
 							}
 						} else {
