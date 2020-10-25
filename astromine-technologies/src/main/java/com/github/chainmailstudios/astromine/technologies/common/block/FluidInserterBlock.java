@@ -35,6 +35,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.redstone.ComparatorMode;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.FluidInserterBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.FluidInserterScreenHandler;
 
@@ -61,5 +62,10 @@ public class FluidInserterBlock extends WrenchableHorizontalFacingBlockWithEntit
 	@Override
 	public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
 		buffer.writeBlockPos(pos);
+	}
+
+	@Override
+	protected ComparatorMode getComparatorMode() {
+		return ComparatorMode.FLUIDS;
 	}
 }

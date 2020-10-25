@@ -55,6 +55,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
+import com.github.chainmailstudios.astromine.common.block.redstone.ComparatorMode;
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 
@@ -169,5 +170,19 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 
 	protected boolean saveTagToDroppedItem() {
 		return true;
+	}
+
+	protected ComparatorMode getComparatorMode() {
+		return ComparatorMode.ITEMS;
+	}
+
+	@Override
+	public boolean hasComparatorOutput(BlockState state) {
+		return getComparatorMode().hasOutput();
+	}
+
+	@Override
+	public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
+		return getComparatorMode().getOutput(world.getBlockEntity(pos));
 	}
 }
