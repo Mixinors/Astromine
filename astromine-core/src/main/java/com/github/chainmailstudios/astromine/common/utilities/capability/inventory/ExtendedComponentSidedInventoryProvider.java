@@ -51,7 +51,7 @@ public interface ExtendedComponentSidedInventoryProvider extends InventoryProvid
 	}
 
 	default boolean isSideOpenForItems(int slot, Direction direction, boolean inserting) {
-		return inserting ? TransportUtilities.isInsertingItem((BlockEntity) this, BlockEntityTransferComponent.get(this), direction, true) && getItemInputSlots().contains(slot) : TransportUtilities.isExtractingItem((BlockEntity) this, BlockEntityTransferComponent.get(this), direction, true) && getItemOutputSlots().contains(slot);
+		return inserting ? TransportUtilities.isInsertingItem(BlockEntityTransferComponent.get(this), direction, true) && getItemInputSlots().contains(slot) : TransportUtilities.isExtractingItem(BlockEntityTransferComponent.get(this), direction, true) && getItemOutputSlots().contains(slot);
 	}
 
 	default IntSet getItemInputSlots() {

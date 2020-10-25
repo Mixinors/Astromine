@@ -46,14 +46,14 @@ public interface ExtendedEnergyProvider extends EnergyStorage {
 
 	@Override
 	default double getMaxInput(EnergySide side) {
-		boolean allow = true;
+		boolean allow = false;
 
 		BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(this);
 
 		if (transferComponent != null) {
 			TransferType type = transferComponent.get(AstromineComponents.ENERGY_INVENTORY_COMPONENT).get(EnergyUtilities.toDirection(side));
 
-			allow = !type.canInsert();
+			allow = type.canInsert();
 		}
 
 		if (!allow) {
@@ -65,14 +65,14 @@ public interface ExtendedEnergyProvider extends EnergyStorage {
 
 	@Override
 	default double getMaxOutput(EnergySide side) {
-		boolean allow = true;
+		boolean allow = false;
 
 		BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(this);
 
 		if (transferComponent != null) {
 			TransferType type = transferComponent.get(AstromineComponents.ENERGY_INVENTORY_COMPONENT).get(EnergyUtilities.toDirection(side));
 
-			allow = !type.canInsert();
+			allow = type.canExtract();
 		}
 
 		if (!allow) {

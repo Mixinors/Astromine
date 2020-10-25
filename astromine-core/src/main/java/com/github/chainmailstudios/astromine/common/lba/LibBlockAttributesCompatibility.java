@@ -72,7 +72,7 @@ public final class LibBlockAttributesCompatibility {
 				BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(blockEntity);
 
 				// This does not check canInsert or canExtract; because I do not know how the hell to do that with LBA.
-				if (transferComponent != null && !transferComponent.get(AstromineComponents.FLUID_INVENTORY_COMPONENT).get(direction).isNone()) {
+				if (transferComponent != null && transferComponent.get(AstromineComponents.FLUID_INVENTORY_COMPONENT) != null &&!transferComponent.get(AstromineComponents.FLUID_INVENTORY_COMPONENT).get(direction).isNone()) {
 					FluidComponent component = FluidComponent.get(blockEntity);
 
 					if (component != null) {

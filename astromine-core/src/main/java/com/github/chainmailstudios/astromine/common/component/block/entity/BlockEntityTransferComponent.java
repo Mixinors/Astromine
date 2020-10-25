@@ -49,7 +49,7 @@ public class BlockEntityTransferComponent implements Component {
 	private final Reference2ReferenceMap<ComponentKey<?>, TransferEntry> components = new Reference2ReferenceOpenHashMap<>();
 
 	public TransferEntry get(ComponentKey<?> type) {
-		return components.computeIfAbsent(type, t -> new TransferEntry(type));
+		return components.getOrDefault(type, null);
 	}
 
 	public Map<ComponentKey<?>, TransferEntry> get() {

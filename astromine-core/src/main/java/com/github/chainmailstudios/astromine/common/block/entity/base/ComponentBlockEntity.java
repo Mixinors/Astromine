@@ -215,7 +215,9 @@ public abstract class ComponentBlockEntity extends BlockEntity implements Packet
 						if (extractable != null && !extractable.isEmpty()) {
 							FluidVolume insertable = neighborFluidComponent.getFirstInsertableVolume(neighborDirection, extractable);
 
-							insertable.moveFrom(extractable);
+							if (insertable != null) {
+								insertable.moveFrom(extractable);
+							}
 						}
 					}
 				}

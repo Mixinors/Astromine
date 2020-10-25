@@ -40,6 +40,14 @@ public final class Fraction extends Number implements Comparable<Fraction> {
 		this.denominator = Math.max(1, denominator);
 	}
 
+	public static Fraction minimum() {
+		return new Fraction(1, Long.MAX_VALUE);
+	}
+
+	public static Fraction maximum() {
+		return new Fraction(Long.MAX_VALUE, 1);
+	}
+
 	public static Fraction empty() {
 		return new Fraction(0, 1);
 	}

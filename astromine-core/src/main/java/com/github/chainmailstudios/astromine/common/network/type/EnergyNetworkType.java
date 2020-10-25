@@ -69,8 +69,8 @@ public class EnergyNetworkType extends NetworkType {
 
 				BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(blockEntity);
 
-				if (transferComponent != null) {
-					type = transferComponent.get(AstromineComponents.FLUID_INVENTORY_COMPONENT).get(memberNode.getDirection());
+				if (transferComponent != null && transferComponent.get(AstromineComponents.ENERGY_INVENTORY_COMPONENT) != null) {
+					type = transferComponent.get(AstromineComponents.ENERGY_INVENTORY_COMPONENT).get(memberNode.getDirection());
 				}
 
 				EnergyHandler volume = Energy.of(blockEntity).side(memberNode.getDirection());
@@ -100,7 +100,14 @@ public class EnergyNetworkType extends NetworkType {
 
 				double outputSpeed = requesters.getOrDefault(output, 0.0D);
 
-				double speed = Collections.min(Arrays.asList(inputSpeed / requesters.size(), outputSpeed / requesters.size(), input.getEnergy() / (i + 1), output.getMaxStored() - output.getEnergy(), input.getMaxOutput(), output.getMaxInput()));
+				double a = inputSpeed / requesters.size();
+				double b = outputSpeed / requesters.size();
+				double c = input.getEnergy() / (i + 1);
+				double d = output.getMaxStored() - output.getEnergy();
+				double e = input.getMaxOutput();
+				double f = output.getMaxInput();
+
+				double speed = Collections.min(Arrays.asList(a, b, c, d, e, f));
 
 				input.into(output).move(speed);
 			}

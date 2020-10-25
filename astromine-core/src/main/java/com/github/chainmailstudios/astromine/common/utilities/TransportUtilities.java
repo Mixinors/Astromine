@@ -49,16 +49,12 @@ public class TransportUtilities {
 		return transferType.canInsert() || (!transferType.isNone() && NetworkMemberRegistry.get(entity, direction).isRequester(AstromineNetworkTypes.ENERGY));
 	}
 
-	public static boolean isExtractingItem(BlockEntity entity, @Nullable BlockEntityTransferComponent transferComponent, Direction direction, boolean defaultValue) {
-		if (!(entity instanceof EnergyStorage))
-			return false;
+	public static boolean isExtractingItem(@Nullable BlockEntityTransferComponent transferComponent, Direction direction, boolean defaultValue) {
 		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(direction) : TransferType.NONE;
 		return transferType.canExtract() || (defaultValue && transferType.isNone());
 	}
 
-	public static boolean isInsertingItem(BlockEntity entity, @Nullable BlockEntityTransferComponent transferComponent, Direction direction, boolean defaultValue) {
-		if (!(entity instanceof EnergyStorage))
-			return false;
+	public static boolean isInsertingItem(@Nullable BlockEntityTransferComponent transferComponent, Direction direction, boolean defaultValue) {
 		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(direction) : TransferType.NONE;
 		return transferType.canInsert() || (defaultValue && transferType.isNone());
 	}

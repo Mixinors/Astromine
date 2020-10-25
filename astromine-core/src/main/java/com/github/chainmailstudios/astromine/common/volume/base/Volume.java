@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.volume.base;
 
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import net.minecraft.nbt.CompoundTag;
 
 import java.util.Objects;
@@ -60,6 +61,13 @@ public abstract class Volume<T, N extends Number> {
 			r.run();
 	}
 
+	public <V extends Volume<T, N>> V withType(T t) {
+		V v = copy();
+		v.setType(t);
+		return v;
+	}
+
+
 	public N getAmount() {
 		return n;
 	}
@@ -69,6 +77,12 @@ public abstract class Volume<T, N extends Number> {
 
 		if (r != null)
 			r.run();
+	}
+
+	public <V extends Volume<T, N>> V withAmount(N n) {
+		V v = copy();
+		v.setAmount(n);
+		return v;
 	}
 
 	public N getSize() {
@@ -82,170 +96,54 @@ public abstract class Volume<T, N extends Number> {
 			r.run();
 	}
 
+	public <V extends Volume<T, N>> V withSize(N n) {
+		V v = copy();
+		v.setSize(n);
+		return v;
+	}
+
 	public void setRunnable(Runnable r) {
 		this.r = r;
+	}
+
+	public <V extends Volume<T, N>> V withRunnable(Runnable r) {
+		setRunnable(r);
+
+		return (V) this;
 	}
 
 	public boolean isFull() {
 		return n.equals(s);
 	}
 
-	public Volume<T, N> ifFull(Runnable runnable) {
-		if (isFull()) {
-			runnable.run();
-		}
-
-		return this;
-	}
-
-	public Volume<T, N> ifNotFull(Runnable runnable) {
-		if (!isFull()) {
-			runnable.run();
-		}
-
-		return this;
-	}
-
 	public boolean isEmpty() {
 		return n.doubleValue() == 0.0D;
-	}
-
-	public Volume<T, N> ifEmpty(Runnable runnable) {
-		if (isEmpty()) {
-			runnable.run();
-		}
-
-		return this;
-	}
-
-	public Volume<T, N> ifNotEmpty(Runnable runnable) {
-		if (!isEmpty()) {
-			runnable.run();
-		}
-
-		return this;
 	}
 
 	public boolean hasAvailable(Number required) {
 		return s.doubleValue() - n.doubleValue() >= required.doubleValue();
 	}
 
-	public Volume<T, N> ifAvailable(Number required, Runnable runnable) {
-		if (hasAvailable(required)) {
-			runnable.run();
-		}
-
-		return this;
-	}
-
-	public Volume<T, N> ifNotAvailable(Number required, Runnable runnable) {
-		if (!hasAvailable(required)) {
-			runnable.run();
-		}
-
-		return this;
-	}
-
 	public boolean hasStored(Number required) {
 		return n.doubleValue() >= required.doubleValue();
-	}
-
-	public Volume<T, N> ifStored(Number required, Runnable runnable) {
-		if (hasStored(required)) {
-			runnable.run();
-		}
-
-		return this;
-	}
-
-	public Volume<T, N> ifNotStored(Number required, Runnable runnable) {
-		if (!hasStored(required)) {
-			runnable.run();
-		}
-
-		return this;
 	}
 
 	public boolean biggerThan(Number number) {
 		return n.doubleValue() > number.doubleValue();
 	}
 
-	public Volume<T, N> ifBiggerThan(Number number, Runnable runnable) {
-		if (biggerThan(number)) {
-			runnable.run();
-		}
-
-		return this;
-	}
-
-	public Volume<T, N> ifNotBiggerThan(Number number, Runnable runnable) {
-		if (!biggerThan(number)) {
-			runnable.run();
-		}
-
-		return this;
-	}
-
 	public boolean smallerThan(Number number) {
 		return n.doubleValue() < number.doubleValue();
-	}
-
-	public Volume<T, N> ifSmallerThan(Number number, Runnable runnable) {
-		if (smallerThan(number)) {
-			runnable.run();
-		}
-
-		return this;
-	}
-
-	public Volume<T, N> ifNotSmallerThan(Number number, Runnable runnable) {
-		if (!smallerThan(number)) {
-			runnable.run();
-		}
-
-		return this;
 	}
 
 	public boolean biggerOrEqualThan(Number number) {
 		return n.doubleValue() >= number.doubleValue();
 	}
 
-	public Volume<T, N> ifBiggerOrEqualThan(Number number, Runnable runnable) {
-		if (biggerOrEqualThan(number)) {
-			runnable.run();
-		}
-
-		return this;
-	}
-
-	public Volume<T, N> ifNotBiggerOrEqualThan(Number number, Runnable runnable) {
-		if (!biggerOrEqualThan(number)) {
-			runnable.run();
-		}
-
-		return this;
-	}
-
 	public boolean smallerOrEqualThan(Number number) {
 		return n.doubleValue() <= number.doubleValue();
 	}
-
-	public Volume<T, N> ifSmallerOrEqualThan(Number number, Runnable runnable) {
-		if (smallerOrEqualThan(number)) {
-			runnable.run();
-		}
-
-		return this;
-	}
-
-	public Volume<T, N> ifNotSmallerOrEqualThan(Number number, Runnable runnable) {
-		if (!smallerOrEqualThan(number)) {
-			runnable.run();
-		}
-
-		return this;
-	}
-
+	
 	@Override
 	public boolean equals(Object object) {
 		if (this == object)

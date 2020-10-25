@@ -89,6 +89,10 @@ public interface ItemComponent extends Iterable<Map.Entry<Integer, ItemStack>>, 
 		return getExtractableStacks(direction).stream().filter(predicate).collect(Collectors.toList());
 	}
 
+	default List<ItemStack> getInsertableStacks(Direction direction) {
+		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, entry.getValue(), entry.getKey())).map(Map.Entry::getValue).collect(Collectors.toList());
+	}
+
 	default List<ItemStack> getInsertableStacks(Direction direction, ItemStack Stack) {
 		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, Stack, entry.getKey())).map(Map.Entry::getValue).collect(Collectors.toList());
 	}
@@ -126,7 +130,7 @@ public interface ItemComponent extends Iterable<Map.Entry<Integer, ItemStack>>, 
 	}
 
 	default boolean canInsert(@Nullable Direction direction, ItemStack stack, int slot) {
-		return ItemStack.areEqual(stack, getStack(slot)) && getStack(slot).getMaxCount() - getStack(slot).getCount() >= stack.getCount();
+		return getStack(slot).isEmpty() || (ItemStack.areEqual(stack, getStack(slot)) && getStack(slot).getMaxCount() - getStack(slot).getCount() >= stack.getCount());
 	}
 
 	default boolean canExtract(Direction direction, ItemStack stack, int slot) {

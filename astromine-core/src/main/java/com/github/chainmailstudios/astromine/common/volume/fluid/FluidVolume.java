@@ -105,7 +105,7 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 	}
 
 	public boolean test(Fluid fluid) {
-		return this.fluid == fluid || this.isEmpty();
+		return (this.fluid == fluid && fluid != Fluids.EMPTY) || this.isEmpty();
 	}
 
 	public boolean test(FluidVolume volume) {
@@ -137,9 +137,10 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 			setAmount(getAmount().subtract(amount));
 		});
 
-		ifEmpty(() -> {
+		if (isEmpty()) {
 			setFluid(Fluids.EMPTY);
-		});
+			setAmount(Fraction.empty());
+		}
 
 		return (V) this;
 	}

@@ -70,12 +70,12 @@ public class SimpleFluidComponent implements FluidComponent {
 
 	@Override
 	public boolean canInsert(@Nullable Direction direction, FluidVolume volume, int slot) {
-		return insertPredicate.test(direction, volume, slot);
+		return insertPredicate.test(direction, volume, slot) && FluidComponent.super.canInsert(direction, volume, slot);
 	}
 
 	@Override
 	public boolean canExtract(@Nullable Direction direction, FluidVolume volume, int slot) {
-		return extractPredicate.test(direction, volume, slot);
+		return extractPredicate.test(direction, volume, slot) && FluidComponent.super.canExtract(direction, volume, slot);
 	}
 
 	public SimpleFluidComponent withInsertPredicate(TriPredicate<@Nullable Direction, FluidVolume, Integer> predicate) {

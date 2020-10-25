@@ -70,12 +70,12 @@ public class SimpleItemComponent implements ItemComponent {
 
 	@Override
 	public boolean canInsert(@Nullable Direction direction, ItemStack stack, int slot) {
-		return insertPredicate.test(direction, stack, slot);
+		return insertPredicate.test(direction, stack, slot) && ItemComponent.super.canInsert(direction, stack, slot);
 	}
 
 	@Override
 	public boolean canExtract(@Nullable Direction direction, ItemStack stack, int slot) {
-		return extractPredicate.test(direction, stack, slot);
+		return extractPredicate.test(direction, stack, slot) && ItemComponent.super.canExtract(direction, stack, slot);
 	}
 
 	public SimpleItemComponent withInsertPredicate(TriPredicate<@Nullable Direction, ItemStack, Integer> predicate) {

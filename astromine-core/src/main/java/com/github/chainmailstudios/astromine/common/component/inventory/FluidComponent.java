@@ -89,6 +89,10 @@ public interface FluidComponent extends Iterable<Map.Entry<Integer, FluidVolume>
 		return getExtractableVolumes(direction).stream().filter(predicate).collect(Collectors.toList());
 	}
 
+	default List<FluidVolume> getInsertableVolumes(Direction direction) {
+		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, entry.getValue(), entry.getKey())).map(Map.Entry::getValue).collect(Collectors.toList());
+	}
+
 	default List<FluidVolume> getInsertableVolumes(Direction direction, FluidVolume volume) {
 		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, volume, entry.getKey())).map(Map.Entry::getValue).collect(Collectors.toList());
 	}
@@ -127,7 +131,7 @@ public interface FluidComponent extends Iterable<Map.Entry<Integer, FluidVolume>
 
 
 	default boolean canInsert(@Nullable Direction direction, FluidVolume volume, int slot) {
-		return getVolume(slot).test(volume);
+		return volume.test(getVolume(slot));
 	}
 
 	default boolean canExtract(@Nullable Direction direction, FluidVolume volume, int slot) {
@@ -140,7 +144,7 @@ public interface FluidComponent extends Iterable<Map.Entry<Integer, FluidVolume>
 	}
 
 	default void setVolume(int slot, FluidVolume volume) {
-		getContents().put(slot, volume);
+		getContents().put(slot, volume.withRunnable(this::updateListeners));
 
 		updateListeners();
 	}
