@@ -35,10 +35,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingTieredBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.network.NetworkBlock;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.PresserBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.PresserScreenHandler;
 
-public abstract class PresserBlock extends WrenchableHorizontalFacingTieredBlockWithEntity {
+public abstract class PresserBlock extends WrenchableHorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester {
 	public PresserBlock(Settings settings) {
 		super(settings);
 	}

@@ -1,0 +1,13 @@
+{
+  "type": "astromine:wiremilling",
+  "input": {
+    "tag": "c:steel_ingots",
+    "count": 1
+  },
+  "output": {
+    "item": "astromine:steel_wire",
+    "count": 3
+  },
+  "time": 80,
+  "energy_consumed": 340
+}

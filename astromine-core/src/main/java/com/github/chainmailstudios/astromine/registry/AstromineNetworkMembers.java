@@ -29,6 +29,7 @@ import alexiil.mc.lib.attributes.SearchOptions;
 import alexiil.mc.lib.attributes.fluid.FluidAttributes;
 import alexiil.mc.lib.attributes.fluid.GroupedFluidInv;
 import alexiil.mc.lib.attributes.misc.NullVariant;
+import com.github.chainmailstudios.astromine.common.network.NetworkBlock;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
@@ -96,6 +97,15 @@ public class AstromineNetworkMembers {
 				}
 				return super.get(pos, direction);
 			}
+		});
+
+		NetworkMemberRegistry.NetworkTypeRegistry<NetworkType> energy = NetworkMemberRegistry.INSTANCE.get(AstromineNetworkTypes.ENERGY);
+		NetworkMemberRegistry.NetworkTypeRegistry<NetworkType> fluid = NetworkMemberRegistry.INSTANCE.get(AstromineNetworkTypes.FLUID);
+
+		BLOCK_CONSUMER.put(block -> block instanceof NetworkBlock, block -> {
+			NetworkBlock networkBlock = (NetworkBlock)block;
+			if(networkBlock.isMember(AstromineNetworkTypes.ENERGY)) energy.register(block, networkBlock.energyType());
+			if(networkBlock.isMember(AstromineNetworkTypes.FLUID)) fluid.register(block, networkBlock.fluidType());
 		});
 
 		FabricLoader.getInstance().getEntrypoints("astromine-network-members", Runnable.class).forEach(Runnable::run);

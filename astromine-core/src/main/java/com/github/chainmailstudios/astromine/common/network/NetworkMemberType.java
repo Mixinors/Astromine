@@ -41,5 +41,9 @@ public enum NetworkMemberType {
 	 * Node is a cable-like member, that provides routing to other members but doesn't actually store and provide
 	 * anything.
 	 */
-	NODE
+	NODE,
+	/**
+	 * Not a member of this network type
+	 */
+	NONE
 }

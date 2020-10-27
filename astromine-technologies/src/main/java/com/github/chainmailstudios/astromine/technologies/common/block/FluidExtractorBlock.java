@@ -36,10 +36,11 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.redstone.ComparatorMode;
+import com.github.chainmailstudios.astromine.common.network.NetworkBlock;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.FluidExtractorBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.FluidExtractorScreenHandler;
 
-public class FluidExtractorBlock extends WrenchableHorizontalFacingBlockWithEntity {
+public class FluidExtractorBlock extends WrenchableHorizontalFacingBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.FluidProvider {
 	public FluidExtractorBlock(Settings settings) {
 		super(settings);
 	}

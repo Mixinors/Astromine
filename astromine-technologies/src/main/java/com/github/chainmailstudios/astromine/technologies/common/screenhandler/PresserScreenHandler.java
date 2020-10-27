@@ -37,12 +37,12 @@ import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 
 public class PresserScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
-	private PresserBlockEntity sorter;
+	private PresserBlockEntity presser;
 
 	public PresserScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AstromineTechnologiesScreenHandlers.PRESSER, syncId, player, position);
 
-		sorter = (PresserBlockEntity) blockEntity;
+		presser = (PresserBlockEntity) blockEntity;
 	}
 
 	@Override
@@ -63,8 +63,8 @@ public class PresserScreenHandler extends ComponentBlockEntityEnergyItemScreenHa
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(output.getX() - 31, output.getY()));
 		arrow.setSize(Size.of(22, 16));
-		arrow.setLimitSupplier(() -> sorter.limit);
-		arrow.setProgressSupplier(() -> (int) sorter.progress);
+		arrow.setLimitSupplier(() -> presser.limit);
+		arrow.setProgressSupplier(() -> (int) presser.progress);
 
 		input.setPosition(Position.of(arrow.getX() - 27, arrow.getY()));
 

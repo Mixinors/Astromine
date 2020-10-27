@@ -35,10 +35,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableFacingEnergyBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.network.NetworkBlock;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.VentBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.VentScreenHandler;
 
-public class VentBlock extends WrenchableFacingEnergyBlockWithEntity {
+public class VentBlock extends WrenchableFacingEnergyBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.FluidRequester {
 	public VentBlock(Settings settings) {
 		super(settings);
 	}

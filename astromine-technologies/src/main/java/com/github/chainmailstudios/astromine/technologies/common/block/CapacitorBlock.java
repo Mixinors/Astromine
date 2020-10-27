@@ -36,10 +36,13 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingTieredBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.redstone.ComparatorMode;
+import com.github.chainmailstudios.astromine.common.network.NetworkBlock;
+import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
+import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.CapacitorBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.CapacitorScreenHandler;
 
-public abstract class CapacitorBlock extends WrenchableHorizontalFacingTieredBlockWithEntity {
+public abstract class CapacitorBlock extends WrenchableHorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyBuffer {
 	public CapacitorBlock(Settings settings) {
 		super(settings);
 	}
@@ -127,6 +130,11 @@ public abstract class CapacitorBlock extends WrenchableHorizontalFacingTieredBlo
 		@Override
 		public BlockEntity createBlockEntity() {
 			return new CapacitorBlockEntity.Creative();
+		}
+
+		@Override
+		public NetworkMemberType energyType() {
+			return NetworkMemberType.PROVIDER;
 		}
 	}
 }

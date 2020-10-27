@@ -135,6 +135,30 @@ public class AstromineConfig implements ConfigData {
 
 	@Comment("Energy for the Elite Presser.")
 	public double elitePresserEnergy = 65535D;
+	
+	@Comment("Speed for the Primitive Wiremill.")
+	public double primitiveWiremillSpeed = 0.5D;
+
+	@Comment("Speed for the Basic Wiremill.")
+	public double basicWiremillSpeed = 1D;
+
+	@Comment("Speed for the Advanced Wiremill.")
+	public double advancedWiremillSpeed = 2D;
+
+	@Comment("Speed for the Elite Wiremill.")
+	public double eliteWiremillSpeed = 4D;
+
+	@Comment("Energy for the Primitive Wiremill.")
+	public double primitiveWiremillEnergy = 2048D;
+
+	@Comment("Energy for the Basic Wiremill.")
+	public double basicWiremillEnergy = 16384D;
+
+	@Comment("Energy for the Advanced Wiremill.")
+	public double advancedWiremillEnergy = 32767D;
+
+	@Comment("Energy for the Elite Wiremill.")
+	public double eliteWiremillEnergy = 65535D;
 
 	@Comment("Speed for the Primitive Liquid Generator.")
 	public double primitiveLiquidGeneratorSpeed = 0.5D;

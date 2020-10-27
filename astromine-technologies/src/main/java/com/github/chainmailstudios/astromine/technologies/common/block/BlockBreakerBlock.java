@@ -35,10 +35,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.network.NetworkBlock;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.BlockBreakerBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.BlockBreakerScreenHandler;
 
-public class BlockBreakerBlock extends WrenchableHorizontalFacingBlockWithEntity {
+public class BlockBreakerBlock extends WrenchableHorizontalFacingBlockWithEntity implements NetworkBlock.EnergyRequester {
 	public BlockBreakerBlock(Settings settings) {
 		super(settings);
 	}

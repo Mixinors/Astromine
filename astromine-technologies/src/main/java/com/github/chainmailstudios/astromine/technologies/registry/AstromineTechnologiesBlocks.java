@@ -78,6 +78,11 @@ public class AstromineTechnologiesBlocks extends AstromineBlocks {
 	public static final Block ADVANCED_PRESSER = register("advanced_presser", new PresserBlock.Advanced(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block ELITE_PRESSER = register("elite_presser", new PresserBlock.Elite(getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
 
+	public static final Block PRIMITIVE_WIREMILL = register("primitive_wiremill", new WiremillBlock.Primitive(getPrimitiveSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block BASIC_WIREMILL = register("basic_wiremill", new WiremillBlock.Basic(getBasicSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block ADVANCED_WIREMILL = register("advanced_wiremill", new WiremillBlock.Advanced(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block ELITE_WIREMILL = register("elite_wiremill", new WiremillBlock.Elite(getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
+
 	public static final Block PRIMITIVE_ELECTROLYZER = register("primitive_electrolyzer", new ElectrolyzerBlock.Primitive(getPrimitiveSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block BASIC_ELECTROLYZER = register("basic_electrolyzer", new ElectrolyzerBlock.Basic(getBasicSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block ADVANCED_ELECTROLYZER = register("advanced_electrolyzer", new ElectrolyzerBlock.Advanced(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
