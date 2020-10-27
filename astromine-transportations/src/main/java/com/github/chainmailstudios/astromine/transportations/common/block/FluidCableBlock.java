@@ -25,10 +25,11 @@
 package com.github.chainmailstudios.astromine.transportations.common.block;
 
 import com.github.chainmailstudios.astromine.common.block.base.CableBlock;
+import com.github.chainmailstudios.astromine.common.network.NetworkBlock;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
-public class FluidCableBlock extends CableBlock {
+public class FluidCableBlock extends CableBlock implements NetworkBlock.FluidNode {
 	public FluidCableBlock(Settings settings) {
 		super(settings);
 	}

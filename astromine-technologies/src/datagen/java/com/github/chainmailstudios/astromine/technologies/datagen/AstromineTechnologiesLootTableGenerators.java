@@ -48,6 +48,11 @@ public class AstromineTechnologiesLootTableGenerators extends AstromineLootTable
 			AstromineTechnologiesBlocks.ADVANCED_PRESSER,
 			AstromineTechnologiesBlocks.ELITE_PRESSER,
 
+			AstromineTechnologiesBlocks.PRIMITIVE_WIREMILL,
+			AstromineTechnologiesBlocks.BASIC_WIREMILL,
+			AstromineTechnologiesBlocks.ADVANCED_WIREMILL,
+			AstromineTechnologiesBlocks.ELITE_WIREMILL,
+
 			AstromineTechnologiesBlocks.PRIMITIVE_ELECTROLYZER,
 			AstromineTechnologiesBlocks.BASIC_ELECTROLYZER,
 			AstromineTechnologiesBlocks.ADVANCED_ELECTROLYZER,

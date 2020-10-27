@@ -35,10 +35,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingTieredBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.network.NetworkBlock;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.ElectricSmelterBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.ElectricSmelterScreenHandler;
 
-public abstract class ElectricSmelterBlock extends WrenchableHorizontalFacingTieredBlockWithEntity {
+public abstract class ElectricSmelterBlock extends WrenchableHorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester {
 	public ElectricSmelterBlock(Settings settings) {
 		super(settings);
 	}

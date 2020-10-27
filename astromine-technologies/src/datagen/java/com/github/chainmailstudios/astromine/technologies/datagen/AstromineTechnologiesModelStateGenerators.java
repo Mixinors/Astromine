@@ -66,7 +66,8 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 			AstromineTechnologiesBlocks.PRIMITIVE_LIQUID_GENERATOR,
 			AstromineTechnologiesBlocks.PRIMITIVE_PRESSER,
 			AstromineTechnologiesBlocks.PRIMITIVE_SOLID_GENERATOR,
-			AstromineTechnologiesBlocks.PRIMITIVE_TRITURATOR
+			AstromineTechnologiesBlocks.PRIMITIVE_TRITURATOR,
+			AstromineTechnologiesBlocks.PRIMITIVE_WIREMILL
 	));
 	public final ModelStateGenerator BASIC_MACHINES = register(new MachineModelStateGenerator(MachineTier.BASIC,
 			AstromineTechnologiesBlocks.BASIC_ALLOY_SMELTER,
@@ -77,7 +78,8 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 			AstromineTechnologiesBlocks.BASIC_LIQUID_GENERATOR,
 			AstromineTechnologiesBlocks.BASIC_PRESSER,
 			AstromineTechnologiesBlocks.BASIC_SOLID_GENERATOR,
-			AstromineTechnologiesBlocks.BASIC_TRITURATOR
+			AstromineTechnologiesBlocks.BASIC_TRITURATOR,
+			AstromineTechnologiesBlocks.BASIC_WIREMILL
 	));
 	public final ModelStateGenerator ADVANCED_MACHINES = register(new MachineModelStateGenerator(MachineTier.ADVANCED,
 			AstromineTechnologiesBlocks.ADVANCED_ALLOY_SMELTER,
@@ -89,6 +91,7 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 			AstromineTechnologiesBlocks.ADVANCED_PRESSER,
 			AstromineTechnologiesBlocks.ADVANCED_SOLID_GENERATOR,
 			AstromineTechnologiesBlocks.ADVANCED_TRITURATOR,
+			AstromineTechnologiesBlocks.ADVANCED_WIREMILL,
 			AstromineTechnologiesBlocks.FLUID_INSERTER,
 			AstromineTechnologiesBlocks.FLUID_EXTRACTOR,
 			AstromineTechnologiesBlocks.BLOCK_BREAKER,
@@ -103,7 +106,8 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 			AstromineTechnologiesBlocks.ELITE_LIQUID_GENERATOR,
 			AstromineTechnologiesBlocks.ELITE_PRESSER,
 			AstromineTechnologiesBlocks.ELITE_SOLID_GENERATOR,
-			AstromineTechnologiesBlocks.ELITE_TRITURATOR
+			AstromineTechnologiesBlocks.ELITE_TRITURATOR,
+			AstromineTechnologiesBlocks.ELITE_WIREMILL
 	));
 
 	public final ModelStateGenerator MACHINE_CHASSIS = register(new GenericItemModelGenerator(

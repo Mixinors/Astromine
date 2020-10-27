@@ -2,6 +2,7 @@ package com.github.chainmailstudios.astromine.transportations.common.block;
 
 import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.network.NetworkBlock;
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.DrainBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -13,7 +14,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class DrainBlock extends BlockWithEntity {
+public class DrainBlock extends BlockWithEntity implements NetworkBlock.FluidRequester {
     public DrainBlock(Settings settings) {
         super(settings);
     }

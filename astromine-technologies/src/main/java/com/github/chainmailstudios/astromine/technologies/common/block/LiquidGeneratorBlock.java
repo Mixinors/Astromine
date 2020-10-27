@@ -35,10 +35,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingTieredBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.redstone.ComparatorMode;
+import com.github.chainmailstudios.astromine.common.network.NetworkBlock;
+import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
+import com.github.chainmailstudios.astromine.common.network.type.EnergyNetworkType;
+import com.github.chainmailstudios.astromine.common.network.type.FluidNetworkType;
+import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.LiquidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.LiquidGeneratorScreenHandler;
 
-public abstract class LiquidGeneratorBlock extends WrenchableHorizontalFacingTieredBlockWithEntity {
+public abstract class LiquidGeneratorBlock extends WrenchableHorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyProvider, NetworkBlock.FluidRequester {
 	public LiquidGeneratorBlock(Settings settings) {
 		super(settings);
 	}
@@ -61,6 +67,11 @@ public abstract class LiquidGeneratorBlock extends WrenchableHorizontalFacingTie
 		@Override
 		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
 			buffer.writeBlockPos(pos);
+		}
+
+		@Override
+		protected ComparatorMode getComparatorMode() {
+			return ComparatorMode.ENERGY;
 		}
 	}
 
