@@ -26,6 +26,12 @@ package com.github.chainmailstudios.astromine.common.widget.blade;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
+import com.github.chainmailstudios.astromine.common.utilities.ScreenUtilities;
+import com.github.vini2003.blade.common.miscellaneous.Position;
+import com.github.vini2003.blade.common.miscellaneous.Size;
+import com.github.vini2003.blade.common.utilities.Networks;
+import com.github.vini2003.blade.common.widget.base.PanelWidget;
+import com.github.vini2003.blade.common.widget.base.TextWidget;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
@@ -65,6 +71,10 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 	private final Identifier FLUID_BACKGROUND = AstromineCommon.identifier("textures/widget/fluid_volume_fractional_vertical_bar_background.png");
 	private Supplier<FluidVolume> volume;
 
+	public FluidVerticalBarWidget() {
+		getSynchronize().add(Networks.getMOUSE_CLICK());
+	}
+
 	public Identifier getBackgroundTexture() {
 		return FLUID_BACKGROUND;
 	}
@@ -81,30 +91,10 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 	public void onMouseClicked(float x, float y, int button) {
 		super.onMouseClicked(x, y, button);
 
-		if (button == 3) {
-			ItemStack stack = getHandler().getPlayer().inventory.getCursorStack();
-
-			Item item = stack.getItem();
-
-			if (item instanceof BucketItem && stack.getCount() == 1 ) {
-				FluidComponent fluidComponent = FluidComponent.get(stack);
-
-				if (volume.get().hasStored(Fraction.bucket())) {
-					FluidVolume insertable = fluidComponent.getFirstInsertableVolume(null, volume.get().withAmount(Fraction.minimum()));
-
-					if (insertable != null && insertable.isEmpty()) {
-						insertable.moveFrom(volume.get());
-
-						getHandler().getPlayer().inventory.setCursorStack(new ItemStack(insertable.getFluid().getBucketItem()));
-					}
-				}
-			} else if (item instanceof FluidVolumeItem) {
-				FluidComponent fluidComponent = FluidComponent.get(stack);
-
-				FluidVolume insertable = fluidComponent.getFirstInsertableVolume(null, volume.get().withAmount(Fraction.minimum()));
-
-				insertable.moveFrom(volume.get());
-			}
+		if (isWithin(x, y) && !getHidden() && button == 2) {
+			volume.get().setAmount(Fraction.empty());
+			volume.get().setSize(Fraction.empty());
+			volume.get().setFluid(Fluids.EMPTY);
 		}
 	}
 

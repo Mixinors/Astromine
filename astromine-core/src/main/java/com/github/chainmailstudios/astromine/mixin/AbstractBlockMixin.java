@@ -95,7 +95,7 @@ public class AbstractBlockMixin {
 				FluidComponent blockEntityFluidComponent = FluidComponent.get(blockEntity);
 
 				if (blockEntityFluidComponent != null) {
-					FluidVolume stackVolume = blockEntityFluidComponent.getFirst();
+					FluidVolume stackVolume = stackFluidComponent.getFirst();
 
 					if (stackVolume.isEmpty()) {
 						FluidVolume extractable = blockEntityFluidComponent.getFirstExtractableVolume(result.getSide());
