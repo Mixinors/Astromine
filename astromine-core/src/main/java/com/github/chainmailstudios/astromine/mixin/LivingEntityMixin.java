@@ -64,8 +64,6 @@ import java.util.Optional;
 public abstract class LivingEntityMixin extends EntityMixin implements GravityEntity {
 	@Unique
 	private static final ThreadLocal<Boolean> FAKE_BEING_IN_LAVA = ThreadLocal.withInitial(() -> Boolean.FALSE);
-	@Unique
-	private static final ThreadLocal<Boolean> FAKE_BEING_IN_WATER = ThreadLocal.withInitial(() -> Boolean.FALSE);
 
 	@Inject(at = @At("RETURN"), method = "createLivingAttributes()Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;")
 	private static void createLivingAttributesInject(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
@@ -77,9 +75,6 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 
 	@Shadow
 	public abstract Iterable<ItemStack> getArmorItems();
-
-	@Shadow
-	public abstract boolean isFallFlying();
 
 	@ModifyConstant(method = "travel(Lnet/minecraft/util/math/Vec3d;)V", constant = @Constant(doubleValue = 0.08D, ordinal = 0))
 	private double modifyGravity(double original) {
