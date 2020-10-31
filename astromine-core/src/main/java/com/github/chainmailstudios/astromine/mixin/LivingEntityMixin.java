@@ -24,12 +24,14 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
+import net.minecraft.fluid.Fluid;
+import net.minecraft.tag.FluidTags;
+import net.minecraft.tag.Tag;
+import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -53,17 +55,17 @@ import com.github.chainmailstudios.astromine.common.registry.BreathableRegistry;
 import com.github.chainmailstudios.astromine.common.registry.FluidEffectRegistry;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineAttributes;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
 import com.github.chainmailstudios.astromine.registry.AstromineTags;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
 
 import java.util.Optional;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin implements GravityEntity {
-	@Shadow
-	public float flyingSpeed;
+public abstract class LivingEntityMixin extends EntityMixin implements GravityEntity {
+	@Unique
+	private static final ThreadLocal<Boolean> FAKE_BEING_IN_LAVA = ThreadLocal.withInitial(() -> Boolean.FALSE);
+	@Unique
+	private static final ThreadLocal<Boolean> FAKE_BEING_IN_WATER = ThreadLocal.withInitial(() -> Boolean.FALSE);
 
 	@Inject(at = @At("RETURN"), method = "createLivingAttributes()Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;")
 	private static void createLivingAttributesInject(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
@@ -75,6 +77,9 @@ public abstract class LivingEntityMixin implements GravityEntity {
 
 	@Shadow
 	public abstract Iterable<ItemStack> getArmorItems();
+
+	@Shadow
+	public abstract boolean isFallFlying();
 
 	@ModifyConstant(method = "travel(Lnet/minecraft/util/math/Vec3d;)V", constant = @Constant(doubleValue = 0.08D, ordinal = 0))
 	private double modifyGravity(double original) {
@@ -194,6 +199,39 @@ public abstract class LivingEntityMixin implements GravityEntity {
 						}
 					}
 				}
+			}
+		}
+	}
+
+	// A redirect would be the most efficient, but ModifyArg is the only compatible option
+	@ModifyArg(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isSubmergedIn(Lnet/minecraft/tag/Tag;)Z"))
+	private Tag<Fluid> astromine_tickAirInFluid(Tag<Fluid> tag) {
+		if (this.isSubmergedIn(AstromineTags.INDUSTRIAL_FLUID)) {
+			return AstromineTags.INDUSTRIAL_FLUID;
+		}
+		return tag;
+	}
+
+	@ModifyVariable(
+			method = "tickMovement",
+			slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;method_29920()Z")),
+			at = @At(value = "STORE", ordinal = 0)	// result from "isTouchingWater && l > 0.0"
+	)
+	private boolean astromine_allowIndustrialFluidSwimming(boolean touchingWater) {
+		return touchingWater || this.getFluidHeight(AstromineTags.INDUSTRIAL_FLUID) > 0;
+	}
+
+	@Inject(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isInLava()Z"))
+	private void astromine_travelInIndustrialFluids(Vec3d movementInput, CallbackInfo ci) {
+		FAKE_BEING_IN_LAVA.set(Boolean.TRUE);
+	}
+
+	@Override	// overrides the inject in EntityMixin
+	protected void astromine_fakeLava(CallbackInfoReturnable<Boolean> cir) {
+		if (FAKE_BEING_IN_LAVA.get()) {
+			FAKE_BEING_IN_LAVA.set(Boolean.FALSE);
+			if (!cir.getReturnValueZ() && this.astromine_isInIndustrialFluid()) {
+				cir.setReturnValue(true);
 			}
 		}
 	}
