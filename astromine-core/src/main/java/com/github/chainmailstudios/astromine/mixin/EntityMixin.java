@@ -49,10 +49,6 @@ import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
 import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
 import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
-import com.github.chainmailstudios.astromine.registry.AstromineCommonCallbacks;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
 
 import com.google.common.collect.Lists;
 import java.util.List;

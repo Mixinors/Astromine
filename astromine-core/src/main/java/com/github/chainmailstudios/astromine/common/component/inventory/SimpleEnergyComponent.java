@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import com.google.common.base.Objects;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,5 +61,18 @@ public class SimpleEnergyComponent implements EnergyComponent {
 	@Override
 	public List<Runnable> getListeners() {
 		return listeners;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		SimpleEnergyComponent that = (SimpleEnergyComponent) o;
+		return Objects.equal(content, that.content);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(content);
 	}
 }
