@@ -24,6 +24,15 @@
 
 package com.github.chainmailstudios.astromine.common.network.type;
 
+import alexiil.mc.lib.attributes.SearchOptions;
+import alexiil.mc.lib.attributes.Simulation;
+import alexiil.mc.lib.attributes.fluid.FluidAttributes;
+import alexiil.mc.lib.attributes.fluid.FluidVolumeUtil;
+import alexiil.mc.lib.attributes.fluid.GroupedFluidInv;
+import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
+import alexiil.mc.lib.attributes.fluid.volume.FluidKey;
+import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
+import alexiil.mc.lib.attributes.misc.NullVariant;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
@@ -33,77 +42,16 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import com.google.common.collect.Lists;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class FluidNetworkType extends NetworkType {
-	private Fraction speed = Fraction.bottle();
-
-	@Override
-	public void tick(NetworkInstance instance) {
-		Map<FluidComponent, Direction> providers = new HashMap<>();
-		Map<FluidComponent, Direction> requesters = new HashMap<>();
-
-		for (NetworkMemberNode memberNode : instance.members) {
-			WorldPos memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPos());
-			NetworkMember networkMember = NetworkMemberRegistry.get(memberPos, memberNode.getDirection());
-
-			if (networkMember.acceptsType(this)) {
-				FluidComponent fluidComponent = FluidComponent.get(memberPos.getBlockEntity());
-
-				if (fluidComponent == null)
-					continue;
-
-				@Nullable
-				BlockEntity blockEntity = memberPos.getBlockEntity();
-				TransferType type = TransferType.NONE;
-
-				BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(blockEntity);
-
-				if (transferComponent != null && transferComponent.get(AstromineComponents.FLUID_INVENTORY_COMPONENT) != null) {
-					type = transferComponent.get(AstromineComponents.FLUID_INVENTORY_COMPONENT).get(memberNode.getDirection());
-				}
-
-				if (!type.isNone()) {
-					if (type.canExtract() && (networkMember.isProvider(this) || networkMember.isBuffer(this))) {
-						providers.put(fluidComponent, memberNode.getDirection());
-					}
-
-					if (type.canInsert() && (networkMember.isRequester(this) || networkMember.isBuffer(this))) {
-						requesters.put(fluidComponent, memberNode.getDirection());
-					}
-				}
-			}
-		}
-
-		for (Map.Entry<FluidComponent, Direction> providerEntry : providers.entrySet()) {
-			for (FluidVolume provider : providerEntry.getKey().getExtractableVolumes(providerEntry.getValue())) {
-				Fraction provided = Fraction.empty();
-
-				for (Map.Entry<FluidComponent, Direction> requesterEntry : requesters.entrySet()) {
-					for (FluidVolume requester : requesterEntry.getKey().getInsertableVolumes(requesterEntry.getValue(), provider.withAmount(Fraction.minimum()))) {
-						if (provided.smallerThan(speed)) {
-							Fraction then = requester.getAmount();
-							requester.moveFrom(provider, speed);
-							provided = requester.getAmount().subtract(then);
-						} else {
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
-/*
-	As per DanielShe's requests,
 public class FluidNetworkType extends NetworkType {
 	private FluidAmount inputSpeed = FluidAmount.of(1, 20);
 	private FluidAmount outputSpeed = FluidAmount.of(1, 20);
@@ -129,7 +77,7 @@ public class FluidNetworkType extends NetworkType {
 				BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(blockEntity);
 
 				if (transferComponent != null) {
-					type = transferComponent.get(AstromineComponents.FLUID_INVENTORY_COMPONENT).get(memberNode.getDirection());
+					type = transferComponent.getFluid(memberNode.getDirection());
 				}
 
 				if (!type.isNone()) {
@@ -149,28 +97,27 @@ public class FluidNetworkType extends NetworkType {
 				if (providerStoredFluid.getRawFluid() == null) continue;
 
 				List<GroupedFluidInv> requestersFiltered = requesters.stream()
-					.filter(inventory -> {
-						FluidVolume fluidVolume = providerStoredFluid.withAmount(provider.getAmount_F(providerStoredFluid));
+						.filter(inventory -> {
+							FluidVolume fluidVolume = providerStoredFluid.withAmount(provider.getAmount_F(providerStoredFluid));
 
-						return !inventory.attemptInsertion(fluidVolume, Simulation.SIMULATE).equals(fluidVolume);
-					})
-					.sorted(Comparator.comparing(inventory -> inventory.getAmount_F(providerStoredFluid)))
-					.collect(Collectors.toList());
+							return !inventory.attemptInsertion(fluidVolume, Simulation.SIMULATE).equals(fluidVolume);
+						})
+						.sorted(Comparator.comparing(inventory -> inventory.getAmount_F(providerStoredFluid)))
+						.collect(Collectors.toList());
 
 				for (int i = requestersFiltered.size() - 1; i >= 0; i--) {
-					GroupedFluidInv inv = requestersFiltered.get(i);
+					GroupedFluidInv requester = requestersFiltered.get(i);
 
 					FluidAmount speed = Collections.min(Arrays.asList(
-						inputSpeed.div(requestersFiltered.size()),
-						outputSpeed.div(requestersFiltered.size()),
-						provider.getAmount_F(providerStoredFluid).div(i + 1),
-						inv.getCapacity_F(providerStoredFluid).sub(inv.getAmount_F(providerStoredFluid))
+							inputSpeed.div(requestersFiltered.size()),
+							outputSpeed.div(requestersFiltered.size()),
+							provider.getAmount_F(providerStoredFluid).div(i + 1),
+							requester.getCapacity_F(providerStoredFluid).sub(requester.getAmount_F(providerStoredFluid))
 					));
 
-					FluidVolumeUtil.move(provider, inv, speed);
+					FluidVolumeUtil.move(provider, requester, speed);
 				}
 			}
 		}
 	}
 }
- */

@@ -24,6 +24,13 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.minecraft.entity.player.PlayerEntity;
+import reborncore.common.crafting.RebornRecipe;
+import techreborn.TechReborn;
+import techreborn.init.ModRecipes;
+
 public class AstromineCommands {
 	public static void initialize() {
 

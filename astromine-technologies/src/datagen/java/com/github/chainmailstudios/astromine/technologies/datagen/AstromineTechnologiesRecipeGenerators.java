@@ -9,7 +9,7 @@ import com.github.chainmailstudios.astromine.datagen.registry.AstromineRecipeGen
 import com.github.chainmailstudios.astromine.technologies.datagen.generators.recipe.onetime.TrituratingRecipeGenerator;
 import com.github.chainmailstudios.astromine.technologies.datagen.generators.recipe.set.PressingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.technologies.datagen.generators.recipe.set.TrituratingSetRecipeGenerator;
-import com.github.chainmailstudios.astromine.technologies.datagen.generators.recipe.set.WiremillingSetRecipeGenerator;
+import com.github.chainmailstudios.astromine.technologies.datagen.generators.recipe.set.WireMillingSetRecipeGenerator;
 
 import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.BLOCK;
 import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.BLOCK_2x2;
@@ -41,7 +41,7 @@ public class AstromineTechnologiesRecipeGenerators extends AstromineRecipeGenera
 
 	public final RecipeGenerator INGOT_TO_PLATES_PRESSING = register(new PressingSetRecipeGenerator(INGOT, PLATE, 60, 340));
 
-	public final RecipeGenerator INGOT_TO_WIRES_WIREMILLING = register(new WiremillingSetRecipeGenerator(INGOT, WIRE, 3, 80, 340));
+	public final RecipeGenerator INGOT_TO_WIRES_WIREMILLING = register(new WireMillingSetRecipeGenerator(INGOT, WIRE, 3, 80, 340));
 
 	public final RecipeGenerator GRAVEL_FROM_COBBLESTONE = register(new TrituratingRecipeGenerator("gravel_from_triturating_cobblestone", Ingredient.ofItems(Blocks.COBBLESTONE), Blocks.GRAVEL, 20, 120));
 	public final RecipeGenerator SAND_FROM_GRAVEL = register(new TrituratingRecipeGenerator("sand_from_triturating_gravel", Ingredient.ofItems(Blocks.GRAVEL), Blocks.SAND, 20, 120));

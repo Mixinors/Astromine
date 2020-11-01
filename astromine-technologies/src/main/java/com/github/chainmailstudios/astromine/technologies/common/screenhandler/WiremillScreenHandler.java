@@ -30,19 +30,19 @@ import net.minecraft.util.math.BlockPos;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyItemScreenHandler;
 import com.github.chainmailstudios.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.chainmailstudios.astromine.common.widget.vanilla.ExtractionSlot;
-import com.github.chainmailstudios.astromine.technologies.common.block.entity.WiremillBlockEntity;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.WireMillBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 
-public class WiremillScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
-	private WiremillBlockEntity wiremill;
+public class WireMillScreenHandler extends ComponentBlockEntityEnergyItemScreenHandler {
+	private WireMillBlockEntity wiremill;
 
-	public WiremillScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+	public WireMillScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AstromineTechnologiesScreenHandlers.WIREMILL, syncId, player, position);
 
-		wiremill = (WiremillBlockEntity) blockEntity;
+		wiremill = (WireMillBlockEntity) blockEntity;
 	}
 
 	@Override

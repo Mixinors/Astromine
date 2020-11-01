@@ -70,7 +70,7 @@ public class EnergyNetworkType extends NetworkType {
 				BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(blockEntity);
 
 				if (transferComponent != null && transferComponent.get(AstromineComponents.ENERGY_INVENTORY_COMPONENT) != null) {
-					type = transferComponent.get(AstromineComponents.ENERGY_INVENTORY_COMPONENT).get(memberNode.getDirection());
+					type = transferComponent.getEnergy(memberNode.getDirection());
 				}
 
 				EnergyHandler volume = Energy.of(blockEntity).side(memberNode.getDirection());

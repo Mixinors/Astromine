@@ -36,15 +36,15 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingTieredBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.network.NetworkBlock;
-import com.github.chainmailstudios.astromine.technologies.common.block.entity.WiremillBlockEntity;
-import com.github.chainmailstudios.astromine.technologies.common.screenhandler.WiremillScreenHandler;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.WireMillBlockEntity;
+import com.github.chainmailstudios.astromine.technologies.common.screenhandler.WireMillScreenHandler;
 
-public abstract class WiremillBlock extends WrenchableHorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester {
-	public WiremillBlock(Settings settings) {
+public abstract class WireMillBlock extends WrenchableHorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester {
+	public WireMillBlock(Settings settings) {
 		super(settings);
 	}
 
-	public abstract static class Base extends WiremillBlock {
+	public abstract static class Base extends WireMillBlock {
 		public Base(Settings settings) {
 			super(settings);
 		}
@@ -56,7 +56,7 @@ public abstract class WiremillBlock extends WrenchableHorizontalFacingTieredBloc
 
 		@Override
 		public ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-			return new WiremillScreenHandler(syncId, playerInventory.player, pos);
+			return new WireMillScreenHandler(syncId, playerInventory.player, pos);
 		}
 
 		@Override
@@ -65,47 +65,47 @@ public abstract class WiremillBlock extends WrenchableHorizontalFacingTieredBloc
 		}
 	}
 
-	public static class Primitive extends WiremillBlock.Base {
+	public static class Primitive extends WireMillBlock.Base {
 		public Primitive(Settings settings) {
 			super(settings);
 		}
 
 		@Override
 		public BlockEntity createBlockEntity() {
-			return new WiremillBlockEntity.Primitive();
+			return new WireMillBlockEntity.Primitive();
 		}
 	}
 
-	public static class Basic extends WiremillBlock.Base {
+	public static class Basic extends WireMillBlock.Base {
 		public Basic(Settings settings) {
 			super(settings);
 		}
 
 		@Override
 		public BlockEntity createBlockEntity() {
-			return new WiremillBlockEntity.Basic();
+			return new WireMillBlockEntity.Basic();
 		}
 	}
 
-	public static class Advanced extends WiremillBlock.Base {
+	public static class Advanced extends WireMillBlock.Base {
 		public Advanced(Settings settings) {
 			super(settings);
 		}
 
 		@Override
 		public BlockEntity createBlockEntity() {
-			return new WiremillBlockEntity.Advanced();
+			return new WireMillBlockEntity.Advanced();
 		}
 	}
 
-	public static class Elite extends WiremillBlock.Base {
+	public static class Elite extends WireMillBlock.Base {
 		public Elite(Settings settings) {
 			super(settings);
 		}
 
 		@Override
 		public BlockEntity createBlockEntity() {
-			return new WiremillBlockEntity.Elite();
+			return new WireMillBlockEntity.Elite();
 		}
 	}
 }

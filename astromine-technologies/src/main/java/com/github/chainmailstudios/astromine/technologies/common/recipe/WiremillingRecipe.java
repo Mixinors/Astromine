@@ -51,24 +51,24 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.annotations.SerializedName;
 
-public class WiremillingRecipe implements EnergyConsumingRecipe<Inventory> {
+public class WireMillingRecipe implements EnergyConsumingRecipe<Inventory> {
 	final Identifier identifier;
 	final Ingredient input;
 	final ItemStack output;
-	final double energyConsumed;
+	final double energy;
 	final int time;
 
-	public WiremillingRecipe(Identifier identifier, Ingredient input, ItemStack output, double energyConsumed, int time) {
+	public WireMillingRecipe(Identifier identifier, Ingredient input, ItemStack output, double energy, int time) {
 		this.identifier = identifier;
 		this.input = input;
 		this.output = output;
-		this.energyConsumed = energyConsumed;
+		this.energy = energy;
 		this.time = time;
 	}
 
 	public static boolean allows(World world, Inventory inventory) {
-		return world.getRecipeManager().getAllOfType(WiremillingRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
-			WiremillingRecipe recipe = ((WiremillingRecipe) it);
+		return world.getRecipeManager().getAllOfType(WireMillingRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
+			WireMillingRecipe recipe = ((WireMillingRecipe) it);
 
 			return recipe.matches(inventory, world);
 		});
@@ -126,11 +126,11 @@ public class WiremillingRecipe implements EnergyConsumingRecipe<Inventory> {
 	}
 
 	public double getEnergy() {
-		return energyConsumed;
+		return energy;
 	}
 
-	public static final class Serializer implements RecipeSerializer<WiremillingRecipe> {
-		public static final Identifier ID = AstromineCommon.identifier("wiremilling");
+	public static final class Serializer implements RecipeSerializer<WireMillingRecipe> {
+		public static final Identifier ID = AstromineCommon.identifier("wire_milling");
 
 		public static final Serializer INSTANCE = new Serializer();
 
@@ -139,27 +139,27 @@ public class WiremillingRecipe implements EnergyConsumingRecipe<Inventory> {
 		}
 
 		@Override
-		public WiremillingRecipe read(Identifier identifier, JsonObject object) {
-			WiremillingRecipe.Format format = new Gson().fromJson(object, WiremillingRecipe.Format.class);
+		public WireMillingRecipe read(Identifier identifier, JsonObject object) {
+			WireMillingRecipe.Format format = new Gson().fromJson(object, WireMillingRecipe.Format.class);
 
-			return new WiremillingRecipe(identifier, IngredientUtilities.fromIngredientJson(format.input), StackUtilities.fromJson(format.output), EnergyUtilities.fromJson(format.energyConsumed), ParsingUtilities.fromJson(format.time, Integer.class));
+			return new WireMillingRecipe(identifier, IngredientUtilities.fromIngredientJson(format.input), StackUtilities.fromJson(format.output), EnergyUtilities.fromJson(format.energy), ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 
 		@Override
-		public WiremillingRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new WiremillingRecipe(identifier, IngredientUtilities.fromIngredientPacket(buffer), StackUtilities.fromPacket(buffer), EnergyUtilities.fromPacket(buffer), PacketUtilities.fromPacket(buffer, Integer.class));
+		public WireMillingRecipe read(Identifier identifier, PacketByteBuf buffer) {
+			return new WireMillingRecipe(identifier, IngredientUtilities.fromIngredientPacket(buffer), StackUtilities.fromPacket(buffer), EnergyUtilities.fromPacket(buffer), PacketUtilities.fromPacket(buffer, Integer.class));
 		}
 
 		@Override
-		public void write(PacketByteBuf buffer, WiremillingRecipe recipe) {
+		public void write(PacketByteBuf buffer, WireMillingRecipe recipe) {
 			IngredientUtilities.toIngredientPacket(buffer, recipe.input);
 			StackUtilities.toPacket(buffer, recipe.output);
-			EnergyUtilities.toPacket(buffer, recipe.energyConsumed);
+			EnergyUtilities.toPacket(buffer, recipe.energy);
 			PacketUtilities.toPacket(buffer, recipe.time);
 		}
 	}
 
-	public static final class Type implements AstromineRecipeType<WiremillingRecipe> {
+	public static final class Type implements AstromineRecipeType<WireMillingRecipe> {
 		public static final Type INSTANCE = new Type();
 
 		private Type() {
@@ -172,12 +172,12 @@ public class WiremillingRecipe implements EnergyConsumingRecipe<Inventory> {
 		JsonObject output;
 		@SerializedName("time")
 		JsonPrimitive time;
-		@SerializedName("energy_consumed")
-		JsonElement energyConsumed;
+		@SerializedName("energy")
+		JsonElement energy;
 
 		@Override
 		public String toString() {
-			return "Format{" + "input=" + input + ", output=" + output + ", time=" + time + ", energyConsumed=" + energyConsumed + '}';
+			return "Format{" + "input=" + input + ", output=" + output + ", time=" + time + ", energy=" + energy + '}';
 		}
 	}
 }

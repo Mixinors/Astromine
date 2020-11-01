@@ -24,10 +24,10 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
+import alexiil.mc.lib.attributes.fluid.*;
+import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.item.ItemInvUtil;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
-import dev.onyxstudios.cca.api.v3.block.BlockComponentProvider;
 import dev.onyxstudios.cca.api.v3.component.*;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.PacketContext;
@@ -37,7 +37,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.Tickable;
@@ -53,17 +52,14 @@ import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
-import com.github.chainmailstudios.astromine.common.utilities.TransportUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedComponentSidedInventoryProvider;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import team.reborn.energy.EnergyStorage;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -170,64 +166,35 @@ public abstract class ComponentBlockEntity extends BlockEntity implements Packet
 		if (!hasWorld() || world.isClient())
 			return;
 
-		FluidComponent fluidComponent = FluidComponent.get(this);
-
 		List<Pair<EnergyHandler, EnergyHandler>> energyTransfers = Lists.newArrayList();
 
 		for (Direction offsetDirection : Direction.values()) {
+			Direction neighborDirection = offsetDirection.getOpposite();
+
 			BlockPos neighborPos = getPos().offset(offsetDirection);
 
 			BlockEntity neighborBlockEntity = world.getBlockEntity(neighborPos);
-			if (neighborBlockEntity instanceof ComponentProvider) {
-				Direction neighborDirection = offsetDirection.getOpposite();
-				BlockEntityTransferComponent neighborTransferComponent = BlockEntityTransferComponent.get(neighborBlockEntity);
 
-				// Handle Item Siding
-				if (this instanceof ExtendedComponentSidedInventoryProvider) {
-					if (!getTransferComponent().get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(offsetDirection).isNone()) {
-						// input
-						ItemExtractable neighbor = ItemAttributes.EXTRACTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
-						ItemInsertable self = ItemAttributes.INSERTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
+			if (getTransferComponent().hasItem()) {
+				if (!getTransferComponent().getItem(offsetDirection).isNone()) {
+					ItemExtractable neighbor = ItemAttributes.EXTRACTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
+					ItemInsertable self = ItemAttributes.INSERTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
 
-						ItemInvUtil.move(neighbor, self, 1);
-					}
-					if (!getTransferComponent().get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(offsetDirection).isNone()) {
-						// output
-						ItemExtractable self = ItemAttributes.EXTRACTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
-						ItemInsertable neighbor = ItemAttributes.INSERTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
-
-						ItemInvUtil.move(self, neighbor, 1);
-					}
+					ItemInvUtil.move(neighbor, self, 1);
 				}
+			}
 
-				// Handle fluid siding
-				if (fluidComponent != null && getTransferComponent().get(AstromineComponents.FLUID_INVENTORY_COMPONENT).get(offsetDirection).canExtract()) {
-					FluidComponent neighborFluidComponent = null;
-					if (neighborTransferComponent != null) {
-						// Get via astromine siding
-						if (neighborTransferComponent.get(AstromineComponents.FLUID_INVENTORY_COMPONENT).get(neighborDirection).canInsert())
-							neighborFluidComponent = FluidComponent.get(neighborBlockEntity);
-					}
+			if (getTransferComponent().hasFluid()) {
+				if (!getTransferComponent().getFluid(offsetDirection).isNone()) {
+					FluidExtractable neighbor = FluidAttributes.EXTRACTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
+					FluidInsertable self = FluidAttributes.INSERTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
 
-					if (neighborFluidComponent != null) {
-						FluidVolume extractable = fluidComponent.getFirstExtractableVolume(offsetDirection, (volume -> !volume.isEmpty()));
-
-						if (extractable != null && !extractable.isEmpty()) {
-							FluidVolume insertable = neighborFluidComponent.getFirstInsertableVolume(neighborDirection, extractable);
-
-							if (insertable != null) {
-								insertable.moveFrom(extractable);
-							}
-						}
-					}
+					FluidVolumeUtil.move(neighbor, self, FluidAmount.of(1, 20));
 				}
+			}
 
-				// Handle energy siding
-				if (TransportUtilities.isExtractingEnergy(this, getTransferComponent(), offsetDirection)) {
-					if (TransportUtilities.isInsertingEnergy(neighborBlockEntity, neighborTransferComponent, neighborDirection)) {
-						energyTransfers.add(new Pair<>(Energy.of(this).side(offsetDirection), Energy.of(neighborBlockEntity).side(neighborDirection)));
-					}
-				}
+			if (this instanceof EnergyStorage && neighborBlockEntity instanceof EnergyStorage) {
+				energyTransfers.add(new Pair<>(Energy.of(this).side(offsetDirection), Energy.of(neighborBlockEntity).side(neighborDirection)));
 			}
 		}
 

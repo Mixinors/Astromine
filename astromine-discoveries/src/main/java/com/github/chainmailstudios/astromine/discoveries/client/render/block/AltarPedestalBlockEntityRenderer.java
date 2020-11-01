@@ -56,7 +56,7 @@ public class AltarPedestalBlockEntityRenderer extends BlockEntityRenderer<AltarP
 	@Override
 	public void render(AltarPedestalBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		matrices.push();
-		ItemStack stack = entity.getItemComponent().getStack(0);
+		ItemStack stack = entity.getItemComponent().getFirst();
 		int j = stack.isEmpty() ? 187 : Item.getRawId(stack.getItem()) + stack.getDamage();
 		this.random.setSeed(j);
 		BakedModel bakedModel = this.itemRenderer.getHeldItemModel(stack, entity.getWorld(), null);

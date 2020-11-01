@@ -27,6 +27,7 @@ package com.github.chainmailstudios.astromine.common.component.block.entity;
 import com.github.chainmailstudios.astromine.common.callback.TransferEntryCallback;
 import com.github.chainmailstudios.astromine.common.network.type.EnergyNetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
@@ -62,6 +63,30 @@ public class BlockEntityTransferComponent implements Component {
 		TransferEntryCallback.EVENT.invoker().handle(entry);
 
 		components.put(type, entry);
+	}
+
+	public boolean hasItem() {
+		return components.containsKey(AstromineComponents.ITEM_INVENTORY_COMPONENT);
+	}
+
+	public boolean hasFluid() {
+		return components.containsKey(AstromineComponents.FLUID_INVENTORY_COMPONENT);
+	}
+
+	public boolean hasEnergy() {
+		return components.containsKey(AstromineComponents.ENERGY_INVENTORY_COMPONENT);
+	}
+
+	public TransferType getItem(Direction direction) {
+		return components.get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(direction);
+	}
+
+	public TransferType getFluid(Direction direction) {
+		return components.get(AstromineComponents.FLUID_INVENTORY_COMPONENT).get(direction);
+	}
+
+	public TransferType getEnergy(Direction direction) {
+		return components.get(AstromineComponents.ENERGY_INVENTORY_COMPONENT).get(direction);
 	}
 
 	@Override

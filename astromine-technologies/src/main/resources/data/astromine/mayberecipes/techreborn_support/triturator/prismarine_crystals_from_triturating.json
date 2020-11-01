@@ -1,0 +1,17 @@
+{
+  "condition": {
+    "modid": "techreborn"
+  },
+  "recipe": {
+    "type": "astromine:triturating",
+    "input": {
+      "item": "minecraft:prismarine_shard"
+    },
+    "output": {
+      "item": "minecraft:prismarine_crystals",
+      "count": 1
+    },
+    "energy": 340,
+    "time": 90
+  }
+}

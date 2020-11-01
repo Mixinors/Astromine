@@ -1,5 +1,5 @@
 {
-  "type": "astromine:wiremilling",
+  "type": "astromine:wire_milling",
   "input": {
     "tag": "c:lead_ingots",
     "count": 1
@@ -9,5 +9,5 @@
     "count": 3
   },
   "time": 80,
-  "energy_consumed": 340
+  "energy": 340
 }

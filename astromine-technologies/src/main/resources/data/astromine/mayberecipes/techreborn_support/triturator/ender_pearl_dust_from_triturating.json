@@ -1,0 +1,17 @@
+{
+  "condition": {
+    "modid": "techreborn"
+  },
+  "recipe": {
+    "type": "astromine:triturating",
+    "input": {
+      "item": "minecraft:ender_pearl"
+    },
+    "output": {
+      "item": "techreborn:ender_pearl_dust",
+      "count": 2
+    },
+    "energy": 340,
+    "time": 90
+  }
+}

@@ -30,7 +30,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
-import com.github.chainmailstudios.astromine.common.screenhandler.base.entity.ComponentEntityFluidInventoryScreenHandler;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.entity.ComponentEntityFluidItemScreenHandler;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.base.RocketEntity;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesItems;
@@ -41,7 +41,7 @@ import com.github.vini2003.blade.common.widget.base.ButtonWidget;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import com.github.vini2003.blade.common.widget.base.TextWidget;
 
-public class RocketScreenHandler extends ComponentEntityFluidInventoryScreenHandler {
+public class RocketScreenHandler extends ComponentEntityFluidItemScreenHandler {
 	private TextWidget fuelTextWidget;
 
 	public RocketScreenHandler(int syncId, PlayerEntity player, int entityId) {

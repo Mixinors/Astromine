@@ -1,0 +1,17 @@
+{
+  "condition": {
+    "modid": "techreborn"
+  },
+  "recipe": {
+    "type": "astromine:triturating",
+    "input": {
+      "tag": "c:glowstone_blocks"
+    },
+    "output": {
+      "item": "minecraft:glowstone_dust",
+      "count": 4
+    },
+    "energy": 340,
+    "time": 90
+  }
+}

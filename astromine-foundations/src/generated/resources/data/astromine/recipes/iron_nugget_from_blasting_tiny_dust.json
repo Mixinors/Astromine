@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "tag": "c:iron_tiny_dusts"
-  },
-  "result": "minecraft:iron_nugget",
-  "experience": 0.1,
-  "cookingtime": 100
-}

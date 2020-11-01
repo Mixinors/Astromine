@@ -1,0 +1,17 @@
+{
+  "recipe": {
+    "type": "astromine:pressing",
+    "input": {
+      "tag": "c:aluminum_ingots"
+    },
+    "output": {
+      "item": "techreborn:aluminum_plate",
+      "count": 1
+    },
+    "energy": 340,
+    "time": 60
+  },
+  "condition": {
+    "modid": "techreborn"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "recipe": {
+    "type": "astromine:pressing",
+    "input": {
+      "item": "minecraft:prismarine_crystals"
+    },
+    "output": {
+      "item": "minecraft:prismarine_shard",
+      "count": 1
+    },
+    "energy": 340,
+    "time": 60
+  },
+  "condition": {
+    "modid": "techreborn"
+  }
+}

@@ -1,10 +1,12 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
+import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.item.BucketItem;
@@ -15,6 +17,10 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class VolumeUtilities {
+    public static FluidAmount transferFluidAmount() {
+        return FluidAmount.of(AstromineConfig.get().fluidTransferNumerator, AstromineConfig.get().fluidTransferDenominator);
+    }
+
     public static FluidVolume fromFluidVolumeJson(JsonElement jsonElement) {
         return FluidVolume.fromJson(jsonElement);
     }

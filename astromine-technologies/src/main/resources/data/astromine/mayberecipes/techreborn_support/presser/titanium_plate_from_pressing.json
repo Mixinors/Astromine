@@ -1,0 +1,17 @@
+{
+  "recipe": {
+    "type": "astromine:pressing",
+    "input": {
+      "tag": "c:titanium_ingots"
+    },
+    "output": {
+      "item": "techreborn:titanium_plate",
+      "count": 1
+    },
+    "energy": 340,
+    "time": 60
+  },
+  "condition": {
+    "modid": "techreborn"
+  }
+}

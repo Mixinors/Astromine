@@ -1,0 +1,17 @@
+{
+  "recipe": {
+    "type": "astromine:pressing",
+    "input": {
+      "tag": "c:brass_ingots"
+    },
+    "output": {
+      "item": "techreborn:brass_plate",
+      "count": 1
+    },
+    "energy": 340,
+    "time": 60
+  },
+  "condition": {
+    "modid": "techreborn"
+  }
+}

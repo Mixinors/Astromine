@@ -58,15 +58,15 @@ public class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 	final ArrayIngredient firstInput;
 	final ArrayIngredient secondInput;
 	final ItemStack output;
-	final double energyConsumed;
+	final double energy;
 	final int time;
 
-	public AlloySmeltingRecipe(Identifier identifier, ArrayIngredient firstInput, ArrayIngredient secondInput, ItemStack output, double energyConsumed, int time) {
+	public AlloySmeltingRecipe(Identifier identifier, ArrayIngredient firstInput, ArrayIngredient secondInput, ItemStack output, double energy, int time) {
 		this.identifier = identifier;
 		this.firstInput = firstInput;
 		this.secondInput = secondInput;
 		this.output = output;
-		this.energyConsumed = energyConsumed;
+		this.energy = energy;
 		this.time = time;
 	}
 
@@ -140,7 +140,7 @@ public class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 	}
 
 	public double getEnergy() {
-		return energyConsumed;
+		return energy;
 	}
 
 	public static final class Serializer implements RecipeSerializer<AlloySmeltingRecipe> {
@@ -156,7 +156,7 @@ public class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		public AlloySmeltingRecipe read(Identifier identifier, JsonObject object) {
 			AlloySmeltingRecipe.Format format = new Gson().fromJson(object, AlloySmeltingRecipe.Format.class);
 
-			return new AlloySmeltingRecipe(identifier, IngredientUtilities.fromArrayIngredientJson(format.firstInput), IngredientUtilities.fromArrayIngredientJson(format.secondInput), StackUtilities.fromJson(format.output), EnergyUtilities.fromJson(format.energyConsumed), ParsingUtilities
+			return new AlloySmeltingRecipe(identifier, IngredientUtilities.fromArrayIngredientJson(format.firstInput), IngredientUtilities.fromArrayIngredientJson(format.secondInput), StackUtilities.fromJson(format.output), EnergyUtilities.fromJson(format.energy), ParsingUtilities
 				.fromJson(format.time, Integer.class));
 		}
 
@@ -170,7 +170,7 @@ public class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 			IngredientUtilities.toArrayIngredientPacket(buffer, recipe.firstInput);
 			IngredientUtilities.toArrayIngredientPacket(buffer, recipe.secondInput);
 			StackUtilities.toPacket(buffer, recipe.output);
-			EnergyUtilities.toPacket(buffer, recipe.energyConsumed);
+			EnergyUtilities.toPacket(buffer, recipe.energy);
 			PacketUtilities.toPacket(buffer, recipe.time);
 		}
 	}
@@ -189,12 +189,12 @@ public class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		JsonObject output;
 		@SerializedName("time")
 		JsonPrimitive time;
-		@SerializedName("energy_consumed")
-		JsonElement energyConsumed;
+		@SerializedName("energy")
+		JsonElement energy;
 
 		@Override
 		public String toString() {
-			return "Format{" + "firstInput=" + firstInput + ", secondInput=" + secondInput + ", output=" + output + ", time=" + time + ", energyConsumed=" + energyConsumed + '}';
+			return "Format{" + "firstInput=" + firstInput + ", secondInput=" + secondInput + ", output=" + output + ", time=" + time + ", energy=" + energy + '}';
 		}
 	}
 }

@@ -1,0 +1,17 @@
+{
+  "recipe": {
+    "type": "astromine:pressing",
+    "input": {
+      "tag": "c:red_garnet_dusts"
+    },
+    "output": {
+      "item": "techreborn:red_garnet_plate",
+      "count": 1
+    },
+    "energy": 340,
+    "time": 60
+  },
+  "condition": {
+    "modid": "techreborn"
+  }
+}

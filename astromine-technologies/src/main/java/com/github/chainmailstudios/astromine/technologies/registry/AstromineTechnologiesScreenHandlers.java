@@ -97,8 +97,8 @@ public class AstromineTechnologiesScreenHandlers extends AstromineScreenHandlers
 		return new PresserScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 
-	public static final ScreenHandlerType<WiremillScreenHandler> WIREMILL = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("wiremill"), ((syncId, inventory, buffer) -> {
-		return new WiremillScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	public static final ScreenHandlerType<WireMillScreenHandler> WIREMILL = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("wire_mill"), ((syncId, inventory, buffer) -> {
+		return new WireMillScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 
 	public static final ScreenHandlerType<ElectricSmelterScreenHandler> ELECTRIC_SMELTER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("electric_smelter"), ((syncId, inventory, buffer) -> {

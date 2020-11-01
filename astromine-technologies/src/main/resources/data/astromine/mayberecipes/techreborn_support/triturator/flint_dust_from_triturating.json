@@ -1,0 +1,17 @@
+{
+  "condition": {
+    "modid": "techreborn"
+  },
+  "recipe": {
+    "type": "astromine:triturating",
+    "input": {
+      "item": "minecraft:flint"
+    },
+    "output": {
+      "item": "techreborn:flint_dust",
+      "count": 1
+    },
+    "energy": 340,
+    "time": 90
+  }
+}

@@ -44,7 +44,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
-import com.github.chainmailstudios.astromine.technologies.common.recipe.WiremillingRecipe;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.WireMillingRecipe;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import it.unimi.dsi.fastutil.ints.IntSet;
@@ -53,14 +53,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public abstract class WiremillBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
 	public double progress = 0;
 	public int limit = 100;
 	public boolean shouldTry = true;
 
-	private Optional<WiremillingRecipe> optionalRecipe = Optional.empty();
+	private Optional<WireMillingRecipe> optionalRecipe = Optional.empty();
 
-	public WiremillBlockEntity(Block energyBlock, BlockEntityType<?> type) {
+	public WireMillBlockEntity(Block energyBlock, BlockEntityType<?> type) {
 		super(energyBlock, type);
 	}
 
@@ -71,7 +71,7 @@ public abstract class WiremillBlockEntity extends ComponentEnergyItemBlockEntity
 				return false;
 			}
 
-			return WiremillingRecipe.allows(world, SimpleItemComponent.of(stack).asInventory());
+			return WireMillingRecipe.allows(world, SimpleItemComponent.of(stack).asInventory());
 		}).withExtractPredicate((direction, stack, slot) -> {
 			return slot == 0;
 		}).withListener((inventory) -> {
@@ -109,7 +109,7 @@ public abstract class WiremillBlockEntity extends ComponentEnergyItemBlockEntity
 			BaseInventory inputInventory = BaseInventory.of(itemComponent.getFirst(), itemComponent.getSecond());
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = (Optional<WiremillingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) WiremillingRecipe.Type.INSTANCE, InventoryFromItemComponent.of(getItemComponent()), world);
+				optionalRecipe = (Optional<WireMillingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) WireMillingRecipe.Type.INSTANCE, InventoryFromItemComponent.of(getItemComponent()), world);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -119,7 +119,7 @@ public abstract class WiremillBlockEntity extends ComponentEnergyItemBlockEntity
 			}
 
 			if (optionalRecipe.isPresent()) {
-				WiremillingRecipe recipe = optionalRecipe.get();
+				WireMillingRecipe recipe = optionalRecipe.get();
 
 				if (recipe.matches(inputInventory, world)) {
 					limit = recipe.getTime();
@@ -181,19 +181,19 @@ public abstract class WiremillBlockEntity extends ComponentEnergyItemBlockEntity
 		super.fromTag(state, tag);
 	}
 
-	public static class Primitive extends WiremillBlockEntity {
+	public static class Primitive extends WireMillBlockEntity {
 		public Primitive() {
 			super(AstromineTechnologiesBlocks.PRIMITIVE_WIREMILL, AstromineTechnologiesBlockEntityTypes.PRIMITIVE_WIREMILL);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().primitiveWiremillSpeed;
+			return AstromineConfig.get().primitiveWireMillSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().primitiveWiremillEnergy;
+			return AstromineConfig.get().primitiveWireMillEnergy;
 		}
 
 		@Override
@@ -202,19 +202,19 @@ public abstract class WiremillBlockEntity extends ComponentEnergyItemBlockEntity
 		}
 	}
 
-	public static class Basic extends WiremillBlockEntity {
+	public static class Basic extends WireMillBlockEntity {
 		public Basic() {
 			super(AstromineTechnologiesBlocks.BASIC_WIREMILL, AstromineTechnologiesBlockEntityTypes.BASIC_WIREMILL);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().basicWiremillSpeed;
+			return AstromineConfig.get().basicWireMillSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().basicWiremillEnergy;
+			return AstromineConfig.get().basicWireMillEnergy;
 		}
 
 		@Override
@@ -223,19 +223,19 @@ public abstract class WiremillBlockEntity extends ComponentEnergyItemBlockEntity
 		}
 	}
 
-	public static class Advanced extends WiremillBlockEntity {
+	public static class Advanced extends WireMillBlockEntity {
 		public Advanced() {
 			super(AstromineTechnologiesBlocks.ADVANCED_WIREMILL, AstromineTechnologiesBlockEntityTypes.ADVANCED_WIREMILL);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().advancedWiremillSpeed;
+			return AstromineConfig.get().advancedWireMillSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().advancedWiremillEnergy;
+			return AstromineConfig.get().advancedWireMillEnergy;
 		}
 
 		@Override
@@ -244,19 +244,19 @@ public abstract class WiremillBlockEntity extends ComponentEnergyItemBlockEntity
 		}
 	}
 
-	public static class Elite extends WiremillBlockEntity {
+	public static class Elite extends WireMillBlockEntity {
 		public Elite() {
 			super(AstromineTechnologiesBlocks.ELITE_WIREMILL, AstromineTechnologiesBlockEntityTypes.ELITE_WIREMILL);
 		}
 
 		@Override
 		public double getMachineSpeed() {
-			return AstromineConfig.get().eliteWiremillSpeed;
+			return AstromineConfig.get().eliteWireMillSpeed;
 		}
 
 		@Override
 		public double getEnergySize() {
-			return AstromineConfig.get().eliteWiremillEnergy;
+			return AstromineConfig.get().eliteWireMillEnergy;
 		}
 
 		@Override

@@ -1,0 +1,22 @@
+{
+  "condition": {
+    "modid": "techreborn"
+  },
+  "recipe": {
+    "type": "astromine:alloy_smelting",
+    "firstInput": {
+      "tag": "c:iron_ingots",
+      "count": 2
+    },
+    "secondInput": {
+      "tag": "c:nickel_ingots"
+    },
+    "output": {
+      "item": "techreborn:invar_ingot",
+      "count": 3
+    },
+    "time": 200,
+    "energy": 800
+  }
+
+}

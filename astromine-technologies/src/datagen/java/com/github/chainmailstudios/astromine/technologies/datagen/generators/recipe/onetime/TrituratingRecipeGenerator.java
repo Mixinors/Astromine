@@ -17,17 +17,17 @@ import com.google.gson.JsonObject;
 public class TrituratingRecipeGenerator extends EnergyProcessingRecipeGenerator {
 	private final String name;
 
-	public TrituratingRecipeGenerator(String name, Ingredient input, int inputCount, ItemConvertible output, int outputCount, int time, int energyConsumed) {
-		super(input, inputCount, output, outputCount, time, energyConsumed);
+	public TrituratingRecipeGenerator(String name, Ingredient input, int inputCount, ItemConvertible output, int outputCount, int time, int energy) {
+		super(input, inputCount, output, outputCount, time, energy);
 		this.name = name;
 	}
 
-	public TrituratingRecipeGenerator(String name, Ingredient input, ItemConvertible output, int outputCount, int time, int energyConsumed) {
-		this(name, input, 1, output, outputCount, time, energyConsumed);
+	public TrituratingRecipeGenerator(String name, Ingredient input, ItemConvertible output, int outputCount, int time, int energy) {
+		this(name, input, 1, output, outputCount, time, energy);
 	}
 
-	public TrituratingRecipeGenerator(String name, Ingredient input, ItemConvertible output, int time, int energyConsumed) {
-		this(name, input, 1, output, 1, time, energyConsumed);
+	public TrituratingRecipeGenerator(String name, Ingredient input, ItemConvertible output, int time, int energy) {
+		this(name, input, 1, output, 1, time, energy);
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class TrituratingRecipeGenerator extends EnergyProcessingRecipeGenerator 
 
 			json.add("output", outputJson);
 			json.addProperty("time", time);
-			json.addProperty("energy_consumed", energyConsumed);
+			json.addProperty("energy", energy);
 		}));
 	}
 

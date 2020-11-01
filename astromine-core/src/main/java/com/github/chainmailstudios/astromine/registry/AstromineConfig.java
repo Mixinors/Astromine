@@ -136,29 +136,29 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Energy for the Elite Presser.")
 	public double elitePresserEnergy = 65535D;
 	
-	@Comment("Speed for the Primitive Wiremill.")
-	public double primitiveWiremillSpeed = 0.5D;
+	@Comment("Speed for the Primitive Wire Mill.")
+	public double primitiveWireMillSpeed = 0.5D;
 
-	@Comment("Speed for the Basic Wiremill.")
-	public double basicWiremillSpeed = 1D;
+	@Comment("Speed for the Basic Wire Mill.")
+	public double basicWireMillSpeed = 1D;
 
-	@Comment("Speed for the Advanced Wiremill.")
-	public double advancedWiremillSpeed = 2D;
+	@Comment("Speed for the Advanced Wire Mill.")
+	public double advancedWireMillSpeed = 2D;
 
-	@Comment("Speed for the Elite Wiremill.")
-	public double eliteWiremillSpeed = 4D;
+	@Comment("Speed for the Elite Wire Mill.")
+	public double eliteWireMillSpeed = 4D;
 
-	@Comment("Energy for the Primitive Wiremill.")
-	public double primitiveWiremillEnergy = 2048D;
+	@Comment("Energy for the Primitive Wire Mill.")
+	public double primitiveWireMillEnergy = 2048D;
 
-	@Comment("Energy for the Basic Wiremill.")
-	public double basicWiremillEnergy = 16384D;
+	@Comment("Energy for the Basic Wire Mill.")
+	public double basicWireMillEnergy = 16384D;
 
-	@Comment("Energy for the Advanced Wiremill.")
-	public double advancedWiremillEnergy = 32767D;
+	@Comment("Energy for the Advanced Wire Mill.")
+	public double advancedWireMillEnergy = 32767D;
 
-	@Comment("Energy for the Elite Wiremill.")
-	public double eliteWiremillEnergy = 65535D;
+	@Comment("Energy for the Elite Wire Mill.")
+	public double eliteWireMillEnergy = 65535D;
 
 	@Comment("Speed for the Primitive Liquid Generator.")
 	public double primitiveLiquidGeneratorSpeed = 0.5D;
@@ -558,6 +558,12 @@ public class AstromineConfig implements ConfigData {
 
 	@Comment("Whether AK9 should asphyxiate.")
 	public boolean asphyxiateAK9 = true;
+
+	@Comment("Fluid numerator for the Fluid Cable and inter-machine transfer.")
+	public long fluidTransferNumerator = 1;
+
+	@Comment("Fluid denominator for the Fluid Cable and inter-machine transfer.")
+	public long fluidTransferDenominator = 5;
 
 	public static AstromineConfig get() {
 		if (instance == null) {

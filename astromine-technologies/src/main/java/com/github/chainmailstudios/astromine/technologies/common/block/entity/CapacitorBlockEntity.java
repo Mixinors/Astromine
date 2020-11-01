@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.utilities.VolumeUtilities;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
@@ -72,13 +73,13 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 
 		ItemComponent itemComponent = getItemComponent();
 
-		ItemStack inputStack = itemComponent.getStack(0);
+		ItemStack inputStack = itemComponent.getFirst();
 		if (Energy.valid(inputStack)) {
 			EnergyHandler energyHandler = Energy.of(inputStack);
 			energyHandler.into(Energy.of(this)).move(1024 * getMachineSpeed());
 		}
 
-		ItemStack outputStack = itemComponent.getStack(1);
+		ItemStack outputStack = itemComponent.getSecond();
 		if (Energy.valid(outputStack)) {
 			EnergyHandler energyHandler = Energy.of(outputStack);
 			Energy.of(this).into(energyHandler).move(1024 * getMachineSpeed());

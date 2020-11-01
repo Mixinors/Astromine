@@ -89,11 +89,6 @@ public interface InventoryFromItemComponent extends Inventory {
 	}
 
 	@Override
-	default boolean isValid(int slot, ItemStack stack) {
-		return getItemComponent().canInsert(null, stack, slot);
-	}
-
-	@Override
 	default void clear() {
 		getItemComponent().clear();
 	}

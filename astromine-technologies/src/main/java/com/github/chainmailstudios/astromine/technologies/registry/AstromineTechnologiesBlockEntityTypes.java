@@ -76,10 +76,10 @@ public class AstromineTechnologiesBlockEntityTypes extends AstromineBlockEntityT
 	public static final BlockEntityType<PresserBlockEntity.Advanced> ADVANCED_PRESSER = register("advanced_presser", PresserBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_PRESSER);
 	public static final BlockEntityType<PresserBlockEntity.Elite> ELITE_PRESSER = register("elite_presser", PresserBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_PRESSER);
 
-	public static final BlockEntityType<WiremillBlockEntity.Primitive> PRIMITIVE_WIREMILL = register("primitive_wiremill", WiremillBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_WIREMILL);
-	public static final BlockEntityType<WiremillBlockEntity.Basic> BASIC_WIREMILL = register("basic_wiremill", WiremillBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_WIREMILL);
-	public static final BlockEntityType<WiremillBlockEntity.Advanced> ADVANCED_WIREMILL = register("advanced_wiremill", WiremillBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_WIREMILL);
-	public static final BlockEntityType<WiremillBlockEntity.Elite> ELITE_WIREMILL = register("elite_wiremill", WiremillBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_WIREMILL);
+	public static final BlockEntityType<WireMillBlockEntity.Primitive> PRIMITIVE_WIREMILL = register("primitive_wire_mill", WireMillBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_WIREMILL);
+	public static final BlockEntityType<WireMillBlockEntity.Basic> BASIC_WIREMILL = register("basic_wire_mill", WireMillBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_WIREMILL);
+	public static final BlockEntityType<WireMillBlockEntity.Advanced> ADVANCED_WIREMILL = register("advanced_wire_mill", WireMillBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_WIREMILL);
+	public static final BlockEntityType<WireMillBlockEntity.Elite> ELITE_WIREMILL = register("elite_wire_mill", WireMillBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_WIREMILL);
 
 	public static final BlockEntityType<ElectrolyzerBlockEntity.Primitive> PRIMITIVE_ELECTROLYZER = register("primitive_electrolyzer", ElectrolyzerBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_ELECTROLYZER);
 	public static final BlockEntityType<ElectrolyzerBlockEntity.Basic> BASIC_ELECTROLYZER = register("basic_electrolyzer", ElectrolyzerBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_ELECTROLYZER);

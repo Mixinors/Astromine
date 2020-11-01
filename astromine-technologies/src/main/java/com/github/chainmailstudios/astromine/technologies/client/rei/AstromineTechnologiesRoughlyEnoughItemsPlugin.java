@@ -53,8 +53,8 @@ import com.github.chainmailstudios.astromine.technologies.client.rei.refining.Re
 import com.github.chainmailstudios.astromine.technologies.client.rei.refining.RefiningDisplay;
 import com.github.chainmailstudios.astromine.technologies.client.rei.triturating.TrituratingCategory;
 import com.github.chainmailstudios.astromine.technologies.client.rei.triturating.TrituratingDisplay;
-import com.github.chainmailstudios.astromine.technologies.client.rei.wiremilling.WiremillingCategory;
-import com.github.chainmailstudios.astromine.technologies.client.rei.wiremilling.WiremillingDisplay;
+import com.github.chainmailstudios.astromine.technologies.client.rei.wire_milling.WireMillingCategory;
+import com.github.chainmailstudios.astromine.technologies.client.rei.wire_milling.WireMillingDisplay;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.AlloySmeltingRecipe;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.ElectrolyzingRecipe;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.FluidMixingRecipe;
@@ -62,7 +62,7 @@ import com.github.chainmailstudios.astromine.technologies.common.recipe.LiquidGe
 import com.github.chainmailstudios.astromine.technologies.common.recipe.PressingRecipe;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.RefiningRecipe;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.TrituratingRecipe;
-import com.github.chainmailstudios.astromine.technologies.common.recipe.WiremillingRecipe;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.WireMillingRecipe;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.EntryStack;
@@ -81,7 +81,7 @@ public class AstromineTechnologiesRoughlyEnoughItemsPlugin extends AstromineRoug
 	public static final Identifier ELECTROLYZING = AstromineCommon.identifier("electrolyzing");
 	public static final Identifier REFINING = AstromineCommon.identifier("refining");
 	public static final Identifier PRESSING = AstromineCommon.identifier("pressing");
-	public static final Identifier WIREMILLING = AstromineCommon.identifier("wiremilling");
+	public static final Identifier WIREMILLING = AstromineCommon.identifier("wire_milling");
 	public static final Identifier ALLOY_SMELTING = AstromineCommon.identifier("alloy_smelting");
 
 	@Override
@@ -91,7 +91,7 @@ public class AstromineTechnologiesRoughlyEnoughItemsPlugin extends AstromineRoug
 
 	@Override
 	public void registerPluginCategories(RecipeHelper recipeHelper) {
-		recipeHelper.registerCategories(new TrituratingCategory(), new ElectricSmeltingCategory(), new LiquidGeneratingCategory(), new SolidGeneratingCategory(), new PressingCategory(), new WiremillingCategory(), new AlloySmeltingCategory(), new FluidMixingCategory(FLUID_MIXING,
+		recipeHelper.registerCategories(new TrituratingCategory(), new ElectricSmeltingCategory(), new LiquidGeneratingCategory(), new SolidGeneratingCategory(), new PressingCategory(), new WireMillingCategory(), new AlloySmeltingCategory(), new FluidMixingCategory(FLUID_MIXING,
 			"category.astromine.fluid_mixing", EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_FLUID_MIXER)), new ElectrolyzingCategory(ELECTROLYZING, "category.astromine.electrolyzing", EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_ELECTROLYZER)),
 			new RefiningCategory(REFINING, "category.astromine.refining", EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_REFINERY)));
 	}
@@ -105,7 +105,7 @@ public class AstromineTechnologiesRoughlyEnoughItemsPlugin extends AstromineRoug
 		recipeHelper.registerRecipes(ELECTROLYZING, ElectrolyzingRecipe.class, ElectrolyzingDisplay::new);
 		recipeHelper.registerRecipes(REFINING, RefiningRecipe.class, RefiningDisplay::new);
 		recipeHelper.registerRecipes(PRESSING, PressingRecipe.class, PressingDisplay::new);
-		recipeHelper.registerRecipes(WIREMILLING, WiremillingRecipe.class, WiremillingDisplay::new);
+		recipeHelper.registerRecipes(WIREMILLING, WireMillingRecipe.class, WireMillingDisplay::new);
 		recipeHelper.registerRecipes(ALLOY_SMELTING, AlloySmeltingRecipe.class, AlloySmeltingDisplay::new);
 
 		for (Map.Entry<Item, Integer> entry : AbstractFurnaceBlockEntity.createFuelTimeMap().entrySet()) {

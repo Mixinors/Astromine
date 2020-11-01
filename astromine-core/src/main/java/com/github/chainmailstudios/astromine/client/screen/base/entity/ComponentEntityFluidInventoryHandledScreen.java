@@ -27,10 +27,10 @@ package com.github.chainmailstudios.astromine.client.screen.base.entity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
-import com.github.chainmailstudios.astromine.common.screenhandler.base.entity.ComponentEntityFluidInventoryScreenHandler;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.entity.ComponentEntityFluidItemScreenHandler;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 
-public abstract class ComponentEntityFluidInventoryHandledScreen<T extends ComponentEntityFluidInventoryScreenHandler> extends ComponentEntityHandledScreen<T> {
+public abstract class ComponentEntityFluidInventoryHandledScreen<T extends ComponentEntityFluidItemScreenHandler> extends ComponentEntityHandledScreen<T> {
 	public ComponentEntityFluidInventoryHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 	}

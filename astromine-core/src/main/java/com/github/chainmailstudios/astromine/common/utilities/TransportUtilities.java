@@ -38,24 +38,24 @@ public class TransportUtilities {
 	public static boolean isExtractingEnergy(BlockEntity entity, @Nullable BlockEntityTransferComponent transferComponent, Direction direction) {
 		if (!(entity instanceof EnergyStorage))
 			return false;
-		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponents.ENERGY_INVENTORY_COMPONENT).get(direction) : TransferType.NONE;
+		TransferType transferType = transferComponent != null ? transferComponent.getEnergy(direction) : TransferType.NONE;
 		return transferType.canExtract() || (!transferType.isNone() && NetworkMemberRegistry.get(entity, direction).isProvider(AstromineNetworkTypes.ENERGY));
 	}
 
 	public static boolean isInsertingEnergy(BlockEntity entity, @Nullable BlockEntityTransferComponent transferComponent, Direction direction) {
 		if (!(entity instanceof EnergyStorage))
 			return false;
-		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponents.ENERGY_INVENTORY_COMPONENT).get(direction) : TransferType.NONE;
+		TransferType transferType = transferComponent != null ? transferComponent.getEnergy(direction) : TransferType.NONE;
 		return transferType.canInsert() || (!transferType.isNone() && NetworkMemberRegistry.get(entity, direction).isRequester(AstromineNetworkTypes.ENERGY));
 	}
 
 	public static boolean isExtractingItem(@Nullable BlockEntityTransferComponent transferComponent, Direction direction, boolean defaultValue) {
-		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(direction) : TransferType.NONE;
+		TransferType transferType = transferComponent != null ? transferComponent.getItem(direction) : TransferType.NONE;
 		return transferType.canExtract() || (defaultValue && transferType.isNone());
 	}
 
 	public static boolean isInsertingItem(@Nullable BlockEntityTransferComponent transferComponent, Direction direction, boolean defaultValue) {
-		TransferType transferType = transferComponent != null ? transferComponent.get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(direction) : TransferType.NONE;
+		TransferType transferType = transferComponent != null ? transferComponent.getItem(direction) : TransferType.NONE;
 		return transferType.canInsert() || (defaultValue && transferType.isNone());
 	}
 }

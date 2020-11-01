@@ -55,14 +55,14 @@ public class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 	final Identifier identifier;
 	final Ingredient input;
 	final ItemStack output;
-	final double energyConsumed;
+	final double energy;
 	final int time;
 
-	public PressingRecipe(Identifier identifier, Ingredient input, ItemStack output, double energyConsumed, int time) {
+	public PressingRecipe(Identifier identifier, Ingredient input, ItemStack output, double energy, int time) {
 		this.identifier = identifier;
 		this.input = input;
 		this.output = output;
-		this.energyConsumed = energyConsumed;
+		this.energy = energy;
 		this.time = time;
 	}
 
@@ -126,7 +126,7 @@ public class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 	}
 
 	public double getEnergy() {
-		return energyConsumed;
+		return energy;
 	}
 
 	public static final class Serializer implements RecipeSerializer<PressingRecipe> {
@@ -142,7 +142,7 @@ public class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 		public PressingRecipe read(Identifier identifier, JsonObject object) {
 			PressingRecipe.Format format = new Gson().fromJson(object, PressingRecipe.Format.class);
 
-			return new PressingRecipe(identifier, IngredientUtilities.fromIngredientJson(format.input), StackUtilities.fromJson(format.output), EnergyUtilities.fromJson(format.energyConsumed), ParsingUtilities.fromJson(format.time, Integer.class));
+			return new PressingRecipe(identifier, IngredientUtilities.fromIngredientJson(format.input), StackUtilities.fromJson(format.output), EnergyUtilities.fromJson(format.energy), ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 
 		@Override
@@ -154,7 +154,7 @@ public class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 		public void write(PacketByteBuf buffer, PressingRecipe recipe) {
 			IngredientUtilities.toIngredientPacket(buffer, recipe.input);
 			StackUtilities.toPacket(buffer, recipe.output);
-			EnergyUtilities.toPacket(buffer, recipe.energyConsumed);
+			EnergyUtilities.toPacket(buffer, recipe.energy);
 			PacketUtilities.toPacket(buffer, recipe.time);
 		}
 	}
@@ -172,12 +172,12 @@ public class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 		JsonObject output;
 		@SerializedName("time")
 		JsonPrimitive time;
-		@SerializedName("energy_consumed")
-		JsonElement energyConsumed;
+		@SerializedName("energy")
+		JsonElement energy;
 
 		@Override
 		public String toString() {
-			return "Format{" + "input=" + input + ", output=" + output + ", time=" + time + ", energyConsumed=" + energyConsumed + '}';
+			return "Format{" + "input=" + input + ", output=" + output + ", time=" + time + ", energy=" + energy + '}';
 		}
 	}
 }

@@ -1,0 +1,17 @@
+{
+  "condition": {
+    "modid": "techreborn"
+  },
+  "recipe": {
+    "type": "astromine:triturating",
+    "input": {
+      "tag": "c:titanium_ingots"
+    },
+    "output": {
+      "item": "techreborn:titanium_dust",
+      "count": 1
+    },
+    "energy": 340,
+    "time": 90
+  }
+}

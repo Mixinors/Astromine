@@ -1,0 +1,17 @@
+{
+  "condition": {
+    "modid": "techreborn"
+  },
+  "recipe": {
+    "type": "astromine:triturating",
+    "input": {
+      "tag": "c:tungsten_ingots"
+    },
+    "output": {
+      "item": "techreborn:tungsten_dust",
+      "count": 1
+    },
+    "energy": 340,
+    "time": 90
+  }
+}

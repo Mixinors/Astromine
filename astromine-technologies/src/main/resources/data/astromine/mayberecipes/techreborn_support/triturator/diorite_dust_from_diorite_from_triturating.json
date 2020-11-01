@@ -1,0 +1,17 @@
+{
+  "condition": {
+    "modid": "techreborn"
+  },
+  "recipe": {
+    "type": "astromine:triturating",
+    "input": {
+      "item": "minecraft:diorite"
+    },
+    "output": {
+      "item": "techreborn:diorite_dust",
+      "count": 1
+    },
+    "energy": 340,
+    "time": 90
+  }
+}

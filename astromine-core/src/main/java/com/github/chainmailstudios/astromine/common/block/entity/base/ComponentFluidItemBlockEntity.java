@@ -27,10 +27,10 @@ package com.github.chainmailstudios.astromine.common.block.entity.base;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
-import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedComponentSidedInventoryProvider;
+import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ComponentInventoryProvider;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 
-public abstract class ComponentFluidItemBlockEntity extends ComponentFluidBlockEntity implements ExtendedComponentSidedInventoryProvider {
+public abstract class ComponentFluidItemBlockEntity extends ComponentFluidBlockEntity implements ComponentInventoryProvider {
 	public ComponentFluidItemBlockEntity(BlockEntityType<?> type) {
 		super(type);
 
