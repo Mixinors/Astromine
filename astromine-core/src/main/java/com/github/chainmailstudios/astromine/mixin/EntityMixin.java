@@ -24,8 +24,14 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
+import com.github.chainmailstudios.astromine.access.EntityAccess;
+import com.github.chainmailstudios.astromine.registry.AstromineTags;
+import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 
+import net.minecraft.fluid.Fluid;
+import net.minecraft.tag.FluidTags;
+import net.minecraft.tag.Tag;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -51,10 +57,12 @@ import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
 import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
 
 import com.google.common.collect.Lists;
+
+import javax.annotation.Nullable;
 import java.util.List;
 
 @Mixin(Entity.class)
-public abstract class EntityMixin implements GravityEntity {
+public abstract class EntityMixin implements GravityEntity, EntityAccess {
 	@Shadow
 	public World world;
 
@@ -66,6 +74,21 @@ public abstract class EntityMixin implements GravityEntity {
 	@Shadow
 	public abstract BlockPos getBlockPos();
 
+	@Shadow
+	public abstract boolean updateMovementInFluid(Tag<Fluid> tag, double d);
+
+	@Shadow
+	protected boolean firstUpdate;
+
+	@Shadow
+	protected Object2DoubleMap<Tag<Fluid>> fluidHeight;
+
+	@Shadow
+	public abstract double getFluidHeight(Tag<Fluid> fluid);
+
+	@Shadow
+	public abstract boolean isSubmergedIn(Tag<Fluid> tag);
+
 	@ModifyVariable(at = @At("HEAD"), method = "handleFallDamage(FF)Z", index = 1)
 	float getDamageMultiplier(float damageMultiplier) {
 		return (float) (damageMultiplier * astromine_getGravity() * astromine_getGravity());
@@ -75,6 +98,11 @@ public abstract class EntityMixin implements GravityEntity {
 	public double astromine_getGravity() {
 		World world = ((Entity) (Object) this).world;
 		return astromine_getGravity(world);
+	}
+
+	@Override
+	public boolean astromine_isInIndustrialFluid() {
+		return !this.firstUpdate && this.fluidHeight.getDouble(AstromineTags.INDUSTRIAL_FLUID) > 0.0D;
 	}
 
 	@Inject(at = @At("HEAD"), method = "tickNetherPortal()V")
@@ -150,5 +178,17 @@ public abstract class EntityMixin implements GravityEntity {
 				ServerSidePacketRegistry.INSTANCE.sendToPlayer(((PlayerEntity) (Object) this), ClientAtmosphereManager.GAS_ADDED, ClientAtmosphereManager.ofGasAdded(blockPos, volume));
 			}));
 		}
+	}
+
+	@Inject(method = "updateWaterState", at = @At("RETURN"), cancellable = true)
+	private void astromine_updateIndustrialFluidState(CallbackInfoReturnable<Boolean> cir) {
+		if (this.updateMovementInFluid(AstromineTags.INDUSTRIAL_FLUID, 0.014)) {
+			cir.setReturnValue(true);
+		}
+	}
+
+	@Inject(method = "isInLava", at = @At("RETURN"), cancellable = true)
+	protected void astromine_fakeLava(CallbackInfoReturnable<Boolean> cir) {
+		// NO-OP
 	}
 }

@@ -33,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BooleanSupplier;
+import java.util.Objects;
 
 public class SimpleFluidComponent implements FluidComponent {
 	private final Int2ObjectOpenHashMap<FluidVolume> contents = new Int2ObjectOpenHashMap<>();
@@ -103,5 +103,18 @@ public class SimpleFluidComponent implements FluidComponent {
 	@Override
 	public int getSize() {
 		return size;
+	}
+
+	@Override
+	public boolean equals(Object o) {	// used by CCA to tell if two stacks are equal
+		if (this == o) return true;
+		if (!(o instanceof SimpleFluidComponent)) return false;
+		SimpleFluidComponent entries = (SimpleFluidComponent) o;
+		return Objects.equals(contents, entries.contents);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(contents);
 	}
 }
