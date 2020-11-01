@@ -182,12 +182,26 @@ public abstract class ComponentBlockEntity extends BlockEntity implements Packet
 
 					ItemInvUtil.move(neighbor, self, 1);
 				}
+
+				if (!getTransferComponent().getItem(offsetDirection).isNone()) {
+					ItemExtractable neighbor = ItemAttributes.EXTRACTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
+					ItemInsertable self = ItemAttributes.INSERTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
+
+					ItemInvUtil.move(neighbor, self, 1);
+				}
 			}
 
 			if (getTransferComponent().hasFluid()) {
 				if (!getTransferComponent().getFluid(offsetDirection).isNone()) {
 					FluidExtractable neighbor = FluidAttributes.EXTRACTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
 					FluidInsertable self = FluidAttributes.INSERTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
+
+					FluidVolumeUtil.move(neighbor, self, FluidAmount.of(1, 20));
+				}
+
+				if (!getTransferComponent().getFluid(offsetDirection).isNone()) {
+					FluidExtractable neighbor = FluidAttributes.EXTRACTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
+					FluidInsertable self = FluidAttributes.INSERTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
 
 					FluidVolumeUtil.move(neighbor, self, FluidAmount.of(1, 20));
 				}
