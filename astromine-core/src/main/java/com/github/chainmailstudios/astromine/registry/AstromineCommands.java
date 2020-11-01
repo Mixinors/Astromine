@@ -24,15 +24,51 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.common.screenhandler.RecipeCreatorScreenHandler;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.minecraft.client.network.ClientCommandSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import reborncore.common.crafting.RebornRecipe;
 import techreborn.TechReborn;
 import techreborn.init.ModRecipes;
 
+import static com.mojang.brigadier.builder.LiteralArgumentBuilder.literal;
+
 public class AstromineCommands {
 	public static void initialize() {
+		CommandRegistrationCallback.EVENT.register((dispatcher, ignored) -> {
+			dispatcher.register(LiteralArgumentBuilder.<ServerCommandSource>literal("recipe").then(LiteralArgumentBuilder.<ServerCommandSource>literal("creator").executes((context) -> {
+				context.getSource().getPlayer().openHandledScreen(new ExtendedScreenHandlerFactory() {
+					@Override
+					public void writeScreenOpeningData(ServerPlayerEntity serverPlayerEntity, PacketByteBuf packetByteBuf) {
 
+					}
+
+					@Override
+					public Text getDisplayName() {
+						return new LiteralText("Recipe Creator");
+					}
+
+					@Override
+					public @NotNull ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
+						return new RecipeCreatorScreenHandler(syncId, player);
+					}
+				});
+
+				return 1;
+			})));
+		});
 	}
 }

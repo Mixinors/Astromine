@@ -24,12 +24,15 @@
 
 package com.github.chainmailstudios.astromine.registry.client;
 
+import com.github.chainmailstudios.astromine.client.screen.RecipeCreatorHandledScreen;
+import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 
 @Environment(EnvType.CLIENT)
 public class AstromineScreens {
 	public static void initialize() {
-
+		ScreenRegistry.register(AstromineScreenHandlers.RECIPE_CREATOR, RecipeCreatorHandledScreen::new);
 	}
 }
