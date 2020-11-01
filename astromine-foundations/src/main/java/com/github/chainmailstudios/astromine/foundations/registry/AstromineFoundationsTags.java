@@ -5,7 +5,9 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 
+import com.github.chainmailstudios.astromine.foundations.AstromineFoundationsCommon;
+
 public class AstromineFoundationsTags {
-	public static final Tag<Fluid> OXYGEN = TagRegistry.fluid(new Identifier("c:oxygen"));
-	public static final Tag<Fluid> HYDROGEN = TagRegistry.fluid(new Identifier("c:hydrogen"));
+	public static final Tag<Fluid> OXYGEN = TagRegistry.fluid(AstromineFoundationsCommon.identifier("oxygen"));
+	public static final Tag<Fluid> HYDROGEN = TagRegistry.fluid(AstromineFoundationsCommon.identifier("hydrogen"));
 }

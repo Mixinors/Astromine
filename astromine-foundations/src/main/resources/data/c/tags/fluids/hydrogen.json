@@ -1,7 +1,6 @@
 {
   "replace": false,
   "values": [
-    "astromine:hydrogen",
-    "astromine:hydrogen_flowing"
+    "#astromine:hydrogen"
   ]
 }
