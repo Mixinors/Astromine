@@ -71,7 +71,8 @@ public class FluidMixingDisplay implements RecipeDisplay {
 
 	@Override
 	public List<List<EntryStack>> getInputEntries() {
-		return Arrays.asList(Arrays.stream(firstIngredient.getMatchingVolumes()).map(AstromineRoughlyEnoughItemsPlugin::convertA2R).collect(Collectors.toList()), Arrays.stream(secondIngredient.getMatchingVolumes()).map(AstromineRoughlyEnoughItemsPlugin::convertA2R).collect(Collectors.toList()));
+		return Arrays.asList(Arrays.stream(firstIngredient.getMatchingVolumes()).map(AstromineRoughlyEnoughItemsPlugin::convertA2R).collect(Collectors.toList()), Arrays.stream(secondIngredient.getMatchingVolumes()).map(AstromineRoughlyEnoughItemsPlugin::convertA2R).collect(
+			Collectors.toList()));
 	}
 
 	@Override

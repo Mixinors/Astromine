@@ -149,7 +149,8 @@ public class FluidIngredient implements Predicate<FluidVolume> {
 		if (this.matchingVolumes.length == 0)
 			return false;
 		for (FluidVolume matchingVolume : matchingVolumes) {
-			if(matchingVolume.getFluid().equals(fluid)) return true;
+			if (matchingVolume.getFluid().equals(fluid))
+				return true;
 		}
 		return false;
 	}

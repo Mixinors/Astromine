@@ -24,11 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
-import com.github.chainmailstudios.astromine.registry.AstromineItems;
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,18 +31,51 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Direction;
+
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public interface FluidComponent extends Iterable<Map.Entry<Integer, FluidVolume>>, NameableComponent, AutoSyncedComponent {
+	static FluidComponent of(int size) {
+		return SimpleFluidComponent.of(size);
+	}
+
+	static FluidComponent of(FluidVolume... volumes) {
+		return SimpleFluidComponent.of(volumes);
+	}
+
+	@Nullable
+	static <V> FluidComponent get(V v) {
+		if (v instanceof ItemStack) {
+			ItemStack stack = (ItemStack) v;
+			Item item = stack.getItem();
+
+			if (item instanceof BucketItem) {
+				BucketItem bucket = (BucketItem) item;
+
+				return SimpleFluidComponent.of(FluidVolume.of(Fraction.bucket(), bucket.fluid));
+			}
+		}
+
+		try {
+			return AstromineComponents.FLUID_INVENTORY_COMPONENT.get(v);
+		} catch (Exception justShutUpAlready) {
+			return null;
+		}
+	}
+
 	default Item getSymbol() {
 		return AstromineItems.FLUID.asItem();
 	}
@@ -104,31 +132,34 @@ public interface FluidComponent extends Iterable<Map.Entry<Integer, FluidVolume>
 	@Nullable
 	default FluidVolume getFirstExtractableVolume(Direction direction) {
 		List<FluidVolume> volumes = getExtractableVolumes(direction);
-		if (!volumes.isEmpty()) return volumes.get(0);
+		if (!volumes.isEmpty())
+			return volumes.get(0);
 		else return null;
 	}
 
 	@Nullable
 	default FluidVolume getFirstExtractableVolume(Direction direction, Predicate<FluidVolume> predicate) {
 		List<FluidVolume> volumes = getExtractableVolumes(direction, predicate);
-		if (!volumes.isEmpty()) return volumes.get(0);
+		if (!volumes.isEmpty())
+			return volumes.get(0);
 		else return null;
 	}
 
 	@Nullable
 	default FluidVolume getFirstInsertableVolume(Direction direction, FluidVolume volume) {
 		List<FluidVolume> volumes = getInsertableVolumes(direction, volume);
-		if (!volumes.isEmpty()) return volumes.get(0);
+		if (!volumes.isEmpty())
+			return volumes.get(0);
 		else return null;
 	}
 
 	@Nullable
 	default FluidVolume getFirstInsertableVolume(Direction direction, FluidVolume volume, Predicate<FluidVolume> predicate) {
 		List<FluidVolume> volumes = getInsertableVolumes(direction, volume, predicate);
-		if (!volumes.isEmpty()) return volumes.get(0);
+		if (!volumes.isEmpty())
+			return volumes.get(0);
 		else return null;
 	}
-
 
 	default boolean canInsert(@Nullable Direction direction, FluidVolume volume, int slot) {
 		return volume.test(getVolume(slot));
@@ -265,34 +296,6 @@ public interface FluidComponent extends Iterable<Map.Entry<Integer, FluidVolume>
 
 	default void setNinth(FluidVolume volume) {
 		setVolume(8, volume);
-	}
-
-	static FluidComponent of(int size) {
-		return SimpleFluidComponent.of(size);
-	}
-
-	static FluidComponent of(FluidVolume... volumes) {
-		return SimpleFluidComponent.of(volumes);
-	}
-
-	@Nullable
-	static <V> FluidComponent get(V v) {
-		if (v instanceof ItemStack) {
-			ItemStack stack = (ItemStack) v;
-			Item item = stack.getItem();
-
-			if (item instanceof BucketItem) {
-				BucketItem bucket = (BucketItem) item;
-
-				return SimpleFluidComponent.of(FluidVolume.of(Fraction.bucket(), bucket.fluid));
-			}
-		}
-
-		try {
-			return AstromineComponents.FLUID_INVENTORY_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
-			return null;
-		}
 	}
 
 	@Override

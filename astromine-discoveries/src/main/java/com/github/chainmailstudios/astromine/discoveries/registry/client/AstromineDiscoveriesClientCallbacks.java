@@ -26,8 +26,6 @@ package com.github.chainmailstudios.astromine.discoveries.registry.client;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import dev.onyxstudios.cca.api.v3.component.ComponentContainer;
-import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 
@@ -46,7 +44,6 @@ import com.github.chainmailstudios.astromine.discoveries.common.item.SpaceSuitIt
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesDimensions;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesEntityTypes;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesItems;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.client.AstromineClientCallbacks;
 
 import java.util.UUID;

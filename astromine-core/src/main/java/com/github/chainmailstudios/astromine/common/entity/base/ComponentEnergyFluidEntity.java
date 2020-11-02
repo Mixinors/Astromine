@@ -29,8 +29,6 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
 
 public abstract class ComponentEnergyFluidEntity extends ComponentEntity {
 	public ComponentEnergyFluidEntity(EntityType<?> type, World world) {

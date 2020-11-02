@@ -24,9 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.volume.fluid;
 
-import com.github.chainmailstudios.astromine.common.utilities.FractionUtilities;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
@@ -36,10 +33,13 @@ import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
+import com.github.chainmailstudios.astromine.common.utilities.FractionUtilities;
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 
 import com.google.common.base.Objects;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 public class FluidVolume extends Volume<Identifier, Fraction> {
 	public static final Identifier ID = AstromineCommon.identifier("fluid");
@@ -86,6 +86,39 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 
 	public static boolean areFluidsEqual(FluidVolume volume1, FluidVolume volume2) {
 		return Objects.equal(volume1.getFluid(), volume2.getFluid());
+	}
+
+	public static FluidVolume fromTag(CompoundTag tag) {
+		return new FluidVolume(Fraction.fromTag(tag.getCompound("amount")), Fraction.fromTag(tag.getCompound("size")), Registry.FLUID.get(new Identifier(tag.getString("fluid"))));
+	}
+
+	public static FluidVolume fromJson(JsonElement jsonElement) {
+		if (!(jsonElement instanceof JsonObject))
+			return null;
+		else {
+			JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+			if (!jsonObject.has("fluid"))
+				return null;
+			if (!jsonObject.has("amount")) {
+				return FluidVolume.of(Fraction.bucket(), Registry.FLUID.get(new Identifier(jsonObject.get("fluid").getAsString())));
+			} else {
+				return FluidVolume.of(FractionUtilities.fromJson(jsonObject.get("amount")), Registry.FLUID.get(new Identifier(jsonObject.get("fluid").getAsString())));
+			}
+		}
+	}
+
+	public static FluidVolume fromPacket(PacketByteBuf buffer) {
+		if (!buffer.readBoolean()) {
+			return empty();
+		} else {
+			int id = buffer.readVarInt();
+
+			Fraction amount = FractionUtilities.fromPacket(buffer);
+			Fraction size = FractionUtilities.fromPacket(buffer);
+
+			return FluidVolume.of(amount, size, Registry.FLUID.get(id));
+		}
 	}
 
 	public boolean fluidEquals(FluidVolume volume) {
@@ -217,10 +250,6 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 		return getAmount().toDecimalString() + " / " + getSize().toDecimalString() + " " + getFluidId();
 	}
 
-	public static FluidVolume fromTag(CompoundTag tag) {
-		return new FluidVolume(Fraction.fromTag(tag.getCompound("amount")), Fraction.fromTag(tag.getCompound("size")), Registry.FLUID.get(new Identifier(tag.getString("fluid"))));
-	}
-
 	@Override
 	public CompoundTag toTag() {
 		CompoundTag tag = new CompoundTag();
@@ -228,20 +257,6 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 		tag.put("size", getSize().toTag());
 		tag.putString("fluid", Registry.FLUID.getId(getFluid()).toString());
 		return tag;
-	}
-
-	public static FluidVolume fromJson(JsonElement jsonElement) {
-		if (!(jsonElement instanceof JsonObject)) return null;
-		else {
-			JsonObject jsonObject = jsonElement.getAsJsonObject();
-
-			if (!jsonObject.has("fluid")) return null;
-			if (!jsonObject.has("amount")) {
-				return FluidVolume.of(Fraction.bucket(), Registry.FLUID.get(new Identifier(jsonObject.get("fluid").getAsString())));
-			} else {
-				return FluidVolume.of(FractionUtilities.fromJson(jsonObject.get("amount")), Registry.FLUID.get(new Identifier(jsonObject.get("fluid").getAsString())));
-			}
-		}
 	}
 
 	public PacketByteBuf toPacket(PacketByteBuf buffer) {
@@ -257,18 +272,5 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 		}
 
 		return buffer;
-	}
-
-	public static FluidVolume fromPacket(PacketByteBuf buffer) {
-		if (!buffer.readBoolean()) {
-			return empty();
-		} else {
-			int id = buffer.readVarInt();
-
-			Fraction amount = FractionUtilities.fromPacket(buffer);
-			Fraction size = FractionUtilities.fromPacket(buffer);
-
-			return FluidVolume.of(amount, size, Registry.FLUID.get(id));
-		}
 	}
 }

@@ -24,12 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.InventoryFromItemComponent;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
-import com.github.chainmailstudios.astromine.registry.AstromineItems;
-import dev.onyxstudios.cca.api.v3.component.Component;
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -37,6 +31,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Direction;
+
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.InventoryFromItemComponent;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,6 +47,22 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public interface ItemComponent extends Iterable<Map.Entry<Integer, ItemStack>>, AutoSyncedComponent, NameableComponent {
+	static ItemComponent of(int size) {
+		return SimpleItemComponent.of(size);
+	}
+
+	static ItemComponent of(ItemStack... stacks) {
+		return SimpleItemComponent.of(stacks);
+	}
+
+	static <V> ItemComponent get(V v) {
+		try {
+			return AstromineComponents.ITEM_INVENTORY_COMPONENT.get(v);
+		} catch (Exception justShutUpAlready) {
+			return null;
+		}
+	}
+
 	default Item getSymbol() {
 		return AstromineItems.ITEM;
 	}
@@ -104,28 +119,32 @@ public interface ItemComponent extends Iterable<Map.Entry<Integer, ItemStack>>, 
 	@Nullable
 	default ItemStack getFirstExtractableStack(Direction direction) {
 		List<ItemStack> Stacks = getExtractableStacks(direction);
-		if (!Stacks.isEmpty()) return Stacks.get(0);
+		if (!Stacks.isEmpty())
+			return Stacks.get(0);
 		else return null;
 	}
 
 	@Nullable
 	default ItemStack getFirstExtractableStack(Direction direction, Predicate<ItemStack> predicate) {
 		List<ItemStack> Stacks = getExtractableStacks(direction, predicate);
-		if (!Stacks.isEmpty()) return Stacks.get(0);
+		if (!Stacks.isEmpty())
+			return Stacks.get(0);
 		else return null;
 	}
 
 	@Nullable
 	default ItemStack getFirstInsertableStack(Direction direction, ItemStack Stack) {
 		List<ItemStack> Stacks = getInsertableStacks(direction, Stack);
-		if (!Stacks.isEmpty()) return Stacks.get(0);
+		if (!Stacks.isEmpty())
+			return Stacks.get(0);
 		else return null;
 	}
 
 	@Nullable
 	default ItemStack getFirstInsertableStack(Direction direction, ItemStack Stack, Predicate<ItemStack> predicate) {
 		List<ItemStack> Stacks = getInsertableStacks(direction, Stack, predicate);
-		if (!Stacks.isEmpty()) return Stacks.get(0);
+		if (!Stacks.isEmpty())
+			return Stacks.get(0);
 		else return null;
 	}
 
@@ -154,7 +173,6 @@ public interface ItemComponent extends Iterable<Map.Entry<Integer, ItemStack>>, 
 
 		return stack;
 	}
-
 
 	int getSize();
 
@@ -276,22 +294,6 @@ public interface ItemComponent extends Iterable<Map.Entry<Integer, ItemStack>>, 
 
 	default Inventory asInventory() {
 		return InventoryFromItemComponent.of(this);
-	}
-
-	static ItemComponent of(int size) {
-		return SimpleItemComponent.of(size);
-	}
-
-	static ItemComponent of(ItemStack... stacks) {
-		return SimpleItemComponent.of(stacks);
-	}
-
-	static <V> ItemComponent get(V v) {
-		try {
-			return AstromineComponents.ITEM_INVENTORY_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
-			return null;
-		}
 	}
 
 	@Override

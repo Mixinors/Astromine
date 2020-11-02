@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
-import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
 import com.google.common.collect.Lists;
 import net.minecraft.fluid.Fluid;
 

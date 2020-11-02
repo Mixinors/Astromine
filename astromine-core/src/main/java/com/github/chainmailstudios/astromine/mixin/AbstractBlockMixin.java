@@ -24,10 +24,6 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -49,12 +45,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.utilities.data.Holder;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
-
-import java.util.Optional;
 
 @Mixin(AbstractBlock.class)
 public class AbstractBlockMixin {
@@ -78,7 +74,7 @@ public class AbstractBlockMixin {
 			if (transferComponent != null) {
 				TransferType type = transferComponent.getFluid(result.getSide());
 
-				if  (!type.canInsert() && !type.canExtract()) {
+				if (!type.canInsert() && !type.canExtract()) {
 					return;
 				}
 			}
@@ -134,8 +130,7 @@ public class AbstractBlockMixin {
 							} else if (insertable != null) {
 								insertable.moveFrom(stackVolume, Fraction.bucket());
 							}
-						} else {
-						}
+						} else {}
 					}
 
 					shouldSkip.set(true);

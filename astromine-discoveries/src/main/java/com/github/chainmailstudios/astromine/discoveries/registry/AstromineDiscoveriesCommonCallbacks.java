@@ -24,21 +24,15 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.minecraft.server.world.ServerWorld;
 
 import com.github.chainmailstudios.astromine.common.callback.ServerChunkManagerCallback;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.glacios.GlaciosChunkGenerator;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.mars.MarsChunkGenerator;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.moon.MoonChunkGenerator;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.space.EarthSpaceChunkGenerator;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.vulcan.VulcanChunkGenerator;
 import com.github.chainmailstudios.astromine.registry.AstromineCommonCallbacks;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
-import nerdhub.cardinal.components.api.event.ItemComponentCallbackV2;
 
 public class AstromineDiscoveriesCommonCallbacks extends AstromineCommonCallbacks {
 	public static void initialize() {

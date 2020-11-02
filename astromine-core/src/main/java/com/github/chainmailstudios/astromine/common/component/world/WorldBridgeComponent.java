@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.component.world;
 
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
-import dev.onyxstudios.cca.api.v3.component.Component;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.BlockPos;
@@ -36,11 +34,12 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.utilities.VoxelShapeUtilities;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import dev.onyxstudios.cca.api.v3.component.Component;
 import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
-
-import com.google.common.collect.Sets;
 import org.jetbrains.annotations.Nullable;
 
+import com.google.common.collect.Sets;
 import java.util.Map;
 import java.util.Set;
 
@@ -51,6 +50,15 @@ public class WorldBridgeComponent implements Component {
 
 	public WorldBridgeComponent(World world) {
 		this.world = world;
+	}
+
+	@Nullable
+	public static <V> WorldBridgeComponent get(V v) {
+		try {
+			return AstromineComponents.WORLD_BRIDGE_COMPONENT.get(v);
+		} catch (Exception justShutUpAlready) {
+			return null;
+		}
 	}
 
 	public World getWorld() {
@@ -160,15 +168,6 @@ public class WorldBridgeComponent implements Component {
 			for (String vecKey : vecTag.getKeys()) {
 				add(pos, BlockPos.fromLong(vecTag.getLong(vecKey)));
 			}
-		}
-	}
-
-	@Nullable
-	public static <V> WorldBridgeComponent get(V v) {
-		try {
-			return AstromineComponents.WORLD_BRIDGE_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
-			return null;
 		}
 	}
 }

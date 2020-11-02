@@ -24,10 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.block;
 
-import com.github.chainmailstudios.astromine.common.block.redstone.RedstoneType;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
-import com.github.vini2003.blade.common.collection.base.WidgetCollection;
-import com.github.vini2003.blade.common.widget.base.ButtonWidget;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
@@ -42,15 +38,18 @@ import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.redstone.RedstoneType;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.NameableComponent;
 import com.github.chainmailstudios.astromine.common.utilities.WidgetUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.vini2003.blade.common.collection.TabWidgetCollection;
+import com.github.vini2003.blade.common.collection.base.WidgetCollection;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.utilities.Slots;
+import com.github.vini2003.blade.common.widget.base.ButtonWidget;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import com.github.vini2003.blade.common.widget.base.TabWidget;
 import com.github.vini2003.blade.common.widget.base.TextWidget;
@@ -163,7 +162,7 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 
 		WidgetCollection redstoneTab = tabs.addTab(Items.REDSTONE, () -> Collections.singletonList(new TranslatableText("text.astromine.redstone")));
 
-		ButtonWidget[] redstoneButtons = new ButtonWidget[]{new ButtonWidget() {
+		ButtonWidget[] redstoneButtons = new ButtonWidget[]{ new ButtonWidget() {
 			@NotNull
 			@Override
 			public List<Text> getTooltip() {
@@ -181,9 +180,9 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 			public List<Text> getTooltip() {
 				return Collections.singletonList(new TranslatableText("tooltip.astromine.work_always").formatted(Formatting.YELLOW));
 			}
-		}};
+		} };
 
-		for (int i : new int[] {0, 1, 2}) {
+		for (int i : new int[]{ 0, 1, 2 }) {
 			ButtonWidget redstoneButton = redstoneButtons[i];
 
 			int buttonOffset = (i * 18) + i * 9 + 9;
@@ -199,7 +198,7 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 
 					redstoneComponent.setType(type);
 
-					for (int k : new int[] {0, 1, 2}) {
+					for (int k : new int[]{ 0, 1, 2 }) {
 						if (k != i) {
 							redstoneButtons[k].setDisabled(() -> false);
 						} else {

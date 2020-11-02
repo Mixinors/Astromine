@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
+import net.minecraft.util.math.Direction;
+
 import com.github.chainmailstudios.astromine.common.utilities.data.predicate.TriPredicate;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -39,11 +40,9 @@ public class SimpleFluidComponent implements FluidComponent {
 	private final Int2ObjectOpenHashMap<FluidVolume> contents = new Int2ObjectOpenHashMap<>();
 
 	private final List<Runnable> listeners = new ArrayList<>();
-
+	private final int size;
 	private TriPredicate<@Nullable Direction, FluidVolume, Integer> insertPredicate = (direction, volume, slot) -> true;
 	private TriPredicate<@Nullable Direction, FluidVolume, Integer> extractPredicate = (direction, volume, integer) -> true;
-
-	private final int size;
 
 	protected SimpleFluidComponent(int size) {
 		this.size = size;
@@ -106,9 +105,11 @@ public class SimpleFluidComponent implements FluidComponent {
 	}
 
 	@Override
-	public boolean equals(Object o) {	// used by CCA to tell if two stacks are equal
-		if (this == o) return true;
-		if (!(o instanceof SimpleFluidComponent)) return false;
+	public boolean equals(Object o) { // used by CCA to tell if two stacks are equal
+		if (this == o)
+			return true;
+		if (!(o instanceof SimpleFluidComponent))
+			return false;
 		SimpleFluidComponent entries = (SimpleFluidComponent) o;
 		return Objects.equals(contents, entries.contents);
 	}

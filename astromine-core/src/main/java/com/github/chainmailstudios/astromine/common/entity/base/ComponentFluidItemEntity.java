@@ -24,14 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.entity.base;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedInventoryProvider;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
 
 public abstract class ComponentFluidItemEntity extends ComponentEntity implements ExtendedInventoryProvider {
 	public ComponentFluidItemEntity(EntityType<?> type, World world) {

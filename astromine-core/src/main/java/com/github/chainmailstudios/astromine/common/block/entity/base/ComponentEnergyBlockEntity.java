@@ -24,11 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
-import com.github.chainmailstudios.astromine.common.utilities.capability.energy.EnergyProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.utilities.capability.energy.EnergyProvider;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 
 public abstract class ComponentEnergyBlockEntity extends ComponentBlockEntity implements EnergyProvider {

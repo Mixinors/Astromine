@@ -180,24 +180,14 @@ public class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumingReci
 		public FluidMixingRecipe read(Identifier identifier, JsonObject object) {
 			FluidMixingRecipe.Format format = new Gson().fromJson(object, FluidMixingRecipe.Format.class);
 
-			return new FluidMixingRecipe(
-					identifier,
-					IngredientUtilities.fromFluidIngredientJson(format.firstInput),
-					IngredientUtilities.fromFluidIngredientJson(format.secondInput),
-					VolumeUtilities.fromFluidVolumeJson(format.output),
-					VolumeUtilities.fromEnergyVolumeJson(format.energy),
-					ParsingUtilities.fromJson(format.time, Integer.class));
+			return new FluidMixingRecipe(identifier, IngredientUtilities.fromFluidIngredientJson(format.firstInput), IngredientUtilities.fromFluidIngredientJson(format.secondInput), VolumeUtilities.fromFluidVolumeJson(format.output), VolumeUtilities.fromEnergyVolumeJson(
+				format.energy), ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 
 		@Override
 		public FluidMixingRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new FluidMixingRecipe(
-					identifier,
-					IngredientUtilities.fromFluidIngredientPacket(buffer),
-					IngredientUtilities.fromFluidIngredientPacket(buffer),
-					VolumeUtilities.fromFluidVolumePacket(buffer),
-					VolumeUtilities.fromEnergyVolumePacket(buffer),
-					PacketUtilities.fromPacket(buffer, Integer.class));
+			return new FluidMixingRecipe(identifier, IngredientUtilities.fromFluidIngredientPacket(buffer), IngredientUtilities.fromFluidIngredientPacket(buffer), VolumeUtilities.fromFluidVolumePacket(buffer), VolumeUtilities.fromEnergyVolumePacket(buffer), PacketUtilities
+				.fromPacket(buffer, Integer.class));
 		}
 
 		@Override
@@ -233,13 +223,7 @@ public class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumingReci
 
 		@Override
 		public String toString() {
-			return "Format{" +
-					"firstInput=" + firstInput +
-					", secondInput=" + secondInput +
-					", output=" + output +
-					", energy=" + energy +
-					", time=" + time +
-					'}';
+			return "Format{" + "firstInput=" + firstInput + ", secondInput=" + secondInput + ", output=" + output + ", energy=" + energy + ", time=" + time + '}';
 		}
 	}
 }

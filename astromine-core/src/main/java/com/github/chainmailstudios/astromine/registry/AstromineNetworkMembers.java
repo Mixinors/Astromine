@@ -24,6 +24,16 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
+import net.fabricmc.loader.api.FabricLoader;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.InventoryProvider;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+
 import alexiil.mc.lib.attributes.SearchOption;
 import alexiil.mc.lib.attributes.SearchOptions;
 import alexiil.mc.lib.attributes.fluid.FluidAttributes;
@@ -35,18 +45,10 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
-import com.google.common.collect.Maps;
-import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.block.Block;
-import net.minecraft.block.InventoryProvider;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.EnergyStorage;
 
+import com.google.common.collect.Maps;
 import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -103,9 +105,11 @@ public class AstromineNetworkMembers {
 		NetworkMemberRegistry.NetworkTypeRegistry<NetworkType> fluid = NetworkMemberRegistry.INSTANCE.get(AstromineNetworkTypes.FLUID);
 
 		BLOCK_CONSUMER.put(block -> block instanceof NetworkBlock, block -> {
-			NetworkBlock networkBlock = (NetworkBlock)block;
-			if(networkBlock.isMember(AstromineNetworkTypes.ENERGY)) energy.register(block, networkBlock.energyType());
-			if(networkBlock.isMember(AstromineNetworkTypes.FLUID)) fluid.register(block, networkBlock.fluidType());
+			NetworkBlock networkBlock = (NetworkBlock) block;
+			if (networkBlock.isMember(AstromineNetworkTypes.ENERGY))
+				energy.register(block, networkBlock.energyType());
+			if (networkBlock.isMember(AstromineNetworkTypes.FLUID))
+				fluid.register(block, networkBlock.fluidType());
 		});
 
 		FabricLoader.getInstance().getEntrypoints("astromine-network-members", Runnable.class).forEach(Runnable::run);

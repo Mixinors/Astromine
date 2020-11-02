@@ -27,7 +27,6 @@ package com.github.chainmailstudios.astromine.mixin;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import net.minecraft.client.render.*;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -36,6 +35,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.BufferBuilderStorage;
+import net.minecraft.client.render.Camera;
+import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.LightmapTextureManager;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.BlockPos;
@@ -64,9 +71,11 @@ public abstract class WorldRendererMixin {
 	@Final
 	private BufferBuilderStorage bufferBuilders;
 
-	@Shadow protected abstract void renderLayer(RenderLayer renderLayer, MatrixStack matrixStack, double d, double e, double f);
+	@Shadow
+	protected abstract void renderLayer(RenderLayer renderLayer, MatrixStack matrixStack, double d, double e, double f);
 
-	@Shadow public abstract void render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f);
+	@Shadow
+	public abstract void render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f);
 
 	@Inject(at = @At("HEAD"), method = "renderSky(Lnet/minecraft/client/util/math/Matrix" + "Stack;F)V", cancellable = true)
 	void astromine_renderSky(MatrixStack matrices, float tickDelta, CallbackInfo callbackInformation) {
@@ -135,7 +144,7 @@ public abstract class WorldRendererMixin {
 				consumer.vertex(matrices.peek().getModel(), x, y + 1, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY + 1, bZ))))).light(15728880).next();
 				consumer.vertex(matrices.peek().getModel(), x, y + 1, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY + 1, bZ + 1))))).light(15728880).next();
 				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY + 1, bZ + 1))))).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z).color (r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY + 1, bZ))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY + 1, bZ))))).light(15728880).next();
 
 				// Front
 				consumer.vertex(matrices.peek().getModel(), x, y, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY, bZ))))).light(15728880).next();

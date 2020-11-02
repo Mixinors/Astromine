@@ -24,10 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.block.redstone;
 
+import net.minecraft.block.entity.BlockEntity;
+
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import net.minecraft.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
@@ -36,50 +37,50 @@ import java.util.Collection;
 import java.util.function.Function;
 
 public class ComparatorOutput {
-    public static int forEnergy(@Nullable BlockEntity entity) {
-        if (entity == null) {
-            return 0;
-        }
+	public static int forEnergy(@Nullable BlockEntity entity) {
+		if (entity == null) {
+			return 0;
+		}
 
-        EnergyHandler handler = Energy.of(entity);
+		EnergyHandler handler = Energy.of(entity);
 
-        if (handler.getEnergy() <= 0.0001) {
-            return 0;
-        }
+		if (handler.getEnergy() <= 0.0001) {
+			return 0;
+		}
 
-        return 1 + (int) (handler.getEnergy() / handler.getMaxStored() * 14.0);
-    }
+		return 1 + (int) (handler.getEnergy() / handler.getMaxStored() * 14.0);
+	}
 
-    public static int forFluids(@Nullable BlockEntity entity) {
-        if (entity == null) {
-            return 0;
-        }
+	public static int forFluids(@Nullable BlockEntity entity) {
+		if (entity == null) {
+			return 0;
+		}
 
-        FluidComponent fluidComponent = FluidComponent.get(entity);
+		FluidComponent fluidComponent = FluidComponent.get(entity);
 
-        if (fluidComponent == null) {
-            return 0;
-        }
+		if (fluidComponent == null) {
+			return 0;
+		}
 
-        Collection<FluidVolume> contents = fluidComponent.getContents().values();
-        Fraction amounts = sumBy(contents, FluidVolume::getAmount);
+		Collection<FluidVolume> contents = fluidComponent.getContents().values();
+		Fraction amounts = sumBy(contents, FluidVolume::getAmount);
 
-        if (amounts.getNumerator() == 0) {
-            return 0;
-        }
+		if (amounts.getNumerator() == 0) {
+			return 0;
+		}
 
-        Fraction sizes = sumBy(contents, FluidVolume::getSize);
-        Fraction ratio = amounts.divide(sizes);
-        return 1 + (int) (ratio.floatValue() * 14.0f);
-    }
+		Fraction sizes = sumBy(contents, FluidVolume::getSize);
+		Fraction ratio = amounts.divide(sizes);
+		return 1 + (int) (ratio.floatValue() * 14.0f);
+	}
 
-    private static <T> Fraction sumBy(Collection<T> ts, Function<? super T, Fraction> extractor) {
-        Fraction result = Fraction.empty();
+	private static <T> Fraction sumBy(Collection<T> ts, Function<? super T, Fraction> extractor) {
+		Fraction result = Fraction.empty();
 
-        for (T t : ts) {
-            result = result.add(extractor.apply(t));
-        }
+		for (T t : ts) {
+			result = result.add(extractor.apply(t));
+		}
 
-        return result;
-    }
+		return result;
+	}
 }

@@ -23,8 +23,8 @@ public abstract class MultiCookingSetRecipeGenerator extends CookingSetRecipeGen
 
 	public Collection<Item> getInputs(MaterialSet set) {
 		ArrayList<Item> items = new ArrayList<>();
-		for(MaterialItemType type:getInputs()) {
-			if(shouldGenerate(set, type)) items.add(set.getItem(type));
+		for (MaterialItemType type : getInputs()) {
+			if (shouldGenerate(set, type)) items.add(set.getItem(type));
 		}
 		return items;
 	}
@@ -32,8 +32,8 @@ public abstract class MultiCookingSetRecipeGenerator extends CookingSetRecipeGen
 	@Override
 	public boolean shouldGenerate(MaterialSet set) {
 		boolean hasInput = false;
-		for(MaterialItemType type:getInputs()) {
-			if(set.hasType(type)) hasInput = true;
+		for (MaterialItemType type : getInputs()) {
+			if (set.hasType(type)) hasInput = true;
 		}
 		return hasInput && set.hasType(output);
 	}

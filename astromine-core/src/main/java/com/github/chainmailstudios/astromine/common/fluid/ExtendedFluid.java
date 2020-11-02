@@ -28,7 +28,12 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricMaterialBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FluidBlock;
+import net.minecraft.block.Material;
+import net.minecraft.block.MaterialColor;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.fluid.FlowableFluid;
@@ -53,9 +58,7 @@ import com.github.vini2003.blade.common.miscellaneous.Color;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class ExtendedFluid extends FlowableFluid {
-	public static final Material INDUSTRIAL_FLUID_MATERIAL = new FabricMaterialBuilder(MaterialColor.WATER)
-			.allowsMovement().lightPassesThrough().destroyedByPiston().replaceable().liquid().notSolid()
-			.build();
+	public static final Material INDUSTRIAL_FLUID_MATERIAL = new FabricMaterialBuilder(MaterialColor.WATER).allowsMovement().lightPassesThrough().destroyedByPiston().replaceable().liquid().notSolid().build();
 
 	private final int fogColor;
 	private final int tintColor;
@@ -69,7 +72,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 
 	private Item bucket;
 
-	private DamageSource source;
+	private final DamageSource source;
 
 	public ExtendedFluid(int fogColor, int tintColor, boolean isInfinite, @Nullable DamageSource source) {
 		this.fogColor = fogColor;

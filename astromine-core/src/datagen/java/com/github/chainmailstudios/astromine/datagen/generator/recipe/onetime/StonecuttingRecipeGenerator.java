@@ -40,7 +40,7 @@ public class StonecuttingRecipeGenerator extends OneTimeRecipeGenerator {
 	public Identifier getRecipeId() {
 		Identifier id = super.getRecipeId();
 		String path = id.getPath() + "_from_stonecutting";
-		if(!suffix.isEmpty()) path = path + "_" + suffix;
+		if (!suffix.isEmpty()) path = path + "_" + suffix;
 		return new Identifier(id.getNamespace(), path);
 	}
 

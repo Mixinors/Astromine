@@ -24,18 +24,18 @@
 
 package com.github.chainmailstudios.astromine.registry.client;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.NumberUtilities;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import team.reborn.energy.EnergyHandler;
 
 public class AstromineClientCallbacks {
@@ -50,7 +50,8 @@ public class AstromineClientCallbacks {
 
 						FluidVolume volume = entry.getValue();
 
-						tooltip.add(new LiteralText(slot + " - " + NumberUtilities.shorten(volume.getAmount().doubleValue(), "") + "/" + NumberUtilities.shorten(volume.getSize().doubleValue(), "") + " " + new TranslatableText(String.format("block.%s.%s", volume.getFluidId().getNamespace(), volume.getFluidId().getPath())).getString()).formatted(Formatting.GRAY));
+						tooltip.add(new LiteralText(slot + " - " + NumberUtilities.shorten(volume.getAmount().doubleValue(), "") + "/" + NumberUtilities.shorten(volume.getSize().doubleValue(), "") + " " + new TranslatableText(String.format("block.%s.%s", volume.getFluidId()
+							.getNamespace(), volume.getFluidId().getPath())).getString()).formatted(Formatting.GRAY));
 					});
 				}
 			}

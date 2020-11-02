@@ -24,11 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
-import alexiil.mc.lib.attributes.fluid.*;
-import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
-import alexiil.mc.lib.attributes.item.ItemInvUtil;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
-import dev.onyxstudios.cca.api.v3.component.*;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.PacketContext;
 
@@ -44,24 +39,35 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import alexiil.mc.lib.attributes.SearchOptions;
+import alexiil.mc.lib.attributes.fluid.FluidAttributes;
+import alexiil.mc.lib.attributes.fluid.FluidExtractable;
+import alexiil.mc.lib.attributes.fluid.FluidInsertable;
+import alexiil.mc.lib.attributes.fluid.FluidVolumeUtil;
+import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.item.ItemAttributes;
 import alexiil.mc.lib.attributes.item.ItemExtractable;
 import alexiil.mc.lib.attributes.item.ItemInsertable;
+import alexiil.mc.lib.attributes.item.ItemInvUtil;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import dev.onyxstudios.cca.api.v3.component.Component;
+import dev.onyxstudios.cca.api.v3.component.ComponentKey;
+import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
+import team.reborn.energy.EnergyStorage;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import team.reborn.energy.EnergyStorage;
-
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
 public abstract class ComponentBlockEntity extends BlockEntity implements PacketConsumer, BlockEntityClientSerializable, Tickable {
@@ -247,12 +253,16 @@ public abstract class ComponentBlockEntity extends BlockEntity implements Packet
 
 		switch (getRedstoneComponent().getType()) {
 			case WORK_WHEN_ON: {
-				if (powered) tickActive(); else tickInactive();
+				if (powered)
+					tickActive();
+				else tickInactive();
 				return powered;
 			}
 
 			case WORK_WHEN_OFF: {
-				if (!powered) tickActive(); else tickInactive();
+				if (!powered)
+					tickActive();
+				else tickInactive();
 				return !powered;
 			}
 

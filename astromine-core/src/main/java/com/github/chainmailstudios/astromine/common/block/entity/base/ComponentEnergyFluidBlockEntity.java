@@ -24,10 +24,10 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 
 public abstract class ComponentEnergyFluidBlockEntity extends ComponentEnergyBlockEntity {

@@ -26,29 +26,30 @@ package com.github.chainmailstudios.astromine.common.block.redstone;
 
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.screen.ScreenHandler;
+
 import org.jetbrains.annotations.Nullable;
 
 @FunctionalInterface
 public interface ComparatorMode {
-    ComparatorMode NONE = new ComparatorMode() {
-        @Override
-        public int getOutput(@Nullable BlockEntity entity) {
-            return 0;
-        }
+	ComparatorMode NONE = new ComparatorMode() {
+		@Override
+		public int getOutput(@Nullable BlockEntity entity) {
+			return 0;
+		}
 
-        @Override
-        public boolean hasOutput() {
-            return false;
-        }
-    };
+		@Override
+		public boolean hasOutput() {
+			return false;
+		}
+	};
 
-    ComparatorMode ITEMS = ScreenHandler::calculateComparatorOutput;
-    ComparatorMode FLUIDS = ComparatorOutput::forFluids;
-    ComparatorMode ENERGY = ComparatorOutput::forEnergy;
+	ComparatorMode ITEMS = ScreenHandler::calculateComparatorOutput;
+	ComparatorMode FLUIDS = ComparatorOutput::forFluids;
+	ComparatorMode ENERGY = ComparatorOutput::forEnergy;
 
-    int getOutput(@Nullable BlockEntity entity);
+	int getOutput(@Nullable BlockEntity entity);
 
-    default boolean hasOutput() {
-        return true;
-    }
+	default boolean hasOutput() {
+		return true;
+	}
 }

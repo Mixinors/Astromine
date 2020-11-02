@@ -44,7 +44,8 @@ public class DestroyRocketCriterion extends AbstractCriterion<DestroyRocketCrite
 
 	@Override
 	protected DestroyRocketCriterion.Conditions conditionsFromJson(JsonObject obj, EntityPredicate.Extended playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
-		if(obj.has("intentional")) return new Conditions(this.id, playerPredicate, obj.get("intentional").getAsBoolean());
+		if (obj.has("intentional"))
+			return new Conditions(this.id, playerPredicate, obj.get("intentional").getAsBoolean());
 		else return new Conditions(this.id, playerPredicate);
 	}
 

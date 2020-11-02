@@ -24,21 +24,39 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
-import com.github.chainmailstudios.astromine.registry.AstromineItems;
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.fabricmc.fabric.api.util.NbtType;
+
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.text.TranslatableText;
+
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.Consumer;
 
 public interface EnergyComponent extends NameableComponent, AutoSyncedComponent {
+	static EnergyComponent of(double size) {
+		return SimpleEnergyComponent.of(size);
+	}
+
+	static EnergyComponent of(EnergyVolume volume) {
+		return SimpleEnergyComponent.of(volume);
+	}
+
+	@Nullable
+	static <V> EnergyComponent get(V v) {
+		try {
+			return AstromineComponents.ENERGY_INVENTORY_COMPONENT.get(v);
+		} catch (Exception justShutUpAlready) {
+			return null;
+		}
+	}
+
 	default Item getSymbol() {
 		return AstromineItems.ENERGY.asItem();
 	}
@@ -113,7 +131,6 @@ public interface EnergyComponent extends NameableComponent, AutoSyncedComponent 
 		}
 	}
 
-
 	default void clear() {
 		this.getVolume().setAmount(0.0);
 	}
@@ -124,22 +141,5 @@ public interface EnergyComponent extends NameableComponent, AutoSyncedComponent 
 
 	default boolean isNotEmpty() {
 		return !isEmpty();
-	}
-
-	static EnergyComponent of(double size) {
-		return SimpleEnergyComponent.of(size);
-	}
-
-	static EnergyComponent of(EnergyVolume volume) {
-		return SimpleEnergyComponent.of(volume);
-	}
-
-	@Nullable
-	static <V> EnergyComponent get(V v) {
-		try {
-			return AstromineComponents.ENERGY_INVENTORY_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
-			return null;
-		}
 	}
 }

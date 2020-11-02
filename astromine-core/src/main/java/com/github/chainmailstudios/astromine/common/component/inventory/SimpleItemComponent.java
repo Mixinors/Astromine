@@ -24,27 +24,25 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
-import com.github.chainmailstudios.astromine.common.utilities.data.predicate.TriPredicate;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
+
+import com.github.chainmailstudios.astromine.common.utilities.data.predicate.TriPredicate;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.BooleanSupplier;
 
 public class SimpleItemComponent implements ItemComponent {
 	private final Int2ObjectOpenHashMap<ItemStack> contents = new Int2ObjectOpenHashMap<>();
 
 	private final List<Runnable> listeners = new ArrayList<>();
-
+	private final int size;
 	private TriPredicate<@Nullable Direction, ItemStack, Integer> insertPredicate = (direction, stack, slot) -> true;
 	private TriPredicate<@Nullable Direction, ItemStack, Integer> extractPredicate = (direction, stack, integer) -> true;
-
-	private final int size;
 
 	protected SimpleItemComponent(int size) {
 		this.size = size;
@@ -108,8 +106,10 @@ public class SimpleItemComponent implements ItemComponent {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof SimpleItemComponent)) return false;
+		if (this == o)
+			return true;
+		if (!(o instanceof SimpleItemComponent))
+			return false;
 		SimpleItemComponent entries = (SimpleItemComponent) o;
 		return Objects.equals(contents, entries.contents);
 	}

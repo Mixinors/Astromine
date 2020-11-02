@@ -24,13 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.util.math.Direction;
+
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.EnergyStorage;
 

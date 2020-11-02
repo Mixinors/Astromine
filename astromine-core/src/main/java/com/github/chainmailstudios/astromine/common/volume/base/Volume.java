@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.volume.base;
 
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import net.minecraft.nbt.CompoundTag;
 
 import java.util.Objects;
@@ -66,7 +65,6 @@ public abstract class Volume<T, N extends Number> {
 		v.setType(t);
 		return v;
 	}
-
 
 	public N getAmount() {
 		return n;
@@ -143,7 +141,7 @@ public abstract class Volume<T, N extends Number> {
 	public boolean smallerOrEqualThan(Number number) {
 		return n.doubleValue() <= number.doubleValue();
 	}
-	
+
 	@Override
 	public boolean equals(Object object) {
 		if (this == object)

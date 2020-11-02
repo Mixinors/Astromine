@@ -24,14 +24,8 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine.access.EntityAccess;
-import com.github.chainmailstudios.astromine.registry.AstromineTags;
-import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 
-import net.minecraft.fluid.Fluid;
-import net.minecraft.tag.FluidTags;
-import net.minecraft.tag.Tag;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -43,29 +37,35 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.tag.Tag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 
+import com.github.chainmailstudios.astromine.access.EntityAccess;
 import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
 import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
 import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
+import com.github.chainmailstudios.astromine.registry.AstromineTags;
+import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 
 import com.google.common.collect.Lists;
-
-import javax.annotation.Nullable;
 import java.util.List;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin implements GravityEntity, EntityAccess {
 	@Shadow
 	public World world;
-
+	@Shadow
+	protected boolean firstUpdate;
+	@Shadow
+	protected Object2DoubleMap<Tag<Fluid>> fluidHeight;
 	private int astromine_lastY = 0;
 	private Entity astromine_lastVehicle = null;
 	private TeleportTarget astromine_nextTeleportTarget = null;
@@ -76,12 +76,6 @@ public abstract class EntityMixin implements GravityEntity, EntityAccess {
 
 	@Shadow
 	public abstract boolean updateMovementInFluid(Tag<Fluid> tag, double d);
-
-	@Shadow
-	protected boolean firstUpdate;
-
-	@Shadow
-	protected Object2DoubleMap<Tag<Fluid>> fluidHeight;
 
 	@Shadow
 	public abstract double getFluidHeight(Tag<Fluid> fluid);

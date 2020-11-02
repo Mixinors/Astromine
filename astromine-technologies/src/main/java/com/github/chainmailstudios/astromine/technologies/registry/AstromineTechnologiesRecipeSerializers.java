@@ -43,7 +43,7 @@ public class AstromineTechnologiesRecipeSerializers extends AstromineRecipeSeria
 	public static final RecipeSerializer<PressingRecipe> PRESSING = Registry.register(Registry.RECIPE_SERIALIZER, PressingRecipe.Serializer.ID, PressingRecipe.Serializer.INSTANCE);
 
 	public static final RecipeSerializer<WireMillingRecipe> WIREMILLING = Registry.register(Registry.RECIPE_SERIALIZER, WireMillingRecipe.Serializer.ID, WireMillingRecipe.Serializer.INSTANCE);
-	
+
 	public static final RecipeSerializer<LiquidGeneratingRecipe> LIQUID_GENERATING = Registry.register(Registry.RECIPE_SERIALIZER, LiquidGeneratingRecipe.Serializer.ID, LiquidGeneratingRecipe.Serializer.INSTANCE);
 
 	public static final RecipeSerializer<ElectrolyzingRecipe> ELECTROLYZING = Registry.register(Registry.RECIPE_SERIALIZER, ElectrolyzingRecipe.Serializer.ID, ElectrolyzingRecipe.Serializer.INSTANCE);
@@ -54,6 +54,5 @@ public class AstromineTechnologiesRecipeSerializers extends AstromineRecipeSeria
 
 	public static final RecipeSerializer<AlloySmeltingRecipe> ALLOY_SMELTING = Registry.register(Registry.RECIPE_SERIALIZER, AlloySmeltingRecipe.Serializer.ID, AlloySmeltingRecipe.Serializer.INSTANCE);
 
-	public static void initialize() {
-	}
+	public static void initialize() {}
 }

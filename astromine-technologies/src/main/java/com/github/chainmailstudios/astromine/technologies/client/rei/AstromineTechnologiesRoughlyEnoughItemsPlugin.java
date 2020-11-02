@@ -134,7 +134,7 @@ public class AstromineTechnologiesRoughlyEnoughItemsPlugin extends AstromineRoug
 		recipeHelper.registerWorkingStations(PRESSING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_PRESSER), EntryStack.create(AstromineTechnologiesBlocks.BASIC_PRESSER), EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_PRESSER), EntryStack.create(
 			AstromineTechnologiesBlocks.ELITE_PRESSER));
 		recipeHelper.registerWorkingStations(WIREMILLING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_WIREMILL), EntryStack.create(AstromineTechnologiesBlocks.BASIC_WIREMILL), EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_WIREMILL), EntryStack.create(
-				AstromineTechnologiesBlocks.ELITE_WIREMILL));
+			AstromineTechnologiesBlocks.ELITE_WIREMILL));
 		recipeHelper.registerWorkingStations(ALLOY_SMELTING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_ALLOY_SMELTER), EntryStack.create(AstromineTechnologiesBlocks.BASIC_ALLOY_SMELTER), EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_ALLOY_SMELTER),
 			EntryStack.create(AstromineTechnologiesBlocks.ELITE_ALLOY_SMELTER));
 

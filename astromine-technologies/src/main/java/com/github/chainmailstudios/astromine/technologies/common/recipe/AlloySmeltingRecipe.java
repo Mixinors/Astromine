@@ -156,13 +156,14 @@ public class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		public AlloySmeltingRecipe read(Identifier identifier, JsonObject object) {
 			AlloySmeltingRecipe.Format format = new Gson().fromJson(object, AlloySmeltingRecipe.Format.class);
 
-			return new AlloySmeltingRecipe(identifier, IngredientUtilities.fromArrayIngredientJson(format.firstInput), IngredientUtilities.fromArrayIngredientJson(format.secondInput), StackUtilities.fromJson(format.output), EnergyUtilities.fromJson(format.energy), ParsingUtilities
-				.fromJson(format.time, Integer.class));
+			return new AlloySmeltingRecipe(identifier, IngredientUtilities.fromArrayIngredientJson(format.firstInput), IngredientUtilities.fromArrayIngredientJson(format.secondInput), StackUtilities.fromJson(format.output), EnergyUtilities.fromJson(format.energy),
+				ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 
 		@Override
 		public AlloySmeltingRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new AlloySmeltingRecipe(identifier, IngredientUtilities.fromArrayIngredientPacket(buffer), IngredientUtilities.fromArrayIngredientPacket(buffer), StackUtilities.fromPacket(buffer), EnergyUtilities.fromPacket(buffer), PacketUtilities.fromPacket(buffer, Integer.class));
+			return new AlloySmeltingRecipe(identifier, IngredientUtilities.fromArrayIngredientPacket(buffer), IngredientUtilities.fromArrayIngredientPacket(buffer), StackUtilities.fromPacket(buffer), EnergyUtilities.fromPacket(buffer), PacketUtilities.fromPacket(buffer,
+				Integer.class));
 		}
 
 		@Override

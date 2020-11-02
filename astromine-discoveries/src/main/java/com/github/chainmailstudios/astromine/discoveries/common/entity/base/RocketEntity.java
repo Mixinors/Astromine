@@ -153,7 +153,7 @@ public abstract class RocketEntity extends ComponentFluidItemEntity {
 		this.tryExplode();
 		this.explosionRemains.forEach(stack -> ItemScatterer.spawn(world, getX(), getY(), getZ(), stack.copy()));
 		Collection<Entity> passengers = this.getPassengersDeep();
-		for(Entity passenger:passengers) {
+		for (Entity passenger : passengers) {
 			if (passenger instanceof ServerPlayerEntity) {
 				AstromineDiscoveriesCriteria.DESTROY_ROCKET.trigger((ServerPlayerEntity) passenger, intentional);
 			}
@@ -176,7 +176,7 @@ public abstract class RocketEntity extends ComponentFluidItemEntity {
 	public void tryLaunch(PlayerEntity launcher) {
 		if (this.getFluidComponent().getFirst().biggerThan(Fraction.empty())) {
 			this.getDataTracker().set(RocketEntity.IS_RUNNING, true);
-			if(launcher instanceof ServerPlayerEntity) {
+			if (launcher instanceof ServerPlayerEntity) {
 				AstromineDiscoveriesCriteria.LAUNCH_ROCKET.trigger((ServerPlayerEntity) launcher);
 			}
 		}

@@ -63,7 +63,8 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 	final EnergyVolume energy;
 	final int time;
 
-	public RefiningRecipe(Identifier identifier, FluidIngredient input, FluidVolume firstOutput, FluidVolume secondOutput, FluidVolume thirdOutput, FluidVolume fourthOutput, FluidVolume fifthOutput, FluidVolume sixthOutput, FluidVolume seventhOutput, EnergyVolume energy, int time) {
+	public RefiningRecipe(Identifier identifier, FluidIngredient input, FluidVolume firstOutput, FluidVolume secondOutput, FluidVolume thirdOutput, FluidVolume fourthOutput, FluidVolume fifthOutput, FluidVolume sixthOutput, FluidVolume seventhOutput, EnergyVolume energy,
+		int time) {
 		this.identifier = identifier;
 		this.input = input;
 		this.firstOutput = firstOutput;
@@ -228,34 +229,16 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 		public RefiningRecipe read(Identifier identifier, JsonObject object) {
 			RefiningRecipe.Format format = new Gson().fromJson(object, RefiningRecipe.Format.class);
 
-			return new RefiningRecipe(
-					identifier,
-					IngredientUtilities.fromFluidIngredientJson(format.input),
-					VolumeUtilities.fromFluidVolumeJson(format.firstOutput),
-					VolumeUtilities.fromFluidVolumeJson(format.secondOutput),
-					VolumeUtilities.fromFluidVolumeJson(format.thirdOutput),
-					VolumeUtilities.fromFluidVolumeJson(format.fourthOutput),
-					VolumeUtilities.fromFluidVolumeJson(format.fifthOutput),
-					VolumeUtilities.fromFluidVolumeJson(format.sixthOutput),
-					VolumeUtilities.fromFluidVolumeJson(format.seventhOutput),
-					VolumeUtilities.fromEnergyVolumeJson(format.energy),
-					ParsingUtilities.fromJson(format.time, Integer.class));
+			return new RefiningRecipe(identifier, IngredientUtilities.fromFluidIngredientJson(format.input), VolumeUtilities.fromFluidVolumeJson(format.firstOutput), VolumeUtilities.fromFluidVolumeJson(format.secondOutput), VolumeUtilities.fromFluidVolumeJson(format.thirdOutput),
+				VolumeUtilities.fromFluidVolumeJson(format.fourthOutput), VolumeUtilities.fromFluidVolumeJson(format.fifthOutput), VolumeUtilities.fromFluidVolumeJson(format.sixthOutput), VolumeUtilities.fromFluidVolumeJson(format.seventhOutput), VolumeUtilities
+					.fromEnergyVolumeJson(format.energy), ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 
 		@Override
 		public RefiningRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new RefiningRecipe(
-					identifier,
-					IngredientUtilities.fromFluidIngredientPacket(buffer),
-					VolumeUtilities.fromFluidVolumePacket(buffer),
-					VolumeUtilities.fromFluidVolumePacket(buffer),
-					VolumeUtilities.fromFluidVolumePacket(buffer),
-					VolumeUtilities.fromFluidVolumePacket(buffer),
-					VolumeUtilities.fromFluidVolumePacket(buffer),
-					VolumeUtilities.fromFluidVolumePacket(buffer),
-					VolumeUtilities.fromFluidVolumePacket(buffer),
-					VolumeUtilities.fromEnergyVolumePacket(buffer),
-					PacketUtilities.fromPacket(buffer, Integer.class));
+			return new RefiningRecipe(identifier, IngredientUtilities.fromFluidIngredientPacket(buffer), VolumeUtilities.fromFluidVolumePacket(buffer), VolumeUtilities.fromFluidVolumePacket(buffer), VolumeUtilities.fromFluidVolumePacket(buffer), VolumeUtilities
+				.fromFluidVolumePacket(buffer), VolumeUtilities.fromFluidVolumePacket(buffer), VolumeUtilities.fromFluidVolumePacket(buffer), VolumeUtilities.fromFluidVolumePacket(buffer), VolumeUtilities.fromEnergyVolumePacket(buffer), PacketUtilities.fromPacket(buffer,
+					Integer.class));
 		}
 
 		@Override
@@ -311,18 +294,8 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 
 		@Override
 		public String toString() {
-			return "Format{" +
-					"input=" + input +
-					", firstOutput=" + firstOutput +
-					", secondOutput=" + secondOutput +
-					", thirdOutput=" + thirdOutput +
-					", fourthOutput=" + fourthOutput +
-					", fifthOutput=" + fifthOutput +
-					", sixthOutput=" + sixthOutput +
-					", seventhOutput=" + seventhOutput +
-					", energy=" + energy +
-					", time=" + time +
-					'}';
+			return "Format{" + "input=" + input + ", firstOutput=" + firstOutput + ", secondOutput=" + secondOutput + ", thirdOutput=" + thirdOutput + ", fourthOutput=" + fourthOutput + ", fifthOutput=" + fifthOutput + ", sixthOutput=" + sixthOutput + ", seventhOutput=" +
+				seventhOutput + ", energy=" + energy + ", time=" + time + '}';
 		}
 	}
 }

@@ -24,9 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.volume.energy;
 
-import com.google.common.base.Objects;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
@@ -34,6 +31,10 @@ import net.minecraft.util.Identifier;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
+
+import com.google.common.base.Objects;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 public class EnergyVolume extends Volume<Identifier, Double> {
 	public static final Identifier ID = AstromineCommon.identifier("energy");
@@ -64,6 +65,36 @@ public class EnergyVolume extends Volume<Identifier, Double> {
 
 	public static EnergyVolume of(double amount, double size) {
 		return new EnergyVolume(amount, size);
+	}
+
+	public static EnergyVolume fromTag(CompoundTag tag) {
+		return of(tag.getDouble("amount"), tag.getDouble("size"));
+	}
+
+	public static EnergyVolume fromJson(JsonElement jsonElement) {
+		if (!jsonElement.isJsonObject())
+			return EnergyVolume.of(jsonElement.getAsDouble());
+		else {
+			JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+			if (!jsonObject.has("amount")) {
+				return null;
+			} else {
+				if (!jsonObject.has("size")) {
+					return EnergyVolume.of(jsonObject.get("amount").getAsDouble());
+				} else {
+					return EnergyVolume.of(jsonObject.get("amount").getAsDouble(), jsonObject.get("size").getAsDouble());
+				}
+			}
+		}
+	}
+
+	public static EnergyVolume fromPacket(PacketByteBuf buffer) {
+		if (!buffer.readBoolean()) {
+			return empty();
+		} else {
+			return EnergyVolume.of(buffer.readDouble(), buffer.readDouble());
+		}
 	}
 
 	@Override
@@ -129,33 +160,12 @@ public class EnergyVolume extends Volume<Identifier, Double> {
 		return getAmount() + " / " + getSize();
 	}
 
-	public static EnergyVolume fromTag(CompoundTag tag) {
-		return of(tag.getDouble("amount"), tag.getDouble("size"));
-	}
-
 	@Override
 	public CompoundTag toTag() {
 		CompoundTag tag = new CompoundTag();
 		tag.putDouble("amount", getAmount());
 		tag.putDouble("size", getSize());
 		return tag;
-	}
-
-	public static EnergyVolume fromJson(JsonElement jsonElement) {
-		if (!jsonElement.isJsonObject()) return EnergyVolume.of(jsonElement.getAsDouble());
-		else {
-			JsonObject jsonObject = jsonElement.getAsJsonObject();
-
-			if (!jsonObject.has("amount")) {
-				return null;
-			} else {
-				if (!jsonObject.has("size")) {
-					return EnergyVolume.of(jsonObject.get("amount").getAsDouble());
-				} else {
-					return EnergyVolume.of(jsonObject.get("amount").getAsDouble(), jsonObject.get("size").getAsDouble());
-				}
-			}
-		}
 	}
 
 	public PacketByteBuf toPacket(PacketByteBuf buffer) {
@@ -169,13 +179,5 @@ public class EnergyVolume extends Volume<Identifier, Double> {
 		}
 
 		return buffer;
-	}
-
-	public static EnergyVolume fromPacket(PacketByteBuf buffer) {
-		if (!buffer.readBoolean()) {
-			return empty();
-		} else {
-			return EnergyVolume.of(buffer.readDouble(), buffer.readDouble());
-		}
 	}
 }

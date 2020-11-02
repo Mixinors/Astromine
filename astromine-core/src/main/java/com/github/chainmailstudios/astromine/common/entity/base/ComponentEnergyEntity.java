@@ -28,8 +28,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
 
 public abstract class ComponentEnergyEntity extends ComponentEntity {
 	public ComponentEnergyEntity(EntityType<?> type, World world) {

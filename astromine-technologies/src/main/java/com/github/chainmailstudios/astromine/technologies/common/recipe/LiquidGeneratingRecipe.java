@@ -153,20 +153,12 @@ public class LiquidGeneratingRecipe implements Recipe<Inventory>, EnergyGenerati
 		public LiquidGeneratingRecipe read(Identifier identifier, JsonObject object) {
 			LiquidGeneratingRecipe.Format format = new Gson().fromJson(object, LiquidGeneratingRecipe.Format.class);
 
-			return new LiquidGeneratingRecipe(
-					identifier,
-					IngredientUtilities.fromFluidIngredientJson(format.input),
-					VolumeUtilities.fromEnergyVolumeJson(format.energy),
-					ParsingUtilities.fromJson(format.time, Integer.class));
+			return new LiquidGeneratingRecipe(identifier, IngredientUtilities.fromFluidIngredientJson(format.input), VolumeUtilities.fromEnergyVolumeJson(format.energy), ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 
 		@Override
 		public LiquidGeneratingRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new LiquidGeneratingRecipe(
-					identifier,
-					IngredientUtilities.fromFluidIngredientPacket(buffer),
-					VolumeUtilities.fromEnergyVolumePacket(buffer),
-					PacketUtilities.fromPacket(buffer, Integer.class));
+			return new LiquidGeneratingRecipe(identifier, IngredientUtilities.fromFluidIngredientPacket(buffer), VolumeUtilities.fromEnergyVolumePacket(buffer), PacketUtilities.fromPacket(buffer, Integer.class));
 		}
 
 		@Override
@@ -194,11 +186,7 @@ public class LiquidGeneratingRecipe implements Recipe<Inventory>, EnergyGenerati
 
 		@Override
 		public String toString() {
-			return "Format{" +
-					"input=" + input +
-					", energy=" + energy +
-					", time=" + time +
-					'}';
+			return "Format{" + "input=" + input + ", energy=" + energy + ", time=" + time + '}';
 		}
 	}
 }

@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.widget.blade;
 
-import com.github.vini2003.blade.common.utilities.Networks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
@@ -50,6 +49,7 @@ import com.github.chainmailstudios.astromine.common.utilities.NumberUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.vini2003.blade.client.utilities.Layers;
+import com.github.vini2003.blade.common.utilities.Networks;
 import com.github.vini2003.blade.common.widget.base.AbstractWidget;
 
 import com.google.common.collect.Lists;

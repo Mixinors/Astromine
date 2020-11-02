@@ -24,30 +24,34 @@
 
 package com.github.chainmailstudios.astromine.common.component.block.entity;
 
-import com.github.chainmailstudios.astromine.common.callback.TransferEntryCallback;
-import com.github.chainmailstudios.astromine.common.network.type.EnergyNetworkType;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import dev.onyxstudios.cca.api.v3.component.Component;
-import dev.onyxstudios.cca.api.v3.component.ComponentKey;
-import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
+import com.github.chainmailstudios.astromine.common.callback.TransferEntryCallback;
 import com.github.chainmailstudios.astromine.common.utilities.DirectionUtilities;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import dev.onyxstudios.cca.api.v3.component.Component;
+import dev.onyxstudios.cca.api.v3.component.ComponentKey;
+import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
-import java.util.Optional;
-import java.util.function.Consumer;
 
 public class BlockEntityTransferComponent implements Component {
 	private final Reference2ReferenceMap<ComponentKey<?>, TransferEntry> components = new Reference2ReferenceOpenHashMap<>();
+
+	@Nullable
+	public static <V> BlockEntityTransferComponent get(V v) {
+		try {
+			return AstromineComponents.BLOCK_ENTITY_TRANSFER_COMPONENT.get(v);
+		} catch (Exception justShutUpAlready) {
+			return null;
+		}
+	}
 
 	public TransferEntry get(ComponentKey<?> type) {
 		return components.getOrDefault(type, null);
@@ -161,15 +165,6 @@ public class BlockEntityTransferComponent implements Component {
 
 		public ComponentKey<?> getComponentKey() {
 			return componentKey;
-		}
-	}
-
-	@Nullable
-	public static <V> BlockEntityTransferComponent get(V v) {
-		try {
-			return AstromineComponents.BLOCK_ENTITY_TRANSFER_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
-			return null;
 		}
 	}
 }

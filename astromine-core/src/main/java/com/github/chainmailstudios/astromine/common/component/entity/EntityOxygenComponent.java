@@ -24,14 +24,14 @@
 
 package com.github.chainmailstudios.astromine.common.component.entity;
 
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import dev.onyxstudios.cca.api.v3.component.Component;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
+
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import dev.onyxstudios.cca.api.v3.component.Component;
 import org.jetbrains.annotations.Nullable;
 
 public class EntityOxygenComponent implements Component {
@@ -48,6 +48,15 @@ public class EntityOxygenComponent implements Component {
 
 	public static EntityOxygenComponent defaulted(Entity entity) {
 		return new EntityOxygenComponent(entity);
+	}
+
+	@Nullable
+	public static <V> EntityOxygenComponent get(V v) {
+		try {
+			return AstromineComponents.ENTITY_OXYGEN_COMPONENT.get(v);
+		} catch (Exception justShutUpAlready) {
+			return null;
+		}
 	}
 
 	@Override
@@ -118,14 +127,5 @@ public class EntityOxygenComponent implements Component {
 
 	public void setEntity(Entity entity) {
 		this.entity = entity;
-	}
-
-	@Nullable
-	public static <V> EntityOxygenComponent get(V v) {
-		try {
-			return AstromineComponents.ENTITY_OXYGEN_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
-			return null;
-		}
 	}
 }

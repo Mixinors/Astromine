@@ -24,10 +24,12 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+
+import net.minecraft.screen.ScreenHandlerType;
+
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.screenhandler.RecipeCreatorScreenHandler;
-import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
-import net.minecraft.screen.ScreenHandlerType;
 
 public class AstromineScreenHandlers {
 	public static final ScreenHandlerType<RecipeCreatorScreenHandler> RECIPE_CREATOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("recipe_creator"), ((syncId, inventory, buffer) -> {

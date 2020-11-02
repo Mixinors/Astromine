@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.network.type;
 
+import net.minecraft.block.entity.BlockEntity;
+
 import alexiil.mc.lib.attributes.SearchOptions;
 import alexiil.mc.lib.attributes.Simulation;
 import alexiil.mc.lib.attributes.fluid.FluidAttributes;
@@ -35,26 +37,24 @@ import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import alexiil.mc.lib.attributes.misc.NullVariant;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
-import com.google.common.collect.Lists;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import com.google.common.collect.Lists;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class FluidNetworkType extends NetworkType {
-	private FluidAmount inputSpeed = FluidAmount.of(1, 20);
-	private FluidAmount outputSpeed = FluidAmount.of(1, 20);
+	private final FluidAmount inputSpeed = FluidAmount.of(1, 20);
+	private final FluidAmount outputSpeed = FluidAmount.of(1, 20);
 
 	@Override
 	public void tick(NetworkInstance instance) {
@@ -94,26 +94,20 @@ public class FluidNetworkType extends NetworkType {
 
 		for (GroupedFluidInv provider : providers) {
 			for (FluidKey providerStoredFluid : provider.getStoredFluids()) {
-				if (providerStoredFluid.getRawFluid() == null) continue;
+				if (providerStoredFluid.getRawFluid() == null)
+					continue;
 
-				List<GroupedFluidInv> requestersFiltered = requesters.stream()
-						.filter(inventory -> {
-							FluidVolume fluidVolume = providerStoredFluid.withAmount(provider.getAmount_F(providerStoredFluid));
+				List<GroupedFluidInv> requestersFiltered = requesters.stream().filter(inventory -> {
+					FluidVolume fluidVolume = providerStoredFluid.withAmount(provider.getAmount_F(providerStoredFluid));
 
-							return !inventory.attemptInsertion(fluidVolume, Simulation.SIMULATE).equals(fluidVolume);
-						})
-						.sorted(Comparator.comparing(inventory -> inventory.getAmount_F(providerStoredFluid)))
-						.collect(Collectors.toList());
+					return !inventory.attemptInsertion(fluidVolume, Simulation.SIMULATE).equals(fluidVolume);
+				}).sorted(Comparator.comparing(inventory -> inventory.getAmount_F(providerStoredFluid))).collect(Collectors.toList());
 
 				for (int i = requestersFiltered.size() - 1; i >= 0; i--) {
 					GroupedFluidInv requester = requestersFiltered.get(i);
 
-					FluidAmount speed = Collections.min(Arrays.asList(
-							inputSpeed.div(requestersFiltered.size()),
-							outputSpeed.div(requestersFiltered.size()),
-							provider.getAmount_F(providerStoredFluid).div(i + 1),
-							requester.getCapacity_F(providerStoredFluid).sub(requester.getAmount_F(providerStoredFluid))
-					));
+					FluidAmount speed = Collections.min(Arrays.asList(inputSpeed.div(requestersFiltered.size()), outputSpeed.div(requestersFiltered.size()), provider.getAmount_F(providerStoredFluid).div(i + 1), requester.getCapacity_F(providerStoredFluid).sub(requester
+						.getAmount_F(providerStoredFluid))));
 
 					FluidVolumeUtil.move(provider, requester, speed);
 				}

@@ -26,7 +26,6 @@ package com.github.chainmailstudios.astromine.registry;
 
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import me.sargunvohra.mcmods.autoconfig1u.ConfigData;
-import me.sargunvohra.mcmods.autoconfig1u.ConfigManager;
 import me.sargunvohra.mcmods.autoconfig1u.annotation.Config;
 import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry;
 import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
@@ -135,7 +134,7 @@ public class AstromineConfig implements ConfigData {
 
 	@Comment("Energy for the Elite Presser.")
 	public double elitePresserEnergy = 65535D;
-	
+
 	@Comment("Speed for the Primitive Wire Mill.")
 	public double primitiveWireMillSpeed = 0.5D;
 
@@ -516,7 +515,7 @@ public class AstromineConfig implements ConfigData {
 
 	@Comment("Energy for the Elite Drill.")
 	public double eliteDrillEnergy = 640000;
-	
+
 	@Comment("Fluid for the Gas Canister.")
 	public long gasCanisterFluid = 8L;
 
@@ -570,7 +569,7 @@ public class AstromineConfig implements ConfigData {
 			try {
 				AutoConfig.register(AstromineConfig.class, JanksonConfigSerializer::new);
 				try {
-					((ConfigManager<AstromineConfig>) AutoConfig.getConfigHolder(AstromineConfig.class)).save();
+					AutoConfig.getConfigHolder(AstromineConfig.class).save();
 				} catch (Throwable throwable) {
 					throwable.printStackTrace();
 				}

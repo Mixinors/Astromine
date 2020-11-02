@@ -25,11 +25,10 @@
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.google.common.base.Objects;
 
+import com.google.common.base.Objects;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BooleanSupplier;
 
 public class SimpleEnergyComponent implements EnergyComponent {
 	private final EnergyVolume content;
@@ -65,8 +64,10 @@ public class SimpleEnergyComponent implements EnergyComponent {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 		SimpleEnergyComponent that = (SimpleEnergyComponent) o;
 		return Objects.equal(content, that.content);
 	}

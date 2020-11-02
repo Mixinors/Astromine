@@ -77,7 +77,7 @@ public class TankScreenHandler extends ComponentBlockEntityFluidItemScreenHandle
 			} else {
 				return 0;
 			}
- 		});
+		});
 		leftArrow.setProgressSupplier(() -> {
 			ItemStack stack = blockEntity.getItemComponent().getFirst();
 

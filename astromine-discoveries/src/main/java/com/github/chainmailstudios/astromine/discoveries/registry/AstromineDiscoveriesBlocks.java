@@ -41,7 +41,6 @@ import net.minecraft.sound.BlockSoundGroup;
 import com.github.chainmailstudios.astromine.discoveries.common.block.AltarBlock;
 import com.github.chainmailstudios.astromine.discoveries.common.block.AltarPedestalBlock;
 import com.github.chainmailstudios.astromine.foundations.common.block.AstromineOreBlock;
-import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsItems;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 
 public class AstromineDiscoveriesBlocks extends AstromineBlocks {
@@ -81,7 +80,7 @@ public class AstromineDiscoveriesBlocks extends AstromineBlocks {
 	public static final Block ASTEROID_STONE_BRICK_SLAB = register("asteroid_stone_brick_slab", new SlabBlock(FabricBlockSettings.copyOf(ASTEROID_STONE_BRICKS)), AstromineDiscoveriesItems.getBasicSettings().fireproof());
 	public static final Block VULCAN_STONE_BRICK_SLAB = register("vulcan_stone_brick_slab", new SlabBlock(FabricBlockSettings.copyOf(VULCAN_STONE_BRICKS)), AstromineDiscoveriesItems.getBasicSettings());
 	public static final Block MARTIAN_STONE_BRICK_SLAB = register("martian_stone_brick_slab", new SlabBlock(FabricBlockSettings.copyOf(MARTIAN_STONE_BRICKS)), AstromineDiscoveriesItems.getBasicSettings());
-	
+
 	public static final Block ASTEROID_STONE_STAIRS = register("asteroid_stone_stairs", new StairsBlock(ASTEROID_STONE.getDefaultState(), FabricBlockSettings.copyOf(ASTEROID_STONE)), AstromineDiscoveriesItems.getBasicSettings().fireproof());
 	public static final Block MOON_STONE_STAIRS = register("moon_stone_stairs", new StairsBlock(MOON_STONE.getDefaultState(), FabricBlockSettings.copyOf(MOON_STONE)), AstromineDiscoveriesItems.getBasicSettings());
 	public static final Block VULCAN_STONE_STAIRS = register("vulcan_stone_stairs", new StairsBlock(VULCAN_STONE.getDefaultState(), FabricBlockSettings.copyOf(VULCAN_STONE)), AstromineDiscoveriesItems.getBasicSettings());
@@ -98,7 +97,7 @@ public class AstromineDiscoveriesBlocks extends AstromineBlocks {
 	public static final Block ASTEROID_STONE_BRICK_STAIRS = register("asteroid_stone_brick_stairs", new StairsBlock(ASTEROID_STONE_BRICKS.getDefaultState(), FabricBlockSettings.copyOf(ASTEROID_STONE_BRICKS)), AstromineDiscoveriesItems.getBasicSettings().fireproof());
 	public static final Block VULCAN_STONE_BRICK_STAIRS = register("vulcan_stone_brick_stairs", new StairsBlock(VULCAN_STONE_BRICKS.getDefaultState(), FabricBlockSettings.copyOf(VULCAN_STONE_BRICKS)), AstromineDiscoveriesItems.getBasicSettings());
 	public static final Block MARTIAN_STONE_BRICK_STAIRS = register("martian_stone_brick_stairs", new StairsBlock(MARTIAN_STONE_BRICKS.getDefaultState(), FabricBlockSettings.copyOf(MARTIAN_STONE_BRICKS)), AstromineDiscoveriesItems.getBasicSettings());
-	
+
 	public static final Block ASTEROID_STONE_WALL = register("asteroid_stone_wall", new WallBlock(FabricBlockSettings.copyOf(ASTEROID_STONE)), AstromineDiscoveriesItems.getBasicSettings().fireproof());
 	public static final Block MOON_STONE_WALL = register("moon_stone_wall", new WallBlock(FabricBlockSettings.copyOf(MOON_STONE)), AstromineDiscoveriesItems.getBasicSettings());
 	public static final Block VULCAN_STONE_WALL = register("vulcan_stone_wall", new WallBlock(FabricBlockSettings.copyOf(VULCAN_STONE)), AstromineDiscoveriesItems.getBasicSettings());
@@ -111,7 +110,7 @@ public class AstromineDiscoveriesBlocks extends AstromineBlocks {
 	public static final Block ASTEROID_STONE_BRICK_WALL = register("asteroid_stone_brick_wall", new WallBlock(FabricBlockSettings.copyOf(ASTEROID_STONE_BRICKS)), AstromineDiscoveriesItems.getBasicSettings().fireproof());
 	public static final Block VULCAN_STONE_BRICK_WALL = register("vulcan_stone_brick_wall", new WallBlock(FabricBlockSettings.copyOf(VULCAN_STONE_BRICKS)), AstromineDiscoveriesItems.getBasicSettings());
 	public static final Block MARTIAN_STONE_BRICK_WALL = register("martian_stone_brick_wall", new WallBlock(FabricBlockSettings.copyOf(MARTIAN_STONE_BRICKS)), AstromineDiscoveriesItems.getBasicSettings());
-	
+
 	public static final Block ASTEROID_METITE_ORE = register("asteroid_metite_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems
 		.getBasicSettings().fireproof());
 	public static final Block ASTEROID_ASTERITE_ORE = register("asteroid_asterite_ore", new AstromineOreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(40, 1000).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems

@@ -24,14 +24,16 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import net.minecraft.fluid.Fluid;
-import net.minecraft.tag.FluidTags;
-import net.minecraft.tag.Tag;
-import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -41,10 +43,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tag.Tag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
@@ -207,10 +212,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 		return tag;
 	}
 
-	@ModifyVariable(
-			method = "tickMovement",
-			slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;method_29920()Z")),
-			at = @At(value = "STORE", ordinal = 0)	// result from "isTouchingWater && l > 0.0"
+	@ModifyVariable(method = "tickMovement", slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;method_29920()Z")), at = @At(value = "STORE", ordinal = 0) // result from "isTouchingWater && l > 0.0"
 	)
 	private boolean astromine_allowIndustrialFluidSwimming(boolean touchingWater) {
 		return touchingWater || this.getFluidHeight(AstromineTags.INDUSTRIAL_FLUID) > 0;
@@ -221,7 +223,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 		FAKE_BEING_IN_LAVA.set(Boolean.TRUE);
 	}
 
-	@Override	// overrides the inject in EntityMixin
+	@Override // overrides the inject in EntityMixin
 	protected void astromine_fakeLava(CallbackInfoReturnable<Boolean> cir) {
 		if (FAKE_BEING_IN_LAVA.get()) {
 			FAKE_BEING_IN_LAVA.set(Boolean.FALSE);

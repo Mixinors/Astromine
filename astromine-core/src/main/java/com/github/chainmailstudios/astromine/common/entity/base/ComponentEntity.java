@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.entity.base;
 
-import dev.onyxstudios.cca.mixin.entity.common.MixinEntity;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundTag;
@@ -38,7 +36,7 @@ public abstract class ComponentEntity extends Entity {
 
 	@Override
 	protected void writeCustomDataToTag(CompoundTag tag) {
-		
+
 	}
 
 	@Override

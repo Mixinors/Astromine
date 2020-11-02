@@ -42,8 +42,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
 
 public class HolographicBridgeInvisibleBlock extends Block {
 	public static final Material MATERIAL = new Material.Builder(MaterialColor.CLEAR).build();

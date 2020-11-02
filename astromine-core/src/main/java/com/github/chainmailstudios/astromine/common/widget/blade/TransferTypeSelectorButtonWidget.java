@@ -43,8 +43,8 @@ import com.github.chainmailstudios.astromine.common.component.block.entity.Block
 import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
 import com.github.vini2003.blade.common.widget.base.AbstractWidget;
-import io.netty.buffer.Unpooled;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
+import io.netty.buffer.Unpooled;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;

@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.component.world;
 
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
-import dev.onyxstudios.cca.api.v3.component.Component;
 import net.fabricmc.fabric.api.util.NbtType;
 
 import net.minecraft.nbt.CompoundTag;
@@ -42,10 +40,11 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
 import com.github.chainmailstudios.astromine.common.network.NetworkNode;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkTypeRegistry;
-
-import com.google.common.collect.Sets;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import dev.onyxstudios.cca.api.v3.component.Component;
 import org.jetbrains.annotations.Nullable;
 
+import com.google.common.collect.Sets;
 import java.util.Set;
 
 public class WorldNetworkComponent implements Component, Tickable {
@@ -55,6 +54,15 @@ public class WorldNetworkComponent implements Component, Tickable {
 
 	public WorldNetworkComponent(World world) {
 		this.world = world;
+	}
+
+	@Nullable
+	public static <V> WorldNetworkComponent get(V v) {
+		try {
+			return AstromineComponents.WORLD_NETWORK_COMPONENT.get(v);
+		} catch (Exception justShutUpAlready) {
+			return null;
+		}
 	}
 
 	public void addInstance(NetworkInstance instance) {
@@ -137,14 +145,5 @@ public class WorldNetworkComponent implements Component, Tickable {
 	public void tick() {
 		this.instances.removeIf(NetworkInstance::isStupidlyEmpty);
 		this.instances.forEach(NetworkInstance::tick);
-	}
-
-	@Nullable
-	public static <V> WorldNetworkComponent get(V v) {
-		try {
-			return AstromineComponents.WORLD_NETWORK_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
-			return null;
-		}
 	}
 }

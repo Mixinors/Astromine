@@ -41,10 +41,11 @@ public class IdentifierFixRegistry extends UniRegistry<String, String> {
 
 	@Override
 	public String register(String oldPath, String newPath) {
-		if(oldPath.equals(newPath)) throw new IllegalArgumentException("Invalid Identifier fix attempted with paths " + oldPath + " and " + newPath+", paths identical");
+		if (oldPath.equals(newPath))
+			throw new IllegalArgumentException("Invalid Identifier fix attempted with paths " + oldPath + " and " + newPath + ", paths identical");
 		else if (this.containsKey(newPath)) {
 			if (this.get(newPath).equals(oldPath))
-				throw new IllegalArgumentException("Invalid Identifier fix attempted with paths " + oldPath + " and " + newPath+", would cause recursion");
+				throw new IllegalArgumentException("Invalid Identifier fix attempted with paths " + oldPath + " and " + newPath + ", would cause recursion");
 			else return this.register(oldPath, this.get(newPath));
 		} else return super.register(oldPath, newPath);
 	}
