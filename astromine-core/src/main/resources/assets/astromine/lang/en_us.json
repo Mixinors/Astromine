@@ -724,6 +724,8 @@
   "subtitles.astromine.fire_extinguisher_open": "Fire Extinguisher opens",
   "subtitles.astromine.gunshot": "Gunshot",
   "subtitles.astromine.empty_magazine": "Magazine is empty",
+  "subtitles.astromine.altar_start": "Altar begins infusing",
+  "subtitles.astromine.altar_finish": "Altar finishes infusing",
   "text.astromine.manual.landing": "Your guide to the stars!",
   "category.astromine.liquid_generating": "Liquid Generating",
   "category.astromine.solid_generating": "Solid Generating",

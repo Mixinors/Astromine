@@ -95,6 +95,8 @@ public class AltarBlock extends WrenchableBlockWithEntity {
 				} else {
 					return ActionResult.CONSUME;
 				}
+			} else if (blockEntity.isCrafting()) {
+				return ActionResult.CONSUME;
 			} else if (AltarPedestalBlock.canMergeItems(stackInHand, blockEntity.getStack(0))) {
 				ItemStack copy = stackInHand.copy();
 				copy.increment(1);

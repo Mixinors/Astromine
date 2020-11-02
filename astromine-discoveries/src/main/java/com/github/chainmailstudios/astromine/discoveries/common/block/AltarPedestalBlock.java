@@ -100,26 +100,28 @@ public class AltarPedestalBlock extends WrenchableBlockWithEntity {
 			ItemStack stackInHand = player.getStackInHand(hand);
 
 			if (blockEntity instanceof AltarPedestalBlockEntity) {
-				AltarPedestalBlockEntity displayerBlockEntity = (AltarPedestalBlockEntity) blockEntity;
-				if (displayerBlockEntity.getStack(0).isEmpty()) {
+				AltarPedestalBlockEntity pedestalBlockEntity = (AltarPedestalBlockEntity) blockEntity;
+				if (pedestalBlockEntity.hasParent() && pedestalBlockEntity.getParent().isCrafting()) {
+					return ActionResult.CONSUME;
+				} else if (pedestalBlockEntity.getStack(0).isEmpty()) {
 					if (!stackInHand.isEmpty()) {
-						displayerBlockEntity.setStack(0, stackInHand.split(1));
-						displayerBlockEntity.sync();
+						pedestalBlockEntity.setStack(0, stackInHand.split(1));
+						pedestalBlockEntity.sync();
 						return ActionResult.SUCCESS;
 					}
 					return ActionResult.CONSUME;
-				} else if (canMergeItems(stackInHand, displayerBlockEntity.getStack(0))) {
+				} else if (canMergeItems(stackInHand, pedestalBlockEntity.getStack(0))) {
 					ItemStack copy = stackInHand.copy();
 					copy.increment(1);
 					player.setStackInHand(hand, copy);
-					displayerBlockEntity.setStack(0, ItemStack.EMPTY);
+					pedestalBlockEntity.setStack(0, ItemStack.EMPTY);
 					player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, .6F, 1);
-					displayerBlockEntity.sync();
+					pedestalBlockEntity.sync();
 				} else if (stackInHand.isEmpty()) {
-					player.setStackInHand(hand, displayerBlockEntity.getStack(0).copy());
-					displayerBlockEntity.setStack(0, ItemStack.EMPTY);
+					player.setStackInHand(hand, pedestalBlockEntity.getStack(0).copy());
+					pedestalBlockEntity.setStack(0, ItemStack.EMPTY);
 					player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, .6F, 1);
-					displayerBlockEntity.sync();
+					pedestalBlockEntity.sync();
 				} else {
 					return ActionResult.CONSUME;
 				}

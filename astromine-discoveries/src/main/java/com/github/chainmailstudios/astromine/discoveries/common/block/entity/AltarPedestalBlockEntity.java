@@ -41,7 +41,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.compatib
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlockEntityTypes;
 
 public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFromItemComponent, Tickable, BlockEntityClientSerializable {
-	public BlockPos parent;
+	public BlockPos parentPos;
 	private int spinAge;
 	private int lastSpinAddition;
 	private int yAge;
@@ -78,18 +78,18 @@ public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFr
 		spinAge++;
 		yAge++;
 
-		if (parent != null) {
-			AltarBlockEntity blockEntity = (AltarBlockEntity) world.getBlockEntity(parent);
+		if (parentPos != null) {
+			AltarBlockEntity blockEntity = getParent();
 			if (blockEntity == null)
 				onRemove();
 			else {
 				spinAge += blockEntity.craftingTicks / 5;
 				lastSpinAddition += blockEntity.craftingTicks / 5;
 
-				int velX = pos.getX() - parent.getX();
-				int velY = pos.getY() - parent.getY();
-				int velZ = pos.getZ() - parent.getZ();
-				world.addParticle(ParticleTypes.ENCHANT, parent.getX() + 0.5, parent.getY() + 1.8, parent.getZ() + 0.5, velX, velY - 1.3, velZ);
+				int velX = pos.getX() - parentPos.getX();
+				int velY = pos.getY() - parentPos.getY();
+				int velZ = pos.getZ() - parentPos.getZ();
+				world.addParticle(ParticleTypes.ENCHANT, parentPos.getX() + 0.5, parentPos.getY() + 1.8, parentPos.getZ() + 0.5, velX, velY - 1.3, velZ);
 			}
 		}
 	}
@@ -121,25 +121,39 @@ public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFr
 		super.fromTag(state, tag);
 		inventory.readFromNbt(tag);
 		if (tag.contains("parent"))
-			parent = BlockPos.fromLong(tag.getLong("parent"));
-		else parent = null;
+			parentPos = BlockPos.fromLong(tag.getLong("parent"));
+		else parentPos = null;
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
 		inventory.writeToNbt(tag);
-		if (parent != null)
-			tag.putLong("parent", parent.asLong());
+		if (parentPos != null)
+			tag.putLong("parent", parentPos.asLong());
 		return super.toTag(tag);
 	}
 
 	public void onRemove() {
-		if (parent != null) {
-			AltarBlockEntity blockEntity = (AltarBlockEntity) world.getBlockEntity(parent);
+		if (parentPos != null) {
+			AltarBlockEntity blockEntity = (AltarBlockEntity) world.getBlockEntity(parentPos);
 			if (blockEntity != null) {
 				blockEntity.onRemove();
 			}
 		}
-		parent = null;
+		parentPos = null;
+	}
+
+	public boolean hasParent() {
+		return parentPos != null && getParent() != null;
+	}
+
+	public AltarBlockEntity getParent() {
+		if(hasWorld() && parentPos != null) {
+			BlockEntity be = world.getBlockEntity(parentPos);
+			if(be instanceof AltarBlockEntity) {
+				return (AltarBlockEntity)be;
+			}
+		}
+		return null;
 	}
 }

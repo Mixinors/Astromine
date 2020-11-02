@@ -119,7 +119,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 
 					for (Supplier<AltarPedestalBlockEntity> child : children) {
 						child.get().setStack(0, ItemStack.EMPTY);
-						child.get().parent = null;
+						child.get().parentPos = null;
 						child.get().sync();
 						spinAge = child.get().getSpinAge();
 					}
@@ -169,7 +169,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 	}
 
 	public boolean initializeCrafting() {
-		if (craftingTicks > 0)
+		if (isCrafting())
 			return false;
 
 		children = scanDisplayers();
@@ -179,10 +179,10 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 			AltarPedestalBlockEntity child = iterator.next().get();
 
 			if (child.getStack(0).isEmpty()) {
-				child.parent = null;
+				child.parentPos = null;
 				iterator.remove();
 			} else {
-				child.parent = pos;
+				child.parentPos = pos;
 			}
 		}
 
@@ -206,7 +206,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 
 	private List<Supplier<AltarPedestalBlockEntity>> scanDisplayers() {
 		return IntStream.range(-4, 5).boxed().flatMap(xOffset -> IntStream.range(-4, 5).boxed().map(zOffset -> world.getBlockEntity(pos.add(xOffset, 0, zOffset)))).filter(blockEntity -> blockEntity instanceof AltarPedestalBlockEntity).map(
-			blockEntity -> (AltarPedestalBlockEntity) blockEntity).filter(blockEntity -> blockEntity.parent == null || pos.equals(blockEntity.parent)).map(blockEntity -> (Supplier<AltarPedestalBlockEntity>) () -> blockEntity).collect(Collectors.toList());
+			blockEntity -> (AltarPedestalBlockEntity) blockEntity).filter(blockEntity -> blockEntity.parentPos == null || pos.equals(blockEntity.parentPos)).map(blockEntity -> (Supplier<AltarPedestalBlockEntity>) () -> blockEntity).collect(Collectors.toList());
 	}
 
 	@Override
@@ -253,11 +253,15 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 		craftingTicksDelta = 0;
 
 		for (Supplier<AltarPedestalBlockEntity> child : children) {
-			child.get().parent = null;
+			child.get().parentPos = null;
 			if (!world.isClient)
 				child.get().sync();
 		}
 
 		children.clear();
+	}
+
+	public boolean isCrafting() {
+		return getCraftingTicks() > 0;
 	}
 }
