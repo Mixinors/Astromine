@@ -37,7 +37,7 @@ public class VulcanSkyProperties extends SkyProperties {
 	}
 
 	@Override
-	public Vec3d adjustSkyColor(Vec3d color, float sunHeight) {
+	public Vec3d adjustFogColor(Vec3d color, float sunHeight) {
 		return new Vec3d(0.4, 0.35, 0.31);
 	}
 
