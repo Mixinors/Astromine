@@ -84,4 +84,24 @@ public enum RedstoneType {
 			}
 		}
 	}
+
+	public boolean shouldWork(boolean powered) {
+		switch(this) {
+			case WORK_WHEN_OFF: {
+				return !powered;
+			}
+
+			case WORK_WHEN_ON: {
+				return powered;
+			}
+
+			case WORK_ALWAYS: {
+				return true;
+			}
+
+			default: {
+				return false;
+			}
+		}
+	}
 }
