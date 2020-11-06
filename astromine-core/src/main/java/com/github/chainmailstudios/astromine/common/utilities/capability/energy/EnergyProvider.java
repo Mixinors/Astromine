@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.utilities.capability.energy;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
@@ -47,12 +48,16 @@ public interface EnergyProvider extends EnergyStorage {
 	default double getMaxInput(EnergySide side) {
 		boolean allow = false;
 
-		BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(this);
+		if(side.equals(EnergySide.UNKNOWN)) {
+			allow = true;
+		} else {
+			BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(this);
 
-		if (transferComponent != null) {
-			TransferType type = transferComponent.getEnergy(EnergyUtilities.toDirection(side));
+			if (transferComponent != null) {
+				TransferType type = transferComponent.getEnergy(EnergyUtilities.toDirection(side));
 
-			allow = type.canInsert();
+				allow = type.canInsert();
+			}
 		}
 
 		if (!allow) {
@@ -66,12 +71,16 @@ public interface EnergyProvider extends EnergyStorage {
 	default double getMaxOutput(EnergySide side) {
 		boolean allow = false;
 
-		BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(this);
+		if(side.equals(EnergySide.UNKNOWN)) {
+			allow = true;
+		} else {
+			BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(this);
 
-		if (transferComponent != null) {
-			TransferType type = transferComponent.getEnergy(EnergyUtilities.toDirection(side));
+			if (transferComponent != null) {
+				TransferType type = transferComponent.getEnergy(EnergyUtilities.toDirection(side));
 
-			allow = type.canExtract();
+				allow = type.canExtract();
+			}
 		}
 
 		if (!allow) {
