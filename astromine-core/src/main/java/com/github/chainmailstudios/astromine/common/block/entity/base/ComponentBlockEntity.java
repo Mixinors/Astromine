@@ -245,8 +245,13 @@ public abstract class ComponentBlockEntity extends BlockEntity implements Packet
 	public boolean tickRedstone() {
 		boolean powered = world.getReceivedRedstonePower(getPos()) > 0;
 
-		if (getRedstoneComponent().getType().shouldWork(powered)) tickActive();
-		else tickInactive();
+		if (getRedstoneComponent().getType().shouldWork(powered)) {
+			tickActive();
+			return true;
+		} else {
+			tickInactive();
+			return false;
+		}
 	}
 
 	public BlockEntityTransferComponent createTransferComponent() {
