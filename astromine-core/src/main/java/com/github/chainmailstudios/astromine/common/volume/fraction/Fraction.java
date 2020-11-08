@@ -32,32 +32,22 @@ import java.text.DecimalFormat;
 public final class Fraction extends Number implements Comparable<Fraction> {
 	public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.###");
 
+	public static final Fraction MINIMUM = new Fraction(1, Long.MAX_VALUE);
+	public static final Fraction MAXIMUM = new Fraction(Long.MAX_VALUE, 1);
+
+	public static final Fraction EMPTY = new Fraction(0, 1);
+	public static final Fraction BUCKET = new Fraction(1, 1);
+	public static final Fraction BOTTLE = new Fraction(1, 3);
+
+	public static final Fraction INGOT = new Fraction(1, 9);
+	public static final Fraction NUGGET = new Fraction(1, 81);
+
 	private final long numerator;
 	private final long denominator;
 
 	public Fraction(long numerator, long denominator) {
 		this.numerator = numerator;
 		this.denominator = Math.max(1, denominator);
-	}
-
-	public static Fraction minimum() {
-		return new Fraction(1, Long.MAX_VALUE);
-	}
-
-	public static Fraction maximum() {
-		return new Fraction(Long.MAX_VALUE, 1);
-	}
-
-	public static Fraction empty() {
-		return new Fraction(0, 1);
-	}
-
-	public static Fraction bucket() {
-		return new Fraction(1, 1);
-	}
-
-	public static Fraction bottle() {
-		return new Fraction(1, 3);
 	}
 
 	public static Fraction of(long whole) {

@@ -181,9 +181,9 @@ public class ChunkAtmosphereComponent implements Component, ServerTickingCompone
 
 					if (isTraversableForPropagation(centerState, centerPos, sideState, sidePos, centerVolume, sideVolume, direction)) {
 						if (world.isAir(centerPos)) {
-							centerVolume.add(sideVolume, Fraction.bottle());
+							centerVolume.add(sideVolume, Fraction.BOTTLE);
 						} else if (!centerState.isSideSolidFullSquare(world, centerPos, direction)) {
-							centerVolume.add(sideVolume, Fraction.bottle());
+							centerVolume.add(sideVolume, Fraction.BOTTLE);
 						} else {
 							centerVolume.add(sideVolume, centerVolume.getAmount());
 						}
@@ -202,9 +202,9 @@ public class ChunkAtmosphereComponent implements Component, ServerTickingCompone
 
 					if (isTraversableForPropagation(centerState, centerPos, sideState, sidePos, centerVolume, sideVolume, direction)) {
 						if (world.isAir(centerPos)) {
-							centerVolume.add(sideVolume, Fraction.bottle());
+							centerVolume.add(sideVolume, Fraction.BOTTLE);
 						} else if (!world.getBlockState(centerPos).isSideSolidFullSquare(world, centerPos, direction)) {
-							centerVolume.add(sideVolume, Fraction.bottle());
+							centerVolume.add(sideVolume, Fraction.BOTTLE);
 						} else {
 							centerVolume.add(sideVolume, centerVolume.getAmount());
 						}
@@ -270,7 +270,7 @@ public class ChunkAtmosphereComponent implements Component, ServerTickingCompone
 			return false;
 
 		return !(Registry.BLOCK.getId(sideState.getBlock()).toString().equals("astromine:airlock") && !sideState.get(Properties.POWERED)) && (sideState.isAir() || !sideState.isSideSolidFullSquare(world, sidePos, direction.getOpposite())) && (centerState.isAir() || !centerState
-			.isSideSolidFullSquare(world, centerPos, direction)) && (sideVolume.isEmpty() || sideVolume.test(centerVolume.getFluid())) && (centerVolume.hasStored(Fraction.bottle()) && !sideState.isOpaqueFullCube(world, centerPos)) && sideVolume.smallerThan(centerVolume
+			.isSideSolidFullSquare(world, centerPos, direction)) && (sideVolume.isEmpty() || sideVolume.test(centerVolume.getFluid())) && (centerVolume.hasStored(Fraction.BOTTLE) && !sideState.isOpaqueFullCube(world, centerPos)) && sideVolume.smallerThan(centerVolume
 				.getAmount());
 	}
 

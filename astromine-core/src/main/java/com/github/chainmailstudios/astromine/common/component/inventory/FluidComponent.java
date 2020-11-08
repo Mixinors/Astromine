@@ -24,11 +24,15 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.PotionItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.potion.PotionUtil;
+import net.minecraft.potion.Potions;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Direction;
 
@@ -65,7 +69,10 @@ public interface FluidComponent extends Iterable<Map.Entry<Integer, FluidVolume>
 			if (item instanceof BucketItem) {
 				BucketItem bucket = (BucketItem) item;
 
-				return SimpleFluidComponent.of(FluidVolume.of(Fraction.bucket(), bucket.fluid));
+				return SimpleFluidComponent.of(FluidVolume.of(Fraction.BUCKET, bucket.fluid));
+			} else if (item instanceof PotionItem) {
+				if(PotionUtil.getPotion(stack).equals(Potions.WATER))
+				return SimpleFluidComponent.of(FluidVolume.of(Fraction.BOTTLE, Fluids.WATER));
 			}
 		}
 

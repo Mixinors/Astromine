@@ -97,38 +97,38 @@ public class AbstractBlockMixin {
 						FluidVolume extractable = blockEntityFluidComponent.getFirstExtractableVolume(result.getSide());
 
 						if (isBucket && extractable != null) {
-							if (extractable.hasStored(Fraction.bucket())) {
+							if (extractable.hasStored(Fraction.BUCKET)) {
 								if (stack.getCount() == 1 || (player.inventory.getEmptySlot() == -1 && stack.getCount() == 1)) {
-									stackVolume.moveFrom(extractable, Fraction.bucket());
+									stackVolume.moveFrom(extractable, Fraction.BUCKET);
 									player.setStackInHand(hand, new ItemStack(stackVolume.getFluid().getBucketItem()));
 								} else if (player.inventory.getEmptySlot() != -1 && stack.getCount() > 1) {
-									stackVolume.moveFrom(extractable, Fraction.bucket());
+									stackVolume.moveFrom(extractable, Fraction.BUCKET);
 									stack.decrement(1);
 									player.giveItemStack(new ItemStack(stackVolume.getFluid().getBucketItem()));
 								}
 							}
 						} else if (extractable != null) {
-							stackVolume.moveFrom(extractable, Fraction.bucket());
+							stackVolume.moveFrom(extractable, Fraction.BUCKET);
 						}
 					} else {
 						FluidVolume insertable = blockEntityFluidComponent.getFirstInsertableVolume(result.getSide(), stackVolume);
 
 						if (isBucket && insertable != null) {
-							if (insertable.hasAvailable(Fraction.bucket())) {
+							if (insertable.hasAvailable(Fraction.BUCKET)) {
 								if (stack.getCount() == 1 || (player.inventory.getEmptySlot() == -1 && stack.getCount() == 1)) {
-									insertable.moveFrom(stackVolume, Fraction.bucket());
+									insertable.moveFrom(stackVolume, Fraction.BUCKET);
 									if (!player.isCreative()) {
 										player.setStackInHand(hand, new ItemStack(Items.BUCKET));
 									}
 								} else if (player.inventory.getEmptySlot() != -1 && stack.getCount() > 1) {
-									insertable.moveFrom(stackVolume, Fraction.bucket());
+									insertable.moveFrom(stackVolume, Fraction.BUCKET);
 									if (!player.isCreative()) {
 										stack.decrement(1);
 										player.giveItemStack(new ItemStack(Items.BUCKET));
 									}
 								}
 							} else if (insertable != null) {
-								insertable.moveFrom(stackVolume, Fraction.bucket());
+								insertable.moveFrom(stackVolume, Fraction.BUCKET);
 							}
 						} else {}
 					}

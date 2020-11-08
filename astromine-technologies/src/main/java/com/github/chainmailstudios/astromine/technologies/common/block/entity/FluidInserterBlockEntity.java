@@ -46,7 +46,7 @@ import com.github.chainmailstudios.astromine.technologies.registry.AstromineTech
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 
 public class FluidInserterBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
-	private Fraction cooldown = Fraction.empty();
+	private Fraction cooldown = Fraction.EMPTY;
 
 	public FluidInserterBlockEntity() {
 		super(AstromineTechnologiesBlocks.FLUID_INSERTER, AstromineTechnologiesBlockEntityTypes.FLUID_INSERTER);
@@ -91,7 +91,7 @@ public class FluidInserterBlockEntity extends ComponentEnergyFluidBlockEntity im
 		if (fluidComponent != null) {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();
 			if (energyVolume.getAmount() < getEnergyConsumed()) {
-				cooldown = Fraction.empty();
+				cooldown = Fraction.EMPTY;
 
 				tickInactive();
 			} else {
@@ -100,7 +100,7 @@ public class FluidInserterBlockEntity extends ComponentEnergyFluidBlockEntity im
 				cooldown = cooldown.add(Fraction.ofDecimal(1.0D / getMachineSpeed()));
 
 				cooldown.ifBiggerOrEqualThan(Fraction.of(1), () -> {
-					cooldown = Fraction.empty();
+					cooldown = Fraction.EMPTY;
 
 					FluidVolume fluidVolume = fluidComponent.getFirst();
 
@@ -111,10 +111,10 @@ public class FluidInserterBlockEntity extends ComponentEnergyFluidBlockEntity im
 					BlockState targetState = world.getBlockState(targetPos);
 
 					if (targetState.isAir()) {
-						if (fluidVolume.hasStored(Fraction.bucket())) {
-							FluidVolume toInsert = FluidVolume.of(Fraction.bucket(), fluidVolume.getFluid());
+						if (fluidVolume.hasStored(Fraction.BUCKET)) {
+							FluidVolume toInsert = FluidVolume.of(Fraction.BUCKET, fluidVolume.getFluid());
 
-							fluidVolume.minus(Fraction.bucket());
+							fluidVolume.minus(Fraction.BUCKET);
 
 							energyVolume.minus(getEnergyConsumed());
 

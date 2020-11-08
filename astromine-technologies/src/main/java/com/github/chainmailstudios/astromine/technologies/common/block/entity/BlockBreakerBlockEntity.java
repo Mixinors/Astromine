@@ -56,7 +56,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
-	private Fraction cooldown = Fraction.empty();
+	private Fraction cooldown = Fraction.EMPTY;
 
 	public BlockBreakerBlockEntity() {
 		super(AstromineTechnologiesBlocks.BLOCK_BREAKER, AstromineTechnologiesBlockEntityTypes.BLOCK_BREAKER);
@@ -99,7 +99,7 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 		if (itemComponent != null) {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();
 			if (energyVolume.getAmount() < getEnergyConsumed()) {
-				cooldown = Fraction.empty();
+				cooldown = Fraction.EMPTY;
 
 				tickInactive();
 			} else {
@@ -108,7 +108,7 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 				cooldown = cooldown.add(Fraction.ofDecimal(1.0D / getMachineSpeed()));
 
 				cooldown.ifBiggerOrEqualThan(Fraction.of(1), () -> {
-					cooldown = Fraction.empty();
+					cooldown = Fraction.EMPTY;
 
 					ItemStack stored = itemComponent.getFirst();
 

@@ -57,15 +57,15 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 	}
 
 	public static FluidVolume empty() {
-		return FluidVolume.of(Fraction.empty(), Fluids.EMPTY);
+		return FluidVolume.of(Fraction.EMPTY, Fluids.EMPTY);
 	}
 
 	public static FluidVolume oxygen() {
-		return new FluidVolume(Fraction.bucket(), Fraction.bucket(), Registry.FLUID.get(AstromineCommon.identifier("oxygen")));
+		return new FluidVolume(Fraction.BUCKET, Fraction.BUCKET, Registry.FLUID.get(AstromineCommon.identifier("oxygen")));
 	}
 
 	public static FluidVolume attached(SimpleFluidComponent component) {
-		return new FluidVolume(Fraction.empty(), Fraction.bucket(), Fluids.EMPTY, component::updateListeners);
+		return new FluidVolume(Fraction.EMPTY, Fraction.BUCKET, Fluids.EMPTY, component::updateListeners);
 	}
 
 	public static FluidVolume of(Fraction amount, Fluid fluid) {
@@ -101,7 +101,7 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 			if (!jsonObject.has("fluid"))
 				return null;
 			if (!jsonObject.has("amount")) {
-				return FluidVolume.of(Fraction.bucket(), Registry.FLUID.get(new Identifier(jsonObject.get("fluid").getAsString())));
+				return FluidVolume.of(Fraction.BUCKET, Registry.FLUID.get(new Identifier(jsonObject.get("fluid").getAsString())));
 			} else {
 				return FluidVolume.of(FractionUtilities.fromJson(jsonObject.get("amount")), Registry.FLUID.get(new Identifier(jsonObject.get("fluid").getAsString())));
 			}
@@ -165,14 +165,14 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 
 		Fraction amount = Fraction.minimum(v.getSize().subtract(v.getAmount()), Fraction.minimum(getAmount(), fraction));
 
-		amount.ifBiggerThan(Fraction.empty(), () -> {
+		amount.ifBiggerThan(Fraction.EMPTY, () -> {
 			v.setAmount(v.getAmount().add(amount));
 			setAmount(getAmount().subtract(amount));
 		});
 
 		if (isEmpty()) {
 			setFluid(Fluids.EMPTY);
-			setAmount(Fraction.empty());
+			setAmount(Fraction.EMPTY);
 		}
 
 		return (V) this;

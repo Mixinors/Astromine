@@ -80,14 +80,14 @@ public class VolumeUtilities {
 					if (ourVolume.test(stackVolume.getFluid())) {
 						if (itemComponent.getFirst().getItem() instanceof BucketItem) {
 							if (itemComponent.getFirst().getItem() != Items.BUCKET && itemComponent.getFirst().getCount() == 1) {
-								if (ourVolume.hasAvailable(Fraction.bucket()) || ourVolume.isEmpty()) {
-									ourVolume.moveFrom(stackVolume, Fraction.bucket());
+								if (ourVolume.hasAvailable(Fraction.BUCKET) || ourVolume.isEmpty()) {
+									ourVolume.moveFrom(stackVolume, Fraction.BUCKET);
 
 									itemComponent.setFirst(new ItemStack(Items.BUCKET));
 								}
 							}
 						} else {
-							ourVolume.moveFrom(stackVolume, Fraction.bucket());
+							ourVolume.moveFrom(stackVolume, Fraction.BUCKET);
 						}
 					}
 				}
@@ -101,14 +101,14 @@ public class VolumeUtilities {
 					if (stackVolume.test(ourVolume.getFluid())) {
 						if (itemComponent.getSecond().getItem() instanceof BucketItem) {
 							if (itemComponent.getSecond().getItem() == Items.BUCKET && itemComponent.getSecond().getCount() == 1) {
-								if (ourVolume.hasStored(Fraction.bucket())) {
-									ourVolume.add(stackVolume, Fraction.bucket());
+								if (ourVolume.hasStored(Fraction.BUCKET)) {
+									ourVolume.add(stackVolume, Fraction.BUCKET);
 
 									itemComponent.setSecond(new ItemStack(stackVolume.getFluid().getBucketItem()));
 								}
 							}
 						} else {
-							ourVolume.add(stackVolume, Fraction.bucket());
+							ourVolume.add(stackVolume, Fraction.BUCKET);
 						}
 					}
 				}

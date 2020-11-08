@@ -81,8 +81,8 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 		super.onMouseClicked(x, y, button);
 
 		if (isWithin(x, y) && !getHidden() && button == 2) {
-			volume.get().setAmount(Fraction.empty());
-			volume.get().setSize(Fraction.empty());
+			volume.get().setAmount(Fraction.EMPTY);
+			volume.get().setSize(Fraction.EMPTY);
 			volume.get().setFluid(Fluids.EMPTY);
 		}
 	}

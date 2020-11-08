@@ -48,7 +48,7 @@ import com.github.chainmailstudios.astromine.technologies.registry.AstromineTech
 import org.jetbrains.annotations.NotNull;
 
 public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
-	private Fraction cooldown = Fraction.empty();
+	private Fraction cooldown = Fraction.EMPTY;
 
 	public BlockPlacerBlockEntity() {
 		super(AstromineTechnologiesBlocks.BLOCK_PLACER, AstromineTechnologiesBlockEntityTypes.BLOCK_PLACER);
@@ -91,7 +91,7 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 		if (itemComponent != null) {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();
 			if (energyVolume.getAmount() < getEnergyConsumed()) {
-				cooldown = Fraction.empty();
+				cooldown = Fraction.EMPTY;
 
 				tickInactive();
 			} else {
@@ -100,7 +100,7 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 				cooldown = cooldown.add(Fraction.ofDecimal(1.0D / getMachineSpeed()));
 
 				cooldown.ifBiggerOrEqualThan(Fraction.of(1), () -> {
-					cooldown = Fraction.empty();
+					cooldown = Fraction.EMPTY;
 
 					ItemStack stored = itemComponent.getFirst();
 

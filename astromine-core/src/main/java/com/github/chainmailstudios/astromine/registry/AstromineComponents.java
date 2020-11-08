@@ -95,7 +95,7 @@ public class AstromineComponents implements WorldComponentInitializer, ChunkComp
 
 	@Override
 	public void registerItemComponentFactories(ItemComponentFactoryRegistry registry) {
-		registry.registerFor(item -> item instanceof FluidVolumeItem, FLUID_INVENTORY_COMPONENT, stack -> SimpleFluidComponent.of(FluidVolume.of(Fraction.empty(), ((FluidVolumeItem) stack.getItem()).getSize(), Fluids.EMPTY)));
+		registry.registerFor(item -> item instanceof FluidVolumeItem, FLUID_INVENTORY_COMPONENT, stack -> SimpleFluidComponent.of(FluidVolume.of(Fraction.EMPTY, ((FluidVolumeItem) stack.getItem()).getSize(), Fluids.EMPTY)));
 	}
 
 	@Override
