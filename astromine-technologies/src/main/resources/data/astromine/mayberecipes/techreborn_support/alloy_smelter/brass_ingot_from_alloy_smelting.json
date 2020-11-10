@@ -12,7 +12,7 @@
       "tag": "c:zinc_ingots"
     },
     "output": {
-      "item": "techreborn:zinc_ingot",
+      "item": "techreborn:brass_ingot",
       "count": 4
     },
     "time": 200,
