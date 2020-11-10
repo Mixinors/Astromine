@@ -79,7 +79,7 @@ public class AbstractBlockMixin {
 			}
 		}
 
-		final Holder<Boolean> shouldSkip = Holder.of(false);
+		boolean shouldSkip = false;
 
 		if (stackFluidComponent != null) {
 			final Block block = state.getBlock();
@@ -133,12 +133,12 @@ public class AbstractBlockMixin {
 						}
 					}
 
-					shouldSkip.set(true);
+					shouldSkip = true;
 				}
 			}
 		}
 
-		if (shouldSkip.get()) {
+		if (shouldSkip) {
 			cir.setReturnValue(ActionResult.SUCCESS);
 		}
 	}

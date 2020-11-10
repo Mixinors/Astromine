@@ -51,7 +51,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.LightType;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.registry.ConveyorBlockBlacklistRegistry;
+import com.github.chainmailstudios.astromine.common.registry.ConveyorSpecialScaleRegistry;
 import com.github.chainmailstudios.astromine.transportations.common.block.property.ConveyorProperties;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorTypes;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.PositionalConveyable;
@@ -125,7 +125,7 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 		int seed = stack.isEmpty() ? 187 : Item.getRawId(stack.getItem()) + stack.getDamage();
 		random.setSeed(seed);
 
-		if (!stack.isEmpty() && stack.getItem() instanceof BlockItem && !ConveyorBlockBlacklistRegistry.INSTANCE.contains(stack.getItem())) {
+		if (!stack.isEmpty() && stack.getItem() instanceof BlockItem && !ConveyorSpecialScaleRegistry.INSTANCE.contains(stack.getItem())) {
 			int light = LightmapTextureManager.pack(blockEntity.getWorld().getLightLevel(LightType.BLOCK, blockEntity.getPos()), blockEntity.getWorld().getLightLevel(LightType.SKY, blockEntity.getPos()));
 			Block block = ((BlockItem) stack.getItem()).getBlock();
 
@@ -174,7 +174,7 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 			matrixStack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90.0F));
 			matrixStack.translate(0.5, 0.5, -4.5F / 16F);
 
-			if (stack.getItem() instanceof BlockItem && ConveyorBlockBlacklistRegistry.INSTANCE.contains(stack.getItem()) && ConveyorBlockBlacklistRegistry.INSTANCE.get(stack.getItem()).getRight()) {
+			if (stack.getItem() instanceof BlockItem && ConveyorSpecialScaleRegistry.INSTANCE.contains(stack.getItem()) && ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getRight()) {
 				matrixStack.translate(0, 0, -3.5F / 16F);
 			}
 
@@ -196,13 +196,13 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 				matrixStack.translate(0, horizontalPosition / speed, -(position / (speed)) + (blockEntity.getCachedState().get(ConveyorProperties.CONVEYOR) ? -1 : 0));
 			}
 
-			if (ConveyorBlockBlacklistRegistry.INSTANCE.contains(stack.getItem())) {
-				float scale = ConveyorBlockBlacklistRegistry.INSTANCE.get(stack.getItem()).getLeft();
+			if (ConveyorSpecialScaleRegistry.INSTANCE.contains(stack.getItem())) {
+				float scale = ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getLeft();
 				matrixStack.scale(scale, scale, scale);
 
 				for (int i = 1; i < int_1; i++) {
 					matrixStack.push();
-					if (ConveyorBlockBlacklistRegistry.INSTANCE.get(stack.getItem()).getRight()) {
+					if (ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getRight()) {
 						float x = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
 						float y = (random.nextFloat() * 2.0F) * 0.15F;
 						float z = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
@@ -249,7 +249,7 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 		int seed = stack.isEmpty() ? 187 : Item.getRawId(stack.getItem()) + stack.getDamage();
 		random.setSeed(seed);
 
-		if (!stack.isEmpty() && stack.getItem() instanceof BlockItem && !ConveyorBlockBlacklistRegistry.INSTANCE.contains(stack.getItem())) {
+		if (!stack.isEmpty() && stack.getItem() instanceof BlockItem && !ConveyorSpecialScaleRegistry.INSTANCE.contains(stack.getItem())) {
 			int light = LightmapTextureManager.pack(blockEntity.getWorld().getLightLevel(LightType.BLOCK, blockEntity.getPos().offset(direction)), blockEntity.getWorld().getLightLevel(LightType.SKY, blockEntity.getPos().offset(direction)));
 			Block block = ((BlockItem) stack.getItem()).getBlock();
 
@@ -298,7 +298,7 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 			matrixStack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90.0F));
 			matrixStack.translate(0.5, 0.5, -4.5F / 16F);
 
-			if (stack.getItem() instanceof BlockItem && ConveyorBlockBlacklistRegistry.INSTANCE.contains(stack.getItem()) && ConveyorBlockBlacklistRegistry.INSTANCE.get(stack.getItem()).getRight()) {
+			if (stack.getItem() instanceof BlockItem && ConveyorSpecialScaleRegistry.INSTANCE.contains(stack.getItem()) && ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getRight()) {
 				matrixStack.translate(0, 0, -3.5F / 16F);
 			}
 
@@ -320,13 +320,13 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 				matrixStack.translate(0, horizontalPosition / speed, -(position / (speed)) + (blockEntity.getCachedState().get(ConveyorProperties.CONVEYOR) ? -1 : 0));
 			}
 
-			if (ConveyorBlockBlacklistRegistry.INSTANCE.contains(stack.getItem())) {
-				float scale = ConveyorBlockBlacklistRegistry.INSTANCE.get(stack.getItem()).getLeft();
+			if (ConveyorSpecialScaleRegistry.INSTANCE.contains(stack.getItem())) {
+				float scale = ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getLeft();
 				matrixStack.scale(scale, scale, scale);
 
 				for (int i = 1; i < int_1; i++) {
 					matrixStack.push();
-					if (ConveyorBlockBlacklistRegistry.INSTANCE.get(stack.getItem()).getRight()) {
+					if (ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getRight()) {
 						float x = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
 						float y = (random.nextFloat() * 2.0F) * 0.15F;
 						float z = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;

@@ -135,7 +135,7 @@ public class WorldNetworkComponent implements Component, Tickable {
 
 	@Override
 	public void tick() {
-		this.instances.removeIf(NetworkInstance::isStupidlyEmpty);
+		this.instances.removeif (NetworkInstance::isStupidlyEmpty);
 		this.instances.forEach(NetworkInstance::tick);
 	}
 

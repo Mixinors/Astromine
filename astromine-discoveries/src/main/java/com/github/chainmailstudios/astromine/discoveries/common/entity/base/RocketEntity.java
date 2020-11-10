@@ -176,7 +176,7 @@ public abstract class RocketEntity extends ComponentFluidItemEntity {
 	public void tryLaunch(PlayerEntity launcher) {
 		if (this.getFluidComponent().getFirst().biggerThan(Fraction.EMPTY)) {
 			this.getDataTracker().set(RocketEntity.IS_RUNNING, true);
-			if(launcher instanceof ServerPlayerEntity) {
+			if (launcher instanceof ServerPlayerEntity) {
 				AstromineDiscoveriesCriteria.LAUNCH_ROCKET.trigger((ServerPlayerEntity) launcher);
 			}
 		}

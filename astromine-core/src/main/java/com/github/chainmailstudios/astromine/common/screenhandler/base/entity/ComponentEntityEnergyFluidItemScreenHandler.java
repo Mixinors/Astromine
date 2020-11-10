@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.entity;
 
+import com.github.chainmailstudios.astromine.common.entity.base.ComponentEnergyFluidEntity;
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentEnergyFluidItemEntity;
 import com.github.chainmailstudios.astromine.common.widget.blade.EnergyVerticalBarWidget;
 import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBarWidget;
@@ -32,19 +33,25 @@ import com.github.vini2003.blade.common.miscellaneous.Size;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 
+/**
+ * A class representing a {@link ComponentEntityScreenHandler}
+ * with an attached {@link ComponentEnergyFluidItemEntity}.
+ */
 public abstract class ComponentEntityEnergyFluidItemScreenHandler extends ComponentEntityScreenHandler {
-	public ComponentEnergyFluidItemEntity entity;
+	protected ComponentEnergyFluidItemEntity entity;
 
-	public EnergyVerticalBarWidget energyBar;
+	protected FluidVerticalBarWidget fluidBar;
 
-	public FluidVerticalBarWidget fluidBar;
+	protected EnergyVerticalBarWidget energyBar;
 
+	/** Instantiates a {@link ComponentEntityEnergyFluidItemScreenHandler} with the given values. */
 	public ComponentEntityEnergyFluidItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, int entityId) {
 		super(type, syncId, player, entityId);
 
 		entity = (ComponentEnergyFluidItemEntity) player.world.getEntityById(entityId);
 	}
 
+	/** Override behavior to add energy and fluid bars. */
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);

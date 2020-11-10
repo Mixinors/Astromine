@@ -56,7 +56,7 @@ public class AstromineNetworkMembers {
 	protected static final Map<Predicate<Block>, Consumer<Block>> BLOCK_CONSUMER = Maps.newHashMap();
 
 	public static void initialize() {
-		NetworkMemberRegistry.INSTANCE.register(AstromineNetworkTypes.ENERGY, new NetworkMemberRegistry.NetworkTypeRegistryImpl<NetworkType>() {
+		NetworkMemberRegistry.INSTANCE.register(AstromineNetworkTypes.ENERGY, new NetworkMemberRegistry.NetworkTypeProviderImpl<NetworkType>() {
 			@Override
 			public Collection<NetworkMemberType> get(WorldPos pos, @Nullable Direction direction) {
 				if (!this.types.containsKey(pos.getBlock())) {
@@ -69,7 +69,7 @@ public class AstromineNetworkMembers {
 			}
 		});
 
-		NetworkMemberRegistry.INSTANCE.register(AstromineNetworkTypes.ITEM, new NetworkMemberRegistry.NetworkTypeRegistryImpl<NetworkType>() {
+		NetworkMemberRegistry.INSTANCE.register(AstromineNetworkTypes.ITEM, new NetworkMemberRegistry.NetworkTypeProviderImpl<NetworkType>() {
 			@Override
 			public Collection<NetworkMemberType> get(WorldPos pos, @Nullable Direction direction) {
 				if (!this.types.containsKey(pos.getBlock())) {
@@ -82,7 +82,7 @@ public class AstromineNetworkMembers {
 			}
 		});
 
-		NetworkMemberRegistry.INSTANCE.register(AstromineNetworkTypes.FLUID, new NetworkMemberRegistry.NetworkTypeRegistryImpl<NetworkType>() {
+		NetworkMemberRegistry.INSTANCE.register(AstromineNetworkTypes.FLUID, new NetworkMemberRegistry.NetworkTypeProviderImpl<NetworkType>() {
 			@Override
 			public Collection<NetworkMemberType> get(WorldPos pos, @Nullable Direction direction) {
 				if (!this.types.containsKey(pos.getBlock())) {
@@ -99,13 +99,13 @@ public class AstromineNetworkMembers {
 			}
 		});
 
-		NetworkMemberRegistry.NetworkTypeRegistry<NetworkType> energy = NetworkMemberRegistry.INSTANCE.get(AstromineNetworkTypes.ENERGY);
-		NetworkMemberRegistry.NetworkTypeRegistry<NetworkType> fluid = NetworkMemberRegistry.INSTANCE.get(AstromineNetworkTypes.FLUID);
+		NetworkMemberRegistry.NetworkTypeProvider<NetworkType> energy = NetworkMemberRegistry.INSTANCE.get(AstromineNetworkTypes.ENERGY);
+		NetworkMemberRegistry.NetworkTypeProvider<NetworkType> fluid = NetworkMemberRegistry.INSTANCE.get(AstromineNetworkTypes.FLUID);
 
 		BLOCK_CONSUMER.put(block -> block instanceof NetworkBlock, block -> {
 			NetworkBlock networkBlock = (NetworkBlock)block;
-			if(networkBlock.isMember(AstromineNetworkTypes.ENERGY)) energy.register(block, networkBlock.energyType());
-			if(networkBlock.isMember(AstromineNetworkTypes.FLUID)) fluid.register(block, networkBlock.fluidType());
+			if (networkBlock.isMember(AstromineNetworkTypes.ENERGY)) energy.register(block, networkBlock.energyType());
+			if (networkBlock.isMember(AstromineNetworkTypes.FLUID)) fluid.register(block, networkBlock.fluidType());
 		});
 
 		FabricLoader.getInstance().getEntrypoints("astromine-network-members", Runnable.class).forEach(Runnable::run);

@@ -11,10 +11,12 @@ import com.github.vini2003.blade.common.widget.base.PanelWidget;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
@@ -32,6 +34,11 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * A class representing a {@link BaseScreenHandler}
+ * configured as an interface for {@link CraftingRecipe}
+ * creation as {@link JsonElement}.
+ */
 public class RecipeCreatorScreenHandler extends BaseScreenHandler {
     public RecipeCreatorScreenHandler(int syncId, @NotNull PlayerEntity player) {
         super(AstromineScreenHandlers.RECIPE_CREATOR, syncId, player);

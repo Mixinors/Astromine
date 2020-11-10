@@ -24,8 +24,16 @@
 
 package com.github.chainmailstudios.astromine.common.recipe.ingredient;
 
+import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.mojang.serialization.JsonOps;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.tag.ServerTagManagerHolder;
@@ -46,40 +54,61 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+/**
+ * A class representing a recipe ingredient
+ * consisting of (an) {@link ItemStack}(s).
+ *
+ * Serialization and deserialization methods are provided for:
+ * - {@link JsonElement} - through {@link #toJson()} and {@link #fromJson(JsonElement)}.
+ * - {@link ByteBuf} - through {@link #toPacket(PacketByteBuf)} and {@link #fromPacket(PacketByteBuf)}.
+ */
 public class ItemIngredient implements Predicate<ItemStack> {
 	private final Entry[] entries;
+
 	private ItemStack[] matchingStacks;
+
 	private Ingredient ingredient;
 
+	/** Instantiates a {@link ItemIngredient} with the given values
+	 * as {@link Entry...} entries. */
 	private ItemIngredient(Entry... entries) {
 		this.entries = entries;
 	}
 
+	/** Instantiates a {@link ItemIngredient} with the given values
+	 *  as {@link ItemIngredient...} stacks. */
 	public static ItemIngredient ofItemStacks(ItemStack... stacks) {
 		return ofItemStacks(Arrays.asList(stacks));
 	}
 
+	/** Instantiates a {@link ItemIngredient} with the given values
+	 * as {@link Collection<ItemStack>} stacks. */
 	public static ItemIngredient ofItemStacks(Collection<ItemStack> stacks) {
 		return new ItemIngredient(new SimpleEntry(stacks));
 	}
 
+	/** Instantiates a {@link ItemIngredient} with the given values
+	 * as {@link Stream<Entry>} entries.
+	 */
 	public static ItemIngredient ofEntries(Stream<? extends Entry> stacks) {
 		return new ItemIngredient(stacks.toArray(Entry[]::new));
 	}
 
+	/** Deserializes an {@link ItemIngredient} from a {@link JsonElement}. */
 	public static ItemIngredient fromJson(JsonElement json) {
 		if (json != null && !json.isJsonNull()) {
 			if (json.isJsonObject()) {
-				return ofEntries(Stream.of(entryFromJson(json.getAsJsonObject())));
+				return ofEntries(Stream.of(Entry.fromJson(json.getAsJsonObject())));
 			} else if (json.isJsonArray()) {
 				JsonArray jsonArray = json.getAsJsonArray();
+
 				if (jsonArray.size() == 0) {
 					throw new JsonSyntaxException("Item array cannot be empty, at least one item must be defined");
 				} else {
-					return ofEntries(StreamSupport.stream(jsonArray.spliterator(), false).map((jsonElement) -> {
-						return entryFromJson(JsonHelper.asObject(jsonElement, "item"));
-					}));
+					return ofEntries(StreamSupport.stream(jsonArray.spliterator(), false).map((jsonElement) -> Entry.fromJson(jsonElement.getAsJsonObject().get("item"))));
 				}
+			} else if (json.isJsonPrimitive() && json.getAsJsonPrimitive().isString()) {
+				return ofEntries(Stream.generate(() -> new SimpleEntry(new ItemStack(Registry.ITEM.get(new Identifier(json.getAsString())), 1))));
 			} else {
 				throw new JsonSyntaxException("Expected item to be object or array of objects");
 			}
@@ -88,95 +117,36 @@ public class ItemIngredient implements Predicate<ItemStack> {
 		}
 	}
 
-	private static Entry entryFromJson(JsonObject json) {
-		if (json.has("item") && json.has("tag")) {
-			throw new JsonParseException("An ingredient entry is either a tag or an item, not both");
+	/** Serializes this {@link ItemIngredient} to a {@link JsonElement}. */
+	public JsonElement toJson() {
+		if (entries.length == 1 && entries[0] instanceof TagEntry) {
+			JsonObject jsonObject = new JsonObject();
+
+			jsonObject.addProperty("tag", ServerTagManagerHolder.getTagManager().getItems().getTagId(((TagEntry) entries[0]).tag).toString());
+			jsonObject.addProperty("amount", ((TagEntry) entries[0]).count);
+
+			return jsonObject;
+		} else if (entries.length >= 1) {
+			JsonArray jsonArray = new JsonArray();
+
+			for (Entry entry : entries) {
+				jsonArray.add(StackUtilities.toJson(((SimpleEntry) entry).stacks.iterator().next()));
+			}
+
+			return jsonArray;
 		} else {
-			int count = 1;
-			if (json.has("count")) {
-				count = JsonHelper.getInt(json, "count");
-			}
-			if (json.has("item")) {
-				Identifier itemId = new Identifier(JsonHelper.getString(json, "item"));
-				Item item = Registry.ITEM.getOrEmpty(itemId).orElseThrow(() -> {
-					return new JsonSyntaxException("Unknown item '" + itemId + "'");
-				});
-				return new SimpleEntry(new ItemStack(item, count));
-			} else if (json.has("tag")) {
-				Identifier tagId = new Identifier(JsonHelper.getString(json, "tag"));
-				Tag<Item> tag = ServerTagManagerHolder.getTagManager().getItems().getTag(tagId);
-				if (tag == null) {
-					throw new JsonSyntaxException("Unknown item tag '" + tagId + "'");
-				} else {
-					return new TagEntry(tag, count);
-				}
-			} else {
-				throw new JsonParseException("An ingredient entry needs either a tag or an item");
-			}
+			throw new UnsupportedOperationException("Cannot serialize a FluidIngredient with no entries");
 		}
 	}
 
+	/** Deserializes an {@link ItemIngredient} from a {@link ByteBuf}. */
 	public static ItemIngredient fromPacket(PacketByteBuf buffer) {
-		int i = buffer.readVarInt();
-		return ofEntries(Stream.generate(() -> {
-			return new SimpleEntry(buffer.readItemStack());
-		}).limit(i));
+		int size = buffer.readVarInt();
+		return ofEntries(Stream.generate(() -> new SimpleEntry(buffer.readItemStack())).limit(size));
 	}
 
-	public ItemStack[] getMatchingStacks() {
-		this.cacheMatchingStacks();
-		return this.matchingStacks;
-	}
-
-	private void cacheMatchingStacks() {
-		if (this.matchingStacks == null) {
-			this.matchingStacks = Arrays.stream(this.entries).flatMap(Entry::getStacks).distinct().toArray(ItemStack[]::new);
-		}
-	}
-
-	public Ingredient asIngredient() {
-		if (ingredient == null) {
-			ingredient = Ingredient.ofStacks(Stream.of(getMatchingStacks()));
-		}
-		return ingredient;
-	}
-
-	@Override
-	public boolean test(ItemStack stack) {
-		return testMatching(stack) != null;
-	}
-
-	public ItemStack testMatching(ItemStack stack) {
-		if (stack == null)
-			return ItemStack.EMPTY;
-		ItemStack[] matchingStacks = getMatchingStacks();
-		if (this.matchingStacks.length == 0)
-			return ItemStack.EMPTY;
-		for (ItemStack matchingStack : matchingStacks) {
-			if (ItemStack.areItemsEqual(matchingStack, stack) && stack.getCount() >= matchingStack.getCount())
-				return matchingStack.copy();
-		}
-		return ItemStack.EMPTY;
-	}
-
-	public boolean allows(ItemStack stack) {
-		return testAllows(stack) != ItemStack.EMPTY;
-	}
-
-	public ItemStack testAllows(ItemStack stack) {
-		if (stack == null)
-			return ItemStack.EMPTY;
-		ItemStack[] matchingStacks = getMatchingStacks();
-		if (this.matchingStacks.length == 0)
-			return ItemStack.EMPTY;
-		for (ItemStack matchingStack : matchingStacks) {
-			if (ItemStack.areItemsEqual(matchingStack, stack))
-				return matchingStack.copy();
-		}
-		return ItemStack.EMPTY;
-	}
-
-	public void write(PacketByteBuf buffer) {
+	/** Serializes an {@link ItemIngredient} to a {@link ByteBuf}. */
+	public void toPacket(PacketByteBuf buffer) {
 		this.cacheMatchingStacks();
 		buffer.writeVarInt(this.matchingStacks.length);
 
@@ -185,40 +155,163 @@ public class ItemIngredient implements Predicate<ItemStack> {
 		}
 	}
 
-	interface Entry {
-		Stream<ItemStack> getStacks();
+	/** Returns the matching stacks of this ingredient. */
+	public ItemStack[] getMatchingStacks() {
+		this.cacheMatchingStacks();
+		return this.matchingStacks;
 	}
 
+	/** Caches the matching stacks of this ingredient. */
+	private void cacheMatchingStacks() {
+		if (this.matchingStacks == null) {
+			this.matchingStacks = Arrays.stream(this.entries).flatMap(Entry::getStacks).distinct().toArray(ItemStack[]::new);
+		}
+	}
+
+	/** Returns this {@link ItemIngredient} as the standard {@link Ingredient}. */
+	public Ingredient asIngredient() {
+		if (ingredient == null) {
+			ingredient = Ingredient.ofStacks(Stream.of(getMatchingStacks()));
+		}
+		return ingredient;
+	}
+
+	/** Asserts whether the given {@link ItemStack} has the
+	 * same item, tag (if present), and equal or bigger amount, than any of the
+	 * stacks of this ingredient or not. */
+	@Override
+	public boolean test(ItemStack stack) {
+		return testMatching(stack) != null;
+	}
+
+	/** Asserts whether the given {@link ItemStack} has the same item and tag (if present)
+	 * as any of the stacks of this ingredient or not. */
+	public boolean testWeak(ItemStack stack) {
+		ItemStack[] matchingStacks = getMatchingStacks();
+		if (this.matchingStacks.length == 0)
+			return false;
+		for (ItemStack matchingStack : matchingStacks) {
+			if (ItemStack.areItemsEqual(stack, matchingStack) && (!matchingStack.hasTag() || ItemStack.areTagsEqual(stack, matchingStack))) return true;
+		}
+		return false;
+	}
+
+	/** Returns the first stack to have the same
+	 * item, tag (if present), and equal or bigger count, than the
+	 * given {@link ItemStack}. */
+	public ItemStack testMatching(ItemStack stack) {
+		if (stack == null)
+			return ItemStack.EMPTY;
+		ItemStack[] matchingStacks = getMatchingStacks();
+		if (this.matchingStacks.length == 0)
+			return ItemStack.EMPTY;
+		for (ItemStack matchingStack : matchingStacks) {
+			if (ItemStack.areItemsEqual(matchingStack, stack) && (!matchingStack.hasTag() || ItemStack.areTagsEqual(matchingStack, stack)) && stack.getCount() >= matchingStack.getCount())
+				return matchingStack.copy();
+		}
+		return ItemStack.EMPTY;
+	}
+
+	/**
+	 * A class representing a supplier of
+	 * {@link ItemStack}s as a {@link Stream}.
+	 */
+	interface Entry {
+		/** Returns the stacks of this entry. */
+		Stream<ItemStack> getStacks();
+
+		/** Deserializes a {@link SimpleEntry} or {@link TagEntry}
+		 * from a {@link JsonElement}. */
+		static Entry fromJson(JsonElement jsonElement) {
+			if (!jsonElement.isJsonObject()) throw new JsonParseException("A fluid ingredient entry must be an object");
+
+			JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+			if (jsonObject.has("item") && jsonObject.has("tag")) {
+				throw new JsonParseException("An item ingredient entry is either a tag or an item, not both");
+			} else {
+				int count = 1;
+
+				CompoundTag stackTag = null;
+
+				if (jsonObject.has("count")) {
+					count = JsonHelper.getInt(jsonObject, "count");
+				}
+
+				if (jsonObject.has("tag")) {
+					stackTag = (CompoundTag) JsonOps.INSTANCE.convertTo(NbtOps.INSTANCE, jsonObject.get("tag"));
+				}
+
+				if (jsonObject.has("item")) {
+					Identifier itemId = new Identifier(JsonHelper.getString(jsonObject, "item"));
+
+					Item item = Registry.ITEM.getOrEmpty(itemId).orElseThrow(() -> new JsonSyntaxException("Unknown item '" + itemId + "'"));
+
+					ItemStack stack = new ItemStack(item, count);
+
+					if (stackTag != null) {
+						stack.setTag(stackTag);
+					}
+
+					return new SimpleEntry(stack);
+				} else if (jsonObject.has("tag")) {
+					Identifier tagId = new Identifier(JsonHelper.getString(jsonObject, "tag"));
+
+					Tag<Item> tag = ServerTagManagerHolder.getTagManager().getItems().getTag(tagId);
+
+					if (tag == null) {
+						throw new JsonSyntaxException("Unknown item tag '" + tagId + "'");
+					} else {
+						return new TagEntry(tag, count);
+					}
+				} else {
+					throw new JsonParseException("An item ingredient entry needs either a tag or an item");
+				}
+			}
+		}
+	}
+
+	/**
+	 * A class representing an {@link Entry}
+	 * of a fixed collection of {@link ItemStack}s.
+	 */
 	private static class SimpleEntry implements Entry {
 		private final Collection<ItemStack> stacks;
 
+		/** Instantiates a {@link SimpleEntry} with the given values. */
 		public SimpleEntry(Collection<ItemStack> stacks) {
 			this.stacks = stacks;
 		}
 
+		/** Instantiates a {@link SimpleEntry} with the given value. */
 		public SimpleEntry(ItemStack stack) {
 			this(Collections.singleton(stack));
 		}
 
+		/** Returns the stacks of this entry. */
 		@Override
 		public Stream<ItemStack> getStacks() {
 			return stacks.stream();
 		}
 	}
 
+	/**
+	 * A class representing an {@link Entry}
+	 * of a dynamic collection of {@link ItemStack}s,
+	 * gathered from a {@link Tag<Item>}.
+	 */
 	private static class TagEntry implements Entry {
 		private final Tag<Item> tag;
+
 		private final int count;
 
+		/** Instantiates a {@link TagEntry} with the given values. */
 		private TagEntry(Tag<Item> tag, int count) {
 			this.tag = tag;
 			this.count = count;
 		}
 
-		private TagEntry(Tag<Item> tag) {
-			this(tag, 1);
-		}
-
+		/** Returns the stacks of this entry. */
 		@Override
 		public Stream<ItemStack> getStacks() {
 			return this.tag.values().stream().map(item -> new ItemStack(item, count));

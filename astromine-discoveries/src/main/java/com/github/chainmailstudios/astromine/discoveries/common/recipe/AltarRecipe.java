@@ -35,7 +35,6 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
-import com.github.chainmailstudios.astromine.common.recipe.base.AstromineRecipe;
 import com.github.chainmailstudios.astromine.common.utilities.IngredientUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.discoveries.common.block.entity.AltarBlockEntity;

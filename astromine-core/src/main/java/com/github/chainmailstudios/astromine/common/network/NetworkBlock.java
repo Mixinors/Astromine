@@ -53,9 +53,9 @@ public interface NetworkBlock {
 		}
 	}
 	default NetworkMemberType getMemberType(NetworkType type) {
-		if(type.equals(AstromineNetworkTypes.ENERGY)) return energyType();
-		else if(type.equals(AstromineNetworkTypes.FLUID)) return fluidType();
-		else if(type.equals(AstromineNetworkTypes.ITEM)) return itemType();
+		if (type.equals(AstromineNetworkTypes.ENERGY)) return energyType();
+		else if (type.equals(AstromineNetworkTypes.FLUID)) return fluidType();
+		else if (type.equals(AstromineNetworkTypes.ITEM)) return itemType();
 		else return NetworkMemberType.NONE;
 	}
 	default NetworkMemberType fluidType() {

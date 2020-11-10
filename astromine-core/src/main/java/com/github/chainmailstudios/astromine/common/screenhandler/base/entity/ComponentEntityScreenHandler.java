@@ -27,9 +27,12 @@ package com.github.chainmailstudios.astromine.common.screenhandler.base.entity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.BlockStateScreenHandler;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentEntity;
@@ -66,17 +69,26 @@ public abstract class ComponentEntityScreenHandler extends BaseScreenHandler {
 		entity = (ComponentEntity) player.world.getEntityById(entityId);
 	}
 
+	/** Returns an {@link ItemStack} representing this entity in the {@link TabWidget}. */
 	public abstract ItemStack getSymbol();
 
+	/** Returns the additional height that the {@link TabWidget} should have.
+	 * At that, I don't know why this method is a thing. */
 	public int getTabWidgetExtendedHeight() {
 		return 0;
 	}
 
+	/** Override behavior to only allow the {@link ScreenHandler} to be open
+	 * when possible, and while the associated {@link Entity} has not died
+	 * or moved too far away. */
 	@Override
 	public boolean canUse(PlayerEntity player) {
 		return this.entity.isAlive() && this.entity.distanceTo(player) < 8.0F;
 	}
 
+	/** Override behavior to build the entity interface,
+	 * instantiating and configuring the {@link TabWidget},
+	 * its tabs, the inventory, and other miscellaneous things. */
 	@Override
 	public void initialize(int width, int height) {
 		tabs = new TabWidget();

@@ -31,10 +31,16 @@ import com.github.chainmailstudios.astromine.common.registry.base.UniRegistry;
 
 import java.util.function.Consumer;
 
+/**
+ * A class representing a {@link UniRegistry} for
+ * registration of {@link Fluid}s mapped to {@link Consumer<LivingEntity>}s.
+ *
+ * The registered consumer should apply an effect
+ * to the given entity related to the fluid.
+ */
 public class FluidEffectRegistry extends UniRegistry<Fluid, Consumer<LivingEntity>> {
 	public static final FluidEffectRegistry INSTANCE = new FluidEffectRegistry();
 
-	private FluidEffectRegistry() {
-
-	}
+	/** We only want one instance of this. */
+	private FluidEffectRegistry() {}
 }

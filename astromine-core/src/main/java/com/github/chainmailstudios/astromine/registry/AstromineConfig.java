@@ -636,6 +636,9 @@ public class AstromineConfig implements ConfigData {
 
 	@Comment("Energy for the Elite Solidifier.")
 	public double eliteSolidifierEnergy = 65535D;
+
+	@Comment("Default gravity for non-Astromine dimensions.")
+	public double defaultGravity = 0.08D;
 	
 	public static AstromineConfig get() {
 		if (instance == null) {

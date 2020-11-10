@@ -62,7 +62,7 @@ public class IngredientUtilities {
 
 	/** Serializes an {@link ItemIngredient} to a {@link ByteBuf}. */
 	public static void toItemIngredientPacket(PacketByteBuf buffer, ItemIngredient ingredient) {
-		ingredient.write(buffer);
+		ingredient.toPacket(buffer);
 	}
 
 	/** Deserializes a {@link FluidIngredient} from a {@link JsonElement}. */
@@ -77,7 +77,7 @@ public class IngredientUtilities {
 
 	/** Serializes a {@link FluidIngredient} to a {@link ByteBuf}. */
 	public static void toFluidIngredientPacket(PacketByteBuf buffer, FluidIngredient ingredient) {
-		ingredient.write(buffer);
+		ingredient.toPacket(buffer);
 	}
 
 	/** Returns an {@link ItemStack} from the specified {@link Ingredient}

@@ -22,13 +22,24 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.recipe.base;
+package com.github.chainmailstudios.astromine.common.registry;
 
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Recipe;
+import net.minecraft.item.Item;
+import net.minecraft.util.Pair;
 
-public interface AstromineRecipe<C extends Inventory> extends Recipe<C> {
-	@Override
-	ItemStack getRecipeKindIcon();
+import com.github.chainmailstudios.astromine.common.registry.base.UniRegistry;
+
+/**
+ * A class representing an {@link UniRegistry} for
+ * registration of {@link Item}s to {@link Pair}s
+ * of {@link Float} and {@link Boolean}.
+ *
+ * When an item on this list appears in a conveyor,
+ * its scale is overridden by the registered value.
+ */
+public class ConveyorSpecialScaleRegistry extends UniRegistry<Item, Pair<Float, Boolean>> {
+	public static final ConveyorSpecialScaleRegistry INSTANCE = new ConveyorSpecialScaleRegistry();
+
+	/** We only want one instance of this. */
+	private ConveyorSpecialScaleRegistry() {}
 }

@@ -127,7 +127,7 @@ public class NetworkInstance implements Iterable<NetworkNode>, Tickable {
 	}
 
 	public boolean isStupidlyEmpty() {
-		this.nodes.removeIf(node -> !NetworkMemberRegistry.get(WorldPos.of(world, node.getBlockPos()), null).isNode(getType()));
+		this.nodes.removeif (node -> !NetworkMemberRegistry.get(WorldPos.of(world, node.getBlockPos()), null).isNode(getType()));
 		if (this.nodes.isEmpty()) {
 			AstromineCommon.LOGGER.error("Network is empty! " + toString());
 			return true;

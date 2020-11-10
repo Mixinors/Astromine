@@ -38,25 +38,25 @@ public interface NetworkMember {
 	Collection<NetworkMemberType> NODE = Collections.singleton(NetworkMemberType.NODE);
 	Collection<NetworkMemberType> NONE = Collections.emptySet();
 
-	Collection<NetworkMemberType> getMemberNetworkTypeProperties(NetworkType type);
+	Collection<NetworkMemberType> getNetworkMemberTypes(NetworkType type);
 
 	default boolean acceptsType(NetworkType type) {
-		return !getMemberNetworkTypeProperties(type).isEmpty();
+		return !getNetworkMemberTypes(type).isEmpty();
 	}
 
 	default boolean isProvider(NetworkType type) {
-		return getMemberNetworkTypeProperties(type).contains(NetworkMemberType.PROVIDER);
+		return getNetworkMemberTypes(type).contains(NetworkMemberType.PROVIDER);
 	}
 
 	default boolean isRequester(NetworkType type) {
-		return getMemberNetworkTypeProperties(type).contains(NetworkMemberType.REQUESTER);
+		return getNetworkMemberTypes(type).contains(NetworkMemberType.REQUESTER);
 	}
 
 	default boolean isBuffer(NetworkType type) {
-		return getMemberNetworkTypeProperties(type).contains(NetworkMemberType.BUFFER);
+		return getNetworkMemberTypes(type).contains(NetworkMemberType.BUFFER);
 	}
 
 	default boolean isNode(NetworkType type) {
-		return getMemberNetworkTypeProperties(type).contains(NetworkMemberType.NODE);
+		return getNetworkMemberTypes(type).contains(NetworkMemberType.NODE);
 	}
 }
