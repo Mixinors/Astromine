@@ -1,10 +1,23 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [" 1 ", "343", "343"],
+  "pattern": [
+    " 1 ",
+    "343",
+    "343"
+  ],
   "key": {
-    "1": {"tag": "c:copper_plates"},
-    "3": {"tag": "c:tin_plates"},
-    "4": {"tag": "c:redstone_dusts"}
+    "1": {
+      "tag": "c:copper_plates"
+    },
+    "3": {
+      "tag": "c:tin_plates"
+    },
+    "4": {
+      "tag": "c:redstone_dusts"
+    }
   },
-  "result": {"item": "astromine:basic_battery", "count": 1}
+  "result": {
+    "item": "astromine:basic_battery",
+    "count": 1
+  }
 }

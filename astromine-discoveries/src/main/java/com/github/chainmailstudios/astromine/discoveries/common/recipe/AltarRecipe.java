@@ -82,7 +82,7 @@ public class AltarRecipe implements AstromineRecipe<AltarBlockEntity> {
 
 	@Override
 	public ItemStack craft(AltarBlockEntity inventory) {
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class AltarRecipe implements AstromineRecipe<AltarBlockEntity> {
 
 	@Override
 	public ItemStack getOutput() {
-		return output;
+		return output.copy();
 	}
 
 	@Override
@@ -125,9 +125,7 @@ public class AltarRecipe implements AstromineRecipe<AltarBlockEntity> {
 
 		public static final Serializer INSTANCE = new Serializer();
 
-		private Serializer() {
-			// Locked.
-		}
+		private Serializer() {}
 
 		@Override
 		public AltarRecipe read(Identifier identifier, JsonObject object) {
@@ -159,9 +157,7 @@ public class AltarRecipe implements AstromineRecipe<AltarBlockEntity> {
 	public static final class Type implements AstromineRecipeType<AltarRecipe> {
 		public static final Type INSTANCE = new Type();
 
-		private Type() {
-			// Locked.
-		}
+		private Type() {}
 	}
 
 	public static final class Format {

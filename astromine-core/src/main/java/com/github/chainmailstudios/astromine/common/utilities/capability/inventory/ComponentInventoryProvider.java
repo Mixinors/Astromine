@@ -25,10 +25,7 @@
 package com.github.chainmailstudios.astromine.common.utilities.capability.inventory;
 
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.InventoryProvider;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -37,46 +34,74 @@ import net.minecraft.world.WorldAccess;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.InventoryFromItemComponent;
-import com.github.chainmailstudios.astromine.common.utilities.TransportUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 
 import java.util.stream.IntStream;
 
 public interface ComponentInventoryProvider extends net.minecraft.block.InventoryProvider, SidedInventory, InventoryFromItemComponent {
+	/** Returns this inventory. */
 	@Override
 	default SidedInventory getInventory(BlockState state, WorldAccess world, BlockPos pos) {
 		return this;
 	}
 
-	default boolean isSideOpenForItems(int slot, Direction direction, boolean inserting) {
-		return inserting ? TransportUtilities.isInsertingItem(BlockEntityTransferComponent.get(this), direction, true) && getItemInputSlots().contains(slot) : TransportUtilities.isExtractingItem(BlockEntityTransferComponent.get(this), direction, true) && getItemOutputSlots().contains(slot);
-	}
-
+	/** Returns this inventory's input slots, defaulting to all slots. */
 	default IntSet getItemInputSlots() {
 		return new IntArraySet(IntStream.range(0, size()).toArray());
 	}
 
+	/** Returns this inventory's output slots, defaulting to all slots. */
 	default IntSet getItemOutputSlots() {
 		return new IntArraySet(IntStream.range(0, size()).toArray());
 	}
 
+	/** Override behavior to redirect calls to this inventory's
+	 * {@link BlockEntityTransferComponent}, if present. */
 	@Override
-	default boolean canInsert(int slot, ItemStack stack, Direction dir) {
-		return isSideOpenForItems(slot, dir, true);
+	default boolean canInsert(int slot, ItemStack stack, Direction direction) {
+		BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(this);
+		
+		if (transferComponent != null) {
+			return transferComponent.hasItem() && transferComponent.getItem(direction).canInsert() && getItemComponent().canInsert(direction, stack, slot);
+		} else {
+			return getItemComponent().canInsert(direction, stack, slot);
+		}
 	}
 
+	/** Override behavior to redirect calls to this inventory's
+	 * {@link BlockEntityTransferComponent}, if present. */
 	@Override
-	default boolean canExtract(int slot, ItemStack stack, Direction dir) {
-		return isSideOpenForItems(slot, dir, false);
+	default boolean canExtract(int slot, ItemStack stack, Direction direction) {
+		BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(this);
+
+		if (transferComponent != null) {
+			return transferComponent.hasItem() && transferComponent.getItem(direction).canExtract() && getItemComponent().canExtract(direction, stack, slot);
+		} else {
+			return getItemComponent().canExtract(direction, stack, slot);
+		}
 	}
 
+	/** Override behavior to redirect calls to this inventory's
+	 * {@link BlockEntityTransferComponent}, if present. */
 	@Override
-	default int[] getAvailableSlots(Direction side) {
-		return IntStream.range(0, size()).filter(slot -> isSideOpenForItems(slot, side, true) || isSideOpenForItems(slot, side, false)).toArray();
+	default int[] getAvailableSlots(Direction direction) {
+		BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(this);
+
+		if (transferComponent != null) {
+			if (transferComponent.hasItem()) {
+				if (transferComponent.getItem(direction).canInsert()) {
+					return IntStream.range(0, size()).filter(slot -> getItemInputSlots().contains(slot)).toArray();
+				} else if (transferComponent.getItem(direction).canExtract()) {
+					return IntStream.range(0, size()).filter(slot -> getItemOutputSlots().contains(slot)).toArray();
+				}
+			}
+		}
+
+		return new int[] { 0 };
 	}
 
+	/** Override behavior to return this as an {@link ItemComponent}. */
 	@Override
 	default ItemComponent getItemComponent() {
 		return ItemComponent.get(this);

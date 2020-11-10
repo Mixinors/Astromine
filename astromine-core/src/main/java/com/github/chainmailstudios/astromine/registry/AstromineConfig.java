@@ -112,29 +112,29 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Energy for the Elite Solid Generator.")
 	public double eliteSolidGeneratorEnergy = 65535D;
 
-	@Comment("Speed for the Primitive Presser.")
-	public double primitivePresserSpeed = 0.5D;
+	@Comment("Speed for the Primitive Press.")
+	public double primitivePressSpeed = 0.5D;
 
-	@Comment("Speed for the Basic Presser.")
-	public double basicPresserSpeed = 1D;
+	@Comment("Speed for the Basic Press.")
+	public double basicPressSpeed = 1D;
 
-	@Comment("Speed for the Advanced Presser.")
-	public double advancedPresserSpeed = 2D;
+	@Comment("Speed for the Advanced Press.")
+	public double advancedPressSpeed = 2D;
 
-	@Comment("Speed for the Elite Presser.")
-	public double elitePresserSpeed = 4D;
+	@Comment("Speed for the Elite Press.")
+	public double elitePressSpeed = 4D;
 
-	@Comment("Energy for the Primitive Presser.")
-	public double primitivePresserEnergy = 2048D;
+	@Comment("Energy for the Primitive Press.")
+	public double primitivePressEnergy = 2048D;
 
-	@Comment("Energy for the Basic Presser.")
-	public double basicPresserEnergy = 16384D;
+	@Comment("Energy for the Basic Press.")
+	public double basicPressEnergy = 16384D;
 
-	@Comment("Energy for the Advanced Presser.")
-	public double advancedPresserEnergy = 32767D;
+	@Comment("Energy for the Advanced Press.")
+	public double advancedPressEnergy = 32767D;
 
-	@Comment("Energy for the Elite Presser.")
-	public double elitePresserEnergy = 65535D;
+	@Comment("Energy for the Elite Press.")
+	public double elitePressEnergy = 65535D;
 	
 	@Comment("Speed for the Primitive Wire Mill.")
 	public double primitiveWireMillSpeed = 0.5D;
@@ -160,41 +160,41 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Energy for the Elite Wire Mill.")
 	public double eliteWireMillEnergy = 65535D;
 
-	@Comment("Speed for the Primitive Liquid Generator.")
-	public double primitiveLiquidGeneratorSpeed = 0.5D;
+	@Comment("Speed for the Primitive Fluid Generator.")
+	public double primitiveFluidGeneratorSpeed = 0.5D;
 
-	@Comment("Speed for the Basic Liquid Generator.")
-	public double basicLiquidGeneratorSpeed = 1D;
+	@Comment("Speed for the Basic Fluid Generator.")
+	public double basicFluidGeneratorSpeed = 1D;
 
-	@Comment("Speed for the Advanced Liquid Generator.")
-	public double advancedLiquidGeneratorSpeed = 2D;
+	@Comment("Speed for the Advanced Fluid Generator.")
+	public double advancedFluidGeneratorSpeed = 2D;
 
-	@Comment("Speed for the Elite Liquid Generator.")
-	public double eliteLiquidGeneratorSpeed = 4D;
+	@Comment("Speed for the Elite Fluid Generator.")
+	public double eliteFluidGeneratorSpeed = 4D;
 
-	@Comment("Energy for the Primitive Liquid Generator.")
-	public double primitiveLiquidGeneratorEnergy = 2048D;
+	@Comment("Energy for the Primitive Fluid Generator.")
+	public double primitiveFluidGeneratorEnergy = 2048D;
 
-	@Comment("Energy for the Basic Liquid Generator.")
-	public double basicLiquidGeneratorEnergy = 16384D;
+	@Comment("Energy for the Basic Fluid Generator.")
+	public double basicFluidGeneratorEnergy = 16384D;
 
-	@Comment("Energy for the Advanced Liquid Generator.")
-	public double advancedLiquidGeneratorEnergy = 32767D;
+	@Comment("Energy for the Advanced Fluid Generator.")
+	public double advancedFluidGeneratorEnergy = 32767D;
 
-	@Comment("Energy for the Elite Liquid Generator.")
-	public double eliteLiquidGeneratorEnergy = 65535D;
+	@Comment("Energy for the Elite Fluid Generator.")
+	public double eliteFluidGeneratorEnergy = 65535D;
 
-	@Comment("Fluid for the Primitive Liquid Generator.")
-	public long primitiveLiquidGeneratorFluid = 4L;
+	@Comment("Fluid for the Primitive Fluid Generator.")
+	public long primitiveFluidGeneratorFluid = 4L;
 
-	@Comment("Fluid for the Basic Liquid Generator.")
-	public long basicLiquidGeneratorFluid = 8L;
+	@Comment("Fluid for the Basic Fluid Generator.")
+	public long basicFluidGeneratorFluid = 8L;
 
-	@Comment("Fluid for the Advanced Liquid Generator.")
-	public long advancedLiquidGeneratorFluid = 16L;
+	@Comment("Fluid for the Advanced Fluid Generator.")
+	public long advancedFluidGeneratorFluid = 16L;
 
-	@Comment("Fluid for the Elite Liquid Generator.")
-	public long eliteLiquidGeneratorFluid = 64L;
+	@Comment("Fluid for the Elite Fluid Generator.")
+	public long eliteFluidGeneratorFluid = 64L;
 
 	@Comment("Speed for the Primitive Fluid Mixer.")
 	public double primitiveFluidMixerSpeed = 0.5D;
@@ -304,29 +304,29 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Fluid for the Elite Refinery.")
 	public long eliteRefineryFluid = 64L;
 
-	@Comment("Speed for the Primitive Electric Smelter.")
-	public double primitiveElectricSmelterSpeed = 0.5D;
+	@Comment("Speed for the Primitive Electric Furnace.")
+	public double primitiveElectricFurnaceSpeed = 0.5D;
 
-	@Comment("Speed for the Basic Electric Smelter.")
-	public double basicElectricSmelterSpeed = 1D;
+	@Comment("Speed for the Basic Electric Furnace.")
+	public double basicElectricFurnaceSpeed = 1D;
 
-	@Comment("Speed for the Advanced Electric Smelter.")
-	public double advancedElectricSmelterSpeed = 2D;
+	@Comment("Speed for the Advanced Electric Furnace.")
+	public double advancedElectricFurnaceSpeed = 2D;
 
-	@Comment("Speed for the Elite Electric Smelter.")
-	public double eliteElectricSmelterSpeed = 4D;
+	@Comment("Speed for the Elite Electric Furnace.")
+	public double eliteElectricFurnaceSpeed = 4D;
 
-	@Comment("Energy for the Primitive Electric Smelter.")
-	public double primitiveElectricSmelterEnergy = 2048D;
+	@Comment("Energy for the Primitive Electric Furnace.")
+	public double primitiveElectricFurnaceEnergy = 2048D;
 
-	@Comment("Energy for the Basic Electric Smelter.")
-	public double basicElectricSmelterEnergy = 16384D;
+	@Comment("Energy for the Basic Electric Furnace.")
+	public double basicElectricFurnaceEnergy = 16384D;
 
-	@Comment("Energy for the Advanced Electric Smelter.")
-	public double advancedElectricSmelterEnergy = 32767D;
+	@Comment("Energy for the Advanced Electric Furnace.")
+	public double advancedElectricFurnaceEnergy = 32767D;
 
-	@Comment("Energy for the Elite Electric Smelter.")
-	public double eliteElectricSmelterEnergy = 65535D;
+	@Comment("Energy for the Elite Electric Furnace.")
+	public double eliteElectricFurnaceEnergy = 65535D;
 
 	@Comment("Speed for the Primitive Alloy Smelter.")
 	public double primitiveAlloySmelterSpeed = 0.5D;
@@ -358,11 +358,11 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Energy for the Block Breaker.")
 	public double blockBreakerEnergy = 16384D;
 
-	@Comment("Energy for the Fluid Inserter.")
-	public double fluidInserterEnergy = 16384D;
+	@Comment("Energy for the Fluid Placer.")
+	public double fluidPlacerEnergy = 16384D;
 
-	@Comment("Energy for the Fluid Extractor.")
-	public double fluidExtractorEnergy = 16384D;
+	@Comment("Energy for the Fluid Collector.")
+	public double fluidCollectorEnergy = 16384D;
 
 	@Comment("Speed for the Vent.")
 	public double ventSpeed = 1D;
@@ -427,11 +427,11 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Energy for the Block Breaker actions.")
 	public double blockBreakerEnergyConsumed = 1024D;
 
-	@Comment("Energy for the Fluid Inserter actions.")
-	public double fluidInserterEnergyConsumed = 1024D;
+	@Comment("Energy for the Fluid Placer actions.")
+	public double fluidPlacerEnergyConsumed = 1024D;
 
-	@Comment("Energy for the Fluid Extractor actions.")
-	public double fluidExtractorEnergyConsumed = 1024D;
+	@Comment("Energy for the Fluid Collector actions.")
+	public double fluidCollectorEnergyConsumed = 1024D;
 
 	@Comment("Energy for the Vent actions.")
 	public double ventEnergyConsumed = 1024D;
@@ -442,11 +442,11 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Delay for the Block Breaker actions (smaller is faster).")
 	public long blockBreakerSpeed = 40L;
 
-	@Comment("Delay for the Fluid Inserter actions (smaller is faster).")
-	public long fluidInserterSpeed = 40L;
+	@Comment("Delay for the Fluid Placer actions (smaller is faster).")
+	public long fluidPlacerSpeed = 40L;
 
-	@Comment("Delay for the Fluid Extractor actions (smaller is faster).")
-	public long fluidExtractorSpeed = 40L;
+	@Comment("Delay for the Fluid Collector actions (smaller is faster).")
+	public long fluidCollectorSpeed = 40L;
 
 	@Comment("Energy for the Gravity Gauntlet.")
 	public double gravityGauntletEnergy = 16384D;
@@ -565,6 +565,78 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Fluid denominator for the Fluid Cable and inter-machine transfer.")
 	public long fluidTransferDenominator = 5;
 
+	@Comment("Fluid for the Primitive Melter.")
+	public long primitiveMelterFluid = 4L;
+
+	@Comment("Speed for the Primitive Melter.")
+	public double primitiveMelterSpeed = 0.5D;
+
+	@Comment("Fluid for the Basic Melter.")
+	public long basicMelterFluid = 8L;
+
+	@Comment("Speed for the Basic Melter.")
+	public double basicMelterSpeed = 1D;
+
+	@Comment("Fluid for the Advanced Melter.")
+	public long advancedMelterFluid = 16L;
+
+	@Comment("Speed for the Advanced Melter.")
+	public double advancedMelterSpeed = 2D;
+
+	@Comment("Fluid for the Elite Melter.")
+	public long eliteMelterFluid = 64L;
+
+	@Comment("Speed for the Elite Melter.")
+	public double eliteMelterSpeed = 4D;
+
+	@Comment("Energy for the Primitive Melter.")
+	public double primitiveMelterEnergy = 2048D;
+
+	@Comment("Energy for the Basic Melter.")
+	public double basicMelterEnergy = 16384D;
+
+	@Comment("Energy for the Advanced Melter.")
+	public double advancedMelterEnergy = 32767D;
+
+	@Comment("Energy for the Elite Melter.")
+	public double eliteMelterEnergy = 65535D;
+
+	@Comment("Fluid for the Primitive Solidifier.")
+	public long primitiveSolidifierFluid = 4L;
+
+	@Comment("Speed for the Primitive Solidifier.")
+	public double primitiveSolidifierSpeed = 0.5D;
+
+	@Comment("Fluid for the Basic Solidifier.")
+	public long basicSolidifierFluid = 8L;
+
+	@Comment("Speed for the Basic Solidifier.")
+	public double basicSolidifierSpeed = 1D;
+
+	@Comment("Fluid for the Advanced Solidifier.")
+	public long advancedSolidifierFluid = 16L;
+
+	@Comment("Speed for the Advanced Solidifier.")
+	public double advancedSolidifierSpeed = 2D;
+
+	@Comment("Fluid for the Elite Solidifier.")
+	public long eliteSolidifierFluid = 64L;
+
+	@Comment("Speed for the Elite Solidifier.")
+	public double eliteSolidifierSpeed = 4D;
+
+	@Comment("Energy for the Primitive Solidifier.")
+	public double primitiveSolidifierEnergy = 2048D;
+
+	@Comment("Energy for the Basic Solidifier.")
+	public double basicSolidifierEnergy = 16384D;
+
+	@Comment("Energy for the Advanced Solidifier.")
+	public double advancedSolidifierEnergy = 32767D;
+
+	@Comment("Energy for the Elite Solidifier.")
+	public double eliteSolidifierEnergy = 65535D;
+	
 	public static AstromineConfig get() {
 		if (instance == null) {
 			try {

@@ -28,10 +28,23 @@ import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.google.common.base.Objects;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 
 public class SimpleEnergyComponent implements EnergyComponent {
+	public static final EnergyComponent INFINITE = new EnergyComponent() {
+		@Override
+		public List<Runnable> getListeners() {
+			return Collections.emptyList();
+		}
+
+		@Override
+		public EnergyVolume getVolume() {
+			return EnergyVolume.of(Double.MAX_VALUE, Double.MAX_VALUE);
+		}
+	};
+
 	private final EnergyVolume content;
 
 	private final List<Runnable> listeners = new ArrayList<>();

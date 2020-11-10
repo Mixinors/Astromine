@@ -29,6 +29,7 @@ import com.github.chainmailstudios.astromine.common.component.block.entity.Block
 import com.github.vini2003.blade.common.collection.base.WidgetCollection;
 import com.github.vini2003.blade.common.widget.base.ButtonWidget;
 import net.minecraft.block.Block;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerContext;
@@ -45,7 +46,6 @@ import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentB
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.NameableComponent;
 import com.github.chainmailstudios.astromine.common.utilities.WidgetUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.vini2003.blade.common.collection.TabWidgetCollection;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import com.github.vini2003.blade.common.miscellaneous.Position;
@@ -62,44 +62,53 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandler {
-	public ComponentBlockEntity syncBlockEntity;
-	public BlockPos position;
-	public Block originalBlock;
-	public Collection<SlotWidget> playerSlots = new HashSet<>();
-	public TabWidgetCollection mainTab;
+/**
+ * A class representing a {@link BlockStateScreenHandler} with an attached
+ * {@link ComponentBlockEntity}.
+ */
+public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreenHandler {
+	protected ComponentBlockEntity blockEntity;
+
+	protected Collection<SlotWidget> playerSlots = new HashSet<>();
+
 	protected TabWidget tabs;
 
-	public ComponentBlockEntityScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
-		super(type, syncId, player);
+	protected TabWidgetCollection mainTab;
 
-		this.position = position;
-		this.syncBlockEntity = (ComponentBlockEntity) player.world.getBlockEntity(position);
-		this.originalBlock = player.world.getBlockState(position).getBlock();
+	/** Instantiates a {@link ComponentBlockEntityScreenHandler},
+	 * synchronizing its attached {@link ComponentBlockEntity}. */
+	public ComponentBlockEntityScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
+		super(type, syncId, player, position);
+
+		this.blockEntity = (ComponentBlockEntity) player.world.getBlockEntity(position);
 
 		if (!player.world.isClient) {
-			syncBlockEntity.doNotSkipInventory();
-			syncBlockEntity.sync();
+			blockEntity.doNotSkipInventory();
+			blockEntity.sync();
 		}
 	}
 
+	/** Returns the {@link Position} at which the {@link TabWidget}
+	 * should be located. */
 	public Position getTabsPosition(int width, int height) {
 		return Position.of(width / 2 - tabs.getWidth() / 2, height / 2 - tabs.getHeight() / 2);
 	}
 
+	/** Returns the {@link Size} which the {@link TabWidget}
+	 * should use. */
 	public Size getTabsSize(int width, int height) {
 		return Size.of(176F, 188F + getTabWidgetExtendedHeight());
 	}
 
+	/** Returns the additional height that the {@link TabWidget} should have.
+	 * At that, I don't know why this method is a thing. */
 	public int getTabWidgetExtendedHeight() {
 		return 0;
 	}
 
-	@Override
-	public boolean canUse(@Nullable PlayerEntity player) {
-		return canUse(ScreenHandlerContext.create(player.world, position), player, originalBlock);
-	}
-
+	/** Override behavior to build the machine interface,
+	 * instantiating and configuring the {@link TabWidget},
+	 * its tabs, the inventory, and other miscellaneous things. */
 	@Override
 	public void initialize(int width, int height) {
 		tabs = new TabWidget();
@@ -108,13 +117,13 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 
 		addWidget(tabs);
 
-		mainTab = (TabWidgetCollection) tabs.addTab(syncBlockEntity.getCachedState().getBlock().asItem());
+		mainTab = (TabWidgetCollection) tabs.addTab(blockEntity.getCachedState().getBlock().asItem());
 		mainTab.setPosition(Position.of(tabs, 0, 25F + 7F));
 		mainTab.setSize(Size.of(176F, 184F));
 
 		TextWidget title = new TextWidget();
 		title.setPosition(Position.of(mainTab, 8, 0));
-		title.setText(new TranslatableText(syncBlockEntity.getCachedState().getBlock().asItem().getTranslationKey()));
+		title.setText(new TranslatableText(blockEntity.getCachedState().getBlock().asItem().getTranslationKey()));
 		title.setColor(4210752);
 		mainTab.addWidget(title);
 
@@ -127,23 +136,23 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 		playerSlots = Slots.addPlayerInventory(invPos, Size.of(18F, 18F), mainTab, getPlayer().inventory);
 
 		Direction rotation = Direction.NORTH;
-		Block block = syncBlockEntity.getCachedState().getBlock();
+		Block block = blockEntity.getCachedState().getBlock();
 
 		if (block instanceof HorizontalFacingBlockWithEntity) {
 			DirectionProperty property = ((HorizontalFacingBlockWithEntity) block).getDirectionProperty();
 			if (property != null)
-				rotation = syncBlockEntity.getCachedState().get(property);
+				rotation = blockEntity.getCachedState().get(property);
 		}
 
 		final Direction finalRotation = rotation;
 
-		BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(syncBlockEntity);
+		BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(blockEntity);
 
 		transferComponent.get().forEach((key, entry) -> {
-			if (key.get(syncBlockEntity) instanceof NameableComponent) {
-				NameableComponent nameableComponent = (NameableComponent) key.get(syncBlockEntity);
+			if (key.get(blockEntity) instanceof NameableComponent) {
+				NameableComponent nameableComponent = (NameableComponent) key.get(blockEntity);
 				TabWidgetCollection current = (TabWidgetCollection) tabs.addTab(nameableComponent.getSymbol(), () -> Collections.singletonList(nameableComponent.getName()));
-				WidgetUtilities.createTransferTab(current, Position.of(tabs, tabs.getWidth() / 2 - 38, getTabWidgetExtendedHeight() / 2), finalRotation, transferComponent, syncBlockEntity.getPos(), key);
+				WidgetUtilities.createTransferTab(current, Position.of(tabs, tabs.getWidth() / 2 - 38, getTabWidgetExtendedHeight() / 2), finalRotation, transferComponent, blockEntity.getPos(), key);
 				TextWidget invTabTitle = new TextWidget();
 				invTabTitle.setPosition(Position.of(invPos, 0, -10));
 				invTabTitle.setText(getPlayer().inventory.getName());
@@ -159,7 +168,7 @@ public abstract class ComponentBlockEntityScreenHandler extends BaseScreenHandle
 			}
 		});
 
-		BlockEntityRedstoneComponent redstoneComponent = BlockEntityRedstoneComponent.get(syncBlockEntity);
+		BlockEntityRedstoneComponent redstoneComponent = BlockEntityRedstoneComponent.get(blockEntity);
 
 		WidgetCollection redstoneTab = tabs.addTab(Items.REDSTONE, () -> Collections.singletonList(new TranslatableText("text.astromine.redstone")));
 

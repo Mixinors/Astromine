@@ -32,8 +32,8 @@ import com.github.chainmailstudios.astromine.common.utilities.capability.invento
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 
 public abstract class ComponentEnergyItemBlockEntity extends ComponentEnergyBlockEntity implements ComponentInventoryProvider {
-	public ComponentEnergyItemBlockEntity(Block energyBlock, BlockEntityType<?> type) {
-		super(energyBlock, type);
+	public ComponentEnergyItemBlockEntity(BlockEntityType<?> type) {
+		super(type);
 
 		addComponent(AstromineComponents.ITEM_INVENTORY_COMPONENT, getItemComponent());
 		getItemComponent().updateListeners();

@@ -24,6 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -31,121 +36,101 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
-import com.google.gson.JsonObject;
+import net.minecraft.util.registry.Registry;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
 
 public class StackUtilities {
-	public static boolean areEqual(List<ItemStack> stackListA, List<ItemStack> stackListB) {
-		for (ItemStack stackA : stackListA) {
-			boolean found = false;
-			for (ItemStack stackB : stackListB) {
-				if (ItemStack.areEqual(stackA, stackB)) {
-					found = true;
-				}
-				if (found) {
-					break;
-				}
-			}
-			if (!found) {
-				return false;
+	/** Attempts to merge two {@link ItemStack}s, returning a {@link Pair}
+	 * with the results.
+	 *
+	 * The amount transferred is the {@link Math#min(int, int)} between
+	 * their available space, our amount, and the specified amount.
+	 * */
+	public static Pair<ItemStack, ItemStack> merge(ItemStack source, ItemStack target) {
+		int targetMax = target.getMaxCount();
+
+		if (ItemStack.areItemsEqual(source, target) && ItemStack.areTagsEqual(source, target)) {
+			int sourceCount = source.getCount();
+			int targetCount = target.getCount();
+
+			int targetAvailable = Math.max(0, targetMax - targetCount);
+
+			target.increment(Math.min(sourceCount, targetAvailable));
+			source.setCount(Math.max(sourceCount - targetAvailable, 0));
+		} else {
+			if (target.isEmpty() && !source.isEmpty()) {
+				int targetCount = target.getCount();
+				int targetAvailable = targetMax - targetCount;
+
+				int sourceCount = source.getCount();
+
+				target = source.copy();
+				target.setCount(Math.min(sourceCount, targetAvailable));
+				target.setTag(source.getTag());
+				source.decrement(Math.min(sourceCount, targetAvailable));
 			}
 		}
-		return true;
+
+		return new Pair<>(source, target);
 	}
 
-	public static boolean equalItemAndTag(ItemStack stackA, ItemStack stackB) {
-		return ItemStack.areTagsEqual(stackA, stackB) && ItemStack.areItemsEqual(stackA, stackB);
+	/** Asserts whether the source {@link ItemStack} matches the second,
+	 * and whether the target can fit the source, or not.
+	 */
+	public static boolean test(ItemStack source, ItemStack target) {
+		return target.isEmpty() || ItemStack.areItemsEqual(source, target) && ItemStack.areTagsEqual(source, target) && target.getMaxCount() - target.getCount() >= source.getCount();
 	}
 
+	/** Weakly merges an {@link ItemStack} into another, returning the resulting target. */
+	public static ItemStack into(ItemStack source, ItemStack target) {
+		if (target.isEmpty()) {
+			return source.copy();
+		} else {
+			target.increment(source.getCount());
+			return target;
+		}
+	}
+
+	/** Deserializes an {@link ItemStack} from a {@link JsonElement}. */
+	public static ItemStack fromJson(JsonElement jsonElement) {
+		if (!jsonElement.isJsonObject()) {
+			if (jsonElement.isJsonPrimitive()) {
+				JsonPrimitive primitive = jsonElement.getAsJsonPrimitive();
+
+				if (primitive.isString()) {
+					return new ItemStack(Registry.ITEM.get(new Identifier(primitive.getAsString())));
+				} else {
+					return ItemStack.EMPTY;
+				}
+			} else {
+				return ItemStack.EMPTY;
+			}
+		} else {
+			return ShapedRecipe.getItemStack(jsonElement.getAsJsonObject());
+		}
+	}
+
+	/** Serializes the given {@link ItemStack} to a {@link JsonElement}. */
+	public static JsonElement toJson(ItemStack stack) {
+		JsonObject object = new JsonObject();
+		object.addProperty("item", Registry.ITEM.getId(stack.getItem()).toString());
+		object.addProperty("count", stack.getCount());
+		return object;
+	}
+
+	/** Deserializes an {@link ItemStack} from a {@link ByteBuf}. */
 	public static ItemStack fromPacket(PacketByteBuf buffer) {
 		return buffer.readItemStack();
 	}
 
+	/** Serializes the given {@link ItemStack} to a {@link ByteBuf}. */
 	public static void toPacket(PacketByteBuf buffer, ItemStack stack) {
 		buffer.writeItemStack(stack);
-	}
-
-	public static ItemStack fromJson(JsonObject jsonObject) {
-		return ShapedRecipe.getItemStack(jsonObject);
-	}
-
-	public static ItemStack withLore(ItemStack stack, Collection<Text> texts) {
-		List<Text> entries = (List<Text>) texts;
-
-		ListTag loreListTag = new ListTag();
-
-		entries.forEach(text -> loreListTag.add(StringTag.of(Text.Serializer.toJson(text))));
-
-		CompoundTag displayTag = stack.getOrCreateTag().getCompound("display");
-
-		displayTag.put("Lore", loreListTag);
-
-		CompoundTag stackTag = stack.getOrCreateTag();
-
-		stackTag.put("display", displayTag);
-
-		stack.setTag(stackTag);
-
-		return stack;
-	}
-
-	public static Pair<ItemStack, ItemStack> merge(Supplier<ItemStack> supplierA, Supplier<ItemStack> supplierB, Supplier<Integer> sA, Supplier<Integer> sB) {
-		return merge(supplierA.get(), supplierB.get(), sA.get(), sB.get());
-	}
-
-	/**
-	 * Support merging stacks with customized maximum count.
-	 *
-	 * @param stackA
-	 *        Source ItemStack
-	 * @param stackB
-	 *        Destination ItemStack
-	 * @param maxA
-	 *        Max. count of stackA
-	 * @param maxB
-	 *        Max. count of stackB
-	 *
-	 * @return Resulting ItemStacks
-	 */
-	public static Pair<ItemStack, ItemStack> merge(ItemStack stackA, ItemStack stackB, int maxA, int maxB) {
-		if (equalItemAndTag(stackA, stackB)) {
-			int countA = stackA.getCount();
-			int countB = stackB.getCount();
-
-			int availableA = Math.max(0, maxA - countA);
-			int availableB = Math.max(0, maxB - countB);
-
-			stackB.increment(Math.min(countA, availableB));
-			stackA.setCount(Math.max(countA - availableB, 0));
-		} else {
-			if (stackA.isEmpty() && !stackB.isEmpty()) {
-				int countA = stackA.getCount();
-				int availableA = maxA - countA;
-
-				int countB = stackB.getCount();
-
-				stackA = stackB.copy();
-				stackA.setCount(Math.min(countB, availableA));
-
-				stackA.setTag(stackB.getTag());
-				stackB.decrement(Math.min(countB, availableA));
-			} else if (stackB.isEmpty() && !stackA.isEmpty()) {
-				int countB = stackB.getCount();
-				int availableB = maxB - countB;
-
-				int countA = stackA.getCount();
-
-				stackB = stackA.copy();
-				stackB.setCount(Math.min(countA, availableB));
-				stackB.setTag(stackA.getTag());
-				stackA.decrement(Math.min(countA, availableB));
-			}
-		}
-
-		return new Pair<>(stackA, stackB);
 	}
 }

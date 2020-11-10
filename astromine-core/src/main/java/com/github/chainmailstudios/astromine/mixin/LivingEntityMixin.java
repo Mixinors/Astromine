@@ -25,7 +25,6 @@
 package com.github.chainmailstudios.astromine.mixin;
 
 import net.minecraft.fluid.Fluid;
-import net.minecraft.tag.FluidTags;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
@@ -101,7 +100,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 					atmosphereVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
 
 					if (atmosphereVolume.isEmpty()) {
-						atmosphereVolume = FluidVolume.oxygen();
+						atmosphereVolume = FluidVolume.ofOxygen();
 					}
 				} else {
 					atmosphereVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));

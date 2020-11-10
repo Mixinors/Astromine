@@ -17,6 +17,6 @@
   "output": {
     "fluid": "astromine:kerosene_oxygen_fuel"
   },
-  "energy": 39960,
+  "energy_input": 39960,
   "time": 540
 }

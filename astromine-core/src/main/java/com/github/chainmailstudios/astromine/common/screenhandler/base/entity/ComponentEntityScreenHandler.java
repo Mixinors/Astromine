@@ -24,6 +24,10 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.entity;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.block.BlockStateScreenHandler;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
@@ -41,16 +45,25 @@ import com.github.vini2003.blade.common.widget.base.TextWidget;
 import java.util.Collection;
 import java.util.HashSet;
 
+/**
+ * A class representing a {@link BlockStateScreenHandler} with an attached
+ * {@link ComponentBlockEntity}.
+ */
 public abstract class ComponentEntityScreenHandler extends BaseScreenHandler {
-	public ComponentEntity syncEntity;
-	public Collection<SlotWidget> playerSlots = new HashSet<>();
-	public TabWidgetCollection mainTab;
+	protected ComponentEntity entity;
+
+	protected Collection<SlotWidget> playerSlots = new HashSet<>();
+
 	protected TabWidget tabs;
 
+	protected TabWidgetCollection mainTab;
+
+	/** Instantiates a {@link ComponentEntityScreenHandler},
+	 * synchronizing its attached {@link ComponentEntity}. */
 	public ComponentEntityScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, int entityId) {
 		super(type, syncId, player);
 
-		syncEntity = (ComponentEntity) player.world.getEntityById(entityId);
+		entity = (ComponentEntity) player.world.getEntityById(entityId);
 	}
 
 	public abstract ItemStack getSymbol();
@@ -61,7 +74,7 @@ public abstract class ComponentEntityScreenHandler extends BaseScreenHandler {
 
 	@Override
 	public boolean canUse(PlayerEntity player) {
-		return this.syncEntity.isAlive() && this.syncEntity.distanceTo(player) < 8.0F;
+		return this.entity.isAlive() && this.entity.distanceTo(player) < 8.0F;
 	}
 
 	@Override
@@ -78,7 +91,7 @@ public abstract class ComponentEntityScreenHandler extends BaseScreenHandler {
 
 		TextWidget title = new TextWidget();
 		title.setPosition(Position.of(mainTab, 8, 0));
-		title.setText(syncEntity.getDisplayName());
+		title.setText(entity.getDisplayName());
 		title.setColor(4210752);
 		mainTab.addWidget(title);
 

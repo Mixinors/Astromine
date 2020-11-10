@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.widget.blade;
 
+import com.github.chainmailstudios.astromine.common.utilities.TextUtilities;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.vini2003.blade.common.utilities.Networks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -56,45 +58,62 @@ import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.function.Supplier;
 
+/**
+ * A class representing a vertical bar widget depicting
+ * the energy level of the specified {@link #volumeSupplier}.
+ *
+ * The {@link #volumeSupplier} supplies the volume from which
+ * {@link EnergyVolume#getAmount()} and {@link EnergyVolume#getSize()}
+ * are queried from.
+ */
 public class FluidVerticalBarWidget extends AbstractWidget {
 	private final Identifier FLUID_BACKGROUND = AstromineCommon.identifier("textures/widget/fluid_volume_fractional_vertical_bar_background.png");
-	private Supplier<FluidVolume> volume;
 
+	private Supplier<FluidVolume> volumeSupplier;
+
+	/** Instantiates a new vertical fluid bar, adding the
+	 * mouse click event to the synchronization list. */
 	public FluidVerticalBarWidget() {
 		getSynchronize().add(Networks.getMOUSE_CLICK());
 	}
 
-	public Identifier getBackgroundTexture() {
-		return FLUID_BACKGROUND;
+	/** Returns this widget's {@link #volumeSupplier}. */
+	public Supplier<FluidVolume> getVolumeSupplier() {
+		return volumeSupplier;
 	}
 
-	public FluidVolume getFluidVolume() {
-		return volume.get();
+	/** Sets this widget's {@link #volumeSupplier} to the specified one. */
+	public void setVolumeSupplier(Supplier<FluidVolume> volumeSupplier) {
+		this.volumeSupplier = volumeSupplier;
 	}
 
-	public void setVolume(Supplier<FluidVolume> volume) {
-		this.volume = volume;
-	}
-
+	/** Override mouse click behavior to clear tank on middle mouse click. */
 	@Override
 	public void onMouseClicked(float x, float y, int button) {
 		super.onMouseClicked(x, y, button);
 
 		if (isWithin(x, y) && !getHidden() && button == 2) {
-			volume.get().setAmount(Fraction.empty());
-			volume.get().setSize(Fraction.empty());
-			volume.get().setFluid(Fluids.EMPTY);
+			volumeSupplier.get().setAmount(Fraction.EMPTY);
+			volumeSupplier.get().setSize(Fraction.EMPTY);
+			volumeSupplier.get().setFluid(Fluids.EMPTY);
 		}
 	}
 
+	/** Returns the tooltip of this widget. */
 	@Environment(EnvType.CLIENT)
 	@Override
 	public List<Text> getTooltip() {
-		Identifier fluidId = getFluidVolume().getFluidId();
-		return Lists.newArrayList(new TranslatableText(String.format("block.%s.%s", fluidId.getNamespace(), fluidId.getPath())), new LiteralText(fluidId.toString()).formatted(Formatting.DARK_GRAY), new LiteralText(NumberUtilities.shorten(volume.get().getAmount().doubleValue(),
-			"") + "/" + NumberUtilities.shorten(volume.get().getSize().doubleValue(), "")).formatted(Formatting.GRAY), new LiteralText(FabricLoader.getInstance().getModContainer(fluidId.getNamespace()).get().getMetadata().getName()).formatted(Formatting.BLUE, Formatting.ITALIC));
+		Identifier fluidId = volumeSupplier.get().getFluidId();
+
+		return Lists.newArrayList(
+				TextUtilities.getFluid(fluidId),
+				TextUtilities.getIdentifier(fluidId),
+				TextUtilities.getVolume(volumeSupplier.get()),
+				TextUtilities.getMod(fluidId)
+		);
 	}
 
+	/** Renders this widget. */
 	@Environment(EnvType.CLIENT)
 	@Override
 	public void drawWidget(MatrixStack matrices, VertexConsumerProvider provider) {
@@ -108,15 +127,24 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 		float sX = getSize().getWidth();
 		float sY = getSize().getHeight();
 
-		float sBGY = (((sY / volume.get().getSize().floatValue()) * volume.get().getAmount().floatValue()));
+		float sBGY = (((sY / volumeSupplier.get().getSize().floatValue()) * volumeSupplier.get().getAmount().floatValue()));
 
-		RenderLayer layer = Layers.get(getBackgroundTexture());
+		RenderLayer layer = Layers.get(FLUID_BACKGROUND);
 
-		BaseRenderer.drawTexturedQuad(matrices, provider, layer, x, y, getSize().getWidth(), getSize().getHeight(), getBackgroundTexture());
+		BaseRenderer.drawTexturedQuad(matrices, provider, layer, x, y, getSize().getWidth(), getSize().getHeight(), FLUID_BACKGROUND);
 
-		if (getFluidVolume().getFluid() != Fluids.EMPTY) {
-			SpriteRenderer.beginPass().setup(provider, RenderLayer.getSolid()).sprite(FluidUtilities.texture(getFluidVolume().getFluid())[0]).color(FluidUtilities.color(MinecraftClient.getInstance().player, getFluidVolume().getFluid())).light(0x00f000f0).overlay(
-				OverlayTexture.DEFAULT_UV).alpha(0xff).normal(matrices.peek().getNormal(), 0, 0, 0).position(matrices.peek().getModel(), x + 1, y + 1 + Math.max(0, sY - ((int) (sBGY) + 1)), x + sX - 1, y + sY - 1, 0F).next(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
+		if (volumeSupplier.get().getFluid() != Fluids.EMPTY) {
+			SpriteRenderer
+					.beginPass()
+					.setup(provider, RenderLayer.getSolid())
+					.sprite(FluidUtilities.getSprite(volumeSupplier.get().getFluid()))
+					.color(FluidUtilities.getColor(MinecraftClient.getInstance().player, volumeSupplier.get().getFluid()))
+					.light(0x00f000f0)
+					.overlay(OverlayTexture.DEFAULT_UV)
+					.alpha(0xff)
+					.normal(matrices.peek().getNormal(), 0, 0, 0)
+					.position(matrices.peek().getModel(), x + 1, y + 1 + Math.max(0, sY - ((int) (sBGY) + 1)), x + sX - 1, y + sY - 1, 0F)
+					.next(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 		}
 	}
 }

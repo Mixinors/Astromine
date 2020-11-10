@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " 1 ",
+    " 4 ",
+    "   "
+  ],
+  "key": {
+    "1": {
+      "tag": "fabric:shears"
+    },
+    "4": {
+      "tag": "c:silver_plates"
+    }
+  },
+  "result": {
+    "item": "astromine:silver_wire"
+  }
+}

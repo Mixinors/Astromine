@@ -13,10 +13,12 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.tag.Tag;
 import net.minecraft.tag.TagManager;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
@@ -28,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class RecipeCreatorScreenHandler extends BaseScreenHandler {
     public RecipeCreatorScreenHandler(int syncId, @NotNull PlayerEntity player) {
@@ -36,6 +39,31 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 
     @Override
     public void initialize(int width, int height) {
+        final List<String> TYPES = new ArrayList<String>() {
+            {
+                add("nugget");
+                add("wire");
+                add("ingot");
+                add("dust");
+                add("tiny_dust");
+                add("plate");
+                add("gear");
+            }
+        };
+
+        final Map<String, String> TAGS = new HashMap<String, String>() {
+            {
+                Registry.ITEM.forEach((item) -> {
+                    Identifier id = Registry.ITEM.getId(item);
+
+                    TYPES.forEach((type) -> {
+                        if (id.getPath().contains(type)) {
+                            put(id.toString(), "c:" + id.getPath() + "s");
+                        }
+                    });
+                });
+            }
+        };
         PanelWidget panel = new PanelWidget();
         panel.setPosition(Position.of(width / 2 - 40, height / 2 - 40));
         panel.setSize(Size.of(93, 100));
@@ -104,10 +132,8 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 
                 TagManager tagManager = getPlayer().getEntityWorld().getTagManager();
 
-                Collection<Identifier> tags = tagManager.getItems().getTagsFor(Registry.ITEM.get(new Identifier(name)));
-
-                if (!tags.isEmpty()) {
-                    entry.addProperty("tag", tags.iterator().next().toString());
+                if (TAGS.containsKey(name)) {
+                    entry.addProperty("tag", TAGS.get(name));
                 } else {
                     entry.addProperty("item", name);
                 }
@@ -120,6 +146,7 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
             JsonObject resultJson = new JsonObject();
 
             resultJson.addProperty("item", outputName);
+            resultJson.addProperty("count", outputStack.getCount());
 
             recipeJson.add("result", resultJson);
 
@@ -127,7 +154,7 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 
             generatedFile.mkdir();
 
-            File outputFile = new File("generated/" + outputName.replace(":", "_").replace("/", "_") + "-" + UUID.randomUUID().toString() + ".json");
+            File outputFile = new File("generated/" + outputName.replace(":", "_").replace("/", "_").replace("astromine_", "") + ".json");
 
             try {
                 outputFile.createNewFile();

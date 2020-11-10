@@ -104,7 +104,7 @@ public class FluidIngredient implements Predicate<FluidVolume> {
 			if (json.has("fluid")) {
 				Identifier fluidId = new Identifier(JsonHelper.getString(json, "fluid"));
 				Fluid fluid = Registry.FLUID.getOrEmpty(fluidId).orElseThrow(() -> new JsonSyntaxException("Unknown fluid '" + fluidId + "'!"));
-				return new SimpleEntry(FluidVolume.of(new Fraction(numerator, denominator), fluid));
+				return new SimpleEntry(FluidVolume.of(Fraction.of(numerator, denominator), fluid));
 			} else if (json.has("tag")) {
 				Identifier tagId = new Identifier(JsonHelper.getString(json, "tag"));
 				Tag<Fluid> tag = ServerTagManagerHolder.getTagManager().getFluids().getTag(tagId);
@@ -161,11 +161,29 @@ public class FluidIngredient implements Predicate<FluidVolume> {
 		if (this.matchingVolumes.length == 0)
 			return null;
 		for (FluidVolume matchingVolume : matchingVolumes) {
-			if (FluidVolume.areFluidsEqual(matchingVolume, volume) && volume.getAmount().biggerOrEqualThan(matchingVolume.getAmount()))
+			if (FluidVolume.fluidsEqual(matchingVolume, volume) && volume.getAmount().biggerOrEqualThan(matchingVolume.getAmount()))
 				return matchingVolume.copy();
 		}
 		return null;
 	}
+
+	public boolean allows(FluidVolume volume) {
+		return testMatching(volume) != null;
+	}
+
+	public FluidVolume allowsMatching(FluidVolume volume) {
+		if (volume == null)
+			return null;
+		FluidVolume[] matchingVolumes = getMatchingVolumes();
+		if (this.matchingVolumes.length == 0)
+			return null;
+		for (FluidVolume matchingVolume : matchingVolumes) {
+			if (FluidVolume.fluidsEqual(matchingVolume, volume) && volume.getAmount().biggerOrEqualThan(matchingVolume.getAmount()))
+				return matchingVolume.copy();
+		}
+		return null;
+	}
+
 
 	public void write(PacketByteBuf buffer) {
 		this.cacheMatchingVolumes();
@@ -214,7 +232,7 @@ public class FluidIngredient implements Predicate<FluidVolume> {
 
 		@Override
 		public Stream<FluidVolume> getVolumes() {
-			return this.tag.values().stream().map(fluid -> FluidVolume.of(new Fraction(numerator, denominator), fluid));
+			return this.tag.values().stream().map(fluid -> FluidVolume.of(Fraction.of(numerator, denominator), fluid));
 		}
 	}
 }

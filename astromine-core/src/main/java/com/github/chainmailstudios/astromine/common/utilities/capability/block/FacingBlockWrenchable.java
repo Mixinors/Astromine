@@ -32,6 +32,8 @@ import com.zundrel.wrenchable.WrenchableUtilities;
 import com.zundrel.wrenchable.block.BlockWrenchable;
 
 public interface FacingBlockWrenchable extends BlockWrenchable {
+	/** When shift-right-clicked with a wrench, break the block.
+	 * When right-clicked with a wrench, rotate the block. */
 	@Override
 	default void onWrenched(World world, PlayerEntity playerEntity, BlockHitResult blockHitResult) {
 		if (playerEntity.isSneaking()) {

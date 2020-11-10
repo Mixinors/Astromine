@@ -24,11 +24,11 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
 import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.chainmailstudios.astromine.common.utilities.*;
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -50,22 +50,24 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
-public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<Inventory> {
-	final Identifier identifier;
-	final FluidIngredient input;
-	final FluidVolume firstOutput;
-	final FluidVolume secondOutput;
-	final FluidVolume thirdOutput;
-	final FluidVolume fourthOutput;
-	final FluidVolume fifthOutput;
-	final FluidVolume sixthOutput;
-	final FluidVolume seventhOutput;
-	final EnergyVolume energy;
-	final int time;
+import java.util.Optional;
 
-	public RefiningRecipe(Identifier identifier, FluidIngredient input, FluidVolume firstOutput, FluidVolume secondOutput, FluidVolume thirdOutput, FluidVolume fourthOutput, FluidVolume fifthOutput, FluidVolume sixthOutput, FluidVolume seventhOutput, EnergyVolume energy, int time) {
+public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<Inventory> {
+	private final Identifier identifier;
+	private final FluidIngredient firstInput;
+	private final FluidVolume firstOutput;
+	private final FluidVolume secondOutput;
+	private final FluidVolume thirdOutput;
+	private final FluidVolume fourthOutput;
+	private final FluidVolume fifthOutput;
+	private final FluidVolume sixthOutput;
+	private final FluidVolume seventhOutput;
+	private final double energyInput;
+	private final int time;
+
+	public RefiningRecipe(Identifier identifier, FluidIngredient firstInput, FluidVolume firstOutput, FluidVolume secondOutput, FluidVolume thirdOutput, FluidVolume fourthOutput, FluidVolume fifthOutput, FluidVolume sixthOutput, FluidVolume seventhOutput, double energyInput, int time) {
 		this.identifier = identifier;
-		this.input = input;
+		this.firstInput = firstInput;
 		this.firstOutput = firstOutput;
 		this.secondOutput = secondOutput;
 		this.thirdOutput = thirdOutput;
@@ -73,57 +75,72 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 		this.fifthOutput = fifthOutput;
 		this.sixthOutput = sixthOutput;
 		this.seventhOutput = seventhOutput;
-		this.energy = energy;
+		this.energyInput = energyInput;
 		this.time = time;
 	}
 
-	public static boolean allows(World world, Fluid inserting, Fluid existing) {
+	public static boolean allows(World world, FluidComponent fluidComponent) {
 		return world.getRecipeManager().getAllOfType(RefiningRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
 			RefiningRecipe recipe = ((RefiningRecipe) it);
 
-			return (existing == inserting || existing == Fluids.EMPTY) && (recipe.input.test(inserting));
+			return recipe.allows(fluidComponent);
 		});
 	}
+	
+	public static Optional<RefiningRecipe> matching(World world, FluidComponent fluidComponent, EnergyComponent energyComponent) {
+		return (Optional<RefiningRecipe>) (Object) world.getRecipeManager().getAllOfType(RefiningRecipe.Type.INSTANCE).values().stream().filter(it -> {
+			RefiningRecipe recipe = ((RefiningRecipe) it);
 
-	public boolean matches(FluidComponent fluidComponent) {
-		FluidVolume inputVolume = fluidComponent.getFirst();
-		FluidVolume firstOutputVolume = fluidComponent.getSecond();
-		FluidVolume secondOutputVolume = fluidComponent.getThird();
-		FluidVolume thirdOutputVolume = fluidComponent.getFourth();
-		FluidVolume fourthOutputVolume = fluidComponent.getFifth();
-		FluidVolume fifthOutputVolume = fluidComponent.getSixth();
-		FluidVolume sixthOutputVolume = fluidComponent.getSeventh();
-		FluidVolume seventhOutputVolume = fluidComponent.getEighth();
+			return recipe.matches(fluidComponent, energyComponent);
+		}).findFirst();
+	}
 
-		if (!input.test(inputVolume)) {
+	public boolean matches(FluidComponent fluidComponent, EnergyComponent energyComponent) {
+		if (fluidComponent.getSize() < 8) {
 			return false;
 		}
 
-		if (!firstOutput.test(firstOutputVolume)) {
+		if (energyComponent.getAmount() < energyInput) {
 			return false;
 		}
 
-		if (!secondOutput.test(secondOutputVolume)) {
+		if (!firstInput.test(fluidComponent.getFirst())) {
 			return false;
 		}
 
-		if (!thirdOutput.test(thirdOutputVolume)) {
+		if (!firstOutput.test(fluidComponent.getSecond())) {
 			return false;
 		}
 
-		if (!fourthOutput.test(fourthOutputVolume)) {
+		if (!secondOutput.test(fluidComponent.getThird())) {
 			return false;
 		}
 
-		if (!fifthOutput.test(fifthOutputVolume)) {
+		if (!thirdOutput.test(fluidComponent.getFourth())) {
 			return false;
 		}
 
-		if (!sixthOutput.test(sixthOutputVolume)) {
+		if (!fourthOutput.test(fluidComponent.getFifth())) {
 			return false;
 		}
 
-		return seventhOutput.test(seventhOutputVolume);
+		if (!fifthOutput.test(fluidComponent.getSixth())) {
+			return false;
+		}
+
+		if (!sixthOutput.test(fluidComponent.getSeventh())) {
+			return false;
+		}
+
+		return seventhOutput.test(fluidComponent.getEighth());
+	}
+
+	public boolean allows(FluidComponent fluidComponent) {
+		if (fluidComponent.getSize() < 1) {
+			return false;
+		}
+
+		return firstInput.test(fluidComponent.getFirst());
 	}
 
 	@Override
@@ -148,7 +165,7 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 
 	@Override
 	public ItemStack craft(Inventory inventory) {
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override
@@ -171,7 +188,7 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 	}
 
 	public FluidIngredient getIngredient() {
-		return input;
+		return firstInput;
 	}
 
 	public FluidVolume getFirstOutputVolume() {
@@ -202,17 +219,13 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 		return seventhOutput.copy();
 	}
 
-	public EnergyVolume getEnergyVolume() {
-		return energy.copy();
-	}
-
 	public int getTime() {
 		return time;
 	}
 
 	@Override
-	public double getEnergy() {
-		return energy.getAmount();
+	public double getEnergyInput() {
+		return energyInput;
 	}
 
 	public static final class Serializer implements RecipeSerializer<RefiningRecipe> {
@@ -220,9 +233,7 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 
 		public static final Serializer INSTANCE = new Serializer();
 
-		private Serializer() {
-			// Locked.
-		}
+		private Serializer() {}
 
 		@Override
 		public RefiningRecipe read(Identifier identifier, JsonObject object) {
@@ -230,7 +241,7 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 
 			return new RefiningRecipe(
 					identifier,
-					IngredientUtilities.fromFluidIngredientJson(format.input),
+					IngredientUtilities.fromFluidIngredientJson(format.firstInput),
 					VolumeUtilities.fromFluidVolumeJson(format.firstOutput),
 					VolumeUtilities.fromFluidVolumeJson(format.secondOutput),
 					VolumeUtilities.fromFluidVolumeJson(format.thirdOutput),
@@ -238,7 +249,7 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 					VolumeUtilities.fromFluidVolumeJson(format.fifthOutput),
 					VolumeUtilities.fromFluidVolumeJson(format.sixthOutput),
 					VolumeUtilities.fromFluidVolumeJson(format.seventhOutput),
-					VolumeUtilities.fromEnergyVolumeJson(format.energy),
+					ParsingUtilities.fromJson(format.energyInput, Double.class),
 					ParsingUtilities.fromJson(format.time, Integer.class));
 		}
 
@@ -254,7 +265,7 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 					VolumeUtilities.fromFluidVolumePacket(buffer),
 					VolumeUtilities.fromFluidVolumePacket(buffer),
 					VolumeUtilities.fromFluidVolumePacket(buffer),
-					VolumeUtilities.fromEnergyVolumePacket(buffer),
+					PacketUtilities.fromPacket(buffer, Double.class),
 					PacketUtilities.fromPacket(buffer, Integer.class));
 		}
 
@@ -268,7 +279,7 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 			VolumeUtilities.toFluidVolumePacket(buffer, recipe.getSecondOutputVolume());
 			VolumeUtilities.toFluidVolumePacket(buffer, recipe.getSecondOutputVolume());
 			VolumeUtilities.toFluidVolumePacket(buffer, recipe.getSecondOutputVolume());
-			VolumeUtilities.toEnergyVolumePacket(buffer, recipe.getEnergyVolume());
+			PacketUtilities.toPacket(buffer, recipe.getEnergyInput());
 			PacketUtilities.toPacket(buffer, recipe.getTime());
 		}
 	}
@@ -276,13 +287,12 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 	public static final class Type implements AstromineRecipeType<RefiningRecipe> {
 		public static final Type INSTANCE = new Type();
 
-		private Type() {
-			// Locked.
-		}
+		private Type() {}
 	}
 
 	public static final class Format {
-		JsonElement input;
+		@SerializedName("input")
+		JsonElement firstInput;
 
 		@SerializedName("first_output")
 		JsonElement firstOutput;
@@ -305,14 +315,15 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 		@SerializedName("seventh_output")
 		JsonElement seventhOutput;
 
-		JsonElement energy;
+		@SerializedName("energy_input")
+		JsonElement energyInput;
 
 		JsonElement time;
 
 		@Override
 		public String toString() {
 			return "Format{" +
-					"input=" + input +
+					"firstInput=" + firstInput +
 					", firstOutput=" + firstOutput +
 					", secondOutput=" + secondOutput +
 					", thirdOutput=" + thirdOutput +
@@ -320,7 +331,7 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 					", fifthOutput=" + fifthOutput +
 					", sixthOutput=" + sixthOutput +
 					", seventhOutput=" + seventhOutput +
-					", energy=" + energy +
+					", energyInput=" + energyInput +
 					", time=" + time +
 					'}';
 		}

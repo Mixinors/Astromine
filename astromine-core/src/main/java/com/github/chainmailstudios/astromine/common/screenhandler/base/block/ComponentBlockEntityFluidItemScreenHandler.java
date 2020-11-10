@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.block;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
@@ -33,17 +34,24 @@ import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBa
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 
+/**
+ * A class representing a {@link ComponentBlockEntityScreenHandler}
+ * with an attached {@link ComponentFluidItemBlockEntity}.
+ */
 public class ComponentBlockEntityFluidItemScreenHandler extends ComponentBlockEntityScreenHandler {
 	public ComponentFluidItemBlockEntity blockEntity;
 
 	public FluidVerticalBarWidget fluidBar;
 
+	/** Instantiates a {@link ComponentBlockEntityItemScreenHandler}
+	 * with the given values, obtaining the {@link ComponentFluidItemBlockEntity}. */
 	public ComponentBlockEntityFluidItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 
 		blockEntity = (ComponentFluidItemBlockEntity) player.world.getBlockEntity(position);
 	}
 
+	/** Override behavior to add a fluid bar. */
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
@@ -51,7 +59,7 @@ public class ComponentBlockEntityFluidItemScreenHandler extends ComponentBlockEn
 		fluidBar = new FluidVerticalBarWidget();
 		fluidBar.setPosition(Position.of(mainTab, 7, 11));
 		fluidBar.setSize(Size.of(24F, 48F));
-		fluidBar.setVolume(() -> blockEntity.getFluidComponent().getFirst());
+		fluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getFirst());
 
 		mainTab.addWidget(fluidBar);
 	}

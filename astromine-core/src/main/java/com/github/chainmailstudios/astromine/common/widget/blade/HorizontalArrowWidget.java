@@ -46,6 +46,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.IntSupplier;
 
+/** A class representing a horizontal arrow widget depicting
+ * the progress level of the {@link #progressSupplier} relative
+ * to the {@link #limitSupplier}.
+ */
 public class HorizontalArrowWidget extends AbstractWidget {
 	private static final Identifier BACKGROUND = AstromineCommon.identifier("textures/widget/horizontal_arrow_background.png");
 	private static final Identifier FOREGROUND = AstromineCommon.identifier("textures/widget/horizontal_arrow_foreground.png");
@@ -53,36 +57,34 @@ public class HorizontalArrowWidget extends AbstractWidget {
 	private IntSupplier progressSupplier = () -> 0;
 	private IntSupplier limitSupplier = () -> 100;
 
-	@NotNull
-	@Override
-	public List<Text> getTooltip() {
-		return Collections.singletonList(new LiteralText(progressSupplier.getAsInt() + "/" + limitSupplier.getAsInt()));
+	/** Returns this widget's {@link #progressSupplier}. */
+	public IntSupplier getProgressSupplier() {
+		return progressSupplier;
 	}
 
-	public Identifier getBackgroundTexture() {
-		return BACKGROUND;
-	}
-
-	public Identifier getForegroundTexture() {
-		return FOREGROUND;
-	}
-
-	public int getProgress() {
-		return progressSupplier.getAsInt();
-	}
-
-	public int getLimit() {
-		return limitSupplier.getAsInt();
-	}
-
+	/** Sets this widget's {@link #progressSupplier} to the specified one. */
 	public void setProgressSupplier(IntSupplier progressSupplier) {
 		this.progressSupplier = progressSupplier;
 	}
 
+	/** Returns this widget's {@link #limitSupplier}. */
+	public IntSupplier getLimitSupplier() {
+		return limitSupplier;
+	}
+
+	/** Sets this widget's {@link #limitSupplier} to the specified one. */
 	public void setLimitSupplier(IntSupplier limitSupplier) {
 		this.limitSupplier = limitSupplier;
 	}
 
+	/** Returns the tooltip of this widget. */
+	@NotNull
+	@Override
+	public List<Text> getTooltip() {
+		return Collections.singletonList(new LiteralText(progressSupplier.getAsInt() + " of " + limitSupplier.getAsInt()));
+	}
+
+	/** Renders this widget. */
 	@Environment(EnvType.CLIENT)
 	@Override
 	public void drawWidget(MatrixStack matrices, VertexConsumerProvider provider) {
@@ -99,20 +101,20 @@ public class HorizontalArrowWidget extends AbstractWidget {
 		float rawHeight = MinecraftClient.getInstance().getWindow().getHeight();
 		float scale = (float) MinecraftClient.getInstance().getWindow().getScaleFactor();
 
-		float sBGX = (int) (((sX / getLimit()) * getProgress()));
+		float sBGX = (int) (((sX / limitSupplier.getAsInt()) * progressSupplier.getAsInt()));
 
-		RenderLayer backgroundLayer = Layers.get(getBackgroundTexture());
-		RenderLayer foregroundLayer = Layers.get(getForegroundTexture());
+		RenderLayer backgroundLayer = Layers.get(BACKGROUND);
+		RenderLayer foregroundLayer = Layers.get(FOREGROUND);
 
 		Scissors area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sX * scale), (int) (sY * scale));
 
-		BaseRenderer.drawTexturedQuad(matrices, provider, backgroundLayer, getPosition().getX(), getPosition().getY(), getSize().getWidth(), getSize().getHeight(), getBackgroundTexture());
+		BaseRenderer.drawTexturedQuad(matrices, provider, backgroundLayer, getPosition().getX(), getPosition().getY(), getSize().getWidth(), getSize().getHeight(), BACKGROUND);
 
 		area.destroy(provider);
 
 		area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sBGX * scale), (int) (sY * scale));
 
-		BaseRenderer.drawTexturedQuad(matrices, provider, foregroundLayer, getPosition().getX(), getPosition().getY(), getSize().getWidth(), getSize().getHeight(), getForegroundTexture());
+		BaseRenderer.drawTexturedQuad(matrices, provider, foregroundLayer, getPosition().getX(), getPosition().getY(), getSize().getWidth(), getSize().getHeight(), FOREGROUND);
 
 		area.destroy(provider);
 	}

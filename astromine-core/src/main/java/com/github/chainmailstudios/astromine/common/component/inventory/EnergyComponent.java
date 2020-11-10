@@ -142,4 +142,8 @@ public interface EnergyComponent extends NameableComponent, AutoSyncedComponent 
 			return null;
 		}
 	}
+
+	public static EnergyComponent infinite() {
+		return SimpleEnergyComponent.of(EnergyVolume.of(Double.MAX_VALUE, Double.MAX_VALUE));
+	}
 }

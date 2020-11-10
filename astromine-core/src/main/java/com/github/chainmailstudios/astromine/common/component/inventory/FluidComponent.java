@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
+import com.github.chainmailstudios.astromine.common.volume.base.Volume;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
@@ -43,11 +44,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public interface FluidComponent extends Iterable<Map.Entry<Integer, FluidVolume>>, NameableComponent, AutoSyncedComponent {
+public interface FluidComponent extends Iterable<FluidVolume>, NameableComponent, AutoSyncedComponent {
 	default Item getSymbol() {
 		return AstromineItems.FLUID.asItem();
 	}
@@ -284,7 +286,7 @@ public interface FluidComponent extends Iterable<Map.Entry<Integer, FluidVolume>
 			if (item instanceof BucketItem) {
 				BucketItem bucket = (BucketItem) item;
 
-				return SimpleFluidComponent.of(FluidVolume.of(Fraction.bucket(), bucket.fluid));
+				return SimpleFluidComponent.of(FluidVolume.of(Fraction.BUCKET, bucket.fluid));
 			}
 		}
 
@@ -295,13 +297,17 @@ public interface FluidComponent extends Iterable<Map.Entry<Integer, FluidVolume>
 		}
 	}
 
-	@Override
-	default void forEach(Consumer<? super Map.Entry<Integer, FluidVolume>> action) {
-		getContents().entrySet().forEach(action);
+	default void forEachIndexed(BiConsumer<Integer, ? super FluidVolume> action) {
+		getContents().forEach(action);
 	}
 
 	@Override
-	default @NotNull Iterator<Map.Entry<Integer, FluidVolume>> iterator() {
-		return getContents().entrySet().iterator();
+	default void forEach(Consumer<? super FluidVolume> action) {
+		getContents().values().forEach(action);
+	}
+
+	@Override
+	default @NotNull Iterator<FluidVolume> iterator() {
+		return getContents().values().iterator();
 	}
 }

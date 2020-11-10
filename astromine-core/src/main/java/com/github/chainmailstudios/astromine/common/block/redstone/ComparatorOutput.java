@@ -74,7 +74,7 @@ public class ComparatorOutput {
     }
 
     private static <T> Fraction sumBy(Collection<T> ts, Function<? super T, Fraction> extractor) {
-        Fraction result = Fraction.empty();
+        Fraction result = Fraction.EMPTY;
 
         for (T t : ts) {
             result = result.add(extractor.apply(t));

@@ -24,17 +24,12 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
-import net.minecraft.block.Block;
+import com.github.chainmailstudios.astromine.common.component.inventory.*;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.CompoundTag;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
@@ -45,7 +40,6 @@ import com.github.chainmailstudios.astromine.technologies.common.block.entity.ma
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.FluidMixingRecipe;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -57,8 +51,8 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 	private Optional<FluidMixingRecipe> optionalRecipe = Optional.empty();
 
-	public FluidMixerBlockEntity(Block energyBlock, BlockEntityType<?> type) {
-		super(energyBlock, type);
+	public FluidMixerBlockEntity(BlockEntityType<?> type) {
+		super(type);
 		getFluidComponent().addListener(() -> shouldTry = true);
 	}
 
@@ -74,12 +68,11 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 				return false;
 			}
 
-			Fluid firstExisting = getFluidComponent().getFirst().getFluid();
-			Fluid secondExisting = getFluidComponent().getSecond().getFluid();
+			if (!volume.test(getFluidComponent().getFirst()) && !volume.test(getFluidComponent().getSecond())) {
+				return false;
+			}
 
-			Fluid inserting = volume.getFluid();
-
-			return FluidMixingRecipe.allows(world, inserting, firstExisting) || FluidMixingRecipe.allows(world, inserting, secondExisting);
+			return FluidMixingRecipe.allows(world, FluidComponent.of(volume, getFluidComponent().getSecond(), getFluidComponent().getThird())) || FluidMixingRecipe.allows(world, FluidComponent.of(getFluidComponent().getFirst(), volume, getFluidComponent().getThird()));
 		}).withExtractPredicate((direction, volume, slot) -> {
 			return slot == 2;
 		}).withListener((inventory) -> {
@@ -87,9 +80,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 			optionalRecipe = Optional.empty();
 		});
 
-		fluidComponent.getFirst().setSize(getFluidSize());
-		fluidComponent.getSecond().setSize(getFluidSize());
-		fluidComponent.getThird().setSize(getFluidSize());
+		fluidComponent.forEach(it -> it.setSize(getFluidSize()));
 
 		return fluidComponent;
 	}
@@ -103,11 +94,13 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 		FluidComponent fluidComponent = getFluidComponent();
 
-		if (fluidComponent != null) {
+		EnergyComponent energyComponent = getEnergyComponent();
+
+		if (fluidComponent != null && energyComponent != null) {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(FluidMixingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof FluidMixingRecipe).filter(recipe -> ((FluidMixingRecipe) recipe).matches(fluidComponent)).findFirst();
+				optionalRecipe = FluidMixingRecipe.matching(world, fluidComponent, energyComponent);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -119,33 +112,27 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 			if (optionalRecipe.isPresent()) {
 				FluidMixingRecipe recipe = optionalRecipe.get();
 
-				if (recipe.matches(fluidComponent)) {
-					limit = recipe.getTime();
+				limit = recipe.getTime();
 
-					double speed = Math.min(getMachineSpeed(), limit - progress);
-					double consumed = recipe.getEnergy() * speed / limit;
+				double speed = Math.min(getMachineSpeed(), limit - progress);
+				double consumed = recipe.getEnergyInput() * speed / limit;
 
-					if (energyVolume.hasStored(consumed)) {
-						energyVolume.minus(consumed);
+				if (energyVolume.hasStored(consumed)) {
+					energyVolume.take(consumed);
 
-						if (progress + speed >= limit) {
-							optionalRecipe = Optional.empty();
+					if (progress + speed >= limit) {
+						optionalRecipe = Optional.empty();
 
-							if (energyVolume.hasAvailable(consumed)) {
-								fluidComponent.getFirst().minus(recipe.getFirstIngredient().getFirstMatchingVolume().getAmount());
-								fluidComponent.getSecond().minus(recipe.getSecondIngredient().getFirstMatchingVolume().getAmount());
-								fluidComponent.getThird().moveFrom(recipe.getOutputVolume());
-							}
+						fluidComponent.getFirst().take(recipe.getFirstInput().testMatching(fluidComponent.getFirst()).getAmount());
+						fluidComponent.getSecond().take(recipe.getSecondInput().testMatching(fluidComponent.getSecond()).getAmount());
+						fluidComponent.getThird().take(recipe.getFirstOutput());
 
-							progress = 0;
-						} else {
-							progress += speed;
-						}
-
-						tickActive();
+						progress = 0;
 					} else {
-						tickInactive();
+						progress += speed;
 					}
+
+					tickActive();
 				} else {
 					tickInactive();
 				}
@@ -171,7 +158,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 	public static class Primitive extends FluidMixerBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlocks.PRIMITIVE_FLUID_MIXER, AstromineTechnologiesBlockEntityTypes.PRIMITIVE_FLUID_MIXER);
+			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_FLUID_MIXER);
 		}
 
 		@Override
@@ -197,7 +184,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 	public static class Basic extends FluidMixerBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlocks.BASIC_FLUID_MIXER, AstromineTechnologiesBlockEntityTypes.BASIC_FLUID_MIXER);
+			super(AstromineTechnologiesBlockEntityTypes.BASIC_FLUID_MIXER);
 		}
 
 		@Override
@@ -223,7 +210,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 	public static class Advanced extends FluidMixerBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlocks.ADVANCED_FLUID_MIXER, AstromineTechnologiesBlockEntityTypes.ADVANCED_FLUID_MIXER);
+			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_FLUID_MIXER);
 		}
 
 		@Override
@@ -249,7 +236,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 
 	public static class Elite extends FluidMixerBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlocks.ELITE_FLUID_MIXER, AstromineTechnologiesBlockEntityTypes.ELITE_FLUID_MIXER);
+			super(AstromineTechnologiesBlockEntityTypes.ELITE_FLUID_MIXER);
 		}
 
 		@Override

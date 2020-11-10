@@ -39,12 +39,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import reborncore.common.crafting.RebornRecipe;
-import techreborn.TechReborn;
-import techreborn.init.ModRecipes;
-
-import static com.mojang.brigadier.builder.LiteralArgumentBuilder.literal;
 
 public class AstromineCommands {
 	public static void initialize() {
@@ -52,9 +46,7 @@ public class AstromineCommands {
 			dispatcher.register(LiteralArgumentBuilder.<ServerCommandSource>literal("recipe").then(LiteralArgumentBuilder.<ServerCommandSource>literal("creator").executes((context) -> {
 				context.getSource().getPlayer().openHandledScreen(new ExtendedScreenHandlerFactory() {
 					@Override
-					public void writeScreenOpeningData(ServerPlayerEntity serverPlayerEntity, PacketByteBuf packetByteBuf) {
-
-					}
+					public void writeScreenOpeningData(ServerPlayerEntity serverPlayerEntity, PacketByteBuf packetByteBuf) {}
 
 					@Override
 					public Text getDisplayName() {

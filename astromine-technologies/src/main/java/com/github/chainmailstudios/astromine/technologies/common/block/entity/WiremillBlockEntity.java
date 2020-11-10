@@ -24,20 +24,17 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
-import net.minecraft.block.Block;
+import com.github.chainmailstudios.astromine.common.utilities.IngredientUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.recipe.RecipeType;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.InventoryFromItemComponent;
-import com.github.chainmailstudios.astromine.common.inventory.BaseInventory;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
@@ -46,7 +43,6 @@ import com.github.chainmailstudios.astromine.technologies.common.block.entity.ma
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.WireMillingRecipe;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
 import org.jetbrains.annotations.NotNull;
@@ -60,8 +56,8 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 
 	private Optional<WireMillingRecipe> optionalRecipe = Optional.empty();
 
-	public WireMillBlockEntity(Block energyBlock, BlockEntityType<?> type) {
-		super(energyBlock, type);
+	public WireMillBlockEntity(BlockEntityType<?> type) {
+		super(type);
 	}
 
 	@Override
@@ -71,7 +67,11 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 				return false;
 			}
 
-			return WireMillingRecipe.allows(world, SimpleItemComponent.of(stack).asInventory());
+			if (!StackUtilities.test(stack, getItemComponent().getFirst())) {
+				return false;
+			}
+
+			return WireMillingRecipe.allows(world, SimpleItemComponent.of(stack));
 		}).withExtractPredicate((direction, stack, slot) -> {
 			return slot == 0;
 		}).withListener((inventory) -> {
@@ -104,12 +104,13 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 
 		ItemComponent itemComponent = getItemComponent();
 
+		EnergyComponent energyComponent = getEnergyComponent();
+
 		if (itemComponent != null) {
-			EnergyVolume volume = getEnergyComponent().getVolume();
-			BaseInventory inputInventory = BaseInventory.of(itemComponent.getFirst(), itemComponent.getSecond());
+			EnergyVolume volume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = (Optional<WireMillingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) WireMillingRecipe.Type.INSTANCE, InventoryFromItemComponent.of(getItemComponent()), world);
+				optionalRecipe = WireMillingRecipe.matching(world, itemComponent, energyComponent);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -121,45 +122,28 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 			if (optionalRecipe.isPresent()) {
 				WireMillingRecipe recipe = optionalRecipe.get();
 
-				if (recipe.matches(inputInventory, world)) {
-					limit = recipe.getTime();
+				limit = recipe.getTime();
 
-					double speed = Math.min(getMachineSpeed(), limit - progress);
-					double consumed = recipe.getEnergy() * speed / limit;
+				double speed = Math.min(getMachineSpeed(), limit - progress);
+				double consumed = recipe.getEnergyInput() * speed / limit;
 
-					ItemStack output = recipe.getOutput().copy();
+				if (volume.hasStored(consumed)) {
+					volume.take(consumed);
 
-					boolean isEmpty = itemComponent.getFirst().isEmpty();
-					boolean isEqual = ItemStack.areItemsEqual(itemComponent.getFirst(), output) && ItemStack.areTagsEqual(itemComponent.getFirst(), output);
+					if (progress + speed >= limit) {
+						optionalRecipe = Optional.empty();
 
-					if (volume.hasStored(consumed)) {
-						if ((isEmpty || isEqual) && itemComponent.getFirst().getCount() + output.getCount() <= itemComponent.getFirst().getMaxCount()) {
-							volume.minus(consumed);
+						itemComponent.getSecond().decrement(IngredientUtilities.testMatching(recipe.getFirstInput(), itemComponent.getSecond()).getCount());
+						itemComponent.setFirst(StackUtilities.into(itemComponent.getFirst(), recipe.getFirstOutput()));
 
-							if (progress + speed >= limit) {
-								optionalRecipe = Optional.empty();
-
-								itemComponent.getSecond().decrement(1);
-
-								if (isEmpty) {
-									itemComponent.setFirst(output);
-								} else {
-									itemComponent.getFirst().increment(output.getCount());
-									shouldTry = true;
-								}
-
-								progress = 0;
-							} else {
-								progress += speed;
-							}
-
-							tickActive();
-						} else {
-							tickInactive();
-						}
+						progress = 0;
 					} else {
-						tickInactive();
+						progress += speed;
 					}
+
+					tickActive();
+				} else {
+					tickInactive();
 				}
 			} else {
 				tickInactive();
@@ -183,7 +167,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 
 	public static class Primitive extends WireMillBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlocks.PRIMITIVE_WIREMILL, AstromineTechnologiesBlockEntityTypes.PRIMITIVE_WIREMILL);
+			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_WIREMILL);
 		}
 
 		@Override
@@ -204,7 +188,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 
 	public static class Basic extends WireMillBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlocks.BASIC_WIREMILL, AstromineTechnologiesBlockEntityTypes.BASIC_WIREMILL);
+			super(AstromineTechnologiesBlockEntityTypes.BASIC_WIREMILL);
 		}
 
 		@Override
@@ -225,7 +209,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 
 	public static class Advanced extends WireMillBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlocks.ADVANCED_WIREMILL, AstromineTechnologiesBlockEntityTypes.ADVANCED_WIREMILL);
+			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_WIREMILL);
 		}
 
 		@Override
@@ -246,7 +230,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 
 	public static class Elite extends WireMillBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlocks.ELITE_WIREMILL, AstromineTechnologiesBlockEntityTypes.ELITE_WIREMILL);
+			super(AstromineTechnologiesBlockEntityTypes.ELITE_WIREMILL);
 		}
 
 		@Override

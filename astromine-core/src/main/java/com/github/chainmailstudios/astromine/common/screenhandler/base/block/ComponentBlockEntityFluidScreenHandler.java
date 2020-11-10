@@ -24,27 +24,34 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.block;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentItemBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBarWidget;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 
+/**
+ * A class representing a {@link ComponentBlockEntityScreenHandler}
+ * with an attached {@link ComponentFluidBlockEntity}.
+ */
 public class ComponentBlockEntityFluidScreenHandler extends ComponentBlockEntityScreenHandler {
 	public ComponentFluidBlockEntity blockEntity;
 
 	public FluidVerticalBarWidget fluidBar;
 
+	/** Instantiates a {@link ComponentBlockEntityItemScreenHandler}
+	 * with the given values, obtaining the {@link ComponentFluidBlockEntity}. */
 	public ComponentBlockEntityFluidScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 
 		blockEntity = (ComponentFluidBlockEntity) player.world.getBlockEntity(position);
 	}
 
+	/** Override behavior to add a fluid bar. */
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
@@ -52,7 +59,7 @@ public class ComponentBlockEntityFluidScreenHandler extends ComponentBlockEntity
 		fluidBar = new FluidVerticalBarWidget();
 		fluidBar.setPosition(Position.of(mainTab, 7, 11));
 		fluidBar.setSize(Size.of(24F, 48F));
-		fluidBar.setVolume(() -> blockEntity.getFluidComponent().getFirst());
+		fluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getFirst());
 
 		mainTab.addWidget(fluidBar);
 	}

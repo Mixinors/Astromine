@@ -102,7 +102,7 @@ public abstract class RocketEntity extends ComponentFluidItemEntity {
 			FluidVolume tank = getTank();
 
 			if (fuelPredicate.test(tank) || tank.isEmpty()) {
-				tank.minus(consumptionFunction.apply(this));
+				tank.take(consumptionFunction.apply(this));
 
 				if (tank.isEmpty() && !world.isClient) {
 					this.world.getPlayers().forEach(player -> player.sendMessage(new TranslatableText("text.astromine.rocket.disassemble_empty_fuel").formatted(Formatting.RED), false));
@@ -174,7 +174,7 @@ public abstract class RocketEntity extends ComponentFluidItemEntity {
 	public abstract void openInventory(PlayerEntity player);
 
 	public void tryLaunch(PlayerEntity launcher) {
-		if (this.getFluidComponent().getFirst().biggerThan(Fraction.empty())) {
+		if (this.getFluidComponent().getFirst().biggerThan(Fraction.EMPTY)) {
 			this.getDataTracker().set(RocketEntity.IS_RUNNING, true);
 			if(launcher instanceof ServerPlayerEntity) {
 				AstromineDiscoveriesCriteria.LAUNCH_ROCKET.trigger((ServerPlayerEntity) launcher);

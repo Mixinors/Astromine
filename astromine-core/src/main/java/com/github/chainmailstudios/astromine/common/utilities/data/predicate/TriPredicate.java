@@ -25,6 +25,6 @@
 package com.github.chainmailstudios.astromine.common.utilities.data.predicate;
 
 @FunctionalInterface
-public interface TriPredicate<MAYBE, THIS, AMAZING> {
-	boolean test(MAYBE first, THIS second, AMAZING third);
+public interface TriPredicate<T, U, V> {
+	boolean test(T t, U u, V v);
 }

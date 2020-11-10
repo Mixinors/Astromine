@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.item.BlockItem;
@@ -45,14 +44,13 @@ import com.github.chainmailstudios.astromine.technologies.common.block.entity.ma
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import org.jetbrains.annotations.NotNull;
 
 public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
-	private Fraction cooldown = Fraction.empty();
+	private Fraction cooldown = Fraction.EMPTY;
 
 	public BlockPlacerBlockEntity() {
-		super(AstromineTechnologiesBlocks.BLOCK_PLACER, AstromineTechnologiesBlockEntityTypes.BLOCK_PLACER);
+		super(AstromineTechnologiesBlockEntityTypes.BLOCK_PLACER);
 	}
 
 	@Override
@@ -89,10 +87,13 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 
 		ItemComponent itemComponent = getItemComponent();
 
-		if (itemComponent != null) {
-			EnergyVolume energyVolume = getEnergyComponent().getVolume();
+		EnergyComponent energyComponent = getEnergyComponent();
+
+		if (itemComponent != null && energyComponent != null) {
+			EnergyVolume energyVolume = energyComponent.getVolume();
+
 			if (energyVolume.getAmount() < getEnergyConsumed()) {
-				cooldown = Fraction.empty();
+				cooldown = Fraction.EMPTY;
 
 				tickInactive();
 			} else {
@@ -100,8 +101,8 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 
 				cooldown = cooldown.add(Fraction.ofDecimal(1.0D / getMachineSpeed()));
 
-				cooldown.ifBiggerOrEqualThan(Fraction.of(1), () -> {
-					cooldown = Fraction.empty();
+				if (cooldown.biggerOrEqualThan(Fraction.of(1))) {
+					cooldown = Fraction.EMPTY;
 
 					ItemStack stored = itemComponent.getFirst();
 
@@ -118,9 +119,9 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 
 						stored.decrement(1);
 
-						energyVolume.minus(getEnergyConsumed());
+						energyVolume.take(getEnergyConsumed());
 					}
-				});
+				}
 			}
 		}
 	}

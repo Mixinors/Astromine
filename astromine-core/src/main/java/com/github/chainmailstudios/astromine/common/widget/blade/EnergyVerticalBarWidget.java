@@ -24,20 +24,18 @@
 
 package com.github.chainmailstudios.astromine.common.widget.blade;
 
+import com.github.chainmailstudios.astromine.common.utilities.TextUtilities;
+import com.github.chainmailstudios.astromine.common.volume.base.Volume;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.BaseRenderer;
-import com.github.chainmailstudios.astromine.common.utilities.NumberUtilities;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.vini2003.blade.client.utilities.Instances;
 import com.github.vini2003.blade.client.utilities.Layers;
@@ -49,23 +47,42 @@ import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.function.Supplier;
 
+/**
+ * A class representing a vertical bar widget depicting
+ * the energy level of the specified {@link #volumeSupplier}.
+ *
+ * The {@link #volumeSupplier} supplies the volume from which
+ * {@link EnergyVolume#getAmount()} and {@link EnergyVolume#getSize()}
+ * are queried from.
+ */
 public class EnergyVerticalBarWidget extends AbstractWidget {
-	private final Identifier ENERGY_BACKGROUND = AstromineCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_background.png");
-	private final Identifier ENERGY_FOREGROUND = AstromineCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_foreground.png");
+	private static final Identifier ENERGY_BACKGROUND = AstromineCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_background.png");
+	private static final Identifier ENERGY_FOREGROUND = AstromineCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_foreground.png");
 
 	private Supplier<EnergyVolume> volumeSupplier;
 
-	@Environment(EnvType.CLIENT)
-	@Override
-	public @NotNull List<Text> getTooltip() {
-		return Lists.newArrayList(new TranslatableText("text.astromine.energy"), new LiteralText(NumberUtilities.shorten(volumeSupplier.get().getAmount().longValue(), "") + "/" + NumberUtilities.shorten(volumeSupplier.get().getSize().longValue(), "")).formatted(Formatting.GRAY),
-			new LiteralText("Astromine").formatted(Formatting.BLUE, Formatting.ITALIC));
+	/** Returns this widget's {@link #volumeSupplier}. */
+	public Supplier<EnergyVolume> getVolumeSupplier() {
+		return volumeSupplier;
 	}
 
-	public void setVolume(Supplier<EnergyVolume> volumeSupplier) {
+	/** Sets this widget's {@link #volumeSupplier} to the specified one. */
+	public void setVolumeSupplier(Supplier<EnergyVolume> volumeSupplier) {
 		this.volumeSupplier = volumeSupplier;
 	}
 
+	/** Returns the tooltip of this widget. */
+	@Environment(EnvType.CLIENT)
+	@Override
+	public @NotNull List<Text> getTooltip() {
+		return Lists.newArrayList(
+				TextUtilities.getEnergy(),
+				TextUtilities.getVolume(volumeSupplier.get()),
+				TextUtilities.getAstromine()
+		);
+	}
+
+	/** Renders this widget. */
 	@Environment(EnvType.CLIENT)
 	@Override
 	public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider) {

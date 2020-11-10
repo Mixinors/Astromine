@@ -30,30 +30,4 @@ public enum MachineTier {
 	ADVANCED,
 	ELITE,
 	CREATIVE;
-
-	public MachineTier upgradesFrom() {
-		switch (this) {
-			case BASIC:
-				return PRIMITIVE;
-			case ADVANCED:
-				return BASIC;
-			case ELITE:
-				return ADVANCED;
-			default:
-				return null;
-		}
-	}
-
-	public MachineTier upgradesTo() {
-		switch (this) {
-			case PRIMITIVE:
-				return BASIC;
-			case BASIC:
-				return ADVANCED;
-			case ADVANCED:
-				return ELITE;
-			default:
-				return null;
-		}
-	}
 }

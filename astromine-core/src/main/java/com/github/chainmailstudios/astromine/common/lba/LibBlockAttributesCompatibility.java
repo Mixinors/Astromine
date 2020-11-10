@@ -125,6 +125,8 @@ public final class LibBlockAttributesCompatibility {
 
 		private final Direction direction;
 
+		private boolean isExtracting = false;
+
 		public FixedItemInvFromComponent(ItemComponent itemComponent, BlockEntityTransferComponent transferComponent, Direction direction) {
 			this.itemComponent = itemComponent;
 			this.transferComponent = transferComponent;
@@ -138,7 +140,7 @@ public final class LibBlockAttributesCompatibility {
 
 		@Override
 		public boolean isItemValidForSlot(int slot, ItemStack stack) {
-			return itemComponent.getStack(slot).isEmpty() || (ItemStack.areItemsEqual(stack, itemComponent.getStack(slot)) && ItemStack.areTagsEqual(stack, itemComponent.getStack(slot)));
+			return ((isExtracting && itemComponent.canExtract(direction, stack, slot)) || (!isExtracting && itemComponent.canInsert(direction, stack, slot)));
 		}
 
 		@Override
@@ -161,6 +163,7 @@ public final class LibBlockAttributesCompatibility {
 		@Override
 		public ItemStack attemptExtraction(ItemFilter filter, int amount, Simulation simulation) {
 			if (transferComponent.getItem(direction).canExtract()) {
+				isExtracting = true;
 				return getGroupedInv().attemptExtraction(filter, amount, simulation);
 			} else {
 				return ItemStack.EMPTY;
@@ -170,6 +173,7 @@ public final class LibBlockAttributesCompatibility {
 		@Override
 		public ItemStack attemptInsertion(ItemStack stack, Simulation simulation) {
 			if (transferComponent.getItem(direction).canInsert()) {
+				isExtracting = false;
 				return getGroupedInv().attemptInsertion(stack, simulation);
 			} else {
 				return stack;
@@ -184,6 +188,7 @@ public final class LibBlockAttributesCompatibility {
 
 		private final Direction direction;
 
+		private boolean isExtracting = false;
 
 		public FixedFluidInvFromComponent(FluidComponent fluidComponent, BlockEntityTransferComponent transferComponent, Direction direction) {
 			this.fluidComponent = fluidComponent;
@@ -210,8 +215,11 @@ public final class LibBlockAttributesCompatibility {
 		}
 
 		@Override
-		public boolean setInvFluid(int tank, alexiil.mc.lib.attributes.fluid.volume.FluidVolume fluidVolume, Simulation simulation) {
-			if (!isFluidValidForTank(tank, fluidVolume.getFluidKey()))
+		public boolean setInvFluid(int slot, alexiil.mc.lib.attributes.fluid.volume.FluidVolume fluidVolume, Simulation simulation) {
+			if (!isFluidValidForTank(slot, fluidVolume.getFluidKey()))
+				return false;
+
+			if (((isExtracting && !fluidComponent.canExtract(direction, wrapToAstromine(fluidVolume).get(), slot)) || (!isExtracting && !fluidComponent.canInsert(direction, wrapToAstromine(fluidVolume).get(), slot))))
 				return false;
 
 			Optional<FluidVolume> optionalFluidVolume = wrapToAstromine(fluidVolume);
@@ -220,7 +228,7 @@ public final class LibBlockAttributesCompatibility {
 				return false;
 
 			FluidVolume incoming = optionalFluidVolume.get();
-			FluidVolume current = fluidComponent.getVolume(tank);
+			FluidVolume current = fluidComponent.getVolume(slot);
 
 			if (incoming.getAmount().biggerThan(current.getSize())) {
 				return false;
@@ -235,7 +243,7 @@ public final class LibBlockAttributesCompatibility {
 				current.setFluid(incoming.getFluid());
 				current.setAmount(incoming.getAmount());
 
-				fluidComponent.setVolume(tank, current);
+				fluidComponent.setVolume(slot, current);
 			}
 
 			return allowed;
@@ -263,6 +271,7 @@ public final class LibBlockAttributesCompatibility {
 		@Override
 		public alexiil.mc.lib.attributes.fluid.volume.FluidVolume attemptExtraction(FluidFilter filter, FluidAmount amount, Simulation simulation) {
 			if (transferComponent.getFluid(direction).canExtract()) {
+				isExtracting = true;
 				return getGroupedInv().attemptExtraction(filter, amount, simulation);
 			} else {
 				return FluidVolumeUtil.EMPTY;
@@ -272,6 +281,7 @@ public final class LibBlockAttributesCompatibility {
 		@Override
 		public alexiil.mc.lib.attributes.fluid.volume.FluidVolume attemptInsertion(alexiil.mc.lib.attributes.fluid.volume.FluidVolume volume, Simulation simulation) {
 			if (transferComponent.getFluid(direction).canInsert()) {
+				isExtracting = false;
 				return getGroupedInv().attemptInsertion(volume, simulation);
 			} else {
 				return volume;

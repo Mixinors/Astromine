@@ -70,7 +70,7 @@ public class RefiningDisplay implements RecipeDisplay {
 	}
 
 	public RefiningDisplay(RefiningRecipe recipe) {
-		this(recipe.getEnergy(), recipe.getIngredient(), recipe.getFirstOutputVolume(), recipe.getSecondOutputVolume(), recipe.getThirdOutputVolume(), recipe.getFourthOutputVolume(), recipe.getFifthOutputVolume(), recipe.getSixthOutputVolume(), recipe.getSeventhOutputVolume(), recipe.getId());
+		this(recipe.getEnergyInput(), recipe.getIngredient(), recipe.getFirstOutputVolume(), recipe.getSecondOutputVolume(), recipe.getThirdOutputVolume(), recipe.getFourthOutputVolume(), recipe.getFifthOutputVolume(), recipe.getSixthOutputVolume(), recipe.getSeventhOutputVolume(), recipe.getId());
 	}
 
 	@Override

@@ -190,9 +190,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 
 		ItemGroup group;
 
-		private Builder() {
-
-		}
+		private Builder() {}
 
 		public Builder fog(int fog) {
 			this.fog = fog;
@@ -259,7 +257,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			this.bucket = bucket;
 
 			if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-				ClientUtilities.buildClient(name, tint, still, flowing);
+				ClientUtilities.registerExtendedFluid(name, tint, still, flowing);
 			}
 
 			return still;

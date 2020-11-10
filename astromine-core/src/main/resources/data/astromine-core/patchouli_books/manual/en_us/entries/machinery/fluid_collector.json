@@ -1,0 +1,19 @@
+{
+  "name": "text.astromine.machinery.fluid_collector.title",
+  "icon": "astromine:fluid_collector",
+  "category": "machinery",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:fluid_collector",
+      "title": "text.astromine.machinery.fluid_collector.page_one.title",
+      "text": "text.astromine.machinery.fluid_collector.page_one.text"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:fluid_collector",
+      "title": "text.astromine.machinery.fluid_collector.page_two.title"
+    }
+  ]
+}

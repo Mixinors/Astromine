@@ -8,43 +8,19 @@ import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 public class VolumeUtilities {
-    public static FluidAmount transferFluidAmount() {
+    /** Returns the amount of fluid transferred during transport as per {@link AstromineConfig}. */
+    public static FluidAmount getTransferFluidAmount() {
         return FluidAmount.of(AstromineConfig.get().fluidTransferNumerator, AstromineConfig.get().fluidTransferDenominator);
     }
 
-    public static FluidVolume fromFluidVolumeJson(JsonElement jsonElement) {
-        return FluidVolume.fromJson(jsonElement);
-    }
-
-    public static FluidVolume fromFluidVolumePacket(PacketByteBuf buffer) {
-        return FluidVolume.fromPacket(buffer);
-    }
-
-    public static void toFluidVolumePacket(PacketByteBuf buffer, FluidVolume volume) {
-        volume.toPacket(buffer);
-    }
-
-    public static EnergyVolume fromEnergyVolumeJson(JsonElement jsonElement) {
-        return EnergyVolume.fromJson(jsonElement);
-    }
-
-    public static EnergyVolume fromEnergyVolumePacket(PacketByteBuf buffer) {
-        return EnergyVolume.fromPacket(buffer);
-    }
-
-    public static void toEnergyVolumePacket(PacketByteBuf buffer, EnergyVolume volume) {
-        volume.toPacket(buffer);
-    }
-
+    /** Inserts fluids from the first stack into the first fluid volume.
+     * Inserts fluids from the first fluid volume into the first stack. */
     public static void transferBetweenFirstAndSecond(FluidComponent fluidComponent, ItemComponent itemComponent) {
         if (fluidComponent != null) {
             if (itemComponent != null) {
@@ -57,14 +33,14 @@ public class VolumeUtilities {
                     if (ourVolume.test(stackVolume.getFluid())) {
                         if (itemComponent.getFirst().getItem() instanceof BucketItem) {
                             if (itemComponent.getFirst().getItem() != Items.BUCKET && itemComponent.getFirst().getCount() == 1) {
-                                if (ourVolume.hasAvailable(Fraction.bucket()) || ourVolume.isEmpty()) {
-                                    ourVolume.moveFrom(stackVolume, Fraction.bucket());
+                                if (ourVolume.hasAvailable(Fraction.BUCKET) || ourVolume.isEmpty()) {
+                                    ourVolume.take(stackVolume, Fraction.BUCKET);
 
                                     itemComponent.setFirst(new ItemStack(Items.BUCKET));
                                 }
                             }
                         } else {
-                            ourVolume.moveFrom(stackVolume, Fraction.bucket());
+                            ourVolume.take(stackVolume, Fraction.BUCKET);
                         }
                     }
                 }
@@ -78,14 +54,14 @@ public class VolumeUtilities {
                     if (stackVolume.test(ourVolume.getFluid())) {
                         if (itemComponent.getSecond().getItem() instanceof BucketItem) {
                             if (itemComponent.getSecond().getItem() == Items.BUCKET && itemComponent.getSecond().getCount() == 1) {
-                                if (ourVolume.hasStored(Fraction.bucket())) {
-                                    ourVolume.add(stackVolume, Fraction.bucket());
+                                if (ourVolume.hasStored(Fraction.BUCKET)) {
+                                    ourVolume.give(stackVolume, Fraction.BUCKET);
 
                                     itemComponent.setSecond(new ItemStack(stackVolume.getFluid().getBucketItem()));
                                 }
                             }
                         } else {
-                            ourVolume.add(stackVolume, Fraction.bucket());
+                            ourVolume.give(stackVolume, Fraction.BUCKET);
                         }
                     }
                 }

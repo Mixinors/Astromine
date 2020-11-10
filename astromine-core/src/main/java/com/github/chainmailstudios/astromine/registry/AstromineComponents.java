@@ -87,7 +87,7 @@ public class AstromineComponents implements WorldComponentInitializer, ChunkComp
 		registry.registerFor(
 				item -> item instanceof FluidVolumeItem,
 				FLUID_INVENTORY_COMPONENT,
-				stack -> SimpleFluidComponent.of(FluidVolume.of(Fraction.empty(), ((FluidVolumeItem) stack.getItem()).getSize(), Fluids.EMPTY))
+				stack -> SimpleFluidComponent.of(FluidVolume.of(Fraction.EMPTY, ((FluidVolumeItem) stack.getItem()).getSize(), Fluids.EMPTY))
 		);
 	}
 
@@ -127,5 +127,10 @@ public class AstromineComponents implements WorldComponentInitializer, ChunkComp
 		registry.registerFor(ComponentFluidBlockEntity.class, FLUID_INVENTORY_COMPONENT, ComponentFluidBlockEntity::createFluidComponent);
 
 		registry.registerFor(ComponentEnergyBlockEntity.class, ENERGY_INVENTORY_COMPONENT, ComponentEnergyBlockEntity::createEnergyComponent);
+
+		registry.registerFor(ComponentEnergyFluidItemBlockEntity.class, ENERGY_INVENTORY_COMPONENT, ComponentEnergyFluidItemBlockEntity::createEnergyComponent);
+		registry.registerFor(ComponentEnergyFluidItemBlockEntity.class, FLUID_INVENTORY_COMPONENT, ComponentEnergyFluidItemBlockEntity::createFluidComponent);
+		registry.registerFor(ComponentEnergyFluidItemBlockEntity.class, ITEM_INVENTORY_COMPONENT, ComponentEnergyFluidItemBlockEntity::createItemComponent);
+
 	}
 }

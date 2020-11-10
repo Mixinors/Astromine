@@ -33,6 +33,7 @@ import java.util.function.Consumer;
 
 public class GeneratorUtilities {
 	public static final class Providers {
+		/** Returns a default implementation of a {@link RecipeJsonProvider}. */
 		public static DefaultedRecipeJsonProvider createProvider(RecipeSerializer<?> type, Identifier id, Consumer<JsonObject> serializer) {
 			return new DefaultedRecipeJsonProvider(type, id) {
 				@Override
@@ -42,6 +43,7 @@ public class GeneratorUtilities {
 			};
 		}
 
+		/** A class responsible for populating a recipe JSON. */
 		private static abstract class DefaultedRecipeJsonProvider implements RecipeJsonProvider {
 			private final RecipeSerializer<?> type;
 			private final Identifier id;

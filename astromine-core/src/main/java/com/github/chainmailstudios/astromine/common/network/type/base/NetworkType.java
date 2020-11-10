@@ -31,9 +31,7 @@ import com.github.chainmailstudios.astromine.common.registry.NetworkTypeRegistry
 public abstract class NetworkType {
 	public static final NetworkType EMPTY = NetworkTypeRegistry.INSTANCE.register(AstromineCommon.identifier("empty_network"), new NetworkType() {
 		@Override
-		public void tick(NetworkInstance instance) {
-
-		}
+		public void tick(NetworkInstance instance) {}
 	});
 
 	public abstract void tick(NetworkInstance instance);

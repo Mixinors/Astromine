@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
@@ -50,17 +49,16 @@ import com.github.chainmailstudios.astromine.technologies.common.block.entity.ma
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
 
 public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
-	private Fraction cooldown = Fraction.empty();
+	private Fraction cooldown = Fraction.EMPTY;
 
 	public BlockBreakerBlockEntity() {
-		super(AstromineTechnologiesBlocks.BLOCK_BREAKER, AstromineTechnologiesBlockEntityTypes.BLOCK_BREAKER);
+		super(AstromineTechnologiesBlockEntityTypes.BLOCK_BREAKER);
 	}
 
 	@Override
@@ -97,10 +95,13 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 
 		ItemComponent itemComponent = getItemComponent();
 
-		if (itemComponent != null) {
-			EnergyVolume energyVolume = getEnergyComponent().getVolume();
+		EnergyComponent energyComponent = getEnergyComponent();
+
+		if (itemComponent != null && energyComponent != null) {
+			EnergyVolume energyVolume = energyComponent.getVolume();
+
 			if (energyVolume.getAmount() < getEnergyConsumed()) {
-				cooldown = Fraction.empty();
+				cooldown = Fraction.EMPTY;
 
 				tickInactive();
 			} else {
@@ -108,8 +109,8 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 
 				cooldown = cooldown.add(Fraction.ofDecimal(1.0D / getMachineSpeed()));
 
-				cooldown.ifBiggerOrEqualThan(Fraction.of(1), () -> {
-					cooldown = Fraction.empty();
+				if (cooldown.biggerOrEqualThan(Fraction.of(1))) {
+					cooldown = Fraction.EMPTY;
 
 					ItemStack stored = itemComponent.getFirst();
 
@@ -128,7 +129,7 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 
 						ItemStack storedCopy = stored.copy();
 
-						Optional<ItemStack> matching = drops.stream().filter(stack -> storedCopy.isEmpty() || StackUtilities.equalItemAndTag(stack, storedCopy)).findFirst();
+						Optional<ItemStack> matching = drops.stream().filter(stack -> storedCopy.isEmpty() || StackUtilities.areItemsAndTagsEqual(stack, storedCopy)).findFirst();
 
 						matching.ifPresent(match -> {
 							Pair<ItemStack, ItemStack> pair = StackUtilities.merge(match, stored, match.getMaxCount(), stored.getMaxCount());
@@ -145,9 +146,9 @@ public class BlockBreakerBlockEntity extends ComponentEnergyItemBlockEntity impl
 
 						world.breakBlock(targetPos, false);
 
-						energyVolume.minus(getEnergyConsumed());
+						energyVolume.take(getEnergyConsumed());
 					}
-				});
+				}
 			}
 		}
 	}

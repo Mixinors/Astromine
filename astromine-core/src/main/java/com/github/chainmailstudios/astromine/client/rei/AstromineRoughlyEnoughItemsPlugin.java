@@ -152,7 +152,7 @@ public abstract class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
 					height = bounds.height - MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
 				else height = MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
 				VertexConsumerProvider.Immediate consumers = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
-				SpriteRenderer.beginPass().setup(consumers, RenderLayer.getSolid()).sprite(FluidUtilities.texture(entry.getFluid())[0]).color(FluidUtilities.color(MinecraftClient.getInstance().player, entry.getFluid())).light(0x00f000f0).overlay(OverlayTexture.DEFAULT_UV).alpha(
+				SpriteRenderer.beginPass().setup(consumers, RenderLayer.getSolid()).sprite(FluidUtilities.getSprites(entry.getFluid())[0]).color(FluidUtilities.getColor(MinecraftClient.getInstance().player, entry.getFluid())).light(0x00f000f0).overlay(OverlayTexture.DEFAULT_UV).alpha(
 					0xff).normal(matrices.peek().getNormal(), 0, 0, 0).position(matrices.peek().getModel(), bounds.x + 1, bounds.y + bounds.height - height + 1, bounds.x + bounds.width - 1, bounds.y + bounds.height - 1, getZOffset() + 1).next(
 						PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
 				consumers.draw();

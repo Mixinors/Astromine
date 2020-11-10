@@ -52,7 +52,7 @@ public class LiquidGeneratingCategory extends AbstractEnergyGeneratingCategory<L
 
 	@Override
 	public String getCategoryName() {
-		return I18n.translate("category.astromine.liquid_generating");
+		return I18n.translate("category.astromine.fluid_generating");
 	}
 
 	@Override

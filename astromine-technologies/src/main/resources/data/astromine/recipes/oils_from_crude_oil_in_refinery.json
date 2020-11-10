@@ -42,7 +42,6 @@
       "denominator": 100
     }
   },
-
   "sixth_output": {
     "fluid": "astromine:gasoline",
     "amount": {
@@ -57,6 +56,6 @@
       "denominator": 100
     }
   },
-  "energy": 1340,
+  "energy_input": 1340,
   "time": 30
 }

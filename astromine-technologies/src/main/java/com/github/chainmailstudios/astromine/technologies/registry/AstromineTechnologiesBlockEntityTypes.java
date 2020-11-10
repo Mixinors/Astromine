@@ -51,15 +51,15 @@ public class AstromineTechnologiesBlockEntityTypes extends AstromineBlockEntityT
 	public static final BlockEntityType<SolidGeneratorBlockEntity.Advanced> ADVANCED_SOLID_GENERATOR = register("advanced_solid_generator", SolidGeneratorBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_SOLID_GENERATOR);
 	public static final BlockEntityType<SolidGeneratorBlockEntity.Elite> ELITE_SOLID_GENERATOR = register("elite_solid_generator", SolidGeneratorBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_SOLID_GENERATOR);
 
-	public static final BlockEntityType<LiquidGeneratorBlockEntity.Primitive> PRIMITIVE_LIQUID_GENERATOR = register("primitive_liquid_generator", LiquidGeneratorBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_LIQUID_GENERATOR);
-	public static final BlockEntityType<LiquidGeneratorBlockEntity.Basic> BASIC_LIQUID_GENERATOR = register("basic_liquid_generator", LiquidGeneratorBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_LIQUID_GENERATOR);
-	public static final BlockEntityType<LiquidGeneratorBlockEntity.Advanced> ADVANCED_LIQUID_GENERATOR = register("advanced_liquid_generator", LiquidGeneratorBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_LIQUID_GENERATOR);
-	public static final BlockEntityType<LiquidGeneratorBlockEntity.Elite> ELITE_LIQUID_GENERATOR = register("elite_liquid_generator", LiquidGeneratorBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_LIQUID_GENERATOR);
+	public static final BlockEntityType<FluidGeneratorBlockEntity.Primitive> PRIMITIVE_LIQUID_GENERATOR = register("primitive_fluid_generator", FluidGeneratorBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_LIQUID_GENERATOR);
+	public static final BlockEntityType<FluidGeneratorBlockEntity.Basic> BASIC_LIQUID_GENERATOR = register("basic_fluid_generator", FluidGeneratorBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_LIQUID_GENERATOR);
+	public static final BlockEntityType<FluidGeneratorBlockEntity.Advanced> ADVANCED_LIQUID_GENERATOR = register("advanced_fluid_generator", FluidGeneratorBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_LIQUID_GENERATOR);
+	public static final BlockEntityType<FluidGeneratorBlockEntity.Elite> ELITE_LIQUID_GENERATOR = register("elite_fluid_generator", FluidGeneratorBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_LIQUID_GENERATOR);
 
-	public static final BlockEntityType<ElectricSmelterBlockEntity.Primitive> PRIMITIVE_ELECTRIC_SMELTER = register("primitive_electric_smelter", ElectricSmelterBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_ELECTRIC_SMELTER);
-	public static final BlockEntityType<ElectricSmelterBlockEntity.Basic> BASIC_ELECTRIC_SMELTER = register("basic_electric_smelter", ElectricSmelterBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_ELECTRIC_SMELTER);
-	public static final BlockEntityType<ElectricSmelterBlockEntity.Advanced> ADVANCED_ELECTRIC_SMELTER = register("advanced_electric_smelter", ElectricSmelterBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_ELECTRIC_SMELTER);
-	public static final BlockEntityType<ElectricSmelterBlockEntity.Elite> ELITE_ELECTRIC_SMELTER = register("elite_electric_smelter", ElectricSmelterBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_ELECTRIC_SMELTER);
+	public static final BlockEntityType<ElectricFurnaceBlockEntity.Primitive> PRIMITIVE_ELECTRIC_SMELTER = register("primitive_electric_furnace", ElectricFurnaceBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_ELECTRIC_SMELTER);
+	public static final BlockEntityType<ElectricFurnaceBlockEntity.Basic> BASIC_ELECTRIC_SMELTER = register("basic_electric_furnace", ElectricFurnaceBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_ELECTRIC_SMELTER);
+	public static final BlockEntityType<ElectricFurnaceBlockEntity.Advanced> ADVANCED_ELECTRIC_SMELTER = register("advanced_electric_furnace", ElectricFurnaceBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_ELECTRIC_SMELTER);
+	public static final BlockEntityType<ElectricFurnaceBlockEntity.Elite> ELITE_ELECTRIC_SMELTER = register("elite_electric_furnace", ElectricFurnaceBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_ELECTRIC_SMELTER);
 
 	public static final BlockEntityType<AlloySmelterBlockEntity.Primitive> PRIMITIVE_ALLOY_SMELTER = register("primitive_alloy_smelter", AlloySmelterBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_ALLOY_SMELTER);
 	public static final BlockEntityType<AlloySmelterBlockEntity.Basic> BASIC_ALLOY_SMELTER = register("basic_alloy_smelter", AlloySmelterBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_ALLOY_SMELTER);
@@ -71,10 +71,10 @@ public class AstromineTechnologiesBlockEntityTypes extends AstromineBlockEntityT
 	public static final BlockEntityType<TrituratorBlockEntity.Advanced> ADVANCED_TRITURATOR = register("advanced_triturator", TrituratorBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_TRITURATOR);
 	public static final BlockEntityType<TrituratorBlockEntity.Elite> ELITE_TRITURATOR = register("elite_triturator", TrituratorBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_TRITURATOR);
 
-	public static final BlockEntityType<PresserBlockEntity.Primitive> PRIMITIVE_PRESSER = register("primitive_presser", PresserBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_PRESSER);
-	public static final BlockEntityType<PresserBlockEntity.Basic> BASIC_PRESSER = register("basic_presser", PresserBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_PRESSER);
-	public static final BlockEntityType<PresserBlockEntity.Advanced> ADVANCED_PRESSER = register("advanced_presser", PresserBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_PRESSER);
-	public static final BlockEntityType<PresserBlockEntity.Elite> ELITE_PRESSER = register("elite_presser", PresserBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_PRESSER);
+	public static final BlockEntityType<PressBlockEntity.Primitive> PRIMITIVE_PRESSER = register("primitive_press", PressBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_PRESSER);
+	public static final BlockEntityType<PressBlockEntity.Basic> BASIC_PRESSER = register("basic_press", PressBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_PRESSER);
+	public static final BlockEntityType<PressBlockEntity.Advanced> ADVANCED_PRESSER = register("advanced_press", PressBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_PRESSER);
+	public static final BlockEntityType<PressBlockEntity.Elite> ELITE_PRESSER = register("elite_press", PressBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_PRESSER);
 
 	public static final BlockEntityType<WireMillBlockEntity.Primitive> PRIMITIVE_WIREMILL = register("primitive_wire_mill", WireMillBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_WIREMILL);
 	public static final BlockEntityType<WireMillBlockEntity.Basic> BASIC_WIREMILL = register("basic_wire_mill", WireMillBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_WIREMILL);
@@ -96,14 +96,24 @@ public class AstromineTechnologiesBlockEntityTypes extends AstromineBlockEntityT
 	public static final BlockEntityType<FluidMixerBlockEntity.Advanced> ADVANCED_FLUID_MIXER = register("advanced_fluid_mixer", FluidMixerBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_FLUID_MIXER);
 	public static final BlockEntityType<FluidMixerBlockEntity.Elite> ELITE_FLUID_MIXER = register("elite_fluid_mixer", FluidMixerBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_FLUID_MIXER);
 
+	public static final BlockEntityType<SolidifierBlockEntity.Primitive> PRIMITIVE_SOLIDIFIER = register("primitive_solidifier", SolidifierBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_SOLIDIFIER);
+	public static final BlockEntityType<SolidifierBlockEntity.Basic> BASIC_SOLIDIFIER = register("basic_solidifier", SolidifierBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_SOLIDIFIER);
+	public static final BlockEntityType<SolidifierBlockEntity.Advanced> ADVANCED_SOLIDIFIER = register("advanced_solidifier", SolidifierBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_SOLIDIFIER);
+	public static final BlockEntityType<SolidifierBlockEntity.Elite> ELITE_SOLIDIFIER = register("elite_solidifier", SolidifierBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_SOLIDIFIER);
+
+	public static final BlockEntityType<MelterBlockEntity.Primitive> PRIMITIVE_MELTER = register("primitive_melter", MelterBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_MELTER);
+	public static final BlockEntityType<MelterBlockEntity.Basic> BASIC_MELTER = register("basic_melter", MelterBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_MELTER);
+	public static final BlockEntityType<MelterBlockEntity.Advanced> ADVANCED_MELTER = register("advanced_melter", MelterBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_MELTER);
+	public static final BlockEntityType<MelterBlockEntity.Elite> ELITE_MELTER = register("elite_melter", MelterBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_MELTER);
+
 	public static final BlockEntityType<CapacitorBlockEntity.Primitive> PRIMITIVE_CAPACITOR = register("primitive_capacitor", CapacitorBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_CAPACITOR);
 	public static final BlockEntityType<CapacitorBlockEntity.Basic> BASIC_CAPACITOR = register("basic_capacitor", CapacitorBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_CAPACITOR);
 	public static final BlockEntityType<CapacitorBlockEntity.Advanced> ADVANCED_CAPACITOR = register("advanced_capacitor", CapacitorBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_CAPACITOR);
 	public static final BlockEntityType<CapacitorBlockEntity.Elite> ELITE_CAPACITOR = register("elite_capacitor", CapacitorBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_CAPACITOR);
 	public static final BlockEntityType<CapacitorBlockEntity.Creative> CREATIVE_CAPACITOR = register("creative_capacitor", CapacitorBlockEntity.Creative::new, AstromineTechnologiesBlocks.CREATIVE_CAPACITOR);
 
-	public static final BlockEntityType<FluidExtractorBlockEntity> FLUID_EXTRACTOR = register("fluid_extractor", FluidExtractorBlockEntity::new, AstromineTechnologiesBlocks.FLUID_EXTRACTOR);
-	public static final BlockEntityType<FluidInserterBlockEntity> FLUID_INSERTER = register("fluid_inserter", FluidInserterBlockEntity::new, AstromineTechnologiesBlocks.FLUID_INSERTER);
+	public static final BlockEntityType<FluidCollectorBlockEntity> FLUID_EXTRACTOR = register("fluid_collector", FluidCollectorBlockEntity::new, AstromineTechnologiesBlocks.FLUID_EXTRACTOR);
+	public static final BlockEntityType<FluidPlacerBlockEntity> FLUID_INSERTER = register("fluid_placer", FluidPlacerBlockEntity::new, AstromineTechnologiesBlocks.FLUID_INSERTER);
 
 	public static final BlockEntityType<BlockBreakerBlockEntity> BLOCK_BREAKER = register("block_breaker", BlockBreakerBlockEntity::new, AstromineTechnologiesBlocks.BLOCK_BREAKER);
 	public static final BlockEntityType<BlockPlacerBlockEntity> BLOCK_PLACER = register("block_placer", BlockPlacerBlockEntity::new, AstromineTechnologiesBlocks.BLOCK_PLACER);

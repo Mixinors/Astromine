@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","pattern":["212","343","1 1"],"key":{"1":{"tag":"c:meteoric_steel_plates"},"2":{"item":"minecraft:flint_and_steel"},"3":{"item":"astromine:primitive_tank"},"4":{"tag":"c:meteoric_steel_gears"}},"result":{"item":"astromine:primitive_rocket_booster","count":1}}

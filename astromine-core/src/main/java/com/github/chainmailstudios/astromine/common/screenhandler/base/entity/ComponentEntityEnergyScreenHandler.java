@@ -50,7 +50,7 @@ public abstract class ComponentEntityEnergyScreenHandler extends ComponentEntity
 		energyBar = new EnergyVerticalBarWidget();
 		energyBar.setPosition(Position.of(mainTab, 7F, 11));
 		energyBar.setSize(Size.of(24F, 48F));
-		energyBar.setVolume(() -> entity.getEnergyComponent().getVolume());
+		energyBar.setVolumeSupplier(() -> entity.getEnergyComponent().getVolume());
 
 		mainTab.addWidget(energyBar);
 	}

@@ -1,11 +1,26 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["010", "343", "010"],
+  "pattern": [
+    "010",
+    "343",
+    "010"
+  ],
   "key": {
-    "0": {"tag": "c:meteoric_steel_plates"},
-    "1": {"item": "astromine:pressurized_gas_canister"},
-    "3": {"tag": "c:meteoric_steel_gears"},
-    "4": {"item": "astromine:elite_machine_chassis"}
+    "0": {
+      "tag": "c:meteoric_steel_plates"
+    },
+    "1": {
+      "item": "astromine:pressurized_gas_canister"
+    },
+    "3": {
+      "tag": "c:meteoric_steel_gears"
+    },
+    "4": {
+      "item": "astromine:elite_machine_chassis"
+    }
   },
-  "result": {"item": "astromine:elite_tank", "count": 1}
+  "result": {
+    "item": "astromine:elite_tank",
+    "count": 1
+  }
 }
