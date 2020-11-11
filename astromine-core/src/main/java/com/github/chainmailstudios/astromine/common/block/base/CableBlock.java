@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.block.base;
 
+import com.github.chainmailstudios.astromine.common.utilities.NetworkUtilities;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -46,13 +47,10 @@ import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
-import com.github.chainmailstudios.astromine.common.network.NetworkTracer;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.capability.block.CableWrenchable;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -114,12 +112,12 @@ public abstract class CableBlock extends Block implements Waterloggable, CableWr
 	public void onPlaced(World world, BlockPos position, BlockState stateA, LivingEntity placer, ItemStack stack) {
 		super.onPlaced(world, position, stateA, placer, stack);
 
-		NetworkTracer.Tracer.INSTANCE.trace(getNetworkType(), WorldPos.of(world, position));
+		NetworkUtilities.Tracer.INSTANCE.trace(getNetworkType(), WorldPos.of(world, position));
 
-		NetworkTracer.Modeller modeller = new NetworkTracer.Modeller();
-		modeller.scanNeighbours(getNetworkType(), position, world);
+		NetworkUtilities.Modeller modeller = new NetworkUtilities.Modeller();
+		modeller.of(getNetworkType(), position, world);
 
-		world.setBlockState(position, modeller.applyToBlockState(stateA));
+		world.setBlockState(position, modeller.toBlockState(stateA));
 
 		for (Direction direction : Direction.values()) {
 			BlockPos offsetPos = position.offset(direction);
@@ -131,10 +129,10 @@ public abstract class CableBlock extends Block implements Waterloggable, CableWr
 			if (member.acceptsType(getNetworkType()))
 				continue;
 
-			NetworkTracer.Modeller offsetModeller = new NetworkTracer.Modeller();
-			offsetModeller.scanNeighbours(((CableBlock) offsetBlock.getBlock()).getNetworkType(), offsetPos, world);
+			NetworkUtilities.Modeller offsetModeller = new NetworkUtilities.Modeller();
+			offsetModeller.of(((CableBlock) offsetBlock.getBlock()).getNetworkType(), offsetPos, world);
 
-			world.setBlockState(offsetPos, offsetModeller.applyToBlockState(world.getBlockState(offsetPos)));
+			world.setBlockState(offsetPos, offsetModeller.toBlockState(world.getBlockState(offsetPos)));
 		}
 	}
 
@@ -158,12 +156,12 @@ public abstract class CableBlock extends Block implements Waterloggable, CableWr
 			if (((CableBlock) offsetBlock).getNetworkType() != getNetworkType())
 				continue;
 
-			NetworkTracer.Tracer.INSTANCE.trace(getNetworkType(), WorldPos.of(world, offsetPos));
+			NetworkUtilities.Tracer.INSTANCE.trace(getNetworkType(), WorldPos.of(world, offsetPos));
 
-			NetworkTracer.Modeller modeller = new NetworkTracer.Modeller();
-			modeller.scanNeighbours(getNetworkType(), offsetPos, world);
+			NetworkUtilities.Modeller modeller = new NetworkUtilities.Modeller();
+			modeller.of(getNetworkType(), offsetPos, world);
 
-			world.setBlockState(offsetPos, modeller.applyToBlockState(world.getBlockState(offsetPos)));
+			world.setBlockState(offsetPos, modeller.toBlockState(world.getBlockState(offsetPos)));
 		}
 	}
 
@@ -174,12 +172,12 @@ public abstract class CableBlock extends Block implements Waterloggable, CableWr
 		WorldNetworkComponent networkComponent = WorldNetworkComponent.get(world);
 
 		networkComponent.removeInstance(networkComponent.getInstance(getNetworkType(), position));
-		NetworkTracer.Tracer.INSTANCE.trace(getNetworkType(), WorldPos.of(world, position));
+		NetworkUtilities.Tracer.INSTANCE.trace(getNetworkType(), WorldPos.of(world, position));
 
-		NetworkTracer.Modeller modeller = new NetworkTracer.Modeller();
-		modeller.scanNeighbours(getNetworkType(), position, world);
+		NetworkUtilities.Modeller modeller = new NetworkUtilities.Modeller();
+		modeller.of(getNetworkType(), position, world);
 
-		world.setBlockState(position, modeller.applyToBlockState(world.getBlockState(position)));
+		world.setBlockState(position, modeller.toBlockState(world.getBlockState(position)));
 	}
 
 	@Override
@@ -190,9 +188,9 @@ public abstract class CableBlock extends Block implements Waterloggable, CableWr
 	@Override
 	public VoxelShape getOutlineShape(BlockState blockState, BlockView world, BlockPos position, ShapeContext entityContext) {
 		VoxelShape returnShape = CENTER_SHAPE;
-		NetworkTracer.Modeller modeller = new NetworkTracer.Modeller();
-		modeller.scanBlockState(blockState);
-		returnShape = modeller.applyToVoxelShape(returnShape);
+		NetworkUtilities.Modeller modeller = new NetworkUtilities.Modeller();
+		modeller.of(blockState);
+		returnShape = modeller.toVoxelShape(returnShape);
 		return returnShape;
 	}
 }

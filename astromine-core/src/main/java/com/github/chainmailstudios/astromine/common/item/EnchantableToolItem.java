@@ -22,17 +22,14 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.item.base;
+package com.github.chainmailstudios.astromine.common.item;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.BlockItem;
+import com.github.chainmailstudios.astromine.mixin.EnchantmentTargetMixin;
+import net.minecraft.item.ToolItem;
 
-import com.github.chainmailstudios.astromine.common.volume.base.Volume;
-
-public abstract class BaseVolumeBlockItem<V extends Volume<?, ?>> extends BlockItem {
-	public BaseVolumeBlockItem(Block block, Settings settings) {
-		super(block, settings);
-	}
-
-	public abstract V getVolume();
-}
+/**
+ * An interface representing a {@link ToolItem}
+ * which may be enchanted, used in
+ * {@link EnchantmentTargetMixin}.
+ */
+public interface EnchantableToolItem {}

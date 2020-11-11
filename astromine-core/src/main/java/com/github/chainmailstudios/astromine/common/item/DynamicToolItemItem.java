@@ -48,13 +48,13 @@ import com.github.chainmailstudios.astromine.common.utilities.ToolUtilities;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
-public class DynamicToolItem extends Item implements DynamicAttributeTool, Vanishable, DiggerTool {
+public class DynamicToolItemItem extends Item implements DynamicAttributeTool, Vanishable, EnchantableToolItem {
 	public final MiningToolItem first;
 	public final MiningToolItem second;
 	private final ToolMaterial material;
 	private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 
-	public DynamicToolItem(MiningToolItem first, MiningToolItem second, ToolMaterial material, Settings settings) {
+	public DynamicToolItemItem(MiningToolItem first, MiningToolItem second, ToolMaterial material, Settings settings) {
 		super(settings.maxDamageIfAbsent((int) (material.getDurability() * 1.1)));
 		this.first = first;
 		this.second = second;

@@ -35,7 +35,7 @@ public abstract class ArmorFeatureRendererMixin {
 	@Unique
 	private static RenderLayer getArmorCutoutNoCull(Identifier texture, int frames) {
 		RenderLayer.MultiPhaseParameters multiPhaseParameters = RenderLayer.MultiPhaseParameters.builder()
-			.texture(new AnimatedArmorItem.Texture(texture, frames))
+			.texture(new AnimatedArmorItem.AnimatedTexturePhase(texture, frames))
 			.transparency(RenderLayer.NO_TRANSPARENCY)
 			.diffuseLighting(RenderLayer.ENABLE_DIFFUSE_LIGHTING)
 			.alpha(RenderLayer.ONE_TENTH_ALPHA)

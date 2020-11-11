@@ -24,48 +24,60 @@
 
 package com.github.chainmailstudios.astromine.common.item.base;
 
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
 
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import me.shedaniel.cloth.api.durability.bar.DurabilityBarItem;
+import net.minecraft.util.registry.Registry;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHolder;
 import team.reborn.energy.EnergyTier;
 
-public class EnergyVolumeItem extends BaseVolumeItem<EnergyVolume> implements EnergyHolder, DurabilityBarItem {
+/**
+ * A class representing an {@link Item} with
+ * an attached {@link EnergyVolume}.
+ */
+public class EnergyVolumeItem extends Item implements EnergyHolder, DurabilityBarItem {
 	private final double size;
 
-	public EnergyVolumeItem(Item.Settings settings, double size) {
+	/** Instantiates an {@link EnergyVolumeItem} with the given values. */
+	private EnergyVolumeItem(Item.Settings settings, double size) {
 		super(settings);
 
 		this.size = size;
 	}
 
+	/** Instantiates an {@link EnergyVolumeItem} with the given value. */
 	public static EnergyVolumeItem ofCreative(Item.Settings settings) {
 		return new EnergyVolumeItem(settings, Double.MAX_VALUE);
 	}
 
+	/** Instantiates an {@link EnergyVolumeItem} with the given values. */
 	public static EnergyVolumeItem of(Settings settings, double size) {
 		return new EnergyVolumeItem(settings, size);
 	}
 
+	/** Returns this item's size. */
 	public double getSize() {
 		return size;
 	}
 
+	/** returns this item's size. */
 	@Override
 	public double getMaxStoredPower() {
 		return getSize();
 	}
 
+	/** Override behavior to ignore TechReborn's energy tiers. */
 	@Override
 	public EnergyTier getTier() {
 		return EnergyTier.INSANE;
 	}
 
+	/** Override behavior to return our progress. */
 	@Override
 	public double getDurabilityBarProgress(ItemStack stack) {
 		if (!Energy.valid(stack) || getMaxStoredPower() == 0)
@@ -73,22 +85,29 @@ public class EnergyVolumeItem extends BaseVolumeItem<EnergyVolume> implements En
 		return 1 - Energy.of(stack).getEnergy() / getMaxStoredPower();
 	}
 
+	/** Override behavior to return true. */
 	@Override
 	public boolean hasDurabilityBar(ItemStack stack) {
 		return true;
 	}
 
+	/** Override behavior to return a median red. */
 	@Override
 	public int getDurabilityBarColor(ItemStack stack) {
 		return 0x91261f;
 	}
 
+	/** Override behavior to add instances of {@link EnergyVolumeItem}
+	 * as {@link ItemStack}s to {@link ItemGroup}s with full energy. */
 	@Override
 	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
 		super.appendStacks(group, stacks);
+
 		if (this.isIn(group)) {
 			ItemStack stack = new ItemStack(this);
+
 			Energy.of(stack).set(getMaxStoredPower());
+
 			stacks.add(stack);
 		}
 	}

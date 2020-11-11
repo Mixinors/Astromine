@@ -67,7 +67,7 @@ public class WorldNetworkComponent implements Component, Tickable {
 	}
 
 	public NetworkInstance getInstance(NetworkType type, BlockPos position) {
-		return this.instances.stream().filter(instance -> instance.getType() == type && instance.nodes.stream().anyMatch(node -> node.getBlockPos().equals(position))).findFirst().orElse(NetworkInstance.EMPTY);
+		return this.instances.stream().filter(instance -> instance.getType() == type && instance.nodes.stream().anyMatch(node -> node.getBlockPosition().equals(position))).findFirst().orElse(NetworkInstance.EMPTY);
 	}
 
 	public boolean containsInstance(NetworkType type, BlockPos position) {
@@ -85,7 +85,7 @@ public class WorldNetworkComponent implements Component, Tickable {
 		for (NetworkInstance instance : instances) {
 			ListTag nodeList = new ListTag();
 			for (NetworkNode node : instance.nodes) {
-				nodeList.add(LongTag.of(node.getPos()));
+				nodeList.add(LongTag.of(node.getLongPosition()));
 			}
 
 			ListTag memberList = new ListTag();
@@ -98,7 +98,6 @@ public class WorldNetworkComponent implements Component, Tickable {
 			data.putString("type", NetworkTypeRegistry.INSTANCE.getKey(instance.getType()).toString());
 			data.put("nodes", nodeList);
 			data.put("members", memberList);
-			data.put("additionalData", instance.getAdditionalData());
 
 			instanceTags.add(data);
 		}
@@ -125,17 +124,13 @@ public class WorldNetworkComponent implements Component, Tickable {
 				instance.addMember(NetworkMemberNode.fromTag((CompoundTag) memberTag));
 			}
 
-			if (dataTag.contains("additionalData")) {
-				instance.setAdditionalData(dataTag.getCompound("additionalData"));
-			}
-
 			addInstance(instance);
 		}
 	}
 
 	@Override
 	public void tick() {
-		this.instances.removeif (NetworkInstance::isStupidlyEmpty);
+		this.instances.removeIf(NetworkInstance::isEmpty);
 		this.instances.forEach(NetworkInstance::tick);
 	}
 

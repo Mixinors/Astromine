@@ -26,7 +26,7 @@ package com.github.chainmailstudios.astromine.common.network;
 
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
-import net.minecraft.nbt.CompoundTag;
+import com.google.common.base.Objects;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -38,60 +38,63 @@ import com.github.chainmailstudios.astromine.common.registry.NetworkTypeRegistry
 import com.google.common.collect.Sets;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-public class NetworkInstance implements Iterable<NetworkNode>, Tickable {
+/**
+ * A class representing a collection of {@link NetworkNode}s
+ * and {@link NetworkMemberNode}s, representing a simple
+ * network structure.
+ */
+public final class NetworkInstance implements Tickable {
 	public static final NetworkInstance EMPTY = new NetworkInstance();
 
 	public final Set<NetworkMemberNode> members = Sets.newConcurrentHashSet();
+
 	public final Set<NetworkNode> nodes = Sets.newConcurrentHashSet();
 
 	private final World world;
-	public NetworkType type;
-	private CompoundTag additionalData = new CompoundTag();
 
+	private final NetworkType type;
+
+	/** Instantiates a {@link NetworkInstance} with {@link NetworkType#EMPTY} network type. */
 	private NetworkInstance() {
 		this.type = NetworkType.EMPTY;
 		this.world = null;
 	}
 
+	/** Instantiates a {@link NetworkInstance} with the given values. */
 	public NetworkInstance(World world, NetworkType type) {
 		this.type = type;
 		this.world = world;
 	}
 
-	public CompoundTag getAdditionalData() {
-		return additionalData;
-	}
-
-	public void setAdditionalData(CompoundTag additionalData) {
-		this.additionalData = additionalData;
-	}
-
-	@Override
-	public Iterator<NetworkNode> iterator() {
-		return this.nodes.iterator();
-	}
-
+	/** Adds the given node to this instance. */
 	public void addNode(NetworkNode node) {
 		this.nodes.add(node);
 	}
 
+	/** Adds the given position as a node to this instance. */
 	public void addBlockPos(BlockPos position) {
 		this.nodes.add(NetworkNode.of(position));
 	}
 
+	/** Adds the given node as a member node to this instance. */
 	public void addMember(NetworkMemberNode member) {
 		this.members.add(member);
 	}
 
+	/** Removes the given node from this instance. */
 	public void removeNode(NetworkNode node) {
 		this.nodes.remove(node);
 	}
 
+	/** Removes the given member node from this instance. */
 	public void removeMember(NetworkMemberNode node) {
 		this.members.remove(node);
 	}
 
+	/** Joins this instance with another, taking
+	 * their nodes and member nodes. */
 	public NetworkInstance join(NetworkInstance controller) {
 		this.nodes.addAll(controller.nodes);
 		this.members.addAll(controller.members);
@@ -99,39 +102,74 @@ public class NetworkInstance implements Iterable<NetworkNode>, Tickable {
 		return this;
 	}
 
+	/** Returns this instance's type. */
 	public NetworkType getType() {
 		return this.type;
 	}
 
-	public NetworkInstance setType(NetworkType type) {
-		this.type = type;
-		return this;
-	}
-
+	/** Returns this instance's world. */
 	public World getWorld() {
 		return world;
 	}
 
+	/** Returns this instance's size. */
 	public int size() {
 		return this.nodes.size();
 	}
 
-	@Override
-	public void tick() {
-		this.type.tick(this);
-	}
-
-	@Override
-	public String toString() {
-		return "NetworkInstance{" + "type=" + NetworkTypeRegistry.INSTANCE.getKey(type) + ", world=" + world.getRegistryKey().getValue() + ", members=" + members + ", nodes=" + nodes + ", additionalData=" + additionalData + '}';
-	}
-
-	public boolean isStupidlyEmpty() {
-		this.nodes.removeif (node -> !NetworkMemberRegistry.get(WorldPos.of(world, node.getBlockPos()), null).isNode(getType()));
+	/** Asserts whether this instance is empty, or not. */
+	public boolean isEmpty() {
+		this.nodes.removeIf(node -> !NetworkMemberRegistry.get(WorldPos.of(world, node.getBlockPosition())).isNode(getType()));
 		if (this.nodes.isEmpty()) {
 			AstromineCommon.LOGGER.error("Network is empty! " + toString());
 			return true;
 		}
 		return false;
+	}
+
+	/** Override behavior to tick network via our {@link NetworkType}. */
+	@Override
+	public void tick() {
+		this.type.tick(this);
+	}
+
+	/** Asserts the quality of the objects. */
+	@Override
+	public boolean equals(Object object) {
+		if (this == object) return true;
+
+		if (object == null || getClass() != object.getClass()) return false;
+
+		NetworkInstance that = (NetworkInstance) object;
+
+		return Objects.equal(members, that.members) &&
+				Objects.equal(nodes, that.nodes) &&
+				Objects.equal(world, that.world) &&
+				Objects.equal(type, that.type);
+	}
+
+	/** Returns the hash for this instance. */
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(members, nodes, world, type);
+	}
+
+	/** Returns this node's string representation.
+	 * For example, it may be
+	 * "astromine:fluid_network, minecraft:overworld
+	 *  [323, 54, 73], NORTH
+	 *  [595, 58, 27], SOUTH
+	 *  [4933, 93, 4]
+	 *  [593, 58, 95]"
+	 * */
+	@Override
+	public String toString() {
+		return String.format(
+				"%s, %s,\n%s,\n%s",
+				NetworkTypeRegistry.INSTANCE.getKey(type),
+				world.getRegistryKey().getValue(),
+				members.stream().map(NetworkMemberNode::toString).collect(Collectors.joining("\n")),
+				nodes.stream().map(NetworkNode::toString).collect(Collectors.joining("\n"))
+		);
 	}
 }

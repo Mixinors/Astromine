@@ -36,63 +36,93 @@ import net.minecraft.util.collection.DefaultedList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
- * A BaseInventory is a class responsible for
- * effectively handling what a BasicInventory
- * does, however, allowing stack sizes
- * higher than the default of 64.
+ * A class representing a standard implementation
+ * of an {@link Inventory}.
  */
 public class BaseInventory implements Inventory, RecipeInputProvider {
-	protected int size;
-	protected DefaultedList<ItemStack> stacks;
-	protected List<InventoryChangedListener> listeners = new ArrayList<>();
+	private final int size;
 
-	public BaseInventory(int size) {
+	private final DefaultedList<ItemStack> stacks;
+
+	private final List<InventoryChangedListener> listeners = new ArrayList<>();
+
+	/** Instantiates a {@link BaseInventory} with the given value. */
+	private BaseInventory(int size) {
 		this.size = size;
 		this.stacks = DefaultedList.ofSize(size, ItemStack.EMPTY);
 	}
 
-	public BaseInventory(ItemStack... items) {
+	/** Instantiates a {@link BaseInventory} with the given values. */
+	private BaseInventory(ItemStack... items) {
 		this.size = items.length;
 		this.stacks = DefaultedList.copyOf(ItemStack.EMPTY, items);
 	}
 
+	/** Instantiates a {@link BaseInventory} with the given value. */
 	public static BaseInventory of(int size) {
 		return new BaseInventory(size);
 	}
 
+	/** Instantiates a {@link BaseInventory} with the given values. */
 	public static BaseInventory of(ItemStack... items) {
 		return new BaseInventory(items);
 	}
 
+	/** Adds an {@link InventoryChangedListener} to this inventory. */
 	public void addListener(InventoryChangedListener... listeners) {
 		this.listeners.addAll(Arrays.asList(listeners));
 	}
 
+	/** Removes an {@link InventoryChangedListener} from this inventory. */
 	public void removeListener(InventoryChangedListener... listeners) {
 		this.listeners.removeAll(Arrays.asList(listeners));
 	}
 
+	/** Returns this inventory's size. */
 	@Override
 	public int size() {
 		return this.size;
 	}
 
+	/** Asserts whether this inventory's {@link ItemStack}s are all empty or not. */
 	@Override
 	public boolean isEmpty() {
 		return this.stacks.stream().allMatch(ItemStack::isEmpty);
 	}
 
+	/** Returns the {@link ItemStack} at the given slot. */
 	@Override
 	public ItemStack getStack(int slot) {
-		return slot >= 0 && slot < this.stacks.size() ? this.stacks.get(slot) : ItemStack.EMPTY;
+		if (slot >= 0 && slot < size) {
+			return stacks.get(slot);
+		} else {
+			throw new ArrayIndexOutOfBoundsException("Cannot access slot bigger than inventory size");
+		}
 	}
 
+	/** Sets the {@link ItemStack} at the given slot to the specified value.
+	 * If the count is bigger than this inventory allows, it is set to the maximum allowed. */
+	@Override
+	public void setStack(int slot, ItemStack stack) {
+		stacks.set(slot, stack);
+
+		if (stack.getCount() > getMaxCountPerStack()) {
+			stack.setCount(getMaxCountPerStack());
+		}
+
+		markDirty();
+	}
+
+	/** Removes the {@link ItemStack} at the given slot,
+	 * or a part of it as per the specified count, and returns it. */
 	@Override
 	public ItemStack removeStack(int slot, int amount) {
 		ItemStack stack = Inventories.splitStack(this.stacks, slot, amount);
+
 		if (!stack.isEmpty()) {
 			this.markDirty();
 		}
@@ -100,25 +130,24 @@ public class BaseInventory implements Inventory, RecipeInputProvider {
 		return stack;
 	}
 
+	/** Removes the {@link ItemStack} at the given slot
+	 * and returns it. */
 	@Override
 	public ItemStack removeStack(int slot) {
-		ItemStack stack = this.stacks.get(slot);
+		ItemStack stack = stacks.get(slot);
+
 		if (stack.isEmpty()) {
 			return ItemStack.EMPTY;
 		} else {
-			this.stacks.set(slot, ItemStack.EMPTY);
-			this.markDirty();
+			stacks.set(slot, ItemStack.EMPTY);
+
+			markDirty();
+
 			return stack;
 		}
 	}
 
-	@Override
-	public void setStack(int slot, ItemStack stack) {
-		this.stacks.set(slot, stack);
-
-		this.markDirty();
-	}
-
+	/** Triggers this inventory's {@link InventoryChangedListener}s. */
 	@Override
 	public void markDirty() {
 		for (InventoryChangedListener listener : listeners) {
@@ -126,21 +155,30 @@ public class BaseInventory implements Inventory, RecipeInputProvider {
 		}
 	}
 
+	/** Allow the player to use this inventory by default. */
 	@Override
 	public boolean canPlayerUse(PlayerEntity player) {
 		return true;
 	}
 
+	/** Clear this inventory's contents. */
 	@Override
 	public void clear() {
-		this.stacks.clear();
-		this.markDirty();
+		for (int slot = 0; slot < size; ++slot) {
+			setStack(slot, ItemStack.EMPTY);
+		}
+
+		markDirty();
 	}
 
-	public String toString() {
-		return (this.stacks.stream().filter((stack) -> !stack.isEmpty()).collect(Collectors.toList())).toString();
-	}
-
+	/** Override behavior to do nothing. */
 	@Override
 	public void provideRecipeInputs(RecipeFinder recipeFinder) {}
+
+	/** Returns this inventory's string representation. */
+	public String toString() {
+		AtomicInteger slot = new AtomicInteger(0);
+
+		return stacks.stream().map(stack -> String.format("%s, %s", slot.get(), stack.toString())).collect(Collectors.joining("\n"));
+	}
 }

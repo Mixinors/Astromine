@@ -59,7 +59,7 @@ import java.util.stream.StreamSupport;
  * - {@link JsonElement} - through {@link #toJson()} and {@link #fromJson(JsonElement)}.
  * - {@link ByteBuf} - through {@link #toPacket(PacketByteBuf)} and {@link #fromPacket(PacketByteBuf)}.
  */
-public class FluidIngredient implements Predicate<FluidVolume> {
+public final class FluidIngredient implements Predicate<FluidVolume> {
 	private final Entry[] entries;
 
 	private FluidVolume[] matchingVolumes;

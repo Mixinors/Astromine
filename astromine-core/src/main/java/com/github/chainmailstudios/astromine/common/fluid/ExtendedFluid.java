@@ -54,7 +54,12 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class ExtendedFluid extends FlowableFluid {
 	public static final Material INDUSTRIAL_FLUID_MATERIAL = new FabricMaterialBuilder(MaterialColor.WATER)
-			.allowsMovement().lightPassesThrough().destroyedByPiston().replaceable().liquid().notSolid()
+			.allowsMovement()
+			.lightPassesThrough()
+			.destroyedByPiston()
+			.replaceable()
+			.liquid()
+			.notSolid()
 			.build();
 
 	private final int fogColor;

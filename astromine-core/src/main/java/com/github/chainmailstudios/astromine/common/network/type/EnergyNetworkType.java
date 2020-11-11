@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.common.network.type;
 
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.common.network.NetworkNode;
 import net.minecraft.block.entity.BlockEntity;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
@@ -46,15 +47,25 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class EnergyNetworkType extends NetworkType {
+/**
+ * A class representing a {@link NetworkType}
+ * for energy.
+ */
+public final class EnergyNetworkType implements NetworkType {
+	/** Override behavior to handle attached {@link EnergyHandler}s,
+	 * transferring energy between them.
+	 *
+	 * Performance is dubious at best.
+	 *
+	 * Transfer is done through {@link Energy}. */
 	@Override
 	public void tick(NetworkInstance instance) {
 		Reference2DoubleMap<EnergyHandler> providers = new Reference2DoubleOpenHashMap<>();
 		Reference2DoubleMap<EnergyHandler> requesters = new Reference2DoubleOpenHashMap<>();
 
 		for (NetworkMemberNode memberNode : instance.members) {
-			WorldPos memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPos());
-			NetworkMember networkMember = NetworkMemberRegistry.get(memberPos, memberNode.getDirection());
+			WorldPos memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPosition());
+			NetworkMember networkMember = NetworkMemberRegistry.get(memberPos);
 			BlockEntity blockEntity = memberPos.getBlockEntity();
 
 			WorldPos nodePosition = memberPos.offset(memberNode.getDirection());
@@ -114,7 +125,19 @@ public class EnergyNetworkType extends NetworkType {
 		}
 	}
 
+	/** Returns this type's string representation.
+	 * It will be "Energy". */
+	@Override
+	public String toString() {
+		return "Energy";
+	}
+
+	/**
+	 * An interface representing a speed provider for
+	 * attached {@link NetworkNode}s.
+	 */
 	public interface NodeSpeedProvider {
+		/** Returns this node's transfer speed. */
 		double getNodeSpeed();
 	}
 }

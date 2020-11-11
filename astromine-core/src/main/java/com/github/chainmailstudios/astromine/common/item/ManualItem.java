@@ -35,17 +35,24 @@ import net.minecraft.world.World;
 
 import vazkii.patchouli.api.PatchouliAPI;
 
+/**
+ * A class representing our Patchouli book.
+ */
 public class ManualItem extends Item {
+	/** Instantiates a {@link ManualItem} with the given value. */
 	public ManualItem(Settings settings) {
 		super(settings);
 	}
 
+	/** Override behavior to open our book interface. */
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		if (!world.isClient() && user instanceof ServerPlayerEntity) {
 			PatchouliAPI.instance.openBookGUI((ServerPlayerEntity) user, new Identifier("astromine-core:manual"));
+
 			return TypedActionResult.success(user.getStackInHand(hand));
+		} else {
+			return TypedActionResult.consume(user.getStackInHand(hand));
 		}
-		return TypedActionResult.consume(user.getStackInHand(hand));
 	}
 }

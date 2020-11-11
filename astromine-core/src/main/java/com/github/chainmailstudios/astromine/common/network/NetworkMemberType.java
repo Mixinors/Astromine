@@ -24,26 +24,36 @@
 
 package com.github.chainmailstudios.astromine.common.network;
 
+import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
+
 public enum NetworkMemberType {
-	/**
-	 * Requester is a member that requests without special handling defined by the user (e.g. siding)
-	 */
+	/** Requester is a member which may only request contents from a given {@link NetworkType}. */
 	REQUESTER,
-	/**
-	 * Provider is a member that provides without special handling defined by the user (e.g. siding)
-	 */
+
+	/** Requester is a member which may only provide contents for a given {@link NetworkType}. */
 	PROVIDER,
-	/**
-	 * Buffer is a member that stores with special handling defined by the user (e.g. siding)
-	 */
+
+	/** Requester is a member which may request or provide contents for a given {@link NetworkType}. */
 	BUFFER,
-	/**
-	 * Node is a cable-like member, that provides routing to other members but doesn't actually store and provide
-	 * anything.
-	 */
+
+	/** Node is a member which may neither request not provide contents,
+	 * existing solely as an intermediary between the other nodes of a given {@link NetworkType}. */
 	NODE,
-	/**
-	 * Not a member of this network type
-	 */
-	NONE
+
+	/** None is a member which is not part of a given {@link NetworkType}. */
+	NONE;
+
+	/** Returns this node's string representation.
+	 * For example, it may be "Requester". */
+	@Override
+	public String toString() {
+		switch (this) {
+			case REQUESTER: return "Requester";
+			case PROVIDER: return "Provider";
+			case BUFFER: return "Buffer";
+			case NODE: return "Node";
+
+			default: return "None";
+		}
+	}
 }

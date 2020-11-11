@@ -104,8 +104,8 @@ public class AstromineNetworkMembers {
 
 		BLOCK_CONSUMER.put(block -> block instanceof NetworkBlock, block -> {
 			NetworkBlock networkBlock = (NetworkBlock)block;
-			if (networkBlock.isMember(AstromineNetworkTypes.ENERGY)) energy.register(block, networkBlock.energyType());
-			if (networkBlock.isMember(AstromineNetworkTypes.FLUID)) fluid.register(block, networkBlock.fluidType());
+			if (networkBlock.isMember(AstromineNetworkTypes.ENERGY)) energy.register(block, networkBlock.getEnergyNetworkMemberType());
+			if (networkBlock.isMember(AstromineNetworkTypes.FLUID)) fluid.register(block, networkBlock.getFluidNetworkMemberType());
 		});
 
 		FabricLoader.getInstance().getEntrypoints("astromine-network-members", Runnable.class).forEach(Runnable::run);

@@ -22,9 +22,13 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.network;
+package com.github.chainmailstudios.astromine.common.utilities;
 
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
+import com.github.chainmailstudios.astromine.common.network.NetworkMember;
+import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
+import com.github.chainmailstudios.astromine.common.network.NetworkNode;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.state.property.BooleanProperty;
@@ -50,31 +54,39 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class NetworkTracer {
+public class NetworkUtilities {
 	public static class Tracer {
-		public static final Tracer INSTANCE = new Tracer();
-
-		private Tracer() {}
-
-		public void trace(NetworkType type, WorldPos initialPosition) {
+		/** Traces a network of the given {@link NetworkType}
+		 * from the specified initial {@link WorldPos}.
+		 *
+		 * Interconnected networks will be merged if necessary.
+		 */
+		public static void trace(NetworkType type, WorldPos initialPosition) {
 			World world = initialPosition.getWorld();
+
 			WorldNetworkComponent networkComponent = WorldNetworkComponent.get(world);
-			NetworkMember initialMember = NetworkMemberRegistry.get(initialPosition, null);
+
+			NetworkMember initialMember = NetworkMemberRegistry.get(initialPosition);
 
 			if (!initialMember.acceptsType(type) || !initialMember.isNode(type) || networkComponent.containsInstance(type, initialPosition.getBlockPos())) {
 				return;
 			}
 
 			LongSet tracedPositions = new LongOpenHashSet();
+
 			tracedPositions.add(initialPosition.getBlockPos().asLong());
+
 			ArrayDeque<BlockPos> positionsToTrace = new ArrayDeque<>(Collections.singleton(initialPosition.getBlockPos()));
 
 			NetworkInstance instance = new NetworkInstance(world, type);
+
 			instance.addNode(NetworkNode.of(initialPosition.getBlockPos()));
 
 			while (!positionsToTrace.isEmpty()) {
 				BlockPos position = positionsToTrace.pop();
+
 				boolean joined = false;
+
 				WorldPos initialObject = WorldPos.of(world, position);
 
 				for (Direction direction : Direction.values()) {
@@ -86,7 +98,8 @@ public class NetworkTracer {
 					}
 
 					WorldPos offsetObject = WorldPos.of(world, offsetPosition);
-					NetworkMember offsetMember = NetworkMemberRegistry.get(offsetObject, direction.getOpposite());
+
+					NetworkMember offsetMember = NetworkMemberRegistry.get(offsetObject);
 
 					NetworkInstance existingInstance = networkComponent.getInstance(type, offsetPosition);
 
@@ -121,30 +134,49 @@ public class NetworkTracer {
 		}
 	}
 
+	/**
+	 * A class representing a cable modeller,
+	 * which scans neighboring blocks and produces
+	 * a connected {@link BlockState} or {@link VoxelShape}.
+	 */
 	public static class Modeller {
 		private final Set<Direction> directions = new HashSet<>();
 
-		public void scanBlockState(BlockState blockState) {
+		/** Instantiates a {@link Modeller} with the given value. */
+		public static Modeller of(BlockState blockState) {
+			Modeller modeller = new Modeller();
+
 			for (Map.Entry<Direction, BooleanProperty> property : CableBlock.PROPERTIES.entrySet()) {
 				if (blockState.get(property.getValue())) {
-					directions.add(property.getKey());
+					modeller.directions.add(property.getKey());
 				}
 			}
+
+			return modeller;
 		}
 
-		public void scanNeighbours(NetworkType type, BlockPos initialPosition, World world) {
+		/** Instantiates a {@link Modeller} with the given values. */
+		public static Modeller of(NetworkType type, BlockPos initialPosition, World world) {
+			Modeller modeller = new Modeller();
+
 			WorldPos initialObject = WorldPos.of(world, initialPosition);
+
 			for (Direction direction : Direction.values()) {
 				WorldPos pos = WorldPos.of(world, initialPosition.offset(direction));
-				NetworkMember offsetMember = NetworkMemberRegistry.get(pos, direction.getOpposite());
+
+				NetworkMember offsetMember = NetworkMemberRegistry.get(pos);
 
 				if (offsetMember.acceptsType(type) && (!offsetMember.isNode(type) || pos.getBlock() == initialObject.getBlock())) {
-					directions.add(direction);
+					modeller.directions.add(direction);
 				}
 			}
+
+			return modeller;
 		}
 
-		public BlockState applyToBlockState(BlockState state) {
+		/** Returns a {@link BlockState} with this modeller's {@link #directions}
+		 * as {@link CableBlock} properties. */
+		public BlockState toBlockState(BlockState state) {
 			if (!(state.getBlock() instanceof CableBlock))
 				return state;
 			for (Direction direction : Direction.values()) {
@@ -153,7 +185,9 @@ public class NetworkTracer {
 			return state;
 		}
 
-		public VoxelShape applyToVoxelShape(VoxelShape shape) {
+		/** Returns a {@link VoxelShape} with this modeller's {@link #directions}
+		 * as {@link CableBlock} shapes. */
+		public VoxelShape toVoxelShape(VoxelShape shape) {
 			for (Direction direction : Direction.values()) {
 				if (directions.contains(direction)) {
 					shape = VoxelShapes.union(shape, CableBlock.SHAPE_MAP.get(CableBlock.PROPERTIES.get(direction)));

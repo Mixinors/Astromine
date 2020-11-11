@@ -62,7 +62,7 @@ import java.util.stream.StreamSupport;
  * - {@link JsonElement} - through {@link #toJson()} and {@link #fromJson(JsonElement)}.
  * - {@link ByteBuf} - through {@link #toPacket(PacketByteBuf)} and {@link #fromPacket(PacketByteBuf)}.
  */
-public class ItemIngredient implements Predicate<ItemStack> {
+public final  class ItemIngredient implements Predicate<ItemStack> {
 	private final Entry[] entries;
 
 	private ItemStack[] matchingStacks;

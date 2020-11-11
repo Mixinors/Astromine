@@ -33,7 +33,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.*;
 import net.minecraft.util.Rarity;
 
-import com.github.chainmailstudios.astromine.common.item.DynamicToolItem;
+import com.github.chainmailstudios.astromine.common.item.DynamicToolItemItem;
 import com.github.chainmailstudios.astromine.common.item.WrenchItem;
 import com.github.chainmailstudios.astromine.foundations.common.item.FireExtinguisherItem;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
@@ -215,31 +215,31 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item NETHERITE_GEAR = register("netherite_gear", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
 
 	// Tools
-	public static final Item WOODEN_MINING_TOOL = register("wooden_mining_tool", new DynamicToolItem((MiningToolItem) Items.WOODEN_SHOVEL, (MiningToolItem) Items.WOODEN_PICKAXE, ToolMaterials.WOOD, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item WOODEN_MATTOCK = register("wooden_mattock", new DynamicToolItem((MiningToolItem) Items.WOODEN_HOE, (MiningToolItem) Items.WOODEN_AXE, ToolMaterials.WOOD, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item WOODEN_MINING_TOOL = register("wooden_mining_tool", new DynamicToolItemItem((MiningToolItem) Items.WOODEN_SHOVEL, (MiningToolItem) Items.WOODEN_PICKAXE, ToolMaterials.WOOD, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item WOODEN_MATTOCK = register("wooden_mattock", new DynamicToolItemItem((MiningToolItem) Items.WOODEN_HOE, (MiningToolItem) Items.WOODEN_AXE, ToolMaterials.WOOD, AstromineFoundationsItems.getBasicSettings()));
 
-	public static final Item STONE_MINING_TOOL = register("stone_mining_tool", new DynamicToolItem((MiningToolItem) Items.STONE_SHOVEL, (MiningToolItem) Items.STONE_PICKAXE, ToolMaterials.STONE, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item STONE_MATTOCK = register("stone_mattock", new DynamicToolItem((MiningToolItem) Items.STONE_HOE, (MiningToolItem) Items.STONE_AXE, ToolMaterials.STONE, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item STONE_MINING_TOOL = register("stone_mining_tool", new DynamicToolItemItem((MiningToolItem) Items.STONE_SHOVEL, (MiningToolItem) Items.STONE_PICKAXE, ToolMaterials.STONE, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item STONE_MATTOCK = register("stone_mattock", new DynamicToolItemItem((MiningToolItem) Items.STONE_HOE, (MiningToolItem) Items.STONE_AXE, ToolMaterials.STONE, AstromineFoundationsItems.getBasicSettings()));
 
-	public static final Item IRON_MINING_TOOL = register("iron_mining_tool", new DynamicToolItem((MiningToolItem) Items.IRON_SHOVEL, (MiningToolItem) Items.IRON_PICKAXE, ToolMaterials.IRON, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item IRON_MATTOCK = register("iron_mattock", new DynamicToolItem((MiningToolItem) Items.IRON_HOE, (MiningToolItem) Items.IRON_AXE, ToolMaterials.IRON, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item IRON_MINING_TOOL = register("iron_mining_tool", new DynamicToolItemItem((MiningToolItem) Items.IRON_SHOVEL, (MiningToolItem) Items.IRON_PICKAXE, ToolMaterials.IRON, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item IRON_MATTOCK = register("iron_mattock", new DynamicToolItemItem((MiningToolItem) Items.IRON_HOE, (MiningToolItem) Items.IRON_AXE, ToolMaterials.IRON, AstromineFoundationsItems.getBasicSettings()));
 
-	public static final Item GOLDEN_MINING_TOOL = register("golden_mining_tool", new DynamicToolItem((MiningToolItem) Items.GOLDEN_SHOVEL, (MiningToolItem) Items.GOLDEN_PICKAXE, ToolMaterials.GOLD, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item GOLDEN_MATTOCK = register("golden_mattock", new DynamicToolItem((MiningToolItem) Items.GOLDEN_HOE, (MiningToolItem) Items.GOLDEN_AXE, ToolMaterials.GOLD, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item GOLDEN_MINING_TOOL = register("golden_mining_tool", new DynamicToolItemItem((MiningToolItem) Items.GOLDEN_SHOVEL, (MiningToolItem) Items.GOLDEN_PICKAXE, ToolMaterials.GOLD, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item GOLDEN_MATTOCK = register("golden_mattock", new DynamicToolItemItem((MiningToolItem) Items.GOLDEN_HOE, (MiningToolItem) Items.GOLDEN_AXE, ToolMaterials.GOLD, AstromineFoundationsItems.getBasicSettings()));
 
-	public static final Item DIAMOND_MINING_TOOL = register("diamond_mining_tool", new DynamicToolItem((MiningToolItem) Items.DIAMOND_SHOVEL, (MiningToolItem) Items.DIAMOND_PICKAXE, ToolMaterials.DIAMOND, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item DIAMOND_MATTOCK = register("diamond_mattock", new DynamicToolItem((MiningToolItem) Items.DIAMOND_HOE, (MiningToolItem) Items.DIAMOND_AXE, ToolMaterials.DIAMOND, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item DIAMOND_MINING_TOOL = register("diamond_mining_tool", new DynamicToolItemItem((MiningToolItem) Items.DIAMOND_SHOVEL, (MiningToolItem) Items.DIAMOND_PICKAXE, ToolMaterials.DIAMOND, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item DIAMOND_MATTOCK = register("diamond_mattock", new DynamicToolItemItem((MiningToolItem) Items.DIAMOND_HOE, (MiningToolItem) Items.DIAMOND_AXE, ToolMaterials.DIAMOND, AstromineFoundationsItems.getBasicSettings()));
 
-	public static final Item NETHERITE_MINING_TOOL = register("netherite_mining_tool", new DynamicToolItem((MiningToolItem) Items.NETHERITE_SHOVEL, (MiningToolItem) Items.NETHERITE_PICKAXE, ToolMaterials.NETHERITE, AstromineFoundationsItems.getBasicSettings().fireproof()));
-	public static final Item NETHERITE_MATTOCK = register("netherite_mattock", new DynamicToolItem((MiningToolItem) Items.NETHERITE_HOE, (MiningToolItem) Items.NETHERITE_AXE, ToolMaterials.NETHERITE, AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item NETHERITE_MINING_TOOL = register("netherite_mining_tool", new DynamicToolItemItem((MiningToolItem) Items.NETHERITE_SHOVEL, (MiningToolItem) Items.NETHERITE_PICKAXE, ToolMaterials.NETHERITE, AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item NETHERITE_MATTOCK = register("netherite_mattock", new DynamicToolItemItem((MiningToolItem) Items.NETHERITE_HOE, (MiningToolItem) Items.NETHERITE_AXE, ToolMaterials.NETHERITE, AstromineFoundationsItems.getBasicSettings().fireproof()));
 
 	public static final PickaxeItem COPPER_PICKAXE = register("copper_pickaxe", new PickaxeItem(AstromineFoundationsToolMaterials.COPPER, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 	public static final AxeItem COPPER_AXE = register("copper_axe", new AxeItem(AstromineFoundationsToolMaterials.COPPER, 5f, -3.0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final ShovelItem COPPER_SHOVEL = register("copper_shovel", new ShovelItem(AstromineFoundationsToolMaterials.COPPER, 1.5f, -3.0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final HoeItem COPPER_HOE = register("copper_hoe", new HoeItem(AstromineFoundationsToolMaterials.COPPER, -1, 0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item COPPER_SWORD = register("copper_sword", new SwordItem(AstromineFoundationsToolMaterials.COPPER, 3, -2.4f, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item COPPER_MINING_TOOL = register("copper_mining_tool", new DynamicToolItem(COPPER_PICKAXE, COPPER_SHOVEL, AstromineFoundationsToolMaterials.COPPER, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item COPPER_MATTOCK = register("copper_mattock", new DynamicToolItem(COPPER_HOE, COPPER_AXE, AstromineFoundationsToolMaterials.COPPER, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item COPPER_MINING_TOOL = register("copper_mining_tool", new DynamicToolItemItem(COPPER_PICKAXE, COPPER_SHOVEL, AstromineFoundationsToolMaterials.COPPER, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item COPPER_MATTOCK = register("copper_mattock", new DynamicToolItemItem(COPPER_HOE, COPPER_AXE, AstromineFoundationsToolMaterials.COPPER, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item COPPER_HAMMER = register("copper_hammer", new HammerItem(AstromineFoundationsToolMaterials.COPPER, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item COPPER_EXCAVATOR = register("copper_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.COPPER, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 
@@ -248,8 +248,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final ShovelItem TIN_SHOVEL = register("tin_shovel", new ShovelItem(AstromineFoundationsToolMaterials.TIN, 1.5f, -3.0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final HoeItem TIN_HOE = register("tin_hoe", new HoeItem(AstromineFoundationsToolMaterials.TIN, -1, 0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item TIN_SWORD = register("tin_sword", new SwordItem(AstromineFoundationsToolMaterials.TIN, 3, -2.4f, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item TIN_MINING_TOOL = register("tin_mining_tool", new DynamicToolItem(TIN_SHOVEL, TIN_PICKAXE, AstromineFoundationsToolMaterials.TIN, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item TIN_MATTOCK = register("tin_mattock", new DynamicToolItem(TIN_HOE, TIN_AXE, AstromineFoundationsToolMaterials.TIN, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item TIN_MINING_TOOL = register("tin_mining_tool", new DynamicToolItemItem(TIN_SHOVEL, TIN_PICKAXE, AstromineFoundationsToolMaterials.TIN, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item TIN_MATTOCK = register("tin_mattock", new DynamicToolItemItem(TIN_HOE, TIN_AXE, AstromineFoundationsToolMaterials.TIN, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item TIN_HAMMER = register("tin_hammer", new HammerItem(AstromineFoundationsToolMaterials.TIN, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item TIN_EXCAVATOR = register("tin_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.TIN, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 
@@ -258,8 +258,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final ShovelItem SILVER_SHOVEL = register("silver_shovel", new ShovelItem(AstromineFoundationsToolMaterials.SILVER, 1.5f, -3.0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final HoeItem SILVER_HOE = register("silver_hoe", new HoeItem(AstromineFoundationsToolMaterials.SILVER, -2, 0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item SILVER_SWORD = register("silver_sword", new SwordItem(AstromineFoundationsToolMaterials.SILVER, 3, -2.4f, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item SILVER_MINING_TOOL = register("silver_mining_tool", new DynamicToolItem(SILVER_PICKAXE, SILVER_SHOVEL, AstromineFoundationsToolMaterials.SILVER, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item SILVER_MATTOCK = register("silver_mattock", new DynamicToolItem(SILVER_HOE, SILVER_AXE, AstromineFoundationsToolMaterials.SILVER, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item SILVER_MINING_TOOL = register("silver_mining_tool", new DynamicToolItemItem(SILVER_PICKAXE, SILVER_SHOVEL, AstromineFoundationsToolMaterials.SILVER, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item SILVER_MATTOCK = register("silver_mattock", new DynamicToolItemItem(SILVER_HOE, SILVER_AXE, AstromineFoundationsToolMaterials.SILVER, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item SILVER_HAMMER = register("silver_hammer", new HammerItem(AstromineFoundationsToolMaterials.SILVER, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item SILVER_EXCAVATOR = register("silver_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.SILVER, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 
@@ -268,8 +268,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final ShovelItem LEAD_SHOVEL = register("lead_shovel", new ShovelItem(AstromineFoundationsToolMaterials.LEAD, 1.5f, -3.0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final HoeItem LEAD_HOE = register("lead_hoe", new HoeItem(AstromineFoundationsToolMaterials.LEAD, -2, 0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item LEAD_SWORD = register("lead_sword", new SwordItem(AstromineFoundationsToolMaterials.LEAD, 3, -2.4f, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item LEAD_MINING_TOOL = register("lead_mining_tool", new DynamicToolItem(LEAD_PICKAXE, LEAD_SHOVEL, AstromineFoundationsToolMaterials.LEAD, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item LEAD_MATTOCK = register("lead_mattock", new DynamicToolItem(LEAD_HOE, LEAD_AXE, AstromineFoundationsToolMaterials.LEAD, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item LEAD_MINING_TOOL = register("lead_mining_tool", new DynamicToolItemItem(LEAD_PICKAXE, LEAD_SHOVEL, AstromineFoundationsToolMaterials.LEAD, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item LEAD_MATTOCK = register("lead_mattock", new DynamicToolItemItem(LEAD_HOE, LEAD_AXE, AstromineFoundationsToolMaterials.LEAD, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item LEAD_HAMMER = register("lead_hammer", new HammerItem(AstromineFoundationsToolMaterials.LEAD, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item LEAD_EXCAVATOR = register("lead_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.LEAD, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 
@@ -278,8 +278,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final ShovelItem BRONZE_SHOVEL = register("bronze_shovel", new ShovelItem(AstromineFoundationsToolMaterials.BRONZE, 1.5f, -3.0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final HoeItem BRONZE_HOE = register("bronze_hoe", new HoeItem(AstromineFoundationsToolMaterials.BRONZE, -2, 0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item BRONZE_SWORD = register("bronze_sword", new SwordItem(AstromineFoundationsToolMaterials.BRONZE, 3, -2.4f, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item BRONZE_MINING_TOOL = register("bronze_mining_tool", new DynamicToolItem(BRONZE_SHOVEL, BRONZE_PICKAXE, AstromineFoundationsToolMaterials.BRONZE, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item BRONZE_MATTOCK = register("bronze_mattock", new DynamicToolItem(BRONZE_HOE, BRONZE_AXE, AstromineFoundationsToolMaterials.BRONZE, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item BRONZE_MINING_TOOL = register("bronze_mining_tool", new DynamicToolItemItem(BRONZE_SHOVEL, BRONZE_PICKAXE, AstromineFoundationsToolMaterials.BRONZE, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item BRONZE_MATTOCK = register("bronze_mattock", new DynamicToolItemItem(BRONZE_HOE, BRONZE_AXE, AstromineFoundationsToolMaterials.BRONZE, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item BRONZE_HAMMER = register("bronze_hammer", new HammerItem(AstromineFoundationsToolMaterials.BRONZE, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item BRONZE_EXCAVATOR = register("bronze_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.BRONZE, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 
@@ -288,8 +288,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final ShovelItem STEEL_SHOVEL = register("steel_shovel", new ShovelItem(AstromineFoundationsToolMaterials.STEEL, 1.5f, -3.0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final HoeItem STEEL_HOE = register("steel_hoe", new HoeItem(AstromineFoundationsToolMaterials.STEEL, -3, 0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item STEEL_SWORD = register("steel_sword", new SwordItem(AstromineFoundationsToolMaterials.STEEL, 3, -2.4f, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item STEEL_MINING_TOOL = register("steel_mining_tool", new DynamicToolItem(STEEL_SHOVEL, STEEL_PICKAXE, AstromineFoundationsToolMaterials.STEEL, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item STEEL_MATTOCK = register("steel_mattock", new DynamicToolItem(STEEL_HOE, STEEL_AXE, AstromineFoundationsToolMaterials.STEEL, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item STEEL_MINING_TOOL = register("steel_mining_tool", new DynamicToolItemItem(STEEL_SHOVEL, STEEL_PICKAXE, AstromineFoundationsToolMaterials.STEEL, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item STEEL_MATTOCK = register("steel_mattock", new DynamicToolItemItem(STEEL_HOE, STEEL_AXE, AstromineFoundationsToolMaterials.STEEL, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item STEEL_HAMMER = register("steel_hammer", new HammerItem(AstromineFoundationsToolMaterials.STEEL, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item STEEL_EXCAVATOR = register("steel_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.STELLUM, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 
@@ -298,8 +298,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final ShovelItem ELECTRUM_SHOVEL = register("electrum_shovel", new ShovelItem(AstromineFoundationsToolMaterials.ELECTRUM, 1.5f, -3.0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final HoeItem ELECTRUM_HOE = register("electrum_hoe", new HoeItem(AstromineFoundationsToolMaterials.ELECTRUM, -1, 0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item ELECTRUM_SWORD = register("electrum_sword", new SwordItem(AstromineFoundationsToolMaterials.ELECTRUM, 3, -2.4f, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item ELECTRUM_MINING_TOOL = register("electrum_mining_tool", new DynamicToolItem(ELECTRUM_SHOVEL, ELECTRUM_PICKAXE, AstromineFoundationsToolMaterials.ELECTRUM, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item ELECTRUM_MATTOCK = register("electrum_mattock", new DynamicToolItem(ELECTRUM_HOE, ELECTRUM_AXE, AstromineFoundationsToolMaterials.ELECTRUM, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item ELECTRUM_MINING_TOOL = register("electrum_mining_tool", new DynamicToolItemItem(ELECTRUM_SHOVEL, ELECTRUM_PICKAXE, AstromineFoundationsToolMaterials.ELECTRUM, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item ELECTRUM_MATTOCK = register("electrum_mattock", new DynamicToolItemItem(ELECTRUM_HOE, ELECTRUM_AXE, AstromineFoundationsToolMaterials.ELECTRUM, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item ELECTRUM_HAMMER = register("electrum_hammer", new HammerItem(AstromineFoundationsToolMaterials.ELECTRUM, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item ELECTRUM_EXCAVATOR = register("electrum_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.SILVER, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 
@@ -308,8 +308,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final ShovelItem ROSE_GOLD_SHOVEL = register("rose_gold_shovel", new ShovelItem(AstromineFoundationsToolMaterials.ROSE_GOLD, 1.5f, -3.0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final HoeItem ROSE_GOLD_HOE = register("rose_gold_hoe", new HoeItem(AstromineFoundationsToolMaterials.ROSE_GOLD, -1, 0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item ROSE_GOLD_SWORD = register("rose_gold_sword", new SwordItem(AstromineFoundationsToolMaterials.ROSE_GOLD, 3, -2.4f, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item ROSE_GOLD_MINING_TOOL = register("rose_gold_mining_tool", new DynamicToolItem(ROSE_GOLD_SHOVEL, ROSE_GOLD_PICKAXE, AstromineFoundationsToolMaterials.ROSE_GOLD, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item ROSE_GOLD_MATTOCK = register("rose_gold_mattock", new DynamicToolItem(ROSE_GOLD_HOE, ROSE_GOLD_AXE, AstromineFoundationsToolMaterials.ROSE_GOLD, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item ROSE_GOLD_MINING_TOOL = register("rose_gold_mining_tool", new DynamicToolItemItem(ROSE_GOLD_SHOVEL, ROSE_GOLD_PICKAXE, AstromineFoundationsToolMaterials.ROSE_GOLD, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item ROSE_GOLD_MATTOCK = register("rose_gold_mattock", new DynamicToolItemItem(ROSE_GOLD_HOE, ROSE_GOLD_AXE, AstromineFoundationsToolMaterials.ROSE_GOLD, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item ROSE_GOLD_HAMMER = register("rose_gold_hammer", new HammerItem(AstromineFoundationsToolMaterials.ROSE_GOLD, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item ROSE_GOLD_EXCAVATOR = register("rose_gold_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.ROSE_GOLD, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 
@@ -318,8 +318,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final ShovelItem STERLING_SILVER_SHOVEL = register("sterling_silver_shovel", new ShovelItem(AstromineFoundationsToolMaterials.STERLING_SILVER, 1.5f, -3.0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final HoeItem STERLING_SILVER_HOE = register("sterling_silver_hoe", new HoeItem(AstromineFoundationsToolMaterials.STERLING_SILVER, -2, 0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item STERLING_SILVER_SWORD = register("sterling_silver_sword", new SwordItem(AstromineFoundationsToolMaterials.STERLING_SILVER, 3, -2.4f, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item STERLING_SILVER_MINING_TOOL = register("sterling_silver_mining_tool", new DynamicToolItem(STERLING_SILVER_SHOVEL, STERLING_SILVER_PICKAXE, AstromineFoundationsToolMaterials.STERLING_SILVER, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item STERLING_SILVER_MATTOCK = register("sterling_silver_mattock", new DynamicToolItem(STERLING_SILVER_HOE, STERLING_SILVER_AXE, AstromineFoundationsToolMaterials.STERLING_SILVER, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item STERLING_SILVER_MINING_TOOL = register("sterling_silver_mining_tool", new DynamicToolItemItem(STERLING_SILVER_SHOVEL, STERLING_SILVER_PICKAXE, AstromineFoundationsToolMaterials.STERLING_SILVER, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item STERLING_SILVER_MATTOCK = register("sterling_silver_mattock", new DynamicToolItemItem(STERLING_SILVER_HOE, STERLING_SILVER_AXE, AstromineFoundationsToolMaterials.STERLING_SILVER, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item STERLING_SILVER_HAMMER = register("sterling_silver_hammer", new HammerItem(AstromineFoundationsToolMaterials.STERLING_SILVER, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item STERLING_SILVER_EXCAVATOR = register("sterling_silver_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.STERLING_SILVER, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 
@@ -328,8 +328,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final ShovelItem FOOLS_GOLD_SHOVEL = register("fools_gold_shovel", new ShovelItem(AstromineFoundationsToolMaterials.FOOLS_GOLD, 1.5f, -3.0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final HoeItem FOOLS_GOLD_HOE = register("fools_gold_hoe", new HoeItem(AstromineFoundationsToolMaterials.FOOLS_GOLD, -3, 0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item FOOLS_GOLD_SWORD = register("fools_gold_sword", new SwordItem(AstromineFoundationsToolMaterials.FOOLS_GOLD, 3, -2.4f, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item FOOLS_GOLD_MINING_TOOL = register("fools_gold_mining_tool", new DynamicToolItem(FOOLS_GOLD_SHOVEL, FOOLS_GOLD_PICKAXE, AstromineFoundationsToolMaterials.FOOLS_GOLD, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item FOOLS_GOLD_MATTOCK = register("fools_gold_mattock", new DynamicToolItem(FOOLS_GOLD_HOE, FOOLS_GOLD_AXE, AstromineFoundationsToolMaterials.FOOLS_GOLD, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item FOOLS_GOLD_MINING_TOOL = register("fools_gold_mining_tool", new DynamicToolItemItem(FOOLS_GOLD_SHOVEL, FOOLS_GOLD_PICKAXE, AstromineFoundationsToolMaterials.FOOLS_GOLD, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item FOOLS_GOLD_MATTOCK = register("fools_gold_mattock", new DynamicToolItemItem(FOOLS_GOLD_HOE, FOOLS_GOLD_AXE, AstromineFoundationsToolMaterials.FOOLS_GOLD, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item FOOLS_GOLD_HAMMER = register("fools_gold_hammer", new HammerItem(AstromineFoundationsToolMaterials.FOOLS_GOLD, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item FOOLS_GOLD_EXCAVATOR = register("fools_gold_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.FOOLS_GOLD, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 
@@ -338,8 +338,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final ShovelItem METITE_SHOVEL = register("metite_shovel", new ShovelItem(AstromineFoundationsToolMaterials.METITE, 1.5f, -3.0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final HoeItem METITE_HOE = register("metite_hoe", new HoeItem(AstromineFoundationsToolMaterials.METITE, -4, 0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item METITE_SWORD = register("metite_sword", new SwordItem(AstromineFoundationsToolMaterials.METITE, 3, -2.4f, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item METITE_MINING_TOOL = register("metite_mining_tool", new DynamicToolItem(METITE_SHOVEL, METITE_PICKAXE, AstromineFoundationsToolMaterials.METITE, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item METITE_MATTOCK = register("metite_mattock", new DynamicToolItem(METITE_HOE, METITE_AXE, AstromineFoundationsToolMaterials.METITE, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item METITE_MINING_TOOL = register("metite_mining_tool", new DynamicToolItemItem(METITE_SHOVEL, METITE_PICKAXE, AstromineFoundationsToolMaterials.METITE, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item METITE_MATTOCK = register("metite_mattock", new DynamicToolItemItem(METITE_HOE, METITE_AXE, AstromineFoundationsToolMaterials.METITE, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item METITE_HAMMER = register("metite_hammer", new HammerItem(AstromineFoundationsToolMaterials.METITE, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item METITE_EXCAVATOR = register("metite_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.METITE, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 
@@ -348,8 +348,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final ShovelItem ASTERITE_SHOVEL = register("asterite_shovel", new ShovelItem(AstromineFoundationsToolMaterials.ASTERITE, 1.5f, -3.0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final HoeItem ASTERITE_HOE = register("asterite_hoe", new HoeItem(AstromineFoundationsToolMaterials.ASTERITE, -5, 0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item ASTERITE_SWORD = register("asterite_sword", new SwordItem(AstromineFoundationsToolMaterials.ASTERITE, 3, -2.4f, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item ASTERITE_MINING_TOOL = register("asterite_mining_tool", new DynamicToolItem(ASTERITE_SHOVEL, ASTERITE_PICKAXE, AstromineFoundationsToolMaterials.ASTERITE, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item ASTERITE_MATTOCK = register("asterite_mattock", new DynamicToolItem(ASTERITE_HOE, ASTERITE_AXE, AstromineFoundationsToolMaterials.ASTERITE, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item ASTERITE_MINING_TOOL = register("asterite_mining_tool", new DynamicToolItemItem(ASTERITE_SHOVEL, ASTERITE_PICKAXE, AstromineFoundationsToolMaterials.ASTERITE, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item ASTERITE_MATTOCK = register("asterite_mattock", new DynamicToolItemItem(ASTERITE_HOE, ASTERITE_AXE, AstromineFoundationsToolMaterials.ASTERITE, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item ASTERITE_HAMMER = register("asterite_hammer", new HammerItem(AstromineFoundationsToolMaterials.ASTERITE, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item ASTERITE_EXCAVATOR = register("asterite_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.ASTERITE, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 
@@ -358,8 +358,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final ShovelItem STELLUM_SHOVEL = register("stellum_shovel", new ShovelItem(AstromineFoundationsToolMaterials.STELLUM, 1.5f, -3.0f, AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final HoeItem STELLUM_HOE = register("stellum_hoe", new HoeItem(AstromineFoundationsToolMaterials.STELLUM, -6, 0f, AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final Item STELLUM_SWORD = register("stellum_sword", new SwordItem(AstromineFoundationsToolMaterials.STELLUM, 3, -2.4f, AstromineFoundationsItems.getBasicSettings().fireproof()));
-	public static final Item STELLUM_MINING_TOOL = register("stellum_mining_tool", new DynamicToolItem(STELLUM_SHOVEL, STELLUM_PICKAXE, AstromineFoundationsToolMaterials.STELLUM, AstromineFoundationsItems.getBasicSettings().fireproof()));
-	public static final Item STELLUM_MATTOCK = register("stellum_mattock", new DynamicToolItem(STELLUM_HOE, STELLUM_AXE, AstromineFoundationsToolMaterials.STELLUM, AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item STELLUM_MINING_TOOL = register("stellum_mining_tool", new DynamicToolItemItem(STELLUM_SHOVEL, STELLUM_PICKAXE, AstromineFoundationsToolMaterials.STELLUM, AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item STELLUM_MATTOCK = register("stellum_mattock", new DynamicToolItemItem(STELLUM_HOE, STELLUM_AXE, AstromineFoundationsToolMaterials.STELLUM, AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final Item STELLUM_HAMMER = register("stellum_hammer", new HammerItem(AstromineFoundationsToolMaterials.STELLUM, 1, -2.8f, AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final Item STELLUM_EXCAVATOR = register("stellum_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.STELLUM, 1, -2.8f, AstromineFoundationsItems.getBasicSettings().fireproof()));
 
@@ -368,8 +368,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final ShovelItem GALAXIUM_SHOVEL = register("galaxium_shovel", new ShovelItem(AstromineFoundationsToolMaterials.GALAXIUM, 1.5f, -3.0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final HoeItem GALAXIUM_HOE = register("galaxium_hoe", new HoeItem(AstromineFoundationsToolMaterials.GALAXIUM, -5, 0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item GALAXIUM_SWORD = register("galaxium_sword", new SwordItem(AstromineFoundationsToolMaterials.GALAXIUM, 3, -2.4f, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item GALAXIUM_MINING_TOOL = register("galaxium_mining_tool", new DynamicToolItem(GALAXIUM_SHOVEL, GALAXIUM_PICKAXE, AstromineFoundationsToolMaterials.GALAXIUM, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item GALAXIUM_MATTOCK = register("galaxium_mattock", new DynamicToolItem(GALAXIUM_HOE, GALAXIUM_AXE, AstromineFoundationsToolMaterials.GALAXIUM, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item GALAXIUM_MINING_TOOL = register("galaxium_mining_tool", new DynamicToolItemItem(GALAXIUM_SHOVEL, GALAXIUM_PICKAXE, AstromineFoundationsToolMaterials.GALAXIUM, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item GALAXIUM_MATTOCK = register("galaxium_mattock", new DynamicToolItemItem(GALAXIUM_HOE, GALAXIUM_AXE, AstromineFoundationsToolMaterials.GALAXIUM, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item GALAXIUM_HAMMER = register("galaxium_hammer", new HammerItem(AstromineFoundationsToolMaterials.GALAXIUM, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item GALAXIUM_EXCAVATOR = register("galaxium_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.GALAXIUM, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 
@@ -378,8 +378,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final ShovelItem UNIVITE_SHOVEL = register("univite_shovel", new ShovelItem(AstromineFoundationsToolMaterials.UNIVITE, 1.5f, -3.0f, AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final HoeItem UNIVITE_HOE = register("univite_hoe", new HoeItem(AstromineFoundationsToolMaterials.UNIVITE, -6, 0f, AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final Item UNIVITE_SWORD = register("univite_sword", new SwordItem(AstromineFoundationsToolMaterials.UNIVITE, 3, -2.4f, AstromineFoundationsItems.getBasicSettings().fireproof()));
-	public static final Item UNIVITE_MINING_TOOL = register("univite_mining_tool", new DynamicToolItem(UNIVITE_SHOVEL, UNIVITE_PICKAXE, AstromineFoundationsToolMaterials.UNIVITE, AstromineFoundationsItems.getBasicSettings().fireproof()));
-	public static final Item UNIVITE_MATTOCK = register("univite_mattock", new DynamicToolItem(UNIVITE_HOE, UNIVITE_AXE, AstromineFoundationsToolMaterials.UNIVITE, AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item UNIVITE_MINING_TOOL = register("univite_mining_tool", new DynamicToolItemItem(UNIVITE_SHOVEL, UNIVITE_PICKAXE, AstromineFoundationsToolMaterials.UNIVITE, AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item UNIVITE_MATTOCK = register("univite_mattock", new DynamicToolItemItem(UNIVITE_HOE, UNIVITE_AXE, AstromineFoundationsToolMaterials.UNIVITE, AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final Item UNIVITE_HAMMER = register("univite_hammer", new HammerItem(AstromineFoundationsToolMaterials.UNIVITE, 1, -2.8f, AstromineFoundationsItems.getBasicSettings().fireproof()));
 	public static final Item UNIVITE_EXCAVATOR = register("univite_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.UNIVITE, 1, -2.8f, AstromineFoundationsItems.getBasicSettings().fireproof()));
 
@@ -388,8 +388,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final ShovelItem LUNUM_SHOVEL = register("lunum_shovel", new ShovelItem(AstromineFoundationsToolMaterials.LUNUM, 1.5f, -3.0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final HoeItem LUNUM_HOE = register("lunum_hoe", new HoeItem(AstromineFoundationsToolMaterials.LUNUM, -5, 0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item LUNUM_SWORD = register("lunum_sword", new SwordItem(AstromineFoundationsToolMaterials.LUNUM, 3, -2.4f, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item LUNUM_MINING_TOOL = register("lunum_mining_tool", new DynamicToolItem(LUNUM_SHOVEL, LUNUM_PICKAXE, AstromineFoundationsToolMaterials.LUNUM, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item LUNUM_MATTOCK = register("lunum_mattock", new DynamicToolItem(LUNUM_HOE, LUNUM_AXE, AstromineFoundationsToolMaterials.LUNUM, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item LUNUM_MINING_TOOL = register("lunum_mining_tool", new DynamicToolItemItem(LUNUM_SHOVEL, LUNUM_PICKAXE, AstromineFoundationsToolMaterials.LUNUM, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item LUNUM_MATTOCK = register("lunum_mattock", new DynamicToolItemItem(LUNUM_HOE, LUNUM_AXE, AstromineFoundationsToolMaterials.LUNUM, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item LUNUM_HAMMER = register("lunum_hammer", new HammerItem(AstromineFoundationsToolMaterials.LUNUM, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item LUNUM_EXCAVATOR = register("lunum_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.LUNUM, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 
@@ -398,8 +398,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final ShovelItem METEORIC_STEEL_SHOVEL = register("meteoric_steel_shovel", new ShovelItem(AstromineFoundationsToolMaterials.METEORIC_STEEL, 1.5f, -3.0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final HoeItem METEORIC_STEEL_HOE = register("meteoric_steel_hoe", new HoeItem(AstromineFoundationsToolMaterials.METEORIC_STEEL, -3, 0f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item METEORIC_STEEL_SWORD = register("meteoric_steel_sword", new SwordItem(AstromineFoundationsToolMaterials.METEORIC_STEEL, 3, -2.4f, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item METEORIC_STEEL_MINING_TOOL = register("meteoric_steel_mining_tool", new DynamicToolItem(METEORIC_STEEL_SHOVEL, METEORIC_STEEL_PICKAXE, AstromineFoundationsToolMaterials.METEORIC_STEEL, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item METEORIC_STEEL_MATTOCK = register("meteoric_steel_mattock", new DynamicToolItem(METEORIC_STEEL_HOE, METEORIC_STEEL_AXE, AstromineFoundationsToolMaterials.METEORIC_STEEL, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item METEORIC_STEEL_MINING_TOOL = register("meteoric_steel_mining_tool", new DynamicToolItemItem(METEORIC_STEEL_SHOVEL, METEORIC_STEEL_PICKAXE, AstromineFoundationsToolMaterials.METEORIC_STEEL, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item METEORIC_STEEL_MATTOCK = register("meteoric_steel_mattock", new DynamicToolItemItem(METEORIC_STEEL_HOE, METEORIC_STEEL_AXE, AstromineFoundationsToolMaterials.METEORIC_STEEL, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item METEORIC_STEEL_HAMMER = register("meteoric_steel_hammer", new HammerItem(AstromineFoundationsToolMaterials.METEORIC_STEEL, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item METEORIC_STEEL_EXCAVATOR = register("meteoric_steel_excavator", new ExcavatorItem(AstromineFoundationsToolMaterials.METEORIC_STEEL, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 

@@ -36,11 +36,16 @@ import net.minecraft.world.World;
 
 import com.zundrel.wrenchable.wrench.Wrench;
 
+/**
+ * A class representing a wrench item.
+ */
 public class WrenchItem extends ToolItem implements Wrench {
+	/** Instantiates a {@link WrenchItem} with the given values. */
 	public WrenchItem(ToolMaterial material, Settings settings) {
 		super(material, settings);
 	}
 
+	/* Override behavior to damage wrench when a block is wrenched. */
 	@Override
 	public void onBlockWrenched(World world, ItemStack stack, PlayerEntity player, Hand hand, BlockHitResult result) {
 		if (player instanceof ServerPlayerEntity) {
@@ -48,6 +53,7 @@ public class WrenchItem extends ToolItem implements Wrench {
 		}
 	}
 
+	/* Override behavior to damage wrench when an entity is wrenched. */
 	@Override
 	public void onEntityWrenched(World world, ItemStack stack, PlayerEntity player, Hand hand, EntityHitResult result) {
 		if (player instanceof ServerPlayerEntity) {
