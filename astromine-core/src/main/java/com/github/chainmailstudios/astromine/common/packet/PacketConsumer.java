@@ -30,7 +30,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 
 /**
- * An interface representing an object
+ * An object
  * which consumes packets identified by
  * an {@link Identifier}.
  */

@@ -35,7 +35,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponents;
  * {@link FluidComponent}.
  */
 public abstract class ComponentFluidBlockEntity extends ComponentBlockEntity {
-	/** Instantiates a {@link ComponentFluidBlockEntity} with the given value. */
+	/** Instantiates a {@link ComponentFluidBlockEntity}. */
 	public ComponentFluidBlockEntity(BlockEntityType<?> type) {
 		super(type);
 

@@ -27,6 +27,10 @@ package com.github.chainmailstudios.astromine.common.block.base;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
 
+/**
+ * A {@link HorizontalFacingBlockWithEntity} whose
+ * {@link DirectionProperty} is {@link Properties#FACING}.
+ */
 public abstract class FacingBlockWithEntity extends HorizontalFacingBlockWithEntity {
 	public FacingBlockWithEntity(Settings settings) {
 		super(settings);

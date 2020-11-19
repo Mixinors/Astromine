@@ -33,7 +33,7 @@ import net.minecraft.network.PacketByteBuf;
 import java.util.Objects;
 
 /**
- * A class representing a {@link Volume} of {@link N},
+ * A {@link Volume} of {@link N},
  * with an {@link #amount} and a {@link #size}.
  */
 public abstract class Volume<N extends Number> {
@@ -43,13 +43,13 @@ public abstract class Volume<N extends Number> {
 
 	private Runnable runnable;
 
-	/** Instantiates a volume with the given values and a listener. */
+	/** Instantiates a {@link Volume}. */
 	protected Volume(N amount, N size) {
 		this.amount = amount;
 		this.size = size;
 	}
 
-	/** Instantiates a volume with the given values and a listener. */
+	/** Instantiates a {@link Volume} with a listener. */
 	protected Volume(N amount, N size, Runnable runnable) {
 		this(amount, size);
 

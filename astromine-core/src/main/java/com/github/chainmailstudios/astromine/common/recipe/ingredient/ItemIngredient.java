@@ -55,8 +55,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
- * A class representing a recipe ingredient
- * consisting of (an) {@link ItemStack}(s).
+ * A recipe ingredient consisting of (an) {@link ItemStack}(s).
  *
  * Serialization and deserialization methods are provided for:
  * - {@link JsonElement} - through {@link #toJson()} and {@link #fromJson(JsonElement)}.
@@ -69,27 +68,22 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 
 	private Ingredient ingredient;
 
-	/** Instantiates a {@link ItemIngredient} with the given values
-	 * as {@link Entry...} entries. */
+	/** Instantiates am {@link ItemIngredient}. */
 	private ItemIngredient(Entry... entries) {
 		this.entries = entries;
 	}
 
-	/** Instantiates a {@link ItemIngredient} with the given values
-	 *  as {@link ItemIngredient...} stacks. */
+	/** Instantiates am {@link ItemIngredient}. */
 	public static ItemIngredient ofItemStacks(ItemStack... stacks) {
 		return ofItemStacks(Arrays.asList(stacks));
 	}
 
-	/** Instantiates a {@link ItemIngredient} with the given values
-	 * as {@link Collection<ItemStack>} stacks. */
+	/** Instantiates am {@link ItemIngredient}. */
 	public static ItemIngredient ofItemStacks(Collection<ItemStack> stacks) {
 		return new ItemIngredient(new SimpleEntry(stacks));
 	}
 
-	/** Instantiates a {@link ItemIngredient} with the given values
-	 * as {@link Stream<Entry>} entries.
-	 */
+	/** Instantiates am {@link ItemIngredient}. */
 	public static ItemIngredient ofEntries(Stream<? extends Entry> stacks) {
 		return new ItemIngredient(stacks.toArray(Entry[]::new));
 	}
@@ -213,8 +207,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 	}
 
 	/**
-	 * A class representing a supplier of
-	 * {@link ItemStack}s as a {@link Stream}.
+	 * A supplier of {@link ItemStack}s as a {@link Stream}.
 	 */
 	interface Entry {
 		/** Returns the {@link ItemStack}s of this entry. */
@@ -272,13 +265,12 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 	}
 
 	/**
-	 * A class representing an {@link Entry}
-	 * of a fixed collection of {@link ItemStack}s.
+	 * An {@link Entry} of a fixed collection of {@link ItemStack}s.
 	 */
 	private static class SimpleEntry implements Entry {
 		private final Collection<ItemStack> stacks;
 
-		/** Instantiates a {@link SimpleEntry} with the given values. */
+		/** Instantiates a {@link SimpleEntry}. */
 		public SimpleEntry(Collection<ItemStack> stacks) {
 			this.stacks = stacks;
 		}
@@ -296,8 +288,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 	}
 
 	/**
-	 * A class representing an {@link Entry}
-	 * of a dynamic collection of {@link ItemStack}s,
+	 * An {@link Entry} of a dynamic collection of {@link ItemStack}s,
 	 * gathered from a {@link Tag<Item>}.
 	 */
 	private static class TagEntry implements Entry {
@@ -305,7 +296,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 
 		private final int count;
 
-		/** Instantiates a {@link TagEntry} with the given values. */
+		/** Instantiates a {@link TagEntry}. */
 		private TagEntry(Tag<Item> tag, int count) {
 			this.tag = tag;
 			this.count = count;

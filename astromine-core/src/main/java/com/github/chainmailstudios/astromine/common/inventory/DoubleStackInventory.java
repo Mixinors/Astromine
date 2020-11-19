@@ -35,18 +35,18 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
- * A class representing a simple {@link Inventory}
- * with helper methods for a left and a right stack.
+ * A simple {@link Inventory} with helper methods
+ * for a left and a right stack.
  *
  * Originally by {@author Juuz}.
  */
 public interface DoubleStackInventory extends Inventory {
-	/** Instantiates a {@link DoubleStackInventory} with the given value. */
+	/** Instantiates a {@link DoubleStackInventory}. */
 	static DoubleStackInventory of(DefaultedList<ItemStack> items) {
 		return new DoubleStackInventoryImpl(() -> items);
 	}
 
-	/** Instantiates a {@link DoubleStackInventory} with the given value. */
+	/** Instantiates a {@link DoubleStackInventory}. */
 	static DoubleStackInventory ofSize(int size) {
 		return of(DefaultedList.ofSize(size, ItemStack.EMPTY));
 	}
@@ -164,7 +164,7 @@ public interface DoubleStackInventory extends Inventory {
 	class DoubleStackInventoryImpl implements DoubleStackInventory {
 		private final Supplier<DefaultedList<ItemStack>> supplier;
 
-		/** Instantiates a {@link DoubleStackInventoryImpl} with the given value. */
+		/** Instantiates a {@link DoubleStackInventoryImpl}. */
 		private DoubleStackInventoryImpl(Supplier<DefaultedList<ItemStack>> supplier) {
 			this.supplier = supplier;
 		}

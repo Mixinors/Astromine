@@ -71,7 +71,7 @@ public final class ChunkAtmosphereComponent implements Component, ServerTickingC
 
 	private int atmosphereTickCounter = 0;
 
-	/** Instantiates a {@link ChunkAtmosphereComponent} with the given value. */
+	/** Instantiates a {@link ChunkAtmosphereComponent}. */
 	public ChunkAtmosphereComponent(Chunk chunk) {
 		if (chunk instanceof WorldChunk) {
 			this.world = ((WorldChunk) chunk).getWorld();

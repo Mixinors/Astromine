@@ -29,7 +29,7 @@ import com.google.common.collect.Multimap;
 import java.util.Collection;
 
 /**
- * A class representing a bidirectional registry,
+ * An unidirectional registry,
  * where all keys must be unique, values may be
  * repeated, and multiple values can be associated
  * with one key.

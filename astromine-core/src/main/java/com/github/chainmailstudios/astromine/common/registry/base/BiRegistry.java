@@ -29,7 +29,7 @@ import com.google.common.collect.HashBiMap;
 import java.util.Collection;
 
 /**
- * A class representing a bidirectional registry,
+ * A bidirectional registry,
  * where all keys and all values must be unique.
  */
 public abstract class BiRegistry<K, V> {

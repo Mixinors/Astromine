@@ -43,8 +43,8 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- * A class representing a specialized registry for
- * registration of {@link NetworkTypeProvider}s mapped to {@link NetworkType}s.
+ * A specialized registry for registration of
+ * {@link NetworkTypeProvider}s mapped to {@link NetworkType}s.
  */
 public class NetworkMemberRegistry {
 	public static final NetworkMemberRegistry INSTANCE = new NetworkMemberRegistry();
@@ -75,7 +75,7 @@ public class NetworkMemberRegistry {
 	}
 
 	/**
-	 * An interface representing a provider of {@link NetworkType}s,
+	 * A provider of {@link NetworkType}s,
 	 * used to gather the types present at a given position.
 	 *
 	 * {@link NetworkTypeProvider#register(Block, NetworkMemberType...)}
@@ -91,7 +91,7 @@ public class NetworkMemberRegistry {
 	}
 
 	/**
-	 * A class representing an implementation of {@link NetworkTypeProvider},
+	 * An implementation of {@link NetworkTypeProvider},
 	 * defaulting to a {@link Map} for lookup of blocks.
 	 */
 	public static class NetworkTypeProviderImpl<T extends NetworkType> implements NetworkTypeProvider<T> {
@@ -118,7 +118,7 @@ public class NetworkMemberRegistry {
 	}
 
 	/**
-	 * A class representing an implementation of {@link NetworkMember}
+	 * An implementation of {@link NetworkMember}
 	 * defaulting to a {@link WorldPos} for lookup of types.
 	 */
 	public class NetworkMemberImpl implements NetworkMember {

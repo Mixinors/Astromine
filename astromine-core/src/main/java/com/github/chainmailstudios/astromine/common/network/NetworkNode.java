@@ -30,7 +30,7 @@ import net.minecraft.util.math.BlockPos;
 import com.google.common.base.Objects;
 
 /**
- * An interface representing a node for
+ * A node for
  * a network, with no attached {@link NetworkMember}.
  *
  * Serialization and deserialization methods are provided for:
@@ -39,22 +39,22 @@ import com.google.common.base.Objects;
 public final class NetworkNode {
 	private long pos;
 
-	/** Instantiates a {@link NetworkMemberNode} with the given value. */
+	/** Instantiates a {@link NetworkMemberNode}. */
 	private NetworkNode(BlockPos blockPos) {
 		setBlockPosition(blockPos);
 	}
 
-	/** Instantiates a {@link NetworkMemberNode} with the given value. */
+	/** Instantiates a {@link NetworkMemberNode}. */
 	private NetworkNode(long pos) {
 		setLongPosition(pos);
 	}
 
-	/** Instantiates a {@link NetworkMemberNode} with the given value. */
+	/** Instantiates a {@link NetworkMemberNode}. */
 	public static NetworkNode of(BlockPos blockPos) {
 		return new NetworkNode(blockPos);
 	}
 
-	/** Instantiates a {@link NetworkMemberNode} with the given value. */
+	/** Instantiates a {@link NetworkMemberNode}. */
 	public static NetworkNode of(long pos) {
 		return new NetworkNode(pos);
 	}

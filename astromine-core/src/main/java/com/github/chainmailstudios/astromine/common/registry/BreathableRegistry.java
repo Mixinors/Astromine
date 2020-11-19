@@ -32,8 +32,8 @@ import net.minecraft.tag.Tag;
 import com.github.chainmailstudios.astromine.common.registry.base.MultiRegistry;
 
 /**
- * A class representing a {@link MultiRegistry} for
- * registration of {@link EntityType}s to {@link Tag<Fluid>}.
+ * A {@link MultiRegistry} for registration of
+ * {@link EntityType}s to {@link Tag<Fluid>}.
  *
  * The specified {@link Tag<Fluid>}(s) registered for
  * the {@link EntityType} are used to verify if the entity

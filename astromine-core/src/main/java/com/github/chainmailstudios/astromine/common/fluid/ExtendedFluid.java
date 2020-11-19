@@ -189,7 +189,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 		return block.getDefaultState().with(FluidBlock.LEVEL, method_15741(state));
 	}
 
-	/** A class representing a builder for {@link ExtendedFluid}s. */
+	/** A builder for {@link ExtendedFluid}s. */
 	public static class Builder {
 		int fog = Color.standard().toInt();
 		int tint = Color.standard().toInt();
@@ -299,7 +299,9 @@ public abstract class ExtendedFluid extends FlowableFluid {
 		}
 	}
 
-	/** A class representing a flowing version of an {@link ExtendedFluid}. */
+	/**
+	 * A flowing version of an {@link ExtendedFluid}.
+	 */
 	public static class Flowing extends ExtendedFluid {
 		/** Instantiates a {@link Flowing} {@link ExtendedFluid}
 		 * with the given values. */
@@ -330,7 +332,9 @@ public abstract class ExtendedFluid extends FlowableFluid {
 		}
 	}
 
-	/** A class representing a still version of an {@link ExtendedFluid}. */
+	/**
+	 * A still version of an {@link ExtendedFluid}.
+	 */
 	public static class Still extends ExtendedFluid {
 		/** Instantiates a {@link Still} {@link ExtendedFluid}
 		 * with the given values. */

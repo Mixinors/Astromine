@@ -56,8 +56,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 /**
- * A class representing a compatibility addon for
- * {@link LibBlockAttributes}.
+ * A compatibility addon for {@link LibBlockAttributes}.
  */
 public final class LibBlockAttributesCompatibility {
 	/** Appends our appender to all {@link FluidAttributes}
@@ -143,7 +142,7 @@ public final class LibBlockAttributesCompatibility {
 	}
 
 	/**
-	 * A class representing a {@link FixedItemInv} wrapped over
+	 * A {@link FixedItemInv} wrapped over
 	 * an {@link ItemComponent}, implementing {@link ItemTransferable}
 	 * for siding control.
 	 */
@@ -156,7 +155,7 @@ public final class LibBlockAttributesCompatibility {
 
 		private boolean isExtracting = false;
 
-		/** Instantiates a {@link FixedItemInvFromComponent} with the given values. */
+		/** Instantiates a {@link FixedItemInvFromComponent}. */
 		public FixedItemInvFromComponent(ItemComponent itemComponent, BlockEntityTransferComponent transferComponent, Direction direction) {
 			this.itemComponent = itemComponent;
 			this.transferComponent = transferComponent;
@@ -233,7 +232,7 @@ public final class LibBlockAttributesCompatibility {
 	}
 
 	/**
-	 * A class representing a {@link FixedFluidInv} wrapped over
+	 * A {@link FixedFluidInv} wrapped over
 	 * a {@link FluidComponent}, implementing {@link FluidTransferable}
 	 * for siding control.
 	 */
@@ -246,7 +245,7 @@ public final class LibBlockAttributesCompatibility {
 
 		private boolean isExtracting = false;
 
-		/** Instantiates a {@link FixedFluidInvFromComponent} with the given values. */
+		/** Instantiates a {@link FixedFluidInvFromComponent}. */
 		public FixedFluidInvFromComponent(FluidComponent fluidComponent, BlockEntityTransferComponent transferComponent, Direction direction) {
 			this.fluidComponent = fluidComponent;
 			this.transferComponent = transferComponent;

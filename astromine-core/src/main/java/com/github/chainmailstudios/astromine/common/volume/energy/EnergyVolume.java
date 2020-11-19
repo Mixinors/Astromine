@@ -41,7 +41,7 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
 
 /**
- * A class representing a {@link Volume} of energy, whose amount and size
+ * A {@link Volume} of energy, whose amount and size
  * are represented by {@link Double}.
  *
  * It is not an inventory, thus it is recommended to use a {@link EnergyComponent},
@@ -72,42 +72,42 @@ import com.github.chainmailstudios.astromine.common.volume.base.Volume;
  * - {@link ByteBuf} - through {@link #toPacket(PacketByteBuf)} and {@link #fromPacket(PacketByteBuf)}.
  */
 public class EnergyVolume extends Volume<Double> {
-	/** Instantiates a volume with the given values. */
+	/** Instantiates an {@link EnergyVolume} with. */
 	protected EnergyVolume(double amount, double size) {
 		super(amount, size);
 	}
 
-	/** Instantiates a volume with the given values and a listener. */
+	/** Instantiates an {@link EnergyVolume} with a listener. */
 	protected EnergyVolume(double amount, double size, Runnable runnable) {
 		super(amount, size, runnable);
 	}
 
-	/** Instantiates an empty volume. */
+	/** Instantiates an empty {@link EnergyVolume}. */
 	public static EnergyVolume ofEmpty() {
 		return new EnergyVolume(0.0D, Long.MAX_VALUE);
 	}
 
-	/** Instantiates an empty volume with a listener. */
+	/** Instantiates an empty {@link EnergyVolume} with a listener. */
 	public static EnergyVolume ofEmpty(Runnable runnable) {
 		return new EnergyVolume(0.0D, Long.MAX_VALUE, runnable);
 	}
 
-	/** Instantiates a volume with the given values. */
+	/** Instantiates an {@link EnergyVolume}. */
 	public static EnergyVolume of(double amount) {
 		return new EnergyVolume(amount, Long.MAX_VALUE);
 	}
 
-	/** Instantiates a volume with the given values and a listener. */
+	/** Instantiates an {@link EnergyVolume} with a listener. */
 	public static EnergyVolume of(double amount, Runnable runnable) {
 		return new EnergyVolume(amount, Long.MAX_VALUE, runnable);
 	}
 
-	/** Instantiates a volume with the given values. */
+	/** Instantiates an {@link EnergyVolume}. */
 	public static EnergyVolume of(double amount, double size) {
 		return new EnergyVolume(amount, size);
 	}
 
-	/** Instantiates a volume with the given values and a listener. */
+	/** Instantiates an {@link EnergyVolume} with a listener. */
 	public static EnergyVolume of(double amount, double size, Runnable runnable) {
 		return new EnergyVolume(amount, size, runnable);
 	}

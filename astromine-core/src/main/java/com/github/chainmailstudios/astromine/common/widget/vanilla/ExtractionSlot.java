@@ -29,10 +29,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
 
 /**
- * A class representing a slot with no insertion.
+ * A slot with no insertion.
  */
 public class ExtractionSlot extends Slot {
-	/** Instantiates a slot with the given values. */
+	/** Instantiates an {@link ExtractionSlot}. */
 	public ExtractionSlot(Inventory inventory, int index, int x, int y) {
 		super(inventory, index, x, y);
 	}

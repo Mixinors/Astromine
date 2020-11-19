@@ -5,13 +5,13 @@ import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 import net.minecraft.block.Block;
 
 /**
- * An interface representing a {@link Block} which
+ * A {@link Block} which
  * provides a {@link NetworkMemberType} for one or more
  * {@link NetworkType}(s).
  */
 public interface NetworkBlock {
 	/**
-	 * An interface representing a {@link NetworkBlock} whose
+	 * A {@link NetworkBlock} whose
 	 * {@link #getEnergyNetworkMemberType()}} defaults to
 	 * {@link NetworkMemberType#REQUESTER}.
 	 */
@@ -23,7 +23,7 @@ public interface NetworkBlock {
 	}
 
 	/**
-	 * An interface representing a {@link NetworkBlock} whose
+	 * A {@link NetworkBlock} whose
 	 * {@link #getEnergyNetworkMemberType()}} defaults to
 	 * {@link NetworkMemberType#PROVIDER}.
 	 */
@@ -35,7 +35,7 @@ public interface NetworkBlock {
 	}
 
 	/**
-	 * An interface representing a {@link NetworkBlock} whose
+	 * A {@link NetworkBlock} whose
 	 * {@link #getEnergyNetworkMemberType()}} defaults to
 	 * {@link NetworkMemberType#BUFFER}.
 	 */
@@ -47,7 +47,7 @@ public interface NetworkBlock {
 	}
 
 	/**
-	 * An interface representing a {@link NetworkBlock} whose
+	 * A {@link NetworkBlock} whose
 	 * {@link #getEnergyNetworkMemberType()}} defaults to
 	 * {@link NetworkMemberType#NODE}.
 	 */
@@ -59,7 +59,7 @@ public interface NetworkBlock {
 	}
 
 	/**
-	 * An interface representing a {@link NetworkBlock} whose
+	 * A {@link NetworkBlock} whose
 	 * {@link #getFluidNetworkMemberType()}} defaults to
 	 * {@link NetworkMemberType#REQUESTER}.
 	 */
@@ -71,7 +71,7 @@ public interface NetworkBlock {
 	}
 
 	/**
-	 * An interface representing a {@link NetworkBlock} whose
+	 * A {@link NetworkBlock} whose
 	 * {@link #getFluidNetworkMemberType()}} defaults to
 	 * {@link NetworkMemberType#PROVIDER}.
 	 */
@@ -83,7 +83,7 @@ public interface NetworkBlock {
 	}
 
 	/**
-	 * An interface representing a {@link NetworkBlock} whose
+	 * A {@link NetworkBlock} whose
 	 * {@link #getFluidNetworkMemberType()}} defaults to
 	 * {@link NetworkMemberType#BUFFER}.
 	 */
@@ -95,7 +95,7 @@ public interface NetworkBlock {
 	}
 
 	/**
-	 * An interface representing a {@link NetworkBlock} whose
+	 * A {@link NetworkBlock} whose
 	 * {@link #getFluidNetworkMemberType()}} defaults to
 	 * {@link NetworkMemberType#NODE}.
 	 */

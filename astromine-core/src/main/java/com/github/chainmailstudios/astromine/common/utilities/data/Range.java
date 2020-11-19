@@ -25,20 +25,20 @@
 package com.github.chainmailstudios.astromine.common.utilities.data;
 
 /**
- * A class representing a range between
+ * A range between
  * {@link #minimum} and {@link #maximum}.
  */
 public final class Range<T extends Number> {
 	private final T minimum;
 	private final T maximum;
 
-	/** Instantiates a range with the given values. */
+	/** Instantiates a {@link Range}. */
 	private Range(T minimum, T maximum) {
 		this.minimum = minimum;
 		this.maximum = maximum;
 	}
 
-	/** Instantiates a range with the given values. */
+	/** Instantiates a {@link Range}. */
 	public static <T extends Number> Range<T> of(T minimum, T maximum) {
 		return new Range<>(minimum, maximum);
 	}

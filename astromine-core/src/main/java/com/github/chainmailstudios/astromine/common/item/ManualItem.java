@@ -36,10 +36,10 @@ import net.minecraft.world.World;
 import vazkii.patchouli.api.PatchouliAPI;
 
 /**
- * A class representing our Patchouli book.
+ * Our Patchouli book.
  */
 public class ManualItem extends Item {
-	/** Instantiates a {@link ManualItem} with the given value. */
+	/** Instantiates a {@link ManualItem}. */
 	public ManualItem(Settings settings) {
 		super(settings);
 	}

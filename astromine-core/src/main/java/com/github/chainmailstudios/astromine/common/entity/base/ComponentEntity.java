@@ -33,11 +33,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.World;
 
 /**
- * A class representing an {@link Entity} which
- * should contain {@link Component}s.
+ * An {@link Entity} which should contain {@link Component}s.
  */
 public abstract class ComponentEntity extends Entity {
-	/** Instantiates a {@link ComponentEntity} with the given values. */
+	/** Instantiates a {@link ComponentEntity}. */
 	public ComponentEntity(EntityType<?> type, World world) {
 		super(type, world);
 	}

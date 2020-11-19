@@ -41,23 +41,23 @@ public class SimpleEnergyComponent implements EnergyComponent {
 
 	private final List<Runnable> listeners = new ArrayList<>();
 
-	/** Instantiates a {@link SimpleEnergyComponent} with the given value. */
+	/** Instantiates a {@link SimpleEnergyComponent}. */
 	protected SimpleEnergyComponent(double size) {
 		this.content = EnergyVolume.of(size, this::updateListeners);
 	}
 
-	/** Instantiates a {@link SimpleEnergyComponent} with the given value. */
+	/** Instantiates a {@link SimpleEnergyComponent}. */
 	protected SimpleEnergyComponent(EnergyVolume volume) {
 		this.content = volume;
 		this.content.setRunnable(this::updateListeners);
 	}
 
-	/** Instantiates a {@link SimpleEnergyComponent} with the given value. */
+	/** Instantiates a {@link SimpleEnergyComponent}. */
 	public static SimpleEnergyComponent of(double size) {
 		return new SimpleEnergyComponent(size);
 	}
 
-	/** Instantiates a {@link SimpleEnergyComponent} with the given value. */
+	/** Instantiates a {@link SimpleEnergyComponent}. */
 	public static SimpleEnergyComponent of(EnergyVolume volume) {
 		return new SimpleEnergyComponent(volume);
 	}

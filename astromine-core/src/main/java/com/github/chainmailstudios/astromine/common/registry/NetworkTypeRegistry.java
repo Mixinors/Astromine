@@ -30,8 +30,8 @@ import com.github.chainmailstudios.astromine.common.network.type.base.NetworkTyp
 import com.github.chainmailstudios.astromine.common.registry.base.BiRegistry;
 
 /**
- * A class representing a {@link BiRegistry} for
- * registration of {@link NetworkType}s mapped to {@link Identifier}s.
+ * A {@link BiRegistry} for registration of
+ * {@link NetworkType}s mapped to {@link Identifier}s.
  */
 public class NetworkTypeRegistry extends BiRegistry<Identifier, NetworkType> {
 	public static final NetworkTypeRegistry INSTANCE = new NetworkTypeRegistry();

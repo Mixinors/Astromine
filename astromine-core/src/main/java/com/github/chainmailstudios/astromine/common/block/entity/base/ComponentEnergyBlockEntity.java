@@ -37,7 +37,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponents;
  * {@link EnergyComponent}.
  */
 public abstract class ComponentEnergyBlockEntity extends ComponentBlockEntity implements ComponentEnergyProvider {
-	/** Instantiates a {@link ComponentEnergyBlockEntity} with the given value. */
+	/** Instantiates a {@link ComponentEnergyBlockEntity}. */
 	public ComponentEnergyBlockEntity(BlockEntityType<?> type) {
 		super(type);
 

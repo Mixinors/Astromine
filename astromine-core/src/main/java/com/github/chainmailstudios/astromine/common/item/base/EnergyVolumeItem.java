@@ -37,8 +37,7 @@ import team.reborn.energy.EnergyHolder;
 import team.reborn.energy.EnergyTier;
 
 /**
- * A class representing an {@link Item} with
- * an attached {@link EnergyVolume}.
+ * An {@link Item} with an attached {@link EnergyVolume}.
  */
 public class EnergyVolumeItem extends Item implements EnergyHolder, DurabilityBarItem {
 	private final double size;

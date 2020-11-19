@@ -36,7 +36,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponents;
  * {@link FluidComponent} and {@link ItemComponent}.
  */
 public abstract class ComponentFluidItemBlockEntity extends ComponentBlockEntity implements ComponentInventoryProvider {
-	/** Instantiates a {@link ComponentFluidItemBlockEntity} with the given value. */
+	/** Instantiates a {@link ComponentFluidItemBlockEntity}. */
 	public ComponentFluidItemBlockEntity(BlockEntityType<?> type) {
 		super(type);
 

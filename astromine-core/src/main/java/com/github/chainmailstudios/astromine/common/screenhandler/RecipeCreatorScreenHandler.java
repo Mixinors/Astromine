@@ -35,7 +35,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * A class representing a {@link BaseScreenHandler}
+ * A {@link BaseScreenHandler}
  * configured as an interface for {@link CraftingRecipe}
  * creation as {@link JsonElement}.
  */

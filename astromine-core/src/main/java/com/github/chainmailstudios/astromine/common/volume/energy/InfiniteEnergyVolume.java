@@ -33,12 +33,12 @@ import com.github.chainmailstudios.astromine.common.volume.base.Volume;
  * {@link #getAmount()} and {@link #getSize()}.
  */
 public final class InfiniteEnergyVolume extends EnergyVolume {
-	/** Instantiates a volume. */
+	/** Instantiates an {@link InfiniteEnergyVolume}. */
 	private InfiniteEnergyVolume() {
 		super(Double.MAX_VALUE, Double.MAX_VALUE);
 	}
 
-	/** Instantiates a volume. */
+	/** Instantiates an {@link InfiniteEnergyVolume}. */
 	public static InfiniteEnergyVolume of() {
 		return new InfiniteEnergyVolume();
 	}

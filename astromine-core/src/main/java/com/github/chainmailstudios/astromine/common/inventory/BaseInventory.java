@@ -40,8 +40,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
- * A class representing a standard implementation
- * of an {@link Inventory}.
+ * A standard implementation of an {@link Inventory}.
  */
 public class BaseInventory implements Inventory, RecipeInputProvider {
 	private final int size;
@@ -50,24 +49,24 @@ public class BaseInventory implements Inventory, RecipeInputProvider {
 
 	private final List<InventoryChangedListener> listeners = new ArrayList<>();
 
-	/** Instantiates a {@link BaseInventory} with the given value. */
+	/** Instantiates a {@link BaseInventory}. */
 	private BaseInventory(int size) {
 		this.size = size;
 		this.stacks = DefaultedList.ofSize(size, ItemStack.EMPTY);
 	}
 
-	/** Instantiates a {@link BaseInventory} with the given values. */
+	/** Instantiates a {@link BaseInventory}. */
 	private BaseInventory(ItemStack... items) {
 		this.size = items.length;
 		this.stacks = DefaultedList.copyOf(ItemStack.EMPTY, items);
 	}
 
-	/** Instantiates a {@link BaseInventory} with the given value. */
+	/** Instantiates a {@link BaseInventory}. */
 	public static BaseInventory of(int size) {
 		return new BaseInventory(size);
 	}
 
-	/** Instantiates a {@link BaseInventory} with the given values. */
+	/** Instantiates a {@link BaseInventory}. */
 	public static BaseInventory of(ItemStack... items) {
 		return new BaseInventory(items);
 	}

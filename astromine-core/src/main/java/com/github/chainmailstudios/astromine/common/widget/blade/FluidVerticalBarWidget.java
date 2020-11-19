@@ -59,7 +59,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 /**
- * A class representing a vertical bar widget depicting
+ * A vertical bar widget depicting
  * the energy level of the specified {@link #volumeSupplier}.
  *
  * The {@link #volumeSupplier} supplies the volume from which
@@ -71,7 +71,7 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 
 	private Supplier<FluidVolume> volumeSupplier;
 
-	/** Instantiates a new vertical fluid bar, adding the
+	/** Instantiates a {@link FluidVerticalBarWidget}, adding the
 	 * mouse click event to the synchronization list. */
 	public FluidVerticalBarWidget() {
 		getSynchronize().add(Networks.getMOUSE_CLICK());

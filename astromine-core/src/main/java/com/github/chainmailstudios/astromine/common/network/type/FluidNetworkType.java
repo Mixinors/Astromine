@@ -51,8 +51,7 @@ import team.reborn.energy.EnergyHandler;
 import java.util.*;
 import java.util.stream.Collectors;
 /**
- * A class representing a {@link NetworkType}
- * for fluids.
+ * A {@link NetworkType} for fluids.
  */
 public final class FluidNetworkType implements NetworkType {
 	/** Override behavior to handle attached fluid inventories,

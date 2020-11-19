@@ -34,7 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A class representing a specialized registry for
+ * A specialized registry for
  * registration of dimensional layers.
  *
  * When an entity transitions the threshold Y-axis level,

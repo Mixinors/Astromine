@@ -31,7 +31,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * A class representing a filter widget depicting
+ * A filter widget depicting
  * the filter {@link Fluid} for a related object.
  *
  * The {@link #fluidSupplier} supplies the {@link Fluid}

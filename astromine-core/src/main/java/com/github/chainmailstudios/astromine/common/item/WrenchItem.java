@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.common.item;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
 import net.minecraft.item.ToolMaterial;
@@ -37,10 +38,10 @@ import net.minecraft.world.World;
 import com.zundrel.wrenchable.wrench.Wrench;
 
 /**
- * A class representing a wrench item.
+ * A wrench {@link Item}.
  */
 public class WrenchItem extends ToolItem implements Wrench {
-	/** Instantiates a {@link WrenchItem} with the given values. */
+	/** Instantiates a {@link WrenchItem}. */
 	public WrenchItem(ToolMaterial material, Settings settings) {
 		super(material, settings);
 	}

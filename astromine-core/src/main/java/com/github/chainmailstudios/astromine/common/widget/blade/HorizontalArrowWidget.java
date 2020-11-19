@@ -46,7 +46,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.IntSupplier;
 
-/** A class representing a horizontal arrow widget depicting
+/**
+ * A horizontal arrow widget depicting
  * the progress level of the {@link #progressSupplier} relative
  * to the {@link #limitSupplier}.
  */

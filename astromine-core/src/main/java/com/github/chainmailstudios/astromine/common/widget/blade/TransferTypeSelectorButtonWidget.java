@@ -53,7 +53,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * A class representing a button for the selection of
+ * A button for the selection of
  * {@link TransferType}s connected to a machine.
  */
 public class TransferTypeSelectorButtonWidget extends AbstractWidget {

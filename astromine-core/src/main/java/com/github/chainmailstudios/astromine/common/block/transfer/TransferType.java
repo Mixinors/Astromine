@@ -39,7 +39,7 @@ public enum TransferType {
 
 	private final Identifier texture;
 
-	/** Instantiates a {@link TransferType} with its associated texture {@link Identifier}. */
+	/** Instantiates a {@link TransferType}. */
 	TransferType(Identifier texture) {
 		this.texture = texture;
 	}

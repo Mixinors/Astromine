@@ -32,8 +32,8 @@ import com.github.chainmailstudios.astromine.common.registry.base.UniRegistry;
 import java.util.Optional;
 
 /**
- * A class representing an {@link UniRegistry}, for
- * registration of {@link RegistryKey<World>}s to {@link Boolean}s.
+ * An {@link UniRegistry}, for registration of
+ * {@link RegistryKey<World>}s to {@link Boolean}s.
  *
  * The specified {@link Boolean} is checked to verify
  * if the given dimension does not have a natural atmosphere.

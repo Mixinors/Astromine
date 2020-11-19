@@ -84,7 +84,7 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 
 	protected int redstoneMode = 0;
 
-	/** Instantiates a {@link ComponentBlockEntity} with the given value. */
+	/** Instantiates a {@link ComponentBlockEntity}. */
 	public ComponentBlockEntity(BlockEntityType<?> type) {
 		super(type);
 

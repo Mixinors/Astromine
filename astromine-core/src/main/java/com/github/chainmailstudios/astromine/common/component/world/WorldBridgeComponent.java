@@ -66,7 +66,7 @@ public final class WorldBridgeComponent implements Component {
 
 	private final World world;
 
-	/** Instantiates a {@link WorldBridgeComponent} with the given value. */
+	/** Instantiates a {@link WorldBridgeComponent}. */
 	public WorldBridgeComponent(World world) {
 		this.world = world;
 	}

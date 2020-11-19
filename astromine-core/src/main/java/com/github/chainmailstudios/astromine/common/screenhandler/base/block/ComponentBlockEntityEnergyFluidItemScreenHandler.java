@@ -35,7 +35,7 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
 /**
- * A class representing a {@link ComponentBlockEntityScreenHandler}
+ * A {@link ComponentBlockEntityScreenHandler}
  * with an attached {@link ComponentEnergyFluidItemBlockEntity}.
  */
 public class ComponentBlockEntityEnergyFluidItemScreenHandler extends ComponentBlockEntityScreenHandler {
@@ -45,8 +45,8 @@ public class ComponentBlockEntityEnergyFluidItemScreenHandler extends ComponentB
 
 	public FluidVerticalBarWidget fluidBar;
 
-	/** Instantiates a {@link ComponentBlockEntityItemScreenHandler}
-	 * with the given values, obtaining the {@link ComponentEnergyFluidItemBlockEntity}. */
+	/** Instantiates a {@link ComponentBlockEntityItemScreenHandler},
+	 * obtaining the {@link ComponentEnergyFluidItemBlockEntity}. */
 	public ComponentBlockEntityEnergyFluidItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 

@@ -131,14 +131,14 @@ public class NetworkUtilities {
 	}
 
 	/**
-	 * A class representing a cable modeller,
+	 * A cable modeller,
 	 * which scans neighboring blocks and produces
 	 * a connected {@link BlockState} or {@link VoxelShape}.
 	 */
 	public static class Modeller {
 		private final Set<Direction> directions = new HashSet<>();
 
-		/** Instantiates a {@link Modeller} with the given value. */
+		/** Instantiates a {@link Modeller}. */
 		public static Modeller of(BlockState blockState) {
 			Modeller modeller = new Modeller();
 
@@ -151,7 +151,7 @@ public class NetworkUtilities {
 			return modeller;
 		}
 
-		/** Instantiates a {@link Modeller} with the given values. */
+		/** Instantiates a {@link Modeller}. */
 		public static Modeller of(NetworkType type, BlockPos initialPosition, World world) {
 			Modeller modeller = new Modeller();
 

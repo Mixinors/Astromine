@@ -31,8 +31,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 /**
- * An interface representing a member
- * of a network.
+ * A member of a network.
  */
 public interface NetworkMember {
 	Collection<NetworkMemberType> REQUESTER_PROVIDER = Sets.newHashSet(NetworkMemberType.REQUESTER, NetworkMemberType.PROVIDER);

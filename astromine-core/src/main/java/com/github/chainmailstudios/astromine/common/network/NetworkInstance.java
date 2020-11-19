@@ -41,7 +41,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * A class representing a collection of {@link NetworkNode}s
+ * A collection of {@link NetworkNode}s
  * and {@link NetworkMemberNode}s, representing a simple
  * network structure.
  */
@@ -56,13 +56,13 @@ public final class NetworkInstance implements Tickable {
 
 	private final NetworkType type;
 
-	/** Instantiates a {@link NetworkInstance} with {@link NetworkType#EMPTY} network type. */
+	/** Instantiates a {@link NetworkInstance} with {@link NetworkType#EMPTY}. */
 	private NetworkInstance() {
 		this.type = NetworkType.EMPTY;
 		this.world = null;
 	}
 
-	/** Instantiates a {@link NetworkInstance} with the given values. */
+	/** Instantiates a {@link NetworkInstance}. */
 	public NetworkInstance(World world, NetworkType type) {
 		this.type = type;
 		this.world = world;

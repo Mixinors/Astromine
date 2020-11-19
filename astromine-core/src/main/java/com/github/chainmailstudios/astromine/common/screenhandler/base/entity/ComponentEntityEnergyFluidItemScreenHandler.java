@@ -34,7 +34,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 
 /**
- * A class representing a {@link ComponentEntityScreenHandler}
+ * A {@link ComponentEntityScreenHandler}
  * with an attached {@link ComponentEnergyFluidItemEntity}.
  */
 public abstract class ComponentEntityEnergyFluidItemScreenHandler extends ComponentEntityScreenHandler {
@@ -44,7 +44,7 @@ public abstract class ComponentEntityEnergyFluidItemScreenHandler extends Compon
 
 	protected EnergyVerticalBarWidget energyBar;
 
-	/** Instantiates a {@link ComponentEntityEnergyFluidItemScreenHandler} with the given values. */
+	/** Instantiates a {@link ComponentEntityEnergyFluidItemScreenHandler}. */
 	public ComponentEntityEnergyFluidItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, int entityId) {
 		super(type, syncId, player, entityId);
 

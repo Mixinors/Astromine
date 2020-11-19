@@ -32,12 +32,11 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 
 /**
- * A class representing a {@link ComponentEntity}
- * with an attached {@link EnergyComponent},
+ * A {@link ComponentEntity} with an attached {@link EnergyComponent},
  * {@link FluidComponent} and {@link ItemComponent}.
  */
 public abstract class ComponentEnergyFluidItemEntity extends ComponentEntity implements InventoryFromItemComponent {
-	/** Instantiates a {@link ComponentEnergyFluidItemEntity} with the given values. */
+	/** Instantiates a {@link ComponentEnergyFluidItemEntity}. */
 	public ComponentEnergyFluidItemEntity(EntityType<?> type, World world) {
 		super(type, world);
 	}

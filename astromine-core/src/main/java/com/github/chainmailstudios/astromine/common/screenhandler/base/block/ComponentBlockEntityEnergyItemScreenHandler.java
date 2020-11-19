@@ -35,7 +35,7 @@ import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 
 /**
- * A class representing a {@link ComponentBlockEntityScreenHandler}
+ *A {@link ComponentBlockEntityScreenHandler}
  * with an attached {@link ComponentEnergyItemBlockEntity}.
  */
 public class ComponentBlockEntityEnergyItemScreenHandler extends ComponentBlockEntityScreenHandler {
@@ -43,8 +43,8 @@ public class ComponentBlockEntityEnergyItemScreenHandler extends ComponentBlockE
 
 	public EnergyVerticalBarWidget energyBar;
 
-	/** Instantiates a {@link ComponentBlockEntityItemScreenHandler}
-	 * with the given values, obtaining the {@link ComponentEnergyItemBlockEntity}. */
+	/** Instantiates a {@link ComponentBlockEntityItemScreenHandler},
+	 * obtaining the {@link ComponentEnergyItemBlockEntity}. */
 	public ComponentBlockEntityEnergyItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 

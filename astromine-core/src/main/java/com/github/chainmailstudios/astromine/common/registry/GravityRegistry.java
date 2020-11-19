@@ -36,8 +36,8 @@ import com.github.chainmailstudios.astromine.common.registry.base.BiRegistry;
 import java.util.Optional;
 
 /**
- * A class representing a {@link BiRegistry} for
- * registration of {@link RegistryKey<World>}s mapped to {@link Double}s.
+ * A {@link BiRegistry} for registration of
+ * {@link RegistryKey<World>}s mapped to {@link Double}s.
  *
  * The registered gravity value will then be used for gravity
  * calculations, through:

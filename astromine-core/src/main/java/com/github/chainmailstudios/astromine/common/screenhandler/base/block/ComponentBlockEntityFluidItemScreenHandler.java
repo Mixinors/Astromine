@@ -35,7 +35,7 @@ import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 
 /**
- * A class representing a {@link ComponentBlockEntityScreenHandler}
+ * A {@link ComponentBlockEntityScreenHandler}
  * with an attached {@link ComponentFluidItemBlockEntity}.
  */
 public class ComponentBlockEntityFluidItemScreenHandler extends ComponentBlockEntityScreenHandler {
@@ -43,8 +43,8 @@ public class ComponentBlockEntityFluidItemScreenHandler extends ComponentBlockEn
 
 	public FluidVerticalBarWidget fluidBar;
 
-	/** Instantiates a {@link ComponentBlockEntityItemScreenHandler}
-	 * with the given values, obtaining the {@link ComponentFluidItemBlockEntity}. */
+	/** Instantiates a {@link ComponentBlockEntityItemScreenHandler},
+	 * obtaining the {@link ComponentFluidItemBlockEntity}. */
 	public ComponentBlockEntityFluidItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 

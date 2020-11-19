@@ -49,7 +49,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 /**
- * A class representing a {@link BlockStateScreenHandler} with an attached
+ * A {@link BlockStateScreenHandler} with an attached
  * {@link ComponentBlockEntity}.
  */
 public abstract class ComponentEntityScreenHandler extends BaseScreenHandler {

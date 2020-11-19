@@ -19,8 +19,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 /**
- * A class representing an {@link ArmorItem}
- * with an animated texture.
+ * An {@link ArmorItem} with an animated texture.
  *
  * Specifically, a {@link AnimatedTexturePhase} is used when
  * drawing a {@link RenderLayer}. That {@link AnimatedTexturePhase}
@@ -43,14 +42,13 @@ public class AnimatedArmorItem extends ArmorItem {
 	}
 
 	/**
-	 * A class representing a {@link RenderPhase.Texture}
-	 * which uses an {@link AnimatedTexture}.
+	 * A {@link RenderPhase.Texture} which uses an {@link AnimatedTexture}.
 	 */
 	@Environment(EnvType.CLIENT)
 	public static final class AnimatedTexturePhase extends RenderPhase.Texture {
 		private final Optional<Identifier> id;
 
-		/** Instantiates a {@link Texture} with the given values. */
+		/** Instantiates a {@link Texture}. */
 		public AnimatedTexturePhase(Identifier id, int frames) {
 			beginAction = () -> {
 				RenderSystem.enableTexture();
@@ -117,7 +115,7 @@ public class AnimatedArmorItem extends ArmorItem {
 		}
 
 		/**
-		 * A class representing an animated {@link AbstractTexture}.
+		 * An animated {@link AbstractTexture}.
 		 *
 		 * A {@link NativeImage} ({@link AnimatedTexture#image}) is used
 		 * to store the original, full-size texture.

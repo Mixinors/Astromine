@@ -38,7 +38,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * A class representing a fractional value, whose {@link #numerator}
+ * A fractional value, whose {@link #numerator}
  * and {@link #denominator} and represented through {@link Long}.
  *
  * There is no overflow protection. Values above {@link #MAX_VALUE},
@@ -70,7 +70,7 @@ public final class Fraction extends Number implements Comparable<Fraction> {
 	private final long numerator;
 	private final long denominator;
 
-	/** Instantiates a fraction with the given values. */
+	/** Instantiates a {@link Fraction}. */
 	private Fraction(long numerator, long denominator) {
 		this.numerator = numerator;
 		this.denominator = Math.max(1, denominator);
@@ -86,22 +86,22 @@ public final class Fraction extends Number implements Comparable<Fraction> {
 		return this.denominator;
 	}
 
-	/** Instantiates a fraction from a whole value. */
+	/** Instantiates a {@link Fraction}. */
 	public static Fraction of(long whole) {
 		return new Fraction(whole, 1);
 	}
 
-	/** Instantiates a fraction with the given values. */
+	/** Instantiates a {@link Fraction}. */
 	public static Fraction of(long numerator, long denominator) {
 		return new Fraction(numerator, denominator);
 	}
 
-	/** Instantiates a fraction with a whole and the given values. */
+	/** Instantiates a {@link Fraction}. */
 	public static Fraction of(long whole, long numerator, long denominator) {
 		return new Fraction(numerator + whole * denominator, denominator);
 	}
 
-	/** Instantiates a fraction from a decimal value. */
+	/** Instantiates {@link Fraction}. */
 	public static Fraction ofDecimal(double d) {
 		String s = FORMAT.format(d);
 		int digitsDec = s.length() - 1 - s.indexOf('.');

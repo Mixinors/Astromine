@@ -48,7 +48,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 /**
- * A class representing a vertical bar widget depicting
+ * A vertical bar widget depicting
  * the energy level of the specified {@link #volumeSupplier}.
  *
  * The {@link #volumeSupplier} supplies the volume from which

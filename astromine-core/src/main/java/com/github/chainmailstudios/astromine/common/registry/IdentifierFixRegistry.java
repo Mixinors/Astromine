@@ -32,8 +32,8 @@ import net.minecraft.util.Identifier;
 import java.util.Optional;
 
 /**
- * A class representing an {@link UniRegistry} for
- * registration of {@link String}s mapped to {@link String}s.
+ * An {@link UniRegistry} for registration of
+ * {@link String}s mapped to {@link String}s.
  *
  * The registered path will then be replaced by the new one,
  * through {@link IdentifierMixin}.

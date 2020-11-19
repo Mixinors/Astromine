@@ -30,8 +30,8 @@ import net.minecraft.util.Pair;
 import com.github.chainmailstudios.astromine.common.registry.base.UniRegistry;
 
 /**
- * A class representing an {@link UniRegistry} for
- * registration of {@link Item}s to {@link Pair}s
+ * An {@link UniRegistry} for registration of
+ * {@link Item}s to {@link Pair}s
  * of {@link Float} and {@link Boolean}.
  *
  * When an item on this list appears in a conveyor,

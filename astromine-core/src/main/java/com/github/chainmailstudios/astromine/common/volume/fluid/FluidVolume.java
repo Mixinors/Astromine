@@ -45,7 +45,7 @@ import com.google.common.base.Objects;
 import java.text.DecimalFormat;
 
 /**
- * A class representing a {@link Volume} of {@link Fluid}s, whose amount
+ * A {@link Volume} of {@link Fluid}s, whose amount
  * and size are represented by a {@link Fraction}
  *
  * It is not an inventory, thus it is recommended to use a {@link FluidComponent},
@@ -85,44 +85,44 @@ public class FluidVolume extends Volume<Fraction> {
 
 	private Fluid fluid;
 
-	/** Instantiates a volume with the given values. */
+	/** Instantiates a {@link FluidVolume}. */
 	protected FluidVolume(Fraction amount, Fraction size, Fluid fluid) {
 		super(amount, size);
 		this.fluid = fluid;
 	}
 
-	/** Instantiates a volume with the given values and a listener. */
+	/** Instantiates a {@link FluidVolume} and a listener. */
 	protected FluidVolume(Fraction amount, Fraction size, Fluid fluid, Runnable runnable) {
 		super(amount, size, runnable);
 		this.fluid = fluid;
 	}
 
-	/** Instantiates an empty volume. */
+	/** Instantiates an empty {@link FluidVolume}. */
 	public static FluidVolume ofEmpty() {
 		return new FluidVolume(Fraction.EMPTY, Fraction.MAX_VALUE, Fluids.EMPTY);
 	}
 
-	/** Instantiates an empty volume with a listener. */
+	/** Instantiates an empty {@link FluidVolume} with a listener. */
 	public static FluidVolume ofEmpty(Runnable runnable) {
 		return new FluidVolume(Fraction.EMPTY, Fraction.MAX_VALUE, Fluids.EMPTY, runnable);
 	}
 
-	/** Instantiates a volume with the given values. */
+	/** Instantiates a {@link FluidVolume}. */
 	public static FluidVolume of(Fraction amount, Fluid fluid) {
 		return new FluidVolume(amount, Fraction.MAX_VALUE, fluid);
 	}
 
-	/** Instantiates a volume with the given values and a listener. */
+	/** Instantiates a {@link FluidVolume} and a listener. */
 	public static FluidVolume of(Fraction amount, Fluid fluid, Runnable runnable) {
 		return new FluidVolume(amount, Fraction.MAX_VALUE, fluid, runnable);
 	}
 
-	/** Instantiates a volume with the given values. */
+	/** Instantiates a {@link FluidVolume}. */
 	public static FluidVolume of(Fraction amount, Fraction size, Fluid fluid) {
 		return new FluidVolume(amount, size, fluid);
 	}
 
-	/** Instantiates a volume with the given values and a listener. */
+	/** Instantiates a {@link FluidVolume} and a listener. */
 	public static FluidVolume of(Fraction amount, Fraction size, Fluid fluid, Runnable runnable) {
 		return new FluidVolume(amount, size, fluid, runnable);
 	}

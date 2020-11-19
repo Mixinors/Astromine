@@ -38,7 +38,7 @@ import net.minecraft.block.entity.BlockEntityType;
  * and {@link ItemComponent}.
  */
 public abstract class ComponentEnergyFluidItemBlockEntity extends ComponentBlockEntity implements ComponentEnergyProvider, ComponentInventoryProvider {
-	/** Instantiates a {@link ComponentEnergyFluidItemBlockEntity} with the given value. */
+	/** Instantiates a {@link ComponentEnergyFluidItemBlockEntity}. */
 	public ComponentEnergyFluidItemBlockEntity(BlockEntityType<?> type) {
 		super(type);
 

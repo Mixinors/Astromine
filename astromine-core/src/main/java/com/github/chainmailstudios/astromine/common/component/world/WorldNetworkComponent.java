@@ -60,7 +60,7 @@ public final class WorldNetworkComponent implements Component, Tickable {
 
 	private final World world;
 
-	/** Instantiates a {@link WorldNetworkComponent} with the given value. */
+	/** Instantiates a {@link WorldNetworkComponent}. */
 	public WorldNetworkComponent(World world) {
 		this.world = world;
 	}

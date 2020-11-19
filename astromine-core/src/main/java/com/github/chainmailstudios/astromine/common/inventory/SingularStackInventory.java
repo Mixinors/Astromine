@@ -32,8 +32,8 @@ import net.minecraft.item.ItemStack;
 import java.util.function.Supplier;
 
 /**
- * A class representing a simple {@link Inventory}
- * with helper methods for a single stack.
+ * A simple {@link Inventory} with helper
+ * methods for a single stack.
  *
  * Originally by {@author Juuz}.
  */
@@ -43,7 +43,7 @@ public interface SingularStackInventory extends Inventory {
 		return of(ItemStack.EMPTY);
 	}
 
-	/** Instantiates a {@link SingularStackInventory} with the given value. */
+	/** Instantiates a {@link SingularStackInventory}. */
 	static SingularStackInventory of(ItemStack stack) {
 		StackHolder holder = new StackHolder(stack);
 
@@ -167,7 +167,7 @@ public interface SingularStackInventory extends Inventory {
 	class SingularStackInventoryImpl implements SingularStackInventory {
 		private final Supplier<StackHolder> supplier;
 
-		/** Instantiates a {@link SingularStackInventoryImpl)} with the given value. */
+		/** Instantiates a {@link SingularStackInventoryImpl)}. */
 		public SingularStackInventoryImpl(Supplier<StackHolder> supplier) {
 			this.supplier = supplier;
 		}
@@ -186,12 +186,12 @@ public interface SingularStackInventory extends Inventory {
 	}
 
 	/**
-	 * A class representing a single {@link ItemStack}.
+	 * A holder of a single {@link ItemStack}.
 	 */
 	class StackHolder {
 		private ItemStack stack;
 
-		/** Instantiates a {@link StackHolder} with the given value. */
+		/** Instantiates a {@link StackHolder}. */
 		public StackHolder(ItemStack stack) {
 			this.stack = stack;
 		}

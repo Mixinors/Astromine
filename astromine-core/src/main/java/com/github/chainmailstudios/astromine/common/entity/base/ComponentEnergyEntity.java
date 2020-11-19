@@ -33,11 +33,10 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 
 /**
- * A class representing a {@link ComponentEntity}
- * with an attached {@link EnergyComponent}.
+ * A{@link ComponentEntity} with an attached {@link EnergyComponent}.
  */
 public abstract class ComponentEnergyEntity extends ComponentEntity {
-	/** Instantiates a {@link ComponentEnergyEntity} with the given values. */
+	/** Instantiates a {@link ComponentEnergyEntity} */
 	public ComponentEnergyEntity(EntityType<?> type, World world) {
 		super(type, world);
 	}

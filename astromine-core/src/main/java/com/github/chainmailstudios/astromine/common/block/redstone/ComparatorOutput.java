@@ -40,7 +40,7 @@ import java.util.Collection;
 import java.util.function.Function;
 
 /**
- * A class representing a handler of {@link ComparatorBlockEntity}
+ * A handler of {@link ComparatorBlockEntity}
  * output levels.
  */
 public class ComparatorOutput {

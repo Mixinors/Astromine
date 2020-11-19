@@ -29,7 +29,6 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
 
 /**
- * A class representing our generic {@link RecipeType},
- * used in {@link ClientRecipeBookMixin}.
+ * Our generic {@link RecipeType}, used in {@link ClientRecipeBookMixin}.
  */
 public interface AstromineRecipeType<T extends Recipe<?>> extends RecipeType<T> {}

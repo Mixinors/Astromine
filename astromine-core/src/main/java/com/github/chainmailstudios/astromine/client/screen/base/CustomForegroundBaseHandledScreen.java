@@ -33,11 +33,17 @@ import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BladeHandledScreen<T extends BaseScreenHandler> extends BaseHandledScreen<T> {
-	public BladeHandledScreen(@NotNull BaseScreenHandler handler, @NotNull PlayerInventory inventory, @NotNull Text title) {
+/**
+ * A {@link BaseHandledScreen} whose {@link #drawForeground(MatrixStack, int, int)}
+ * method does nothing.
+ */
+public class CustomForegroundBaseHandledScreen<T extends BaseScreenHandler> extends BaseHandledScreen<T> {
+	/** Instantiates a {@link CustomForegroundBaseHandledScreen}. */
+	public CustomForegroundBaseHandledScreen(@NotNull BaseScreenHandler handler, @NotNull PlayerInventory inventory, @NotNull Text title) {
 		super(handler, inventory, title);
 	}
 
+	/** Override behavior to do nothing. */
 	@Override
 	protected void drawForeground(@Nullable MatrixStack matrices, int mouseX, int mouseY) {}
 }

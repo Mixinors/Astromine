@@ -28,7 +28,7 @@ import com.github.chainmailstudios.astromine.mixin.EnchantmentTargetMixin;
 import net.minecraft.item.ToolItem;
 
 /**
- * An interface representing a {@link ToolItem}
+ * A {@link ToolItem}
  * which may be enchanted, used in
  * {@link EnchantmentTargetMixin}.
  */

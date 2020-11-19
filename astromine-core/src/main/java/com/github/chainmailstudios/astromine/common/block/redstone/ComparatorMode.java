@@ -29,7 +29,7 @@ import net.minecraft.screen.ScreenHandler;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * An interface representing comparator behavior.
+ * Comparator behavior.
  */
 @FunctionalInterface
 public interface ComparatorMode {

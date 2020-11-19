@@ -44,7 +44,7 @@ public abstract class BlockStateScreenHandler extends BaseScreenHandler {
 	protected Block originalBlock;
 	protected BlockState state;
 
-	/** Instantiates a {@link BlockStateScreenHandler} with the given values. */
+	/** Instantiates a {@link BlockStateScreenHandler}. */
 	public BlockStateScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player);
 

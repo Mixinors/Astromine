@@ -37,7 +37,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 /**
- * A class representing a {@link BlockPos} relative to a {@link World}.
+ * A {@link BlockPos} with an associated {@link World}.
  */
 public final class WorldPos {
 	private final World world;
@@ -46,13 +46,13 @@ public final class WorldPos {
 
 	private BlockState blockState;
 
-	/** Instantiates a position with the given values. */
+	/** Instantiates a {@link WorldPos}. */
 	private WorldPos(World world, BlockPos pos) {
 		this.world = world;
 		this.pos = pos;
 	}
 
-	/** Instantiates a position with the given values. */
+	/** Instantiates a {@link WorldPos}. */
 	public static WorldPos of(World world, BlockPos pos) {
 		return new WorldPos(world, pos);
 	}

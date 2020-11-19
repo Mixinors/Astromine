@@ -7,7 +7,11 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * A {@link BaseHandledScreen} used by {@link RecipeCreatorScreenHandler}.
+ */
 public class RecipeCreatorHandledScreen extends BaseHandledScreen<RecipeCreatorScreenHandler> {
+    /** Instantiates a {@link RecipeCreatorHandledScreen}. */
     public RecipeCreatorHandledScreen(@NotNull BaseScreenHandler handler, @NotNull PlayerInventory inventory, @NotNull Text title) {
         super(handler, inventory, title);
 

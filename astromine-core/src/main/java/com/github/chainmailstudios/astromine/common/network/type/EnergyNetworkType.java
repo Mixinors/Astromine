@@ -48,8 +48,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * A class representing a {@link NetworkType}
- * for energy.
+ * A {@link NetworkType} for energy.
  */
 public final class EnergyNetworkType implements NetworkType {
 	/** Override behavior to handle attached {@link EnergyHandler}s,
@@ -133,7 +132,7 @@ public final class EnergyNetworkType implements NetworkType {
 	}
 
 	/**
-	 * An interface representing a speed provider for
+	 * A speed provider for
 	 * attached {@link NetworkNode}s.
 	 */
 	public interface NodeSpeedProvider {

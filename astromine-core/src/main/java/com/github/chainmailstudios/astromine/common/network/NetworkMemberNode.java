@@ -31,8 +31,7 @@ import net.minecraft.util.math.Direction;
 import com.google.common.base.Objects;
 
 /**
- * An interface representing a node for
- * a {@link NetworkMember} of a network.
+ * A node for a {@link NetworkMember} of a network.
  *
  * Serialization and deserialization methods are provided for:
  * - {@link CompoundTag} - through {@link #toTag()} and {@link #fromTag(CompoundTag)}.
@@ -42,46 +41,46 @@ public final class NetworkMemberNode {
 
 	private int directionId;
 
-	/** Instantiates a {@link NetworkMemberNode} with the given values. */
+	/** Instantiates a {@link NetworkMemberNode}. */
 	private NetworkMemberNode(BlockPos blockPos, Direction direction) {
 		setBlockPosition(blockPos);
 		setDirection(direction);
 	}
 
-	/** Instantiates a {@link NetworkMemberNode} with the given values. */
+	/** Instantiates a {@link NetworkMemberNode}. */
 	private NetworkMemberNode(long pos, int directionId) {
 		setLongPosition(pos);
 		setDirectionId(directionId);
 	}
 
-	/** Instantiates a {@link NetworkMemberNode} with the given values. */
+	/** Instantiates a {@link NetworkMemberNode}. */
 	private NetworkMemberNode(BlockPos blockPos) {
 		setBlockPosition(blockPos);
 		setDirectionId(-1);
 	}
 
-	/** Instantiates a {@link NetworkMemberNode} with the given values. */
+	/** Instantiates a {@link NetworkMemberNode}. */
 	private NetworkMemberNode(long pos) {
 		setLongPosition(pos);
 		setDirectionId(-1);
 	}
 
-	/** Instantiates a {@link NetworkMemberNode} with the given values. */
+	/** Instantiates a {@link NetworkMemberNode}. */
 	public static NetworkMemberNode of(BlockPos blockPos, Direction direction) {
 		return new NetworkMemberNode(blockPos, direction);
 	}
 
-	/** Instantiates a {@link NetworkMemberNode} with the given values. */
+	/** Instantiates a {@link NetworkMemberNode}. */
 	public static NetworkMemberNode of(long pos, int dir) {
 		return new NetworkMemberNode(pos, dir);
 	}
 
-	/** Instantiates a {@link NetworkMemberNode} with the given values. */
+	/** Instantiates a {@link NetworkMemberNode}. */
 	public static NetworkMemberNode of(BlockPos blockPos) {
 		return new NetworkMemberNode(blockPos);
 	}
 
-	/** Instantiates a {@link NetworkMemberNode} with the given values. */
+	/** Instantiates a {@link NetworkMemberNode}. */
 	public static NetworkMemberNode of(long pos) {
 		return new NetworkMemberNode(pos);
 	}

@@ -34,12 +34,11 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 
 /**
- * A class representing a {@link ComponentEntity}
- * with an attached {@link FluidComponent} and
- * {@link ItemComponent}.
+ * A {@link ComponentEntity} with an attached {@link FluidComponent}
+ * and {@link ItemComponent}.
  */
 public abstract class ComponentFluidItemEntity extends ComponentEntity implements InventoryFromItemComponent {
-	/** Instantiates a {@link ComponentFluidItemEntity} with the given values. */
+	/** Instantiates a {@link ComponentFluidItemEntity}. */
 	public ComponentFluidItemEntity(EntityType<?> type, World world) {
 		super(type, world);
 	}

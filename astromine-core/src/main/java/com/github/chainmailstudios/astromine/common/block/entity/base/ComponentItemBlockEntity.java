@@ -35,7 +35,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponents;
  * {@link ItemComponent}.
  */
 public abstract class ComponentItemBlockEntity extends ComponentBlockEntity implements ComponentInventoryProvider {
-	/** Instantiates a {@link ComponentItemBlockEntity} with the given value. */
+	/** Instantiates a {@link ComponentItemBlockEntity}. */
 	public ComponentItemBlockEntity(BlockEntityType<?> type) {
 		super(type);
 

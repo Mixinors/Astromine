@@ -1,7 +1,6 @@
 package com.github.chainmailstudios.astromine.transportations.common.block;
 
 import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
-import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.network.NetworkBlock;
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.DrainBlockEntity;
 import net.minecraft.block.BlockState;

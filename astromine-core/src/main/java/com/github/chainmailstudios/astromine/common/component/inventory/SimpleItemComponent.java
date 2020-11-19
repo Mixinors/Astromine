@@ -49,7 +49,7 @@ public class SimpleItemComponent implements ItemComponent {
 
 	private final int size;
 
-	/** Instantiates a {@link SimpleItemComponent} with the given value. */
+	/** Instantiates a {@link SimpleItemComponent}. */
 	protected SimpleItemComponent(int size) {
 		this.size = size;
 
@@ -60,7 +60,7 @@ public class SimpleItemComponent implements ItemComponent {
 		this.contents.defaultReturnValue(ItemStack.EMPTY);
 	}
 
-	/** Instantiates a {@link SimpleItemComponent} with the given values. */
+	/** Instantiates a {@link SimpleItemComponent}. */
 	protected SimpleItemComponent(ItemStack... stacks) {
 		this(stacks.length);
 
@@ -69,12 +69,12 @@ public class SimpleItemComponent implements ItemComponent {
 		}
 	}
 
-	/** Instantiates a {@link SimpleItemComponent} with the given value. */
+	/** Instantiates a {@link SimpleItemComponent}. */
 	public static SimpleItemComponent of(int size) {
 		return new SimpleItemComponent(size);
 	}
 
-	/** Instantiates a {@link SimpleItemComponent} with the given values. */
+	/** Instantiates a {@link SimpleItemComponent}. */
 	public static SimpleItemComponent of(ItemStack... stacks) {
 		return new SimpleItemComponent(stacks);
 	}

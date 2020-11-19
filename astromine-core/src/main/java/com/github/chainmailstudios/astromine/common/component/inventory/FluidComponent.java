@@ -58,12 +58,12 @@ import java.util.stream.Collectors;
  * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
  */
 public interface FluidComponent extends Iterable<FluidVolume>, NameableComponent, AutoSyncedComponent {
-	/** Instantiates a {@link FluidComponent} with the given value. */
+	/** Instantiates a {@link FluidComponent}. */
 	static FluidComponent of(int size) {
 		return SimpleFluidComponent.of(size);
 	}
 
-	/** Instantiates a {@link FluidComponent} with the given values. */
+	/** Instantiates a {@link FluidComponent}. */
 	static FluidComponent of(FluidVolume... volumes) {
 		return SimpleFluidComponent.of(volumes);
 	}

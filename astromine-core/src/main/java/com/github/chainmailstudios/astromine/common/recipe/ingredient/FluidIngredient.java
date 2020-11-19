@@ -51,8 +51,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
- * A class representing a recipe ingredient
- * consisting of (a) {@link Fluid}(s) and its
+ * A recipe ingredient consisting of (a) {@link Fluid}(s) and its
  * {@link Fraction}(s) fractional amount(s).
  *
  * Serialization and deserialization methods are provided for:
@@ -64,27 +63,22 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 
 	private FluidVolume[] matchingVolumes;
 
-	/** Instantiates a {@link FluidIngredient} with the given values
-	 * as {@link Entry...} entries. */
+	/** Instantiates a {@link FluidIngredient}. */
 	private FluidIngredient(Entry... entries) {
 		this.entries = entries;
 	}
 
-	/** Instantiates a {@link FluidIngredient} with the given values
-	 *  as {@link FluidVolume...} fluid volumes. */
+	/** Instantiates a {@link FluidIngredient}. */
 	public static FluidIngredient ofFluidVolumes(FluidVolume... volumes) {
 		return ofFluidVolumes(Arrays.asList(volumes));
 	}
 
-	/** Instantiates a {@link FluidIngredient} with the given values
-	 * as {@link Collection<FluidVolume>} fluid volumes. */
+	/** Instantiates a {@link FluidIngredient}. */
 	public static FluidIngredient ofFluidVolumes(Collection<FluidVolume> volumes) {
 		return new FluidIngredient(new SimpleEntry(volumes));
 	}
 
-	/** Instantiates a {@link FluidIngredient} with the given values
-	 * as {@link Stream<Entry>} entries.
-	 */
+	/** Instantiates a {@link FluidIngredient}. */
 	public static FluidIngredient ofEntries(Stream<? extends Entry> volumes) {
 		return new FluidIngredient(volumes.toArray(Entry[]::new));
 	}
@@ -203,8 +197,7 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 	}
 
 	/**
-	 * A class representing a supplier of
-	 * {@link FluidVolume}s as a {@link Stream}.
+	 * A supplier of {@link FluidVolume}s as a {@link Stream}.
 	 */
 	interface Entry {
 		/** Returns the volumes of this entry. */
@@ -250,13 +243,12 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 	}
 
 	/**
-	 * A class representing an {@link Entry}
-	 * of a fixed collection of {@link FluidVolume}s.
+	 * An {@link Entry} of a fixed collection of {@link FluidVolume}s.
 	 */
 	private static class SimpleEntry implements Entry {
 		private final Collection<FluidVolume> volumes;
 
-		/** Instantiates a {@link SimpleEntry} with the given values. */
+		/** Instantiates a {@link SimpleEntry}. */
 		public SimpleEntry(Collection<FluidVolume> volumes) {
 			this.volumes = volumes;
 		}
@@ -274,15 +266,14 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 	}
 
 	/**
-	 * A class representing an {@link Entry}
-	 * of a dynamic collection of {@link FluidVolume}s,
+	 * An {@link Entry} of a dynamic collection of {@link FluidVolume}s,
 	 * gathered from a {@link Tag<Fluid>}.
 	 */
 	private static class TagEntry implements Entry {
 		private final Tag<Fluid> tag;
 		private final Fraction amount;
 
-		/** Instantiates a {@link TagEntry} with the given values. */
+		/** Instantiates a {@link TagEntry}. */
 		private TagEntry(Tag<Fluid> tag, Fraction amount) {
 			this.tag = tag;
 			this.amount = amount;

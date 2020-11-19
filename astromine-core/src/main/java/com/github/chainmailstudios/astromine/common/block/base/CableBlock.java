@@ -56,6 +56,13 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A {@link Block} which is composed of six {@link BlockState} properties,
+ * which are responsible for its {@link VoxelShape} and model.
+ *
+ * It will search and trace a network of {@link #getNetworkType()} on
+ * {@link BlockState} change, placement or removal.
+ */
 public abstract class CableBlock extends Block implements Waterloggable, CableWrenchable {
 	public static final BooleanProperty EAST = BooleanProperty.of("east");
 	public static final BooleanProperty WEST = BooleanProperty.of("west");
@@ -87,27 +94,21 @@ public abstract class CableBlock extends Block implements Waterloggable, CableWr
 	};
 
 	protected static final Map<Integer, VoxelShape> SHAPE_CACHE = new HashMap<>();
+
 	protected static final VoxelShape CENTER_SHAPE = Block.createCuboidShape(6.0D, 6.0D, 6.0D, 10.0D, 10.0D, 10.0D);
 
+	/** Instantiates a {@link CableBlock}. */
 	public CableBlock(AbstractBlock.Settings settings) {
 		super(settings);
 
 		setDefaultState(getDefaultState().with(Properties.WATERLOGGED, false));
 	}
 
+	/** Returns this {@link CableBlock}'s {@link NetworkType}. */
 	public abstract <T extends NetworkType> T getNetworkType();
 
-	@Override
-	public FluidState getFluidState(BlockState state) {
-		return (state.contains(Properties.WATERLOGGED) && state.get(Properties.WATERLOGGED)) ? Fluids.WATER.getDefaultState() : super.getFluidState(state);
-	}
-
-	@Nullable
-	@Override
-	public BlockState getPlacementState(ItemPlacementContext context) {
-		return super.getPlacementState(context).with(Properties.WATERLOGGED, context.getWorld().getBlockState(context.getBlockPos()).getBlock() == Blocks.WATER);
-	}
-
+	/** Override behavior to update the {@link BlockState} properties
+	 * and re-trace the network. */
 	@Override
 	public void onPlaced(World world, BlockPos position, BlockState stateA, LivingEntity placer, ItemStack stack) {
 		super.onPlaced(world, position, stateA, placer, stack);
@@ -136,6 +137,8 @@ public abstract class CableBlock extends Block implements Waterloggable, CableWr
 		}
 	}
 
+	/** Override behavior to update the {@link BlockState} properties
+	 * of neighbors and re-trace the network. */
 	@Override
 	public void onStateReplaced(BlockState state, World world, BlockPos position, BlockState newState, boolean moved) {
 		super.onStateReplaced(state, world, position, newState, moved);
@@ -165,6 +168,8 @@ public abstract class CableBlock extends Block implements Waterloggable, CableWr
 		}
 	}
 
+	/** Override behavior to update the {@link BlockState} properties
+	 * and re-trace the network. */
 	@Override
 	public void neighborUpdate(BlockState state, World world, BlockPos position, Block block, BlockPos neighborPosition, boolean moved) {
 		super.neighborUpdate(state, world, position, block, neighborPosition, moved);
@@ -180,17 +185,31 @@ public abstract class CableBlock extends Block implements Waterloggable, CableWr
 		world.setBlockState(position, modeller.toBlockState(world.getBlockState(position)));
 	}
 
+	/** Override behavior to add the {@link Properties#WATERLOGGED} property
+	 * and our cardinal properties. */
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		builder.add(EAST, WEST, NORTH, SOUTH, UP, DOWN, Properties.WATERLOGGED);
 	}
 
+	/** Override behavior to return a {@link VoxelShape} based on
+	 * the {@link BlockState}'s properties. */
 	@Override
 	public VoxelShape getOutlineShape(BlockState blockState, BlockView world, BlockPos position, ShapeContext entityContext) {
-		VoxelShape returnShape = CENTER_SHAPE;
-		NetworkUtilities.Modeller modeller = new NetworkUtilities.Modeller();
-		modeller.of(blockState);
-		returnShape = modeller.toVoxelShape(returnShape);
-		return returnShape;
+		return NetworkUtilities.Modeller.of(blockState).toVoxelShape(CENTER_SHAPE);
 	}
+
+	/** Override behavior to implement {@link Waterloggable}. */
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return (state.contains(Properties.WATERLOGGED) && state.get(Properties.WATERLOGGED)) ? Fluids.WATER.getDefaultState() : super.getFluidState(state);
+	}
+
+	/** Override behavior to implement {@link Waterloggable}. */
+	@Nullable
+	@Override
+	public BlockState getPlacementState(ItemPlacementContext context) {
+		return super.getPlacementState(context).with(Properties.WATERLOGGED, context.getWorld().getBlockState(context.getBlockPos()).getBlock() == Blocks.WATER);
+	}
+
 }

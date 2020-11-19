@@ -48,7 +48,7 @@ public class SimpleFluidComponent implements FluidComponent {
 
 	private final int size;
 
-	/** Instantiates a {@link SimpleFluidComponent} with the given value. */
+	/** Instantiates a {@link SimpleFluidComponent}. */
 	protected SimpleFluidComponent(int size) {
 		this.size = size;
 
@@ -59,7 +59,7 @@ public class SimpleFluidComponent implements FluidComponent {
 		this.contents.defaultReturnValue(FluidVolume.ofEmpty(this::updateListeners));
 	}
 
-	/** Instantiates a {@link SimpleFluidComponent} with the given values. */
+	/** Instantiates a {@link SimpleFluidComponent}. */
 	protected SimpleFluidComponent(FluidVolume... volumes) {
 		this(volumes.length);
 
@@ -68,12 +68,12 @@ public class SimpleFluidComponent implements FluidComponent {
 		}
 	}
 
-	/** Instantiates a {@link SimpleFluidComponent} with the given value. */
+	/** Instantiates a {@link SimpleFluidComponent}. */
 	public static SimpleFluidComponent of(int size) {
 		return new SimpleFluidComponent(size);
 	}
 
-	/** Instantiates a {@link SimpleFluidComponent} with the given values. */
+	/** Instantiates a {@link SimpleFluidComponent}. */
 	public static SimpleFluidComponent of(FluidVolume... volumes) {
 		return new SimpleFluidComponent(volumes);
 	}
