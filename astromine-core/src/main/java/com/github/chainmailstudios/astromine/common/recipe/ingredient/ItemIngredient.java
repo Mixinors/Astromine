@@ -231,11 +231,11 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 					count = JsonHelper.getInt(jsonObject, "count");
 				}
 
-				if (jsonObject.has("tag")) {
-					stackTag = (CompoundTag) JsonOps.INSTANCE.convertTo(NbtOps.INSTANCE, jsonObject.get("tag"));
-				}
-
 				if (jsonObject.has("item")) {
+					if (jsonObject.has("tag")) {
+						stackTag = (CompoundTag) JsonOps.INSTANCE.convertTo(NbtOps.INSTANCE, jsonObject.get("tag"));
+					}
+
 					Identifier itemId = new Identifier(JsonHelper.getString(jsonObject, "item"));
 
 					Item item = Registry.ITEM.getOrEmpty(itemId).orElseThrow(() -> new JsonSyntaxException("Unknown item '" + itemId + "'"));
