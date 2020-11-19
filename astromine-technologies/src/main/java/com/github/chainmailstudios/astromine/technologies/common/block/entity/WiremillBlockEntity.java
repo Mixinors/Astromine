@@ -133,7 +133,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 					if (progress + speed >= limit) {
 						optionalRecipe = Optional.empty();
 
-						itemComponent.getSecond().decrement(IngredientUtilities.testMatching(recipe.getFirstInput(), itemComponent.getSecond()).getCount());
+						itemComponent.getSecond().decrement(recipe.getFirstInput().testMatching(itemComponent.getSecond()).getCount());
 						itemComponent.setFirst(StackUtilities.into(itemComponent.getFirst(), recipe.getFirstOutput()));
 
 						progress = 0;

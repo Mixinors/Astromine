@@ -138,11 +138,6 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 	}
 
 	@Override
-	public DefaultedList<Ingredient> getPreviewInputs() {
-		return DefaultedList.of();
-	}
-
-	@Override
 	public ItemStack getRecipeKindIcon() {
 		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_LIQUID_GENERATOR);
 	}
@@ -173,25 +168,27 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 
 			return new FluidGeneratingRecipe(
 					identifier,
-					IngredientUtilities.fromFluidIngredientJson(format.firstInput),
-					ParsingUtilities.fromJson(format.energyOutput, Double.class),
-					ParsingUtilities.fromJson(format.time, Integer.class));
+					FluidIngredient.fromJson(format.firstInput),
+					DoubleUtilities.fromJson(format.energyOutput),
+					IntegerUtilities.fromJson(format.time)
+			);
 		}
 
 		@Override
 		public FluidGeneratingRecipe read(Identifier identifier, PacketByteBuf buffer) {
 			return new FluidGeneratingRecipe(
 					identifier,
-					IngredientUtilities.fromFluidIngredientPacket(buffer),
-					PacketUtilities.fromPacket(buffer, Double.class),
-					PacketUtilities.fromPacket(buffer, Integer.class));
+					FluidIngredient.fromPacket(buffer),
+					DoubleUtilities.fromPacket(buffer),
+					IntegerUtilities.fromPacket(buffer)
+			);
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, FluidGeneratingRecipe recipe) {
-			IngredientUtilities.toFluidIngredientPacket(buffer, recipe.getFirstInput());
-			PacketUtilities.toPacket(buffer, recipe.getEnergyOutput());
-			PacketUtilities.toPacket(buffer, recipe.getTime());
+			recipe.firstInput.toPacket(buffer);
+			DoubleUtilities.toPacket(buffer, recipe.energyOutput);
+			DoubleUtilities.toPacket(buffer, recipe.time);
 		}
 	}
 

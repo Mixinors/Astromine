@@ -93,7 +93,7 @@ public class AstromineComponents implements WorldComponentInitializer, ChunkComp
 
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
-		registry.registerFor(LivingEntity.class, ENTITY_OXYGEN_COMPONENT, EntityOxygenComponent::new);
+		registry.registerFor(LivingEntity.class, ENTITY_OXYGEN_COMPONENT, EntityOxygenComponent::of);
 
 		registry.registerFor(ComponentFluidItemEntity.class, FLUID_INVENTORY_COMPONENT, ComponentFluidItemEntity::createFluidComponent);
 		registry.registerFor(ComponentFluidItemEntity.class, ITEM_INVENTORY_COMPONENT, ComponentFluidItemEntity::createItemComponent);
@@ -113,7 +113,7 @@ public class AstromineComponents implements WorldComponentInitializer, ChunkComp
 		registry.registerFor(ComponentBlockEntity.class, BLOCK_ENTITY_REDSTONE_COMPONENT, ComponentBlockEntity::createRedstoneComponent);
 		registry.registerFor(ComponentBlockEntity.class, BLOCK_ENTITY_TRANSFER_COMPONENT, ComponentBlockEntity::createTransferComponent);
 
-		registry.registerFor(ComponentFluidItemBlockEntity.class, FLUID_INVENTORY_COMPONENT, ComponentFluidBlockEntity::createFluidComponent);
+		registry.registerFor(ComponentFluidItemBlockEntity.class, FLUID_INVENTORY_COMPONENT, ComponentFluidItemBlockEntity::createFluidComponent);
 		registry.registerFor(ComponentFluidItemBlockEntity.class, ITEM_INVENTORY_COMPONENT, ComponentFluidItemBlockEntity::createItemComponent);
 
 		registry.registerFor(ComponentEnergyItemBlockEntity.class, ITEM_INVENTORY_COMPONENT, ComponentEnergyItemBlockEntity::createItemComponent);

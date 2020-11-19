@@ -29,6 +29,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.FluidCom
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
 import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.ItemIngredient;
 import com.github.chainmailstudios.astromine.common.utilities.*;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -192,31 +193,33 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 
 			return new ElectrolyzingRecipe(
 					identifier,
-					IngredientUtilities.fromFluidIngredientJson(format.firstInput),
-					VolumeUtilities.fromFluidVolumeJson(format.firstOutput),
-					VolumeUtilities.fromFluidVolumeJson(format.secondOutput),
-					ParsingUtilities.fromJson(format.energyInput, Double.class),
-					ParsingUtilities.fromJson(format.time, Integer.class));
+					FluidIngredient.fromJson(format.firstInput),
+					FluidVolume.fromJson(format.firstOutput),
+					FluidVolume.fromJson(format.secondOutput),
+					DoubleUtilities.fromJson(format.energyInput),
+					IntegerUtilities.fromJson(format.time)
+			);
 		}
 
 		@Override
 		public ElectrolyzingRecipe read(Identifier identifier, PacketByteBuf buffer) {
 			return new ElectrolyzingRecipe(
 					identifier,
-					IngredientUtilities.fromFluidIngredientPacket(buffer),
-					VolumeUtilities.fromFluidVolumePacket(buffer),
-					VolumeUtilities.fromFluidVolumePacket(buffer),
-					PacketUtilities.fromPacket(buffer, Double.class),
-					PacketUtilities.fromPacket(buffer, Integer.class));
+					FluidIngredient.fromPacket(buffer),
+					FluidVolume.fromPacket(buffer),
+					FluidVolume.fromPacket(buffer),
+					DoubleUtilities.fromPacket(buffer),
+					IntegerUtilities.fromPacket(buffer)
+			);
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, ElectrolyzingRecipe recipe) {
-			IngredientUtilities.toFluidIngredientPacket(buffer, recipe.firstInput);
-			VolumeUtilities.toFluidVolumePacket(buffer, recipe.firstOutput);
-			VolumeUtilities.toFluidVolumePacket(buffer, recipe.secondOutput);
-			PacketUtilities.toPacket(buffer, recipe.energyInput);
-			PacketUtilities.toPacket(buffer, recipe.time);
+			recipe.firstInput.toPacket(buffer);
+			recipe.firstOutput.toPacket(buffer);
+			recipe.secondOutput.toPacket(buffer);
+			DoubleUtilities.toPacket(buffer, recipe.energyInput);
+			IntegerUtilities.toPacket(buffer, recipe.time);
 		}
 	}
 

@@ -154,11 +154,6 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 	}
 
 	@Override
-	public DefaultedList<Ingredient> getPreviewInputs() {
-		return DefaultedList.of();
-	}
-
-	@Override
 	public ItemStack getRecipeKindIcon() {
 		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_FLUID_MIXER);
 	}
@@ -201,31 +196,33 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 
 			return new FluidMixingRecipe(
 					identifier,
-					IngredientUtilities.fromFluidIngredientJson(format.firstInput),
-					IngredientUtilities.fromFluidIngredientJson(format.secondInput),
-					VolumeUtilities.fromFluidVolumeJson(format.firstOutput),
-					ParsingUtilities.fromJson(format.energyInput, Double.class),
-					ParsingUtilities.fromJson(format.time, Integer.class));
+					FluidIngredient.fromJson(format.firstInput),
+					FluidIngredient.fromJson(format.secondInput),
+					FluidVolume.fromJson(format.firstOutput),
+					DoubleUtilities.fromJson(format.energyInput),
+					IntegerUtilities.fromJson(format.time)
+			);
 		}
 
 		@Override
 		public FluidMixingRecipe read(Identifier identifier, PacketByteBuf buffer) {
 			return new FluidMixingRecipe(
 					identifier,
-					IngredientUtilities.fromFluidIngredientPacket(buffer),
-					IngredientUtilities.fromFluidIngredientPacket(buffer),
-					VolumeUtilities.fromFluidVolumePacket(buffer),
-					PacketUtilities.fromPacket(buffer, Double.class),
-					PacketUtilities.fromPacket(buffer, Integer.class));
+					FluidIngredient.fromPacket(buffer),
+					FluidIngredient.fromPacket(buffer),
+					FluidVolume.fromPacket(buffer),
+					DoubleUtilities.fromPacket(buffer),
+					IntegerUtilities.fromPacket(buffer)
+			);
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, FluidMixingRecipe recipe) {
-			IngredientUtilities.toFluidIngredientPacket(buffer, recipe.firstInput);
-			IngredientUtilities.toFluidIngredientPacket(buffer, recipe.secondInput);
-			VolumeUtilities.toFluidVolumePacket(buffer, recipe.firstOutput);
-			PacketUtilities.toPacket(buffer, recipe.energyInput);
-			PacketUtilities.toPacket(buffer, recipe.time);
+			recipe.firstInput.toPacket(buffer);
+			recipe.secondInput.toPacket(buffer);
+			recipe.firstOutput.toPacket(buffer);
+			DoubleUtilities.toPacket(buffer, recipe.energyInput);
+			IntegerUtilities.toPacket(buffer, recipe.time);
 		}
 	}
 

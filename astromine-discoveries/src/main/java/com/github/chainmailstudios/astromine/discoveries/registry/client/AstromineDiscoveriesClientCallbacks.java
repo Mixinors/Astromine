@@ -65,7 +65,7 @@ public class AstromineDiscoveriesClientCallbacks extends AstromineClientCallback
 					FluidComponent fluidComponent = FluidComponent.get(stack);
 
 					fluidComponent.forEachIndexed((slot, volume) -> {
-						tooltip.add(new LiteralText(volume.getAmount().toFractionalString() + " | " + new TranslatableText(volume.getFluid().getDefaultState().getBlockState().getBlock().getTranslationKey()).getString()).formatted(Formatting.GRAY));
+						tooltip.add(new LiteralText(volume.getAmount().toString() + " | " + new TranslatableText(volume.getFluid().getDefaultState().getBlockState().getBlock().getTranslationKey()).getString()).formatted(Formatting.GRAY));
 					});
 				}
 			}

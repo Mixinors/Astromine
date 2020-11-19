@@ -29,6 +29,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -95,6 +96,11 @@ public class StackUtilities {
 			target.increment(source.getCount());
 			return target;
 		}
+	}
+
+	/** Asserts equality of {@link ItemStack} {@link CompoundTag} and {@link Item}. */
+	public static boolean areItemsAndTagsEqual(ItemStack left, ItemStack right) {
+		return ItemStack.areItemsEqual(left, right) && ItemStack.areTagsEqual(left, right);
 	}
 
 	/** Deserializes an {@link ItemStack} from a {@link JsonElement}. */

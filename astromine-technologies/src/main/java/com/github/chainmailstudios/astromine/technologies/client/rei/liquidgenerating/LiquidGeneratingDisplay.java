@@ -71,11 +71,11 @@ public class LiquidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
 	}
 
 	public Fluid getFluid() {
-		return input.getFirstMatchingVolume().getFluid();
+		return input.getMatchingVolumes()[0].getFluid();
 	}
 
 	public Fraction getAmount() {
-		return input.getFirstMatchingVolume().getAmount();
+		return input.getMatchingVolumes()[0].getAmount();
 	}
 
 	@Override

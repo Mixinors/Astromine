@@ -143,7 +143,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 						optionalRecipe = Optional.empty();
 
 						fluidComponent.getFirst().take(recipe.getFirstOutput());
-						itemComponent.getFirst().decrement(IngredientUtilities.testMatching(recipe.getFirstInput(), itemComponent.getFirst()).getCount());
+						itemComponent.getFirst().decrement(recipe.getFirstInput().testMatching(itemComponent.getFirst()).getCount());
 
 						progress = 0;
 					} else {

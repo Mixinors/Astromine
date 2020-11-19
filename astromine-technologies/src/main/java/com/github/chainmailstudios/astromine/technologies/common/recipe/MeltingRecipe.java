@@ -31,6 +31,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.ItemComp
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.ItemIngredient;
 import com.github.chainmailstudios.astromine.common.utilities.*;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
@@ -52,12 +53,12 @@ import java.util.Optional;
 
 public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 	private final Identifier identifier;
-	private final Ingredient firstInput;
+	private final ItemIngredient firstInput;
 	private final FluidVolume firstOutput;
 	private final double energyInput;
 	private final int time;
 
-	public MeltingRecipe(Identifier identifier, Ingredient firstInput, FluidVolume firstOutput, double energyInput, int time) {
+	public MeltingRecipe(Identifier identifier, ItemIngredient firstInput, FluidVolume firstOutput, double energyInput, int time) {
 		this.identifier = identifier;
 		this.firstInput = firstInput;
 		this.firstOutput = firstOutput;
@@ -145,11 +146,6 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 	}
 
 	@Override
-	public DefaultedList<Ingredient> getPreviewInputs() {
-		return DefaultedList.of();
-	}
-
-	@Override
 	public ItemStack getRecipeKindIcon() {
 		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_LIQUID_GENERATOR);
 	}
@@ -158,7 +154,7 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		return identifier;
 	}
 
-	public Ingredient getFirstInput() {
+	public ItemIngredient getFirstInput() {
 		return firstInput;
 	}
 
@@ -188,28 +184,30 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 
 			return new MeltingRecipe(
 					identifier,
-					IngredientUtilities.fromIngredientJson(format.firstInput),
-					VolumeUtilities.fromFluidVolumeJson(format.firstOutput),
-					ParsingUtilities.fromJson(format.energyInput, Double.class),
-					ParsingUtilities.fromJson(format.time, Integer.class));
+					ItemIngredient.fromJson(format.firstInput),
+					FluidVolume.fromJson(format.firstOutput),
+					DoubleUtilities.fromJson(format.energyInput),
+					IntegerUtilities.fromJson(format.time)
+			);
 		}
 
 		@Override
 		public MeltingRecipe read(Identifier identifier, PacketByteBuf buffer) {
 			return new MeltingRecipe(
 					identifier,
-					IngredientUtilities.fromIngredientPacket(buffer),
-					VolumeUtilities.fromFluidVolumePacket(buffer),
-					PacketUtilities.fromPacket(buffer, Double.class),
-					PacketUtilities.fromPacket(buffer, Integer.class));
+					ItemIngredient.fromPacket(buffer),
+					FluidVolume.fromPacket(buffer),
+					DoubleUtilities.fromPacket(buffer),
+					IntegerUtilities.fromPacket(buffer)
+			);
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, MeltingRecipe recipe) {
-			IngredientUtilities.toIngredientPacket(buffer, recipe.firstInput);
-			VolumeUtilities.toFluidVolumePacket(buffer, recipe.firstOutput);
-			PacketUtilities.toPacket(buffer, recipe.energyInput);
-			PacketUtilities.toPacket(buffer, recipe.time);
+			recipe.firstInput.toPacket(buffer);
+			recipe.firstOutput.toPacket(buffer);
+			DoubleUtilities.toPacket(buffer, recipe.energyInput);
+			IntegerUtilities.toPacket(buffer, recipe.time);
 		}
 	}
 

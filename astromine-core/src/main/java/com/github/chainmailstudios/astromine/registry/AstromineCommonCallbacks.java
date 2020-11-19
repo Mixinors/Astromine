@@ -90,8 +90,8 @@ public class AstromineCommonCallbacks {
 				if (playerEntity.currentScreenHandler instanceof ComponentBlockEntityScreenHandler) {
 					ComponentBlockEntityScreenHandler screenHandler = (ComponentBlockEntityScreenHandler) playerEntity.currentScreenHandler;
 
-					if (screenHandler.syncBlockEntity != null) {
-						screenHandler.syncBlockEntity.sync();
+					if (screenHandler.getBlockEntity() != null) {
+						screenHandler.getBlockEntity().sync();
 						break;
 					}
 				}

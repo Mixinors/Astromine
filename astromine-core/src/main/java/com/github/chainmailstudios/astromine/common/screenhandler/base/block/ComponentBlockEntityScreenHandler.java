@@ -84,6 +84,12 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 		}
 	}
 
+	/** Returns this {@link ComponentBlockEntityScreenHandler}'s
+	 * {@link ComponentBlockEntity}. */
+	public ComponentBlockEntity getBlockEntity() {
+		return blockEntity;
+	}
+
 	/** Returns the {@link Position} at which the {@link TabWidget}
 	 * should be located. */
 	public Position getTabsPosition(int width, int height) {

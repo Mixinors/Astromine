@@ -82,7 +82,7 @@ public class AstromineTechnologiesServerContainerPlugin implements Runnable {
 
 		@Override
 		public List<StackAccessor> getGridStacks(ContainerContext<T> context) {
-			return gridStacks.stream().map(slotIndex -> new InventoryStackAccessor((Inventory) context.getContainer().syncBlockEntity, slotIndex)).collect(Collectors.toList());
+			return gridStacks.stream().map(slotIndex -> new InventoryStackAccessor((Inventory) context.getContainer().getBlockEntity(), slotIndex)).collect(Collectors.toList());
 		}
 
 		@Override

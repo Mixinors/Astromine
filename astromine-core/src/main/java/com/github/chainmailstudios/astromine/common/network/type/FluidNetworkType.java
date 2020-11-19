@@ -67,7 +67,7 @@ public final class FluidNetworkType implements NetworkType {
 
 		for (NetworkMemberNode memberNode : instance.members) {
 			WorldPos memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPosition());
-			NetworkMember networkMember = NetworkMemberRegistry.get(memberPos);
+			NetworkMember networkMember = NetworkMemberRegistry.get(memberPos, memberNode.getDirection());
 
 			if (networkMember.acceptsType(this)) {
 				GroupedFluidInv inv = FluidAttributes.GROUPED_INV.get(memberPos.getWorld(), memberPos.getBlockPos(), SearchOptions.inDirection(memberNode.getDirection().getOpposite()));

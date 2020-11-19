@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 public interface DoubleStackInventory extends Inventory {
 	/** Instantiates a {@link DoubleStackInventory}. */
 	static DoubleStackInventory of(DefaultedList<ItemStack> items) {
-		return new DoubleStackInventoryImpl(() -> items);
+		return new DoubleStackInventoryImpl(items);
 	}
 
 	/** Instantiates a {@link DoubleStackInventory}. */
@@ -162,17 +162,17 @@ public interface DoubleStackInventory extends Inventory {
 	}
 
 	class DoubleStackInventoryImpl implements DoubleStackInventory {
-		private final Supplier<DefaultedList<ItemStack>> supplier;
+		private final DefaultedList<ItemStack> items;
 
 		/** Instantiates a {@link DoubleStackInventoryImpl}. */
-		private DoubleStackInventoryImpl(Supplier<DefaultedList<ItemStack>> supplier) {
-			this.supplier = supplier;
+		private DoubleStackInventoryImpl(DefaultedList<ItemStack> items) {
+			this.items = items;
 		}
 
 		/** Returns this inventory's {@link ItemStack}s. */
 		@Override
 		public DefaultedList<ItemStack> getItems() {
-			return supplier.get();
+			return items;
 		}
 
 		/** Returns this inventory's string representation. */

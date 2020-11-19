@@ -27,6 +27,7 @@ package com.github.chainmailstudios.astromine.discoveries.common.recipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
@@ -48,7 +49,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AltarRecipe implements AstromineRecipe<AltarBlockEntity> {
+public class AltarRecipe implements Recipe<AltarBlockEntity> {
 	private final List<Ingredient> ingredients;
 	private final ItemStack output;
 	private final Identifier id;

@@ -62,7 +62,7 @@ public class NetworkUtilities {
 
 			WorldNetworkComponent networkComponent = WorldNetworkComponent.get(world);
 
-			NetworkMember initialMember = NetworkMemberRegistry.get(initialPosition);
+			NetworkMember initialMember = NetworkMemberRegistry.get(initialPosition, null);
 
 			if (!initialMember.acceptsType(type) || !initialMember.isNode(type) || networkComponent.contains(type, initialPosition.getBlockPos())) {
 				return;
@@ -95,7 +95,7 @@ public class NetworkUtilities {
 
 					WorldPos offsetObject = WorldPos.of(world, offsetPosition);
 
-					NetworkMember offsetMember = NetworkMemberRegistry.get(offsetObject);
+					NetworkMember offsetMember = NetworkMemberRegistry.get(offsetObject, direction.getOpposite());
 
 					NetworkInstance existingInstance = networkComponent.get(type, offsetPosition);
 
@@ -160,7 +160,7 @@ public class NetworkUtilities {
 			for (Direction direction : Direction.values()) {
 				WorldPos pos = WorldPos.of(world, initialPosition.offset(direction));
 
-				NetworkMember offsetMember = NetworkMemberRegistry.get(pos);
+				NetworkMember offsetMember = NetworkMemberRegistry.get(pos, direction.getOpposite());
 
 				if (offsetMember.acceptsType(type) && (!offsetMember.isNode(type) || pos.getBlock() == initialObject.getBlock())) {
 					modeller.directions.add(direction);

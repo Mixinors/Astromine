@@ -207,7 +207,7 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 	public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
 		List<ItemStack> stacks = super.getDroppedStacks(state, builder);
 		BlockEntity blockEntity = builder.getNullable(LootContextParameters.BLOCK_ENTITY);
-		if (blockEntity != null) {
+		if (blockEntity != null && saveTagToDroppedItem()) {
 			for (ItemStack drop : stacks) {
 				if (drop.getItem() == asItem()) {
 					CompoundTag tag = blockEntity.toTag(drop.getOrCreateTag());
@@ -220,5 +220,9 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 			}
 		}
 		return stacks;
+	}
+
+	protected boolean saveTagToDroppedItem() {
+		return true;
 	}
 }

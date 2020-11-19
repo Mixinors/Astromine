@@ -169,7 +169,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 											}
 
 											if (!canBreathe) {
-												if (FluidEffectRegistry.INSTANCE.contains(volume.getFluid())) {
+												if (FluidEffectRegistry.INSTANCE.containsKey(volume.getFluid())) {
 													FluidEffectRegistry.INSTANCE.get(volume.getFluid()).accept((LivingEntity) entity);
 												}
 											}
@@ -179,7 +179,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 							}
 						}
 
-						if (!hasSuit && FluidEffectRegistry.INSTANCE.contains(atmosphereVolume.getFluid())) {
+						if (!hasSuit && FluidEffectRegistry.INSTANCE.containsKey(atmosphereVolume.getFluid())) {
 							FluidEffectRegistry.INSTANCE.get(atmosphereVolume.getFluid()).accept((LivingEntity) entity);
 						}
 

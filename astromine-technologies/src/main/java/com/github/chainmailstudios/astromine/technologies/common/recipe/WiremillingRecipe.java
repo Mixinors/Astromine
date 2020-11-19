@@ -26,6 +26,8 @@ package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.ItemIngredient;
+import com.github.chainmailstudios.astromine.common.utilities.*;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -39,9 +41,6 @@ import net.minecraft.world.World;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.IngredientUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 
 import com.google.gson.Gson;
@@ -53,12 +52,12 @@ import java.util.Optional;
 
 public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory> {
 	private final Identifier identifier;
-	private final Ingredient firstInput;
+	private final ItemIngredient firstInput;
 	private final ItemStack firstOutput;
 	private final double energyInput;
 	private final int time;
 
-	public WireMillingRecipe(Identifier identifier, Ingredient firstInput, ItemStack firstOutput, double energyInput, int time) {
+	public WireMillingRecipe(Identifier identifier, ItemIngredient firstInput, ItemStack firstOutput, double energyInput, int time) {
 		this.identifier = identifier;
 		this.firstInput = firstInput;
 		this.firstOutput = firstOutput;
@@ -142,13 +141,6 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 	}
 
 	@Override
-	public DefaultedList<Ingredient> getPreviewInputs() {
-		DefaultedList<Ingredient> defaultedList = DefaultedList.of();
-		defaultedList.add(this.firstInput);
-		return defaultedList;
-	}
-
-	@Override
 	public ItemStack getRecipeKindIcon() {
 		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_WIREMILL);
 	}
@@ -157,7 +149,7 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 		return identifier;
 	}
 
-	public Ingredient getFirstInput() {
+	public ItemIngredient getFirstInput() {
 		return firstInput;
 	}
 
@@ -185,20 +177,31 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 		public WireMillingRecipe read(Identifier identifier, JsonObject object) {
 			WireMillingRecipe.Format format = new Gson().fromJson(object, WireMillingRecipe.Format.class);
 
-			return new WireMillingRecipe(identifier, IngredientUtilities.fromIngredientJson(format.firstInput), StackUtilities.fromJson(format.firstOutput), EnergyUtilities.fromJson(format.energyInput), ParsingUtilities.fromJson(format.time, Integer.class));
+			return new WireMillingRecipe(identifier,
+					ItemIngredient.fromJson(format.firstInput),
+					StackUtilities.fromJson(format.firstOutput),
+					DoubleUtilities.fromJson(format.energyInput),
+					IntegerUtilities.fromJson(format.time)
+			);
 		}
 
 		@Override
 		public WireMillingRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new WireMillingRecipe(identifier, IngredientUtilities.fromIngredientPacket(buffer), StackUtilities.fromPacket(buffer), EnergyUtilities.fromPacket(buffer), PacketUtilities.fromPacket(buffer, Integer.class));
+			return new WireMillingRecipe(
+					identifier,
+					ItemIngredient.fromPacket(buffer),
+					StackUtilities.fromPacket(buffer),
+					DoubleUtilities.fromPacket(buffer),
+					IntegerUtilities.fromPacket(buffer)
+			);
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, WireMillingRecipe recipe) {
-			IngredientUtilities.toIngredientPacket(buffer, recipe.firstInput);
+			recipe.firstInput.toPacket(buffer);
 			StackUtilities.toPacket(buffer, recipe.firstOutput);
-			EnergyUtilities.toPacket(buffer, recipe.energyInput);
-			PacketUtilities.toPacket(buffer, recipe.time);
+			DoubleUtilities.toPacket(buffer, recipe.energyInput);
+			IntegerUtilities.toPacket(buffer, recipe.time);
 		}
 	}
 

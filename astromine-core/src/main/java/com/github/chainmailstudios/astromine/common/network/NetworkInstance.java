@@ -119,7 +119,7 @@ public final class NetworkInstance implements Tickable {
 
 	/** Asserts whether this instance is empty, or not. */
 	public boolean isEmpty() {
-		this.nodes.removeIf(node -> !NetworkMemberRegistry.get(WorldPos.of(world, node.getBlockPosition())).isNode(getType()));
+		this.nodes.removeIf(node -> !NetworkMemberRegistry.get(WorldPos.of(world, node.getBlockPosition()), null).isNode(getType()));
 		if (this.nodes.isEmpty()) {
 			AstromineCommon.LOGGER.error("Network is empty! " + toString());
 			return true;

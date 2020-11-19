@@ -28,8 +28,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.collection.DefaultedList;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * A simple {@link Inventory} with helper
@@ -38,20 +41,13 @@ import java.util.function.Supplier;
  * Originally by {@author Juuz}.
  */
 public interface SingularStackInventory extends Inventory {
-	/** Instantiates an empty {@link SingularStackInventory}. */
-	static SingularStackInventory ofEmpty() {
-		return of(ItemStack.EMPTY);
-	}
-
 	/** Instantiates a {@link SingularStackInventory}. */
-	static SingularStackInventory of(ItemStack stack) {
-		StackHolder holder = new StackHolder(stack);
-
-		return new SingularStackInventoryImpl(() -> holder);
+	static SingularStackInventory of(DefaultedList<ItemStack> items) {
+		return new SingularStackInventoryImpl(items);
 	}
 
-	/** Returns the {@link StackHolder} of this inventory. */
-	StackHolder getHolder();
+	/** Returns this inventory's {@link ItemStack}s. */
+	DefaultedList<ItemStack> getItems();
 
 	/** Returns this inventory's size. */
 	@Override
@@ -71,7 +67,7 @@ public interface SingularStackInventory extends Inventory {
 		if (slot != 0) {
 			throw new ArrayIndexOutOfBoundsException("Cannot access slot bigger than inventory size");
 		} else {
-			return getHolder().get();
+			return getItems().get(0);
 		}
 	}
 
@@ -137,7 +133,7 @@ public interface SingularStackInventory extends Inventory {
 			throw new ArrayIndexOutOfBoundsException("Cannot access slot bigger than inventory size");
 		}
 
-		getHolder().set(stack);
+		getItems().set(slot, stack);
 
 		if (stack.getCount() > getMaxCountPerStack()) {
 			stack.setCount(getMaxCountPerStack());
@@ -149,7 +145,7 @@ public interface SingularStackInventory extends Inventory {
 	/** Clear this inventory's content. */
 	@Override
 	default void clear() {
-		getHolder().set(ItemStack.EMPTY);
+		setStack(0, ItemStack.EMPTY);
 
 		markDirty();
 	}
@@ -165,45 +161,25 @@ public interface SingularStackInventory extends Inventory {
 	}
 
 	class SingularStackInventoryImpl implements SingularStackInventory {
-		private final Supplier<StackHolder> supplier;
+		private final DefaultedList<ItemStack> items;
 
-		/** Instantiates a {@link SingularStackInventoryImpl)}. */
-		public SingularStackInventoryImpl(Supplier<StackHolder> supplier) {
-			this.supplier = supplier;
+		/** Instantiates a {@link SingularStackInventory}. */
+		private SingularStackInventoryImpl(DefaultedList<ItemStack> items) {
+			this.items = items;
 		}
 
-		/** Returns the {@link StackHolder} of this inventory. */
+		/** Returns this inventory's {@link ItemStack}s. */
 		@Override
-		public StackHolder getHolder() {
-			return supplier.get();
+		public DefaultedList<ItemStack> getItems() {
+			return items;
 		}
 
 		/** Returns this inventory's string representation. */
 		@Override
 		public String toString() {
-			return getStack().toString();
-		}
-	}
+			AtomicInteger slot = new AtomicInteger(0);
 
-	/**
-	 * A holder of a single {@link ItemStack}.
-	 */
-	class StackHolder {
-		private ItemStack stack;
-
-		/** Instantiates a {@link StackHolder}. */
-		public StackHolder(ItemStack stack) {
-			this.stack = stack;
-		}
-
-		/** Returns this holder's {@link ItemStack}. */
-		public ItemStack get() {
-			return stack;
-		}
-
-		/** Sets the held {@link ItemStack} to the specified value. */
-		public void set(ItemStack stack) {
-			this.stack = stack;
+			return getItems().stream().map(stack -> String.format("%s, %s", slot.getAndIncrement(), stack.toString())).collect(Collectors.joining("\n"));
 		}
 	}
 }

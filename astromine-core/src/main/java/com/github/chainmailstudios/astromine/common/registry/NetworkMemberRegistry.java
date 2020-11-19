@@ -65,13 +65,13 @@ public class NetworkMemberRegistry {
 	}
 
 	/** Returns the {@link NetworkMember} at the given position. */
-	public static NetworkMember get(@Nullable WorldPos pos) {
-		return INSTANCE.new NetworkMemberImpl(pos);
+	public static NetworkMember get(@Nullable WorldPos pos, @Nullable Direction direction) {
+		return INSTANCE.new NetworkMemberImpl(pos, direction);
 	}
 
 	/** Returns the {@link NetworkMember} at the given {@link BlockEntity}'s position. */
-	public static NetworkMember get(@Nullable BlockEntity blockEntity) {
-		return blockEntity != null ? get(WorldPos.of(blockEntity.getWorld(), blockEntity.getPos())) : get((WorldPos) null);
+	public static NetworkMember get(@Nullable BlockEntity blockEntity, @Nullable Direction direction) {
+		return blockEntity != null ? get(WorldPos.of(blockEntity.getWorld(), blockEntity.getPos()), direction) : get((WorldPos) null, direction);
 	}
 
 	/**
@@ -81,13 +81,13 @@ public class NetworkMemberRegistry {
 	 * {@link NetworkTypeProvider#register(Block, NetworkMemberType...)}
 	 * registers the available types for the given block.
 	 *
-	 * {@link NetworkTypeProvider#get(WorldPos)} returns the types
+	 * {@link NetworkTypeProvider#get(WorldPos, Direction)} returns the types
 	 * available at the given position.
 	 */
 	public interface NetworkTypeProvider<T extends NetworkType> {
 		void register(Block block, NetworkMemberType... types);
 
-		Collection<NetworkMemberType> get(WorldPos pos);
+		Collection<NetworkMemberType> get(@Nullable WorldPos pos, @Nullable Direction direction);
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class NetworkMemberRegistry {
 		protected final Map<Block, Collection<NetworkMemberType>> types = new Reference2ObjectOpenHashMap<>();
 
 		/** Instantiates a {@link NetworkTypeProviderImpl}. */
-		public NetworkTypeProviderImpl() {}
+		public  NetworkTypeProviderImpl() {}
 
 		/** Instantiates a {@link NetworkTypeProviderImpl}.
 		 * This solely exists to keep our code cleaner in {@link #get(NetworkType)}. */
@@ -112,7 +112,7 @@ public class NetworkMemberRegistry {
 
 		/** Override behavior to use our {@link Map}. */
 		@Override
-		public Collection<NetworkMemberType> get(WorldPos pos) {
+		public Collection<NetworkMemberType> get(WorldPos pos, Direction direction) {
 			return this.types.getOrDefault(pos.getBlock(), Collections.emptySet());
 		}
 	}
@@ -125,15 +125,19 @@ public class NetworkMemberRegistry {
 		@Nullable
 		private final WorldPos pos;
 
-		/** Instantiates a {@link NetworkMemberImpl} with the given value. */
-		public NetworkMemberImpl(@Nullable WorldPos pos) {
+		@Nullable
+		private final Direction direction;
+
+		/** Instantiates a {@link NetworkMemberImpl}. */
+		public NetworkMemberImpl(@Nullable WorldPos pos, Direction direction) {
 			this.pos = pos;
+			this.direction = direction;
 		}
 
 		/** Override behavior to use our {@link WorldPos}. */
 		@Override
 		public Collection<NetworkMemberType> getNetworkMemberTypes(NetworkType type) {
-			return pos == null ? Collections.emptySet() : get(type).get(pos);
+			return pos == null ? Collections.emptySet() : get(type).get(pos, direction);
 		}
 	}
 }

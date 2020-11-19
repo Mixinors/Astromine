@@ -32,6 +32,7 @@ import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEn
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.ItemIngredient;
 import com.github.chainmailstudios.astromine.common.utilities.*;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
@@ -189,28 +190,30 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 
 			return new SolidifyingRecipe(
 					identifier,
-					IngredientUtilities.fromFluidIngredientJson(format.firstInput),
+					FluidIngredient.fromJson(format.firstInput),
 					StackUtilities.fromJson(format.firstOutput),
-					ParsingUtilities.fromJson(format.energyInput, Double.class),
-					ParsingUtilities.fromJson(format.time, Integer.class));
+					DoubleUtilities.fromJson(format.energyInput),
+					IntegerUtilities.fromJson(format.time)
+			);
 		}
 
 		@Override
 		public SolidifyingRecipe read(Identifier identifier, PacketByteBuf buffer) {
 			return new SolidifyingRecipe(
 					identifier,
-					IngredientUtilities.fromFluidIngredientPacket(buffer),
+					FluidIngredient.fromPacket(buffer),
 					StackUtilities.fromPacket(buffer),
-					PacketUtilities.fromPacket(buffer, Double.class),
-					PacketUtilities.fromPacket(buffer, Integer.class));
+					DoubleUtilities.fromPacket(buffer),
+					IntegerUtilities.fromPacket(buffer)
+			);
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, SolidifyingRecipe recipe) {
-			IngredientUtilities.toFluidIngredientPacket(buffer, recipe.getFirstInput());
+			recipe.firstInput.toPacket(buffer);
 			StackUtilities.toPacket(buffer, recipe.getFirstOutput());
-			PacketUtilities.toPacket(buffer, recipe.getEnergyInput());
-			PacketUtilities.toPacket(buffer, recipe.getTime());
+			DoubleUtilities.toPacket(buffer, recipe.energyInput);
+			IntegerUtilities.toPacket(buffer, recipe.time);
 		}
 	}
 

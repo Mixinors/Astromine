@@ -241,46 +241,48 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 
 			return new RefiningRecipe(
 					identifier,
-					IngredientUtilities.fromFluidIngredientJson(format.firstInput),
-					VolumeUtilities.fromFluidVolumeJson(format.firstOutput),
-					VolumeUtilities.fromFluidVolumeJson(format.secondOutput),
-					VolumeUtilities.fromFluidVolumeJson(format.thirdOutput),
-					VolumeUtilities.fromFluidVolumeJson(format.fourthOutput),
-					VolumeUtilities.fromFluidVolumeJson(format.fifthOutput),
-					VolumeUtilities.fromFluidVolumeJson(format.sixthOutput),
-					VolumeUtilities.fromFluidVolumeJson(format.seventhOutput),
-					ParsingUtilities.fromJson(format.energyInput, Double.class),
-					ParsingUtilities.fromJson(format.time, Integer.class));
+					FluidIngredient.fromJson(format.firstInput),
+					FluidVolume.fromJson(format.firstOutput),
+					FluidVolume.fromJson(format.secondOutput),
+					FluidVolume.fromJson(format.thirdOutput),
+					FluidVolume.fromJson(format.fourthOutput),
+					FluidVolume.fromJson(format.fifthOutput),
+					FluidVolume.fromJson(format.sixthOutput),
+					FluidVolume.fromJson(format.seventhOutput),
+					DoubleUtilities.fromJson(format.energyInput),
+					IntegerUtilities.fromJson(format.time)
+			);
 		}
 
 		@Override
 		public RefiningRecipe read(Identifier identifier, PacketByteBuf buffer) {
 			return new RefiningRecipe(
 					identifier,
-					IngredientUtilities.fromFluidIngredientPacket(buffer),
-					VolumeUtilities.fromFluidVolumePacket(buffer),
-					VolumeUtilities.fromFluidVolumePacket(buffer),
-					VolumeUtilities.fromFluidVolumePacket(buffer),
-					VolumeUtilities.fromFluidVolumePacket(buffer),
-					VolumeUtilities.fromFluidVolumePacket(buffer),
-					VolumeUtilities.fromFluidVolumePacket(buffer),
-					VolumeUtilities.fromFluidVolumePacket(buffer),
-					PacketUtilities.fromPacket(buffer, Double.class),
-					PacketUtilities.fromPacket(buffer, Integer.class));
+					FluidIngredient.fromPacket(buffer),
+					FluidVolume.fromPacket(buffer),
+					FluidVolume.fromPacket(buffer),
+					FluidVolume.fromPacket(buffer),
+					FluidVolume.fromPacket(buffer),
+					FluidVolume.fromPacket(buffer),
+					FluidVolume.fromPacket(buffer),
+					FluidVolume.fromPacket(buffer),
+					DoubleUtilities.fromPacket(buffer),
+					IntegerUtilities.fromPacket(buffer)
+			);
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, RefiningRecipe recipe) {
-			IngredientUtilities.toFluidIngredientPacket(buffer, recipe.getIngredient());
-			VolumeUtilities.toFluidVolumePacket(buffer, recipe.getFirstOutputVolume());
-			VolumeUtilities.toFluidVolumePacket(buffer, recipe.getSecondOutputVolume());
-			VolumeUtilities.toFluidVolumePacket(buffer, recipe.getSecondOutputVolume());
-			VolumeUtilities.toFluidVolumePacket(buffer, recipe.getSecondOutputVolume());
-			VolumeUtilities.toFluidVolumePacket(buffer, recipe.getSecondOutputVolume());
-			VolumeUtilities.toFluidVolumePacket(buffer, recipe.getSecondOutputVolume());
-			VolumeUtilities.toFluidVolumePacket(buffer, recipe.getSecondOutputVolume());
-			PacketUtilities.toPacket(buffer, recipe.getEnergyInput());
-			PacketUtilities.toPacket(buffer, recipe.getTime());
+			recipe.firstInput.toPacket(buffer);
+			recipe.firstOutput.toPacket(buffer);
+			recipe.secondOutput.toPacket(buffer);
+			recipe.thirdOutput.toPacket(buffer);
+			recipe.fourthOutput.toPacket(buffer);
+			recipe.fifthOutput.toPacket(buffer);
+			recipe.sixthOutput.toPacket(buffer);
+			recipe.seventhOutput.toPacket(buffer);
+			DoubleUtilities.toPacket(buffer, recipe.energyInput);
+			IntegerUtilities.toPacket(buffer, recipe.time);
 		}
 	}
 

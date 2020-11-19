@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.utilities.*;
 import it.unimi.dsi.fastutil.ints.Int2BooleanArrayMap;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -41,9 +42,6 @@ import com.github.chainmailstudios.astromine.common.component.inventory.ItemComp
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.ingredient.ItemIngredient;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.IngredientUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 
 import com.google.gson.Gson;
@@ -158,14 +156,6 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 	}
 
 	@Override
-	public DefaultedList<Ingredient> getPreviewInputs() {
-		DefaultedList<Ingredient> defaultedList = DefaultedList.of();
-		defaultedList.add(this.firstInput.asIngredient());
-		defaultedList.add(this.secondInput.asIngredient());
-		return defaultedList;
-	}
-
-	@Override
 	public ItemStack getRecipeKindIcon() {
 		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_ALLOY_SMELTER);
 	}
@@ -209,22 +199,35 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 		public AlloySmeltingRecipe read(Identifier identifier, JsonObject object) {
 			AlloySmeltingRecipe.Format format = new Gson().fromJson(object, AlloySmeltingRecipe.Format.class);
 
-			return new AlloySmeltingRecipe(identifier, IngredientUtilities.fromItemIngredientJson(format.firstInput), IngredientUtilities.fromItemIngredientJson(format.secondInput), StackUtilities.fromJson(format.output.getAsJsonObject()), EnergyUtilities.fromJson(format.energyInput), ParsingUtilities
-				.fromJson(format.time, Integer.class));
+			return new AlloySmeltingRecipe(
+					identifier,
+					ItemIngredient.fromJson(format.firstInput),
+					ItemIngredient.fromJson(format.secondInput),
+					StackUtilities.fromJson(format.output.getAsJsonObject()),
+					DoubleUtilities.fromJson(format.energyInput),
+					IntegerUtilities.fromJson(format.time)
+			);
 		}
 
 		@Override
 		public AlloySmeltingRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new AlloySmeltingRecipe(identifier, IngredientUtilities.fromItemIngredientPacket(buffer), IngredientUtilities.fromItemIngredientPacket(buffer), StackUtilities.fromPacket(buffer), EnergyUtilities.fromPacket(buffer), PacketUtilities.fromPacket(buffer, Integer.class));
+			return new AlloySmeltingRecipe(
+					identifier,
+					ItemIngredient.fromPacket(buffer),
+					ItemIngredient.fromPacket(buffer),
+					StackUtilities.fromPacket(buffer),
+					DoubleUtilities.fromPacket(buffer),
+					IntegerUtilities.fromPacket(buffer)
+			);
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, AlloySmeltingRecipe recipe) {
-			IngredientUtilities.toItemIngredientPacket(buffer, recipe.firstInput);
-			IngredientUtilities.toItemIngredientPacket(buffer, recipe.secondInput);
+			recipe.firstInput.toPacket(buffer);
+			recipe.secondInput.toPacket(buffer);
 			StackUtilities.toPacket(buffer, recipe.firstOutput);
-			EnergyUtilities.toPacket(buffer, recipe.energyInput);
-			PacketUtilities.toPacket(buffer, recipe.time);
+			DoubleUtilities.toPacket(buffer, recipe.energyInput);
+			IntegerUtilities.toPacket(buffer, recipe.time);
 		}
 	}
 

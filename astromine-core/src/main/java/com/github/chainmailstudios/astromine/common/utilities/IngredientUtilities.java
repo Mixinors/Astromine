@@ -50,36 +50,6 @@ public class IngredientUtilities {
 		ingredient.write(buffer);
 	}
 
-	/** Deserializes an {@link ItemIngredient} from a {@link JsonElement}. */
-	public static ItemIngredient fromItemIngredientJson(JsonElement jsonElement) {
-		return ItemIngredient.fromJson(jsonElement);
-	}
-
-	/** Deserializes an {@link ItemIngredient} from a {@link ByteBuf}. */
-	public static ItemIngredient fromItemIngredientPacket(PacketByteBuf buffer) {
-		return ItemIngredient.fromPacket(buffer);
-	}
-
-	/** Serializes an {@link ItemIngredient} to a {@link ByteBuf}. */
-	public static void toItemIngredientPacket(PacketByteBuf buffer, ItemIngredient ingredient) {
-		ingredient.toPacket(buffer);
-	}
-
-	/** Deserializes a {@link FluidIngredient} from a {@link JsonElement}. */
-	public static FluidIngredient fromFluidIngredientJson(JsonElement jsonElement) {
-		return FluidIngredient.fromJson(jsonElement);
-	}
-
-	/** Deserializes a {@link FluidIngredient} from a {@link ByteBuf}. */
-	public static FluidIngredient fromFluidIngredientPacket(PacketByteBuf buffer) {
-		return FluidIngredient.fromPacket(buffer);
-	}
-
-	/** Serializes a {@link FluidIngredient} to a {@link ByteBuf}. */
-	public static void toFluidIngredientPacket(PacketByteBuf buffer, FluidIngredient ingredient) {
-		ingredient.toPacket(buffer);
-	}
-
 	/** Returns an {@link ItemStack} from the specified {@link Ingredient}
 	 * which is compatible with the given {@link ItemStack}.
 	 *
