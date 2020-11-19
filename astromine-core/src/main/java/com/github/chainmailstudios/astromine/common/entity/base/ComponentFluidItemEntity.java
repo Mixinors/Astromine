@@ -25,28 +25,38 @@
 package com.github.chainmailstudios.astromine.common.entity.base;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.InventoryFromItemComponent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
-import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.InventoryFromItemComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 
+/**
+ * A class representing a {@link ComponentEntity}
+ * with an attached {@link FluidComponent} and
+ * {@link ItemComponent}.
+ */
 public abstract class ComponentFluidItemEntity extends ComponentEntity implements InventoryFromItemComponent {
+	/** Instantiates a {@link ComponentFluidItemEntity} with the given values. */
 	public ComponentFluidItemEntity(EntityType<?> type, World world) {
 		super(type, world);
 	}
 
-	public abstract ItemComponent createItemComponent();
-
+	/** Returns the {@link FluidComponent} to be attached. */
 	public abstract FluidComponent createFluidComponent();
 
-	public ItemComponent getItemComponent() {
-		return ItemComponent.get(this);
-	}
+	/** Returns the {@link ItemComponent} to be attached. */
+	public abstract ItemComponent createItemComponent();
 
+	/** Returns the attached {@link FluidComponent}. */
 	public FluidComponent getFluidComponent() {
 		return FluidComponent.get(this);
+	}
+
+	/** Returns the attached {@link ItemComponent}. */
+	public ItemComponent getItemComponent() {
+		return ItemComponent.get(this);
 	}
 }

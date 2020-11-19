@@ -27,6 +27,11 @@ package com.github.chainmailstudios.astromine.common.entity.placer;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.TeleportTarget;
 
+/**
+ * An interface describing a placer for
+ * {@link Entity}-ies.
+ */
 public interface EntityPlacer {
+	/** Returns a {@link TeleportTarget} for the given entity. */
 	TeleportTarget placeEntity(Entity entity);
 }

@@ -39,23 +39,36 @@ import com.github.chainmailstudios.astromine.common.utilities.VoxelShapeUtilitie
 import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
 
 import com.google.common.collect.Sets;
+import net.minecraft.world.chunk.Chunk;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * A {@link Component} which stores information about
+ * a {@link World}'s holographic bridges.
+ *
+ * Information is stored as
+ *
+ * Serialization and deserialization methods are provided for:
+ * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ */
 public class WorldBridgeComponent implements Component {
-	public final Long2ObjectArrayMap<Set<Vec3i>> entries = new Long2ObjectArrayMap<>();
+	private final Long2ObjectArrayMap<Set<Vec3i>> entries = new Long2ObjectArrayMap<>();
 
 	private final World world;
 
+	/** Instantiates a {@link WorldBridgeComponent} with the given value. */
 	public WorldBridgeComponent(World world) {
 		this.world = world;
 	}
 
+	/** Returns this component's world. */
 	public World getWorld() {
 		return world;
 	}
+
 
 	public void add(BlockPos pos, Vec3i vec) {
 		add(pos.asLong(), vec);

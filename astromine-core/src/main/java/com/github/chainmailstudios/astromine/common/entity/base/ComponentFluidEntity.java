@@ -25,19 +25,27 @@
 package com.github.chainmailstudios.astromine.common.entity.base;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 
+/**
+ * A class representing a {@link ComponentEntity}
+ * with an attached {@link FluidComponent}.
+ */
 public abstract class ComponentFluidEntity extends ComponentEntity {
+	/** Instantiates a {@link ComponentFluidEntity} with the given values. */
 	public ComponentFluidEntity(EntityType<?> type, World world) {
 		super(type, world);
 	}
 
+	/** Returns the {@link FluidComponent} to be attached. */
 	public abstract FluidComponent createFluidComponent();
 
+	/** Returns the attached {@link FluidComponent}. */
 	public FluidComponent getFluidComponent() {
 		return FluidComponent.get(this);
 	}

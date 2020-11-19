@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.entity.base;
 
+import dev.onyxstudios.cca.api.v3.component.Component;
 import dev.onyxstudios.cca.mixin.entity.common.MixinEntity;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.entity.Entity;
@@ -31,18 +32,21 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.World;
 
+/**
+ * A class representing an {@link Entity} which
+ * should contain {@link Component}s.
+ */
 public abstract class ComponentEntity extends Entity {
+	/** Instantiates a {@link ComponentEntity} with the given values. */
 	public ComponentEntity(EntityType<?> type, World world) {
 		super(type, world);
 	}
 
+	/** Override behavior to do nothing, as synchronize themselves. */
 	@Override
-	protected void writeCustomDataToTag(CompoundTag tag) {
-		
-	}
+	protected void writeCustomDataToTag(CompoundTag tag) {}
 
+	/** Override behavior to do nothing, as synchronize themselves. */
 	@Override
-	protected void readCustomDataFromTag(CompoundTag tag) {
-
-	}
+	protected void readCustomDataFromTag(CompoundTag tag) {}
 }

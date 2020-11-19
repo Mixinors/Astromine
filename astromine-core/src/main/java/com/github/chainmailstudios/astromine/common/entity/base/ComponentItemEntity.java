@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.entity.base;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentItemBlockEntity;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 
@@ -31,13 +33,20 @@ import com.github.chainmailstudios.astromine.common.component.inventory.ItemComp
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 
+/**
+ * A class representing a {@link ComponentEntity}
+ * with an attached {@link ItemComponent}.
+ */
 public abstract class ComponentItemEntity extends ComponentEntity {
+	/** Instantiates a {@link ComponentItemEntity} with the given values. */
 	public ComponentItemEntity(EntityType<?> type, World world) {
 		super(type, world);
 	}
 
+	/** Returns the {@link ItemComponent} to be attached. */
 	public abstract ItemComponent createItemComponent();
 
+	/** Returns the attached {@link ItemComponent}. */
 	public ItemComponent getItemComponent() {
 		return ItemComponent.get(this);
 	}

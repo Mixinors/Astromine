@@ -34,6 +34,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.WaterFluid;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -52,6 +53,10 @@ import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.github.vini2003.blade.common.miscellaneous.Color;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * A class representing a {@link Fluid} with
+ * extra properties.
+ */
 public abstract class ExtendedFluid extends FlowableFluid {
 	public static final Material INDUSTRIAL_FLUID_MATERIAL = new FabricMaterialBuilder(MaterialColor.WATER)
 			.allowsMovement()
@@ -76,6 +81,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 
 	private DamageSource source;
 
+	/** Instantiates an {@link ExtendedFluid} with the given values. */
 	public ExtendedFluid(int fogColor, int tintColor, boolean isInfinite, @Nullable DamageSource source) {
 		this.fogColor = fogColor;
 		this.tintColor = tintColor;
@@ -83,97 +89,107 @@ public abstract class ExtendedFluid extends FlowableFluid {
 		this.source = source == null ? DamageSource.GENERIC : source;
 	}
 
+	/** Instantiates a {@link Builder}. */
 	public static Builder builder() {
 		return new Builder();
 	}
 
+	/** Returns this fluid's {@link DamageSource}, used when
+	 * damaging entities it comes in contact with. */
 	public DamageSource getSource() {
 		return source;
 	}
 
+	/** Returns this fluid's still form. */
 	@Override
 	public Fluid getStill() {
 		return still;
 	}
 
+	/** Returns this fluid's flowing form. */
 	@Override
 	public Fluid getFlowing() {
 		return flowing;
 	}
 
+	/** Asserts whether this fluid is infinite or not. */
 	@Override
 	protected boolean isInfinite() {
 		return isInfinite;
 	}
 
+	/** Returns this fluid's fog color. */
 	public int getFogColor() {
 		return fogColor;
 	}
 
+	/** Returns this fluid's tint color. */
 	public int getTintColor() {
 		return tintColor;
 	}
 
+	/** Returns this fluid's block. */
 	public Block getBlock() {
 		return block;
 	}
 
+	/** Override behavior to mimic {@link WaterFluid}. */
 	@Override
 	protected void beforeBreakingBlock(WorldAccess world, BlockPos position, BlockState state) {
 		BlockEntity blockEntity = state.getBlock().hasBlockEntity() ? world.getBlockEntity(position) : null;
 		Block.dropStacks(state, world, position, blockEntity);
 	}
 
+	/** Asserts whether the given fluid equals
+	 * this fluid's still or flowable form, or not. */
 	@Override
 	public boolean matchesType(Fluid fluid) {
 		return fluid == flowing || fluid == still;
 	}
 
+	/** Override behavior to mimic {@link WaterFluid}. */
 	@Override
 	protected int getFlowSpeed(WorldView world) {
 		return 4;
 	}
 
+	/** Override behavior to mimic {@link WaterFluid}. */
 	@Override
 	protected int getLevelDecreasePerBlock(WorldView world) {
 		return 1;
 	}
 
+	/** Returns this fluid's {@link Item} representation. */
 	@Override
 	public Item getBucketItem() {
 		return bucket;
 	}
 
+	/** Override behavior to mimic {@link WaterFluid}. */
 	@Override
 	protected boolean canBeReplacedWith(FluidState state, BlockView world, BlockPos pos, Fluid fluid, Direction direction) {
 		return direction == Direction.DOWN && fluid != flowing && fluid != still;
 	}
 
+	/** Override behavior to mimic {@link WaterFluid}. */
 	@Override
 	public int getTickRate(WorldView world) {
 		return 5;
 	}
 
+	/** Override behavior to mimic {@link WaterFluid}. */
 	@Override
 	protected float getBlastResistance() {
 		return 100.0F;
 	}
 
+	/** Returns this fluid's {@link BlockState} representation. */
 	@Override
 	protected BlockState toBlockState(FluidState state) {
 		return block.getDefaultState().with(FluidBlock.LEVEL, method_15741(state));
 	}
 
-	@Override
-	public boolean isStill(FluidState state) {
-		return false;
-	}
-
-	@Override
-	public int getLevel(FluidState state) {
-		return 0;
-	}
-
+	/** A class representing a builder for {@link ExtendedFluid}s. */
 	public static class Builder {
 		int fog = Color.standard().toInt();
 		int tint = Color.standard().toInt();
@@ -195,48 +211,62 @@ public abstract class ExtendedFluid extends FlowableFluid {
 
 		ItemGroup group;
 
+		/** We only want {@link ExtendedFluid#builder()} to
+		 * be able to instantiate a {@link Builder}. */
 		private Builder() {}
 
+		/** Sets this builder's fluid fog to the specified value. */
 		public Builder fog(int fog) {
 			this.fog = fog;
 			return this;
 		}
 
+		/** Sets this builder's fluid tint to the specified value. */
 		public Builder tint(int tint) {
 			this.tint = tint;
 			return this;
 		}
 
+		/** Sets this builder's damage to the specified value. */
 		public Builder damage(int damage) {
 			this.damage = damage;
 			return this;
 		}
 
+		/** Sets whether this builder's fluid is infinite to the specified value. */
 		public Builder infinite(boolean isInfinite) {
 			this.isInfinite = isInfinite;
 			return this;
 		}
 
+		/** Sets whether this builder's fluid is toxic to the specified value. */
 		public Builder toxic(boolean isToxic) {
 			this.isToxic = isToxic;
 			return this;
 		}
 
+		/** Sets this builder's fluid name to the specified value. */
 		public Builder name(String name) {
 			this.name = name;
 			return this;
 		}
 
+		/** Sets this builder's fluid {@link DamageSource} to the specified value. */
 		public Builder source(DamageSource source) {
 			this.source = source;
 			return this;
 		}
 
+		/** Sets this builder's {@link ItemGroup} to the specified value. */
 		public Builder group(ItemGroup group) {
 			this.group = group;
 			return this;
 		}
 
+		/** Builds this builder's fluid.
+		 * Part of the process is delegated to
+		 * {@link ClientUtilities#registerExtendedFluid(String, int, Fluid, Fluid)},
+		 * since rendering registration cannot be done on the server side. */
 		public Fluid build() {
 			ExtendedFluid flowing = AstromineFluids.register(name + "_flowing", new Flowing(fog, tint, isInfinite, source));
 			ExtendedFluid still = AstromineFluids.register(name, new Still(fog, tint, isInfinite, source));
@@ -269,38 +299,54 @@ public abstract class ExtendedFluid extends FlowableFluid {
 		}
 	}
 
+	/** A class representing a flowing version of an {@link ExtendedFluid}. */
 	public static class Flowing extends ExtendedFluid {
+		/** Instantiates a {@link Flowing} {@link ExtendedFluid}
+		 * with the given values. */
 		public Flowing(int fogColor, int tintColor, boolean isInfinite, @Nullable DamageSource source) {
 			super(fogColor, tintColor, isInfinite, source);
 		}
 
+		/** Override behavior to add the {@link #LEVEL}
+		 * property to the given builder. */
 		@Override
 		protected void appendProperties(StateManager.Builder<Fluid, FluidState> builder) {
 			super.appendProperties(builder);
 			builder.add(LEVEL);
 		}
 
+		/** Override behavior to return the fluid
+		 * level based on the {@link #LEVEL} property. */
 		@Override
 		public int getLevel(FluidState state) {
 			return state.get(LEVEL);
 		}
 
+		/** Override behavior to always return false,
+		 * since this fluid is flowing. */
 		@Override
 		public boolean isStill(FluidState state) {
 			return false;
 		}
 	}
 
+	/** A class representing a still version of an {@link ExtendedFluid}. */
 	public static class Still extends ExtendedFluid {
+		/** Instantiates a {@link Still} {@link ExtendedFluid}
+		 * with the given values. */
 		public Still(int fogColor, int tintColor, boolean isInfinite, @Nullable DamageSource source) {
 			super(fogColor, tintColor, isInfinite, source);
 		}
 
+		/** Override behavior to always return 8,
+		 * since this fluid is still. */
 		@Override
 		public int getLevel(FluidState state) {
 			return 8;
 		}
 
+		/** Override behavior to always return true,
+		 * since this fluid is still. */
 		@Override
 		public boolean isStill(FluidState state) {
 			return true;
