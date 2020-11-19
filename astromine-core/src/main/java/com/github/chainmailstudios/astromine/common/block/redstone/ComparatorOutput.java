@@ -24,10 +24,14 @@
 
 package com.github.chainmailstudios.astromine.common.block.redstone;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.ComparatorBlockEntity;
+import net.minecraft.screen.ScreenHandler;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
@@ -35,21 +39,36 @@ import team.reborn.energy.EnergyHandler;
 import java.util.Collection;
 import java.util.function.Function;
 
+/**
+ * A class representing a handler of {@link ComparatorBlockEntity}
+ * output levels.
+ */
 public class ComparatorOutput {
+    /** Returns the output level for a {@link BlockEntity} with an {@link ItemComponent}. */
+    public static int forItems(@Nullable BlockEntity entity) {
+        return ScreenHandler.calculateComparatorOutput(entity);
+    }
+
+    /** Returns the output level for a {@link BlockEntity} with an {@link EnergyComponent}. */
     public static int forEnergy(@Nullable BlockEntity entity) {
         if (entity == null) {
             return 0;
         }
 
-        EnergyHandler handler = Energy.of(entity);
+        EnergyComponent component = EnergyComponent.get(entity);
 
-        if (handler.getEnergy() <= 0.0001) {
+        if (component == null) {
             return 0;
         }
 
-        return 1 + (int) (handler.getEnergy() / handler.getMaxStored() * 14.0);
+        if (component.getAmount() <= 0.0001) {
+            return 0;
+        }
+
+        return 1 + (int) (component.getAmount() / component.getSize() * 14.0);
     }
 
+    /** Returns the output level for a {@link BlockEntity} with a {@link FluidComponent}. */
     public static int forFluids(@Nullable BlockEntity entity) {
         if (entity == null) {
             return 0;
@@ -62,6 +81,7 @@ public class ComparatorOutput {
         }
 
         Collection<FluidVolume> contents = fluidComponent.getContents().values();
+
         Fraction amounts = sumBy(contents, FluidVolume::getAmount);
 
         if (amounts.getNumerator() == 0) {
@@ -70,9 +90,11 @@ public class ComparatorOutput {
 
         Fraction sizes = sumBy(contents, FluidVolume::getSize);
         Fraction ratio = amounts.divide(sizes);
+
         return 1 + (int) (ratio.floatValue() * 14.0f);
     }
 
+    /** Sums collection of {@link T} into a {@link Fraction} by the given {@link Function}. */
     private static <T> Fraction sumBy(Collection<T> ts, Function<? super T, Fraction> extractor) {
         Fraction result = Fraction.EMPTY;
 

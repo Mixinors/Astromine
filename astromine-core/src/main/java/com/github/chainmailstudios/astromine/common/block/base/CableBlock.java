@@ -112,7 +112,7 @@ public abstract class CableBlock extends Block implements Waterloggable, CableWr
 	public void onPlaced(World world, BlockPos position, BlockState stateA, LivingEntity placer, ItemStack stack) {
 		super.onPlaced(world, position, stateA, placer, stack);
 
-		NetworkUtilities.Tracer.INSTANCE.trace(getNetworkType(), WorldPos.of(world, position));
+		NetworkUtilities.Tracer.trace(getNetworkType(), WorldPos.of(world, position));
 
 		NetworkUtilities.Modeller modeller = new NetworkUtilities.Modeller();
 		modeller.of(getNetworkType(), position, world);
@@ -125,7 +125,7 @@ public abstract class CableBlock extends Block implements Waterloggable, CableWr
 
 			if (!(offsetBlock.getBlock() instanceof CableBlock))
 				continue;
-			NetworkMember member = NetworkMemberRegistry.get(offsetBlock, direction.getOpposite());
+			NetworkMember member = NetworkMemberRegistry.get(offsetBlock);
 			if (member.acceptsType(getNetworkType()))
 				continue;
 
@@ -156,7 +156,7 @@ public abstract class CableBlock extends Block implements Waterloggable, CableWr
 			if (((CableBlock) offsetBlock).getNetworkType() != getNetworkType())
 				continue;
 
-			NetworkUtilities.Tracer.INSTANCE.trace(getNetworkType(), WorldPos.of(world, offsetPos));
+			NetworkUtilities.Tracer.trace(getNetworkType(), WorldPos.of(world, offsetPos));
 
 			NetworkUtilities.Modeller modeller = new NetworkUtilities.Modeller();
 			modeller.of(getNetworkType(), offsetPos, world);
@@ -172,7 +172,7 @@ public abstract class CableBlock extends Block implements Waterloggable, CableWr
 		WorldNetworkComponent networkComponent = WorldNetworkComponent.get(world);
 
 		networkComponent.remove(networkComponent.get(getNetworkType(), position));
-		NetworkUtilities.Tracer.INSTANCE.trace(getNetworkType(), WorldPos.of(world, position));
+		NetworkUtilities.Tracer.trace(getNetworkType(), WorldPos.of(world, position));
 
 		NetworkUtilities.Modeller modeller = new NetworkUtilities.Modeller();
 		modeller.of(getNetworkType(), position, world);

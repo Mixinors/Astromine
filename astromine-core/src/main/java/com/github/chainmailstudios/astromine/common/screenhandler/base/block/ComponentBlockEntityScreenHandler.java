@@ -29,10 +29,8 @@ import com.github.chainmailstudios.astromine.common.component.block.entity.Block
 import com.github.vini2003.blade.common.collection.base.WidgetCollection;
 import com.github.vini2003.blade.common.widget.base.ButtonWidget;
 import net.minecraft.block.Block;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
-import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.text.Text;
@@ -47,7 +45,6 @@ import com.github.chainmailstudios.astromine.common.component.block.entity.Block
 import com.github.chainmailstudios.astromine.common.component.inventory.NameableComponent;
 import com.github.chainmailstudios.astromine.common.utilities.WidgetUtilities;
 import com.github.vini2003.blade.common.collection.TabWidgetCollection;
-import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.utilities.Slots;
@@ -55,7 +52,6 @@ import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import com.github.vini2003.blade.common.widget.base.TabWidget;
 import com.github.vini2003.blade.common.widget.base.TextWidget;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -148,7 +144,7 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 
 		BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(blockEntity);
 
-		transferComponent.get().forEach((key, entry) -> {
+		transferComponent.getComponents().forEach((key, entry) -> {
 			if (key.get(blockEntity) instanceof NameableComponent) {
 				NameableComponent nameableComponent = (NameableComponent) key.get(blockEntity);
 				TabWidgetCollection current = (TabWidgetCollection) tabs.addTab(nameableComponent.getSymbol(), () -> Collections.singletonList(nameableComponent.getName()));

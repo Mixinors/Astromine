@@ -25,12 +25,17 @@
 package com.github.chainmailstudios.astromine.common.component.block.entity;
 
 import com.github.chainmailstudios.astromine.common.callback.TransferEntryCallback;
+import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.network.type.EnergyNetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
@@ -46,17 +51,27 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+/**
+ * A {@link Component} representing a {@link BlockEntity}'s
+ * siding information.
+ *
+ * Serialization and deserialization methods are provided for:
+ * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ */
 public class BlockEntityTransferComponent implements Component {
 	private final Reference2ReferenceMap<ComponentKey<?>, TransferEntry> components = new Reference2ReferenceOpenHashMap<>();
 
+	/** Returns this component's {@link Map} of {@link ComponentKey}s to {@link TransferEntry}-ies. */
+	public Map<ComponentKey<?>, TransferEntry> getComponents() {
+		return components;
+	}
+
+	/** Returns this component's {@link TransferEntry} for the given {@link ComponentKey}. */
 	public TransferEntry get(ComponentKey<?> type) {
 		return components.getOrDefault(type, null);
 	}
 
-	public Map<ComponentKey<?>, TransferEntry> get() {
-		return components;
-	}
-
+	/** Adds a {@link TransferEntry} to this component for the given {@link ComponentKey}. */
 	public void add(ComponentKey<?> type) {
 		TransferEntry entry = new TransferEntry(type);
 
@@ -65,75 +80,113 @@ public class BlockEntityTransferComponent implements Component {
 		components.put(type, entry);
 	}
 
+	/** Asserts whether this component's siding contains
+	 * data for {@link ItemComponent} or not. */
 	public boolean hasItem() {
 		return components.containsKey(AstromineComponents.ITEM_INVENTORY_COMPONENT);
 	}
 
+	/** Asserts whether this component's siding contains
+	 * data for {@link FluidComponent} or not. */
 	public boolean hasFluid() {
 		return components.containsKey(AstromineComponents.FLUID_INVENTORY_COMPONENT);
 	}
 
+	/** Asserts whether this component's siding contains
+	 * data for {@link EnergyComponent} or not. */
 	public boolean hasEnergy() {
 		return components.containsKey(AstromineComponents.ENERGY_INVENTORY_COMPONENT);
 	}
 
+	/** Returns this component's {@link TransferType} for {@link ItemComponent}'s key at the given {@link Direction}. */
 	public TransferType getItem(Direction direction) {
 		return components.get(AstromineComponents.ITEM_INVENTORY_COMPONENT).get(direction);
 	}
 
+	/** Returns this component's {@link TransferType} for {@link FluidComponent}'s key at the given {@link Direction}. */
 	public TransferType getFluid(Direction direction) {
 		return components.get(AstromineComponents.FLUID_INVENTORY_COMPONENT).get(direction);
 	}
 
+	/** Returns this component's {@link TransferType} for {@link EnergyComponent}'s key at the given {@link Direction}. */
 	public TransferType getEnergy(Direction direction) {
 		return components.get(AstromineComponents.ENERGY_INVENTORY_COMPONENT).get(direction);
 	}
 
+	/** Serializes this {@link BlockEntityTransferComponent} to a {@link CompoundTag}. */
+	@Override
+	public void writeToNbt(CompoundTag tag) {
+		CompoundTag dataTag = new CompoundTag();
+
+		for (Map.Entry<ComponentKey<?>, TransferEntry> entry : components.entrySet()) {
+			dataTag.put(entry.getKey().getId().toString(), entry.getValue().toTag());
+		}
+
+		tag.put("data", dataTag);
+	}
+
+	/** Deserializes this {@link BlockEntityTransferComponent} from a {@link CompoundTag}. */
 	@Override
 	public void readFromNbt(CompoundTag tag) {
 		CompoundTag dataTag = tag.getCompound("data");
 
 		for (String key : dataTag.getKeys()) {
 			Identifier keyId = new Identifier(key);
+
 			TransferEntry entry = new TransferEntry(ComponentRegistry.get(keyId));
+
 			entry.fromTag(dataTag.getCompound(key));
+
 			components.put(ComponentRegistry.get(keyId), entry);
 		}
 	}
 
-	@Override
-	public void writeToNbt(CompoundTag tag) {
-		CompoundTag dataTag = new CompoundTag();
-
-		for (Map.Entry<ComponentKey<?>, TransferEntry> entry : components.entrySet()) {
-			dataTag.put(entry.getKey().getId().toString(), entry.getValue().toTag(new CompoundTag()));
+	/** Returns the {@link BlockEntityTransferComponent} of the given {@link V}. */
+	@Nullable
+	public static <V> BlockEntityTransferComponent get(V v) {
+		try {
+			return AstromineComponents.BLOCK_ENTITY_TRANSFER_COMPONENT.get(v);
+		} catch (Exception justShutUpAlready) {
+			return null;
 		}
-
-		tag.put("data", dataTag);
 	}
 
+	/**
+	 * A representation of a side's transfer information.
+	 *
+	 * Serialization and deserialization methods are provided for:
+	 * - {@link CompoundTag} - through {@link #toTag()} and {@link #fromTag(CompoundTag)}.
+	 */
 	public static class TransferEntry {
-		public static final Direction[] DIRECTIONS = Direction.values();
 		private final Reference2ReferenceMap<Direction, TransferType> types = new Reference2ReferenceOpenHashMap<>(6, 1);
 
 		private final ComponentKey<?> componentKey;
 
 		public TransferEntry(ComponentKey<?> componentKey) {
-			for (Direction direction : DIRECTIONS) {
+			for (Direction direction : Direction.values()) {
 				this.set(direction, TransferType.NONE);
 			}
 
 			this.componentKey = componentKey;
 		}
 
+		/** Returns this entry's {@link ComponentKey}. */
+		public ComponentKey<?> getComponentKey() {
+			return componentKey;
+		}
+
+		/** Sets the {@link TransferType} of the given {@link Direction}
+		 * to the specified value. */
 		public void set(Direction direction, TransferType type) {
 			types.put(direction, type);
 		}
 
+		/** Returns the {@link TransferType} of the given {@link Direction}. */
 		public TransferType get(Direction origin) {
 			return types.get(origin);
 		}
 
+		/** Deserializes this {@link TransferEntry} from a {@link CompoundTag}. */
 		public void fromTag(CompoundTag tag) {
 			for (String directionKey : tag.getKeys()) {
 				if (tag.contains(directionKey)) {
@@ -142,34 +195,16 @@ public class BlockEntityTransferComponent implements Component {
 			}
 		}
 
-		public CompoundTag toTag(CompoundTag tag) {
+		/** Serializes this {@link TransferEntry} to a {@link CompoundTag}. */
+		public CompoundTag toTag() {
+			CompoundTag tag = new CompoundTag();
+
 			for (Map.Entry<Direction, TransferType> entry : types.entrySet()) {
 				if (entry.getValue() != TransferType.NONE)
 					tag.putString(String.valueOf(entry.getKey().getName()), entry.getValue().toString());
 			}
 
 			return tag;
-		}
-
-		public boolean areAllNone() {
-			for (TransferType value : types.values()) {
-				if (value != TransferType.NONE)
-					return false;
-			}
-			return true;
-		}
-
-		public ComponentKey<?> getComponentKey() {
-			return componentKey;
-		}
-	}
-
-	@Nullable
-	public static <V> BlockEntityTransferComponent get(V v) {
-		try {
-			return AstromineComponents.BLOCK_ENTITY_TRANSFER_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
-			return null;
 		}
 	}
 }

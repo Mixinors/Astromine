@@ -28,6 +28,7 @@ import alexiil.mc.lib.attributes.fluid.*;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.item.ItemInvUtil;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
 import dev.onyxstudios.cca.api.v3.component.*;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.PacketContext;
@@ -51,7 +52,6 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.Energy;
@@ -64,24 +64,31 @@ import team.reborn.energy.EnergyStorage;
 import java.util.*;
 import java.util.function.BiConsumer;
 
-public abstract class ComponentBlockEntity extends BlockEntity implements PacketConsumer, BlockEntityClientSerializable, Tickable {
+/**
+ * A {@link BlockEntity} which is synchronized to the client
+ * through {@link BlockEntityClientSerializable}, which is
+ * {@link Tickable}, updates its {@link BlockState} based on
+ * its activity, and handles redstone behavior.
+ */
+public abstract class ComponentBlockEntity extends BlockEntity implements BlockEntityClientSerializable, Tickable {
 	public static final Identifier TRANSFER_UPDATE_PACKET = AstromineCommon.identifier("transfer_update_packet");
 
 	protected final Map<ComponentKey<?>, Component> allComponents = Maps.newHashMap();
 
 	protected final Map<Identifier, BiConsumer<PacketByteBuf, PacketContext>> allHandlers = Maps.newHashMap();
 
-	public boolean isActive = false;
-	public boolean[] activity = { false, false, false, false, false };
+	private boolean isActive = false;
+	private final boolean[] activity = { false, false, false, false, false };
 
 	protected boolean skipInventory = true;
 
 	protected int redstoneMode = 0;
 
+	/** Instantiates a {@link ComponentBlockEntity} with the given value. */
 	public ComponentBlockEntity(BlockEntityType<?> type) {
 		super(type);
 
-		addConsumer(TRANSFER_UPDATE_PACKET, ((buffer, context) -> {
+		addPacketConsumer(TRANSFER_UPDATE_PACKET, ((buffer, context) -> {
 			Identifier packetIdentifier = buffer.readIdentifier();
 			Direction packetDirection = buffer.readEnumConstant(Direction.class);
 			TransferType packetTransferType = buffer.readEnumConstant(TransferType.class);
@@ -92,75 +99,88 @@ public abstract class ComponentBlockEntity extends BlockEntity implements Packet
 		}));
 	}
 
+	/** Returns the {@link BlockEntityTransferComponent} to be attached. */
+	public BlockEntityTransferComponent createTransferComponent() {
+		return new BlockEntityTransferComponent();
+	}
+
+	/** Returns the attached {@link BlockEntityTransferComponent}. */
+	public BlockEntityTransferComponent getTransferComponent() {
+		return BlockEntityTransferComponent.get(this);
+	}
+
+	/** Returns the {@link BlockEntityRedstoneComponent} to be attached. */
+	public BlockEntityRedstoneComponent createRedstoneComponent() {
+		return new BlockEntityRedstoneComponent();
+	}
+
+	/** Returns the attached {@link BlockEntityRedstoneComponent}. */
+	public BlockEntityRedstoneComponent getRedstoneComponent() {
+		return BlockEntityRedstoneComponent.get(this);
+	}
+
+	/** Signals that this {@link ComponentBlockEntity} should synchronize
+	 * its full inventory contents on the next {@link #tick()}. */
 	public void doNotSkipInventory() {
 		this.skipInventory = false;
 	}
 
+	/** Adds a {@link Component} to this {@link ComponentBlockEntity},
+	 * appropriately adding an entry to {@link #getTransferComponent()}. */
 	public void addComponent(ComponentKey<?> type, Component component) {
 		allComponents.put(type, component);
 		getTransferComponent().add(type);
 	}
 
-	public void addConsumer(Identifier identifier, BiConsumer<PacketByteBuf, PacketContext> consumer) {
+	/** Adds a {@link BiConsumer} that handles a {@link PacketByteBuf}
+	 * whose header is the given {@link Identifier}. */
+	public void addPacketConsumer(Identifier identifier, BiConsumer<PacketByteBuf, PacketContext> consumer) {
 		allHandlers.put(identifier, consumer);
 	}
 
-	@Override
+	/** Consumes a {@link PacketByteBuf}, with the read header {@link Identifier},
+	 * repassing it to the matching {@link BiConsumer}. */
 	public void consumePacket(Identifier identifier, PacketByteBuf buffer, PacketContext context) {
 		allHandlers.get(identifier).accept(buffer, context);
 	}
 
-	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		CompoundTag transferTag = new CompoundTag();
-		getTransferComponent().writeToNbt(transferTag);
-
-		CompoundTag redstoneTag = new CompoundTag();
-		getRedstoneComponent().writeToNbt(redstoneTag);
-
-		tag.put("transfer", transferTag);
-		tag.put("redstone", redstoneTag);
-
-		allComponents.forEach((type, component) -> {
-			CompoundTag componentTag = new CompoundTag();
-			component.writeToNbt(componentTag);
-
-			tag.put(type.getId().toString(), componentTag);
-		});
-
-		return super.toTag(tag);
+	/** Sets this machine as active. */
+	public void tickActive() {
+		isActive = true;
 	}
 
-	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		getTransferComponent().readFromNbt(tag.getCompound("transfer"));
-		getRedstoneComponent().readFromNbt(tag.getCompound("redstone"));
+	/** Sets this machine as inactive. */
+	public void tickInactive() {
+		isActive = false;
+	}
 
-		allComponents.forEach((type, component) -> {
-			if (tag.contains(type.getId().toString())) {
-				component.readFromNbt(tag.getCompound(type.getId().toString()));
+	/** Ticks this {@link ComponentBlockEntity}'s redstone behavior,
+	 * returning whether it should work or not. */
+	public boolean tickRedstone() {
+		boolean powered = world.getReceivedRedstonePower(getPos()) > 0;
+
+		switch (getRedstoneComponent().getType()) {
+			case WORK_WHEN_ON: {
+				if (powered) tickActive(); else tickInactive();
+				return powered;
 			}
-		});
 
-		super.fromTag(state, tag);
-	}
+			case WORK_WHEN_OFF: {
+				if (!powered) tickActive(); else tickInactive();
+				return !powered;
+			}
 
-	@Override
-	public CompoundTag toClientTag(CompoundTag compoundTag) {
-		compoundTag = toTag(compoundTag);
-		if (skipInventory) {
-			compoundTag.remove(AstromineComponents.ITEM_INVENTORY_COMPONENT.getId().toString());
-		} else {
-			skipInventory = true;
+			default: {
+				tickActive();
+				return true;
+			}
 		}
-		return compoundTag;
 	}
 
-	@Override
-	public void fromClientTag(CompoundTag compoundTag) {
-		fromTag(null, compoundTag);
-	}
-
+	/** Ticks this {@link ComponentBlockEntity},
+	 * handling transfer between adjacent {@link BlockEntity}-ies
+	 * and updating the machine's {@link BlockState}
+	 * based on its activity, or lack thereof. */
 	@Override
 	public void tick() {
 		if (!hasWorld() || world.isClient())
@@ -234,48 +254,60 @@ public abstract class ComponentBlockEntity extends BlockEntity implements Packet
 		}
 	}
 
-	public void tickActive() {
-		isActive = true;
+	/** Serializes this {@link ComponentBlockEntity} to a {@link CompoundTag}. */
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		CompoundTag transferTag = new CompoundTag();
+		getTransferComponent().writeToNbt(transferTag);
+
+		CompoundTag redstoneTag = new CompoundTag();
+		getRedstoneComponent().writeToNbt(redstoneTag);
+
+		tag.put("transfer", transferTag);
+		tag.put("redstone", redstoneTag);
+
+		allComponents.forEach((type, component) -> {
+			CompoundTag componentTag = new CompoundTag();
+			component.writeToNbt(componentTag);
+
+			tag.put(type.getId().toString(), componentTag);
+		});
+
+		return super.toTag(tag);
 	}
 
-	public void tickInactive() {
-		isActive = false;
+	/** Deserializes this {@link ComponentBlockEntity} from a {@link CompoundTag}. */
+	@Override
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+		getTransferComponent().readFromNbt(tag.getCompound("transfer"));
+		getRedstoneComponent().readFromNbt(tag.getCompound("redstone"));
+
+		allComponents.forEach((type, component) -> {
+			if (tag.contains(type.getId().toString())) {
+				component.readFromNbt(tag.getCompound(type.getId().toString()));
+			}
+		});
+
+		super.fromTag(state, tag);
 	}
 
-	public boolean tickRedstone() {
-		boolean powered = world.getReceivedRedstonePower(getPos()) > 0;
-
-		switch (getRedstoneComponent().getType()) {
-			case WORK_WHEN_ON: {
-				if (powered) tickActive(); else tickInactive();
-				return powered;
-			}
-
-			case WORK_WHEN_OFF: {
-				if (!powered) tickActive(); else tickInactive();
-				return !powered;
-			}
-
-			default: {
-				tickActive();
-				return true;
-			}
+	/** Serializes this {@link ComponentBlockEntity} to a {@link CompoundTag},
+	 * for synchronization usage. */
+	@Override
+	public CompoundTag toClientTag(CompoundTag compoundTag) {
+		compoundTag = toTag(compoundTag);
+		if (skipInventory) {
+			compoundTag.remove(AstromineComponents.ITEM_INVENTORY_COMPONENT.getId().toString());
+		} else {
+			skipInventory = true;
 		}
+		return compoundTag;
 	}
 
-	public BlockEntityTransferComponent createTransferComponent() {
-		return new BlockEntityTransferComponent();
-	}
-
-	public BlockEntityRedstoneComponent createRedstoneComponent() {
-		return new BlockEntityRedstoneComponent();
-	}
-
-	public BlockEntityTransferComponent getTransferComponent() {
-		return BlockEntityTransferComponent.get(this);
-	}
-
-	public BlockEntityRedstoneComponent getRedstoneComponent() {
-		return BlockEntityRedstoneComponent.get(this);
+	/** Deserializes this {@link ComponentBlockEntity} from a {@link CompoundTag},
+	 * for synchronization usage. */
+	@Override
+	public void fromClientTag(CompoundTag compoundTag) {
+		fromTag(null, compoundTag);
 	}
 }

@@ -24,22 +24,43 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.utilities.capability.energy.ComponentEnergyProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 
-public abstract class ComponentEnergyFluidBlockEntity extends ComponentEnergyBlockEntity {
+/**
+ * A {@link ComponentBlockEntity} with an attached
+ * {@link EnergyComponent} and {@link ItemComponent}.
+ */
+public abstract class ComponentEnergyFluidBlockEntity extends ComponentEnergyBlockEntity implements ComponentEnergyProvider {
+	/** Instantiates a {@link ComponentEnergyFluidBlockEntity} with the given value. */
 	public ComponentEnergyFluidBlockEntity(BlockEntityType<?> type) {
 		super(type);
+
+		addComponent(AstromineComponents.ENERGY_INVENTORY_COMPONENT, getEnergyComponent());
+		getEnergyComponent().updateListeners();
 
 		addComponent(AstromineComponents.FLUID_INVENTORY_COMPONENT, getFluidComponent());
 		getFluidComponent().updateListeners();
 	}
 
+	/** Returns the {@link EnergyComponent} to be attached. */
+	public abstract EnergyComponent createEnergyComponent();
+
+	/** Returns the attached {@link EnergyComponent}. */
+	public EnergyComponent getEnergyComponent() {
+		return EnergyComponent.get(this);
+	}
+
+	/** Returns the {@link FluidComponent} to be attached. */
 	public abstract FluidComponent createFluidComponent();
 
+	/** Returns the attached {@link FluidComponent}. */
 	public FluidComponent getFluidComponent() {
 		return FluidComponent.get(this);
 	}

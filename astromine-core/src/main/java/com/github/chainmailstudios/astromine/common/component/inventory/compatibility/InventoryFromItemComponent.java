@@ -34,42 +34,37 @@ import static java.lang.Integer.min;
 /**
  * An {@link Inventory} wrapped over an {@link ItemComponent}.
  */
-public class InventoryFromItemComponent implements Inventory {
-	ItemComponent itemComponent;
-
+public interface InventoryFromItemComponent extends Inventory {
+	ItemComponent getItemComponent();
+	
 	/** Instantiates an {@link InventoryFromItemComponent} with the given value. */
-	public InventoryFromItemComponent(ItemComponent itemComponent) {
-		this.itemComponent = itemComponent;
-	}
-
-	/** Instantiates an {@link InventoryFromItemComponent} with the given value. */
-	public static InventoryFromItemComponent of(ItemComponent itemComponent) {
-		return new InventoryFromItemComponent(itemComponent);
+	static InventoryFromItemComponent of(ItemComponent itemComponent) {
+		return () -> itemComponent;
 	}
 
 	/** Returns this inventory's size. */
 	@Override
-	public int size() {
-		return itemComponent.getSize();
+	default int size() {
+		return getItemComponent().getSize();
 	}
 
 	/** Returns the {@link ItemStack} at the given slot. */
 	@Override
-	public ItemStack getStack(int slot) {
-		return itemComponent.getStack(slot);
+	default ItemStack getStack(int slot) {
+		return getItemComponent().getStack(slot);
 	}
 
 	/** Sets the {@link ItemStack} at the given slot to the specified value. */
 	@Override
-	public void setStack(int slot, ItemStack stack) {
-		itemComponent.setStack(slot, stack);
+	default void setStack(int slot, ItemStack stack) {
+		getItemComponent().setStack(slot, stack);
 	}
 
 	/** Removes the {@link ItemStack} at the given slot,
 	 * or a part of it as per the specified count, and returns it. */
 	@Override
-	public ItemStack removeStack(int slot, int count) {
-		ItemStack removed = itemComponent.removeStack(slot);
+	default ItemStack removeStack(int slot, int count) {
+		ItemStack removed = getItemComponent().removeStack(slot);
 
 		ItemStack returned = removed.copy();
 
@@ -77,38 +72,38 @@ public class InventoryFromItemComponent implements Inventory {
 
 		removed.decrement(count);
 
-		itemComponent.setStack(slot, removed);
+		getItemComponent().setStack(slot, removed);
 
 		return returned;
 	}
 
 	/** Removes the {@link ItemStack} at the given slot, and returns it. */
 	@Override
-	public ItemStack removeStack(int slot) {
-		return itemComponent.removeStack(slot);
+	default ItemStack removeStack(int slot) {
+		return getItemComponent().removeStack(slot);
 	}
 
 	/** Asserts whether this inventory's contents are all empty or not. */
 	@Override
-	public boolean isEmpty() {
-		return itemComponent.isEmpty();
+	default boolean isEmpty() {
+		return getItemComponent().isEmpty();
 	}
 
 	/** Clears this inventory's contents. */
 	@Override
-	public void clear() {
-		itemComponent.clear();
+	default void clear() {
+		getItemComponent().clear();
 	}
 
 	/** Marks this inventory as dirt, or, pending update. */
 	@Override
-	public void markDirty() {
-		itemComponent.updateListeners();
+	default void markDirty() {
+		getItemComponent().updateListeners();
 	}
 
 	/** Allow the player to use this inventory by default. */
 	@Override
-	public boolean canPlayerUse(PlayerEntity player) {
+	default boolean canPlayerUse(PlayerEntity player) {
 		return true;
 	}
 }

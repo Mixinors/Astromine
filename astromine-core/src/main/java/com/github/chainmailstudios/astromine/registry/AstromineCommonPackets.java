@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 
 import net.minecraft.block.entity.BlockEntity;
@@ -46,8 +47,8 @@ public class AstromineCommonPackets {
 			context.getTaskQueue().execute(() -> {
 				BlockEntity blockEntity = context.getPlayer().getEntityWorld().getBlockEntity(blockPos);
 
-				if (blockEntity instanceof PacketConsumer) {
-					((PacketConsumer) blockEntity).consumePacket(identifier, storedBuffer, context);
+				if (blockEntity instanceof ComponentBlockEntity) {
+					((ComponentBlockEntity) blockEntity).consumePacket(identifier, storedBuffer, context);
 				}
 			});
 		})));

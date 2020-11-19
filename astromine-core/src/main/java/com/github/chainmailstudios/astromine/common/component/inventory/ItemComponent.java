@@ -26,11 +26,13 @@ package com.github.chainmailstudios.astromine.common.component.inventory;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.InventoryFromItemComponent;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -260,6 +262,16 @@ public interface ItemComponent extends Iterable<ItemStack>, AutoSyncedComponent,
 			CompoundTag stackTag = stacksTag.getCompound(i);
 
 			setStack(i, ItemStack.fromTag(stackTag));
+		}
+	}
+
+	/** Returns the {@link ItemComponent} of the given {@link V}. */
+	@Nullable
+	static <V> ItemComponent get(V v) {
+		try {
+			return AstromineComponents.ITEM_INVENTORY_COMPONENT.get(v);
+		} catch (Exception justShutUpAlready) {
+			return null;
 		}
 	}
 
