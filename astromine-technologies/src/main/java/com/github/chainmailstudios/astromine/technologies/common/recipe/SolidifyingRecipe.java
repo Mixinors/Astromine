@@ -70,7 +70,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 		return world.getRecipeManager().getAllOfType(SolidifyingRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
 			SolidifyingRecipe recipe = ((SolidifyingRecipe) it);
 
-			return recipe.matches(itemComponent, fluidComponent, SimpleEnergyComponent.INFINITE);
+			return recipe.allows(fluidComponent);
 		});
 	}
 

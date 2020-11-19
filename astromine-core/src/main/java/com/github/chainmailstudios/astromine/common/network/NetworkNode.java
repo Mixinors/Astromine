@@ -79,7 +79,7 @@ public final class NetworkNode {
 		this.pos = pos;
 	}
 
-	/** Asserts the quality of the objects. */
+	/** Asserts the equality of the objects. */
 	@Override
 	public boolean equals(Object object) {
 		if (this == object)

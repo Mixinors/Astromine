@@ -55,7 +55,7 @@ import java.util.Set;
  * Serialization and deserialization methods are provided for:
  * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
  */
-public class WorldNetworkComponent implements Component, Tickable {
+public final class WorldNetworkComponent implements Component, Tickable {
 	private final Set<NetworkInstance> instances = Sets.newConcurrentHashSet();
 
 	private final World world;
@@ -152,6 +152,7 @@ public class WorldNetworkComponent implements Component, Tickable {
 		}
 	}
 
+	/** Returns the {@link WorldNetworkComponent} of the given {@link V}. */
 	@Nullable
 	public static <V> WorldNetworkComponent get(V v) {
 		try {

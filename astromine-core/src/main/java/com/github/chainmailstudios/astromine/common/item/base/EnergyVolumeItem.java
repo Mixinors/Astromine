@@ -44,7 +44,7 @@ public class EnergyVolumeItem extends Item implements EnergyHolder, DurabilityBa
 	private final double size;
 
 	/** Instantiates an {@link EnergyVolumeItem} with the given values. */
-	private EnergyVolumeItem(Item.Settings settings, double size) {
+	protected EnergyVolumeItem(Item.Settings settings, double size) {
 		super(settings);
 
 		this.size = size;

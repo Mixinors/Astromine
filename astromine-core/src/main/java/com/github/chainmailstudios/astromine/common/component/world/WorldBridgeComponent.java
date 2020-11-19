@@ -61,7 +61,7 @@ import java.util.Set;
  * Serialization and deserialization methods are provided for:
  * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
  */
-public class WorldBridgeComponent implements Component {
+public final class WorldBridgeComponent implements Component {
 	private final Long2ObjectArrayMap<Set<Vec3i>> entries = new Long2ObjectArrayMap<>();
 
 	private final World world;

@@ -153,7 +153,7 @@ public abstract class Volume<N extends Number> {
 		return amount.doubleValue() <= number.doubleValue();
 	}
 
-	/** Asserts the quality of the objects. */
+	/** Asserts the equality of the objects. */
 	@Override
 	public boolean equals(Object object) {
 		if (this == object)

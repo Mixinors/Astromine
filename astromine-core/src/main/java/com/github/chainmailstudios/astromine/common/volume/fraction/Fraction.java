@@ -290,7 +290,7 @@ public final class Fraction extends Number implements Comparable<Fraction> {
 		return this.biggerThan(fraction) ? 1 : this.smallerThan(fraction) ? -1 : 0;
 	}
 
-	/** Asserts the quality of the objects. */
+	/** Asserts the equality of the objects. */
 	@Override
 	public boolean equals(Object object) {
 		if (this == object) {
@@ -313,8 +313,6 @@ public final class Fraction extends Number implements Comparable<Fraction> {
 	public int hashCode() {
 		return Objects.hashCode(this.numerator, this.denominator);
 	}
-
-
 
 	/** Returns the value of this fraction as an {@link Integer}. */
 	@Override

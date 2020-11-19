@@ -26,7 +26,7 @@ package com.github.chainmailstudios.astromine.technologies.registry;
 
 import net.minecraft.item.Item;
 
-import com.github.chainmailstudios.astromine.common.item.DrillItem;
+import com.github.chainmailstudios.astromine.technologies.common.item.DrillItem;
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;

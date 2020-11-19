@@ -31,31 +31,45 @@ import net.minecraft.item.ItemStack;
 
 import static java.lang.Integer.min;
 
-public interface InventoryFromItemComponent extends Inventory {
-	static InventoryFromItemComponent of(ItemComponent component) {
-		return () -> component;
+/**
+ * An {@link Inventory} wrapped over an {@link ItemComponent}.
+ */
+public class InventoryFromItemComponent implements Inventory {
+	ItemComponent itemComponent;
+
+	/** Instantiates an {@link InventoryFromItemComponent} with the given value. */
+	public InventoryFromItemComponent(ItemComponent itemComponent) {
+		this.itemComponent = itemComponent;
 	}
 
-	@Override
-	default int size() {
-		return this.getItemComponent().getSize();
+	/** Instantiates an {@link InventoryFromItemComponent} with the given value. */
+	public static InventoryFromItemComponent of(ItemComponent itemComponent) {
+		return new InventoryFromItemComponent(itemComponent);
 	}
 
-	ItemComponent getItemComponent();
-
+	/** Returns this inventory's size. */
 	@Override
-	default boolean isEmpty() {
-		return this.getItemComponent().isEmpty();
+	public int size() {
+		return itemComponent.getSize();
 	}
 
+	/** Returns the {@link ItemStack} at the given slot. */
 	@Override
-	default ItemStack getStack(int slot) {
-		return this.getItemComponent().getStack(slot);
+	public ItemStack getStack(int slot) {
+		return itemComponent.getStack(slot);
 	}
 
+	/** Sets the {@link ItemStack} at the given slot to the specified value. */
 	@Override
-	default ItemStack removeStack(int slot, int count) {
-		ItemStack removed = getItemComponent().removeStack(slot);
+	public void setStack(int slot, ItemStack stack) {
+		itemComponent.setStack(slot, stack);
+	}
+
+	/** Removes the {@link ItemStack} at the given slot,
+	 * or a part of it as per the specified count, and returns it. */
+	@Override
+	public ItemStack removeStack(int slot, int count) {
+		ItemStack removed = itemComponent.removeStack(slot);
 
 		ItemStack returned = removed.copy();
 
@@ -63,33 +77,38 @@ public interface InventoryFromItemComponent extends Inventory {
 
 		removed.decrement(count);
 
-		getItemComponent().setStack(slot, removed);
+		itemComponent.setStack(slot, removed);
 
 		return returned;
 	}
 
+	/** Removes the {@link ItemStack} at the given slot, and returns it. */
 	@Override
-	default ItemStack removeStack(int slot) {
-		return getItemComponent().removeStack(slot);
+	public ItemStack removeStack(int slot) {
+		return itemComponent.removeStack(slot);
 	}
 
+	/** Asserts whether this inventory's contents are all empty or not. */
 	@Override
-	default void setStack(int slot, ItemStack stack) {
-		getItemComponent().setStack(slot, stack);
+	public boolean isEmpty() {
+		return itemComponent.isEmpty();
 	}
 
+	/** Clears this inventory's contents. */
 	@Override
-	default void markDirty() {
-		getItemComponent().updateListeners();
+	public void clear() {
+		itemComponent.clear();
 	}
 
+	/** Marks this inventory as dirt, or, pending update. */
 	@Override
-	default boolean canPlayerUse(PlayerEntity player) {
+	public void markDirty() {
+		itemComponent.updateListeners();
+	}
+
+	/** Allow the player to use this inventory by default. */
+	@Override
+	public boolean canPlayerUse(PlayerEntity player) {
 		return true;
-	}
-
-	@Override
-	default void clear() {
-		getItemComponent().clear();
 	}
 }

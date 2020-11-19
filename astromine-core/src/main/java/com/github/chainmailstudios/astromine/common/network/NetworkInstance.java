@@ -133,7 +133,7 @@ public final class NetworkInstance implements Tickable {
 		this.type.tick(this);
 	}
 
-	/** Asserts the quality of the objects. */
+	/** Asserts the equality of the objects. */
 	@Override
 	public boolean equals(Object object) {
 		if (this == object) return true;

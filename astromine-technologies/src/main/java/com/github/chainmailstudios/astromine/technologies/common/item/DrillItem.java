@@ -22,8 +22,9 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.item;
+package com.github.chainmailstudios.astromine.technologies.common.item;
 
+import com.github.chainmailstudios.astromine.common.item.EnchantableToolItem;
 import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
 
 import net.minecraft.block.BlockState;

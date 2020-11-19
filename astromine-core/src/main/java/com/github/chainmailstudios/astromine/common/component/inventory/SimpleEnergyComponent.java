@@ -31,61 +31,70 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BooleanSupplier;
+import java.util.stream.Collectors;
 
+/**
+ * A simple implementation of {@link EnergyComponent}.
+ */
 public class SimpleEnergyComponent implements EnergyComponent {
-	public static final EnergyComponent INFINITE = new EnergyComponent() {
-		@Override
-		public List<Runnable> getListeners() {
-			return Collections.emptyList();
-		}
-
-		@Override
-		public EnergyVolume getVolume() {
-			return EnergyVolume.of(Double.MAX_VALUE, Double.MAX_VALUE);
-		}
-	};
-
 	private final EnergyVolume content;
 
 	private final List<Runnable> listeners = new ArrayList<>();
 
+	/** Instantiates a {@link SimpleEnergyComponent} with the given value. */
 	protected SimpleEnergyComponent(double size) {
-		this.content = EnergyVolume.of(size, this);
+		this.content = EnergyVolume.of(size, this::updateListeners);
 	}
 
+	/** Instantiates a {@link SimpleEnergyComponent} with the given value. */
 	protected SimpleEnergyComponent(EnergyVolume volume) {
 		this.content = volume;
 		this.content.setRunnable(this::updateListeners);
 	}
 
+	/** Instantiates a {@link SimpleEnergyComponent} with the given value. */
 	public static SimpleEnergyComponent of(double size) {
 		return new SimpleEnergyComponent(size);
 	}
 
+	/** Instantiates a {@link SimpleEnergyComponent} with the given value. */
 	public static SimpleEnergyComponent of(EnergyVolume volume) {
 		return new SimpleEnergyComponent(volume);
 	}
 
+	/** Returns this component's volume. */
 	@Override
 	public EnergyVolume getVolume() {
 		return content;
 	}
 
+	/** Returns this component's listeners. */
 	@Override
 	public List<Runnable> getListeners() {
 		return listeners;
 	}
 
+	/** Asserts the equality of the objects. */
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		SimpleEnergyComponent that = (SimpleEnergyComponent) o;
+	public boolean equals(Object object) {
+		if (this == object) return true;
+
+		if (object == null || getClass() != object.getClass()) return false;
+
+		SimpleEnergyComponent that = (SimpleEnergyComponent) object;
+
 		return Objects.equal(content, that.content);
 	}
 
+	/** Returns the hash for this volume. */
 	@Override
 	public int hashCode() {
 		return Objects.hashCode(content);
+	}
+
+	/** Returns this inventory's string representation. */
+	@Override
+	public String toString() {
+		return String.format("Listeners: %s\nContent: %s", listeners.size(), content);
 	}
 }

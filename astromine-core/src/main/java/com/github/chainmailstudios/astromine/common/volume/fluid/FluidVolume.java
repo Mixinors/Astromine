@@ -266,7 +266,7 @@ public class FluidVolume extends Volume<Fraction> {
 		return (V) of(getAmount(), getSize(), getFluid());
 	}
 
-	/** Asserts the quality of the objects. */
+	/** Asserts the equality of the objects. */
 	@Override
 	public boolean equals(Object object) {
 		if (this == object)

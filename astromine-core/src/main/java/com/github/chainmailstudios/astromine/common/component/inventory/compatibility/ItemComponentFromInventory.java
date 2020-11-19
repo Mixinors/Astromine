@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory.compatibility;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import net.minecraft.inventory.Inventory;
@@ -36,19 +37,38 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * An {@link ItemComponent} wrapped over an {@link Inventory}.
+ */
 public class ItemComponentFromInventory extends SimpleItemComponent {
 	Inventory inventory;
+
 	List<Runnable> listeners = new ArrayList<>();
 
+	/** Instantiates an {@link ItemComponentFromInventory} with the given value. */
 	private ItemComponentFromInventory(Inventory inventory) {
 		super(inventory.size());
 		this.inventory = inventory;
 	}
 
+	/** Instantiates an {@link ItemComponentFromInventory} with the given value. */
 	public static ItemComponentFromInventory of(Inventory inventory) {
 		return new ItemComponentFromInventory(inventory);
 	}
 
+	/** Returns this component's size. */
+	@Override
+	public int getSize() {
+		return this.inventory.size();
+	}
+
+	/** Returns this component's listeners. */
+	@Override
+	public List<Runnable> getListeners() {
+		return this.listeners;
+	}
+
+	/** Returns this component's contents. */
 	@Override
 	public Map<Integer, ItemStack> getContents() {
 		Int2ObjectArrayMap<ItemStack> contents = new Int2ObjectArrayMap<>();
@@ -59,28 +79,22 @@ public class ItemComponentFromInventory extends SimpleItemComponent {
 		return contents;
 	}
 
+	/** Asserts whether the given stack can be inserted through the specified
+	 * direction into the supplied slot. */
 	@Override
-	public void setStack(int slot, ItemStack stack) {
-		this.inventory.setStack(slot, stack);
+	public boolean canInsert(@Nullable Direction direction, ItemStack stack, int slot) {
+		return this.inventory.isValid(slot, stack);
 	}
 
-	@Override
-	public int getSize() {
-		return this.inventory.size();
-	}
-
-	@Override
-	public List<Runnable> getListeners() {
-		return this.listeners;
-	}
-
+	/* Returns the {@link ItemStack} at the given slot. */
 	@Override
 	public ItemStack getStack(int slot) {
 		return this.inventory.getStack(slot);
 	}
 
+	/** Sets the {@link ItemStack} at the given slot to the specified value. */
 	@Override
-	public boolean canInsert(@Nullable Direction direction, ItemStack stack, int slot) {
-		return this.inventory.isValid(slot, stack);
+	public void setStack(int slot, ItemStack stack) {
+		this.inventory.setStack(slot, stack);
 	}
 }

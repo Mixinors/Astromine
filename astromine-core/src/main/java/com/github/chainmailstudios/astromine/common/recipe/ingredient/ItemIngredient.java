@@ -185,7 +185,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 	}
 
 	/** Asserts whether the given {@link ItemStack} has the same item and tag (if present)
-	 * as any of the stacks of this ingredient or not. */
+	 * as any of the {@link ItemStack}s of this ingredient or not. */
 	public boolean testWeak(ItemStack stack) {
 		ItemStack[] matchingStacks = getMatchingStacks();
 		if (this.matchingStacks.length == 0)
@@ -217,7 +217,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 	 * {@link ItemStack}s as a {@link Stream}.
 	 */
 	interface Entry {
-		/** Returns the stacks of this entry. */
+		/** Returns the {@link ItemStack}s of this entry. */
 		Stream<ItemStack> getStacks();
 
 		/** Deserializes a {@link SimpleEntry} or {@link TagEntry}
@@ -288,7 +288,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 			this(Collections.singleton(stack));
 		}
 
-		/** Returns the stacks of this entry. */
+		/** Returns the {@link ItemStack}s of this entry. */
 		@Override
 		public Stream<ItemStack> getStacks() {
 			return stacks.stream();
@@ -311,7 +311,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 			this.count = count;
 		}
 
-		/** Returns the stacks of this entry. */
+		/** Returns the {@link ItemStack}s of this entry. */
 		@Override
 		public Stream<ItemStack> getStacks() {
 			return this.tag.values().stream().map(item -> new ItemStack(item, count));

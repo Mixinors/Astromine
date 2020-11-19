@@ -60,7 +60,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Serialization and deserialization methods are provided for:
  * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
  */
-public class ChunkAtmosphereComponent implements Component, ServerTickingComponent {
+public final class ChunkAtmosphereComponent implements Component, ServerTickingComponent {
 	private final List<Direction> directions = Lists.newArrayList(Direction.values());
 
 	private final Map<BlockPos, FluidVolume> volumes = new ConcurrentHashMap<>();
@@ -129,7 +129,6 @@ public class ChunkAtmosphereComponent implements Component, ServerTickingCompone
 			});
 		}
 	}
-
 
 	/** Asserts whether a {@link BlockPos} is within a {@link ChunkPos} or not. */
 	public static boolean isInChunk(ChunkPos chunkPos, BlockPos pos) {

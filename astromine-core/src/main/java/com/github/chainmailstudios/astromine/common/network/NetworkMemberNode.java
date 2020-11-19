@@ -126,7 +126,7 @@ public final class NetworkMemberNode {
 		this.directionId = directionId;
 	}
 
-	/** Asserts the quality of the objects. */
+	/** Asserts the equality of the objects. */
 	@Override
 	public boolean equals(Object object) {
 		if (this == object)

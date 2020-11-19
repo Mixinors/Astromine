@@ -89,7 +89,7 @@ public class AnimatedArmorItem extends ArmorItem {
 			return this.id;
 		}
 
-		/** Asserts the quality of the objects. */
+		/** Asserts the equality of the objects. */
 		@Override
 		public boolean equals(Object object) {
 			if (this == object) {

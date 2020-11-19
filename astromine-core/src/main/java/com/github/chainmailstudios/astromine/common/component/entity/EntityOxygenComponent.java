@@ -25,6 +25,8 @@
 package com.github.chainmailstudios.astromine.common.component.entity;
 
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import dev.onyxstudios.cca.api.v3.component.Component;
@@ -34,32 +36,31 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.Nullable;
 
-public class EntityOxygenComponent implements Component {
+/**
+ * A {@link Component} containing oxygen levels for an entity.
+ *
+ * Serialization and deserialization methods are provided for:
+ * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ */
+public final class EntityOxygenComponent implements Component {
 	int oxygen = 0;
 
 	int minimumOxygen = -20;
-	int maximumOxygen = -180;
+	int maximumOxygen = 180;
 
 	Entity entity;
 
-	public EntityOxygenComponent(Entity entity) {
+	/** Instantiates an {@link EntityOxygenComponent} with the given value. */
+	private EntityOxygenComponent(Entity entity) {
 		this.entity = entity;
 	}
 
-	public static EntityOxygenComponent defaulted(Entity entity) {
+	/** Instantiates an {@link EntityOxygenComponent} with the given value. */
+	public static EntityOxygenComponent of(Entity entity) {
 		return new EntityOxygenComponent(entity);
 	}
 
-	@Override
-	public void readFromNbt(CompoundTag tag) {
-		this.oxygen = tag.getInt("oxygen");
-	}
-
-	@Override
-	public void writeToNbt(CompoundTag tag) {
-		tag.putInt("oxygen", oxygen);
-	}
-
+	/** Simulate behavior, damaging the entity if out of oxygen. */
 	public void simulate(boolean isBreathing) {
 		if (entity instanceof PlayerEntity) {
 			PlayerEntity player = (PlayerEntity) entity;
@@ -84,42 +85,66 @@ public class EntityOxygenComponent implements Component {
 		}
 	}
 
+	/** Returns the next oxygen level for this component,
+	 * adding if positive, subtracting if negative, based
+	 * on the given amount. */
 	private int nextOxygen(boolean isPositive, int oxygen) {
 		return isPositive ? oxygen < getMaximumOxygen() ? oxygen + 1 : getMaximumOxygen() : oxygen > getMinimumOxygen() ? oxygen - 1 : getMinimumOxygen();
 	}
 
+	/** Returns this component's oxygen amount. */
 	public int getOxygen() {
 		return oxygen;
 	}
 
+	/** Sets this component's oxygen amount to the specified value. */
 	public void setOxygen(int oxygen) {
 		this.oxygen = oxygen;
 	}
 
+	/** Returns this component's minimum oxygen amount. */
 	public int getMinimumOxygen() {
 		return minimumOxygen;
 	}
 
+	/** Sets this component's minimum oxygen amount to the specified value. */
 	public void setMinimumOxygen(int minimumOxygen) {
 		this.minimumOxygen = minimumOxygen;
 	}
 
+	/** Returns this component's maximum oxygen amount. */
 	public int getMaximumOxygen() {
 		return maximumOxygen;
 	}
 
+	/** Sets this component's maximum oxygen amount to the specified value. */
 	public void setMaximumOxygen(int maximumOxygen) {
 		this.maximumOxygen = maximumOxygen;
 	}
 
+	/** Returns this componetn's entity. */
 	public Entity getEntity() {
 		return entity;
 	}
 
+	/** Sets this component's entity to the specified value. */
 	public void setEntity(Entity entity) {
 		this.entity = entity;
 	}
 
+	/** Serializes this {@link FluidComponent} to a {@link CompoundTag}. */
+	@Override
+	public void writeToNbt(CompoundTag tag) {
+		tag.putInt("oxygen", oxygen);
+	}
+
+	/** Deserializes this {@link FluidComponent} from a {@link CompoundTag}. */
+	@Override
+	public void readFromNbt(CompoundTag tag) {
+		this.oxygen = tag.getInt("oxygen");
+	}
+
+	/** Returns the {@link EntityOxygenComponent} of the given {@link V}. */
 	@Nullable
 	public static <V> EntityOxygenComponent get(V v) {
 		try {
