@@ -145,7 +145,7 @@ public abstract class CableBlock extends Block implements Waterloggable, CableWr
 
 		WorldNetworkComponent networkComponent = WorldNetworkComponent.get(world);
 
-		networkComponent.removeInstance(networkComponent.getInstance(getNetworkType(), position));
+		networkComponent.remove(networkComponent.get(getNetworkType(), position));
 
 		for (Direction directionA : Direction.values()) {
 			BlockPos offsetPos = position.offset(directionA);
@@ -171,7 +171,7 @@ public abstract class CableBlock extends Block implements Waterloggable, CableWr
 
 		WorldNetworkComponent networkComponent = WorldNetworkComponent.get(world);
 
-		networkComponent.removeInstance(networkComponent.getInstance(getNetworkType(), position));
+		networkComponent.remove(networkComponent.get(getNetworkType(), position));
 		NetworkUtilities.Tracer.INSTANCE.trace(getNetworkType(), WorldPos.of(world, position));
 
 		NetworkUtilities.Modeller modeller = new NetworkUtilities.Modeller();

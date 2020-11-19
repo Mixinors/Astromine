@@ -24,13 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
 import com.github.chainmailstudios.astromine.common.network.NetworkNode;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -43,10 +41,8 @@ import com.github.chainmailstudios.astromine.common.component.world.WorldNetwork
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
 
 import java.util.ArrayDeque;
 import java.util.Collections;
@@ -68,7 +64,7 @@ public class NetworkUtilities {
 
 			NetworkMember initialMember = NetworkMemberRegistry.get(initialPosition);
 
-			if (!initialMember.acceptsType(type) || !initialMember.isNode(type) || networkComponent.containsInstance(type, initialPosition.getBlockPos())) {
+			if (!initialMember.acceptsType(type) || !initialMember.isNode(type) || networkComponent.contains(type, initialPosition.getBlockPos())) {
 				return;
 			}
 
@@ -101,12 +97,12 @@ public class NetworkUtilities {
 
 					NetworkMember offsetMember = NetworkMemberRegistry.get(offsetObject);
 
-					NetworkInstance existingInstance = networkComponent.getInstance(type, offsetPosition);
+					NetworkInstance existingInstance = networkComponent.get(type, offsetPosition);
 
 					if (existingInstance != NetworkInstance.EMPTY) {
 						existingInstance.join(instance);
-						networkComponent.removeInstance(instance);
-						networkComponent.addInstance(existingInstance);
+						networkComponent.remove(instance);
+						networkComponent.add(existingInstance);
 						instance = existingInstance;
 						joined = true;
 					}
@@ -130,7 +126,7 @@ public class NetworkUtilities {
 				}
 			}
 
-			networkComponent.addInstance(instance);
+			networkComponent.add(instance);
 		}
 	}
 

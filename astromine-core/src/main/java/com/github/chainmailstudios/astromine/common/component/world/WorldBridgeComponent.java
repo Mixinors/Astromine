@@ -49,7 +49,14 @@ import java.util.Set;
  * A {@link Component} which stores information about
  * a {@link World}'s holographic bridges.
  *
- * Information is stored as
+ * It is important to understand how information is stored here.
+ * A {@link Map} of {@link Long}-represented {@link BlockPos} positions
+ * to a {@link Set} of {@link Vec3i} contains points in the block's
+ * 16x16 vertical grid intersected by a bridge's line.
+ *
+ * That is to say, if the bridge crosses a block horizontally entirely,
+ * there will be 16 {@link Vec3i}s, at least, representing 1-wide steps
+ * which will be used to build the block's {@link VoxelShape}.
  *
  * Serialization and deserialization methods are provided for:
  * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
@@ -69,36 +76,43 @@ public class WorldBridgeComponent implements Component {
 		return world;
 	}
 
-
+	/** Adds the given step at the specified {@link BlockPos}'s long representation. */
 	public void add(BlockPos pos, Vec3i vec) {
 		add(pos.asLong(), vec);
 	}
 
+	/** Adds the given step at the specified position. */
 	public void add(long pos, Vec3i top) {
 		entries.computeIfAbsent(pos, (k) -> Sets.newHashSet());
 		entries.get(pos).add(top);
 	}
 
+	/** Removes the steps at the specified {@link BlockPos}'s long representation. */
 	public void remove(BlockPos pos) {
 		remove(pos.asLong());
 	}
 
+	/** Removes the steps at the specified position. */
 	public void remove(long pos) {
 		entries.remove(pos);
 	}
 
+	/** Returns the steps at the given {@link BlockPos}'s long representation. */
 	public Set<Vec3i> get(BlockPos pos) {
 		return get(pos.asLong());
 	}
 
+	/** Returns the sTeps at the given position. */
 	public Set<Vec3i> get(long pos) {
 		return entries.getOrDefault(pos, Sets.newHashSet());
 	}
 
+	/** Returns the {@link VoxelShape} at the given {@link BlockPos}'s long representation. */
 	public VoxelShape getShape(BlockPos pos) {
 		return getShape(pos.asLong());
 	}
 
+	/** Returns the {@link VoxelShape} at the given position. */
 	public VoxelShape getShape(long pos) {
 		Set<Vec3i> vecs = get(pos);
 		if (vecs == null)
@@ -106,6 +120,8 @@ public class WorldBridgeComponent implements Component {
 		else return getShape(vecs);
 	}
 
+	/** Returns the {@link VoxelShape} formed by the given {@link Set} of steps.
+	 * I made this work months ago; and I don't know how. Accept it, or suffer. */
 	private VoxelShape getShape(Set<Vec3i> vecs) {
 		VoxelShape shape = VoxelShapes.empty();
 
@@ -130,6 +146,7 @@ public class WorldBridgeComponent implements Component {
 		return shape;
 	}
 
+	/** Serializes this {@link WorldBridgeComponent} to a {@link CompoundTag}. */
 	@Override
 	public void writeToNbt(CompoundTag tag) {
 		CompoundTag dataTag = new CompoundTag();
@@ -160,6 +177,7 @@ public class WorldBridgeComponent implements Component {
 		tag.put("data", dataTag);
 	}
 
+	/** Deserializes this {@link WorldBridgeComponent} from a {@link CompoundTag}. */
 	@Override
 	public void readFromNbt(CompoundTag tag) {
 		CompoundTag dataTag = tag.getCompound("data");
@@ -176,6 +194,7 @@ public class WorldBridgeComponent implements Component {
 		}
 	}
 
+	/** Returns the {@link WorldBridgeComponent} of the given {@link V}. */
 	@Nullable
 	public static <V> WorldBridgeComponent get(V v) {
 		try {
