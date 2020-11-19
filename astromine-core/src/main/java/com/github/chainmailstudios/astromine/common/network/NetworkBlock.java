@@ -110,11 +110,11 @@ public interface NetworkBlock {
 	 * {@link NetworkType}, or {@link NetworkMemberType#NODE}
 	 * if the type is unknown. */
 	default NetworkMemberType getMemberType(NetworkType type) {
-		if (AstromineNetworkTypes.ENERGY.equals(type)) {
+		if (type.equals(AstromineNetworkTypes.ENERGY)) {
 			return getEnergyNetworkMemberType();
-		} else if (AstromineNetworkTypes.FLUID.equals(type)) {
+		} else if (type.equals(AstromineNetworkTypes.FLUID)) {
 			return getFluidNetworkMemberType();
-		} else if (AstromineNetworkTypes.ITEM.equals(type)) {
+		} else if (type.equals(AstromineNetworkTypes.ITEM)) {
 			return getItemNetworkMemberType();
 		}
 

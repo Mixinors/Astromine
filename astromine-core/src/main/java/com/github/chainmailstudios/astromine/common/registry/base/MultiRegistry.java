@@ -67,9 +67,11 @@ public abstract class MultiRegistry<K, V> {
 	}
 
 	/** Associates the given {@link K} key with the specified {@link V} value.
-	 * Returns whether another key-value pair of same hash did not already exist. */
-	public boolean register(K k, V v) {
-		return set(k, v);
+	 * Returns the given {@link V} value. */
+	public V register(K k, V v) {
+		set(k, v);
+
+		return v;
 	}
 
 	/** Dissociates the given {@link K} key from the specified {@link V} value.

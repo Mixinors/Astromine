@@ -66,9 +66,11 @@ public class UniRegistry<K, V> {
 	}
 
 	/** Associates the given {@link K} key with the specified {@link V} value.
-	 * Returns the existing value for the {@link K} key, or null if none existed. */
+	 * Returns the given {@link V} value. */
 	public V register(K k, V v) {
-		return set(k, v);
+		set(k, v);
+
+		return v;
 	}
 
 	/** Dissociates the given {@link K} key from the specified {@link V} value.
