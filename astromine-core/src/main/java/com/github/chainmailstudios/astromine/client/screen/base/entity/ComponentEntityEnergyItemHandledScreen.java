@@ -24,13 +24,19 @@
 
 package com.github.chainmailstudios.astromine.client.screen.base.entity;
 
+import com.github.chainmailstudios.astromine.common.screenhandler.base.entity.ComponentEntityFluidItemScreenHandler;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
 import com.github.chainmailstudios.astromine.common.screenhandler.base.entity.ComponentEntityEnergyItemScreenHandler;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 
+/**
+ * A {@link ComponentEntityHandledScreen} used by
+ * {@link ComponentEntityEnergyItemScreenHandler}.
+ */
 public abstract class ComponentEntityEnergyItemHandledScreen<T extends ComponentEntityEnergyItemScreenHandler> extends ComponentEntityHandledScreen<T> {
+	/** Instantiates a {@link ComponentEntityEnergyItemHandledScreen}. */
 	public ComponentEntityEnergyItemHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 	}

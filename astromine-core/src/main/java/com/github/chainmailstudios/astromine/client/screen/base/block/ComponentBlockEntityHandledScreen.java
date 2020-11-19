@@ -31,7 +31,12 @@ import com.github.chainmailstudios.astromine.client.screen.base.CustomForeground
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 
+/**
+ * A {@link CustomForegroundBaseHandledScreen} used by
+ * {@link ComponentBlockEntityScreenHandler}.
+ */
 public class ComponentBlockEntityHandledScreen<T extends ComponentBlockEntityScreenHandler> extends CustomForegroundBaseHandledScreen<T> {
+	/** Instantiates a {@link ComponentBlockEntityHandledScreen}. */
 	public ComponentBlockEntityHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 	}

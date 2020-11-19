@@ -26,6 +26,7 @@ package com.github.chainmailstudios.astromine.advancement;
 
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
+import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
 import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -35,32 +36,46 @@ import com.github.chainmailstudios.astromine.registry.AstromineCriteria;
 
 import com.google.gson.JsonObject;
 
+/**
+ * A {@link Criterion} for tricking piglins by
+ * giving them a gold-like substance, which is not,
+ * in fact, gold.
+ */
 public class TrickedPiglinCriterion extends AbstractCriterion<TrickedPiglinCriterion.Conditions> {
 	public final Identifier id;
 
+	/** Instantiates a {@link TrickedPiglinCriterion}. */
 	public TrickedPiglinCriterion(Identifier id) {
 		this.id = id;
 	}
 
+	/** Reads {@link Conditions} from a {@link JsonObject}. */;
 	@Override
 	protected TrickedPiglinCriterion.Conditions conditionsFromJson(JsonObject obj, EntityPredicate.Extended playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
 		return new Conditions(this.id, playerPredicate);
 	}
 
+	/** Returns this {@link Criterion}'s ID. */
 	@Override
 	public Identifier getId() {
 		return id;
 	}
 
+	/** Triggers this {@link Criterion} for the given player. */
 	public void trigger(ServerPlayerEntity player) {
 		this.test(player, conditions -> true);
 	}
 
+	/**
+	 * Conditions for {@link #trigger(ServerPlayerEntity)}.
+	 */
 	public static class Conditions extends AbstractCriterionConditions {
+		/** Instantiates {@link Conditions}. */
 		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate) {
 			super(id, playerPredicate);
 		}
 
+		/** Instantiates {@link Conditions}. */
 		public static Conditions create() {
 			return new Conditions(AstromineCriteria.TRICKED_PIGLIN.getId(), EntityPredicate.Extended.EMPTY);
 		}
