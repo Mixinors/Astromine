@@ -25,7 +25,7 @@ public class TextUtilities {
 
     /** Returns the "16k/32k" text. */
     public static Text getVolume(Volume<?> volume) {
-        return new LiteralText(NumberUtilities.shorten(volume.getAmount().longValue(), "") + "/" + NumberUtilities.shorten(volume.getSize().longValue(), "")).formatted(Formatting.GRAY);
+        return new LiteralText(NumberUtilities.shorten(volume.getAmount().doubleValue(), "") + "/" + NumberUtilities.shorten(volume.getSize().doubleValue(), "")).formatted(Formatting.GRAY);
     }
 
     /** Returns the "Water" / "Lava" / "Hydrogen" / ... text. */
