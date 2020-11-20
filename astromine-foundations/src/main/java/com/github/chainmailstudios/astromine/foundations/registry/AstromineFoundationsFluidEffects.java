@@ -33,12 +33,14 @@ import com.github.chainmailstudios.astromine.registry.AstromineFluidEffects;
 
 public class AstromineFoundationsFluidEffects extends AstromineFluidEffects {
 	public static void initialize() {
-		FluidEffectRegistry.INSTANCE.register(Fluids.LAVA, (entity) -> {
-			entity.setOnFireFor(15);
+		FluidEffectRegistry.INSTANCE.register(Fluids.LAVA, (submerged, entity) -> {
+			if (!submerged) {
+				entity.setOnFireFor(15);
+			}
 		});
 
 		AstromineFoundationsFluids.OIL_DERIVATIVES.forEach(fluid -> {
-			FluidEffectRegistry.INSTANCE.register(fluid, (entity) -> {
+			FluidEffectRegistry.INSTANCE.register(fluid, (submerged, entity) -> {
 				entity.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 30 * 20, 3));
 				entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 30 * 20, 3));
 				entity.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 30 * 20, 1));

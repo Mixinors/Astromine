@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "astromine:item/pressurized_gas_canister"
+    "layer0": "astromine:item/portable_tank"
   }
 }

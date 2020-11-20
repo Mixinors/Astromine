@@ -9,7 +9,6 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
-import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import me.shedaniel.cloth.api.datagen.v1.ModelStateData;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
@@ -19,11 +18,8 @@ import java.util.Optional;
 public class MachineModelStateGenerator extends GenericBlockModelStateGenerator {
 	private static final Model MACHINE = getModel("cube", TextureKey.NORTH, TextureKey.SOUTH, TextureKey.EAST, TextureKey.WEST, TextureKey.UP, TextureKey.DOWN);
 
-	private final MachineTier tier;
-
-	public MachineModelStateGenerator(MachineTier tier, Block... blocks) {
+	public MachineModelStateGenerator(Block... blocks) {
 		super(blocks);
-		this.tier = tier;
 	}
 
 	public static BlockStateVariantMap getActiveMap(Identifier active, Identifier inactive) {

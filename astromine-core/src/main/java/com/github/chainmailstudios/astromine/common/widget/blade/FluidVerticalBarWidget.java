@@ -99,7 +99,7 @@ public class FluidVerticalBarWidget extends AbstractWidget {
 		}
 	}
 
-	/** Returns the tooltip of this widget. */
+	/** Returns this widget's tooltip. */
 	@Environment(EnvType.CLIENT)
 	@Override
 	public List<Text> getTooltip() {

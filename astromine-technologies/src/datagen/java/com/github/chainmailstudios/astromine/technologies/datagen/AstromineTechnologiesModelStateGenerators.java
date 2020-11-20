@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine.technologies.datagen;
 
-import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.ModelStateGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.GenericItemModelGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.HandheldItemModelGenerator;
@@ -10,7 +9,7 @@ import com.github.chainmailstudios.astromine.technologies.registry.AstromineTech
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesItems;
 
 public class AstromineTechnologiesModelStateGenerators extends AstromineModelStateGenerators {
-	public final ModelStateGenerator PRIMITIVE_MACHINES = register(new MachineModelStateGenerator(MachineTier.PRIMITIVE,
+	public final ModelStateGenerator PRIMITIVE_MACHINES = register(new MachineModelStateGenerator(
 			AstromineTechnologiesBlocks.PRIMITIVE_ALLOY_SMELTER,
 			AstromineTechnologiesBlocks.PRIMITIVE_ELECTRIC_FURNACE,
 			AstromineTechnologiesBlocks.PRIMITIVE_ELECTROLYZER,
@@ -28,7 +27,7 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 			AstromineTechnologiesBlocks.PRIMITIVE_TANK
 	));
 
-	public final ModelStateGenerator BASIC_MACHINES = register(new MachineModelStateGenerator(MachineTier.BASIC,
+	public final ModelStateGenerator BASIC_MACHINES = register(new MachineModelStateGenerator(
 			AstromineTechnologiesBlocks.BASIC_ALLOY_SMELTER,
 			AstromineTechnologiesBlocks.BASIC_ELECTRIC_FURNACE,
 			AstromineTechnologiesBlocks.BASIC_ELECTROLYZER,
@@ -46,7 +45,7 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 			AstromineTechnologiesBlocks.BASIC_TANK
 			));
 
-	public final ModelStateGenerator ADVANCED_MACHINES = register(new MachineModelStateGenerator(MachineTier.ADVANCED,
+	public final ModelStateGenerator ADVANCED_MACHINES = register(new MachineModelStateGenerator(
 			AstromineTechnologiesBlocks.ADVANCED_ALLOY_SMELTER,
 			AstromineTechnologiesBlocks.ADVANCED_ELECTRIC_FURNACE,
 			AstromineTechnologiesBlocks.ADVANCED_ELECTROLYZER,
@@ -64,7 +63,7 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 			AstromineTechnologiesBlocks.ADVANCED_TANK
 	));
 
-	public final ModelStateGenerator ELITE_MACHINES = register(new MachineModelStateGenerator(MachineTier.ELITE,
+	public final ModelStateGenerator ELITE_MACHINES = register(new MachineModelStateGenerator(
 			AstromineTechnologiesBlocks.ELITE_ALLOY_SMELTER,
 			AstromineTechnologiesBlocks.ELITE_ELECTRIC_FURNACE,
 			AstromineTechnologiesBlocks.ELITE_ELECTROLYZER,
@@ -82,7 +81,7 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 			AstromineTechnologiesBlocks.ELITE_TANK
 	));
 
-	public final ModelStateGenerator CREATIVE_MACHINES = register(new MachineModelStateGenerator(MachineTier.CREATIVE,
+	public final ModelStateGenerator CREATIVE_MACHINES = register(new MachineModelStateGenerator(
 			AstromineTechnologiesBlocks.CREATIVE_BUFFER,
 			AstromineTechnologiesBlocks.CREATIVE_CAPACITOR,
 			AstromineTechnologiesBlocks.CREATIVE_TANK
@@ -102,8 +101,8 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 	));
 
 	public final ModelStateGenerator CANISTERS = register(new GenericItemModelGenerator(
-			AstromineTechnologiesItems.GAS_CANISTER,
-			AstromineTechnologiesItems.PRESSURIZED_GAS_CANISTER
+			AstromineTechnologiesItems.LARGE_LARGE_TANK,
+			AstromineTechnologiesItems.PORTABLE_TANK
 	));
 
 	public final ModelStateGenerator CIRCUITS = register(new GenericItemModelGenerator(

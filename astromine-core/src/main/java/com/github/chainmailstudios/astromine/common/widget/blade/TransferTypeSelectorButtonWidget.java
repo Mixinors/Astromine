@@ -165,7 +165,7 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 		super.onMouseReleased(mouseX, mouseY, mouseButton);
 	}
 
-	/** Returns the tooltip of this widget. */
+	/** Returns this widget's tooltip. */
 	@Environment(EnvType.CLIENT)
 	@Override
 	public @NotNull List<Text> getTooltip() {

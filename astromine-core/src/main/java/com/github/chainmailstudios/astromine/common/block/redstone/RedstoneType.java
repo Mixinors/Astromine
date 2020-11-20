@@ -68,4 +68,21 @@ public enum RedstoneType {
             }
         }
     }
+
+    /** Returns the next type on this enum. */
+    public RedstoneType next() {
+        switch (this) {
+            case WORK_ALWAYS: {
+                return WORK_WHEN_OFF;
+            }
+
+            case WORK_WHEN_OFF: {
+                return WORK_WHEN_ON;
+            }
+
+            default: {
+                return WORK_ALWAYS;
+            }
+        }
+    }
 }

@@ -5,6 +5,11 @@ import com.github.chainmailstudios.astromine.registry.AstromineIdentifierFixes;
 
 public class AstromineTechnologiesIdentifierFixes extends AstromineIdentifierFixes {
     public static void initialize() {
+        register("fluid_cable", "fluid_pipe");
+
+        register("gas_canister", "large_portable_tank");
+        register("pressurized_gas_canister", "portable_tank");
+
         register("fluid_inserter", "fluid_placer");
         register("fluid_extractor", "fluid_collector");
 

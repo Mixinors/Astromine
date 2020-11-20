@@ -119,7 +119,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 					if (blockState.getBlock() instanceof FluidBlock) {
 						isSubmerged = true;
 
-						Optional.ofNullable(FluidEffectRegistry.INSTANCE.get(blockState.getFluidState().getFluid())).ifPresent(it -> it.accept((LivingEntity) (Object) this));
+						Optional.ofNullable(FluidEffectRegistry.INSTANCE.get(blockState.getFluidState().getFluid())).ifPresent(it -> it.accept(true, (LivingEntity) (Object) this));
 					}
 				}
 
@@ -170,7 +170,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 
 											if (!canBreathe) {
 												if (FluidEffectRegistry.INSTANCE.containsKey(volume.getFluid())) {
-													FluidEffectRegistry.INSTANCE.get(volume.getFluid()).accept((LivingEntity) entity);
+													FluidEffectRegistry.INSTANCE.get(volume.getFluid()).accept(false, (LivingEntity) entity);
 												}
 											}
 										}
@@ -180,7 +180,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 						}
 
 						if (!hasSuit && FluidEffectRegistry.INSTANCE.containsKey(atmosphereVolume.getFluid())) {
-							FluidEffectRegistry.INSTANCE.get(atmosphereVolume.getFluid()).accept((LivingEntity) entity);
+							FluidEffectRegistry.INSTANCE.get(atmosphereVolume.getFluid()).accept(false, (LivingEntity) entity);
 						}
 
 						if (!isBreathing) {

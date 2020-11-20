@@ -64,6 +64,8 @@ import java.util.Set;
 public final class WorldBridgeComponent implements Component {
 	private final Long2ObjectArrayMap<Set<Vec3i>> entries = new Long2ObjectArrayMap<>();
 
+	private final Long2ObjectArrayMap<VoxelShape> cache = new Long2ObjectArrayMap<>();
+
 	private final World world;
 
 	/** Instantiates a {@link WorldBridgeComponent}. */
@@ -85,6 +87,8 @@ public final class WorldBridgeComponent implements Component {
 	public void add(long pos, Vec3i top) {
 		entries.computeIfAbsent(pos, (k) -> Sets.newHashSet());
 		entries.get(pos).add(top);
+
+		cache.remove(pos);
 	}
 
 	/** Removes the steps at the specified {@link BlockPos}'s long representation. */
@@ -95,6 +99,8 @@ public final class WorldBridgeComponent implements Component {
 	/** Removes the steps at the specified position. */
 	public void remove(long pos) {
 		entries.remove(pos);
+
+		cache.remove(pos);
 	}
 
 	/** Returns the steps at the given {@link BlockPos}'s long representation. */
@@ -114,10 +120,18 @@ public final class WorldBridgeComponent implements Component {
 
 	/** Returns the {@link VoxelShape} at the given position. */
 	public VoxelShape getShape(long pos) {
+		if (cache.containsKey(pos)) return cache.get(pos);
+
 		Set<Vec3i> vecs = get(pos);
+
 		if (vecs == null)
 			return VoxelShapes.fullCube();
-		else return getShape(vecs);
+
+		VoxelShape shape = getShape(vecs);
+
+		cache.put(pos, shape);
+
+		return shape;
 	}
 
 	/** Returns the {@link VoxelShape} formed by the given {@link Set} of steps.

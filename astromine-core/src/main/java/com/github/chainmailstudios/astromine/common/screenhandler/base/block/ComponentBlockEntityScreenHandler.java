@@ -26,6 +26,7 @@ package com.github.chainmailstudios.astromine.common.screenhandler.base.block;
 
 import com.github.chainmailstudios.astromine.common.block.redstone.RedstoneType;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
+import com.github.chainmailstudios.astromine.common.widget.blade.RedstoneWidget;
 import com.github.vini2003.blade.common.collection.base.WidgetCollection;
 import com.github.vini2003.blade.common.widget.base.ButtonWidget;
 import net.minecraft.block.Block;
@@ -119,7 +120,7 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 
 		addWidget(tabs);
 
-		mainTab = (TabWidgetCollection) tabs.addTab(blockEntity.getCachedState().getBlock().asItem());
+		mainTab = (TabWidgetCollection) tabs.addTab(blockEntity.getCachedState().getBlock().asItem(), () -> Collections.singletonList(new TranslatableText(blockEntity.getCachedState().getBlock().getTranslationKey())));
 		mainTab.setPosition(Position.of(tabs, 0, 25F + 7F));
 		mainTab.setSize(Size.of(176F, 184F));
 
@@ -170,63 +171,11 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 			}
 		});
 
-		BlockEntityRedstoneComponent redstoneComponent = BlockEntityRedstoneComponent.get(blockEntity);
+		RedstoneWidget redstoneWidget = new RedstoneWidget();
+		redstoneWidget.setPosition(Position.of(tabs, mainTab.getWidth() - 20, 0));
+		redstoneWidget.setSize(Size.of(20, 19));
+		redstoneWidget.setBlockEntity(blockEntity);
 
-		WidgetCollection redstoneTab = tabs.addTab(Items.REDSTONE, () -> Collections.singletonList(new TranslatableText("text.astromine.redstone")));
-
-		ButtonWidget[] redstoneButtons = new ButtonWidget[]{new ButtonWidget() {
-			@NotNull
-			@Override
-			public List<Text> getTooltip() {
-				return Collections.singletonList(new TranslatableText("tooltip.astromine.work_when_off").formatted(Formatting.RED));
-			}
-		}, new ButtonWidget() {
-			@NotNull
-			@Override
-			public List<Text> getTooltip() {
-				return Collections.singletonList(new TranslatableText("tooltip.astromine.work_when_on").formatted(Formatting.GREEN));
-			}
-		}, new ButtonWidget() {
-			@NotNull
-			@Override
-			public List<Text> getTooltip() {
-				return Collections.singletonList(new TranslatableText("tooltip.astromine.work_always").formatted(Formatting.YELLOW));
-			}
-		}};
-
-		for (int i : new int[] {0, 1, 2}) {
-			ButtonWidget redstoneButton = redstoneButtons[i];
-
-			int buttonOffset = (i * 18) + i * 9 + 9;
-
-			redstoneButton.setPosition(Position.of(mainTab.getX() + mainTab.getWidth() / 2 - 64 / 2, mainTab.getY() + mainTab.getHeight() / 2 - buttonOffset + 9));
-			redstoneButton.setSize(Size.of(64, 18));
-			redstoneButton.setLabel(RedstoneType.byNumber(i).asText());
-			redstoneButton.setClickAction(() -> {
-				if (!redstoneButton.getHidden()) {
-					RedstoneType type = RedstoneType.byNumber(i);
-
-					redstoneButton.setLabel(type.asText());
-
-					redstoneComponent.setType(type);
-
-					for (int k : new int[] {0, 1, 2}) {
-						if (k != i) {
-							redstoneButtons[k].setDisabled(() -> false);
-						} else {
-							redstoneButtons[k].setDisabled(() -> true);
-						}
-					}
-				}
-
-				return null;
-			});
-
-			if (RedstoneType.byNumber(i) == redstoneComponent.getType()) {
-				redstoneButton.setDisabled(() -> true);
-			}
-
-			redstoneTab.addWidget(redstoneButton);
-		}
+		addWidget(redstoneWidget);
 	}
 }

@@ -88,7 +88,7 @@ public class FluidFilterWidget extends ButtonWidget {
 		}
 	}
 
-	/** Returns the tooltip of this widget. */
+	/** Returns this widget's tooltip. */
 	@NotNull
 	@Override
 	public List<Text> getTooltip() {

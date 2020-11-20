@@ -517,11 +517,11 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Energy for the Elite Drill.")
 	public double eliteDrillEnergy = 640000;
 	
-	@Comment("Fluid for the Gas Canister.")
-	public long gasCanisterFluid = 8L;
+	@Comment("Fluid for the Large Portable Tank.")
+	public long largePortableTankFluid = 16L;
 
-	@Comment("Fluid for the Pressurized Gas Canister.")
-	public long pressurizedGasCanisterFluid = 32L;
+	@Comment("Fluid for the Portable Tank.")
+	public long portableTankFluid = 8L;
 
 	@Comment("Energy rate for the Primitive Energy Cable.")
 	public double primitiveEnergyCableEnergy = 64D;

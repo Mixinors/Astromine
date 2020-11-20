@@ -88,7 +88,7 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		VolumeUtilities.transferBetweenFirstAndSecond(getFluidComponent(), getItemComponent());
+		VolumeUtilities.transferBetween(getItemComponent(), getFluidComponent(), 0, 1, 0);
 	}
 
 	@Override

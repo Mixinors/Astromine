@@ -71,7 +71,7 @@ public class EnergyVerticalBarWidget extends AbstractWidget {
 		this.volumeSupplier = volumeSupplier;
 	}
 
-	/** Returns the tooltip of this widget. */
+	/** Returns this widget's tooltip. */
 	@Environment(EnvType.CLIENT)
 	@Override
 	public @NotNull List<Text> getTooltip() {

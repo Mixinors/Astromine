@@ -10,7 +10,7 @@
       "tag": "c:iron_plates"
     },
     "1": {
-      "item": "astromine:gas_canister"
+      "item": "astromine:large_portable_tank"
     },
     "2": {
       "tag": "c:iron_plates"
@@ -28,7 +28,7 @@
       "tag": "c:iron_plates"
     },
     "7": {
-      "item": "astromine:gas_canister"
+      "item": "astromine:large_portable_tank"
     },
     "8": {
       "tag": "c:iron_plates"
