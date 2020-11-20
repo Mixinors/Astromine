@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/cube_bottom_top",
-  "textures": {
-    "top": "astromine:block/creative_buffer_top",
-    "bottom": "astromine:block/creative_machine_bottom",
-    "side": "astromine:block/creative_machine_side"
-  }
-}

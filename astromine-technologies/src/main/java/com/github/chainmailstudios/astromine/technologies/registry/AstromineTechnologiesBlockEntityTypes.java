@@ -56,10 +56,10 @@ public class AstromineTechnologiesBlockEntityTypes extends AstromineBlockEntityT
 	public static final BlockEntityType<FluidGeneratorBlockEntity.Advanced> ADVANCED_LIQUID_GENERATOR = register("advanced_fluid_generator", FluidGeneratorBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_LIQUID_GENERATOR);
 	public static final BlockEntityType<FluidGeneratorBlockEntity.Elite> ELITE_LIQUID_GENERATOR = register("elite_fluid_generator", FluidGeneratorBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_LIQUID_GENERATOR);
 
-	public static final BlockEntityType<ElectricFurnaceBlockEntity.Primitive> PRIMITIVE_ELECTRIC_SMELTER = register("primitive_electric_furnace", ElectricFurnaceBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_ELECTRIC_SMELTER);
-	public static final BlockEntityType<ElectricFurnaceBlockEntity.Basic> BASIC_ELECTRIC_SMELTER = register("basic_electric_furnace", ElectricFurnaceBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_ELECTRIC_SMELTER);
-	public static final BlockEntityType<ElectricFurnaceBlockEntity.Advanced> ADVANCED_ELECTRIC_SMELTER = register("advanced_electric_furnace", ElectricFurnaceBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_ELECTRIC_SMELTER);
-	public static final BlockEntityType<ElectricFurnaceBlockEntity.Elite> ELITE_ELECTRIC_SMELTER = register("elite_electric_furnace", ElectricFurnaceBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_ELECTRIC_SMELTER);
+	public static final BlockEntityType<ElectricFurnaceBlockEntity.Primitive> PRIMITIVE_ELECTRIC_FURNACE = register("primitive_electric_furnace", ElectricFurnaceBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_ELECTRIC_FURNACE);
+	public static final BlockEntityType<ElectricFurnaceBlockEntity.Basic> BASIC_ELECTRIC_FURNACE = register("basic_electric_furnace", ElectricFurnaceBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_ELECTRIC_FURNACE);
+	public static final BlockEntityType<ElectricFurnaceBlockEntity.Advanced> ADVANCED_ELECTRIC_FURNACE = register("advanced_electric_furnace", ElectricFurnaceBlockEntity.Advanced::new, AstromineTechnologiesBlocks.ADVANCED_ELECTRIC_FURNACE);
+	public static final BlockEntityType<ElectricFurnaceBlockEntity.Elite> ELITE_ELECTRIC_FURNACE = register("elite_electric_furnace", ElectricFurnaceBlockEntity.Elite::new, AstromineTechnologiesBlocks.ELITE_ELECTRIC_FURNACE);
 
 	public static final BlockEntityType<AlloySmelterBlockEntity.Primitive> PRIMITIVE_ALLOY_SMELTER = register("primitive_alloy_smelter", AlloySmelterBlockEntity.Primitive::new, AstromineTechnologiesBlocks.PRIMITIVE_ALLOY_SMELTER);
 	public static final BlockEntityType<AlloySmelterBlockEntity.Basic> BASIC_ALLOY_SMELTER = register("basic_alloy_smelter", AlloySmelterBlockEntity.Basic::new, AstromineTechnologiesBlocks.BASIC_ALLOY_SMELTER);

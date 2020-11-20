@@ -109,7 +109,7 @@
   "block.astromine.basic_fluid_mixer": "Flüssigkeiten-Mixer",
   "block.astromine.advanced_fluid_mixer": "Verbesserter Flüssigkeiten-Mixer",
   "block.astromine.elite_fluid_mixer": "Elitärer Flüssigkeiten-Mixer",
-  "block.astromine.fluid_cable": "Flüssigkeiten-Kabel",
+  "block.astromine.fluid_pipe": "Flüssigkeiten-Kabel",
   "block.astromine.primitive_energy_cable": "Primitives Energiekabel",
   "block.astromine.basic_energy_cable": "Energiekabel",
   "block.astromine.advanced_energy_cable": "Verbessertes Energiekabel",

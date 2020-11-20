@@ -60,10 +60,10 @@ public class AstromineTechnologiesBlocks extends AstromineBlocks {
 	public static final Block ADVANCED_LIQUID_GENERATOR = register("advanced_fluid_generator", new FluidGeneratorBlock.Advanced(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block ELITE_LIQUID_GENERATOR = register("elite_fluid_generator", new FluidGeneratorBlock.Elite(getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
 
-	public static final Block PRIMITIVE_ELECTRIC_SMELTER = register("primitive_electric_furnace", new ElectricFurnaceBlock.Primitive(getPrimitiveSettings()), AstromineTechnologiesItems.getBasicSettings());
-	public static final Block BASIC_ELECTRIC_SMELTER = register("basic_electric_furnace", new ElectricFurnaceBlock.Basic(getBasicSettings()), AstromineTechnologiesItems.getBasicSettings());
-	public static final Block ADVANCED_ELECTRIC_SMELTER = register("advanced_electric_furnace", new ElectricFurnaceBlock.Advanced(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
-	public static final Block ELITE_ELECTRIC_SMELTER = register("elite_electric_furnace", new ElectricFurnaceBlock.Elite(getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block PRIMITIVE_ELECTRIC_FURNACE = register("primitive_electric_furnace", new ElectricFurnaceBlock.Primitive(getPrimitiveSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block BASIC_ELECTRIC_FURNACE = register("basic_electric_furnace", new ElectricFurnaceBlock.Basic(getBasicSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block ADVANCED_ELECTRIC_FURNACE = register("advanced_electric_furnace", new ElectricFurnaceBlock.Advanced(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block ELITE_ELECTRIC_FURNACE = register("elite_electric_furnace", new ElectricFurnaceBlock.Elite(getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
 
 	public static final Block PRIMITIVE_ALLOY_SMELTER = register("primitive_alloy_smelter", new AlloySmelterBlock.Primitive(getPrimitiveSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block BASIC_ALLOY_SMELTER = register("basic_alloy_smelter", new AlloySmelterBlock.Basic(getBasicSettings()), AstromineTechnologiesItems.getBasicSettings());

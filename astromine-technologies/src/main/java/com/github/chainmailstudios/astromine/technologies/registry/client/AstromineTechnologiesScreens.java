@@ -66,7 +66,7 @@ public class AstromineTechnologiesScreens extends AstromineScreens {
 
 		ScreenRegistry.register(AstromineTechnologiesScreenHandlers.WIREMILL, WireMillHandledScreen::new);
 
-		ScreenRegistry.register(AstromineTechnologiesScreenHandlers.ELECTRIC_SMELTER, ElectricFurnaceHandledScreen::new);
+		ScreenRegistry.register(AstromineTechnologiesScreenHandlers.ELECTRIC_FURNACE, ElectricFurnaceHandledScreen::new);
 
 		ScreenRegistry.register(AstromineTechnologiesScreenHandlers.ELECTROLYZER, ElectrolyzerHandledScreen::new);
 

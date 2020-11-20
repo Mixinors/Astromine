@@ -1,9 +1,11 @@
 {
-  "parent": "minecraft:block/orientable_with_bottom",
+  "parent": "minecraft:block/cube",
   "textures": {
-    "top": "astromine:block/basic_machine_top",
-    "bottom": "astromine:block/basic_machine_bottom",
-    "side": "astromine:block/basic_machine_side",
-    "front": "astromine:block/basic_fluid_generator_front_active"
+    "north": "astromine:block/fluid_generator/active/basic_fluid_generator_back",
+    "south": "astromine:block/fluid_generator/active/basic_fluid_generator_front",
+    "east": "astromine:block/fluid_generator/active/basic_fluid_generator_right",
+    "west": "astromine:block/fluid_generator/active/basic_fluid_generator_left",
+    "up": "astromine:block/fluid_generator/active/basic_fluid_generator_top",
+    "down": "astromine:block/fluid_generator/active/basic_fluid_generator_bottom"
   }
 }

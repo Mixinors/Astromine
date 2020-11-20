@@ -116,8 +116,8 @@ public class AstromineTechnologiesRoughlyEnoughItemsPlugin extends AstromineRoug
 	public void registerOthers(RecipeHelper recipeHelper) {
 		recipeHelper.registerWorkingStations(TRITURATING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_TRITURATOR), EntryStack.create(AstromineTechnologiesBlocks.BASIC_TRITURATOR), EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_TRITURATOR), EntryStack.create(
 			AstromineTechnologiesBlocks.ELITE_TRITURATOR));
-		recipeHelper.registerWorkingStations(ELECTRIC_SMELTING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_ELECTRIC_SMELTER), EntryStack.create(AstromineTechnologiesBlocks.BASIC_ELECTRIC_SMELTER), EntryStack.create(
-			AstromineTechnologiesBlocks.ADVANCED_ELECTRIC_SMELTER), EntryStack.create(AstromineTechnologiesBlocks.ELITE_ELECTRIC_SMELTER));
+		recipeHelper.registerWorkingStations(ELECTRIC_SMELTING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_ELECTRIC_FURNACE), EntryStack.create(AstromineTechnologiesBlocks.BASIC_ELECTRIC_FURNACE), EntryStack.create(
+			AstromineTechnologiesBlocks.ADVANCED_ELECTRIC_FURNACE), EntryStack.create(AstromineTechnologiesBlocks.ELITE_ELECTRIC_FURNACE));
 		recipeHelper.registerWorkingStations(LIQUID_GENERATING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_LIQUID_GENERATOR), EntryStack.create(AstromineTechnologiesBlocks.BASIC_LIQUID_GENERATOR), EntryStack.create(
 			AstromineTechnologiesBlocks.ADVANCED_LIQUID_GENERATOR), EntryStack.create(AstromineTechnologiesBlocks.ELITE_LIQUID_GENERATOR));
 		recipeHelper.registerWorkingStations(SOLID_GENERATING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_SOLID_GENERATOR), EntryStack.create(AstromineTechnologiesBlocks.BASIC_SOLID_GENERATOR), EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_SOLID_GENERATOR),

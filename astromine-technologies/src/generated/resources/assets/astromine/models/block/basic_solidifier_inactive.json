@@ -1,9 +1,11 @@
 {
-  "parent": "minecraft:block/orientable_with_bottom",
+  "parent": "minecraft:block/cube",
   "textures": {
-    "top": "astromine:block/basic_machine_top",
-    "bottom": "astromine:block/basic_machine_bottom",
-    "side": "astromine:block/basic_machine_side",
-    "front": "astromine:block/basic_solidifier_front_inactive"
+    "north": "astromine:block/solidifier/inactive/basic_solidifier_back",
+    "south": "astromine:block/solidifier/inactive/basic_solidifier_front",
+    "east": "astromine:block/solidifier/inactive/basic_solidifier_right",
+    "west": "astromine:block/solidifier/inactive/basic_solidifier_left",
+    "up": "astromine:block/solidifier/inactive/basic_solidifier_top",
+    "down": "astromine:block/solidifier/inactive/basic_solidifier_bottom"
   }
 }

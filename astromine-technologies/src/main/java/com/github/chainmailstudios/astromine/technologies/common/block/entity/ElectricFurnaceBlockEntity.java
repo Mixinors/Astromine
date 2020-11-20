@@ -191,7 +191,7 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 
 	public static class Primitive extends ElectricFurnaceBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_ELECTRIC_SMELTER);
+			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_ELECTRIC_FURNACE);
 		}
 
 		@Override
@@ -212,7 +212,7 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 
 	public static class Basic extends ElectricFurnaceBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlockEntityTypes.BASIC_ELECTRIC_SMELTER);
+			super(AstromineTechnologiesBlockEntityTypes.BASIC_ELECTRIC_FURNACE);
 		}
 
 		@Override
@@ -233,7 +233,7 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 
 	public static class Advanced extends ElectricFurnaceBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_ELECTRIC_SMELTER);
+			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_ELECTRIC_FURNACE);
 		}
 
 		@Override
@@ -254,7 +254,7 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 
 	public static class Elite extends ElectricFurnaceBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlockEntityTypes.ELITE_ELECTRIC_SMELTER);
+			super(AstromineTechnologiesBlockEntityTypes.ELITE_ELECTRIC_FURNACE);
 		}
 
 		@Override

@@ -559,10 +559,10 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Whether AK9 should asphyxiate.")
 	public boolean asphyxiateAK9 = true;
 
-	@Comment("Fluid numerator for the Fluid Cable and inter-machine transfer.")
+	@Comment("Fluid numerator for the Fluid Pipe and inter-machine transfer.")
 	public long fluidTransferNumerator = 1;
 
-	@Comment("Fluid denominator for the Fluid Cable and inter-machine transfer.")
+	@Comment("Fluid denominator for the Fluid Pipe and inter-machine transfer.")
 	public long fluidTransferDenominator = 5;
 
 	@Comment("Fluid for the Primitive Melter.")

@@ -40,7 +40,7 @@ public class ElectricFurnaceScreenHandler extends ComponentBlockEntityEnergyItem
 	private ElectricFurnaceBlockEntity smelter;
 
 	public ElectricFurnaceScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AstromineTechnologiesScreenHandlers.ELECTRIC_SMELTER, syncId, player, position);
+		super(AstromineTechnologiesScreenHandlers.ELECTRIC_FURNACE, syncId, player, position);
 
 		smelter = (ElectricFurnaceBlockEntity) blockEntity;
 	}

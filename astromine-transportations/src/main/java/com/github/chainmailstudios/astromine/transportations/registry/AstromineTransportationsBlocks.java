@@ -59,7 +59,7 @@ public class AstromineTransportationsBlocks extends AstromineBlocks {
 	public static final Block CATWALK = register("catwalk", new CatwalkBlock(FabricBlockSettings.copyOf(Blocks.STONE).sounds(BlockSoundGroup.METAL).nonOpaque()), AstromineTransportationsItems.getBasicSettings());
 	public static final Block CATWALK_STAIRS = register("catwalk_stairs", new CatwalkStairsBlock(FabricBlockSettings.copyOf(Blocks.STONE).sounds(BlockSoundGroup.METAL).nonOpaque()), AstromineTransportationsItems.getBasicSettings());
 
-	public static final Block FLUID_CABLE = register("fluid_cable", new FluidCableBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AstromineTransportationsItems.getBasicSettings());
+	public static final Block FLUID_CABLE = register("fluid_pipe", new FluidPipeBlock(FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AstromineTransportationsItems.getBasicSettings());
 
 	public static final Block PRIMITIVE_ENERGY_CABLE = register("primitive_energy_cable", new EnergyCableBlock(AstromineConfig.get().primitiveEnergyCableEnergy, FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AstromineTransportationsItems.getBasicSettings());
 	public static final Block BASIC_ENERGY_CABLE = register("basic_energy_cable", new EnergyCableBlock(AstromineConfig.get().basicEnergyCableEnergy, FabricBlockSettings.of(Material.METAL).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(1F, 1.5F).sounds(BlockSoundGroup.METAL)), AstromineTransportationsItems.getBasicSettings());

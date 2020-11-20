@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "north": "astromine:block/buffer/inactive/advanced_buffer_back",
+    "south": "astromine:block/buffer/inactive/advanced_buffer_front",
+    "east": "astromine:block/buffer/inactive/advanced_buffer_right",
+    "west": "astromine:block/buffer/inactive/advanced_buffer_left",
+    "up": "astromine:block/buffer/inactive/advanced_buffer_top",
+    "down": "astromine:block/buffer/inactive/advanced_buffer_bottom"
+  }
+}

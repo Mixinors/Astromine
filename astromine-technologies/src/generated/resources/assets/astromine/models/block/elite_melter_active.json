@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "north": "astromine:block/melter/active/elite_melter_back",
+    "south": "astromine:block/melter/active/elite_melter_front",
+    "east": "astromine:block/melter/active/elite_melter_right",
+    "west": "astromine:block/melter/active/elite_melter_left",
+    "up": "astromine:block/melter/active/elite_melter_top",
+    "down": "astromine:block/melter/active/elite_melter_bottom"
+  }
+}

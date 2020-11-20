@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "north": "astromine:block/tank/active/advanced_tank_back",
+    "south": "astromine:block/tank/active/advanced_tank_front",
+    "east": "astromine:block/tank/active/advanced_tank_right",
+    "west": "astromine:block/tank/active/advanced_tank_left",
+    "up": "astromine:block/tank/active/advanced_tank_top",
+    "down": "astromine:block/tank/active/advanced_tank_bottom"
+  }
+}
