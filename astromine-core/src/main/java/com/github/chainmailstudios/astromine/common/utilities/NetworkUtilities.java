@@ -44,11 +44,7 @@ import com.github.chainmailstudios.astromine.common.utilities.data.position.Worl
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
 
-import java.util.ArrayDeque;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class NetworkUtilities {
 	public static class Tracer {
@@ -136,24 +132,22 @@ public class NetworkUtilities {
 	 * a connected {@link BlockState} or {@link VoxelShape}.
 	 */
 	public static class Modeller {
-		private final Set<Direction> directions = new HashSet<>();
-
-		/** Instantiates a {@link Modeller}. */
-		public static Modeller of(BlockState blockState) {
-			Modeller modeller = new Modeller();
+		protected static final VoxelShape[] SHAPE_CACHE = new VoxelShape[64];
+		
+		public static int of(BlockState blockState) {
+			int i = 0;
 
 			for (Map.Entry<Direction, BooleanProperty> property : CableBlock.PROPERTIES.entrySet()) {
 				if (blockState.get(property.getValue())) {
-					modeller.directions.add(property.getKey());
+					i |= 1 << property.getKey().getId();
 				}
 			}
 
-			return modeller;
+			return i;
 		}
 
-		/** Instantiates a {@link Modeller}. */
-		public static Modeller of(NetworkType type, BlockPos initialPosition, World world) {
-			Modeller modeller = new Modeller();
+		public static Set<Direction> of(NetworkType type, BlockPos initialPosition, World world) {
+			Set<Direction> directions = EnumSet.noneOf(Direction.class);
 
 			WorldPos initialObject = WorldPos.of(world, initialPosition);
 
@@ -163,16 +157,16 @@ public class NetworkUtilities {
 				NetworkMember offsetMember = NetworkMemberRegistry.get(pos, direction.getOpposite());
 
 				if (offsetMember.acceptsType(type) && (!offsetMember.isNode(type) || pos.getBlock() == initialObject.getBlock())) {
-					modeller.directions.add(direction);
+					directions.add(direction);
 				}
 			}
 
-			return modeller;
+			return directions;
 		}
 
-		/** Returns a {@link BlockState} with this modeller's {@link #directions}
+		/** Returns a {@link BlockState} with {@code directions}
 		 * as {@link CableBlock} properties. */
-		public BlockState toBlockState(BlockState state) {
+		public static BlockState toBlockState(Set<Direction> directions, BlockState state) {
 			if (!(state.getBlock() instanceof CableBlock))
 				return state;
 			for (Direction direction : Direction.values()) {
@@ -181,15 +175,37 @@ public class NetworkUtilities {
 			return state;
 		}
 
-		/** Returns a {@link VoxelShape} with this modeller's {@link #directions}
+		/** Returns a {@link VoxelShape} with {@code directions}
 		 * as {@link CableBlock} shapes. */
-		public VoxelShape toVoxelShape(VoxelShape shape) {
+		private static VoxelShape toVoxelShape(int directions, VoxelShape shape) {
 			for (Direction direction : Direction.values()) {
-				if (directions.contains(direction)) {
+				if ((directions & (0x1 << direction.getId())) != 0) {
 					shape = VoxelShapes.union(shape, CableBlock.SHAPE_MAP.get(CableBlock.PROPERTIES.get(direction)));
 				}
 			}
 			return shape;
+		}
+
+		/** Returns a {@link VoxelShape} with {@code directions}
+		 * as {@link CableBlock} shapes, also caches the shapes. */
+		public static VoxelShape getVoxelShape(Set<Direction> directions) {
+			int i = 0;
+
+			for (Direction direction : directions) {
+				i |= 1 << direction.getId();
+			}
+			
+			return getVoxelShape(i);
+		}
+
+		/** Returns a {@link VoxelShape} with {@code directions}
+		 * as {@link CableBlock} shapes, also caches the shapes. */
+		public static VoxelShape getVoxelShape(int directions) {
+			VoxelShape shape = SHAPE_CACHE[directions];
+			if (shape != null) {
+				return shape;
+			}
+			return SHAPE_CACHE[directions] = toVoxelShape(directions, CableBlock.CENTER_SHAPE);
 		}
 	}
 }
