@@ -170,12 +170,12 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 
 	/** Asserts whether the given {@link Fluid} has the same fluid
 	 * as any of the volumes of this ingredient or not. */
-	public boolean testWeak(Fluid fluid) {
+	public boolean testWeak(FluidVolume volume) {
 		FluidVolume[] matchingVolumes = getMatchingVolumes();
 		if (this.matchingVolumes.length == 0)
 			return false;
 		for (FluidVolume matchingVolume : matchingVolumes) {
-			if (matchingVolume.getFluid().equals(fluid)) return true;
+			if (matchingVolume.getFluid().equals(volume.getFluid())) return true;
 		}
 		return false;
 	}

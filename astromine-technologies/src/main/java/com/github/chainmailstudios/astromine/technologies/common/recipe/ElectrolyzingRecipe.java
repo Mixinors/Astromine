@@ -111,7 +111,7 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 			return false;
 		}
 
-		return firstInput.test(fluidComponent.getFirst());
+		return firstInput.testWeak(fluidComponent.getFirst());
 	}
 
 

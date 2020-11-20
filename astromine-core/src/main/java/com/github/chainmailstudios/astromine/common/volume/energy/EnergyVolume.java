@@ -93,13 +93,13 @@ public class EnergyVolume extends Volume<Double> {
 	}
 
 	/** Instantiates an {@link EnergyVolume}. */
-	public static EnergyVolume of(double amount) {
-		return new EnergyVolume(amount, Long.MAX_VALUE);
+	public static EnergyVolume of(double size) {
+		return new EnergyVolume(0, size);
 	}
 
 	/** Instantiates an {@link EnergyVolume} with a listener. */
-	public static EnergyVolume of(double amount, Runnable runnable) {
-		return new EnergyVolume(amount, Long.MAX_VALUE, runnable);
+	public static EnergyVolume of(double size, Runnable runnable) {
+		return new EnergyVolume(0, size, runnable);
 	}
 
 	/** Instantiates an {@link EnergyVolume}. */

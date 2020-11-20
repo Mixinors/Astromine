@@ -108,7 +108,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 			return false;
 		}
 
-		return firstInput.test(fluidComponent.getFirst());
+		return firstInput.testWeak(fluidComponent.getFirst());
 	}
 
 	@Override

@@ -102,7 +102,7 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 			return false;
 		}
 
-		return firstInput.test(itemComponent.getFirst());
+		return firstInput.testWeak(itemComponent.getFirst());
 	}
 
 	@Override

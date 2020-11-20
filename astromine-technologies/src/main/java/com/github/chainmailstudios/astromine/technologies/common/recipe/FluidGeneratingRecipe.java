@@ -99,7 +99,7 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 			return false;
 		}
 
-		return firstInput.test(fluidComponent.getFirst());
+		return firstInput.testWeak(fluidComponent.getFirst());
 	}
 
 	@Override

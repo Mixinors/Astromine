@@ -107,7 +107,7 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 			return false;
 		}
 
-		return firstInput.test(itemComponent.getFirst());
+		return firstInput.testWeak(itemComponent.getFirst());
 	}
 
 	@Override

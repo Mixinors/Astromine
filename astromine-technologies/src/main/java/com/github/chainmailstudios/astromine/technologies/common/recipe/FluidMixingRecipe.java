@@ -111,11 +111,11 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 			return false;
 		}
 
-		if (!firstInput.test(fluidComponent.getFirst()) && !secondInput.test(fluidComponent.getFirst())) {
+		if (!firstInput.testWeak(fluidComponent.getFirst()) && !secondInput.testWeak(fluidComponent.getFirst())) {
 			return false;
 		}
 
-		return secondInput.test(fluidComponent.getSecond()) || firstInput.test(fluidComponent.getSecond());
+		return secondInput.testWeak(fluidComponent.getSecond()) || firstInput.testWeak(fluidComponent.getSecond());
 	}
 
 	@Override

@@ -140,7 +140,7 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 			return false;
 		}
 
-		return firstInput.testWeak(fluidComponent.getFirst().getFluid());
+		return firstInput.testWeak(fluidComponent.getFirst());
 	}
 
 	@Override

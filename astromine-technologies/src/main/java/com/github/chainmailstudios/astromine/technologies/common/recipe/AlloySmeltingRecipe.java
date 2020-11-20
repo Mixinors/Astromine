@@ -112,11 +112,11 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 			return false;
 		}
 
-		if (!firstInput.test(itemComponent.getFirst()) && !secondInput.test(itemComponent.getFirst())) {
+		if (!firstInput.testWeak(itemComponent.getFirst()) && !secondInput.testWeak(itemComponent.getFirst())) {
 			return false;
 		}
 
-		return firstInput.test(itemComponent.getSecond()) || secondInput.test(itemComponent.getSecond());
+		return firstInput.testWeak(itemComponent.getSecond()) || secondInput.testWeak(itemComponent.getSecond());
 	}
 
 
