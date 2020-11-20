@@ -58,8 +58,10 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 	private HolographicBridgeProjectorBlockEntity parent = null;
 
 	private BlockPos childPosition = null;
+	private BlockPos parentPosition = null;
 
 	private boolean hasCheckedChild = false;
+	private boolean hasCheckedParent = false;
 
 	public HolographicBridgeProjectorBlockEntity() {
 		super(AstromineTechnologiesBlockEntityTypes.HOLOGRAPHIC_BRIDGE);
@@ -84,6 +86,19 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 				this.buildBridge();
 			} else if (childEntity != null) {
 				this.hasCheckedChild = true;
+			}
+		}
+
+		if (!this.hasCheckedParent && this.parentPosition != null) {
+			BlockEntity parentEntity = this.world.getBlockEntity(parentPosition);
+
+			if (parentEntity instanceof HolographicBridgeProjectorBlockEntity) {
+				this.parent = (HolographicBridgeProjectorBlockEntity) parentEntity;
+				this.hasCheckedParent = true;
+
+				this.buildBridge();
+			} else if (parentEntity != null) {
+				this.hasCheckedParent = true;
 			}
 		}
 	}
@@ -161,14 +176,25 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 	@Override
 	public void markRemoved() {
 		if (this.child != null) {
-			if (this.parent != null) {
-				this.parent.destroyBridge();
-			}
-
 			this.destroyBridge();
 
 			this.setChild(null);
+
+			if (!world.isClient) {
+				this.sync();
+			}
 		}
+
+		if (this.parent != null) {
+			this.parent.destroyBridge();
+
+			this.parent.setChild(null);
+
+			if (!world.isClient) {
+				this.parent.sync();
+			}
+		}
+
 
 		super.markRemoved();
 	}
@@ -184,6 +210,8 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 
 				this.world.setBlockState(pos, Blocks.AIR.getDefaultState());
 			}
+
+			this.segments.clear();
 		}
 	}
 
@@ -191,6 +219,10 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
 		if (tag.contains("child_position")) {
 			this.childPosition = BlockPos.fromLong(tag.getLong("child_position"));
+		}
+
+		if (tag.contains("parent_position")) {
+			this.parentPosition = BlockPos.fromLong(tag.getLong("parent_position"));
 		}
 
 		super.fromTag(state, tag);
@@ -202,6 +234,12 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 			tag.putLong("child_position", this.child.getPos().asLong());
 		} else if (this.childPosition != null) {
 			tag.putLong("child_position", this.childPosition.asLong());
+		}
+
+		if (this.parent != null) {
+			tag.putLong("parent_position", this.parent.getPos().asLong());
+		} else if (this.parentPosition != null) {
+			tag.putLong("parent_position", this.parentPosition.asLong());
 		}
 
 		return super.toTag(tag);
