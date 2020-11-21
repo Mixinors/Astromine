@@ -225,6 +225,12 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 			this.parentPosition = BlockPos.fromLong(tag.getLong("parent_position"));
 		}
 
+		if (tag.contains("color")) {
+			CompoundTag colorTag = tag.getCompound("color");
+
+			color = new Color(colorTag.getFloat("r"), colorTag.getFloat("g"), colorTag.getFloat("b"), colorTag.getFloat("a"));
+		}
+
 		super.fromTag(state, tag);
 	}
 
@@ -241,6 +247,14 @@ public class HolographicBridgeProjectorBlockEntity extends BlockEntity implement
 		} else if (this.parentPosition != null) {
 			tag.putLong("parent_position", this.parentPosition.asLong());
 		}
+
+		CompoundTag colorTag = new CompoundTag();
+		colorTag.putFloat("r", color.getR());
+		colorTag.putFloat("g", color.getG());
+		colorTag.putFloat("b", color.getB());
+		colorTag.putFloat("a", color.getA());
+
+		tag.put("color", colorTag);
 
 		return super.toTag(tag);
 	}
