@@ -171,7 +171,7 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 	}
 
 	public static final class Serializer implements RecipeSerializer<MeltingRecipe> {
-		public static final Identifier ID = AstromineCommon.identifier("solidifying");
+		public static final Identifier ID = AstromineCommon.identifier("melting");
 
 		public static final Serializer INSTANCE = new Serializer();
 
