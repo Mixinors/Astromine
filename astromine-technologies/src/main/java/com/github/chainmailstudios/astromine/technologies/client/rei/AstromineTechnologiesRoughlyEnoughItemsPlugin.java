@@ -55,8 +55,8 @@ import com.github.chainmailstudios.astromine.technologies.client.rei.solidifying
 import com.github.chainmailstudios.astromine.technologies.client.rei.solidifying.SolidifyingDisplay;
 import com.github.chainmailstudios.astromine.technologies.client.rei.triturating.TrituratingCategory;
 import com.github.chainmailstudios.astromine.technologies.client.rei.triturating.TrituratingDisplay;
-import com.github.chainmailstudios.astromine.technologies.client.rei.wire_milling.WireMillingCategory;
-import com.github.chainmailstudios.astromine.technologies.client.rei.wire_milling.WireMillingDisplay;
+import com.github.chainmailstudios.astromine.technologies.client.rei.wiremilling.WireMillingCategory;
+import com.github.chainmailstudios.astromine.technologies.client.rei.wiremilling.WireMillingDisplay;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.AlloySmeltingRecipe;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.ElectrolyzingRecipe;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.FluidGeneratingRecipe;

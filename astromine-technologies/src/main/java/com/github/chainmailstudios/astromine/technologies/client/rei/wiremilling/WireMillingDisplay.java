@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.technologies.client.rei.wire_milling;
+package com.github.chainmailstudios.astromine.technologies.client.rei.wiremilling;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

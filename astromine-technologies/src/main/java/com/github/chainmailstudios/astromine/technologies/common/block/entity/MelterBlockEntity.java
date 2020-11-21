@@ -167,7 +167,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 
 	public static class Primitive extends MelterBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_SOLIDIFIER);
+			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_MELTER);
 		}
 
 		@Override
@@ -193,7 +193,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 
 	public static class Basic extends MelterBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlockEntityTypes.BASIC_SOLIDIFIER);
+			super(AstromineTechnologiesBlockEntityTypes.BASIC_MELTER);
 		}
 
 		@Override
@@ -219,7 +219,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 
 	public static class Advanced extends MelterBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_SOLIDIFIER);
+			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_MELTER);
 		}
 
 		@Override
@@ -245,7 +245,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 
 	public static class Elite extends MelterBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlockEntityTypes.ELITE_SOLIDIFIER);
+			super(AstromineTechnologiesBlockEntityTypes.ELITE_MELTER);
 		}
 
 		@Override

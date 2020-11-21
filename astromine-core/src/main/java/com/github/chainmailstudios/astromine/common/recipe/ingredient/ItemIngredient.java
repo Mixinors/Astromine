@@ -173,7 +173,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 	 * stacks of this ingredient or not. */
 	@Override
 	public boolean test(ItemStack stack) {
-		return testMatching(stack) != null;
+		return testMatching(stack) != ItemStack.EMPTY;
 	}
 
 	/** Asserts whether the given {@link ItemStack} has the same item and tag (if present)
