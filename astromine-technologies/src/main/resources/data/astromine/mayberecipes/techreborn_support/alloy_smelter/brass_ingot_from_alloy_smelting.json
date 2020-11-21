@@ -4,11 +4,11 @@
   },
   "recipe": {
     "type": "astromine:alloy_smelting",
-    "firstInput": {
+    "first_input": {
       "tag": "c:copper_ingots",
       "count": 3
     },
-    "secondInput": {
+    "second_input": {
       "tag": "c:zinc_ingots"
     },
     "output": {
@@ -16,6 +16,6 @@
       "count": 4
     },
     "time": 200,
-    "energy": 800
+    "energy_input": 800
   }
 }

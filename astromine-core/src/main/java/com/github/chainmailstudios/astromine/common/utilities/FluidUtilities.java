@@ -32,11 +32,18 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.util.math.BlockPos;
 
 public class FluidUtilities {
-	public static int color(PlayerEntity player, Fluid fluid) {
+	/** Returns the color of the specified fluid at the given player's position. */
+	public static int getColor(PlayerEntity player, Fluid fluid) {
 		return FluidRenderHandlerRegistry.INSTANCE.get(fluid).getFluidColor(player.getEntityWorld(), BlockPos.ORIGIN, fluid.getDefaultState());
 	}
 
-	public static Sprite[] texture(Fluid fluid) {
+	/** Returns the sprites of the specified fluid. */
+	public static Sprite[] getSprites(Fluid fluid) {
 		return FluidRenderHandlerRegistry.INSTANCE.get(fluid).getFluidSprites(null, null, fluid.getDefaultState());
+	}
+
+	/** Returns the first sprite of the specified fluid. */
+	public static Sprite getSprite(Fluid fluid) {
+		return getSprites(fluid)[0];
 	}
 }

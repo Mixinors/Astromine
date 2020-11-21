@@ -1,9 +1,11 @@
 {
-  "parent": "minecraft:block/orientable_with_bottom",
+  "parent": "minecraft:block/cube",
   "textures": {
-    "top": "astromine:block/elite_machine_top",
-    "bottom": "astromine:block/elite_machine_bottom",
-    "side": "astromine:block/elite_machine_side",
-    "front": "astromine:block/elite_electrolyzer_front_inactive"
+    "north": "astromine:block/electrolyzer/inactive/elite_electrolyzer_back",
+    "south": "astromine:block/electrolyzer/inactive/elite_electrolyzer_front",
+    "east": "astromine:block/electrolyzer/inactive/elite_electrolyzer_right",
+    "west": "astromine:block/electrolyzer/inactive/elite_electrolyzer_left",
+    "up": "astromine:block/electrolyzer/inactive/elite_electrolyzer_top",
+    "down": "astromine:block/electrolyzer/inactive/elite_electrolyzer_bottom"
   }
 }

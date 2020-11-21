@@ -1,12 +1,26 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["010", "343", "070"],
+  "pattern": [
+    "010",
+    "343",
+    "070"
+  ],
   "key": {
-    "0": {"tag": "c:steel_plates"},
-    "1": {"item": "astromine:advanced_circuit"},
-    "3": {"tag": "c:sterling_silver_gears"},
-    "4": {"item": "astromine:advanced_machine_chassis"},
-    "7": {"item": "minecraft:smithing_table"}
+    "0": {
+      "tag": "c:steel_plates"
+    },
+    "1": {
+      "item": "astromine:advanced_circuit"
+    },
+    "3": {
+      "tag": "c:sterling_silver_gears"
+    },
+    "4": {
+      "item": "astromine:advanced_machine_chassis"
+    },
+    "7": {
+      "item": "minecraft:smithing_table"
+    }
   },
   "result": {
     "item": "astromine:advanced_alloy_smelter",

@@ -24,33 +24,43 @@
 
 package com.github.chainmailstudios.astromine.common.volume.fluid;
 
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 
-public class InfiniteFluidVolume extends FluidVolume {
-	public InfiniteFluidVolume(Fluid fluid) {
+/**
+ * A variation of {@link FluidVolume}, with infinite
+ * {@link #getAmount()} and {@link #getSize()}.
+ */
+public final class InfiniteFluidVolume extends FluidVolume {
+	/** Instantiates an {@link InfiniteFluidVolume} with the given values. */
+	private InfiniteFluidVolume(Fluid fluid) {
 		super(Fraction.of(Long.MAX_VALUE), Fraction.of(Long.MAX_VALUE), fluid);
 	}
 
+	/** Instantiates an {@link InfiniteFluidVolume} with the given values. */
 	public static InfiniteFluidVolume of(Fluid fluid) {
 		return new InfiniteFluidVolume(fluid);
 	}
 
+	/** Always return {@link Fraction#MAX_VALUE}. */
 	@Override
 	public Fraction getAmount() {
 		return Fraction.of(Long.MAX_VALUE);
 	}
 
+	/** Always return {@link Fraction#MAX_VALUE}. */
 	@Override
 	public Fraction getSize() {
 		return Fraction.of(Long.MAX_VALUE);
 	}
 
+	/** Returns a copy of this volume. */
 	@Override
-	public <V extends Volume<Identifier, Fraction>> V copy() {
+	public <V extends Volume<Fraction>> V copy() {
 		return (V) of(getFluid());
 	}
 }

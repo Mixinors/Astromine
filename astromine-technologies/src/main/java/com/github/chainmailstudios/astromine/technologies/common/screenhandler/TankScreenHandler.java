@@ -59,11 +59,11 @@ public class TankScreenHandler extends ComponentBlockEntityFluidItemScreenHandle
 		fluidBar.setPosition(Position.of(width / 2F - fluidBar.getWidth() / 2F, fluidBar.getY()));
 
 		SlotWidget input = new SlotWidget(0, blockEntity);
-		input.setPosition(Position.of(mainTab, 12, 26));
+		input.setPosition(Position.of(fluidBar, -18 - 3, 0));
 		input.setSize(Size.of(18, 18));
 
 		SlotWidget output = new SlotWidget(1, blockEntity);
-		output.setPosition(Position.of(mainTab, 146, 26));
+		output.setPosition(Position.of(fluidBar, -18 - 3, fluidBar.getHeight() - 18));
 		output.setSize(Size.of(18, 18));
 
 		HorizontalArrowWidget leftArrow = new HorizontalArrowWidget();
@@ -111,7 +111,7 @@ public class TankScreenHandler extends ComponentBlockEntityFluidItemScreenHandle
 		});
 
 		FluidFilterWidget filter = new FluidFilterWidget();
-		filter.setPosition(Position.of(input, 5, -9 - 5));
+		filter.setPosition(Position.of(input, 5F, 18F + 2F));
 		filter.setSize(Size.of(8, 8));
 		filter.setFluidConsumer(fluid -> {
 			tank.setFilter(fluid);
@@ -120,8 +120,7 @@ public class TankScreenHandler extends ComponentBlockEntityFluidItemScreenHandle
 
 		mainTab.addWidget(input);
 		mainTab.addWidget(output);
-		mainTab.addWidget(leftArrow);
-		mainTab.addWidget(rightArrow);
+
 		mainTab.addWidget(filter);
 	}
 }

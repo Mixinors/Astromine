@@ -30,7 +30,12 @@ import com.github.chainmailstudios.astromine.common.component.inventory.ItemComp
 import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ComponentInventoryProvider;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 
+/**
+ * A {@link ComponentBlockEntity} with an attached
+ * {@link ItemComponent}.
+ */
 public abstract class ComponentItemBlockEntity extends ComponentBlockEntity implements ComponentInventoryProvider {
+	/** Instantiates a {@link ComponentItemBlockEntity}. */
 	public ComponentItemBlockEntity(BlockEntityType<?> type) {
 		super(type);
 
@@ -38,8 +43,10 @@ public abstract class ComponentItemBlockEntity extends ComponentBlockEntity impl
 		getItemComponent().updateListeners();
 	}
 
+	/** Returns the {@link ItemComponent} to be attached. */
 	public abstract ItemComponent createItemComponent();
 
+	/** Returns the attached {@link ItemComponent}. */
 	public ItemComponent getItemComponent() {
 		return ItemComponent.get(this);
 	}

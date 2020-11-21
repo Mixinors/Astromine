@@ -8,6 +8,6 @@
     "item": "minecraft:snowball",
     "count": 4
   },
-  "time": 120,
-  "energy": 340
+  "time": 60,
+  "energy_input": 340
 }

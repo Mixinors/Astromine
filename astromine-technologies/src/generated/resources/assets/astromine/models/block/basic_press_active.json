@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "north": "astromine:block/press/active/basic_press_back",
+    "south": "astromine:block/press/active/basic_press_front",
+    "east": "astromine:block/press/active/basic_press_right",
+    "west": "astromine:block/press/active/basic_press_left",
+    "up": "astromine:block/press/active/basic_press_top",
+    "down": "astromine:block/press/active/basic_press_bottom"
+  }
+}

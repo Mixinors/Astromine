@@ -24,6 +24,12 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.tag.Tag;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -106,7 +112,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 					atmosphereVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
 
 					if (atmosphereVolume.isEmpty()) {
-						atmosphereVolume = FluidVolume.oxygen();
+						atmosphereVolume = FluidVolume.of(Fraction.BUCKET, Registry.FLUID.get(AstromineCommon.identifier("oxygen")));
 					}
 				} else {
 					atmosphereVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
@@ -122,7 +128,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 					if (blockState.getBlock() instanceof FluidBlock) {
 						isSubmerged = true;
 
-						Optional.ofNullable(FluidEffectRegistry.INSTANCE.get(blockState.getFluidState().getFluid())).ifPresent(it -> it.accept((LivingEntity) (Object) this));
+						Optional.ofNullable(FluidEffectRegistry.INSTANCE.get(blockState.getFluidState().getFluid())).ifPresent(it -> it.accept(true, (LivingEntity) (Object) this));
 					}
 				}
 
@@ -172,8 +178,8 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 											}
 
 											if (!canBreathe) {
-												if (FluidEffectRegistry.INSTANCE.contains(volume.getFluid())) {
-													FluidEffectRegistry.INSTANCE.get(volume.getFluid()).accept((LivingEntity) entity);
+												if (FluidEffectRegistry.INSTANCE.containsKey(volume.getFluid())) {
+													FluidEffectRegistry.INSTANCE.get(volume.getFluid()).accept(false, (LivingEntity) entity);
 												}
 											}
 										}
@@ -182,8 +188,8 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 							}
 						}
 
-						if (!hasSuit && FluidEffectRegistry.INSTANCE.contains(atmosphereVolume.getFluid())) {
-							FluidEffectRegistry.INSTANCE.get(atmosphereVolume.getFluid()).accept((LivingEntity) entity);
+						if (!hasSuit && FluidEffectRegistry.INSTANCE.containsKey(atmosphereVolume.getFluid())) {
+							FluidEffectRegistry.INSTANCE.get(atmosphereVolume.getFluid()).accept(false, (LivingEntity) entity);
 						}
 
 						if (!isBreathing) {

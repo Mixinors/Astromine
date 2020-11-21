@@ -24,11 +24,21 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
+import dev.onyxstudios.cca.api.v3.component.Component;
 import net.minecraft.item.Item;
+import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
+/**
+ * An interface which should be implemented
+ * by {@link Component}s which require
+ * an {@link Item} symbol and
+ * {@link Text} name.
+ */
 public interface NameableComponent {
+	/** Returns this component's {@link Item} symbol. */
 	Item getSymbol();
 
-	TranslatableText getName();
+	/** Returns this component's {@link Text} name. */
+	Text getName();
 }

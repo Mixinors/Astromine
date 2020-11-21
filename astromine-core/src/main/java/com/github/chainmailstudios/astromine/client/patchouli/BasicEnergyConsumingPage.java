@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.client.patchouli;
 
+import com.github.chainmailstudios.astromine.common.utilities.TextUtilities;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.text.TranslatableText;
@@ -43,7 +44,7 @@ public abstract class BasicEnergyConsumingPage<T extends EnergyConsumingRecipe<?
 	@Override
 	public void drawRecipe(MatrixStack ms, T recipe, int recipeX, int recipeY, int mouseX, int mouseY, boolean second) {
 		super.drawRecipe(ms, recipe, recipeX, recipeY, mouseX, mouseY, second);
-		parent.drawCenteredStringNoShadow(ms, new TranslatableText("category.astromine.consuming.energy", EnergyUtilities.simpleDisplay(recipe.getEnergy())).asOrderedText(), GuiBook.PAGE_WIDTH / 2, recipeY + 25, ENERGY_CONSUMED_TEXT_COLOR);
+		parent.drawCenteredStringNoShadow(ms, new TranslatableText("category.astromine.consuming.energy", "" + recipe.getEnergyInput()).asOrderedText(), GuiBook.PAGE_WIDTH / 2, recipeY + 25, ENERGY_CONSUMED_TEXT_COLOR);
 	}
 
 	@Override

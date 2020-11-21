@@ -60,7 +60,7 @@ public class DrainBlockEntity extends ComponentFluidBlockEntity implements Ticka
 		if (world == null)
 			return;
 
-		getFluidComponent().getFirst().setFluid(Fluids.EMPTY);
-		getFluidComponent().getFirst().setAmount(Fraction.EMPTY);
-	}
+        getFluidComponent().getFirst().setFluid(Fluids.EMPTY);
+        getFluidComponent().getFirst().setAmount(Fraction.EMPTY);
+    }
 }

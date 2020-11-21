@@ -29,12 +29,15 @@ import net.minecraft.util.math.Direction;
 import com.github.chainmailstudios.astromine.common.utilities.data.predicate.TriPredicate;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import net.minecraft.util.math.Direction;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class SimpleFluidComponent implements FluidComponent {
 	private final Int2ObjectOpenHashMap<FluidVolume> contents = new Int2ObjectOpenHashMap<>();
@@ -42,80 +45,106 @@ public class SimpleFluidComponent implements FluidComponent {
 	private final List<Runnable> listeners = new ArrayList<>();
 	private final int size;
 	private TriPredicate<@Nullable Direction, FluidVolume, Integer> insertPredicate = (direction, volume, slot) -> true;
+
 	private TriPredicate<@Nullable Direction, FluidVolume, Integer> extractPredicate = (direction, volume, integer) -> true;
 
+	private final int size;
+
+	/** Instantiates a {@link SimpleFluidComponent}. */
 	protected SimpleFluidComponent(int size) {
 		this.size = size;
+
 		for (int i = 0; i < size; ++i) {
-			setVolume(i, FluidVolume.empty());
+			setVolume(i, FluidVolume.ofEmpty(this::updateListeners));
 		}
-		this.contents.defaultReturnValue(FluidVolume.empty());
+
+		this.contents.defaultReturnValue(FluidVolume.ofEmpty(this::updateListeners));
 	}
 
+	/** Instantiates a {@link SimpleFluidComponent}. */
 	protected SimpleFluidComponent(FluidVolume... volumes) {
 		this(volumes.length);
+
 		for (int i = 0; i < volumes.length; ++i) {
 			setVolume(i, volumes[i]);
 		}
 	}
 
+	/** Instantiates a {@link SimpleFluidComponent}. */
 	public static SimpleFluidComponent of(int size) {
 		return new SimpleFluidComponent(size);
 	}
 
+	/** Instantiates a {@link SimpleFluidComponent}. */
 	public static SimpleFluidComponent of(FluidVolume... volumes) {
 		return new SimpleFluidComponent(volumes);
 	}
 
-	@Override
-	public boolean canInsert(@Nullable Direction direction, FluidVolume volume, int slot) {
-		return insertPredicate.test(direction, volume, slot) && FluidComponent.super.canInsert(direction, volume, slot);
-	}
-
-	@Override
-	public boolean canExtract(@Nullable Direction direction, FluidVolume volume, int slot) {
-		return extractPredicate.test(direction, volume, slot) && FluidComponent.super.canExtract(direction, volume, slot);
-	}
-
+	/** Returns this component with an added insertion predicate. */
 	public SimpleFluidComponent withInsertPredicate(TriPredicate<@Nullable Direction, FluidVolume, Integer> predicate) {
 		TriPredicate<Direction, FluidVolume, Integer> triPredicate = this.insertPredicate;
 		this.insertPredicate = (direction, volume, integer) -> triPredicate.test(direction, volume, integer) && predicate.test(direction, volume, integer);
 		return this;
 	}
 
+	/** Returns this component with an added extraction predicate. */
 	public SimpleFluidComponent withExtractPredicate(TriPredicate<@Nullable Direction, FluidVolume, Integer> predicate) {
 		TriPredicate<Direction, FluidVolume, Integer> triPredicate = this.extractPredicate;
 		this.extractPredicate = (direction, volume, integer) -> triPredicate.test(direction, volume, integer) && predicate.test(direction, volume, integer);
 		return this;
 	}
 
+	/** Override behavior to take {@link #insertPredicate} into account. */
 	@Override
-	public Map<Integer, FluidVolume> getContents() {
-		return contents;
+	public boolean canInsert(@Nullable Direction direction, FluidVolume volume, int slot) {
+		return insertPredicate.test(direction, volume, slot) && FluidComponent.super.canInsert(direction, volume, slot);
 	}
 
+	/** Override behavior to take {@link #extractPredicate} into account. */
 	@Override
-	public List<Runnable> getListeners() {
-		return listeners;
+	public boolean canExtract(@Nullable Direction direction, FluidVolume volume, int slot) {
+		return extractPredicate.test(direction, volume, slot) && FluidComponent.super.canExtract(direction, volume, slot);
 	}
 
+	/** Returns this component's size. */
 	@Override
 	public int getSize() {
 		return size;
 	}
 
+	/** Returns this component's contents. */
 	@Override
-	public boolean equals(Object o) { // used by CCA to tell if two stacks are equal
-		if (this == o)
-			return true;
-		if (!(o instanceof SimpleFluidComponent))
-			return false;
-		SimpleFluidComponent entries = (SimpleFluidComponent) o;
+	public @NotNull Map<Integer, FluidVolume> getContents() {
+		return contents;
+	}
+
+	/** Returns this component's listeners. */
+	@Override
+	public @NotNull List<Runnable> getListeners() {
+		return listeners;
+	}
+
+	/** Asserts the equality of the objects. */
+	@Override
+	public boolean equals(Object object) {
+		if (this == object) return true;
+
+		if (!(object instanceof SimpleFluidComponent)) return false;
+
+		SimpleFluidComponent entries = (SimpleFluidComponent) object;
+
 		return Objects.equals(contents, entries.contents);
 	}
 
+	/** Returns the hash for this volume. */
 	@Override
 	public int hashCode() {
 		return Objects.hash(contents);
+	}
+
+	/** Returns this inventory's string representation. */
+	@Override
+	public String toString() {
+		return String.format("Listeners: %s\nInsertion predicate: %s\n Extraction predicate: %s\nContents: \n%s", listeners.size(), insertPredicate, extractPredicate, getContents().entrySet().stream().map((entry) -> String.format("%s, %s", entry.getKey(), entry.getValue().toString())).collect(Collectors.joining("\n")));
 	}
 }

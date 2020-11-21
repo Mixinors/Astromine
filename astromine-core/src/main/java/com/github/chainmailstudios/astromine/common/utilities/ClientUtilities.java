@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
+import com.github.chainmailstudios.astromine.common.fluid.ExtendedFluid;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
@@ -50,17 +51,14 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import java.util.function.Function;
 
 public class ClientUtilities {
-	public static void playSound(BlockPos position, SoundEvent sound, SoundCategory category, float volume, float pitch, boolean useDistance) {
-		MinecraftClient.getInstance().world.playSoundFromEntity(MinecraftClient.getInstance().player, MinecraftClient.getInstance().player, sound, category, volume, pitch);
-	}
-
+	/** Registers the necessary data for an {@link ExtendedFluid} on the client side. */
 	@Environment(EnvType.CLIENT)
-	public static void buildClient(String name, int tint, Fluid still, Fluid flowing) {
-		final Identifier stillSpriteIdentifier = new Identifier("block/water_still");
-		final Identifier flowingSpriteIdentifier = new Identifier("block/water_flow");
-		final Identifier listenerIdentifier = AstromineCommon.identifier(name + "_reload_listener");
+	public static void registerExtendedFluid(String name, int tint, Fluid still, Fluid flowing) {
+		Identifier stillSpriteIdentifier = new Identifier("block/water_still");
+		Identifier flowingSpriteIdentifier = new Identifier("block/water_flow");
+		Identifier listenerIdentifier = AstromineCommon.identifier(name + "_reload_listener");
 
-		final Sprite[] fluidSprites = { null, null };
+		Sprite[] fluidSprites = { null, null };
 
 		ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
 			registry.register(stillSpriteIdentifier);

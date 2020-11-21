@@ -24,8 +24,15 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.entity;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.block.BlockStateScreenHandler;
+import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentEntity;
@@ -41,29 +48,47 @@ import com.github.vini2003.blade.common.widget.base.TextWidget;
 import java.util.Collection;
 import java.util.HashSet;
 
+/**
+ * A {@link BlockStateScreenHandler} with an attached
+ * {@link ComponentBlockEntity}.
+ */
 public abstract class ComponentEntityScreenHandler extends BaseScreenHandler {
-	public ComponentEntity syncEntity;
-	public Collection<SlotWidget> playerSlots = new HashSet<>();
-	public TabWidgetCollection mainTab;
+	protected ComponentEntity entity;
+
+	protected Collection<SlotWidget> playerSlots = new HashSet<>();
+
 	protected TabWidget tabs;
 
+	protected TabWidgetCollection mainTab;
+
+	/** Instantiates a {@link ComponentEntityScreenHandler},
+	 * synchronizing its attached {@link ComponentEntity}. */
 	public ComponentEntityScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, int entityId) {
 		super(type, syncId, player);
 
-		syncEntity = (ComponentEntity) player.world.getEntityById(entityId);
+		entity = (ComponentEntity) player.world.getEntityById(entityId);
 	}
 
+	/** Returns an {@link ItemStack} representing this entity in the {@link TabWidget}. */
 	public abstract ItemStack getSymbol();
 
+	/** Returns the additional height that the {@link TabWidget} should have.
+	 * At that, I don't know why this method is a thing. */
 	public int getTabWidgetExtendedHeight() {
 		return 0;
 	}
 
+	/** Override behavior to only allow the {@link ScreenHandler} to be open
+	 * when possible, and while the associated {@link Entity} has not died
+	 * or moved too far away. */
 	@Override
 	public boolean canUse(PlayerEntity player) {
-		return this.syncEntity.isAlive() && this.syncEntity.distanceTo(player) < 8.0F;
+		return this.entity.isAlive() && this.entity.distanceTo(player) < 8.0F;
 	}
 
+	/** Override behavior to build the entity interface,
+	 * instantiating and configuring the {@link TabWidget},
+	 * its tabs, the inventory, and other miscellaneous things. */
 	@Override
 	public void initialize(int width, int height) {
 		tabs = new TabWidget();
@@ -78,7 +103,7 @@ public abstract class ComponentEntityScreenHandler extends BaseScreenHandler {
 
 		TextWidget title = new TextWidget();
 		title.setPosition(Position.of(mainTab, 8, 0));
-		title.setText(syncEntity.getDisplayName());
+		title.setText(entity.getDisplayName());
 		title.setColor(4210752);
 		mainTab.addWidget(title);
 

@@ -30,7 +30,12 @@ import net.minecraft.text.Text;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 
+/**
+ * A {@link ComponentBlockEntityHandledScreen} used by
+ * {@link ComponentBlockEntityScreenHandler}.
+ */
 public abstract class ComponentBlockEntityEnergyItemHandledScreen<T extends ComponentBlockEntityScreenHandler> extends ComponentBlockEntityHandledScreen<T> {
+	/** Instantiates a {@link ComponentBlockEntityEnergyItemHandledScreen}. */
 	public ComponentBlockEntityEnergyItemHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
 	}

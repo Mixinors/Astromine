@@ -37,6 +37,9 @@ import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import com.google.common.collect.ImmutableMap;
 
 public class WidgetUtilities {
+	/** Populates a {@link TabWidgetCollection} widgets corresponding to
+	 * the specified {@link BlockEntityTransferComponent} and {@link ComponentKey}.
+	 */
 	public static void createTransferTab(TabWidgetCollection tab, Position anchor, Direction rotation, BlockEntityTransferComponent component, BlockPos blockPos, ComponentKey<?> type) {
 		final Position finalNorth = Position.of(anchor, 7 + 22, 31 + 22);
 		final Position finalSouth = Position.of(anchor, 7 + 0, 31 + 44);

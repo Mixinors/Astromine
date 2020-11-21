@@ -47,45 +47,59 @@ import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.Sets;
 import java.util.Set;
 
-public class WorldNetworkComponent implements Component, Tickable {
+/**
+ * A {@link Component} which stores information about
+ * a {@link World}'s networks.
+ *
+ * Serialization and deserialization methods are provided for:
+ * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ */
+public final class WorldNetworkComponent implements Component, Tickable {
 	private final Set<NetworkInstance> instances = Sets.newConcurrentHashSet();
 
 	private final World world;
 
+	/** Instantiates a {@link WorldNetworkComponent}. */
 	public WorldNetworkComponent(World world) {
 		this.world = world;
 	}
 
-	@Nullable
-	public static <V> WorldNetworkComponent get(V v) {
-		try {
-			return AstromineComponents.WORLD_NETWORK_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
-			return null;
-		}
-	}
-
-	public void addInstance(NetworkInstance instance) {
-		if (!instance.nodes.isEmpty())
-			this.instances.add(instance);
-	}
-
-	public void removeInstance(NetworkInstance instance) {
-		this.instances.remove(instance);
-	}
-
-	public NetworkInstance getInstance(NetworkType type, BlockPos position) {
-		return this.instances.stream().filter(instance -> instance.getType() == type && instance.nodes.stream().anyMatch(node -> node.getBlockPos().equals(position))).findFirst().orElse(NetworkInstance.EMPTY);
-	}
-
-	public boolean containsInstance(NetworkType type, BlockPos position) {
-		return getInstance(type, position) != NetworkInstance.EMPTY;
-	}
-
+	/** Returns this component's world. */
 	public World getWorld() {
 		return world;
 	}
 
+	/** Adds the given {@link NetworkInstance} to this component. */
+	public void add(NetworkInstance instance) {
+		if (!instance.nodes.isEmpty())
+			this.instances.add(instance);
+	}
+
+	/** Removes the given {@link NetworkInstance} from this component. */
+	public void remove(NetworkInstance instance) {
+		this.instances.remove(instance);
+	}
+
+	/** Returns the {@link NetworkInstance} of the given {@link NetworkType}
+	 * at the specified {@link BlockPos}. */
+	public NetworkInstance get(NetworkType type, BlockPos position) {
+		return this.instances.stream().filter(instance -> instance.getType() == type && instance.nodes.stream().anyMatch(node -> node.getBlockPosition().equals(position))).findFirst().orElse(NetworkInstance.EMPTY);
+	}
+
+	/** Asserts whether any {@link NetworkInstance} exists for the given {@link NetworkType}
+	 * at the specified {@link BlockPos}. */
+	public boolean contains(NetworkType type, BlockPos position) {
+		return get(type, position) != NetworkInstance.EMPTY;
+	}
+
+	/** Override behavior to implement network ticking logic. */
+	@Override
+	public void tick() {
+		this.instances.removeIf(NetworkInstance::isEmpty);
+		this.instances.forEach(NetworkInstance::tick);
+	}
+
+	/** Serializes this {@link WorldNetworkComponent} to a {@link CompoundTag}. */
 	@Override
 	public void writeToNbt(CompoundTag tag) {
 		ListTag instanceTags = new ListTag();
@@ -93,12 +107,12 @@ public class WorldNetworkComponent implements Component, Tickable {
 		for (NetworkInstance instance : instances) {
 			ListTag nodeList = new ListTag();
 			for (NetworkNode node : instance.nodes) {
-				nodeList.add(LongTag.of(node.getPos()));
+				nodeList.add(LongTag.of(node.getLongPosition()));
 			}
 
 			ListTag memberList = new ListTag();
 			for (NetworkMemberNode member : instance.members) {
-				memberList.add(member.toTag(new CompoundTag()));
+				memberList.add(member.toTag());
 			}
 
 			CompoundTag data = new CompoundTag();
@@ -106,7 +120,6 @@ public class WorldNetworkComponent implements Component, Tickable {
 			data.putString("type", NetworkTypeRegistry.INSTANCE.getKey(instance.getType()).toString());
 			data.put("nodes", nodeList);
 			data.put("members", memberList);
-			data.put("additionalData", instance.getAdditionalData());
 
 			instanceTags.add(data);
 		}
@@ -114,6 +127,7 @@ public class WorldNetworkComponent implements Component, Tickable {
 		tag.put("instanceTags", instanceTags);
 	}
 
+	/** Deserializes this {@link WorldNetworkComponent} from a {@link CompoundTag}. */
 	@Override
 	public void readFromNbt(CompoundTag tag) {
 		ListTag instanceTags = tag.getList("instanceTags", NbtType.COMPOUND);
@@ -133,17 +147,17 @@ public class WorldNetworkComponent implements Component, Tickable {
 				instance.addMember(NetworkMemberNode.fromTag((CompoundTag) memberTag));
 			}
 
-			if (dataTag.contains("additionalData")) {
-				instance.setAdditionalData(dataTag.getCompound("additionalData"));
-			}
-
-			addInstance(instance);
+			add(instance);
 		}
 	}
 
-	@Override
-	public void tick() {
-		this.instances.removeIf(NetworkInstance::isStupidlyEmpty);
-		this.instances.forEach(NetworkInstance::tick);
+	/** Returns the {@link WorldNetworkComponent} of the given {@link V}. */
+	@Nullable
+	public static <V> WorldNetworkComponent get(V v) {
+		try {
+			return AstromineComponents.WORLD_NETWORK_COMPONENT.get(v);
+		} catch (Exception justShutUpAlready) {
+			return null;
+		}
 	}
 }

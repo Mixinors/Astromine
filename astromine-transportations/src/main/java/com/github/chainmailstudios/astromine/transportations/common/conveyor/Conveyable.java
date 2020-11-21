@@ -29,7 +29,7 @@ import net.minecraft.util.math.Direction;
 
 public interface Conveyable {
 	/**
-	 * @return Whether or not the interactable accepts the stack to be inputted.
+	 * @return Whether or not the interactable accepts the {@link ItemStack} to be inputted.
 	 */
 	boolean accepts(ItemStack stack);
 
@@ -38,7 +38,7 @@ public interface Conveyable {
 	boolean isOutputSide(Direction direction, ConveyorTypes type);
 
 	/**
-	 * @return Gives the interactable the stack.
+	 * @return Gives the interactable the {@link ItemStack}.
 	 */
 	void give(ItemStack stack);
 

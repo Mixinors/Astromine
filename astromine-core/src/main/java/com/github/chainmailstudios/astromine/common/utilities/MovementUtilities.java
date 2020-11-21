@@ -29,10 +29,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 public class MovementUtilities {
+	/** Pushes the specified {@link Entity} per the given values. */
 	public static void pushEntity(Entity entity, BlockPos pos, float speed, Direction facing) {
 		pushEntity(entity, pos, speed, facing, true);
 	}
 
+	/** Pushes the specified {@link Entity} per the given values. */
 	public static void pushEntity(Entity entity, BlockPos pos, float speed, Direction facing, boolean shouldCenter) {
 		double motionX = entity.getVelocity().getX();
 		double motionZ = entity.getVelocity().getZ();
@@ -54,6 +56,7 @@ public class MovementUtilities {
 		}
 	}
 
+	/** Centers the specified {@link Entity} on the X and Z axis per the given values. */
 	private static void centerEntity(Entity entity, BlockPos pos, float speed, Direction facing) {
 		if (speed * facing.getOffsetX() > 0 || speed * facing.getOffsetX() < 0) {
 			centerZ(entity, pos);
@@ -64,6 +67,7 @@ public class MovementUtilities {
 		}
 	}
 
+	/** Centers the specified {@link Entity} on the Z axis per the given values. */
 	private static void centerZ(Entity entity, BlockPos pos) {
 		if (entity.getZ() > pos.getZ() + .55) {
 			entity.addVelocity(0, 0, -0.1F);
@@ -74,6 +78,7 @@ public class MovementUtilities {
 		}
 	}
 
+	/** Centers the specified {@link Entity} on the X axis per the given values. */
 	private static void centerX(Entity entity, BlockPos pos) {
 		if (entity.getX() > pos.getX() + .55) {
 			entity.addVelocity(-0.1F, 0, 0);

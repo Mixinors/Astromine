@@ -52,16 +52,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ChunkAtmosphereComponent implements Component, ServerTickingComponent {
+/**
+ * A {@link Component} which stores information about
+ * a {@link Chunk}'s atmosphere.
+ *
+ * Serialization and deserialization methods are provided for:
+ * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ */
+public final class ChunkAtmosphereComponent implements Component, ServerTickingComponent {
 	private final List<Direction> directions = Lists.newArrayList(Direction.values());
 
 	private final Map<BlockPos, FluidVolume> volumes = new ConcurrentHashMap<>();
 
 	private final World world;
+
 	private final Chunk chunk;
 
-	public int atmosphereTickCounter = 0;
+	private int atmosphereTickCounter = 0;
 
+	/** Instantiates a {@link ChunkAtmosphereComponent}. */
 	public ChunkAtmosphereComponent(Chunk chunk) {
 		if (chunk instanceof WorldChunk) {
 			this.world = ((WorldChunk) chunk).getWorld();
@@ -72,10 +81,60 @@ public class ChunkAtmosphereComponent implements Component, ServerTickingCompone
 		}
 	}
 
+	/** Returns this component's world. */
+	public World getWorld() {
+		return world;
+	}
+
+	/** Returns this component's chunk. */
+	public Chunk getChunk() {
+		return chunk;
+	}
+
+	/** Returns this component's contents. */
+	public Map<BlockPos, FluidVolume> getVolumes() {
+		return volumes;
+	}
+
+	/** Returns the volume at the given position, defaulting to {@link FluidVolume#ofEmpty()}. */
+	public FluidVolume get(BlockPos position) {
+		if (world == null) return FluidVolume.ofEmpty();
+
+		return volumes.getOrDefault(position, FluidVolume.ofEmpty());
+	}
+
+	/** Removes the volume at the given position. */
+	public void remove(BlockPos blockPos) {
+		if (world == null) return;
+
+		volumes.remove(blockPos);
+
+		if (!world.isClient) {
+			world.getPlayers().forEach((player) -> {
+				ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, ClientAtmosphereManager.GAS_REMOVED, ClientAtmosphereManager.ofGasRemoved(blockPos));
+			});
+		}
+	}
+
+	/** Adds the given volume at the specified position. */
+	public void add(BlockPos blockPos, FluidVolume volume) {
+		if (world == null) return;
+
+		volumes.put(blockPos, volume);
+
+		if (!world.isClient) {
+			world.getPlayers().forEach((player) -> {
+				ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, ClientAtmosphereManager.GAS_ADDED, ClientAtmosphereManager.ofGasAdded(blockPos, volume));
+			});
+		}
+	}
+
+	/** Asserts whether a {@link BlockPos} is within a {@link ChunkPos} or not. */
 	public static boolean isInChunk(ChunkPos chunkPos, BlockPos pos) {
 		return pos.getX() >= chunkPos.getStartX() && pos.getX() <= chunkPos.getEndX() && pos.getZ() >= chunkPos.getStartZ() && pos.getZ() <= chunkPos.getEndZ();
 	}
 
+	/** Returns the nearest neighbouring {@link ChunkPos} towards the given {@link BlockPos}. */
 	public static ChunkPos getNeighborFromPos(ChunkPos chunkPos, BlockPos pos) {
 		if (pos.getX() < chunkPos.getStartX()) {
 			return new ChunkPos(chunkPos.x - 1, chunkPos.z);
@@ -89,60 +148,65 @@ public class ChunkAtmosphereComponent implements Component, ServerTickingCompone
 		return chunkPos;
 	}
 
-	@Nullable
-	public static <V> ChunkAtmosphereComponent get(V v) {
-		try {
-			return AstromineComponents.CHUNK_ATMOSPHERE_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
-			return null;
-		}
+	/** Returns {@link #getNeighborFromPos(ChunkPos, BlockPos)},
+	 * based on this component's chunk's position. */
+	public ChunkPos getNeighborFromPos(BlockPos pos) {
+		if (world == null) return new ChunkPos(0, 0);
+
+		return getNeighborFromPos(chunk.getPos(), pos);
 	}
 
-	public World getWorld() {
-		return world;
+	/** Asserts whether the given position is within
+	 * this component's chunk or not. */
+	public boolean isInChunk(BlockPos pos) {
+		if (world == null) return false;
+
+		return isInChunk(chunk.getPos(), pos);
 	}
 
-	public Chunk getChunk() {
-		return chunk;
+	/** Asserts whether gas may traverse from the given
+	 * {@link BlockState} centerState, at {@link BlockPos} centerPos,
+	 * into {@link BlockState} sideState, at {@link BlockPos} sidePos,
+	 * considering {@link FluidVolume} centerVolume and {@link FluidVolume} sideVolume,
+	 * from the given {@link Direction} when propagating - that is to say,
+	 * when simulating natural gas movement. */
+	public boolean isTraversableForPropagation(BlockState centerState, BlockPos centerPos, BlockState sideState, BlockPos sidePos, FluidVolume centerVolume, FluidVolume sideVolume, Direction direction) {
+		if (world == null) return false;
+
+		return !(Registry.BLOCK.getId(sideState.getBlock()).toString().equals("astromine:airlock") && !sideState.get(Properties.POWERED))
+				&& (sideState.isAir() || !sideState.isSideSolidFullSquare(world, sidePos, direction.getOpposite()))
+				&& (centerState.isAir() || !centerState.isSideSolidFullSquare(world, centerPos, direction)) && (sideVolume.isEmpty() || sideVolume.test(centerVolume.getFluid()))
+				&& (centerVolume.hasStored(Fraction.BOTTLE) && !sideState.isOpaqueFullCube(world, centerPos))
+				&& sideVolume.smallerThan(centerVolume.getAmount());
 	}
 
-	public Map<BlockPos, FluidVolume> getVolumes() {
-		return volumes;
+	/** Asserts whether gas may traverse from the given
+	 * {@link BlockState} centerState, at {@link BlockPos} centerPos,
+	 * into {@link BlockState} sideState, at {@link BlockPos} sidePos,
+	 * considering {@link FluidVolume} centerVolume and {@link FluidVolume} sideVolume,
+	 * from the given {@link Direction} when displacing - that is to say,
+	 * when a gas is forced out of its position due to, for example, block placement. */
+	public boolean isTraversableForDisplacement(BlockState centerState, BlockPos centerPos, BlockState sideState, BlockPos sidePos, FluidVolume centerVolume, FluidVolume sideVolume, Direction direction) {
+		if (world == null) return false;
+
+		return !(Registry.BLOCK.getId(sideState.getBlock()).toString().equals("astromine:airlock") && !sideState.get(Properties.POWERED))
+				&& (sideState.isAir() || !sideState.isSideSolidFullSquare(world, sidePos, direction.getOpposite()))
+				&& (centerState.isAir() || !centerState.isSideSolidFullSquare(world, centerPos, direction)) && (sideVolume.isEmpty() || sideVolume.test(centerVolume.getFluid()))
+				&& (!sideState.isOpaqueFullCube(world, centerPos));
 	}
 
-	public FluidVolume get(BlockPos position) {
-		if (world == null)
-			return FluidVolume.empty();
-
-		return volumes.getOrDefault(position, FluidVolume.empty());
-	}
-
-	public void add(BlockPos blockPos, FluidVolume volume) {
-		if (world == null)
-			return;
-
-		volumes.put(blockPos, volume);
-
-		if (!world.isClient) {
-			world.getPlayers().forEach((player) -> {
-				ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, ClientAtmosphereManager.GAS_ADDED, ClientAtmosphereManager.ofGasAdded(blockPos, volume));
-			});
-		}
-	}
-
-	public void remove(BlockPos blockPos) {
-		if (world == null)
-			return;
-
-		volumes.remove(blockPos);
-
-		if (!world.isClient) {
-			world.getPlayers().forEach((player) -> {
-				ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, ClientAtmosphereManager.GAS_REMOVED, ClientAtmosphereManager.ofGasRemoved(blockPos));
-			});
-		}
-	}
-
+	/**
+	 * Override behavior to implement atmospheric logic.
+	 *
+	 * {@link #atmosphereTickCounter} is used to count
+	 * time between simulations.
+	 *
+	 * Effectively, this component's volumes are iterated over,
+	 * balancing them between their six neighboring volumes.
+	 *
+	 * The direction of movement is shuffled to avoid propagating
+	 * volumes in straight lines.
+	 */
 	@Override
 	public void serverTick() {
 		if (world == null)
@@ -162,7 +226,7 @@ public class ChunkAtmosphereComponent implements Component, ServerTickingCompone
 
 			FluidVolume centerVolume = pair.getValue();
 
-			centerVolume.minus(Fraction.of(AstromineConfig.get().gasDecayNumerator, AstromineConfig.get().gasDecayDenominator));
+			centerVolume.take(Fraction.of(AstromineConfig.get().gasDecayNumerator, AstromineConfig.get().gasDecayDenominator));
 
 			if (centerVolume.isEmpty()) {
 				remove(centerPos);
@@ -181,11 +245,11 @@ public class ChunkAtmosphereComponent implements Component, ServerTickingCompone
 
 					if (isTraversableForPropagation(centerState, centerPos, sideState, sidePos, centerVolume, sideVolume, direction)) {
 						if (world.isAir(centerPos)) {
-							centerVolume.add(sideVolume, Fraction.BOTTLE);
+							centerVolume.give(sideVolume, Fraction.BOTTLE);
 						} else if (!centerState.isSideSolidFullSquare(world, centerPos, direction)) {
-							centerVolume.add(sideVolume, Fraction.BOTTLE);
+							centerVolume.give(sideVolume, Fraction.BOTTLE);
 						} else {
-							centerVolume.add(sideVolume, centerVolume.getAmount());
+							centerVolume.give(sideVolume, centerVolume.getAmount());
 						}
 
 						add(sidePos, sideVolume);
@@ -202,11 +266,11 @@ public class ChunkAtmosphereComponent implements Component, ServerTickingCompone
 
 					if (isTraversableForPropagation(centerState, centerPos, sideState, sidePos, centerVolume, sideVolume, direction)) {
 						if (world.isAir(centerPos)) {
-							centerVolume.add(sideVolume, Fraction.BOTTLE);
+							centerVolume.give(sideVolume, Fraction.BOTTLE);
 						} else if (!world.getBlockState(centerPos).isSideSolidFullSquare(world, centerPos, direction)) {
-							centerVolume.add(sideVolume, Fraction.BOTTLE);
+							centerVolume.give(sideVolume, Fraction.BOTTLE);
 						} else {
-							centerVolume.add(sideVolume, centerVolume.getAmount());
+							centerVolume.give(sideVolume, centerVolume.getAmount());
 						}
 
 						chunkAtmosphereComponent.add(sidePos, sideVolume);
@@ -216,20 +280,7 @@ public class ChunkAtmosphereComponent implements Component, ServerTickingCompone
 		}
 	}
 
-	public boolean isInChunk(BlockPos pos) {
-		if (world == null)
-			return false;
-
-		return isInChunk(chunk.getPos(), pos);
-	}
-
-	public ChunkPos getNeighborFromPos(BlockPos pos) {
-		if (world == null)
-			return new ChunkPos(0, 0);
-
-		return getNeighborFromPos(chunk.getPos(), pos);
-	}
-
+	/** Serializes this {@link ChunkAtmosphereComponent} to a {@link CompoundTag}. */
 	@Override
 	public void writeToNbt(CompoundTag tag) {
 		if (world == null)
@@ -251,6 +302,7 @@ public class ChunkAtmosphereComponent implements Component, ServerTickingCompone
 		tag.put("data", dataTag);
 	}
 
+	/** Deserializes this {@link ChunkAtmosphereComponent} from a {@link CompoundTag}. */
 	@Override
 	public void readFromNbt(CompoundTag tag) {
 		if (world == null)
@@ -265,20 +317,13 @@ public class ChunkAtmosphereComponent implements Component, ServerTickingCompone
 		}
 	}
 
-	public boolean isTraversableForPropagation(BlockState centerState, BlockPos centerPos, BlockState sideState, BlockPos sidePos, FluidVolume centerVolume, FluidVolume sideVolume, Direction direction) {
-		if (world == null)
-			return false;
-
-		return !(Registry.BLOCK.getId(sideState.getBlock()).toString().equals("astromine:airlock") && !sideState.get(Properties.POWERED)) && (sideState.isAir() || !sideState.isSideSolidFullSquare(world, sidePos, direction.getOpposite())) && (centerState.isAir() || !centerState
-			.isSideSolidFullSquare(world, centerPos, direction)) && (sideVolume.isEmpty() || sideVolume.test(centerVolume.getFluid())) && (centerVolume.hasStored(Fraction.BOTTLE) && !sideState.isOpaqueFullCube(world, centerPos)) && sideVolume.smallerThan(centerVolume
-				.getAmount());
-	}
-
-	public boolean isTraversableForDisplacement(BlockState centerState, BlockPos centerPos, BlockState sideState, BlockPos sidePos, FluidVolume centerVolume, FluidVolume sideVolume, Direction direction) {
-		if (world == null)
-			return false;
-
-		return !(Registry.BLOCK.getId(sideState.getBlock()).toString().equals("astromine:airlock") && !sideState.get(Properties.POWERED)) && (sideState.isAir() || !sideState.isSideSolidFullSquare(world, sidePos, direction.getOpposite())) && (centerState.isAir() || !centerState
-			.isSideSolidFullSquare(world, centerPos, direction)) && (sideVolume.isEmpty() || sideVolume.test(centerVolume.getFluid())) && (!sideState.isOpaqueFullCube(world, centerPos));
+	/** Returns the {@link ChunkAtmosphereComponent} of the given {@link V}. */
+	@Nullable
+	public static <V> ChunkAtmosphereComponent get(V v) {
+		try {
+			return AstromineComponents.CHUNK_ATMOSPHERE_COMPONENT.get(v);
+		} catch (Exception justShutUpAlready) {
+			return null;
+		}
 	}
 }

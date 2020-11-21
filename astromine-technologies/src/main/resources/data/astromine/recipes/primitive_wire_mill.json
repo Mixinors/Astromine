@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "818",
+    "545",
+    "878"
+  ],
+  "key": {
+    "1": {
+      "item": "minecraft:shears"
+    },
+    "4": {
+      "item": "astromine:primitive_machine_chassis"
+    },
+    "5": {
+      "item": "minecraft:quartz"
+    },
+    "7": {
+      "item": "astromine:primitive_press"
+    },
+    "8": {
+      "tag": "c:steel_plates"
+    }
+  },
+  "result": {
+    "count": 1,
+    "item": "astromine:primitive_wire_mill"
+  }
+}

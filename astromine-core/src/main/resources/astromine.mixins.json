@@ -7,7 +7,7 @@
     "AbstractBlockMixin",
     "AbstractMinecartEntityMixin",
     "BiomeLayerSamplerMixin",
-    "DiggerEnchantmentTargetMixin",
+    "EnchantmentTargetMixin",
     "EntityMixin",
     "EntityNavigationMixin",
     "FishingBobberEntityMixin",

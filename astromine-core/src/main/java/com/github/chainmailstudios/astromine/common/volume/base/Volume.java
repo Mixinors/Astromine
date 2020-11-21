@@ -24,124 +24,136 @@
 
 package com.github.chainmailstudios.astromine.common.volume.base;
 
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.google.gson.JsonElement;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.PacketByteBuf;
 
 import java.util.Objects;
 
-public abstract class Volume<T, N extends Number> {
-	private T t;
+/**
+ * A {@link Volume} of {@link N},
+ * with an {@link #amount} and a {@link #size}.
+ */
+public abstract class Volume<N extends Number> {
+	private N amount;
 
-	private N n;
+	private N size;
 
-	private N s;
+	private Runnable runnable;
 
-	private Runnable r;
-
-	public Volume(T t, N n, N s) {
-		this.t = t;
-		this.n = n;
-		this.s = s;
+	/** Instantiates a {@link Volume}. */
+	protected Volume(N amount, N size) {
+		this.amount = amount;
+		this.size = size;
 	}
 
-	public Volume(T t, N n, N s, Runnable r) {
-		this(t, n, s);
+	/** Instantiates a {@link Volume} with a listener. */
+	protected Volume(N amount, N size, Runnable runnable) {
+		this(amount, size);
 
-		this.r = r;
+		this.runnable = runnable;
 	}
 
-	public T getType() {
-		return t;
-	}
-
-	public void setType(T t) {
-		this.t = t;
-
-		if (r != null)
-			r.run();
-	}
-
-	public <V extends Volume<T, N>> V withType(T t) {
-		V v = copy();
-		v.setType(t);
-		return v;
-	}
-
+	/** Returns the amount of this volume. */
 	public N getAmount() {
-		return n;
+		return amount;
 	}
 
+	/** Sets the amount of this volume to the specified value. */
 	public void setAmount(N n) {
-		this.n = n;
+		this.amount = n;
 
-		if (r != null)
-			r.run();
+		if (runnable != null)
+			runnable.run();
 	}
 
-	public <V extends Volume<T, N>> V withAmount(N n) {
-		V v = copy();
-		v.setAmount(n);
-		return v;
+	/** Returns this volume with an amount equal to the specified amount. */
+	public <V extends Volume<N>> V withAmount(N amount) {
+		V volume = copy();
+		volume.setAmount(amount);
+		return volume;
 	}
 
+	/** Returns the size of this volume. */
 	public N getSize() {
-		return s;
+		return size;
 	}
 
-	public void setSize(N s) {
-		this.s = s;
+	/** Sets the size of this volume to the specified size. */
+	public void setSize(N size) {
+		this.size = size;
 
-		if (r != null)
-			r.run();
+		if (runnable != null)
+			runnable.run();
 	}
 
-	public <V extends Volume<T, N>> V withSize(N n) {
-		V v = copy();
-		v.setSize(n);
-		return v;
+	/** Returns this volume with a size equal to the specified amount. */
+	public <V extends Volume<N>> V withSize(N size) {
+		V volume = copy();
+		volume.setSize(size);
+		return volume;
 	}
 
-	public void setRunnable(Runnable r) {
-		this.r = r;
+	/** Returns the runnable of this volume. */
+	public Runnable getRunnable() {
+		return runnable;
 	}
 
-	public <V extends Volume<T, N>> V withRunnable(Runnable r) {
-		setRunnable(r);
+	/** Sets the runnable of this volume to the specified value. */
+	public void setRunnable(Runnable runnable) {
+		this.runnable = runnable;
+	}
+
+	/** Returns this volume with a runnable equal to the specified amount. */
+	public <V extends Volume<N>> V withRunnable(Runnable runnable) {
+		setRunnable(runnable);
 
 		return (V) this;
 	}
 
-	public boolean isFull() {
-		return n.equals(s);
-	}
-
+	/** Asserts whether this volume is empty. */
 	public boolean isEmpty() {
-		return n.doubleValue() == 0.0D;
+		return amount.doubleValue() == 0.0D;
 	}
 
+	/** Asserts whether this volume is full. */
+	public boolean isFull() {
+		return amount.equals(size);
+	}
+
+	/** Asserts whether this volume has the specified {@link Number} available. */
 	public boolean hasAvailable(Number required) {
-		return s.doubleValue() - n.doubleValue() >= required.doubleValue();
+		return size.doubleValue() - amount.doubleValue() >= required.doubleValue();
 	}
 
+	/** Asserts whether this volume has the specified {@link Number} stored. */
 	public boolean hasStored(Number required) {
-		return n.doubleValue() >= required.doubleValue();
+		return amount.doubleValue() >= required.doubleValue();
 	}
 
+	/** Asserts whether this volume is bigger than the specified {@link Number}. */
 	public boolean biggerThan(Number number) {
-		return n.doubleValue() > number.doubleValue();
+		return amount.doubleValue() > number.doubleValue();
 	}
 
+	/** Asserts whether this volume is smaller than the specified {@link Number}. */
 	public boolean smallerThan(Number number) {
-		return n.doubleValue() < number.doubleValue();
+		return amount.doubleValue() < number.doubleValue();
 	}
 
+	/** Asserts whether this volume is bigger or equal than the specified {@link Number}. */
 	public boolean biggerOrEqualThan(Number number) {
-		return n.doubleValue() >= number.doubleValue();
+		return amount.doubleValue() >= number.doubleValue();
 	}
 
+	/** Asserts whether this volume is smaller or equal than the specified {@link Number}. */
 	public boolean smallerOrEqualThan(Number number) {
-		return n.doubleValue() <= number.doubleValue();
+		return amount.doubleValue() <= number.doubleValue();
 	}
 
+	/** Asserts the equality of the objects. */
 	@Override
 	public boolean equals(Object object) {
 		if (this == object)
@@ -150,43 +162,66 @@ public abstract class Volume<T, N extends Number> {
 		if (!(object instanceof Volume))
 			return false;
 
-		Volume<?, ?> volume = (Volume<?, ?>) object;
+		Volume<?> volume = (Volume<?>) object;
 
-		if (!Objects.equals(t, volume.t))
-			return false;
-		if (!Objects.equals(n, volume.n))
+		if (!Objects.equals(amount, volume.amount))
 			return false;
 
-		return Objects.equals(s, volume.s);
+		return Objects.equals(size, volume.size);
 	}
 
+	/** Returns the hash for this volume. */
 	@Override
 	public int hashCode() {
-		int result = t != null ? t.hashCode() : 0;
-		result = 31 * result + (n != null ? n.hashCode() : 0);
-		result = 31 * result + (s != null ? s.hashCode() : 0);
-		return result;
+		return com.google.common.base.Objects.hashCode(amount, size, runnable);
 	}
 
+	/** Returns this volume's string representation.
+	 * For example, it may be "8.00 of 32.00" */
+	@Override
+	public String toString() {
+		return String.format("%s of %s", getAmount(), getSize());
+	}
+
+	/**
+	 * Attempts to give the given {@link V} volume a {@link Fraction} of this
+	 * volume's content.
+	 */
+	public abstract <V extends Volume<N>> void give(V volume, N amount);
+
+	/** Gives this volume the minimum between the available amount and the
+	 * specified amount. */
+	public abstract void give(N amount);
+
+	/** Attempts to give the given {@link V} volume all our content. */
+	public <V extends Volume<N>> void give(V amount) {
+		give(amount, amount.getAmount());
+	}
+
+	/**
+	 * Attempts to take the given {@link N} from a {@link V}
+	 * volume's content.
+	 */
+	public abstract <V extends Volume<N>> void take(V volume, N amount);
+
+	/** Takes the minimum between the stored amount and the
+	 * specified amount from this volume. */
+	public abstract void take(N amount);
+
+	/** Attempts to take all the content from the specified {@link V} volume. */
+	public <V extends Volume<N>> void take(V volume) {
+		take(volume, volume.getAmount());
+	}
+
+	/** Returns a copy of this volume. */
+	public abstract <V extends Volume<N>> V copy();
+
+	/** Serializes this volume to a {@link CompoundTag}. */
 	public abstract CompoundTag toTag();
 
-	public abstract <V extends Volume<T, N>> V add(V v, N n);
+	/** Deserializes a volume from a {@link JsonElement}. */
+	public abstract JsonElement toJson();
 
-	public abstract <V extends Volume<T, N>> V add(N n);
-
-	public abstract <V extends Volume<T, N>> V moveFrom(V v, N n);
-
-	public abstract <V extends Volume<T, N>> V moveFrom(V v);
-
-	public abstract <V extends Volume<T, N>> V minus(N n);
-
-	public abstract <V extends Volume<T, N>> V copy();
-
-	public boolean use(N n) {
-		if (hasStored(n)) {
-			minus(n);
-			return true;
-		}
-		return false;
-	}
+	/** Serialize this volume to a {@link ByteBuf}. */
+	public abstract PacketByteBuf toPacket(PacketByteBuf buffer);
 }

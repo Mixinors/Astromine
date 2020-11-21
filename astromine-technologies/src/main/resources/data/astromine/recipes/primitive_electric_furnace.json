@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "616",
+    "343",
+    "676"
+  ],
+  "key": {
+    "1": {
+      "item": "minecraft:furnace"
+    },
+    "3": {
+      "tag": "c:gold_gears"
+    },
+    "4": {
+      "item": "astromine:primitive_machine_chassis"
+    },
+    "6": {
+      "tag": "c:steel_plates"
+    },
+    "7": {
+      "item": "astromine:basic_circuit"
+    }
+  },
+  "result": {
+    "count": 1,
+    "item": "astromine:primitive_electric_furnace"
+  }
+}

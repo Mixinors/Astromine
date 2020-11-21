@@ -1,16 +1,41 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["012", "345", "678"],
+  "pattern": [
+    "012",
+    "345",
+    "678"
+  ],
   "key": {
-    "0": {"tag": "c:iron_plates"},
-    "1": {"tag": "c:iron_plates"},
-    "2": {"tag": "c:metite_gears"},
-    "3": {"tag": "c:steel_plates"},
-    "4": {"item": "astromine:elite_circuit"},
-    "5": {"tag": "c:diamond_dusts"},
-    "6": {"tag": "c:iron_plates"},
-    "7": {"tag": "c:iron_plates"},
-    "8": {"tag": "c:metite_gears"}
+    "0": {
+      "tag": "c:iron_plates"
+    },
+    "1": {
+      "tag": "c:iron_plates"
+    },
+    "2": {
+      "tag": "c:metite_gears"
+    },
+    "3": {
+      "tag": "c:steel_plates"
+    },
+    "4": {
+      "item": "astromine:elite_circuit"
+    },
+    "5": {
+      "tag": "c:diamond_dusts"
+    },
+    "6": {
+      "tag": "c:iron_plates"
+    },
+    "7": {
+      "tag": "c:iron_plates"
+    },
+    "8": {
+      "tag": "c:metite_gears"
+    }
   },
-  "result": {"item": "astromine:holographic_bridge_projector", "count": 1}
+  "result": {
+    "item": "astromine:holographic_bridge_projector",
+    "count": 1
+  }
 }

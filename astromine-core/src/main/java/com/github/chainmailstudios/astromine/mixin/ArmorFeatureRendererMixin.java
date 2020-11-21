@@ -67,4 +67,19 @@ public abstract class ArmorFeatureRendererMixin {
 			ci.cancel();
 		}
 	}
+
+	@Unique
+	private static RenderLayer getArmorCutoutNoCull(Identifier texture, int frames) {
+		RenderLayer.MultiPhaseParameters multiPhaseParameters = RenderLayer.MultiPhaseParameters.builder()
+			.texture(new AnimatedArmorItem.AnimatedTexturePhase(texture, frames))
+			.transparency(RenderLayer.NO_TRANSPARENCY)
+			.diffuseLighting(RenderLayer.ENABLE_DIFFUSE_LIGHTING)
+			.alpha(RenderLayer.ONE_TENTH_ALPHA)
+			.cull(RenderLayer.DISABLE_CULLING)
+			.lightmap(RenderLayer.ENABLE_LIGHTMAP)
+			.overlay(RenderLayer.ENABLE_OVERLAY_COLOR)
+			.layering(RenderLayer.VIEW_OFFSET_Z_LAYERING)
+			.build(true);
+		return RenderLayer.of("astromine:armor_cutout_no_cull", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, 7, 256, true, false, multiPhaseParameters);
+	}
 }

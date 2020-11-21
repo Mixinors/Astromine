@@ -31,6 +31,7 @@ import net.minecraft.world.World;
 import com.zundrel.wrenchable.block.BlockWrenchable;
 
 public interface CableWrenchable extends BlockWrenchable {
+	/** When shift-right-clicked with a wrench, break the block. */
 	@Override
 	default void onWrenched(World world, PlayerEntity playerEntity, BlockHitResult blockHitResult) {
 		if (playerEntity.isSneaking()) {

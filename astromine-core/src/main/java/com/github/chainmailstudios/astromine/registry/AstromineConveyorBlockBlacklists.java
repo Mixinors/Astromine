@@ -27,19 +27,19 @@ package com.github.chainmailstudios.astromine.registry;
 import net.minecraft.item.Items;
 import net.minecraft.util.Pair;
 
-import com.github.chainmailstudios.astromine.common.registry.ConveyorBlockBlacklistRegistry;
+import com.github.chainmailstudios.astromine.common.registry.ConveyorSpecialScaleRegistry;
 
 public class AstromineConveyorBlockBlacklists {
 	public static void initialize() {
-		ConveyorBlockBlacklistRegistry.INSTANCE.register(Items.CHEST, new Pair<>(1F, true));
-		ConveyorBlockBlacklistRegistry.INSTANCE.register(Items.TRAPPED_CHEST, new Pair<>(1F, true));
-		ConveyorBlockBlacklistRegistry.INSTANCE.register(Items.ENDER_CHEST, new Pair<>(1F, true));
-		ConveyorBlockBlacklistRegistry.INSTANCE.register(Items.CREEPER_HEAD, new Pair<>(1F, true));
-		ConveyorBlockBlacklistRegistry.INSTANCE.register(Items.DRAGON_HEAD, new Pair<>(0.625F, true));
-		ConveyorBlockBlacklistRegistry.INSTANCE.register(Items.PLAYER_HEAD, new Pair<>(1F, true));
-		ConveyorBlockBlacklistRegistry.INSTANCE.register(Items.ZOMBIE_HEAD, new Pair<>(1F, true));
-		ConveyorBlockBlacklistRegistry.INSTANCE.register(Items.SKELETON_SKULL, new Pair<>(1F, true));
-		ConveyorBlockBlacklistRegistry.INSTANCE.register(Items.WITHER_SKELETON_SKULL, new Pair<>(1F, true));
-		ConveyorBlockBlacklistRegistry.INSTANCE.register(Items.REDSTONE, new Pair<>(0.8F, true));
+		ConveyorSpecialScaleRegistry.INSTANCE.register(Items.CHEST, new Pair<>(1F, true));
+		ConveyorSpecialScaleRegistry.INSTANCE.register(Items.TRAPPED_CHEST, new Pair<>(1F, true));
+		ConveyorSpecialScaleRegistry.INSTANCE.register(Items.ENDER_CHEST, new Pair<>(1F, true));
+		ConveyorSpecialScaleRegistry.INSTANCE.register(Items.CREEPER_HEAD, new Pair<>(1F, true));
+		ConveyorSpecialScaleRegistry.INSTANCE.register(Items.DRAGON_HEAD, new Pair<>(0.625F, true));
+		ConveyorSpecialScaleRegistry.INSTANCE.register(Items.PLAYER_HEAD, new Pair<>(1F, true));
+		ConveyorSpecialScaleRegistry.INSTANCE.register(Items.ZOMBIE_HEAD, new Pair<>(1F, true));
+		ConveyorSpecialScaleRegistry.INSTANCE.register(Items.SKELETON_SKULL, new Pair<>(1F, true));
+		ConveyorSpecialScaleRegistry.INSTANCE.register(Items.WITHER_SKELETON_SKULL, new Pair<>(1F, true));
+		ConveyorSpecialScaleRegistry.INSTANCE.register(Items.REDSTONE, new Pair<>(0.8F, true));
 	}
 }

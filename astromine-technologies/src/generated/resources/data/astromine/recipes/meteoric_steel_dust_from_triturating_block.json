@@ -8,6 +8,6 @@
     "item": "astromine:meteoric_steel_dust",
     "count": 9
   },
-  "time": 240,
-  "energy": 540
+  "time": 120,
+  "energy_input": 540
 }

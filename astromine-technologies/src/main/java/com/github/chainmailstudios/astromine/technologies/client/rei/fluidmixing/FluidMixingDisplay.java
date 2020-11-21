@@ -52,10 +52,10 @@ public class FluidMixingDisplay implements RecipeDisplay {
 	private final Identifier id;
 
 	public FluidMixingDisplay(FluidMixingRecipe recipe) {
-		this.energy = recipe.getEnergy();
-		this.firstIngredient = recipe.getFirstIngredient();
-		this.secondIngredient = recipe.getSecondIngredient();
-		this.output = recipe.getOutputVolume();
+		this.energy = recipe.getEnergyInput();
+		this.firstIngredient = recipe.getFirstInput();
+		this.secondIngredient = recipe.getSecondInput();
+		this.output = recipe.getFirstOutput();
 		this.id = recipe.getId();
 	}
 

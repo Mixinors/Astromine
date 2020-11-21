@@ -25,10 +25,8 @@
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.*;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.CompoundTag;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
@@ -42,7 +40,6 @@ import com.github.chainmailstudios.astromine.technologies.common.block.entity.ma
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.ElectrolyzingRecipe;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -54,8 +51,8 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	private Optional<ElectrolyzingRecipe> optionalRecipe = Optional.empty();
 
-	public ElectrolyzerBlockEntity(Block energyBlock, BlockEntityType<?> type) {
-		super(energyBlock, type);
+	public ElectrolyzerBlockEntity(BlockEntityType<?> type) {
+		super(type);
 	}
 
 	@Override
@@ -70,11 +67,11 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 				return false;
 			}
 
-			Fluid existing = getFluidComponent().getFirst().getFluid();
+			if (!volume.test(getFluidComponent().getFirst()) && !volume.test(getFluidComponent().getSecond())) {
+				return false;
+			}
 
-			Fluid inserting = volume.getFluid();
-
-			return ElectrolyzingRecipe.allows(world, inserting, existing);
+			return ElectrolyzingRecipe.allows(world, FluidComponent.of(volume, getFluidComponent().getSecond(), getFluidComponent().getThird()));
 		}).withExtractPredicate((direction, volume, slot) -> {
 			return slot == 1 || slot == 2;
 		}).withListener((inventory) -> {
@@ -82,9 +79,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 			optionalRecipe = Optional.empty();
 		});
 
-		fluidComponent.getFirst().setSize(getFluidSize());
-		fluidComponent.getSecond().setSize(getFluidSize());
-		fluidComponent.getThird().setSize(getFluidSize());
+		fluidComponent.forEach(it -> it.setSize(getFluidSize()));
 
 		return fluidComponent;
 	}
@@ -98,10 +93,13 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 		FluidComponent fluidComponent = getFluidComponent();
 
-		if (fluidComponent != null) {
-			EnergyVolume volume = getEnergyComponent().getVolume();
+		EnergyComponent energyComponent = getEnergyComponent();
+
+		if (fluidComponent != null && energyComponent != null) {
+			EnergyVolume volume = energyComponent.getVolume();
+
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof ElectrolyzingRecipe).filter(recipe -> ((ElectrolyzingRecipe) recipe).matches(fluidComponent)).findFirst();
+				optionalRecipe = ElectrolyzingRecipe.matching(world, fluidComponent, energyComponent);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -113,33 +111,27 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 			if (optionalRecipe.isPresent()) {
 				ElectrolyzingRecipe recipe = optionalRecipe.get();
 
-				if (recipe.matches(fluidComponent)) {
-					limit = recipe.getTime();
+				limit = recipe.getTime();
 
-					double speed = Math.min(getMachineSpeed(), limit - progress);
-					double consumed = recipe.getEnergy() * speed / limit;
+				double speed = Math.min(getMachineSpeed(), limit - progress);
+				double consumed = recipe.getEnergyInput() * speed / limit;
 
-					if (volume.hasStored(consumed)) {
-						volume.minus(consumed);
+				if (volume.hasStored(consumed)) {
+					volume.take(consumed);
 
-						if (progress + speed >= limit) {
-							optionalRecipe = Optional.empty();
+					if (progress + speed >= limit) {
+						optionalRecipe = Optional.empty();
 
-							if (volume.hasAvailable(consumed)) {
-								fluidComponent.getFirst().minus(recipe.getIngredient().getFirstMatchingVolume().getAmount());
-								fluidComponent.getSecond().moveFrom(recipe.getFirstOutputVolume());
-								fluidComponent.getThird().moveFrom(recipe.getSecondOutputVolume());
-							}
+						fluidComponent.getFirst().take(recipe.getFirstInput().testMatching(fluidComponent.getFirst()).getAmount());
+						fluidComponent.getSecond().take(recipe.getFirstOutput());
+						fluidComponent.getThird().take(recipe.getSecondOutput());
 
-							progress = 0;
-						} else {
-							progress += speed;
-						}
-
-						tickActive();
+						progress = 0;
 					} else {
-						tickInactive();
+						progress += speed;
 					}
+
+					tickActive();
 				} else {
 					tickInactive();
 				}
@@ -165,7 +157,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	public static class Primitive extends ElectrolyzerBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlocks.PRIMITIVE_ELECTROLYZER, AstromineTechnologiesBlockEntityTypes.PRIMITIVE_ELECTROLYZER);
+			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_ELECTROLYZER);
 		}
 
 		@Override
@@ -191,7 +183,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	public static class Basic extends ElectrolyzerBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlocks.BASIC_ELECTROLYZER, AstromineTechnologiesBlockEntityTypes.BASIC_ELECTROLYZER);
+			super(AstromineTechnologiesBlockEntityTypes.BASIC_ELECTROLYZER);
 		}
 
 		@Override
@@ -217,7 +209,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	public static class Advanced extends ElectrolyzerBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlocks.ADVANCED_ELECTROLYZER, AstromineTechnologiesBlockEntityTypes.ADVANCED_ELECTROLYZER);
+			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_ELECTROLYZER);
 		}
 
 		@Override
@@ -243,7 +235,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 
 	public static class Elite extends ElectrolyzerBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlocks.ELITE_ELECTROLYZER, AstromineTechnologiesBlockEntityTypes.ELITE_ELECTROLYZER);
+			super(AstromineTechnologiesBlockEntityTypes.ELITE_ELECTROLYZER);
 		}
 
 		@Override

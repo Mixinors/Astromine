@@ -28,10 +28,10 @@ public class AstromineTechnologiesLootTableGenerators extends AstromineLootTable
 			AstromineTechnologiesBlocks.ADVANCED_LIQUID_GENERATOR,
 			AstromineTechnologiesBlocks.ELITE_LIQUID_GENERATOR,
 
-			AstromineTechnologiesBlocks.PRIMITIVE_ELECTRIC_SMELTER,
-			AstromineTechnologiesBlocks.BASIC_ELECTRIC_SMELTER,
-			AstromineTechnologiesBlocks.ADVANCED_ELECTRIC_SMELTER,
-			AstromineTechnologiesBlocks.ELITE_ELECTRIC_SMELTER,
+			AstromineTechnologiesBlocks.PRIMITIVE_ELECTRIC_FURNACE,
+			AstromineTechnologiesBlocks.BASIC_ELECTRIC_FURNACE,
+			AstromineTechnologiesBlocks.ADVANCED_ELECTRIC_FURNACE,
+			AstromineTechnologiesBlocks.ELITE_ELECTRIC_FURNACE,
 
 			AstromineTechnologiesBlocks.PRIMITIVE_ALLOY_SMELTER,
 			AstromineTechnologiesBlocks.BASIC_ALLOY_SMELTER,

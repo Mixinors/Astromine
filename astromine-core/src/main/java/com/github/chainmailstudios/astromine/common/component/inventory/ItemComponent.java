@@ -24,11 +24,20 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.InventoryFromItemComponent;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import dev.onyxstudios.cca.api.v3.component.Component;
+import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Direction;
 
@@ -42,130 +51,165 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public interface ItemComponent extends Iterable<Map.Entry<Integer, ItemStack>>, AutoSyncedComponent, NameableComponent {
+/**
+ * A {@link NameableComponent} representing an item reserve.
+ *
+ * Serialization and deserialization methods are provided for:
+ * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ */
+public interface ItemComponent extends Iterable<ItemStack>, AutoSyncedComponent, NameableComponent {
+	/** Instantiates an {@link ItemComponent} with the given value. */
 	static ItemComponent of(int size) {
 		return SimpleItemComponent.of(size);
 	}
 
+	/** Instantiates an {@link ItemComponent} with the given value. */
 	static ItemComponent of(ItemStack... stacks) {
 		return SimpleItemComponent.of(stacks);
 	}
 
-	static <V> ItemComponent get(V v) {
-		try {
-			return AstromineComponents.ITEM_INVENTORY_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
-			return null;
-		}
-	}
-
+	/** Returns this component's {@link Item} symbol. */
 	default Item getSymbol() {
 		return AstromineItems.ITEM;
 	}
 
-	default TranslatableText getName() {
+	/** Returns this component's {@link Text} name. */
+	default Text getName() {
 		return new TranslatableText("text.astromine.item");
 	}
 
+	/** Returns this component's size. */
+	int getSize();
+
+	/** Returns this component's listeners. */
 	List<Runnable> getListeners();
 
+	/** Adds a listener to this component. */
 	default void addListener(Runnable listener) {
 		this.getListeners().add(listener);
 	}
 
+	/** Removes a listener from this component. */
 	default void removeListener(Runnable listener) {
 		this.getListeners().remove(listener);
 	}
 
+	/** Triggers this component's listeners. */
 	default void updateListeners() {
 		getListeners().forEach(Runnable::run);
 	}
 
+	/** Returns this component with an added listener. */
 	default ItemComponent withListener(Consumer<ItemComponent> listener) {
 		addListener(() -> listener.accept(this));
 		return this;
 	}
 
+	/** Returns this component's contents. */
 	Map<Integer, ItemStack> getContents();
 
+	/** Returns this component's contents matching the given predicate. */
 	default List<ItemStack> getStacks(Predicate<ItemStack> predicate) {
 		return getContents().values().stream().filter(predicate).collect(Collectors.toList());
 	}
 
-	default List<ItemStack> getExtractableStacks(Direction direction) {
+	/** Returns this component's contents extractable through the given direction. */
+	default List<ItemStack> getExtractableStacks(@Nullable Direction direction) {
 		return getContents().entrySet().stream().filter((entry) -> canExtract(direction, entry.getValue(), entry.getKey())).map(Map.Entry::getValue).collect(Collectors.toList());
 	}
 
-	default List<ItemStack> getExtractableStacks(Direction direction, Predicate<ItemStack> predicate) {
+	/** Returns this component's contents matching the given predicate
+	 * extractable through the specified direction. */
+	default List<ItemStack> getExtractableStacks(@Nullable Direction direction, Predicate<ItemStack> predicate) {
 		return getExtractableStacks(direction).stream().filter(predicate).collect(Collectors.toList());
 	}
 
-	default List<ItemStack> getInsertableStacks(Direction direction) {
+	/** Returns this component's contents insertable through the given direction. */
+	default List<ItemStack> getInsertableStacks(@Nullable Direction direction) {
 		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, entry.getValue(), entry.getKey())).map(Map.Entry::getValue).collect(Collectors.toList());
 	}
 
-	default List<ItemStack> getInsertableStacks(Direction direction, ItemStack Stack) {
+	/** Returns this component's contents insertable through the given direction
+	 * which accept the specified stack. */
+	default List<ItemStack> getInsertableStacks(@Nullable Direction direction, ItemStack Stack) {
 		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, Stack, entry.getKey())).map(Map.Entry::getValue).collect(Collectors.toList());
 	}
 
-	default List<ItemStack> getInsertableStacks(Direction direction, ItemStack Stack, Predicate<ItemStack> predicate) {
+	/** Returns this component's contents matching the given predicate
+	 * insertable through the specified direction which accept the supplied stack. */
+	default List<ItemStack> getInsertableStacks(@Nullable Direction direction, ItemStack Stack, Predicate<ItemStack> predicate) {
 		return getInsertableStacks(direction, Stack).stream().filter(predicate).collect(Collectors.toList());
 	}
 
+	/** Returns the first stack extractable through the given direction. */
 	@Nullable
-	default ItemStack getFirstExtractableStack(Direction direction) {
-		List<ItemStack> Stacks = getExtractableStacks(direction);
-		if (!Stacks.isEmpty())
-			return Stacks.get(0);
+	default ItemStack getFirstExtractableStack(@Nullable Direction direction) {
+		List<ItemStack> stacks = getExtractableStacks(direction);
+		if (!stacks.isEmpty()) return stacks.get(0);
 		else return null;
 	}
 
+	/** Returns the first stack matching the given predicate
+	 * extractable through the specified direction. */
 	@Nullable
-	default ItemStack getFirstExtractableStack(Direction direction, Predicate<ItemStack> predicate) {
+	default ItemStack getFirstExtractableStack(@Nullable Direction direction, Predicate<ItemStack> predicate) {
 		List<ItemStack> Stacks = getExtractableStacks(direction, predicate);
 		if (!Stacks.isEmpty())
 			return Stacks.get(0);
 		else return null;
 	}
 
+	/** Returns the first stack insertable through the given direction
+	 * which accepts the specified volume. */
 	@Nullable
-	default ItemStack getFirstInsertableStack(Direction direction, ItemStack Stack) {
+	default ItemStack getFirstInsertableStack(@Nullable Direction direction, ItemStack Stack) {
 		List<ItemStack> Stacks = getInsertableStacks(direction, Stack);
 		if (!Stacks.isEmpty())
 			return Stacks.get(0);
 		else return null;
 	}
 
+	/** Returns the first volume matching the given predicate
+	 * insertable through the specified direction which accepts the supplied stack. */
 	@Nullable
-	default ItemStack getFirstInsertableStack(Direction direction, ItemStack Stack, Predicate<ItemStack> predicate) {
+	default ItemStack getFirstInsertableStack(@Nullable Direction direction, ItemStack Stack, Predicate<ItemStack> predicate) {
 		List<ItemStack> Stacks = getInsertableStacks(direction, Stack, predicate);
 		if (!Stacks.isEmpty())
 			return Stacks.get(0);
 		else return null;
 	}
 
+	/** Asserts whether the given stack can be inserted through the specified
+	 * direction into the supplied slot. */
 	default boolean canInsert(@Nullable Direction direction, ItemStack stack, int slot) {
 		return getStack(slot).isEmpty() || (ItemStack.areItemsEqual(stack, getStack(slot)) && ItemStack.areTagsEqual(stack, getStack(slot)) && getStack(slot).getMaxCount() - getStack(slot).getCount() >= stack.getCount());
 	}
 
+	/** Asserts whether the given stack can be extracted through the specified
+	 * direction from the supplied slot. */
 	default boolean canExtract(Direction direction, ItemStack stack, int slot) {
 		return true;
 	}
 
+	/* Returns the {@link ItemStack} at the given slot. */
 	default ItemStack getStack(int slot) {
-		return getContents().getOrDefault(slot, ItemStack.EMPTY);
+		if (!getContents().containsKey(slot)) throw new ArrayIndexOutOfBoundsException("Slot " + slot + " not found in ItemComponent!");
+		return getContents().get(slot);
 	}
 
+	/** Sets the {@link ItemStack} at the given slot to the specified value. */
 	default void setStack(int slot, ItemStack stack) {
 		getContents().put(slot, stack);
 
 		updateListeners();
 	}
 
+	/** Removes the {@link ItemStack} at the given slot, returning it. */
 	default ItemStack removeStack(int slot) {
 		ItemStack stack = getContents().remove(slot);
 
@@ -174,8 +218,27 @@ public interface ItemComponent extends Iterable<Map.Entry<Integer, ItemStack>>, 
 		return stack;
 	}
 
-	int getSize();
+	/** Asserts whether this component's contents are all empty or not. */
+	default boolean isEmpty() {
+		return getContents().values().stream().allMatch(ItemStack::isEmpty);
+	}
 
+	/** Asserts whether this component's contents are not all empty or not. */
+	default boolean isNotEmpty() {
+		return !isEmpty();
+	}
+
+	/** Clears this component's contents. */
+	default void clear() {
+		getContents().forEach((slot, stack) -> setStack(slot, ItemStack.EMPTY));
+	}
+
+	/** Returns an {@link Inventory} wrapped over this component. */
+	default Inventory asInventory() {
+		return InventoryFromItemComponent.of(this);
+	}
+
+	/** Serializes this {@link FluidComponent} to a {@link CompoundTag}. */
 	@Override
 	default void writeToNbt(CompoundTag tag) {
 		ListTag listTag = new ListTag();
@@ -194,6 +257,8 @@ public interface ItemComponent extends Iterable<Map.Entry<Integer, ItemStack>>, 
 		tag.put(AstromineComponents.ITEM_INVENTORY_COMPONENT.getId().toString(), dataTag);
 	}
 
+	/** Deserializes this {@link FluidComponent} from  a {@link CompoundTag}. */
+	@Override
 	default void readFromNbt(CompoundTag tag) {
 		CompoundTag dataTag = tag.getCompound(AstromineComponents.ITEM_INVENTORY_COMPONENT.getId().toString());
 
@@ -208,101 +273,120 @@ public interface ItemComponent extends Iterable<Map.Entry<Integer, ItemStack>>, 
 		}
 	}
 
-	default void clear() {
-		getContents().forEach((slot, stack) -> setStack(slot, ItemStack.EMPTY));
+	/** Returns the {@link ItemComponent} of the given {@link V}. */
+	@Nullable
+	static <V> ItemComponent get(V v) {
+		try {
+			return AstromineComponents.ITEM_INVENTORY_COMPONENT.get(v);
+		} catch (Exception justShutUpAlready) {
+			return null;
+		}
 	}
 
-	default boolean isEmpty() {
-		return getContents().values().stream().allMatch(ItemStack::isEmpty);
+	/** Returns an iterator of this component's contents. */
+	@Override
+	default  Iterator<ItemStack> iterator() {
+		return getContents().values().iterator();
 	}
 
-	default boolean isNotEmpty() {
-		return !isEmpty();
+	/** Applies the given action to all of this component's contents. */
+	@Override
+	default void forEach(Consumer<? super ItemStack> action) {
+		getContents().values().forEach(action);
 	}
 
+	/** Applies the given action to all of this component's contents. */
+	default void forEachIndexed(BiConsumer<Integer, ? super ItemStack> action) {
+		getContents().forEach(action);
+	}
+
+	/** Returns the first stack in this component. */
 	default ItemStack getFirst() {
 		return getStack(0);
 	}
 
-	default void setFirst(ItemStack Stack) {
-		setStack(0, Stack);
+	/** Sets the first stack in this component to the specified value. */
+	default void setFirst(ItemStack stack) {
+		setStack(0, stack);
 	}
 
+	/** Returns the second stack in this component. */
 	default ItemStack getSecond() {
 		return getStack(1);
 	}
 
-	default void setSecond(ItemStack Stack) {
-		setStack(1, Stack);
+	/** Sets the second stack in this component to the specified value. */
+	default void setSecond(ItemStack stack) {
+		setStack(1, stack);
 	}
 
+	/** Returns the third stack in this component. */
 	default ItemStack getThird() {
 		return getStack(2);
 	}
 
-	default void setThird(ItemStack Stack) {
-		setStack(2, Stack);
+	/** Sets the third stack in this component to the specified value. */
+	default void setThird(ItemStack stack) {
+		setStack(2, stack);
 	}
 
+	/** Returns the fourth stack in this component. */
 	default ItemStack getFourth() {
 		return getStack(3);
 	}
 
-	default void setFourth(ItemStack Stack) {
-		setStack(3, Stack);
+	/** Sets the fourth stack in this component to the specified value. */
+	default void setFourth(ItemStack stack) {
+		setStack(3, stack);
 	}
 
+	/** Returns the fifth stack in this component. */
 	default ItemStack getFifth() {
 		return getStack(4);
 	}
 
-	default void setFifth(ItemStack Stack) {
-		setStack(4, Stack);
+	/** Sets the fifth stack in this component to the specified value. */
+	default void setFifth(ItemStack stack) {
+		setStack(4, stack);
 	}
 
+	/** Returns the sixth stack in this component. */
 	default ItemStack getSixth() {
 		return getStack(5);
 	}
 
-	default void setSixth(ItemStack Stack) {
-		setStack(5, Stack);
+	/** Sets the sixth stack in this component to the specified value. */
+	default void setSixth(ItemStack stack) {
+		setStack(5, stack);
 	}
 
+	/** Returns the seventh stack in this component. */
 	default ItemStack getSeventh() {
 		return getStack(6);
 	}
 
-	default void setSeventh(ItemStack Stack) {
-		setStack(6, Stack);
+	/** Sets the seventh stack in this component to the specified value. */
+	default void setSeventh(ItemStack stack) {
+		setStack(6, stack);
 	}
 
+	/** Returns the eighth stack in this component. */
 	default ItemStack getEighth() {
 		return getStack(7);
 	}
 
-	default void setEight(ItemStack Stack) {
-		setStack(7, Stack);
+	/** Sets the eighth stack in this component to the specified value. */
+	default void setEight(ItemStack stack) {
+		setStack(7, stack);
 	}
 
+	/** Returns the ninth stack in this component. */
 	default ItemStack getNinth() {
 		return getStack(8);
 	}
 
-	default void setNinth(ItemStack Stack) {
-		setStack(8, Stack);
-	}
-
-	default Inventory asInventory() {
-		return InventoryFromItemComponent.of(this);
-	}
-
-	@Override
-	default void forEach(Consumer<? super Map.Entry<Integer, ItemStack>> action) {
-		getContents().entrySet().forEach(action);
-	}
-
-	@Override
-	default @NotNull Iterator<Map.Entry<Integer, ItemStack>> iterator() {
-		return getContents().entrySet().iterator();
+	/** Sets the ninth stack in this component to the specified value. */
+	default void setNinth(ItemStack stack) {
+		setStack(8, stack);
 	}
 }

@@ -1,4 +1,5 @@
 /*
+/*
  * MIT License
  *
  * Copyright (c) 2020 Chainmail Studios
@@ -32,9 +33,13 @@ import com.github.vini2003.blade.client.handler.BaseHandledScreen;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * A {@link BaseHandledScreen} used by {@link RecipeCreatorScreenHandler}.
+ */
 public class RecipeCreatorHandledScreen extends BaseHandledScreen<RecipeCreatorScreenHandler> {
-	public RecipeCreatorHandledScreen(@NotNull BaseScreenHandler handler, @NotNull PlayerInventory inventory, @NotNull Text title) {
-		super(handler, inventory, title);
+    /** Instantiates a {@link RecipeCreatorHandledScreen}. */
+    public RecipeCreatorHandledScreen(@NotNull BaseScreenHandler handler, @NotNull PlayerInventory inventory, @NotNull Text title) {
+        super(handler, inventory, title);
 
 		playerInventoryTitleX = -Integer.MAX_VALUE;
 		playerInventoryTitleY = -Integer.MAX_VALUE;

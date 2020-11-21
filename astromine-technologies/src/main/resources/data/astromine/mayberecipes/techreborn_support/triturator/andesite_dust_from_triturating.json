@@ -11,7 +11,7 @@
       "item": "techreborn:andesite_dust",
       "count": 2
     },
-    "energy": 340,
+    "energy_input": 340,
     "time": 90
   }
 }

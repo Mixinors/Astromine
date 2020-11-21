@@ -29,27 +29,34 @@ import net.minecraft.screen.ScreenHandler;
 
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Comparator behavior.
+ */
 @FunctionalInterface
 public interface ComparatorMode {
-	ComparatorMode NONE = new ComparatorMode() {
-		@Override
-		public int getOutput(@Nullable BlockEntity entity) {
-			return 0;
-		}
+    ComparatorMode NONE = new ComparatorMode() {
+        /** Override behavior to have no output. */
+        @Override
+        public int getOutput(@Nullable BlockEntity entity) {
+            return 0;
+        }
 
-		@Override
-		public boolean hasOutput() {
-			return false;
-		}
-	};
+        /** Override behavior to have no output. */
+        @Override
+        public boolean hasOutput() {
+            return false;
+        }
+    };
 
-	ComparatorMode ITEMS = ScreenHandler::calculateComparatorOutput;
-	ComparatorMode FLUIDS = ComparatorOutput::forFluids;
-	ComparatorMode ENERGY = ComparatorOutput::forEnergy;
+    ComparatorMode ITEMS = ComparatorOutput::forItems;
+    ComparatorMode FLUIDS = ComparatorOutput::forFluids;
+    ComparatorMode ENERGY = ComparatorOutput::forEnergy;
 
-	int getOutput(@Nullable BlockEntity entity);
+    /** Returns the output level for the given {@link BlockEntity}. */
+    int getOutput(@Nullable BlockEntity entity);
 
-	default boolean hasOutput() {
-		return true;
-	}
+    /** Asserts whether this mode has an output or not. */
+    default boolean hasOutput() {
+        return true;
+    }
 }

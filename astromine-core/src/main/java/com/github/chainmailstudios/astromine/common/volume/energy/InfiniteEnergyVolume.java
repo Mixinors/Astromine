@@ -28,27 +28,36 @@ import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
 
-public class InfiniteEnergyVolume extends EnergyVolume {
-	public InfiniteEnergyVolume() {
+/**
+ * A variation of {@link EnergyVolume}, with infinite
+ * {@link #getAmount()} and {@link #getSize()}.
+ */
+public final class InfiniteEnergyVolume extends EnergyVolume {
+	/** Instantiates an {@link InfiniteEnergyVolume}. */
+	private InfiniteEnergyVolume() {
 		super(Double.MAX_VALUE, Double.MAX_VALUE);
 	}
 
+	/** Instantiates an {@link InfiniteEnergyVolume}. */
 	public static InfiniteEnergyVolume of() {
 		return new InfiniteEnergyVolume();
 	}
 
+	/** Always return {@link Double#MAX_VALUE}. */
 	@Override
 	public Double getAmount() {
 		return Double.MAX_VALUE;
 	}
 
+	/** Always return {@link Double#MAX_VALUE}. */
 	@Override
 	public Double getSize() {
 		return Double.MAX_VALUE;
 	}
 
+	/** Returns a copy of this volume. */
 	@Override
-	public <V extends Volume<Identifier, Double>> V copy() {
+	public <V extends Volume<Double>> V copy() {
 		return (V) of();
 	}
 }

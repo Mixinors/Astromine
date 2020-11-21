@@ -1,12 +1,29 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["010", "343", "070"],
+  "pattern": [
+    "010",
+    "343",
+    "070"
+  ],
   "key": {
-    "0": {"tag": "c:meteoric_steel_plates"},
-    "1": {"item": "astromine:elite_circuit"},
-    "3": {"tag": "c:electrum_gears"},
-    "4": {"item": "astromine:elite_machine_chassis"},
-    "7": {"item": "minecraft:bucket"}
+    "0": {
+      "tag": "c:meteoric_steel_plates"
+    },
+    "1": {
+      "item": "astromine:elite_circuit"
+    },
+    "3": {
+      "tag": "c:electrum_gears"
+    },
+    "4": {
+      "item": "astromine:elite_machine_chassis"
+    },
+    "7": {
+      "item": "minecraft:bucket"
+    }
   },
-  "result": {"item": "astromine:elite_fluid_mixer", "count": 1}
+  "result": {
+    "item": "astromine:elite_fluid_mixer",
+    "count": 1
+  }
 }

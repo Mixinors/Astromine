@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "north": "astromine:block/capacitor/inactive/creative_capacitor_back",
+    "south": "astromine:block/capacitor/inactive/creative_capacitor_front",
+    "east": "astromine:block/capacitor/inactive/creative_capacitor_right",
+    "west": "astromine:block/capacitor/inactive/creative_capacitor_left",
+    "up": "astromine:block/capacitor/inactive/creative_capacitor_top",
+    "down": "astromine:block/capacitor/inactive/creative_capacitor_bottom"
+  }
+}

@@ -68,6 +68,7 @@ import java.util.stream.IntStream;
 public class InserterBlockEntity extends BlockEntity implements SingularStackInventory, BlockEntityClientSerializable, RenderAttachmentBlockEntity, Tickable {
 	protected int position = 0;
 	protected int prevPosition = 0;
+
 	private DefaultedList<ItemStack> stacks = DefaultedList.ofSize(1, ItemStack.EMPTY);
 
 	public InserterBlockEntity() {

@@ -1,9 +1,11 @@
 {
-  "parent": "minecraft:block/orientable_with_bottom",
+  "parent": "minecraft:block/cube",
   "textures": {
-    "top": "astromine:block/elite_machine_top",
-    "bottom": "astromine:block/elite_machine_bottom",
-    "side": "astromine:block/elite_machine_side",
-    "front": "astromine:block/elite_fluid_mixer_front_active"
+    "north": "astromine:block/fluid_mixer/active/elite_fluid_mixer_back",
+    "south": "astromine:block/fluid_mixer/active/elite_fluid_mixer_front",
+    "east": "astromine:block/fluid_mixer/active/elite_fluid_mixer_right",
+    "west": "astromine:block/fluid_mixer/active/elite_fluid_mixer_left",
+    "up": "astromine:block/fluid_mixer/active/elite_fluid_mixer_top",
+    "down": "astromine:block/fluid_mixer/active/elite_fluid_mixer_bottom"
   }
 }

@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "north": "astromine:block/solidifier/inactive/basic_solidifier_back",
+    "south": "astromine:block/solidifier/inactive/basic_solidifier_front",
+    "east": "astromine:block/solidifier/inactive/basic_solidifier_right",
+    "west": "astromine:block/solidifier/inactive/basic_solidifier_left",
+    "up": "astromine:block/solidifier/inactive/basic_solidifier_top",
+    "down": "astromine:block/solidifier/inactive/basic_solidifier_bottom"
+  }
+}

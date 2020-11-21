@@ -62,7 +62,7 @@ public class ElectrolyzingDisplay implements RecipeDisplay {
 	}
 
 	public ElectrolyzingDisplay(ElectrolyzingRecipe recipe) {
-		this(recipe.getEnergy(), recipe.getIngredient(), recipe.getFirstOutputVolume(), recipe.getSecondOutputVolume(), recipe.getId());
+		this(recipe.getEnergyInput(), recipe.getFirstInput(), recipe.getFirstOutput(), recipe.getSecondOutput(), recipe.getId());
 	}
 
 	@Override

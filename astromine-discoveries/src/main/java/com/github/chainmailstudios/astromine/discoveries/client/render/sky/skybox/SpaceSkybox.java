@@ -205,9 +205,7 @@ public class SpaceSkybox extends Skybox {
 	public static class Builder {
 		ImmutableMap.Builder<Identifier, Identifier> textures = ImmutableMap.builder();
 
-		public Builder() {
-
-		}
+		public Builder() {}
 
 		public Builder up(Identifier up) {
 			this.textures.put(UP, up);

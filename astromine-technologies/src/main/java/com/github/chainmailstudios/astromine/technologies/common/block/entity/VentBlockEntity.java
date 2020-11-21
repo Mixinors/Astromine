@@ -47,9 +47,9 @@ import com.github.chainmailstudios.astromine.technologies.registry.AstromineTech
 
 public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements FluidSizeProvider, EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	public VentBlockEntity() {
-		super(AstromineTechnologiesBlocks.VENT, AstromineTechnologiesBlockEntityTypes.VENT);
+		super(AstromineTechnologiesBlockEntityTypes.VENT);
 
-		getFluidComponent().getFirst().setSize(new Fraction(AstromineConfig.get().ventFluid, 1));
+		getFluidComponent().getFirst().setSize(Fraction.of(AstromineConfig.get().ventFluid, 1));
 	}
 
 	@Override
@@ -111,11 +111,11 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 						FluidVolume sideVolume = atmosphereComponent.get(output);
 
 						if ((sideVolume.test(centerVolume.getFluid())) && sideVolume.smallerThan(centerVolume.getAmount())) {
-							centerVolume.add(sideVolume, Fraction.of(1, 8));
+							centerVolume.give(sideVolume, Fraction.of(1, 8));
 
 							atmosphereComponent.add(output, sideVolume);
 
-							energyVolume.minus(getEnergyConsumed());
+							energyVolume.take(getEnergyConsumed());
 
 							tickActive();
 						} else {
@@ -129,11 +129,11 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 						FluidVolume sideVolume = neighborAtmosphereComponent.get(output);
 
 						if ((centerVolume.test(sideVolume.getFluid())) && sideVolume.smallerThan(centerVolume.getAmount())) {
-							centerVolume.add(sideVolume, Fraction.of(1, 8));
+							centerVolume.give(sideVolume, Fraction.of(1, 8));
 
 							neighborAtmosphereComponent.add(output, sideVolume);
 
-							energyVolume.minus(getEnergyConsumed());
+							energyVolume.take(getEnergyConsumed());
 
 							tickActive();
 						} else {

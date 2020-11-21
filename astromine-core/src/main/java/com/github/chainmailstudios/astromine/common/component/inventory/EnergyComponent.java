@@ -24,10 +24,17 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
+import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.fabricmc.fabric.api.util.NbtType;
 
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
@@ -39,74 +46,102 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * A {@link NameableComponent} representing an energy reserve.
+ *
+ * Serialization and deserialization methods are provided for:
+ * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ */
 public interface EnergyComponent extends NameableComponent, AutoSyncedComponent {
+	/** Instantiates an {@link EnergyComponent} with the given value. */
 	static EnergyComponent of(double size) {
 		return SimpleEnergyComponent.of(size);
 	}
 
+	/** Instantiates an {@link EnergyComponent} with the given value. */
 	static EnergyComponent of(EnergyVolume volume) {
 		return SimpleEnergyComponent.of(volume);
 	}
 
-	@Nullable
-	static <V> EnergyComponent get(V v) {
-		try {
-			return AstromineComponents.ENERGY_INVENTORY_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
-			return null;
-		}
-	}
-
+	/** Returns this component's {@link Item} symbol. */
 	default Item getSymbol() {
 		return AstromineItems.ENERGY.asItem();
 	}
 
-	default TranslatableText getName() {
+	/** Returns this component's {@link Text} name. */
+	default Text getName() {
 		return new TranslatableText("text.astromine.energy");
 	}
 
+	/** Returns this component's listeners. */
 	List<Runnable> getListeners();
 
+	/** Adds a listener to this component. */
 	default void addListener(Runnable listener) {
 		this.getListeners().add(listener);
 	}
 
+	/** Removes a listener from this component. */
 	default void removeListener(Runnable listener) {
 		this.getListeners().remove(listener);
 	}
 
+	/** Triggers this component's listeners. */
 	default void updateListeners() {
 		this.getListeners().forEach(Runnable::run);
 	}
 
+	/** Returns this component with an added listener. */
 	default EnergyComponent withListener(Consumer<EnergyComponent> listener) {
 		addListener(() -> listener.accept(this));
 		return this;
 	}
 
+	/** Returns this component's volume. */
 	EnergyVolume getVolume();
 
+	/** Sets this component's volume to the specified value. */
 	default void setVolume(EnergyVolume volume) {
 		getVolume().setSize(volume.getSize());
 		getVolume().setAmount(volume.getAmount());
 	}
 
+	/** Returns this component's volume's amount. */
 	default double getAmount() {
 		return getVolume().getAmount();
 	}
 
+	/** Sets this component's volume's amount. */
 	default void setAmount(double amount) {
 		getVolume().setAmount(amount);
 	}
 
+	/** Returns this component's volume's size. */
 	default double getSize() {
 		return getVolume().getSize();
 	}
 
+	/** Sets this component's volume's size. */
 	default void setSize(double amount) {
 		getVolume().setSize(amount);
 	}
 
+	/** Asserts whether this component's volume is empty or not. */
+	default boolean isEmpty() {
+		return this.getVolume().isEmpty();
+	}
+
+	/** Asserts whether this component's volume is not empty or not. */
+	default boolean isNotEmpty() {
+		return !isEmpty();
+	}
+
+	/** Clears this component's volume. */
+	default void clear() {
+		this.getVolume().setAmount(0.0);
+	}
+
+	/** Serializes this {@link EnergyComponent} to a {@link CompoundTag}. */
 	@Override
 	default void writeToNbt(CompoundTag tag) {
 		CompoundTag dataTag = new CompoundTag();
@@ -116,6 +151,7 @@ public interface EnergyComponent extends NameableComponent, AutoSyncedComponent 
 		tag.put(AstromineComponents.ENERGY_INVENTORY_COMPONENT.getId().toString(), dataTag);
 	}
 
+	/** Deserializes this {@link EnergyComponent} from a {@link CompoundTag}. */
 	@Override
 	default void readFromNbt(CompoundTag tag) {
 		CompoundTag dataTag = tag.getCompound(AstromineComponents.ENERGY_INVENTORY_COMPONENT.getId().toString());
@@ -141,5 +177,14 @@ public interface EnergyComponent extends NameableComponent, AutoSyncedComponent 
 
 	default boolean isNotEmpty() {
 		return !isEmpty();
+		
+	/** Returns the {@link EnergyComponent} of the given {@link V}. */
+	@Nullable
+	static <V> EnergyComponent get(V v) {
+		try {
+			return AstromineComponents.ENERGY_INVENTORY_COMPONENT.get(v);
+		} catch (Exception justShutUpAlready) {
+			return null;
+		}
 	}
 }

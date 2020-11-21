@@ -75,7 +75,6 @@ project.ext.setDefaultApis = {
 }
 
 project.ext.setRuntimeTestMods = {
-
     // DataBreaker
     useAsRuntime("com.github.SuperCoder7979:databreaker:${databreaker_version}")
 }

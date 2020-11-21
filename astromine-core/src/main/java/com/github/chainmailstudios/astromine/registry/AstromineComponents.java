@@ -95,12 +95,16 @@ public class AstromineComponents implements WorldComponentInitializer, ChunkComp
 
 	@Override
 	public void registerItemComponentFactories(ItemComponentFactoryRegistry registry) {
-		registry.registerFor(item -> item instanceof FluidVolumeItem, FLUID_INVENTORY_COMPONENT, stack -> SimpleFluidComponent.of(FluidVolume.of(Fraction.EMPTY, ((FluidVolumeItem) stack.getItem()).getSize(), Fluids.EMPTY)));
+		registry.registerFor(
+				item -> item instanceof FluidVolumeItem,
+				FLUID_INVENTORY_COMPONENT,
+				stack -> SimpleFluidComponent.of(FluidVolume.of(Fraction.EMPTY, ((FluidVolumeItem) stack.getItem()).getSize(), Fluids.EMPTY))
+		);
 	}
 
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
-		registry.registerFor(LivingEntity.class, ENTITY_OXYGEN_COMPONENT, EntityOxygenComponent::new);
+		registry.registerFor(LivingEntity.class, ENTITY_OXYGEN_COMPONENT, EntityOxygenComponent::of);
 
 		registry.registerFor(ComponentFluidItemEntity.class, FLUID_INVENTORY_COMPONENT, ComponentFluidItemEntity::createFluidComponent);
 		registry.registerFor(ComponentFluidItemEntity.class, ITEM_INVENTORY_COMPONENT, ComponentFluidItemEntity::createItemComponent);
@@ -120,7 +124,7 @@ public class AstromineComponents implements WorldComponentInitializer, ChunkComp
 		registry.registerFor(ComponentBlockEntity.class, BLOCK_ENTITY_REDSTONE_COMPONENT, ComponentBlockEntity::createRedstoneComponent);
 		registry.registerFor(ComponentBlockEntity.class, BLOCK_ENTITY_TRANSFER_COMPONENT, ComponentBlockEntity::createTransferComponent);
 
-		registry.registerFor(ComponentFluidItemBlockEntity.class, FLUID_INVENTORY_COMPONENT, ComponentFluidBlockEntity::createFluidComponent);
+		registry.registerFor(ComponentFluidItemBlockEntity.class, FLUID_INVENTORY_COMPONENT, ComponentFluidItemBlockEntity::createFluidComponent);
 		registry.registerFor(ComponentFluidItemBlockEntity.class, ITEM_INVENTORY_COMPONENT, ComponentFluidItemBlockEntity::createItemComponent);
 
 		registry.registerFor(ComponentEnergyItemBlockEntity.class, ITEM_INVENTORY_COMPONENT, ComponentEnergyItemBlockEntity::createItemComponent);
@@ -134,5 +138,10 @@ public class AstromineComponents implements WorldComponentInitializer, ChunkComp
 		registry.registerFor(ComponentFluidBlockEntity.class, FLUID_INVENTORY_COMPONENT, ComponentFluidBlockEntity::createFluidComponent);
 
 		registry.registerFor(ComponentEnergyBlockEntity.class, ENERGY_INVENTORY_COMPONENT, ComponentEnergyBlockEntity::createEnergyComponent);
+
+		registry.registerFor(ComponentEnergyFluidItemBlockEntity.class, ENERGY_INVENTORY_COMPONENT, ComponentEnergyFluidItemBlockEntity::createEnergyComponent);
+		registry.registerFor(ComponentEnergyFluidItemBlockEntity.class, FLUID_INVENTORY_COMPONENT, ComponentEnergyFluidItemBlockEntity::createFluidComponent);
+		registry.registerFor(ComponentEnergyFluidItemBlockEntity.class, ITEM_INVENTORY_COMPONENT, ComponentEnergyFluidItemBlockEntity::createItemComponent);
+
 	}
 }

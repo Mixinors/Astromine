@@ -1,16 +1,26 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["012", "345", "678"],
+  "pattern": [
+    "676",
+    "343",
+    "676"
+  ],
   "key": {
-    "0": {"tag": "c:bronze_plates"},
-    "1": {"item": "astromine:gas_canister"},
-    "2": {"tag": "c:bronze_plates"},
-    "3": {"tag": "c:bronze_gears"},
-    "4": {"item": "astromine:primitive_machine_chassis"},
-    "5": {"tag": "c:bronze_gears"},
-    "6": {"tag": "c:bronze_plates"},
-    "7": {"item": "astromine:gas_canister"},
-    "8": {"tag": "c:bronze_plates"}
+    "3": {
+      "item": "astromine:large_portable_tank"
+    },
+    "4": {
+      "item": "astromine:primitive_machine_chassis"
+    },
+    "6": {
+      "tag": "c:steel_plates"
+    },
+    "7": {
+      "item": "minecraft:bucket"
+    }
   },
-  "result": {"item": "astromine:primitive_tank", "count": 1}
+  "result": {
+    "count": 1,
+    "item": "astromine:primitive_tank"
+  }
 }

@@ -61,12 +61,8 @@ public class AstromineDiscoveriesClientCallbacks extends AstromineClientCallback
 				if (stack.getItem() == AstromineDiscoveriesItems.SPACE_SUIT_CHESTPLATE) {
 					FluidComponent fluidComponent = FluidComponent.get(stack);
 
-					fluidComponent.forEach((entry) -> {
-						int slot = entry.getKey();
-
-						FluidVolume volume = entry.getValue();
-
-						tooltip.add(new LiteralText(volume.getAmount().toFractionalString() + " | " + new TranslatableText(volume.getFluid().getDefaultState().getBlockState().getBlock().getTranslationKey()).getString()).formatted(Formatting.GRAY));
+					fluidComponent.forEachIndexed((slot, volume) -> {
+						tooltip.add(new LiteralText(volume.getAmount().toString() + " | " + new TranslatableText(volume.getFluid().getDefaultState().getBlockState().getBlock().getTranslationKey()).getString()).formatted(Formatting.GRAY));
 					});
 				}
 			}

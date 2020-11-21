@@ -32,6 +32,11 @@ import net.minecraft.util.Identifier;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 
+/**
+ * A callback called when initializing {@link SkyProperties}
+ * statically and adding new properties for custom
+ * dimensions.
+ */
 public interface SkyPropertiesCallback {
 	Event<SkyPropertiesCallback> EVENT = EventFactory.createArrayBacked(SkyPropertiesCallback.class, (listeners) -> (properties) -> {
 		for (SkyPropertiesCallback listener : listeners) {
@@ -39,5 +44,6 @@ public interface SkyPropertiesCallback {
 		}
 	});
 
+	/** Handle the properties. */
 	void handle(Object2ObjectMap<Identifier, SkyProperties> properties);
 }

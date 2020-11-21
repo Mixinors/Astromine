@@ -26,7 +26,7 @@ package com.github.chainmailstudios.astromine.technologies.registry;
 
 import net.minecraft.item.Item;
 
-import com.github.chainmailstudios.astromine.common.item.DrillItem;
+import com.github.chainmailstudios.astromine.technologies.common.item.DrillItem;
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
@@ -45,8 +45,8 @@ public class AstromineTechnologiesItems extends AstromineItems {
 	public static final Item ADVANCED_MACHINE_UPGRADE_KIT = register("advanced_machine_upgrade_kit", new Item(getBasicSettings()));
 	public static final Item ELITE_MACHINE_UPGRADE_KIT = register("elite_machine_upgrade_kit", new Item(getBasicSettings()));
 
-	public static final Item GAS_CANISTER = register("gas_canister", FluidVolumeItem.of(getBasicSettings().maxCount(1), Fraction.of(AstromineConfig.get().gasCanisterFluid, 1)));
-	public static final Item PRESSURIZED_GAS_CANISTER = register("pressurized_gas_canister", FluidVolumeItem.of(getBasicSettings().maxCount(1), Fraction.of(AstromineConfig.get().pressurizedGasCanisterFluid, 1)));
+	public static final Item PORTABLE_TANK = register("portable_tank", FluidVolumeItem.of(getBasicSettings().maxCount(1), Fraction.of(AstromineConfig.get().portableTankFluid, 1)));
+	public static final Item LARGE_LARGE_TANK = register("large_portable_tank", FluidVolumeItem.of(getBasicSettings().maxCount(1), Fraction.of(AstromineConfig.get().largePortableTankFluid, 1)));
 
 	public static final Item BASIC_CIRCUIT = register("basic_circuit", new Item(getBasicSettings()));
 	public static final Item ADVANCED_CIRCUIT = register("advanced_circuit", new Item(getBasicSettings()));

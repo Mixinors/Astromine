@@ -56,22 +56,34 @@ public class HolographicBridgeProjectorBlock extends WrenchableHorizontalFacingB
 		if (stack.getItem() instanceof DyeItem) {
 			DyeItem dye = (DyeItem) stack.getItem();
 
-			HolographicBridgeProjectorBlockEntity entity = (HolographicBridgeProjectorBlockEntity) world.getBlockEntity(position);
+			HolographicBridgeProjectorBlockEntity originalEntity = (HolographicBridgeProjectorBlockEntity) world.getBlockEntity(position);
 
-			if (entity != null) {
-				entity.color = Color.of(0x7e000000 >> 2 | dye.getColor().color);
+			for (HolographicBridgeProjectorBlockEntity entity : new HolographicBridgeProjectorBlockEntity[] {originalEntity.getChild(), originalEntity, originalEntity.getParent()}) {
+				if (entity != null) {
+					int color = dye.getColor().color;
 
-				if (!world.isClient())
-					entity.sync();
+					Color colorColor = new Color((color >> 16 & 0xFF) / 255F, (color >> 8 & 0xFF) / 255F, (color & 0xFF) / 255F, 0x7E);
 
-				if (entity.hasChild()) {
-					entity.getChild().color = Color.of(0x7e000000 >> 2 | dye.getColor().color);
+					entity.color = colorColor;
+
+					entity.markDirty();
+
 					if (!world.isClient())
-						entity.getChild().sync();
-				}
+						entity.sync();
 
-				if (!player.isCreative()) {
-					stack.decrement(1);
+					if (entity.hasChild()) {
+						entity.getChild().color = colorColor;
+
+						entity.getChild().markDirty();
+
+						if (!world.isClient()) {
+							entity.getChild().sync();
+						}
+					}
+
+					if (!player.isCreative()) {
+						stack.decrement(1);
+					}
 				}
 			}
 		}

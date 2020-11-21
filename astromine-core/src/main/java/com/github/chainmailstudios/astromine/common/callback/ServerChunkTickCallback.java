@@ -30,6 +30,10 @@ import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.chunk.WorldChunk;
 
+/**
+ * A callback called when a {@link ServerWorld}'s
+ * {@link WorldChunk} is ticked.
+ */
 @FunctionalInterface
 public interface ServerChunkTickCallback {
 	Event<ServerChunkTickCallback> EVENT = EventFactory.createArrayBacked(ServerChunkTickCallback.class, (listeners) -> (world, chunk) -> {
@@ -38,5 +42,6 @@ public interface ServerChunkTickCallback {
 		}
 	});
 
+	/** Handle the {@link ServerWorld} and its {@link WorldChunk}. */
 	void tickChunk(ServerWorld world, WorldChunk chunk);
 }

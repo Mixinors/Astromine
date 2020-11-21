@@ -1,16 +1,23 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["012", "345", "678"],
+  "pattern": [
+    "676",
+    "747",
+    "676"
+  ],
   "key": {
-    "0": {"tag": "c:bronze_plates"},
-    "1": {"item": "minecraft:chest"},
-    "2": {"tag": "c:bronze_plates"},
-    "3": {"tag": "c:bronze_gears"},
-    "4": {"item": "astromine:primitive_machine_chassis"},
-    "5": {"tag": "c:bronze_gears"},
-    "6": {"tag": "c:bronze_plates"},
-    "7": {"item": "minecraft:chest"},
-    "8": {"tag": "c:bronze_plates"}
+    "4": {
+      "item": "astromine:primitive_machine_chassis"
+    },
+    "6": {
+      "tag": "c:steel_plates"
+    },
+    "7": {
+      "item": "minecraft:barrel"
+    }
   },
-  "result": {"item": "astromine:primitive_buffer", "count": 1}
+  "result": {
+    "count": 1,
+    "item": "astromine:primitive_buffer"
+  }
 }

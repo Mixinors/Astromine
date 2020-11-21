@@ -28,13 +28,20 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.registry.NetworkTypeRegistry;
 
-public abstract class NetworkType {
-	public static final NetworkType EMPTY = NetworkTypeRegistry.INSTANCE.register(AstromineCommon.identifier("empty_network"), new NetworkType() {
+public interface NetworkType {
+	NetworkType EMPTY = NetworkTypeRegistry.INSTANCE.register(AstromineCommon.identifier("empty_network"), new NetworkType() {
+		/** Override behavior to do nothing. */
 		@Override
-		public void tick(NetworkInstance instance) {
+		public void tick(NetworkInstance instance) {}
 
+		/** Returns this node's string representation.
+		 * It will be "Empty". */
+		@Override
+		public String toString() {
+			return "Empty";
 		}
 	});
 
-	public abstract void tick(NetworkInstance instance);
+	/** Tick a {@link NetworkInstance} of this type. */
+	void tick(NetworkInstance instance);
 }

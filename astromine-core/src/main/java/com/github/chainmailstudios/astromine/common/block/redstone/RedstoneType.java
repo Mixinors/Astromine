@@ -24,84 +24,89 @@
 
 package com.github.chainmailstudios.astromine.common.block.redstone;
 
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
+/**
+ * An enum representing redstone behavior.
+ */
 public enum RedstoneType {
-	WORK_WHEN_ON,
-	WORK_WHEN_OFF,
-	WORK_ALWAYS;
+    WORK_WHEN_ON,
+    WORK_WHEN_OFF,
+    WORK_ALWAYS;
 
-	public static RedstoneType byNumber(int number) {
-		switch (number) {
-			case 1: {
-				return WORK_WHEN_ON;
-			}
+    /** Returns this type as a {@link Text}. */
+    public Text asText() {
+        switch (this) {
+            case WORK_WHEN_OFF: {
+                return new TranslatableText("text.astromine.work_when_off").formatted(Formatting.RED);
+            }
 
-			case 2: {
-				return WORK_ALWAYS;
-			}
+            case WORK_WHEN_ON: {
+                return new TranslatableText("text.astromine.work_when_on").formatted(Formatting.GREEN);
+            }
 
-			default: {
-				return WORK_WHEN_OFF;
-			}
-		}
-	}
+            case WORK_ALWAYS: {
+                return new TranslatableText("text.astromine.work_always").formatted(Formatting.YELLOW);
+            }
 
-	public int asNumber() {
-		switch (this) {
+            default: {
+                return null;
+            }
+        }
+    }
 
-			case WORK_WHEN_ON: {
-				return 1;
-			}
+    /** Returns this type as a number. */
+    public int asNumber() {
+        switch (this) {
 
-			case WORK_ALWAYS: {
-				return 2;
-			}
+            case WORK_WHEN_ON: {
+                return 1;
+            }
 
-			default: {
-				return 0;
-			}
-		}
-	}
+            case WORK_ALWAYS: {
+                return 2;
+            }
 
-	public TranslatableText asText() {
-		switch (this) {
-			case WORK_WHEN_OFF: {
-				return (TranslatableText) new TranslatableText("text.astromine.work_when_off").formatted(Formatting.RED);
-			}
+            default: {
+                return 0;
+            }
+        }
+    }
 
-			case WORK_WHEN_ON: {
-				return (TranslatableText) new TranslatableText("text.astromine.work_when_on").formatted(Formatting.GREEN);
-			}
+    /** Returns the type corresponding to the given number. */
+    public static RedstoneType byNumber(int number) {
+        switch (number) {
+            case 1: {
+                return WORK_WHEN_ON;
+            }
 
-			case WORK_ALWAYS: {
-				return (TranslatableText) new TranslatableText("text.astromine.work_always").formatted(Formatting.YELLOW);
-			}
+            case 2: {
+                return WORK_ALWAYS;
+            }
 
-			default: {
-				return null;
-			}
-		}
-	}
+            default: {
+                return WORK_WHEN_OFF;
+            }
+        }
+    }
 
-	public boolean shouldWork(boolean powered) {
-		switch(this) {
-			case WORK_WHEN_OFF: {
-				return !powered;
-			}
+    /** Returns the next type on this enum. */
+    public RedstoneType next() {
+        switch (this) {
+            case WORK_ALWAYS: {
+                return WORK_WHEN_OFF;
+            }
 
-			case WORK_WHEN_ON: {
-				return powered;
-			}
+            case WORK_WHEN_OFF: {
+                return WORK_WHEN_ON;
+            }
 
-			case WORK_ALWAYS: {
-				return true;
-			}
-
-			default: {
-				return false;
-			}
-		}
-	}
+            default: {
+                return WORK_ALWAYS;
+            }
+        }
+    }
 }

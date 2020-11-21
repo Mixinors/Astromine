@@ -35,6 +35,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BooleanSupplier;
+import java.util.stream.Collectors;
 
 public class SimpleItemComponent implements ItemComponent {
 	private final Int2ObjectOpenHashMap<ItemStack> contents = new Int2ObjectOpenHashMap<>();
@@ -42,80 +45,106 @@ public class SimpleItemComponent implements ItemComponent {
 	private final List<Runnable> listeners = new ArrayList<>();
 	private final int size;
 	private TriPredicate<@Nullable Direction, ItemStack, Integer> insertPredicate = (direction, stack, slot) -> true;
+
 	private TriPredicate<@Nullable Direction, ItemStack, Integer> extractPredicate = (direction, stack, integer) -> true;
 
+	private final int size;
+
+	/** Instantiates a {@link SimpleItemComponent}. */
 	protected SimpleItemComponent(int size) {
 		this.size = size;
+
 		for (int i = 0; i < size; ++i) {
 			contents.put(i, ItemStack.EMPTY);
 		}
+
 		this.contents.defaultReturnValue(ItemStack.EMPTY);
 	}
 
+	/** Instantiates a {@link SimpleItemComponent}. */
 	protected SimpleItemComponent(ItemStack... stacks) {
 		this(stacks.length);
+
 		for (int i = 0; i < stacks.length; ++i) {
 			setStack(i, stacks[i]);
 		}
 	}
 
+	/** Instantiates a {@link SimpleItemComponent}. */
 	public static SimpleItemComponent of(int size) {
 		return new SimpleItemComponent(size);
 	}
 
+	/** Instantiates a {@link SimpleItemComponent}. */
 	public static SimpleItemComponent of(ItemStack... stacks) {
 		return new SimpleItemComponent(stacks);
 	}
 
-	@Override
-	public boolean canInsert(@Nullable Direction direction, ItemStack stack, int slot) {
-		return insertPredicate.test(direction, stack, slot) && ItemComponent.super.canInsert(direction, stack, slot);
-	}
-
-	@Override
-	public boolean canExtract(@Nullable Direction direction, ItemStack stack, int slot) {
-		return extractPredicate.test(direction, stack, slot) && ItemComponent.super.canExtract(direction, stack, slot);
-	}
-
+	/** Returns this component with an added insertion predicate. */
 	public SimpleItemComponent withInsertPredicate(TriPredicate<@Nullable Direction, ItemStack, Integer> predicate) {
 		TriPredicate<Direction, ItemStack, Integer> triPredicate = this.insertPredicate;
 		this.insertPredicate = (direction, stack, integer) -> triPredicate.test(direction, stack, integer) && predicate.test(direction, stack, integer);
 		return this;
 	}
 
+	/** Returns this component with an added extraction predicate. */
 	public SimpleItemComponent withExtractPredicate(TriPredicate<@Nullable Direction, ItemStack, Integer> predicate) {
 		TriPredicate<Direction, ItemStack, Integer> triPredicate = this.extractPredicate;
 		this.extractPredicate = (direction, stack, integer) -> triPredicate.test(direction, stack, integer) && predicate.test(direction, stack, integer);
 		return this;
 	}
 
+	/** Override behavior to take {@link #insertPredicate} into account. */
 	@Override
-	public Map<Integer, ItemStack> getContents() {
-		return this.contents;
+	public boolean canInsert(@Nullable Direction direction, ItemStack stack, int slot) {
+		return insertPredicate.test(direction, stack, slot) && ItemComponent.super.canInsert(direction, stack, slot);
 	}
 
+	/** Override behavior to take {@link #extractPredicate} into account. */
 	@Override
-	public List<Runnable> getListeners() {
-		return this.listeners;
+	public boolean canExtract(@Nullable Direction direction, ItemStack stack, int slot) {
+		return extractPredicate.test(direction, stack, slot) && ItemComponent.super.canExtract(direction, stack, slot);
 	}
 
+	/** Returns this component's size. */
 	@Override
 	public int getSize() {
 		return this.size;
 	}
 
+	/** Returns this component's contents. */
 	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof SimpleItemComponent))
-			return false;
-		SimpleItemComponent entries = (SimpleItemComponent) o;
+	public Map<Integer, ItemStack> getContents() {
+		return this.contents;
+	}
+
+	/** Returns this component's listeners. */
+	@Override
+	public List<Runnable> getListeners() {
+		return this.listeners;
+	}
+
+	/** Asserts the equality of the objects. */
+	@Override
+	public boolean equals(Object object) {
+		if (this == object) return true;
+
+		if (!(object instanceof SimpleItemComponent)) return false;
+
+		SimpleItemComponent entries = (SimpleItemComponent) object;
+
 		return Objects.equals(contents, entries.contents);
 	}
 
+	/** Returns the hash for this volume. */
 	@Override
 	public int hashCode() {
 		return Objects.hash(contents);
+	}
+
+	/** Returns this inventory's string representation. */
+	@Override
+	public String toString() {
+		return String.format("Listeners: %s\nInsertion predicate: %s\n Extraction predicate: %s\nContents: \n%s", listeners.size(), insertPredicate, extractPredicate, getContents().entrySet().stream().map((entry) -> String.format("%s, %s", entry.getKey(), entry.getValue().toString())).collect(Collectors.joining("\n")));
 	}
 }

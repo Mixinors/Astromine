@@ -31,33 +31,29 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
+
+/**
+ * A {@link Component} representing a {@link BlockEntity}'s
+ * redstone information.
+ *
+ * Serialization and deserialization methods are provided for:
+ * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ */
 public class BlockEntityRedstoneComponent implements Component {
 	private RedstoneType type = RedstoneType.WORK_WHEN_OFF;
 
-	@Nullable
-	public static <V> BlockEntityRedstoneComponent get(V v) {
-		try {
-			return AstromineComponents.BLOCK_ENTITY_REDSTONE_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
-			return null;
-		}
-	}
-
+	/** Returns this component's {@link RedstoneType}. */
 	public RedstoneType getType() {
 		return type;
 	}
 
+	/** Sets this component's {@link RedstoneType} to the specified value. */
 	public void setType(RedstoneType type) {
 		this.type = type;
 	}
 
-	@Override
-	public void readFromNbt(CompoundTag tag) {
-		CompoundTag dataTag = tag.getCompound("data");
-
-		type = RedstoneType.byNumber(dataTag.getInt("number"));
-	}
-
+	/** Serializes this {@link BlockEntityRedstoneComponent} to a {@link CompoundTag}. */
 	@Override
 	public void writeToNbt(CompoundTag tag) {
 		CompoundTag dataTag = new CompoundTag();
@@ -65,5 +61,23 @@ public class BlockEntityRedstoneComponent implements Component {
 		dataTag.putInt("number", type.asNumber());
 
 		tag.put("data", dataTag);
+	}
+
+	/** Deserializes this {@link BlockEntityRedstoneComponent} from a {@link CompoundTag}. */
+	@Override
+	public void readFromNbt(CompoundTag tag) {
+		CompoundTag dataTag = tag.getCompound("data");
+
+		type = RedstoneType.byNumber(dataTag.getInt("number"));
+	}
+
+	/** Returns the {@link BlockEntityRedstoneComponent} of the given {@link V}. */
+	@Nullable
+	public static <V> BlockEntityRedstoneComponent get(V v) {
+		try {
+			return AstromineComponents.BLOCK_ENTITY_REDSTONE_COMPONENT.get(v);
+		} catch (Exception justShutUpAlready) {
+			return null;
+		}
 	}
 }

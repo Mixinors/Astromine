@@ -33,12 +33,12 @@ import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.*;
 
 public class AstromineTechnologiesScreenHandlers extends AstromineScreenHandlers {
-	public static final ScreenHandlerType<FluidExtractorScreenHandler> FLUID_EXTRACTOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("fluid_extractor"), ((syncId, inventory, buffer) -> {
-		return new FluidExtractorScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	public static final ScreenHandlerType<FluidCollectorScreenHandler> FLUID_EXTRACTOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("fluid_collector"), ((syncId, inventory, buffer) -> {
+		return new FluidCollectorScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 
-	public static final ScreenHandlerType<FluidInserterScreenHandler> FLUID_INSERTER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("fluid_inserter"), ((syncId, inventory, buffer) -> {
-		return new FluidInserterScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	public static final ScreenHandlerType<FluidPlacerScreenHandler> FLUID_INSERTER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("fluid_placer"), ((syncId, inventory, buffer) -> {
+		return new FluidPlacerScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 
 	public static final ScreenHandlerType<BlockBreakerScreenHandler> BLOCK_BREAKER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("block_breaker"), ((syncId, inventory, buffer) -> {
@@ -49,8 +49,8 @@ public class AstromineTechnologiesScreenHandlers extends AstromineScreenHandlers
 		return new BlockPlacerScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 
-	public static final ScreenHandlerType<LiquidGeneratorScreenHandler> LIQUID_GENERATOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("liquid_generator"), ((syncId, inventory, buffer) -> {
-		return new LiquidGeneratorScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	public static final ScreenHandlerType<FluidGeneratorScreenHandler> LIQUID_GENERATOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("fluid_generator"), ((syncId, inventory, buffer) -> {
+		return new FluidGeneratorScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 
 	public static final ScreenHandlerType<SolidGeneratorScreenHandler> SOLID_GENERATOR = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("solid_generator"), ((syncId, inventory, buffer) -> {
@@ -93,16 +93,16 @@ public class AstromineTechnologiesScreenHandlers extends AstromineScreenHandlers
 		return new TrituratorScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 
-	public static final ScreenHandlerType<PresserScreenHandler> PRESSER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("presser"), ((syncId, inventory, buffer) -> {
-		return new PresserScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	public static final ScreenHandlerType<PressScreenHandler> PRESSER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("press"), ((syncId, inventory, buffer) -> {
+		return new PressScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 
 	public static final ScreenHandlerType<WireMillScreenHandler> WIREMILL = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("wire_mill"), ((syncId, inventory, buffer) -> {
 		return new WireMillScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 
-	public static final ScreenHandlerType<ElectricSmelterScreenHandler> ELECTRIC_SMELTER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("electric_smelter"), ((syncId, inventory, buffer) -> {
-		return new ElectricSmelterScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	public static final ScreenHandlerType<ElectricFurnaceScreenHandler> ELECTRIC_FURNACE = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("electric_furnace"), ((syncId, inventory, buffer) -> {
+		return new ElectricFurnaceScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 
 	public static final ScreenHandlerType<ElectrolyzerScreenHandler> ELECTROLYZER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("electrolyzer"), ((syncId, inventory, buffer) -> {
@@ -119,6 +119,14 @@ public class AstromineTechnologiesScreenHandlers extends AstromineScreenHandlers
 
 	public static final ScreenHandlerType<AlloySmelterScreenHandler> ALLOY_SMELTER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("alloy_smelter"), ((syncId, inventory, buffer) -> {
 		return new AlloySmelterScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+
+	public static final ScreenHandlerType<SolidifierScreenHandler> SOLIDIFIER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("solidifier"), ((syncId, inventory, buffer) -> {
+		return new SolidifierScreenHandler(syncId, inventory.player, buffer.readBlockPos());
+	}));
+
+	public static final ScreenHandlerType<MelterScreenHandler> MELTER = ScreenHandlerRegistry.registerExtended(AstromineCommon.identifier("melter"), ((syncId, inventory, buffer) -> {
+		return new MelterScreenHandler(syncId, inventory.player, buffer.readBlockPos());
 	}));
 
 	public static void initialize() {

@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.block;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
@@ -33,17 +34,24 @@ import com.github.chainmailstudios.astromine.common.widget.blade.EnergyVerticalB
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 
+/**
+ *A {@link ComponentBlockEntityScreenHandler}
+ * with an attached {@link ComponentEnergyItemBlockEntity}.
+ */
 public class ComponentBlockEntityEnergyItemScreenHandler extends ComponentBlockEntityScreenHandler {
 	public ComponentEnergyItemBlockEntity blockEntity;
 
 	public EnergyVerticalBarWidget energyBar;
 
+	/** Instantiates a {@link ComponentBlockEntityItemScreenHandler},
+	 * obtaining the {@link ComponentEnergyItemBlockEntity}. */
 	public ComponentBlockEntityEnergyItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 
 		blockEntity = (ComponentEnergyItemBlockEntity) player.world.getBlockEntity(position);
 	}
 
+	/** Override behavior to add an energy bar. */
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
@@ -51,7 +59,7 @@ public class ComponentBlockEntityEnergyItemScreenHandler extends ComponentBlockE
 		energyBar = new EnergyVerticalBarWidget();
 		energyBar.setPosition(Position.of(mainTab, 7F, 11));
 		energyBar.setSize(Size.of(24F, 48F));
-		energyBar.setVolume(() -> blockEntity.getEnergyComponent().getVolume());
+		energyBar.setVolumeSupplier(() -> blockEntity.getEnergyComponent().getVolume());
 
 		mainTab.addWidget(energyBar);
 	}

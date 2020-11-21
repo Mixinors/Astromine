@@ -8,6 +8,6 @@
     "item": "minecraft:sand",
     "count": 1
   },
-  "time": 40,
-  "energy": 120
+  "time": 20,
+  "energy_input": 120
 }

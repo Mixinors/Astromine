@@ -24,26 +24,36 @@
 
 package com.github.chainmailstudios.astromine.common.entity.base;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 
+/**
+ * A {@link ComponentEntity} with an attached {@link EnergyComponent}
+ * and {@link ItemComponent}.
+ */
 public abstract class ComponentEnergyItemEntity extends ComponentEntity {
+	/** Instantiates a {@link ComponentEnergyItemEntity}. */
 	public ComponentEnergyItemEntity(EntityType<?> type, World world) {
 		super(type, world);
 	}
 
-	public abstract ItemComponent createItemComponent();
-
+	/** Returns the {@link EnergyComponent} to be attached. */
 	public abstract EnergyComponent createEnergyComponent();
 
-	public ItemComponent getItemComponent() {
-		return ItemComponent.get(this);
-	}
+	/** Returns the {@link ItemComponent} to be attached. */
+	public abstract ItemComponent createItemComponent();
 
+	/** Returns the attached {@link EnergyComponent}. */
 	public EnergyComponent getEnergyComponent() {
 		return EnergyComponent.get(this);
+	}
+
+	/** Returns the attached {@link ItemComponent}. */
+	public ItemComponent getItemComponent() {
+		return ItemComponent.get(this);
 	}
 }
