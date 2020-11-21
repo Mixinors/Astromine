@@ -49,13 +49,6 @@ import org.jetbrains.annotations.Nullable;
 
 @Mixin(ArmorFeatureRenderer.class)
 public abstract class ArmorFeatureRendererMixin {
-	@Unique
-	private static RenderLayer getArmorCutoutNoCull(Identifier texture, int frames) {
-		RenderLayer.MultiPhaseParameters multiPhaseParameters = RenderLayer.MultiPhaseParameters.builder().texture(new AnimatedArmorItem.Texture(texture, frames)).transparency(RenderLayer.NO_TRANSPARENCY).diffuseLighting(RenderLayer.ENABLE_DIFFUSE_LIGHTING).alpha(
-			RenderLayer.ONE_TENTH_ALPHA).cull(RenderLayer.DISABLE_CULLING).lightmap(RenderLayer.ENABLE_LIGHTMAP).overlay(RenderLayer.ENABLE_OVERLAY_COLOR).layering(RenderLayer.VIEW_OFFSET_Z_LAYERING).build(true);
-		return RenderLayer.of("astromine:armor_cutout_no_cull", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, 7, 256, true, false, multiPhaseParameters);
-	}
-
 	@Shadow
 	protected abstract Identifier getArmorTexture(ArmorItem armorItem, boolean bl, @Nullable String string);
 
@@ -66,5 +59,20 @@ public abstract class ArmorFeatureRendererMixin {
 			bipedEntityModel.render(matrixStack, vertexConsumer, i, OverlayTexture.DEFAULT_UV, f, g, h, 1.0F);
 			ci.cancel();
 		}
+	}
+
+	@Unique
+	private static RenderLayer getArmorCutoutNoCull(Identifier texture, int frames) {
+		RenderLayer.MultiPhaseParameters multiPhaseParameters = RenderLayer.MultiPhaseParameters.builder()
+			.texture(new AnimatedArmorItem.AnimatedTexturePhase(texture, frames))
+			.transparency(RenderLayer.NO_TRANSPARENCY)
+			.diffuseLighting(RenderLayer.ENABLE_DIFFUSE_LIGHTING)
+			.alpha(RenderLayer.ONE_TENTH_ALPHA)
+			.cull(RenderLayer.DISABLE_CULLING)
+			.lightmap(RenderLayer.ENABLE_LIGHTMAP)
+			.overlay(RenderLayer.ENABLE_OVERLAY_COLOR)
+			.layering(RenderLayer.VIEW_OFFSET_Z_LAYERING)
+			.build(true);
+		return RenderLayer.of("astromine:armor_cutout_no_cull", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, 7, 256, true, false, multiPhaseParameters);
 	}
 }

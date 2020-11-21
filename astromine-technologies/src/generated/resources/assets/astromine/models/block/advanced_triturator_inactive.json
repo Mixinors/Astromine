@@ -1,9 +1,11 @@
 {
-  "parent": "minecraft:block/orientable_with_bottom",
+  "parent": "minecraft:block/cube",
   "textures": {
-    "top": "astromine:block/advanced_machine_top",
-    "bottom": "astromine:block/advanced_machine_bottom",
-    "side": "astromine:block/advanced_machine_side",
-    "front": "astromine:block/advanced_triturator_front_inactive"
+    "north": "astromine:block/triturator/inactive/advanced_triturator_back",
+    "south": "astromine:block/triturator/inactive/advanced_triturator_front",
+    "east": "astromine:block/triturator/inactive/advanced_triturator_right",
+    "west": "astromine:block/triturator/inactive/advanced_triturator_left",
+    "up": "astromine:block/triturator/inactive/advanced_triturator_top",
+    "down": "astromine:block/triturator/inactive/advanced_triturator_bottom"
   }
 }

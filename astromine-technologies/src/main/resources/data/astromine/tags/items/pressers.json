@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "astromine:primitive_presser",
-    "astromine:basic_presser",
-    "astromine:advanced_presser",
-    "astromine:elite_presser"
-  ]
-}

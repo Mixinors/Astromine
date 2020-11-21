@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei.pressing;
 
+import me.shedaniel.rei.utils.CollectionUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -34,6 +35,7 @@ import com.github.chainmailstudios.astromine.technologies.common.recipe.Pressing
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeDisplay;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -47,7 +49,7 @@ public class PressingDisplay implements RecipeDisplay {
 	private final Identifier recipeId;
 
 	public PressingDisplay(PressingRecipe recipe) {
-		this(EntryStack.ofIngredients(recipe.getPreviewInputs()), Collections.singletonList(EntryStack.create(recipe.getOutput())), recipe.getTime(), recipe.getEnergy(), recipe.getId());
+		this(Collections.singletonList(EntryStack.ofItemStacks(Arrays.asList(recipe.getFirstInput().getMatchingStacks()))), Collections.singletonList(EntryStack.create(recipe.getFirstOutput())), recipe.getTime(), recipe.getEnergyInput(), recipe.getId());
 	}
 
 	public PressingDisplay(List<List<EntryStack>> inputs, List<EntryStack> outputs, int timeRequired, double energyRequired, Identifier recipeId) {

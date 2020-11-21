@@ -50,12 +50,12 @@ public class ElectrolyzerScreenHandler extends ComponentBlockEntityEnergyFluidSc
 
 		FluidVerticalBarWidget firstOutputFluidBar = new FluidVerticalBarWidget();
 		firstOutputFluidBar.setSize(Size.absolute(fluidBar));
-		firstOutputFluidBar.setVolume(() -> blockEntity.getFluidComponent().getSecond());
+		firstOutputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getSecond());
 
 		FluidVerticalBarWidget secondOutputFluidBar = new FluidVerticalBarWidget();
 		secondOutputFluidBar.setSize(Size.absolute(fluidBar));
 
-		secondOutputFluidBar.setVolume(() -> blockEntity.getFluidComponent().getThird());
+		secondOutputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getThird());
 
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, fluidBar.getHeight() / 2 - 8));

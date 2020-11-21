@@ -27,6 +27,10 @@ package com.github.chainmailstudios.astromine.common.callback;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
+/**
+ * A callback called when a {@link BlockEntityTransferComponent.TransferEntry}
+ * is added to a {@link BlockEntityTransferComponent}.
+ */
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 
 public interface TransferEntryCallback {
@@ -36,5 +40,6 @@ public interface TransferEntryCallback {
 		}
 	});
 
-	void handle(BlockEntityTransferComponent.TransferEntry entry);
+	/** Handle the added {@link BlockEntityTransferComponent.TransferEntry}. */
+    void handle(BlockEntityTransferComponent.TransferEntry entry);
 }

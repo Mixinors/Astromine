@@ -48,55 +48,81 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.Random;
 
+// TODO: This is concerning code and does not allow upgrades to work on non-horizontal machinery.
+
+/**
+ * A {@link HorizontalFacingBlockWithEntity} with wrenching behavior.
+ */
 public abstract class WrenchableHorizontalFacingTieredBlockWithEntity extends WrenchableHorizontalFacingBlockWithEntity {
 	public WrenchableHorizontalFacingTieredBlockWithEntity(Settings settings) {
 		super(settings);
 	}
 
+	/** Override behavior to implement tier upgrades.
+	 * Yes, the ones from the Technologies module.
+	 * Why is this here?
+	 * Why am I here?
+	 * Just to suffer?
+	 * Is there a point anymore? */
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		Identifier blockId = Registry.BLOCK.getId(this);
+
 		Tier blockTier = Tier.fromId(blockId);
+
 		if (blockTier != null) {
 			ItemStack stack = player.getStackInHand(hand);
+
 			Identifier itemId = Registry.ITEM.getId(stack.getItem());
+
 			if (itemId.getNamespace().equals(AstromineCommon.MOD_ID) && itemId.getPath().endsWith("_machine_upgrade_kit")) {
 				Tier itemTier = Tier.fromId(itemId);
 
 				if (itemTier != null && itemTier.ordinal() != 0 && Tier.values()[itemTier.ordinal() - 1] == blockTier) {
 					Identifier newBlockId = new Identifier(blockId.toString().replace(blockTier.name().toLowerCase(Locale.ROOT) + "_", itemTier.name().toLowerCase(Locale.ROOT) + "_"));
+
 					Optional<Block> newBlock = Registry.BLOCK.getOrEmpty(newBlockId);
 
 					if (newBlock.isPresent()) {
 						if (world.isClient) {
 							Random random = world.random;
+
 							double x = pos.getX() - 0.3;
 							double y = pos.getY() - 0.3;
 							double z = pos.getZ() - 0.3;
+
 							for (int i = 0; i < 20; i++) {
 								world.addParticle(ParticleTypes.COMPOSTER, x + random.nextDouble() * 1.6, y + random.nextDouble() * 1.6, z + random.nextDouble() * 1.6, -0.2 + random.nextDouble() * 0.4, -0.2 + random.nextDouble() * 0.4, -0.2 + random.nextDouble() * 0.4);
 							}
+
 							world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 1, 1, false);
+
 							return ActionResult.CONSUME;
 						}
 
 						if (!player.isCreative()) {
 							ItemStack copy = stack.copy();
+
 							copy.decrement(1);
+
 							player.setStackInHand(hand, copy);
 						}
 
 						BlockEntity blockEntity = world.getBlockEntity(pos);
+
 						CompoundTag beTag = null;
+
 						if (blockEntity != null) {
 							beTag = blockEntity.toTag(new CompoundTag());
 							beTag.putInt("x", pos.getX());
 							beTag.putInt("y", pos.getY());
 							beTag.putInt("z", pos.getZ());
 						}
+
 						world.removeBlockEntity(pos);
 
 						BlockState newState = newBlock.get().getDefaultState();
+
 						for (Property property : state.getProperties()) {
 							if (newState.contains(property)) {
 								newState = newState.with(property, state.get(property));
@@ -104,7 +130,9 @@ public abstract class WrenchableHorizontalFacingTieredBlockWithEntity extends Wr
 						}
 
 						world.setBlockState(pos, newState, 3, 512);
+
 						BlockEntity newBlockEntity = world.getBlockEntity(pos);
+
 						if (newBlockEntity != null && beTag != null) {
 							newBlockEntity.fromTag(newState, beTag);
 						}
@@ -118,12 +146,16 @@ public abstract class WrenchableHorizontalFacingTieredBlockWithEntity extends Wr
 		return super.onUse(state, world, pos, player, hand, hit);
 	}
 
+	/**
+	 * An enum representing machine tiers, because yes?
+	 */
 	private enum Tier {
 		PRIMITIVE,
 		BASIC,
 		ADVANCED,
 		ELITE;
 
+		/** Returns the {@link Tier} of the given {@link Identifier}'s path. */
 		static Tier fromId(Identifier identifier) {
 			String path = identifier.getPath();
 			for (Tier tier : values()) {

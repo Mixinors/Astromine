@@ -31,8 +31,8 @@ import net.minecraft.util.Identifier;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.AlloySmelterScreenHandler;
-import com.github.chainmailstudios.astromine.technologies.common.screenhandler.ElectricSmelterScreenHandler;
-import com.github.chainmailstudios.astromine.technologies.common.screenhandler.PresserScreenHandler;
+import com.github.chainmailstudios.astromine.technologies.common.screenhandler.ElectricFurnaceScreenHandler;
+import com.github.chainmailstudios.astromine.technologies.common.screenhandler.PressScreenHandler;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.SolidGeneratorScreenHandler;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.TrituratorScreenHandler;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
@@ -56,9 +56,9 @@ public class AstromineTechnologiesServerContainerPlugin implements Runnable {
 	@Override
 	public void run() {
 		ContainerInfoHandler.registerContainerInfo(TRITURATING, new SimpleContainerInfo<>(TrituratorScreenHandler.class, 1, 1, 1));
-		ContainerInfoHandler.registerContainerInfo(ELECTRIC_SMELTING, new SimpleContainerInfo<>(ElectricSmelterScreenHandler.class, 1, 1, 1));
+		ContainerInfoHandler.registerContainerInfo(ELECTRIC_SMELTING, new SimpleContainerInfo<>(ElectricFurnaceScreenHandler.class, 1, 1, 1));
 		ContainerInfoHandler.registerContainerInfo(SOLID_GENERATING, new SimpleContainerInfo<>(SolidGeneratorScreenHandler.class, 1, 1, 0));
-		ContainerInfoHandler.registerContainerInfo(PRESSING, new SimpleContainerInfo<>(PresserScreenHandler.class, 1, 1, 1));
+		ContainerInfoHandler.registerContainerInfo(PRESSING, new SimpleContainerInfo<>(PressScreenHandler.class, 1, 1, 1));
 		ContainerInfoHandler.registerContainerInfo(ALLOY_SMELTING, new SimpleContainerInfo<>(AlloySmelterScreenHandler.class, 1, 2, 0, 1));
 	}
 
@@ -82,7 +82,7 @@ public class AstromineTechnologiesServerContainerPlugin implements Runnable {
 
 		@Override
 		public List<StackAccessor> getGridStacks(ContainerContext<T> context) {
-			return gridStacks.stream().map(slotIndex -> new InventoryStackAccessor((Inventory) context.getContainer().syncBlockEntity, slotIndex)).collect(Collectors.toList());
+			return gridStacks.stream().map(slotIndex -> new InventoryStackAccessor((Inventory) context.getContainer().getBlockEntity(), slotIndex)).collect(Collectors.toList());
 		}
 
 		@Override

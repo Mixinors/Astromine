@@ -30,9 +30,15 @@ import net.minecraft.util.math.BlockPos;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentItemBlockEntity;
 
+/**
+ * A {@link ComponentBlockEntityScreenHandler}
+ * with an attached {@link ComponentItemBlockEntity}.
+ */
 public class ComponentBlockEntityItemScreenHandler extends ComponentBlockEntityScreenHandler {
 	public ComponentItemBlockEntity blockEntity;
 
+	/** Instantiates a {@link ComponentBlockEntityItemScreenHandler},
+	 * obtaining the {@link ComponentItemBlockEntity}. */
 	public ComponentBlockEntityItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 

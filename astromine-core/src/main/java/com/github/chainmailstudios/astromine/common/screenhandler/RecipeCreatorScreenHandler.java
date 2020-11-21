@@ -40,6 +40,22 @@ import com.github.vini2003.blade.common.utilities.Slots;
 import com.github.vini2003.blade.common.widget.base.ButtonWidget;
 import com.github.vini2003.blade.common.widget.base.PanelWidget;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
+import com.google.common.collect.Lists;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.screen.slot.Slot;
+import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagManager;
+import net.minecraft.text.LiteralText;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
@@ -49,12 +65,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
+/**
+ * A {@link BaseScreenHandler}
+ * configured as an interface for {@link CraftingRecipe}
+ * creation as {@link JsonElement}.
+ */
 public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 	public RecipeCreatorScreenHandler(int syncId, @NotNull PlayerEntity player) {
 		super(AstromineScreenHandlers.RECIPE_CREATOR, syncId, player);
@@ -62,13 +80,37 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 
 	@Override
 	public void initialize(int width, int height) {
-		PanelWidget panel = new PanelWidget();
+		final List<String> TYPES = new ArrayList<String>() {
+            {
+                add("nugget");
+                add("wire");
+                add("ingot");
+                add("dust");
+                add("tiny_dust");
+                add("plate");
+                add("gear");
+            }
+        };
+
+        final Map<String, String> TAGS = new HashMap<String, String>() {
+            {
+                Registry.ITEM.forEach((item) -> {
+                    Identifier id = Registry.ITEM.getId(item);
+
+                    TYPES.forEach((type) -> {
+                        if (id.getPath().contains(type)) {
+                            put(id.toString(), "c:" + id.getPath() + "s");
+                        }
+                    });
+                });
+            }
+        };PanelWidget panel = new PanelWidget();
 		panel.setPosition(Position.of(width / 2 - 40, height / 2 - 40));
 		panel.setSize(Size.of(93, 100));
 
 		addWidget(panel);
 
-		BaseInventory inventory = new BaseInventory(10);
+		BaseInventory inventory = BaseInventory.of(10);
 
 		List<SlotWidget> inputSlots = Lists.newArrayList(Slots.addArray(Position.of(panel.getX() + 7, panel.getY() + 7 + 9), Size.of(18, 18), panel, 0, 3, 3, inventory));
 
@@ -130,10 +172,10 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 
 				TagManager tagManager = getPlayer().getEntityWorld().getTagManager();
 
-				Collection<Identifier> tags = tagManager.getItems().getTagsFor(Registry.ITEM.get(new Identifier(name)));
+				if (TAGS.containsKey(name)) {
 
-				if (!tags.isEmpty()) {
-					entry.addProperty("tag", tags.iterator().next().toString());
+				
+					entry.addProperty("tag", TAGS.get(name));
 				} else {
 					entry.addProperty("item", name);
 				}
@@ -146,6 +188,7 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 			JsonObject resultJson = new JsonObject();
 
 			resultJson.addProperty("item", outputName);
+            resultJson.addProperty("count", outputStack.getCount());
 
 			recipeJson.add("result", resultJson);
 
@@ -153,7 +196,7 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 
 			generatedFile.mkdir();
 
-			File outputFile = new File("generated/" + outputName.replace(":", "_").replace("/", "_") + "-" + UUID.randomUUID().toString() + ".json");
+			File outputFile = new File("generated/" + outputName.replace(":", "_").replace("/", "_").replace("astromine_", "") + ".json");
 
 			try {
 				outputFile.createNewFile();

@@ -17,3 +17,4 @@ accessible field net/minecraft/client/render/RenderPhase beginAction Ljava/lang/
 mutable field net/minecraft/client/render/RenderPhase beginAction Ljava/lang/Runnable;
 accessible field net/minecraft/client/render/RenderPhase endAction Ljava/lang/Runnable;
 mutable field net/minecraft/client/render/RenderPhase endAction Ljava/lang/Runnable;
+accessible field net/minecraft/recipe/Ingredient matchingStacks [Lnet/minecraft/item/ItemStack;

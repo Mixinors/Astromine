@@ -46,9 +46,7 @@ public class AstromineCommands {
 			dispatcher.register(LiteralArgumentBuilder.<ServerCommandSource> literal("recipe").then(LiteralArgumentBuilder.<ServerCommandSource> literal("creator").executes((context) -> {
 				context.getSource().getPlayer().openHandledScreen(new ExtendedScreenHandlerFactory() {
 					@Override
-					public void writeScreenOpeningData(ServerPlayerEntity serverPlayerEntity, PacketByteBuf packetByteBuf) {
-
-					}
+					public void writeScreenOpeningData(ServerPlayerEntity serverPlayerEntity, PacketByteBuf packetByteBuf) {}
 
 					@Override
 					public Text getDisplayName() {

@@ -1,0 +1,19 @@
+{
+  "name": "text.astromine.machinery.electric_furnace.title",
+  "icon": "astromine:primitive_electric_furnace",
+  "category": "machinery",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "astromine:primitive_electric_furnace",
+      "title": "text.astromine.machinery.electric_furnace.page_one.title",
+      "text": "text.astromine.machinery.electric_furnace.page_one.text"
+    },
+    {
+      "type": "crafting",
+      "recipe": "astromine:primitive_electric_furnace",
+      "title": "text.astromine.machinery.electric_furnace.page_two.title"
+    }
+  ]
+}

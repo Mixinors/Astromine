@@ -24,15 +24,35 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.PacketByteBuf;
 
 public class NumberUtilities {
-	public static String shorten(double value, String unit) {
+	/**
+	 * Shortens the given {@link Double}, appending the specified
+	 * unit if necessary.
+	 *
+	 * < 1,000 has no suffix.
+	 * > 1,000 has the "k" suffix.
+	 * > 1,000,000 has the "M" suffix.
+	 * > 1,000,000,000 has the "G" suffix.
+	 * > 1,000,000,000,000 has the "T" suffix.
+	 * > 1,000,000,000,000,000 has the "P" suffix.
+	 * > 1,000,000,000,000,000,000 has the "E" suffix.
+	 * > 1,000,000,000,000,000,000,000 has the "Z" suffix.
+	 * > 1,000,000,000,000,000,000,000,000 has the "Y" suffix.
+	 * > 1,000,000,000,000,000,000,000,000,000 has the "?" suffix.
+	 */
+	public static java.lang.String shorten(double value, java.lang.String unit) {
 		if (value < 1000) {
-			return Fraction.DECIMAL_FORMAT.format(value);
+			return Fraction.FORMAT.format(value);
 		}
 		int exponent = (int) (Math.log(value) / Math.log(1000));
-		String[] units = new String[]{ "k" + unit, "M" + unit, "G" + unit, "T" + unit, "P" + unit, "E" + unit, "Z" + unit, "Y" + unit };
-		return String.format("%.1f%s", value / Math.pow(1000, exponent), exponent - 1 > units.length - 1 ? "?" : units[exponent - 1]);
+		java.lang.String[] units = new java.lang.String[]{ "k" + unit, "M" + unit, "G" + unit, "T" + unit, "P" + unit, "E" + unit, "Z" + unit, "Y" + unit };
+		return java.lang.String.format("%.1f%s", value / Math.pow(1000, exponent), exponent - 1 > units.length - 1 ? "?" : units[exponent - 1]);
 	}
 }

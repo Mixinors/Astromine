@@ -31,11 +31,20 @@ import com.github.chainmailstudios.astromine.common.registry.base.UniRegistry;
 
 import java.util.Optional;
 
+/**
+ * An {@link UniRegistry}, for registration of
+ * {@link RegistryKey<World>}s to {@link Boolean}s.
+ *
+ * The specified {@link Boolean} is checked to verify
+ * if the given dimension does not have a natural atmosphere.
+ */
 public class AtmosphereRegistry extends UniRegistry<RegistryKey<World>, Boolean> {
 	public static final AtmosphereRegistry INSTANCE = new AtmosphereRegistry();
 
+	/** We only want one instance of this. */
 	private AtmosphereRegistry() {}
 
+	/** Asserts whether the given dimension does not have a natural atmosphere, or not. */
 	@Override
 	public Boolean get(RegistryKey<World> worldRegistryKey) {
 		return Optional.ofNullable(super.get(worldRegistryKey)).orElse(false);

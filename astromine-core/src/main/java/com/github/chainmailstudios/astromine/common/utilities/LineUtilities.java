@@ -32,18 +32,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class LineUtilities {
-	/**
-	 * Builds a Bezier curve from two points. Current implementation needs to be reworked.
-	 *
-	 * @param posA
-	 *        the first specified position.
-	 * @param posB
-	 *        the second specified position.
-	 * @param segments
-	 *        the segments between both positions.
-	 *
-	 * @return the dots of the requested curve.
-	 */
+	/** Returns points of a Bezier curve between the three given points with the specified amount of segments. */
 	public static Collection<Vector3f> getBezierSegments(Vector3f posA, Vector3f posB, Vector3f posC, float segments) {
 		ArrayList<Vector3f> positions = new ArrayList<>();
 
@@ -91,8 +80,8 @@ public class LineUtilities {
 		return positions;
 	}
 
+	/** Returns points of a Bresenham line between the two given points with the specified amount of segments. */
 	public static Collection<Vector3f> getBresenhamSegments(Vector3f posA, Vector3f posB, float segments) {
-
 		float x1 = posA.getX();
 		float y1 = posA.getY();
 		float z1 = posA.getZ();

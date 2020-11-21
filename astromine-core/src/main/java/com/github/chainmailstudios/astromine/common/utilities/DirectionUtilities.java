@@ -27,19 +27,23 @@ package com.github.chainmailstudios.astromine.common.utilities;
 import net.minecraft.util.math.Direction;
 
 public class DirectionUtilities {
-	public static Direction byNameOrId(String name) {
-		if (name.equals("down"))
-			return Direction.DOWN;
-		else if (name.equals("up"))
-			return Direction.UP;
-		else if (name.equals("north"))
-			return Direction.NORTH;
-		else if (name.equals("south"))
-			return Direction.SOUTH;
-		else if (name.equals("west"))
-			return Direction.WEST;
-		else if (name.equals("east"))
-			return Direction.EAST;
-		else return Direction.byId(Integer.parseInt(name));
+	/** Returns the {@link Direction} corresponding to the given name or ordinal. */
+	public static Direction byNameOrId(String nameOrOrdinal) {
+		switch (nameOrOrdinal) {
+			case "down":
+				return Direction.DOWN;
+			case "up":
+				return Direction.UP;
+			case "north":
+				return Direction.NORTH;
+			case "south":
+				return Direction.SOUTH;
+			case "west":
+				return Direction.WEST;
+			case "east":
+				return Direction.EAST;
+			default:
+				return Direction.byId(Integer.parseInt(nameOrOrdinal));
+		}
 	}
 }

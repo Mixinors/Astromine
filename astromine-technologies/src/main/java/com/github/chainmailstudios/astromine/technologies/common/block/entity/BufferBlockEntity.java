@@ -96,9 +96,7 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 			ItemComponent itemComponent = getItemComponent();
 
 			if (itemComponent != null) {
-				itemComponent.forEach(entry -> {
-					ItemStack stack = entry.getValue();
-
+				itemComponent.forEach(stack -> {
 					stack.setCount(stack.getMaxCount());
 				});
 			}

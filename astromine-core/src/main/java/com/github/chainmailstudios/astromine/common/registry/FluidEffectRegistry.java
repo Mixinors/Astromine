@@ -29,12 +29,22 @@ import net.minecraft.fluid.Fluid;
 
 import com.github.chainmailstudios.astromine.common.registry.base.UniRegistry;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-public class FluidEffectRegistry extends UniRegistry<Fluid, Consumer<LivingEntity>> {
+/**
+ * An {@link UniRegistry} for registration of
+ * {@link Fluid}s mapped to {@link BiConsumer}s.
+ *
+ * The registered consumer should apply an effect
+ * to the given entity related to the fluid.
+ *
+ * The supplied boolean indicates whether the entity
+ * is inside a block of the fluid or not.
+ */
+public class FluidEffectRegistry extends UniRegistry<Fluid, BiConsumer<Boolean, LivingEntity>> {
 	public static final FluidEffectRegistry INSTANCE = new FluidEffectRegistry();
 
-	private FluidEffectRegistry() {
-
-	}
+	/** We only want one instance of this. */
+	private FluidEffectRegistry() {}
 }

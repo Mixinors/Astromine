@@ -38,81 +38,65 @@ import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 import com.google.gson.JsonElement;
+import net.minecraft.item.BucketItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.network.PacketByteBuf;
 
 public class VolumeUtilities {
-	public static FluidAmount transferFluidAmount() {
+	/** Returns the amount of fluid transferred during transport as per {@link AstromineConfig}. */
+    public static FluidAmount getTransferFluidAmount() {
 		return FluidAmount.of(AstromineConfig.get().fluidTransferNumerator, AstromineConfig.get().fluidTransferDenominator);
 	}
 
-	public static FluidVolume fromFluidVolumeJson(JsonElement jsonElement) {
-		return FluidVolume.fromJson(jsonElement);
-	}
+	/** Inserts fluids from the first stack into the first fluid volume.
+		* Inserts fluids from the first fluid volume into the first stack. */
 
-	public static FluidVolume fromFluidVolumePacket(PacketByteBuf buffer) {
-		return FluidVolume.fromPacket(buffer);
-	}
-
-	public static void toFluidVolumePacket(PacketByteBuf buffer, FluidVolume volume) {
-		volume.toPacket(buffer);
-	}
-
-	public static EnergyVolume fromEnergyVolumeJson(JsonElement jsonElement) {
-		return EnergyVolume.fromJson(jsonElement);
-	}
-
-	public static EnergyVolume fromEnergyVolumePacket(PacketByteBuf buffer) {
-		return EnergyVolume.fromPacket(buffer);
-	}
-
-	public static void toEnergyVolumePacket(PacketByteBuf buffer, EnergyVolume volume) {
-		volume.toPacket(buffer);
-	}
-
-	public static void transferBetweenFirstAndSecond(FluidComponent fluidComponent, ItemComponent itemComponent) {
+	public static void transferBetween(ItemComponent itemComponent, FluidComponent fluidComponent, int firstStackSlot, int secondStackSlot, int volumeSlot) {
 		if (fluidComponent != null) {
 			if (itemComponent != null) {
-				FluidComponent firstStackFluidComponent = FluidComponent.get(itemComponent.getFirst());
+				FluidComponent firstStackFluidComponent = FluidComponent.get(itemComponent.getStack(firstStackSlot));
 
 				if (firstStackFluidComponent != null) {
-					FluidVolume ourVolume = fluidComponent.getFirst();
-					FluidVolume stackVolume = firstStackFluidComponent.getFirst();
+					FluidVolume ourVolume = fluidComponent.getVolume(volumeSlot);
 
-					if (ourVolume.test(stackVolume.getFluid())) {
-						if (itemComponent.getFirst().getItem() instanceof BucketItem) {
-							if (itemComponent.getFirst().getItem() != Items.BUCKET && itemComponent.getFirst().getCount() == 1) {
+					firstStackFluidComponent.forEach(stackVolume -> {if (ourVolume.test(stackVolume.getFluid())) {
+						if (itemComponent.getStack(firstStackSlot).getItem() instanceof BucketItem) {
+							if (itemComponent.getStack(firstStackSlot).getItem() != Items.BUCKET && itemComponent.getStack(firstStackSlot).getCount() == 1) {
 								if (ourVolume.hasAvailable(Fraction.BUCKET) || ourVolume.isEmpty()) {
-									ourVolume.moveFrom(stackVolume, Fraction.BUCKET);
+									ourVolume.take(stackVolume, Fraction.BUCKET);
 
-									itemComponent.setFirst(new ItemStack(Items.BUCKET));
-								}
-							}
-						} else {
-							ourVolume.moveFrom(stackVolume, Fraction.BUCKET);
-						}
-					}
-				}
+                                        itemComponent.setStack(firstStackSlot, new ItemStack(Items.BUCKET));
+                                    }
+                                }
+                            } else {
+                                ourVolume.take(stackVolume, Fraction.BUCKET);
+                            }
+                        }
+                    });
+                }
 
-				FluidComponent secondStackFluidComponent = FluidComponent.get(itemComponent.getSecond());
+				FluidComponent secondStackFluidComponent = FluidComponent.get(itemComponent.getStack(secondStackSlot));
 
 				if (secondStackFluidComponent != null) {
-					FluidVolume ourVolume = fluidComponent.getFirst();
-					FluidVolume stackVolume = secondStackFluidComponent.getFirst();
+					FluidVolume ourVolume = fluidComponent.getVolume(volumeSlot);
 
-					if (stackVolume.test(ourVolume.getFluid())) {
-						if (itemComponent.getSecond().getItem() instanceof BucketItem) {
-							if (itemComponent.getSecond().getItem() == Items.BUCKET && itemComponent.getSecond().getCount() == 1) {
+					secondStackFluidComponent.forEach(stackVolume -> {if (stackVolume.test(ourVolume.getFluid())) {
+						if (itemComponent.getStack(secondStackSlot).getItem() instanceof BucketItem) {
+							if (itemComponent.getStack(secondStackSlot).getItem() == Items.BUCKET && itemComponent.getStack(secondStackSlot).getCount() == 1) {
 								if (ourVolume.hasStored(Fraction.BUCKET)) {
-									ourVolume.add(stackVolume, Fraction.BUCKET);
+									ourVolume.give(stackVolume, Fraction.BUCKET);
 
-									itemComponent.setSecond(new ItemStack(stackVolume.getFluid().getBucketItem()));
-								}
-							}
-						} else {
-							ourVolume.add(stackVolume, Fraction.BUCKET);
-						}
-					}
-				}
-			}
-		}
-	}
+                                        itemComponent.setStack(secondStackSlot, new ItemStack(stackVolume.getFluid().getBucketItem()));
+                                    }
+                                }
+                            } else {
+                                ourVolume.give(stackVolume, Fraction.BUCKET);
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    }
 }

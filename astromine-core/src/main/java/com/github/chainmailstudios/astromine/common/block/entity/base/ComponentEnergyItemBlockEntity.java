@@ -24,6 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.utilities.capability.energy.ComponentEnergyProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 
@@ -31,16 +34,34 @@ import com.github.chainmailstudios.astromine.common.component.inventory.ItemComp
 import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ComponentInventoryProvider;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 
-public abstract class ComponentEnergyItemBlockEntity extends ComponentEnergyBlockEntity implements ComponentInventoryProvider {
-	public ComponentEnergyItemBlockEntity(Block energyBlock, BlockEntityType<?> type) {
-		super(energyBlock, type);
+/**
+ * A {@link ComponentBlockEntity} with an attached
+ * {@link EnergyComponent} and {@link ItemComponent}.
+ */
+public abstract class ComponentEnergyItemBlockEntity extends ComponentBlockEntity implements ComponentEnergyProvider, ComponentInventoryProvider {
+	/** Instantiates a {@link ComponentEnergyItemBlockEntity}. */
+	public ComponentEnergyItemBlockEntity(BlockEntityType<?> type) {
+		super(type);
+
+		addComponent(AstromineComponents.ENERGY_INVENTORY_COMPONENT, getEnergyComponent());
+		getEnergyComponent().updateListeners();
 
 		addComponent(AstromineComponents.ITEM_INVENTORY_COMPONENT, getItemComponent());
 		getItemComponent().updateListeners();
 	}
 
+	/** Returns the {@link EnergyComponent} to be attached. */
+	public abstract EnergyComponent createEnergyComponent();
+
+	/** Returns the attached {@link EnergyComponent}. */
+	public EnergyComponent getEnergyComponent() {
+		return EnergyComponent.get(this);
+	}
+
+	/** Returns the {@link ItemComponent} to be attached. */
 	public abstract ItemComponent createItemComponent();
 
+	/** Returns the attached {@link ItemComponent}. */
 	public ItemComponent getItemComponent() {
 		return ItemComponent.get(this);
 	}

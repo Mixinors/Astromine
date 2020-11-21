@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "north": "astromine:block/electric_furnace/inactive/advanced_electric_furnace_back",
+    "south": "astromine:block/electric_furnace/inactive/advanced_electric_furnace_front",
+    "east": "astromine:block/electric_furnace/inactive/advanced_electric_furnace_right",
+    "west": "astromine:block/electric_furnace/inactive/advanced_electric_furnace_left",
+    "up": "astromine:block/electric_furnace/inactive/advanced_electric_furnace_top",
+    "down": "astromine:block/electric_furnace/inactive/advanced_electric_furnace_bottom"
+  }
+}

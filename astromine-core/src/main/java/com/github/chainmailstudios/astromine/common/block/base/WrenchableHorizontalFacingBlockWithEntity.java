@@ -26,7 +26,11 @@ package com.github.chainmailstudios.astromine.common.block.base;
 
 import com.github.chainmailstudios.astromine.common.utilities.capability.block.FacingBlockWrenchable;
 
+/**
+ * A {@link HorizontalFacingBlockWithEntity} with wrenching behavior.
+ */
 public abstract class WrenchableHorizontalFacingBlockWithEntity extends HorizontalFacingBlockWithEntity implements FacingBlockWrenchable {
+	/** Instantiates a {@link WrenchableHorizontalFacingBlockWithEntity}. */
 	public WrenchableHorizontalFacingBlockWithEntity(Settings settings) {
 		super(settings);
 	}

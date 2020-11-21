@@ -32,28 +32,37 @@ import com.github.chainmailstudios.astromine.common.component.inventory.ItemComp
 
 import static java.lang.Integer.min;
 
+/**
+ * An {@link Inventory} wrapped over an {@link ItemComponent}.
+ */
 public interface InventoryFromItemComponent extends Inventory {
-	static InventoryFromItemComponent of(ItemComponent component) {
-		return () -> component;
+	ItemComponent getItemComponent();
+	
+	/** Instantiates an {@link InventoryFromItemComponent} with the given value. */
+	static InventoryFromItemComponent of(ItemComponent itemComponent) {
+		return () -> itemComponent;
 	}
 
+	/** Returns this inventory's size. */
 	@Override
 	default int size() {
-		return this.getItemComponent().getSize();
+		return getItemComponent().getSize();
 	}
 
-	ItemComponent getItemComponent();
-
-	@Override
-	default boolean isEmpty() {
-		return this.getItemComponent().isEmpty();
-	}
-
+	/** Returns the {@link ItemStack} at the given slot. */
 	@Override
 	default ItemStack getStack(int slot) {
-		return this.getItemComponent().getStack(slot);
+		return getItemComponent().getStack(slot);
 	}
 
+	/** Sets the {@link ItemStack} at the given slot to the specified value. */
+	@Override
+	default void setStack(int slot, ItemStack stack) {
+		getItemComponent().setStack(slot, stack);
+	}
+
+	/** Removes the {@link ItemStack} at the given slot,
+	 * or a part of it as per the specified count, and returns it. */
 	@Override
 	default ItemStack removeStack(int slot, int count) {
 		ItemStack removed = getItemComponent().removeStack(slot);
@@ -69,28 +78,33 @@ public interface InventoryFromItemComponent extends Inventory {
 		return returned;
 	}
 
+	/** Removes the {@link ItemStack} at the given slot, and returns it. */
 	@Override
 	default ItemStack removeStack(int slot) {
 		return getItemComponent().removeStack(slot);
 	}
 
+	/** Asserts whether this inventory's contents are all empty or not. */
 	@Override
-	default void setStack(int slot, ItemStack stack) {
-		getItemComponent().setStack(slot, stack);
+	default boolean isEmpty() {
+		return getItemComponent().isEmpty();
 	}
 
+	/** Clears this inventory's contents. */
+	@Override
+	default void clear() {
+		getItemComponent().clear();
+	}
+
+	/** Marks this inventory as dirt, or, pending update. */
 	@Override
 	default void markDirty() {
 		getItemComponent().updateListeners();
 	}
 
+	/** Allow the player to use this inventory by default. */
 	@Override
 	default boolean canPlayerUse(PlayerEntity player) {
 		return true;
-	}
-
-	@Override
-	default void clear() {
-		getItemComponent().clear();
 	}
 }

@@ -51,7 +51,7 @@ public class FluidMixerScreenHandler extends ComponentBlockEntityEnergyFluidScre
 		FluidVerticalBarWidget secondInputFluidBar = new FluidVerticalBarWidget();
 		secondInputFluidBar.setPosition(Position.of(fluidBar, fluidBar.getWidth() + 7, 0));
 		secondInputFluidBar.setSize(Size.absolute(fluidBar));
-		secondInputFluidBar.setVolume(() -> blockEntity.getFluidComponent().getSecond());
+		secondInputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getSecond());
 
 		HorizontalArrowWidget arrow = new HorizontalArrowWidget();
 		arrow.setPosition(Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9, secondInputFluidBar.getHeight() / 2F - 8));
@@ -62,7 +62,7 @@ public class FluidMixerScreenHandler extends ComponentBlockEntityEnergyFluidScre
 		FluidVerticalBarWidget outputFluidBar = new FluidVerticalBarWidget();
 		outputFluidBar.setPosition(Position.of(secondInputFluidBar, secondInputFluidBar.getWidth() + 9 + arrow.getWidth() + 7, 0));
 		outputFluidBar.setSize(Size.absolute(fluidBar));
-		outputFluidBar.setVolume(() -> blockEntity.getFluidComponent().getThird());
+		outputFluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getThird());
 
 		mainTab.addWidget(secondInputFluidBar);
 		mainTab.addWidget(arrow);

@@ -28,6 +28,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
 import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.texture.NativeImage;
@@ -47,27 +48,45 @@ import org.apache.logging.log4j.LogManager;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * An {@link ArmorItem} with an animated texture.
+ *
+ * Specifically, a {@link AnimatedTexturePhase} is used when
+ * drawing a {@link RenderLayer}. That {@link AnimatedTexturePhase}
+ * then binds an {@link AnimatedTexturePhase.AnimatedTexture},
+ * which then handles the texture animation.
+ */
 public class AnimatedArmorItem extends ArmorItem {
 	private final int frames;
 
+	/** Instantiates an {@link AnimatedArmorItem} with the given values. */
 	public AnimatedArmorItem(ArmorMaterial material, EquipmentSlot slot, Settings settings, int frames) {
 		super(material, slot, settings);
+
 		this.frames = frames;
 	}
 
+	/** Returns this item's total texture frames. */
 	public int getFrames() {
 		return frames;
 	}
 
+	/**
+	 * A {@link RenderPhase.Texture} which uses an {@link AnimatedTexture}.
+	 */
 	@Environment(EnvType.CLIENT)
-	public static class Texture extends RenderPhase.Texture {
+	public static final class AnimatedTexturePhase extends RenderPhase.Texture {
 		private final Optional<Identifier> id;
 
-		public Texture(Identifier id, int frames) {
+		/** Instantiates a {@link Texture}. */
+		public AnimatedTexturePhase(Identifier id, int frames) {
 			beginAction = () -> {
 				RenderSystem.enableTexture();
+
 				TextureManager textureManager = MinecraftClient.getInstance().getTextureManager();
+
 				AbstractTexture texture = textureManager.getTexture(id);
+
 				if (!(texture instanceof AnimatedTexture)) {
 					if (texture != null) {
 						try {
@@ -80,57 +99,80 @@ public class AnimatedArmorItem extends ArmorItem {
 					}
 
 					texture = new AnimatedTexture(id, frames);
+
 					textureManager.registerTexture(id, texture);
 				}
 
 				texture.bindTexture();
 			};
+
 			endAction = () -> {};
+
 			this.id = Optional.of(id);
 		}
 
-		public Texture() {
-			this.id = Optional.empty();
+		/** Override behavior to return our own ID. */
+		@Override
+		protected Optional<Identifier> getId() {
+			return this.id;
 		}
 
+		/** Asserts the equality of the objects. */
 		@Override
 		public boolean equals(Object object) {
 			if (this == object) {
 				return true;
 			} else if (object != null && this.getClass() == object.getClass()) {
-				AnimatedArmorItem.Texture texture = (AnimatedArmorItem.Texture) object;
-				return this.id.equals(texture.id);
+				AnimatedTexturePhase animatedTexturePhase = (AnimatedTexturePhase) object;
+
+				return this.id.equals(animatedTexturePhase.id);
 			} else {
 				return false;
 			}
 		}
 
+		/** Returns the hash for this texture. */
 		@Override
 		public int hashCode() {
 			return this.id.hashCode();
 		}
 
+		/** Returns this texture's string representation.
+		* For example, it may be "texture [minecraft:textures/models/armor/asterite_layer_1.png". */
 		@Override
 		public String toString() {
 			return this.name + '[' + this.id + "]";
 		}
 
-		protected Optional<Identifier> getId() {
-			return this.id;
-		}
-
+		/**
+		 * An animated {@link AbstractTexture}.
+		 *
+		 * A {@link NativeImage} ({@link AnimatedTexture#image}) is used
+		 * to store the original, full-size texture.
+		 *
+		 * A {@link NativeImage} ({@link AnimatedTexture#placeholderTexture}) is used
+		 * to store the modified, smaller texture.
+		 *
+		 * The placeholder is the one rendered.
+		 */
 		private static final class AnimatedTexture extends AbstractTexture implements TextureTickListener {
 			private final Identifier id;
-			private final int frames;
-			private int i;
-			private NativeImage image;
-			private NativeImage tmpTexture;
 
+			private final int frames;
+
+			private int tick;
+
+			private NativeImage image;
+
+			private NativeImage placeholderTexture;
+
+			/** Instantiates an {@link AnimatedTexture} with the given values. */
 			public AnimatedTexture(Identifier id, int frames) {
 				this.id = id;
 				this.frames = frames;
 			}
 
+			/** Loads this this texture from a {@link ResourceManager}. */
 			@Override
 			public void load(ResourceManager manager) throws IOException {
 				close();
@@ -138,43 +180,57 @@ public class AnimatedArmorItem extends ArmorItem {
 				try (Resource resource = manager.getResource(id)) {
 					image = NativeImage.read(resource.getInputStream());
 				}
-				this.tmpTexture = new NativeImage(this.image.getFormat(), image.getWidth(), image.getHeight() / frames, false);
-				TextureUtil.allocate(this.getGlId(), tmpTexture.getWidth(), tmpTexture.getHeight());
+
+				this.placeholderTexture = new NativeImage(this.image.getFormat(), image.getWidth(), image.getHeight() / frames, false);
+
+				TextureUtil.allocate(this.getGlId(), placeholderTexture.getWidth(), placeholderTexture.getHeight());
 			}
 
+			/** Closes this texture. */
 			@Override
 			public void close() {
 				super.close();
+
 				if (this.image != null) {
 					this.image.close();
+
 					this.clearGlId();
+
 					this.image = null;
 				}
-				if (this.tmpTexture != null) {
-					this.tmpTexture.close();
-					this.tmpTexture = null;
+
+				if (this.placeholderTexture != null) {
+					this.placeholderTexture.close();
+
+					this.placeholderTexture = null;
 				}
 			}
 
+			/** Override behavior to tick the animation. */
 			@Override
 			public void tick() {
 				if (!RenderSystem.isOnRenderThread()) {
-					RenderSystem.recordRenderCall(this::_tick);
+					RenderSystem.recordRenderCall(this::tickAnimation);
 				} else {
-					this._tick();
+					this.tickAnimation();
 				}
 			}
 
-			private void _tick() {
-				i++;
+			/** Tick the animation. */
+			private void tickAnimation() {
+				++tick;
+
 				bindTexture();
-				int yOffset = (i % frames) * tmpTexture.getHeight();
-				for (int x = 0; x < tmpTexture.getWidth(); x++) {
-					for (int y = 0; y < tmpTexture.getHeight(); y++) {
-						tmpTexture.setPixelColor(x, y, image.getPixelColor(x, y + yOffset));
+
+				int yOffset = (tick % frames) * placeholderTexture.getHeight();
+
+				for (int x = 0; x < placeholderTexture.getWidth(); x++) {
+					for (int y = 0; y < placeholderTexture.getHeight(); y++) {
+						placeholderTexture.setPixelColor(x, y, image.getPixelColor(x, y + yOffset));
 					}
 				}
-				tmpTexture.upload(0, 0, 0, false);
+
+				placeholderTexture.upload(0, 0, 0, false);
 			}
 		}
 	}

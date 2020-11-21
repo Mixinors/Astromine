@@ -132,7 +132,7 @@ public abstract class CapacitorBlock extends WrenchableHorizontalFacingTieredBlo
 		}
 
 		@Override
-		public NetworkMemberType energyType() {
+		public NetworkMemberType getEnergyNetworkMemberType() {
 			return NetworkMemberType.PROVIDER;
 		}
 	}

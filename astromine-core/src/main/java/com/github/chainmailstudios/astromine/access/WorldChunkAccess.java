@@ -24,8 +24,12 @@
 
 package com.github.chainmailstudios.astromine.access;
 
+import com.github.chainmailstudios.astromine.mixin.WorldChunkMixin;
 import net.minecraft.world.chunk.WorldChunk;
 
+/**
+ * A mixin helper class, used by {@link WorldChunkMixin}.
+ */
 public interface WorldChunkAccess {
 	void astromine_addUnloadListener(Runnable runnable);
 

@@ -30,89 +30,102 @@ import net.minecraft.util.math.Direction;
 
 import com.google.common.base.Objects;
 
-public class NetworkMemberNode {
+/**
+ * A node for a {@link NetworkMember} of a network.
+ *
+ * Serialization and deserialization methods are provided for:
+ * - {@link CompoundTag} - through {@link #toTag()} and {@link #fromTag(CompoundTag)}.
+ */
+public final class NetworkMemberNode {
 	private long pos;
 
-	private int dir;
+	private int directionId;
 
-	public NetworkMemberNode(BlockPos blockPos, Direction direction) {
-		setBlockPos(blockPos);
+	/** Instantiates a {@link NetworkMemberNode}. */
+	private NetworkMemberNode(BlockPos blockPos, Direction direction) {
+		setBlockPosition(blockPos);
 		setDirection(direction);
 	}
 
-	public NetworkMemberNode(long pos, int dir) {
-		setPos(pos);
-		setDir(dir);
+	/** Instantiates a {@link NetworkMemberNode}. */
+	private NetworkMemberNode(long pos, int directionId) {
+		setLongPosition(pos);
+		setDirectionId(directionId);
 	}
 
-	public NetworkMemberNode(BlockPos blockPos) {
-		setBlockPos(blockPos);
-		setDir(-1);
+	/** Instantiates a {@link NetworkMemberNode}. */
+	private NetworkMemberNode(BlockPos blockPos) {
+		setBlockPosition(blockPos);
+		setDirectionId(-1);
 	}
 
-	public NetworkMemberNode(long pos) {
-		setPos(pos);
-		setDir(-1);
+	/** Instantiates a {@link NetworkMemberNode}. */
+	private NetworkMemberNode(long pos) {
+		setLongPosition(pos);
+		setDirectionId(-1);
 	}
 
+	/** Instantiates a {@link NetworkMemberNode}. */
 	public static NetworkMemberNode of(BlockPos blockPos, Direction direction) {
 		return new NetworkMemberNode(blockPos, direction);
 	}
 
+	/** Instantiates a {@link NetworkMemberNode}. */
 	public static NetworkMemberNode of(long pos, int dir) {
 		return new NetworkMemberNode(pos, dir);
 	}
 
+	/** Instantiates a {@link NetworkMemberNode}. */
 	public static NetworkMemberNode of(BlockPos blockPos) {
 		return new NetworkMemberNode(blockPos);
 	}
 
+	/** Instantiates a {@link NetworkMemberNode}. */
 	public static NetworkMemberNode of(long pos) {
 		return new NetworkMemberNode(pos);
 	}
 
-	public static NetworkMemberNode fromTag(CompoundTag tag) {
-		return of(tag.getLong("pos"), tag.getInt("dir"));
-	}
-
-	public BlockPos getBlockPos() {
+	/** Returns this node's {@link BlockPos} from its long representation. */
+	public BlockPos getBlockPosition() {
 		return BlockPos.fromLong(this.pos);
 	}
 
-	public void setBlockPos(BlockPos blockPos) {
+	/** Sets this node's {@link BlockPos} to the long representation of the specified value. */
+	public void setBlockPosition(BlockPos blockPos) {
 		this.pos = blockPos.asLong();
 	}
 
+	/** Returns this node's {@link Direction} from its ID. */
 	public Direction getDirection() {
-		return Direction.values()[dir];
+		return Direction.byId(directionId);
 	}
 
+	/** Sets this node's {@link Direction} ID to the ID of the specified value. */
 	public void setDirection(Direction direction) {
-		this.dir = direction.getId();
+		this.directionId = direction.getId();
 	}
 
-	public long getPos() {
+	/** Returns this node's {@link BlockPos} long representation. */
+	public long getLongPosition() {
 		return pos;
 	}
 
-	public void setPos(long pos) {
+	/** Sets this node's {@link BlockPos} long representation to the specified value. */
+	public void setLongPosition(long pos) {
 		this.pos = pos;
 	}
 
-	public int getDir() {
-		return dir;
+	/** Returns this node's {@link Direction} ID */
+	public int getDirectionId() {
+		return directionId;
 	}
 
-	public void setDir(int dir) {
-		this.dir = dir;
+	/** Sets this node's {@link Direction} ID to the specified value. */
+	public void setDirectionId(int directionId) {
+		this.directionId = directionId;
 	}
 
-	public CompoundTag toTag(CompoundTag tag) {
-		tag.putLong("pos", pos);
-		tag.putInt("dir", dir);
-		return tag;
-	}
-
+	/** Asserts the equality of the objects. */
 	@Override
 	public boolean equals(Object object) {
 		if (this == object)
@@ -122,24 +135,38 @@ public class NetworkMemberNode {
 
 		NetworkMemberNode that = (NetworkMemberNode) object;
 
-		if (dir == -1) {
+		if (directionId == -1) {
 			return this.pos == that.pos;
 		} else {
-			return this.pos == that.pos && this.dir == that.dir;
+			return this.pos == that.pos && this.directionId == that.directionId;
 		}
 	}
 
-	@Override
-	public String toString() {
-		return "NetworkMemberNode{" + "pos=" + toShortString(getBlockPos()) + ", dir=" + getDirection().getName() + '}';
-	}
-
-	private String toShortString(BlockPos pos) {
-		return "" + pos.getX() + ", " + pos.getY() + ", " + pos.getZ();
-	}
-
+	/** Returns the hash for this node. */
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(pos);
+		return Objects.hashCode(pos, directionId);
+	}
+
+	/** Returns this node's string representation.
+	 * For example, it may be "[273, 98, -479], NORTH" */
+	@Override
+	public String toString() {
+		return String.format("[%s, %s, %s], %s", getBlockPosition().getX(), getBlockPosition().getY(), getBlockPosition().getY(), getDirection().asString().toUpperCase());
+	}
+
+	/** Deserializes a {@link NetworkMemberNode} from a {@link CompoundTag}. */
+	public static NetworkMemberNode fromTag(CompoundTag tag) {
+		return of(tag.getLong("pos"), tag.getInt("dir"));
+	}
+
+	/** Serializes a {@link NetworkMemberNode} to a {@link CompoundTag}. */
+	public CompoundTag toTag() {
+		CompoundTag tag = new CompoundTag();
+
+		tag.putLong("pos", pos);
+		tag.putInt("dir", directionId);
+
+		return tag;
 	}
 }

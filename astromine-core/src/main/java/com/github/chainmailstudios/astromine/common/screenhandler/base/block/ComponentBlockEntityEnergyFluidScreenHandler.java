@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.block;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
@@ -34,18 +35,26 @@ import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBa
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 
+/**
+ * A {@link ComponentBlockEntityScreenHandler}
+ * with an attached {@link ComponentEnergyFluidBlockEntity}.
+ */
 public class ComponentBlockEntityEnergyFluidScreenHandler extends ComponentBlockEntityScreenHandler {
-	public EnergyVerticalBarWidget energyBar;
-	public FluidVerticalBarWidget fluidBar;
-
 	public ComponentEnergyFluidBlockEntity blockEntity;
 
+	public EnergyVerticalBarWidget energyBar;
+
+	public FluidVerticalBarWidget fluidBar;
+
+	/** Instantiates a {@link ComponentBlockEntityItemScreenHandler},
+	 * obtaining the {@link ComponentEnergyFluidBlockEntity}. */
 	public ComponentBlockEntityEnergyFluidScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player, position);
 
 		blockEntity = (ComponentEnergyFluidBlockEntity) player.world.getBlockEntity(position);
 	}
 
+	/** Override behavior to add energy and fluid bars. */
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
@@ -53,12 +62,12 @@ public class ComponentBlockEntityEnergyFluidScreenHandler extends ComponentBlock
 		energyBar = new EnergyVerticalBarWidget();
 		energyBar.setPosition(Position.of(mainTab, 7, 11));
 		energyBar.setSize(Size.of(24, 48));
-		energyBar.setVolume(() -> blockEntity.getEnergyComponent().getVolume());
+		energyBar.setVolumeSupplier(() -> blockEntity.getEnergyComponent().getVolume());
 
 		fluidBar = new FluidVerticalBarWidget();
 		fluidBar.setPosition(Position.of(energyBar, energyBar.getWidth() + 7, 0));
 		fluidBar.setSize(Size.of(energyBar.getWidth(), energyBar.getHeight()));
-		fluidBar.setVolume(() -> blockEntity.getFluidComponent().getFirst());
+		fluidBar.setVolumeSupplier(() -> blockEntity.getFluidComponent().getFirst());
 
 		mainTab.addWidget(energyBar);
 		mainTab.addWidget(fluidBar);

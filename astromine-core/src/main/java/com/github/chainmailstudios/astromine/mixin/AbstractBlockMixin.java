@@ -24,6 +24,9 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -48,8 +51,6 @@ import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
-import com.github.chainmailstudios.astromine.common.utilities.data.Holder;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 
 @Mixin(AbstractBlock.class)
@@ -80,7 +81,7 @@ public class AbstractBlockMixin {
 			}
 		}
 
-		final Holder<Boolean> shouldSkip = Holder.of(false);
+		boolean shouldSkip = false;
 
 		if (stackFluidComponent != null) {
 			final Block block = state.getBlock();
@@ -99,16 +100,16 @@ public class AbstractBlockMixin {
 						if (isBucket && extractable != null) {
 							if (extractable.hasStored(Fraction.BUCKET)) {
 								if (stack.getCount() == 1 || (player.inventory.getEmptySlot() == -1 && stack.getCount() == 1)) {
-									stackVolume.moveFrom(extractable, Fraction.BUCKET);
+									stackVolume.take(extractable, Fraction.BUCKET);
 									player.setStackInHand(hand, new ItemStack(stackVolume.getFluid().getBucketItem()));
 								} else if (player.inventory.getEmptySlot() != -1 && stack.getCount() > 1) {
-									stackVolume.moveFrom(extractable, Fraction.BUCKET);
+									stackVolume.take(extractable, Fraction.BUCKET);
 									stack.decrement(1);
 									player.giveItemStack(new ItemStack(stackVolume.getFluid().getBucketItem()));
 								}
 							}
 						} else if (extractable != null) {
-							stackVolume.moveFrom(extractable, Fraction.BUCKET);
+							stackVolume.take(extractable, Fraction.BUCKET);
 						}
 					} else {
 						FluidVolume insertable = blockEntityFluidComponent.getFirstInsertableVolume(result.getSide(), stackVolume);
@@ -116,29 +117,29 @@ public class AbstractBlockMixin {
 						if (isBucket && insertable != null) {
 							if (insertable.hasAvailable(Fraction.BUCKET)) {
 								if (stack.getCount() == 1 || (player.inventory.getEmptySlot() == -1 && stack.getCount() == 1)) {
-									insertable.moveFrom(stackVolume, Fraction.BUCKET);
+									insertable.take(stackVolume, Fraction.BUCKET);
 									if (!player.isCreative()) {
 										player.setStackInHand(hand, new ItemStack(Items.BUCKET));
 									}
 								} else if (player.inventory.getEmptySlot() != -1 && stack.getCount() > 1) {
-									insertable.moveFrom(stackVolume, Fraction.BUCKET);
+									insertable.take(stackVolume, Fraction.BUCKET);
 									if (!player.isCreative()) {
 										stack.decrement(1);
 										player.giveItemStack(new ItemStack(Items.BUCKET));
 									}
 								}
 							} else if (insertable != null) {
-								insertable.moveFrom(stackVolume, Fraction.BUCKET);
+								insertable.take(stackVolume, Fraction.BUCKET);
 							}
 						} else {}
 					}
 
-					shouldSkip.set(true);
+					shouldSkip = true;
 				}
 			}
 		}
 
-		if (shouldSkip.get()) {
+		if (shouldSkip) {
 			cir.setReturnValue(ActionResult.SUCCESS);
 		}
 	}

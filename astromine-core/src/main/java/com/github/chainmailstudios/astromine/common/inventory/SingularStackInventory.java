@@ -30,135 +30,156 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
 
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
 /**
- * A simple {@code Inventory} implementation with only default methods + an item list getter.
- * <p>
- * Originally by Juuz
+ * A simple {@link Inventory} with helper
+ * methods for a single stack.
+ *
+ * Originally by {@author Juuz}.
  */
 public interface SingularStackInventory extends Inventory {
-	/**
-	 * Creates an inventory from the item list.
-	 */
+	/** Instantiates a {@link SingularStackInventory}. */
 	static SingularStackInventory of(DefaultedList<ItemStack> items) {
-		return () -> items;
-	}
-	// Creation
-
-	/**
-	 * Creates a new inventory with the size.
-	 */
-	static SingularStackInventory ofSize(int size) {
-		return of(DefaultedList.ofSize(size, ItemStack.EMPTY));
+		return new SingularStackInventoryImpl(items);
 	}
 
-	/**
-	 * Gets the item list of this inventory. Must return the same instance every time it's called.
-	 */
+	/** Returns this inventory's {@link ItemStack}s. */
 	DefaultedList<ItemStack> getItems();
-	// Inventory
 
-	/**
-	 * Returns the inventory size.
-	 */
+	/** Returns this inventory's size. */
 	@Override
 	default int size() {
-		return getItems().size();
+		return 1;
 	}
 
-	/**
-	 * @return true if this inventory has only empty stacks, false otherwise
-	 */
-	default boolean isInvEmpty() {
-		for (int i = 0; i < size(); i++) {
-			ItemStack stack = getStack(i);
-			if (!stack.isEmpty()) {
-				return false;
-			}
-		}
-		return true;
-	}
-
+	/** Asserts whether this inventory's {@link ItemStack} is empty. */
 	@Override
 	default boolean isEmpty() {
-		return isInvEmpty();
+		return getStack(0).isEmpty();
 	}
 
-	/**
-	 * Gets the item in the slot.
-	 */
+	/** Returns the {@link ItemStack} at the given slot. */
 	@Override
 	default ItemStack getStack(int slot) {
-		return getItems().get(slot);
+		if (slot != 0) {
+			throw new ArrayIndexOutOfBoundsException("Cannot access slot bigger than inventory size");
+		} else {
+			return getItems().get(0);
+		}
 	}
 
+	/** Returns this inventory's {@link ItemStack}. */
 	default ItemStack getStack() {
 		return getStack(0);
 	}
 
+	/** Sets this inventory's {@link ItemStack} to the specified value. */
 	default void setStack(ItemStack stack) {
 		setStack(0, stack);
 	}
 
-	/**
-	 * Takes a stack of the size from the slot.
-	 * <p>
-	 * (default implementation) If there are less items in the slot than what are requested, takes all items in that
-	 * slot.
-	 */
+	/** Removes the {@link ItemStack} at the given slot,
+	 * or a part of it as per the specified count, and returns it. */
 	@Override
 	default ItemStack removeStack(int slot, int count) {
-		ItemStack result = Inventories.splitStack(getItems(), slot, count);
-		if (!result.isEmpty()) {
-			markDirty();
+		if (slot != 0) {
+			throw new ArrayIndexOutOfBoundsException("Cannot access slot bigger than inventory size");
 		}
-		return result;
+
+		ItemStack stack = getStack();
+
+		if (count > stack.getCount()) {
+			setStack(ItemStack.EMPTY);
+			return stack;
+		} else {
+			stack.decrement(count);
+
+			ItemStack copy = stack.copy();
+
+			copy.setCount(count);
+
+			return copy;
+		}
 	}
 
-	/**
-	 * Removes the current stack in the {@code slot} and returns it.
-	 */
+	/** Removes the {@link ItemStack} at the given slot
+	 * and returns it. */
 	@Override
 	default ItemStack removeStack(int slot) {
-		ItemStack stack = Inventories.removeStack(getItems(), slot);
+		if (slot != 0) {
+			throw new ArrayIndexOutOfBoundsException("Cannot access slot bigger than inventory size");
+		}
+
+		ItemStack stack = getStack();
+
 		markDirty();
+
 		return stack;
 	}
 
+	/** Removes this inventory's {@link ItemStack} and returns it. */
 	default ItemStack removeStack() {
 		return removeStack(0);
 	}
 
-	/**
-	 * Replaces the current stack in the {@code slot} with the provided stack.
-	 * <p>
-	 * If the stack is too big for this inventory ({@link Inventory#getMaxCountPerStack()}), it gets resized to this
-	 * inventory's maximum amount.
-	 */
+	/** Sets the {@link ItemStack} at the given slot to the specified value.
+	 * If the count is bigger than this inventory allows, it is set to the maximum allowed. */
 	@Override
 	default void setStack(int slot, ItemStack stack) {
+		if (slot != 0) {
+			throw new ArrayIndexOutOfBoundsException("Cannot access slot bigger than inventory size");
+		}
+
 		getItems().set(slot, stack);
+
 		if (stack.getCount() > getMaxCountPerStack()) {
 			stack.setCount(getMaxCountPerStack());
 		}
+
 		markDirty();
 	}
 
-	/**
-	 * Clears {@linkplain #getItems() the item list}}.
-	 */
+	/** Clear this inventory's content. */
 	@Override
 	default void clear() {
-		getItems().clear();
+		setStack(0, ItemStack.EMPTY);
+
 		markDirty();
 	}
 
+	/** Override to do nothing. */
 	@Override
-	default void markDirty() {
-		// Override if you want behavior.
-	}
+	default void markDirty() {}
 
+	/** Allow the player to use this inventory by default. */
 	@Override
 	default boolean canPlayerUse(PlayerEntity player) {
 		return true;
+	}
+
+	class SingularStackInventoryImpl implements SingularStackInventory {
+		private final DefaultedList<ItemStack> items;
+
+		/** Instantiates a {@link SingularStackInventory}. */
+		private SingularStackInventoryImpl(DefaultedList<ItemStack> items) {
+			this.items = items;
+		}
+
+		/** Returns this inventory's {@link ItemStack}s. */
+		@Override
+		public DefaultedList<ItemStack> getItems() {
+			return items;
+		}
+
+		/** Returns this inventory's string representation. */
+		@Override
+		public String toString() {
+			AtomicInteger slot = new AtomicInteger(0);
+
+			return getItems().stream().map(stack -> String.format("%s, %s", slot.getAndIncrement(), stack.toString())).collect(Collectors.joining("\n"));
+		}
 	}
 }

@@ -24,6 +24,10 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
+import com.github.chainmailstudios.astromine.common.callback.TransferEntryCallback;
+import com.google.common.collect.Lists;
+import me.shedaniel.cloth.api.common.events.v1.BlockPlaceCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 import net.minecraft.block.BlockState;
@@ -71,7 +75,7 @@ public class AstromineCommonCallbacks {
 					FluidVolume sideVolume = sideAtmosphereComponent.get(sidePos);
 
 					if (atmosphereComponent.isTraversableForDisplacement(centerState, centerPos, sideState, sidePos, centerVolume, sideVolume, direction)) {
-						sideVolume.moveFrom(centerVolume);
+						sideVolume.take(centerVolume);
 						sideAtmosphereComponent.add(sidePos, sideVolume);
 
 						break;
@@ -90,8 +94,8 @@ public class AstromineCommonCallbacks {
 				if (playerEntity.currentScreenHandler instanceof ComponentBlockEntityScreenHandler) {
 					ComponentBlockEntityScreenHandler screenHandler = (ComponentBlockEntityScreenHandler) playerEntity.currentScreenHandler;
 
-					if (screenHandler.syncBlockEntity != null) {
-						screenHandler.syncBlockEntity.sync();
+					if (screenHandler.getBlockEntity() != null) {
+						screenHandler.getBlockEntity().sync();
 						break;
 					}
 				}

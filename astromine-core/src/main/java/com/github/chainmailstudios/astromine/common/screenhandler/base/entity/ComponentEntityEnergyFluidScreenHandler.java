@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.entity;
 
+import com.github.chainmailstudios.astromine.common.entity.base.ComponentEnergyItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 
@@ -33,18 +34,25 @@ import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBa
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 
+/**
+ * A {@link ComponentEntityScreenHandler}
+ * with an attached {@link ComponentEnergyFluidEntity}.
+ */
 public abstract class ComponentEntityEnergyFluidScreenHandler extends ComponentEntityScreenHandler {
-	public EnergyVerticalBarWidget energyBar;
-	public FluidVerticalBarWidget fluidBar;
+	protected ComponentEnergyFluidEntity entity;
 
-	public ComponentEnergyFluidEntity entity;
+	protected FluidVerticalBarWidget fluidBar;
 
+	protected EnergyVerticalBarWidget energyBar;
+
+	/** Instantiates a {@link ComponentEntityEnergyFluidScreenHandler}. */
 	public ComponentEntityEnergyFluidScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, int entityId) {
 		super(type, syncId, player, entityId);
 
 		entity = (ComponentEnergyFluidEntity) player.world.getEntityById(entityId);
 	}
 
+	/** Override behavior to add energy and fluid bars. */
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
@@ -52,12 +60,12 @@ public abstract class ComponentEntityEnergyFluidScreenHandler extends ComponentE
 		energyBar = new EnergyVerticalBarWidget();
 		energyBar.setPosition(Position.of(mainTab, 7, 11));
 		energyBar.setSize(Size.of(24, 48));
-		energyBar.setVolume(() -> entity.getEnergyComponent().getVolume());
+		energyBar.setVolumeSupplier(() -> entity.getEnergyComponent().getVolume());
 
 		fluidBar = new FluidVerticalBarWidget();
 		fluidBar.setPosition(Position.of(energyBar, energyBar.getWidth() + 7, 0));
 		fluidBar.setSize(Size.of(energyBar.getWidth(), energyBar.getHeight()));
-		fluidBar.setVolume(() -> entity.getFluidComponent().getFirst());
+		fluidBar.setVolumeSupplier(() -> entity.getFluidComponent().getFirst());
 
 		mainTab.addWidget(energyBar);
 		mainTab.addWidget(fluidBar);

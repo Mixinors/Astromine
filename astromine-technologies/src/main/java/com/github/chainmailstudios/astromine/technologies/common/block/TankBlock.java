@@ -127,7 +127,7 @@ public abstract class TankBlock extends WrenchableHorizontalFacingTieredBlockWit
 		}
 
 		@Override
-		public NetworkMemberType fluidType() {
+		public NetworkMemberType getFluidNetworkMemberType() {
 			return NetworkMemberType.PROVIDER;
 		}
 	}

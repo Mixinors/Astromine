@@ -24,48 +24,50 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 
-import com.github.chainmailstudios.astromine.common.recipe.ingredient.ArrayIngredient;
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.ItemIngredient;
 import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
 
 import com.google.gson.JsonElement;
 
 public class IngredientUtilities {
+	/** Deserializes an {@link Ingredient} from a {@link JsonElement}. */
 	public static Ingredient fromIngredientJson(JsonElement jsonElement) {
 		return Ingredient.fromJson(jsonElement);
 	}
 
+	/** Deserializes an {@link Ingredient} from a {@link ByteBuf}. */
 	public static Ingredient fromIngredientPacket(PacketByteBuf buffer) {
 		return Ingredient.fromPacket(buffer);
 	}
 
+	/** Serializes an {@link Ingredient} to a {@link ByteBuf}. */
 	public static void toIngredientPacket(PacketByteBuf buffer, Ingredient ingredient) {
 		ingredient.write(buffer);
 	}
 
-	public static ArrayIngredient fromArrayIngredientJson(JsonElement jsonElement) {
-		return ArrayIngredient.fromJson(jsonElement);
-	}
+	/** Returns an {@link ItemStack} from the specified {@link Ingredient}
+	 * which is compatible with the given {@link ItemStack}.
+	 *
+	 * This method is already implemented in {@link ItemIngredient} and
+	 * {@link FluidIngredient}, but not present in the default {@link Ingredient}.
+	 * */
+	public static ItemStack testMatching(Ingredient input, ItemStack stack) {
+		if (stack != null) {
+			if (input.matchingStacks.length != 0) {
+				for (ItemStack matching : input.matchingStacks) {
+					if (matching.getItem() == stack.getItem()) {
+						return matching;
+					}
+				}
+			}
+		}
 
-	public static ArrayIngredient fromArrayIngredientPacket(PacketByteBuf buffer) {
-		return ArrayIngredient.fromPacket(buffer);
-	}
-
-	public static void toArrayIngredientPacket(PacketByteBuf buffer, ArrayIngredient ingredient) {
-		ingredient.write(buffer);
-	}
-
-	public static FluidIngredient fromFluidIngredientJson(JsonElement jsonElement) {
-		return FluidIngredient.fromJson(jsonElement);
-	}
-
-	public static FluidIngredient fromFluidIngredientPacket(PacketByteBuf buffer) {
-		return FluidIngredient.fromPacket(buffer);
-	}
-
-	public static void toFluidIngredientPacket(PacketByteBuf buffer, FluidIngredient ingredient) {
-		ingredient.write(buffer);
+		return ItemStack.EMPTY;
 	}
 }

@@ -30,22 +30,24 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 
 public class RotationUtilities {
-	public static Box getRotatedBoundingBox(Box def, Direction facing) {
-		def.offset(-0.5, -0.5, -0.5);
+	/** Returns the given {@link Box} rotated towards the specified {@link Direction}. */
+	public static Box getRotatedBoundingBox(Box box, Direction facing) {
+		box.offset(-0.5, -0.5, -0.5);
 		switch (facing) {
 			case SOUTH:
-				def = new Box(def.minZ, def.minY, (def.maxX * -1) + 1, def.maxZ, def.maxY, (def.minX * -1) + 1);
+				box = new Box(box.minZ, box.minY, (box.maxX * -1) + 1, box.maxZ, box.maxY, (box.minX * -1) + 1);
 			case WEST:
-				def = new Box((def.maxX * -1) + 1, def.minY, (def.maxZ * -1) + 1, (def.minX * -1) + 1, def.maxY, (def.minZ * -1) + 1);
+				box = new Box((box.maxX * -1) + 1, box.minY, (box.maxZ * -1) + 1, (box.minX * -1) + 1, box.maxY, (box.minZ * -1) + 1);
 			case EAST:
-				def = new Box((def.maxZ * -1) + 1, def.minY, def.minX, (def.minZ * -1) + 1, def.maxY, def.maxX);
+				box = new Box((box.maxZ * -1) + 1, box.minY, box.minX, (box.minZ * -1) + 1, box.maxY, box.maxX);
 			default:
 
 		}
-		def.offset(0.5, 0.5, 0.5);
-		return def;
+		box.offset(0.5, 0.5, 0.5);
+		return box;
 	}
 
+	/** Returns the given {@link Box} rotated towards the specified {@link Direction} as a {@link VoxelShape}. */
 	public static VoxelShape getRotatedShape(Box def, Direction facing) {
 		return VoxelShapes.cuboid(getRotatedBoundingBox(def, facing));
 	}

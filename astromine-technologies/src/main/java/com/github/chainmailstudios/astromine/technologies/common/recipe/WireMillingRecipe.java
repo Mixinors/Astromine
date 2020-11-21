@@ -24,6 +24,10 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.ItemIngredient;
+import com.github.chainmailstudios.astromine.common.utilities.*;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -35,63 +39,90 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemComponentFromInventory;
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.IngredientUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import com.google.gson.annotations.SerializedName;
 
-public class WireMillingRecipe implements EnergyConsumingRecipe<Inventory> {
-	final Identifier identifier;
-	final Ingredient input;
-	final ItemStack output;
-	final double energy;
-	final int time;
+import java.util.Optional;
 
-	public WireMillingRecipe(Identifier identifier, Ingredient input, ItemStack output, double energy, int time) {
+public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory> {
+	private final Identifier identifier;
+	private final ItemIngredient firstInput;
+	private final ItemStack firstOutput;
+	private final double energyInput;
+	private final int time;
+
+	public WireMillingRecipe(Identifier identifier, ItemIngredient firstInput, ItemStack firstOutput, double energyInput, int time) {
 		this.identifier = identifier;
-		this.input = input;
-		this.output = output;
-		this.energy = energy;
+		this.firstInput = firstInput;
+		this.firstOutput = firstOutput;
+		this.energyInput = energyInput;
 		this.time = time;
 	}
 
-	public static boolean allows(World world, Inventory inventory) {
+	public static boolean allows(World world, ItemComponent itemComponent) {
 		return world.getRecipeManager().getAllOfType(WireMillingRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
 			WireMillingRecipe recipe = ((WireMillingRecipe) it);
 
-			return recipe.matches(inventory, world);
+			return recipe.allows(itemComponent);
 		});
 	}
 
+	public static Optional<WireMillingRecipe> matching(World world, ItemComponent itemComponent, EnergyComponent energyComponent) {
+		return (Optional<WireMillingRecipe>) (Object) world.getRecipeManager().getAllOfType(WireMillingRecipe.Type.INSTANCE).values().stream().filter(it -> {
+			WireMillingRecipe recipe = ((WireMillingRecipe) it);
+
+			return recipe.matches(itemComponent, energyComponent);
+		}).findFirst();
+	}
+
+	public boolean matches(ItemComponent itemComponent, EnergyComponent energyComponent) {
+		if (itemComponent.getSize() < 2) {
+			return false;
+		}
+
+		if (energyComponent.getAmount() < energyInput) {
+			return false;
+		}
+
+		if (!firstInput.test(itemComponent.getFirst())) {
+			return false;
+		}
+
+		return StackUtilities.test(firstOutput, itemComponent.getSecond());
+	}
+
+	public boolean allows(ItemComponent itemComponent) {
+		if (itemComponent.getSize() < 1) {
+			return false;
+		}
+
+		return firstInput.testWeak(itemComponent.getFirst());
+	}
+
 	@Override
-	public boolean matches(Inventory inventory, World world) {
-		return ItemComponentFromInventory.of(inventory).getContents().values().stream().anyMatch(input);
+	public boolean matches(Inventory inv, World world) {
+		return false;
 	}
 
 	@Override
 	public ItemStack craft(Inventory inventory) {
-		return output.copy();
+		return firstOutput.copy();
 	}
 
 	@Override
 	public boolean fits(int width, int height) {
-		return true;
+		return false;
 	}
 
 	@Override
 	public ItemStack getOutput() {
-		return output.copy();
+		return firstOutput.copy();
 	}
 
 	@Override
@@ -110,23 +141,29 @@ public class WireMillingRecipe implements EnergyConsumingRecipe<Inventory> {
 	}
 
 	@Override
-	public DefaultedList<Ingredient> getPreviewInputs() {
-		DefaultedList<Ingredient> defaultedList = DefaultedList.of();
-		defaultedList.add(this.input);
-		return defaultedList;
-	}
-
-	@Override
 	public ItemStack getRecipeKindIcon() {
 		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_WIREMILL);
+	}
+
+	public Identifier getIdentifier() {
+		return identifier;
+	}
+
+	public ItemIngredient getFirstInput() {
+		return firstInput;
+	}
+
+	public ItemStack getFirstOutput() {
+		return firstOutput;
 	}
 
 	public int getTime() {
 		return time;
 	}
 
-	public double getEnergy() {
-		return energy;
+	@Override
+	public double getEnergyInput() {
+		return energyInput;
 	}
 
 	public static final class Serializer implements RecipeSerializer<WireMillingRecipe> {
@@ -134,50 +171,66 @@ public class WireMillingRecipe implements EnergyConsumingRecipe<Inventory> {
 
 		public static final Serializer INSTANCE = new Serializer();
 
-		private Serializer() {
-			// Locked.
-		}
+		private Serializer() {}
 
 		@Override
 		public WireMillingRecipe read(Identifier identifier, JsonObject object) {
 			WireMillingRecipe.Format format = new Gson().fromJson(object, WireMillingRecipe.Format.class);
 
-			return new WireMillingRecipe(identifier, IngredientUtilities.fromIngredientJson(format.input), StackUtilities.fromJson(format.output), EnergyUtilities.fromJson(format.energy), ParsingUtilities.fromJson(format.time, Integer.class));
+			return new WireMillingRecipe(identifier,
+					ItemIngredient.fromJson(format.firstInput),
+					StackUtilities.fromJson(format.firstOutput),
+					DoubleUtilities.fromJson(format.energyInput),
+					IntegerUtilities.fromJson(format.time)
+			);
 		}
 
 		@Override
 		public WireMillingRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new WireMillingRecipe(identifier, IngredientUtilities.fromIngredientPacket(buffer), StackUtilities.fromPacket(buffer), EnergyUtilities.fromPacket(buffer), PacketUtilities.fromPacket(buffer, Integer.class));
+			return new WireMillingRecipe(
+					identifier,
+					ItemIngredient.fromPacket(buffer),
+					StackUtilities.fromPacket(buffer),
+					DoubleUtilities.fromPacket(buffer),
+					IntegerUtilities.fromPacket(buffer)
+			);
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, WireMillingRecipe recipe) {
-			IngredientUtilities.toIngredientPacket(buffer, recipe.input);
-			StackUtilities.toPacket(buffer, recipe.output);
-			EnergyUtilities.toPacket(buffer, recipe.energy);
-			PacketUtilities.toPacket(buffer, recipe.time);
+			recipe.firstInput.toPacket(buffer);
+			StackUtilities.toPacket(buffer, recipe.firstOutput);
+			DoubleUtilities.toPacket(buffer, recipe.energyInput);
+			IntegerUtilities.toPacket(buffer, recipe.time);
 		}
 	}
 
 	public static final class Type implements AstromineRecipeType<WireMillingRecipe> {
 		public static final Type INSTANCE = new Type();
 
-		private Type() {
-			// Locked.
-		}
+		private Type() {}
 	}
 
 	public static final class Format {
-		JsonObject input;
-		JsonObject output;
-		@SerializedName("time")
-		JsonPrimitive time;
-		@SerializedName("energy")
-		JsonElement energy;
+		@SerializedName("input")
+		JsonElement firstInput;
+
+		@SerializedName("output")
+		JsonElement firstOutput;
+
+		@SerializedName("energy_input")
+		JsonElement energyInput;
+
+		JsonElement time;
 
 		@Override
 		public String toString() {
-			return "Format{" + "input=" + input + ", output=" + output + ", time=" + time + ", energy=" + energy + '}';
+			return "Format{" +
+					"firstInput=" + firstInput +
+					", firstOutput=" + firstOutput +
+					", energyInput=" + energyInput +
+					", time=" + time +
+					'}';
 		}
 	}
 }

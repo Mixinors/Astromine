@@ -1,10 +1,23 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["010", "141", "010"],
+  "pattern": [
+    "010",
+    "141",
+    "010"
+  ],
   "key": {
-    "0": {"tag": "c:bronze_plates"},
-    "1": {"tag": "c:iron_plates"},
-    "4": {"item": "astromine:primitive_machine_chassis"}
+    "0": {
+      "tag": "c:bronze_plates"
+    },
+    "1": {
+      "tag": "c:iron_plates"
+    },
+    "4": {
+      "item": "astromine:primitive_machine_chassis"
+    }
   },
-  "result": {"item": "astromine:basic_machine_chassis", "count": 1}
+  "result": {
+    "item": "astromine:basic_machine_chassis",
+    "count": 1
+  }
 }

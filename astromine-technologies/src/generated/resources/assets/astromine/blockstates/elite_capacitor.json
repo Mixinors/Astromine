@@ -1,19 +1,34 @@
 {
   "variants": {
-    "facing=east": {
-      "model": "astromine:block/elite_capacitor",
-      "y": 90
+    "active=false,facing=east": {
+      "y": 90,
+      "model": "astromine:block/elite_capacitor_inactive"
     },
-    "facing=north": {
-      "model": "astromine:block/elite_capacitor"
+    "active=false,facing=north": {
+      "model": "astromine:block/elite_capacitor_inactive"
     },
-    "facing=south": {
-      "model": "astromine:block/elite_capacitor",
-      "y": 180
+    "active=false,facing=south": {
+      "y": 180,
+      "model": "astromine:block/elite_capacitor_inactive"
     },
-    "facing=west": {
-      "model": "astromine:block/elite_capacitor",
-      "y": 270
+    "active=false,facing=west": {
+      "y": 270,
+      "model": "astromine:block/elite_capacitor_inactive"
+    },
+    "active=true,facing=east": {
+      "y": 90,
+      "model": "astromine:block/elite_capacitor_active"
+    },
+    "active=true,facing=north": {
+      "model": "astromine:block/elite_capacitor_active"
+    },
+    "active=true,facing=south": {
+      "y": 180,
+      "model": "astromine:block/elite_capacitor_active"
+    },
+    "active=true,facing=west": {
+      "y": 270,
+      "model": "astromine:block/elite_capacitor_active"
     }
   }
 }

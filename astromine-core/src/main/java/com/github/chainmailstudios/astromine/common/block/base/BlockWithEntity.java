@@ -43,6 +43,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerFactory;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -61,17 +62,27 @@ import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 
 import java.util.List;
 
+/**
+ * A {@link Block} with an attached {@link BlockEntity} provided
+ * through {@link BlockEntityProvider}, providing {@link #ACTIVE}
+ * {@link BlockState} property by default.
+ */
 public abstract class BlockWithEntity extends Block implements BlockEntityProvider {
 	public static final BooleanProperty ACTIVE = BooleanProperty.of("active");
 
+	/** Instantiates a {@link BlockWithEntity}. */
 	protected BlockWithEntity(AbstractBlock.Settings settings) {
 		super(settings);
 	}
 
+	/** Sets the {@link BlockState} at the {@link BlockPos} in
+	 * in the given {@link World} to have {@link #ACTIVE} as true. */
 	public static void markActive(World world, BlockPos pos) {
 		world.setBlockState(pos, world.getBlockState(pos).with(ACTIVE, true));
 	}
 
+	/** Sets the {@link BlockState} at the {@link BlockPos} in
+	 * in the given {@link World} to have {@link #ACTIVE} as false. */
 	public static void markInactive(World world, BlockPos pos) {
 		world.setBlockState(pos, world.getBlockState(pos).with(ACTIVE, false));
 	}
@@ -80,6 +91,7 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!world.isClient && (!(player.getStackInHand(hand).getItem() instanceof BucketItem) && !(player.getStackInHand(hand).getItem() instanceof EnergyVolumeItem) && !(player.getStackInHand(hand).getItem() instanceof FluidVolumeItem)) && hasScreenHandler()) {
 			player.openHandledScreen(state.createScreenHandlerFactory(world, pos));
+
 			return ActionResult.CONSUME;
 		} else if (player.getStackInHand(hand).getItem() instanceof BucketItem) {
 			return super.onUse(state, world, pos, player, hand, hit);
@@ -88,32 +100,48 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 		}
 	}
 
+	/** Asserts whether this {@link BlockWithEntity} has
+	 * a {@link ScreenHandler} or not. */
 	public abstract boolean hasScreenHandler();
 
+	/** Returns the {@link BlockEntity} this {@link Block}
+	 * will create. */
 	public abstract BlockEntity createBlockEntity();
 
+	/** Returns the {@link ScreenHandler} this {@link Block}
+	 * will open. */
 	public abstract ScreenHandler createScreenHandler(BlockState state, World world, BlockPos pos, int syncId, PlayerInventory playerInventory, PlayerEntity player);
 
+	/** Populates the {@link PacketByteBuf} which will be
+	 * passed onto {@link ExtendedScreenHandlerFactory#writeScreenOpeningData(ServerPlayerEntity, PacketByteBuf)}. */
 	public abstract void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer);
 
+	/** Returns the {@link BlockEntity} this {@link Block}
+	 * will create. */
 	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
 		return createBlockEntity();
 	}
 
+	/** Returns the {@link ScreenHandlerFactory} this {@link Block}
+	 * will use. */
 	@Override
 	public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
 		return new ExtendedScreenHandlerFactory() {
+			/** Writes data from {@link BlockWithEntity#populateScreenHandlerBuffer(BlockState, World, BlockPos, ServerPlayerEntity, PacketByteBuf)}
+			 * to the given {@link PacketByteBuf}. */
 			@Override
 			public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buffer) {
 				populateScreenHandlerBuffer(state, world, pos, player, buffer);
 			}
 
+			/** Returns the name of the created {@link ScreenHandler}. */
 			@Override
 			public Text getDisplayName() {
 				return new TranslatableText(getTranslationKey());
 			}
 
+			/** Returns the created {@link ScreenHandler}. */
 			@Override
 			public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
 				return createScreenHandler(state, world, pos, syncId, playerInventory, player);
@@ -121,34 +149,60 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 		};
 	}
 
+	/** Repasses the synced block event to the {@link BlockEntity} in the
+	 * given {@link World} at the given {@link BlockPos}. */
 	public boolean onSyncedBlockEvent(BlockState state, World world, BlockPos pos, int type, int data) {
 		super.onSyncedBlockEvent(state, world, pos, type, data);
+
 		BlockEntity blockEntity = world.getBlockEntity(pos);
+
 		return blockEntity != null && blockEntity.onSyncedBlockEvent(type, data);
 	}
 
+	/** Override behavior to add the {@link #ACTIVE} property. */
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		builder.add(ACTIVE);
 		super.appendProperties(builder);
 	}
 
+	/** Override behavior to set {@link #ACTIVE} to false by default. */
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
 		return super.getPlacementState(context).with(ACTIVE, false);
 	}
 
+	/** Return this {@link BlockWithEntity}'s {@link ComparatorMode}. */
+	protected ComparatorMode getComparatorMode() {
+		return ComparatorMode.ITEMS;
+	}
+
+	/** Override behavior to use {@link ComparatorMode}. */
+	@Override
+	public boolean hasComparatorOutput(BlockState state) {
+		return getComparatorMode().hasOutput();
+	}
+
+	/** Override behavior to use {@link ComparatorMode}. */
+	@Override
+	public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
+		return getComparatorMode().getOutput(world.getBlockEntity(pos));
+	}
+
+	/** Override behavior to read {@link BlockEntity} contents from {@link ItemStack} {@link CompoundTag}. */
 	@Override
 	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		super.onPlaced(world, pos, state, placer, stack);
 
 		BlockEntity blockEntity = world.getBlockEntity(pos);
+
 		if (blockEntity != null) {
 			blockEntity.fromTag(state, stack.getOrCreateTag());
 			blockEntity.setPos(pos);
 		}
 	}
 
+	/** Override behavior to write {@link BlockEntity} contents to {@link ItemStack} {@link CompoundTag}. */
 	@Override
 	public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
 		List<ItemStack> stacks = super.getDroppedStacks(state, builder);
@@ -170,19 +224,5 @@ public abstract class BlockWithEntity extends Block implements BlockEntityProvid
 
 	protected boolean saveTagToDroppedItem() {
 		return true;
-	}
-
-	protected ComparatorMode getComparatorMode() {
-		return ComparatorMode.ITEMS;
-	}
-
-	@Override
-	public boolean hasComparatorOutput(BlockState state) {
-		return getComparatorMode().hasOutput();
-	}
-
-	@Override
-	public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
-		return getComparatorMode().getOutput(world.getBlockEntity(pos));
 	}
 }

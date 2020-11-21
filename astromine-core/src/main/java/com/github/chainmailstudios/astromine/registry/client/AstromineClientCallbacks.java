@@ -35,7 +35,7 @@ import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.NumberUtilities;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
 public class AstromineClientCallbacks {
@@ -45,13 +45,8 @@ public class AstromineClientCallbacks {
 				FluidComponent fluidComponent = FluidComponent.get(stack);
 
 				if (fluidComponent != null) {
-					fluidComponent.forEach((entry) -> {
-						int slot = entry.getKey();
-
-						FluidVolume volume = entry.getValue();
-
-						tooltip.add(new LiteralText(slot + " - " + NumberUtilities.shorten(volume.getAmount().doubleValue(), "") + "/" + NumberUtilities.shorten(volume.getSize().doubleValue(), "") + " " + new TranslatableText(String.format("block.%s.%s", volume.getFluidId()
-							.getNamespace(), volume.getFluidId().getPath())).getString()).formatted(Formatting.GRAY));
+					fluidComponent.forEachIndexed((slot, volume) -> {
+						tooltip.add(new LiteralText(slot + " - " + NumberUtilities.shorten(volume.getAmount().doubleValue(), "") + "/" + NumberUtilities.shorten(volume.getSize().doubleValue(), "") + " " + new TranslatableText(String.format("block.%s.%s", volume.getFluidId().getNamespace(), volume.getFluidId().getPath())).getString()).formatted(Formatting.GRAY));
 					});
 				}
 			}
@@ -59,7 +54,7 @@ public class AstromineClientCallbacks {
 
 		ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
 			if (stack.getItem() instanceof EnergyVolumeItem) {
-				EnergyHandler handler = EnergyUtilities.ofNullable(stack);
+				EnergyHandler handler = Energy.of(stack);
 				tooltip.add(Math.min(tooltip.size(), 1), new LiteralText(NumberUtilities.shorten(handler.getEnergy(), "") + "/" + NumberUtilities.shorten(((EnergyVolumeItem) stack.getItem()).getMaxStoredPower(), "")).formatted(Formatting.GRAY));
 			}
 		});

@@ -1,16 +1,41 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["012", "345", "678"],
+  "pattern": [
+    "012",
+    "345",
+    "678"
+  ],
   "key": {
-    "0": {"tag": "c:steel_plates"},
-    "1": {"item": "astromine:advanced_circuit"},
-    "2": {"tag": "c:steel_plates"},
-    "3": {"item": "minecraft:air"},
-    "4": {"tag": "c:copper_gears"},
-    "5": {"item": "minecraft:air"},
-    "6": {"item": "minecraft:air"},
-    "7": {"tag": "c:iron_plates"},
-    "8": {"item": "minecraft:air"}
+    "0": {
+      "tag": "c:steel_plates"
+    },
+    "1": {
+      "item": "astromine:advanced_circuit"
+    },
+    "2": {
+      "tag": "c:steel_plates"
+    },
+    "3": {
+      "item": "minecraft:air"
+    },
+    "4": {
+      "tag": "c:copper_gears"
+    },
+    "5": {
+      "item": "minecraft:air"
+    },
+    "6": {
+      "item": "minecraft:air"
+    },
+    "7": {
+      "tag": "c:iron_plates"
+    },
+    "8": {
+      "item": "minecraft:air"
+    }
   },
-  "result": {"item": "astromine:holographic_connector", "count": 1}
+  "result": {
+    "item": "astromine:holographic_connector",
+    "count": 1
+  }
 }

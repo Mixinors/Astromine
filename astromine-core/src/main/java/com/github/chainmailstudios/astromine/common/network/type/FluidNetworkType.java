@@ -32,37 +32,41 @@ import alexiil.mc.lib.attributes.fluid.GroupedFluidInv;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKey;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
+import alexiil.mc.lib.attributes.misc.LibBlockAttributes;
 import alexiil.mc.lib.attributes.misc.NullVariant;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
+import com.github.chainmailstudios.astromine.common.utilities.VolumeUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.google.common.collect.Lists;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
+import team.reborn.energy.EnergyHandler;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
-public class FluidNetworkType extends NetworkType {
-	private FluidAmount inputSpeed = FluidAmount.of(1, 20);
-	private FluidAmount outputSpeed = FluidAmount.of(1, 20);
-
+/**
+ * A {@link NetworkType} for fluids.
+ */
+public final class FluidNetworkType implements NetworkType {
+	/** Override behavior to handle attached fluid inventories,
+	 * transferring energy between them.
+	 *
+	 * Performance is dubious at best.
+	 *
+	 * Transfer is done through {@link LibBlockAttributes}. */
 	@Override
 	public void tick(NetworkInstance instance) {
 		List<GroupedFluidInv> providers = Lists.newArrayList();
 		List<GroupedFluidInv> requesters = Lists.newArrayList();
 
 		for (NetworkMemberNode memberNode : instance.members) {
-			WorldPos memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPos());
+			WorldPos memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPosition());
 			NetworkMember networkMember = NetworkMemberRegistry.get(memberPos, memberNode.getDirection());
 
 			if (networkMember.acceptsType(this)) {
@@ -109,8 +113,7 @@ public class FluidNetworkType extends NetworkType {
 					GroupedFluidInv requester = requestersFiltered.get(i);
 
 					FluidAmount speed = Collections.min(Arrays.asList(
-							inputSpeed.div(requestersFiltered.size()),
-							outputSpeed.div(requestersFiltered.size()),
+							VolumeUtilities.getTransferFluidAmount().div(requestersFiltered.size()),
 							provider.getAmount_F(providerStoredFluid).div(i + 1),
 							requester.getCapacity_F(providerStoredFluid).sub(requester.getAmount_F(providerStoredFluid))
 					));
@@ -119,5 +122,12 @@ public class FluidNetworkType extends NetworkType {
 				}
 			}
 		}
+	}
+
+	/** Returns this type's string representation.
+	 * It will be "Fluid". */
+	@Override
+	public String toString() {
+		return "Fluid";
 	}
 }
