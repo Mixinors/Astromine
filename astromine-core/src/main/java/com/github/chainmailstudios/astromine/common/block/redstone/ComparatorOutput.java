@@ -24,17 +24,16 @@
 
 package com.github.chainmailstudios.astromine.common.block.redstone;
 
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.ComparatorBlockEntity;
+import net.minecraft.screen.ScreenHandler;
+
 import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.ComparatorBlockEntity;
-import net.minecraft.screen.ScreenHandler;
 import org.jetbrains.annotations.Nullable;
-import team.reborn.energy.Energy;
-import team.reborn.energy.EnergyHandler;
 
 import java.util.Collection;
 import java.util.function.Function;

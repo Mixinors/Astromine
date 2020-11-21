@@ -24,43 +24,31 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.block;
 
-import com.github.chainmailstudios.astromine.common.block.redstone.RedstoneType;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
-import com.github.chainmailstudios.astromine.common.widget.blade.RedstoneWidget;
-import com.github.vini2003.blade.common.collection.base.WidgetCollection;
-import com.github.vini2003.blade.common.widget.base.ButtonWidget;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.redstone.RedstoneType;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.NameableComponent;
 import com.github.chainmailstudios.astromine.common.utilities.WidgetUtilities;
+import com.github.chainmailstudios.astromine.common.widget.blade.RedstoneWidget;
 import com.github.vini2003.blade.common.collection.TabWidgetCollection;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.utilities.Slots;
-import com.github.vini2003.blade.common.widget.base.ButtonWidget;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
 import com.github.vini2003.blade.common.widget.base.TabWidget;
 import com.github.vini2003.blade.common.widget.base.TextWidget;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 
 /**
  * A {@link BlockStateScreenHandler}with an attached

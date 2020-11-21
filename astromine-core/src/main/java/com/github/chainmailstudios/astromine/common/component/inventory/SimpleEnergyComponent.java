@@ -28,10 +28,7 @@ import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 
 import com.google.common.base.Objects;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.function.BooleanSupplier;
-import java.util.stream.Collectors;
 
 /**
  * A simple implementation of {@link EnergyComponent}.

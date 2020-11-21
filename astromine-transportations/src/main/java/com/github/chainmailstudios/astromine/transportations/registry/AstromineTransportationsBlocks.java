@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.transportations.registry;
 
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 
@@ -34,6 +33,7 @@ import net.minecraft.block.Material;
 import net.minecraft.sound.BlockSoundGroup;
 
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.transportations.common.block.*;
 
 public class AstromineTransportationsBlocks extends AstromineBlocks {

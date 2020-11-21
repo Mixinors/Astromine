@@ -24,19 +24,28 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import net.minecraft.block.entity.BlockEntityType;
+
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidItemBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.*;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.*;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.FluidSizeProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
+import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.SolidifyingRecipe;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
-import net.minecraft.block.entity.BlockEntityType;
 
 import java.util.Optional;
 

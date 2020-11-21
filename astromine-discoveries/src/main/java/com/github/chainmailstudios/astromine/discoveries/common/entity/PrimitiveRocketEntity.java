@@ -24,22 +24,6 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.entity;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
-import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
-import com.github.chainmailstudios.astromine.common.utilities.VolumeUtilities;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.discoveries.common.entity.base.RocketEntity;
-import com.github.chainmailstudios.astromine.discoveries.common.screenhandler.PrimitiveRocketScreenHandler;
-import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesDimensions;
-import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesItems;
-import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFluids;
-import com.google.common.collect.Lists;
-import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 
@@ -57,9 +41,25 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
+import com.github.chainmailstudios.astromine.common.utilities.VolumeUtilities;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.github.chainmailstudios.astromine.discoveries.common.entity.base.RocketEntity;
+import com.github.chainmailstudios.astromine.discoveries.common.screenhandler.PrimitiveRocketScreenHandler;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesDimensions;
+import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesItems;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFluids;
+import io.netty.buffer.Unpooled;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 
+import com.google.common.collect.Lists;
 import javax.annotation.Nullable;
 import java.util.Collection;
 

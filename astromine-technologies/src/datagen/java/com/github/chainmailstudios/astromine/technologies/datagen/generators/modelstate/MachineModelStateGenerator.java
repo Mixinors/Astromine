@@ -1,17 +1,24 @@
 package com.github.chainmailstudios.astromine.technologies.datagen.generators.modelstate;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.GenericBlockModelStateGenerator;
 import net.minecraft.block.Block;
-import net.minecraft.data.client.model.*;
+import net.minecraft.data.client.model.BlockStateVariant;
+import net.minecraft.data.client.model.BlockStateVariantMap;
+import net.minecraft.data.client.model.Model;
+import net.minecraft.data.client.model.ModelIds;
+import net.minecraft.data.client.model.Texture;
+import net.minecraft.data.client.model.TextureKey;
+import net.minecraft.data.client.model.VariantSettings;
+import net.minecraft.data.client.model.VariantsBlockStateSupplier;
 import net.minecraft.item.Item;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
-
-import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
-import me.shedaniel.cloth.api.datagen.v1.ModelStateData;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
+
+import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
+import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.GenericBlockModelStateGenerator;
+import me.shedaniel.cloth.api.datagen.v1.ModelStateData;
 
 import java.util.Optional;
 

@@ -24,12 +24,12 @@
 
 package com.github.chainmailstudios.astromine.client.registry;
 
-import com.github.chainmailstudios.astromine.mixin.WorldRendererMixin;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.client.render.sky.skybox.Skybox;
 import com.github.chainmailstudios.astromine.common.registry.base.BiRegistry;
+import com.github.chainmailstudios.astromine.mixin.WorldRendererMixin;
 
 /**
  * A {@link BiRegistry} for registration of

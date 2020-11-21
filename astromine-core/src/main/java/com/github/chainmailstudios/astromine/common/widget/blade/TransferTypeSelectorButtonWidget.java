@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.widget.blade;
 
-import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
@@ -40,6 +39,7 @@ import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.client.BaseRenderer;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;

@@ -24,14 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 
-import com.github.chainmailstudios.astromine.common.recipe.ingredient.ItemIngredient;
 import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.ItemIngredient;
+import io.netty.buffer.ByteBuf;
 
 import com.google.gson.JsonElement;
 

@@ -24,6 +24,13 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei.solidifying;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import net.minecraft.fluid.Fluid;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Identifier;
+
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
@@ -31,11 +38,6 @@ import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTe
 import com.github.chainmailstudios.astromine.technologies.client.rei.generating.AbstractEnergyGeneratingDisplay;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.SolidifyingRecipe;
 import me.shedaniel.rei.api.EntryStack;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Identifier;
 
 import java.util.Arrays;
 import java.util.Collections;

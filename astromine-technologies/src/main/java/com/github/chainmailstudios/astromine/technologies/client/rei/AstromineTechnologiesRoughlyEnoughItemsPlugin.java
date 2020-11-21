@@ -24,10 +24,6 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei;
 
-import com.github.chainmailstudios.astromine.technologies.client.rei.fluidmixing.FluidMixingDisplay;
-import com.github.chainmailstudios.astromine.technologies.client.rei.solidifying.SolidifyingCategory;
-import com.github.chainmailstudios.astromine.technologies.client.rei.solidifying.SolidifyingDisplay;
-import com.github.chainmailstudios.astromine.technologies.common.recipe.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -46,18 +42,30 @@ import com.github.chainmailstudios.astromine.technologies.client.rei.electricsme
 import com.github.chainmailstudios.astromine.technologies.client.rei.electrolyzing.ElectrolyzingCategory;
 import com.github.chainmailstudios.astromine.technologies.client.rei.electrolyzing.ElectrolyzingDisplay;
 import com.github.chainmailstudios.astromine.technologies.client.rei.fluidmixing.FluidMixingCategory;
+import com.github.chainmailstudios.astromine.technologies.client.rei.fluidmixing.FluidMixingDisplay;
 import com.github.chainmailstudios.astromine.technologies.client.rei.liquidgenerating.LiquidGeneratingCategory;
 import com.github.chainmailstudios.astromine.technologies.client.rei.liquidgenerating.LiquidGeneratingDisplay;
-import com.github.chainmailstudios.astromine.technologies.client.rei.solidgenerating.SolidGeneratingCategory;
-import com.github.chainmailstudios.astromine.technologies.client.rei.solidgenerating.SolidGeneratingDisplay;
 import com.github.chainmailstudios.astromine.technologies.client.rei.pressing.PressingCategory;
 import com.github.chainmailstudios.astromine.technologies.client.rei.pressing.PressingDisplay;
 import com.github.chainmailstudios.astromine.technologies.client.rei.refining.RefiningCategory;
 import com.github.chainmailstudios.astromine.technologies.client.rei.refining.RefiningDisplay;
+import com.github.chainmailstudios.astromine.technologies.client.rei.solidgenerating.SolidGeneratingCategory;
+import com.github.chainmailstudios.astromine.technologies.client.rei.solidgenerating.SolidGeneratingDisplay;
+import com.github.chainmailstudios.astromine.technologies.client.rei.solidifying.SolidifyingCategory;
+import com.github.chainmailstudios.astromine.technologies.client.rei.solidifying.SolidifyingDisplay;
 import com.github.chainmailstudios.astromine.technologies.client.rei.triturating.TrituratingCategory;
 import com.github.chainmailstudios.astromine.technologies.client.rei.triturating.TrituratingDisplay;
 import com.github.chainmailstudios.astromine.technologies.client.rei.wire_milling.WireMillingCategory;
 import com.github.chainmailstudios.astromine.technologies.client.rei.wire_milling.WireMillingDisplay;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.AlloySmeltingRecipe;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.ElectrolyzingRecipe;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.FluidGeneratingRecipe;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.FluidMixingRecipe;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.PressingRecipe;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.RefiningRecipe;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.SolidifyingRecipe;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.TrituratingRecipe;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.WireMillingRecipe;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.EntryStack;

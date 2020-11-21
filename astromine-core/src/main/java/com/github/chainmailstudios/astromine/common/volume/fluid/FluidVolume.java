@@ -24,10 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.volume.fluid;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
@@ -39,11 +35,12 @@ import com.github.chainmailstudios.astromine.common.component.inventory.FluidCom
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import io.netty.buffer.ByteBuf;
 
 import com.google.common.base.Objects;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
+import com.google.gson.JsonPrimitive;
 import java.text.DecimalFormat;
 
 /**

@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block.entity.base;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 
 import net.minecraft.block.BlockState;
@@ -40,6 +39,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
 import com.github.chainmailstudios.astromine.common.inventory.DoubleStackInventory;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyable;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorConveyable;

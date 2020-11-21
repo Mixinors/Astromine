@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.rei.pressing;
 
-import me.shedaniel.rei.utils.CollectionUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 

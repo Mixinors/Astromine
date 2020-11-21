@@ -24,10 +24,10 @@
 
 package com.github.chainmailstudios.astromine.client.screen.base.entity;
 
-import com.github.chainmailstudios.astromine.common.screenhandler.base.entity.ComponentEntityFluidItemScreenHandler;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
+import com.github.chainmailstudios.astromine.common.screenhandler.base.entity.ComponentEntityFluidItemScreenHandler;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.entity.ComponentEntityFluidScreenHandler;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 

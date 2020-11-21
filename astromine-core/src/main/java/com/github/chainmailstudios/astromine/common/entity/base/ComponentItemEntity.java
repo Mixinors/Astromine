@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.entity.base;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentItemBlockEntity;
-import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 

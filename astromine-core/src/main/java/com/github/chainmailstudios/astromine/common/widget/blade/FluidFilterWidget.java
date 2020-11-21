@@ -24,14 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.widget.blade;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.client.BaseRenderer;
-import com.github.chainmailstudios.astromine.client.render.sprite.SpriteRenderer;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
-import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.vini2003.blade.client.utilities.Layers;
-import com.github.vini2003.blade.common.widget.base.ButtonWidget;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 

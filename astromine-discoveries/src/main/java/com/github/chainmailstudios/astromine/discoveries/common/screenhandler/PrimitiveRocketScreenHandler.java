@@ -24,15 +24,14 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.screenhandler;
 
-import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBarWidget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
 import com.github.chainmailstudios.astromine.common.screenhandler.base.entity.ComponentEntityFluidItemScreenHandler;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBarWidget;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.base.RocketEntity;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesItems;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesScreenHandlers;
@@ -40,7 +39,6 @@ import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.ButtonWidget;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
-import com.github.vini2003.blade.common.widget.base.TextWidget;
 
 public class PrimitiveRocketScreenHandler extends ComponentEntityFluidItemScreenHandler {
 	public PrimitiveRocketScreenHandler(int syncId, PlayerEntity player, int entityId) {

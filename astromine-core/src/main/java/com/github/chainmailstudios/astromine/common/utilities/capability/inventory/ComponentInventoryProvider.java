@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.utilities.capability.inventory;
 
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.InventoryProvider;
 import net.minecraft.inventory.SidedInventory;

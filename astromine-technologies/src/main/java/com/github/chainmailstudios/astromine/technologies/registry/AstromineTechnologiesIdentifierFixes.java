@@ -1,6 +1,5 @@
 package com.github.chainmailstudios.astromine.technologies.registry;
 
-import com.github.chainmailstudios.astromine.common.registry.IdentifierFixRegistry;
 import com.github.chainmailstudios.astromine.registry.AstromineIdentifierFixes;
 
 public class AstromineTechnologiesIdentifierFixes extends AstromineIdentifierFixes {

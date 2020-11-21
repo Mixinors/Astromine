@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
-import com.github.chainmailstudios.astromine.common.item.AnimatedArmorItem;
 import net.fabricmc.fabric.impl.content.registry.FuelRegistryImpl;
 
 import net.minecraft.entity.EquipmentSlot;
@@ -33,6 +32,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.*;
 import net.minecraft.util.Rarity;
 
+import com.github.chainmailstudios.astromine.common.item.AnimatedArmorItem;
 import com.github.chainmailstudios.astromine.common.item.DynamicToolItemItem;
 import com.github.chainmailstudios.astromine.common.item.WrenchItem;
 import com.github.chainmailstudios.astromine.foundations.common.item.FireExtinguisherItem;

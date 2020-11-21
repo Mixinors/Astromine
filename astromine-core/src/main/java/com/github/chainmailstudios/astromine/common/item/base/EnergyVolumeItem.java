@@ -24,14 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.item.base;
 
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
 
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import me.shedaniel.cloth.api.durability.bar.DurabilityBarItem;
-import net.minecraft.util.registry.Registry;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHolder;
 import team.reborn.energy.EnergyTier;

@@ -24,13 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.entity.base;
 
-import dev.onyxstudios.cca.api.v3.component.Component;
-import dev.onyxstudios.cca.mixin.entity.common.MixinEntity;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.World;
+
+import dev.onyxstudios.cca.api.v3.component.Component;
 
 /**
  * An {@link Entity} which should contain {@link Component}s.

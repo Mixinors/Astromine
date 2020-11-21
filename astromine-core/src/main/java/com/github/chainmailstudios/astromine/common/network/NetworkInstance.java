@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.network;
 
-import com.google.common.base.Objects;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -35,8 +34,8 @@ import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegist
 import com.github.chainmailstudios.astromine.common.registry.NetworkTypeRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Sets;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.Collectors;
 

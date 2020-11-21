@@ -24,8 +24,9 @@
 
 package com.github.chainmailstudios.astromine.access;
 
-import com.github.chainmailstudios.astromine.mixin.WorldChunkMixin;
 import net.minecraft.world.chunk.WorldChunk;
+
+import com.github.chainmailstudios.astromine.mixin.WorldChunkMixin;
 
 /**
  * A mixin helper class, used by {@link WorldChunkMixin}.

@@ -33,7 +33,6 @@ import net.minecraft.util.Formatting;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.NumberUtilities;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;

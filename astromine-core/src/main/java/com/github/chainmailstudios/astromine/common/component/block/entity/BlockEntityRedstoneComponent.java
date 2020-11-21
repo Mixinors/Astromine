@@ -31,8 +31,6 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-
 /**
  * A {@link Component} representing a {@link BlockEntity}'s
  * redstone information.

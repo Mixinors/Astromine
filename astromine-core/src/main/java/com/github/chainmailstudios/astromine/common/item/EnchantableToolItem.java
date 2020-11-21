@@ -24,8 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.item;
 
-import com.github.chainmailstudios.astromine.mixin.EnchantmentTargetMixin;
 import net.minecraft.item.ToolItem;
+
+import com.github.chainmailstudios.astromine.mixin.EnchantmentTargetMixin;
 
 /**
  * A {@link ToolItem}

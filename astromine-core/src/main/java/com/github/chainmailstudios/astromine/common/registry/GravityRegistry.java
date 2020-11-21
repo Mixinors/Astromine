@@ -24,14 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.registry;
 
-import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
-import com.github.chainmailstudios.astromine.mixin.*;
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.registry.base.BiRegistry;
+import com.github.chainmailstudios.astromine.mixin.*;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 import java.util.Optional;
 

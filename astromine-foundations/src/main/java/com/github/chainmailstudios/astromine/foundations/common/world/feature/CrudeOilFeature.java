@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.foundations.common.world.feature;
 
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.util.Lazy;
@@ -40,6 +39,7 @@ import com.mojang.serialization.Codec;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFluids;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.terraformersmc.shapes.api.Position;
 import com.terraformersmc.shapes.impl.Shapes;
 import com.terraformersmc.shapes.impl.layer.transform.NoiseTranslateLayer;

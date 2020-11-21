@@ -24,6 +24,10 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block.entity;
 
+import net.minecraft.fluid.Fluids;
+import net.minecraft.util.Tickable;
+import net.minecraft.util.math.Direction;
+
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
@@ -31,9 +35,6 @@ import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFl
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.util.Tickable;
-import net.minecraft.util.math.Direction;
 
 public class DrainBlockEntity extends ComponentFluidBlockEntity implements Tickable {
 	public DrainBlockEntity() {

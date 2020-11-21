@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.block.redstone;
 
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;

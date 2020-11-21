@@ -1,7 +1,8 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.network.PacketByteBuf;
+
+import io.netty.buffer.ByteBuf;
 
 public class EnumUtilities {
     /** Serializes the given {@link Enum} to a {@link ByteBuf}. */

@@ -31,7 +31,6 @@ import net.minecraft.text.TranslatableText;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import com.github.chainmailstudios.astromine.client.patchouli.BasicEnergyConsumingPage;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.AlloySmeltingRecipe;
 import vazkii.patchouli.client.book.gui.GuiBook;
 import vazkii.patchouli.client.book.page.abstr.PageDoubleRecipeRegistry;

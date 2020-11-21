@@ -24,31 +24,30 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
-import com.github.chainmailstudios.astromine.common.utilities.*;
-import it.unimi.dsi.fastutil.ints.Int2BooleanArrayMap;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.ingredient.ItemIngredient;
+import com.github.chainmailstudios.astromine.common.utilities.DoubleUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.IntegerUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
+import it.unimi.dsi.fastutil.ints.Int2BooleanArrayMap;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-
 import java.util.Optional;
 
 public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventory> {

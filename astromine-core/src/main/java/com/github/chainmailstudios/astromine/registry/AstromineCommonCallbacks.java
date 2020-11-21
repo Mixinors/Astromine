@@ -24,10 +24,6 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
-import com.github.chainmailstudios.astromine.common.callback.TransferEntryCallback;
-import com.google.common.collect.Lists;
-import me.shedaniel.cloth.api.common.events.v1.BlockPlaceCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 import net.minecraft.block.BlockState;

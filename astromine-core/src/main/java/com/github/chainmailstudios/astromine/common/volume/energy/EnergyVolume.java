@@ -24,21 +24,19 @@
 
 package com.github.chainmailstudios.astromine.common.volume.energy;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import io.netty.buffer.ByteBuf;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 /**
  * A {@link Volume} of energy, whose amount and size

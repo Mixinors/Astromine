@@ -24,11 +24,18 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.Fluids;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidItemBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidItemBlockEntity;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;

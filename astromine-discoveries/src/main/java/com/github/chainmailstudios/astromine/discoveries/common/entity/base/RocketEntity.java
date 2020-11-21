@@ -24,9 +24,6 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.entity.base;
 
-import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
-import com.github.chainmailstudios.astromine.common.utilities.VolumeUtilities;
-import com.github.chainmailstudios.astromine.registry.AstromineGravities;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -38,9 +35,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Arm;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -49,7 +44,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidItemEntity;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesCriteria;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesParticles;
@@ -57,9 +52,6 @@ import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 import java.util.Collection;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 import static java.lang.Math.min;
 

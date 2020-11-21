@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.widget.blade;
 
-import com.github.chainmailstudios.astromine.common.utilities.TextUtilities;
-import com.github.chainmailstudios.astromine.common.volume.base.Volume;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -36,6 +34,7 @@ import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.BaseRenderer;
+import com.github.chainmailstudios.astromine.common.utilities.TextUtilities;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.vini2003.blade.client.utilities.Instances;
 import com.github.vini2003.blade.client.utilities.Layers;

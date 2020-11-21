@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.minecraft.structure.StructurePieceType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -42,6 +41,7 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.foundations.common.world.feature.CrudeOilFeature;
 import com.github.chainmailstudios.astromine.foundations.common.world.feature.MeteorFeature;
 import com.github.chainmailstudios.astromine.foundations.common.world.feature.MeteorGenerator;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineFeatures;
 import me.shedaniel.cloth.api.dynamic.registry.v1.BiomesRegistry;
 import me.shedaniel.cloth.api.dynamic.registry.v1.DynamicRegistryCallback;

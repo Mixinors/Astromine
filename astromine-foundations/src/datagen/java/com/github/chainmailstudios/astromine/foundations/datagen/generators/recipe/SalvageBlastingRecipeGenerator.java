@@ -1,7 +1,6 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe;
 
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.MultiBlastingSetRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.MultiSmeltingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 
 import java.util.Arrays;

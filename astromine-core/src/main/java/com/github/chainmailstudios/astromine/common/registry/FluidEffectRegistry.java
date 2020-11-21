@@ -30,7 +30,6 @@ import net.minecraft.fluid.Fluid;
 import com.github.chainmailstudios.astromine.common.registry.base.UniRegistry;
 
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 /**
  * An {@link UniRegistry} for registration of

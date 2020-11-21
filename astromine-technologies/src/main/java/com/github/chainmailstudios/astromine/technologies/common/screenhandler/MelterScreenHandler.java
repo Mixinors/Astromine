@@ -24,6 +24,9 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.screenhandler;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.BlockPos;
+
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyFluidItemScreenHandler;
 import com.github.chainmailstudios.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.chainmailstudios.astromine.common.widget.vanilla.ExtractionSlot;
@@ -32,8 +35,6 @@ import com.github.chainmailstudios.astromine.technologies.registry.AstromineTech
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 import com.github.vini2003.blade.common.widget.base.SlotWidget;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
 
 public class MelterScreenHandler extends ComponentBlockEntityEnergyFluidItemScreenHandler {
 	private MelterBlockEntity melter;

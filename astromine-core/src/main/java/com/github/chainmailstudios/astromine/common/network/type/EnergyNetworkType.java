@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.network.type;
 
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import com.github.chainmailstudios.astromine.common.network.NetworkNode;
 import net.minecraft.block.entity.BlockEntity;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
@@ -33,6 +31,7 @@ import com.github.chainmailstudios.astromine.common.component.block.entity.Block
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
+import com.github.chainmailstudios.astromine.common.network.NetworkNode;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;

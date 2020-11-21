@@ -24,12 +24,12 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.screen;
 
-import com.github.chainmailstudios.astromine.client.screen.base.block.ComponentBlockEntityEnergyItemHandledScreen;
-import com.github.chainmailstudios.astromine.technologies.common.screenhandler.PressScreenHandler;
-import com.github.chainmailstudios.astromine.technologies.common.screenhandler.SolidifierScreenHandler;
-import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
+
+import com.github.chainmailstudios.astromine.client.screen.base.block.ComponentBlockEntityEnergyItemHandledScreen;
+import com.github.chainmailstudios.astromine.technologies.common.screenhandler.SolidifierScreenHandler;
+import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 
 public class SolidifierHandledScreen extends ComponentBlockEntityEnergyItemHandledScreen<SolidifierScreenHandler> {
 	public SolidifierHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {

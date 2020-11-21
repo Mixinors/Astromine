@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.volume.energy;
 
-import net.minecraft.util.Identifier;
-
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
 
 /**

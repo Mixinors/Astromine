@@ -36,9 +36,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class AstromineCommon implements ModInitializer {
 	public static final String LOG_ID = "Astromine";
 	public static final String MOD_ID = "astromine";

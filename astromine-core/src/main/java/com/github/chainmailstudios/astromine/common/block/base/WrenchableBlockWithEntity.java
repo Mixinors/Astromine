@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.block.base;
 
+import net.minecraft.block.AbstractBlock;
+
 import com.github.chainmailstudios.astromine.common.utilities.capability.block.FacingBlockWrenchable;
 
 /**
@@ -31,7 +33,7 @@ import com.github.chainmailstudios.astromine.common.utilities.capability.block.F
  */
 public abstract class WrenchableBlockWithEntity extends BlockWithEntity implements FacingBlockWrenchable {
 	/** Instantiates a {@link WrenchableBlockWithEntity}. */
-	public WrenchableBlockWithEntity(Settings settings) {
+	public WrenchableBlockWithEntity(AbstractBlock.Settings settings) {
 		super(settings);
 	}
 }

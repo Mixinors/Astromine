@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.item;
 
-import com.github.chainmailstudios.astromine.common.item.EnchantableToolItem;
 import net.fabricmc.fabric.api.tool.attribute.v1.DynamicAttributeTool;
 
 import net.minecraft.block.BlockState;
@@ -41,6 +40,7 @@ import net.minecraft.tag.Tag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import com.github.chainmailstudios.astromine.common.item.EnchantableToolItem;
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import draylar.magna.api.MagnaTool;

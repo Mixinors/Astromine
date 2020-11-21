@@ -24,12 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.widget.blade;
 
-import com.github.chainmailstudios.astromine.common.utilities.TextUtilities;
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.vini2003.blade.common.utilities.Networks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.loader.api.FabricLoader;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
@@ -38,17 +34,15 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.screen.PlayerScreenHandler;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.BaseRenderer;
 import com.github.chainmailstudios.astromine.client.render.sprite.SpriteRenderer;
 import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.NumberUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.TextUtilities;
+import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.vini2003.blade.client.utilities.Layers;

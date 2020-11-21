@@ -24,10 +24,17 @@
 
 package com.github.chainmailstudios.astromine.transportations.registry;
 
-import com.github.chainmailstudios.astromine.transportations.common.block.entity.*;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
+import com.github.chainmailstudios.astromine.transportations.common.block.entity.AlternatorBlockEntity;
+import com.github.chainmailstudios.astromine.transportations.common.block.entity.ConveyorBlockEntity;
+import com.github.chainmailstudios.astromine.transportations.common.block.entity.DownVerticalConveyorBlockEntity;
+import com.github.chainmailstudios.astromine.transportations.common.block.entity.DrainBlockEntity;
+import com.github.chainmailstudios.astromine.transportations.common.block.entity.IncineratorBlockEntity;
+import com.github.chainmailstudios.astromine.transportations.common.block.entity.InserterBlockEntity;
+import com.github.chainmailstudios.astromine.transportations.common.block.entity.SplitterBlockEntity;
+import com.github.chainmailstudios.astromine.transportations.common.block.entity.VerticalConveyorBlockEntity;
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.base.AbstractConveyableBlockEntity;
 
 public class AstromineTransportationsBlockEntityTypes extends AstromineBlockEntityTypes {

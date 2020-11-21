@@ -24,15 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.block.base;
 
-import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
-import com.github.chainmailstudios.astromine.common.network.NetworkMember;
-import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
-import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
-import com.github.chainmailstudios.astromine.common.utilities.NetworkUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.capability.block.CableWrenchable;
-import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
-import com.google.common.collect.ImmutableMap;
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.ShapeContext;
+import net.minecraft.block.Waterloggable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -47,6 +44,15 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
+import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
+import com.github.chainmailstudios.astromine.common.network.NetworkMember;
+import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
+import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
+import com.github.chainmailstudios.astromine.common.utilities.NetworkUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.capability.block.CableWrenchable;
+import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
+
+import com.google.common.collect.ImmutableMap;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;

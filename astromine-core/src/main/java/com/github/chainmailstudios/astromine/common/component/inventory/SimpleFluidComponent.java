@@ -29,7 +29,6 @@ import net.minecraft.util.math.Direction;
 import com.github.chainmailstudios.astromine.common.utilities.data.predicate.TriPredicate;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

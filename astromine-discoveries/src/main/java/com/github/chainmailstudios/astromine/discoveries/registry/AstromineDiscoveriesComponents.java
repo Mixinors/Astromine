@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry;
 
+import net.minecraft.fluid.Fluids;
+
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
@@ -31,7 +33,6 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import dev.onyxstudios.cca.api.v3.item.ItemComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.item.ItemComponentInitializer;
-import net.minecraft.fluid.Fluids;
 
 public class AstromineDiscoveriesComponents implements ItemComponentInitializer {
 	@Override

@@ -24,15 +24,15 @@
 
 package com.github.chainmailstudios.astromine.common.volume.fraction;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.PacketByteBuf;
+
+import io.netty.buffer.ByteBuf;
+
+import com.google.common.base.Objects;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.nbt.CompoundTag;
-
-import com.google.common.base.Objects;
-import net.minecraft.network.PacketByteBuf;
-
 import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

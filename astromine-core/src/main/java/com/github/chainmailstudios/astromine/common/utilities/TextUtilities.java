@@ -1,8 +1,7 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import com.github.chainmailstudios.astromine.common.volume.base.Volume;
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import net.fabricmc.loader.api.FabricLoader;
+
 import net.minecraft.fluid.Fluid;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -10,6 +9,8 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+
+import com.github.chainmailstudios.astromine.common.volume.base.Volume;
 
 public class TextUtilities {
     /** Returns the "Astromine" text, formatted with {@link Formatting#BLUE}

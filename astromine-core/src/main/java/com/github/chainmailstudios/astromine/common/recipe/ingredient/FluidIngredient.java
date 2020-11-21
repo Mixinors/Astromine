@@ -24,19 +24,17 @@
 
 package com.github.chainmailstudios.astromine.common.recipe.ingredient;
 
-import com.github.chainmailstudios.astromine.common.utilities.StringUtilities;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.tag.ServerTagManagerHolder;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
 import net.minecraft.util.registry.Registry;
 
+import com.github.chainmailstudios.astromine.common.utilities.StringUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import io.netty.buffer.ByteBuf;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

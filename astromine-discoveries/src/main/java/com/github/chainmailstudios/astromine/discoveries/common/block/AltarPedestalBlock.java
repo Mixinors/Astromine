@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.block;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -52,7 +53,7 @@ import com.github.chainmailstudios.astromine.discoveries.common.block.entity.Alt
 public class AltarPedestalBlock extends WrenchableBlockWithEntity {
 	protected static final VoxelShape SHAPE = Block.createCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D);
 
-	public AltarPedestalBlock(Settings settings) {
+	public AltarPedestalBlock(AbstractBlock.Settings settings) {
 		super(settings);
 	}
 

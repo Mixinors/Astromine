@@ -26,12 +26,12 @@ package com.github.chainmailstudios.astromine.technologies.registry;
 
 import net.minecraft.item.Item;
 
-import com.github.chainmailstudios.astromine.technologies.common.item.DrillItem;
 import com.github.chainmailstudios.astromine.common.item.base.EnergyVolumeItem;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import com.github.chainmailstudios.astromine.technologies.common.item.DrillItem;
 import com.github.chainmailstudios.astromine.technologies.common.item.GravityGauntletItem;
 import com.github.chainmailstudios.astromine.technologies.common.item.HolographicConnectorItem;
 

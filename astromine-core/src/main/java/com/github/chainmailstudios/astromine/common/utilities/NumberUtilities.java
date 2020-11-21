@@ -24,12 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.network.PacketByteBuf;
 
 public class NumberUtilities {
 	/**

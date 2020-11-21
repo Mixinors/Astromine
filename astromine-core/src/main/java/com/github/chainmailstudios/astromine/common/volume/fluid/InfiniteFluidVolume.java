@@ -24,9 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.volume.fluid;
 
-import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;

@@ -24,12 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.volume.base;
 
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.google.gson.JsonElement;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import io.netty.buffer.ByteBuf;
+
+import com.google.gson.JsonElement;
 import java.util.Objects;
 
 /**

@@ -25,7 +25,6 @@
 package com.github.chainmailstudios.astromine.common.block.redstone;
 
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.screen.ScreenHandler;
 
 import org.jetbrains.annotations.Nullable;
 

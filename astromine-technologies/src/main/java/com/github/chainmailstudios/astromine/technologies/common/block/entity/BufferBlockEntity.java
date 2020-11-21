@@ -30,7 +30,6 @@ import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentI
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import net.minecraft.item.ItemStack;
 
 public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 	public BufferBlockEntity(BlockEntityType<?> type) {

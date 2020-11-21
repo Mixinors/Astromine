@@ -24,12 +24,12 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
-import com.google.common.collect.Lists;
 import net.minecraft.fluid.Fluid;
 
 import com.github.chainmailstudios.astromine.common.fluid.ExtendedFluid;
 import com.github.chainmailstudios.astromine.registry.AstromineFluids;
 
+import com.google.common.collect.Lists;
 import java.util.List;
 
 public class AstromineFoundationsFluids extends AstromineFluids {

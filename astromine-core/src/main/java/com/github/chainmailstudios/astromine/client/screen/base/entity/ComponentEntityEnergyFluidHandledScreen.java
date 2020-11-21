@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.client.screen.base.entity;
 
-import com.github.chainmailstudios.astromine.common.screenhandler.base.entity.ComponentEntityEnergyScreenHandler;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 

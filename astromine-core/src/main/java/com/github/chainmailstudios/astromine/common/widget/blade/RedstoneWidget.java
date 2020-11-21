@@ -1,12 +1,5 @@
 package com.github.chainmailstudios.astromine.common.widget.blade;
 
-import com.github.chainmailstudios.astromine.client.BaseRenderer;
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.redstone.RedstoneType;
-import com.github.vini2003.blade.Blade;
-import com.github.vini2003.blade.client.data.PartitionedTexture;
-import com.github.vini2003.blade.common.widget.base.AbstractWidget;
-import com.github.vini2003.blade.common.widget.base.ButtonWidget;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
@@ -14,6 +7,13 @@ import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
+
+import com.github.chainmailstudios.astromine.client.BaseRenderer;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
+import com.github.vini2003.blade.Blade;
+import com.github.vini2003.blade.client.data.PartitionedTexture;
+import com.github.vini2003.blade.common.widget.base.AbstractWidget;
+import com.github.vini2003.blade.common.widget.base.ButtonWidget;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;

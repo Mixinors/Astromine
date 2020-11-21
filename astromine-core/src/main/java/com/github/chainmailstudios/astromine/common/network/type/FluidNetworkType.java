@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.network.type;
 
+import net.minecraft.block.entity.BlockEntity;
+
 import alexiil.mc.lib.attributes.SearchOptions;
 import alexiil.mc.lib.attributes.Simulation;
 import alexiil.mc.lib.attributes.fluid.FluidAttributes;
@@ -43,12 +45,13 @@ import com.github.chainmailstudios.astromine.common.network.type.base.NetworkTyp
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.VolumeUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
-import com.google.common.collect.Lists;
-import net.minecraft.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
-import team.reborn.energy.EnergyHandler;
 
-import java.util.*;
+import com.google.common.collect.Lists;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 /**
  * A {@link NetworkType} for fluids.

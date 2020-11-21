@@ -24,7 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.block;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;

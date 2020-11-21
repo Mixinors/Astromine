@@ -40,9 +40,6 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.Sets;
-import net.minecraft.world.chunk.Chunk;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.Map;
 import java.util.Set;
 
