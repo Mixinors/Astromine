@@ -103,7 +103,7 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 			EnergyVolume energyVolume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = FluidGeneratingRecipe.matching(world, fluidComponent, energyComponent);
+				optionalRecipe = FluidGeneratingRecipe.matching(world, fluidComponent);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {

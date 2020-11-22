@@ -102,7 +102,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 			EnergyVolume volume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = RefiningRecipe.matching(world, fluidComponent, energyComponent);
+				optionalRecipe = RefiningRecipe.matching(world, fluidComponent);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {

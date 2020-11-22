@@ -123,7 +123,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 			EnergyVolume energyVolume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = SolidifyingRecipe.matching(world, itemComponent, fluidComponent, energyComponent);
+				optionalRecipe = SolidifyingRecipe.matching(world, itemComponent, fluidComponent);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {

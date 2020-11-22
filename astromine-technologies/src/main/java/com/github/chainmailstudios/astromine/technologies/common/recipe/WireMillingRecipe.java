@@ -72,20 +72,16 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 		});
 	}
 
-	public static Optional<WireMillingRecipe> matching(World world, ItemComponent itemComponent, EnergyComponent energyComponent) {
+	public static Optional<WireMillingRecipe> matching(World world, ItemComponent itemComponent) {
 		return (Optional<WireMillingRecipe>) (Object) world.getRecipeManager().getAllOfType(WireMillingRecipe.Type.INSTANCE).values().stream().filter(it -> {
 			WireMillingRecipe recipe = ((WireMillingRecipe) it);
 
-			return recipe.matches(itemComponent, energyComponent);
+			return recipe.matches(itemComponent);
 		}).findFirst();
 	}
 
-	public boolean matches(ItemComponent itemComponent, EnergyComponent energyComponent) {
+	public boolean matches(ItemComponent itemComponent) {
 		if (itemComponent.getSize() < 2) {
-			return false;
-		}
-
-		if (energyComponent.getAmount() < energyInput) {
 			return false;
 		}
 

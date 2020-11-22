@@ -109,7 +109,7 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 			EnergyVolume volume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = PressingRecipe.matching(world, itemComponent, energyComponent);
+				optionalRecipe = PressingRecipe.matching(world, itemComponent);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {

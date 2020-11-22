@@ -113,7 +113,7 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 			EnergyVolume energyVolume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = AlloySmeltingRecipe.matching(world, itemComponent, energyComponent);
+				optionalRecipe = AlloySmeltingRecipe.matching(world, itemComponent);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {

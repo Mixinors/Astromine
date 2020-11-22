@@ -86,20 +86,16 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 		});
 	}
 	
-	public static Optional<RefiningRecipe> matching(World world, FluidComponent fluidComponent, EnergyComponent energyComponent) {
+	public static Optional<RefiningRecipe> matching(World world, FluidComponent fluidComponent) {
 		return (Optional<RefiningRecipe>) (Object) world.getRecipeManager().getAllOfType(RefiningRecipe.Type.INSTANCE).values().stream().filter(it -> {
 			RefiningRecipe recipe = ((RefiningRecipe) it);
 
-			return recipe.matches(fluidComponent, energyComponent);
+			return recipe.matches(fluidComponent);
 		}).findFirst();
 	}
 
-	public boolean matches(FluidComponent fluidComponent, EnergyComponent energyComponent) {
+	public boolean matches(FluidComponent fluidComponent) {
 		if (fluidComponent.getSize() < 8) {
-			return false;
-		}
-
-		if (energyComponent.getAmount() < energyInput) {
 			return false;
 		}
 

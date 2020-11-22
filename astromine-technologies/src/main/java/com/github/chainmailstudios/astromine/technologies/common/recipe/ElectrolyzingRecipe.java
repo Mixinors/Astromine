@@ -75,20 +75,16 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 		});
 	}
 
-	public static Optional<ElectrolyzingRecipe> matching(World world, FluidComponent fluidComponent, EnergyComponent energyComponent) {
+	public static Optional<ElectrolyzingRecipe> matching(World world, FluidComponent fluidComponent) {
 		return (Optional<ElectrolyzingRecipe>) (Object) world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream().filter(it -> {
 			ElectrolyzingRecipe recipe = ((ElectrolyzingRecipe) it);
 
-			return recipe.matches(fluidComponent, energyComponent);
+			return recipe.matches(fluidComponent);
 		}).findFirst();
 	}
 
-	public boolean matches(FluidComponent fluidComponent, EnergyComponent energyComponent) {
+	public boolean matches(FluidComponent fluidComponent) {
 		if (fluidComponent.getSize() < 3) {
-			return false;
-		}
-
-		if (energyComponent.getAmount() < energyInput) {
 			return false;
 		}
 

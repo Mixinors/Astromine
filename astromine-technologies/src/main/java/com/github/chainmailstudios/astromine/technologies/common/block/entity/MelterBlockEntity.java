@@ -124,7 +124,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 			EnergyVolume energyVolume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = MeltingRecipe.matching(world, itemComponent, fluidComponent, energyComponent);
+				optionalRecipe = MeltingRecipe.matching(world, itemComponent, fluidComponent);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {

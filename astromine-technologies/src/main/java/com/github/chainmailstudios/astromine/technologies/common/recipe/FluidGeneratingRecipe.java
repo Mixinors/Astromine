@@ -72,20 +72,16 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 		});
 	}
 
-	public static Optional<FluidGeneratingRecipe> matching(World world, FluidComponent fluidComponent, EnergyComponent energyComponent) {
+	public static Optional<FluidGeneratingRecipe> matching(World world, FluidComponent fluidComponent) {
 		return (Optional<FluidGeneratingRecipe>) (Object) world.getRecipeManager().getAllOfType(FluidGeneratingRecipe.Type.INSTANCE).values().stream().filter(it -> {
 			FluidGeneratingRecipe recipe = ((FluidGeneratingRecipe) it);
 
-			return recipe.matches(fluidComponent, energyComponent);
+			return recipe.matches(fluidComponent);
 		}).findFirst();
 	}
 
-	public boolean matches(FluidComponent fluidComponent, EnergyComponent energyComponent) {
+	public boolean matches(FluidComponent fluidComponent) {
 		if (fluidComponent.getSize() < 1) {
-			return false;
-		}
-
-		if (energyComponent.getSize() - energyComponent.getAmount() < energyOutput) {
 			return false;
 		}
 

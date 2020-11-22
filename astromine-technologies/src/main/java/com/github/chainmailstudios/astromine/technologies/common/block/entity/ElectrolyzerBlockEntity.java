@@ -102,7 +102,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 			EnergyVolume volume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = ElectrolyzingRecipe.matching(world, fluidComponent, energyComponent);
+				optionalRecipe = ElectrolyzingRecipe.matching(world, fluidComponent);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {

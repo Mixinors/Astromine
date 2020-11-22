@@ -78,20 +78,16 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 		});
 	}
 
-	public static Optional<AlloySmeltingRecipe> matching(World world, ItemComponent itemComponent, EnergyComponent energyComponent) {
+	public static Optional<AlloySmeltingRecipe> matching(World world, ItemComponent itemComponent) {
 		return (Optional<AlloySmeltingRecipe>) (Object) world.getRecipeManager().getAllOfType(AlloySmeltingRecipe.Type.INSTANCE).values().stream().filter(it -> {
 			AlloySmeltingRecipe recipe = ((AlloySmeltingRecipe) it);
 
-			return recipe.matches(itemComponent, energyComponent);
+			return recipe.matches(itemComponent);
 		}).findFirst();
 	}
 
-	public boolean matches(ItemComponent itemComponent, EnergyComponent energyComponent) {
+	public boolean matches(ItemComponent itemComponent) {
 		if (itemComponent.getSize() < 3) {
-			return false;
-		}
-
-		if (energyComponent.getAmount() < energyInput) {
 			return false;
 		}
 

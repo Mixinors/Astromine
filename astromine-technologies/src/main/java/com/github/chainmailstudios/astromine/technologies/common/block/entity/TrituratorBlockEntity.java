@@ -109,7 +109,7 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 			EnergyVolume energyVolume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = TrituratingRecipe.matching(world, itemComponent, energyComponent);
+				optionalRecipe = TrituratingRecipe.matching(world, itemComponent);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {

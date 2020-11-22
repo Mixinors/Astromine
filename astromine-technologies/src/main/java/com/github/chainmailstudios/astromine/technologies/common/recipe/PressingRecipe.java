@@ -72,20 +72,16 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 		});
 	}
 
-	public static Optional<PressingRecipe> matching(World world, ItemComponent itemComponent, EnergyComponent energyComponent) {
+	public static Optional<PressingRecipe> matching(World world, ItemComponent itemComponent) {
 		return (Optional<PressingRecipe>) (Object) world.getRecipeManager().getAllOfType(PressingRecipe.Type.INSTANCE).values().stream().filter(it -> {
 			PressingRecipe recipe = ((PressingRecipe) it);
 
-			return recipe.matches(itemComponent, energyComponent);
+			return recipe.matches(itemComponent);
 		}).findFirst();
 	}
 
-	public boolean matches(ItemComponent itemComponent, EnergyComponent energyComponent) {
+	public boolean matches(ItemComponent itemComponent) {
 		if (itemComponent.getSize() < 2) {
-			return false;
-		}
-
-		if (energyComponent.getAmount() < energyInput) {
 			return false;
 		}
 

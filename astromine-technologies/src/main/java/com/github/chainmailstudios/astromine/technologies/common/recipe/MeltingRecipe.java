@@ -73,24 +73,20 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 		});
 	}
 
-	public static Optional<MeltingRecipe> matching(World world, ItemComponent itemComponent, FluidComponent fluidComponent, EnergyComponent energyComponent) {
+	public static Optional<MeltingRecipe> matching(World world, ItemComponent itemComponent, FluidComponent fluidComponent) {
 		return (Optional<MeltingRecipe>) (Object) world.getRecipeManager().getAllOfType(MeltingRecipe.Type.INSTANCE).values().stream().filter(it -> {
 			MeltingRecipe recipe = ((MeltingRecipe) it);
 
-			return recipe.matches(itemComponent, fluidComponent, energyComponent);
+			return recipe.matches(itemComponent, fluidComponent);
 		}).findFirst();
 	}
 
-	public boolean matches(ItemComponent itemComponent, FluidComponent fluidComponent, EnergyComponent energyComponent) {
+	public boolean matches(ItemComponent itemComponent, FluidComponent fluidComponent) {
 		if (fluidComponent.getSize() < 1) {
 			return false;
 		}
 
 		if (itemComponent.getSize() < 1) {
-			return false;
-		}
-
-		if (energyComponent.getAmount() < energyInput) {
 			return false;
 		}
 

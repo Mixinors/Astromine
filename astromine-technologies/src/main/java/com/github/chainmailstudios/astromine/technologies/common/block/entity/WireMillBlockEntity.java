@@ -109,7 +109,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 			EnergyVolume volume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = WireMillingRecipe.matching(world, itemComponent, energyComponent);
+				optionalRecipe = WireMillingRecipe.matching(world, itemComponent);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {

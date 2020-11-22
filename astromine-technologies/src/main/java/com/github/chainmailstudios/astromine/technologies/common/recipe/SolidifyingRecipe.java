@@ -75,24 +75,20 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 		});
 	}
 
-	public static Optional<SolidifyingRecipe> matching(World world, ItemComponent itemComponent, FluidComponent fluidComponent, EnergyComponent energyComponent) {
+	public static Optional<SolidifyingRecipe> matching(World world, ItemComponent itemComponent, FluidComponent fluidComponent) {
 		return (Optional<SolidifyingRecipe>) (Object) world.getRecipeManager().getAllOfType(SolidifyingRecipe.Type.INSTANCE).values().stream().filter(it -> {
 			SolidifyingRecipe recipe = ((SolidifyingRecipe) it);
 
-			return recipe.matches(itemComponent, fluidComponent, energyComponent);
+			return recipe.matches(itemComponent, fluidComponent);
 		}).findFirst();
 	}
 
-	public boolean matches(ItemComponent itemComponent, FluidComponent fluidComponent, EnergyComponent energyComponent) {
+	public boolean matches(ItemComponent itemComponent, FluidComponent fluidComponent) {
 		if (fluidComponent.getSize() < 1) {
 			return false;
 		}
 
 		if (itemComponent.getSize() < 1) {
-			return false;
-		}
-
-		if (energyComponent.getAmount() < energyInput) {
 			return false;
 		}
 
