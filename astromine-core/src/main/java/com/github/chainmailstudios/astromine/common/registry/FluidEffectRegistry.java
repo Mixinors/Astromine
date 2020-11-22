@@ -26,6 +26,7 @@ package com.github.chainmailstudios.astromine.common.registry;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.tag.Tag;
 
 import com.github.chainmailstudios.astromine.common.registry.base.UniRegistry;
 
@@ -41,7 +42,7 @@ import java.util.function.BiConsumer;
  * The supplied boolean indicates whether the entity
  * is inside a block of the fluid or not.
  */
-public class FluidEffectRegistry extends UniRegistry<Fluid, BiConsumer<Boolean, LivingEntity>> {
+public class FluidEffectRegistry extends UniRegistry<Tag<Fluid>, BiConsumer<Boolean, LivingEntity>> {
 	public static final FluidEffectRegistry INSTANCE = new FluidEffectRegistry();
 
 	/** We only want one instance of this. */

@@ -1,1 +1,5 @@
-{"type":"minecraft:crafting_shaped","pattern":["811","1 1","118"],"key":{"1":{"tag":"c:meteoric_steel_plates"},"8":{"tag":"c:meteoric_steel_gears"}},"result":{"item":"astromine:primitive_rocket_hull","count":1}}
+{
+  "type": "minecraft:crafting_shaped", "pattern": ["811", "1 1", "118"],
+  "key": {"1": {"tag": "c:meteoric_steel_plates"}, "8": {"tag": "c:meteoric_steel_gears"}},
+  "result": {"item": "astromine:primitive_rocket_hull", "count": 1}
+}
