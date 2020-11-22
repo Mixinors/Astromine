@@ -40,7 +40,7 @@ public class NumberUtilities {
 	 * > 1,000,000,000,000,000,000 has the "E" suffix.
 	 * > 1,000,000,000,000,000,000,000 has the "Z" suffix.
 	 * > 1,000,000,000,000,000,000,000,000 has the "Y" suffix.
-	 * > 1,000,000,000,000,000,000,000,000,000 has the "?" suffix.
+	 * > 1,000,000,000,000,000,000,000,000,000 has the "∞" suffix.
 	 */
 	public static java.lang.String shorten(double value, java.lang.String unit) {
 		if (value < 1000) {
@@ -48,6 +48,6 @@ public class NumberUtilities {
 		}
 		int exponent = (int) (Math.log(value) / Math.log(1000));
 		java.lang.String[] units = new java.lang.String[]{ "k" + unit, "M" + unit, "G" + unit, "T" + unit, "P" + unit, "E" + unit, "Z" + unit, "Y" + unit };
-		return java.lang.String.format("%.1f%s", value / Math.pow(1000, exponent), exponent - 1 > units.length - 1 ? "?" : units[exponent - 1]);
+		return java.lang.String.format("%.1f%s", value / Math.pow(1000, exponent), exponent - 1 > units.length - 1 ? "∞" : units[exponent - 1]);
 	}
 }

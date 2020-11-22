@@ -9,22 +9,22 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 
 public class IntegerUtilities {
-    /** Serializes the given {@link Integer} to a {@link ByteBuf}. */
+    /** Serializes the given integer to a {@link ByteBuf}. */
     public static void toPacket(PacketByteBuf buffer, int number) {
         buffer.writeInt(number);
     }
 
-    /** Deserializes an {@link Integer} from a {@link ByteBuf}. */
+    /** Deserializes an integer from a {@link ByteBuf}. */
     public static int fromPacket(PacketByteBuf buffer) {
         return buffer.readInt();
     }
 
-    /** Serializes the given {@link Integer} to a {@link JsonElement}. */
+    /** Serializes the given integer to a {@link JsonElement}. */
     public static JsonElement toJson(int number) {
         return new JsonPrimitive(number);
     }
 
-    /** Deserializes an {@link Integer} from a {@link JsonElement}. */
+    /** Deserializes an integer from a {@link JsonElement}. */
     public static int fromJson(JsonElement json) {
         return AstromineCommon.GSON.fromJson(json, Integer.class);
     }

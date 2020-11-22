@@ -9,22 +9,22 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 
 public class LongUtilities {
-    /** Serializes the given {@link ParsingUtilities.Float.Long} to a {@link ByteBuf}. */
+    /** Serializes the given long to a {@link ByteBuf}. */
     public static void toPacket(PacketByteBuf buffer, long number) {
         buffer.writeLong(number);
     }
 
-    /** Deserializes a {@link ParsingUtilities.Float.Long} from a {@link ByteBuf}. */
+    /** Deserializes a long from a {@link ByteBuf}. */
     public static long fromPacket(PacketByteBuf buffer) {
         return buffer.readLong();
     }
 
-    /** Serializes the given {@link ParsingUtilities.Float.Long} to a {@link JsonElement}. */
+    /** Serializes the given long to a {@link JsonElement}. */
     public static JsonElement toJson(long number) {
         return new JsonPrimitive(number);
     }
 
-    /** Deserializes an {@link ParsingUtilities.Float.Long} from a {@link JsonElement}. */
+    /** Deserializes a long from a {@link JsonElement}. */
     public static long fromJson(JsonElement json) {
         return AstromineCommon.GSON.fromJson(json, Long.class);
     }

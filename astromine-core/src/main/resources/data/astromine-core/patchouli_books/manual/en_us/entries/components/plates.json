@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "spotlight",
-      "item": "astromine:iron_plates",
+      "item": "astromine:iron_plate",
       "title": "text.astromine.components.plates.page_one.title",
       "text": "text.astromine.components.plates.page_one.text"
     },

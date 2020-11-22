@@ -24,15 +24,31 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffectUtil;
 import net.minecraft.fluid.Fluids;
 
 import com.github.chainmailstudios.astromine.common.registry.FluidEffectRegistry;
+import com.github.chainmailstudios.astromine.common.utilities.EntityUtilities;
 
 public class AstromineFluidEffects {
 	public static void initialize() {
+		/** Makes attempting to breathe lava through a vent or space suit set you on fire. */
 		FluidEffectRegistry.INSTANCE.register(Fluids.LAVA, (submerged, entity) -> {
 			if(!submerged && !entity.isFireImmune()) {
 				entity.setOnFireFor(15);
+			}
+		});
+
+		/** Makes attempting to breathe water through a vent or space suit cause drowning. */
+		FluidEffectRegistry.INSTANCE.register(Fluids.WATER, (submerged, entity) -> {
+			if(!submerged) {
+				if(!entity.canBreatheInWater() && !StatusEffectUtil.hasWaterBreathing(entity)) {
+					entity.setAir(EntityUtilities.getNextAirUnderwater(entity, entity.getAir()));
+				}
+				if(entity.hurtByWater()) {
+					entity.damage(DamageSource.DROWN, 1.0F);
+				}
 			}
 		});
 	}
