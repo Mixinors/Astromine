@@ -1,14 +1,14 @@
 {
-  "parent": "astromine:astromine/get_fools_gold_ingot",
+  "parent": "astromine:astromine/tricked_piglin",
   "display": {
     "icon": {
       "item": "astromine:fools_gold_ingot"
     },
     "title": {
-      "translate": "advancements.astromine.tricked_piglin.title"
+      "translate": "advancements.astromine.unsuccessfully_tricked_piglin.title"
     },
     "description": {
-      "translate": "advancements.astromine.tricked_piglin.description"
+      "translate": "advancements.astromine.unsuccessfully_tricked_piglin.description"
     },
     "frame": "task",
     "show_toast": true,
@@ -19,7 +19,7 @@
     "tricked_piglin": {
       "trigger": "astromine:tricked_piglin",
       "conditions": {
-        "successful": true
+        "successful": false
       }
     }
   }

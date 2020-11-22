@@ -36,6 +36,7 @@ import net.minecraft.entity.mob.PiglinEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundEvents;
 
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineCriteria;
@@ -50,8 +51,10 @@ public abstract class PiglinBrainMixin {
 		if (bl && bl2 && stack.getItem().isIn(AstromineTags.TRICKS_PIGLINS)) {
 			Optional<PlayerEntity> optional = entity.getBrain().getOptionalMemory(MemoryModuleType.NEAREST_VISIBLE_PLAYER);
 			if (optional.isPresent() && optional.get() instanceof ServerPlayerEntity) {
-				AstromineCriteria.TRICKED_PIGLIN.trigger((ServerPlayerEntity) optional.get());
-				if(entity.getRandom().nextInt(AstromineConfig.get().piglinAngerChance) == 0) {
+				boolean noticed = entity.getRandom().nextInt(AstromineConfig.get().piglinAngerChance) == 0;
+				AstromineCriteria.TRICKED_PIGLIN.trigger((ServerPlayerEntity) optional.get(), !noticed);
+				if(noticed) {
+					entity.playSound(SoundEvents.ENTITY_PIGLIN_ANGRY, 1.0f, 1.0f);
 					PiglinBrain.becomeAngryWith(entity, optional.get());
 					ci.cancel();
 				}

@@ -52,7 +52,9 @@ public class TrickedPiglinCriterion extends AbstractCriterion<TrickedPiglinCrite
 	/** Reads {@link Conditions} from a {@link JsonObject}. */;
 	@Override
 	protected TrickedPiglinCriterion.Conditions conditionsFromJson(JsonObject obj, EntityPredicate.Extended playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
-		return new Conditions(this.id, playerPredicate);
+		if (obj.has("successful"))
+			return new Conditions(this.id, playerPredicate, obj.get("successful").getAsBoolean());
+		else return new Conditions(this.id, playerPredicate);
 	}
 
 	/** Returns this {@link Criterion}'s ID. */
@@ -61,18 +63,42 @@ public class TrickedPiglinCriterion extends AbstractCriterion<TrickedPiglinCrite
 		return id;
 	}
 
-	/** Triggers this {@link Criterion} for the given player. */
-	public void trigger(ServerPlayerEntity player) {
-		this.test(player, conditions -> true);
+	/** Triggers this {@link Criterion} for the given player with the given parameter. */
+	public void trigger(ServerPlayerEntity player, boolean successful) {
+		this.test(player, conditions -> conditions.matches(successful));
 	}
 
 	/**
-	 * Conditions for {@link #trigger(ServerPlayerEntity)}.
+	 * Conditions for {@link #trigger(ServerPlayerEntity, boolean)}.
 	 */
 	public static class Conditions extends AbstractCriterionConditions {
+		private final Boolean successful;
+
+		/** Instantiates {@link Conditions}. */
+		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate, Boolean successful) {
+			super(id, playerPredicate);
+			this.successful = successful;
+		}
+
 		/** Instantiates {@link Conditions}. */
 		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate) {
 			super(id, playerPredicate);
+			this.successful = null;
+		}
+
+		/** Returns whether the Piglin was successfully tricked. */
+		public Boolean successful() {
+			return successful;
+		}
+
+		/** Returns whether this condition should be fulfilled by the given parameter. */
+		public boolean matches(boolean successful) {
+			return successful() == null || successful == successful();
+		}
+
+		/** Instantiates {@link Conditions}. */
+		public static Conditions create(boolean successful) {
+			return new Conditions(AstromineCriteria.TRICKED_PIGLIN.getId(), EntityPredicate.Extended.EMPTY, successful);
 		}
 
 		/** Instantiates {@link Conditions}. */

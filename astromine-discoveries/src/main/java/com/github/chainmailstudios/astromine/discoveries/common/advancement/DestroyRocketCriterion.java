@@ -82,5 +82,9 @@ public class DestroyRocketCriterion extends AbstractCriterion<DestroyRocketCrite
 		public static Conditions create(boolean intentional) {
 			return new Conditions(AstromineDiscoveriesCriteria.DESTROY_ROCKET.getId(), EntityPredicate.Extended.EMPTY, intentional);
 		}
+
+		public static Conditions create() {
+			return new Conditions(AstromineDiscoveriesCriteria.DESTROY_ROCKET.getId(), EntityPredicate.Extended.EMPTY);
+		}
 	}
 }
