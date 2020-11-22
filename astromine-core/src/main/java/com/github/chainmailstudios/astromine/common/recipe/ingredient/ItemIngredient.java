@@ -127,7 +127,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 
 			return jsonArray;
 		} else {
-			throw new UnsupportedOperationException("Cannot serialize a FluidIngredient with no entries");
+			throw new UnsupportedOperationException("Cannot serialize an ItemIngredient with no entries");
 		}
 	}
 
@@ -214,7 +214,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 		/** Deserializes a {@link SimpleEntry} or {@link TagEntry}
 		 * from a {@link JsonElement}. */
 		static Entry fromJson(JsonElement jsonElement) {
-			if (!jsonElement.isJsonObject()) throw new JsonParseException("A fluid ingredient entry must be an object");
+			if (!jsonElement.isJsonObject()) throw new JsonParseException("An item ingredient entry must be an object");
 
 			JsonObject jsonObject = jsonElement.getAsJsonObject();
 
@@ -230,8 +230,8 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 				}
 
 				if (jsonObject.has("item")) {
-					if (jsonObject.has("tag")) {
-						stackTag = (CompoundTag) JsonOps.INSTANCE.convertTo(NbtOps.INSTANCE, jsonObject.get("tag"));
+					if (jsonObject.has("nbt")) {
+						stackTag = (CompoundTag) JsonOps.INSTANCE.convertTo(NbtOps.INSTANCE, jsonObject.get("nbt"));
 					}
 
 					Identifier itemId = new Identifier(JsonHelper.getString(jsonObject, "item"));
