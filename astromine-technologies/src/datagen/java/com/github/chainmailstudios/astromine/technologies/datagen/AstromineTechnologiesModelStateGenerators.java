@@ -101,7 +101,7 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 	));
 
 	public final ModelStateGenerator CANISTERS = register(new GenericItemModelGenerator(
-			AstromineTechnologiesItems.LARGE_LARGE_TANK,
+			AstromineTechnologiesItems.LARGE_PORTABLE_TANK,
 			AstromineTechnologiesItems.PORTABLE_TANK
 	));
 

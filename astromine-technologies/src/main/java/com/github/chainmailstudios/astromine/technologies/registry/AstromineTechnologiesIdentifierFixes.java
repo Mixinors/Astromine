@@ -1,9 +1,15 @@
 package com.github.chainmailstudios.astromine.technologies.registry;
 
 import com.github.chainmailstudios.astromine.registry.AstromineIdentifierFixes;
+import org.jetbrains.annotations.ApiStatus;
 
 public class AstromineTechnologiesIdentifierFixes extends AstromineIdentifierFixes {
     public static void initialize() {
+        initializeFixesOnePointTwelve();
+    }
+
+    @ApiStatus.AvailableSince("1.12.0")
+    public static void initializeFixesOnePointTwelve() {
         register("fluid_cable", "fluid_pipe");
 
         register("gas_canister", "large_portable_tank");

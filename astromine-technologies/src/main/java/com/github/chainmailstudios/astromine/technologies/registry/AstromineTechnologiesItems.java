@@ -46,7 +46,7 @@ public class AstromineTechnologiesItems extends AstromineItems {
 	public static final Item ELITE_MACHINE_UPGRADE_KIT = register("elite_machine_upgrade_kit", new Item(getBasicSettings()));
 
 	public static final Item PORTABLE_TANK = register("portable_tank", FluidVolumeItem.of(getBasicSettings().maxCount(1), Fraction.of(AstromineConfig.get().portableTankFluid, 1)));
-	public static final Item LARGE_LARGE_TANK = register("large_portable_tank", FluidVolumeItem.of(getBasicSettings().maxCount(1), Fraction.of(AstromineConfig.get().largePortableTankFluid, 1)));
+	public static final Item LARGE_PORTABLE_TANK = register("large_portable_tank", FluidVolumeItem.of(getBasicSettings().maxCount(1), Fraction.of(AstromineConfig.get().largePortableTankFluid, 1)));
 
 	public static final Item BASIC_CIRCUIT = register("basic_circuit", new Item(getBasicSettings()));
 	public static final Item ADVANCED_CIRCUIT = register("advanced_circuit", new Item(getBasicSettings()));
