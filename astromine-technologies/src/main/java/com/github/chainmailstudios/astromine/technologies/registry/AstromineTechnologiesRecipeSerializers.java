@@ -32,6 +32,7 @@ import com.github.chainmailstudios.astromine.technologies.common.recipe.AlloySme
 import com.github.chainmailstudios.astromine.technologies.common.recipe.ElectrolyzingRecipe;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.FluidGeneratingRecipe;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.FluidMixingRecipe;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.MeltingRecipe;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.PressingRecipe;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.RefiningRecipe;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.SolidifyingRecipe;
@@ -57,5 +58,7 @@ public class AstromineTechnologiesRecipeSerializers extends AstromineRecipeSeria
 
 	public static final RecipeSerializer<SolidifyingRecipe> SOLIDIFYING = Registry.register(Registry.RECIPE_SERIALIZER, SolidifyingRecipe.Serializer.ID, SolidifyingRecipe.Serializer.INSTANCE);
 
+	public static final RecipeSerializer<MeltingRecipe> MELTING = Registry.register(Registry.RECIPE_SERIALIZER, MeltingRecipe.Serializer.ID, MeltingRecipe.Serializer.INSTANCE);
+	
 	public static void initialize() {}
 }
