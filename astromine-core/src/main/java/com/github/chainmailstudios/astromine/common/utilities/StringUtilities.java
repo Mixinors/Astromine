@@ -24,7 +24,7 @@ public class StringUtilities {
         return new JsonPrimitive(string);
     }
 
-    /** Deserializes an {@link String} from a {@link JsonElement}. */
+    /** Deserializes a {@link String} from a {@link JsonElement}. */
     public static String fromJson(JsonElement json) {
         return AstromineCommon.GSON.fromJson(json, String.class);
     }
