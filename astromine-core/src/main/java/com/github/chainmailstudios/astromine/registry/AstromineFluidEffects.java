@@ -24,8 +24,16 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import net.minecraft.fluid.Fluids;
+
+import com.github.chainmailstudios.astromine.common.registry.FluidEffectRegistry;
+
 public class AstromineFluidEffects {
 	public static void initialize() {
-
+		FluidEffectRegistry.INSTANCE.register(Fluids.LAVA, (submerged, entity) -> {
+			if(!submerged && !entity.isFireImmune()) {
+				entity.setOnFireFor(15);
+			}
+		});
 	}
 }
