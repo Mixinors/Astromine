@@ -89,11 +89,11 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 			return false;
 		}
 
-		if (!firstInput.test(itemComponent.getFirst())) {
+		if (!firstInput.test(itemComponent.getSecond())) {
 			return false;
 		}
 
-		return StackUtilities.test(firstOutput, itemComponent.getSecond());
+		return StackUtilities.test(firstOutput, itemComponent.getFirst());
 	}
 
 	public boolean allows(ItemComponent itemComponent) {
@@ -101,7 +101,7 @@ public final class WireMillingRecipe implements EnergyConsumingRecipe<Inventory>
 			return false;
 		}
 
-		return firstInput.testWeak(itemComponent.getFirst());
+		return firstInput.testWeak(itemComponent.getSecond());
 	}
 
 	@Override
