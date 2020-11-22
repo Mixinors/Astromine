@@ -33,12 +33,14 @@ import com.github.chainmailstudios.astromine.common.utilities.EntityUtilities;
 
 public class AstromineFluidEffects {
 	public static void initialize() {
+		/** Makes attempting to breathe lava through a vent or space suit set you on fire. */
 		FluidEffectRegistry.INSTANCE.register(Fluids.LAVA, (submerged, entity) -> {
 			if(!submerged && !entity.isFireImmune()) {
 				entity.setOnFireFor(15);
 			}
 		});
 
+		/** Makes attempting to breathe water through a vent or space suit cause drowning. */
 		FluidEffectRegistry.INSTANCE.register(Fluids.WATER, (submerged, entity) -> {
 			if(!submerged) {
 				if(!entity.canBreatheInWater() && !StatusEffectUtil.hasWaterBreathing(entity)) {
