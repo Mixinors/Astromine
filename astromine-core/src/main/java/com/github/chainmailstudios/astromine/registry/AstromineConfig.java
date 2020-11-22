@@ -638,6 +638,9 @@ public class AstromineConfig implements ConfigData {
 
 	@Comment("Default gravity for non-Astromine dimensions.")
 	public double defaultGravity = 0.08D;
+
+	@Comment("Chance for Piglins to realize if you try to trick them. (1 in x)")
+	public int piglinAngerChance = 5;
 	
 	public static AstromineConfig get() {
 		if (instance == null) {

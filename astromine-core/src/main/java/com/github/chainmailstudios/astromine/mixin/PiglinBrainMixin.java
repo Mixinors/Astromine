@@ -37,6 +37,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.registry.AstromineCriteria;
 import com.github.chainmailstudios.astromine.registry.AstromineTags;
 
@@ -44,12 +45,16 @@ import java.util.Optional;
 
 @Mixin(PiglinBrain.class)
 public abstract class PiglinBrainMixin {
-	@Inject(method = "consumeOffHandItem(Lnet/minecraft/entity/mob/PiglinEntity;Z)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/mob/PiglinBrain;acceptsForBarter(Lnet/minecraft/item/Item;)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
+	@Inject(method = "consumeOffHandItem(Lnet/minecraft/entity/mob/PiglinEntity;Z)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/mob/PiglinBrain;acceptsForBarter(Lnet/minecraft/item/Item;)Z"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
 	private static void astromine_consumeOffHandItem(PiglinEntity entity, boolean bl, CallbackInfo ci, ItemStack stack, boolean bl2) {
 		if (bl && bl2 && stack.getItem().isIn(AstromineTags.TRICKS_PIGLINS)) {
 			Optional<PlayerEntity> optional = entity.getBrain().getOptionalMemory(MemoryModuleType.NEAREST_VISIBLE_PLAYER);
 			if (optional.isPresent() && optional.get() instanceof ServerPlayerEntity) {
 				AstromineCriteria.TRICKED_PIGLIN.trigger((ServerPlayerEntity) optional.get());
+				if(entity.getRandom().nextInt(AstromineConfig.get().piglinAngerChance) == 0) {
+					PiglinBrain.becomeAngryWith(entity, optional.get());
+					ci.cancel();
+				}
 			}
 		}
 	}
