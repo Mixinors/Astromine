@@ -79,7 +79,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 				return false;
 			}
 
-			if (!StackUtilities.test(stack, getItemComponent().getFirst())) {
+			if (!StackUtilities.test(stack, getItemComponent().getFirst().copy())) {
 				return false;
 			}
 

@@ -141,6 +141,6 @@ public class SimpleItemComponent implements ItemComponent {
 	/** Returns this inventory's string representation. */
 	@Override
 	public String toString() {
-		return String.format("Listeners: %s\nInsertion predicate: %s\n Extraction predicate: %s\nContents: \n%s", listeners.size(), insertPredicate, extractPredicate, getContents().entrySet().stream().map((entry) -> String.format("%s, %s", entry.getKey(), entry.getValue().toString())).collect(Collectors.joining("\n")));
+		return  getContents().entrySet().stream().map((entry) -> String.format("%s - [%s]", entry.getKey(), entry.getValue().toString())).collect(Collectors.joining(", "));
 	}
 }

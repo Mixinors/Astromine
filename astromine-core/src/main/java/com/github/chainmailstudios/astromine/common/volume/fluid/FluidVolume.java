@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.volume.fluid;
 
+import com.github.chainmailstudios.astromine.common.utilities.NumberUtilities;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
@@ -292,7 +293,7 @@ public class FluidVolume extends Volume<Fraction> {
 	 * For example, it may be "minecraft:water, 16.50 of 32.00 Buckets" */
 	@Override
 	public String toString() {
-		return getFluidId().toString() + ", " + FORMAT.format(getAmount().doubleValue()) + " of " + FORMAT.format(getSize().doubleValue() + " Buckets");
+		return getFluidId().toString() + ", " + NumberUtilities.shorten(getAmount().doubleValue(), "") + "/" + NumberUtilities.shorten(getSize().doubleValue(), "") + " Buckets";
 	}
 
 	/** Deserializes a volume from a {@link CompoundTag}. */

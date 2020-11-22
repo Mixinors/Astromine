@@ -178,6 +178,6 @@ public class BaseInventory implements Inventory, RecipeInputProvider {
 	public String toString() {
 		AtomicInteger slot = new AtomicInteger(0);
 
-		return stacks.stream().map(stack -> String.format("%s, %s", slot.get(), stack.toString())).collect(Collectors.joining("\n"));
+		return stacks.stream().map(stack -> String.format("%s - [%s]", slot.getAndIncrement(), stack.toString())).collect(Collectors.joining(", "));
 	}
 }

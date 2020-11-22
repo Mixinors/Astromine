@@ -74,7 +74,7 @@ public abstract class ElectrolyzerBlockEntity extends ComponentEnergyFluidBlockE
 				return false;
 			}
 
-			return ElectrolyzingRecipe.allows(world, FluidComponent.of(volume, getFluidComponent().getSecond(), getFluidComponent().getThird()));
+			return ElectrolyzingRecipe.allows(world, FluidComponent.of(volume, getFluidComponent().getSecond().copy(), getFluidComponent().getThird().copy()));
 		}).withExtractPredicate((direction, volume, slot) -> {
 			return slot == 1 || slot == 2;
 		}).withListener((inventory) -> {

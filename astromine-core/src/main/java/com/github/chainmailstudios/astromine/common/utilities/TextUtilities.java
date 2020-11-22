@@ -49,8 +49,8 @@ public class TextUtilities {
         return new LiteralText(FabricLoader.getInstance().getModContainer(identifier.getNamespace()).get().getMetadata().getName()).formatted(Formatting.BLUE, Formatting.ITALIC);
     }
 
-    /** Returns the "75 of 200" text. */
+    /** Returns the "75%" text. */
     public static Text getRatio(int progress, int limit) {
-        return new TranslatableText("text.astromine.tooltip.fractional_bar", progress, limit);
+        return new LiteralText("" + (int) ((float) progress / (float) limit * 100) + "%");
     }
 }

@@ -177,7 +177,7 @@ public interface SingularStackInventory extends Inventory {
 		public String toString() {
 			AtomicInteger slot = new AtomicInteger(0);
 
-			return getItems().stream().map(stack -> String.format("%s, %s", slot.getAndIncrement(), stack.toString())).collect(Collectors.joining("\n"));
+			return getItems().stream().map(stack -> String.format("%s - [%s]", slot.getAndIncrement(), stack.toString())).collect(Collectors.joining(", "));
 		}
 	}
 }

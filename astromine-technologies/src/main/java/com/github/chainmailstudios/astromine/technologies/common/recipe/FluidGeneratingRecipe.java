@@ -66,6 +66,8 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 		return world.getRecipeManager().getAllOfType(FluidGeneratingRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
 			FluidGeneratingRecipe recipe = ((FluidGeneratingRecipe) it);
 
+			fluidComponent.toString();
+
 			return recipe.allows(fluidComponent);
 		});
 	}

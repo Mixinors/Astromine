@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.widget.blade;
 
+import com.github.chainmailstudios.astromine.common.utilities.TextUtilities;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -82,7 +83,7 @@ public class HorizontalArrowWidget extends AbstractWidget {
 	@NotNull
 	@Override
 	public List<Text> getTooltip() {
-		return Collections.singletonList(new LiteralText(progressSupplier.getAsInt() + " of " + limitSupplier.getAsInt()));
+		return Collections.singletonList(TextUtilities.getRatio(progressSupplier.getAsInt(), limitSupplier.getAsInt()));
 	}
 
 	/** Renders this widget. */

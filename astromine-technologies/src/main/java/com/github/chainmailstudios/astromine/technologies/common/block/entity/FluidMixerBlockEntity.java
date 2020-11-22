@@ -75,7 +75,7 @@ public abstract class FluidMixerBlockEntity extends ComponentEnergyFluidBlockEnt
 				return false;
 			}
 
-			return FluidMixingRecipe.allows(world, FluidComponent.of(volume, getFluidComponent().getSecond(), getFluidComponent().getThird())) || FluidMixingRecipe.allows(world, FluidComponent.of(getFluidComponent().getFirst(), volume, getFluidComponent().getThird()));
+			return FluidMixingRecipe.allows(world, FluidComponent.of(volume, getFluidComponent().getSecond().copy(), getFluidComponent().getThird().copy())) || FluidMixingRecipe.allows(world, FluidComponent.of(getFluidComponent().getFirst().copy(), volume, getFluidComponent().getThird().copy()));
 		}).withExtractPredicate((direction, volume, slot) -> {
 			return slot == 2;
 		}).withListener((inventory) -> {
