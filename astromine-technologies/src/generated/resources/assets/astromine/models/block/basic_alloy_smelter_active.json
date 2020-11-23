@@ -6,6 +6,7 @@
     "east": "astromine:block/alloy_smelter/active/basic_alloy_smelter_left",
     "west": "astromine:block/alloy_smelter/active/basic_alloy_smelter_right",
     "up": "astromine:block/alloy_smelter/active/basic_alloy_smelter_top",
-    "down": "astromine:block/alloy_smelter/active/basic_alloy_smelter_bottom"
+    "down": "astromine:block/alloy_smelter/active/basic_alloy_smelter_bottom",
+    "particle": "astromine:block/machine/generic_machine_top"
   }
 }

@@ -33,6 +33,6 @@ public class AstromineTransportationsRenderLayers extends AstromineRenderLayers 
 	public static void initialize() {
 		register(AstromineTransportationsBlocks.ALTERNATOR, RenderLayer.getCutout());
 		register(AstromineTransportationsBlocks.SPLITTER, RenderLayer.getCutout());
-		register(AstromineTransportationsBlocks.INCINERATOR, RenderLayer.getCutout());
+		register(AstromineTransportationsBlocks.SHREDDER, RenderLayer.getCutout());
 	}
 }

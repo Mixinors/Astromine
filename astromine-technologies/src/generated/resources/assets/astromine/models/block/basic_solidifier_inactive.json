@@ -6,6 +6,7 @@
     "east": "astromine:block/solidifier/inactive/basic_solidifier_left",
     "west": "astromine:block/solidifier/inactive/basic_solidifier_right",
     "up": "astromine:block/solidifier/inactive/basic_solidifier_top",
-    "down": "astromine:block/solidifier/inactive/basic_solidifier_bottom"
+    "down": "astromine:block/solidifier/inactive/basic_solidifier_bottom",
+    "particle": "astromine:block/machine/generic_machine_top"
   }
 }

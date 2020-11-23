@@ -40,7 +40,7 @@ import com.github.chainmailstudios.astromine.transportations.common.block.entity
 public class AstromineTransportationsBlockEntityTypes extends AstromineBlockEntityTypes {
 	public static final BlockEntityType<AbstractConveyableBlockEntity> ALTERNATOR = register("alternator", AlternatorBlockEntity::new, AstromineTransportationsBlocks.ALTERNATOR);
 	public static final BlockEntityType<AbstractConveyableBlockEntity> SPLITTER = register("splitter", SplitterBlockEntity::new, AstromineTransportationsBlocks.SPLITTER);
-	public static final BlockEntityType<ShredderBlockEntity> INCINERATOR = register("shredder", ShredderBlockEntity::new, AstromineTransportationsBlocks.INCINERATOR);
+	public static final BlockEntityType<ShredderBlockEntity> INCINERATOR = register("shredder", ShredderBlockEntity::new, AstromineTransportationsBlocks.SHREDDER);
 	public static final BlockEntityType<InserterBlockEntity> INSERTER = register("inserter", InserterBlockEntity::new, AstromineTransportationsBlocks.INSERTER, AstromineTransportationsBlocks.FAST_INSERTER);
 
 	public static final BlockEntityType<ConveyorBlockEntity> CONVEYOR = register("conveyor", ConveyorBlockEntity::new, AstromineTransportationsBlocks.BASIC_CONVEYOR, AstromineTransportationsBlocks.ADVANCED_CONVEYOR, AstromineTransportationsBlocks.ELITE_CONVEYOR);

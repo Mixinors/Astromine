@@ -46,6 +46,7 @@ import com.github.chainmailstudios.astromine.client.BaseRenderer;
 import com.github.chainmailstudios.astromine.client.render.sprite.SpriteRenderer;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.TextUtilities;
 import com.github.vini2003.blade.client.utilities.Layers;
 import com.github.vini2003.blade.common.widget.base.ButtonWidget;
 import org.jetbrains.annotations.NotNull;
@@ -119,7 +120,7 @@ public class FluidFilterWidget extends ButtonWidget {
 	public List<Text> getTooltip() {
 		Identifier fluidId = Registry.FLUID.getId(fluidSupplier.get());
 
-		return Collections.singletonList(new TranslatableText(String.format("block.%s.%s", fluidId.getNamespace(), fluidId.getPath())));
+		return Collections.singletonList(new TranslatableText("text.astromine.filter", TextUtilities.getFluid(fluidId)));
 	}
 
 	/** Renders this widget. */

@@ -39,7 +39,7 @@ import com.github.chainmailstudios.astromine.transportations.common.block.*;
 public class AstromineTransportationsBlocks extends AstromineBlocks {
 	public static final Block ALTERNATOR = register("alternator", new AlternatorBlock(getBasicSettings()), AstromineTransportationsItems.getBasicSettings());
 	public static final Block SPLITTER = register("splitter", new SplitterBlock(getBasicSettings()), AstromineTransportationsItems.getBasicSettings());
-	public static final Block INCINERATOR = register("shredder", new ShredderBlock(getBasicSettings().ticksRandomly()), AstromineTransportationsItems.getBasicSettings());
+	public static final Block SHREDDER = register("shredder", new ShredderBlock(getBasicSettings().ticksRandomly()), AstromineTransportationsItems.getBasicSettings());
 
 	public static final Block DRAIN = register("drain", new DrainBlock(getBasicSettings()), AstromineTransportationsItems.getBasicSettings());
 

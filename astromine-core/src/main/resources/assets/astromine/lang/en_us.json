@@ -61,6 +61,7 @@
   "text.astromine.rocket.launch": "Launch",
   "text.astromine.rocket.destroy": "Destroy!",
   "text.astromine.rocket.fuel_status": "Fuel sufficient for %s of flight time.",
+  "text.astromine.filter": "Filter: %s",
   "tooltip.astromine.work_when_off": "The machine will work when not powered.",
   "tooltip.astromine.work_when_on": "The machine will work when powered.",
   "tooltip.astromine.work_always": "The machine will always work.",

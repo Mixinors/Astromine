@@ -6,6 +6,7 @@
     "east": "astromine:block/wire_mill/inactive/advanced_wire_mill_left",
     "west": "astromine:block/wire_mill/inactive/advanced_wire_mill_right",
     "up": "astromine:block/wire_mill/inactive/advanced_wire_mill_top",
-    "down": "astromine:block/wire_mill/inactive/advanced_wire_mill_bottom"
+    "down": "astromine:block/wire_mill/inactive/advanced_wire_mill_bottom",
+    "particle": "astromine:block/machine/generic_machine_top"
   }
 }

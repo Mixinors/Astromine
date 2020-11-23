@@ -6,6 +6,7 @@
     "east": "astromine:block/press/inactive/primitive_press_left",
     "west": "astromine:block/press/inactive/primitive_press_right",
     "up": "astromine:block/press/inactive/primitive_press_top",
-    "down": "astromine:block/press/inactive/primitive_press_bottom"
+    "down": "astromine:block/press/inactive/primitive_press_bottom",
+    "particle": "astromine:block/machine/generic_machine_top"
   }
 }

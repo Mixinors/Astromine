@@ -6,6 +6,7 @@
     "east": "astromine:block/capacitor/active/advanced_capacitor_left",
     "west": "astromine:block/capacitor/active/advanced_capacitor_right",
     "up": "astromine:block/capacitor/active/advanced_capacitor_top",
-    "down": "astromine:block/capacitor/active/advanced_capacitor_bottom"
+    "down": "astromine:block/capacitor/active/advanced_capacitor_bottom",
+    "particle": "astromine:block/machine/generic_machine_top"
   }
 }

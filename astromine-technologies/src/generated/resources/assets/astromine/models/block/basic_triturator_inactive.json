@@ -6,6 +6,7 @@
     "east": "astromine:block/triturator/inactive/basic_triturator_left",
     "west": "astromine:block/triturator/inactive/basic_triturator_right",
     "up": "astromine:block/triturator/inactive/basic_triturator_top",
-    "down": "astromine:block/triturator/inactive/basic_triturator_bottom"
+    "down": "astromine:block/triturator/inactive/basic_triturator_bottom",
+    "particle": "astromine:block/machine/generic_machine_top"
   }
 }
