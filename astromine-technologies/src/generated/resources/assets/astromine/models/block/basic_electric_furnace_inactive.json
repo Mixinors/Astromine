@@ -1,10 +1,10 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
-    "north": "astromine:block/electric_furnace/inactive/basic_electric_furnace_back",
-    "south": "astromine:block/electric_furnace/inactive/basic_electric_furnace_front",
-    "east": "astromine:block/electric_furnace/inactive/basic_electric_furnace_right",
-    "west": "astromine:block/electric_furnace/inactive/basic_electric_furnace_left",
+    "north": "astromine:block/electric_furnace/inactive/basic_electric_furnace_front",
+    "south": "astromine:block/electric_furnace/inactive/basic_electric_furnace_back",
+    "east": "astromine:block/electric_furnace/inactive/basic_electric_furnace_left",
+    "west": "astromine:block/electric_furnace/inactive/basic_electric_furnace_right",
     "up": "astromine:block/electric_furnace/inactive/basic_electric_furnace_top",
     "down": "astromine:block/electric_furnace/inactive/basic_electric_furnace_bottom"
   }

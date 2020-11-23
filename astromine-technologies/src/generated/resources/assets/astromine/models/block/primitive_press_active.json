@@ -1,10 +1,10 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
-    "north": "astromine:block/press/active/primitive_press_back",
-    "south": "astromine:block/press/active/primitive_press_front",
-    "east": "astromine:block/press/active/primitive_press_right",
-    "west": "astromine:block/press/active/primitive_press_left",
+    "north": "astromine:block/press/active/primitive_press_front",
+    "south": "astromine:block/press/active/primitive_press_back",
+    "east": "astromine:block/press/active/primitive_press_left",
+    "west": "astromine:block/press/active/primitive_press_right",
     "up": "astromine:block/press/active/primitive_press_top",
     "down": "astromine:block/press/active/primitive_press_bottom"
   }

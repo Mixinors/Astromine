@@ -69,10 +69,10 @@ public class MachineModelStateGenerator extends GenericBlockModelStateGenerator 
 
 	public Texture getTexture(Block block, boolean active) {
 		return new Texture()
-				.put(TextureKey.NORTH, AstromineCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_back"))
-				.put(TextureKey.SOUTH, AstromineCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_front"))
-				.put(TextureKey.EAST, AstromineCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_right"))
-				.put(TextureKey.WEST, AstromineCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_left"))
+				.put(TextureKey.SOUTH, AstromineCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_back"))
+				.put(TextureKey.NORTH, AstromineCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_front"))
+				.put(TextureKey.WEST, AstromineCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_right"))
+				.put(TextureKey.EAST, AstromineCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_left"))
 				.put(TextureKey.UP, AstromineCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_top"))
 				.put(TextureKey.DOWN, AstromineCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_bottom"));
 	}

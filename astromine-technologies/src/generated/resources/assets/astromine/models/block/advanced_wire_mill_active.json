@@ -1,10 +1,10 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
-    "north": "astromine:block/wire_mill/active/advanced_wire_mill_back",
-    "south": "astromine:block/wire_mill/active/advanced_wire_mill_front",
-    "east": "astromine:block/wire_mill/active/advanced_wire_mill_right",
-    "west": "astromine:block/wire_mill/active/advanced_wire_mill_left",
+    "north": "astromine:block/wire_mill/active/advanced_wire_mill_front",
+    "south": "astromine:block/wire_mill/active/advanced_wire_mill_back",
+    "east": "astromine:block/wire_mill/active/advanced_wire_mill_left",
+    "west": "astromine:block/wire_mill/active/advanced_wire_mill_right",
     "up": "astromine:block/wire_mill/active/advanced_wire_mill_top",
     "down": "astromine:block/wire_mill/active/advanced_wire_mill_bottom"
   }

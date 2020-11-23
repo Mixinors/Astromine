@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "astromine:block/block_placer/active/block_placer_bottom",
+    "down": "astromine:block/block_placer/active/block_placer_bottom",
+    "up": "astromine:block/block_placer/active/block_placer_top",
+    "north": "astromine:block/block_placer/active/block_placer_front",
+    "east": "astromine:block/block_placer/active/block_placer_right",
+    "south": "astromine:block/block_placer/active/block_placer_back",
+    "west": "astromine:block/block_placer/active/block_placer_left"
+  }
+}

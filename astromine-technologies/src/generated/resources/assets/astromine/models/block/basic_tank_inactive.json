@@ -1,10 +1,10 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
-    "north": "astromine:block/tank/inactive/basic_tank_back",
-    "south": "astromine:block/tank/inactive/basic_tank_front",
-    "east": "astromine:block/tank/inactive/basic_tank_right",
-    "west": "astromine:block/tank/inactive/basic_tank_left",
+    "north": "astromine:block/tank/inactive/basic_tank_front",
+    "south": "astromine:block/tank/inactive/basic_tank_back",
+    "east": "astromine:block/tank/inactive/basic_tank_left",
+    "west": "astromine:block/tank/inactive/basic_tank_right",
     "up": "astromine:block/tank/inactive/basic_tank_top",
     "down": "astromine:block/tank/inactive/basic_tank_bottom"
   }

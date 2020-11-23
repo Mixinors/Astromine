@@ -1,10 +1,10 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
-    "north": "astromine:block/triturator/active/primitive_triturator_back",
-    "south": "astromine:block/triturator/active/primitive_triturator_front",
-    "east": "astromine:block/triturator/active/primitive_triturator_right",
-    "west": "astromine:block/triturator/active/primitive_triturator_left",
+    "north": "astromine:block/triturator/active/primitive_triturator_front",
+    "south": "astromine:block/triturator/active/primitive_triturator_back",
+    "east": "astromine:block/triturator/active/primitive_triturator_left",
+    "west": "astromine:block/triturator/active/primitive_triturator_right",
     "up": "astromine:block/triturator/active/primitive_triturator_top",
     "down": "astromine:block/triturator/active/primitive_triturator_bottom"
   }

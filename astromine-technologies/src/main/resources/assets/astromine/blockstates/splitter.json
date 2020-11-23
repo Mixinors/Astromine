@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "y": 90,
+      "model": "astromine:block/splitter"
+    },
+    "facing=north": {
+      "model": "astromine:block/splitter"
+    },
+    "facing=south": {
+      "y": 180,
+      "model": "astromine:block/splitter"
+    },
+    "facing=west": {
+      "y": 270,
+      "model": "astromine:block/splitter"
+    }
+  }
+}

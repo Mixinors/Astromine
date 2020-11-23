@@ -1,10 +1,10 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
-    "north": "astromine:block/buffer/inactive/basic_buffer_back",
-    "south": "astromine:block/buffer/inactive/basic_buffer_front",
-    "east": "astromine:block/buffer/inactive/basic_buffer_right",
-    "west": "astromine:block/buffer/inactive/basic_buffer_left",
+    "north": "astromine:block/buffer/inactive/basic_buffer_front",
+    "south": "astromine:block/buffer/inactive/basic_buffer_back",
+    "east": "astromine:block/buffer/inactive/basic_buffer_left",
+    "west": "astromine:block/buffer/inactive/basic_buffer_right",
     "up": "astromine:block/buffer/inactive/basic_buffer_top",
     "down": "astromine:block/buffer/inactive/basic_buffer_bottom"
   }

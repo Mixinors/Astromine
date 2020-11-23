@@ -1,10 +1,10 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
-    "north": "astromine:block/refinery/inactive/basic_refinery_back",
-    "south": "astromine:block/refinery/inactive/basic_refinery_front",
-    "east": "astromine:block/refinery/inactive/basic_refinery_right",
-    "west": "astromine:block/refinery/inactive/basic_refinery_left",
+    "north": "astromine:block/refinery/inactive/basic_refinery_front",
+    "south": "astromine:block/refinery/inactive/basic_refinery_back",
+    "east": "astromine:block/refinery/inactive/basic_refinery_left",
+    "west": "astromine:block/refinery/inactive/basic_refinery_right",
     "up": "astromine:block/refinery/inactive/basic_refinery_top",
     "down": "astromine:block/refinery/inactive/basic_refinery_bottom"
   }

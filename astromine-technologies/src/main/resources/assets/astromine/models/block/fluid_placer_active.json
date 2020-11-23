@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "astromine:block/fluid_placer/active/fluid_placer_bottom",
+    "down": "astromine:block/fluid_placer/active/fluid_placer_bottom",
+    "up": "astromine:block/fluid_placer/active/fluid_placer_top",
+    "north": "astromine:block/fluid_placer/active/fluid_placer_front",
+    "east": "astromine:block/fluid_placer/active/fluid_placer_right",
+    "south": "astromine:block/fluid_placer/active/fluid_placer_back",
+    "west": "astromine:block/fluid_placer/active/fluid_placer_left"
+  }
+}

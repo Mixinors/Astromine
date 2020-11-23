@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "astromine:block/block_breaker/inactive/block_breaker_bottom",
+    "down": "astromine:block/block_breaker/inactive/block_breaker_bottom",
+    "up": "astromine:block/block_breaker/inactive/block_breaker_top",
+    "north": "astromine:block/block_breaker/inactive/block_breaker_front",
+    "east": "astromine:block/block_breaker/inactive/block_breaker_right",
+    "south": "astromine:block/block_breaker/inactive/block_breaker_back",
+    "west": "astromine:block/block_breaker/inactive/block_breaker_left"
+  }
+}

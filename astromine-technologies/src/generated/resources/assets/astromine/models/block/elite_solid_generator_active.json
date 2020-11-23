@@ -1,10 +1,10 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
-    "north": "astromine:block/solid_generator/active/elite_solid_generator_back",
-    "south": "astromine:block/solid_generator/active/elite_solid_generator_front",
-    "east": "astromine:block/solid_generator/active/elite_solid_generator_right",
-    "west": "astromine:block/solid_generator/active/elite_solid_generator_left",
+    "north": "astromine:block/solid_generator/active/elite_solid_generator_front",
+    "south": "astromine:block/solid_generator/active/elite_solid_generator_back",
+    "east": "astromine:block/solid_generator/active/elite_solid_generator_left",
+    "west": "astromine:block/solid_generator/active/elite_solid_generator_right",
     "up": "astromine:block/solid_generator/active/elite_solid_generator_top",
     "down": "astromine:block/solid_generator/active/elite_solid_generator_bottom"
   }

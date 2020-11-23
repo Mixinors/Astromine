@@ -51,7 +51,7 @@ public class TrituratingRecipeGenerator extends EnergyProcessingRecipeGenerator 
 
 			json.add("output", outputJson);
 			json.addProperty("time", time);
-			json.addProperty("energy", energy);
+			json.addProperty("energy_input", energy);
 		}));
 	}
 

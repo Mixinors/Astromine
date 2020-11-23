@@ -1,10 +1,10 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
-    "north": "astromine:block/solidifier/active/primitive_solidifier_back",
-    "south": "astromine:block/solidifier/active/primitive_solidifier_front",
-    "east": "astromine:block/solidifier/active/primitive_solidifier_right",
-    "west": "astromine:block/solidifier/active/primitive_solidifier_left",
+    "north": "astromine:block/solidifier/active/primitive_solidifier_front",
+    "south": "astromine:block/solidifier/active/primitive_solidifier_back",
+    "east": "astromine:block/solidifier/active/primitive_solidifier_left",
+    "west": "astromine:block/solidifier/active/primitive_solidifier_right",
     "up": "astromine:block/solidifier/active/primitive_solidifier_top",
     "down": "astromine:block/solidifier/active/primitive_solidifier_bottom"
   }
