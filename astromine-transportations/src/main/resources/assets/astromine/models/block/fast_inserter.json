@@ -2,8 +2,8 @@
   "credit": "Made with Blockbench",
   "textures": {
     "0": "astromine:block/conveyor_side",
-    "bottom": "astromine:block/advanced_machine_bottom",
-    "top": "astromine:block/advanced_machine_top",
+    "bottom": "astromine:block/machine/advanced_machine_bottom",
+    "top": "astromine:block/machine/advanced_machine_top",
     "particle": "astromine:block/conveyor_side"
   },
   "elements": [

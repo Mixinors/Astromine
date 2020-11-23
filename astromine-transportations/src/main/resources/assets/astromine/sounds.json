@@ -1,9 +1,9 @@
 {
-  "block.incinerator.incinerate": {
+  "block.shredder.incinerate": {
     "sounds": [
       "mob/ghast/fireball4"
     ],
-    "subtitle": "subtitle.astromine.incinerator.incinerate"
+    "subtitle": "subtitle.astromine.shredder.incinerate"
   },
   "block.machine.click": {
     "sounds": [

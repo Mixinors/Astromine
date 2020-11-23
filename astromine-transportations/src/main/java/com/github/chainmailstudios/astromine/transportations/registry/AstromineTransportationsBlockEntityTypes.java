@@ -31,7 +31,7 @@ import com.github.chainmailstudios.astromine.transportations.common.block.entity
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.ConveyorBlockEntity;
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.DownVerticalConveyorBlockEntity;
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.DrainBlockEntity;
-import com.github.chainmailstudios.astromine.transportations.common.block.entity.IncineratorBlockEntity;
+import com.github.chainmailstudios.astromine.transportations.common.block.entity.ShredderBlockEntity;
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.InserterBlockEntity;
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.SplitterBlockEntity;
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.VerticalConveyorBlockEntity;
@@ -40,7 +40,7 @@ import com.github.chainmailstudios.astromine.transportations.common.block.entity
 public class AstromineTransportationsBlockEntityTypes extends AstromineBlockEntityTypes {
 	public static final BlockEntityType<AbstractConveyableBlockEntity> ALTERNATOR = register("alternator", AlternatorBlockEntity::new, AstromineTransportationsBlocks.ALTERNATOR);
 	public static final BlockEntityType<AbstractConveyableBlockEntity> SPLITTER = register("splitter", SplitterBlockEntity::new, AstromineTransportationsBlocks.SPLITTER);
-	public static final BlockEntityType<IncineratorBlockEntity> INCINERATOR = register("incinerator", IncineratorBlockEntity::new, AstromineTransportationsBlocks.INCINERATOR);
+	public static final BlockEntityType<ShredderBlockEntity> INCINERATOR = register("shredder", ShredderBlockEntity::new, AstromineTransportationsBlocks.INCINERATOR);
 	public static final BlockEntityType<InserterBlockEntity> INSERTER = register("inserter", InserterBlockEntity::new, AstromineTransportationsBlocks.INSERTER, AstromineTransportationsBlocks.FAST_INSERTER);
 
 	public static final BlockEntityType<ConveyorBlockEntity> CONVEYOR = register("conveyor", ConveyorBlockEntity::new, AstromineTransportationsBlocks.BASIC_CONVEYOR, AstromineTransportationsBlocks.ADVANCED_CONVEYOR, AstromineTransportationsBlocks.ELITE_CONVEYOR);
