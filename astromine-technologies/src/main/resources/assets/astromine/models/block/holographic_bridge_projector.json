@@ -1,12 +1,12 @@
 {
   "parent": "block/cube",
   "textures": {
-    "particle": "astromine:block/splitter/splitter_bottom",
-    "down": "astromine:block/splitter/splitter_bottom",
-    "up": "astromine:block/splitter/splitter_top",
-    "north": "astromine:block/splitter/splitter_front",
-    "east": "astromine:block/splitter/splitter_right",
-    "south": "astromine:block/splitter/splitter_back",
-    "west": "astromine:block/splitter/splitter_left"
+    "particle": "astromine:block/holographic_bridge_projector/holographic_bridge_projector_bottom",
+    "down": "astromine:block/holographic_bridge_projector/holographic_bridge_projector_bottom",
+    "up": "astromine:block/holographic_bridge_projector/holographic_bridge_projector_top",
+    "north": "astromine:block/holographic_bridge_projector/holographic_bridge_projector_front",
+    "east": "astromine:block/holographic_bridge_projector/holographic_bridge_projector_right",
+    "south": "astromine:block/holographic_bridge_projector/holographic_bridge_projector_back",
+    "west": "astromine:block/holographic_bridge_projector/holographic_bridge_projector_left"
   }
 }
