@@ -73,10 +73,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item TIN_WIRE = register("tin_wire", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item SILVER_WIRE = register("silver_wire", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item LEAD_WIRE = register("lead_wire", new Item(AstromineFoundationsItems.getBasicSettings()));
-
 	public static final Item STEEL_WIRE = register("steel_wire", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item ELECTRUM_WIRE = register("electrum_wire", new Item(AstromineFoundationsItems.getBasicSettings()));
-
 	public static final Item GOLD_WIRE = register("gold_wire", new Item(AstromineFoundationsItems.getBasicSettings()));
 
 	// Materials - Gems
@@ -190,6 +188,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item IRON_PLATE = register("iron_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item GOLD_PLATE = register("gold_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item NETHERITE_PLATE = register("netherite_plate", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
+
+	public static final Item STONE_PLATE = register("stone_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
 
 	// Materials - Gears
 	public static final Item METITE_GEAR = register("metite_gear", new Item(AstromineFoundationsItems.getBasicSettings()));
@@ -507,6 +507,8 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final FoodComponent LEAD_APPLE_COMPONENT = new FoodComponent.Builder().hunger(2).saturationModifier(0.4F).statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 40, 1), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 1000, 2), 1.0F)
 		.statusEffect(new StatusEffectInstance(StatusEffects.POISON, 500, 1), 1.0F).alwaysEdible().build();
 	public static final Item LEAD_APPLE = register("lead_apple", new Item(AstromineFoundationsItems.getBasicSettings().food(LEAD_APPLE_COMPONENT).rarity(Rarity.RARE)));
+
+	public static final Item BLADES = register("blades", new Item(getBasicSettings()));
 
 	public static Item.Settings getBasicSettings() {
 		return AstromineItems.getBasicSettings().group(AstromineFoundationsItemGroups.FOUNDATIONS);

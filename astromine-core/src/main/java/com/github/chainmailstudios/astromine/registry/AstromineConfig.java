@@ -498,6 +498,9 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Whether to enable Meteor generation in The End.")
 	public boolean endMeteorGeneration = true;
 
+	@Comment("Energy for the Primitive Battery.")
+	public double primitiveBatteryEnergy = 4500;
+
 	@Comment("Energy for the Basic Battery.")
 	public double basicBatteryEnergy = 9000;
 
@@ -506,6 +509,21 @@ public class AstromineConfig implements ConfigData {
 
 	@Comment("Energy for the Elite Battery.")
 	public double eliteBatteryEnergy = 64000;
+
+	@Comment("Energy for the Primitive Battery Pack.")
+	public double primitiveBatteryPackEnergy = 27000;
+
+	@Comment("Energy for the Basic Battery Pack.")
+	public double basicBatteryPackEnergy = 54000;
+
+	@Comment("Energy for the Advanced Battery Pack.")
+	public double advancedBatteryPackEnergy = 144000;
+
+	@Comment("Energy for the Elite Battery Pack.")
+	public double eliteBatteryPackEnergy = 384000;
+
+	@Comment("Energy for the Primitive Drill.")
+	public double primitiveDrillEnergy = 45000;
 
 	@Comment("Energy for the Basic Drill.")
 	public double basicDrillEnergy = 90000;

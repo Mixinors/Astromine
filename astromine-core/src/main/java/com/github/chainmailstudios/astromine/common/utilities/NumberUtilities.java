@@ -27,6 +27,8 @@ package com.github.chainmailstudios.astromine.common.utilities;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 
 public class NumberUtilities {
+	private static final java.lang.String[] units = new java.lang.String[]{ "k", "M", "G", "T", "P", "E", "Z", "Y" };
+
 	/**
 	 * Shortens the given {@link Double}, appending the specified
 	 * unit if necessary.
@@ -46,8 +48,12 @@ public class NumberUtilities {
 		if (value < 1000) {
 			return Fraction.FORMAT.format(value);
 		}
-		int exponent = (int) (Math.log(value) / Math.log(1000));
-		java.lang.String[] units = new java.lang.String[]{ "k" + unit, "M" + unit, "G" + unit, "T" + unit, "P" + unit, "E" + unit, "Z" + unit, "Y" + unit };
-		return java.lang.String.format("%.1f%s", value / Math.pow(1000, exponent), exponent - 1 > units.length - 1 ? "∞" : units[exponent - 1]);
+		int exponent = 0;
+		while (value >= 1000) {
+			value /= 1000;
+			++exponent;
+		}
+
+		return java.lang.String.format("%.1f%s", value, exponent - 1 > units.length - 1 ? "∞" : units[exponent - 1] + unit);
 	}
 }

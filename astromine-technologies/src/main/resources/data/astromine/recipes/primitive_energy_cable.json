@@ -1,5 +1,1 @@
-{
-  "type": "minecraft:crafting_shaped", "pattern": ["111", "333", "111"],
-  "key": {"1": {"tag": "c:lead_plates"}, "3": {"tag": "c:copper_wires"}},
-  "result": {"item": "astromine:primitive_energy_cable", "count": 8}
-}
+{"type":"minecraft:crafting_shaped","pattern":["888","444","888"],"key":{"4":{"tag":"c:tin_wires"},"8":{"tag":"c:lead_plates"}},"result":{"item":"astromine:primitive_energy_cable","count":8}}

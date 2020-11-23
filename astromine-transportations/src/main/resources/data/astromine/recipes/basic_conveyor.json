@@ -1,5 +1,1 @@
-{
-  "type": "minecraft:crafting_shaped", "pattern": ["   ", " 4 ", "   "],
-  "key": {"4": {"item": "astromine:basic_downward_vertical_conveyor"}},
-  "result": {"item": "astromine:basic_conveyor", "count": 1}
-}
+{"type":"minecraft:crafting_shaped","pattern":["   ","333","676"],"key":{"3":{"tag":"c:lead_plates"},"6":{"item":"astromine:blades"},"7":{"item":"minecraft:slime_ball"}},"result":{"item":"astromine:basic_conveyor","count":16}}

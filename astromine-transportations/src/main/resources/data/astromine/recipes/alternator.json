@@ -1,6 +1,0 @@
-{
-  "type": "minecraft:crafting_shaped", "pattern": ["010", "343", "010"], "key": {
-  "0": {"tag": "c:bronze_plates"}, "1": {"item": "astromine:basic_conveyor"}, "3": {"tag": "c:bronze_gears"},
-  "4": {"item": "astromine:basic_circuit"}
-}, "result": {"item": "astromine:alternator", "count": 1}
-}

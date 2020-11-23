@@ -3,6 +3,8 @@ package com.github.chainmailstudios.astromine.foundations.datagen.registry;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.ModelStateGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.GenericBlockModelStateGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.GenericItemModelGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.HandheldItemModelGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime.SimpleBlockItemModelGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.set.ColumnBlockSetModelStateGenerator;
 import com.github.chainmailstudios.astromine.datagen.generator.modelstate.set.GenericBlockSetModelStateGenerator;
@@ -11,6 +13,7 @@ import com.github.chainmailstudios.astromine.datagen.generator.modelstate.set.Ha
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineModelStateGenerators;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsItems;
 
 public class AstromineFoundationsModelStateGenerators extends AstromineModelStateGenerators {
 	public final ModelStateGenerator INGOT = register(new GenericItemSetModelGenerator(MaterialItemType.INGOT));
@@ -71,5 +74,13 @@ public class AstromineFoundationsModelStateGenerators extends AstromineModelStat
 			AstromineFoundationsBlocks.POLISHED_METEOR_STONE_STAIRS,
 			AstromineFoundationsBlocks.METEOR_STONE_BRICK_SLAB,
 			AstromineFoundationsBlocks.METEOR_STONE_BRICK_STAIRS
+	));
+
+	public final ModelStateGenerator EXTRA_PLATES = register(new GenericItemModelGenerator(
+			AstromineFoundationsItems.STONE_PLATE
+	));
+
+	public final ModelStateGenerator BLADES = register(new HandheldItemModelGenerator(
+			AstromineFoundationsItems.BLADES
 	));
 }

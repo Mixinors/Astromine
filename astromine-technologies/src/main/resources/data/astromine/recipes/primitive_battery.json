@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","pattern":[" 1 ","646","646"],"key":{"1":{"tag":"c:tin_wires"},"4":{"item":"minecraft:redstone"},"6":{"tag":"c:lead_plates"}},"result":{"item":"astromine:primitive_battery","count":1}}

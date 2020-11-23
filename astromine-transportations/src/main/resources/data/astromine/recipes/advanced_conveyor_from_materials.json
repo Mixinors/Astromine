@@ -1,5 +1,0 @@
-{
-  "type": "minecraft:crafting_shaped", "pattern": ["   ", "343", "474"], "key": {
-  "3": {"item": "minecraft:slime_ball"}, "4": {"tag": "c:steel_plates"}, "7": {"item": "astromine:advanced_circuit"}
-}, "result": {"item": "astromine:advanced_conveyor", "count": 16}
-}

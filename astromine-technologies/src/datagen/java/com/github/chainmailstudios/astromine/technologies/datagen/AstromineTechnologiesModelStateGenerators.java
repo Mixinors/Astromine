@@ -106,21 +106,47 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 	));
 
 	public final ModelStateGenerator CIRCUITS = register(new GenericItemModelGenerator(
+			AstromineTechnologiesItems.PRIMITIVE_CIRCUIT,
 			AstromineTechnologiesItems.BASIC_CIRCUIT,
 			AstromineTechnologiesItems.ADVANCED_CIRCUIT,
 			AstromineTechnologiesItems.ELITE_CIRCUIT
 	));
 
 	public final ModelStateGenerator BATTERIES = register(new GenericItemModelGenerator(
+			AstromineTechnologiesItems.PRIMITIVE_BATTERY,
 			AstromineTechnologiesItems.BASIC_BATTERY,
 			AstromineTechnologiesItems.ADVANCED_BATTERY,
 			AstromineTechnologiesItems.ELITE_BATTERY,
 			AstromineTechnologiesItems.CREATIVE_BATTERY
 	));
 
+	public final ModelStateGenerator BATTERY_PACKS = register(new GenericItemModelGenerator(
+			AstromineTechnologiesItems.PRIMITIVE_BATTERY_PACK,
+			AstromineTechnologiesItems.BASIC_BATTERY_PACK,
+			AstromineTechnologiesItems.ADVANCED_BATTERY_PACK,
+			AstromineTechnologiesItems.ELITE_BATTERY_PACK,
+			AstromineTechnologiesItems.CREATIVE_BATTERY_PACK
+	));
+
 	public final ModelStateGenerator DRILLS = register(new HandheldItemModelGenerator(
+			AstromineTechnologiesItems.PRIMITIVE_DRILL,
 			AstromineTechnologiesItems.BASIC_DRILL,
 			AstromineTechnologiesItems.ADVANCED_DRILL,
 			AstromineTechnologiesItems.ELITE_DRILL
+	));
+
+	public final ModelStateGenerator DRILL_HEADS = register(new HandheldItemModelGenerator(
+			AstromineTechnologiesItems.PRIMITIVE_DRILL_BASE,
+			AstromineTechnologiesItems.BASIC_DRILL_BASE,
+			AstromineTechnologiesItems.ADVANCED_DRILL_BASE,
+			AstromineTechnologiesItems.ELITE_DRILL_BASE
+	));
+
+	public final ModelStateGenerator DRILL_HEAD = register(new HandheldItemModelGenerator(
+			AstromineTechnologiesItems.DRILL_HEAD
+	));
+
+	public final ModelStateGenerator HOLOGRAPHIC_CONNECTOR = register(new HandheldItemModelGenerator(
+			AstromineTechnologiesItems.HOLOGRAPHIC_CONNECTOR
 	));
 }

@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.common.screenhandler;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.tag.TagManager;
@@ -62,6 +63,12 @@ import java.util.Map;
  * creation as {@link JsonElement}.
  */
 public class RecipeCreatorScreenHandler extends BaseScreenHandler {
+	public static final Inventory[] craftingInventories = new Inventory[] { BaseInventory.of(10), BaseInventory.of(10) };
+
+	public Inventory getInventory() {
+		return getClient() ? craftingInventories[0] : craftingInventories[1];
+	}
+
 	public RecipeCreatorScreenHandler(int syncId, @NotNull PlayerEntity player) {
 		super(AstromineScreenHandlers.RECIPE_CREATOR, syncId, player);
 	}
@@ -92,17 +99,18 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
                     });
                 });
             }
-        };PanelWidget panel = new PanelWidget();
-		panel.setPosition(Position.of(width / 2 - 40, height / 2 - 40));
-		panel.setSize(Size.of(93, 100));
+        };
+        PanelWidget panel = new PanelWidget();
+		panel.setPosition(Position.of(width / 2 - 88.5, height / 2 - 92));
+		panel.setSize(Size.of(93 + 84, 100 + 84));
 
 		addWidget(panel);
 
-		BaseInventory inventory = BaseInventory.of(10);
+		Slots.addPlayerInventory(Position.of(panel.getX() + 7, panel.getY() + 7 + 9 + 18 + 18 + 18 + 7 + 18 + 7), Size.of(18, 18), this, getPlayer().inventory);
 
-		List<SlotWidget> inputSlots = Lists.newArrayList(Slots.addArray(Position.of(panel.getX() + 7, panel.getY() + 7 + 9), Size.of(18, 18), panel, 0, 3, 3, inventory));
+		List<SlotWidget> inputSlots = Lists.newArrayList(Slots.addArray(Position.of(panel.getX() + 7, panel.getY() + 7 + 9), Size.of(18, 18), panel, 0, 3, 3, getInventory()));
 
-		SlotWidget outputSlot = new SlotWidget(9, inventory);
+		SlotWidget outputSlot = new SlotWidget(9, getInventory());
 		outputSlot.setPosition(Position.of(panel.getX() + 7 + 18 * 3 + 7, panel.getY() + 7 + 18 + 9));
 		outputSlot.setSize(Size.of(18, 18));
 
@@ -158,11 +166,7 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 			table.forEach((slot, name) -> {
 				JsonObject entry = new JsonObject();
 
-				TagManager tagManager = getPlayer().getEntityWorld().getTagManager();
-
 				if (TAGS.containsKey(name)) {
-
-				
 					entry.addProperty("tag", TAGS.get(name));
 				} else {
 					entry.addProperty("item", name);
