@@ -6,6 +6,7 @@
     "east": "astromine:block/tank/inactive/primitive_tank_left",
     "west": "astromine:block/tank/inactive/primitive_tank_right",
     "up": "astromine:block/tank/inactive/primitive_tank_top",
-    "down": "astromine:block/tank/inactive/primitive_tank_bottom"
+    "down": "astromine:block/tank/inactive/primitive_tank_bottom",
+    "particle": "astromine:block/machine/generic_machine_top"
   }
 }

@@ -6,6 +6,7 @@
     "east": "astromine:block/refinery/active/primitive_refinery_left",
     "west": "astromine:block/refinery/active/primitive_refinery_right",
     "up": "astromine:block/refinery/active/primitive_refinery_top",
-    "down": "astromine:block/refinery/active/primitive_refinery_bottom"
+    "down": "astromine:block/refinery/active/primitive_refinery_bottom",
+    "particle": "astromine:block/machine/generic_machine_top"
   }
 }

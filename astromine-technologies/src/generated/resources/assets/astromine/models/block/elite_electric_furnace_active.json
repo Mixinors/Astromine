@@ -6,6 +6,7 @@
     "east": "astromine:block/electric_furnace/active/elite_electric_furnace_left",
     "west": "astromine:block/electric_furnace/active/elite_electric_furnace_right",
     "up": "astromine:block/electric_furnace/active/elite_electric_furnace_top",
-    "down": "astromine:block/electric_furnace/active/elite_electric_furnace_bottom"
+    "down": "astromine:block/electric_furnace/active/elite_electric_furnace_bottom",
+    "particle": "astromine:block/machine/generic_machine_top"
   }
 }

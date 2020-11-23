@@ -23,7 +23,7 @@ import me.shedaniel.cloth.api.datagen.v1.ModelStateData;
 import java.util.Optional;
 
 public class MachineModelStateGenerator extends GenericBlockModelStateGenerator {
-	private static final Model MACHINE = getModel("cube", TextureKey.NORTH, TextureKey.SOUTH, TextureKey.EAST, TextureKey.WEST, TextureKey.UP, TextureKey.DOWN);
+	private static final Model MACHINE = getModel("cube", TextureKey.NORTH, TextureKey.SOUTH, TextureKey.EAST, TextureKey.WEST, TextureKey.UP, TextureKey.DOWN, TextureKey.PARTICLE);
 
 	public MachineModelStateGenerator(Block... blocks) {
 		super(blocks);
@@ -74,7 +74,8 @@ public class MachineModelStateGenerator extends GenericBlockModelStateGenerator 
 				.put(TextureKey.WEST, AstromineCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_right"))
 				.put(TextureKey.EAST, AstromineCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_left"))
 				.put(TextureKey.UP, AstromineCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_top"))
-				.put(TextureKey.DOWN, AstromineCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_bottom"));
+				.put(TextureKey.DOWN, AstromineCommon.identifier("block/" + getPathNoTier(block) + "/" + (active ? "active/" : "inactive/") +  getPath(block) + "_bottom"))
+				.put(TextureKey.PARTICLE, AstromineCommon.identifier("block/machine/generic_machine_top"));
 	}
 
 	@Override

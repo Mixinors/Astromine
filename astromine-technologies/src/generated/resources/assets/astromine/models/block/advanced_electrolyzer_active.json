@@ -6,6 +6,7 @@
     "east": "astromine:block/electrolyzer/active/advanced_electrolyzer_left",
     "west": "astromine:block/electrolyzer/active/advanced_electrolyzer_right",
     "up": "astromine:block/electrolyzer/active/advanced_electrolyzer_top",
-    "down": "astromine:block/electrolyzer/active/advanced_electrolyzer_bottom"
+    "down": "astromine:block/electrolyzer/active/advanced_electrolyzer_bottom",
+    "particle": "astromine:block/machine/generic_machine_top"
   }
 }

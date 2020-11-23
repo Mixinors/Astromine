@@ -6,6 +6,7 @@
     "east": "astromine:block/buffer/active/creative_buffer_left",
     "west": "astromine:block/buffer/active/creative_buffer_right",
     "up": "astromine:block/buffer/active/creative_buffer_top",
-    "down": "astromine:block/buffer/active/creative_buffer_bottom"
+    "down": "astromine:block/buffer/active/creative_buffer_bottom",
+    "particle": "astromine:block/machine/generic_machine_top"
   }
 }

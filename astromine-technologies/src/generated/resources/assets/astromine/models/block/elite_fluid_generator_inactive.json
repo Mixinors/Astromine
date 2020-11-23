@@ -6,6 +6,7 @@
     "east": "astromine:block/fluid_generator/inactive/elite_fluid_generator_left",
     "west": "astromine:block/fluid_generator/inactive/elite_fluid_generator_right",
     "up": "astromine:block/fluid_generator/inactive/elite_fluid_generator_top",
-    "down": "astromine:block/fluid_generator/inactive/elite_fluid_generator_bottom"
+    "down": "astromine:block/fluid_generator/inactive/elite_fluid_generator_bottom",
+    "particle": "astromine:block/machine/generic_machine_top"
   }
 }

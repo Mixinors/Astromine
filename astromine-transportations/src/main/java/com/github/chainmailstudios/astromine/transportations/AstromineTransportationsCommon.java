@@ -27,6 +27,7 @@ package com.github.chainmailstudios.astromine.transportations;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlocks;
+import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsIdentifierFixes;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsItems;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsSoundEvents;
 import com.github.chainmailstudios.astromine.transportations.registry.client.AstromineTransportationsItemGroups;
@@ -34,6 +35,7 @@ import com.github.chainmailstudios.astromine.transportations.registry.client.Ast
 public class AstromineTransportationsCommon extends AstromineCommon {
 	@Override
 	public void onInitialize() {
+		AstromineTransportationsIdentifierFixes.initialize();
 		AstromineTransportationsBlocks.initialize();
 		AstromineTransportationsItems.initialize();
 		AstromineTransportationsItemGroups.initialize();

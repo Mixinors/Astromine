@@ -6,6 +6,7 @@
     "east": "astromine:block/melter/inactive/advanced_melter_left",
     "west": "astromine:block/melter/inactive/advanced_melter_right",
     "up": "astromine:block/melter/inactive/advanced_melter_top",
-    "down": "astromine:block/melter/inactive/advanced_melter_bottom"
+    "down": "astromine:block/melter/inactive/advanced_melter_bottom",
+    "particle": "astromine:block/machine/generic_machine_top"
   }
 }
