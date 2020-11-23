@@ -184,15 +184,25 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 		public ElectrolyzingRecipe read(Identifier identifier, JsonObject object) {
 			ElectrolyzingRecipe.Format format = new Gson().fromJson(object, ElectrolyzingRecipe.Format.class);
 
-			return new ElectrolyzingRecipe(identifier, FluidIngredient.fromJson(format.firstInput), FluidVolume.fromJson(format.firstOutput), FluidVolume.fromJson(format.secondOutput), DoubleUtilities.fromJson(
-				format.energyInput), IntegerUtilities.fromJson(format.time)
+			return new ElectrolyzingRecipe(
+					identifier,
+					FluidIngredient.fromJson(format.firstInput),
+					FluidVolume.fromJson(format.firstOutput),
+					FluidVolume.fromJson(format.secondOutput),
+					DoubleUtilities.fromJson(format.energyInput),
+					IntegerUtilities.fromJson(format.time)
 			);
 		}
 
 		@Override
 		public ElectrolyzingRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new ElectrolyzingRecipe(identifier, FluidIngredient.fromPacket(buffer), FluidVolume.fromPacket(buffer), FluidVolume.fromPacket(buffer), DoubleUtilities.fromPacket(buffer), IntegerUtilities.fromPacket(
-				buffer)
+			return new ElectrolyzingRecipe(
+					identifier,
+					FluidIngredient.fromPacket(buffer),
+					FluidVolume.fromPacket(buffer),
+					FluidVolume.fromPacket(buffer),
+					DoubleUtilities.fromPacket(buffer),
+					IntegerUtilities.fromPacket(buffer)
 			);
 		}
 

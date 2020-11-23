@@ -166,7 +166,11 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 
 		@Override
 		public FluidGeneratingRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new FluidGeneratingRecipe(identifier, FluidIngredient.fromPacket(buffer), DoubleUtilities.fromPacket(buffer), IntegerUtilities.fromPacket(buffer)
+			return new FluidGeneratingRecipe(
+					identifier,
+					FluidIngredient.fromPacket(buffer),
+					DoubleUtilities.fromPacket(buffer),
+					IntegerUtilities.fromPacket(buffer)
 			);
 		}
 
@@ -174,7 +178,7 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 		public void write(PacketByteBuf buffer, FluidGeneratingRecipe recipe) {
 			recipe.firstInput.toPacket(buffer);
 			DoubleUtilities.toPacket(buffer, recipe.energyOutput);
-			DoubleUtilities.toPacket(buffer, recipe.time);
+			IntegerUtilities.toPacket(buffer, recipe.time);
 		}
 	}
 
