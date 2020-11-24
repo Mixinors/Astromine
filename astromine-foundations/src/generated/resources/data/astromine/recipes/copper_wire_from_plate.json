@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "c:copper_plates"
+    },
+    {
+      "tag": "fabric:shears"
+    }
+  ],
+  "result": {
+    "item": "astromine:copper_wire"
+  }
+}
