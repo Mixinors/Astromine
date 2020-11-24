@@ -1,1 +1,7 @@
-{"type":"minecraft:crafting_shaped","pattern":["212","343","676"],"key":{"1":{"item":"astromine:large_portable_tank"},"2":{"item":"astromine:primitive_circuit"},"3":{"item":"astromine:blades"},"4":{"item":"astromine:primitive_machine_chassis"},"6":{"item":"minecraft:packed_ice"},"7":{"item":"astromine:primitive_battery_pack"}},"result":{"item":"astromine:primitive_solidifier","count":1}}
+{
+  "type": "minecraft:crafting_shaped", "pattern": ["212", "343", "676"], "key": {
+  "1": {"item": "astromine:large_portable_tank"}, "2": {"item": "astromine:primitive_circuit"},
+  "3": {"item": "astromine:blades"}, "4": {"item": "astromine:primitive_machine_chassis"},
+  "6": {"item": "minecraft:packed_ice"}, "7": {"item": "astromine:primitive_battery_pack"}
+}, "result": {"item": "astromine:primitive_solidifier", "count": 1}
+}

@@ -1,1 +1,6 @@
-{"type":"minecraft:crafting_shaped","pattern":[" 1 ","646","676"],"key":{"1":{"tag":"c:gold_wires"},"4":{"tag":"c:lunum_dusts"},"6":{"tag":"c:lunum_plates"},"7":{"tag":"c:asterite_dusts"}},"result":{"item":"astromine:elite_battery","count":1}}
+{
+  "type": "minecraft:crafting_shaped", "pattern": [" 1 ", "646", "676"], "key": {
+  "1": {"tag": "c:gold_wires"}, "4": {"tag": "c:meteoric_steel_dusts"}, "6": {"tag": "c:meteoric_steel_plates"},
+  "7": {"tag": "c:asterite_dusts"}
+}, "result": {"item": "astromine:elite_battery", "count": 1}
+}

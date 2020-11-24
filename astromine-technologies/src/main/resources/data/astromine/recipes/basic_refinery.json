@@ -1,1 +1,7 @@
-{"type":"minecraft:crafting_shaped","pattern":["212","343","676"],"key":{"1":{"item":"astromine:basic_circuit"},"2":{"item":"astromine:blades"},"3":{"item":"minecraft:blaze_powder"},"4":{"item":"astromine:basic_machine_chassis"},"6":{"item":"astromine:basic_tank"},"7":{"item":"astromine:basic_battery_pack"}},"result":{"item":"astromine:basic_refinery","count":1}}
+{
+  "type": "minecraft:crafting_shaped", "pattern": ["212", "343", "676"], "key": {
+  "1": {"item": "astromine:basic_circuit"}, "2": {"item": "astromine:blades"}, "3": {"item": "minecraft:blaze_powder"},
+  "4": {"item": "astromine:basic_machine_chassis"}, "6": {"item": "astromine:basic_tank"},
+  "7": {"item": "astromine:basic_battery_pack"}
+}, "result": {"item": "astromine:basic_refinery", "count": 1}
+}

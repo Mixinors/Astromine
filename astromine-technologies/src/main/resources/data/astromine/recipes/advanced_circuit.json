@@ -1,1 +1,5 @@
-{"type":"minecraft:crafting_shaped","pattern":["878","555","878"],"key":{"5":{"tag":"c:silver_wires"},"7":{"tag":"c:asterite_tiny_dusts"},"8":{"tag":"c:rose_gold_plates"}},"result":{"item":"astromine:advanced_circuit","count":1}}
+{
+  "type": "minecraft:crafting_shaped", "pattern": ["878", "555", "878"],
+  "key": {"5": {"tag": "c:silver_wires"}, "7": {"tag": "c:asterite_tiny_dusts"}, "8": {"tag": "c:rose_gold_plates"}},
+  "result": {"item": "astromine:advanced_circuit", "count": 1}
+}

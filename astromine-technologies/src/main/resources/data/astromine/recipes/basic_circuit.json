@@ -1,1 +1,5 @@
-{"type":"minecraft:crafting_shaped","pattern":["676","333","676"],"key":{"3":{"tag":"c:copper_wires"},"6":{"tag":"c:iron_plates"},"7":{"tag":"c:emerald_tiny_dusts"}},"result":{"item":"astromine:basic_circuit","count":1}}
+{
+  "type": "minecraft:crafting_shaped", "pattern": ["676", "333", "676"],
+  "key": {"3": {"tag": "c:copper_wires"}, "6": {"tag": "c:iron_plates"}, "7": {"tag": "c:emerald_tiny_dusts"}},
+  "result": {"item": "astromine:basic_circuit", "count": 1}
+}

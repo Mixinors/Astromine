@@ -1,1 +1,7 @@
-{"type":"minecraft:crafting_shaped","pattern":["212","545","676"],"key":{"1":{"item":"astromine:advanced_circuit"},"2":{"tag":"c:steel_plates"},"4":{"item":"astromine:advanced_machine_chassis"},"5":{"item":"astromine:blades"},"6":{"item":"astromine:large_portable_tank"},"7":{"item":"astromine:advanced_battery_pack"}},"result":{"item":"astromine:advanced_fluid_mixer","count":1}}
+{
+  "type": "minecraft:crafting_shaped", "pattern": ["212", "545", "676"], "key": {
+  "1": {"item": "astromine:advanced_circuit"}, "2": {"tag": "c:steel_plates"},
+  "4": {"item": "astromine:advanced_machine_chassis"}, "5": {"item": "astromine:blades"},
+  "6": {"item": "astromine:large_portable_tank"}, "7": {"item": "astromine:advanced_battery_pack"}
+}, "result": {"item": "astromine:advanced_fluid_mixer", "count": 1}
+}

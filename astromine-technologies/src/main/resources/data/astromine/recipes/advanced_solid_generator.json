@@ -1,1 +1,6 @@
-{"type":"minecraft:crafting_shaped","pattern":["616","545","676"],"key":{"1":{"item":"astromine:advanced_circuit"},"4":{"item":"astromine:advanced_machine_chassis"},"5":{"item":"minecraft:furnace"},"6":{"tag":"c:steel_plates"},"7":{"item":"astromine:advanced_battery_pack"}},"result":{"item":"astromine:advanced_solid_generator","count":1}}
+{
+  "type": "minecraft:crafting_shaped", "pattern": ["616", "545", "676"], "key": {
+  "1": {"item": "astromine:advanced_circuit"}, "4": {"item": "astromine:advanced_machine_chassis"},
+  "5": {"item": "minecraft:furnace"}, "6": {"tag": "c:steel_plates"}, "7": {"item": "astromine:advanced_battery_pack"}
+}, "result": {"item": "astromine:advanced_solid_generator", "count": 1}
+}
