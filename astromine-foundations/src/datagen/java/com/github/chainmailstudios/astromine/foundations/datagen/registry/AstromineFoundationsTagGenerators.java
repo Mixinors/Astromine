@@ -91,5 +91,5 @@ public class AstromineFoundationsTagGenerators extends AstromineTagGenerators {
 	public final OneTimeTagGenerator ENCHANTED_GOLDEN_APPLE = register(new ItemInTagGenerator(new Identifier("c", "golden_apples"), new Identifier("enchanted_golden_apple")));
 
 	public final SetTagGenerator GEARS = register(new GenericSetTagGenerator("gears", AstromineCommon.identifier("gears"), MaterialItemType.GEAR));
-	public final SetTagGenerator PLATES = register(new GenericSetTagGenerator("plates", AstromineCommon.identifier("plates"), MaterialItemType.PLATE));
+	public final SetTagGenerator METAL_PLATES = register(new GenericSetTagGenerator("metal_plates", AstromineCommon.identifier("metal_plates"), MaterialItemType.PLATE));
 }
