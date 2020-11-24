@@ -37,9 +37,14 @@ import net.minecraft.world.chunk.WorldChunk;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 
+/**
+ * This is a concerning utility class - vini2003.
+ * @author HalfOf2
+ */
 public class ExplosionUtilities {
 	private static final BlockState AIR = Blocks.AIR.getDefaultState();
 
+	/** Attempts to explode at specified position with the given power. */
 	public static void attemptExplosion(World world, int x, int y, int z, int power) {
 		if (!world.isClient) {
 			long start = System.currentTimeMillis();
@@ -49,6 +54,7 @@ public class ExplosionUtilities {
 		}
 	}
 
+	/** Explodes at specified position with the given power. */
 	private static long explode(World access, int x, int y, int z, int radius) {
 		int cr = radius >> 4;
 		long blocks = 0;
@@ -69,11 +75,12 @@ public class ExplosionUtilities {
 	}
 
 	/**
-	 * copied from https://stackoverflow.com/a/4579069/9773993 and converted to java
-	 */
+	 * Asserts whether a certain point is inside a given sphere or not.
+	 * Originally from {@see https://stackoverflow.com/a/4579069/9773993}, adapted to Java. */
 	private static boolean touchesOrIsIn(int x1, int y1, int z1, int x2, int y2, int z2, int radius) {
 		int squared = radius * radius;
-		/* assume C1 and C2 are element-wise sorted, if not, do that now */
+
+		// Assume C1 and C2 are element-wise sorted. If not, sort them now.
 		if (0 < x1) {
 			squared -= x1 * x1;
 		} else if (0 > x2) {
@@ -92,6 +99,7 @@ public class ExplosionUtilities {
 		return squared > 0;
 	}
 
+	/** Explodes all subchunks in the given sphere. */
 	private static long forSubchunks(WorldChunk chunk, int bx, int bz, int x, int y, int z, int radius) {
 		int scr = radius >> 4;
 		int sc = y >> 4;
@@ -122,10 +130,7 @@ public class ExplosionUtilities {
 		return destroyed;
 	}
 
-	private static boolean encompassed(int x1, int y1, int z1, int x2, int y2, int z2, int radius) {
-		return in(x1, y1, z1, radius) && in(x1, y1, z2, radius) && in(x1, y2, z1, radius) && in(x1, y2, z2, radius) && in(x2, y1, z1, radius) && in(x2, y1, z2, radius) && in(x2, y2, z1, radius) && in(x2, y2, z2, radius);
-	}
-
+	/** Asserts... something?! */
 	private static boolean in(int ox, int oy, int oz, int radius) {
 		return ox * ox + oy * oy + oz * oz <= radius * radius;
 	}

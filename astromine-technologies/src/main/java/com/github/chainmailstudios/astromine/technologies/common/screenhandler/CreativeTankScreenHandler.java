@@ -32,6 +32,7 @@ import com.github.chainmailstudios.astromine.technologies.registry.AstromineTech
 // TODO! - 07/08/2020 - 17:13:28
 // TODO! - 21/08/2020 - 17:31:08
 // TODO! - 27/08/2020 - 07:56:00
+// DONE? - 20/11/2020 - 05:47:47
 public class CreativeTankScreenHandler extends TankScreenHandler {
 	public CreativeTankScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
 		super(AstromineTechnologiesScreenHandlers.CREATIVE_TANK, syncId, player, position);

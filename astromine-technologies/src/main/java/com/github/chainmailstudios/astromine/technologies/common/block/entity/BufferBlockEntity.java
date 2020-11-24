@@ -26,13 +26,12 @@ package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
 import net.minecraft.block.entity.BlockEntityType;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentInventoryBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentItemBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 
-public abstract class BufferBlockEntity extends ComponentInventoryBlockEntity {
+public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 	public BufferBlockEntity(BlockEntityType<?> type) {
 		super(type);
 	}
@@ -43,8 +42,8 @@ public abstract class BufferBlockEntity extends ComponentInventoryBlockEntity {
 		}
 
 		@Override
-		protected ItemInventoryComponent createItemComponent() {
-			return new SimpleItemInventoryComponent(6 * 9);
+		public ItemComponent createItemComponent() {
+			return SimpleItemComponent.of(6 * 9);
 		}
 	}
 
@@ -54,8 +53,8 @@ public abstract class BufferBlockEntity extends ComponentInventoryBlockEntity {
 		}
 
 		@Override
-		protected ItemInventoryComponent createItemComponent() {
-			return new SimpleItemInventoryComponent(12 * 9);
+		public ItemComponent createItemComponent() {
+			return SimpleItemComponent.of(12 * 9);
 		}
 	}
 
@@ -65,8 +64,8 @@ public abstract class BufferBlockEntity extends ComponentInventoryBlockEntity {
 		}
 
 		@Override
-		protected ItemInventoryComponent createItemComponent() {
-			return new SimpleItemInventoryComponent(18 * 9);
+		public ItemComponent createItemComponent() {
+			return SimpleItemComponent.of(18 * 9);
 		}
 	}
 
@@ -76,8 +75,8 @@ public abstract class BufferBlockEntity extends ComponentInventoryBlockEntity {
 		}
 
 		@Override
-		protected ItemInventoryComponent createItemComponent() {
-			return new SimpleItemInventoryComponent(24 * 9);
+		public ItemComponent createItemComponent() {
+			return SimpleItemComponent.of(24 * 9);
 		}
 	}
 
@@ -87,17 +86,19 @@ public abstract class BufferBlockEntity extends ComponentInventoryBlockEntity {
 		}
 
 		@Override
-		protected ItemInventoryComponent createItemComponent() {
-			return new SimpleItemInventoryComponent(6 * 9);
+		public ItemComponent createItemComponent() {
+			return SimpleItemComponent.of(6 * 9);
 		}
 
 		@Override
 		public void tick() {
-			ItemHandler.ofOptional(this).ifPresent(items -> {
-				items.forEach(stack -> {
+			ItemComponent itemComponent = getItemComponent();
+
+			if (itemComponent != null) {
+				itemComponent.forEach(stack -> {
 					stack.setCount(stack.getMaxCount());
 				});
-			});
+			}
 		}
 	}
 }

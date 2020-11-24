@@ -25,6 +25,7 @@
 package com.github.chainmailstudios.astromine.common.item;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
 import net.minecraft.item.ToolMaterial;
@@ -36,11 +37,16 @@ import net.minecraft.world.World;
 
 import com.zundrel.wrenchable.wrench.Wrench;
 
+/**
+ * A wrench {@link Item}.
+ */
 public class WrenchItem extends ToolItem implements Wrench {
+	/** Instantiates a {@link WrenchItem}. */
 	public WrenchItem(ToolMaterial material, Settings settings) {
 		super(material, settings);
 	}
 
+	/* Override behavior to damage wrench when a block is wrenched. */
 	@Override
 	public void onBlockWrenched(World world, ItemStack stack, PlayerEntity player, Hand hand, BlockHitResult result) {
 		if (player instanceof ServerPlayerEntity) {
@@ -48,6 +54,7 @@ public class WrenchItem extends ToolItem implements Wrench {
 		}
 	}
 
+	/* Override behavior to damage wrench when an entity is wrenched. */
 	@Override
 	public void onEntityWrenched(World world, ItemStack stack, PlayerEntity player, Hand hand, EntityHitResult result) {
 		if (player instanceof ServerPlayerEntity) {

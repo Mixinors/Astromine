@@ -24,13 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
-import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.PacketContext;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.FacingBlock;
-import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
@@ -41,193 +39,202 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import alexiil.mc.lib.attributes.SearchOptions;
+import alexiil.mc.lib.attributes.fluid.FluidAttributes;
+import alexiil.mc.lib.attributes.fluid.FluidExtractable;
+import alexiil.mc.lib.attributes.fluid.FluidInsertable;
+import alexiil.mc.lib.attributes.fluid.FluidVolumeUtil;
+import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.item.ItemAttributes;
 import alexiil.mc.lib.attributes.item.ItemExtractable;
 import alexiil.mc.lib.attributes.item.ItemInsertable;
+import alexiil.mc.lib.attributes.item.ItemInvUtil;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
 import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
-import com.github.chainmailstudios.astromine.common.utilities.TransportUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ExtendedComponentSidedInventoryProvider;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-import nerdhub.cardinal.components.api.ComponentRegistry;
-import nerdhub.cardinal.components.api.ComponentType;
-import nerdhub.cardinal.components.api.component.Component;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import dev.onyxstudios.cca.api.v3.component.Component;
+import dev.onyxstudios.cca.api.v3.component.ComponentKey;
+import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import org.jetbrains.annotations.NotNull;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
+import team.reborn.energy.EnergyStorage;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 
-public abstract class ComponentBlockEntity extends net.minecraft.block.entity.BlockEntity implements ComponentProvider, PacketConsumer, BlockEntityClientSerializable, Tickable {
+/**
+ * A {@link BlockEntity} which is synchronized to the client
+ * through {@link BlockEntityClientSerializable}, which is
+ * {@link Tickable}, updates its {@link BlockState} based on
+ * its activity, and handles redstone behavior.
+ */
+public abstract class ComponentBlockEntity extends BlockEntity implements BlockEntityClientSerializable, Tickable {
 	public static final Identifier TRANSFER_UPDATE_PACKET = AstromineCommon.identifier("transfer_update_packet");
-	protected final BlockEntityTransferComponent transferComponent = new BlockEntityTransferComponent();
-	protected final Map<ComponentType<?>, Component> allComponents = Maps.newHashMap();
-	protected final Map<Identifier, BiConsumer<PacketByteBuf, PacketContext>> allHandlers = Maps.newHashMap();
-	public boolean isActive = false;
 
-	public boolean[] activity = { false, false, false, false, false };
+	protected final Map<ComponentKey<?>, Component> allComponents = Maps.newHashMap();
+
+	protected final Map<Identifier, BiConsumer<PacketByteBuf, PacketContext>> allHandlers = Maps.newHashMap();
+
+	private boolean isActive = false;
+
+	private final boolean[] activity = { false, false, false, false, false };
+
 	protected boolean skipInventory = true;
 
+	protected int redstoneMode = 0;
+
+	/** Instantiates a {@link ComponentBlockEntity}. */
 	public ComponentBlockEntity(BlockEntityType<?> type) {
 		super(type);
 
-		addConsumer(TRANSFER_UPDATE_PACKET, ((buffer, context) -> {
+		addPacketConsumer(TRANSFER_UPDATE_PACKET, ((buffer, context) -> {
 			Identifier packetIdentifier = buffer.readIdentifier();
 			Direction packetDirection = buffer.readEnumConstant(Direction.class);
 			TransferType packetTransferType = buffer.readEnumConstant(TransferType.class);
 
-			transferComponent.get(ComponentRegistry.INSTANCE.get(packetIdentifier)).set(packetDirection, packetTransferType);
+			getTransferComponent().get(ComponentRegistry.get(packetIdentifier)).set(packetDirection, packetTransferType);
 			markDirty();
 			sync();
 		}));
 	}
 
+	/** Returns the {@link BlockEntityTransferComponent} to be attached. */
+	public BlockEntityTransferComponent createTransferComponent() {
+		return new BlockEntityTransferComponent();
+	}
+
+	/** Returns the attached {@link BlockEntityTransferComponent}. */
+	public BlockEntityTransferComponent getTransferComponent() {
+		return BlockEntityTransferComponent.get(this);
+	}
+
+	/** Returns the {@link BlockEntityRedstoneComponent} to be attached. */
+	public BlockEntityRedstoneComponent createRedstoneComponent() {
+		return new BlockEntityRedstoneComponent();
+	}
+
+	/** Returns the attached {@link BlockEntityRedstoneComponent}. */
+	public BlockEntityRedstoneComponent getRedstoneComponent() {
+		return BlockEntityRedstoneComponent.get(this);
+	}
+
+	/** Signals that this {@link ComponentBlockEntity} should synchronize
+	 * its full inventory contents on the next {@link #tick()}. */
 	public void doNotSkipInventory() {
 		this.skipInventory = false;
 	}
 
-	public void addComponent(ComponentType<?> type, Component component) {
+	/** Adds a {@link Component} to this {@link ComponentBlockEntity},
+	 * appropriately adding an entry to {@link #getTransferComponent()}. */
+	public void addComponent(ComponentKey<?> type, Component component) {
 		allComponents.put(type, component);
-		transferComponent.add(type);
+		getTransferComponent().add(type);
 	}
 
-	public void addConsumer(Identifier identifier, BiConsumer<PacketByteBuf, PacketContext> consumer) {
+	/** Adds a {@link BiConsumer} that handles a {@link PacketByteBuf}
+	 * whose header is the given {@link Identifier}. */
+	public void addPacketConsumer(Identifier identifier, BiConsumer<PacketByteBuf, PacketContext> consumer) {
 		allHandlers.put(identifier, consumer);
 	}
 
-	@Override
+	/** Consumes a {@link PacketByteBuf}, with the read header {@link Identifier},
+	 * repassing it to the matching {@link BiConsumer}. */
 	public void consumePacket(Identifier identifier, PacketByteBuf buffer, PacketContext context) {
 		allHandlers.get(identifier).accept(buffer, context);
 	}
 
-	@Override
-	public boolean hasComponent(ComponentType<?> componentType) {
-		return allComponents.containsKey(componentType) || componentType == AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT;
+	/** Sets this machine as active. */
+	public void tickActive() {
+		isActive = true;
 	}
 
-	@Override
-	public <C extends Component> C getComponent(ComponentType<C> componentType) {
-		return componentType == AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT ? (C) transferComponent : (C) allComponents.get(componentType);
+	/** Sets this machine as inactive. */
+	public void tickInactive() {
+		isActive = false;
 	}
 
-	@Override
-	public Set<ComponentType<?>> getComponentTypes() {
-		return allComponents.keySet();
-	}
+	/** Ticks this {@link ComponentBlockEntity}'s redstone behavior,
+	 * returning whether it should work or not. */
+	public boolean tickRedstone() {
+		boolean powered = world.getReceivedRedstonePower(getPos()) > 0;
 
-	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		tag.put("transfer", transferComponent.toTag(new CompoundTag()));
-
-		allComponents.forEach((type, component) -> {
-			tag.put(type.getId().toString(), component.toTag(new CompoundTag()));
-		});
-
-		return super.toTag(tag);
-	}
-
-	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		transferComponent.fromTag(tag.getCompound("transfer"));
-
-		allComponents.forEach((type, component) -> {
-			if (tag.contains(type.getId().toString())) {
-				component.fromTag(tag.getCompound(type.getId().toString()));
+		switch (getRedstoneComponent().getType()) {
+			case WORK_WHEN_ON: {
+				if (powered) tickActive(); else tickInactive();
+				return powered;
 			}
-		});
 
-		super.fromTag(state, tag);
-	}
+			case WORK_WHEN_OFF: {
+				if (!powered) tickActive(); else tickInactive();
+				return !powered;
+			}
 
-	@Override
-	public CompoundTag toClientTag(CompoundTag compoundTag) {
-		compoundTag = toTag(compoundTag);
-		if (skipInventory) {
-			compoundTag.remove(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT.getId().toString());
-		} else {
-			skipInventory = true;
+			default: {
+				tickActive();
+				return true;
+			}
 		}
-		return compoundTag;
 	}
 
-	@Override
-	public void fromClientTag(CompoundTag compoundTag) {
-		fromTag(null, compoundTag);
-	}
-
+	/** Ticks this {@link ComponentBlockEntity},
+	 * handling transfer between adjacent {@link BlockEntity}-ies
+	 * and updating the machine's {@link BlockState}
+	 * based on its activity, or lack thereof. */
 	@Override
 	public void tick() {
 		if (!hasWorld() || world.isClient())
 			return;
 
-		FluidInventoryComponent fluidComponent = getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
-
 		List<Pair<EnergyHandler, EnergyHandler>> energyTransfers = Lists.newArrayList();
 
 		for (Direction offsetDirection : Direction.values()) {
+			Direction neighborDirection = offsetDirection.getOpposite();
+
 			BlockPos neighborPos = getPos().offset(offsetDirection);
 
-			net.minecraft.block.entity.BlockEntity neighborBlockEntity = world.getBlockEntity(neighborPos);
-			if (neighborBlockEntity instanceof ComponentProvider) {
-				ComponentProvider neighborProvider = (ComponentProvider) neighborBlockEntity;
-				Direction neighborDirection = offsetDirection.getOpposite();
-				BlockEntityTransferComponent neighborTransferComponent = neighborProvider != null ? neighborProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT) : null;
+			BlockEntity neighborBlockEntity = world.getBlockEntity(neighborPos);
 
-				// Handle Item Siding
-				if (this instanceof ExtendedComponentSidedInventoryProvider) {
-					if (!transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(offsetDirection).isDefault()) {
-						// input
-						ItemExtractable neighbor = ItemAttributes.EXTRACTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
-						ItemInsertable self = ItemAttributes.INSERTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
+			if (getTransferComponent().hasItem()) {
+				if (!getTransferComponent().getItem(offsetDirection).isNone()) {
+					ItemExtractable neighbor = ItemAttributes.EXTRACTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
+					ItemInsertable self = ItemAttributes.INSERTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
 
-						TransportUtilities.move(neighbor, self, 1);
-					}
-					if (!transferComponent.get(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT).get(offsetDirection).isDefault()) {
-						// output
-						ItemExtractable self = ItemAttributes.EXTRACTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
-						ItemInsertable neighbor = ItemAttributes.INSERTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
-
-						TransportUtilities.move(self, neighbor, 1);
-					}
+					ItemInvUtil.move(neighbor, self, 1);
 				}
 
-				// Handle fluid siding
-				if (fluidComponent != null && transferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).get(offsetDirection).canExtract()) {
-					FluidInventoryComponent neighborFluidComponent = null;
-					if (neighborTransferComponent != null) {
-						// Get via astromine siding
-						if (neighborTransferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).get(neighborDirection).canInsert())
-							neighborFluidComponent = neighborProvider.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
-					}
+				if (!getTransferComponent().getItem(offsetDirection).isNone()) {
+					ItemExtractable neighbor = ItemAttributes.EXTRACTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
+					ItemInsertable self = ItemAttributes.INSERTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
 
-					if (neighborFluidComponent != null) {
-						List<FluidVolume> matching = (List<FluidVolume>) fluidComponent.getExtractableContentsMatching(offsetDirection, (volume -> !volume.isEmpty()));
+					ItemInvUtil.move(neighbor, self, 1);
+				}
+			}
 
-						if (!matching.isEmpty()) {
-							neighborFluidComponent.insert(neighborDirection, matching.get(0));
-						}
-					}
+			if (getTransferComponent().hasFluid()) {
+				if (!getTransferComponent().getFluid(offsetDirection).isNone()) {
+					FluidExtractable neighbor = FluidAttributes.EXTRACTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
+					FluidInsertable self = FluidAttributes.INSERTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
+
+					FluidVolumeUtil.move(neighbor, self, FluidAmount.of(1, 20));
 				}
 
-				// Handle energy siding
-				if (TransportUtilities.isExtractingEnergy(this, transferComponent, offsetDirection)) {
-					if (TransportUtilities.isInsertingEnergy(neighborBlockEntity, neighborTransferComponent, neighborDirection)) {
-						energyTransfers.add(new Pair<>(Energy.of(this).side(offsetDirection), Energy.of(neighborBlockEntity).side(neighborDirection)));
-					}
+				if (!getTransferComponent().getFluid(offsetDirection).isNone()) {
+					FluidExtractable neighbor = FluidAttributes.EXTRACTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
+					FluidInsertable self = FluidAttributes.INSERTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
+
+					FluidVolumeUtil.move(neighbor, self, FluidAmount.of(1, 20));
 				}
+			}
+
+			if (this instanceof EnergyStorage && neighborBlockEntity instanceof EnergyStorage) {
+				energyTransfers.add(new Pair<>(Energy.of(this).side(offsetDirection), Energy.of(neighborBlockEntity).side(neighborDirection)));
 			}
 		}
 
@@ -253,11 +260,60 @@ public abstract class ComponentBlockEntity extends net.minecraft.block.entity.Bl
 		}
 	}
 
-	public void tickActive() {
-		isActive = true;
+	/** Serializes this {@link ComponentBlockEntity} to a {@link CompoundTag}. */
+	@Override
+	public CompoundTag toTag(CompoundTag tag) {
+		CompoundTag transferTag = new CompoundTag();
+		getTransferComponent().writeToNbt(transferTag);
+
+		CompoundTag redstoneTag = new CompoundTag();
+		getRedstoneComponent().writeToNbt(redstoneTag);
+
+		tag.put("transfer", transferTag);
+		tag.put("redstone", redstoneTag);
+
+		allComponents.forEach((type, component) -> {
+			CompoundTag componentTag = new CompoundTag();
+			component.writeToNbt(componentTag);
+
+			tag.put(type.getId().toString(), componentTag);
+		});
+
+		return super.toTag(tag);
 	}
 
-	public void tickInactive() {
-		isActive = false;
+	/** Deserializes this {@link ComponentBlockEntity} from a {@link CompoundTag}. */
+	@Override
+	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+		getTransferComponent().readFromNbt(tag.getCompound("transfer"));
+		getRedstoneComponent().readFromNbt(tag.getCompound("redstone"));
+
+		allComponents.forEach((type, component) -> {
+			if (tag.contains(type.getId().toString())) {
+				component.readFromNbt(tag.getCompound(type.getId().toString()));
+			}
+		});
+
+		this.pos = new BlockPos(tag.getInt("x"), tag.getInt("y"), tag.getInt("z"));
+	}
+
+	/** Serializes this {@link ComponentBlockEntity} to a {@link CompoundTag},
+	 * for synchronization usage. */
+	@Override
+	public CompoundTag toClientTag(CompoundTag compoundTag) {
+		compoundTag = toTag(compoundTag);
+		if (skipInventory) {
+			compoundTag.remove(AstromineComponents.ITEM_INVENTORY_COMPONENT.getId().toString());
+		} else {
+			skipInventory = true;
+		}
+		return compoundTag;
+	}
+
+	/** Deserializes this {@link ComponentBlockEntity} from a {@link CompoundTag},
+	 * for synchronization usage. */
+	@Override
+	public void fromClientTag(CompoundTag compoundTag) {
+		fromTag(null, compoundTag);
 	}
 }

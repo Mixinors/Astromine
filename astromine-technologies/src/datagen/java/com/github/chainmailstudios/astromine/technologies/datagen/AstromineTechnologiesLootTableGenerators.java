@@ -28,10 +28,10 @@ public class AstromineTechnologiesLootTableGenerators extends AstromineLootTable
 			AstromineTechnologiesBlocks.ADVANCED_LIQUID_GENERATOR,
 			AstromineTechnologiesBlocks.ELITE_LIQUID_GENERATOR,
 
-			AstromineTechnologiesBlocks.PRIMITIVE_ELECTRIC_SMELTER,
-			AstromineTechnologiesBlocks.BASIC_ELECTRIC_SMELTER,
-			AstromineTechnologiesBlocks.ADVANCED_ELECTRIC_SMELTER,
-			AstromineTechnologiesBlocks.ELITE_ELECTRIC_SMELTER,
+			AstromineTechnologiesBlocks.PRIMITIVE_ELECTRIC_FURNACE,
+			AstromineTechnologiesBlocks.BASIC_ELECTRIC_FURNACE,
+			AstromineTechnologiesBlocks.ADVANCED_ELECTRIC_FURNACE,
+			AstromineTechnologiesBlocks.ELITE_ELECTRIC_FURNACE,
 
 			AstromineTechnologiesBlocks.PRIMITIVE_ALLOY_SMELTER,
 			AstromineTechnologiesBlocks.BASIC_ALLOY_SMELTER,
@@ -48,6 +48,11 @@ public class AstromineTechnologiesLootTableGenerators extends AstromineLootTable
 			AstromineTechnologiesBlocks.ADVANCED_PRESSER,
 			AstromineTechnologiesBlocks.ELITE_PRESSER,
 
+			AstromineTechnologiesBlocks.PRIMITIVE_WIREMILL,
+			AstromineTechnologiesBlocks.BASIC_WIREMILL,
+			AstromineTechnologiesBlocks.ADVANCED_WIREMILL,
+			AstromineTechnologiesBlocks.ELITE_WIREMILL,
+
 			AstromineTechnologiesBlocks.PRIMITIVE_ELECTROLYZER,
 			AstromineTechnologiesBlocks.BASIC_ELECTROLYZER,
 			AstromineTechnologiesBlocks.ADVANCED_ELECTROLYZER,
@@ -62,6 +67,16 @@ public class AstromineTechnologiesLootTableGenerators extends AstromineLootTable
 			AstromineTechnologiesBlocks.BASIC_FLUID_MIXER,
 			AstromineTechnologiesBlocks.ADVANCED_FLUID_MIXER,
 			AstromineTechnologiesBlocks.ELITE_FLUID_MIXER,
+
+			AstromineTechnologiesBlocks.PRIMITIVE_SOLIDIFIER,
+			AstromineTechnologiesBlocks.BASIC_SOLIDIFIER,
+			AstromineTechnologiesBlocks.ADVANCED_SOLIDIFIER,
+			AstromineTechnologiesBlocks.ELITE_SOLIDIFIER,
+
+			AstromineTechnologiesBlocks.PRIMITIVE_MELTER,
+			AstromineTechnologiesBlocks.BASIC_MELTER,
+			AstromineTechnologiesBlocks.ADVANCED_MELTER,
+			AstromineTechnologiesBlocks.ELITE_MELTER,
 
 			AstromineTechnologiesBlocks.PRIMITIVE_BUFFER,
 			AstromineTechnologiesBlocks.BASIC_BUFFER,

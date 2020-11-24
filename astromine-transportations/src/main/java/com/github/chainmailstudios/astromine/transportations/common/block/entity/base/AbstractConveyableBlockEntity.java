@@ -24,30 +24,28 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block.entity.base;
 
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
 import com.github.chainmailstudios.astromine.common.inventory.DoubleStackInventory;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyable;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorConveyable;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorTypes;
 
-public class AbstractConveyableBlockEntity extends BlockEntity implements Conveyable, DoubleStackInventory, BlockEntityClientSerializable, RenderAttachmentBlockEntity, Tickable {
+public class AbstractConveyableBlockEntity extends ComponentBlockEntity implements Conveyable, DoubleStackInventory, RenderAttachmentBlockEntity {
 	int leftPosition = 0;
 	int prevLeftPosition = 0;
 	int rightPosition = 0;
@@ -63,6 +61,9 @@ public class AbstractConveyableBlockEntity extends BlockEntity implements Convey
 
 	@Override
 	public void tick() {
+		if (world == null || !tickRedstone())
+			return;
+
 		Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
 		int speed = 16;
 
@@ -101,6 +102,7 @@ public class AbstractConveyableBlockEntity extends BlockEntity implements Convey
 				setLeftPosition(getLeftPosition() + 1);
 			} else if (transition && leftPosition >= speed) {
 				conveyable.give(getLeftStack());
+				setLeftStack(ItemStack.EMPTY);
 				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 40 * 40)
 					removeLeftStack();
 			}
@@ -125,6 +127,7 @@ public class AbstractConveyableBlockEntity extends BlockEntity implements Convey
 				setRightPosition(getRightPosition() + 1);
 			} else if (transition && rightPosition >= speed) {
 				conveyable.give(getRightStack());
+				setRightStack(ItemStack.EMPTY);
 				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 40 * 40)
 					removeRightStack();
 			}

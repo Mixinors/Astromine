@@ -29,9 +29,14 @@ import net.minecraft.screen.ScreenHandlerType;
 
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentItemEntity;
 
+/**
+ * A {@link ComponentEntityScreenHandler}
+ * with an attached {@link ComponentItemEntity}.
+ */
 public abstract class ComponentEntityItemScreenHandler extends ComponentEntityScreenHandler {
-	public ComponentItemEntity entity;
+	protected ComponentItemEntity entity;
 
+	/** Instantiates a {@link ComponentEntityScreenHandler}. */
 	public ComponentEntityItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, int entityId) {
 		super(type, syncId, player, entityId);
 

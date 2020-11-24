@@ -24,55 +24,53 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.recipe.RecipeType;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
-import com.github.chainmailstudios.astromine.common.inventory.BaseInventory;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
+import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.TrituratingRecipe;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public abstract class TrituratorBlockEntity extends ComponentEnergyInventoryBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
 	public double progress = 0;
 	public int limit = 100;
 	public boolean shouldTry = true;
 
 	Optional<TrituratingRecipe> optionalRecipe = Optional.empty();
 
-	public TrituratorBlockEntity(Block energyBlock, BlockEntityType<?> type) {
-		super(energyBlock, type);
+	public TrituratorBlockEntity(BlockEntityType<?> type) {
+		super(type);
 	}
 
 	@Override
-	protected ItemInventoryComponent createItemComponent() {
-		return new SimpleItemInventoryComponent(2).withInsertPredicate((direction, stack, slot) -> {
+	public ItemComponent createItemComponent() {
+		return SimpleItemComponent.of(2).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 1) {
 				return false;
 			}
 
-			return TrituratingRecipe.allows(world, new SimpleItemInventoryComponent(stack).asInventory());
+			if (!StackUtilities.test(stack, getItemComponent().getFirst())) {
+				return false;
+			}
+
+			return TrituratingRecipe.allows(world, SimpleItemComponent.of(stack));
 		}).withExtractPredicate(((direction, stack, slot) -> {
 			return slot == 0;
 		})).withListener((inventory) -> {
@@ -82,8 +80,8 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyInventoryBloc
 	}
 
 	@Override
-	protected EnergyInventoryComponent createEnergyComponent() {
-		return new SimpleEnergyInventoryComponent(getEnergySize());
+	public EnergyComponent createEnergyComponent() {
+		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
 	@Override
@@ -100,17 +98,18 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyInventoryBloc
 	public void tick() {
 		super.tick();
 
-		if (world == null)
-			return;
-		if (world.isClient)
+		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		ItemHandler.ofOptional(this).ifPresent(items -> {
-			EnergyVolume energyVolume = getEnergyComponent().getVolume();
-			BaseInventory inputInventory = BaseInventory.of(items.getFirst(), items.getSecond());
+		ItemComponent itemComponent = getItemComponent();
+
+		EnergyComponent energyComponent = getEnergyComponent();
+
+		if (itemComponent != null && energyComponent != null) {
+			EnergyVolume energyVolume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = (Optional<TrituratingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) TrituratingRecipe.Type.INSTANCE, ItemInventoryFromInventoryComponent.of(itemComponent), world);
+				optionalRecipe = TrituratingRecipe.matching(world, itemComponent);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -122,50 +121,33 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyInventoryBloc
 			if (optionalRecipe.isPresent()) {
 				TrituratingRecipe recipe = optionalRecipe.get();
 
-				if (recipe.matches(inputInventory, world)) {
-					limit = recipe.getTime();
+				limit = recipe.getTime();
 
-					double speed = Math.min(getMachineSpeed(), limit - progress);
-					double consumed = recipe.getEnergyConsumed() * speed / limit;
+				double speed = Math.min(getMachineSpeed(), limit - progress);
+				double consumed = recipe.getEnergyInput() * speed / limit;
 
-					ItemStack output = recipe.getOutput().copy();
+				if (energyVolume.hasStored(consumed)) {
+					energyVolume.take(consumed);
 
-					boolean isEmpty = items.getFirst().isEmpty();
-					boolean isEqual = ItemStack.areItemsEqual(items.getFirst(), output) && ItemStack.areTagsEqual(items.getFirst(), output);
+					if (progress + speed >= limit) {
+						optionalRecipe = Optional.empty();
 
-					if (energyVolume.hasStored(consumed)) {
-						if ((isEmpty || isEqual) && items.getFirst().getCount() + output.getCount() <= items.getFirst().getMaxCount()) {
-							energyVolume.minus(consumed);
+						itemComponent.getSecond().decrement(recipe.getFirstInput().testMatching(itemComponent.getSecond()).getCount());
+						itemComponent.setFirst(StackUtilities.into(itemComponent.getFirst(), recipe.getFirstOutput()));
 
-							if (progress + speed >= limit) {
-								optionalRecipe = Optional.empty();
-
-								items.getSecond().decrement(1);
-
-								if (isEmpty) {
-									items.setFirst(output);
-								} else {
-									items.getFirst().increment(output.getCount());
-									shouldTry = true;
-								}
-
-								progress = 0;
-							} else {
-								progress += speed;
-							}
-
-							tickActive();
-						} else {
-							tickInactive();
-						}
+						progress = 0;
 					} else {
-						tickInactive();
+						progress += speed;
 					}
+
+					tickActive();
+				} else {
+					tickInactive();
 				}
 			} else {
 				tickInactive();
 			}
-		});
+		}
 	}
 
 	@Override
@@ -184,7 +166,7 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyInventoryBloc
 
 	public static class Primitive extends TrituratorBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlocks.PRIMITIVE_TRITURATOR, AstromineTechnologiesBlockEntityTypes.PRIMITIVE_TRITURATOR);
+			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_TRITURATOR);
 		}
 
 		@Override
@@ -205,7 +187,7 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyInventoryBloc
 
 	public static class Basic extends TrituratorBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlocks.BASIC_TRITURATOR, AstromineTechnologiesBlockEntityTypes.BASIC_TRITURATOR);
+			super(AstromineTechnologiesBlockEntityTypes.BASIC_TRITURATOR);
 		}
 
 		@Override
@@ -226,7 +208,7 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyInventoryBloc
 
 	public static class Advanced extends TrituratorBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlocks.ADVANCED_TRITURATOR, AstromineTechnologiesBlockEntityTypes.ADVANCED_TRITURATOR);
+			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_TRITURATOR);
 		}
 
 		@Override
@@ -247,7 +229,7 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyInventoryBloc
 
 	public static class Elite extends TrituratorBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlocks.ELITE_TRITURATOR, AstromineTechnologiesBlockEntityTypes.ELITE_TRITURATOR);
+			super(AstromineTechnologiesBlockEntityTypes.ELITE_TRITURATOR);
 		}
 
 		@Override

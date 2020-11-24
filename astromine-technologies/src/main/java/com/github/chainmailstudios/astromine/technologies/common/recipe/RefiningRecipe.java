@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -33,169 +31,111 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Lazy;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.FractionUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
+import com.github.chainmailstudios.astromine.common.utilities.DoubleUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.IntegerUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+import java.util.Optional;
 
-public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<Inventory> {
-	final Identifier identifier;
-	final RegistryKey<Fluid> inputFluidKey;
-	final Lazy<Fluid> inputFluid;
-	final Fraction inputAmount;
-	final RegistryKey<Fluid> firstOutputFluidKey;
-	final Lazy<Fluid> firstOutputFluid;
-	final Fraction firstOutputAmount;
-	final RegistryKey<Fluid> secondOutputFluidKey;
-	final Lazy<Fluid> secondOutputFluid;
-	final Fraction secondOutputAmount;
-	final RegistryKey<Fluid> thirdOutputFluidKey;
-	final Lazy<Fluid> thirdOutputFluid;
-	final Fraction thirdOutputAmount;
-	final RegistryKey<Fluid> fourthOutputFluidKey;
-	final Lazy<Fluid> fourthOutputFluid;
-	final Fraction fourthOutputAmount;
-	final RegistryKey<Fluid> fifthOutputFluidKey;
-	final Lazy<Fluid> fifthOutputFluid;
-	final Fraction fifthOutputAmount;
-	final RegistryKey<Fluid> sixthOutputFluidKey;
-	final Lazy<Fluid> sixthOutputFluid;
-	final Fraction sixthOutputAmount;
-	final RegistryKey<Fluid> seventhOutputFluidKey;
-	final Lazy<Fluid> seventhOutputFluid;
-	final Fraction seventhOutputAmount;
-	final double energyConsumed;
-	final int time;
+public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<Inventory> {
+	private final Identifier identifier;
+	private final FluidIngredient firstInput;
+	private final FluidVolume firstOutput;
+	private final FluidVolume secondOutput;
+	private final FluidVolume thirdOutput;
+	private final FluidVolume fourthOutput;
+	private final FluidVolume fifthOutput;
+	private final FluidVolume sixthOutput;
+	private final FluidVolume seventhOutput;
+	private final double energyInput;
+	private final int time;
 
-	public RefiningRecipe(Identifier identifier, RegistryKey<Fluid> inputFluidKey, Fraction inputAmount, RegistryKey<Fluid> firstOutputFluidKey, Fraction firstOutputAmount, RegistryKey<Fluid> secondOutputFluidKey, Fraction secondOutputAmount,
-		RegistryKey<Fluid> thirdOutputFluidKey, Fraction thirdOutputAmount, RegistryKey<Fluid> fourthOutputFluidKey, Fraction fourthOutputAmount, RegistryKey<Fluid> fifthOutputFluidKey, Fraction fifthOutputAmount, RegistryKey<Fluid> sixthOutputFluidKey,
-		Fraction sixthOutputAmount, RegistryKey<Fluid> seventhOutputFluidKey, Fraction seventhOutputAmount, double energyConsumed, int time) {
+	public RefiningRecipe(Identifier identifier, FluidIngredient firstInput, FluidVolume firstOutput, FluidVolume secondOutput, FluidVolume thirdOutput, FluidVolume fourthOutput, FluidVolume fifthOutput, FluidVolume sixthOutput, FluidVolume seventhOutput, double energyInput,
+		int time) {
 		this.identifier = identifier;
-		this.inputFluidKey = inputFluidKey;
-		this.inputFluid = new Lazy<>(() -> Registry.FLUID.get(this.inputFluidKey));
-		this.inputAmount = inputAmount;
-		this.firstOutputFluidKey = firstOutputFluidKey;
-		this.firstOutputFluid = new Lazy<>(() -> Registry.FLUID.get(this.firstOutputFluidKey));
-		this.firstOutputAmount = firstOutputAmount;
-		this.secondOutputFluidKey = secondOutputFluidKey;
-		this.secondOutputFluid = new Lazy<>(() -> Registry.FLUID.get(this.secondOutputFluidKey));
-		this.secondOutputAmount = secondOutputAmount;
-		this.thirdOutputFluidKey = thirdOutputFluidKey;
-		this.thirdOutputFluid = new Lazy<>(() -> Registry.FLUID.get(this.thirdOutputFluidKey));
-		this.thirdOutputAmount = thirdOutputAmount;
-		this.fourthOutputFluidKey = fourthOutputFluidKey;
-		this.fourthOutputFluid = new Lazy<>(() -> Registry.FLUID.get(this.fourthOutputFluidKey));
-		this.fourthOutputAmount = fourthOutputAmount;
-		this.fifthOutputFluidKey = fifthOutputFluidKey;
-		this.fifthOutputFluid = new Lazy<>(() -> Registry.FLUID.get(this.fifthOutputFluidKey));
-		this.fifthOutputAmount = fifthOutputAmount;
-		this.sixthOutputFluidKey = sixthOutputFluidKey;
-		this.sixthOutputFluid = new Lazy<>(() -> Registry.FLUID.get(this.sixthOutputFluidKey));
-		this.sixthOutputAmount = sixthOutputAmount;
-		this.seventhOutputFluidKey = seventhOutputFluidKey;
-		this.seventhOutputFluid = new Lazy<>(() -> Registry.FLUID.get(this.seventhOutputFluidKey));
-		this.seventhOutputAmount = seventhOutputAmount;
-		this.energyConsumed = energyConsumed;
+		this.firstInput = firstInput;
+		this.firstOutput = firstOutput;
+		this.secondOutput = secondOutput;
+		this.thirdOutput = thirdOutput;
+		this.fourthOutput = fourthOutput;
+		this.fifthOutput = fifthOutput;
+		this.sixthOutput = sixthOutput;
+		this.seventhOutput = seventhOutput;
+		this.energyInput = energyInput;
 		this.time = time;
 	}
 
-	public static boolean allows(World world, Fluid inserting, Fluid existing) {
+	public static boolean allows(World world, FluidComponent fluidComponent) {
 		return world.getRecipeManager().getAllOfType(RefiningRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
 			RefiningRecipe recipe = ((RefiningRecipe) it);
 
-			return (existing == inserting || existing == Fluids.EMPTY) && (recipe.inputFluid.get() == inserting);
+			return recipe.allows(fluidComponent);
 		});
 	}
+	
+	public static Optional<RefiningRecipe> matching(World world, FluidComponent fluidComponent) {
+		return (Optional<RefiningRecipe>) (Object) world.getRecipeManager().getAllOfType(RefiningRecipe.Type.INSTANCE).values().stream().filter(it -> {
+			RefiningRecipe recipe = ((RefiningRecipe) it);
 
-	public boolean matches(FluidInventoryComponent fluidComponent) {
-		FluidHandler fluidHandler = FluidHandler.of(fluidComponent);
+			return recipe.matches(fluidComponent);
+		}).findFirst();
+	}
 
-		FluidVolume inputVolume = fluidHandler.getFirst();
-		FluidVolume firstOutputVolume = fluidHandler.getSecond();
-		FluidVolume secondOutputVolume = fluidHandler.getThird();
-		FluidVolume thirdOutputVolume = fluidHandler.getFourth();
-		FluidVolume fourthOutputVolume = fluidHandler.getFifth();
-		FluidVolume fifthOutputVolume = fluidHandler.getSixth();
-		FluidVolume sixthOutputVolume = fluidHandler.getSeventh();
-		FluidVolume seventhOutputVolume = fluidHandler.getEighth();
-
-		if (!inputVolume.canAccept(inputFluid.get())) {
-			return false;
-		}
-		if (!inputVolume.hasStored(inputAmount)) {
+	public boolean matches(FluidComponent fluidComponent) {
+		if (fluidComponent.getSize() < 8) {
 			return false;
 		}
 
-		if (!firstOutputVolume.canAccept(firstOutputFluid.get())) {
-			return false;
-		}
-		if (!firstOutputVolume.hasAvailable(firstOutputAmount)) {
+		if (!firstInput.test(fluidComponent.getFirst())) {
 			return false;
 		}
 
-		if (!secondOutputVolume.canAccept(secondOutputFluid.get())) {
+		if (!firstOutput.test(fluidComponent.getSecond())) {
 			return false;
 		}
 
-		if (!secondOutputVolume.hasAvailable(secondOutputAmount)) {
+		if (!secondOutput.test(fluidComponent.getThird())) {
 			return false;
 		}
 
-		if (!thirdOutputVolume.canAccept(thirdOutputFluid.get())) {
+		if (!thirdOutput.test(fluidComponent.getFourth())) {
 			return false;
 		}
 
-		if (!thirdOutputVolume.hasAvailable(thirdOutputAmount)) {
+		if (!fourthOutput.test(fluidComponent.getFifth())) {
 			return false;
 		}
 
-		if (!fourthOutputVolume.canAccept(fourthOutputFluid.get())) {
+		if (!fifthOutput.test(fluidComponent.getSixth())) {
 			return false;
 		}
 
-		if (!fourthOutputVolume.hasAvailable(fourthOutputAmount)) {
+		if (!sixthOutput.test(fluidComponent.getSeventh())) {
 			return false;
 		}
 
-		if (!fifthOutputVolume.canAccept(fifthOutputFluid.get())) {
+		return seventhOutput.test(fluidComponent.getEighth());
+	}
+
+	public boolean allows(FluidComponent fluidComponent) {
+		if (fluidComponent.getSize() < 1) {
 			return false;
 		}
 
-		if (!fifthOutputVolume.hasAvailable(fifthOutputAmount)) {
-			return false;
-		}
-
-		if (!sixthOutputVolume.canAccept(sixthOutputFluid.get())) {
-			return false;
-		}
-
-		if (!sixthOutputVolume.hasAvailable(sixthOutputAmount)) {
-			return false;
-		}
-
-		if (!seventhOutputVolume.canAccept(seventhOutputFluid.get())) {
-			return false;
-		}
-
-		return seventhOutputVolume.hasAvailable(seventhOutputAmount);
+		return firstInput.testWeak(fluidComponent.getFirst());
 	}
 
 	@Override
@@ -220,7 +160,7 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 
 	@Override
 	public ItemStack craft(Inventory inventory) {
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override
@@ -242,76 +182,45 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 		return identifier;
 	}
 
-	public Fluid getInputFluid() {
-		return inputFluid.get();
+	public FluidIngredient getIngredient() {
+		return firstInput;
 	}
 
-	public Fraction getInputAmount() {
-		return inputAmount.copy();
+	public FluidVolume getFirstOutputVolume() {
+		return firstOutput.copy();
 	}
 
-	public Fluid getFirstOutputFluid() {
-		return firstOutputFluid.get();
+	public FluidVolume getSecondOutputVolume() {
+		return secondOutput.copy();
 	}
 
-	public Fraction getFirstOutputAmount() {
-		return firstOutputAmount.copy();
+	public FluidVolume getThirdOutputVolume() {
+		return thirdOutput.copy();
 	}
 
-	public Fluid getSecondOutputFluid() {
-		return secondOutputFluid.get();
+	public FluidVolume getFourthOutputVolume() {
+		return fourthOutput.copy();
 	}
 
-	public Fraction getSecondOutputAmount() {
-		return secondOutputAmount.copy();
+	public FluidVolume getFifthOutputVolume() {
+		return fifthOutput.copy();
 	}
 
-	public Fluid getThirdOutputFluid() {
-		return thirdOutputFluid.get();
+	public FluidVolume getSixthOutputVolume() {
+		return sixthOutput.copy();
 	}
 
-	public Fraction getThirdOutputAmount() {
-		return thirdOutputAmount.copy();
-	}
-
-	public Fluid getFourthOutputFluid() {
-		return fourthOutputFluid.get();
-	}
-
-	public Fraction getFourthOutputAmount() {
-		return fourthOutputAmount.copy();
-	}
-
-	public Fluid getFifthOutputFluid() {
-		return fifthOutputFluid.get();
-	}
-
-	public Fraction getFifthOutputAmount() {
-		return fifthOutputAmount.copy();
-	}
-
-	public Fluid getSixthOutputFluid() {
-		return sixthOutputFluid.get();
-	}
-
-	public Fraction getSixthOutputAmount() {
-		return sixthOutputAmount.copy();
-	}
-
-	public Fluid getSeventhOutputFluid() {
-		return seventhOutputFluid.get();
-	}
-
-	public Fraction getSeventhOutputAmount() {
-		return seventhOutputAmount.copy();
-	}
-
-	public double getEnergyConsumed() {
-		return energyConsumed;
+	public FluidVolume getSeventhOutputVolume() {
+		return seventhOutput.copy();
 	}
 
 	public int getTime() {
 		return time;
+	}
+
+	@Override
+	public double getEnergyInput() {
+		return energyInput;
 	}
 
 	public static final class Serializer implements RecipeSerializer<RefiningRecipe> {
@@ -319,117 +228,99 @@ public class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<
 
 		public static final Serializer INSTANCE = new Serializer();
 
-		private Serializer() {
-			// Locked.
-		}
+		private Serializer() {}
 
 		@Override
 		public RefiningRecipe read(Identifier identifier, JsonObject object) {
 			RefiningRecipe.Format format = new Gson().fromJson(object, RefiningRecipe.Format.class);
 
-			return new RefiningRecipe(identifier, RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.input)), FractionUtilities.fromJson(format.inputAmount), RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.firstOutput)), FractionUtilities.fromJson(
-				format.firstOutputAmount), RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.secondOutput)), FractionUtilities.fromJson(format.secondOutputAmount), RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.thirdOutput)), FractionUtilities.fromJson(
-					format.thirdOutputAmount), RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.fourthOutput)), FractionUtilities.fromJson(format.fourthOutputAmount), RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.fifthOutput)), FractionUtilities.fromJson(
-						format.fifthOutputAmount), RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.sixthOutput)), FractionUtilities.fromJson(format.sixthOutputAmount), RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.seventhOutput)), FractionUtilities.fromJson(
-							format.seventhOutputAmount), EnergyUtilities.fromJson(format.energyGenerated), ParsingUtilities.fromJson(format.time, Integer.class));
+			return new RefiningRecipe(
+					identifier,
+					FluidIngredient.fromJson(format.firstInput),
+					FluidVolume.fromJson(format.firstOutput),
+					FluidVolume.fromJson(format.secondOutput),
+					FluidVolume.fromJson(format.thirdOutput),
+					FluidVolume.fromJson(format.fourthOutput),
+					FluidVolume.fromJson(format.fifthOutput),
+					FluidVolume.fromJson(format.sixthOutput),
+					FluidVolume.fromJson(format.seventhOutput),
+					DoubleUtilities.fromJson(format.energyInput),
+					IntegerUtilities.fromJson(format.time)
+			);
 		}
 
 		@Override
 		public RefiningRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new RefiningRecipe(identifier, RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), RegistryKey.of(
-				Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities
-					.fromPacket(buffer), RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), RegistryKey.of(Registry.FLUID_KEY, buffer
-						.readIdentifier()), FractionUtilities.fromPacket(buffer), EnergyUtilities.fromPacket(buffer), PacketUtilities.fromPacket(buffer, Integer.class));
+			return new RefiningRecipe(
+					identifier,
+					FluidIngredient.fromPacket(buffer),
+					FluidVolume.fromPacket(buffer),
+					FluidVolume.fromPacket(buffer),
+					FluidVolume.fromPacket(buffer),
+					FluidVolume.fromPacket(buffer),
+					FluidVolume.fromPacket(buffer),
+					FluidVolume.fromPacket(buffer),
+					FluidVolume.fromPacket(buffer),
+					DoubleUtilities.fromPacket(buffer),
+					IntegerUtilities.fromPacket(buffer)
+			);
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, RefiningRecipe recipe) {
-			buffer.writeIdentifier(recipe.inputFluidKey.getValue());
-			FractionUtilities.toPacket(buffer, recipe.inputAmount);
-			buffer.writeIdentifier(recipe.firstOutputFluidKey.getValue());
-			FractionUtilities.toPacket(buffer, recipe.firstOutputAmount);
-			buffer.writeIdentifier(recipe.secondOutputFluidKey.getValue());
-			FractionUtilities.toPacket(buffer, recipe.secondOutputAmount);
-			buffer.writeIdentifier(recipe.thirdOutputFluidKey.getValue());
-			FractionUtilities.toPacket(buffer, recipe.thirdOutputAmount);
-			buffer.writeIdentifier(recipe.fourthOutputFluidKey.getValue());
-			FractionUtilities.toPacket(buffer, recipe.fourthOutputAmount);
-			buffer.writeIdentifier(recipe.fifthOutputFluidKey.getValue());
-			FractionUtilities.toPacket(buffer, recipe.fifthOutputAmount);
-			buffer.writeIdentifier(recipe.sixthOutputFluidKey.getValue());
-			FractionUtilities.toPacket(buffer, recipe.sixthOutputAmount);
-			buffer.writeIdentifier(recipe.seventhOutputFluidKey.getValue());
-			FractionUtilities.toPacket(buffer, recipe.seventhOutputAmount);
-			EnergyUtilities.toPacket(buffer, recipe.energyConsumed);
-			buffer.writeInt(recipe.getTime());
+			recipe.firstInput.toPacket(buffer);
+			recipe.firstOutput.toPacket(buffer);
+			recipe.secondOutput.toPacket(buffer);
+			recipe.thirdOutput.toPacket(buffer);
+			recipe.fourthOutput.toPacket(buffer);
+			recipe.fifthOutput.toPacket(buffer);
+			recipe.sixthOutput.toPacket(buffer);
+			recipe.seventhOutput.toPacket(buffer);
+			DoubleUtilities.toPacket(buffer, recipe.energyInput);
+			IntegerUtilities.toPacket(buffer, recipe.time);
 		}
 	}
 
 	public static final class Type implements AstromineRecipeType<RefiningRecipe> {
 		public static final Type INSTANCE = new Type();
 
-		private Type() {
-			// Locked.
-		}
+		private Type() {}
 	}
 
 	public static final class Format {
-		String input;
-		@SerializedName("input_amount")
-		JsonElement inputAmount;
+		@SerializedName("input")
+		JsonElement firstInput;
 
 		@SerializedName("first_output")
-		String firstOutput;
-
-		@SerializedName("first_output_amount")
-		JsonElement firstOutputAmount;
+		JsonElement firstOutput;
 
 		@SerializedName("second_output")
-		String secondOutput;
-
-		@SerializedName("second_output_amount")
-		JsonElement secondOutputAmount;
+		JsonElement secondOutput;
 
 		@SerializedName("third_output")
-		String thirdOutput;
-
-		@SerializedName("third_output_amount")
-		JsonElement thirdOutputAmount;
+		JsonElement thirdOutput;
 
 		@SerializedName("fourth_output")
-		String fourthOutput;
-
-		@SerializedName("fourth_output_amount")
-		JsonElement fourthOutputAmount;
+		JsonElement fourthOutput;
 
 		@SerializedName("fifth_output")
-		String fifthOutput;
-
-		@SerializedName("fifth_output_amount")
-		JsonElement fifthOutputAmount;
+		JsonElement fifthOutput;
 
 		@SerializedName("sixth_output")
-		String sixthOutput;
-
-		@SerializedName("sixth_output_amount")
-		JsonElement sixthOutputAmount;
+		JsonElement sixthOutput;
 
 		@SerializedName("seventh_output")
-		String seventhOutput;
+		JsonElement seventhOutput;
 
-		@SerializedName("seventh_output_amount")
-		JsonElement seventhOutputAmount;
-
-		@SerializedName("energy_consumed")
-		JsonElement energyGenerated;
+		@SerializedName("energy_input")
+		JsonElement energyInput;
 
 		JsonElement time;
 
 		@Override
 		public String toString() {
-			return "Format{" + "input='" + input + '\'' + ", inputAmount=" + inputAmount + ", firstOutput='" + firstOutput + '\'' + ", firstOutputAmount=" + firstOutputAmount + ", secondOutput='" + secondOutput + '\'' + ", secondOutputAmount=" + secondOutputAmount +
-				", thirdOutput='" + thirdOutput + '\'' + ", thirdOutputAmount=" + thirdOutputAmount + ", fourthOutput='" + fourthOutput + '\'' + ", fourthOutputAmount=" + fourthOutputAmount + ", fifthOutput='" + fifthOutput + '\'' + ", fifthOutputAmount=" + fifthOutputAmount +
-				", sixthOutput='" + sixthOutput + '\'' + ", sixthOutputAmount=" + sixthOutputAmount + ", seventhOutput='" + seventhOutput + '\'' + ", seventhOutputAmount=" + seventhOutputAmount + ", energyGenerated=" + energyGenerated + ", time=" + time + '}';
+			return "Format{" + "firstInput=" + firstInput + ", firstOutput=" + firstOutput + ", secondOutput=" + secondOutput + ", thirdOutput=" + thirdOutput + ", fourthOutput=" + fourthOutput + ", fifthOutput=" + fifthOutput + ", sixthOutput=" + sixthOutput + ", seventhOutput=" +
+				seventhOutput + ", energyInput=" + energyInput + ", time=" + time + '}';
 		}
 	}
 }

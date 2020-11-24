@@ -18,7 +18,9 @@
   "criteria": {
     "tricked_piglin": {
       "trigger": "astromine:tricked_piglin",
-      "conditions": {}
+      "conditions": {
+        "successful": true
+      }
     }
   }
 }

@@ -1,10 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": ["010", "121", "010"],
-  "key": {
-    "0": {"tag": "c:steel_plates"},
-    "1": {"tag": "c:sterling_silver_plates"},
-    "2": {"item": "astromine:basic_machine_chassis"}
-  },
+  "type": "minecraft:crafting_shaped", "pattern": ["252", "545", "252"],
+  "key": {"2": {"tag": "c:rose_gold_plates"}, "4": {"tag": "c:asterite_dusts"}, "5": {"tag": "c:silver_gears"}},
   "result": {"item": "astromine:advanced_machine_chassis", "count": 1}
 }

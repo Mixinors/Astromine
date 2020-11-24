@@ -1,16 +1,6 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": ["012", "345", "678"],
-  "key": {
-    "0": {"tag": "c:steel_plates"},
-    "1": {"item": "astromine:pressurized_gas_canister"},
-    "2": {"tag": "c:steel_plates"},
-    "3": {"tag": "c:steel_gears"},
-    "4": {"item": "astromine:advanced_machine_chassis"},
-    "5": {"tag": "c:steel_gears"},
-    "6": {"tag": "c:steel_plates"},
-    "7": {"item": "astromine:pressurized_gas_canister"},
-    "8": {"tag": "c:steel_plates"}
-  },
-  "result": {"item": "astromine:advanced_tank", "count": 1}
+  "type": "minecraft:crafting_shaped", "pattern": ["010", "141", "010"], "key": {
+  "0": {"tag": "c:steel_plates"}, "1": {"item": "astromine:large_portable_tank"},
+  "4": {"item": "astromine:advanced_machine_chassis"}
+}, "result": {"item": "astromine:advanced_tank", "count": 1}
 }

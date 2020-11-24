@@ -1,12 +1,7 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": ["010", "343", "070"],
-  "key": {
-    "0": {"tag": "c:copper_plates"},
-    "1": {"item": "astromine:basic_circuit"},
-    "3": {"tag": "c:tin_gears"},
-    "4": {"item": "astromine:primitive_machine_chassis"},
-    "7": {"item": "minecraft:grindstone"}
-  },
-  "result": {"item": "astromine:primitive_triturator", "count": 1}
+  "type": "minecraft:crafting_shaped", "pattern": ["212", "343", "676"], "key": {
+  "1": {"item": "astromine:primitive_circuit"}, "2": {"tag": "c:lead_plates"}, "3": {"item": "minecraft:iron_bars"},
+  "4": {"item": "astromine:primitive_machine_chassis"}, "6": {"item": "minecraft:piston"},
+  "7": {"item": "astromine:primitive_battery_pack"}
+}, "result": {"item": "astromine:primitive_triturator", "count": 1}
 }

@@ -24,15 +24,14 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.InfiniteEnergyVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
@@ -40,18 +39,17 @@ import com.github.chainmailstudios.astromine.technologies.common.block.entity.ma
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
-public abstract class CapacitorBlockEntity extends ComponentEnergyInventoryBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
-	public CapacitorBlockEntity(Block energyBlock, BlockEntityType<?> type) {
-		super(energyBlock, type);
+public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+	public CapacitorBlockEntity(BlockEntityType<?> type) {
+		super(type);
 	}
 
 	@Override
-	protected ItemInventoryComponent createItemComponent() {
-		return new SimpleItemInventoryComponent(2).withInsertPredicate((direction, stack, slot) -> {
+	public ItemComponent createItemComponent() {
+		return SimpleItemComponent.of(2).withInsertPredicate((direction, stack, slot) -> {
 			return slot == 0;
 		}).withExtractPredicate((direction, stack, slot) -> {
 			return slot == 1;
@@ -59,26 +57,26 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyInventoryBlock
 	}
 
 	@Override
-	protected EnergyInventoryComponent createEnergyComponent() {
-		return new SimpleEnergyInventoryComponent(getEnergySize());
+	public EnergyComponent createEnergyComponent() {
+		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
 
-		if (world == null)
-			return;
-		if (world.isClient)
+		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		ItemStack inputStack = itemComponent.getStack(0);
+		ItemComponent itemComponent = getItemComponent();
+
+		ItemStack inputStack = itemComponent.getFirst();
 		if (Energy.valid(inputStack)) {
 			EnergyHandler energyHandler = Energy.of(inputStack);
 			energyHandler.into(Energy.of(this)).move(1024 * getMachineSpeed());
 		}
 
-		ItemStack outputStack = itemComponent.getStack(1);
+		ItemStack outputStack = itemComponent.getSecond();
 		if (Energy.valid(outputStack)) {
 			EnergyHandler energyHandler = Energy.of(outputStack);
 			Energy.of(this).into(energyHandler).move(1024 * getMachineSpeed());
@@ -87,7 +85,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyInventoryBlock
 
 	public static class Primitive extends CapacitorBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlocks.PRIMITIVE_CAPACITOR, AstromineTechnologiesBlockEntityTypes.PRIMITIVE_CAPACITOR);
+			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_CAPACITOR);
 		}
 
 		@Override
@@ -108,7 +106,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyInventoryBlock
 
 	public static class Basic extends CapacitorBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlocks.BASIC_CAPACITOR, AstromineTechnologiesBlockEntityTypes.BASIC_CAPACITOR);
+			super(AstromineTechnologiesBlockEntityTypes.BASIC_CAPACITOR);
 		}
 
 		@Override
@@ -129,7 +127,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyInventoryBlock
 
 	public static class Advanced extends CapacitorBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlocks.ADVANCED_CAPACITOR, AstromineTechnologiesBlockEntityTypes.ADVANCED_CAPACITOR);
+			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_CAPACITOR);
 		}
 
 		@Override
@@ -150,7 +148,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyInventoryBlock
 
 	public static class Elite extends CapacitorBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlocks.ELITE_CAPACITOR, AstromineTechnologiesBlockEntityTypes.ELITE_CAPACITOR);
+			super(AstromineTechnologiesBlockEntityTypes.ELITE_CAPACITOR);
 		}
 
 		@Override
@@ -171,12 +169,12 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyInventoryBlock
 
 	public static class Creative extends CapacitorBlockEntity {
 		public Creative() {
-			super(AstromineTechnologiesBlocks.CREATIVE_CAPACITOR, AstromineTechnologiesBlockEntityTypes.CREATIVE_CAPACITOR);
+			super(AstromineTechnologiesBlockEntityTypes.CREATIVE_CAPACITOR);
 		}
 
 		@Override
-		protected EnergyInventoryComponent createEnergyComponent() {
-			return new SimpleEnergyInventoryComponent(InfiniteEnergyVolume.of());
+		public EnergyComponent createEnergyComponent() {
+			return SimpleEnergyComponent.of(InfiniteEnergyVolume.of());
 		}
 
 		@Override

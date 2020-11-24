@@ -38,9 +38,11 @@ import java.util.Random;
  * @author Valoeghese and SuperCoder79
  */
 public class OctaveNoiseSampler<T extends Noise> extends Noise {
-	private Noise[] samplers;
-	private double clamp;
-	private double frequency, amplitudeLow, amplitudeHigh;
+	private final Noise[] samplers;
+	private final double clamp;
+	private final double frequency;
+	private final double amplitudeLow;
+	private final double amplitudeHigh;
 
 	public OctaveNoiseSampler(Class<T> classT, Random rand, int octaves, double frequency, double amplitudeHigh, double amplitudeLow) {
 		super(0);

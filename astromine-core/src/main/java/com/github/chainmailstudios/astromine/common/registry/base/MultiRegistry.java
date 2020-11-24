@@ -28,60 +28,87 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import java.util.Collection;
 
-public abstract class MultiRegistry<T, U> {
-	private final Multimap<T, U> entries = HashMultimap.create();
+/**
+ * An unidirectional registry,
+ * where all keys must be unique, values may be
+ * repeated, and multiple values can be associated
+ * with one key.
+ */
+public abstract class MultiRegistry<K, V> {
+	private final Multimap<K, V> entries = HashMultimap.create();
 
-	public Collection<U> get(T t) {
-		return entries.get(t);
+	/** Returns the {@link Collection<V>} collection of values associated with the given {@link K} key. */
+	public Collection<V> get(K k) {
+		return entries.get(k);
 	}
 
-	public U set(T t, U u) {
-		entries.put(t, u);
-		return u;
+	/** Associates the given {@link K} key with the specified {@link V} value.
+	 * Returns whether another key-value pair of same hash did not already exist. */
+	public boolean set(K k, V v) {
+		return entries.put(k, v);
 	}
 
-	public U add(T t, U u) {
-		return set(t, u);
+	/** Associates the given {@link K} key with the specified {@link V} value.
+	 * Returns whether another key-value pair of same hash did not already exist. */
+	public boolean add(K k, V v) {
+		return set(k, v);
 	}
 
-	public U remove(T t, U u) {
-		entries.remove(t, u);
-		return u;
+	/** Dissociates the given {@link K} key from the specified {@link V} value.
+	 * Returns whether the operation was successful or not. */
+	public boolean remove(K k, V v) {
+		return entries.remove(k, v);
 	}
 
-	public void removeKey(T t) {
-		entries.removeAll(t);
+	/** Dissociates the given {@link K} key from its associated {@link Collection<V>} values.
+	 * Returns the existing values for the {@link K} key, or empty if none existed. */
+	public Collection<V> removeKey(K k) {
+		return entries.removeAll(k);
 	}
 
-	public U register(T t, U u) {
-		return set(t, u);
+	/** Associates the given {@link K} key with the specified {@link V} value.
+	 * Returns the given {@link V} value. */
+	public V register(K k, V v) {
+		set(k, v);
+
+		return v;
 	}
 
-	public void unregister(T t, U u) {
-		remove(t, u);
+	/** Dissociates the given {@link K} key from the specified {@link V} value.
+	 * Returns whether the operation was successful or not. */
+	public boolean unregister(K k, V v) {
+		return remove(k, v);
 	}
 
-	public void unregisterKey(T t) {
-		removeKey(t);
+	/** Dissociates the given {@link K} key from its associated {@link V} value.
+	 * Returns the existing values for the {@link K} key, or empty if none existed. */
+	public Collection<V> unregisterKey(K k) {
+		return removeKey(k);
 	}
 
-	public boolean contains(T t, U u) {
-		return containsKey(t) && get(t).equals(u);
+	/** Asserts whether this registry contains the given {@link K} key
+	 * associated with the specified {@link V} value. */
+	public boolean contains(K k, V v) {
+		return containsKey(k) && get(k).equals(v);
 	}
 
-	public boolean containsKey(T t) {
-		return entries.containsKey(t);
+	/** Asserts whether this registry contains the given {@link K} key. */
+	public boolean containsKey(K k) {
+		return entries.containsKey(k);
 	}
 
-	public boolean containsValue(U u) {
-		return entries.containsValue(u);
+	/** Asserts whether this registry contains the given {@link V} value. */
+	public boolean containsValue(V v) {
+		return entries.containsValue(v);
 	}
 
-	public Collection<T> getKeys() {
+	/** Returns a collection of this registry's {@link K} keys. */
+	public Collection<K> getKeys() {
 		return entries.keySet();
 	}
 
-	public Collection<U> getValues() {
+	/** Returns a collection of this registry's {@link V} values. */
+	public Collection<V> getValues() {
 		return entries.values();
 	}
 }

@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.utilities.capability.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.world.World;
@@ -31,7 +32,13 @@ import net.minecraft.world.World;
 import com.zundrel.wrenchable.WrenchableUtilities;
 import com.zundrel.wrenchable.block.BlockWrenchable;
 
+/**
+ * An interface meant to be implemented by
+ * {@link Block}s on which a wrench can be used.
+ */
 public interface FacingBlockWrenchable extends BlockWrenchable {
+	/** When shift-right-clicked with a wrench, break the block.
+	 * When right-clicked with a wrench, rotate the block. */
 	@Override
 	default void onWrenched(World world, PlayerEntity playerEntity, BlockHitResult blockHitResult) {
 		if (playerEntity.isSneaking()) {

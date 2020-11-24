@@ -24,19 +24,42 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 
 public class FluidUtilities {
-	public static int color(PlayerEntity player, Fluid fluid) {
-		return FluidRenderHandlerRegistry.INSTANCE.get(fluid).getFluidColor(player.getEntityWorld(), BlockPos.ORIGIN, fluid.getDefaultState());
+	/**
+	 * Returns the color of the specified fluid at the given player's position.
+	 */
+	public static int getColor(PlayerEntity player, Fluid fluid) {
+		FluidRenderHandler handler = FluidRenderHandlerRegistry.INSTANCE.get(fluid);
+		if (handler == null) {
+			throw new NullPointerException("No fluid renderer for " + Registry.FLUID.getId(fluid));
+		}
+		return handler.getFluidColor(player.getEntityWorld(), BlockPos.ORIGIN, fluid.getDefaultState());
 	}
 
-	public static Sprite[] texture(Fluid fluid) {
-		return FluidRenderHandlerRegistry.INSTANCE.get(fluid).getFluidSprites(null, null, fluid.getDefaultState());
+	/**
+	 * Returns the sprites of the specified fluid.
+	 */
+	public static Sprite[] getSprites(Fluid fluid) {
+		FluidRenderHandler handler = FluidRenderHandlerRegistry.INSTANCE.get(fluid);
+		if (handler == null) {
+			throw new NullPointerException("No fluid renderer for " + Registry.FLUID.getId(fluid));
+		}
+		return handler.getFluidSprites(null, null, fluid.getDefaultState());
+	}
+
+	/**
+	 * Returns the first sprite of the specified fluid.
+	 */
+	public static Sprite getSprite(Fluid fluid) {
+		return getSprites(fluid)[0];
 	}
 }

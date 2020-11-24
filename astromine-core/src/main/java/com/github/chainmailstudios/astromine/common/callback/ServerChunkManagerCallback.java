@@ -29,6 +29,9 @@ import net.fabricmc.fabric.api.event.EventFactory;
 
 import net.minecraft.server.world.ServerChunkManager;
 
+/**
+ * A callback called when initializing a {@link ServerChunkManager}.
+ */
 public interface ServerChunkManagerCallback {
 	Event<ServerChunkManagerCallback> EVENT = EventFactory.createArrayBacked(ServerChunkManagerCallback.class, (listeners) -> (manager) -> {
 		for (ServerChunkManagerCallback listener : listeners) {
@@ -36,5 +39,6 @@ public interface ServerChunkManagerCallback {
 		}
 	});
 
+	/** Handle the {@link ServerChunkManager}. */
 	void handle(ServerChunkManager manager);
 }

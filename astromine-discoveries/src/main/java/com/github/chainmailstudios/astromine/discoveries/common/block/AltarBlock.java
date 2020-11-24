@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.block;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -54,7 +55,7 @@ public class AltarBlock extends WrenchableBlockWithEntity {
 	protected static final VoxelShape SHAPE_TOP = Block.createCuboidShape(0.0D, 14.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 	protected static final VoxelShape SHAPE_BOTTOM = Block.createCuboidShape(1.0D, 0.0D, 1.0D, 15.0D, 14.0D, 15.0D);
 
-	public AltarBlock(Settings settings) {
+	public AltarBlock(AbstractBlock.Settings settings) {
 		super(settings);
 	}
 
@@ -95,6 +96,8 @@ public class AltarBlock extends WrenchableBlockWithEntity {
 				} else {
 					return ActionResult.CONSUME;
 				}
+			} else if (blockEntity.isCrafting()) {
+				return ActionResult.CONSUME;
 			} else if (AltarPedestalBlock.canMergeItems(stackInHand, blockEntity.getStack(0))) {
 				ItemStack copy = stackInHand.copy();
 				copy.increment(1);

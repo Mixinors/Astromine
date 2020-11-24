@@ -24,26 +24,29 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
-
 import net.minecraft.block.entity.BlockEntityType;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 
+/**
+ * A {@link ComponentBlockEntity} with an attached
+ * {@link FluidComponent}.
+ */
 public abstract class ComponentFluidBlockEntity extends ComponentBlockEntity {
-	protected final FluidInventoryComponent fluidComponent = createFluidComponent();
-
+	/** Instantiates a {@link ComponentFluidBlockEntity}. */
 	public ComponentFluidBlockEntity(BlockEntityType<?> type) {
 		super(type);
 
-		addComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, fluidComponent);
-		fluidComponent.dispatchConsumers();
+		addComponent(AstromineComponents.FLUID_INVENTORY_COMPONENT, getFluidComponent());
+		getFluidComponent().updateListeners();
 	}
 
-	protected abstract FluidInventoryComponent createFluidComponent();
+	/** Returns the {@link FluidComponent} to be attached. */
+	public abstract FluidComponent createFluidComponent();
 
-	public FluidInventoryComponent getFluidComponent() {
-		return fluidComponent;
+	/** Returns the attached {@link FluidComponent}. */
+	public FluidComponent getFluidComponent() {
+		return FluidComponent.get(this);
 	}
 }

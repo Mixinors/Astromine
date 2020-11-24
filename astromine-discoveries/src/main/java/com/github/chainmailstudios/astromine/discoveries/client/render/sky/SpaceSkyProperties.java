@@ -37,7 +37,7 @@ public class SpaceSkyProperties extends SkyProperties {
 	}
 
 	@Override
-	public Vec3d adjustSkyColor(Vec3d color, float sunHeight) {
+	public Vec3d adjustFogColor(Vec3d color, float sunHeight) {
 		return color.multiply(0.15000000596046448D);
 	}
 

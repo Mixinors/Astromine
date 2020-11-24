@@ -24,27 +24,43 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
-
-import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.utilities.capability.energy.ComponentEnergyProvider;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 
-public abstract class ComponentEnergyFluidBlockEntity extends ComponentEnergyBlockEntity {
-	protected final FluidInventoryComponent fluidComponent = createFluidComponent();
+/**
+ * A {@link ComponentBlockEntity} with an attached
+ * {@link EnergyComponent} and {@link ItemComponent}.
+ */
+public abstract class ComponentEnergyFluidBlockEntity extends ComponentEnergyBlockEntity implements ComponentEnergyProvider {
+	/** Instantiates a {@link ComponentEnergyFluidBlockEntity}. */
+	public ComponentEnergyFluidBlockEntity(BlockEntityType<?> type) {
+		super(type);
 
-	public ComponentEnergyFluidBlockEntity(Block energyBlock, BlockEntityType<?> type) {
-		super(energyBlock, type);
+		addComponent(AstromineComponents.ENERGY_INVENTORY_COMPONENT, getEnergyComponent());
+		getEnergyComponent().updateListeners();
 
-		addComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, fluidComponent);
-		fluidComponent.dispatchConsumers();
+		addComponent(AstromineComponents.FLUID_INVENTORY_COMPONENT, getFluidComponent());
+		getFluidComponent().updateListeners();
 	}
 
-	protected abstract FluidInventoryComponent createFluidComponent();
+	/** Returns the {@link EnergyComponent} to be attached. */
+	public abstract EnergyComponent createEnergyComponent();
 
-	public FluidInventoryComponent getFluidComponent() {
-		return fluidComponent;
+	/** Returns the attached {@link EnergyComponent}. */
+	public EnergyComponent getEnergyComponent() {
+		return EnergyComponent.get(this);
+	}
+
+	/** Returns the {@link FluidComponent} to be attached. */
+	public abstract FluidComponent createFluidComponent();
+
+	/** Returns the attached {@link FluidComponent}. */
+	public FluidComponent getFluidComponent() {
+		return FluidComponent.get(this);
 	}
 }

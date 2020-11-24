@@ -24,28 +24,49 @@
 
 package com.github.chainmailstudios.astromine.common.registry;
 
+import net.minecraft.util.Identifier;
+
 import com.github.chainmailstudios.astromine.common.registry.base.UniRegistry;
+import com.github.chainmailstudios.astromine.mixin.IdentifierMixin;
 
 import java.util.Optional;
 
+/**
+ * An {@link UniRegistry} for registration of
+ * {@link String}s mapped to {@link String}s.
+ *
+ * The registered path will then be replaced by the new one,
+ * through {@link IdentifierMixin}.
+ */
 public class IdentifierFixRegistry extends UniRegistry<String, String> {
 	public static final IdentifierFixRegistry INSTANCE = new IdentifierFixRegistry();
 
+	/** We only want one instance of this. */
+	private IdentifierFixRegistry() {}
+
+	/** Returns the fixed path for an {@link Identifier#getPath()},
+	 * or the value passed if no fixes are registered. */
 	@Override
 	public String get(String oldPath) {
 		String newPath = Optional.ofNullable(super.get(oldPath)).orElse(oldPath);
-		if (this.containsKey(newPath))
-			return this.get(newPath);
-		return newPath;
+
+		return containsKey(newPath) ? get(newPath) : newPath;
 	}
 
+	/** Register a fix for an {@link Identifier#getPath()}. */
 	@Override
 	public String register(String oldPath, String newPath) {
-		if(oldPath.equals(newPath)) throw new IllegalArgumentException("Invalid Identifier fix attempted with paths " + oldPath + " and " + newPath+", paths identical");
-		else if (this.containsKey(newPath)) {
-			if (this.get(newPath).equals(oldPath))
-				throw new IllegalArgumentException("Invalid Identifier fix attempted with paths " + oldPath + " and " + newPath+", would cause recursion");
-			else return this.register(oldPath, this.get(newPath));
-		} else return super.register(oldPath, newPath);
+		if (oldPath.equals(newPath))
+			{
+			throw new IllegalArgumentException(String.format("Invalid Identifier path fix attempted: '%s' and '%s' are the same!", newPath , oldPath));
+		}  else if (containsKey(newPath)) {
+			if (get(newPath).equals(oldPath)) {
+				throw new IllegalArgumentException(String.format("Invalid Identifier path fix attempted: '%s' and '%s' would cause recursion!", oldPath, newPath));
+			} else {
+				return register(oldPath, get(newPath));
+			}
+		} else {
+			return super.register(oldPath, newPath);
+		}
 	}
 }

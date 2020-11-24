@@ -34,62 +34,106 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.utilities.VoxelShapeUtilities;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import dev.onyxstudios.cca.api.v3.component.Component;
 import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
-import nerdhub.cardinal.components.api.component.Component;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.Sets;
 import java.util.Map;
 import java.util.Set;
 
-public class WorldBridgeComponent implements Component {
-	public final Long2ObjectArrayMap<Set<Vec3i>> entries = new Long2ObjectArrayMap<>();
+/**
+ * A {@link Component} which stores information about
+ * a {@link World}'s holographic bridges.
+ *
+ * It is important to understand how information is stored here.
+ * A {@link Map} of {@link Long}-represented {@link BlockPos} positions
+ * to a {@link Set} of {@link Vec3i} contains points in the block's
+ * 16x16 vertical grid intersected by a bridge's line.
+ *
+ * That is to say, if the bridge crosses a block horizontally entirely,
+ * there will be 16 {@link Vec3i}s, at least, representing 1-wide steps
+ * which will be used to build the block's {@link VoxelShape}.
+ *
+ * Serialization and deserialization methods are provided for:
+ * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ */
+public final class WorldBridgeComponent implements Component {
+	private final Long2ObjectArrayMap<Set<Vec3i>> entries = new Long2ObjectArrayMap<>();
+
+	private final Long2ObjectArrayMap<VoxelShape> cache = new Long2ObjectArrayMap<>();
 
 	private final World world;
 
+	/** Instantiates a {@link WorldBridgeComponent}. */
 	public WorldBridgeComponent(World world) {
 		this.world = world;
 	}
 
+	/** Returns this component's world. */
 	public World getWorld() {
 		return world;
 	}
 
+	/** Adds the given step at the specified {@link BlockPos}'s long representation. */
 	public void add(BlockPos pos, Vec3i vec) {
 		add(pos.asLong(), vec);
 	}
 
+	/** Adds the given step at the specified position. */
 	public void add(long pos, Vec3i top) {
 		entries.computeIfAbsent(pos, (k) -> Sets.newHashSet());
 		entries.get(pos).add(top);
+
+		cache.remove(pos);
 	}
 
+	/** Removes the steps at the specified {@link BlockPos}'s long representation. */
 	public void remove(BlockPos pos) {
 		remove(pos.asLong());
 	}
 
+	/** Removes the steps at the specified position. */
 	public void remove(long pos) {
 		entries.remove(pos);
+
+		cache.remove(pos);
 	}
 
+	/** Returns the steps at the given {@link BlockPos}'s long representation. */
 	public Set<Vec3i> get(BlockPos pos) {
 		return get(pos.asLong());
 	}
 
+	/** Returns the sTeps at the given position. */
 	public Set<Vec3i> get(long pos) {
 		return entries.getOrDefault(pos, Sets.newHashSet());
 	}
 
+	/** Returns the {@link VoxelShape} at the given {@link BlockPos}'s long representation. */
 	public VoxelShape getShape(BlockPos pos) {
 		return getShape(pos.asLong());
 	}
 
+	/** Returns the {@link VoxelShape} at the given position. */
 	public VoxelShape getShape(long pos) {
+		if (cache.containsKey(pos)) return cache.get(pos);
+
 		Set<Vec3i> vecs = get(pos);
+
 		if (vecs == null)
 			return VoxelShapes.fullCube();
-		else return getShape(vecs);
+
+		VoxelShape shape = getShape(vecs);
+
+		cache.put(pos, shape);
+
+		return shape;
 	}
 
+	/** Returns the {@link VoxelShape} formed by the given {@link Set} of steps.
+	 * I made this work months ago; and I don't know how. Accept it, or suffer. */
 	private VoxelShape getShape(Set<Vec3i> vecs) {
 		VoxelShape shape = VoxelShapes.empty();
 
@@ -114,8 +158,9 @@ public class WorldBridgeComponent implements Component {
 		return shape;
 	}
 
+	/** Serializes this {@link WorldBridgeComponent} to a {@link CompoundTag}. */
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public void writeToNbt(CompoundTag tag) {
 		CompoundTag dataTag = new CompoundTag();
 
 		int k = 0;
@@ -142,12 +187,11 @@ public class WorldBridgeComponent implements Component {
 		}
 
 		tag.put("data", dataTag);
-
-		return tag;
 	}
 
+	/** Deserializes this {@link WorldBridgeComponent} from a {@link CompoundTag}. */
 	@Override
-	public void fromTag(CompoundTag tag) {
+	public void readFromNbt(CompoundTag tag) {
 		CompoundTag dataTag = tag.getCompound("data");
 
 		for (String key : dataTag.getKeys()) {
@@ -159,6 +203,16 @@ public class WorldBridgeComponent implements Component {
 			for (String vecKey : vecTag.getKeys()) {
 				add(pos, BlockPos.fromLong(vecTag.getLong(vecKey)));
 			}
+		}
+	}
+
+	/** Returns the {@link WorldBridgeComponent} of the given {@link V}. */
+	@Nullable
+	public static <V> WorldBridgeComponent get(V v) {
+		try {
+			return AstromineComponents.WORLD_BRIDGE_COMPONENT.get(v);
+		} catch (Exception justShutUpAlready) {
+			return null;
 		}
 	}
 }

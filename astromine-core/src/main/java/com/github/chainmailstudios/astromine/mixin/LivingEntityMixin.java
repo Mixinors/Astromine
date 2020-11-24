@@ -26,10 +26,14 @@ package com.github.chainmailstudios.astromine.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -39,32 +43,34 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tag.Tag;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
 import com.github.chainmailstudios.astromine.common.registry.BreathableRegistry;
 import com.github.chainmailstudios.astromine.common.registry.FluidEffectRegistry;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineAttributes;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.registry.AstromineDimensions;
 import com.github.chainmailstudios.astromine.registry.AstromineTags;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
 
 import java.util.Optional;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin implements GravityEntity {
-	@Shadow
-	public float flyingSpeed;
+public abstract class LivingEntityMixin extends EntityMixin implements GravityEntity {
+	@Unique
+	private static final ThreadLocal<Boolean> FAKE_BEING_IN_LAVA = ThreadLocal.withInitial(() -> Boolean.FALSE);
 
 	@Inject(at = @At("RETURN"), method = "createLivingAttributes()Lnet/minecraft/entity/attribute/DefaultAttributeContainer$Builder;")
 	private static void createLivingAttributesInject(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
@@ -93,9 +99,7 @@ public abstract class LivingEntityMixin implements GravityEntity {
 			return;
 
 		if (!entity.getType().isIn(AstromineTags.DOES_NOT_BREATHE)) {
-			ComponentProvider chunkProvider = ComponentProvider.fromChunk(entity.world.getChunk(entity.getBlockPos()));
-
-			ChunkAtmosphereComponent atmosphereComponent = chunkProvider.getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);
+			ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(entity.world.getChunk(entity.getBlockPos()));
 
 			if (atmosphereComponent != null) {
 				FluidVolume atmosphereVolume;
@@ -104,7 +108,7 @@ public abstract class LivingEntityMixin implements GravityEntity {
 					atmosphereVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
 
 					if (atmosphereVolume.isEmpty()) {
-						atmosphereVolume = FluidVolume.oxygen();
+						atmosphereVolume = FluidVolume.of(Fraction.BUCKET, Registry.FLUID.get(AstromineCommon.identifier("oxygen")));
 					}
 				} else {
 					atmosphereVolume = atmosphereComponent.get(entity.getBlockPos().offset(Direction.UP));
@@ -120,16 +124,14 @@ public abstract class LivingEntityMixin implements GravityEntity {
 					if (blockState.getBlock() instanceof FluidBlock) {
 						isSubmerged = true;
 
-						Optional.ofNullable(FluidEffectRegistry.INSTANCE.get(blockState.getFluidState().getFluid())).ifPresent(it -> it.accept((LivingEntity) (Object) this));
+						Optional.ofNullable(FluidEffectRegistry.INSTANCE.get(blockState.getFluidState().getFluid())).ifPresent(it -> it.accept(true, (LivingEntity) (Object) this));
 					}
 				}
 
 				if (!isSubmerged) {
 					boolean isBreathing = true;
 
-					ComponentProvider entityProvider = ComponentProvider.fromEntity(entity);
-
-					EntityOxygenComponent oxygenComponent = entityProvider.getComponent(AstromineComponentTypes.ENTITY_OXYGEN_COMPONENT);
+					EntityOxygenComponent oxygenComponent = EntityOxygenComponent.get(entity);
 
 					if (oxygenComponent != null) {
 						boolean hasHelmet = false;
@@ -159,12 +161,10 @@ public abstract class LivingEntityMixin implements GravityEntity {
 						for (ItemStack stack : getArmorItems()) {
 							if (!stack.isEmpty()) {
 								if (Registry.ITEM.getId(stack.getItem()).toString().equals("astromine:space_suit_chestplate")) { // TODO: Properly verify for Space Suit.
-									ComponentProvider provider = ComponentProvider.fromItemStack(stack);
-
-									FluidInventoryComponent fluidComponent = provider.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+									FluidComponent fluidComponent = FluidComponent.get(stack);
 
 									if (fluidComponent != null) {
-										FluidVolume volume = FluidHandler.of(fluidComponent).getFirst();
+										FluidVolume volume = fluidComponent.getFirst();
 
 										if (volume != null) {
 											boolean canBreathe = BreathableRegistry.INSTANCE.canBreathe(entity.getType(), volume.getFluid());
@@ -174,14 +174,18 @@ public abstract class LivingEntityMixin implements GravityEntity {
 											}
 
 											if (!canBreathe) {
-												if (FluidEffectRegistry.INSTANCE.contains(volume.getFluid())) {
-													FluidEffectRegistry.INSTANCE.get(volume.getFluid()).accept((LivingEntity) entity);
+												if (FluidEffectRegistry.INSTANCE.containsKey(volume.getFluid())) {
+													FluidEffectRegistry.INSTANCE.get(volume.getFluid()).accept(false, (LivingEntity) entity);
 												}
 											}
 										}
 									}
 								}
 							}
+						}
+
+						if (!hasSuit && FluidEffectRegistry.INSTANCE.containsKey(atmosphereVolume.getFluid())) {
+							FluidEffectRegistry.INSTANCE.get(atmosphereVolume.getFluid()).accept(false, (LivingEntity) entity);
 						}
 
 						if (!isBreathing) {
@@ -197,6 +201,36 @@ public abstract class LivingEntityMixin implements GravityEntity {
 						}
 					}
 				}
+			}
+		}
+	}
+
+	// A redirect would be the most efficient, but ModifyArg is the only compatible option
+	@ModifyArg(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isSubmergedIn(Lnet/minecraft/tag/Tag;)Z"))
+	private Tag<Fluid> astromine_tickAirInFluid(Tag<Fluid> tag) {
+		if (this.isSubmergedIn(AstromineTags.INDUSTRIAL_FLUID)) {
+			return AstromineTags.INDUSTRIAL_FLUID;
+		}
+		return tag;
+	}
+
+	@ModifyVariable(method = "tickMovement", slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;method_29920()Z")), at = @At(value = "STORE", ordinal = 0) // result from "isTouchingWater && l > 0.0"
+	)
+	private boolean astromine_allowIndustrialFluidSwimming(boolean touchingWater) {
+		return touchingWater || this.getFluidHeight(AstromineTags.INDUSTRIAL_FLUID) > 0;
+	}
+
+	@Inject(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isInLava()Z"))
+	private void astromine_travelInIndustrialFluids(Vec3d movementInput, CallbackInfo ci) {
+		FAKE_BEING_IN_LAVA.set(Boolean.TRUE);
+	}
+
+	@Override // overrides the inject in EntityMixin
+	protected void astromine_fakeLava(CallbackInfoReturnable<Boolean> cir) {
+		if (FAKE_BEING_IN_LAVA.get()) {
+			FAKE_BEING_IN_LAVA.set(Boolean.FALSE);
+			if (!cir.getReturnValueZ() && this.astromine_isInIndustrialFluid()) {
+				cir.setReturnValue(true);
 			}
 		}
 	}

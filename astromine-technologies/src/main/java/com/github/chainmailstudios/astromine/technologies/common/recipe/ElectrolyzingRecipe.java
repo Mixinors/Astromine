@@ -24,8 +24,6 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -33,92 +31,82 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Lazy;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.FractionUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
+import com.github.chainmailstudios.astromine.common.utilities.DoubleUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.IntegerUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+import java.util.Optional;
 
-public class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<Inventory> {
-	final Identifier identifier;
-	final RegistryKey<Fluid> inputFluidKey;
-	final Lazy<Fluid> inputFluid;
-	final Fraction inputAmount;
-	final RegistryKey<Fluid> firstOutputFluidKey;
-	final Lazy<Fluid> firstOutputFluid;
-	final Fraction firstOutputAmount;
-	final RegistryKey<Fluid> secondOutputFluidKey;
-	final Lazy<Fluid> secondOutputFluid;
-	final Fraction secondOutputAmount;
-	final double energyConsumed;
-	final int time;
+public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<Inventory> {
+	private final Identifier identifier;
+	private final FluidIngredient firstInput;
+	private final FluidVolume firstOutput;
+	private final FluidVolume secondOutput;
+	private final double energyInput;
+	private final int time;
 
-	public ElectrolyzingRecipe(Identifier identifier, RegistryKey<Fluid> inputFluidKey, Fraction inputAmount, RegistryKey<Fluid> firstOutputFluidKey, Fraction firstOutputAmount, RegistryKey<Fluid> secondOutputFluidKey, Fraction secondOutputAmount, double energyConsumed,
-		int time) {
+	public ElectrolyzingRecipe(Identifier identifier, FluidIngredient firstInput, FluidVolume firstOutput, FluidVolume secondOutput, double energyInput, int time) {
 		this.identifier = identifier;
-		this.inputFluidKey = inputFluidKey;
-		this.inputFluid = new Lazy<>(() -> Registry.FLUID.get(this.inputFluidKey));
-		this.inputAmount = inputAmount;
-		this.firstOutputFluidKey = firstOutputFluidKey;
-		this.firstOutputFluid = new Lazy<>(() -> Registry.FLUID.get(this.firstOutputFluidKey));
-		this.firstOutputAmount = firstOutputAmount;
-		this.secondOutputFluidKey = secondOutputFluidKey;
-		this.secondOutputFluid = new Lazy<>(() -> Registry.FLUID.get(this.secondOutputFluidKey));
-		this.secondOutputAmount = secondOutputAmount;
-		this.energyConsumed = energyConsumed;
+		this.firstInput = firstInput;
+		this.firstOutput = firstOutput;
+		this.secondOutput = secondOutput;
+		this.energyInput = energyInput;
 		this.time = time;
 	}
 
-	public static boolean allows(World world, Fluid inserting, Fluid existing) {
+	public static boolean allows(World world, FluidComponent fluidComponent) {
 		return world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
 			ElectrolyzingRecipe recipe = ((ElectrolyzingRecipe) it);
 
-			return (existing == inserting || existing == Fluids.EMPTY) && (recipe.inputFluid.get() == inserting);
+			return recipe.allows(fluidComponent);
 		});
 	}
 
-	public boolean matches(FluidInventoryComponent fluidComponent) {
-		FluidHandler fluidHandler = FluidHandler.of(fluidComponent);
+	public static Optional<ElectrolyzingRecipe> matching(World world, FluidComponent fluidComponent) {
+		return (Optional<ElectrolyzingRecipe>) (Object) world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream().filter(it -> {
+			ElectrolyzingRecipe recipe = ((ElectrolyzingRecipe) it);
 
-		FluidVolume inputVolume = fluidHandler.getFirst();
-		FluidVolume firstOutputVolume = fluidHandler.getSecond();
-		FluidVolume secondOutputVolume = fluidHandler.getThird();
-
-		if (!inputVolume.canAccept(inputFluid.get())) {
-			return false;
-		}
-		if (!inputVolume.hasStored(inputAmount)) {
-			return false;
-		}
-		if (!firstOutputVolume.canAccept(firstOutputFluid.get())) {
-			return false;
-		}
-		if (!firstOutputVolume.hasAvailable(firstOutputAmount)) {
-			return false;
-		}
-		if (!secondOutputVolume.canAccept(secondOutputFluid.get())) {
-			return false;
-		}
-
-		return secondOutputVolume.hasAvailable(secondOutputAmount);
+			return recipe.matches(fluidComponent);
+		}).findFirst();
 	}
+
+	public boolean matches(FluidComponent fluidComponent) {
+		if (fluidComponent.getSize() < 3) {
+			return false;
+		}
+
+		if (!firstInput.test(fluidComponent.getFirst())) {
+			return false;
+		}
+
+		if (!firstOutput.test(fluidComponent.getSecond())) {
+			return false;
+		}
+
+		return secondOutput.test(fluidComponent.getThird());
+	}
+
+	public boolean allows(FluidComponent fluidComponent) {
+		if (fluidComponent.getSize() < 1) {
+			return false;
+		}
+
+		return firstInput.testWeak(fluidComponent.getFirst());
+	}
+
 
 	@Override
 	public Identifier getId() {
@@ -142,7 +130,7 @@ public class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsumingRe
 
 	@Override
 	public ItemStack craft(Inventory inventory) {
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override
@@ -164,36 +152,25 @@ public class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsumingRe
 		return identifier;
 	}
 
-	public Fluid getInputFluid() {
-		return inputFluid.get();
+	public FluidIngredient getFirstInput() {
+		return firstInput;
 	}
 
-	public Fraction getInputAmount() {
-		return inputAmount.copy();
+	public FluidVolume getFirstOutput() {
+		return firstOutput.copy();
 	}
 
-	public Fluid getFirstOutputFluid() {
-		return firstOutputFluid.get();
-	}
-
-	public Fraction getFirstOutputAmount() {
-		return firstOutputAmount.copy();
-	}
-
-	public Fluid getSecondOutputFluid() {
-		return secondOutputFluid.get();
-	}
-
-	public Fraction getSecondOutputAmount() {
-		return secondOutputAmount.copy();
-	}
-
-	public double getEnergyConsumed() {
-		return energyConsumed;
+	public FluidVolume getSecondOutput() {
+		return secondOutput.copy();
 	}
 
 	public int getTime() {
 		return time;
+	}
+
+	@Override
+	public double getEnergyInput() {
+		return energyInput;
 	}
 
 	public static final class Serializer implements RecipeSerializer<ElectrolyzingRecipe> {
@@ -201,71 +178,68 @@ public class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsumingRe
 
 		public static final Serializer INSTANCE = new Serializer();
 
-		private Serializer() {
-			// Locked.
-		}
+		private Serializer() {}
 
 		@Override
 		public ElectrolyzingRecipe read(Identifier identifier, JsonObject object) {
 			ElectrolyzingRecipe.Format format = new Gson().fromJson(object, ElectrolyzingRecipe.Format.class);
 
-			return new ElectrolyzingRecipe(identifier, RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.input)), FractionUtilities.fromJson(format.inputAmount), RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.firstOutput)), FractionUtilities.fromJson(
-				format.firstOutputAmount), RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.secondOutput)), FractionUtilities.fromJson(format.secondOutputAmount), EnergyUtilities.fromJson(format.energyGenerated), ParsingUtilities.fromJson(format.time, Integer.class));
+			return new ElectrolyzingRecipe(
+					identifier,
+					FluidIngredient.fromJson(format.firstInput),
+					FluidVolume.fromJson(format.firstOutput),
+					FluidVolume.fromJson(format.secondOutput),
+					DoubleUtilities.fromJson(format.energyInput),
+					IntegerUtilities.fromJson(format.time)
+			);
 		}
 
 		@Override
 		public ElectrolyzingRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new ElectrolyzingRecipe(identifier, RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), RegistryKey.of(
-				Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), EnergyUtilities.fromPacket(buffer), PacketUtilities.fromPacket(buffer, Integer.class));
+			return new ElectrolyzingRecipe(
+					identifier,
+					FluidIngredient.fromPacket(buffer),
+					FluidVolume.fromPacket(buffer),
+					FluidVolume.fromPacket(buffer),
+					DoubleUtilities.fromPacket(buffer),
+					IntegerUtilities.fromPacket(buffer)
+			);
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, ElectrolyzingRecipe recipe) {
-			buffer.writeIdentifier(recipe.inputFluidKey.getValue());
-			FractionUtilities.toPacket(buffer, recipe.inputAmount);
-			buffer.writeIdentifier(recipe.firstOutputFluidKey.getValue());
-			FractionUtilities.toPacket(buffer, recipe.firstOutputAmount);
-			buffer.writeIdentifier(recipe.secondOutputFluidKey.getValue());
-			FractionUtilities.toPacket(buffer, recipe.secondOutputAmount);
-			EnergyUtilities.toPacket(buffer, recipe.energyConsumed);
-			buffer.writeInt(recipe.getTime());
+			recipe.firstInput.toPacket(buffer);
+			recipe.firstOutput.toPacket(buffer);
+			recipe.secondOutput.toPacket(buffer);
+			DoubleUtilities.toPacket(buffer, recipe.energyInput);
+			IntegerUtilities.toPacket(buffer, recipe.time);
 		}
 	}
 
 	public static final class Type implements AstromineRecipeType<ElectrolyzingRecipe> {
 		public static final Type INSTANCE = new Type();
 
-		private Type() {
-			// Locked.
-		}
+		private Type() {}
 	}
 
 	public static final class Format {
-		String input;
-		@SerializedName("input_amount")
-		JsonElement inputAmount;
+		@SerializedName("input")
+		JsonElement firstInput;
 
 		@SerializedName("first_output")
-		String firstOutput;
-
-		@SerializedName("first_output_amount")
-		JsonElement firstOutputAmount;
+		JsonElement firstOutput;
 
 		@SerializedName("second_output")
-		String secondOutput;
+		JsonElement secondOutput;
 
-		@SerializedName("second_output_amount")
-		JsonElement secondOutputAmount;
-
-		@SerializedName("energy_consumed")
-		JsonElement energyGenerated;
+		@SerializedName("energy_input")
+		JsonElement energyInput;
 
 		JsonElement time;
 
 		@Override
 		public String toString() {
-			return "Format{" + "input='" + input + '\'' + ", inputAmount=" + inputAmount + ", firstOutput='" + firstOutput + '\'' + ", firstOutputAmount=" + firstOutputAmount + ", secondOutput='" + secondOutput + '\'' + ", secondOutputAmount=" + secondOutputAmount +
-				", energyGenerated=" + energyGenerated + ", time=" + time + '}';
+			return "Format{" + "input=" + firstInput + ", firstOutput=" + firstOutput + ", secondOutput=" + secondOutput + ", energy=" + energyInput + ", time=" + time + '}';
 		}
 	}
 }

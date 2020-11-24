@@ -35,47 +35,65 @@ import net.minecraft.util.BlockRotation;
 
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * A {@link BlockWithEntity} with a {@link DirectionProperty}
+ * of {@link Properties#HORIZONTAL_FACING}.
+ */
 public abstract class HorizontalFacingBlockWithEntity extends BlockWithEntity {
+	/** Instantiates a {@link HorizontalFacingBlockWithEntity}. */
 	public HorizontalFacingBlockWithEntity(Settings settings) {
 		super(settings);
 	}
 
+	/** Override behavior to add the {@link DirectionProperty}. */
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		DirectionProperty directionProperty = getDirectionProperty();
+
 		if (directionProperty != null) {
 			builder.add(directionProperty);
 		}
+
 		super.appendProperties(builder);
 	}
 
+	/** Override behavior to add the {@link DirectionProperty}. */
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
 		DirectionProperty directionProperty = getDirectionProperty();
+
 		if (directionProperty != null) {
 			return super.getPlacementState(context).with(getDirectionProperty(), context.getPlayerFacing().getOpposite());
 		}
+
 		return super.getPlacementState(context);
 	}
 
+	/** Override behavior to add the {@link DirectionProperty}. */
 	@Override
 	public BlockState rotate(BlockState state, BlockRotation rotation) {
 		DirectionProperty directionProperty = getDirectionProperty();
+
 		if (directionProperty != null) {
 			return state.with(getDirectionProperty(), rotation.rotate(state.get(getDirectionProperty())));
 		}
+
 		return super.rotate(state, rotation);
 	}
 
+	/** Override behavior to add the {@link DirectionProperty}. */
 	@Override
 	public BlockState mirror(BlockState state, BlockMirror mirror) {
 		DirectionProperty directionProperty = getDirectionProperty();
+
 		if (directionProperty != null) {
 			return state.rotate(mirror.getRotation(state.get(getDirectionProperty())));
 		}
+
 		return super.mirror(state, mirror);
 	}
 
+	/** Returns the {@link DirectionProperty} of this block. */
 	@Nullable
 	public DirectionProperty getDirectionProperty() {
 		return Properties.HORIZONTAL_FACING;

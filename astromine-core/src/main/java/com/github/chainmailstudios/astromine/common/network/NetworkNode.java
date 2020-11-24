@@ -29,59 +29,57 @@ import net.minecraft.util.math.BlockPos;
 
 import com.google.common.base.Objects;
 
-public class NetworkNode {
+/**
+ * A node for
+ * a network, with no attached {@link NetworkMember}.
+ *
+ * Serialization and deserialization methods are provided for:
+ * - {@link CompoundTag} - through {@link #toTag()} and {@link #fromTag(CompoundTag)}.
+ */
+public final class NetworkNode {
 	private long pos;
 
-	public NetworkNode(BlockPos blockPos) {
-		setBlockPos(blockPos);
+	/** Instantiates a {@link NetworkMemberNode}. */
+	private NetworkNode(BlockPos blockPos) {
+		setBlockPosition(blockPos);
 	}
 
-	public NetworkNode(long pos) {
-		setPos(pos);
+	/** Instantiates a {@link NetworkMemberNode}. */
+	private NetworkNode(long pos) {
+		setLongPosition(pos);
 	}
 
+	/** Instantiates a {@link NetworkMemberNode}. */
 	public static NetworkNode of(BlockPos blockPos) {
 		return new NetworkNode(blockPos);
 	}
 
+	/** Instantiates a {@link NetworkMemberNode}. */
 	public static NetworkNode of(long pos) {
 		return new NetworkNode(pos);
 	}
 
-	public static NetworkNode fromTag(CompoundTag tag) {
-		return of(tag.getLong("pos"));
-	}
-
-	public BlockPos getBlockPos() {
+	/** Returns this node's {@link BlockPos} from its long representation. */
+	public BlockPos getBlockPosition() {
 		return BlockPos.fromLong(this.pos);
 	}
 
-	public void setBlockPos(BlockPos blockPos) {
+	/** Sets this node's {@link BlockPos} to the long representation of the specified value. */
+	public void setBlockPosition(BlockPos blockPos) {
 		this.pos = blockPos.asLong();
 	}
 
-	public long getPos() {
+	/** Returns this node's {@link BlockPos} long representation. */
+	public long getLongPosition() {
 		return pos;
 	}
 
-	public void setPos(long pos) {
+	/** Sets this node's {@link BlockPos} long representation to the specified value. */
+	public void setLongPosition(long pos) {
 		this.pos = pos;
 	}
 
-	public CompoundTag toTag(CompoundTag tag) {
-		tag.putLong("pos", pos);
-		return tag;
-	}
-
-	@Override
-	public String toString() {
-		return "NetworkMemberNode{" + "pos=" + toShortString(getBlockPos()) + '}';
-	}
-
-	private String toShortString(BlockPos pos) {
-		return "" + pos.getX() + ", " + pos.getY() + ", " + pos.getZ();
-	}
-
+	/** Asserts the equality of the objects. */
 	@Override
 	public boolean equals(Object object) {
 		if (this == object)
@@ -93,8 +91,30 @@ public class NetworkNode {
 		return this.pos == that.pos;
 	}
 
+	/** Returns the hash for this node. */
 	@Override
 	public int hashCode() {
 		return Objects.hashCode(pos);
+	}
+
+	/** Returns this node's string representation.
+	 * For example, it may be "[184, 47, -759]" */
+	@Override
+	public String toString() {
+		return String.format("[%s, %s, %s]", getBlockPosition().getX(), getBlockPosition().getY(), getBlockPosition().getY());
+	}
+
+	/** Deserializes a {@link NetworkNode} from a {@link CompoundTag}. */
+	public static NetworkNode fromTag(CompoundTag tag) {
+		return of(tag.getLong("pos"));
+	}
+
+	/** Serializes a {@link NetworkNode} to a {@link CompoundTag}. */
+	public CompoundTag toTag() {
+		CompoundTag tag = new CompoundTag();
+
+		tag.putLong("pos", pos);
+
+		return tag;
 	}
 }

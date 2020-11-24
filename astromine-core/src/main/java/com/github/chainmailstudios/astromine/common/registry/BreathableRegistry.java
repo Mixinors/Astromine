@@ -29,14 +29,23 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.tag.Tag;
 
 import com.github.chainmailstudios.astromine.common.registry.base.MultiRegistry;
+import com.github.chainmailstudios.astromine.mixin.LivingEntityMixin;
 
+/**
+ * A {@link MultiRegistry} for registration of
+ * {@link EntityType}s to {@link Tag<Fluid>}.
+ *
+ * The specified {@link Tag<Fluid>}(s) registered for
+ * the {@link EntityType} are used to verify if the entity
+ * can breathe, in {@link LivingEntityMixin}.
+ */
 public class BreathableRegistry extends MultiRegistry<EntityType<?>, Tag<Fluid>> {
 	public static final BreathableRegistry INSTANCE = new BreathableRegistry();
 
-	private BreathableRegistry() {
-		super();
-	}
+	/** We only want one instance of this. */
+	private BreathableRegistry() {}
 
+	/** Registers a variable amount of {@link Tag<Fluid>}. */
 	@SafeVarargs
 	public final void register(EntityType<?> type, Tag<Fluid>... tags) {
 		for (Tag<Fluid> tag : tags) {
@@ -44,6 +53,7 @@ public class BreathableRegistry extends MultiRegistry<EntityType<?>, Tag<Fluid>>
 		}
 	}
 
+	/** Asserts whether the given {@link EntityType} can breathe in the specified {@link Fluid}, or not. */
 	public boolean canBreathe(EntityType<?> type, Fluid fluid) {
 		return get(type).stream().anyMatch(tag -> tag.contains(fluid));
 	}

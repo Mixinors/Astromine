@@ -28,7 +28,22 @@
     "main": ["com.github.chainmailstudios.astromine.AstromineCommon"],
     "client": ["com.github.chainmailstudios.astromine.AstromineClient"],
     "server": ["com.github.chainmailstudios.astromine.AstromineDedicated"],
-    "modmenu": ["com.github.chainmailstudios.astromine.client.modmenu.AstromineModMenuSupport"]
+    "modmenu": ["com.github.chainmailstudios.astromine.client.modmenu.AstromineModMenuSupport"],
+    "cardinal-components-item": [
+      "com.github.chainmailstudios.astromine.registry.AstromineComponents"
+    ],
+    "cardinal-components-entity": [
+      "com.github.chainmailstudios.astromine.registry.AstromineComponents"
+    ],
+    "cardinal-components-world": [
+      "com.github.chainmailstudios.astromine.registry.AstromineComponents"
+    ],
+    "cardinal-components-chunk": [
+      "com.github.chainmailstudios.astromine.registry.AstromineComponents"
+    ],
+    "cardinal-components-block": [
+      "com.github.chainmailstudios.astromine.registry.AstromineComponents"
+    ]
   },
   "mixins": ["astromine.mixins.json"],
   "accessWidener": "astromine-core.accesswidener",
@@ -38,6 +53,17 @@
     "minecraft": "~1.16.2"
   },
   "custom": {
-    "modmenu:parent": "astromine"
+    "modmenu:parent": "astromine",
+    "cardinal-components": [
+      "astromine:world_network_component",
+      "astromine:chunk_atmosphere_component",
+      "astromine:world_bridge_component",
+      "astromine:item_inventory_component",
+      "astromine:fluid_inventory_component",
+      "astromine:energy_inventory_component",
+      "astromine:block_entity_transfer_component",
+      "astromine:block_entity_redstone_component",
+      "astromine:entity_oxygen_component"
+    ]
   }
 }

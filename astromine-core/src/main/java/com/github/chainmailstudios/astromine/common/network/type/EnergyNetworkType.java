@@ -27,14 +27,15 @@ package com.github.chainmailstudios.astromine.common.network.type;
 import net.minecraft.block.entity.BlockEntity;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
+import com.github.chainmailstudios.astromine.common.network.NetworkNode;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
-import com.github.chainmailstudios.astromine.common.volume.handler.TransferHandler;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import it.unimi.dsi.fastutil.objects.Reference2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Reference2DoubleOpenHashMap;
 import team.reborn.energy.Energy;
@@ -46,41 +47,51 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class EnergyNetworkType extends NetworkType {
+/**
+ * A {@link NetworkType} for energy.
+ */
+public final class EnergyNetworkType implements NetworkType {
+	/** Override behavior to handle attached {@link EnergyHandler}s,
+	 * transferring energy between them.
+	 *
+	 * Performance is dubious at best.
+	 *
+	 * Transfer is done through {@link Energy}. */
 	@Override
 	public void tick(NetworkInstance instance) {
 		Reference2DoubleMap<EnergyHandler> providers = new Reference2DoubleOpenHashMap<>();
 		Reference2DoubleMap<EnergyHandler> requesters = new Reference2DoubleOpenHashMap<>();
 
 		for (NetworkMemberNode memberNode : instance.members) {
-			WorldPos memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPos());
-			NetworkMember networkMember = NetworkMemberRegistry.get(memberPos);
+			WorldPos memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPosition());
+			NetworkMember networkMember = NetworkMemberRegistry.get(memberPos, memberNode.getDirection());
 			BlockEntity blockEntity = memberPos.getBlockEntity();
 
 			WorldPos nodePosition = memberPos.offset(memberNode.getDirection());
 
-			double speedOfMovement = nodePosition.getBlock() instanceof NodeSpeedProvider ? ((NodeSpeedProvider) nodePosition.getBlock()).getNodeSpeed() : 0.0D;
+			double speed = nodePosition.getBlock() instanceof NodeSpeedProvider ? ((NodeSpeedProvider) nodePosition.getBlock()).getNodeSpeed() : 0.0D;
 
-			if (speedOfMovement <= 0)
+			if (speed <= 0)
 				continue;
 
 			if (networkMember.acceptsType(this)) {
-				TransferType[] type = { TransferType.NONE };
+				TransferType type = TransferType.NONE;
 
-				TransferHandler.of(blockEntity).ifPresent(handler -> {
-					handler.withDirection(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, memberNode.getDirection(), transferType -> {
-						type[0] = transferType;
-					});
-				});
+				BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(blockEntity);
+
+				if (transferComponent != null && transferComponent.get(AstromineComponents.ENERGY_INVENTORY_COMPONENT) != null) {
+					type = transferComponent.getEnergy(memberNode.getDirection());
+				}
 
 				EnergyHandler volume = Energy.of(blockEntity).side(memberNode.getDirection());
-				if (!type[0].isDisabled()) {
-					if (type[0].canExtract() || networkMember.isProvider(this)) {
-						providers.put(volume, speedOfMovement);
+
+				if (!type.isNone()) {
+					if (type.canExtract() && (networkMember.isProvider(this) || networkMember.isBuffer(this))) {
+						providers.put(volume, speed);
 					}
 
-					if (type[0].canInsert() || networkMember.isRequester(this)) {
-						requesters.put(volume, speedOfMovement);
+					if (type.canInsert() && (networkMember.isRequester(this) || networkMember.isBuffer(this))) {
+						requesters.put(volume, speed);
 					}
 				}
 			}
@@ -99,14 +110,33 @@ public class EnergyNetworkType extends NetworkType {
 
 				double outputSpeed = requesters.getOrDefault(output, 0.0D);
 
-				double speed = Collections.min(Arrays.asList(inputSpeed / requesters.size(), outputSpeed / requesters.size(), input.getEnergy() / (i + 1), output.getMaxStored() - output.getEnergy(), input.getMaxOutput(), output.getMaxInput()));
+				double a = inputSpeed / requesters.size();
+				double b = outputSpeed / requesters.size();
+				double c = input.getEnergy() / (i + 1);
+				double d = output.getMaxStored() - output.getEnergy();
+				double e = input.getMaxOutput();
+				double f = output.getMaxInput();
+
+				double speed = Collections.min(Arrays.asList(a, b, c, d, e, f));
 
 				input.into(output).move(speed);
 			}
 		}
 	}
 
+	/** Returns this type's string representation.
+	 * It will be "Energy". */
+	@Override
+	public String toString() {
+		return "Energy";
+	}
+
+	/**
+	 * A speed provider for
+	 * attached {@link NetworkNode}s.
+	 */
 	public interface NodeSpeedProvider {
+		/** Returns this node's transfer speed. */
 		double getNodeSpeed();
 	}
 }

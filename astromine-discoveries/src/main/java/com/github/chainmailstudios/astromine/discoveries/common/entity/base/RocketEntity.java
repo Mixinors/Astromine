@@ -32,14 +32,10 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Arm;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -47,42 +43,34 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidInventoryEntity;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
+import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidItemEntity;
+import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
-import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesCriteria;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesParticles;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 import java.util.Collection;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 
-public abstract class RocketEntity extends ComponentFluidInventoryEntity {
+import static java.lang.Math.min;
+
+public abstract class RocketEntity extends ComponentFluidItemEntity {
 	public static final TrackedData<Boolean> IS_RUNNING = DataTracker.registerData(RocketEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-	private final Predicate<FluidVolume> fuelPredicate = createFuelPredicate();
-	private final Function<RocketEntity, Fraction> consumptionFunction = createConsumptionFunction();
-	private final Collection<ItemStack> explosionRemains = createExplosionRemains();
-	private final Function<RocketEntity, Vector3d> accelerationFunction = createAccelerationFunction();
-	private final Supplier<Vector3f> passengerPosition = createPassengerPosition();
 
 	public RocketEntity(EntityType<?> type, World world) {
 		super(type, world);
 	}
 
-	protected abstract Predicate<FluidVolume> createFuelPredicate();
+	protected abstract boolean isFuelMatching();
 
-	protected abstract Function<RocketEntity, Fraction> createConsumptionFunction();
+	protected abstract void consumeFuel();
 
-	protected abstract Collection<ItemStack> createExplosionRemains();
+	protected abstract Vector3d getAcceleration();
 
-	protected abstract Function<RocketEntity, Vector3d> createAccelerationFunction();
+	protected abstract Vector3f getPassengerPosition();
 
-	protected abstract Supplier<Vector3f> createPassengerPosition();
+	protected abstract Collection<ItemStack> getDroppedStacks();
 
 	@Override
 	protected void initDataTracker() {
@@ -92,7 +80,7 @@ public abstract class RocketEntity extends ComponentFluidInventoryEntity {
 	@Override
 	public void updatePassengerPosition(Entity passenger) {
 		if (this.hasPassenger(passenger)) {
-			Vector3f position = passengerPosition.get();
+			Vector3f position = getPassengerPosition();
 			passenger.updatePosition(getX() + position.x, getY() + position.y, getZ() + position.z);
 		}
 	}
@@ -102,111 +90,70 @@ public abstract class RocketEntity extends ComponentFluidInventoryEntity {
 		super.tick();
 
 		if (this.getDataTracker().get(IS_RUNNING)) {
-			FluidVolume tank = getTank();
+			if (isFuelMatching()) {
+				consumeFuel();
 
-			if (fuelPredicate.test(tank) || tank.isEmpty()) {
-				tank.minus(consumptionFunction.apply(this));
+				Vector3d acceleration = getAcceleration();
 
-				if (tank.isEmpty() && !world.isClient) {
-					this.world.getPlayers().forEach(player -> player.sendMessage(new TranslatableText("text.astromine.rocket.disassemble_empty_fuel").formatted(Formatting.RED), false));
+				this.addVelocity(0, acceleration.y, 0);
+				this.move(MovementType.SELF, this.getVelocity());
 
-					this.tryDisassemble(false);
-				} else {
-					Vector3d acceleration = accelerationFunction.apply(this);
+				if (!this.world.isClient) {
+					Box box = getBoundingBox();
 
-					this.addVelocity(0, acceleration.y, 0);
-					this.move(MovementType.SELF, this.getVelocity());
+					double y = getY();
 
-					if (!this.world.isClient) {
-						Box box = getBoundingBox();
-
-						double y = getY();
-
-						for (double x = box.minX; x < box.maxX; x += 0.0625) {
-							for (double z = box.minZ; z < box.maxZ; z += 0.0625) {
-								((ServerWorld) world).spawnParticles(AstromineDiscoveriesParticles.ROCKET_FLAME, x, y, z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
-							}
+					for (double x = box.minX; x < box.maxX; x += 0.0625) {
+						for (double z = box.minZ; z < box.maxZ; z += 0.0625) {
+							((ServerWorld) world).spawnParticles(AstromineDiscoveriesParticles.ROCKET_FLAME, x, y, z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
 						}
 					}
 				}
 
-				if (BlockPos.Mutable.stream(getBoundingBox()).anyMatch(pos -> world.getBlockState(pos).isFullCube(world, pos)) && !world.isClient) {
-					this.world.getPlayers().forEach(player -> player.sendMessage(new TranslatableText("text.astromine.rocket.disassemble_collision").formatted(Formatting.RED), false));
-
+				if (BlockPos.Mutable.stream(getBoundingBox()).anyMatch(pos -> !world.getBlockState(pos).isAir()) && !world.isClient) {
 					this.tryDisassemble(false);
 				}
 			} else if (!world.isClient) {
-				this.world.getPlayers().forEach(player -> player.sendMessage(new TranslatableText("text.astromine.rocket.disassemble_invalid_fuel").formatted(Formatting.RED), false));
+				this.addVelocity(0, -GravityRegistry.INSTANCE.get(world.getRegistryKey()), 0);
+				this.move(MovementType.SELF, this.getVelocity());
 
-				this.tryDisassemble(false);
+				if (getVelocity().y < -GravityRegistry.INSTANCE.get(world.getRegistryKey())) {
+					if (BlockPos.Mutable.stream(getBoundingBox().offset(0, -1, 0)).anyMatch(pos -> !world.getBlockState(pos).isAir()) && !world.isClient) {
+						this.tryDisassemble(false);
+					}
+				}
 			}
 		} else {
 			setVelocity(Vec3d.ZERO);
+
 			this.velocityDirty = true;
 		}
-
-		FluidHandler.ofOptional(this).ifPresent(fluids -> {
-			ItemHandler.ofOptional(this).ifPresent(items -> {
-				FluidHandler.ofOptional(items.getFirst()).ifPresent(stackFluids -> {
-					FluidVolume ourVolume = fluids.getFirst();
-					FluidVolume stackVolume = stackFluids.getFirst();
-
-					if (ourVolume.canAccept(stackVolume.getFluid())) {
-						if (items.getFirst().getItem() instanceof BucketItem) {
-							if (items.getFirst().getItem() != Items.BUCKET && items.getFirst().getCount() == 1) {
-								if (ourVolume.hasAvailable(Fraction.bucket()) || ourVolume.isEmpty()) {
-									ourVolume.moveFrom(stackVolume, Fraction.bucket());
-
-									items.setFirst(new ItemStack(Items.BUCKET));
-								}
-							}
-						} else {
-							ourVolume.moveFrom(stackVolume, Fraction.bucket());
-						}
-					}
-				});
-
-				FluidHandler.ofOptional(items.getSecond()).ifPresent(stackFluids -> {
-					FluidVolume ourVolume = fluids.getFirst();
-					FluidVolume stackVolume = stackFluids.getFirst();
-
-					if (stackVolume.canAccept(ourVolume.getFluid())) {
-						if (items.getSecond().getItem() instanceof BucketItem) {
-							if (items.getSecond().getItem() == Items.BUCKET && items.getSecond().getCount() == 1) {
-								if (ourVolume.hasStored(Fraction.bucket())) {
-									ourVolume.add(stackVolume, Fraction.bucket());
-
-									items.setSecond(new ItemStack(stackVolume.getFluid().getBucketItem()));
-								}
-							}
-						} else {
-							ourVolume.add(stackVolume, Fraction.bucket());
-						}
-					}
-				});
-			});
-		});
-	}
-
-	private FluidVolume getTank() {
-		return getFluidComponent().getVolume(0);
 	}
 
 	public void tryDisassemble(boolean intentional) {
 		this.tryExplode();
-		this.explosionRemains.forEach(stack -> ItemScatterer.spawn(world, getX(), getY(), getZ(), stack.copy()));
+
+		this.getDroppedStacks().forEach(stack -> ItemScatterer.spawn(world, getX(), getY(), getZ(), stack.copy()));
+
 		Collection<Entity> passengers = this.getPassengersDeep();
-		for(Entity passenger:passengers) {
+
+		for (Entity passenger : passengers) {
 			if (passenger instanceof ServerPlayerEntity) {
 				AstromineDiscoveriesCriteria.DESTROY_ROCKET.trigger((ServerPlayerEntity) passenger, intentional);
 			}
+
 			passenger.stopRiding();
 		}
+
 		this.remove();
 	}
 
 	private void tryExplode() {
-		world.createExplosion(this, getX(), getY(), getZ(), getTank().getAmount().floatValue() + 3f, Explosion.DestructionType.BREAK);
+		float[] strength = { 0 };
+
+		getFluidComponent().forEach(volume -> strength[0] += volume.getAmount().floatValue());
+
+		world.createExplosion(this, getX(), getY(), getZ(), min(strength[0], 32F) + 3F, Explosion.DestructionType.BREAK);
 	}
 
 	public Vec3d updatePassengerForDismount(LivingEntity passenger) {
@@ -217,9 +164,9 @@ public abstract class RocketEntity extends ComponentFluidInventoryEntity {
 	public abstract void openInventory(PlayerEntity player);
 
 	public void tryLaunch(PlayerEntity launcher) {
-		if (this.getFluidComponent().getVolume(0).biggerThan(Fraction.empty())) {
+		if (this.getFluidComponent().getFirst().biggerThan(Fraction.EMPTY)) {
 			this.getDataTracker().set(RocketEntity.IS_RUNNING, true);
-			if(launcher instanceof ServerPlayerEntity) {
+			if (launcher instanceof ServerPlayerEntity) {
 				AstromineDiscoveriesCriteria.LAUNCH_ROCKET.trigger((ServerPlayerEntity) launcher);
 			}
 		}

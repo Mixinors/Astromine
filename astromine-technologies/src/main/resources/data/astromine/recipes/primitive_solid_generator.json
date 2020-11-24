@@ -1,12 +1,7 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": ["010", "343", "070"],
-  "key": {
-    "0": {"tag": "c:copper_plates"},
-    "1": {"item": "astromine:basic_circuit"},
-    "3": {"tag": "c:tin_plates"},
-    "4": {"item": "astromine:primitive_machine_chassis"},
-    "7": {"item": "minecraft:furnace"}
-  },
-  "result": {"item": "astromine:primitive_solid_generator", "count": 1}
+  "type": "minecraft:crafting_shaped", "pattern": ["616", "343", "676"], "key": {
+  "1": {"item": "astromine:primitive_circuit"}, "3": {"item": "minecraft:furnace"},
+  "4": {"item": "astromine:primitive_machine_chassis"}, "6": {"tag": "c:lead_plates"},
+  "7": {"item": "astromine:primitive_battery_pack"}
+}, "result": {"item": "astromine:primitive_solid_generator", "count": 1}
 }

@@ -24,22 +24,18 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.CompoundTag;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.FluidSizeProvider;
@@ -47,7 +43,6 @@ import com.github.chainmailstudios.astromine.technologies.common.block.entity.ma
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.RefiningRecipe;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -59,27 +54,27 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 
 	private Optional<RefiningRecipe> optionalRecipe = Optional.empty();
 
-	public RefineryBlockEntity(Block energyBlock, BlockEntityType<?> type) {
-		super(energyBlock, type);
+	public RefineryBlockEntity(BlockEntityType<?> type) {
+		super(type);
 	}
 
 	@Override
-	protected EnergyInventoryComponent createEnergyComponent() {
-		return new SimpleEnergyInventoryComponent(getEnergySize());
+	public EnergyComponent createEnergyComponent() {
+		return SimpleEnergyComponent.of(getEnergySize());
 	}
 
 	@Override
-	protected FluidInventoryComponent createFluidComponent() {
-		FluidInventoryComponent fluidComponent = new SimpleFluidInventoryComponent(8).withInsertPredicate((direction, volume, slot) -> {
+	public FluidComponent createFluidComponent() {
+		FluidComponent fluidComponent = SimpleFluidComponent.of(8).withInsertPredicate((direction, volume, slot) -> {
 			if (slot != 0) {
 				return false;
 			}
 
-			Fluid existing = this.fluidComponent.getVolume(0).getFluid();
+			if (!volume.test(getFluidComponent().getFirst())) {
+				return false;
+			}
 
-			Fluid inserting = volume.getFluid();
-
-			return RefiningRecipe.allows(world, inserting, existing);
+			return RefiningRecipe.allows(world, FluidComponent.of(volume, getFluidComponent().getSecond(), getFluidComponent().getThird(), getFluidComponent().getFourth(), getFluidComponent().getFifth(), getFluidComponent().getSixth(), getFluidComponent().getSeventh(), getFluidComponent().getEighth()));
 		}).withExtractPredicate((direction, volume, slot) -> {
 			return slot == 1 || slot == 2 || slot == 3 || slot == 4 || slot == 5 || slot == 6 || slot == 7;
 		}).withListener((inventory) -> {
@@ -87,14 +82,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 			optionalRecipe = Optional.empty();
 		});
 
-		FluidHandler.of(fluidComponent).getFirst().setSize(getFluidSize());
-		FluidHandler.of(fluidComponent).getSecond().setSize(getFluidSize());
-		FluidHandler.of(fluidComponent).getThird().setSize(getFluidSize());
-		FluidHandler.of(fluidComponent).getFourth().setSize(getFluidSize());
-		FluidHandler.of(fluidComponent).getFifth().setSize(getFluidSize());
-		FluidHandler.of(fluidComponent).getSixth().setSize(getFluidSize());
-		FluidHandler.of(fluidComponent).getSeventh().setSize(getFluidSize());
-		FluidHandler.of(fluidComponent).getEighth().setSize(getFluidSize());
+		fluidComponent.forEach(it -> it.setSize(getFluidSize()));
 
 		return fluidComponent;
 	}
@@ -103,67 +91,62 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 	public void tick() {
 		super.tick();
 
-		if (world == null)
-			return;
-		if (world.isClient)
+		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		FluidHandler.ofOptional(this).ifPresent(fluids -> {
-			EnergyVolume volume = getEnergyComponent().getVolume();
+		FluidComponent fluidComponent = getFluidComponent();
+
+		EnergyComponent energyComponent = getEnergyComponent();
+
+		if (fluidComponent != null && energyComponent != null) {
+			EnergyVolume volume = energyComponent.getVolume();
+
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = (Optional) world.getRecipeManager().getAllOfType(RefiningRecipe.Type.INSTANCE).values().stream().filter(recipe -> recipe instanceof RefiningRecipe).filter(recipe -> ((RefiningRecipe) recipe).matches(fluidComponent)).findFirst();
+				optionalRecipe = RefiningRecipe.matching(world, fluidComponent);
 				shouldTry = false;
+
+				if (!optionalRecipe.isPresent()) {
+					progress = 0;
+					limit = 100;
+				}
 			}
 
 			if (optionalRecipe.isPresent()) {
 				RefiningRecipe recipe = optionalRecipe.get();
 
-				if (recipe.matches(fluidComponent)) {
-					limit = recipe.getTime();
+				limit = recipe.getTime();
 
-					double speed = Math.min(getMachineSpeed(), limit - progress);
-					double consumed = recipe.getEnergyConsumed() * speed / limit;
+				double speed = Math.min(getMachineSpeed(), limit - progress);
+				double consumed = recipe.getEnergyInput() * speed / limit;
 
-					if (volume.hasStored(consumed)) {
-						volume.minus(consumed);
+				if (volume.hasStored(consumed)) {
+					volume.take(consumed);
 
-						if (progress + speed >= limit) {
-							optionalRecipe = Optional.empty();
+					if (progress + speed >= limit) {
+						optionalRecipe = Optional.empty();
 
-							FluidVolume inputVolume = fluids.getFirst();
-							FluidVolume firstOutputVolume = fluids.getSecond();
-							FluidVolume secondOutputVolume = fluids.getThird();
-							FluidVolume thirdOutputVolume = fluids.getFourth();
-							FluidVolume fourthOutputVolume = fluids.getFifth();
-							FluidVolume fifthOutputVolume = fluids.getSixth();
-							FluidVolume sixthOutputVolume = fluids.getSeventh();
-							FluidVolume seventhOutputVolume = fluids.getEighth();
+						fluidComponent.getFirst().take(recipe.getIngredient().testMatching(fluidComponent.getFirst()).getAmount());
+						fluidComponent.getSecond().take(recipe.getFirstOutputVolume());
+						fluidComponent.getThird().take(recipe.getSecondOutputVolume());
+						fluidComponent.getFourth().take(recipe.getThirdOutputVolume());
+						fluidComponent.getFifth().take(recipe.getFourthOutputVolume());
+						fluidComponent.getSixth().take(recipe.getFifthOutputVolume());
+						fluidComponent.getSeventh().take(recipe.getSixthOutputVolume());
+						fluidComponent.getEighth().take(recipe.getSeventhOutputVolume());
 
-							inputVolume.minus(recipe.getInputAmount());
-							firstOutputVolume.moveFrom(FluidVolume.of(recipe.getFirstOutputAmount(), recipe.getFirstOutputFluid()), recipe.getFirstOutputAmount());
-							secondOutputVolume.moveFrom(FluidVolume.of(recipe.getSecondOutputAmount(), recipe.getSecondOutputFluid()), recipe.getSecondOutputAmount());
-							thirdOutputVolume.moveFrom(FluidVolume.of(recipe.getThirdOutputAmount(), recipe.getThirdOutputFluid()), recipe.getThirdOutputAmount());
-							fourthOutputVolume.moveFrom(FluidVolume.of(recipe.getFourthOutputAmount(), recipe.getFourthOutputFluid()), recipe.getFourthOutputAmount());
-							fifthOutputVolume.moveFrom(FluidVolume.of(recipe.getFifthOutputAmount(), recipe.getFifthOutputFluid()), recipe.getFifthOutputAmount());
-							sixthOutputVolume.moveFrom(FluidVolume.of(recipe.getSixthOutputAmount(), recipe.getSixthOutputFluid()), recipe.getSixthOutputAmount());
-							seventhOutputVolume.moveFrom(FluidVolume.of(recipe.getSeventhOutputAmount(), recipe.getSeventhOutputFluid()), recipe.getSeventhOutputAmount());
-
-							progress = 0;
-						} else {
-							progress += speed;
-						}
-
-						tickActive();
+						progress = 0;
 					} else {
-						tickInactive();
+						progress += speed;
 					}
+
+					tickActive();
 				} else {
 					tickInactive();
 				}
 			} else {
 				tickInactive();
 			}
-		});
+		}
 	}
 
 	@Override
@@ -182,7 +165,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 
 	public static class Primitive extends RefineryBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlocks.PRIMITIVE_REFINERY, AstromineTechnologiesBlockEntityTypes.PRIMITIVE_REFINERY);
+			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_REFINERY);
 		}
 
 		@Override
@@ -208,7 +191,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 
 	public static class Basic extends RefineryBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlocks.BASIC_REFINERY, AstromineTechnologiesBlockEntityTypes.BASIC_REFINERY);
+			super(AstromineTechnologiesBlockEntityTypes.BASIC_REFINERY);
 		}
 
 		@Override
@@ -234,7 +217,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 
 	public static class Advanced extends RefineryBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlocks.ADVANCED_REFINERY, AstromineTechnologiesBlockEntityTypes.ADVANCED_REFINERY);
+			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_REFINERY);
 		}
 
 		@Override
@@ -260,7 +243,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 
 	public static class Elite extends RefineryBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlocks.ELITE_REFINERY, AstromineTechnologiesBlockEntityTypes.ELITE_REFINERY);
+			super(AstromineTechnologiesBlockEntityTypes.ELITE_REFINERY);
 		}
 
 		@Override

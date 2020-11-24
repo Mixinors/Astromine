@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:crafting_shaped", "pattern": ["010", "343", "878"], "key": {
+  "0": {"item": "astromine:advanced_circuit"}, "1": {"item": "astromine:large_portable_tank"},
+  "3": {"item": "astromine:blades"}, "4": {"item": "astromine:advanced_machine_chassis"},
+  "7": {"item": "astromine:advanced_battery_pack"}, "8": {"item": "minecraft:magma_block"}
+}, "result": {"item": "astromine:advanced_melter", "count": 1}
+}

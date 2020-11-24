@@ -39,6 +39,7 @@ import net.minecraft.client.render.BufferBuilderStorage;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.LightmapTextureManager;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.WorldRenderer;
@@ -70,7 +71,13 @@ public abstract class WorldRendererMixin {
 	@Final
 	private BufferBuilderStorage bufferBuilders;
 
-	@Inject(at = @At("HEAD"), method = "renderSky(Lnet/minecraft/client/util/math/MatrixStack;F)V", cancellable = true)
+	@Shadow
+	protected abstract void renderLayer(RenderLayer renderLayer, MatrixStack matrixStack, double d, double e, double f);
+
+	@Shadow
+	public abstract void render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f);
+
+	@Inject(at = @At("HEAD"), method = "renderSky(Lnet/minecraft/client/util/math/Matrix" + "Stack;F)V", cancellable = true)
 	void astromine_renderSky(MatrixStack matrices, float tickDelta, CallbackInfo callbackInformation) {
 		Skybox skybox = SkyboxRegistry.INSTANCE.get(this.client.world.getRegistryKey());
 
@@ -80,9 +87,8 @@ public abstract class WorldRendererMixin {
 		}
 	}
 
-	@Inject(at = @At(value = "HEAD", target = "Lnet/minecraft/client/render/WorldRenderer;checkEmpty(Lnet/minecraft/client/util/math/MatrixStack;)V"),
-		method = "render(Lnet/minecraft/client/util/math/MatrixStack;FJZLnet/minecraft/client/render/Camera;Lnet/minecraft/client/render/GameRenderer;Lnet/minecraft/client/render/LightmapTextureManager;Lnet/minecraft/util/math/Matrix4f;)V")
-	void astromine_render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci) {
+	@Inject(method = "render", at = @At(value = "INVOKE_STRING", target = "net/minecraft/util/profiler/Profiler.swap(Ljava/lang/String;)V", args = "ldc=blockentities", shift = At.Shift.BEFORE))
+	void astromine_render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lighttmapTextureManager, Matrix4f matrix4f, CallbackInfo ci) {
 		Vec3d cameraPosition = camera.getPos();
 
 		float cX = (float) cameraPosition.x;
@@ -91,16 +97,19 @@ public abstract class WorldRendererMixin {
 
 		VertexConsumerProvider.Immediate immediate = this.bufferBuilders.getEntityVertexConsumers();
 
-		VertexConsumer consumer = immediate.getBuffer(Layer.getFlatNoCutout());
+		VertexConsumer consumer = immediate.getBuffer(Layer.getGas());
+
+		Vec3d playerPos = MinecraftClient.getInstance().player.getPos();
 
 		for (Long2ObjectMap.Entry<FluidVolume> entry : ClientAtmosphereManager.getVolumes().long2ObjectEntrySet()) {
 			long blockPos = entry.getLongKey();
+
 			FluidVolume volume = entry.getValue();
 
-			int r = 255;
-			int g = 255;
-			int b = 255;
-			int a = 31;
+			float r = 255;
+			float g = 255;
+			float b = 255;
+			float a = 31;
 
 			if (volume.getFluid() instanceof ExtendedFluid) {
 				int color = ((ExtendedFluid) volume.getFluid()).getTintColor();
@@ -110,8 +119,14 @@ public abstract class WorldRendererMixin {
 				b = (color & 255);
 			}
 
+			r /= 255;
+			g /= 255;
+			b /= 255;
+			a /= 255;
+
 			int bX = BlockPos.unpackLongX(blockPos);
 			int bZ = BlockPos.unpackLongZ(blockPos);
+
 			if (!volume.isEmpty() && world.isChunkLoaded(bX >> 4, bZ >> 4)) {
 				int bY = BlockPos.unpackLongY(blockPos);
 
@@ -120,41 +135,43 @@ public abstract class WorldRendererMixin {
 				float z = bZ - cZ;
 
 				// Bottom
-				consumer.vertex(matrices.peek().getModel(), x, y, z).color(r, g, b, a).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x, y, z + 1).color(r, g, b, a).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y, z + 1).color(r, g, b, a).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y, z).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x, y, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY, bZ))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x, y, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY, bZ + 1))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1, y, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY, bZ + 1))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1, y, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY, bZ))))).light(15728880).next();
 
 				// Top
-				consumer.vertex(matrices.peek().getModel(), x, y + 1, z).color(r, g, b, a).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x, y + 1, z + 1).color(r, g, b, a).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z + 1).color(r, g, b, a).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x, y + 1, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY + 1, bZ))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x, y + 1, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY + 1, bZ + 1))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY + 1, bZ + 1))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY + 1, bZ))))).light(15728880).next();
 
 				// Front
-				consumer.vertex(matrices.peek().getModel(), x, y, z).color(r, g, b, a).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x, y + 1, z).color(r, g, b, a).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z).color(r, g, b, a).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y, z).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x, y, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY, bZ))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x, y + 1, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY + 1, bZ))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY + 1, bZ))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1, y, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY, bZ))))).light(15728880).next();
 
 				// Back
-				consumer.vertex(matrices.peek().getModel(), x, y, z + 1).color(r, g, b, a).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x, y + 1, z + 1).color(r, g, b, a).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z + 1).color(r, g, b, a).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y, z + 1).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x, y, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY, bZ + 1))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x, y + 1, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY + 1, bZ + 1))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY + 1, bZ + 1))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1, y, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY, bZ + 1))))).light(15728880).next();
 
 				// Left
-				consumer.vertex(matrices.peek().getModel(), x, y, z).color(r, g, b, a).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x, y + 1, z).color(r, g, b, a).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x, y + 1, z + 1).color(r, g, b, a).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x, y, z + 1).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x, y, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY, bZ))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x, y + 1, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY + 1, bZ))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x, y + 1, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY + 1, bZ + 1))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x, y, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX, bY, bZ + 1))))).light(15728880).next();
 
 				// Right
-				consumer.vertex(matrices.peek().getModel(), x + 1, y, z).color(r, g, b, a).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z).color(r, g, b, a).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z + 1).color(r, g, b, a).light(15728880).next();
-				consumer.vertex(matrices.peek().getModel(), x + 1, y, z + 1).color(r, g, b, a).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1, y, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY, bZ))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY + 1, bZ))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1, y + 1, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY + 1, bZ + 1))))).light(15728880).next();
+				consumer.vertex(matrices.peek().getModel(), x + 1, y, z + 1).color(r, g, b, Math.min(a, a / (16F / (float) playerPos.distanceTo(new Vec3d(bX + 1, bY, bZ + 1))))).light(15728880).next();
 			}
 		}
+
+		immediate.draw();
 	}
 }

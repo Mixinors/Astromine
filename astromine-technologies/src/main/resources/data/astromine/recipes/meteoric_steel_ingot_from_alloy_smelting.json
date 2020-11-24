@@ -1,10 +1,10 @@
 {
   "type": "astromine:alloy_smelting",
-  "firstInput": {
+  "first_input": {
     "tag": "c:metite_ingots",
     "count": 2
   },
-  "secondInput": {
+  "second_input": {
     "tag": "c:steel_ingots"
   },
   "output": {
@@ -12,5 +12,5 @@
     "count": 3
   },
   "time": 200,
-  "energy_consumed": 800
+  "energy_input": 800
 }

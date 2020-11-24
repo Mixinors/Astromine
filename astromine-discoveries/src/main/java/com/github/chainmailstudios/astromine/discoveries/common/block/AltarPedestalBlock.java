@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.block;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -52,7 +53,7 @@ import com.github.chainmailstudios.astromine.discoveries.common.block.entity.Alt
 public class AltarPedestalBlock extends WrenchableBlockWithEntity {
 	protected static final VoxelShape SHAPE = Block.createCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D);
 
-	public AltarPedestalBlock(Settings settings) {
+	public AltarPedestalBlock(AbstractBlock.Settings settings) {
 		super(settings);
 	}
 
@@ -100,26 +101,28 @@ public class AltarPedestalBlock extends WrenchableBlockWithEntity {
 			ItemStack stackInHand = player.getStackInHand(hand);
 
 			if (blockEntity instanceof AltarPedestalBlockEntity) {
-				AltarPedestalBlockEntity displayerBlockEntity = (AltarPedestalBlockEntity) blockEntity;
-				if (displayerBlockEntity.getStack(0).isEmpty()) {
+				AltarPedestalBlockEntity pedestalBlockEntity = (AltarPedestalBlockEntity) blockEntity;
+				if (pedestalBlockEntity.hasParent() && pedestalBlockEntity.getParent().isCrafting()) {
+					return ActionResult.CONSUME;
+				} else if (pedestalBlockEntity.getStack(0).isEmpty()) {
 					if (!stackInHand.isEmpty()) {
-						displayerBlockEntity.setStack(0, stackInHand.split(1));
-						displayerBlockEntity.sync();
+						pedestalBlockEntity.setStack(0, stackInHand.split(1));
+						pedestalBlockEntity.sync();
 						return ActionResult.SUCCESS;
 					}
 					return ActionResult.CONSUME;
-				} else if (canMergeItems(stackInHand, displayerBlockEntity.getStack(0))) {
+				} else if (canMergeItems(stackInHand, pedestalBlockEntity.getStack(0))) {
 					ItemStack copy = stackInHand.copy();
 					copy.increment(1);
 					player.setStackInHand(hand, copy);
-					displayerBlockEntity.setStack(0, ItemStack.EMPTY);
+					pedestalBlockEntity.setStack(0, ItemStack.EMPTY);
 					player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, .6F, 1);
-					displayerBlockEntity.sync();
+					pedestalBlockEntity.sync();
 				} else if (stackInHand.isEmpty()) {
-					player.setStackInHand(hand, displayerBlockEntity.getStack(0).copy());
-					displayerBlockEntity.setStack(0, ItemStack.EMPTY);
+					player.setStackInHand(hand, pedestalBlockEntity.getStack(0).copy());
+					pedestalBlockEntity.setStack(0, ItemStack.EMPTY);
 					player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, .6F, 1);
-					displayerBlockEntity.sync();
+					pedestalBlockEntity.sync();
 				} else {
 					return ActionResult.CONSUME;
 				}

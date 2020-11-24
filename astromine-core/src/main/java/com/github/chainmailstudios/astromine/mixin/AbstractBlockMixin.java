@@ -45,14 +45,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
-import com.github.chainmailstudios.astromine.common.utilities.data.Holder;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
-import com.github.chainmailstudios.astromine.common.volume.handler.TransferHandler;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
-
-import java.util.Optional;
 
 @Mixin(AbstractBlock.class)
 public class AbstractBlockMixin {
@@ -68,91 +65,79 @@ public class AbstractBlockMixin {
 
 		final boolean isFluidVolumeItem = stackItem instanceof FluidVolumeItem;
 
-		final Optional<FluidHandler> handler = FluidHandler.ofOptional(stack);
+		final FluidComponent stackFluidComponent = FluidComponent.get(stack);
 
 		if (state.getBlock().hasBlockEntity()) {
-			final Optional<TransferHandler> optionalTransferHandler = TransferHandler.of(world.getBlockEntity(pos));
+			BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(world.getBlockEntity(pos));
 
-			if (optionalTransferHandler.isPresent()) {
-				TransferHandler transferHandler = optionalTransferHandler.get();
+			if (transferComponent != null && transferComponent.hasFluid()) {
+				TransferType type = transferComponent.getFluid(result.getSide());
 
-				Holder<TransferType> typeHolder = Holder.of(null);
-
-				transferHandler.withDirection(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, result.getSide(), (type) -> {
-					typeHolder.set(type);
-				});
-
-				if (typeHolder.get() == null || (!typeHolder.get().canInsert() && !typeHolder.get().canExtract())) {
+				if (!type.canInsert() && !type.canExtract()) {
 					return;
 				}
 			}
 		}
 
-		final Holder<Boolean> shouldSkip = Holder.of(false);
+		boolean shouldSkip = false;
 
-		handler.ifPresent(stackHandler -> {
+		if (stackFluidComponent != null) {
 			final Block block = state.getBlock();
 
 			if (block.hasBlockEntity()) {
 				final BlockEntity blockEntity = world.getBlockEntity(pos);
 
-				FluidHandler.ofOptional(blockEntity).ifPresent(blockEntityHandler -> {
-					stackHandler.withVolume(0, (optionalStackVolume) -> {
-						optionalStackVolume.ifPresent((stackVolume) -> {
-							if (stackVolume.isEmpty()) {
-								blockEntityHandler.withFirstExtractable(result.getSide(), (optionalFirstExtractable) -> {
-									optionalFirstExtractable.ifPresent((firstExtractable) -> {
-										if (isBucket) {
-											firstExtractable.ifStored(Fraction.bucket(), () -> {
-												if (stack.getCount() == 1 || (player.inventory.getEmptySlot() == -1 && stack.getCount() == 1)) {
-													stackVolume.moveFrom(firstExtractable, Fraction.bucket());
-													player.setStackInHand(hand, new ItemStack(stackVolume.getFluid().getBucketItem()));
-												} else if (player.inventory.getEmptySlot() != -1 && stack.getCount() > 1) {
-													stackVolume.moveFrom(firstExtractable, Fraction.bucket());
-													stack.decrement(1);
-													player.giveItemStack(new ItemStack(stackVolume.getFluid().getBucketItem()));
-												}
-											});
-										} else {
-											stackVolume.moveFrom(firstExtractable, Fraction.bucket());
-										}
-									});
-								});
-							} else {
-								blockEntityHandler.withFirstInsertable(result.getSide(), stackVolume.getFluid(), (optionalFirstInsertable) -> {
-									optionalFirstInsertable.ifPresent((firstInsertable) -> {
-										if (isBucket) {
-											firstInsertable.ifAvailable(Fraction.bucket(), () -> {
-												if (stack.getCount() == 1 || (player.inventory.getEmptySlot() == -1 && stack.getCount() == 1)) {
-													firstInsertable.moveFrom(stackVolume, Fraction.bucket());
+				FluidComponent blockEntityFluidComponent = FluidComponent.get(blockEntity);
 
-													if (!player.isCreative()) {
-														player.setStackInHand(hand, new ItemStack(Items.BUCKET));
-													}
-												} else if (player.inventory.getEmptySlot() != -1 && stack.getCount() > 1) {
-													firstInsertable.moveFrom(stackVolume, Fraction.bucket());
+				if (blockEntityFluidComponent != null) {
+					FluidVolume stackVolume = stackFluidComponent.getFirst();
 
-													if (!player.isCreative()) {
-														stack.decrement(1);
-														player.giveItemStack(new ItemStack(Items.BUCKET));
-													}
-												}
-											});
-										} else {
-											firstInsertable.moveFrom(stackVolume, Fraction.bucket());
-										}
-									});
-								});
+					if (stackVolume.isEmpty()) {
+						FluidVolume extractable = blockEntityFluidComponent.getFirstExtractableVolume(result.getSide());
+
+						if (isBucket && extractable != null) {
+							if (extractable.hasStored(Fraction.BUCKET)) {
+								if (stack.getCount() == 1 || (player.inventory.getEmptySlot() == -1 && stack.getCount() == 1)) {
+									stackVolume.take(extractable, Fraction.BUCKET);
+									player.setStackInHand(hand, new ItemStack(stackVolume.getFluid().getBucketItem()));
+								} else if (player.inventory.getEmptySlot() != -1 && stack.getCount() > 1) {
+									stackVolume.take(extractable, Fraction.BUCKET);
+									stack.decrement(1);
+									player.giveItemStack(new ItemStack(stackVolume.getFluid().getBucketItem()));
+								}
 							}
+						} else if (extractable != null) {
+							stackVolume.take(extractable, Fraction.BUCKET);
+						}
+					} else {
+						FluidVolume insertable = blockEntityFluidComponent.getFirstInsertableVolume(result.getSide(), stackVolume);
 
-							shouldSkip.set(true);
-						});
-					});
-				});
+						if (isBucket && insertable != null) {
+							if (insertable.hasAvailable(Fraction.BUCKET)) {
+								if (stack.getCount() == 1 || (player.inventory.getEmptySlot() == -1 && stack.getCount() == 1)) {
+									insertable.take(stackVolume, Fraction.BUCKET);
+									if (!player.isCreative()) {
+										player.setStackInHand(hand, new ItemStack(Items.BUCKET));
+									}
+								} else if (player.inventory.getEmptySlot() != -1 && stack.getCount() > 1) {
+									insertable.take(stackVolume, Fraction.BUCKET);
+									if (!player.isCreative()) {
+										stack.decrement(1);
+										player.giveItemStack(new ItemStack(Items.BUCKET));
+									}
+								}
+							} else if (insertable != null) {
+								insertable.take(stackVolume, Fraction.BUCKET);
+							}
+						} else {}
+					}
+
+					shouldSkip = true;
+				}
 			}
-		});
+		}
 
-		if (shouldSkip.get()) {
+		if (shouldSkip) {
 			cir.setReturnValue(ActionResult.SUCCESS);
 		}
 	}

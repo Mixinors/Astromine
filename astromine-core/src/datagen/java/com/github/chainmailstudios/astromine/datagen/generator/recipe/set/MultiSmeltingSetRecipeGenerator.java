@@ -9,7 +9,6 @@ import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 public class MultiSmeltingSetRecipeGenerator extends MultiCookingSetRecipeGenerator {

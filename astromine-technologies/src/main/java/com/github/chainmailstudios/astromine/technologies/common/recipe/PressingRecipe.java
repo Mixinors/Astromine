@@ -27,71 +27,97 @@ package com.github.chainmailstudios.astromine.technologies.common.recipe;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.IngredientUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.ItemIngredient;
+import com.github.chainmailstudios.astromine.common.utilities.DoubleUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.IntegerUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import com.google.gson.annotations.SerializedName;
+import java.util.Optional;
 
-public class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
-	final Identifier identifier;
-	final Ingredient input;
-	final ItemStack output;
-	final double energyConsumed;
-	final int time;
+public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
+	private final Identifier identifier;
+	private final ItemIngredient firstInput;
+	private final ItemStack firstOutput;
+	private final double energyInput;
+	private final int time;
 
-	public PressingRecipe(Identifier identifier, Ingredient input, ItemStack output, double energyConsumed, int time) {
+	public PressingRecipe(Identifier identifier, ItemIngredient firstInput, ItemStack output, double energy, int time) {
 		this.identifier = identifier;
-		this.input = input;
-		this.output = output;
-		this.energyConsumed = energyConsumed;
+		this.firstInput = firstInput;
+		this.firstOutput = output;
+		this.energyInput = energy;
 		this.time = time;
 	}
 
-	public static boolean allows(World world, Inventory inventory) {
+	public static boolean allows(World world, ItemComponent itemComponent) {
 		return world.getRecipeManager().getAllOfType(PressingRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
 			PressingRecipe recipe = ((PressingRecipe) it);
 
-			return recipe.matches(inventory, world);
+			return recipe.allows(itemComponent);
 		});
+	}
+
+	public static Optional<PressingRecipe> matching(World world, ItemComponent itemComponent) {
+		return (Optional<PressingRecipe>) (Object) world.getRecipeManager().getAllOfType(PressingRecipe.Type.INSTANCE).values().stream().filter(it -> {
+			PressingRecipe recipe = ((PressingRecipe) it);
+
+			return recipe.matches(itemComponent);
+		}).findFirst();
+	}
+
+	public boolean matches(ItemComponent itemComponent) {
+		if (itemComponent.getSize() < 2) {
+			return false;
+		}
+
+		if (!firstInput.test(itemComponent.getSecond())) {
+			return false;
+		}
+
+		return StackUtilities.test(firstOutput, itemComponent.getFirst());
+	}
+
+	public boolean allows(ItemComponent itemComponent) {
+		if (itemComponent.getSize() < 1) {
+			return false;
+		}
+
+		return firstInput.testWeak(itemComponent.getSecond());
 	}
 
 	@Override
 	public boolean matches(Inventory inventory, World world) {
-		return ItemInventoryComponentFromItemInventory.of(inventory).getContents().values().stream().anyMatch(input);
+		return false;
 	}
 
 	@Override
 	public ItemStack craft(Inventory inventory) {
-		return output.copy();
+		return ItemStack.EMPTY;
 	}
 
 	@Override
 	public boolean fits(int width, int height) {
-		return true;
+		return false;
 	}
 
 	@Override
 	public ItemStack getOutput() {
-		return output.copy();
+		return ItemStack.EMPTY;
 	}
 
 	@Override
@@ -110,23 +136,29 @@ public class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 	}
 
 	@Override
-	public DefaultedList<Ingredient> getPreviewInputs() {
-		DefaultedList<Ingredient> defaultedList = DefaultedList.of();
-		defaultedList.add(this.input);
-		return defaultedList;
-	}
-
-	@Override
 	public ItemStack getRecipeKindIcon() {
 		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_PRESSER);
+	}
+
+	public Identifier getIdentifier() {
+		return identifier;
+	}
+
+	public ItemIngredient getFirstInput() {
+		return firstInput;
+	}
+
+	public ItemStack getFirstOutput() {
+		return firstOutput;
 	}
 
 	public int getTime() {
 		return time;
 	}
 
-	public double getEnergyConsumed() {
-		return energyConsumed;
+	@Override
+	public double getEnergyInput() {
+		return energyInput;
 	}
 
 	public static final class Serializer implements RecipeSerializer<PressingRecipe> {
@@ -134,50 +166,67 @@ public class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 
 		public static final Serializer INSTANCE = new Serializer();
 
-		private Serializer() {
-			// Locked.
-		}
+		private Serializer() {}
 
 		@Override
 		public PressingRecipe read(Identifier identifier, JsonObject object) {
 			PressingRecipe.Format format = new Gson().fromJson(object, PressingRecipe.Format.class);
 
-			return new PressingRecipe(identifier, IngredientUtilities.fromJson(format.input), StackUtilities.fromJson(format.output), EnergyUtilities.fromJson(format.energyConsumed), ParsingUtilities.fromJson(format.time, Integer.class));
+			return new PressingRecipe(
+					identifier,
+					ItemIngredient.fromJson(format.firstInput),
+					StackUtilities.fromJson(format.firstOutput),
+					DoubleUtilities.fromJson(format.energyInput),
+					IntegerUtilities.fromJson(format.time)
+			);
 		}
 
 		@Override
 		public PressingRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new PressingRecipe(identifier, IngredientUtilities.fromPacket(buffer), StackUtilities.fromPacket(buffer), EnergyUtilities.fromPacket(buffer), PacketUtilities.fromPacket(buffer, Integer.class));
+			return new PressingRecipe(
+					identifier,
+					ItemIngredient.fromPacket(buffer),
+					StackUtilities.fromPacket(buffer),
+					DoubleUtilities.fromPacket(buffer),
+					IntegerUtilities.fromPacket(buffer)
+			);
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, PressingRecipe recipe) {
-			IngredientUtilities.toPacket(buffer, recipe.input);
-			StackUtilities.toPacket(buffer, recipe.output);
-			EnergyUtilities.toPacket(buffer, recipe.energyConsumed);
-			PacketUtilities.toPacket(buffer, recipe.time);
+			recipe.firstInput.toPacket(buffer);
+			StackUtilities.toPacket(buffer, recipe.firstOutput);
+			DoubleUtilities.toPacket(buffer, recipe.energyInput);
+			IntegerUtilities.toPacket(buffer, recipe.time);
 		}
 	}
 
 	public static final class Type implements AstromineRecipeType<PressingRecipe> {
 		public static final Type INSTANCE = new Type();
 
-		private Type() {
-			// Locked.
-		}
+		private Type() {}
 	}
 
 	public static final class Format {
-		JsonObject input;
-		JsonObject output;
-		@SerializedName("time")
-		JsonPrimitive time;
-		@SerializedName("energy_consumed")
-		JsonElement energyConsumed;
+		@SerializedName("input")
+		JsonElement firstInput;
+
+		@SerializedName("output")
+		JsonElement firstOutput;
+
+		@SerializedName("energy_input")
+		JsonElement energyInput;
+
+		JsonElement time;
 
 		@Override
 		public String toString() {
-			return "Format{" + "input=" + input + ", output=" + output + ", time=" + time + ", energyConsumed=" + energyConsumed + '}';
+			return "Format{" +
+					"firstInput=" + firstInput +
+					", firstOutput=" + firstOutput +
+					", energyInput=" + energyInput +
+					", time=" + time +
+					'}';
 		}
 	}
 }

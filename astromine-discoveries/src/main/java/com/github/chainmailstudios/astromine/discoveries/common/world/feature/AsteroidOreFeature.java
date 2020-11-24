@@ -37,6 +37,7 @@ import com.mojang.serialization.Codec;
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
 import com.github.chainmailstudios.astromine.discoveries.client.registry.AsteroidOreRegistry;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.terraformersmc.shapes.api.Position;
 import com.terraformersmc.shapes.api.Quaternion;
 import com.terraformersmc.shapes.api.Shape;
@@ -85,7 +86,7 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 				BlockPos orePosition = streamPosition.toBlockPos();
 
 				if (world.getBlockState(orePosition).getBlock() == AstromineDiscoveriesBlocks.ASTEROID_STONE) {
-					if (random.nextInt(8) == 0) { // Only 1 in 8 blocks is ore, essentially anti-veinminer
+					if (random.nextInt(AstromineConfig.get().asteroidOreThreshold) == 0) { // Only 1 in 8 blocks is ore, essentially anti-veinminer
 						world.setBlockState(orePosition, ore.getDefaultState(), 0b0110100);
 					}
 				}

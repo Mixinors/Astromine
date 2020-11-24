@@ -8,6 +8,6 @@
     "item": "astromine:emerald_dust",
     "count": 2
   },
-  "time": 90,
-  "energy_consumed": 340
+  "time": 180,
+  "energy_input": 340
 }

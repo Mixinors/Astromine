@@ -24,27 +24,30 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.utilities.capability.energy.ExtendedEnergyProvider;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.utilities.capability.energy.ComponentEnergyProvider;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 
-public abstract class ComponentEnergyBlockEntity extends ComponentBlockEntity implements ExtendedEnergyProvider {
-	protected final EnergyInventoryComponent energyComponent = createEnergyComponent();
-
-	public ComponentEnergyBlockEntity(Block energyBlock, BlockEntityType<?> type) {
+/**
+ * A {@link ComponentBlockEntity} with an attached
+ * {@link EnergyComponent}.
+ */
+public abstract class ComponentEnergyBlockEntity extends ComponentBlockEntity implements ComponentEnergyProvider {
+	/** Instantiates a {@link ComponentEnergyBlockEntity}. */
+	public ComponentEnergyBlockEntity(BlockEntityType<?> type) {
 		super(type);
 
-		transferComponent.add(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT);
-		addComponent(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, energyComponent);
+		addComponent(AstromineComponents.ENERGY_INVENTORY_COMPONENT, getEnergyComponent());
+		getEnergyComponent().updateListeners();
 	}
 
-	protected abstract EnergyInventoryComponent createEnergyComponent();
+	/** Returns the {@link EnergyComponent} to be attached. */
+	public abstract EnergyComponent createEnergyComponent();
 
-	@Override
-	public EnergyInventoryComponent getEnergyComponent() {
-		return energyComponent;
+	/** Returns the attached {@link EnergyComponent}. */
+	public EnergyComponent getEnergyComponent() {
+		return EnergyComponent.get(this);
 	}
 }

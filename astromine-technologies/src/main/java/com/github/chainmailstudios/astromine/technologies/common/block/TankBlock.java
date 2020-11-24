@@ -35,10 +35,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingTieredBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.redstone.ComparatorMode;
+import com.github.chainmailstudios.astromine.common.network.NetworkBlock;
+import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.TankBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.TankScreenHandler;
 
-public abstract class TankBlock extends WrenchableHorizontalFacingTieredBlockWithEntity {
+public abstract class TankBlock extends WrenchableHorizontalFacingTieredBlockWithEntity implements NetworkBlock.FluidBuffer {
 	public TankBlock(Settings settings) {
 		super(settings);
 	}
@@ -61,6 +64,11 @@ public abstract class TankBlock extends WrenchableHorizontalFacingTieredBlockWit
 		@Override
 		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
 			buffer.writeBlockPos(pos);
+		}
+
+		@Override
+		protected ComparatorMode getComparatorMode() {
+			return ComparatorMode.FLUIDS;
 		}
 	}
 
@@ -116,6 +124,11 @@ public abstract class TankBlock extends WrenchableHorizontalFacingTieredBlockWit
 		@Override
 		public BlockEntity createBlockEntity() {
 			return new TankBlockEntity.Creative();
+		}
+
+		@Override
+		public NetworkMemberType getFluidNetworkMemberType() {
+			return NetworkMemberType.PROVIDER;
 		}
 	}
 }

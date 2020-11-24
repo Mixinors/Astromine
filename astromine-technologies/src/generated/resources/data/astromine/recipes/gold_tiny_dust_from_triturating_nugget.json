@@ -8,6 +8,6 @@
     "item": "astromine:gold_tiny_dust",
     "count": 1
   },
-  "time": 15,
-  "energy_consumed": 200
+  "time": 30,
+  "energy_input": 200
 }

@@ -32,7 +32,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.packet.PacketConsumer;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
 
 public class AstromineCommonPackets {
 	public static final Identifier BLOCK_ENTITY_UPDATE_PACKET = AstromineCommon.identifier("block_entity_update");
@@ -46,8 +46,8 @@ public class AstromineCommonPackets {
 			context.getTaskQueue().execute(() -> {
 				BlockEntity blockEntity = context.getPlayer().getEntityWorld().getBlockEntity(blockPos);
 
-				if (blockEntity instanceof PacketConsumer) {
-					((PacketConsumer) blockEntity).consumePacket(identifier, storedBuffer, context);
+				if (blockEntity instanceof ComponentBlockEntity) {
+					((ComponentBlockEntity) blockEntity).consumePacket(identifier, storedBuffer, context);
 				}
 			});
 		})));

@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "astromine:primitive_electric_smelter",
-    "astromine:basic_electric_smelter",
-    "astromine:advanced_electric_smelter",
-    "astromine:elite_electric_smelter"
-  ]
-}

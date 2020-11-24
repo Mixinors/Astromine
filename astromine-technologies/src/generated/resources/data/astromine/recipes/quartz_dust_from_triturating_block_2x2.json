@@ -8,6 +8,6 @@
     "item": "astromine:quartz_dust",
     "count": 4
   },
-  "time": 80,
-  "energy_consumed": 480
+  "time": 160,
+  "energy_input": 480
 }

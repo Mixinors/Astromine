@@ -1,0 +1,6 @@
+{
+  "type": "minecraft:crafting_shaped", "pattern": ["818", "747", "878"], "key": {
+  "1": {"item": "minecraft:flint"}, "4": {"item": "astromine:portable_tank"}, "7": {"item": "minecraft:red_dye"},
+  "8": {"tag": "c:iron_plates"}
+}, "result": {"item": "astromine:fire_extinguisher", "count": 1}
+}

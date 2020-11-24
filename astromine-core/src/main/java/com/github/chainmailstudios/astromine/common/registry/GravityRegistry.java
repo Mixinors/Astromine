@@ -28,18 +28,38 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.registry.base.BiRegistry;
+import com.github.chainmailstudios.astromine.mixin.*;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 import java.util.Optional;
 
+/**
+ * A {@link BiRegistry} for registration of
+ * {@link RegistryKey<World>}s mapped to {@link Double}s.
+ *
+ * The registered gravity value will then be used for gravity
+ * calculations, through:
+ *
+ * - {@link AbstractMinecartEntityMixin}
+ * - {@link EggEntityMixin}
+ * - {@link EntityMixin}
+ * - {@link FishingBobberEntityMixin}
+ * - {@link GravityEntityMixin}
+ * - {@link HoneyBlockMixin}
+ * - {@link ItemEntityMixin}
+ * - {@link LivingEntityMixin}
+ * - {@link SquidEntityMixin}
+ * - {@link StepAndDestroyBlockGoalMixin}
+ */
 public class GravityRegistry extends BiRegistry<RegistryKey<World>, Double> {
 	public static final GravityRegistry INSTANCE = new GravityRegistry();
 
-	private GravityRegistry() {
-		// Locked.
-	}
+	/** We only want one instance of this. */
+	private GravityRegistry() {}
 
+	/** Returns the gravity for the given registry key, or the default value. */
 	@Override
 	public Double get(RegistryKey<World> worldRegistryKey) {
-		return Optional.ofNullable(super.get(worldRegistryKey)).orElse(0.08D);
+		return Optional.ofNullable(super.get(worldRegistryKey)).orElse(AstromineConfig.get().defaultGravity);
 	}
 }

@@ -26,42 +26,46 @@ package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyInventoryBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
+import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
-import com.github.chainmailstudios.astromine.common.volume.handler.ItemHandler;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
-import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
+import it.unimi.dsi.fastutil.ints.IntSet;
+import it.unimi.dsi.fastutil.ints.IntSets;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventoryBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
+public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
 	public double available = 0;
 	public double progress = 0;
 	public int limit = 100;
 
-	public SolidGeneratorBlockEntity(Block energyBlock, BlockEntityType<?> type) {
-		super(energyBlock, type);
+	public SolidGeneratorBlockEntity(BlockEntityType<?> type) {
+		super(type);
 	}
 
 	@Override
-	protected ItemInventoryComponent createItemComponent() {
-		return new SimpleItemInventoryComponent(1).withInsertPredicate((direction, stack, slot) -> {
+	public ItemComponent createItemComponent() {
+		return SimpleItemComponent.of(1).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 0) {
+				return false;
+			}
+
+			if (!StackUtilities.test(stack, getItemComponent().getFirst())) {
 				return false;
 			}
 
@@ -72,30 +76,43 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 	}
 
 	@Override
-	protected EnergyInventoryComponent createEnergyComponent() {
-		return new SimpleEnergyInventoryComponent(getEnergySize());
+	public EnergyComponent createEnergyComponent() {
+		return SimpleEnergyComponent.of(getEnergySize());
+	}
+
+	@Override
+	public IntSet getItemInputSlots() {
+		return IntSets.singleton(0);
+	}
+
+	@Override
+	public IntSet getItemOutputSlots() {
+		return IntSets.EMPTY_SET;
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
 
-		if (world == null)
-			return;
-		if (world.isClient)
+		if (world == null || world.isClient || !tickRedstone())
 			return;
 
-		ItemHandler.ofOptional(this).ifPresent(items -> {
+		ItemComponent itemComponent = getItemComponent();
+
+		EnergyComponent energyComponent = getEnergyComponent();
+
+		if (itemComponent != null && energyComponent != null) {
 			EnergyVolume energyVolume = energyComponent.getVolume();
 
 			if (available > 0) {
 				double produced = 5;
+
 				for (int i = 0; i < 3 * getMachineSpeed(); i++) {
 					if (progress <= limit) {
 						if (energyVolume.hasAvailable(produced)) {
 							--available;
 							++progress;
-							energyVolume.add(produced * getMachineSpeed());
+							energyVolume.give(produced * getMachineSpeed());
 
 							tickActive();
 						} else {
@@ -110,7 +127,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 					}
 				}
 			} else {
-				ItemStack burnStack = items.getFirst();
+				ItemStack burnStack = itemComponent.getFirst();
 
 				Integer value = FuelRegistry.INSTANCE.get(burnStack.getItem());
 
@@ -133,7 +150,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 					tickInactive();
 				}
 			}
-		});
+		}
 	}
 
 	@Override
@@ -154,7 +171,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 
 	public static class Primitive extends SolidGeneratorBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlocks.PRIMITIVE_SOLID_GENERATOR, AstromineTechnologiesBlockEntityTypes.PRIMITIVE_SOLID_GENERATOR);
+			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_SOLID_GENERATOR);
 		}
 
 		@Override
@@ -175,7 +192,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 
 	public static class Basic extends SolidGeneratorBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlocks.BASIC_SOLID_GENERATOR, AstromineTechnologiesBlockEntityTypes.BASIC_SOLID_GENERATOR);
+			super(AstromineTechnologiesBlockEntityTypes.BASIC_SOLID_GENERATOR);
 		}
 
 		@Override
@@ -196,7 +213,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 
 	public static class Advanced extends SolidGeneratorBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlocks.ADVANCED_SOLID_GENERATOR, AstromineTechnologiesBlockEntityTypes.ADVANCED_SOLID_GENERATOR);
+			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_SOLID_GENERATOR);
 		}
 
 		@Override
@@ -217,7 +234,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyInventory
 
 	public static class Elite extends SolidGeneratorBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlocks.ELITE_SOLID_GENERATOR, AstromineTechnologiesBlockEntityTypes.ELITE_SOLID_GENERATOR);
+			super(AstromineTechnologiesBlockEntityTypes.ELITE_SOLID_GENERATOR);
 		}
 
 		@Override

@@ -14,8 +14,9 @@ public class AstromineDatagenInitializer implements PreLaunchEntrypoint {
 			FabricLoader.getInstance().getEntrypoints("main", ModInitializer.class).forEach(ModInitializer::onInitialize); // Ensures blocks and items are registered
 			FabricLoader.getInstance().getEntrypoints("astromine_datagen", DatagenInitializer.class).forEach(DatagenInitializer::getMaterialSets); // Ensures Material Sets are registered
 			FabricLoader.getInstance().getEntrypoints("astromine_datagen", DatagenInitializer.class).forEach(DatagenInitializer::registerData);
-		} catch (Throwable throwable) {
-			AstromineCommon.LOGGER.error("Data generation failed.", throwable);
+		} catch (Exception e) {
+			AstromineCommon.LOGGER.error("Data generation failed.");
+			AstromineCommon.LOGGER.error(e.getMessage(), e);
 			System.exit(1);
 		}
 		System.exit(0);

@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.volume.fluid;
 
+import com.github.chainmailstudios.astromine.common.utilities.NumberUtilities;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
@@ -31,201 +32,241 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import io.netty.buffer.ByteBuf;
 
 import com.google.common.base.Objects;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import java.text.DecimalFormat;
 
-public class FluidVolume extends Volume<Identifier, Fraction> {
-	public static final Identifier ID = AstromineCommon.identifier("fluid");
+/**
+ * A {@link Volume} of {@link Fluid}s, whose amount
+ * and size are represented by a {@link Fraction}
+ *
+ * It is not an inventory, thus it is recommended to use a {@link FluidComponent},
+ * most commonly via its implementation, {@link SimpleFluidComponent}.
+ *
+ * A few utility methods for instantiation are provided, that being:
+ *
+ * - {@link #ofEmpty()}, returning an empty volume.
+ *
+ * - {@link #ofEmpty(Runnable)}, returning an empty volume, with an a listener.
+ *
+ * - {@link #of(Fraction, Fluid)}, returning a volume with the specified
+ * amount as a {@link Fraction}, and the given {@link Fluid}.
+ *
+ * - {@link #of(Fraction, Fluid, Runnable)}, returning a volume with the
+ * specified amount as a {@link Fraction}, the given {@link Fluid},
+ * and a listener as a {@link Runnable}.
+ *
+ * - {@link #of(Fraction, Fraction, Fluid)}, returning a volume with the
+ * specified amount as a {@link Fraction}, size as a {@link Fraction},
+ * and the given {@link Fluid}.
+ *
+ *- {@link #of(Fraction, Fraction, Fluid, Runnable)}, returning a value with
+ * the specified amount as a {@link Fraction}, size as a {@link Fraction},
+ * the given {@link Fluid}, and a listener as a {@link Runnable}.
+ *
+ * It is recommended that you always set the volume's listener to
+ * {@link FluidComponent#updateListeners()}, if using one.
+ *
+ * Serialization and deserialization methods are provided for:
+ * - {@link CompoundTag} - through {@link #toTag()} and {@link #fromTag(CompoundTag)}.
+ * - {@link JsonElement} - through {@link #toJson()} and {@link #fromJson(JsonElement)}.
+ * - {@link ByteBuf} - through {@link #toPacket(PacketByteBuf)} and {@link #fromPacket(PacketByteBuf)}.
+ */
+public class FluidVolume extends Volume<Fraction> {
+	public static final DecimalFormat FORMAT = new DecimalFormat("#0.00");
 
 	private Fluid fluid;
 
-	private static final FluidVolume EMPTY = new FluidVolume(Fraction.empty(), Fraction.bucket(), Fluids.EMPTY);
-
-	public FluidVolume(Fraction amount, Fraction size, Fluid fluid) {
-		super(ID, amount, size);
+	/** Instantiates a {@link FluidVolume}. */
+	protected FluidVolume(Fraction amount, Fraction size, Fluid fluid) {
+		super(amount, size);
 		this.fluid = fluid;
 	}
 
-	public FluidVolume(Fraction amount, Fraction size, Fluid fluid, Runnable runnable) {
-		super(ID, amount, size, runnable);
+	/** Instantiates a {@link FluidVolume} and a listener. */
+	protected FluidVolume(Fraction amount, Fraction size, Fluid fluid, Runnable runnable) {
+		super(amount, size, runnable);
 		this.fluid = fluid;
 	}
 
-	public static FluidVolume empty() {
-		return EMPTY;
+	/** Instantiates an empty {@link FluidVolume}. */
+	public static FluidVolume ofEmpty() {
+		return new FluidVolume(Fraction.EMPTY, Fraction.MAX_VALUE, Fluids.EMPTY);
 	}
 
-	public static FluidVolume oxygen() {
-		return new FluidVolume(Fraction.bucket(), Fraction.bucket(), Registry.FLUID.get(AstromineCommon.identifier("oxygen")));
+	/** Instantiates an empty {@link FluidVolume} with a listener. */
+	public static FluidVolume ofEmpty(Runnable runnable) {
+		return new FluidVolume(Fraction.EMPTY, Fraction.MAX_VALUE, Fluids.EMPTY, runnable);
 	}
 
-	public static FluidVolume attached(SimpleFluidInventoryComponent component) {
-		return new FluidVolume(Fraction.empty(), Fraction.bucket(), Fluids.EMPTY, component::dispatchConsumers);
-	}
-
+	/** Instantiates a {@link FluidVolume}. */
 	public static FluidVolume of(Fraction amount, Fluid fluid) {
-		return new FluidVolume(amount, Fraction.of(128L), fluid);
+		return new FluidVolume(amount, Fraction.MAX_VALUE, fluid);
 	}
 
+	/** Instantiates a {@link FluidVolume} and a listener. */
+	public static FluidVolume of(Fraction amount, Fluid fluid, Runnable runnable) {
+		return new FluidVolume(amount, Fraction.MAX_VALUE, fluid, runnable);
+	}
+
+	/** Instantiates a {@link FluidVolume}. */
 	public static FluidVolume of(Fraction amount, Fraction size, Fluid fluid) {
 		return new FluidVolume(amount, size, fluid);
 	}
 
-	public static FluidVolume of(Fraction amount, Fluid fluid, Runnable runnable) {
-		return new FluidVolume(amount, Fraction.of(128L), fluid, runnable);
-	}
-
+	/** Instantiates a {@link FluidVolume} and a listener. */
 	public static FluidVolume of(Fraction amount, Fraction size, Fluid fluid, Runnable runnable) {
 		return new FluidVolume(amount, size, fluid, runnable);
 	}
 
-	public static FluidVolume fromTag(CompoundTag tag) {
-		return new FluidVolume(Fraction.fromTag(tag.getCompound("amount")), Fraction.fromTag(tag.getCompound("size")), Registry.FLUID.get(new Identifier(tag.getString("fluid"))));
+	/** Asserts the equality of the volume's fluids. */
+	public static boolean fluidsEqual(FluidVolume first, FluidVolume second) {
+		return Objects.equal(first.getFluid(), second.getFluid());
 	}
 
-	public static boolean areFluidsEqual(FluidVolume volume1, FluidVolume volume2) {
-		return Objects.equal(volume1.getFluid(), volume2.getFluid());
-	}
-
+	/** Asserts the equality of the volume's fluids. */
 	public boolean fluidEquals(FluidVolume volume) {
-		return Objects.equal(this.getFluid(), volume.getFluid());
+		return Objects.equal(getFluid(), volume.getFluid());
 	}
 
+	/** Returns the volume's fluid. */
 	public Fluid getFluid() {
 		return this.fluid;
 	}
 
+	/** Sets the volume's fluid to the given one. */
 	public void setFluid(Fluid fluid) {
 		this.fluid = fluid;
 	}
 
+	/** Returns the identifier of the volume's fluid. */
 	public Identifier getFluidId() {
 		return Registry.FLUID.getId(getFluid());
 	}
 
-	@Override
-	public <V extends Volume<Identifier, Fraction>> V add(V v, Fraction fraction) {
-		if (!(v instanceof FluidVolume))
-			return (V) this;
-
-		if (((FluidVolume) v).getFluid() != getFluid()) {
-			if (v.isEmpty()) {
-				((FluidVolume) v).setFluid((this).getFluid());
-			} else {
-				return (V) this;
-			}
-		}
-
-		Fraction amount = Fraction.minimum(v.getSize().subtract(v.getAmount()), Fraction.minimum(getAmount(), fraction));
-
-		amount.ifBiggerThan(Fraction.empty(), () -> {
-			v.setAmount(v.getAmount().add(amount));
-			setAmount(getAmount().subtract(amount));
-		});
-
-		ifEmpty(() -> {
-			setFluid(Fluids.EMPTY);
-		});
-
-		return (V) this;
+	/** Asserts whether the fluid can be inserted into this volume or not. */
+	public boolean test(Fluid fluid) {
+		return (this.fluid == fluid && fluid != Fluids.EMPTY) || this.isEmpty();
 	}
 
-	@Override
-	public <V extends Volume<Identifier, Fraction>> V add(Fraction fraction) {
-		Fraction amount = Fraction.minimum(getSize().subtract(getAmount()), fraction);
-
-		setAmount(Fraction.add(getAmount(), amount));
-
-		return (V) this;
+	/** Asserts whether this volume can be inserted into the given one or not. */
+	public boolean test(FluidVolume volume) {
+		return volume.test(getFluid()) && volume.hasAvailable(getAmount());
 	}
 
-	@Override
-	public <V extends Volume<Identifier, Fraction>> V moveFrom(V v, Fraction fraction) {
-		if (!(v instanceof FluidVolume))
-			return (V) this;
-
-		if (((FluidVolume) v).getFluid() != getFluid()) {
-			if (this.isEmpty()) {
-				this.setFluid(((FluidVolume) v).getFluid());
-			} else {
-				return (V) this;
-			}
-		}
-
-		v.add(this, fraction);
-
-		return (V) this;
-	}
-
-	@Override
-	public <V extends Volume<Identifier, Fraction>> V minus(Fraction fraction) {
-		Fraction amount = Fraction.minimum(getAmount(), fraction);
-
-		setAmount(Fraction.subtract(getAmount(), amount));
-
-		return (V) this;
-	}
-
-	@Override
-	public <V extends Volume<Identifier, Fraction>> V copy() {
-		return (V) of(getAmount().copy(), getSize().copy(), getFluid());
-	}
-
-	public PacketByteBuf writeToBuffer(PacketByteBuf buffer) {
-		if (this.isEmpty()) {
-			buffer.writeBoolean(false);
-		} else {
-			buffer.writeBoolean(true);
-			Fluid fluid = this.getFluid();
-			buffer.writeVarInt(Registry.FLUID.getRawId(fluid));
-			Fraction amount = this.getAmount();
-			buffer.writeLong(amount.getNumerator());
-			buffer.writeLong(amount.getDenominator());
-			Fraction size = this.getSize();
-			buffer.writeLong(size.getNumerator());
-			buffer.writeLong(size.getDenominator());
-		}
-
-		return buffer;
-	}
-
-	public static FluidVolume readFromBuffer(PacketByteBuf buffer) {
-		if (!buffer.readBoolean()) {
-			return empty();
-		} else {
-			int id = buffer.readVarInt();
-			Fraction amount = new Fraction(buffer.readLong(), buffer.readLong());
-			Fraction size = new Fraction(buffer.readLong(), buffer.readLong());
-			return new FluidVolume(amount, size, Registry.FLUID.get(id));
-		}
-	}
-
-	public boolean canAccept(Fluid fluid) {
-		return this.fluid == fluid || this.isEmpty();
-	}
-
-	public boolean canAcceptFrom(FluidVolume volume) {
-		return this.fluidEquals(volume) || this.isEmpty();
-	}
-
-	@Override
-	public CompoundTag toTag() {
-		CompoundTag tag = new CompoundTag();
-		tag.put("amount", getAmount().toTag());
-		tag.put("size", getSize().toTag());
-		tag.putString("fluid", Registry.FLUID.getId(getFluid()).toString());
-		return tag;
-	}
-
+	/** Asserts whether this volume is empty or not. */
 	@Override
 	public boolean isEmpty() {
 		return super.isEmpty() || getFluid() == Fluids.EMPTY;
 	}
 
+	/**
+	 * Attempts to give the given {@link V} volume a {@link Fraction} of this
+	 * volume's content.
+	 *
+	 * If we both have the same fluid, the target receives as much as possible.
+	 *
+	 * If our fluids are not the same, but the theirs is {@link Fluids#EMPTY}
+	 * empty, change their fluid to {@link #fluid} ours. They then receive
+	 * as much as possible.
+	 *
+	 * If our fluids not the same, and theirs is not {@link Fluids#EMPTY},
+	 * do nothing.
+	 *
+	 * The amount transferred is the {@link Fraction#minimum(Fraction, Fraction)} between
+	 * the target's available space, our amount, and the specified amount.
+	 */
+	@Override
+	public <V extends Volume<Fraction>> void give(V volume, Fraction fraction) {
+		if (!(volume instanceof FluidVolume))
+			return;
+
+		if (((FluidVolume) volume).getFluid() != getFluid()) {
+			if (volume.isEmpty()) {
+				((FluidVolume) volume).setFluid((this).getFluid());
+			} else {
+				return;
+			}
+		}
+
+		Fraction amount = Fraction.minimum(volume.getSize().subtract(volume.getAmount()), Fraction.minimum(getAmount(), fraction));
+
+		if (amount.biggerThan(Fraction.EMPTY)) {
+			volume.setAmount(volume.getAmount().add(amount));
+			setAmount(getAmount().subtract(amount));
+		}
+
+		if (isEmpty()) {
+			setFluid(Fluids.EMPTY);
+			setAmount(Fraction.EMPTY);
+		}
+	}
+
+	/** Gives this volume the minimum between the available amount and the
+	 * specified amount. */
+	@Override
+	public void give(Fraction fraction) {
+		Fraction amount = Fraction.minimum(getSize().subtract(getAmount()), fraction);
+
+		setAmount(Fraction.add(getAmount(), amount));
+	}
+
+	/**
+	 * Attempts to take the given {@link Fraction} from a {@link V}
+	 * volume's content.
+	 *
+	 * If we both have the same fluid, we receive as much as possible.
+	 *
+	 * If our fluids are not the same, but the ours is {@link Fluids#EMPTY}
+	 * empty, change our fluid to {@link #fluid} theirs. We then receive
+	 * as much as possible.
+	 *
+	 * If our fluids not the same, and ours is not {@link Fluids#EMPTY},
+	 * do nothing.
+	 *
+	 * The amount transferred is the {@link Fraction#minimum(Fraction, Fraction)} between
+	 * the our available space, their amount, and the specified amount.
+	 */
+	@Override
+	public <V extends Volume<Fraction>> void take(V volume, Fraction amount) {
+		if (!(volume instanceof FluidVolume))
+			return;
+
+		if (((FluidVolume) volume).getFluid() != getFluid()) {
+			if (this.isEmpty()) {
+				this.setFluid(((FluidVolume) volume).getFluid());
+			} else {
+				return;
+			}
+		}
+
+		volume.give(this, amount);
+	}
+
+	/** Takes the minimum between the stored amount and the
+	 * specified amount from this volume. */
+	@Override
+	public void take(Fraction fraction) {
+		Fraction amount = Fraction.minimum(getAmount(), fraction);
+
+		setAmount(Fraction.subtract(getAmount(), amount));
+	}
+
+	/** Returns a copy of this volume. */
+	@Override
+	public <V extends Volume<Fraction>> V copy() {
+		return (V) of(getAmount(), getSize(), getFluid());
+	}
+
+	/** Asserts the equality of the objects. */
 	@Override
 	public boolean equals(Object object) {
 		if (this == object)
@@ -239,16 +280,99 @@ public class FluidVolume extends Volume<Identifier, Fraction> {
 
 		FluidVolume volume = (FluidVolume) object;
 
-		return FluidVolume.areFluidsEqual(this, volume);
+		return FluidVolume.fluidsEqual(this, volume);
 	}
 
+	/** Returns the hash for this volume. */
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(super.hashCode(), fluid);
+		return Objects.hashCode(super.hashCode(), getAmount(), getSize(), fluid);
 	}
 
+	/** Returns this volume's string representation.
+	 * For example, it may be "minecraft:water, 16.50 of 32.00 Buckets" */
 	@Override
 	public String toString() {
-		return getAmount().toDecimalString() + " / " + getSize().toDecimalString() + " " + getFluidId();
+		return getFluidId().toString() + ", " + NumberUtilities.shorten(getAmount().doubleValue(), "") + "/" + NumberUtilities.shorten(getSize().doubleValue(), "") + " Buckets";
+	}
+
+	/** Deserializes a volume from a {@link CompoundTag}. */
+	public static FluidVolume fromTag(CompoundTag tag) {
+		return of(Fraction.fromTag(tag.getCompound("amount")), Fraction.fromTag(tag.getCompound("size")), Registry.FLUID.get(new Identifier(tag.getString("fluid"))));
+	}
+
+	/** Serializes this volume to a {@link CompoundTag}. */
+	@Override
+	public CompoundTag toTag() {
+		CompoundTag tag = new CompoundTag();
+		tag.put("amount", getAmount().toTag());
+		tag.put("size", getSize().toTag());
+		tag.putString("fluid", Registry.FLUID.getId(getFluid()).toString());
+		return tag;
+	}
+
+	/** Deserializes a volume from a {@link JsonElement}. */
+	public static FluidVolume fromJson(JsonElement jsonElement) {
+		if (!(jsonElement instanceof JsonObject)) {
+			if (jsonElement.isJsonPrimitive()) {
+				JsonPrimitive jsonPrimitive = jsonElement.getAsJsonPrimitive();
+
+				if (jsonPrimitive.isString()) {
+					return of(Fraction.BUCKET, Registry.FLUID.get(new Identifier(jsonPrimitive.getAsString())));
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+		} else {
+			JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+			if (!jsonObject.has("fluid")) return null;
+			if (!jsonObject.has("amount")) {
+				return of(Fraction.BUCKET, Registry.FLUID.get(new Identifier(jsonObject.get("fluid").getAsString())));
+			} else {
+				return of(Fraction.fromJson(jsonObject.get("amount")), Registry.FLUID.get(new Identifier(jsonObject.get("fluid").getAsString())));
+			}
+		}
+	}
+
+	/** Serializes this volume to a {@link JsonElement}. */
+	public JsonElement toJson() {
+		JsonObject object = new JsonObject();
+		object.addProperty("fluid", Registry.FLUID.getId(getFluid()).toString());
+		object.add("amount", getAmount().toJson());
+		object.add("size", getSize().toJson());
+		return object;
+	}
+
+	/** Deserializes a volume from a {@link ByteBuf}. */
+	public static FluidVolume fromPacket(PacketByteBuf buffer) {
+		if (!buffer.readBoolean()) {
+			return ofEmpty();
+		} else {
+			int id = buffer.readVarInt();
+
+			Fraction amount = Fraction.fromPacket(buffer);
+			Fraction size = Fraction.fromPacket(buffer);
+
+			return of(amount, size, Registry.FLUID.get(id));
+		}
+	}
+
+	/** Serialize this volume to a {@link ByteBuf}. */
+	public PacketByteBuf toPacket(PacketByteBuf buffer) {
+		if (this.isEmpty()) {
+			buffer.writeBoolean(false);
+		} else {
+			buffer.writeBoolean(true);
+
+			buffer.writeVarInt(Registry.FLUID.getRawId(getFluid()));
+
+			getAmount().toPacket(buffer);
+			getSize().toPacket(buffer);
+		}
+
+		return buffer;
 	}
 }

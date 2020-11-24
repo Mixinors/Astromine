@@ -25,7 +25,6 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.type.EnergyNetworkType;
 import com.github.chainmailstudios.astromine.common.network.type.FluidNetworkType;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
@@ -34,12 +33,10 @@ import com.github.chainmailstudios.astromine.common.registry.NetworkTypeRegistry
 public class AstromineNetworkTypes {
 	public static final NetworkType ENERGY = register("energy_network", new EnergyNetworkType());
 	public static final NetworkType FLUID = register("fluid_network", new FluidNetworkType());
-	public static final NetworkType ITEM = register("item_network", new NetworkType() {
-		@Override
-		public void tick(NetworkInstance instance) {
-			// TODO: item network
-			// TODO: still todo two months later
-		}
+	public static final NetworkType ITEM = register("item_network", instance -> {
+		// TODO: item network
+		// TODO: still todo two months later
+		// TODO: still todo six months later
 	});
 
 	public static void initialize() {

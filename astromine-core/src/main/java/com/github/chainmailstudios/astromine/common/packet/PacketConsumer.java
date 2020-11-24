@@ -29,6 +29,12 @@ import net.fabricmc.fabric.api.network.PacketContext;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 
+/**
+ * An object
+ * which consumes packets identified by
+ * an {@link Identifier}.
+ */
 public interface PacketConsumer {
+	/** Consumes the packet. */
 	void consumePacket(Identifier identifier, PacketByteBuf buffer, PacketContext context);
 }

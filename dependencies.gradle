@@ -33,6 +33,7 @@ project.ext.setDefaultApis = {
     useAsApi("teamreborn:energy:${tr_energy_version}")
 
     // Cloth API
+    useAsApi("me.shedaniel.cloth.api:cloth-common-events-v1:${cloth_api_version}")
     useAsApi("me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${cloth_api_version}")
     useAsApi("me.shedaniel.cloth.api:cloth-dynamic-registry-api-v1:${cloth_api_version}")
     useAsApi("me.shedaniel.cloth.api:cloth-datagen-api-v1:${cloth_api_version}")
@@ -68,12 +69,6 @@ project.ext.setDefaultApis = {
 }
 
 project.ext.setRuntimeTestMods = {
-    // Tech Reborn
-    useAsRuntime("TechReborn:TechReborn-1.16:${tech_reborn_version}")
-
-    // Reborn Core
-    useAsRuntime("RebornCore:RebornCore-1.16:${reborn_core_version}")
-
     // DataBreaker
     useAsRuntime("com.github.SuperCoder7979:databreaker:${databreaker_version}")
 }

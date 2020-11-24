@@ -24,23 +24,31 @@
 
 package com.github.chainmailstudios.astromine.common.utilities.data;
 
-public class Range<T extends Number> {
+/**
+ * A range between
+ * {@link #minimum} and {@link #maximum}.
+ */
+public final class Range<T extends Number> {
 	private final T minimum;
 	private final T maximum;
 
-	public Range(T minimum, T maximum) {
+	/** Instantiates a {@link Range}. */
+	private Range(T minimum, T maximum) {
 		this.minimum = minimum;
 		this.maximum = maximum;
 	}
 
+	/** Instantiates a {@link Range}. */
 	public static <T extends Number> Range<T> of(T minimum, T maximum) {
 		return new Range<>(minimum, maximum);
 	}
 
+	/** Returns this range's {@link #minimum}. */
 	public T getMinimum() {
 		return this.minimum;
 	}
 
+	/** Returns this range's {@link #maximum}. */
 	public T getMaximum() {
 		return this.maximum;
 	}

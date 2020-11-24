@@ -1,0 +1,6 @@
+{
+  "type": "minecraft:crafting_shaped", "pattern": ["882", "348", "438"], "key": {
+  "2": {"tag": "c:steel_gears"}, "3": {"item": "astromine:elite_circuit"},
+  "4": {"item": "astromine:elite_battery_pack"}, "8": {"tag": "c:steel_plates"}
+}, "result": {"item": "astromine:elite_drill_base", "count": 1}
+}

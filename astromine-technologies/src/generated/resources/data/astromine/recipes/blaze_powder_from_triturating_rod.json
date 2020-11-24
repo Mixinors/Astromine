@@ -8,6 +8,6 @@
     "item": "minecraft:blaze_powder",
     "count": 4
   },
-  "time": 15,
-  "energy_consumed": 60
+  "time": 30,
+  "energy_input": 60
 }

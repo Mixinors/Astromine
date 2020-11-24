@@ -1,10 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [" 1 ", "343", "343"],
-  "key": {
-    "1": {"tag": "c:bronze_plates"},
-    "3": {"tag": "c:steel_plates"},
-    "4": {"tag": "c:emerald_dusts"}
-  },
+  "type": "minecraft:crafting_shaped", "pattern": [" 1 ", "848", "848"],
+  "key": {"1": {"tag": "c:asterite_dusts"}, "4": {"tag": "c:lead_dusts"}, "8": {"tag": "c:tin_plates"}},
   "result": {"item": "astromine:advanced_battery", "count": 1}
 }

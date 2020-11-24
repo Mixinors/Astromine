@@ -1,9 +1,0 @@
-{
-  "parent": "minecraft:block/orientable_with_bottom",
-  "textures": {
-    "top": "astromine:block/advanced_machine_top",
-    "bottom": "astromine:block/advanced_machine_bottom",
-    "side": "astromine:block/advanced_machine_side",
-    "front": "astromine:block/fluid_inserter_front_active"
-  }
-}

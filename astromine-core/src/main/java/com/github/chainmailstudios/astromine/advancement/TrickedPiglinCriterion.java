@@ -26,6 +26,7 @@ package com.github.chainmailstudios.astromine.advancement;
 
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
+import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
 import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -35,32 +36,72 @@ import com.github.chainmailstudios.astromine.registry.AstromineCriteria;
 
 import com.google.gson.JsonObject;
 
+/**
+ * A {@link Criterion} for tricking piglins by
+ * giving them a gold-like substance, which is not,
+ * in fact, gold.
+ */
 public class TrickedPiglinCriterion extends AbstractCriterion<TrickedPiglinCriterion.Conditions> {
 	public final Identifier id;
 
+	/** Instantiates a {@link TrickedPiglinCriterion}. */
 	public TrickedPiglinCriterion(Identifier id) {
 		this.id = id;
 	}
 
+	/** Reads {@link Conditions} from a {@link JsonObject}. */;
 	@Override
 	protected TrickedPiglinCriterion.Conditions conditionsFromJson(JsonObject obj, EntityPredicate.Extended playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
-		return new Conditions(this.id, playerPredicate);
+		if (obj.has("successful"))
+			return new Conditions(this.id, playerPredicate, obj.get("successful").getAsBoolean());
+		else return new Conditions(this.id, playerPredicate);
 	}
 
+	/** Returns this {@link Criterion}'s ID. */
 	@Override
 	public Identifier getId() {
 		return id;
 	}
 
-	public void trigger(ServerPlayerEntity player) {
-		this.test(player, conditions -> true);
+	/** Triggers this {@link Criterion} for the given player with the given parameter. */
+	public void trigger(ServerPlayerEntity player, boolean successful) {
+		this.test(player, conditions -> conditions.matches(successful));
 	}
 
+	/**
+	 * Conditions for {@link #trigger(ServerPlayerEntity, boolean)}.
+	 */
 	public static class Conditions extends AbstractCriterionConditions {
-		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate) {
+		private final Boolean successful;
+
+		/** Instantiates {@link Conditions}. */
+		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate, Boolean successful) {
 			super(id, playerPredicate);
+			this.successful = successful;
 		}
 
+		/** Instantiates {@link Conditions}. */
+		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate) {
+			super(id, playerPredicate);
+			this.successful = null;
+		}
+
+		/** Returns whether the Piglin was successfully tricked. */
+		public Boolean successful() {
+			return successful;
+		}
+
+		/** Returns whether this condition should be fulfilled by the given parameter. */
+		public boolean matches(boolean successful) {
+			return successful() == null || successful == successful();
+		}
+
+		/** Instantiates {@link Conditions}. */
+		public static Conditions create(boolean successful) {
+			return new Conditions(AstromineCriteria.TRICKED_PIGLIN.getId(), EntityPredicate.Extended.EMPTY, successful);
+		}
+
+		/** Instantiates {@link Conditions}. */
 		public static Conditions create() {
 			return new Conditions(AstromineCriteria.TRICKED_PIGLIN.getId(), EntityPredicate.Extended.EMPTY);
 		}

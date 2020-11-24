@@ -27,76 +27,112 @@ package com.github.chainmailstudios.astromine.technologies.common.recipe;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryComponentFromItemInventory;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
-import com.github.chainmailstudios.astromine.common.recipe.ingredient.ArrayIngredient;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.IngredientUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.ItemIngredient;
+import com.github.chainmailstudios.astromine.common.utilities.DoubleUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.IntegerUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
+import it.unimi.dsi.fastutil.ints.Int2BooleanArrayMap;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import com.google.gson.annotations.SerializedName;
+import java.util.Optional;
 
-public class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventory> {
-	final Identifier identifier;
-	final ArrayIngredient firstInput;
-	final ArrayIngredient secondInput;
-	final ItemStack output;
-	final double energyConsumed;
-	final int time;
+public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventory> {
+	private final Identifier identifier;
+	private final ItemIngredient firstInput;
+	private final ItemIngredient secondInput;
+	private final ItemStack firstOutput;
+	private final double energyInput;
+	private final int time;
 
-	public AlloySmeltingRecipe(Identifier identifier, ArrayIngredient firstInput, ArrayIngredient secondInput, ItemStack output, double energyConsumed, int time) {
+	private final Int2BooleanArrayMap cache = new Int2BooleanArrayMap();
+
+	public AlloySmeltingRecipe(Identifier identifier, ItemIngredient firstInput, ItemIngredient secondInput, ItemStack firstOutput, double energyInput, int time) {
 		this.identifier = identifier;
 		this.firstInput = firstInput;
 		this.secondInput = secondInput;
-		this.output = output;
-		this.energyConsumed = energyConsumed;
+		this.firstOutput = firstOutput;
+		this.energyInput = energyInput;
 		this.time = time;
 	}
 
+
+	public static boolean allows(World world, ItemComponent itemComponent) {
+		return world.getRecipeManager().getAllOfType(AlloySmeltingRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
+			AlloySmeltingRecipe recipe = ((AlloySmeltingRecipe) it);
+
+			return recipe.allows(itemComponent);
+		});
+	}
+
+	public static Optional<AlloySmeltingRecipe> matching(World world, ItemComponent itemComponent) {
+		return (Optional<AlloySmeltingRecipe>) (Object) world.getRecipeManager().getAllOfType(AlloySmeltingRecipe.Type.INSTANCE).values().stream().filter(it -> {
+			AlloySmeltingRecipe recipe = ((AlloySmeltingRecipe) it);
+
+			return recipe.matches(itemComponent);
+		}).findFirst();
+	}
+
+	public boolean matches(ItemComponent itemComponent) {
+		if (itemComponent.getSize() < 3) {
+			return false;
+		}
+
+		if (!firstInput.test(itemComponent.getFirst()) && !secondInput.test(itemComponent.getFirst())) {
+			return false;
+		}
+
+		if (!firstInput.test(itemComponent.getSecond()) && !secondInput.test(itemComponent.getSecond())) {
+			return false;
+		}
+
+		return StackUtilities.test(firstOutput, itemComponent.getThird());
+	}
+
+	public boolean allows(ItemComponent itemComponent) {
+		if (itemComponent.getSize() < 2) {
+			return false;
+		}
+
+		if (!firstInput.testWeak(itemComponent.getFirst()) && !secondInput.testWeak(itemComponent.getFirst())) {
+			return false;
+		}
+
+		return firstInput.testWeak(itemComponent.getSecond()) || secondInput.testWeak(itemComponent.getSecond());
+	}
+
+
 	@Override
 	public boolean matches(Inventory inventory, World world) {
-		ItemInventoryComponent component = ItemInventoryComponentFromItemInventory.of(inventory);
-		if (component.getItemSize() < 2)
-			return false;
-		ItemStack stack1 = component.getStack(0);
-		ItemStack stack2 = component.getStack(1);
-		if (firstInput.test(stack1))
-			return secondInput.test(stack2);
-		if (firstInput.test(stack2))
-			return secondInput.test(stack1);
 		return false;
 	}
 
 	@Override
 	public ItemStack craft(Inventory inventory) {
-		return output.copy();
-	}
-
-	@Override
-	public boolean fits(int width, int height) {
-		return true;
+		return ItemStack.EMPTY;
 	}
 
 	@Override
 	public ItemStack getOutput() {
-		return output.copy();
+		return ItemStack.EMPTY;
+	}
+
+	@Override
+	public boolean fits(int width, int height) {
+		return false;
 	}
 
 	@Override
@@ -115,32 +151,36 @@ public class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 	}
 
 	@Override
-	public DefaultedList<Ingredient> getPreviewInputs() {
-		DefaultedList<Ingredient> defaultedList = DefaultedList.of();
-		defaultedList.add(this.firstInput.asIngredient());
-		defaultedList.add(this.secondInput.asIngredient());
-		return defaultedList;
-	}
-
-	public ArrayIngredient getFirstInput() {
-		return firstInput;
-	}
-
-	public ArrayIngredient getSecondInput() {
-		return secondInput;
-	}
-
-	@Override
 	public ItemStack getRecipeKindIcon() {
 		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_ALLOY_SMELTER);
 	}
 
+	public Int2BooleanArrayMap getCache() {
+		return cache;
+	}
+
+	public Identifier getIdentifier() {
+		return identifier;
+	}
+
+	public ItemIngredient getFirstInput() {
+		return firstInput;
+	}
+
+	public ItemIngredient getSecondInput() {
+		return secondInput;
+	}
+
+	public ItemStack getFirstOutput() {
+		return firstOutput.copy();
+	}
+	
 	public int getTime() {
 		return time;
 	}
 
-	public double getEnergyConsumed() {
-		return energyConsumed;
+	public double getEnergyInput() {
+		return energyInput;
 	}
 
 	public static final class Serializer implements RecipeSerializer<AlloySmeltingRecipe> {
@@ -148,53 +188,73 @@ public class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 
 		public static final Serializer INSTANCE = new Serializer();
 
-		private Serializer() {
-			// Locked.
-		}
+		private Serializer() {}
 
 		@Override
 		public AlloySmeltingRecipe read(Identifier identifier, JsonObject object) {
 			AlloySmeltingRecipe.Format format = new Gson().fromJson(object, AlloySmeltingRecipe.Format.class);
 
-			return new AlloySmeltingRecipe(identifier, IngredientUtilities.fromBetterJson(format.firstInput), IngredientUtilities.fromBetterJson(format.secondInput), StackUtilities.fromJson(format.output), EnergyUtilities.fromJson(format.energyConsumed), ParsingUtilities
-				.fromJson(format.time, Integer.class));
+			return new AlloySmeltingRecipe(
+					identifier,
+					ItemIngredient.fromJson(format.firstInput),
+					ItemIngredient.fromJson(format.secondInput),
+					StackUtilities.fromJson(format.output.getAsJsonObject()),
+					DoubleUtilities.fromJson(format.energyInput),
+					IntegerUtilities.fromJson(format.time)
+			);
 		}
 
 		@Override
 		public AlloySmeltingRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new AlloySmeltingRecipe(identifier, IngredientUtilities.fromBetterPacket(buffer), IngredientUtilities.fromBetterPacket(buffer), StackUtilities.fromPacket(buffer), EnergyUtilities.fromPacket(buffer), PacketUtilities.fromPacket(buffer, Integer.class));
+			return new AlloySmeltingRecipe(
+					identifier,
+					ItemIngredient.fromPacket(buffer),
+					ItemIngredient.fromPacket(buffer),
+					StackUtilities.fromPacket(buffer),
+					DoubleUtilities.fromPacket(buffer),
+					IntegerUtilities.fromPacket(buffer)
+			);
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, AlloySmeltingRecipe recipe) {
-			IngredientUtilities.toBetterPacket(buffer, recipe.firstInput);
-			IngredientUtilities.toBetterPacket(buffer, recipe.secondInput);
-			StackUtilities.toPacket(buffer, recipe.output);
-			EnergyUtilities.toPacket(buffer, recipe.energyConsumed);
-			PacketUtilities.toPacket(buffer, recipe.time);
+			recipe.firstInput.toPacket(buffer);
+			recipe.secondInput.toPacket(buffer);
+			StackUtilities.toPacket(buffer, recipe.firstOutput);
+			DoubleUtilities.toPacket(buffer, recipe.energyInput);
+			IntegerUtilities.toPacket(buffer, recipe.time);
 		}
 	}
 
 	public static final class Type implements AstromineRecipeType<AlloySmeltingRecipe> {
 		public static final Type INSTANCE = new Type();
 
-		private Type() {
-			// Locked.
-		}
+		private Type() {}
 	}
 
 	public static final class Format {
-		JsonObject firstInput;
-		JsonObject secondInput;
-		JsonObject output;
-		@SerializedName("time")
-		JsonPrimitive time;
-		@SerializedName("energy_consumed")
-		JsonElement energyConsumed;
+		@SerializedName("first_input")
+		JsonElement firstInput;
+
+		@SerializedName("second_input")
+		JsonElement secondInput;
+
+		JsonElement output;
+
+		@SerializedName("energy_input")
+		JsonElement energyInput;
+
+		JsonElement time;
 
 		@Override
 		public String toString() {
-			return "Format{" + "firstInput=" + firstInput + ", secondInput=" + secondInput + ", output=" + output + ", time=" + time + ", energyConsumed=" + energyConsumed + '}';
+			return "Format{" +
+					"firstInput=" + firstInput +
+					", secondInput=" + secondInput +
+					", output=" + output +
+					", energyInput=" + energyInput +
+					", time=" + time +
+					'}';
 		}
 	}
 }

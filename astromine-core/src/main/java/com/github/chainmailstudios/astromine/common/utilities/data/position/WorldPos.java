@@ -31,31 +31,38 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
-
+/**
+ * A {@link BlockPos} with an associated {@link World}.
+ */
 public final class WorldPos {
-	@NotNull
 	private final World world;
-	@NotNull
+
 	private final BlockPos pos;
+
 	private BlockState blockState;
 
+	/** Instantiates a {@link WorldPos}. */
 	private WorldPos(World world, BlockPos pos) {
-		this.world = Objects.requireNonNull(world);
-		this.pos = Objects.requireNonNull(pos);
+		this.world = world;
+		this.pos = pos;
 	}
 
+	/** Instantiates a {@link WorldPos}. */
 	public static WorldPos of(World world, BlockPos pos) {
 		return new WorldPos(world, pos);
 	}
 
+	/** Returns a position offset to this one by the given {@link Direction}. */
 	public WorldPos offset(Direction direction) {
 		return of(world, getBlockPos().offset(direction));
 	}
 
+	/** Returns the {@link Block} at this position's {@link BlockPos}. */
+	public Block getBlock() {
+		return getBlockState().getBlock();
+	}
+
+	/** Returns the {@link BlockState} at this position's {@link BlockPos}. */
 	public BlockState getBlockState() {
 		if (blockState == null) {
 			this.blockState = world.getBlockState(pos);
@@ -64,40 +71,33 @@ public final class WorldPos {
 		return blockState;
 	}
 
-	public void setBlockState(BlockState state) {
-		this.blockState = null;
-
-		this.world.setBlockState(pos, state);
+	/** Returns the {@link BlockEntity} at this position's {@link BlockPos}. */
+	public BlockEntity getBlockEntity() {
+		return world.getBlockEntity(pos);
 	}
 
-	public Block getBlock() {
-		return getBlockState().getBlock();
-	}
-
-	@NotNull
+	/** Returns this position's {@link World}. */
 	public World getWorld() {
 		return world;
 	}
 
-	@NotNull
+	/** Returns this position's {@link BlockPos}. */
 	public BlockPos getBlockPos() {
 		return pos;
 	}
 
+	/** Returns this position's {@link BlockPos}'s X-axis coordinate. */
 	public int getX() {
 		return pos.getX();
 	}
 
+	/** Returns this position's {@link BlockPos}'s Y-axis coordinate. */
 	public int getY() {
 		return pos.getY();
 	}
 
+	/** Returns this position's {@link BlockPos}'s Z-axis coordinate. */
 	public int getZ() {
 		return pos.getZ();
-	}
-
-	@Nullable
-	public BlockEntity getBlockEntity() {
-		return world.getBlockEntity(pos);
 	}
 }

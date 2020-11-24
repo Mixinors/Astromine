@@ -8,6 +8,6 @@
     "item": "minecraft:white_concrete_powder",
     "count": 1
   },
-  "time": 10,
-  "energy_consumed": 50
+  "time": 20,
+  "energy_input": 50
 }

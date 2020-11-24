@@ -56,7 +56,7 @@ public class AltarPedestalBlockEntityRenderer extends BlockEntityRenderer<AltarP
 	@Override
 	public void render(AltarPedestalBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		matrices.push();
-		ItemStack stack = entity.getItemComponent().getStack(0);
+		ItemStack stack = entity.getItemComponent().getFirst();
 		int j = stack.isEmpty() ? 187 : Item.getRawId(stack.getItem()) + stack.getDamage();
 		this.random.setSeed(j);
 		BakedModel bakedModel = this.itemRenderer.getHeldItemModel(stack, entity.getWorld(), null);
@@ -67,8 +67,8 @@ public class AltarPedestalBlockEntityRenderer extends BlockEntityRenderer<AltarP
 		float m = bakedModel.getTransformation().getTransformation(ModelTransformation.Mode.GROUND).scale.getY();
 		matrices.translate(0.5D, l + 1.0D + 0.25D * m, 0.5D);
 		double progress;
-		if (entity.parent != null) {
-			AltarBlockEntity parent = (AltarBlockEntity) entity.getWorld().getBlockEntity(entity.parent);
+		if (entity.parentPos != null) {
+			AltarBlockEntity parent = (AltarBlockEntity) entity.getWorld().getBlockEntity(entity.parentPos);
 
 			progress = Math.min(1, parent.craftingTicksDelta / (double) AltarBlockEntity.CRAFTING_TIME);
 			BlockPos pos = entity.getPos();

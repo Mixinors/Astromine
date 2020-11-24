@@ -24,105 +24,91 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Lazy;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
-import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.FractionUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.PacketUtilities;
-import com.github.chainmailstudios.astromine.common.utilities.ParsingUtilities;
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
+import com.github.chainmailstudios.astromine.common.utilities.DoubleUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.IntegerUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.common.volume.handler.FluidHandler;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+import java.util.Optional;
 
-public class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<Inventory> {
-	final Identifier identifier;
-	final RegistryKey<Fluid> firstInputFluidKey;
-	final Lazy<Fluid> firstInputFluid;
-	final Fraction firstInputAmount;
-	final RegistryKey<Fluid> secondInputFluidKey;
-	final Lazy<Fluid> secondInputFluid;
-	final Fraction secondInputAmount;
-	final RegistryKey<Fluid> outputFluidKey;
-	final Lazy<Fluid> outputFluid;
-	final Fraction outputAmount;
-	final double energyConsumed;
-	final int time;
+public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<Inventory> {
+	private final Identifier identifier;
+	private final FluidIngredient firstInput;
+	private final FluidIngredient secondInput;
+	private final FluidVolume firstOutput;
+	private final double energyInput;
+	private final int time;
 
-	public FluidMixingRecipe(Identifier identifier, RegistryKey<Fluid> firstInputFluidKey, Fraction firstInputAmount, RegistryKey<Fluid> secondInputFluidKey, Fraction secondInputAmount, RegistryKey<Fluid> outputFluidKey, Fraction outputAmount, double energyConsumed, int time) {
+	public FluidMixingRecipe(Identifier identifier, FluidIngredient firstInput, FluidIngredient secondIngredient, FluidVolume firstOutput, double energyInput, int time) {
 		this.identifier = identifier;
-		this.firstInputFluidKey = firstInputFluidKey;
-		this.firstInputFluid = new Lazy<>(() -> Registry.FLUID.get(this.firstInputFluidKey));
-		this.firstInputAmount = firstInputAmount;
-		this.secondInputFluidKey = secondInputFluidKey;
-		this.secondInputFluid = new Lazy<>(() -> Registry.FLUID.get(this.secondInputFluidKey));
-		this.secondInputAmount = secondInputAmount;
-		this.outputFluidKey = outputFluidKey;
-		this.outputFluid = new Lazy<>(() -> Registry.FLUID.get(this.outputFluidKey));
-		this.outputAmount = outputAmount;
-		this.energyConsumed = energyConsumed;
+		this.firstInput = firstInput;
+		this.secondInput = secondIngredient;
+		this.firstOutput = firstOutput;
+		this.energyInput = energyInput;
 		this.time = time;
 	}
 
-	public static boolean allows(World world, Fluid inserting, Fluid existing) {
+	public static boolean allows(World world, FluidComponent fluidComponent) {
 		return world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().anyMatch(it -> {
 			FluidMixingRecipe recipe = ((FluidMixingRecipe) it);
 
-			return (existing == inserting || existing == Fluids.EMPTY) && (recipe.firstInputFluid.get() == inserting || recipe.secondInputFluid.get() == inserting);
+			return recipe.allows(fluidComponent);
 		});
 	}
 
-	public boolean matches(FluidInventoryComponent fluidComponent) {
-		FluidHandler fluidHandler = FluidHandler.of(fluidComponent);
+	public static Optional<FluidMixingRecipe> matching(World world, FluidComponent fluidComponent) {
+		return (Optional<FluidMixingRecipe>) (Object) world.getRecipeManager().getAllOfType(FluidMixingRecipe.Type.INSTANCE).values().stream().filter(it -> {
+			FluidMixingRecipe recipe = ((FluidMixingRecipe) it);
 
-		FluidVolume firstInputVolume = fluidHandler.getFirst();
-		FluidVolume secondInputVolume = fluidHandler.getSecond();
-		FluidVolume outputVolume = fluidHandler.getThird();
+			return recipe.matches(fluidComponent);
+		}).findFirst();
+	}
 
-		if (!firstInputVolume.canAccept(firstInputFluid.get()) && !secondInputVolume.canAccept(firstInputFluid.get())) {
+	public boolean matches(FluidComponent fluidComponent) {
+		if (fluidComponent.getSize() < 3) {
 			return false;
 		}
 
-		if (!firstInputVolume.hasStored(firstInputAmount)) {
+		if (!firstInput.test(fluidComponent.getFirst()) && !secondInput.test(fluidComponent.getFirst())) {
 			return false;
 		}
 
-		if (!secondInputVolume.canAccept(secondInputFluid.get()) && !firstInputVolume.canAccept(secondInputFluid.get())) {
+		if (!secondInput.test(fluidComponent.getSecond()) && !firstInput.test(fluidComponent.getSecond())) {
 			return false;
 		}
 
-		if (!secondInputVolume.hasStored(secondInputAmount)) {
+		return firstOutput.test(fluidComponent.getThird());
+	}
+
+	public boolean allows(FluidComponent fluidComponent) {
+		if (fluidComponent.getSize() < 2) {
 			return false;
 		}
 
-		if (!outputVolume.canAccept(outputFluid.get())) {
+		if (!firstInput.testWeak(fluidComponent.getFirst()) && !secondInput.testWeak(fluidComponent.getFirst())) {
 			return false;
 		}
 
-		return outputVolume.hasAvailable(outputAmount);
+		return secondInput.testWeak(fluidComponent.getSecond()) || firstInput.testWeak(fluidComponent.getSecond());
 	}
 
 	@Override
@@ -161,11 +147,6 @@ public class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumingReci
 	}
 
 	@Override
-	public DefaultedList<Ingredient> getPreviewInputs() {
-		return DefaultedList.of(); // we are not dealing with items
-	}
-
-	@Override
 	public ItemStack getRecipeKindIcon() {
 		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_FLUID_MIXER);
 	}
@@ -174,36 +155,25 @@ public class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumingReci
 		return identifier;
 	}
 
-	public Fluid getFirstInputFluid() {
-		return firstInputFluid.get();
+	public FluidIngredient getFirstInput() {
+		return firstInput;
 	}
 
-	public Fraction getFirstInputAmount() {
-		return firstInputAmount;
+	public FluidIngredient getSecondInput() {
+		return secondInput;
 	}
 
-	public Fluid getSecondInputFluid() {
-		return secondInputFluid.get();
-	}
-
-	public Fraction getSecondInputAmount() {
-		return secondInputAmount;
-	}
-
-	public Fluid getOutputFluid() {
-		return outputFluid.get();
-	}
-
-	public Fraction getOutputAmount() {
-		return outputAmount;
-	}
-
-	public double getEnergyConsumed() {
-		return energyConsumed;
+	public FluidVolume getFirstOutput() {
+		return firstOutput.copy();
 	}
 
 	public int getTime() {
 		return time;
+	}
+
+	@Override
+	public double getEnergyInput() {
+		return energyInput;
 	}
 
 	public static final class Serializer implements RecipeSerializer<FluidMixingRecipe> {
@@ -211,72 +181,63 @@ public class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumingReci
 
 		public static final Serializer INSTANCE = new Serializer();
 
-		private Serializer() {
-			// Locked.
-		}
+		private Serializer() {}
 
 		@Override
 		public FluidMixingRecipe read(Identifier identifier, JsonObject object) {
 			FluidMixingRecipe.Format format = new Gson().fromJson(object, FluidMixingRecipe.Format.class);
 
-			return new FluidMixingRecipe(identifier, RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.firstInput)), FractionUtilities.fromJson(format.firstInputAmount), RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.secondInput)), FractionUtilities.fromJson(
-				format.secondInputAmount), RegistryKey.of(Registry.FLUID_KEY, new Identifier(format.output)), FractionUtilities.fromJson(format.outputAmount), EnergyUtilities.fromJson(format.energyGenerated), ParsingUtilities.fromJson(format.time, Integer.class));
+			return new FluidMixingRecipe(identifier, FluidIngredient.fromJson(format.firstInput), FluidIngredient.fromJson(format.secondInput), FluidVolume.fromJson(format.firstOutput), DoubleUtilities.fromJson(
+				format.energyInput), IntegerUtilities.fromJson(format.time)
+			);
 		}
 
 		@Override
 		public FluidMixingRecipe read(Identifier identifier, PacketByteBuf buffer) {
-			return new FluidMixingRecipe(identifier, RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), RegistryKey.of(Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), RegistryKey.of(
-				Registry.FLUID_KEY, buffer.readIdentifier()), FractionUtilities.fromPacket(buffer), EnergyUtilities.fromPacket(buffer), PacketUtilities.fromPacket(buffer, Integer.class));
+			return new FluidMixingRecipe(
+					identifier,
+					FluidIngredient.fromPacket(buffer),
+					FluidIngredient.fromPacket(buffer),
+					FluidVolume.fromPacket(buffer),
+					DoubleUtilities.fromPacket(buffer),
+					IntegerUtilities.fromPacket(buffer)
+			);
 		}
 
 		@Override
 		public void write(PacketByteBuf buffer, FluidMixingRecipe recipe) {
-			buffer.writeIdentifier(recipe.firstInputFluidKey.getValue());
-			FractionUtilities.toPacket(buffer, recipe.firstInputAmount);
-			buffer.writeIdentifier(recipe.secondInputFluidKey.getValue());
-			FractionUtilities.toPacket(buffer, recipe.secondInputAmount);
-			buffer.writeIdentifier(recipe.outputFluidKey.getValue());
-			FractionUtilities.toPacket(buffer, recipe.outputAmount);
-			EnergyUtilities.toPacket(buffer, recipe.energyConsumed);
-			buffer.writeInt(recipe.getTime());
+			recipe.firstInput.toPacket(buffer);
+			recipe.secondInput.toPacket(buffer);
+			recipe.firstOutput.toPacket(buffer);
+			DoubleUtilities.toPacket(buffer, recipe.energyInput);
+			IntegerUtilities.toPacket(buffer, recipe.time);
 		}
 	}
 
 	public static final class Type implements AstromineRecipeType<FluidMixingRecipe> {
 		public static final Type INSTANCE = new Type();
 
-		private Type() {
-			// Locked.
-		}
+		private Type() {}
 	}
 
 	public static final class Format {
 		@SerializedName("first_input")
-		String firstInput;
-
-		@SerializedName("first_input_amount")
-		JsonElement firstInputAmount;
+		JsonElement firstInput;
 
 		@SerializedName("second_input")
-		String secondInput;
+		JsonElement secondInput;
 
-		@SerializedName("second_input_amount")
-		JsonElement secondInputAmount;
+		@SerializedName("output")
+		JsonElement firstOutput;
 
-		String output;
-
-		@SerializedName("output_amount")
-		JsonElement outputAmount;
-
-		@SerializedName("energy_consumed")
-		JsonElement energyGenerated;
+		@SerializedName("energy_input")
+		JsonElement energyInput;
 
 		JsonElement time;
 
 		@Override
 		public String toString() {
-			return "Format{" + "firstInput='" + firstInput + '\'' + ", firstInputAmount=" + firstInputAmount + ", secondInput='" + secondInput + '\'' + ", secondInputAmount=" + secondInputAmount + ", output='" + output + '\'' + ", outputAmount=" + outputAmount +
-				", energyGenerated=" + energyGenerated + '}';
+			return "Format{" + "firstInput=" + firstInput + ", secondInput=" + secondInput + ", firstOutput=" + firstOutput + ", energyInput=" + energyInput + ", time=" + time + '}';
 		}
 	}
 }

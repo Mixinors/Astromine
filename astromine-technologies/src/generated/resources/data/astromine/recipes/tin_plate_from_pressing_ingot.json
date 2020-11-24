@@ -8,6 +8,6 @@
     "item": "astromine:tin_plate",
     "count": 1
   },
-  "time": 60,
-  "energy_consumed": 340
+  "time": 80,
+  "energy_input": 340
 }

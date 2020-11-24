@@ -86,7 +86,7 @@ public class MirrorUtilities {
 					return origin;
 			}
 		} else {
-			return origin; // TODO - UP && DOWN
+			return origin; /* TODO: {@link Direction#UP} and {@link Direction#DOWN}. */
 		}
 	}
 }

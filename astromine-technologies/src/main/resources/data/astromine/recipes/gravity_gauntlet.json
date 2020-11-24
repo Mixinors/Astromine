@@ -1,12 +1,29 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [" 0 ", "121", "343"],
+  "pattern": [
+    " 0 ",
+    "121",
+    "343"
+  ],
   "key": {
-    "0": {"item": "astromine:advanced_circuit"},
-    "1": {"tag": "c:rose_gold_plates"},
-    "2": {"tag": "c:galaxiums"},
-    "3": {"tag": "c:steel_plates"},
-    "4": {"item": "astromine:advanced_battery"}
+    "0": {
+      "item": "astromine:advanced_circuit"
+    },
+    "1": {
+      "tag": "c:rose_gold_plates"
+    },
+    "2": {
+      "tag": "c:galaxiums"
+    },
+    "3": {
+      "tag": "c:steel_plates"
+    },
+    "4": {
+      "item": "astromine:advanced_battery"
+    }
   },
-  "result": {"item": "astromine:gravity_gauntlet", "count": 1}
+  "result": {
+    "item": "astromine:gravity_gauntlet",
+    "count": 1
+  }
 }

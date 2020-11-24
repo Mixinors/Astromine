@@ -1,5 +1,0 @@
-{
-  "type": "minecraft:crafting_shaped", "pattern": ["000", "343", "000"],
-  "key": {"0": {"tag": "c:bronze_plates"}, "3": {"tag": "c:bronze_gears"}, "4": {"item": "minecraft:bucket"}},
-  "result": {"item": "astromine:drain", "count": 1}
-}

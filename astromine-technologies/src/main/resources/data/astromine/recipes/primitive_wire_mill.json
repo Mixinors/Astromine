@@ -1,0 +1,6 @@
+{
+  "type": "minecraft:crafting_shaped", "pattern": ["212", "343", "272"], "key": {
+  "1": {"item": "astromine:primitive_circuit"}, "2": {"tag": "c:lead_plates"}, "3": {"tag": "c:lead_gears"},
+  "4": {"item": "astromine:primitive_machine_chassis"}, "7": {"item": "astromine:primitive_battery_pack"}
+}, "result": {"item": "astromine:primitive_wire_mill", "count": 1}
+}

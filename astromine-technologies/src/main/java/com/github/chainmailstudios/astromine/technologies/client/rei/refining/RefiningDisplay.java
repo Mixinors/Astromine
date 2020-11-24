@@ -30,6 +30,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.RefiningRecipe;
@@ -40,11 +41,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Environment(EnvType.CLIENT)
 public class RefiningDisplay implements RecipeDisplay {
 	private final double energy;
-	private final FluidVolume input;
+	private final FluidIngredient input;
 	private final FluidVolume firstOutput;
 	private final FluidVolume secondOutput;
 	private final FluidVolume thirdOutput;
@@ -54,7 +56,7 @@ public class RefiningDisplay implements RecipeDisplay {
 	private final FluidVolume seventhOutput;
 	private final Identifier id;
 
-	public RefiningDisplay(double energy, FluidVolume input, FluidVolume firstOutput, FluidVolume secondOutput, FluidVolume thirdOutput, FluidVolume fourthOutput, FluidVolume fifthOutput, FluidVolume sixthOutput, FluidVolume seventhOutput, Identifier id) {
+	public RefiningDisplay(double energy, FluidIngredient input, FluidVolume firstOutput, FluidVolume secondOutput, FluidVolume thirdOutput, FluidVolume fourthOutput, FluidVolume fifthOutput, FluidVolume sixthOutput, FluidVolume seventhOutput, Identifier id) {
 		this.energy = energy;
 		this.input = input;
 		this.firstOutput = firstOutput;
@@ -68,9 +70,8 @@ public class RefiningDisplay implements RecipeDisplay {
 	}
 
 	public RefiningDisplay(RefiningRecipe recipe) {
-		this(recipe.getEnergyConsumed(), FluidVolume.of(recipe.getInputAmount(), recipe.getInputFluid()), FluidVolume.of(recipe.getFirstOutputAmount(), recipe.getFirstOutputFluid()), FluidVolume.of(recipe.getSecondOutputAmount(), recipe.getSecondOutputFluid()), FluidVolume.of(
-			recipe.getThirdOutputAmount(), recipe.getThirdOutputFluid()), FluidVolume.of(recipe.getFourthOutputAmount(), recipe.getFourthOutputFluid()), FluidVolume.of(recipe.getFifthOutputAmount(), recipe.getFifthOutputFluid()), FluidVolume.of(recipe.getSixthOutputAmount(),
-				recipe.getSixthOutputFluid()), FluidVolume.of(recipe.getSeventhOutputAmount(), recipe.getSeventhOutputFluid()), recipe.getId());
+		this(recipe.getEnergyInput(), recipe.getIngredient(), recipe.getFirstOutputVolume(), recipe.getSecondOutputVolume(), recipe.getThirdOutputVolume(), recipe.getFourthOutputVolume(), recipe.getFifthOutputVolume(), recipe.getSixthOutputVolume(), recipe.getSeventhOutputVolume(),
+			recipe.getId());
 	}
 
 	@Override
@@ -80,7 +81,7 @@ public class RefiningDisplay implements RecipeDisplay {
 
 	@Override
 	public List<List<EntryStack>> getInputEntries() {
-		return Collections.singletonList(Collections.singletonList(AstromineRoughlyEnoughItemsPlugin.convertA2R(input)));
+		return Collections.singletonList(Arrays.stream(input.getMatchingVolumes()).map(AstromineRoughlyEnoughItemsPlugin::convertA2R).collect(Collectors.toList()));
 	}
 
 	@Override

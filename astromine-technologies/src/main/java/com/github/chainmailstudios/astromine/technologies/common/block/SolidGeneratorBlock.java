@@ -35,10 +35,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingTieredBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.block.redstone.ComparatorMode;
+import com.github.chainmailstudios.astromine.common.network.NetworkBlock;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.SolidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.SolidGeneratorScreenHandler;
 
-public abstract class SolidGeneratorBlock extends WrenchableHorizontalFacingTieredBlockWithEntity {
+public abstract class SolidGeneratorBlock extends WrenchableHorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyProvider {
 	public SolidGeneratorBlock(Settings settings) {
 		super(settings);
 	}
@@ -61,6 +63,11 @@ public abstract class SolidGeneratorBlock extends WrenchableHorizontalFacingTier
 		@Override
 		public void populateScreenHandlerBuffer(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, PacketByteBuf buffer) {
 			buffer.writeBlockPos(pos);
+		}
+
+		@Override
+		protected ComparatorMode getComparatorMode() {
+			return ComparatorMode.ENERGY;
 		}
 	}
 

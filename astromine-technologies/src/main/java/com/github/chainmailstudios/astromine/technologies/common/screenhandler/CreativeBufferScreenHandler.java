@@ -27,9 +27,8 @@ package com.github.chainmailstudios.astromine.technologies.common.screenhandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.InventoryFromItemComponent;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityItemScreenHandler;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
@@ -44,7 +43,7 @@ public class CreativeBufferScreenHandler extends ComponentBlockEntityItemScreenH
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
 
-		SlotWidget slot = new SlotWidget(0, ItemInventoryFromInventoryComponent.of(blockEntity.getComponent(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT)));
+		SlotWidget slot = new SlotWidget(0, InventoryFromItemComponent.of(blockEntity.getItemComponent()));
 		slot.setPosition(Position.of(mainTab, 70, 20));
 		slot.setSize(Size.of(36, 36));
 

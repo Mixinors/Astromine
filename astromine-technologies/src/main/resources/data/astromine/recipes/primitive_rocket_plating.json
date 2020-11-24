@@ -1,0 +1,5 @@
+{
+  "type": "minecraft:crafting_shaped", "pattern": ["616", "1 1", "616"],
+  "key": {"1": {"tag": "c:meteoric_steel_plates"}, "6": {"tag": "c:meteoric_steel_gears"}},
+  "result": {"item": "astromine:primitive_rocket_plating", "count": 1}
+}

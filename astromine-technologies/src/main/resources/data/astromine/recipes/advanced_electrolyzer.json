@@ -1,12 +1,7 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": ["010", "343", "070"],
-  "key": {
-    "0": {"tag": "c:steel_plates"},
-    "1": {"item": "astromine:advanced_circuit"},
-    "3": {"item": "astromine:gas_canister"},
-    "4": {"item": "astromine:advanced_machine_chassis"},
-    "7": {"tag": "c:sterling_silver_gears"}
-  },
-  "result": {"item": "astromine:advanced_electrolyzer", "count": 1}
+  "type": "minecraft:crafting_shaped", "pattern": ["010", "343", "878"], "key": {
+  "0": {"item": "astromine:blades"}, "1": {"item": "astromine:advanced_circuit"},
+  "3": {"item": "minecraft:prismarine_crystals"}, "4": {"item": "astromine:advanced_machine_chassis"},
+  "7": {"item": "astromine:advanced_battery_pack"}, "8": {"item": "astromine:large_portable_tank"}
+}, "result": {"item": "astromine:advanced_electrolyzer", "count": 1}
 }

@@ -32,17 +32,23 @@ import com.github.chainmailstudios.astromine.common.widget.blade.EnergyVerticalB
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
 
+/**
+ * A {@link ComponentEntityScreenHandler}
+ * with an attached {@link ComponentEnergyEntity}.
+ */
 public abstract class ComponentEntityEnergyScreenHandler extends ComponentEntityScreenHandler {
 	public ComponentEnergyEntity entity;
 
 	public EnergyVerticalBarWidget energyBar;
 
+	/** Instantiates a {@link ComponentEntityEnergyScreenHandler}. */
 	public ComponentEntityEnergyScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, int entityId) {
 		super(type, syncId, player, entityId);
 
 		entity = (ComponentEnergyEntity) player.world.getEntityById(entityId);
 	}
 
+	/** Override behavior to add a energy bar. */
 	@Override
 	public void initialize(int width, int height) {
 		super.initialize(width, height);
@@ -50,7 +56,7 @@ public abstract class ComponentEntityEnergyScreenHandler extends ComponentEntity
 		energyBar = new EnergyVerticalBarWidget();
 		energyBar.setPosition(Position.of(mainTab, 7F, 11));
 		energyBar.setSize(Size.of(24F, 48F));
-		energyBar.setVolume(() -> entity.getEnergyComponent().getVolume());
+		energyBar.setVolumeSupplier(() -> entity.getEnergyComponent().getVolume());
 
 		mainTab.addWidget(energyBar);
 	}

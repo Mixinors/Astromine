@@ -1,0 +1,13 @@
+{
+  "type": "astromine:wire_milling",
+  "input": {
+    "tag": "c:silver_ingots",
+    "count": 1
+  },
+  "output": {
+    "item": "astromine:silver_wire",
+    "count": 3
+  },
+  "time": 80,
+  "energy_input": 340
+}

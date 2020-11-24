@@ -25,120 +25,93 @@
 package com.github.chainmailstudios.astromine.registry;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.Item;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.chunk.WorldChunk;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 
-import com.github.chainmailstudios.astromine.common.callback.ServerChunkTickCallback;
-import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidInventoryComponent;
+import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
+import com.github.chainmailstudios.astromine.common.callback.TransferEntryCallback;
 import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
-import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentEnergyEntity;
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentEnergyItemEntity;
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidEntity;
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidInventoryEntity;
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentItemEntity;
-import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
-import nerdhub.cardinal.components.api.event.ChunkComponentCallback;
-import nerdhub.cardinal.components.api.event.EntityComponentCallback;
-import nerdhub.cardinal.components.api.event.ItemComponentCallbackV2;
-import nerdhub.cardinal.components.api.event.WorldComponentCallback;
+import me.shedaniel.cloth.api.common.events.v1.BlockPlaceCallback;
 
-import java.util.function.Consumer;
+import com.google.common.collect.Lists;
+import java.util.Collections;
+import java.util.List;
 
 public class AstromineCommonCallbacks {
-	public static int atmosphereTickCounter = 0;
-
-	@SuppressWarnings("UnstableApiUsage")
 	public static void initialize() {
-		ServerTickEvents.START_SERVER_TICK.register(server -> {
-			if (atmosphereTickCounter < AstromineConfig.get().gasTickRate) {
-				atmosphereTickCounter++;
-			} else {
-				atmosphereTickCounter = 0;
+		BlockPlaceCallback.EVENT.register(((world, pos, state, entity, stack) -> {
+			ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(pos));
+
+			if (atmosphereComponent != null) {
+				BlockPos centerPos = pos;
+				BlockState centerState = world.getBlockState(centerPos);
+				FluidVolume centerVolume = atmosphereComponent.get(centerPos);
+
+				List<Direction> directions = Lists.newArrayList(Direction.values());
+
+				Collections.shuffle(directions);
+
+				for (Direction direction : directions) {
+					BlockPos sidePos = pos.offset(direction);
+					BlockState sideState = world.getBlockState(sidePos);
+
+					ChunkAtmosphereComponent sideAtmosphereComponent = atmosphereComponent;
+
+					if (!atmosphereComponent.isInChunk(sidePos)) {
+						sideAtmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(sidePos));
+					}
+
+					FluidVolume sideVolume = sideAtmosphereComponent.get(sidePos);
+
+					if (atmosphereComponent.isTraversableForDisplacement(centerState, centerPos, sideState, sidePos, centerVolume, sideVolume, direction)) {
+						sideVolume.take(centerVolume);
+						sideAtmosphereComponent.add(sidePos, sideVolume);
+
+						break;
+
+					}
+				}
+
+				atmosphereComponent.remove(centerPos);
 			}
-		});
+
+			return ActionResult.PASS;
+		}));
 
 		ServerTickEvents.START_SERVER_TICK.register((server) -> {
 			for (PlayerEntity playerEntity : server.getPlayerManager().getPlayerList()) {
 				if (playerEntity.currentScreenHandler instanceof ComponentBlockEntityScreenHandler) {
 					ComponentBlockEntityScreenHandler screenHandler = (ComponentBlockEntityScreenHandler) playerEntity.currentScreenHandler;
 
-					if (screenHandler.syncBlockEntity != null) {
-						screenHandler.syncBlockEntity.sync();
+					if (screenHandler.getBlockEntity() != null) {
+						screenHandler.getBlockEntity().sync();
 						break;
 					}
 				}
 			}
 		});
 
-		WorldComponentCallback.register(AstromineComponentTypes.WORLD_NETWORK_COMPONENT, WorldNetworkComponent::new);
-
 		ServerTickEvents.START_WORLD_TICK.register((world -> {
-			WorldNetworkComponent component = ComponentProvider.fromWorld(world).getComponent(AstromineComponentTypes.WORLD_NETWORK_COMPONENT);
+			WorldNetworkComponent component = WorldNetworkComponent.get(world);
+
 			if (component != null) {
 				component.tick();
 			}
 		}));
 
-		ChunkComponentCallback.EVENT.register((chunk, components) -> {
-			if (chunk instanceof WorldChunk) {
-				components.put(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT, new ChunkAtmosphereComponent(((WorldChunk) chunk).getWorld(), chunk));
-			}
-		});
-
-		ServerChunkTickCallback.EVENT.register((world, chunk) -> {
-			ChunkAtmosphereComponent component = ComponentProvider.fromChunk(chunk).getComponent(AstromineComponentTypes.CHUNK_ATMOSPHERE_COMPONENT);
-			if (component != null) {
-				if (atmosphereTickCounter == AstromineConfig.get().gasTickRate && component.getWorld().isChunkLoaded(chunk.getPos().x, chunk.getPos().z) && world == component.getWorld()) {
-					component.tick();
+		TransferEntryCallback.EVENT.register((entry) -> {
+			if (entry.getComponentKey() == AstromineComponents.ENERGY_INVENTORY_COMPONENT) {
+				for (Direction direction : Direction.values()) {
+					entry.set(direction, TransferType.INPUT_OUTPUT);
 				}
 			}
 		});
-
-		WorldComponentCallback.EVENT.register((world, container) -> {
-			WorldBridgeComponent component = new WorldBridgeComponent(world);
-			container.put(AstromineComponentTypes.WORLD_BRIDGE_COMPONENT, component);
-		});
-
-		EntityComponentCallback.register(AstromineComponentTypes.ENTITY_OXYGEN_COMPONENT, LivingEntity.class, EntityOxygenComponent::defaulted);
-
-		Consumer<Item> itemConsumer = (item) -> {
-			if (item instanceof FluidVolumeItem) {
-				FluidVolumeItem volumeItem = (FluidVolumeItem) item;
-
-				ItemComponentCallbackV2.register(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, item, (useless, stack) -> {
-					FluidInventoryComponent component = new SimpleFluidInventoryComponent(1);
-					component.setVolume(0, FluidVolume.of(Fraction.empty(), volumeItem.getSize(), Fluids.EMPTY));
-					return component;
-				});
-			}
-		};
-		Registry.ITEM.forEach(itemConsumer);
-		RegistryEntryAddedCallback.event(Registry.ITEM).register((i, identifier, item) -> itemConsumer.accept(item));
-
-		EntityComponentCallback.register(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, ComponentFluidInventoryEntity.class, ComponentFluidInventoryEntity::createFluidComponent);
-		EntityComponentCallback.register(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, ComponentFluidInventoryEntity.class, ComponentFluidInventoryEntity::createItemComponent);
-
-		EntityComponentCallback.register(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, ComponentEnergyItemEntity.class, ComponentEnergyItemEntity::createItemComponent);
-		EntityComponentCallback.register(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, ComponentEnergyItemEntity.class, ComponentEnergyItemEntity::createEnergyComponent);
-
-		EntityComponentCallback.register(AstromineComponentTypes.ITEM_INVENTORY_COMPONENT, ComponentItemEntity.class, ComponentItemEntity::createItemComponent);
-
-		EntityComponentCallback.register(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT, ComponentFluidEntity.class, ComponentFluidEntity::createFluidComponent);
-
-		EntityComponentCallback.register(AstromineComponentTypes.ENERGY_INVENTORY_COMPONENT, ComponentEnergyEntity.class, ComponentEnergyEntity::createEnergyComponent);
 	}
 }

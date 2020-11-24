@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "c:silver_plates"
+    },
+    {
+      "tag": "fabric:shears"
+    }
+  ],
+  "result": {
+    "item": "astromine:silver_wire"
+  }
+}

@@ -35,17 +35,17 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemInventoryComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemInventoryFromInventoryComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.InventoryFromItemComponent;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlockEntityTypes;
 
-public class AltarPedestalBlockEntity extends BlockEntity implements ItemInventoryFromInventoryComponent, Tickable, BlockEntityClientSerializable {
-	public BlockPos parent;
+public class AltarPedestalBlockEntity extends BlockEntity implements InventoryFromItemComponent, Tickable, BlockEntityClientSerializable {
+	public BlockPos parentPos;
 	private int spinAge;
 	private int lastSpinAddition;
 	private int yAge;
-	private ItemInventoryComponent inventory = new SimpleItemInventoryComponent(1).withListener(inventory -> {
+	private ItemComponent inventory = SimpleItemComponent.of(1).withListener(inventory -> {
 		if (hasWorld() && !world.isClient) {
 			sync();
 			world.playSound(null, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1, 1);
@@ -57,7 +57,7 @@ public class AltarPedestalBlockEntity extends BlockEntity implements ItemInvento
 	}
 
 	@Override
-	public ItemInventoryComponent getItemComponent() {
+	public ItemComponent getItemComponent() {
 		return inventory;
 	}
 
@@ -78,18 +78,18 @@ public class AltarPedestalBlockEntity extends BlockEntity implements ItemInvento
 		spinAge++;
 		yAge++;
 
-		if (parent != null) {
-			AltarBlockEntity blockEntity = (AltarBlockEntity) world.getBlockEntity(parent);
+		if (parentPos != null) {
+			AltarBlockEntity blockEntity = getParent();
 			if (blockEntity == null)
 				onRemove();
 			else {
 				spinAge += blockEntity.craftingTicks / 5;
 				lastSpinAddition += blockEntity.craftingTicks / 5;
 
-				int velX = pos.getX() - parent.getX();
-				int velY = pos.getY() - parent.getY();
-				int velZ = pos.getZ() - parent.getZ();
-				world.addParticle(ParticleTypes.ENCHANT, parent.getX() + 0.5, parent.getY() + 1.8, parent.getZ() + 0.5, velX, velY - 1.3, velZ);
+				int velX = pos.getX() - parentPos.getX();
+				int velY = pos.getY() - parentPos.getY();
+				int velZ = pos.getZ() - parentPos.getZ();
+				world.addParticle(ParticleTypes.ENCHANT, parentPos.getX() + 0.5, parentPos.getY() + 1.8, parentPos.getZ() + 0.5, velX, velY - 1.3, velZ);
 			}
 		}
 	}
@@ -121,25 +121,39 @@ public class AltarPedestalBlockEntity extends BlockEntity implements ItemInvento
 		super.fromTag(state, tag);
 		inventory.fromTag(tag);
 		if (tag.contains("parent"))
-			parent = BlockPos.fromLong(tag.getLong("parent"));
-		else parent = null;
+			parentPos = BlockPos.fromLong(tag.getLong("parent"));
+		else parentPos = null;
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
 		inventory.toTag(tag);
-		if (parent != null)
-			tag.putLong("parent", parent.asLong());
+		if (parentPos != null)
+			tag.putLong("parent", parentPos.asLong());
 		return super.toTag(tag);
 	}
 
 	public void onRemove() {
-		if (parent != null) {
-			AltarBlockEntity blockEntity = (AltarBlockEntity) world.getBlockEntity(parent);
+		if (parentPos != null) {
+			AltarBlockEntity blockEntity = (AltarBlockEntity) world.getBlockEntity(parentPos);
 			if (blockEntity != null) {
 				blockEntity.onRemove();
 			}
 		}
-		parent = null;
+		parentPos = null;
+	}
+
+	public boolean hasParent() {
+		return parentPos != null && getParent() != null;
+	}
+
+	public AltarBlockEntity getParent() {
+		if(hasWorld() && parentPos != null) {
+			BlockEntity be = world.getBlockEntity(parentPos);
+			if(be instanceof AltarBlockEntity) {
+				return (AltarBlockEntity)be;
+			}
+		}
+		return null;
 	}
 }

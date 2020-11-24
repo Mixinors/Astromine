@@ -55,7 +55,7 @@ public class AltarBlockEntityRenderer extends BlockEntityRenderer<AltarBlockEnti
 		if (entity.craftingTicks > 0)
 			entity.craftingTicksDelta = entity.craftingTicks + tickDelta;
 		matrices.push();
-		ItemStack stack = entity.getItemComponent().getStack(0);
+		ItemStack stack = entity.getItemComponent().getFirst();
 		int j = stack.isEmpty() ? 187 : Item.getRawId(stack.getItem()) + stack.getDamage();
 		this.random.setSeed(j);
 		BakedModel bakedModel = this.itemRenderer.getHeldItemModel(stack, entity.getWorld(), null);

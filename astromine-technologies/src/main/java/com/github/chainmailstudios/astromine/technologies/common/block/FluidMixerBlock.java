@@ -35,10 +35,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingTieredBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.network.NetworkBlock;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.FluidMixerBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.FluidMixerScreenHandler;
 
-public abstract class FluidMixerBlock extends WrenchableHorizontalFacingTieredBlockWithEntity {
+public abstract class FluidMixerBlock extends WrenchableHorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.FluidBuffer {
 	public FluidMixerBlock(Settings settings) {
 		super(settings);
 	}

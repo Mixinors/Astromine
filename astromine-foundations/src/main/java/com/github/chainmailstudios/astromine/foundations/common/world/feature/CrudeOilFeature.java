@@ -39,6 +39,7 @@ import com.mojang.serialization.Codec;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsFluids;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import com.terraformersmc.shapes.api.Position;
 import com.terraformersmc.shapes.impl.Shapes;
 import com.terraformersmc.shapes.impl.layer.transform.NoiseTranslateLayer;
@@ -55,7 +56,7 @@ public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
 
 	@Override
 	public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos pos, DefaultFeatureConfig config) {
-		if (random.nextInt(1000) > 1)
+		if (random.nextInt(AstromineConfig.get().crudeOilThreshold) > 1)
 			return false;
 
 		int offsetY = MathHelper.clamp(random.nextInt(20), 8, 20);

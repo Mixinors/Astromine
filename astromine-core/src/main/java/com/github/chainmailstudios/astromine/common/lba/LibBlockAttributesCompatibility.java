@@ -24,11 +24,10 @@
 
 package com.github.chainmailstudios.astromine.common.lba;
 
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
@@ -41,105 +40,283 @@ import alexiil.mc.lib.attributes.Simulation;
 import alexiil.mc.lib.attributes.fluid.FixedFluidInv;
 import alexiil.mc.lib.attributes.fluid.FluidAttributes;
 import alexiil.mc.lib.attributes.fluid.FluidInvTankChangeListener;
+import alexiil.mc.lib.attributes.fluid.FluidTransferable;
+import alexiil.mc.lib.attributes.fluid.FluidVolumeUtil;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
+import alexiil.mc.lib.attributes.fluid.filter.FluidFilter;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKey;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKeys;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidInventoryComponent;
+import alexiil.mc.lib.attributes.item.FixedItemInv;
+import alexiil.mc.lib.attributes.item.ItemAttributes;
+import alexiil.mc.lib.attributes.item.ItemTransferable;
+import alexiil.mc.lib.attributes.item.filter.ItemFilter;
+import alexiil.mc.lib.attributes.misc.LibBlockAttributes;
+import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import com.github.chainmailstudios.astromine.registry.AstromineComponentTypes;
+import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
+/**
+ * A compatibility addon for {@link LibBlockAttributes}.
+ */
 public final class LibBlockAttributesCompatibility {
+	/** Appends our appender to all {@link FluidAttributes}
+	 * and {@link ItemAttributes} attributes.
+	 */
 	public static void initialize() {
 		FluidAttributes.forEachInv(LibBlockAttributesCompatibility::appendAdder);
+		ItemAttributes.forEachInv(LibBlockAttributesCompatibility::appendAdder);
 	}
 
+	/** Appends our appender to the given attribute. */
 	private static <T> void appendAdder(Attribute<T> attribute) {
 		attribute.appendBlockAdder(LibBlockAttributesCompatibility::append);
 	}
 
+	/** Appends a {@link FixedFluidInvFromComponent} to {@link BlockEntity}-ies
+	 * with an attached {@link FluidComponent}.
+	 *
+	 * Appends a {@link FixedItemInvFromComponent} to {@link BlockEntity}-ies
+	 * with an attached {@link ItemComponent}.
+	 *
+	 * Since {@link LibBlockAttributes} queries this method for every insertion,
+	 * we also instantiate a new wrapper for each insertion. If I may be honest,
+	 * this seems entirely unnecessary and not performant, but I have not run
+	 * any tests.
+	 */
 	private static <T> void append(World world, BlockPos blockPos, BlockState state, AttributeList<T> list) {
 		BlockEntity blockEntity = world.getBlockEntity(blockPos);
 
 		if (blockEntity instanceof ComponentProvider) {
-			ComponentProvider componentProvider = (ComponentProvider) blockEntity;
-
 			@Nullable
 			Direction direction = list.getTargetSide();
 
 			if (direction != null) {
-				BlockEntityTransferComponent transferComponent = componentProvider.getComponent(AstromineComponentTypes.BLOCK_ENTITY_TRANSFER_COMPONENT);
+				BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(blockEntity);
 
-				// This does not check canInsert or canExtract; because I do not know how the hell to do that with LBA.
-				if (transferComponent != null && !transferComponent.get(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT).get(direction).isNone()) {
-					FluidInventoryComponent component = componentProvider.getComponent(AstromineComponentTypes.FLUID_INVENTORY_COMPONENT);
+				if (transferComponent != null) {
+					if (transferComponent.hasFluid()) {
+						FluidComponent fluidComponent = FluidComponent.get(blockEntity);
 
-					if (component != null) {
-						list.offer(new LibBlockAttributesWrapper(component));
+						if (fluidComponent != null) {
+							list.offer(new FixedFluidInvFromComponent(fluidComponent, transferComponent, direction));
+						}
+					}
+
+					if (transferComponent.hasItem()) {
+						ItemComponent itemComponent = ItemComponent.get(blockEntity);
+
+						if (itemComponent != null) {
+							list.offer(new FixedItemInvFromComponent(itemComponent, transferComponent, direction));
+						}
 					}
 				}
 			}
 		}
 	}
 
-	private static alexiil.mc.lib.attributes.fluid.volume.FluidVolume wrapLibBlockAttributes(FluidVolume volume) {
-		return FluidKeys.get(volume.getFluid()).withAmount(wrapLibBlockAttributes(volume.getAmount().copy()));
+	/** Returns a {@link LibBlockAttributes} volume from the given Astromine one. */
+	private static alexiil.mc.lib.attributes.fluid.volume.FluidVolume wrapToLibBlockAttributes(FluidVolume volume) {
+		if (FluidKeys.get(volume.getFluid()).isEmpty()) {
+			return FluidKeys.EMPTY.withAmount(FluidAmount.ZERO);
+		} else {
+			return FluidKeys.get(volume.getFluid()).withAmount(wrapToLibBlockAttributes(volume.getAmount().copy()));
+		}
 	}
 
-	private static Optional<FluidVolume> wrapVolumeToAstromine(alexiil.mc.lib.attributes.fluid.volume.FluidVolume volume) {
+	/** Returns an Astromine volume from the given {@link LibBlockAttributes} one. */
+	private static Optional<FluidVolume> wrapToAstromine(alexiil.mc.lib.attributes.fluid.volume.FluidVolume volume) {
 		if (volume.getRawFluid() == null)
 			return Optional.empty();
 
-		return Optional.of(FluidVolume.of(wrapVolumeToAstromine(volume.amount()), volume.getRawFluid()));
+		return Optional.of(FluidVolume.of(wrapToAstromine(volume.amount()), volume.getRawFluid()));
 	}
 
-	private static FluidAmount wrapLibBlockAttributes(Fraction fraction) {
+	/** Returns a {@link LibBlockAttributes} fraction from the given Astromine one. */
+	private static FluidAmount wrapToLibBlockAttributes(Fraction fraction) {
 		return FluidAmount.of(fraction.getNumerator(), fraction.getDenominator());
 	}
 
-	private static Fraction wrapVolumeToAstromine(FluidAmount amount) {
+	/** Returns an Astromine fraction from the given {@link LibBlockAttributes} one. */
+	private static Fraction wrapToAstromine(FluidAmount amount) {
 		return Fraction.of(amount.whole, amount.numerator, amount.denominator);
 	}
 
-	private static class LibBlockAttributesWrapper implements FixedFluidInv {
-		private final FluidInventoryComponent component;
+	/**
+	 * A {@link FixedItemInv} wrapped over
+	 * an {@link ItemComponent}, implementing {@link ItemTransferable}
+	 * for siding control.
+	 */
+	private static class FixedItemInvFromComponent implements FixedItemInv, ItemTransferable {
+		private final ItemComponent itemComponent;
 
-		public LibBlockAttributesWrapper(FluidInventoryComponent component) {
-			this.component = component;
+		private final BlockEntityTransferComponent transferComponent;
+
+		private final Direction direction;
+
+		private boolean isExtracting = false;
+
+		/** Instantiates a {@link FixedItemInvFromComponent}. */
+		public FixedItemInvFromComponent(ItemComponent itemComponent, BlockEntityTransferComponent transferComponent, Direction direction) {
+			this.itemComponent = itemComponent;
+			this.transferComponent = transferComponent;
+			this.direction = direction;
 		}
 
-		private void validateTankIndex(int tank) {
-			if (tank < 0 || tank >= getTankCount()) {
-				throw new IndexOutOfBoundsException("Tank (" + tank + ") was out of bounds [0, " + getTankCount() + ")");
+		/** Asserts whether the given {@link ItemStack} is valid for
+		 * the specified slot or not, based on {@link ItemComponent#canInsert(Direction, ItemStack, int)}
+		 * or {@link ItemComponent#canExtract(Direction, ItemStack, int)}.
+		 *
+		 * Importantly, we need to keep track of whether the item is being
+		 * inserted or extracted, which is done in {@link #attemptInsertion(ItemStack, Simulation)}
+		 * or {@link #attemptExtraction(ItemFilter, int, Simulation)}, respectively. */
+		@Override
+		public boolean isItemValidForSlot(int slot, ItemStack stack) {
+			return ((isExtracting && itemComponent.canExtract(direction, stack, slot)) || (!isExtracting && itemComponent.canInsert(direction, stack, slot)));
+		}
+
+		/** Returns this inventory's size. */
+		@Override
+		public int getSlotCount() {
+			return itemComponent.getSize();
+		}
+
+		/** Returns the {@link ItemStack} at the specified slot. */
+		@Override
+		public ItemStack getInvStack(int slot) {
+			return itemComponent.getStack(slot);
+		}
+
+		/** Attempts to set the {@link ItemStack} at the given slot
+		 * to the specified one, returning whether the operation
+		 * was successful or not. */
+		@Override
+		public boolean setInvStack(int slot, ItemStack stack, Simulation simulation) {
+			if (!isItemValidForSlot(slot, stack))
+				return false;
+
+			if (!simulation.isSimulate()) {
+				itemComponent.setStack(slot, stack);
+			}
+
+			return true;
+		}
+
+		/** Attempts to extract an {@link ItemStack} from this inventory
+		 * based on an {@link ItemFilter}.
+		 *
+		 * Sets this inventory's mode to extracting, for use in
+		 * {@link #setInvStack(int, ItemStack, Simulation)}. */
+		@Override
+		public ItemStack attemptExtraction(ItemFilter filter, int amount, Simulation simulation) {
+			if (transferComponent.getItem(direction).canExtract()) {
+				isExtracting = true;
+				return getGroupedInv().attemptExtraction(filter, amount, simulation);
+			} else {
+				return ItemStack.EMPTY;
 			}
 		}
 
+		/** Attempts to insert an {@link ItemStack} into this inventory.
+		 *
+		 * Sets this inventory's mode to inserting, for use in
+		 * {@link #setInvStack(int, ItemStack, Simulation)}. */
 		@Override
-		public int getTankCount() {
-			return component.getSize();
+		public ItemStack attemptInsertion(ItemStack stack, Simulation simulation) {
+			if (transferComponent.getItem(direction).canInsert()) {
+				isExtracting = false;
+				return getGroupedInv().attemptInsertion(stack, simulation);
+			} else {
+				return stack;
+			}
+		}
+	}
+
+	/**
+	 * A {@link FixedFluidInv} wrapped over
+	 * a {@link FluidComponent}, implementing {@link FluidTransferable}
+	 * for siding control.
+	 */
+	private static class FixedFluidInvFromComponent implements FixedFluidInv, FluidTransferable {
+		private final FluidComponent fluidComponent;
+
+		private final BlockEntityTransferComponent transferComponent;
+
+		private final Direction direction;
+
+		private boolean isExtracting = false;
+
+		/** Instantiates a {@link FixedFluidInvFromComponent}. */
+		public FixedFluidInvFromComponent(FluidComponent fluidComponent, BlockEntityTransferComponent transferComponent, Direction direction) {
+			this.fluidComponent = fluidComponent;
+			this.transferComponent = transferComponent;
+			this.direction = direction;
 		}
 
+		/** Asserts whether the given slot is valid for this inventory or not. */
+		private void validateTankIndex(int slot) {
+			if (slot < 0 || slot >= getTankCount()) {
+				throw new IndexOutOfBoundsException("Tank (" + slot + ") was out of bounds [0, " + getTankCount() + ")");
+			}
+		}
+
+		/** Asserts whether the given {@link FluidVolume} is valid for
+		 * the specified slot or not, based on {@link FluidComponent#canInsert(Direction, FluidVolume, int)}
+		 * or {@link FluidComponent#canExtract(Direction, FluidVolume, int)}.
+		 *
+		 * Importantly, we need to keep track of whether the item is being
+		 * inserted or extracted, which is done in {@link #attemptInsertion(alexiil.mc.lib.attributes.fluid.volume.FluidVolume, Simulation)}
+		 * or {@link #attemptExtraction(FluidFilter, FluidAmount, Simulation)}, respectively. */
+		public boolean isVolumeValidForSlot(int slot, FluidVolume volume) {
+			return ((isExtracting && fluidComponent.canExtract(direction, volume, slot)) || (!isExtracting && fluidComponent.canInsert(direction, volume, slot)));
+		}
+
+		/** Asserts whether the given {@link FluidKey} is valid for
+		 * the specified slot or not. */
+		@Override
+		public boolean isFluidValidForTank(int tank, FluidKey fluidKey) {
+			validateTankIndex(tank);
+			Fluid fluid = fluidKey.getRawFluid();
+			return fluid != null;
+		}
+
+		/** Returns this inventory's size. */
+		@Override
+		public int getTankCount() {
+			return fluidComponent.getSize();
+		}
+
+		/** Returns the {@link FluidVolume} at the specified slot. */
 		@Override
 		public alexiil.mc.lib.attributes.fluid.volume.FluidVolume getInvFluid(int tank) {
 			validateTankIndex(tank);
-			return wrapLibBlockAttributes(component.getVolume(tank));
+
+			return wrapToLibBlockAttributes(fluidComponent.getVolume(tank));
 		}
 
+		/** Attempts to set the {@link FluidVolume} at the given slot
+		 * to the specified one, returning whether the operation
+		 * was successful or not. */
 		@Override
-		public boolean setInvFluid(int tank, alexiil.mc.lib.attributes.fluid.volume.FluidVolume fluidVolume, Simulation simulation) {
-			if (!isFluidValidForTank(tank, fluidVolume.getFluidKey()))
+		public boolean setInvFluid(int slot, alexiil.mc.lib.attributes.fluid.volume.FluidVolume fluidVolume, Simulation simulation) {
+			if (!isFluidValidForTank(slot, fluidVolume.getFluidKey()))
 				return false;
 
-			Optional<FluidVolume> optionalFluidVolume = wrapVolumeToAstromine(fluidVolume);
+			if (((isExtracting && !fluidComponent.canExtract(direction, wrapToAstromine(fluidVolume).get(), slot)) || (!isExtracting && !fluidComponent.canInsert(direction, wrapToAstromine(fluidVolume).get(), slot))))
+				return false;
+
+			Optional<FluidVolume> optionalFluidVolume = wrapToAstromine(fluidVolume);
 
 			if (!optionalFluidVolume.isPresent())
 				return false;
 
 			FluidVolume incoming = optionalFluidVolume.get();
-			FluidVolume current = component.getVolume(tank);
+			FluidVolume current = fluidComponent.getVolume(slot);
 
 			if (incoming.getAmount().biggerThan(current.getSize())) {
 				return false;
@@ -147,56 +324,58 @@ public final class LibBlockAttributesCompatibility {
 
 			boolean allowed;
 
-			if (incoming.isEmpty()) {
-				if (current.isEmpty()) {
-					return true;
-				}
-				allowed = component.canExtract(null, current, tank);
-			} else if (current.isEmpty()) {
-				allowed = component.canInsert(null, incoming, tank);
-			} else if (incoming.getFluid() == current.getFluid()) {
-
-				if (incoming.getAmount().equals(current.getAmount())) {
-					return true;
-				}
-
-				if (incoming.smallerThan(current.getAmount())) {
-					allowed = component.canExtract(null, current, tank);
-				} else {
-					allowed = component.canInsert(null, incoming, tank);
-				}
-			} else {
-				allowed = component.canExtract(null, current, tank) && component.canInsert(null, incoming, tank);
-			}
+			allowed = current.test(incoming.getFluid());
 
 			if (allowed && simulation.isAction()) {
 
 				current.setFluid(incoming.getFluid());
 				current.setAmount(incoming.getAmount());
 
-				component.setVolume(tank, current);
+				fluidComponent.setVolume(slot, current);
 			}
 
 			return allowed;
 		}
 
+		/** Returns the size of the volume at the given slot. */
 		@Override
-		public boolean isFluidValidForTank(int tank, FluidKey fluidKey) {
-			validateTankIndex(tank);
-			Fluid fluid = fluidKey.getRawFluid();
-			return fluid != null && component.canInsert(null, FluidVolume.of(Fraction.bucket(), fluid), tank);
+		public FluidAmount getMaxAmount_F(int slot) {
+			validateTankIndex(slot);
+			return wrapToLibBlockAttributes(fluidComponent.getVolume(slot).getSize());
 		}
 
-		@Override
-		public FluidAmount getMaxAmount_F(int tank) {
-			validateTankIndex(tank);
-			return wrapLibBlockAttributes(component.getVolume(tank).getSize());
-		}
-
+		/** We do not support listeners. */
 		@Override
 		public ListenerToken addListener(FluidInvTankChangeListener fluidInvTankChangeListener, ListenerRemovalToken listenerRemovalToken) {
-			// We don't support listeners
 			return null;
+		}
+
+		/** Attempts to extract a {@link FluidVolume} from this inventory.
+		 *
+		 * Sets this inventory's mode to extracting, for use in
+		 * {@link #setInvFluid(int, alexiil.mc.lib.attributes.fluid.volume.FluidVolume, Simulation)}. */
+		@Override
+		public alexiil.mc.lib.attributes.fluid.volume.FluidVolume attemptExtraction(FluidFilter filter, FluidAmount amount, Simulation simulation) {
+			if (transferComponent.getFluid(direction).canExtract()) {
+				isExtracting = true;
+				return getGroupedInv().attemptExtraction(filter, amount, simulation);
+			} else {
+				return FluidVolumeUtil.EMPTY;
+			}
+		}
+
+		/** Attempts to insert a {@link FluidVolume} into this inventory.
+		 *
+		 * Sets this inventory's mode to inserting, for use in
+		 * {@link #setInvFluid(int, alexiil.mc.lib.attributes.fluid.volume.FluidVolume, Simulation)}. */
+		@Override
+		public alexiil.mc.lib.attributes.fluid.volume.FluidVolume attemptInsertion(alexiil.mc.lib.attributes.fluid.volume.FluidVolume volume, Simulation simulation) {
+			if (transferComponent.getFluid(direction).canInsert()) {
+				isExtracting = false;
+				return getGroupedInv().attemptInsertion(volume, simulation);
+			} else {
+				return volume;
+			}
 		}
 	}
 }

@@ -35,10 +35,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.base.WrenchableHorizontalFacingTieredBlockWithEntity;
+import com.github.chainmailstudios.astromine.common.network.NetworkBlock;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.ElectrolyzerBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.ElectrolyzerScreenHandler;
 
-public abstract class ElectrolyzerBlock extends WrenchableHorizontalFacingTieredBlockWithEntity {
+public abstract class ElectrolyzerBlock extends WrenchableHorizontalFacingTieredBlockWithEntity implements NetworkBlock.EnergyRequester, NetworkBlock.FluidBuffer {
 	public ElectrolyzerBlock(Settings settings) {
 		super(settings);
 	}

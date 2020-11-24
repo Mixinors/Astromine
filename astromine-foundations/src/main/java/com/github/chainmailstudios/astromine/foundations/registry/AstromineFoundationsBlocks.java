@@ -91,6 +91,20 @@ public class AstromineFoundationsBlocks extends AstromineBlocks {
 	public static final Block METEOR_STONE_STAIRS = register("meteor_stone_stairs", new StairsBlock(METEOR_STONE.getDefaultState(), FabricBlockSettings.copyOf(METEOR_STONE)), AstromineFoundationsItems.getBasicSettings().fireproof());
 	public static final Block METEOR_STONE_WALL = register("meteor_stone_wall", new WallBlock(FabricBlockSettings.copyOf(METEOR_STONE)), AstromineFoundationsItems.getBasicSettings().fireproof());
 
+	public static final Block SMOOTH_METEOR_STONE = register("smooth_meteor_stone", new Block(FabricBlockSettings.copyOf(METEOR_STONE)), AstromineFoundationsItems.getBasicSettings().fireproof());
+	public static final Block SMOOTH_METEOR_STONE_SLAB = register("smooth_meteor_stone_slab", new SlabBlock(FabricBlockSettings.copyOf(SMOOTH_METEOR_STONE)), AstromineFoundationsItems.getBasicSettings().fireproof());
+	public static final Block SMOOTH_METEOR_STONE_STAIRS = register("smooth_meteor_stone_stairs", new StairsBlock(SMOOTH_METEOR_STONE.getDefaultState(), FabricBlockSettings.copyOf(SMOOTH_METEOR_STONE)), AstromineFoundationsItems.getBasicSettings().fireproof());
+	public static final Block SMOOTH_METEOR_STONE_WALL = register("smooth_meteor_stone_wall", new WallBlock(FabricBlockSettings.copyOf(SMOOTH_METEOR_STONE)), AstromineFoundationsItems.getBasicSettings().fireproof());
+
+	public static final Block POLISHED_METEOR_STONE = register("polished_meteor_stone", new Block(FabricBlockSettings.copyOf(METEOR_STONE)), AstromineFoundationsItems.getBasicSettings().fireproof());
+	public static final Block POLISHED_METEOR_STONE_SLAB = register("polished_meteor_stone_slab", new SlabBlock(FabricBlockSettings.copyOf(POLISHED_METEOR_STONE)), AstromineFoundationsItems.getBasicSettings().fireproof());
+	public static final Block POLISHED_METEOR_STONE_STAIRS = register("polished_meteor_stone_stairs", new StairsBlock(POLISHED_METEOR_STONE.getDefaultState(), FabricBlockSettings.copyOf(POLISHED_METEOR_STONE)), AstromineFoundationsItems.getBasicSettings().fireproof());
+
+	public static final Block METEOR_STONE_BRICKS = register("meteor_stone_bricks", new Block(FabricBlockSettings.copyOf(METEOR_STONE)), AstromineFoundationsItems.getBasicSettings().fireproof());
+	public static final Block METEOR_STONE_BRICK_SLAB = register("meteor_stone_brick_slab", new SlabBlock(FabricBlockSettings.copyOf(METEOR_STONE_BRICKS)), AstromineFoundationsItems.getBasicSettings().fireproof());
+	public static final Block METEOR_STONE_BRICK_STAIRS = register("meteor_stone_brick_stairs", new StairsBlock(METEOR_STONE_BRICKS.getDefaultState(), FabricBlockSettings.copyOf(METEOR_STONE_BRICKS)), AstromineFoundationsItems.getBasicSettings().fireproof());
+	public static final Block METEOR_STONE_BRICK_WALL = register("meteor_stone_brick_wall", new WallBlock(FabricBlockSettings.copyOf(METEOR_STONE_BRICKS)), AstromineFoundationsItems.getBasicSettings().fireproof());
+
 	public static void initialize() {
 
 	}

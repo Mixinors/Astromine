@@ -8,6 +8,6 @@
     "item": "astromine:coal_dust",
     "count": 1
   },
-  "time": 30,
-  "energy_consumed": 270
+  "time": 60,
+  "energy_input": 270
 }

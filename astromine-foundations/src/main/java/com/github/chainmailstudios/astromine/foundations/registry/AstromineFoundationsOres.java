@@ -31,21 +31,22 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 
+import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.foundations.AstromineFoundationsCommon;
 import me.shedaniel.cloth.api.dynamic.registry.v1.BiomesRegistry;
 import me.shedaniel.cloth.api.dynamic.registry.v1.DynamicRegistryCallback;
 
 public class AstromineFoundationsOres {
-	public static final Identifier TIN_ORE_ID = AstromineFoundationsCommon.identifier("tin_ore");
+	public static final Identifier TIN_ORE_ID = AstromineCommon.identifier("tin_ore");
 	public static final RegistryKey<ConfiguredFeature<?, ?>> TIN_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, TIN_ORE_ID);
 
-	public static final Identifier COPPER_ORE_ID = AstromineFoundationsCommon.identifier("copper_ore");
+	public static final Identifier COPPER_ORE_ID = AstromineCommon.identifier("copper_ore");
 	public static final RegistryKey<ConfiguredFeature<?, ?>> COPPER_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, COPPER_ORE_ID);
 
-	public static final Identifier SILVER_ORE_ID = AstromineFoundationsCommon.identifier("silver_ore");
+	public static final Identifier SILVER_ORE_ID = AstromineCommon.identifier("silver_ore");
 	public static final RegistryKey<ConfiguredFeature<?, ?>> SILVER_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, SILVER_ORE_ID);
 
-	public static final Identifier LEAD_ORE_ID = AstromineFoundationsCommon.identifier("lead_ore");
+	public static final Identifier LEAD_ORE_ID = AstromineCommon.identifier("lead_ore");
 	public static final RegistryKey<ConfiguredFeature<?, ?>> LEAD_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, LEAD_ORE_ID);
 
 	public static void initialize() {

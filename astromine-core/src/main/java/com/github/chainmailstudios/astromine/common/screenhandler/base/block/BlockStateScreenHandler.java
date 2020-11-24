@@ -27,6 +27,7 @@ package com.github.chainmailstudios.astromine.common.screenhandler.base.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
@@ -34,11 +35,16 @@ import net.minecraft.util.math.BlockPos;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * This class represents a {@link ScreenHandler} with an associated
+ * {@link BlockPos}, {@link Block} and {@link BlockState}
+ */
 public abstract class BlockStateScreenHandler extends BaseScreenHandler {
-	public BlockPos position;
-	public Block originalBlock;
-	BlockState state;
+	protected BlockPos position;
+	protected Block originalBlock;
+	protected BlockState state;
 
+	/** Instantiates a {@link BlockStateScreenHandler}. */
 	public BlockStateScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
 		super(type, syncId, player);
 
@@ -47,6 +53,9 @@ public abstract class BlockStateScreenHandler extends BaseScreenHandler {
 		this.position = position;
 	}
 
+	/** Override behavior to only allow the {@link ScreenHandler} to be open
+	 * when possible, and while the associated {@link BlockState} has not
+	 * changed. */
 	@Override
 	public boolean canUse(@Nullable PlayerEntity player) {
 		return canUse(ScreenHandlerContext.create(player.world, position), player, originalBlock);

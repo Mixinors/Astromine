@@ -34,6 +34,7 @@ import com.github.chainmailstudios.astromine.technologies.common.recipe.Triturat
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeDisplay;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -47,7 +48,7 @@ public class TrituratingDisplay implements RecipeDisplay {
 	private final Identifier recipeId;
 
 	public TrituratingDisplay(TrituratingRecipe recipe) {
-		this(EntryStack.ofIngredients(recipe.getPreviewInputs()), Collections.singletonList(EntryStack.create(recipe.getOutput())), recipe.getTime(), recipe.getEnergyConsumed(), recipe.getId());
+		this(Collections.singletonList(EntryStack.ofItemStacks(Arrays.asList(recipe.getFirstInput().getMatchingStacks()))), Collections.singletonList(EntryStack.create(recipe.getFirstOutput())), recipe.getTime(), recipe.getEnergyInput(), recipe.getId());
 	}
 
 	public TrituratingDisplay(List<List<EntryStack>> inputs, List<EntryStack> outputs, int timeRequired, double energyRequired, Identifier recipeId) {

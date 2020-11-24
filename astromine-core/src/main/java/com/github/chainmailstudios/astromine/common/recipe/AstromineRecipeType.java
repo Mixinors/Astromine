@@ -27,4 +27,9 @@ package com.github.chainmailstudios.astromine.common.recipe;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
 
+import com.github.chainmailstudios.astromine.mixin.ClientRecipeBookMixin;
+
+/**
+ * Our generic {@link RecipeType}, used in {@link ClientRecipeBookMixin}.
+ */
 public interface AstromineRecipeType<T extends Recipe<?>> extends RecipeType<T> {}

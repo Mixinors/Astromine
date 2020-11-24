@@ -1,0 +1,26 @@
+{
+  "type": "astromine:electrolyzing",
+  "input": {
+    "fluid": "minecraft:water",
+    "amount": {
+      "numerator": 1,
+      "denominator": 32
+    }
+  },
+  "first_output": {
+    "fluid": "astromine:oxygen",
+    "amount": {
+      "numerator": 1,
+      "denominator": 96
+    }
+  },
+  "second_output": {
+    "fluid": "astromine:hydrogen",
+    "amount": {
+      "numerator": 1,
+      "denominator": 48
+    }
+  },
+  "energy_input": 24,
+  "time": 5
+}

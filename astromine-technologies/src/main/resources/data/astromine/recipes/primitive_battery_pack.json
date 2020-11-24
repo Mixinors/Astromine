@@ -1,0 +1,5 @@
+{
+  "type": "minecraft:crafting_shaped", "pattern": ["212", "141", "212"], "key": {
+  "1": {"tag": "c:lead_plates"}, "2": {"item": "astromine:primitive_battery"}, "4": {"item": "minecraft:slime_ball"}
+}, "result": {"item": "astromine:primitive_battery_pack", "count": 1}
+}

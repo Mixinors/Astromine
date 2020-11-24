@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "particle": "astromine:block/martian_stone_top",
+    "all": "astromine:block/martian_stone_top"
+  }
+}

@@ -1,39 +1,19 @@
 {
-  "multipart": [
-    {
-      "when": {
-        "facing": "north"
-      },
-      "apply": {
-        "model": "astromine:block/splitter"
-      }
+  "variants": {
+    "facing=east": {
+      "y": 90,
+      "model": "astromine:block/splitter"
     },
-    {
-      "when": {
-        "facing": "east"
-      },
-      "apply": {
-        "model": "astromine:block/splitter",
-        "y": 90
-      }
+    "facing=north": {
+      "model": "astromine:block/splitter"
     },
-    {
-      "when": {
-        "facing": "south"
-      },
-      "apply": {
-        "model": "astromine:block/splitter",
-        "y": 180
-      }
+    "facing=south": {
+      "y": 180,
+      "model": "astromine:block/splitter"
     },
-    {
-      "when": {
-        "facing": "west"
-      },
-      "apply": {
-        "model": "astromine:block/splitter",
-        "y": 270
-      }
+    "facing=west": {
+      "y": 270,
+      "model": "astromine:block/splitter"
     }
-  ]
+  }
 }

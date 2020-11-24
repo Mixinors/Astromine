@@ -24,35 +24,49 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 
-import com.github.chainmailstudios.astromine.common.recipe.ingredient.ArrayIngredient;
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.ItemIngredient;
+import io.netty.buffer.ByteBuf;
 
 import com.google.gson.JsonElement;
 
 public class IngredientUtilities {
-	public static Ingredient fromJson(JsonElement jsonElement) {
+	/** Deserializes an {@link Ingredient} from a {@link JsonElement}. */
+	public static Ingredient fromIngredientJson(JsonElement jsonElement) {
 		return Ingredient.fromJson(jsonElement);
 	}
 
-	public static ArrayIngredient fromBetterJson(JsonElement jsonElement) {
-		return ArrayIngredient.fromJson(jsonElement);
-	}
-
-	public static Ingredient fromPacket(PacketByteBuf buffer) {
+	/** Deserializes an {@link Ingredient} from a {@link ByteBuf}. */
+	public static Ingredient fromIngredientPacket(PacketByteBuf buffer) {
 		return Ingredient.fromPacket(buffer);
 	}
 
-	public static void toPacket(PacketByteBuf buffer, Ingredient ingredient) {
+	/** Serializes an {@link Ingredient} to a {@link ByteBuf}. */
+	public static void toIngredientPacket(PacketByteBuf buffer, Ingredient ingredient) {
 		ingredient.write(buffer);
 	}
 
-	public static ArrayIngredient fromBetterPacket(PacketByteBuf buffer) {
-		return ArrayIngredient.fromPacket(buffer);
-	}
+	/** Returns an {@link ItemStack} from the specified {@link Ingredient}
+	 * which is compatible with the given {@link ItemStack}.
+	 *
+	 * This method is already implemented in {@link ItemIngredient} and
+	 * {@link FluidIngredient}, but not present in the default {@link Ingredient}.
+	 * */
+	public static ItemStack testMatching(Ingredient input, ItemStack stack) {
+		if (stack != null) {
+			if (input.matchingStacks.length != 0) {
+				for (ItemStack matching : input.matchingStacks) {
+					if (matching.getItem() == stack.getItem()) {
+						return matching;
+					}
+				}
+			}
+		}
 
-	public static void toBetterPacket(PacketByteBuf buffer, ArrayIngredient ingredient) {
-		ingredient.write(buffer);
+		return ItemStack.EMPTY;
 	}
 }

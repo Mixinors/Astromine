@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:crafting_shaped", "pattern": ["212", "545", "878"], "key": {
+  "1": {"item": "astromine:large_portable_tank"}, "2": {"item": "astromine:primitive_circuit"},
+  "4": {"item": "astromine:primitive_machine_chassis"}, "5": {"item": "astromine:blades"},
+  "7": {"item": "astromine:primitive_battery_pack"}, "8": {"item": "minecraft:magma_block"}
+}, "result": {"item": "astromine:primitive_melter", "count": 1}
+}

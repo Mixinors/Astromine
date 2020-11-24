@@ -30,33 +30,53 @@ import com.google.common.collect.Sets;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * A member of a network.
+ */
 public interface NetworkMember {
-	Collection<NetworkMemberType> REQUESTER = Collections.singleton(NetworkMemberType.REQUESTER);
-	Collection<NetworkMemberType> PROVIDER = Collections.singleton(NetworkMemberType.PROVIDER);
 	Collection<NetworkMemberType> REQUESTER_PROVIDER = Sets.newHashSet(NetworkMemberType.REQUESTER, NetworkMemberType.PROVIDER);
+
+	Collection<NetworkMemberType> REQUESTER = Collections.singleton(NetworkMemberType.REQUESTER);
+
+	Collection<NetworkMemberType> PROVIDER = Collections.singleton(NetworkMemberType.PROVIDER);
+
 	Collection<NetworkMemberType> BUFFER = Collections.singleton(NetworkMemberType.BUFFER);
+
 	Collection<NetworkMemberType> NODE = Collections.singleton(NetworkMemberType.NODE);
+
 	Collection<NetworkMemberType> NONE = Collections.emptySet();
 
-	Collection<NetworkMemberType> getMemberNetworkTypeProperties(NetworkType type);
+	/** Returns the {@link NetworkMemberType}s of this member
+	 * for the given {@link NetworkType}. */
+	Collection<NetworkMemberType> getNetworkMemberTypes(NetworkType type);
 
+	/** Asserts whether this member accepts the
+	 * given {@link NetworkType} or not. */
 	default boolean acceptsType(NetworkType type) {
-		return !getMemberNetworkTypeProperties(type).isEmpty();
+		return !getNetworkMemberTypes(type).isEmpty();
 	}
 
+	/** Asserts whether this member is a provider
+	 * for the given {@link NetworkType} or not. */
 	default boolean isProvider(NetworkType type) {
-		return getMemberNetworkTypeProperties(type).contains(NetworkMemberType.PROVIDER);
+		return getNetworkMemberTypes(type).contains(NetworkMemberType.PROVIDER);
 	}
 
+	/** Asserts whether this member is a requester
+	 * for the given {@link NetworkType} or not. */
 	default boolean isRequester(NetworkType type) {
-		return getMemberNetworkTypeProperties(type).contains(NetworkMemberType.REQUESTER);
+		return getNetworkMemberTypes(type).contains(NetworkMemberType.REQUESTER);
 	}
 
+	/** Asserts whether this member is a buffer
+	 * for the given {@link NetworkType} or not. */
 	default boolean isBuffer(NetworkType type) {
-		return getMemberNetworkTypeProperties(type).contains(NetworkMemberType.BUFFER);
+		return getNetworkMemberTypes(type).contains(NetworkMemberType.BUFFER);
 	}
 
+	/** Asserts whether this member is a node
+	 * for the given {@link NetworkType} or not. */
 	default boolean isNode(NetworkType type) {
-		return getMemberNetworkTypeProperties(type).contains(NetworkMemberType.NODE);
+		return getNetworkMemberTypes(type).contains(NetworkMemberType.NODE);
 	}
 }

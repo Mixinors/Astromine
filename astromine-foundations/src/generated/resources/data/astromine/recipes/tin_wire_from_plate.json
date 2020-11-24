@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "c:tin_plates"
+    },
+    {
+      "tag": "fabric:shears"
+    }
+  ],
+  "result": {
+    "item": "astromine:tin_wire"
+  }
+}

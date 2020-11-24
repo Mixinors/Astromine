@@ -8,6 +8,6 @@
     "item": "minecraft:gravel",
     "count": 1
   },
-  "time": 20,
-  "energy_consumed": 120
+  "time": 40,
+  "energy_input": 120
 }

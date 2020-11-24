@@ -11,14 +11,24 @@ import me.shedaniel.cloth.api.datagen.v1.RecipeData;
 
 public class StonecuttingRecipeGenerator extends OneTimeRecipeGenerator {
 	public final Ingredient input;
+	public final String suffix;
 
-	public StonecuttingRecipeGenerator(ItemConvertible output, Ingredient input, int outputCount) {
+	public StonecuttingRecipeGenerator(ItemConvertible output, Ingredient input, int outputCount, String suffix) {
 		super(output, outputCount);
 		this.input = input;
+		this.suffix = suffix;
 	}
 
 	public StonecuttingRecipeGenerator(ItemConvertible output, Ingredient input) {
-		this(output, input, 1);
+		this(output, input, 1, "");
+	}
+
+	public StonecuttingRecipeGenerator(ItemConvertible output, Ingredient input, int outputCount) {
+		this(output, input, outputCount, "");
+	}
+
+	public StonecuttingRecipeGenerator(ItemConvertible output, Ingredient input, String suffix) {
+		this(output, input, 1, suffix);
 	}
 
 	@Override
@@ -29,7 +39,9 @@ public class StonecuttingRecipeGenerator extends OneTimeRecipeGenerator {
 	@Override
 	public Identifier getRecipeId() {
 		Identifier id = super.getRecipeId();
-		return new Identifier(id.getNamespace(), id.getPath() + "_from_stonecutting");
+		String path = id.getPath() + "_from_stonecutting";
+		if (!suffix.isEmpty()) path = path + "_" + suffix;
+		return new Identifier(id.getNamespace(), path);
 	}
 
 	@Override

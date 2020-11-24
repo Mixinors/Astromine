@@ -28,46 +28,46 @@ import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 
+/**
+ * An enum representing a side's transfer information.
+ */
 public enum TransferType {
 	NONE(AstromineCommon.identifier("textures/widget/none.png")),
 	INPUT(AstromineCommon.identifier("textures/widget/input.png")),
 	OUTPUT(AstromineCommon.identifier("textures/widget/output.png")),
-	INPUT_OUTPUT(AstromineCommon.identifier("textures/widget/input_output.png")),
-	DISABLED(AstromineCommon.identifier("textures/widget/disabled.png"));
+	INPUT_OUTPUT(AstromineCommon.identifier("textures/widget/input_output.png"));
 
 	private final Identifier texture;
 
+	/** Instantiates a {@link TransferType}. */
 	TransferType(Identifier texture) {
 		this.texture = texture;
 	}
 
+	/** Returns the next {@link TransferType} in relation to this one. */
 	public TransferType next() {
 		if (ordinal() + 1 == values().length)
 			return values()[0];
 		return values()[ordinal() + 1];
 	}
 
+	/** Returns the texture of this type. */
 	public Identifier texture() {
 		return texture;
 	}
 
+	/** Asserts whether this type accepts insertion or not. */
 	public boolean canInsert() {
 		return this == INPUT || this == INPUT_OUTPUT;
 	}
 
+	/** Asserts whether this type accepts extraction or not. */
 	public boolean canExtract() {
 		return this == OUTPUT || this == INPUT_OUTPUT;
 	}
 
+	/** Asserts whether this type is none or not. */
 	public boolean isNone() {
-		return isDefault() || isDisabled();
-	}
-
-	public boolean isDefault() {
 		return this == NONE;
-	}
-
-	public boolean isDisabled() {
-		return this == DISABLED;
 	}
 }
