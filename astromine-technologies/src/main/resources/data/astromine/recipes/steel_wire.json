@@ -10,10 +10,10 @@
       "tag": "fabric:shears"
     },
     "4": {
-      "tag": "c:gold_plates"
+      "tag": "c:steel_plates"
     }
   },
   "result": {
-    "item": "astromine:gold_wire"
+    "item": "astromine:steel_wire"
   }
 }
