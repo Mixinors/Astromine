@@ -68,6 +68,16 @@ public class AstromineTechnologiesLootTableGenerators extends AstromineLootTable
 			AstromineTechnologiesBlocks.ADVANCED_FLUID_MIXER,
 			AstromineTechnologiesBlocks.ELITE_FLUID_MIXER,
 
+			AstromineTechnologiesBlocks.PRIMITIVE_SOLIDIFIER,
+			AstromineTechnologiesBlocks.BASIC_SOLIDIFIER,
+			AstromineTechnologiesBlocks.ADVANCED_SOLIDIFIER,
+			AstromineTechnologiesBlocks.ELITE_SOLIDIFIER,
+
+			AstromineTechnologiesBlocks.PRIMITIVE_MELTER,
+			AstromineTechnologiesBlocks.BASIC_MELTER,
+			AstromineTechnologiesBlocks.ADVANCED_MELTER,
+			AstromineTechnologiesBlocks.ELITE_MELTER,
+
 			AstromineTechnologiesBlocks.PRIMITIVE_BUFFER,
 			AstromineTechnologiesBlocks.BASIC_BUFFER,
 			AstromineTechnologiesBlocks.ADVANCED_BUFFER,
