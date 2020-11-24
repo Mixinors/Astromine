@@ -36,7 +36,6 @@ import net.minecraft.util.math.Direction;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.InventoryFromItemComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
@@ -48,12 +47,12 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
- * A {@link NameableComponent} representing an item reserve.
+ * A {@link IdentifiableComponent} representing an item reserve.
  *
  * Serialization and deserialization methods are provided for:
- * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
  */
-public interface ItemComponent extends Iterable<ItemStack>, AutoSyncedComponent, NameableComponent {
+public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponent {
 	/** Instantiates an {@link ItemComponent} with the given value. */
 	static ItemComponent of(int size) {
 		return SimpleItemComponent.of(size);
@@ -62,6 +61,16 @@ public interface ItemComponent extends Iterable<ItemStack>, AutoSyncedComponent,
 	/** Instantiates an {@link ItemComponent} with the given value. */
 	static ItemComponent of(ItemStack... stacks) {
 		return SimpleItemComponent.of(stacks);
+	}
+
+	/** Instantiates an {@link ItemComponent} with the given value and synchronization. */
+	static ItemComponent ofSynced(int size) {
+		return SimpleAutoSyncedItemComponent.of(size);
+	}
+
+	/** Instantiates an {@link ItemComponent} with the given value and synchronization. */
+	static ItemComponent ofSynced(ItemStack... stacks) {
+		return SimpleAutoSyncedItemComponent.of(stacks);
 	}
 
 	/** Returns this component's {@link Item} symbol. */
@@ -230,7 +239,7 @@ public interface ItemComponent extends Iterable<ItemStack>, AutoSyncedComponent,
 		return InventoryFromItemComponent.of(this);
 	}
 
-	/** Serializes this {@link FluidComponent} to a {@link CompoundTag}. */
+	/** Serializes this {@link ItemComponent} to a {@link CompoundTag}. */
 	@Override
 	default void writeToNbt(CompoundTag tag) {
 		ListTag listTag = new ListTag();
@@ -249,7 +258,7 @@ public interface ItemComponent extends Iterable<ItemStack>, AutoSyncedComponent,
 		tag.put(AstromineComponents.ITEM_INVENTORY_COMPONENT.getId().toString(), dataTag);
 	}
 
-	/** Deserializes this {@link FluidComponent} from  a {@link CompoundTag}. */
+	/** Deserializes this {@link ItemComponent} from  a {@link CompoundTag}. */
 	@Override
 	default void readFromNbt(CompoundTag tag) {
 		CompoundTag dataTag = tag.getCompound(AstromineComponents.ITEM_INVENTORY_COMPONENT.getId().toString());

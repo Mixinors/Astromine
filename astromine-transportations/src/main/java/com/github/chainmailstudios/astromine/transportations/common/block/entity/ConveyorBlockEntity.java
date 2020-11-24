@@ -106,6 +106,9 @@ public class ConveyorBlockEntity extends BlockEntity implements ConveyorConveyab
 				setPosition(getPosition() + 1);
 			} else if (transition && position == speed) {
 				conveyable.give(getStack());
+
+				setStack(ItemStack.EMPTY);
+
 				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 40 * 40)
 					removeStack();
 			}

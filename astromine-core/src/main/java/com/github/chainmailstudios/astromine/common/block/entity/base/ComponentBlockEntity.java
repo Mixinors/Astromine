@@ -83,6 +83,7 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 	protected final Map<Identifier, BiConsumer<PacketByteBuf, PacketContext>> allHandlers = Maps.newHashMap();
 
 	private boolean isActive = false;
+
 	private final boolean[] activity = { false, false, false, false, false };
 
 	protected boolean skipInventory = true;
@@ -293,7 +294,7 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 			}
 		});
 
-		super.fromTag(state, tag);
+		this.pos = new BlockPos(tag.getInt("x"), tag.getInt("y"), tag.getInt("z"));
 	}
 
 	/** Serializes this {@link ComponentBlockEntity} to a {@link CompoundTag},

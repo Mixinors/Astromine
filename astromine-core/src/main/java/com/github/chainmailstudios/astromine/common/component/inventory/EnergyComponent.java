@@ -34,19 +34,18 @@ import net.minecraft.text.TranslatableText;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * A {@link NameableComponent} representing an energy reserve.
+ * A {@link IdentifiableComponent} representing an energy reserve.
  *
  * Serialization and deserialization methods are provided for:
- * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
  */
-public interface EnergyComponent extends NameableComponent, AutoSyncedComponent {
+public interface EnergyComponent extends IdentifiableComponent {
 	/** Instantiates an {@link EnergyComponent} with the given value. */
 	static EnergyComponent of(double size) {
 		return SimpleEnergyComponent.of(size);
@@ -55,6 +54,16 @@ public interface EnergyComponent extends NameableComponent, AutoSyncedComponent 
 	/** Instantiates an {@link EnergyComponent} with the given value. */
 	static EnergyComponent of(EnergyVolume volume) {
 		return SimpleEnergyComponent.of(volume);
+	}
+
+	/** Instantiates an {@link EnergyComponent} with the given value and synchronization. */
+	static EnergyComponent ofSynced(double size) {
+		return SimpleAutoSyncedEnergyComponent.of(size);
+	}
+
+	/** Instantiates an {@link EnergyComponent} with the given value and synchronization. */
+	static EnergyComponent ofSynced(EnergyVolume volume) {
+		return SimpleAutoSyncedEnergyComponent.of(volume);
 	}
 
 	/** Returns this component's {@link Item} symbol. */

@@ -41,7 +41,6 @@ import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
@@ -53,12 +52,12 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
- * A {@link NameableComponent} representing a fluid reserve.
+ * A {@link IdentifiableComponent} representing a fluid reserve.
  *
  * Serialization and deserialization methods are provided for:
- * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
+ * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
  */
-public interface FluidComponent extends Iterable<FluidVolume>, NameableComponent, AutoSyncedComponent {
+public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableComponent {
 	/** Instantiates a {@link FluidComponent}. */
 	static FluidComponent of(int size) {
 		return SimpleFluidComponent.of(size);
@@ -67,6 +66,16 @@ public interface FluidComponent extends Iterable<FluidVolume>, NameableComponent
 	/** Instantiates a {@link FluidComponent}. */
 	static FluidComponent of(FluidVolume... volumes) {
 		return SimpleFluidComponent.of(volumes);
+	}
+
+	/** Instantiates a {@link FluidComponent} and synchronization. */
+	static FluidComponent ofSynced(int size) {
+		return SimpleAutoSyncedFluidComponent.of(size);
+	}
+
+	/** Instantiates a {@link FluidComponent} and synchronization. */
+	static FluidComponent ofSynced(FluidVolume... volumes) {
+		return SimpleAutoSyncedFluidComponent.of(volumes);
 	}
 
 	/** Returns the {@link FluidComponent} of the given {@link V}. */

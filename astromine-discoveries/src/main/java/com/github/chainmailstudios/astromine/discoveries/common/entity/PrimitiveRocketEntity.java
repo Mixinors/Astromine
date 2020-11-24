@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.entity;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.*;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 
@@ -42,10 +43,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.chainmailstudios.astromine.common.utilities.VolumeUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
@@ -76,7 +73,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 
 	@Override
 	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleFluidComponent.of(2);
+		FluidComponent fluidComponent = SimpleAutoSyncedFluidComponent.of(2);
 		fluidComponent.getFirst().setSize(Fraction.of(1024L));
 		fluidComponent.getSecond().setSize(Fraction.of(1024L));
 		return fluidComponent;
@@ -84,7 +81,7 @@ public class PrimitiveRocketEntity extends RocketEntity implements ExtendedScree
 
 	@Override
 	public ItemComponent createItemComponent() {
-		return SimpleItemComponent.of(4);
+		return SimpleAutoSyncedItemComponent.of(4);
 	}
 
 	@Override

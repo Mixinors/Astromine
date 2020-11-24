@@ -66,7 +66,6 @@ public class StackUtilities {
 
 				target = source.copy();
 				target.setCount(Math.min(sourceCount, targetAvailable));
-				target.setTag(source.getTag());
 				source.decrement(Math.min(sourceCount, targetAvailable));
 			}
 		}

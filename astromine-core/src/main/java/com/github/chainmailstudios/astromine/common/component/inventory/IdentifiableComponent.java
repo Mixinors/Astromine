@@ -35,7 +35,7 @@ import dev.onyxstudios.cca.api.v3.component.Component;
  * an {@link Item} symbol and
  * {@link Text} name.
  */
-public interface NameableComponent {
+public interface IdentifiableComponent extends Component {
 	/** Returns this component's {@link Item} symbol. */
 	Item getSymbol();
 

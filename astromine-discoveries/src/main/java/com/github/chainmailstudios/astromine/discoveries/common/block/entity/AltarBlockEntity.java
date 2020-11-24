@@ -222,7 +222,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 	@Override
 	public void fromTag(BlockState state, CompoundTag tag) {
 		super.fromTag(state, tag);
-		inventory.readFromNbt(tag);
+		inventory.fromTag(tag);
 		craftingTicks = tag.getInt("craftingTicks");
 		if (craftingTicksDelta == 0 || craftingTicks == 0 || craftingTicks == 1)
 			craftingTicksDelta = craftingTicks;
@@ -237,7 +237,7 @@ public class AltarBlockEntity extends BlockEntity implements InventoryFromItemCo
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		inventory.writeToNbt(tag);
+		inventory.toTag(tag);
 		tag.putInt("craftingTicks", craftingTicks);
 		ListTag childrenTag = new ListTag();
 		for (Supplier<AltarPedestalBlockEntity> child : children) {

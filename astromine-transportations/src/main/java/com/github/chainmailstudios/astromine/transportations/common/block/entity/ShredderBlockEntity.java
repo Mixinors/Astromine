@@ -64,7 +64,7 @@ public class ShredderBlockEntity extends ComponentBlockEntity implements Conveya
 
 	@Override
 	public boolean validInputSide(Direction direction) {
-		return direction == getCachedState().get(HorizontalFacingBlock.FACING).getOpposite();
+		return direction != Direction.UP && direction != Direction.DOWN;
 	}
 
 	@Override

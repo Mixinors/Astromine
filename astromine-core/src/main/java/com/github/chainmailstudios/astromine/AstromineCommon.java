@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 
@@ -35,6 +37,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.Gson;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 public class AstromineCommon implements ModInitializer {
 	public static final String LOG_ID = "Astromine";

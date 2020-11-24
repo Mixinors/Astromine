@@ -18,6 +18,7 @@
   "item.astromine.primitive_circuit": "Primitive Circuit",
   "entity.astromine.primitive_rocket": "Primitive Rocket",
   "item.astromine.primitive_drill": "Primitive Drill",
+  "item.astromine.stone_plate": "Stone Plate",
   "text.astromine.message.holographic_connection_successful": "Connected %s with projector at %s.",
   "text.astromine.message.holographic_connection_failed": "Failed to connect projector at %s with projector at %s.",
   "text.astromine.message.holographic_connection_clear": "Cleared selected projectors!",

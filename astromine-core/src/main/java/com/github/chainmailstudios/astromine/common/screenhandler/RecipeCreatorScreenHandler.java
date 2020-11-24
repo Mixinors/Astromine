@@ -24,6 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler;
 
+import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.texture.AbstractTexture;
+import net.minecraft.client.texture.Sprite;
+import net.minecraft.data.client.model.Texture;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
