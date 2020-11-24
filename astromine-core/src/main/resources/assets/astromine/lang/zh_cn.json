@@ -48,6 +48,7 @@
   "text.astromine.rocket.launch": "起飞",
   "text.astromine.rocket.destroy": "§c摧毁！！",
   "text.astromine.rocket.fuel_status": "燃料可供飞行时长：%s",
+  "text.astromine.filter": "仅接受：%s",
   "tooltip.astromine.work_when_off": "机器仅在接收红石信号时运作。",
   "tooltip.astromine.work_when_on": "机器仅在未接收红石信号时运作。",
   "tooltip.astromine.work_always": "机器总是运作，无视红石信号。",
