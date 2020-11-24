@@ -102,6 +102,7 @@ public class AbstractConveyableBlockEntity extends ComponentBlockEntity implemen
 				setLeftPosition(getLeftPosition() + 1);
 			} else if (transition && leftPosition >= speed) {
 				conveyable.give(getLeftStack());
+				setLeftStack(ItemStack.EMPTY);
 				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 40 * 40)
 					removeLeftStack();
 			}
@@ -126,6 +127,7 @@ public class AbstractConveyableBlockEntity extends ComponentBlockEntity implemen
 				setRightPosition(getRightPosition() + 1);
 			} else if (transition && rightPosition >= speed) {
 				conveyable.give(getRightStack());
+				setRightStack(ItemStack.EMPTY);
 				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 40 * 40)
 					removeRightStack();
 			}

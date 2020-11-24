@@ -28,12 +28,14 @@ public class ShapedCraftingSetRecipeGenerator extends CraftingSetRecipeGenerator
 		this(input, output, 1, pattern);
 	}
 
-	public void addIngredient(char c, Ingredient ingredient) {
+	public ShapedCraftingSetRecipeGenerator addIngredient(char c, Ingredient ingredient) {
 		this.ingredients.put(c, ingredient);
+		return this;
 	}
 
-	public void addType(char c, MaterialItemType type) {
+	public ShapedCraftingSetRecipeGenerator addType(char c, MaterialItemType type) {
 		this.types.put(c, type);
+		return this;
 	}
 
 	@Override

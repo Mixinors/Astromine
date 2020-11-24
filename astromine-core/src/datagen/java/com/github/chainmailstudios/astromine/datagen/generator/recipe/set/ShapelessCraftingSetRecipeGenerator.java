@@ -27,12 +27,14 @@ public class ShapelessCraftingSetRecipeGenerator extends CraftingSetRecipeGenera
 		this(input, output, 1);
 	}
 
-	public void addIngredients(Ingredient... ingredients) {
+	public ShapelessCraftingSetRecipeGenerator addIngredients(Ingredient... ingredients) {
 		this.ingredients.addAll(Arrays.asList(ingredients));
+		return this;
 	}
 
-	public void addTypes(MaterialItemType... types) {
+	public ShapelessCraftingSetRecipeGenerator addTypes(MaterialItemType... types) {
 		this.types.addAll(Arrays.asList(types));
+		return this;
 	}
 
 	@Override

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "c:electrum_plates"
+    },
+    {
+      "tag": "fabric:shears"
+    }
+  ],
+  "result": {
+    "item": "astromine:electrum_wire"
+  }
+}

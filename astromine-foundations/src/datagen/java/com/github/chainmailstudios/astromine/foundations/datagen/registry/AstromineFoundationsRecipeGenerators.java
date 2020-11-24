@@ -1,5 +1,7 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.registry;
 
+import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
+
 import net.minecraft.recipe.Ingredient;
 
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.RecipeGenerator;
@@ -114,6 +116,8 @@ public class AstromineFoundationsRecipeGenerators extends AstromineRecipeGenerat
 
 	public final RecipeGenerator INGOT_TO_PLATES_CRAFTING = register(new ShapedCraftingSetRecipeGenerator(INGOT, PLATE, "#", "#"));
 	public final RecipeGenerator INGOT_TO_GEAR_CRAFTING = register(new ShapedCraftingSetRecipeGenerator(INGOT, GEAR, 2, " # ", "# #", " # "));
+
+	public final RecipeGenerator PLATE_TO_WIRE_CRAFTING = register(new ShapelessCraftingSetRecipeGenerator(PLATE, WIRE, 1).addIngredients(Ingredient.fromTag(FabricToolTags.SHEARS)));
 
 	public final RecipeGenerator PICKAXE_SMITHING_FROM_INGOT = register(new SmithingSetRecipeGenerator(PICKAXE, INGOT));
 	public final RecipeGenerator PICKAXE_SMITHING_FROM_GEM = register(new SmithingSetRecipeGenerator(PICKAXE, GEM));
