@@ -155,6 +155,7 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 	@Nullable
 	default ItemStack getFirstExtractableStack(@Nullable Direction direction) {
 		List<ItemStack> stacks = getExtractableStacks(direction);
+		stacks.removeIf(ItemStack::isEmpty);
 		if (!stacks.isEmpty())
 			return stacks.get(0);
 		else return null;
@@ -164,9 +165,9 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 	 * extractable through the specified direction. */
 	@Nullable
 	default ItemStack getFirstExtractableStack(@Nullable Direction direction, Predicate<ItemStack> predicate) {
-		List<ItemStack> Stacks = getExtractableStacks(direction, predicate);
-		if (!Stacks.isEmpty())
-			return Stacks.get(0);
+		List<ItemStack> stacks = getExtractableStacks(direction, predicate);
+		if (!stacks.isEmpty())
+			return stacks.get(0);
 		else return null;
 	}
 
@@ -174,9 +175,9 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 	 * which accepts the specified volume. */
 	@Nullable
 	default ItemStack getFirstInsertableStack(@Nullable Direction direction, ItemStack Stack) {
-		List<ItemStack> Stacks = getInsertableStacks(direction, Stack);
-		if (!Stacks.isEmpty())
-			return Stacks.get(0);
+		List<ItemStack> stacks = getInsertableStacks(direction, Stack);
+		if (!stacks.isEmpty())
+			return stacks.get(0);
 		else return null;
 	}
 

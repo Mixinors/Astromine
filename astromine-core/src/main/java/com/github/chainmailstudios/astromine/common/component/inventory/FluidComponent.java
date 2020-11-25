@@ -161,6 +161,7 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 	@Nullable
 	default FluidVolume getFirstExtractableVolume(@Nullable Direction direction) {
 		List<FluidVolume> volumes = getExtractableVolumes(direction);
+		volumes.removeIf(FluidVolume::isEmpty);
 		if (!volumes.isEmpty())
 			return volumes.get(0);
 		else return null;

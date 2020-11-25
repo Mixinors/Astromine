@@ -52,13 +52,17 @@ import com.github.chainmailstudios.astromine.transportations.common.conveyor.Con
 import java.util.Random;
 
 public class InserterBlock extends HorizontalFacingBlock implements BlockEntityProvider, ConveyableBlock, FacingBlockWrenchable, Waterloggable {
-	private String type;
-	private int speed;
+	private static final VoxelShape SHAPE = VoxelShapes.cuboid(0, 0, 0, 1, 0.5, 1);;
+
+	private final String type;
+
+	private final int speed;
 
 	public InserterBlock(String type, int speed, Settings settings) {
 		super(settings);
 
 		this.type = type;
+
 		this.speed = speed;
 
 		setDefaultState(getDefaultState().with(Properties.WATERLOGGED, false));
@@ -73,7 +77,7 @@ public class InserterBlock extends HorizontalFacingBlock implements BlockEntityP
 	}
 
 	@Override
-	public BlockEntity createBlockEntity(BlockView blockView) {
+	public BlockEntity createBlockEntity(BlockView world) {
 		return new InserterBlockEntity();
 	}
 
@@ -84,8 +88,7 @@ public class InserterBlock extends HorizontalFacingBlock implements BlockEntityP
 
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
-		return this.getDefaultState().with(Properties.POWERED, false).with(FACING, context.getPlayer().isSneaking() ? context.getPlayerFacing().getOpposite() : context.getPlayerFacing()).with(Properties.WATERLOGGED, context.getWorld().getBlockState(context.getBlockPos())
-			.getBlock() == Blocks.WATER);
+		return this.getDefaultState().with(Properties.POWERED, false).with(FACING, context.getPlayer().isSneaking() ? context.getPlayerFacing().getOpposite() : context.getPlayerFacing()).with(Properties.WATERLOGGED, context.getWorld().getBlockState(context.getBlockPos()).getBlock() == Blocks.WATER);
 	}
 
 	@Override
@@ -94,11 +97,12 @@ public class InserterBlock extends HorizontalFacingBlock implements BlockEntityP
 	}
 
 	@Override
-	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos neighborPos, boolean moved) {
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
 		if (!world.isClient) {
-			boolean bl = state.get(Properties.POWERED);
-			if (bl != world.isReceivingRedstonePower(pos)) {
-				if (bl) {
+			boolean powered = state.get(Properties.POWERED);
+
+			if (powered != world.isReceivingRedstonePower(pos)) {
+				if (powered) {
 					world.getBlockTickScheduler().schedule(pos, this, 4);
 				} else {
 					world.setBlockState(pos, state.cycle(Properties.POWERED), 2);
@@ -114,20 +118,22 @@ public class InserterBlock extends HorizontalFacingBlock implements BlockEntityP
 		}
 	}
 
+
 	@Override
-	public void onBlockAdded(BlockState blockState, World world, BlockPos blockPos, BlockState blockState2, boolean boolean_1) {
-		updateDiagonals(world, this, blockPos);
+	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+		updateDiagonals(world, this, pos);
 	}
 
 	@Override
-	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean notify) {
+	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
 		if (state.getBlock() != newState.getBlock()) {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
+
 			if (blockEntity instanceof InserterBlockEntity) {
-				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), ((InserterBlockEntity) blockEntity).getStack());
+				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), ((InserterBlockEntity) blockEntity).getItemComponent().getFirst());
 			}
 
-			super.onStateReplaced(state, world, pos, newState, notify);
+			super.onStateReplaced(state, world, pos, newState, moved);
 		}
 
 		updateDiagonals(world, this, pos);
@@ -135,6 +141,6 @@ public class InserterBlock extends HorizontalFacingBlock implements BlockEntityP
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		return VoxelShapes.cuboid(0, 0, 0, 1, 0.5, 1);
+		return SHAPE;
 	}
 }

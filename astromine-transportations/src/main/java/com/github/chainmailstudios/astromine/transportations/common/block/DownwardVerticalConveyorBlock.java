@@ -62,51 +62,56 @@ public class DownwardVerticalConveyorBlock extends VerticalConveyorBlock {
 	}
 
 	@Override
-	public BlockState getStateForNeighborUpdate(BlockState blockState, Direction fromDirection, BlockState fromState, WorldAccess world, BlockPos blockPos, BlockPos fromPos) {
-		BlockState newState = blockState;
-		Direction direction = newState.get(FACING);
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction fromDirection, BlockState fromState, WorldAccess world, BlockPos blockPos, BlockPos fromPos) {
+		Direction direction = state.get(FACING);
 
 		BlockPos frontPos = blockPos.offset(direction.getOpposite());
 		BlockPos conveyorPos = blockPos.offset(direction).up();
 
 		BlockEntity frontBlockEntity = world.getBlockEntity(frontPos);
-		if (frontBlockEntity instanceof Conveyable && ((Conveyable) frontBlockEntity).canInsert(direction))
-			newState = newState.with(ConveyorProperties.FRONT, true);
-		else newState = newState.with(ConveyorProperties.FRONT, false);
+
+		if (frontBlockEntity instanceof Conveyable && ((Conveyable) frontBlockEntity).canInsert(direction)) {
+			state = state.with(ConveyorProperties.FRONT, true);
+		} else {
+			state = state.with(ConveyorProperties.FRONT, false);
+		}
 
 		BlockEntity conveyorBlockEntity = world.getBlockEntity(conveyorPos);
-		if (world.isAir(blockPos.up()) && conveyorBlockEntity instanceof Conveyable && !conveyorBlockEntity.isRemoved() && ((Conveyable) conveyorBlockEntity).canExtract(direction.getOpposite(), getType()))
-			newState = newState.with(ConveyorProperties.CONVEYOR, true);
-		else newState = newState.with(ConveyorProperties.CONVEYOR, false);
 
-		return newState;
+		if (world.isAir(blockPos.up()) && conveyorBlockEntity instanceof Conveyable && !conveyorBlockEntity.isRemoved() && ((Conveyable) conveyorBlockEntity).canExtract(direction.getOpposite(), getType())) {
+			state = state.with(ConveyorProperties.CONVEYOR, true);
+		} else {
+			state = state.with(ConveyorProperties.CONVEYOR, false);
+		}
+
+		return state;
 	}
 
 	@Override
-	public void neighborUpdate(BlockState blockState, World world, BlockPos blockPos, Block block, BlockPos blockPos2, boolean boolean_1) {
-		Direction direction = blockState.get(FACING);
-		ConveyorBlockEntity blockEntity = (ConveyorBlockEntity) world.getBlockEntity(blockPos);
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
+		Direction direction = state.get(FACING);
+		ConveyorBlockEntity blockEntity = (ConveyorBlockEntity) world.getBlockEntity(pos);
 
-		BlockPos downPos = blockPos.down(1);
-		BlockPos conveyorPos = blockPos.offset(direction).up();
+		BlockPos downPos = pos.down(1);
+		BlockPos conveyorPos = pos.offset(direction).up();
 
 		BlockEntity downBlockEntity = world.getBlockEntity(downPos);
-		if (downBlockEntity instanceof Conveyable && ((Conveyable) downBlockEntity).canInsert(Direction.UP))
-			blockEntity.setDown(true);
-		else blockEntity.setDown(false);
+
+		blockEntity.setDown(downBlockEntity instanceof Conveyable && ((Conveyable) downBlockEntity).canInsert(Direction.UP));
 
 		BlockEntity conveyorBlockEntity = world.getBlockEntity(conveyorPos);
-		checkForConveyor(world, blockState, conveyorBlockEntity, direction, blockPos, blockPos.up());
+
+		checkForConveyor(world, state, conveyorBlockEntity, direction, pos, pos.up());
 	}
 
 	@Override
-	public void checkForConveyor(World world, BlockState blockState, BlockEntity conveyorBlockEntity, Direction direction, BlockPos pos, BlockPos upPos) {
-		BlockState newState = blockState;
+	public void checkForConveyor(World world, BlockState state, BlockEntity conveyorBlockEntity, Direction direction, BlockPos pos, BlockPos upPos) {
+		if (world.isAir(upPos) && conveyorBlockEntity instanceof Conveyable && !conveyorBlockEntity.isRemoved() && ((Conveyable) conveyorBlockEntity).canExtract(direction.getOpposite(), getType())) {
+			state = state.with(ConveyorProperties.CONVEYOR, true);
+		} else {
+			state = state.with(ConveyorProperties.CONVEYOR, false);
+		}
 
-		if (world.isAir(upPos) && conveyorBlockEntity instanceof Conveyable && !conveyorBlockEntity.isRemoved() && ((Conveyable) conveyorBlockEntity).canExtract(direction.getOpposite(), getType()))
-			newState = newState.with(ConveyorProperties.CONVEYOR, true);
-		else newState = newState.with(ConveyorProperties.CONVEYOR, false);
-
-		world.setBlockState(pos, newState, 8);
+		world.setBlockState(pos, state, 8);
 	}
 }

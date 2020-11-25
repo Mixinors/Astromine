@@ -69,16 +69,17 @@ public class SplitterBlock extends HorizontalFacingBlock implements BlockEntityP
 	}
 
 	@Override
-	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean notify) {
+	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
 		if (state.getBlock() != newState.getBlock()) {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
 			if (blockEntity instanceof AbstractConveyableBlockEntity) {
 				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), ((AbstractConveyableBlockEntity) blockEntity).getItemComponent().getFirst());
 				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), ((AbstractConveyableBlockEntity) blockEntity).getItemComponent().getSecond());
-				((AbstractConveyableBlockEntity) blockEntity).markRemoved();
+
+				blockEntity.markRemoved();
 			}
 
-			super.onStateReplaced(state, world, pos, newState, notify);
+			super.onStateReplaced(state, world, pos, newState, moved);
 		}
 
 		updateDiagonals(world, this, pos);
@@ -87,19 +88,18 @@ public class SplitterBlock extends HorizontalFacingBlock implements BlockEntityP
 	@Override
 	public void neighborUpdate(BlockState blockState, World world, BlockPos blockPos, Block block, BlockPos blockPos2, boolean boolean_1) {
 		Direction direction = blockState.get(FACING);
+
 		AbstractConveyableBlockEntity machineBlockEntity = (AbstractConveyableBlockEntity) world.getBlockEntity(blockPos);
 
 		BlockPos leftPos = blockPos.offset(direction.rotateYCounterclockwise());
 		BlockPos rightPos = blockPos.offset(direction.rotateYClockwise());
 
 		BlockEntity leftBlockEntity = world.getBlockEntity(leftPos);
-		if (leftBlockEntity instanceof Conveyable && ((Conveyable) leftBlockEntity).canInsert(direction.rotateYClockwise()))
-			machineBlockEntity.setLeft(true);
-		else machineBlockEntity.setLeft(false);
+
+		machineBlockEntity.setLeft(leftBlockEntity instanceof Conveyable && ((Conveyable) leftBlockEntity).canInsert(direction.rotateYClockwise()));
 
 		BlockEntity rightBlockEntity = world.getBlockEntity(rightPos);
-		if (rightBlockEntity instanceof Conveyable && ((Conveyable) rightBlockEntity).canInsert(direction.rotateYCounterclockwise()))
-			machineBlockEntity.setRight(true);
-		else machineBlockEntity.setRight(false);
+
+		machineBlockEntity.setRight(rightBlockEntity instanceof Conveyable && ((Conveyable) rightBlockEntity).canInsert(direction.rotateYCounterclockwise()));
 	}
 }

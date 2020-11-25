@@ -104,7 +104,7 @@ public class InserterBlockEntityRenderer extends BlockEntityRenderer<InserterBlo
 			matrices.translate(0, (1 + 5 / 16F) - distance, distance - (1F / 16F));
 			matrices.scale(0.3F, 0.3F, 0.3F);
 
-			renderItem(blockEntity, blockEntity.getStack(), matrices, vertexConsumers);
+			renderItem(blockEntity, blockEntity.getItemComponent().getFirst(), matrices, vertexConsumers);
 			matrices.pop();
 		}
 	}

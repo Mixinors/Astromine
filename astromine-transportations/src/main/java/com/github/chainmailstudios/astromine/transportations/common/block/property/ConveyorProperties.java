@@ -33,5 +33,5 @@ public class ConveyorProperties {
 	public static final BooleanProperty BACK = BooleanProperty.of("back");
 	public static final BooleanProperty UP = BooleanProperty.of("up");
 	public static final BooleanProperty CONVEYOR = BooleanProperty.of("conveyor");
-	public static final BooleanProperty FLOOR = BooleanProperty.of("floor");
+	public static final BooleanProperty NO_FLOOR = BooleanProperty.of("floor");
 }

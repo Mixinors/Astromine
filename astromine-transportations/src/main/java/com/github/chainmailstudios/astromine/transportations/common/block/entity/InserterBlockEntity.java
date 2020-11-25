@@ -24,7 +24,9 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 
@@ -58,11 +60,9 @@ import com.github.chainmailstudios.astromine.transportations.registry.AstromineT
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class InserterBlockEntity extends BlockEntity implements SingularStackInventory, BlockEntityClientSerializable, RenderAttachmentBlockEntity, Tickable {
+public class InserterBlockEntity extends ComponentItemBlockEntity implements BlockEntityClientSerializable, RenderAttachmentBlockEntity, Tickable {
 	protected int position = 0;
 	protected int prevPosition = 0;
-
-	private DefaultedList<ItemStack> stacks = DefaultedList.ofSize(1, ItemStack.EMPTY);
 
 	public InserterBlockEntity() {
 		super(AstromineTransportationsBlockEntityTypes.INSERTER);
@@ -70,6 +70,23 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 
 	public InserterBlockEntity(BlockEntityType type) {
 		super(type);
+	}
+
+	@Override
+	public ItemComponent createItemComponent() {
+		return new SimpleItemComponent(1) {
+			@Override
+			public ItemStack removeStack(int slot) {
+				position = 15;
+				prevPosition = 15;
+
+				return super.removeStack(slot);
+			}
+		}.withListener((inventory) -> {
+			if (world != null && !world.isClient) {
+				sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+			}
+		});
 	}
 
 	private static IntStream getAvailableSlots(Inventory inventory, Direction side) {
@@ -154,108 +171,102 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 
 	@Override
 	public void tick() {
-		//Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
-		//boolean powered = getCachedState().get(Properties.POWERED);
-		//int speed = ((InserterBlock) getCachedState().getBlock()).getSpeed();
-//
-		//if (!powered) {
-		//	if (isEmpty()) {
-		//		BlockState behindState = world.getBlockState(getPos().offset(direction.getOpposite()));
-//
-		//		ItemComponent itemComponent = ItemComponent.get(world.getBlockEntity(getPos().offset(direction.getOpposite())));
-//
-		//		if (itemComponent != null) {
-		//			if (behindState.getBlock() instanceof AbstractFurnaceBlock) {
-		//				direction = Direction.UP;
-		//			}
-//
-		//			ItemStack stack = itemComponent.getFirstExtractableStack(direction);
-//
-		//			if (position == 0 && !stack.isEmpty() && !(behindState.getBlock() instanceof InserterBlock)) {
-		//				itemComponent.int
-		//			}
-		//		}
-//
-//
-		//		if (extractable != EmptyItemExtractable.NULL) {
-		//			ItemStack stack = extractable.attemptAnyExtraction(64, Simulation.SIMULATE);
-		//			if (position == 0 && !stack.isEmpty() && !(behindState.getBlock() instanceof InserterBlock)) {
-		//				stack = extractable.attemptAnyExtraction(64, Simulation.ACTION);
-		//				setStack(stack);
-		//			} else if (position > 0) {
-		//				setPosition(getPosition() - 1);
-		//			}
-		//		} else {
-		//			BlockPos offsetPos = getPos().offset(direction.getOpposite());
-		//			List<ChestMinecartEntity> minecartEntities = getWorld().getEntitiesByClass(ChestMinecartEntity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1),
-		//				EntityPredicates.EXCEPT_SPECTATOR);
-		//			if (position == 0 && minecartEntities.size() >= 1) {
-		//				ChestMinecartEntity minecartEntity = minecartEntities.get(0);
-		//				FixedInventoryVanillaWrapper wrapper = new FixedInventoryVanillaWrapper(minecartEntity);
-		//				ItemExtractable extractableMinecart = wrapper.getExtractable();
-//
-		//				ItemStack stackMinecart = extractableMinecart.attemptAnyExtraction(64, Simulation.SIMULATE);
-		//				if (position == 0 && !stackMinecart.isEmpty()) {
-		//					stackMinecart = extractableMinecart.attemptAnyExtraction(64, Simulation.ACTION);
-		//					setStack(stackMinecart);
-		//					minecartEntity.markDirty();
-		//				}
-		//			} else if (position > 0) {
-		//				setPosition(getPosition() - 1);
-		//			}
-		//		}
-		//	} else if (!isEmpty()) {
-		//		BlockState aheadState = getWorld().getBlockState(getPos().offset(direction));
-//
-		//		ItemInsertable insertable = ItemAttributes.INSERTABLE.get(world, getPos().offset(direction), SearchOptions.inDirection(direction));
-//
-		//		if (aheadState.getBlock() instanceof ComposterBlock) {
-		//			insertable = ItemAttributes.INSERTABLE.get(world, getPos().offset(direction), SearchOptions.inDirection(Direction.DOWN));
-		//		} else if (aheadState.getBlock() instanceof AbstractFurnaceBlock && !AbstractFurnaceBlockEntity.canUseAsFuel(getStack())) {
-		//			insertable = ItemAttributes.INSERTABLE.get(world, getPos().offset(direction), SearchOptions.inDirection(Direction.DOWN));
-		//		}
-//
-		//		ItemStack stack = insertable.attemptInsertion(getStack(), Simulation.SIMULATE);
-		//		if (insertable != RejectingItemInsertable.NULL) {
-		//			if (stack.isEmpty() || stack.getCount() != getStack().getCount()) {
-		//				if (position < speed) {
-		//					setPosition(getPosition() + 1);
-		//				} else if (!getWorld().isClient()) {
-		//					stack = insertable.attemptInsertion(getStack(), Simulation.ACTION);
-		//					setStack(stack);
-		//				}
-		//			} else if (position > 0) {
-		//				setPosition(getPosition() - 1);
-		//			}
-		//		} else {
-		//			BlockPos offsetPos = getPos().offset(direction);
-		//			List<ChestMinecartEntity> minecartEntities = getWorld().getEntitiesByClass(ChestMinecartEntity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1),
-		//				EntityPredicates.EXCEPT_SPECTATOR);
-		//			if (minecartEntities.size() >= 1) {
-		//				ChestMinecartEntity minecartEntity = minecartEntities.get(0);
-		//				if (minecartEntity instanceof Inventory) {
-		//					FixedInventoryVanillaWrapper wrapper = new FixedInventoryVanillaWrapper(minecartEntity);
-		//					ItemInsertable insertableMinecart = wrapper.getInsertable();
-//
-		//					ItemStack stackMinecart = insertableMinecart.attemptInsertion(getStack(), Simulation.SIMULATE);
-		//					if (position < speed && (stackMinecart.isEmpty() || stackMinecart.getCount() != getStack().getCount())) {
-		//						setPosition(getPosition() + 1);
-		//					} else if (!getWorld().isClient() && (stackMinecart.isEmpty() || stackMinecart.getCount() != getStack().getCount())) {
-		//						stackMinecart = insertableMinecart.attemptInsertion(getStack(), Simulation.ACTION);
-		//						setStack(stackMinecart);
-		//						((Inventory) minecartEntity).markDirty();
-		//					}
-		//				}
-		//			} else if (position > 0) {
-		//				setPosition(getPosition() - 1);
-		//			}
-		//		}
-		//	} else if (position > 0) {
-		//		setPosition(getPosition() - 1);
-		//	}
-		//} else if (position > 0) {
-		//	setPosition(getPosition() - 1);
-		//}
+		Direction facing = getCachedState().get(HorizontalFacingBlock.FACING);
+
+		boolean powered = getCachedState().get(Properties.POWERED);
+
+		int speed = ((InserterBlock) getCachedState().getBlock()).getSpeed();
+
+		if (!powered) {
+			if (isEmpty()) {
+				BlockState behindState = world.getBlockState(getPos().offset(facing.getOpposite()));
+
+				ItemComponent extractableItemComponent = ItemComponent.get(world.getBlockEntity(getPos().offset(facing.getOpposite())));
+
+				if (extractableItemComponent != null && !extractableItemComponent.isEmpty()) {
+					ItemStack stack = extractableItemComponent.getFirstExtractableStack(facing);
+
+					if (position == 0 && stack != null && !(behindState.getBlock() instanceof InserterBlock)) {
+						extractableItemComponent.into(getItemComponent(), 64, facing);
+					} else if (position > 0) {
+						setPosition(getPosition() - 1);
+					}
+				} else {
+					BlockPos offsetPos = getPos().offset(facing.getOpposite());
+
+					List<ChestMinecartEntity> minecartEntities = getWorld().getEntitiesByClass(ChestMinecartEntity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1), EntityPredicates.EXCEPT_SPECTATOR);
+
+					if (position == 0 && minecartEntities.size() >= 1) {
+						ChestMinecartEntity minecartEntity = minecartEntities.get(0);
+
+						extractableItemComponent = ItemComponent.get(minecartEntity);
+
+						ItemStack stackMinecart = extractableItemComponent.getFirstExtractableStack(facing.getOpposite());
+						if (position == 0 && !stackMinecart.isEmpty()) {
+							extractableItemComponent.into(getItemComponent(), 64, facing);
+
+							minecartEntity.markDirty();
+						}
+					} else if (position > 0) {
+						setPosition(getPosition() - 1);
+					}
+				}
+			} else if (!isEmpty()) {
+				BlockState aheadState = getWorld().getBlockState(getPos().offset(facing));
+
+				ItemComponent insertableItemComponent = ItemComponent.get(world.getBlockEntity(getPos().offset(facing)));
+
+				Direction insertionDirection = facing;
+
+				if (aheadState.getBlock() instanceof ComposterBlock) {
+					insertionDirection = Direction.DOWN;
+				} else if (aheadState.getBlock() instanceof AbstractFurnaceBlock && !AbstractFurnaceBlockEntity.canUseAsFuel(getItemComponent().getFirst())) {
+					insertionDirection = Direction.DOWN;
+				}
+
+				if (insertableItemComponent != null) {
+					ItemStack stack = insertableItemComponent.getFirstInsertableStack(insertionDirection, getItemComponent().getFirst());
+
+					if (stack != null) {
+						if (position < speed) {
+							setPosition(getPosition() + 1);
+						} else if (!getWorld().isClient()) {
+							getItemComponent().into(insertableItemComponent, 64, insertionDirection);
+						}
+					} else if (position > 0) {
+						setPosition(getPosition() - 1);
+					}
+				} else {
+					BlockPos offsetPos = getPos().offset(facing);
+
+					List<ChestMinecartEntity> minecartEntities = getWorld().getEntitiesByClass(ChestMinecartEntity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1), EntityPredicates.EXCEPT_SPECTATOR);
+
+					if (minecartEntities.size() >= 1) {
+						ChestMinecartEntity minecartEntity = minecartEntities.get(0);
+
+						if (minecartEntity instanceof Inventory) {
+							insertableItemComponent = ItemComponent.get(minecartEntity);
+
+							ItemStack stackMinecart = insertableItemComponent.getFirstInsertableStack(insertionDirection, getItemComponent().getFirst());
+
+							if (position < speed && (stackMinecart.isEmpty() || stackMinecart.getCount() != getItemComponent().getFirst().getCount())) {
+								setPosition(getPosition() + 1);
+							} else if (!getWorld().isClient() && (stackMinecart.isEmpty() || stackMinecart.getCount() != getItemComponent().getFirst().getCount())) {
+								getItemComponent().into(insertableItemComponent, 64, insertionDirection);
+
+								((Inventory) minecartEntity).markDirty();
+							}
+						}
+					} else if (position > 0) {
+						setPosition(getPosition() - 1);
+					}
+				}
+			} else if (position > 0) {
+				setPosition(getPosition() - 1);
+			}
+		} else if (position > 0) {
+			setPosition(getPosition() - 1);
+		}
 	}
 
 	private boolean isInventoryFull(Inventory inventory, Direction direction) {
@@ -263,40 +274,6 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 			ItemStack stack = inventory.getStack(i);
 			return stack.getCount() >= stack.getMaxCount();
 		});
-	}
-
-	@Override
-	public DefaultedList<ItemStack> getItems() {
-		return stacks;
-	}
-
-	@Override
-	public int size() {
-		return 1;
-	}
-
-	@Override
-	public void setStack(int slot, ItemStack stack) {
-		SingularStackInventory.super.setStack(slot, stack);
-		if (!world.isClient)
-			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
-	}
-
-	@Override
-	public ItemStack removeStack(int slot) {
-		ItemStack stack = SingularStackInventory.super.removeStack(slot);
-		position = 15;
-		prevPosition = 15;
-		if (!world.isClient)
-			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
-		return stack;
-	}
-
-	@Override
-	public void clear() {
-		SingularStackInventory.super.clear();
-		if (!world.isClient)
-			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
 	}
 
 	@Override
@@ -336,7 +313,9 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 	@Override
 	public void fromTag(BlockState state, CompoundTag compoundTag) {
 		super.fromTag(state, compoundTag);
-		getItems().set(0, ItemStack.fromTag(compoundTag.getCompound("stack")));
+
+		getItemComponent().setFirst(ItemStack.fromTag(compoundTag.getCompound("stack")));
+
 		position = compoundTag.getInt("position");
 	}
 
@@ -347,8 +326,10 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 
 	@Override
 	public CompoundTag toTag(CompoundTag compoundTag) {
-		compoundTag.put("stack", getStack().toTag(new CompoundTag()));
+		compoundTag.put("stack", getItemComponent().getFirst().toTag(new CompoundTag()));
+
 		compoundTag.putInt("position", position);
+
 		return super.toTag(compoundTag);
 	}
 
