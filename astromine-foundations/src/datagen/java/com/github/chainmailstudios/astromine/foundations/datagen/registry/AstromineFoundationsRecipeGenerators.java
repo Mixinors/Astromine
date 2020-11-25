@@ -1,31 +1,13 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.registry;
 
-import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
-
-import net.minecraft.recipe.Ingredient;
-
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.RecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.Crafting2x2RecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.SlabCraftingRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.SmeltingRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.StairsCraftingRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.StonecuttingRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.WallCraftingRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.BlastingSetRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.Crafting2x2SetRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.Crafting3x3SetRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.ShapedCraftingSetRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.ShapelessCraftingSetRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.SmeltingSetRecipeGenerator;
-import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.SmithingSetRecipeGenerator;
+import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.*;
+import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.*;
 import com.github.chainmailstudios.astromine.datagen.registry.AstromineRecipeGenerators;
-import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.AppleCraftingRecipeGenerator;
-import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.ArmorCraftingRecipeGenerators;
-import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.SalvageBlastingRecipeGenerator;
-import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.SalvageSmeltingRecipeGenerator;
-import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.ToolCraftingRecipeGenerators;
-import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.WrenchCraftingRecipeGenerator;
+import com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe.*;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsBlocks;
+import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
+import net.minecraft.recipe.Ingredient;
 
 import static com.github.chainmailstudios.astromine.datagen.material.MaterialItemType.*;
 
@@ -117,7 +99,7 @@ public class AstromineFoundationsRecipeGenerators extends AstromineRecipeGenerat
 	public final RecipeGenerator INGOT_TO_PLATES_CRAFTING = register(new ShapedCraftingSetRecipeGenerator(INGOT, PLATE, "#", "#"));
 	public final RecipeGenerator INGOT_TO_GEAR_CRAFTING = register(new ShapedCraftingSetRecipeGenerator(INGOT, GEAR, 2, " # ", "# #", " # "));
 
-	public final RecipeGenerator PLATE_TO_WIRE_CRAFTING = register(new ShapelessCraftingSetRecipeGenerator(PLATE, WIRE, 1).addIngredients(Ingredient.fromTag(FabricToolTags.SHEARS)));
+	public final RecipeGenerator PLATE_TO_WIRE_CRAFTING = register(new WireFromPlateRecipeGenerator(PLATE, Ingredient.fromTag(FabricToolTags.SHEARS), WIRE, 1));
 
 	public final RecipeGenerator PICKAXE_SMITHING_FROM_INGOT = register(new SmithingSetRecipeGenerator(PICKAXE, INGOT));
 	public final RecipeGenerator PICKAXE_SMITHING_FROM_GEM = register(new SmithingSetRecipeGenerator(PICKAXE, GEM));
@@ -172,18 +154,18 @@ public class AstromineFoundationsRecipeGenerators extends AstromineRecipeGenerat
 	public final RecipeGenerator SMOOTH_METEOR_STONE_SLAB = register(new SlabCraftingRecipeGenerator(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE_SLAB, Ingredient.ofItems(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE)));
 	public final RecipeGenerator SMOOTH_METEOR_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE_STAIRS, Ingredient.ofItems(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE)));
 	public final RecipeGenerator SMOOTH_METEOR_STONE_WALL = register(new WallCraftingRecipeGenerator(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE_WALL, Ingredient.ofItems(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE)));
-	
+
 	public final RecipeGenerator POLISHED_METEOR_STONE_SLAB = register(new SlabCraftingRecipeGenerator(AstromineFoundationsBlocks.POLISHED_METEOR_STONE_SLAB, Ingredient.ofItems(AstromineFoundationsBlocks.POLISHED_METEOR_STONE)));
 	public final RecipeGenerator POLISHED_METEOR_STONE_STAIRS = register(new StairsCraftingRecipeGenerator(AstromineFoundationsBlocks.POLISHED_METEOR_STONE_STAIRS, Ingredient.ofItems(AstromineFoundationsBlocks.POLISHED_METEOR_STONE)));
-	
+
 	public final RecipeGenerator METEOR_STONE_BRICK_SLAB = register(new SlabCraftingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_BRICK_SLAB, Ingredient.ofItems(AstromineFoundationsBlocks.METEOR_STONE_BRICKS)));
 	public final RecipeGenerator METEOR_STONE_BRICK_STAIRS = register(new StairsCraftingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_BRICK_STAIRS, Ingredient.ofItems(AstromineFoundationsBlocks.METEOR_STONE_BRICKS)));
 	public final RecipeGenerator METEOR_STONE_BRICK_WALL = register(new WallCraftingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_BRICK_WALL, Ingredient.ofItems(AstromineFoundationsBlocks.METEOR_STONE_BRICKS)));
-	
+
 	public final RecipeGenerator METEOR_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_SLAB, Ingredient.ofItems(AstromineFoundationsBlocks.METEOR_STONE), 2));
 	public final RecipeGenerator METEOR_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_STAIRS, Ingredient.ofItems(AstromineFoundationsBlocks.METEOR_STONE)));
 	public final RecipeGenerator METEOR_STONE_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.METEOR_STONE_WALL, Ingredient.ofItems(AstromineFoundationsBlocks.METEOR_STONE)));
-	
+
 	public final RecipeGenerator SMOOTH_METEOR_STONE_SLAB_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE_SLAB, Ingredient.ofItems(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE), 2));
 	public final RecipeGenerator SMOOTH_METEOR_STONE_STAIRS_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE_STAIRS, Ingredient.ofItems(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE)));
 	public final RecipeGenerator SMOOTH_METEOR_STONE_WALL_STONECUTTING = register(new StonecuttingRecipeGenerator(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE_WALL, Ingredient.ofItems(AstromineFoundationsBlocks.SMOOTH_METEOR_STONE)));
