@@ -3,7 +3,6 @@ import net.fabricmc.loom.task.RunClientTask
 
 plugins {
     id 'maven-publish'
-    id 'com.diffplug.spotless' version '5.1.0' apply false
     id 'fabric-loom' version '0.5-SNAPSHOT'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
     id("net.corda.plugins.jar-filter") version("5.0.8") apply false
@@ -20,7 +19,6 @@ allprojects {
 
     apply plugin: 'maven-publish'
     apply plugin: 'fabric-loom'
-    apply plugin: 'com.diffplug.spotless'
     apply plugin: 'com.matthewprenger.cursegradle'
     apply plugin: 'net.corda.plugins.jar-filter'
 
@@ -36,17 +34,6 @@ allprojects {
 
     loom {
         shareCaches = true
-    }
-
-    spotless {
-        encoding 'UTF-8'
-        enforceCheck(false)
-
-        java {
-            licenseHeaderFile(rootProject.file('HEADER'))
-            removeUnusedImports()
-            eclipse().configFile(rootProject.file('spotless/formatter-settings.xml'))
-        }
     }
 
     java {
@@ -334,7 +321,6 @@ task releaseOnCf
 releaseOnCf.dependsOn(":curseforge")
 subprojects { releaseOnCf.dependsOn("${it.path}:curseforge") }
 subprojects { rootProject.remapJar.dependsOn("${it.path}:remapJar") }
-subprojects { rootProject.spotlessApply.dependsOn("${it.path}:spotlessApply") }
 
 task remapMavenJar(type: RemapJarTask, dependsOn: jar) {
     afterEvaluate {
