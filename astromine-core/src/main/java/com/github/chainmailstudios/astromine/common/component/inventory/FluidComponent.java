@@ -74,14 +74,24 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 		return SimpleFluidComponent.of(volumes);
 	}
 
-	/** Instantiates a {@link FluidComponent} and synchronization. */
+	/** Instantiates a {@link FluidComponent} with automatic synchronization. */
 	static FluidComponent ofSynced(int size) {
 		return SimpleAutoSyncedFluidComponent.of(size);
 	}
 
-	/** Instantiates a {@link FluidComponent} and synchronization. */
+	/** Instantiates a {@link FluidComponent} with automatic synchronization. */
 	static FluidComponent ofSynced(FluidVolume... volumes) {
 		return SimpleAutoSyncedFluidComponent.of(volumes);
+	}
+
+	/** Instantiates a {@link FluidComponent} with directional insertion and extraction. */
+	static <V> FluidComponent ofDirectional(V v, int size) {
+		return SimpleDirectionalFluidComponent.of(v, size);
+	}
+
+	/** Instantiates a {@link FluidComponent} with directional insertion and extraction. */
+	static <V> FluidComponent ofDirectional(V v, FluidVolume... volumes) {
+		return SimpleDirectionalFluidComponent.of(v, volumes);
 	}
 
 	/** Returns this component's {@link Item} symbol. */
@@ -199,11 +209,11 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 
 	/** Transfers all transferable content from this component
 	 * to the target component. */
-	default void into(FluidComponent target, Fraction count, Direction direction) {
+	default void into(FluidComponent target, Fraction count, Direction extractionDirection, Direction insertionDirection) {
 		for (int sourceSlot = 0; sourceSlot < getSize(); ++sourceSlot) {
 			FluidVolume sourceVolume = getVolume(sourceSlot);
 
-			if (canExtract(direction.getOpposite(), sourceVolume, sourceSlot)) {
+			if (canExtract(extractionDirection, sourceVolume, sourceSlot)) {
 				for (int targetSlot = 0; targetSlot < target.getSize(); ++targetSlot) {
 					FluidVolume targetVolume = target.getVolume(targetSlot);
 
@@ -213,7 +223,7 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 
 						Fraction insertionCount = insertionVolume.getAmount();
 
-						if (target.canInsert(direction, insertionVolume, targetSlot)) {
+						if (target.canInsert(extractionDirection, insertionVolume, targetSlot)) {
 							Pair<FluidVolume, FluidVolume> merge = VolumeUtilities.merge(insertionVolume, targetVolume);
 
 							sourceVolume.take(insertionCount.subtract(merge.getLeft().getAmount()));
@@ -226,6 +236,24 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 				}
 			}
 		}
+	}
+
+	/** Transfers all transferable content from this component
+	 * to the target component. */
+	default void into(FluidComponent target, Fraction count, Direction direction) {
+		into(target, count, direction, direction.getOpposite());
+	}
+
+	/** Transfers all transferable content from this component
+	 * to the target component. */
+	default void into(FluidComponent target, Fraction count) {
+		into(target, count, null, null);
+	}
+
+	/** Transfers all transferable content from this component
+	 * to the target component. */
+	default void into(FluidComponent target) {
+		into(target, Fraction.BUCKET, null, null);
 	}
 
 	/** Asserts whether the given volume can be inserted through the specified

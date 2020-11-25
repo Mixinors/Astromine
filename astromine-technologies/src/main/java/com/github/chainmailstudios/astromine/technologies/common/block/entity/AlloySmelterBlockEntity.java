@@ -24,16 +24,13 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.*;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
@@ -65,8 +62,12 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 
 	@Override
 	public ItemComponent createItemComponent() {
-		return SimpleItemComponent.of(3).withInsertPredicate((direction, stack, slot) -> {
+		return SimpleDirectionalItemComponent.of(this, 3).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 0 && slot != 1) {
+				return false;
+			}
+
+			if (!getTransferComponent().getItem(direction).canInsert()) {
 				return false;
 			}
 
@@ -76,6 +77,10 @@ public abstract class AlloySmelterBlockEntity extends ComponentEnergyItemBlockEn
 
 			return AlloySmeltingRecipe.allows(world, ItemComponent.of(stack, getItemComponent().getSecond())) || AlloySmeltingRecipe.allows(world, ItemComponent.of(getItemComponent().getFirst(), stack));
 		}).withExtractPredicate(((direction, stack, slot) -> {
+			if (!getTransferComponent().getItem(direction).canExtract()) {
+				return false;
+			}
+
 			return slot == 2;
 		})).withListener((inventory) -> {
 			shouldTry = true;

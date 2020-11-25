@@ -24,15 +24,10 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.*;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidItemBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
@@ -74,7 +69,7 @@ public abstract class MelterBlockEntity extends ComponentEnergyFluidItemBlockEnt
 
 	@Override
 	public ItemComponent createItemComponent() {
-		return SimpleItemComponent.of(1).withInsertPredicate((direction, stack, slot) -> {
+		return SimpleDirectionalItemComponent.of(this, 1).withInsertPredicate((direction, stack, slot) -> {
 			if (slot != 0) {
 				return false;
 			}

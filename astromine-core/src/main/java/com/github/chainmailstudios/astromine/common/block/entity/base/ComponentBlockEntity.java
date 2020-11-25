@@ -203,13 +203,8 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 					ItemComponent theirComponent = ItemComponent.get(neighborBlockEntity);
 
 					if (theirComponent != null) {
-						if (getTransferComponent().getItem(offsetDirection).canInsert()) {
-							theirComponent.into(ourComponent, 1, neighborDirection);
-						}
-
-						if (getTransferComponent().getItem(offsetDirection).canExtract()) {
-							ourComponent.into(theirComponent, 1, offsetDirection);
-						}
+						theirComponent.into(ourComponent, 1, neighborDirection, offsetDirection);
+						ourComponent.into(theirComponent, 1, offsetDirection, neighborDirection);
 					}
 				}
 			}
@@ -221,13 +216,8 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 					FluidComponent theirComponent = FluidComponent.get(neighborBlockEntity);
 
 					if (theirComponent != null) {
-						if (getTransferComponent().getFluid(offsetDirection).canInsert()) {
-							theirComponent.into(ourComponent, Fraction.TRANSFER, neighborDirection);
-						}
-
-						if (getTransferComponent().getFluid(offsetDirection).canExtract()) {
-							ourComponent.into(theirComponent, Fraction.TRANSFER, offsetDirection);
-						}
+						theirComponent.into(ourComponent, Fraction.TRANSFER, neighborDirection, offsetDirection);
+						ourComponent.into(theirComponent, Fraction.TRANSFER, offsetDirection, neighborDirection);
 					}
 				}
 			}
@@ -239,13 +229,8 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 					EnergyComponent theirComponent = EnergyComponent.get(neighborBlockEntity);
 
 					if (theirComponent != null) {
-						if (getTransferComponent().getEnergy(offsetDirection).canInsert()) {
-							theirComponent.into(ourComponent, 1024D);
-						}
-
-						if (getTransferComponent().getEnergy(offsetDirection).canExtract()) {
-							ourComponent.into(theirComponent, 1024D);
-						}
+						theirComponent.into(ourComponent, 1024D);
+						ourComponent.into(theirComponent, 1024D);
 					}
 				}
 			}

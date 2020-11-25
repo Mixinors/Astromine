@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleDirectionalItemComponent;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentItemBlockEntity;
@@ -43,7 +44,7 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 
 		@Override
 		public ItemComponent createItemComponent() {
-			return SimpleItemComponent.of(6 * 9);
+			return SimpleDirectionalItemComponent.of(this, 6 * 9);
 		}
 	}
 
@@ -54,7 +55,7 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 
 		@Override
 		public ItemComponent createItemComponent() {
-			return SimpleItemComponent.of(12 * 9);
+			return SimpleDirectionalItemComponent.of(this, 12 * 9);
 		}
 	}
 
@@ -65,7 +66,7 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 
 		@Override
 		public ItemComponent createItemComponent() {
-			return SimpleItemComponent.of(18 * 9);
+			return SimpleDirectionalItemComponent.of(this, 18 * 9);
 		}
 	}
 
@@ -76,7 +77,7 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 
 		@Override
 		public ItemComponent createItemComponent() {
-			return SimpleItemComponent.of(24 * 9);
+			return SimpleDirectionalItemComponent.of(this, 24 * 9);
 		}
 	}
 
@@ -87,7 +88,7 @@ public abstract class BufferBlockEntity extends ComponentItemBlockEntity {
 
 		@Override
 		public ItemComponent createItemComponent() {
-			return SimpleItemComponent.of(6 * 9);
+			return SimpleDirectionalItemComponent.of(this, 6 * 9);
 		}
 
 		@Override

@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.*;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.fluid.Fluid;
@@ -33,10 +34,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidItemBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import com.github.chainmailstudios.astromine.common.utilities.VolumeUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
@@ -66,7 +63,7 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 
 	@Override
 	public ItemComponent createItemComponent() {
-		return SimpleItemComponent.of(2).withInsertPredicate((direction, stack, slot) -> {
+		return SimpleDirectionalItemComponent.of(this, 2).withInsertPredicate((direction, stack, slot) -> {
 			return slot == 0;
 		}).withExtractPredicate((direction, stack, slot) -> {
 			return slot == 1;

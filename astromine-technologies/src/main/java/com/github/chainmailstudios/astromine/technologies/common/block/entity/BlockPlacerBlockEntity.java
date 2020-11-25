@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.*;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.item.BlockItem;
@@ -33,10 +34,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
@@ -55,7 +52,7 @@ public class BlockPlacerBlockEntity extends ComponentEnergyItemBlockEntity imple
 
 	@Override
 	public ItemComponent createItemComponent() {
-		return SimpleItemComponent.of(1);
+		return SimpleDirectionalItemComponent.of(this, 1);
 	}
 
 	@Override

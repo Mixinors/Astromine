@@ -26,6 +26,7 @@ package com.github.chainmailstudios.astromine.common.component.inventory;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemComponentFromInventory;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
+import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -68,14 +69,24 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 		return SimpleItemComponent.of(stacks);
 	}
 
-	/** Instantiates an {@link ItemComponent} and synchronization. */
+	/** Instantiates an {@link ItemComponent} with autoamtic synchronization. */
 	static ItemComponent ofSynced(int size) {
 		return SimpleAutoSyncedItemComponent.of(size);
 	}
 
-	/** Instantiates an {@link ItemComponent} and synchronization. */
+	/** Instantiates an {@link ItemComponent} with automatic synchronization. */
 	static ItemComponent ofSynced(ItemStack... stacks) {
 		return SimpleAutoSyncedItemComponent.of(stacks);
+	}
+
+	/** Instantiates an {@link ItemComponent} with directional insertion and extraction. */
+	static <V> ItemComponent ofDirectional(V v, int size) {
+		return SimpleDirectionalItemComponent.of(v, size);
+	}
+
+	/** Instantiates an {@link ItemComponent} with directional insertion and extraction. */
+	static <V> ItemComponent ofDirectional(V v, ItemStack... stacks) {
+		return SimpleDirectionalItemComponent.of(v, stacks);
 	}
 
 	/** Returns this component's {@link Item} symbol. */
@@ -193,11 +204,11 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 
 	/** Transfers all transferable content from this component
 	 * to the target component. */
-	default void into(ItemComponent target, int count, Direction direction) {
+	default void into(ItemComponent target, int count, Direction extractionDirection, Direction insertionDirection) {
 		for (int sourceSlot = 0; sourceSlot < getSize(); ++sourceSlot) {
 			ItemStack sourceStack = getStack(sourceSlot);
 
-			if (canExtract(direction.getOpposite(), sourceStack, sourceSlot)) {
+			if (canExtract(extractionDirection, sourceStack, sourceSlot)) {
 				for (int targetSlot = 0; targetSlot < target.getSize(); ++targetSlot) {
 					ItemStack targetStack = target.getStack(targetSlot);
 
@@ -207,7 +218,7 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 
 						int insertionCount = insertionStack.getCount();
 
-						if (target.canInsert(direction, insertionStack, targetSlot)) {
+						if (target.canInsert(insertionDirection, insertionStack, targetSlot)) {
 							Pair<ItemStack, ItemStack> merge = StackUtilities.merge(insertionStack, targetStack);
 
 							sourceStack.decrement(insertionCount - merge.getLeft().getCount());
@@ -220,6 +231,24 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 				}
 			}
 		}
+	}
+
+	/** Transfers all transferable content from this component
+	 * to the target component. */
+	default void into(ItemComponent target, int count, Direction extractionDirection) {
+		into(target, count, extractionDirection, extractionDirection.getOpposite());
+	}
+
+	/** Transfers all transferable content from this component
+	 * to the target component. */
+	default void into(ItemComponent target, int count) {
+		into(target, count, null, null);
+	}
+
+	/** Transfers all transferable content from this component
+	 * to the target component. */
+	default void into(ItemComponent target) {
+		into(target, 1, null, null);
 	}
 
 	/** Asserts whether the given stack can be inserted through the specified

@@ -64,7 +64,7 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 
 	@Override
 	public ItemComponent createItemComponent() {
-		return new SimpleItemComponent() {
+		return new SimpleItemComponent(2) {
 			@Override
 			public ItemStack removeStack(int slot) {
 				leftPosition = 0;

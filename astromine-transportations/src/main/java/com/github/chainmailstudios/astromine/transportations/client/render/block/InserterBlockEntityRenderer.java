@@ -39,6 +39,8 @@ import com.github.chainmailstudios.astromine.transportations.client.model.Insert
 import com.github.chainmailstudios.astromine.transportations.common.block.InserterBlock;
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.InserterBlockEntity;
 
+import static java.lang.Math.*;
+
 public class InserterBlockEntityRenderer extends BlockEntityRenderer<InserterBlockEntity> implements ConveyorRenderer<InserterBlockEntity> {
 	public InserterBlockEntityRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher) {
 		super(blockEntityRenderDispatcher);
@@ -81,7 +83,7 @@ public class InserterBlockEntityRenderer extends BlockEntityRenderer<InserterBlo
 		modelInserterArm.render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntitySolid(new Identifier(AstromineCommon.MOD_ID + ":textures/block/" + type + "_inserter.png"))), light, overlay, 1, 1, 1, 1);
 		matrices.pop();
 
-		if (!blockEntity.isEmpty()) {
+		if (!blockEntity.getItemComponent().isEmpty()) {
 			matrices.push();
 			matrices.translate(0.5, 0, 0.5);
 			if (direction == Direction.NORTH) {
