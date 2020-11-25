@@ -85,6 +85,7 @@ public class StackUtilities {
 		if (target.isEmpty()) {
 			return source.copy();
 		} else {
+			target = target.copy();
 			target.increment(source.getCount());
 			return target;
 		}

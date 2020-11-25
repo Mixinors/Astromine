@@ -112,14 +112,15 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 						if (energyVolume.hasAvailable(produced)) {
 							--available;
 							++progress;
-							energyVolume.give(produced * getMachineSpeed());
+							energyVolume.give(produced);
 
 							tickActive();
 						} else {
 							tickInactive();
 						}
+					}
 
-					} else {
+					if (progress > limit || available <= 0) {
 						progress = 0;
 						limit = 0;
 
@@ -137,6 +138,7 @@ public abstract class SolidGeneratorBlockEntity extends ComponentEnergyItemBlock
 					if (isFuel) {
 						available = value;
 						limit = value;
+						progress = 0;
 
 						burnStack.decrement(1);
 					}

@@ -33,6 +33,7 @@ import com.github.chainmailstudios.astromine.foundations.registry.AstromineFound
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsIdentifierFixes;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsItems;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsOres;
+import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsRecipeSerializers;
 
 public class AstromineFoundationsCommon extends AstromineCommon {
 	public static String appendId(String id) {
@@ -49,5 +50,6 @@ public class AstromineFoundationsCommon extends AstromineCommon {
 		AstromineFoundationsFluidEffects.initialize();
 		AstromineFoundationsFeatures.initialize();
 		AstromineFoundationsIdentifierFixes.initialize();
+		AstromineFoundationsRecipeSerializers.initialize();
 	}
 }

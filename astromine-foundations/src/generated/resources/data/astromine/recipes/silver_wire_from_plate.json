@@ -1,14 +1,13 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "tag": "c:silver_plates"
-    },
-    {
-      "tag": "fabric:shears"
-    }
-  ],
-  "result": {
-    "item": "astromine:silver_wire"
+  "type": "astromine:wire_cutting",
+  "input": {
+    "tag": "c:silver_plates"
+  },
+  "tool": {
+    "tag": "fabric:shears"
+  },
+  "output": {
+    "item": "astromine:silver_wire",
+    "count": 1
   }
 }
