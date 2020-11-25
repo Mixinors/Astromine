@@ -59,7 +59,7 @@ import java.util.Optional;
 public class AnimatedArmorItem extends ArmorItem {
 	private final int frames;
 
-	/** Instantiates an {@link AnimatedArmorItem} with the given values. */
+	/** Instantiates an {@link AnimatedArmorItem}s. */
 	public AnimatedArmorItem(ArmorMaterial material, EquipmentSlot slot, Settings settings, int frames) {
 		super(material, slot, settings);
 
@@ -166,7 +166,7 @@ public class AnimatedArmorItem extends ArmorItem {
 
 			private NativeImage placeholderTexture;
 
-			/** Instantiates an {@link AnimatedTexture} with the given values. */
+			/** Instantiates an {@link AnimatedTexture}s. */
 			public AnimatedTexture(Identifier id, int frames) {
 				this.id = id;
 				this.frames = frames;

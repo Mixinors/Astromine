@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.volume.fraction;
 
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 
@@ -66,6 +67,8 @@ public final class Fraction extends Number implements Comparable<Fraction> {
 	public static final Fraction BUCKET = of(1, 1);
 
 	public static final Fraction BOTTLE = of(1, 3);
+
+	public static final Fraction TRANSFER = of(AstromineConfig.get().fluidTransferNumerator, AstromineConfig.get().fluidTransferDenominator);
 
 	public static final Fraction MINIMUM = of(1, Long.MAX_VALUE);
 	public static final Fraction MAXIMUM = of(Long.MAX_VALUE, 1);

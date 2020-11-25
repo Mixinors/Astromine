@@ -34,12 +34,12 @@ import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
  * {@link #getAmount()} and {@link #getSize()}.
  */
 public final class InfiniteFluidVolume extends FluidVolume {
-	/** Instantiates an {@link InfiniteFluidVolume} with the given values. */
+	/** Instantiates an {@link InfiniteFluidVolume}s. */
 	private InfiniteFluidVolume(Fluid fluid) {
 		super(Fraction.of(Long.MAX_VALUE), Fraction.of(Long.MAX_VALUE), fluid);
 	}
 
-	/** Instantiates an {@link InfiniteFluidVolume} with the given values. */
+	/** Instantiates an {@link InfiniteFluidVolume}s. */
 	public static InfiniteFluidVolume of(Fluid fluid) {
 		return new InfiniteFluidVolume(fluid);
 	}

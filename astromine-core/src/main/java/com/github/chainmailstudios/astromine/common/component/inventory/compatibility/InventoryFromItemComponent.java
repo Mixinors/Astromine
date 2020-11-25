@@ -38,7 +38,7 @@ import static java.lang.Integer.min;
 public interface InventoryFromItemComponent extends Inventory {
 	ItemComponent getItemComponent();
 	
-	/** Instantiates an {@link InventoryFromItemComponent} with the given value. */
+	/** Instantiates an {@link InventoryFromItemComponent}. */
 	static InventoryFromItemComponent of(ItemComponent itemComponent) {
 		return () -> itemComponent;
 	}

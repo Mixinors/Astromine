@@ -45,13 +45,13 @@ public class ItemComponentFromInventory extends SimpleItemComponent {
 
 	List<Runnable> listeners = new ArrayList<>();
 
-	/** Instantiates an {@link ItemComponentFromInventory} with the given value. */
+	/** Instantiates an {@link ItemComponentFromInventory}. */
 	private ItemComponentFromInventory(Inventory inventory) {
 		super(inventory.size());
 		this.inventory = inventory;
 	}
 
-	/** Instantiates an {@link ItemComponentFromInventory} with the given value. */
+	/** Instantiates an {@link ItemComponentFromInventory}. */
 	public static ItemComponentFromInventory of(Inventory inventory) {
 		return new ItemComponentFromInventory(inventory);
 	}

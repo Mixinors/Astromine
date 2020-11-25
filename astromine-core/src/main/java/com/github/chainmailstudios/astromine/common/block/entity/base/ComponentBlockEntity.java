@@ -24,6 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.utilities.VolumeUtilities;
+import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.PacketContext;
 
@@ -38,16 +43,6 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-import alexiil.mc.lib.attributes.SearchOptions;
-import alexiil.mc.lib.attributes.fluid.FluidAttributes;
-import alexiil.mc.lib.attributes.fluid.FluidExtractable;
-import alexiil.mc.lib.attributes.fluid.FluidInsertable;
-import alexiil.mc.lib.attributes.fluid.FluidVolumeUtil;
-import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
-import alexiil.mc.lib.attributes.item.ItemAttributes;
-import alexiil.mc.lib.attributes.item.ItemExtractable;
-import alexiil.mc.lib.attributes.item.ItemInsertable;
-import alexiil.mc.lib.attributes.item.ItemInvUtil;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
@@ -202,48 +197,58 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 			BlockEntity neighborBlockEntity = world.getBlockEntity(neighborPos);
 
 			if (getTransferComponent().hasItem()) {
-				if (!getTransferComponent().getItem(offsetDirection).isNone()) {
-					ItemExtractable neighbor = ItemAttributes.EXTRACTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
-					ItemInsertable self = ItemAttributes.INSERTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
+				ItemComponent ourComponent = ItemComponent.get(this);
 
-					ItemInvUtil.move(neighbor, self, 1);
-				}
+				if (ourComponent != null) {
+					ItemComponent theirComponent = ItemComponent.get(neighborBlockEntity);
 
-				if (!getTransferComponent().getItem(offsetDirection).isNone()) {
-					ItemExtractable neighbor = ItemAttributes.EXTRACTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
-					ItemInsertable self = ItemAttributes.INSERTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
+					if (theirComponent != null) {
+						if (getTransferComponent().getItem(offsetDirection).canInsert()) {
+							theirComponent.into(ourComponent, 1, neighborDirection);
+						}
 
-					ItemInvUtil.move(neighbor, self, 1);
+						if (getTransferComponent().getItem(offsetDirection).canExtract()) {
+							ourComponent.into(theirComponent, 1, offsetDirection);
+						}
+					}
 				}
 			}
 
 			if (getTransferComponent().hasFluid()) {
-				if (!getTransferComponent().getFluid(offsetDirection).isNone()) {
-					FluidExtractable neighbor = FluidAttributes.EXTRACTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
-					FluidInsertable self = FluidAttributes.INSERTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
+				FluidComponent ourComponent = FluidComponent.get(this);
 
-					FluidVolumeUtil.move(neighbor, self, FluidAmount.of(1, 20));
-				}
+				if (ourComponent != null) {
+					FluidComponent theirComponent = FluidComponent.get(neighborBlockEntity);
 
-				if (!getTransferComponent().getFluid(offsetDirection).isNone()) {
-					FluidExtractable neighbor = FluidAttributes.EXTRACTABLE.get(world, getPos(), SearchOptions.inDirection(neighborDirection));
-					FluidInsertable self = FluidAttributes.INSERTABLE.get(world, neighborPos, SearchOptions.inDirection(offsetDirection));
+					if (theirComponent != null) {
+						if (getTransferComponent().getFluid(offsetDirection).canInsert()) {
+							theirComponent.into(ourComponent, Fraction.TRANSFER, neighborDirection);
+						}
 
-					FluidVolumeUtil.move(neighbor, self, FluidAmount.of(1, 20));
+						if (getTransferComponent().getFluid(offsetDirection).canExtract()) {
+							ourComponent.into(theirComponent, Fraction.TRANSFER, offsetDirection);
+						}
+					}
 				}
 			}
 
-			if (this instanceof EnergyStorage && neighborBlockEntity instanceof EnergyStorage) {
-				energyTransfers.add(new Pair<>(Energy.of(this).side(offsetDirection), Energy.of(neighborBlockEntity).side(neighborDirection)));
-			}
-		}
+			if (getTransferComponent().hasEnergy()) {
+				EnergyComponent ourComponent = EnergyComponent.get(this);
 
-		energyTransfers.sort(Comparator.comparing(Pair::getRight, Comparator.comparingDouble(EnergyHandler::getEnergy)));
-		for (int i = energyTransfers.size() - 1; i >= 0; i--) {
-			Pair<EnergyHandler, EnergyHandler> pair = energyTransfers.get(i);
-			EnergyHandler input = pair.getLeft();
-			EnergyHandler output = pair.getRight();
-			input.into(output).move(Math.max(0, Math.min(input.getMaxOutput() / energyTransfers.size(), Math.min(Math.min(input.getEnergy() / (i + 1), output.getMaxStored() - output.getEnergy()), Math.min(input.getMaxOutput(), output.getMaxInput())))));
+				if (ourComponent != null) {
+					EnergyComponent theirComponent = EnergyComponent.get(neighborBlockEntity);
+
+					if (theirComponent != null) {
+						if (getTransferComponent().getEnergy(offsetDirection).canInsert()) {
+							theirComponent.into(ourComponent, 1024D);
+						}
+
+						if (getTransferComponent().getEnergy(offsetDirection).canExtract()) {
+							ourComponent.into(theirComponent, 1024D);
+						}
+					}
+				}
+			}
 		}
 
 		if (world.getBlockState(getPos()).contains(BlockWithEntity.ACTIVE)) {

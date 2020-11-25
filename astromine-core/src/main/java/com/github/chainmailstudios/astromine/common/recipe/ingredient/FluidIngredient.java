@@ -252,7 +252,7 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 			this.volumes = volumes;
 		}
 
-		/** Instantiates a {@link SimpleEntry} with the given value. */
+		/** Instantiates a {@link SimpleEntry}. */
 		public SimpleEntry(FluidVolume volume) {
 			this(Collections.singleton(volume));
 		}

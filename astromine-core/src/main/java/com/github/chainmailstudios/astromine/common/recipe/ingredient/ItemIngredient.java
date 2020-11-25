@@ -273,7 +273,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 			this.stacks = stacks;
 		}
 
-		/** Instantiates a {@link SimpleEntry} with the given value. */
+		/** Instantiates a {@link SimpleEntry}. */
 		public SimpleEntry(ItemStack stack) {
 			this(Collections.singleton(stack));
 		}

@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemComponentFromInventory;
+import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -31,6 +33,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Pair;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.InventoryFromItemComponent;
@@ -46,6 +49,8 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static java.lang.Integer.min;
+
 /**
  * A {@link IdentifiableComponent} representing an item reserve.
  *
@@ -53,22 +58,22 @@ import java.util.stream.Collectors;
  * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
  */
 public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponent {
-	/** Instantiates an {@link ItemComponent} with the given value. */
+	/** Instantiates an {@link ItemComponent}. */
 	static ItemComponent of(int size) {
 		return SimpleItemComponent.of(size);
 	}
 
-	/** Instantiates an {@link ItemComponent} with the given value. */
+	/** Instantiates an {@link ItemComponent}. */
 	static ItemComponent of(ItemStack... stacks) {
 		return SimpleItemComponent.of(stacks);
 	}
 
-	/** Instantiates an {@link ItemComponent} with the given value and synchronization. */
+	/** Instantiates an {@link ItemComponent} and synchronization. */
 	static ItemComponent ofSynced(int size) {
 		return SimpleAutoSyncedItemComponent.of(size);
 	}
 
-	/** Instantiates an {@link ItemComponent} with the given value and synchronization. */
+	/** Instantiates an {@link ItemComponent} and synchronization. */
 	static ItemComponent ofSynced(ItemStack... stacks) {
 		return SimpleAutoSyncedItemComponent.of(stacks);
 	}
@@ -185,6 +190,37 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 		else return null;
 	}
 
+	/** Transfers all transferable content from this component
+	 * to the target component. */
+	default void into(ItemComponent target, int count, Direction direction) {
+		for (int sourceSlot = 0; sourceSlot < getSize(); ++sourceSlot) {
+			ItemStack sourceStack = getStack(sourceSlot);
+
+			if (canExtract(direction.getOpposite(), sourceStack, sourceSlot)) {
+				for (int targetSlot = 0; targetSlot < target.getSize(); ++targetSlot) {
+					ItemStack targetStack = target.getStack(targetSlot);
+
+					if (!sourceStack.isEmpty() && count > 0) {
+						ItemStack insertionStack = sourceStack.copy();
+						insertionStack.setCount(min(count, insertionStack.getCount()));
+
+						int insertionCount = insertionStack.getCount();
+
+						if (target.canInsert(direction, insertionStack, targetSlot)) {
+							Pair<ItemStack, ItemStack> merge = StackUtilities.merge(insertionStack, targetStack);
+
+							sourceStack.decrement(insertionCount - merge.getLeft().getCount());
+							setStack(sourceSlot, sourceStack);
+							target.setStack(targetSlot, merge.getRight());
+						}
+					} else {
+						break;
+					}
+				}
+			}
+		}
+	}
+
 	/** Asserts whether the given stack can be inserted through the specified
 	 * direction into the supplied slot. */
 	default boolean canInsert(@Nullable Direction direction, ItemStack stack, int slot) {
@@ -280,6 +316,10 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 		try {
 			return AstromineComponents.ITEM_INVENTORY_COMPONENT.get(v);
 		} catch (Exception justShutUpAlready) {
+			if (v instanceof Inventory) {
+				return ItemComponentFromInventory.of((Inventory) v);
+			}
+
 			return null;
 		}
 	}

@@ -24,11 +24,6 @@ project.ext.setDefaultApis = {
     // AutoConfig
     useAsApi("me.sargunvohra.mcmods:autoconfig1u:${auto_config_version}")
 
-    // LBA
-    useAsApi("alexiil.mc.lib:libblockattributes-core:${lba_version}")
-    useAsApi("alexiil.mc.lib:libblockattributes-items:${lba_version}")
-    useAsApi("alexiil.mc.lib:libblockattributes-fluids:${lba_version}")
-
     // Tech Reborn Energy
     useAsApi("teamreborn:energy:${tr_energy_version}")
 

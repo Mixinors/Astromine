@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.EnergyComponentFromEnergyStorage;
 import net.fabricmc.fabric.api.util.NbtType;
 
 import net.minecraft.item.Item;
@@ -35,9 +36,12 @@ import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import org.jetbrains.annotations.Nullable;
+import team.reborn.energy.EnergyStorage;
 
 import java.util.List;
 import java.util.function.Consumer;
+
+import static java.lang.Math.min;
 
 /**
  * A {@link IdentifiableComponent} representing an energy reserve.
@@ -46,22 +50,27 @@ import java.util.function.Consumer;
  * - {@link CompoundTag} - through {@link #toTag(CompoundTag)} and {@link #fromTag(CompoundTag)}.
  */
 public interface EnergyComponent extends IdentifiableComponent {
-	/** Instantiates an {@link EnergyComponent} with the given value. */
+	/** Instantiates an {@link EnergyComponent}. */
 	static EnergyComponent of(double size) {
 		return SimpleEnergyComponent.of(size);
 	}
 
-	/** Instantiates an {@link EnergyComponent} with the given value. */
+	/** Instantiates an {@link EnergyComponent}. */
 	static EnergyComponent of(EnergyVolume volume) {
 		return SimpleEnergyComponent.of(volume);
 	}
 
-	/** Instantiates an {@link EnergyComponent} with the given value and synchronization. */
+	/** Instantiates an {@link EnergyComponent}. */
+	static EnergyComponent of(EnergyStorage storage) {
+		return EnergyComponentFromEnergyStorage.of(storage);
+	}
+
+	/** Instantiates an {@link EnergyComponent} and synchronization. */
 	static EnergyComponent ofSynced(double size) {
 		return SimpleAutoSyncedEnergyComponent.of(size);
 	}
 
-	/** Instantiates an {@link EnergyComponent} with the given value and synchronization. */
+	/** Instantiates an {@link EnergyComponent} and synchronization. */
 	static EnergyComponent ofSynced(EnergyVolume volume) {
 		return SimpleAutoSyncedEnergyComponent.of(volume);
 	}
@@ -144,6 +153,15 @@ public interface EnergyComponent extends IdentifiableComponent {
 		this.getVolume().setAmount(0.0);
 	}
 
+	default void into(EnergyComponent component, double amount) {
+		EnergyVolume ourVolume = getVolume();
+		EnergyVolume theirVolume = component.getVolume();
+
+		double transferable = min(theirVolume.getSize() - theirVolume.getAmount(), amount);
+
+		ourVolume.give(theirVolume, transferable);
+	}
+
 	/** Serializes this {@link EnergyComponent} to a {@link CompoundTag}. */
 	@Override
 	default void writeToNbt(CompoundTag tag) {
@@ -176,6 +194,10 @@ public interface EnergyComponent extends IdentifiableComponent {
 		try {
 			return AstromineComponents.ENERGY_INVENTORY_COMPONENT.get(v);
 		} catch (Exception justShutUpAlready) {
+			if (v instanceof EnergyStorage) {
+				return of((EnergyStorage) v);
+			}
+
 			return null;
 		}
 	}

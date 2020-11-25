@@ -32,7 +32,7 @@ import net.minecraft.item.SpawnEggItem;
  * A {@link SpawnEggItem} with no color of its own.
  */
 public class UncoloredSpawnEggItem extends SpawnEggItem {
-	/** Instantiates an {@link UncoloredSpawnEggItem} with the given values. */
+	/** Instantiates an {@link UncoloredSpawnEggItem}s. */
 	public UncoloredSpawnEggItem(EntityType<?> type, Item.Settings settings) {
 		super(type, 0xFFFFFFFF, 0xFFFFFFFF, settings);
 	}

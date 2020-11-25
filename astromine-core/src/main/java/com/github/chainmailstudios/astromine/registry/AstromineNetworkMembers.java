@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.fabricmc.loader.api.FabricLoader;
 
@@ -34,11 +35,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 
-import alexiil.mc.lib.attributes.SearchOption;
-import alexiil.mc.lib.attributes.SearchOptions;
-import alexiil.mc.lib.attributes.fluid.FluidAttributes;
-import alexiil.mc.lib.attributes.fluid.GroupedFluidInv;
-import alexiil.mc.lib.attributes.misc.NullVariant;
 import com.github.chainmailstudios.astromine.common.network.NetworkBlock;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberType;
@@ -88,12 +84,7 @@ public class AstromineNetworkMembers {
 			@Override
 			public Collection<NetworkMemberType> get(WorldPos pos, @Nullable Direction direction) {
 				if (!this.types.containsKey(pos.getBlock())) {
-					SearchOption option = null;
-					if (direction != null) {
-						option = SearchOptions.inDirection(direction.getOpposite());
-					}
-					GroupedFluidInv inv = FluidAttributes.GROUPED_INV.get(pos.getWorld(), pos.getBlockPos(), option);
-					if (inv != null && !(inv instanceof NullVariant)) {
+					if (FluidComponent.get(pos.getBlockEntity()) != null) {
 						return NetworkMember.REQUESTER_PROVIDER;
 					}
 				}

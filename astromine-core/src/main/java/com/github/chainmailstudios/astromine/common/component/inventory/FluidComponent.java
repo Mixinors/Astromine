@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
+import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.VolumeUtilities;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
@@ -35,6 +37,7 @@ import net.minecraft.potion.PotionUtil;
 import net.minecraft.potion.Potions;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Pair;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
@@ -50,6 +53,9 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import static com.github.chainmailstudios.astromine.common.volume.fraction.Fraction.minimum;
+import static java.lang.Integer.min;
 
 /**
  * A {@link IdentifiableComponent} representing a fluid reserve.
@@ -76,30 +82,6 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 	/** Instantiates a {@link FluidComponent} and synchronization. */
 	static FluidComponent ofSynced(FluidVolume... volumes) {
 		return SimpleAutoSyncedFluidComponent.of(volumes);
-	}
-
-	/** Returns the {@link FluidComponent} of the given {@link V}. */
-	@Nullable
-	static <V> FluidComponent get(V v) {
-		if (v instanceof ItemStack) {
-			ItemStack stack = (ItemStack) v;
-			Item item = stack.getItem();
-
-			if (item instanceof BucketItem) {
-				BucketItem bucket = (BucketItem) item;
-
-				return SimpleFluidComponent.of(FluidVolume.of(Fraction.BUCKET, bucket.fluid));
-			} else if (item instanceof PotionItem) {
-				if(PotionUtil.getPotion(stack).equals(Potions.WATER))
-					return SimpleFluidComponent.of(FluidVolume.of(Fraction.BOTTLE, Fluids.WATER));
-			}
-		}
-
-		try {
-			return AstromineComponents.FLUID_INVENTORY_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
-			return null;
-		}
 	}
 
 	/** Returns this component's {@link Item} symbol. */
@@ -214,6 +196,37 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 		else return null;
 	}
 
+	/** Transfers all transferable content from this component
+	 * to the target component. */
+	default void into(FluidComponent target, Fraction count, Direction direction) {
+		for (int sourceSlot = 0; sourceSlot < getSize(); ++sourceSlot) {
+			FluidVolume sourceVolume = getVolume(sourceSlot);
+
+			if (canExtract(direction.getOpposite(), sourceVolume, sourceSlot)) {
+				for (int targetSlot = 0; targetSlot < target.getSize(); ++targetSlot) {
+					FluidVolume targetVolume = target.getVolume(targetSlot);
+
+					if (!sourceVolume.isEmpty() && count.biggerThan(Fraction.EMPTY)) {
+						FluidVolume insertionVolume = sourceVolume.copy();
+						insertionVolume.setAmount(minimum(count, insertionVolume.getAmount()));
+
+						Fraction insertionCount = insertionVolume.getAmount();
+
+						if (target.canInsert(direction, insertionVolume, targetSlot)) {
+							Pair<FluidVolume, FluidVolume> merge = VolumeUtilities.merge(insertionVolume, targetVolume);
+
+							sourceVolume.take(insertionCount.subtract(merge.getLeft().getAmount()));
+							setVolume(sourceSlot, sourceVolume);
+							target.setVolume(targetSlot, merge.getRight());
+						}
+					} else {
+						break;
+					}
+				}
+			}
+		}
+	}
+
 	/** Asserts whether the given volume can be inserted through the specified
 	 * direction into the supplied slot. */
 	default boolean canInsert(@Nullable Direction direction, FluidVolume volume, int slot) {
@@ -303,6 +316,30 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 			CompoundTag volumeTag = volumesTag.getCompound(i);
 
 			setVolume(i, FluidVolume.fromTag(volumeTag));
+		}
+	}
+
+	/** Returns the {@link FluidComponent} of the given {@link V}. */
+	@Nullable
+	static <V> FluidComponent get(V v) {
+		if (v instanceof ItemStack) {
+			ItemStack stack = (ItemStack) v;
+			Item item = stack.getItem();
+
+			if (item instanceof BucketItem) {
+				BucketItem bucket = (BucketItem) item;
+
+				return SimpleFluidComponent.of(FluidVolume.of(Fraction.BUCKET, bucket.fluid));
+			} else if (item instanceof PotionItem) {
+				if(PotionUtil.getPotion(stack).equals(Potions.WATER))
+					return SimpleFluidComponent.of(FluidVolume.of(Fraction.BOTTLE, Fluids.WATER));
+			}
+		}
+
+		try {
+			return AstromineComponents.FLUID_INVENTORY_COMPONENT.get(v);
+		} catch (Exception justShutUpAlready) {
+			return null;
 		}
 	}
 

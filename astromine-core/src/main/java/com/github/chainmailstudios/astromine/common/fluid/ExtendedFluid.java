@@ -84,7 +84,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 
 	private final DamageSource source;
 
-	/** Instantiates an {@link ExtendedFluid} with the given values. */
+	/** Instantiates an {@link ExtendedFluid}s. */
 	public ExtendedFluid(int fogColor, int tintColor, boolean isInfinite, @Nullable DamageSource source) {
 		this.fogColor = fogColor;
 		this.tintColor = tintColor;
@@ -307,7 +307,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 	 */
 	public static class Flowing extends ExtendedFluid {
 		/** Instantiates a {@link Flowing} {@link ExtendedFluid}
-		 * with the given values. */
+		 *s. */
 		public Flowing(int fogColor, int tintColor, boolean isInfinite, @Nullable DamageSource source) {
 			super(fogColor, tintColor, isInfinite, source);
 		}
@@ -340,7 +340,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 	 */
 	public static class Still extends ExtendedFluid {
 		/** Instantiates a {@link Still} {@link ExtendedFluid}
-		 * with the given values. */
+		 *s. */
 		public Still(int fogColor, int tintColor, boolean isInfinite, @Nullable DamageSource source) {
 			super(fogColor, tintColor, isInfinite, source);
 		}

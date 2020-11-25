@@ -97,7 +97,7 @@ public final class TrituratingRecipe implements EnergyConsumingRecipe<Inventory>
 			return false;
 		}
 
-		return firstInput.testWeak(itemComponent.getSecond());
+		return firstInput.testWeak(itemComponent.getFirst());
 	}
 
 	@Override

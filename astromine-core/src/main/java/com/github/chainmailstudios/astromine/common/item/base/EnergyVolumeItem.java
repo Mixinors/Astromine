@@ -41,19 +41,19 @@ import team.reborn.energy.EnergyTier;
 public class EnergyVolumeItem extends Item implements EnergyHolder, DurabilityBarItem {
 	private final double size;
 
-	/** Instantiates an {@link EnergyVolumeItem} with the given values. */
+	/** Instantiates an {@link EnergyVolumeItem}s. */
 	protected EnergyVolumeItem(Item.Settings settings, double size) {
 		super(settings);
 
 		this.size = size;
 	}
 
-	/** Instantiates an {@link EnergyVolumeItem} with the given value. */
+	/** Instantiates an {@link EnergyVolumeItem}. */
 	public static EnergyVolumeItem ofCreative(Item.Settings settings) {
 		return new EnergyVolumeItem(settings, Double.MAX_VALUE);
 	}
 
-	/** Instantiates an {@link EnergyVolumeItem} with the given values. */
+	/** Instantiates an {@link EnergyVolumeItem}s. */
 	public static EnergyVolumeItem of(Settings settings, double size) {
 		return new EnergyVolumeItem(settings, size);
 	}

@@ -28,22 +28,37 @@ import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
-import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import net.minecraft.util.Pair;
 
 public class VolumeUtilities {
-	/** Returns the amount of fluid transferred during transport as per {@link AstromineConfig}. */
-    public static FluidAmount getTransferFluidAmount() {
-		return FluidAmount.of(AstromineConfig.get().fluidTransferNumerator, AstromineConfig.get().fluidTransferDenominator);
+	/** Attempts to merge two {@link FluidVolume}s, returning a {@link Pair}
+	 * with the results.
+	 *
+	 * The amount transferred is the {@link Fraction#minimum(Fraction, Fraction)} between
+	 * their available space, our amount, and the specified amount.
+	 * */
+	public static Pair<FluidVolume, FluidVolume> merge(FluidVolume source, FluidVolume target) {
+		Fraction targetMax = target.getSize();
+
+		if (source.test(target)) {
+			Fraction sourceCount = source.getAmount();
+			Fraction targetCount = target.getAmount();
+
+			Fraction targetAvailable = Fraction.maximum(Fraction.EMPTY, targetMax.subtract(targetCount));
+
+			target.take(source, Fraction.minimum(sourceCount, targetAvailable));
+		}
+
+		return new Pair<>(source, target);
 	}
 
 	/** Inserts fluids from the first stack into the first fluid volume.
 		* Inserts fluids from the first fluid volume into the first stack. */
-
 	public static void transferBetween(ItemComponent itemComponent, FluidComponent fluidComponent, int firstStackSlot, int secondStackSlot, int volumeSlot) {
 		if (fluidComponent != null) {
 			if (itemComponent != null) {

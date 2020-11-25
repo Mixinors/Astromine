@@ -49,7 +49,7 @@ public final class EntityOxygenComponent implements Component {
 
 	Entity entity;
 
-	/** Instantiates an {@link EntityOxygenComponent} with the given value. */
+	/** Instantiates an {@link EntityOxygenComponent}. */
 	private EntityOxygenComponent(Entity entity) {
 		this.entity = entity;
 	}
@@ -64,7 +64,7 @@ public final class EntityOxygenComponent implements Component {
 		}
 	}
 
-	/** Instantiates an {@link EntityOxygenComponent} with the given value. */
+	/** Instantiates an {@link EntityOxygenComponent}. */
 	public static EntityOxygenComponent of(Entity entity) {
 		return new EntityOxygenComponent(entity);
 	}
