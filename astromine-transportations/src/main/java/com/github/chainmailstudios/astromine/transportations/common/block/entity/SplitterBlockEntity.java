@@ -55,14 +55,14 @@ public class SplitterBlockEntity extends AbstractConveyableBlockEntity {
 			largeStack.setCount(largeHalf);
 
 			if (smallStack.getCount() > 0)
-				setLeftStack(smallStack);
+				getItemComponent().setFirst(smallStack);
 
 			if (largeStack.getCount() > 0)
-				setRightStack(largeStack);
-		} else if (!getLeftStack().isEmpty() && getRightStack().isEmpty()) {
-			setRightStack(stack);
-		} else if (!getRightStack().isEmpty() && getLeftStack().isEmpty()) {
-			setLeftStack(stack);
+				getItemComponent().setSecond(largeStack);
+		} else if (!getItemComponent().getFirst().isEmpty() && getItemComponent().getSecond().isEmpty()) {
+			getItemComponent().setSecond(stack);
+		} else if (!getItemComponent().getSecond().isEmpty() && getItemComponent().getFirst().isEmpty()) {
+			getItemComponent().setFirst(stack);
 		}
 
 		world.playSound(null, getPos().getX(), getPos().getY(), getPos().getZ(), AstromineTransportationsSoundEvents.MACHINE_CLICK, SoundCategory.BLOCKS, 1.0F, 1.0F);

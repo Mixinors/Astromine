@@ -45,7 +45,7 @@ public class ConveyorBlockEntityRenderer extends BlockEntityRenderer<ConveyorBlo
 		ConveyorTypes type = ((Conveyor) blockEntity.getCachedState().getBlock()).getType();
 
 		if (!blockEntity.getWorld().getBlockState(blockEntity.getPos()).isAir() && !blockEntity.isEmpty()) {
-			ItemStack stack = blockEntity.getStack();
+			ItemStack stack = blockEntity.getItemComponent().getFirst();
 
 			float position = blockEntity.getRenderAttachmentData()[1] + (blockEntity.getRenderAttachmentData()[0] - blockEntity.getRenderAttachmentData()[1]) * partialTicks;
 

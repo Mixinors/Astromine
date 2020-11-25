@@ -89,25 +89,24 @@ public interface DoubleStackInventory extends Inventory {
 
 		markDirty();
 	}
-
-
+	
 	/** Returns the {@link ItemStack} at the first slot. */
-	default ItemStack getLeftStack() {
+	default ItemStack getFirst() {
 		return getStack(0);
 	}
 
 	/** Sets the {@link ItemStack} at the first slot to the specified value. */
-	default void setLeftStack(ItemStack stack) {
+	default void setFirst(ItemStack stack) {
 		setStack(0, stack);
 	}
 
 	/** Returns the {@link ItemStack} at the second slot. */
-	default ItemStack getRightStack() {
+	default ItemStack getSecond() {
 		return getStack(1);
 	}
 
 	/** Sets the {@link ItemStack} at the second slot to the specified value. */
-	default void setRightStack(ItemStack stack) {
+	default void setSecond(ItemStack stack) {
 		setStack(1, stack);
 	}
 

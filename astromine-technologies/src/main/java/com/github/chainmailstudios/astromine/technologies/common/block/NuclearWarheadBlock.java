@@ -48,7 +48,7 @@ public class NuclearWarheadBlock extends Block {
 	}
 
 	private void tryDetonate(World world, BlockPos pos) {
-		if (world.isClient())
+		if (world.isClient)
 			return;
 		if (world.isReceivingRedstonePower(pos)) {
 			if (AstromineConfig.get().nuclearWarheadEnabled) {

@@ -184,7 +184,7 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 	 * based on its activity, or lack thereof. */
 	@Override
 	public void tick() {
-		if (!hasWorld() || world.isClient())
+		if (!hasWorld() || world.isClient)
 			return;
 
 		List<Pair<EnergyHandler, EnergyHandler>> energyTransfers = Lists.newArrayList();

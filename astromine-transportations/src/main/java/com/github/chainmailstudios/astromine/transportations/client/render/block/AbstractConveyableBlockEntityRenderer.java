@@ -46,16 +46,16 @@ public class AbstractConveyableBlockEntityRenderer extends BlockEntityRenderer<A
 		Direction direction = blockEntity.getCachedState().get(HorizontalFacingBlock.FACING);
 
 		if (!blockEntity.getWorld().getBlockState(blockEntity.getPos()).isAir()) {
-			if (!blockEntity.getLeftStack().isEmpty()) {
-				ItemStack leftStack = blockEntity.getLeftStack();
+			if (!blockEntity.getItemComponent().getFirst().isEmpty()) {
+				ItemStack leftStack = blockEntity.getItemComponent().getFirst();
 
 				float leftPosition = blockEntity.getRenderAttachmentData()[1] + (blockEntity.getRenderAttachmentData()[0] - blockEntity.getRenderAttachmentData()[1]) * partialTicks;
 
 				renderItem(blockEntity, direction.rotateYCounterclockwise(), leftStack, leftPosition, speed, 0, ConveyorTypes.NORMAL, matrixStack, vertexConsumerProvider);
 			}
 
-			if (!blockEntity.getRightStack().isEmpty()) {
-				ItemStack rightStack = blockEntity.getRightStack();
+			if (!blockEntity.getItemComponent().getSecond().isEmpty()) {
+				ItemStack rightStack = blockEntity.getItemComponent().getSecond();
 
 				float rightPosition = blockEntity.getRenderAttachmentData()[3] + (blockEntity.getRenderAttachmentData()[2] - blockEntity.getRenderAttachmentData()[3]) * partialTicks;
 

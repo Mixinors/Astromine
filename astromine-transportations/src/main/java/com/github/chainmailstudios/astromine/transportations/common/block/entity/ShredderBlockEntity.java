@@ -37,8 +37,6 @@ import com.github.chainmailstudios.astromine.transportations.registry.AstromineT
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsSoundEvents;
 
 public class ShredderBlockEntity extends ComponentBlockEntity implements Conveyable {
-	public boolean hasBeenRemoved = false;
-
 	public ShredderBlockEntity() {
 		super(AstromineTransportationsBlockEntityTypes.INCINERATOR);
 	}
@@ -48,27 +46,17 @@ public class ShredderBlockEntity extends ComponentBlockEntity implements Conveya
 	}
 
 	@Override
-	public boolean hasBeenRemoved() {
-		return hasBeenRemoved;
-	}
-
-	@Override
-	public void setRemoved(boolean hasBeenRemoved) {
-		this.hasBeenRemoved = hasBeenRemoved;
-	}
-
-	@Override
 	public boolean accepts(ItemStack stack) {
 		return tickRedstone();
 	}
 
 	@Override
-	public boolean validInputSide(Direction direction) {
+	public boolean canInsert(Direction direction) {
 		return direction != Direction.UP && direction != Direction.DOWN;
 	}
 
 	@Override
-	public boolean isOutputSide(Direction direction, ConveyorTypes type) {
+	public boolean canExtract(Direction direction, ConveyorTypes type) {
 		return false;
 	}
 

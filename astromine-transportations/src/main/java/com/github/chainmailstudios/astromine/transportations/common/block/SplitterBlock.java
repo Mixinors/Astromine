@@ -73,9 +73,9 @@ public class SplitterBlock extends HorizontalFacingBlock implements BlockEntityP
 		if (state.getBlock() != newState.getBlock()) {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
 			if (blockEntity instanceof AbstractConveyableBlockEntity) {
-				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), ((AbstractConveyableBlockEntity) blockEntity).getLeftStack());
-				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), ((AbstractConveyableBlockEntity) blockEntity).getRightStack());
-				((AbstractConveyableBlockEntity) blockEntity).setRemoved(true);
+				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), ((AbstractConveyableBlockEntity) blockEntity).getItemComponent().getFirst());
+				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), ((AbstractConveyableBlockEntity) blockEntity).getItemComponent().getSecond());
+				((AbstractConveyableBlockEntity) blockEntity).markRemoved();
 			}
 
 			super.onStateReplaced(state, world, pos, newState, notify);
@@ -93,12 +93,12 @@ public class SplitterBlock extends HorizontalFacingBlock implements BlockEntityP
 		BlockPos rightPos = blockPos.offset(direction.rotateYClockwise());
 
 		BlockEntity leftBlockEntity = world.getBlockEntity(leftPos);
-		if (leftBlockEntity instanceof Conveyable && ((Conveyable) leftBlockEntity).validInputSide(direction.rotateYClockwise()))
+		if (leftBlockEntity instanceof Conveyable && ((Conveyable) leftBlockEntity).canInsert(direction.rotateYClockwise()))
 			machineBlockEntity.setLeft(true);
 		else machineBlockEntity.setLeft(false);
 
 		BlockEntity rightBlockEntity = world.getBlockEntity(rightPos);
-		if (rightBlockEntity instanceof Conveyable && ((Conveyable) rightBlockEntity).validInputSide(direction.rotateYCounterclockwise()))
+		if (rightBlockEntity instanceof Conveyable && ((Conveyable) rightBlockEntity).canInsert(direction.rotateYCounterclockwise()))
 			machineBlockEntity.setRight(true);
 		else machineBlockEntity.setRight(false);
 	}

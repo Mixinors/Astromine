@@ -92,7 +92,7 @@ public class ShredderBlock extends HorizontalFacingBlock implements BlockEntityP
 		if (state.getBlock() != newState.getBlock()) {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
 			if (blockEntity instanceof ShredderBlockEntity) {
-				((ShredderBlockEntity) blockEntity).setRemoved(true);
+				blockEntity.markRemoved();
 			}
 
 			super.onStateReplaced(state, world, pos, newState, notify);

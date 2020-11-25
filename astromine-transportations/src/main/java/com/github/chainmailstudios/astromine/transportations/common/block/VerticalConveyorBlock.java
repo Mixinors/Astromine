@@ -98,13 +98,13 @@ public class VerticalConveyorBlock extends HorizontalFacingBlock implements Bloc
 		if (!playerEntity.getStackInHand(hand).isEmpty() && Block.getBlockFromItem(playerEntity.getStackInHand(hand).getItem()) instanceof Conveyor) {
 			return ActionResult.PASS;
 		} else if (!playerEntity.getStackInHand(hand).isEmpty() && blockEntity.isEmpty()) {
-			blockEntity.setStack(playerEntity.getStackInHand(hand));
+			blockEntity.getItemComponent().setFirst(playerEntity.getStackInHand(hand));
 			playerEntity.setStackInHand(hand, ItemStack.EMPTY);
 
 			return ActionResult.SUCCESS;
 		} else if (!blockEntity.isEmpty()) {
-			playerEntity.inventory.offerOrDrop(world, blockEntity.getStack());
-			blockEntity.removeStack();
+			playerEntity.inventory.offerOrDrop(world, blockEntity.getItemComponent().getFirst());
+			blockEntity.getItemComponent().setFirst(ItemStack.EMPTY);
 
 			return ActionResult.SUCCESS;
 		}
@@ -125,8 +125,8 @@ public class VerticalConveyorBlock extends HorizontalFacingBlock implements Bloc
 		if (blockState.getBlock() != blockState2.getBlock()) {
 			BlockEntity blockEntity_1 = world.getBlockEntity(blockPos);
 			if (blockEntity_1 instanceof VerticalConveyorBlockEntity) {
-				((VerticalConveyorBlockEntity) blockEntity_1).setRemoved(true);
-				ItemScatterer.spawn(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ((VerticalConveyorBlockEntity) blockEntity_1).getStack());
+				blockEntity_1.markRemoved();
+				ItemScatterer.spawn(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), ((VerticalConveyorBlockEntity) blockEntity_1).getItemComponent().getFirst());
 				world.updateComparators(blockPos, this);
 			}
 
@@ -145,12 +145,12 @@ public class VerticalConveyorBlock extends HorizontalFacingBlock implements Bloc
 		BlockPos conveyorPos = blockPos.offset(direction).up();
 
 		BlockEntity frontBlockEntity = world.getBlockEntity(frontPos);
-		if (frontBlockEntity instanceof Conveyable && ((Conveyable) frontBlockEntity).isOutputSide(direction, getType())) {
+		if (frontBlockEntity instanceof Conveyable && ((Conveyable) frontBlockEntity).canExtract(direction, getType())) {
 			newState = newState.with(ConveyorProperties.FRONT, true);
 		} else newState = newState.with(ConveyorProperties.FRONT, false);
 
 		BlockEntity conveyorBlockEntity = world.getBlockEntity(conveyorPos);
-		if (world.isAir(upPos) && conveyorBlockEntity instanceof Conveyable && !((Conveyable) conveyorBlockEntity).hasBeenRemoved() && ((Conveyable) conveyorBlockEntity).validInputSide(direction.getOpposite()))
+		if (world.isAir(upPos) && conveyorBlockEntity instanceof Conveyable && !conveyorBlockEntity.isRemoved() && ((Conveyable) conveyorBlockEntity).canInsert(direction.getOpposite()))
 			newState = newState.with(ConveyorProperties.CONVEYOR, true);
 		else newState = newState.with(ConveyorProperties.CONVEYOR, false);
 
@@ -166,7 +166,7 @@ public class VerticalConveyorBlock extends HorizontalFacingBlock implements Bloc
 		BlockPos conveyorPos = blockPos.offset(direction).up();
 
 		BlockEntity upBlockEntity = world.getBlockEntity(upPos);
-		if (upBlockEntity instanceof Conveyable && ((Conveyable) upBlockEntity).validInputSide(Direction.DOWN))
+		if (upBlockEntity instanceof Conveyable && ((Conveyable) upBlockEntity).canInsert(Direction.DOWN))
 			((VerticalConveyorBlockEntity) blockEntity).setUp(true);
 		else((VerticalConveyorBlockEntity) blockEntity).setUp(false);
 
@@ -179,7 +179,7 @@ public class VerticalConveyorBlock extends HorizontalFacingBlock implements Bloc
 	public void checkForConveyor(World world, BlockState blockState, BlockEntity conveyorBlockEntity, Direction direction, BlockPos pos, BlockPos upPos) {
 		BlockState newState = blockState;
 
-		if (world.isAir(upPos) && conveyorBlockEntity instanceof Conveyable && !((Conveyable) conveyorBlockEntity).hasBeenRemoved() && ((Conveyable) conveyorBlockEntity).validInputSide(direction.getOpposite())) {
+		if (world.isAir(upPos) && conveyorBlockEntity instanceof Conveyable && !conveyorBlockEntity.isRemoved() && ((Conveyable) conveyorBlockEntity).canInsert(direction.getOpposite())) {
 			newState = newState.with(ConveyorProperties.CONVEYOR, true);
 		} else {
 			newState = newState.with(ConveyorProperties.CONVEYOR, false);

@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.entity.BlockEntityType;
@@ -44,6 +46,7 @@ import com.github.chainmailstudios.astromine.transportations.registry.AstromineT
 
 public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	protected boolean up = false;
+
 	protected int horizontalPosition;
 	protected int prevHorizontalPosition;
 
@@ -53,6 +56,26 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 
 	public VerticalConveyorBlockEntity(BlockEntityType type) {
 		super(type);
+	}
+
+	@Override
+	public ItemComponent createItemComponent() {
+		return new SimpleItemComponent(1) {
+			@Override
+			public ItemStack removeStack(int slot) {
+				position = 0;
+				prevPosition = 0;
+
+				horizontalPosition = 0;
+				prevHorizontalPosition = 0;
+
+				return super.removeStack(slot);
+			}
+		}.withListener((inventory) -> {
+			if (world != null && !world.isClient) {
+				sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+			}
+		});
 	}
 
 	@Override
@@ -87,14 +110,13 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	}
 
 	public void handleMovementHorizontal(Conveyable conveyable, int speed, boolean transition) {
-		if (conveyable.accepts(getStack())) {
+		if (conveyable.accepts(getItemComponent().getFirst())) {
 			if (horizontalPosition < speed) {
 				setHorizontalPosition(getHorizontalPosition() + 2);
 			} else if (transition && horizontalPosition >= speed) {
-				conveyable.give(getStack());
-				setStack(ItemStack.EMPTY);
-				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24)
-					removeStack();
+				conveyable.give(getItemComponent().getFirst());
+
+				getItemComponent().setFirst(ItemStack.EMPTY);
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
 			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
@@ -108,20 +130,13 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	}
 
 	@Override
-	public boolean validInputSide(Direction direction) {
+	public boolean canInsert(Direction direction) {
 		return !getCachedState().get(ConveyorProperties.FRONT) && direction == Direction.DOWN || direction == getCachedState().get(HorizontalFacingBlock.FACING).getOpposite();
 	}
 
 	@Override
-	public boolean isOutputSide(Direction direction, ConveyorTypes type) {
+	public boolean canExtract(Direction direction, ConveyorTypes type) {
 		return type == ConveyorTypes.NORMAL ? getCachedState().get(HorizontalFacingBlock.FACING) == direction : direction == Direction.UP;
-	}
-
-	@Override
-	public ItemStack removeStack() {
-		horizontalPosition = 0;
-		prevHorizontalPosition = 0;
-		return super.removeStack();
 	}
 
 	public boolean hasUp() {
@@ -130,9 +145,12 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 
 	public void setUp(boolean up) {
 		this.up = up;
+
 		markDirty();
-		if (!world.isClient())
+
+		if (!world.isClient) {
 			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+		}
 	}
 
 	@Override
@@ -155,7 +173,9 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	@Override
 	public void fromTag(BlockState state, CompoundTag compoundTag) {
 		super.fromTag(state, compoundTag);
+
 		up = compoundTag.getBoolean("up");
+
 		horizontalPosition = compoundTag.getInt("horizontalPosition");
 		prevHorizontalPosition = horizontalPosition = compoundTag.getInt("horizontalPosition");
 	}
@@ -168,7 +188,9 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	@Override
 	public CompoundTag toTag(CompoundTag compoundTag) {
 		compoundTag.putBoolean("up", up);
+
 		compoundTag.putInt("horizontalPosition", horizontalPosition);
+
 		return super.toTag(compoundTag);
 	}
 

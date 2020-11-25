@@ -24,6 +24,8 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.client.MinecraftClient;
@@ -51,20 +53,44 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	}
 
 	@Override
+	public ItemComponent createItemComponent() {
+		return new SimpleItemComponent(1) {
+			@Override
+			public ItemStack removeStack(int slot) {
+				position = 0;
+				prevPosition = 0;
+
+				horizontalPosition = 0;
+				prevHorizontalPosition = 0;
+
+				return super.removeStack(slot);
+			}
+		}.withListener((inventory) -> {
+			if (world != null && !world.isClient) {
+				sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+			}
+		});
+	}
+
+	@Override
 	public void tick() {
 		Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
+
 		int speed = ((Conveyor) getCachedState().getBlock()).getSpeed();
 
 		if (!isEmpty()) {
 			if (getCachedState().get(ConveyorProperties.FRONT)) {
 				BlockPos frontPos = getPos().offset(direction.getOpposite());
+
 				if (getWorld().getBlockEntity(frontPos) instanceof Conveyable) {
 					Conveyable conveyable = (Conveyable) getWorld().getBlockEntity(frontPos);
+
 					if (getCachedState().get(ConveyorProperties.CONVEYOR)) {
 						if (position < speed) {
 							handleMovement(conveyable, speed, false);
 						} else {
 							prevPosition = speed;
+
 							handleMovementHorizontal(conveyable, speed, true);
 						}
 					} else {
@@ -73,8 +99,10 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 				}
 			} else if (down) {
 				BlockPos downPos = getPos().down();
+
 				if (getWorld().getBlockEntity(downPos) instanceof Conveyable) {
 					Conveyable conveyable = (Conveyable) getWorld().getBlockEntity(downPos);
+
 					if (getCachedState().get(ConveyorProperties.CONVEYOR)) {
 						handleMovement(conveyable, speed * 2, true);
 					} else {
@@ -90,14 +118,13 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	}
 
 	public void handleMovementHorizontal(Conveyable conveyable, int speed, boolean transition) {
-		if (conveyable.accepts(getStack())) {
+		if (conveyable.accepts(getItemComponent().getFirst())) {
 			if (horizontalPosition < speed) {
 				setHorizontalPosition(getHorizontalPosition() + 1);
 			} else if (transition && horizontalPosition >= speed) {
-				conveyable.give(getStack());
-				setStack(ItemStack.EMPTY);
-				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 24 * 24)
-					removeStack();
+				conveyable.give(getItemComponent().getFirst());
+
+				getItemComponent().setFirst(ItemStack.EMPTY);
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
 			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
@@ -111,20 +138,13 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	}
 
 	@Override
-	public boolean validInputSide(Direction direction) {
+	public boolean canInsert(Direction direction) {
 		return direction == Direction.UP || direction == getCachedState().get(HorizontalFacingBlock.FACING);
 	}
 
 	@Override
-	public boolean isOutputSide(Direction direction, ConveyorTypes type) {
+	public boolean canExtract(Direction direction, ConveyorTypes type) {
 		return getCachedState().get(HorizontalFacingBlock.FACING).getOpposite() == direction || direction == Direction.DOWN;
-	}
-
-	@Override
-	public ItemStack removeStack() {
-		horizontalPosition = 0;
-		prevHorizontalPosition = 0;
-		return super.removeStack();
 	}
 
 	@Override
@@ -135,9 +155,12 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	@Override
 	public void setDown(boolean down) {
 		this.down = down;
+
 		markDirty();
-		if (!world.isClient())
+
+		if (!world.isClient) {
 			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+		}
 	}
 
 	@Override
@@ -150,9 +173,11 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	}
 
 	public void setHorizontalPosition(int horizontalPosition) {
-		if (horizontalPosition == 0)
+		if (horizontalPosition == 0) {
 			this.prevHorizontalPosition = 0;
-		else this.prevHorizontalPosition = this.horizontalPosition;
+		} else {
+			this.prevHorizontalPosition = this.horizontalPosition;
+		}
 
 		this.horizontalPosition = horizontalPosition;
 	}
@@ -160,7 +185,9 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	@Override
 	public void fromTag(BlockState state, CompoundTag compoundTag) {
 		super.fromTag(state, compoundTag);
+
 		down = compoundTag.getBoolean("down_vertical");
+
 		horizontalPosition = compoundTag.getInt("horizontalPosition");
 		prevHorizontalPosition = horizontalPosition = compoundTag.getInt("horizontalPosition");
 	}
@@ -173,7 +200,9 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	@Override
 	public CompoundTag toTag(CompoundTag compoundTag) {
 		compoundTag.putBoolean("down_vertical", down);
+
 		compoundTag.putInt("horizontalPosition", horizontalPosition);
+
 		return super.toTag(compoundTag);
 	}
 

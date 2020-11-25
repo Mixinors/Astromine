@@ -24,6 +24,9 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block.entity.base;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentItemBlockEntity;
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 
 import net.minecraft.block.BlockState;
@@ -45,18 +48,38 @@ import com.github.chainmailstudios.astromine.transportations.common.conveyor.Con
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorConveyable;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorTypes;
 
-public class AbstractConveyableBlockEntity extends ComponentBlockEntity implements Conveyable, DoubleStackInventory, RenderAttachmentBlockEntity {
+public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEntity implements Conveyable, RenderAttachmentBlockEntity {
 	int leftPosition = 0;
 	int prevLeftPosition = 0;
+	
 	int rightPosition = 0;
 	int prevRightPosition = 0;
-	boolean hasBeenRemoved = false;
+	
 	boolean left = false;
 	boolean right = false;
-	private DefaultedList<ItemStack> stacks = DefaultedList.ofSize(2, ItemStack.EMPTY);
-
+	
 	public AbstractConveyableBlockEntity(BlockEntityType type) {
 		super(type);
+	}
+
+	@Override
+	public ItemComponent createItemComponent() {
+		return new SimpleItemComponent() {
+			@Override
+			public ItemStack removeStack(int slot) {
+				leftPosition = 0;
+				rightPosition = 0;
+
+				prevLeftPosition = 0;
+				prevRightPosition = 0;
+
+				return super.removeStack(slot);
+			}
+		}.withListener((inventory) -> {
+			if (world != null && !world.isClient) {
+				sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+			}
+		});
 	}
 
 	@Override
@@ -65,13 +88,16 @@ public class AbstractConveyableBlockEntity extends ComponentBlockEntity implemen
 			return;
 
 		Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
+
 		int speed = 16;
 
-		if (!getLeftStack().isEmpty()) {
+		if (!getItemComponent().getFirst().isEmpty()) {
 			if (left) {
 				BlockPos leftPos = getPos().offset(direction.rotateYCounterclockwise());
+
 				if (getWorld().getBlockEntity(leftPos) instanceof Conveyable) {
 					Conveyable conveyable = (Conveyable) getWorld().getBlockEntity(leftPos);
+
 					handleLeftMovement(conveyable, speed, true);
 				}
 			} else {
@@ -81,11 +107,13 @@ public class AbstractConveyableBlockEntity extends ComponentBlockEntity implemen
 			setLeftPosition(0);
 		}
 
-		if (!getRightStack().isEmpty()) {
+		if (!getItemComponent().getSecond().isEmpty()) {
 			if (right) {
 				BlockPos rightPos = getPos().offset(direction.rotateYClockwise());
+
 				if (getWorld().getBlockEntity(rightPos) instanceof Conveyable) {
 					Conveyable conveyable = (Conveyable) getWorld().getBlockEntity(rightPos);
+
 					handleRightMovement(conveyable, speed, true);
 				}
 			} else {
@@ -97,14 +125,13 @@ public class AbstractConveyableBlockEntity extends ComponentBlockEntity implemen
 	}
 
 	public void handleLeftMovement(Conveyable conveyable, int speed, boolean transition) {
-		if (conveyable.accepts(getLeftStack())) {
+		if (conveyable.accepts(getItemComponent().getFirst())) {
 			if (leftPosition < speed) {
 				setLeftPosition(getLeftPosition() + 1);
-			} else if (transition && leftPosition >= speed) {
-				conveyable.give(getLeftStack());
-				setLeftStack(ItemStack.EMPTY);
-				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 40 * 40)
-					removeLeftStack();
+			} else if (transition) {
+				conveyable.give(getItemComponent().getFirst());
+
+				getItemComponent().setFirst(ItemStack.EMPTY);
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
 			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
@@ -122,14 +149,13 @@ public class AbstractConveyableBlockEntity extends ComponentBlockEntity implemen
 	}
 
 	public void handleRightMovement(Conveyable conveyable, int speed, boolean transition) {
-		if (conveyable.accepts(getRightStack())) {
+		if (conveyable.accepts(getItemComponent().getSecond())) {
 			if (rightPosition < speed) {
 				setRightPosition(getRightPosition() + 1);
-			} else if (transition && rightPosition >= speed) {
-				conveyable.give(getRightStack());
-				setRightStack(ItemStack.EMPTY);
-				if (!world.isClient() || world.isClient && MinecraftClient.getInstance().player.squaredDistanceTo(Vec3d.of(getPos())) > 40 * 40)
-					removeRightStack();
+			} else if (transition) {
+				conveyable.give(getItemComponent().getSecond());
+
+				getItemComponent().setSecond(ItemStack.EMPTY);
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
 			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
@@ -146,45 +172,18 @@ public class AbstractConveyableBlockEntity extends ComponentBlockEntity implemen
 		}
 	}
 
-	@Override
-	public DefaultedList<ItemStack> getItems() {
-		return stacks;
-	}
-
-	@Override
-	public void setStack(int slot, ItemStack stack) {
-		DoubleStackInventory.super.setStack(slot, stack);
-		if (!world.isClient())
-			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
-	}
-
-	@Override
-	public ItemStack removeStack(int slot) {
-		ItemStack stack = DoubleStackInventory.super.removeStack(slot);
-		leftPosition = 0;
-		rightPosition = 0;
-		prevLeftPosition = 0;
-		prevRightPosition = 0;
-		if (!world.isClient())
-			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
-		return stack;
-	}
-
-	@Override
-	public void clear() {
-		DoubleStackInventory.super.clear();
-		if (!world.isClient())
-			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
-	}
 
 	public int getLeftPosition() {
 		return leftPosition;
 	}
 
 	public void setLeftPosition(int leftPosition) {
-		if (leftPosition == 0)
+		if (leftPosition == 0) {
 			this.prevLeftPosition = 0;
-		else this.prevLeftPosition = this.leftPosition;
+		} else {
+			this.prevLeftPosition = this.leftPosition;
+		}
+
 		this.leftPosition = leftPosition;
 	}
 
@@ -193,20 +192,13 @@ public class AbstractConveyableBlockEntity extends ComponentBlockEntity implemen
 	}
 
 	public void setRightPosition(int rightPosition) {
-		if (rightPosition == 0)
+		if (rightPosition == 0) {
 			this.prevRightPosition = 0;
-		else this.prevRightPosition = this.rightPosition;
+		} else {
+			this.prevRightPosition = this.rightPosition;
+		}
+
 		this.rightPosition = rightPosition;
-	}
-
-	@Override
-	public boolean hasBeenRemoved() {
-		return hasBeenRemoved;
-	}
-
-	@Override
-	public void setRemoved(boolean hasBeenRemoved) {
-		this.hasBeenRemoved = hasBeenRemoved;
 	}
 
 	public boolean hasLeft() {
@@ -219,68 +211,87 @@ public class AbstractConveyableBlockEntity extends ComponentBlockEntity implemen
 
 	public void setLeft(boolean left) {
 		this.left = left;
+
 		markDirty();
-		if (!world.isClient())
+
+		if (!world.isClient) {
 			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+		}
 	}
 
 	public void setRight(boolean right) {
 		this.right = right;
+
 		markDirty();
-		if (!world.isClient())
+
+		if (!world.isClient) {
 			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
+		}
 	}
 
 	@Override
 	public boolean accepts(ItemStack stack) {
-		return !(!getLeftStack().isEmpty() && !getRightStack().isEmpty());
+		return !(!getItemComponent().getFirst().isEmpty() && !getItemComponent().getSecond().isEmpty());
 	}
 
 	@Override
-	public boolean validInputSide(Direction direction) {
+	public boolean canInsert(Direction direction) {
 		return direction == getCachedState().get(HorizontalFacingBlock.FACING).getOpposite();
 	}
 
 	@Override
-	public boolean isOutputSide(Direction direction, ConveyorTypes type) {
+	public boolean canExtract(Direction direction, ConveyorTypes type) {
 		return getCachedState().get(HorizontalFacingBlock.FACING).rotateYCounterclockwise() == direction || getCachedState().get(HorizontalFacingBlock.FACING).rotateYClockwise() == direction;
 	}
 
 	@Override
-	public void give(ItemStack stack) {
-
-	}
-
-	@Override
 	public int[] getRenderAttachmentData() {
-		return new int[]{ leftPosition, prevLeftPosition, rightPosition, prevRightPosition };
+		return new int[] { leftPosition, prevLeftPosition, rightPosition, prevRightPosition };
 	}
 
-	protected void sendPacket(ServerWorld w, CompoundTag tag) {
+	protected void sendPacket(ServerWorld world, CompoundTag tag) {
 		tag.putString("id", BlockEntityType.getId(getType()).toString());
-		sendPacket(w, new BlockEntityUpdateS2CPacket(getPos(), 127, tag));
+
+		sendPacket(world, new BlockEntityUpdateS2CPacket(getPos(), 127, tag));
 	}
 
-	protected void sendPacket(ServerWorld w, BlockEntityUpdateS2CPacket packet) {
-		w.getPlayers(player -> player.squaredDistanceTo(Vec3d.of(getPos())) < 40 * 40).forEach(player -> player.networkHandler.sendPacket(packet));
-	}
-
-	@Override
-	public void markDirty() {
-		super.markDirty();
+	protected void sendPacket(ServerWorld world, BlockEntityUpdateS2CPacket packet) {
+		world.getPlayers(player -> player.squaredDistanceTo(Vec3d.of(getPos())) < 40 * 40).forEach(player -> player.networkHandler.sendPacket(packet));
 	}
 
 	@Override
 	public void fromTag(BlockState state, CompoundTag compoundTag) {
 		super.fromTag(state, compoundTag);
-		getItems().set(0, ItemStack.fromTag(compoundTag.getCompound("leftStack")));
-		getItems().set(1, ItemStack.fromTag(compoundTag.getCompound("rightStack")));
-		left = compoundTag.getBoolean("left");
-		right = compoundTag.getBoolean("right");
+
+		getItemComponent().setFirst(ItemStack.fromTag(compoundTag.getCompound("leftStack")));
+		getItemComponent().setSecond(ItemStack.fromTag(compoundTag.getCompound("rightStack")));
+
 		leftPosition = compoundTag.getInt("leftPosition");
 		prevLeftPosition = compoundTag.getInt("prevLeftPosition");
+
 		rightPosition = compoundTag.getInt("rightPosition");
 		prevRightPosition = compoundTag.getInt("prevRightPosition");
+
+		left = compoundTag.getBoolean("left");
+		right = compoundTag.getBoolean("right");
+	}
+
+	@Override
+	public CompoundTag toTag(CompoundTag compoundTag) {
+		compoundTag.put("leftStack", getItemComponent().getFirst().toTag(new CompoundTag()));
+		compoundTag.put("rightStack", getItemComponent().getSecond().toTag(new CompoundTag()));
+
+
+		compoundTag.putInt("leftPosition", leftPosition);
+		compoundTag.putInt("prevLeftPosition", prevLeftPosition);
+
+		compoundTag.putInt("rightPosition", rightPosition);
+		compoundTag.putInt("prevRightPosition", prevRightPosition);
+
+		compoundTag.putBoolean("left", left);
+		compoundTag.putBoolean("right", right);
+
+		return super.toTag(compoundTag);
 	}
 
 	@Override
@@ -289,25 +300,12 @@ public class AbstractConveyableBlockEntity extends ComponentBlockEntity implemen
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag compoundTag) {
-		compoundTag.put("leftStack", getLeftStack().toTag(new CompoundTag()));
-		compoundTag.put("rightStack", getRightStack().toTag(new CompoundTag()));
-		compoundTag.putBoolean("left", left);
-		compoundTag.putBoolean("right", right);
-		compoundTag.putInt("leftPosition", leftPosition);
-		compoundTag.putInt("prevLeftPosition", prevLeftPosition);
-		compoundTag.putInt("rightPosition", rightPosition);
-		compoundTag.putInt("prevRightPosition", prevRightPosition);
-		return super.toTag(compoundTag);
+	public CompoundTag toClientTag(CompoundTag compoundTag) {
+		return toTag(compoundTag);
 	}
 
 	@Override
 	public CompoundTag toInitialChunkDataTag() {
 		return toTag(new CompoundTag());
-	}
-
-	@Override
-	public CompoundTag toClientTag(CompoundTag compoundTag) {
-		return toTag(compoundTag);
 	}
 }

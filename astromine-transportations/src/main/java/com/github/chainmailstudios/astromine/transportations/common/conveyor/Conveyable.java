@@ -33,16 +33,12 @@ public interface Conveyable {
 	 */
 	boolean accepts(ItemStack stack);
 
-	boolean validInputSide(Direction direction);
+	boolean canInsert(Direction direction);
 
-	boolean isOutputSide(Direction direction, ConveyorTypes type);
+	boolean canExtract(Direction direction, ConveyorTypes type);
 
 	/**
 	 * @return Gives the interactable the {@link ItemStack}.
 	 */
 	void give(ItemStack stack);
-
-	boolean hasBeenRemoved();
-
-	void setRemoved(boolean hasBeenRemoved);
 }

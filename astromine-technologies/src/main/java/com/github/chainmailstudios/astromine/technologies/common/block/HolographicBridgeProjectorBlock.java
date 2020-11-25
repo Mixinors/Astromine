@@ -68,7 +68,7 @@ public class HolographicBridgeProjectorBlock extends WrenchableHorizontalFacingB
 
 					entity.markDirty();
 
-					if (!world.isClient())
+					if (!world.isClient)
 						entity.sync();
 
 					if (entity.hasChild()) {
@@ -76,7 +76,7 @@ public class HolographicBridgeProjectorBlock extends WrenchableHorizontalFacingB
 
 						entity.getChild().markDirty();
 
-						if (!world.isClient()) {
+						if (!world.isClient) {
 							entity.getChild().sync();
 						}
 					}

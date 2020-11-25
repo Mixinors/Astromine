@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 
@@ -153,98 +154,108 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 
 	@Override
 	public void tick() {
-//		Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
-//		boolean powered = getCachedState().get(Properties.POWERED);
-//		int speed = ((InserterBlock) getCachedState().getBlock()).getSpeed();
+		//Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
+		//boolean powered = getCachedState().get(Properties.POWERED);
+		//int speed = ((InserterBlock) getCachedState().getBlock()).getSpeed();
 //
-//		if (!powered) {
-//			if (isEmpty()) {
-//				BlockState behindState = world.getBlockState(getPos().offset(direction.getOpposite()));
-//				ItemExtractable extractable = ItemAttributes.EXTRACTABLE.get(world, getPos().offset(direction.getOpposite()), SearchOptions.inDirection(direction.getOpposite()));
+		//if (!powered) {
+		//	if (isEmpty()) {
+		//		BlockState behindState = world.getBlockState(getPos().offset(direction.getOpposite()));
 //
-//				if (behindState.getBlock() instanceof AbstractFurnaceBlock) {
-//					extractable = ItemAttributes.EXTRACTABLE.get(world, getPos().offset(direction.getOpposite()), SearchOptions.inDirection(Direction.UP));
-//				}
+		//		ItemComponent itemComponent = ItemComponent.get(world.getBlockEntity(getPos().offset(direction.getOpposite())));
 //
-//				if (extractable != EmptyItemExtractable.NULL) {
-//					ItemStack stack = extractable.attemptAnyExtraction(64, Simulation.SIMULATE);
-//					if (position == 0 && !stack.isEmpty() && !(behindState.getBlock() instanceof InserterBlock)) {
-//						stack = extractable.attemptAnyExtraction(64, Simulation.ACTION);
-//						setStack(stack);
-//					} else if (position > 0) {
-//						setPosition(getPosition() - 1);
-//					}
-//				} else {
-//					BlockPos offsetPos = getPos().offset(direction.getOpposite());
-//					List<ChestMinecartEntity> minecartEntities = getWorld().getEntitiesByClass(ChestMinecartEntity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1),
-//						EntityPredicates.EXCEPT_SPECTATOR);
-//					if (position == 0 && minecartEntities.size() >= 1) {
-//						ChestMinecartEntity minecartEntity = minecartEntities.get(0);
-//						FixedInventoryVanillaWrapper wrapper = new FixedInventoryVanillaWrapper(minecartEntity);
-//						ItemExtractable extractableMinecart = wrapper.getExtractable();
+		//		if (itemComponent != null) {
+		//			if (behindState.getBlock() instanceof AbstractFurnaceBlock) {
+		//				direction = Direction.UP;
+		//			}
 //
-//						ItemStack stackMinecart = extractableMinecart.attemptAnyExtraction(64, Simulation.SIMULATE);
-//						if (position == 0 && !stackMinecart.isEmpty()) {
-//							stackMinecart = extractableMinecart.attemptAnyExtraction(64, Simulation.ACTION);
-//							setStack(stackMinecart);
-//							minecartEntity.markDirty();
-//						}
-//					} else if (position > 0) {
-//						setPosition(getPosition() - 1);
-//					}
-//				}
-//			} else if (!isEmpty()) {
-//				BlockState aheadState = getWorld().getBlockState(getPos().offset(direction));
+		//			ItemStack stack = itemComponent.getFirstExtractableStack(direction);
 //
-//				ItemInsertable insertable = ItemAttributes.INSERTABLE.get(world, getPos().offset(direction), SearchOptions.inDirection(direction));
+		//			if (position == 0 && !stack.isEmpty() && !(behindState.getBlock() instanceof InserterBlock)) {
+		//				itemComponent.int
+		//			}
+		//		}
 //
-//				if (aheadState.getBlock() instanceof ComposterBlock) {
-//					insertable = ItemAttributes.INSERTABLE.get(world, getPos().offset(direction), SearchOptions.inDirection(Direction.DOWN));
-//				} else if (aheadState.getBlock() instanceof AbstractFurnaceBlock && !AbstractFurnaceBlockEntity.canUseAsFuel(getStack())) {
-//					insertable = ItemAttributes.INSERTABLE.get(world, getPos().offset(direction), SearchOptions.inDirection(Direction.DOWN));
-//				}
 //
-//				ItemStack stack = insertable.attemptInsertion(getStack(), Simulation.SIMULATE);
-//				if (insertable != RejectingItemInsertable.NULL) {
-//					if (stack.isEmpty() || stack.getCount() != getStack().getCount()) {
-//						if (position < speed) {
-//							setPosition(getPosition() + 1);
-//						} else if (!getWorld().isClient()) {
-//							stack = insertable.attemptInsertion(getStack(), Simulation.ACTION);
-//							setStack(stack);
-//						}
-//					} else if (position > 0) {
-//						setPosition(getPosition() - 1);
-//					}
-//				} else {
-//					BlockPos offsetPos = getPos().offset(direction);
-//					List<ChestMinecartEntity> minecartEntities = getWorld().getEntitiesByClass(ChestMinecartEntity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1),
-//						EntityPredicates.EXCEPT_SPECTATOR);
-//					if (minecartEntities.size() >= 1) {
-//						ChestMinecartEntity minecartEntity = minecartEntities.get(0);
-//						if (minecartEntity instanceof Inventory) {
-//							FixedInventoryVanillaWrapper wrapper = new FixedInventoryVanillaWrapper(minecartEntity);
-//							ItemInsertable insertableMinecart = wrapper.getInsertable();
+		//		if (extractable != EmptyItemExtractable.NULL) {
+		//			ItemStack stack = extractable.attemptAnyExtraction(64, Simulation.SIMULATE);
+		//			if (position == 0 && !stack.isEmpty() && !(behindState.getBlock() instanceof InserterBlock)) {
+		//				stack = extractable.attemptAnyExtraction(64, Simulation.ACTION);
+		//				setStack(stack);
+		//			} else if (position > 0) {
+		//				setPosition(getPosition() - 1);
+		//			}
+		//		} else {
+		//			BlockPos offsetPos = getPos().offset(direction.getOpposite());
+		//			List<ChestMinecartEntity> minecartEntities = getWorld().getEntitiesByClass(ChestMinecartEntity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1),
+		//				EntityPredicates.EXCEPT_SPECTATOR);
+		//			if (position == 0 && minecartEntities.size() >= 1) {
+		//				ChestMinecartEntity minecartEntity = minecartEntities.get(0);
+		//				FixedInventoryVanillaWrapper wrapper = new FixedInventoryVanillaWrapper(minecartEntity);
+		//				ItemExtractable extractableMinecart = wrapper.getExtractable();
 //
-//							ItemStack stackMinecart = insertableMinecart.attemptInsertion(getStack(), Simulation.SIMULATE);
-//							if (position < speed && (stackMinecart.isEmpty() || stackMinecart.getCount() != getStack().getCount())) {
-//								setPosition(getPosition() + 1);
-//							} else if (!getWorld().isClient() && (stackMinecart.isEmpty() || stackMinecart.getCount() != getStack().getCount())) {
-//								stackMinecart = insertableMinecart.attemptInsertion(getStack(), Simulation.ACTION);
-//								setStack(stackMinecart);
-//								((Inventory) minecartEntity).markDirty();
-//							}
-//						}
-//					} else if (position > 0) {
-//						setPosition(getPosition() - 1);
-//					}
-//				}
-//			} else if (position > 0) {
-//				setPosition(getPosition() - 1);
-//			}
-//		} else if (position > 0) {
-//			setPosition(getPosition() - 1);
-//		}
+		//				ItemStack stackMinecart = extractableMinecart.attemptAnyExtraction(64, Simulation.SIMULATE);
+		//				if (position == 0 && !stackMinecart.isEmpty()) {
+		//					stackMinecart = extractableMinecart.attemptAnyExtraction(64, Simulation.ACTION);
+		//					setStack(stackMinecart);
+		//					minecartEntity.markDirty();
+		//				}
+		//			} else if (position > 0) {
+		//				setPosition(getPosition() - 1);
+		//			}
+		//		}
+		//	} else if (!isEmpty()) {
+		//		BlockState aheadState = getWorld().getBlockState(getPos().offset(direction));
+//
+		//		ItemInsertable insertable = ItemAttributes.INSERTABLE.get(world, getPos().offset(direction), SearchOptions.inDirection(direction));
+//
+		//		if (aheadState.getBlock() instanceof ComposterBlock) {
+		//			insertable = ItemAttributes.INSERTABLE.get(world, getPos().offset(direction), SearchOptions.inDirection(Direction.DOWN));
+		//		} else if (aheadState.getBlock() instanceof AbstractFurnaceBlock && !AbstractFurnaceBlockEntity.canUseAsFuel(getStack())) {
+		//			insertable = ItemAttributes.INSERTABLE.get(world, getPos().offset(direction), SearchOptions.inDirection(Direction.DOWN));
+		//		}
+//
+		//		ItemStack stack = insertable.attemptInsertion(getStack(), Simulation.SIMULATE);
+		//		if (insertable != RejectingItemInsertable.NULL) {
+		//			if (stack.isEmpty() || stack.getCount() != getStack().getCount()) {
+		//				if (position < speed) {
+		//					setPosition(getPosition() + 1);
+		//				} else if (!getWorld().isClient()) {
+		//					stack = insertable.attemptInsertion(getStack(), Simulation.ACTION);
+		//					setStack(stack);
+		//				}
+		//			} else if (position > 0) {
+		//				setPosition(getPosition() - 1);
+		//			}
+		//		} else {
+		//			BlockPos offsetPos = getPos().offset(direction);
+		//			List<ChestMinecartEntity> minecartEntities = getWorld().getEntitiesByClass(ChestMinecartEntity.class, new Box(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), offsetPos.getX() + 1, offsetPos.getY() + 1, offsetPos.getZ() + 1),
+		//				EntityPredicates.EXCEPT_SPECTATOR);
+		//			if (minecartEntities.size() >= 1) {
+		//				ChestMinecartEntity minecartEntity = minecartEntities.get(0);
+		//				if (minecartEntity instanceof Inventory) {
+		//					FixedInventoryVanillaWrapper wrapper = new FixedInventoryVanillaWrapper(minecartEntity);
+		//					ItemInsertable insertableMinecart = wrapper.getInsertable();
+//
+		//					ItemStack stackMinecart = insertableMinecart.attemptInsertion(getStack(), Simulation.SIMULATE);
+		//					if (position < speed && (stackMinecart.isEmpty() || stackMinecart.getCount() != getStack().getCount())) {
+		//						setPosition(getPosition() + 1);
+		//					} else if (!getWorld().isClient() && (stackMinecart.isEmpty() || stackMinecart.getCount() != getStack().getCount())) {
+		//						stackMinecart = insertableMinecart.attemptInsertion(getStack(), Simulation.ACTION);
+		//						setStack(stackMinecart);
+		//						((Inventory) minecartEntity).markDirty();
+		//					}
+		//				}
+		//			} else if (position > 0) {
+		//				setPosition(getPosition() - 1);
+		//			}
+		//		}
+		//	} else if (position > 0) {
+		//		setPosition(getPosition() - 1);
+		//	}
+		//} else if (position > 0) {
+		//	setPosition(getPosition() - 1);
+		//}
 	}
 
 	private boolean isInventoryFull(Inventory inventory, Direction direction) {
@@ -267,7 +278,7 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 	@Override
 	public void setStack(int slot, ItemStack stack) {
 		SingularStackInventory.super.setStack(slot, stack);
-		if (!world.isClient())
+		if (!world.isClient)
 			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
 	}
 
@@ -276,7 +287,7 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 		ItemStack stack = SingularStackInventory.super.removeStack(slot);
 		position = 15;
 		prevPosition = 15;
-		if (!world.isClient())
+		if (!world.isClient)
 			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
 		return stack;
 	}
@@ -284,7 +295,7 @@ public class InserterBlockEntity extends BlockEntity implements SingularStackInv
 	@Override
 	public void clear() {
 		SingularStackInventory.super.clear();
-		if (!world.isClient())
+		if (!world.isClient)
 			sendPacket((ServerWorld) world, toTag(new CompoundTag()));
 	}
 
