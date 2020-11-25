@@ -86,6 +86,19 @@ public class WireCuttingRecipe extends SpecialCraftingRecipe {
 	public ItemStack craft(CraftingInventory inv) {
 		return this.output.copy();
 	}
+	
+	public Ingredient getInput() {
+		return input;
+	}
+
+	public Ingredient getTool() {
+		return tool;
+	}
+
+	@Override
+	public ItemStack getOutput() {
+		return output;
+	}
 
 	@Override
 	public boolean fits(int width, int height) {
