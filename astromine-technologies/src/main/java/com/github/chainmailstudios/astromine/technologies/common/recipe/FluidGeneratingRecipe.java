@@ -46,6 +46,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGeneratingRecipe<Inventory> {
@@ -53,6 +56,8 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 	private final FluidIngredient firstInput;
 	private final double energyOutput;
 	private final int time;
+
+	private static final Map<World, FluidGeneratingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
 	public FluidGeneratingRecipe(Identifier identifier, FluidIngredient firstInput, double energyOutput, int time) {
 		this.identifier = identifier;
@@ -62,21 +67,31 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 	}
 
 	public static boolean allows(World world, FluidComponent fluidComponent) {
-		return world.getRecipeManager().getAllOfType(FluidGeneratingRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
-			FluidGeneratingRecipe recipe = ((FluidGeneratingRecipe) it);
+		if (RECIPE_CACHE.get(world) == null) {
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidGeneratingRecipe) it).toArray(FluidGeneratingRecipe[]::new));
+		}
 
-			fluidComponent.toString();
+		for (FluidGeneratingRecipe recipe : RECIPE_CACHE.get(world)) {
+			if (recipe.allows(fluidComponent)) {
+				return true;
+			}
+		}
 
-			return recipe.allows(fluidComponent);
-		});
+		return false;
 	}
 
 	public static Optional<FluidGeneratingRecipe> matching(World world, FluidComponent fluidComponent) {
-		return (Optional<FluidGeneratingRecipe>) (Object) world.getRecipeManager().getAllOfType(FluidGeneratingRecipe.Type.INSTANCE).values().stream().filter(it -> {
-			FluidGeneratingRecipe recipe = ((FluidGeneratingRecipe) it);
+		if (RECIPE_CACHE.get(world) == null) {
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidGeneratingRecipe) it).toArray(FluidGeneratingRecipe[]::new));
+		}
 
-			return recipe.matches(fluidComponent);
-		}).findFirst();
+		for (FluidGeneratingRecipe recipe : RECIPE_CACHE.get(world)) {
+			if (recipe.allows(fluidComponent)) {
+				return Optional.of(recipe);
+			}
+		}
+
+		return Optional.empty();
 	}
 
 	public boolean matches(FluidComponent fluidComponent) {

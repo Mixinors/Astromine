@@ -49,6 +49,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory> {
@@ -58,6 +61,8 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 	private final double energyInput;
 	private final int time;
 
+	private static final Map<World, SolidifyingRecipe[]> RECIPE_CACHE = new HashMap<>();
+
 	public SolidifyingRecipe(Identifier identifier, FluidIngredient firstInput, ItemStack firstOutput, double energyInput, int time) {
 		this.identifier = identifier;
 		this.firstInput = firstInput;
@@ -66,20 +71,32 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 		this.time = time;
 	}
 
-	public static boolean allows(World world, ItemComponent itemComponent, FluidComponent fluidComponent) {
-		return world.getRecipeManager().getAllOfType(SolidifyingRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
-			SolidifyingRecipe recipe = ((SolidifyingRecipe) it);
+	public static boolean allows(World world, FluidComponent fluidComponent) {
+		if (RECIPE_CACHE.get(world) == null) {
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (SolidifyingRecipe) it).toArray(SolidifyingRecipe[]::new));
+		}
 
-			return recipe.allows(fluidComponent);
-		});
+		for (SolidifyingRecipe recipe : RECIPE_CACHE.get(world)) {
+			if (recipe.allows(fluidComponent)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public static Optional<SolidifyingRecipe> matching(World world, ItemComponent itemComponent, FluidComponent fluidComponent) {
-		return (Optional<SolidifyingRecipe>) (Object) world.getRecipeManager().getAllOfType(SolidifyingRecipe.Type.INSTANCE).values().stream().filter(it -> {
-			SolidifyingRecipe recipe = ((SolidifyingRecipe) it);
+		if (RECIPE_CACHE.get(world) == null) {
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (SolidifyingRecipe) it).toArray(SolidifyingRecipe[]::new));
+		}
 
-			return recipe.matches(itemComponent, fluidComponent);
-		}).findFirst();
+		for (SolidifyingRecipe recipe : RECIPE_CACHE.get(world)) {
+			if (recipe.matches(itemComponent, fluidComponent)) {
+				return Optional.of(recipe);
+			}
+		}
+
+		return Optional.empty();
 	}
 
 	public boolean matches(ItemComponent itemComponent, FluidComponent fluidComponent) {

@@ -47,6 +47,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
@@ -55,6 +58,8 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 	private final FluidVolume firstOutput;
 	private final double energyInput;
 	private final int time;
+
+	private static final Map<World, MeltingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
 	public MeltingRecipe(Identifier identifier, ItemIngredient firstInput, FluidVolume firstOutput, double energyInput, int time) {
 		this.identifier = identifier;
@@ -65,19 +70,31 @@ public final class MeltingRecipe implements EnergyConsumingRecipe<Inventory> {
 	}
 
 	public static boolean allows(World world, ItemComponent itemComponent) {
-		return world.getRecipeManager().getAllOfType(MeltingRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
-			MeltingRecipe recipe = ((MeltingRecipe) it);
+		if (RECIPE_CACHE.get(world) == null) {
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (MeltingRecipe) it).toArray(MeltingRecipe[]::new));
+		}
 
-			return recipe.allows(itemComponent);
-		});
+		for (MeltingRecipe recipe : RECIPE_CACHE.get(world)) {
+			if (recipe.allows(itemComponent)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public static Optional<MeltingRecipe> matching(World world, ItemComponent itemComponent, FluidComponent fluidComponent) {
-		return (Optional<MeltingRecipe>) (Object) world.getRecipeManager().getAllOfType(MeltingRecipe.Type.INSTANCE).values().stream().filter(it -> {
-			MeltingRecipe recipe = ((MeltingRecipe) it);
+		if (RECIPE_CACHE.get(world) == null) {
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (MeltingRecipe) it).toArray(MeltingRecipe[]::new));
+		}
 
-			return recipe.matches(itemComponent, fluidComponent);
-		}).findFirst();
+		for (MeltingRecipe recipe : RECIPE_CACHE.get(world)) {
+			if (recipe.matches(itemComponent, fluidComponent)) {
+				return Optional.of(recipe);
+			}
+		}
+
+		return Optional.empty();
 	}
 
 	public boolean matches(ItemComponent itemComponent, FluidComponent fluidComponent) {

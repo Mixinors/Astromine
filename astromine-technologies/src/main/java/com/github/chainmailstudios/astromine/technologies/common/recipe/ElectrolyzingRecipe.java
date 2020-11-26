@@ -47,6 +47,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<Inventory> {
@@ -56,6 +59,8 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 	private final FluidVolume secondOutput;
 	private final double energyInput;
 	private final int time;
+
+	private static final Map<World, ElectrolyzingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
 	public ElectrolyzingRecipe(Identifier identifier, FluidIngredient firstInput, FluidVolume firstOutput, FluidVolume secondOutput, double energyInput, int time) {
 		this.identifier = identifier;
@@ -67,19 +72,31 @@ public final class ElectrolyzingRecipe implements Recipe<Inventory>, EnergyConsu
 	}
 
 	public static boolean allows(World world, FluidComponent fluidComponent) {
-		return world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
-			ElectrolyzingRecipe recipe = ((ElectrolyzingRecipe) it);
+		if (RECIPE_CACHE.get(world) == null) {
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (ElectrolyzingRecipe) it).toArray(ElectrolyzingRecipe[]::new));
+		}
 
-			return recipe.allows(fluidComponent);
-		});
+		for (ElectrolyzingRecipe recipe : RECIPE_CACHE.get(world)) {
+			if (recipe.allows(fluidComponent)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public static Optional<ElectrolyzingRecipe> matching(World world, FluidComponent fluidComponent) {
-		return (Optional<ElectrolyzingRecipe>) (Object) world.getRecipeManager().getAllOfType(ElectrolyzingRecipe.Type.INSTANCE).values().stream().filter(it -> {
-			ElectrolyzingRecipe recipe = ((ElectrolyzingRecipe) it);
+		if (RECIPE_CACHE.get(world) == null) {
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (ElectrolyzingRecipe) it).toArray(ElectrolyzingRecipe[]::new));
+		}
 
-			return recipe.matches(fluidComponent);
-		}).findFirst();
+		for (ElectrolyzingRecipe recipe : RECIPE_CACHE.get(world)) {
+			if (recipe.allows(fluidComponent)) {
+				return Optional.of(recipe);
+			}
+		}
+
+		return Optional.empty();
 	}
 
 	public boolean matches(FluidComponent fluidComponent) {

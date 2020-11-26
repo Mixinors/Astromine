@@ -69,7 +69,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 				return false;
 			}
 
-			return SolidifyingRecipe.allows(world, getItemComponent(), FluidComponent.of(volume));
+			return SolidifyingRecipe.allows(world, FluidComponent.of(volume));
 		});
 
 		fluidComponent.getFirst().setSize(getFluidSize());

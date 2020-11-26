@@ -46,6 +46,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public final class TrituratingRecipe implements EnergyConsumingRecipe<Inventory> {
@@ -54,6 +57,8 @@ public final class TrituratingRecipe implements EnergyConsumingRecipe<Inventory>
 	private final ItemStack firstOutput;
 	private final double energyInput;
 	private final int time;
+
+	private static final Map<World, TrituratingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
 	public TrituratingRecipe(Identifier identifier, ItemIngredient firstInput, ItemStack firstOutput, double energyInput, int time) {
 		this.identifier = identifier;
@@ -64,19 +69,31 @@ public final class TrituratingRecipe implements EnergyConsumingRecipe<Inventory>
 	}
 
 	public static boolean allows(World world, ItemComponent itemComponent) {
-		return world.getRecipeManager().getAllOfType(TrituratingRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
-			TrituratingRecipe recipe = ((TrituratingRecipe) it);
+		if (RECIPE_CACHE.get(world) == null) {
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (TrituratingRecipe) it).toArray(TrituratingRecipe[]::new));
+		}
 
-			return recipe.allows(itemComponent);
-		});
+		for (TrituratingRecipe recipe : RECIPE_CACHE.get(world)) {
+			if (recipe.allows(itemComponent)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public static Optional<TrituratingRecipe> matching(World world, ItemComponent itemComponent) {
-		return (Optional<TrituratingRecipe>) (Object) world.getRecipeManager().getAllOfType(TrituratingRecipe.Type.INSTANCE).values().stream().filter(it -> {
-			TrituratingRecipe recipe = ((TrituratingRecipe) it);
+		if (RECIPE_CACHE.get(world) == null) {
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (TrituratingRecipe) it).toArray(TrituratingRecipe[]::new));
+		}
 
-			return recipe.matches(itemComponent);
-		}).findFirst();
+		for (TrituratingRecipe recipe : RECIPE_CACHE.get(world)) {
+			if (recipe.matches(itemComponent)) {
+				return Optional.of(recipe);
+			}
+		}
+
+		return Optional.empty();
 	}
 
 	public boolean matches(ItemComponent itemComponent) {

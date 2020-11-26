@@ -47,6 +47,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<Inventory> {
@@ -56,6 +59,8 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 	private final FluidVolume firstOutput;
 	private final double energyInput;
 	private final int time;
+
+	private static final Map<World, FluidMixingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
 	public FluidMixingRecipe(Identifier identifier, FluidIngredient firstInput, FluidIngredient secondIngredient, FluidVolume firstOutput, double energyInput, int time) {
 		this.identifier = identifier;
@@ -67,19 +72,31 @@ public final class FluidMixingRecipe implements Recipe<Inventory>, EnergyConsumi
 	}
 
 	public static boolean allows(World world, FluidComponent fluidComponent) {
-		return world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().anyMatch(it -> {
-			FluidMixingRecipe recipe = ((FluidMixingRecipe) it);
+		if (RECIPE_CACHE.get(world) == null) {
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidMixingRecipe) it).toArray(FluidMixingRecipe[]::new));
+		}
 
-			return recipe.allows(fluidComponent);
-		});
+		for (FluidMixingRecipe recipe : RECIPE_CACHE.get(world)) {
+			if (recipe.allows(fluidComponent)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public static Optional<FluidMixingRecipe> matching(World world, FluidComponent fluidComponent) {
-		return (Optional<FluidMixingRecipe>) (Object) world.getRecipeManager().getAllOfType(FluidMixingRecipe.Type.INSTANCE).values().stream().filter(it -> {
-			FluidMixingRecipe recipe = ((FluidMixingRecipe) it);
+		if (RECIPE_CACHE.get(world) == null) {
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (FluidMixingRecipe) it).toArray(FluidMixingRecipe[]::new));
+		}
 
-			return recipe.matches(fluidComponent);
-		}).findFirst();
+		for (FluidMixingRecipe recipe : RECIPE_CACHE.get(world)) {
+			if (recipe.allows(fluidComponent)) {
+				return Optional.of(recipe);
+			}
+		}
+
+		return Optional.empty();
 	}
 
 	public boolean matches(FluidComponent fluidComponent) {

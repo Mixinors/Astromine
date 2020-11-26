@@ -47,6 +47,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventory> {
@@ -57,7 +60,7 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 	private final double energyInput;
 	private final int time;
 
-	private final Int2BooleanArrayMap cache = new Int2BooleanArrayMap();
+	private static final Map<World, AlloySmeltingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
 	public AlloySmeltingRecipe(Identifier identifier, ItemIngredient firstInput, ItemIngredient secondInput, ItemStack firstOutput, double energyInput, int time) {
 		this.identifier = identifier;
@@ -70,19 +73,31 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 
 
 	public static boolean allows(World world, ItemComponent itemComponent) {
-		return world.getRecipeManager().getAllOfType(AlloySmeltingRecipe.Type.INSTANCE).values().stream().anyMatch(it -> {
-			AlloySmeltingRecipe recipe = ((AlloySmeltingRecipe) it);
+		if (RECIPE_CACHE.get(world) == null) {
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (AlloySmeltingRecipe) it).toArray(AlloySmeltingRecipe[]::new));
+		}
 
-			return recipe.allows(itemComponent);
-		});
+		for (AlloySmeltingRecipe recipe : RECIPE_CACHE.get(world)) {
+			if (recipe.allows(itemComponent)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public static Optional<AlloySmeltingRecipe> matching(World world, ItemComponent itemComponent) {
-		return (Optional<AlloySmeltingRecipe>) (Object) world.getRecipeManager().getAllOfType(AlloySmeltingRecipe.Type.INSTANCE).values().stream().filter(it -> {
-			AlloySmeltingRecipe recipe = ((AlloySmeltingRecipe) it);
+		if (RECIPE_CACHE.get(world) == null) {
+			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (AlloySmeltingRecipe) it).toArray(AlloySmeltingRecipe[]::new));
+		}
 
-			return recipe.matches(itemComponent);
-		}).findFirst();
+		for (AlloySmeltingRecipe recipe : RECIPE_CACHE.get(world)) {
+			if (recipe.matches(itemComponent)) {
+				return Optional.of(recipe);
+			}
+		}
+
+		return Optional.empty();
 	}
 
 	public boolean matches(ItemComponent itemComponent) {
@@ -152,10 +167,6 @@ public final class AlloySmeltingRecipe implements EnergyConsumingRecipe<Inventor
 	@Override
 	public ItemStack getRecipeKindIcon() {
 		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_ALLOY_SMELTER);
-	}
-
-	public Int2BooleanArrayMap getCache() {
-		return cache;
 	}
 
 	public Identifier getIdentifier() {
