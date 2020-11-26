@@ -1,1 +1,1 @@
-{"type":"minecraft:crafting_shaped","pattern":["858","5 5","858"],"key":{"5":{"item":"minecraft:iron_bars"},"8":{"tag":"c:iron_plates"}},"result":{"item":"astromine:drain","count":1}}
+{"type":"minecraft:crafting_shaped","pattern":["070","7 7","070"],"key":{"0":{"tag":"c:lead_plates"},"7":{"item":"minecraft:iron_bars"}},"result":{"item":"astromine:drain","count":1}}

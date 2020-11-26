@@ -1,1 +1,1 @@
-{"type":"minecraft:crafting_shaped","pattern":["858","545","888"],"key":{"4":{"item":"minecraft:iron_bars"},"5":{"item":"astromine:basic_conveyor"},"8":{"tag":"c:iron_plates"}},"result":{"item":"astromine:splitter","count":1}}
+{"type":"minecraft:crafting_shaped","pattern":["010","343","070"],"key":{"0":{"tag":"c:lead_plates"},"1":{"item":"astromine:primitive_circuit"},"3":{"item":"astromine:blades"},"4":{"item":"minecraft:trapped_chest"},"7":{"item":"astromine:primitive_battery_pack"}},"result":{"item":"astromine:splitter","count":1}}

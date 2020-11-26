@@ -1,1 +1,1 @@
-{"type":"minecraft:crafting_shaped","pattern":["858","545","858"],"key":{"4":{"item":"astromine:primitive_circuit"},"5":{"item":"astromine:blades"},"8":{"tag":"c:iron_plates"}},"result":{"item":"astromine:shredder","count":1}}
+{"type":"minecraft:crafting_shaped","pattern":["070","7 7","070"],"key":{"0":{"tag":"c:lead_plates"},"7":{"item":"astromine:blades"}},"result":{"item":"astromine:shredder","count":1}}
