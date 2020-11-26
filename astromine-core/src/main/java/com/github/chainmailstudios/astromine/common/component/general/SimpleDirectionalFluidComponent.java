@@ -1,7 +1,7 @@
-package com.github.chainmailstudios.astromine.common.component.inventory;
+package com.github.chainmailstudios.astromine.common.component.general;
 
 import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;

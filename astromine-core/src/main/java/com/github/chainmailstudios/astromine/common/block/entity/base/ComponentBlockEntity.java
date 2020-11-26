@@ -25,11 +25,11 @@
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
 import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.base.EnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.base.ItemComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.provider.RedstoneComponentProvider;
-import com.github.chainmailstudios.astromine.common.component.inventory.provider.TransferComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.general.provider.RedstoneComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.general.provider.TransferComponentProvider;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.PacketContext;
@@ -109,6 +109,7 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 	}
 
 	/** Returns the attached {@link TransferComponent}. */
+	@Override
 	public TransferComponent getTransferComponent() {
 		return transferComponent;
 	}
@@ -119,6 +120,7 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 	}
 
 	/** Returns the attached {@link RedstoneComponent}. */
+	@Override
 	public RedstoneComponent getRedstoneComponent() {
 		return redstoneComponent;
 	}

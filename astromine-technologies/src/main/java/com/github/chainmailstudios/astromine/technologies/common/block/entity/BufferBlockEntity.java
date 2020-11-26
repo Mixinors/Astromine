@@ -24,11 +24,11 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleDirectionalItemComponent;
+import com.github.chainmailstudios.astromine.common.component.general.SimpleDirectionalItemComponent;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentItemBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.base.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 
 public abstract class BufferBlockEntity extends ComponentItemBlockEntity {

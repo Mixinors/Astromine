@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.component.inventory;
+package com.github.chainmailstudios.astromine.common.component.general;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.utilities.data.predicate.TriPredicate;

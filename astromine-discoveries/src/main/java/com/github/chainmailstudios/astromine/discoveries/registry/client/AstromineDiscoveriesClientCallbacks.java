@@ -33,7 +33,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
 import com.github.chainmailstudios.astromine.common.callback.SkyPropertiesCallback;
-import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.discoveries.client.render.sky.MarsSkyProperties;
 import com.github.chainmailstudios.astromine.discoveries.client.render.sky.MoonSkyProperties;
 import com.github.chainmailstudios.astromine.discoveries.client.render.sky.SpaceSkyProperties;

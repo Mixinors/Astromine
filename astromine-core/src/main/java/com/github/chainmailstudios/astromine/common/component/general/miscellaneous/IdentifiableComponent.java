@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.component.inventory;
+package com.github.chainmailstudios.astromine.common.component.general.miscellaneous;
 
 import net.minecraft.item.Item;
 import net.minecraft.text.Text;

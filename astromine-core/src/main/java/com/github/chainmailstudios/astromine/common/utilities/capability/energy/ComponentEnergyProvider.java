@@ -26,7 +26,7 @@ package com.github.chainmailstudios.astromine.common.utilities.capability.energy
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.base.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import team.reborn.energy.EnergySide;
 import team.reborn.energy.EnergyStorage;

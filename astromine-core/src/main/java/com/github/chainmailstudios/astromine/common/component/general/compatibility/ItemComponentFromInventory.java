@@ -22,38 +22,38 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.component.inventory.compatibility;
+package com.github.chainmailstudios.astromine.common.component.general.compatibility;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.base.ItemComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
-import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
-import net.minecraft.inventory.SidedInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
+
+import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.general.SimpleItemComponent;
+import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 /**
- * An {@link ItemComponent} wrapped over an {@link SidedInventory}.
+ * An {@link ItemComponent} wrapped over an {@link Inventory}.
  */
-public class ItemComponentFromSidedInventory extends SimpleItemComponent {
-	SidedInventory inventory;
+public class ItemComponentFromInventory extends SimpleItemComponent {
+	Inventory inventory;
 
 	List<Runnable> listeners = new ArrayList<>();
 
-	/** Instantiates an {@link ItemComponentFromSidedInventory}. */
-	private ItemComponentFromSidedInventory(SidedInventory inventory) {
+	/** Instantiates an {@link ItemComponentFromInventory}. */
+	private ItemComponentFromInventory(Inventory inventory) {
 		super(inventory.size());
 		this.inventory = inventory;
 	}
 
-	/** Instantiates an {@link ItemComponentFromSidedInventory}. */
-	public static ItemComponentFromSidedInventory of(SidedInventory inventory) {
-		return new ItemComponentFromSidedInventory(inventory);
+	/** Instantiates an {@link ItemComponentFromInventory}. */
+	public static ItemComponentFromInventory of(Inventory inventory) {
+		return new ItemComponentFromInventory(inventory);
 	}
 
 	/** Returns this component's size. */
@@ -83,14 +83,7 @@ public class ItemComponentFromSidedInventory extends SimpleItemComponent {
 	 * direction into the supplied slot. */
 	@Override
 	public boolean canInsert(@Nullable Direction direction, ItemStack stack, int slot) {
-		return this.inventory.isValid(slot, stack) && Arrays.stream(this.inventory.getAvailableSlots(direction)).anyMatch(it -> it == slot);
-	}
-
-	/** Asserts whether the given stack can be extracted from the specified
-	 * direction from the supplied slot. */
-	@Override
-	public boolean canExtract(@Nullable Direction direction, ItemStack stack, int slot) {
-		return super.canExtract(direction, stack, slot) && Arrays.stream(this.inventory.getAvailableSlots(direction)).anyMatch(it -> it == slot);
+		return this.inventory.isValid(slot, stack);
 	}
 
 	/* Returns the {@link ItemStack} at the given slot. */

@@ -1,6 +1,6 @@
-package com.github.chainmailstudios.astromine.common.component.inventory.compatibility;
+package com.github.chainmailstudios.astromine.common.component.general.compatibility;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.base.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.energy.WrappedEnergyVolume;
 import team.reborn.energy.EnergyStorage;

@@ -43,9 +43,9 @@ import net.minecraft.util.Lazy;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.base.ItemComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.InventoryFromItemComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.general.SimpleItemComponent;
+import com.github.chainmailstudios.astromine.common.component.general.compatibility.InventoryFromItemComponent;
 import com.github.chainmailstudios.astromine.discoveries.common.recipe.AltarRecipe;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlockEntityTypes;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesSoundEvents;

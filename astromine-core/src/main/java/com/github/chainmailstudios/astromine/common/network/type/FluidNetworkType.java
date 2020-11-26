@@ -25,7 +25,7 @@
 package com.github.chainmailstudios.astromine.common.network.type;
 
 import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import net.minecraft.block.entity.BlockEntity;
 

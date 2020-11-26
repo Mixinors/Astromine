@@ -22,13 +22,13 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.component.inventory.base;
+package com.github.chainmailstudios.astromine.common.component.general.base;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.IdentifiableComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleAutoSyncedEnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.EnergyComponentFromEnergyStorage;
-import com.github.chainmailstudios.astromine.common.component.inventory.provider.EnergyComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.general.miscellaneous.IdentifiableComponent;
+import com.github.chainmailstudios.astromine.common.component.general.SimpleAutoSyncedEnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.general.SimpleEnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.general.compatibility.EnergyComponentFromEnergyStorage;
+import com.github.chainmailstudios.astromine.common.component.general.provider.EnergyComponentProvider;
 import net.fabricmc.fabric.api.util.NbtType;
 
 import net.minecraft.item.Item;
