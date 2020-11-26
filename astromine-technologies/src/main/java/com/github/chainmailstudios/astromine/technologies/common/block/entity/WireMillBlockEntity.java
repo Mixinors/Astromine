@@ -63,7 +63,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 				return false;
 			}
 
-			if (!StackUtilities.test(stack, getItemComponent().getFirst())) {
+			if (!StackUtilities.test(stack, getItemComponent().getSecond())) {
 				return false;
 			}
 

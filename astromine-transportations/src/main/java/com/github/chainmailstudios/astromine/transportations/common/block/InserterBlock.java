@@ -52,7 +52,7 @@ import com.github.chainmailstudios.astromine.transportations.common.conveyor.Con
 import java.util.Random;
 
 public class InserterBlock extends HorizontalFacingBlock implements BlockEntityProvider, ConveyableBlock, FacingBlockWrenchable, Waterloggable {
-	private static final VoxelShape SHAPE = VoxelShapes.cuboid(0, 0, 0, 1, 0.5, 1);;
+	private static final VoxelShape SHAPE = VoxelShapes.cuboid(0, 0, 0, 1, (1 / 16F), 1);;
 
 	private final String type;
 
