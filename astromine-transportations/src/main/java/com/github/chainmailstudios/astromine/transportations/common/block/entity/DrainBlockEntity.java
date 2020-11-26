@@ -30,8 +30,8 @@ import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
-import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.general.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;

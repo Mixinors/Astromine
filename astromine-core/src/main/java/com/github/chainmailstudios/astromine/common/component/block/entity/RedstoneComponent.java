@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.component.block.entity;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.provider.RedstoneComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.general.provider.RedstoneComponentProvider;
 import net.minecraft.nbt.CompoundTag;
 
 import com.github.chainmailstudios.astromine.common.block.redstone.RedstoneType;

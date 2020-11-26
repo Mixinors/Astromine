@@ -24,8 +24,8 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.base.ItemComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.general.SimpleItemComponent;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.item.ItemStack;

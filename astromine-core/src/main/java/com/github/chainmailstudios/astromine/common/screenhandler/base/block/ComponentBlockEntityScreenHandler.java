@@ -25,9 +25,9 @@
 package com.github.chainmailstudios.astromine.common.screenhandler.base.block;
 
 import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.provider.EnergyComponentProvider;
-import com.github.chainmailstudios.astromine.common.component.inventory.provider.FluidComponentProvider;
-import com.github.chainmailstudios.astromine.common.component.inventory.provider.ItemComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.general.provider.EnergyComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.general.provider.FluidComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.general.provider.ItemComponentProvider;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import net.minecraft.block.Block;
@@ -40,7 +40,7 @@ import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.IdentifiableComponent;
+import com.github.chainmailstudios.astromine.common.component.general.miscellaneous.IdentifiableComponent;
 import com.github.chainmailstudios.astromine.common.utilities.WidgetUtilities;
 import com.github.chainmailstudios.astromine.common.widget.blade.RedstoneWidget;
 import com.github.vini2003.blade.common.collection.TabWidgetCollection;
@@ -55,7 +55,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 /**
  * A {@link BlockStateScreenHandler}with an attached

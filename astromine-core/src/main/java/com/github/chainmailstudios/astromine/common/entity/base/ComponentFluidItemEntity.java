@@ -27,9 +27,9 @@ package com.github.chainmailstudios.astromine.common.entity.base;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.base.ItemComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.InventoryFromItemComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.general.compatibility.InventoryFromItemComponent;
 
 /**
  * A {@link ComponentEntity} with an attached {@link FluidComponent}

@@ -33,8 +33,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.WorldAccess;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.base.ItemComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.InventoryFromItemComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.general.compatibility.InventoryFromItemComponent;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 

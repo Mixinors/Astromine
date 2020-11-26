@@ -26,7 +26,7 @@ package com.github.chainmailstudios.astromine.discoveries.registry;
 
 import net.minecraft.fluid.Fluids;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
+import com.github.chainmailstudios.astromine.common.component.general.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;

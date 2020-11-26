@@ -35,8 +35,8 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.base.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
 import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;

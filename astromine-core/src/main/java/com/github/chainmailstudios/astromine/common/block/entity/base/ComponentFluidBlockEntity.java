@@ -24,10 +24,10 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.provider.FluidComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.general.provider.FluidComponentProvider;
 import net.minecraft.block.entity.BlockEntityType;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 
 /**

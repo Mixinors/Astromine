@@ -24,8 +24,8 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block.entity;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.base.ItemComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.general.SimpleItemComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
@@ -40,7 +40,6 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
@@ -57,7 +56,6 @@ import com.github.chainmailstudios.astromine.transportations.registry.AstromineT
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class InserterBlockEntity extends BlockEntity implements BlockEntityClientSerializable, RenderAttachmentBlockEntity, Tickable {
 	protected int position = 0;
@@ -91,14 +89,6 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityClien
 
 	public ItemComponent getItemComponent() {
 		return itemComponent;
-	}
-
-	private static IntStream getAvailableSlots(Inventory inventory, Direction side) {
-		return inventory instanceof SidedInventory ? IntStream.of(((SidedInventory) inventory).getAvailableSlots(side)) : IntStream.range(0, inventory.size());
-	}
-
-	private static boolean canExtract(Inventory inventory, ItemStack stack, int slot, Direction facing) {
-		return !(inventory instanceof SidedInventory) || ((SidedInventory) inventory).canExtract(slot, stack, facing);
 	}
 
 	@Override

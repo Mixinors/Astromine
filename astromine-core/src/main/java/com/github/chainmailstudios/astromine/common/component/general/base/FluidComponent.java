@@ -22,13 +22,13 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.component.inventory.base;
+package com.github.chainmailstudios.astromine.common.component.general.base;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.IdentifiableComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleAutoSyncedFluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleDirectionalFluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.provider.FluidComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.general.miscellaneous.IdentifiableComponent;
+import com.github.chainmailstudios.astromine.common.component.general.SimpleAutoSyncedFluidComponent;
+import com.github.chainmailstudios.astromine.common.component.general.SimpleDirectionalFluidComponent;
+import com.github.chainmailstudios.astromine.common.component.general.SimpleFluidComponent;
+import com.github.chainmailstudios.astromine.common.component.general.provider.FluidComponentProvider;
 import com.github.chainmailstudios.astromine.common.utilities.VolumeUtilities;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;

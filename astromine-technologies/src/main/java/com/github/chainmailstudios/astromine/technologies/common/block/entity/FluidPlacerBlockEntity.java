@@ -32,10 +32,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.inventory.base.EnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.general.SimpleEnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.general.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;

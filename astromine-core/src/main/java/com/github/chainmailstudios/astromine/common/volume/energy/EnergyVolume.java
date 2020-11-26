@@ -29,8 +29,8 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.component.inventory.base.EnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.general.SimpleEnergyComponent;
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import io.netty.buffer.ByteBuf;

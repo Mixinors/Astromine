@@ -22,15 +22,15 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.component.inventory.base;
+package com.github.chainmailstudios.astromine.common.component.general.base;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.IdentifiableComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleAutoSyncedItemComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleDirectionalItemComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemComponentFromInventory;
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemComponentFromSidedInventory;
-import com.github.chainmailstudios.astromine.common.component.inventory.provider.ItemComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.general.miscellaneous.IdentifiableComponent;
+import com.github.chainmailstudios.astromine.common.component.general.SimpleAutoSyncedItemComponent;
+import com.github.chainmailstudios.astromine.common.component.general.SimpleDirectionalItemComponent;
+import com.github.chainmailstudios.astromine.common.component.general.SimpleItemComponent;
+import com.github.chainmailstudios.astromine.common.component.general.compatibility.ItemComponentFromInventory;
+import com.github.chainmailstudios.astromine.common.component.general.compatibility.ItemComponentFromSidedInventory;
+import com.github.chainmailstudios.astromine.common.component.general.provider.ItemComponentProvider;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
@@ -43,7 +43,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.Direction;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.InventoryFromItemComponent;
+import com.github.chainmailstudios.astromine.common.component.general.compatibility.InventoryFromItemComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import org.jetbrains.annotations.Nullable;

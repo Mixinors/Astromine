@@ -1,4 +1,4 @@
-package com.github.chainmailstudios.astromine.common.component.inventory;
+package com.github.chainmailstudios.astromine.common.component.general;
 
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;

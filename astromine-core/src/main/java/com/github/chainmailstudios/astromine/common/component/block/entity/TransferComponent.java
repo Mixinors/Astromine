@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.component.block.entity;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.provider.TransferComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.general.provider.TransferComponentProvider;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
@@ -32,9 +32,9 @@ import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.callback.TransferEntryCallback;
-import com.github.chainmailstudios.astromine.common.component.inventory.base.EnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.base.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
 import com.github.chainmailstudios.astromine.common.utilities.DirectionUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import dev.onyxstudios.cca.api.v3.component.Component;

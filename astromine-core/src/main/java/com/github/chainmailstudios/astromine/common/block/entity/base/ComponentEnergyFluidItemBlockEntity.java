@@ -24,12 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.base.EnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.base.ItemComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.provider.EnergyComponentProvider;
-import com.github.chainmailstudios.astromine.common.component.inventory.provider.FluidComponentProvider;
-import com.github.chainmailstudios.astromine.common.component.inventory.provider.ItemComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.general.provider.EnergyComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.general.provider.FluidComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.general.provider.ItemComponentProvider;
 import net.minecraft.block.entity.BlockEntityType;
 
 import com.github.chainmailstudios.astromine.common.utilities.capability.energy.ComponentEnergyProvider;
