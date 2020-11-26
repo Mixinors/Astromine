@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block;
 
+import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -115,7 +116,7 @@ public class ConveyorBlock extends HorizontalFacingBlock implements BlockEntityP
 
 		if (entity instanceof ItemEntity && pos.equals(pos) && world.getBlockEntity(pos) instanceof ConveyorBlockEntity) {
 			ConveyorBlockEntity blockEntity = (ConveyorBlockEntity) world.getBlockEntity(pos);
-
+			
 			if (blockEntity.isEmpty()) {
 				blockEntity.getItemComponent().setFirst(((ItemEntity) entity).getStack());
 

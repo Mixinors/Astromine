@@ -27,6 +27,7 @@ package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 import com.github.chainmailstudios.astromine.common.component.general.*;
 import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
+import com.github.chainmailstudios.astromine.technologies.common.recipe.FluidMixingRecipe;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
@@ -45,8 +46,11 @@ import com.github.chainmailstudios.astromine.technologies.common.block.entity.ma
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBlockEntity implements EnergySizeProvider, TierProvider, SpeedProvider {
@@ -55,6 +59,8 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 	public boolean shouldTry = true;
 
 	private Optional<SmeltingRecipe> optionalRecipe = Optional.empty();
+
+	private static final Map<World, SmeltingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
 	public ElectricFurnaceBlockEntity(BlockEntityType<?> type) {
 		super(type);
@@ -70,8 +76,15 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 			BaseInventory inputInventory = BaseInventory.of(stack);
 
 			if (world != null) {
-				Optional<SmeltingRecipe> recipe = (Optional<SmeltingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) RecipeType.SMELTING, inputInventory, world);
-				return recipe.isPresent();
+				if (RECIPE_CACHE.get(world) == null) {
+					RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(RecipeType.SMELTING).values().stream().map(it -> (SmeltingRecipe) it).toArray(SmeltingRecipe[]::new));
+				}
+
+				for (SmeltingRecipe recipe : RECIPE_CACHE.get(world)) {
+					if (recipe.matches(inputInventory, world)) {
+						return true;
+					}
+				}
 			}
 
 			return false;
@@ -115,7 +128,16 @@ public abstract class ElectricFurnaceBlockEntity extends ComponentEnergyItemBloc
 			BaseInventory inputInventory = BaseInventory.of(itemComponent.getSecond());
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = (Optional<SmeltingRecipe>) world.getRecipeManager().getFirstMatch((RecipeType) RecipeType.SMELTING, inputInventory, world);
+				if (RECIPE_CACHE.get(world) == null) {
+					RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(RecipeType.SMELTING).values().stream().map(it -> (SmeltingRecipe) it).toArray(SmeltingRecipe[]::new));
+				}
+
+				for (SmeltingRecipe recipe : RECIPE_CACHE.get(world)) {
+					if (recipe.matches(inputInventory, world)) {
+						optionalRecipe = Optional.of(recipe);
+					}
+				}
+
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {

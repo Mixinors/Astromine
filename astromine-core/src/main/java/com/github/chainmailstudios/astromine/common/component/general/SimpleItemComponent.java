@@ -41,8 +41,10 @@ import java.util.stream.Collectors;
 public class SimpleItemComponent implements ItemComponent {
 	private final Int2ObjectOpenHashMap<ItemStack> contents = new Int2ObjectOpenHashMap<>();
 
-	private final List<Runnable> listeners = new ArrayList<>();
 	private final int size;
+
+	private final List<Runnable> listeners = new ArrayList<>();
+
 	private TriPredicate<@Nullable Direction, ItemStack, Integer> insertPredicate = (direction, stack, slot) -> true;
 
 	private TriPredicate<@Nullable Direction, ItemStack, Integer> extractPredicate = (direction, stack, integer) -> true;

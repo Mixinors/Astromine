@@ -28,6 +28,7 @@ import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentI
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.general.SimpleItemComponent;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 
@@ -200,7 +201,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 
 	@Override
 	public int accepts(ItemStack stack) {
-		if (getItemComponent().getFirst().isEmpty() || StackUtilities.areItemsAndTagsEqual(stack, getItemComponent().getFirst())) {
+		if (getItemComponent().getFirst().isEmpty() || (AstromineConfig.get().conveyorsMergeStacks && StackUtilities.areItemsAndTagsEqual(stack, getItemComponent().getFirst()))) {
 			return getItemComponent().getFirst().getMaxCount() - getItemComponent().getFirst().getCount();
 		} else {
 			return 0;

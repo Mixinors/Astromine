@@ -663,6 +663,9 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Stack ssize transferred by Inserters.")
 	public int inserterStackSize = 8;
 
+	@Comment("Whether Conveyors should merge their contents with others or not.")
+	public boolean conveyorsMergeStacks = false;
+
 	public static AstromineConfig get() {
 		if (instance == null) {
 			try {

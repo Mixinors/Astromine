@@ -42,8 +42,10 @@ import java.util.stream.Collectors;
 public class SimpleFluidComponent implements FluidComponent {
 	private final Int2ObjectOpenHashMap<FluidVolume> contents = new Int2ObjectOpenHashMap<>();
 
-	private final List<Runnable> listeners = new ArrayList<>();
 	private final int size;
+
+	private final List<Runnable> listeners = new ArrayList<>();
+
 	private TriPredicate<@Nullable Direction, FluidVolume, Integer> insertPredicate = (direction, volume, slot) -> true;
 
 	private TriPredicate<@Nullable Direction, FluidVolume, Integer> extractPredicate = (direction, volume, integer) -> true;

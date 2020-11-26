@@ -148,7 +148,10 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityClien
 				}
 
 				if (insertableItemComponent != null) {
-					ItemStack stack = insertableItemComponent.getFirstInsertableStack(insertionDirection, getItemComponent().getFirst());
+					ItemStack sampleStack = getItemComponent().getFirst().copy();
+					sampleStack.setCount(1);
+
+					ItemStack stack = insertableItemComponent.getFirstInsertableStack(insertionDirection, sampleStack);
 
 					if (stack != null) {
 						if (position < speed) {

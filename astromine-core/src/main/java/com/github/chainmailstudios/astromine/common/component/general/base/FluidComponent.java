@@ -222,11 +222,11 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 
 					if (!sourceVolume.isEmpty() && count.biggerThan(Fraction.EMPTY)) {
 						FluidVolume insertionVolume = sourceVolume.copy();
-						insertionVolume.setAmount(minimum(count, insertionVolume.getAmount()));
+						insertionVolume.setAmount(minimum(minimum(count, insertionVolume.getAmount()), targetVolume.getSize().subtract(targetVolume.getAmount())));
 
 						Fraction insertionCount = insertionVolume.getAmount();
 
-						if (target.canInsert(extractionDirection, insertionVolume, targetSlot)) {
+						if (target.canInsert(insertionDirection, insertionVolume, targetSlot)) {
 							Pair<FluidVolume, FluidVolume> merge = VolumeUtilities.merge(insertionVolume, targetVolume);
 
 							sourceVolume.take(insertionCount.subtract(merge.getLeft().getAmount()));

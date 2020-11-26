@@ -52,8 +52,10 @@ import com.github.chainmailstudios.astromine.common.block.base.WrenchableBlockWi
 import com.github.chainmailstudios.astromine.discoveries.common.block.entity.AltarBlockEntity;
 
 public class AltarBlock extends WrenchableBlockWithEntity {
-	protected static final VoxelShape SHAPE_TOP = Block.createCuboidShape(0.0D, 14.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape SHAPE_BOTTOM = Block.createCuboidShape(1.0D, 0.0D, 1.0D, 15.0D, 14.0D, 15.0D);
+	private static final VoxelShape SHAPE_TOP = Block.createCuboidShape(0.0D, 14.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+	private static final VoxelShape SHAPE_BOTTOM = Block.createCuboidShape(1.0D, 0.0D, 1.0D, 15.0D, 14.0D, 15.0D);
+
+	private static final VoxelShape SHAPE = VoxelShapes.union(SHAPE_TOP, SHAPE_BOTTOM);
 
 	public AltarBlock(AbstractBlock.Settings settings) {
 		super(settings);
@@ -81,13 +83,14 @@ public class AltarBlock extends WrenchableBlockWithEntity {
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		return VoxelShapes.union(SHAPE_TOP, SHAPE_BOTTOM);
+		return SHAPE;
 	}
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (!world.isClient) {
 			AltarBlockEntity blockEntity = (AltarBlockEntity) world.getBlockEntity(pos);
+
 			ItemStack stackInHand = player.getStackInHand(hand);
 
 			if (blockEntity.getStack(0).isEmpty()) {
@@ -101,16 +104,25 @@ public class AltarBlock extends WrenchableBlockWithEntity {
 			} else if (AltarPedestalBlock.canMergeItems(stackInHand, blockEntity.getStack(0))) {
 				ItemStack copy = stackInHand.copy();
 				copy.increment(1);
+
 				player.setStackInHand(hand, copy);
+
 				blockEntity.setStack(0, ItemStack.EMPTY);
+
 				player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, .6F, 1);
+
 				blockEntity.sync();
+
 				return ActionResult.SUCCESS;
 			} else if (stackInHand.isEmpty()) {
 				player.setStackInHand(hand, blockEntity.getStack(0).copy());
+
 				blockEntity.setStack(0, ItemStack.EMPTY);
+
 				player.playSound(SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, .6F, 1);
+
 				blockEntity.sync();
+
 				return ActionResult.SUCCESS;
 			} else {
 				return ActionResult.CONSUME;
@@ -142,8 +154,10 @@ public class AltarBlock extends WrenchableBlockWithEntity {
 	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
 		if (!state.isOf(newState.getBlock())) {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
+
 			if (blockEntity instanceof Inventory) {
 				ItemScatterer.spawn(world, pos.add(0, 1, 0), (Inventory) blockEntity);
+
 				world.updateComparators(pos, this);
 			}
 
@@ -154,9 +168,11 @@ public class AltarBlock extends WrenchableBlockWithEntity {
 	@Override
 	public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
+
 		if (blockEntity instanceof AltarBlockEntity) {
 			((AltarBlockEntity) blockEntity).onRemove();
 		}
+
 		super.onBreak(world, pos, state, player);
 	}
 }

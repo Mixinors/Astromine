@@ -220,7 +220,7 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 
 					if (!sourceStack.isEmpty() && count > 0) {
 						ItemStack insertionStack = sourceStack.copy();
-						insertionStack.setCount(min(count, insertionStack.getCount()));
+						insertionStack.setCount(min(min(count, insertionStack.getCount()), targetStack.getMaxCount() - targetStack.getCount()));
 
 						int insertionCount = insertionStack.getCount();
 
