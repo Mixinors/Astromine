@@ -27,6 +27,7 @@ package com.github.chainmailstudios.astromine.transportations.common.block.entit
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
+import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 
 import net.minecraft.block.BlockState;
@@ -125,13 +126,19 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 	}
 
 	public void handleLeftMovement(Conveyable conveyable, int speed, boolean transition) {
-		if (conveyable.accepts(getItemComponent().getFirst())) {
+		int accepted = conveyable.accepts(getItemComponent().getFirst());
+
+		if (accepted > 0) {
 			if (leftPosition < speed) {
 				setLeftPosition(getLeftPosition() + 1);
 			} else if (transition) {
-				conveyable.give(getItemComponent().getFirst());
+				ItemStack split = getItemComponent().getFirst().copy();
+				split.setCount(Math.min(accepted, split.getCount()));
 
-				getItemComponent().setFirst(ItemStack.EMPTY);
+				getItemComponent().getFirst().decrement(accepted);
+				getItemComponent().updateListeners();
+
+				conveyable.give(split);
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
 			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
@@ -149,13 +156,19 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 	}
 
 	public void handleRightMovement(Conveyable conveyable, int speed, boolean transition) {
-		if (conveyable.accepts(getItemComponent().getSecond())) {
+		int accepted = conveyable.accepts(getItemComponent().getSecond());
+
+		if (accepted > 0) {
 			if (rightPosition < speed) {
 				setRightPosition(getRightPosition() + 1);
 			} else if (transition) {
-				conveyable.give(getItemComponent().getSecond());
+				ItemStack split = getItemComponent().getSecond().copy();
+				split.setCount(Math.min(accepted, split.getCount()));
 
-				getItemComponent().setSecond(ItemStack.EMPTY);
+				getItemComponent().getSecond().decrement(accepted);
+				getItemComponent().updateListeners();
+
+				conveyable.give(split);
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
 			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
@@ -230,8 +243,14 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 	}
 
 	@Override
-	public boolean accepts(ItemStack stack) {
-		return !(!getItemComponent().getFirst().isEmpty() && !getItemComponent().getSecond().isEmpty());
+	public int accepts(ItemStack stack) {
+		if (getItemComponent().getFirst().isEmpty() || StackUtilities.areItemsAndTagsEqual(stack, getItemComponent().getFirst())) {
+			return getItemComponent().getFirst().getMaxCount() - getItemComponent().getFirst().getCount();
+		} else if (getItemComponent().getSecond().isEmpty() || StackUtilities.areItemsAndTagsEqual(stack, getItemComponent().getSecond())) {
+			return getItemComponent().getSecond().getMaxCount() - getItemComponent().getSecond().getCount();
+		} else {
+			return 0;
+		}
 	}
 
 	@Override

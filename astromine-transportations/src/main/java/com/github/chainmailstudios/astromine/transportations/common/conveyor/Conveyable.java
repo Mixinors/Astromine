@@ -31,7 +31,7 @@ public interface Conveyable {
 	/**
 	 * @return Whether or not the interactable accepts the {@link ItemStack} to be inputted.
 	 */
-	boolean accepts(ItemStack stack);
+	int accepts(ItemStack stack);
 
 	boolean canInsert(Direction direction);
 

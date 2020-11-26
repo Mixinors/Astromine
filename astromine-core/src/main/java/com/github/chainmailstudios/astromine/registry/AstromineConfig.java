@@ -659,7 +659,10 @@ public class AstromineConfig implements ConfigData {
 
 	@Comment("Chance for Piglins to realize if you try to trick them. (1 in x)")
 	public int piglinAngerChance = 5;
-	
+
+	@Comment("Stack ssize transferred by Inserters.")
+	public int inserterStackSize = 8;
+
 	public static AstromineConfig get() {
 		if (instance == null) {
 			try {

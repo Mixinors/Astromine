@@ -27,6 +27,7 @@ package com.github.chainmailstudios.astromine.transportations.common.block.entit
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
+import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 
@@ -123,7 +124,7 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityClien
 					ItemStack stack = extractableItemComponent.getFirstExtractableStack(facing);
 
 					if (position == 0 && stack != null && !(behindState.getBlock() instanceof InserterBlock)) {
-						extractableItemComponent.into(getItemComponent(), 1, facing, facing);
+						extractableItemComponent.into(getItemComponent(), AstromineConfig.get().inserterStackSize, facing, facing);
 					} else if (position > 0) {
 						setPosition(getPosition() - 1);
 					}
@@ -140,7 +141,7 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityClien
 						ItemStack stack = extractableItemComponent.getFirstExtractableStack(facing.getOpposite());
 
 						if (position == 0 && !stack.isEmpty()) {
-							extractableItemComponent.into(getItemComponent(), 1, facing);
+							extractableItemComponent.into(getItemComponent(), AstromineConfig.get().inserterStackSize, facing);
 
 							entityInventory.markDirty();
 						}
@@ -168,7 +169,7 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityClien
 						if (position < speed) {
 							setPosition(getPosition() + 1);
 						} else if (!world.isClient) {
-							getItemComponent().into(insertableItemComponent, 1, facing, insertionDirection);
+							getItemComponent().into(insertableItemComponent, AstromineConfig.get().inserterStackSize, facing, insertionDirection);
 						}
 					} else if (position > 0) {
 						setPosition(getPosition() - 1);
@@ -188,7 +189,7 @@ public class InserterBlockEntity extends BlockEntity implements BlockEntityClien
 						if (position < speed && (stack.isEmpty() || stack.getCount() != getItemComponent().getFirst().getCount())) {
 							setPosition(getPosition() + 1);
 						} else if (!world.isClient && (stack.isEmpty() || stack.getCount() != getItemComponent().getFirst().getCount())) {
-							getItemComponent().into(insertableItemComponent, 1, facing, insertionDirection);
+							getItemComponent().into(insertableItemComponent, AstromineConfig.get().inserterStackSize, facing, insertionDirection);
 
 							entityInventory.markDirty();
 						}

@@ -118,13 +118,19 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	}
 
 	public void handleMovementHorizontal(Conveyable conveyable, int speed, boolean transition) {
-		if (conveyable.accepts(getItemComponent().getFirst())) {
+		int accepted = conveyable.accepts(getItemComponent().getFirst());
+
+		if (accepted > 0) {
 			if (horizontalPosition < speed) {
 				setHorizontalPosition(getHorizontalPosition() + 1);
 			} else if (transition && horizontalPosition >= speed) {
-				conveyable.give(getItemComponent().getFirst());
+				ItemStack split = getItemComponent().getFirst().copy();
+				split.setCount(Math.min(accepted, split.getCount()));
 
-				getItemComponent().setFirst(ItemStack.EMPTY);
+				getItemComponent().getFirst().decrement(accepted);
+				getItemComponent().updateListeners();
+
+				conveyable.give(split);
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
 			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;

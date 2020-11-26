@@ -63,7 +63,7 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 				return false;
 			}
 
-			if (!StackUtilities.test(stack, getItemComponent().getFirst())) {
+			if (!StackUtilities.test(stack, getItemComponent().getSecond())) {
 				return false;
 			}
 

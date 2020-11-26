@@ -63,7 +63,7 @@ public abstract class TrituratorBlockEntity extends ComponentEnergyItemBlockEnti
 				return false;
 			}
 
-			if (!StackUtilities.test(stack, getItemComponent().getFirst())) {
+			if (!StackUtilities.test(stack, getItemComponent().getSecond())) {
 				return false;
 			}
 
