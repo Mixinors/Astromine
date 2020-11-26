@@ -24,10 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.callback;
 
+import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 
 public interface TransferEntryCallback {
 	Event<TransferEntryCallback> EVENT = EventFactory.createArrayBacked(TransferEntryCallback.class, (listeners) -> (entry) -> {
@@ -36,6 +35,6 @@ public interface TransferEntryCallback {
 		}
 	});
 
-	/** Handle the added {@link BlockEntityTransferComponent.TransferEntry}. */
-    void handle(BlockEntityTransferComponent.TransferEntry entry);
+	/** Handle the added {@link TransferComponent.TransferEntry}. */
+    void handle(TransferComponent.TransferEntry entry);
 }

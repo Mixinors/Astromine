@@ -24,24 +24,16 @@
 
 package com.github.chainmailstudios.astromine.registry;
 
+import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.Fluids;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidItemBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidItemBlockEntity;
-import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentItemBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.common.component.block.entity.RedstoneComponent;
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
@@ -76,8 +68,8 @@ public class AstromineComponents implements WorldComponentInitializer, ChunkComp
 	public static final ComponentKey<FluidComponent> FLUID_INVENTORY_COMPONENT = ComponentRegistry.getOrCreate(AstromineCommon.identifier("fluid_inventory_component"), FluidComponent.class);
 	public static final ComponentKey<EnergyComponent> ENERGY_INVENTORY_COMPONENT = ComponentRegistry.getOrCreate(AstromineCommon.identifier("energy_inventory_component"), EnergyComponent.class);
 
-	public static final ComponentKey<BlockEntityTransferComponent> BLOCK_ENTITY_TRANSFER_COMPONENT = ComponentRegistry.getOrCreate(AstromineCommon.identifier("block_entity_transfer_component"), BlockEntityTransferComponent.class);
-	public static final ComponentKey<BlockEntityRedstoneComponent> BLOCK_ENTITY_REDSTONE_COMPONENT = ComponentRegistry.getOrCreate(AstromineCommon.identifier("block_entity_redstone_component"), BlockEntityRedstoneComponent.class);
+	public static final ComponentKey<TransferComponent> BLOCK_ENTITY_TRANSFER_COMPONENT = ComponentRegistry.getOrCreate(AstromineCommon.identifier("block_entity_transfer_component"), TransferComponent.class);
+	public static final ComponentKey<RedstoneComponent> BLOCK_ENTITY_REDSTONE_COMPONENT = ComponentRegistry.getOrCreate(AstromineCommon.identifier("block_entity_redstone_component"), RedstoneComponent.class);
 
 	public static final ComponentKey<EntityOxygenComponent> ENTITY_OXYGEN_COMPONENT = ComponentRegistry.getOrCreate(AstromineCommon.identifier("entity_oxygen_component"), EntityOxygenComponent.class);
 
@@ -121,28 +113,5 @@ public class AstromineComponents implements WorldComponentInitializer, ChunkComp
 	}
 
 	@Override
-	public void registerBlockComponentFactories(BlockComponentFactoryRegistry registry) {
-		registry.registerFor(ComponentBlockEntity.class, BLOCK_ENTITY_REDSTONE_COMPONENT, ComponentBlockEntity::createRedstoneComponent);
-		registry.registerFor(ComponentBlockEntity.class, BLOCK_ENTITY_TRANSFER_COMPONENT, ComponentBlockEntity::createTransferComponent);
-
-		registry.registerFor(ComponentFluidItemBlockEntity.class, FLUID_INVENTORY_COMPONENT, ComponentFluidItemBlockEntity::createFluidComponent);
-		registry.registerFor(ComponentFluidItemBlockEntity.class, ITEM_INVENTORY_COMPONENT, ComponentFluidItemBlockEntity::createItemComponent);
-
-		registry.registerFor(ComponentEnergyItemBlockEntity.class, ITEM_INVENTORY_COMPONENT, ComponentEnergyItemBlockEntity::createItemComponent);
-		registry.registerFor(ComponentEnergyItemBlockEntity.class, ENERGY_INVENTORY_COMPONENT, ComponentEnergyItemBlockEntity::createEnergyComponent);
-
-		registry.registerFor(ComponentEnergyFluidBlockEntity.class, ENERGY_INVENTORY_COMPONENT, ComponentEnergyFluidBlockEntity::createEnergyComponent);
-		registry.registerFor(ComponentEnergyFluidBlockEntity.class, FLUID_INVENTORY_COMPONENT, ComponentEnergyFluidBlockEntity::createFluidComponent);
-
-		registry.registerFor(ComponentItemBlockEntity.class, ITEM_INVENTORY_COMPONENT, ComponentItemBlockEntity::createItemComponent);
-
-		registry.registerFor(ComponentFluidBlockEntity.class, FLUID_INVENTORY_COMPONENT, ComponentFluidBlockEntity::createFluidComponent);
-
-		registry.registerFor(ComponentEnergyBlockEntity.class, ENERGY_INVENTORY_COMPONENT, ComponentEnergyBlockEntity::createEnergyComponent);
-
-		registry.registerFor(ComponentEnergyFluidItemBlockEntity.class, ENERGY_INVENTORY_COMPONENT, ComponentEnergyFluidItemBlockEntity::createEnergyComponent);
-		registry.registerFor(ComponentEnergyFluidItemBlockEntity.class, FLUID_INVENTORY_COMPONENT, ComponentEnergyFluidItemBlockEntity::createFluidComponent);
-		registry.registerFor(ComponentEnergyFluidItemBlockEntity.class, ITEM_INVENTORY_COMPONENT, ComponentEnergyFluidItemBlockEntity::createItemComponent);
-
-	}
+	public void registerBlockComponentFactories(BlockComponentFactoryRegistry registry) {}
 }

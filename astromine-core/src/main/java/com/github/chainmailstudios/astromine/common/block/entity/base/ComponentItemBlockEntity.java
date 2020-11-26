@@ -24,9 +24,10 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.provider.ItemComponentProvider;
 import net.minecraft.block.entity.BlockEntityType;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.ItemComponent;
 import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ComponentInventoryProvider;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 
@@ -34,7 +35,9 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponents;
  * A {@link ComponentBlockEntity} with an attached
  * {@link ItemComponent}.
  */
-public abstract class ComponentItemBlockEntity extends ComponentBlockEntity implements ComponentInventoryProvider {
+public abstract class ComponentItemBlockEntity extends ComponentBlockEntity implements ComponentInventoryProvider, ItemComponentProvider {
+	private final ItemComponent itemComponent = createItemComponent();
+
 	/** Instantiates a {@link ComponentItemBlockEntity}. */
 	public ComponentItemBlockEntity(BlockEntityType<?> type) {
 		super(type);
@@ -48,6 +51,6 @@ public abstract class ComponentItemBlockEntity extends ComponentBlockEntity impl
 
 	/** Returns the attached {@link ItemComponent}. */
 	public ItemComponent getItemComponent() {
-		return ItemComponent.get(this);
+		return itemComponent;
 	}
 }

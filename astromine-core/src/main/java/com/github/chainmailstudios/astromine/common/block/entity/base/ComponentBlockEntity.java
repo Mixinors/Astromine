@@ -24,10 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
-import com.github.chainmailstudios.astromine.common.utilities.VolumeUtilities;
+import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.provider.RedstoneComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.inventory.provider.TransferComponentProvider;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.PacketContext;
@@ -46,20 +48,17 @@ import net.minecraft.util.math.Direction;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityRedstoneComponent;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.common.component.block.entity.RedstoneComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import org.jetbrains.annotations.NotNull;
-import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
-import team.reborn.energy.EnergyStorage;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import java.util.Comparator;
+
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -70,8 +69,12 @@ import java.util.function.BiConsumer;
  * {@link Tickable}, updates its {@link BlockState} based on
  * its activity, and handles redstone behavior.
  */
-public abstract class ComponentBlockEntity extends BlockEntity implements BlockEntityClientSerializable, Tickable {
+public abstract class ComponentBlockEntity extends BlockEntity implements BlockEntityClientSerializable, Tickable, TransferComponentProvider, RedstoneComponentProvider {
 	public static final Identifier TRANSFER_UPDATE_PACKET = AstromineCommon.identifier("transfer_update_packet");
+
+	private final TransferComponent transferComponent = createTransferComponent();
+
+	private final RedstoneComponent redstoneComponent = createRedstoneComponent();
 
 	protected final Map<ComponentKey<?>, Component> allComponents = Maps.newHashMap();
 
@@ -100,24 +103,24 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 		}));
 	}
 
-	/** Returns the {@link BlockEntityTransferComponent} to be attached. */
-	public BlockEntityTransferComponent createTransferComponent() {
-		return new BlockEntityTransferComponent();
+	/** Returns the {@link TransferComponent} to be attached. */
+	public TransferComponent createTransferComponent() {
+		return new TransferComponent();
 	}
 
-	/** Returns the attached {@link BlockEntityTransferComponent}. */
-	public BlockEntityTransferComponent getTransferComponent() {
-		return BlockEntityTransferComponent.get(this);
+	/** Returns the attached {@link TransferComponent}. */
+	public TransferComponent getTransferComponent() {
+		return transferComponent;
 	}
 
-	/** Returns the {@link BlockEntityRedstoneComponent} to be attached. */
-	public BlockEntityRedstoneComponent createRedstoneComponent() {
-		return new BlockEntityRedstoneComponent();
+	/** Returns the {@link RedstoneComponent} to be attached. */
+	public RedstoneComponent createRedstoneComponent() {
+		return new RedstoneComponent();
 	}
 
-	/** Returns the attached {@link BlockEntityRedstoneComponent}. */
-	public BlockEntityRedstoneComponent getRedstoneComponent() {
-		return BlockEntityRedstoneComponent.get(this);
+	/** Returns the attached {@link RedstoneComponent}. */
+	public RedstoneComponent getRedstoneComponent() {
+		return redstoneComponent;
 	}
 
 	/** Signals that this {@link ComponentBlockEntity} should synchronize

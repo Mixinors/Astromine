@@ -27,7 +27,7 @@ package com.github.chainmailstudios.astromine.common.entity.base;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.EnergyComponent;
 
 /**
  * A{@link ComponentEntity} with an attached {@link EnergyComponent}.

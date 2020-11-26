@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.widget.blade;
 
+import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
@@ -40,7 +41,6 @@ import net.minecraft.util.math.Direction;
 import com.github.chainmailstudios.astromine.client.BaseRenderer;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.utilities.MirrorUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineCommonPackets;
 import com.github.vini2003.blade.common.widget.base.AbstractWidget;
@@ -57,7 +57,7 @@ import java.util.Locale;
  * {@link TransferType}s connected to a machine.
  */
 public class TransferTypeSelectorButtonWidget extends AbstractWidget {
-	private BlockEntityTransferComponent component;
+	private TransferComponent component;
 
 	private ComponentKey<?> type;
 
@@ -79,13 +79,13 @@ public class TransferTypeSelectorButtonWidget extends AbstractWidget {
 		return component.get(type).get(direction).texture();
 	}
 
-	/** Returns this widget's {@link BlockEntityTransferComponent}. */
-	public BlockEntityTransferComponent getComponent() {
+	/** Returns this widget's {@link TransferComponent}. */
+	public TransferComponent getComponent() {
 		return component;
 	}
 
-	/** Sets this widget's {@link BlockEntityTransferComponent} to the specified one. */
-	public void setComponent(BlockEntityTransferComponent component) {
+	/** Sets this widget's {@link TransferComponent} to the specified one. */
+	public void setComponent(TransferComponent component) {
 		this.component = component;
 	}
 

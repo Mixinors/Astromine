@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.base.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.volume.energy.EnergyVolume;
 
 import com.google.common.base.Objects;

@@ -24,10 +24,10 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
+import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.widget.blade.TransferTypeSelectorButtonWidget;
 import com.github.vini2003.blade.common.collection.TabWidgetCollection;
 import com.github.vini2003.blade.common.miscellaneous.Position;
@@ -38,9 +38,9 @@ import com.google.common.collect.ImmutableMap;
 
 public class WidgetUtilities {
 	/** Populates a {@link TabWidgetCollection} widgets corresponding to
-	 * the specified {@link BlockEntityTransferComponent} and {@link ComponentKey}.
+	 * the specified {@link TransferComponent} and {@link ComponentKey}.
 	 */
-	public static void createTransferTab(TabWidgetCollection tab, Position anchor, Direction rotation, BlockEntityTransferComponent component, BlockPos blockPos, ComponentKey<?> type) {
+	public static void createTransferTab(TabWidgetCollection tab, Position anchor, Direction rotation, TransferComponent component, BlockPos blockPos, ComponentKey<?> type) {
 		final Position finalNorth = Position.of(anchor, 7 + 22, 31 + 22);
 		final Position finalSouth = Position.of(anchor, 7 + 0, 31 + 44);
 		final Position finalUp = Position.of(anchor, 7 + 22, 31 + 0);

@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.component.block.entity;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.provider.TransferComponentProvider;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
@@ -31,9 +32,9 @@ import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.callback.TransferEntryCallback;
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.ItemComponent;
 import com.github.chainmailstudios.astromine.common.utilities.DirectionUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import dev.onyxstudios.cca.api.v3.component.Component;
@@ -51,11 +52,15 @@ import java.util.Map;
  * Serialization and deserialization methods are provided for:
  * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
  */
-public class BlockEntityTransferComponent implements Component {
+public class TransferComponent implements Component {
 	private final Reference2ReferenceMap<ComponentKey<?>, TransferEntry> components = new Reference2ReferenceOpenHashMap<>();
 
 	/** Returns this component's {@link Map} of {@link ComponentKey}s to {@link TransferEntry}-ies. */
-	public static <V> BlockEntityTransferComponent get(V v) {
+	public static <V> TransferComponent get(V v) {
+		if (v instanceof TransferComponentProvider) {
+			return ((TransferComponentProvider) v).getTransferComponent();
+		}
+
 		try {
 			return AstromineComponents.BLOCK_ENTITY_TRANSFER_COMPONENT.get(v);
 		} catch (Exception justShutUpAlready) {
@@ -114,7 +119,7 @@ public class BlockEntityTransferComponent implements Component {
 		return components.get(AstromineComponents.ENERGY_INVENTORY_COMPONENT).get(direction);
 	}
 
-	/** Serializes this {@link BlockEntityTransferComponent} to a {@link CompoundTag}. */
+	/** Serializes this {@link TransferComponent} to a {@link CompoundTag}. */
 	@Override
 	public void writeToNbt(CompoundTag tag) {
 		CompoundTag dataTag = new CompoundTag();
@@ -126,7 +131,7 @@ public class BlockEntityTransferComponent implements Component {
 		tag.put("data", dataTag);
 	}
 
-	/** Deserializes this {@link BlockEntityTransferComponent} from a {@link CompoundTag}. */
+	/** Deserializes this {@link TransferComponent} from a {@link CompoundTag}. */
 	@Override
 	public void readFromNbt(CompoundTag tag) {
 		CompoundTag dataTag = tag.getCompound("data");

@@ -22,12 +22,16 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.component.inventory;
+package com.github.chainmailstudios.astromine.common.component.inventory.base;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.IdentifiableComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleAutoSyncedItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleDirectionalItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemComponentFromInventory;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.ItemComponentFromSidedInventory;
+import com.github.chainmailstudios.astromine.common.component.inventory.provider.ItemComponentProvider;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
-import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.Item;
@@ -155,9 +159,7 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 	/** Returns this component's contents insertable through the given direction
 	 * which accept the specified stack. */
 	default List<ItemStack> getInsertableStacks(@Nullable Direction direction, ItemStack Stack) {
-		return getContents().entrySet().stream().filter((entry) -> {
-			return canInsert(direction, Stack, entry.getKey());
-		}).map(Map.Entry::getValue).collect(Collectors.toList());
+		return getContents().entrySet().stream().filter((entry) -> canInsert(direction, Stack, entry.getKey())).map(Map.Entry::getValue).collect(Collectors.toList());
 	}
 
 	/** Returns this component's contents matching the given predicate
@@ -347,9 +349,13 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 	/** Returns the {@link ItemComponent} of the given {@link V}. */
 	@Nullable
 	static <V> ItemComponent get(V v) {
-		try {
+		if (v instanceof ItemComponentProvider) {
+			return ((ItemComponentProvider) v).getItemComponent();
+		}
+
+		if (v != null && AstromineComponents.ITEM_INVENTORY_COMPONENT.isProvidedBy(v)) {
 			return AstromineComponents.ITEM_INVENTORY_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
+		} else {
 			if (v instanceof SidedInventory) {
 				return ItemComponentFromSidedInventory.of((SidedInventory) v);
 			}

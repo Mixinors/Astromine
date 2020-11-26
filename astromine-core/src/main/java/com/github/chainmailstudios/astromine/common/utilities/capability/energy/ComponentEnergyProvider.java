@@ -25,8 +25,8 @@
 package com.github.chainmailstudios.astromine.common.utilities.capability.energy;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.utilities.EnergyUtilities;
 import team.reborn.energy.EnergySide;
 import team.reborn.energy.EnergyStorage;
@@ -59,7 +59,7 @@ ComponentEnergyProvider extends EnergyStorage {
 	}
 
 	/** Override behavior to redirect calls to this provider's {@link EnergyComponent}
-	 * and {@link BlockEntityTransferComponent}, if present. */
+	 * and {@link TransferComponent}, if present. */
 	@Override
 	default double getMaxInput(EnergySide side) {
 		boolean allow = false;
@@ -67,7 +67,7 @@ ComponentEnergyProvider extends EnergyStorage {
 		if(side.equals(EnergySide.UNKNOWN)) {
 			allow = true;
 		} else {
-			BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(this);
+			TransferComponent transferComponent = TransferComponent.get(this);
 
 			if (transferComponent != null) {
 				TransferType type = transferComponent.getEnergy(EnergyUtilities.toDirection(side));
@@ -84,7 +84,7 @@ ComponentEnergyProvider extends EnergyStorage {
 	}
 
 	/** Override behavior to redirect calls to this provider's {@link EnergyComponent}
-	 * and {@link BlockEntityTransferComponent}, if present. */
+	 * and {@link TransferComponent}, if present. */
 	@Override
 	default double getMaxOutput(EnergySide side) {
 		boolean allow = false;
@@ -92,7 +92,7 @@ ComponentEnergyProvider extends EnergyStorage {
 		if(side.equals(EnergySide.UNKNOWN)) {
 			allow = true;
 		} else {
-			BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(this);
+			TransferComponent transferComponent = TransferComponent.get(this);
 
 			if (transferComponent != null) {
 				TransferType type = transferComponent.getEnergy(EnergyUtilities.toDirection(side));

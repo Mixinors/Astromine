@@ -25,6 +25,8 @@
 package com.github.chainmailstudios.astromine.discoveries.common.entity;
 
 import com.github.chainmailstudios.astromine.common.component.inventory.*;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.ItemComponent;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 

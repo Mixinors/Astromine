@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
 import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.utilities.data.predicate.TriPredicate;

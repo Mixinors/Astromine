@@ -24,11 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.base.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.provider.EnergyComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.inventory.provider.FluidComponentProvider;
 import net.minecraft.block.entity.BlockEntityType;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
 import com.github.chainmailstudios.astromine.common.utilities.capability.energy.ComponentEnergyProvider;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 
@@ -36,7 +38,11 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponents;
  * A {@link ComponentBlockEntity} with an attached
  * {@link EnergyComponent} and {@link ItemComponent}.
  */
-public abstract class ComponentEnergyFluidBlockEntity extends ComponentEnergyBlockEntity implements ComponentEnergyProvider {
+public abstract class ComponentEnergyFluidBlockEntity extends ComponentEnergyBlockEntity implements ComponentEnergyProvider, EnergyComponentProvider, FluidComponentProvider {
+	private final EnergyComponent energyComponent = createEnergyComponent();
+
+	private final FluidComponent fluidComponent = createFluidComponent();
+
 	/** Instantiates a {@link ComponentEnergyFluidBlockEntity}. */
 	public ComponentEnergyFluidBlockEntity(BlockEntityType<?> type) {
 		super(type);
@@ -52,15 +58,17 @@ public abstract class ComponentEnergyFluidBlockEntity extends ComponentEnergyBlo
 	public abstract EnergyComponent createEnergyComponent();
 
 	/** Returns the attached {@link EnergyComponent}. */
+	@Override
 	public EnergyComponent getEnergyComponent() {
-		return EnergyComponent.get(this);
+		return energyComponent;
 	}
 
 	/** Returns the {@link FluidComponent} to be attached. */
 	public abstract FluidComponent createFluidComponent();
 
 	/** Returns the attached {@link FluidComponent}. */
+	@Override
 	public FluidComponent getFluidComponent() {
-		return FluidComponent.get(this);
+		return fluidComponent;
 	}
 }
