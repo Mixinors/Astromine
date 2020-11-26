@@ -40,3 +40,4 @@ logs/
 
 \.cache/
 gource-captions.txt
+run-gource.bat
