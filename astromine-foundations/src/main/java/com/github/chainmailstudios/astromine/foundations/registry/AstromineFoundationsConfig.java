@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2020 Chainmail Studios
+ * Copyright (c) 4040 Chainmail Studios
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,6 @@ package com.github.chainmailstudios.astromine.foundations.registry;
 
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import me.sargunvohra.mcmods.autoconfig1u.ConfigData;
-import me.sargunvohra.mcmods.autoconfig1u.ConfigManager;
 import me.sargunvohra.mcmods.autoconfig1u.annotation.Config;
 import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry;
 import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
@@ -35,7 +34,7 @@ import me.sargunvohra.mcmods.autoconfig1u.shadowed.blue.endless.jankson.Comment;
 @Config(name = "astromine/foundations")
 public class AstromineFoundationsConfig implements ConfigData {
 	@ConfigEntry.Gui.Excluded
-	public static AstromineFoundationsConfig instance;
+	public static AstromineFoundationsConfig INSTANCE;
 
 	@Comment("Whether generation of Copper Ore in the Overworld is enabled.")
 	public boolean overworldCopperOre = true;
@@ -53,7 +52,7 @@ public class AstromineFoundationsConfig implements ConfigData {
 	public int asteroidCoalOreMinimumRange = 0;
 
 	@Comment("Maximum range of Asteroid Coal Ore weight.")
-	public int asteroidCoalOreMaximumRange = 48;
+	public int asteroidCoalOreMaximumRange = 100;
 
 	@Comment("Minimum size of Asteroid Coal Ore veins.")
 	public int asteroidCoalOreMinimumSize = 8;
@@ -65,7 +64,7 @@ public class AstromineFoundationsConfig implements ConfigData {
 	public int asteroidIronOreMinimumRange = 0;
 
 	@Comment("Maximum range of Asteroid Iron Ore weight.")
-	public int asteroidIronOreMaximumRange = 48;
+	public int asteroidIronOreMaximumRange = 100;
 
 	@Comment("Minimum size of Asteroid Iron Ore veins.")
 	public int asteroidIronOreMinimumSize = 8;
@@ -77,7 +76,7 @@ public class AstromineFoundationsConfig implements ConfigData {
 	public int asteroidGoldOreMinimumRange = 0;
 
 	@Comment("Maximum range of Asteroid Gold Ore weight.")
-	public int asteroidGoldOreMaximumRange = 48;
+	public int asteroidGoldOreMaximumRange = 100;
 
 	@Comment("Minimum size of Asteroid Gold Ore veins.")
 	public int asteroidGoldOreMinimumSize = 8;
@@ -89,7 +88,7 @@ public class AstromineFoundationsConfig implements ConfigData {
 	public int asteroidCopperOreMinimumRange = 0;
 
 	@Comment("Maximum range of Asteroid Copper Ore weight.")
-	public int asteroidCopperOreMaximumRange = 48;
+	public int asteroidCopperOreMaximumRange = 100;
 
 	@Comment("Minimum size of Asteroid Copper Ore veins.")
 	public int asteroidCopperOreMinimumSize = 8;
@@ -101,7 +100,7 @@ public class AstromineFoundationsConfig implements ConfigData {
 	public int asteroidTinOreMinimumRange = 0;
 
 	@Comment("Maximum range of Asteroid Tin Ore weight.")
-	public int asteroidTinOreMaximumRange = 48;
+	public int asteroidTinOreMaximumRange = 100;
 
 	@Comment("Minimum size of Asteroid Tin Ore veins.")
 	public int asteroidTinOreMinimumSize = 8;
@@ -113,7 +112,7 @@ public class AstromineFoundationsConfig implements ConfigData {
 	public int asteroidSilverOreMinimumRange = 0;
 
 	@Comment("Maximum range of Asteroid Silver Ore weight.")
-	public int asteroidSilverOreMaximumRange = 48;
+	public int asteroidSilverOreMaximumRange = 100;
 
 	@Comment("Minimum size of Asteroid Silver Ore veins.")
 	public int asteroidSilverOreMinimumSize = 8;
@@ -125,7 +124,7 @@ public class AstromineFoundationsConfig implements ConfigData {
 	public int asteroidLeadOreMinimumRange = 0;
 
 	@Comment("Maximum range of Asteroid Lead Ore weight.")
-	public int asteroidLeadOreMaximumRange = 48;
+	public int asteroidLeadOreMaximumRange = 100;
 
 	@Comment("Minimum size of Asteroid Lead Ore veins.")
 	public int asteroidLeadOreMinimumSize = 8;
@@ -137,7 +136,7 @@ public class AstromineFoundationsConfig implements ConfigData {
 	public int asteroidRedstoneOreMinimumRange = 0;
 
 	@Comment("Maximum range of Asteroid Redstone Ore weight.")
-	public int asteroidRedstoneOreMaximumRange = 32;
+	public int asteroidRedstoneOreMaximumRange = 40;
 
 	@Comment("Minimum size of Asteroid Redstone Ore veins.")
 	public int asteroidRedstoneOreMinimumSize = 8;
@@ -149,7 +148,7 @@ public class AstromineFoundationsConfig implements ConfigData {
 	public int asteroidLapisOreMinimumRange = 0;
 
 	@Comment("Maximum range of Asteroid Lapis Ore weight.")
-	public int asteroidLapisOreMaximumRange = 32;
+	public int asteroidLapisOreMaximumRange = 40;
 
 	@Comment("Minimum size of Asteroid Lapis Ore veins.")
 	public int asteroidLapisOreMinimumSize = 8;
@@ -161,7 +160,7 @@ public class AstromineFoundationsConfig implements ConfigData {
 	public int asteroidDiamondOreMinimumRange = 0;
 
 	@Comment("Maximum range of Asteroid Diamond Ore weight.")
-	public int asteroidDiamondOreMaximumRange = 16;
+	public int asteroidDiamondOreMaximumRange = 50;
 
 	@Comment("Minimum size of Asteroid Diamond Ore veins.")
 	public int asteroidDiamondOreMinimumSize = 8;
@@ -173,7 +172,7 @@ public class AstromineFoundationsConfig implements ConfigData {
 	public int asteroidEmeraldOreMinimumRange = 0;
 
 	@Comment("Maximum range of Asteroid Emerald Ore weight.")
-	public int asteroidEmeraldOreMaximumRange = 16;
+	public int asteroidEmeraldOreMaximumRange = 50;
 
 	@Comment("Minimum size of Asteroid Emerald Ore veins.")
 	public int asteroidEmeraldOreMinimumSize = 8;
@@ -185,7 +184,7 @@ public class AstromineFoundationsConfig implements ConfigData {
 	public int asteroidMetiteOreMinimumRange = 0;
 
 	@Comment("Maximum range of Asteroid Metite Ore weight.")
-	public int asteroidMetiteOreMaximumRange = 48;
+	public int asteroidMetiteOreMaximumRange = 50;
 
 	@Comment("Minimum size of Asteroid Metite Ore veins.")
 	public int asteroidMetiteOreMinimumSize = 8;
@@ -197,7 +196,7 @@ public class AstromineFoundationsConfig implements ConfigData {
 	public int asteroidAsteriteOreMinimumRange = 0;
 
 	@Comment("Maximum range of Asteroid Asterite Ore weight.")
-	public int asteroidAsteriteOreMaximumRange = 32;
+	public int asteroidAsteriteOreMaximumRange = 40;
 
 	@Comment("Minimum size of Asteroid Asterite Ore veins.")
 	public int asteroidAsteriteOreMinimumSize = 8;
@@ -209,7 +208,7 @@ public class AstromineFoundationsConfig implements ConfigData {
 	public int asteroidStellumOreMinimumRange = 0;
 
 	@Comment("Maximum range of Asteroid Stellum Ore weight.")
-	public int asteroidStellumOreMaximumRange = 8;
+	public int asteroidStellumOreMaximumRange = 30;
 
 	@Comment("Minimum size of Asteroid Stellum Ore veins.")
 	public int asteroidStellumOreMinimumSize = 8;
@@ -221,7 +220,7 @@ public class AstromineFoundationsConfig implements ConfigData {
 	public int asteroidGalaxiumOreMinimumRange = 0;
 
 	@Comment("Maximum range of Asteroid Galaxium Ore weight.")
-	public int asteroidGalaxiumOreMaximumRange = 4;
+	public int asteroidGalaxiumOreMaximumRange = 20;
 
 	@Comment("Minimum size of Asteroid Galaxium Ore veins.")
 	public int asteroidGalaxiumOreMinimumSize = 8;
@@ -230,21 +229,21 @@ public class AstromineFoundationsConfig implements ConfigData {
 	public int asteroidGalaxiumOreMaximumSize = 48;
 
 	public static AstromineFoundationsConfig get() {
-		if (instance == null) {
+		if (INSTANCE == null) {
 			try {
 				AutoConfig.register(AstromineFoundationsConfig.class, JanksonConfigSerializer::new);
 				try {
-					((ConfigManager<AstromineFoundationsConfig>) AutoConfig.getConfigHolder(AstromineFoundationsConfig.class)).save();
+					AutoConfig.getConfigHolder(AstromineFoundationsConfig.class).save();
 				} catch (Throwable throwable) {
 					throwable.printStackTrace();
 				}
-				instance = AutoConfig.getConfigHolder(AstromineFoundationsConfig.class).getConfig();
+				INSTANCE = AutoConfig.getConfigHolder(AstromineFoundationsConfig.class).getConfig();
 			} catch (Throwable throwable) {
 				throwable.printStackTrace();
-				instance = new AstromineFoundationsConfig();
+				INSTANCE = new AstromineFoundationsConfig();
 			}
 		}
 
-		return instance;
+		return INSTANCE;
 	}
 }

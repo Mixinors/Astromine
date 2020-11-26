@@ -34,7 +34,7 @@ import me.sargunvohra.mcmods.autoconfig1u.shadowed.blue.endless.jankson.Comment;
 @Config(name = "astromine/config")
 public class AstromineConfig implements ConfigData {
 	@ConfigEntry.Gui.Excluded
-	public static AstromineConfig instance;
+	public static AstromineConfig INSTANCE;
 
 	@Comment("Whether Nuclear Warheads are enabled.")
 	public boolean nuclearWarheadEnabled = true;
@@ -55,385 +55,415 @@ public class AstromineConfig implements ConfigData {
 	public int overworldSpawnYLevel = 992;
 
 	@Comment("Gravity level in Space")
-	public double spaceGravity = 0.01d;
+	public double spaceGravity = 0.01D;
 
 	@Comment("Gravity level in Moon")
-	public double moonGravity = 0.03d;
+	public double moonGravity = 0.03D;
 
 	@Comment("Gravity level in Mars")
-	public double marsGravity = 0.045d;
+	public double marsGravity = 0.045D;
+
+	@Comment("Energy for the Primitive Battery.")
+	public double primitiveBatteryEnergy = 8000;
+
+	@Comment("Energy for the Basic Battery.")
+	public double basicBatteryEnergy = 16000;
+
+	@Comment("Energy for the Advanced Battery.")
+	public double advancedBatteryEnergy = 32000;
+
+	@Comment("Energy for the Elite Battery.")
+	public double eliteBatteryEnergy = 64000;
+
+	@Comment("Fluid for the Large Portable Tank.")
+	public long largePortableTankFluid = 16L;
+
+	@Comment("Fluid for the Portable Tank.")
+	public long portableTankFluid = 8L;
+
+	@Comment("Fluid for the Primitive Tank.")
+	public long primitiveTankFluid = largePortableTankFluid * 4L;
+
+	@Comment("Speed for the Primitive Tank.")
+	public double primitiveTankSpeed = 1.0D;
+
+	@Comment("Fluid for the Basic Tank.")
+	public long basicTankFluid = largePortableTankFluid * 4L;
+
+	@Comment("Speed for the Basic Tank.")
+	public double basicTankSpeed = 2.0D;
+
+	@Comment("Fluid for the Advanced Tank.")
+	public long advancedTankFluid = largePortableTankFluid * 4L;
+
+	@Comment("Speed for the Advanced Tank.")
+	public double advancedTankSpeed = 4.0D;
+
+	@Comment("Fluid for the Elite Tank.")
+	public long eliteTankFluid = largePortableTankFluid * 4L;
+
+	@Comment("Speed for the Elite Tank.")
+	public double eliteTankSpeed = 16.0D;
+
+	@Comment("Energy for the Primitive Battery Pack.")
+	public double primitiveBatteryPackEnergy = primitiveBatteryEnergy * 6.0D;
+
+	@Comment("Energy for the Basic Battery Pack.")
+	public double basicBatteryPackEnergy = basicBatteryEnergy * 6.0D;
+
+	@Comment("Energy for the Advanced Battery Pack.")
+	public double advancedBatteryPackEnergy = advancedBatteryEnergy * 6.0D;
+
+	@Comment("Energy for the Elite Battery Pack.")
+	public double eliteBatteryPackEnergy = eliteBatteryEnergy * 6.0D;
 
 	@Comment("Speed for the Primitive Triturator.")
 	public double primitiveTrituratorSpeed = 0.5D;
 
 	@Comment("Speed for the Basic Triturator.")
-	public double basicTrituratorSpeed = 1D;
+	public double basicTrituratorSpeed = 1.0D;
 
 	@Comment("Speed for the Advanced Triturator.")
-	public double advancedTrituratorSpeed = 2D;
+	public double advancedTrituratorSpeed = 2.0D;
 
 	@Comment("Speed for the Elite Triturator.")
-	public double eliteTrituratorSpeed = 4D;
+	public double eliteTrituratorSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Triturator.")
-	public double primitiveTrituratorEnergy = 2048D;
+	public double primitiveTrituratorEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Triturator.")
-	public double basicTrituratorEnergy = 16384D;
+	public double basicTrituratorEnergy = basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Triturator.")
-	public double advancedTrituratorEnergy = 32767D;
+	public double advancedTrituratorEnergy = advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Triturator.")
-	public double eliteTrituratorEnergy = 65535D;
+	public double eliteTrituratorEnergy = eliteBatteryPackEnergy;
 
 	@Comment("Speed for the Primitive Solid Generator.")
 	public double primitiveSolidGeneratorSpeed = 0.5D;
 
 	@Comment("Speed for the Basic Solid Generator.")
-	public double basicSolidGeneratorSpeed = 1D;
+	public double basicSolidGeneratorSpeed = 1.0D;
 
 	@Comment("Speed for the Advanced Solid Generator.")
-	public double advancedSolidGeneratorSpeed = 2D;
+	public double advancedSolidGeneratorSpeed = 2.0D;
 
 	@Comment("Speed for the Elite Solid Generator.")
-	public double eliteSolidGeneratorSpeed = 4D;
+	public double eliteSolidGeneratorSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Solid Generator.")
-	public double primitiveSolidGeneratorEnergy = 2048D;
+	public double primitiveSolidGeneratorEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Solid Generator.")
-	public double basicSolidGeneratorEnergy = 16384D;
+	public double basicSolidGeneratorEnergy = basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Solid Generator.")
-	public double advancedSolidGeneratorEnergy = 32767D;
+	public double advancedSolidGeneratorEnergy = advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Solid Generator.")
-	public double eliteSolidGeneratorEnergy = 65535D;
+	public double eliteSolidGeneratorEnergy = eliteBatteryPackEnergy;
 
 	@Comment("Speed for the Primitive Press.")
 	public double primitivePressSpeed = 0.5D;
 
 	@Comment("Speed for the Basic Press.")
-	public double basicPressSpeed = 1D;
+	public double basicPressSpeed = 1.0D;
 
 	@Comment("Speed for the Advanced Press.")
-	public double advancedPressSpeed = 2D;
+	public double advancedPressSpeed = 2.0D;
 
 	@Comment("Speed for the Elite Press.")
-	public double elitePressSpeed = 4D;
+	public double elitePressSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Press.")
-	public double primitivePressEnergy = 2048D;
+	public double primitivePressEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Press.")
-	public double basicPressEnergy = 16384D;
+	public double basicPressEnergy = basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Press.")
-	public double advancedPressEnergy = 32767D;
+	public double advancedPressEnergy = advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Press.")
-	public double elitePressEnergy = 65535D;
+	public double elitePressEnergy = eliteBatteryPackEnergy;
 	
 	@Comment("Speed for the Primitive Wire Mill.")
 	public double primitiveWireMillSpeed = 0.5D;
 
 	@Comment("Speed for the Basic Wire Mill.")
-	public double basicWireMillSpeed = 1D;
+	public double basicWireMillSpeed = 1.0D;
 
 	@Comment("Speed for the Advanced Wire Mill.")
-	public double advancedWireMillSpeed = 2D;
+	public double advancedWireMillSpeed = 2.0D;
 
 	@Comment("Speed for the Elite Wire Mill.")
-	public double eliteWireMillSpeed = 4D;
+	public double eliteWireMillSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Wire Mill.")
-	public double primitiveWireMillEnergy = 2048D;
+	public double primitiveWireMillEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Wire Mill.")
-	public double basicWireMillEnergy = 16384D;
+	public double basicWireMillEnergy = basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Wire Mill.")
-	public double advancedWireMillEnergy = 32767D;
+	public double advancedWireMillEnergy = advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Wire Mill.")
-	public double eliteWireMillEnergy = 65535D;
+	public double eliteWireMillEnergy = eliteBatteryPackEnergy;
 
 	@Comment("Speed for the Primitive Fluid Generator.")
 	public double primitiveFluidGeneratorSpeed = 0.5D;
 
 	@Comment("Speed for the Basic Fluid Generator.")
-	public double basicFluidGeneratorSpeed = 1D;
+	public double basicFluidGeneratorSpeed = 1.0D;
 
 	@Comment("Speed for the Advanced Fluid Generator.")
-	public double advancedFluidGeneratorSpeed = 2D;
+	public double advancedFluidGeneratorSpeed = 2.0D;
 
 	@Comment("Speed for the Elite Fluid Generator.")
-	public double eliteFluidGeneratorSpeed = 4D;
+	public double eliteFluidGeneratorSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Fluid Generator.")
-	public double primitiveFluidGeneratorEnergy = 2048D;
+	public double primitiveFluidGeneratorEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Fluid Generator.")
-	public double basicFluidGeneratorEnergy = 16384D;
+	public double basicFluidGeneratorEnergy = basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Fluid Generator.")
-	public double advancedFluidGeneratorEnergy = 32767D;
+	public double advancedFluidGeneratorEnergy = advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Fluid Generator.")
-	public double eliteFluidGeneratorEnergy = 65535D;
+	public double eliteFluidGeneratorEnergy = eliteBatteryPackEnergy;
 
 	@Comment("Fluid for the Primitive Fluid Generator.")
-	public long primitiveFluidGeneratorFluid = 4L;
+	public long primitiveFluidGeneratorFluid = largePortableTankFluid * 2L;
 
 	@Comment("Fluid for the Basic Fluid Generator.")
-	public long basicFluidGeneratorFluid = 8L;
+	public long basicFluidGeneratorFluid = largePortableTankFluid * 2L;
 
 	@Comment("Fluid for the Advanced Fluid Generator.")
-	public long advancedFluidGeneratorFluid = 16L;
+	public long advancedFluidGeneratorFluid = largePortableTankFluid * 2L;
 
 	@Comment("Fluid for the Elite Fluid Generator.")
-	public long eliteFluidGeneratorFluid = 64L;
+	public long eliteFluidGeneratorFluid = largePortableTankFluid * 2L;
 
 	@Comment("Speed for the Primitive Fluid Mixer.")
 	public double primitiveFluidMixerSpeed = 0.5D;
 
 	@Comment("Speed for the Basic Fluid Mixer.")
-	public double basicFluidMixerSpeed = 1D;
+	public double basicFluidMixerSpeed = 1.0D;
 
 	@Comment("Speed for the Advanced Fluid Mixer.")
-	public double advancedFluidMixerSpeed = 2D;
+	public double advancedFluidMixerSpeed = 2.0D;
 
 	@Comment("Speed for the Elite Fluid Mixer.")
-	public double eliteFluidMixerSpeed = 4D;
+	public double eliteFluidMixerSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Fluid Mixer.")
-	public double primitiveFluidMixerEnergy = 2048D;
+	public double primitiveFluidMixerEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Fluid Mixer.")
-	public double basicFluidMixerEnergy = 16384D;
+	public double basicFluidMixerEnergy = basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Fluid Mixer.")
-	public double advancedFluidMixerEnergy = 32767D;
+	public double advancedFluidMixerEnergy = advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Fluid Mixer.")
-	public double eliteFluidMixerEnergy = 65535D;
+	public double eliteFluidMixerEnergy = eliteBatteryPackEnergy;
 
 	@Comment("Fluid for the Primitive Fluid Mixer.")
-	public long primitiveFluidMixerFluid = 4L;
+	public long primitiveFluidMixerFluid = largePortableTankFluid * 2L;
 
 	@Comment("Fluid for the Basic Fluid Mixer.")
-	public long basicFluidMixerFluid = 8L;
+	public long basicFluidMixerFluid = largePortableTankFluid * 2L;
 
 	@Comment("Fluid for the Advanced Fluid Mixer.")
-	public long advancedFluidMixerFluid = 16L;
+	public long advancedFluidMixerFluid = largePortableTankFluid * 2L;
 
 	@Comment("Fluid for the Elite Fluid Mixer.")
-	public long eliteFluidMixerFluid = 64L;
+	public long eliteFluidMixerFluid = largePortableTankFluid * 2L;
 
 	@Comment("Speed for the Primitive Electrolyzer.")
 	public double primitiveElectrolyzerSpeed = 0.5D;
 
 	@Comment("Speed for the Basic Electrolyzer.")
-	public double basicElectrolyzerSpeed = 1D;
+	public double basicElectrolyzerSpeed = 1.0D;
 
 	@Comment("Speed for the Advanced Electrolyzer.")
-	public double advancedElectrolyzerSpeed = 2D;
+	public double advancedElectrolyzerSpeed = 2.0D;
 
 	@Comment("Speed for the Elite Electrolyzer.")
-	public double eliteElectrolyzerSpeed = 4D;
+	public double eliteElectrolyzerSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Electrolyzer.")
-	public double primitiveElectrolyzerEnergy = 2048D;
+	public double primitiveElectrolyzerEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Electrolyzer.")
-	public double basicElectrolyzerEnergy = 16384D;
+	public double basicElectrolyzerEnergy = basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Electrolyzer.")
-	public double advancedElectrolyzerEnergy = 32767D;
+	public double advancedElectrolyzerEnergy = advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Electrolyzer.")
-	public double eliteElectrolyzerEnergy = 65535D;
+	public double eliteElectrolyzerEnergy = eliteBatteryPackEnergy;
 
 	@Comment("Fluid for the Primitive Electrolyzer.")
-	public long primitiveElectrolyzerFluid = 4L;
+	public long primitiveElectrolyzerFluid = largePortableTankFluid * 2L;
 
 	@Comment("Fluid for the Basic Electrolyzer.")
-	public long basicElectrolyzerFluid = 8L;
+	public long basicElectrolyzerFluid = largePortableTankFluid * 2L;
 
 	@Comment("Fluid for the Advanced Electrolyzer.")
-	public long advancedElectrolyzerFluid = 16L;
+	public long advancedElectrolyzerFluid = largePortableTankFluid * 2L;
 
 	@Comment("Fluid for the Elite Electrolyzer.")
-	public long eliteElectrolyzerFluid = 64L;
+	public long eliteElectrolyzerFluid = largePortableTankFluid * 2L;
 
 	@Comment("Speed for the Primitive Refinery.")
 	public double primitiveRefinerySpeed = 0.5D;
 
 	@Comment("Speed for the Basic Refinery.")
-	public double basicRefinerySpeed = 1D;
+	public double basicRefinerySpeed = 1.0D;
 
 	@Comment("Speed for the Advanced Refinery.")
-	public double advancedRefinerySpeed = 2D;
+	public double advancedRefinerySpeed = 2.0D;
 
 	@Comment("Speed for the Elite Refinery.")
-	public double eliteRefinerySpeed = 4D;
+	public double eliteRefinerySpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Refinery.")
-	public double primitiveRefineryEnergy = 2048D;
+	public double primitiveRefineryEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Refinery.")
-	public double basicRefineryEnergy = 16384D;
+	public double basicRefineryEnergy = basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Refinery.")
-	public double advancedRefineryEnergy = 32767D;
+	public double advancedRefineryEnergy = advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Refinery.")
-	public double eliteRefineryEnergy = 65535D;
+	public double eliteRefineryEnergy = eliteBatteryPackEnergy;
 
 	@Comment("Fluid for the Primitive Refinery.")
-	public long primitiveRefineryFluid = 4L;
+	public long primitiveRefineryFluid = primitiveTankFluid * 2L;
 
 	@Comment("Fluid for the Basic Refinery.")
-	public long basicRefineryFluid = 8L;
+	public long basicRefineryFluid = basicTankFluid * 2L;
 
 	@Comment("Fluid for the Advanced Refinery.")
-	public long advancedRefineryFluid = 16L;
+	public long advancedRefineryFluid = advancedTankFluid * 2L;
 
 	@Comment("Fluid for the Elite Refinery.")
-	public long eliteRefineryFluid = 64L;
+	public long eliteRefineryFluid = eliteTankFluid * 2L;
 
 	@Comment("Speed for the Primitive Electric Furnace.")
 	public double primitiveElectricFurnaceSpeed = 0.5D;
 
 	@Comment("Speed for the Basic Electric Furnace.")
-	public double basicElectricFurnaceSpeed = 1D;
+	public double basicElectricFurnaceSpeed = 1.0D;
 
 	@Comment("Speed for the Advanced Electric Furnace.")
-	public double advancedElectricFurnaceSpeed = 2D;
+	public double advancedElectricFurnaceSpeed = 2.0D;
 
 	@Comment("Speed for the Elite Electric Furnace.")
-	public double eliteElectricFurnaceSpeed = 4D;
+	public double eliteElectricFurnaceSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Electric Furnace.")
-	public double primitiveElectricFurnaceEnergy = 2048D;
+	public double primitiveElectricFurnaceEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Electric Furnace.")
-	public double basicElectricFurnaceEnergy = 16384D;
+	public double basicElectricFurnaceEnergy = basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Electric Furnace.")
-	public double advancedElectricFurnaceEnergy = 32767D;
+	public double advancedElectricFurnaceEnergy = advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Electric Furnace.")
-	public double eliteElectricFurnaceEnergy = 65535D;
+	public double eliteElectricFurnaceEnergy = eliteBatteryPackEnergy;
 
 	@Comment("Speed for the Primitive Alloy Smelter.")
 	public double primitiveAlloySmelterSpeed = 0.5D;
 
 	@Comment("Speed for the Basic Alloy Smelter.")
-	public double basicAlloySmelterSpeed = 1D;
+	public double basicAlloySmelterSpeed = 1.0D;
 
 	@Comment("Speed for the Advanced Alloy Smelter.")
-	public double advancedAlloySmelterSpeed = 2D;
+	public double advancedAlloySmelterSpeed = 2.0D;
 
 	@Comment("Speed for the Elite Alloy Smelter.")
-	public double eliteAlloySmelterSpeed = 4D;
+	public double eliteAlloySmelterSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Alloy Smelter.")
-	public double primitiveAlloySmelterEnergy = 2048D;
+	public double primitiveAlloySmelterEnergy = primitiveElectricFurnaceEnergy* 2.0D + primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Alloy Smelter.")
-	public double basicAlloySmelterEnergy = 16384D;
+	public double basicAlloySmelterEnergy = basicElectricFurnaceEnergy* 2.0D + basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Alloy Smelter.")
-	public double advancedAlloySmelterEnergy = 32767D;
+	public double advancedAlloySmelterEnergy = advancedElectricFurnaceEnergy* 2.0D + advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Alloy Smelter.")
-	public double eliteAlloySmelterEnergy = 65535D;
+	public double eliteAlloySmelterEnergy = eliteElectricFurnaceEnergy* 2.0D + eliteBatteryPackEnergy;
 
 	@Comment("Energy for the Block Placer.")
-	public double blockPlacerEnergy = 16384D;
+	public double blockPlacerEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Block Breaker.")
-	public double blockBreakerEnergy = 16384D;
+	public double blockBreakerEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Fluid Placer.")
-	public double fluidPlacerEnergy = 16384D;
+	public double fluidPlacerEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Fluid Collector.")
-	public double fluidCollectorEnergy = 16384D;
+	public double fluidCollectorEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Speed for the Vent.")
-	public double ventSpeed = 1D;
+	public double ventSpeed = 1.0D;
 
 	@Comment("Energy for the Vent.")
-	public double ventEnergy = 16384D;
+	public double ventEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Fluid for the Vent.")
 	public long ventFluid = 16L;
-
-	@Comment("Fluid for the Primitive Tank.")
-	public long primitiveTankFluid = 16L;
-
-	@Comment("Speed for the Primitive Tank.")
-	public double primitiveTankSpeed = 1D;
-
-	@Comment("Fluid for the Basic Tank.")
-	public long basicTankFluid = 32L;
-
-	@Comment("Speed for the Basic Tank.")
-	public double basicTankSpeed = 2D;
-
-	@Comment("Fluid for the Advanced Tank.")
-	public long advancedTankFluid = 128L;
-
-	@Comment("Speed for the Advanced Tank.")
-	public double advancedTankSpeed = 4D;
-
-	@Comment("Fluid for the Elite Tank.")
-	public long eliteTankFluid = 256L;
-
-	@Comment("Speed for the Elite Tank.")
-	public double eliteTankSpeed = 16D;
 
 	@Comment("Speed for the Primitive Capacitor.")
 	public double primitiveCapacitorSpeed = 0.5D;
 
 	@Comment("Speed for the Basic Capacitor.")
-	public double basicCapacitorSpeed = 1D;
+	public double basicCapacitorSpeed = 1.0D;
 
 	@Comment("Speed for the Advanced Capacitor.")
-	public double advancedCapacitorSpeed = 2D;
+	public double advancedCapacitorSpeed = 2.0D;
 
 	@Comment("Speed for the Elite Capacitor.")
-	public double eliteCapacitorSpeed = 4D;
+	public double eliteCapacitorSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Capacitor.")
-	public double primitiveCapacitorEnergy = 16384D;
+	public double primitiveCapacitorEnergy = primitiveBatteryPackEnergy * 4.0D;
 
 	@Comment("Energy for the Basic Capacitor.")
-	public double basicCapacitorEnergy = 32767D;
+	public double basicCapacitorEnergy = basicBatteryPackEnergy * 4.0D;
 
 	@Comment("Energy for the Advanced Capacitor.")
-	public double advancedCapacitorEnergy = 65535D;
+	public double advancedCapacitorEnergy = advancedBatteryPackEnergy * 4.0D;
 
 	@Comment("Energy for the Elite Capacitor.")
-	public double eliteCapacitorEnergy = 131071D;
+	public double eliteCapacitorEnergy = eliteBatteryPackEnergy * 4.0D;
 
 	@Comment("Energy for the Block Placer actions.")
-	public double blockPlacerEnergyConsumed = 1024D;
+	public double blockPlacerEnergyConsumed = 1024.0D;
 
 	@Comment("Energy for the Block Breaker actions.")
-	public double blockBreakerEnergyConsumed = 1024D;
+	public double blockBreakerEnergyConsumed = 1024.0D;
 
 	@Comment("Energy for the Fluid Placer actions.")
-	public double fluidPlacerEnergyConsumed = 1024D;
+	public double fluidPlacerEnergyConsumed = 1024.0D;
 
 	@Comment("Energy for the Fluid Collector actions.")
-	public double fluidCollectorEnergyConsumed = 1024D;
+	public double fluidCollectorEnergyConsumed = 1024.0D;
 
 	@Comment("Energy for the Vent actions.")
-	public double ventEnergyConsumed = 1024D;
+	public double ventEnergyConsumed = 1024.0D;
 
 	@Comment("Delay for the Block Placer actions (smaller is faster).")
 	public long blockPlacerSpeed = 40L;
@@ -448,16 +478,16 @@ public class AstromineConfig implements ConfigData {
 	public long fluidCollectorSpeed = 40L;
 
 	@Comment("Energy for the Gravity Gauntlet.")
-	public double gravityGauntletEnergy = 16384D;
+	public double gravityGauntletEnergy = advancedBatteryEnergy;
 
 	@Comment("Energy for the Gravity Gauntlet actions.")
-	public double gravityGauntletConsumed = 1024D;
+	public double gravityGauntletConsumed = 512.0D;
 
 	@Comment("Energy for the Drill actions.")
-	public double drillConsumed = 6D;
+	public double drillConsumed = 6.0D;
 
 	@Comment("Multiplier for the Drill entity hit actions.")
-	public double drillEntityHitMultiplier = 2D;
+	public double drillEntityHitMultiplier = 2.0D;
 
 	@Comment("Delay for the Fire Extinguisher sneaking actions.")
 	public int fireExtinguisherSneakingDelay = 2;
@@ -498,59 +528,29 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Whether to enable Meteor generation in The End.")
 	public boolean endMeteorGeneration = true;
 
-	@Comment("Energy for the Primitive Battery.")
-	public double primitiveBatteryEnergy = 4500;
-
-	@Comment("Energy for the Basic Battery.")
-	public double basicBatteryEnergy = 9000;
-
-	@Comment("Energy for the Advanced Battery.")
-	public double advancedBatteryEnergy = 24000;
-
-	@Comment("Energy for the Elite Battery.")
-	public double eliteBatteryEnergy = 64000;
-
-	@Comment("Energy for the Primitive Battery Pack.")
-	public double primitiveBatteryPackEnergy = 27000;
-
-	@Comment("Energy for the Basic Battery Pack.")
-	public double basicBatteryPackEnergy = 54000;
-
-	@Comment("Energy for the Advanced Battery Pack.")
-	public double advancedBatteryPackEnergy = 144000;
-
-	@Comment("Energy for the Elite Battery Pack.")
-	public double eliteBatteryPackEnergy = 384000;
-
 	@Comment("Energy for the Primitive Drill.")
-	public double primitiveDrillEnergy = 45000;
+	public double primitiveDrillEnergy = primitiveBatteryPackEnergy * 2;
 
 	@Comment("Energy for the Basic Drill.")
-	public double basicDrillEnergy = 90000;
+	public double basicDrillEnergy = basicBatteryPackEnergy * 2;
 
 	@Comment("Energy for the Advanced Drill.")
-	public double advancedDrillEnergy = 240000;
+	public double advancedDrillEnergy = advancedBatteryPackEnergy * 2;
 
 	@Comment("Energy for the Elite Drill.")
-	public double eliteDrillEnergy = 640000;
-	
-	@Comment("Fluid for the Large Portable Tank.")
-	public long largePortableTankFluid = 16L;
-
-	@Comment("Fluid for the Portable Tank.")
-	public long portableTankFluid = 8L;
+	public double eliteDrillEnergy = eliteBatteryPackEnergy * 2;
 
 	@Comment("Energy rate for the Primitive Energy Cable.")
-	public double primitiveEnergyCableEnergy = 64D;
+	public double primitiveEnergyCableEnergy = 256.0D;
 
 	@Comment("Energy for the Basic Energy Cable.")
-	public double basicEnergyCableEnergy = 256D;
+	public double basicEnergyCableEnergy = 512.0D;
 
 	@Comment("Energy for the Advanced Energy Cable.")
-	public double advancedEnergyCableEnergy = 1024D;
+	public double advancedEnergyCableEnergy = 1024.0D;
 
 	@Comment("Energy for the Elite Energy Cable.")
-	public double eliteEnergyCableEnergy = 4096D;
+	public double eliteEnergyCableEnergy = 4096.0D;
 
 	@Comment("Delay for the Inserter actions (smaller is faster).")
 	public int inserterSpeed = 16;
@@ -568,91 +568,91 @@ public class AstromineConfig implements ConfigData {
 	public int eliteConveyorSpeed = 8;
 
 	@Comment("Fluid for the Space Suit.")
-	public long spaceSuitFluid = 64L;
+	public long spaceSuitFluid = portableTankFluid;
 
 	@Comment("Threshold for Asteroid Ores.")
-	public int asteroidOreThreshold = 6;
+	public int asteroidOreThreshold = 2;
 
 	@Comment("Whether AK9 should asphyxiate.")
 	public boolean asphyxiateAK9 = true;
 
 	@Comment("Fluid numerator for the Fluid Pipe and inter-machine transfer.")
-	public long fluidTransferNumerator = 1;
+	public long fluidTransferNumerator = 1L;
 
 	@Comment("Fluid denominator for the Fluid Pipe and inter-machine transfer.")
-	public long fluidTransferDenominator = 5;
+	public long fluidTransferDenominator = 5L;
 
 	@Comment("Fluid for the Primitive Melter.")
-	public long primitiveMelterFluid = 4L;
+	public long primitiveMelterFluid = largePortableTankFluid;
 
 	@Comment("Speed for the Primitive Melter.")
 	public double primitiveMelterSpeed = 0.5D;
 
 	@Comment("Fluid for the Basic Melter.")
-	public long basicMelterFluid = 8L;
+	public long basicMelterFluid = largePortableTankFluid;
 
 	@Comment("Speed for the Basic Melter.")
-	public double basicMelterSpeed = 1D;
+	public double basicMelterSpeed = 1.0D;
 
 	@Comment("Fluid for the Advanced Melter.")
-	public long advancedMelterFluid = 16L;
+	public long advancedMelterFluid = largePortableTankFluid;
 
 	@Comment("Speed for the Advanced Melter.")
-	public double advancedMelterSpeed = 2D;
+	public double advancedMelterSpeed = 2.0D;
 
 	@Comment("Fluid for the Elite Melter.")
-	public long eliteMelterFluid = 64L;
+	public long eliteMelterFluid = largePortableTankFluid;
 
 	@Comment("Speed for the Elite Melter.")
-	public double eliteMelterSpeed = 4D;
+	public double eliteMelterSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Melter.")
-	public double primitiveMelterEnergy = 2048D;
+	public double primitiveMelterEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Melter.")
-	public double basicMelterEnergy = 16384D;
+	public double basicMelterEnergy = basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Melter.")
-	public double advancedMelterEnergy = 32767D;
+	public double advancedMelterEnergy = advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Melter.")
-	public double eliteMelterEnergy = 65535D;
+	public double eliteMelterEnergy = eliteBatteryPackEnergy;
 
 	@Comment("Fluid for the Primitive Solidifier.")
-	public long primitiveSolidifierFluid = 4L;
+	public long primitiveSolidifierFluid = largePortableTankFluid;
 
 	@Comment("Speed for the Primitive Solidifier.")
 	public double primitiveSolidifierSpeed = 0.5D;
 
 	@Comment("Fluid for the Basic Solidifier.")
-	public long basicSolidifierFluid = 8L;
+	public long basicSolidifierFluid = largePortableTankFluid;
 
 	@Comment("Speed for the Basic Solidifier.")
-	public double basicSolidifierSpeed = 1D;
+	public double basicSolidifierSpeed = 1.0D;
 
 	@Comment("Fluid for the Advanced Solidifier.")
-	public long advancedSolidifierFluid = 16L;
+	public long advancedSolidifierFluid = largePortableTankFluid;
 
 	@Comment("Speed for the Advanced Solidifier.")
-	public double advancedSolidifierSpeed = 2D;
+	public double advancedSolidifierSpeed = 2.0D;
 
 	@Comment("Fluid for the Elite Solidifier.")
-	public long eliteSolidifierFluid = 64L;
+	public long eliteSolidifierFluid = largePortableTankFluid;
 
 	@Comment("Speed for the Elite Solidifier.")
-	public double eliteSolidifierSpeed = 4D;
+	public double eliteSolidifierSpeed = 4.0D;
 
 	@Comment("Energy for the Primitive Solidifier.")
-	public double primitiveSolidifierEnergy = 2048D;
+	public double primitiveSolidifierEnergy = primitiveBatteryPackEnergy;
 
 	@Comment("Energy for the Basic Solidifier.")
-	public double basicSolidifierEnergy = 16384D;
+	public double basicSolidifierEnergy = basicBatteryPackEnergy;
 
 	@Comment("Energy for the Advanced Solidifier.")
-	public double advancedSolidifierEnergy = 32767D;
+	public double advancedSolidifierEnergy = advancedBatteryPackEnergy;
 
 	@Comment("Energy for the Elite Solidifier.")
-	public double eliteSolidifierEnergy = 65535D;
+	public double eliteSolidifierEnergy = eliteBatteryPackEnergy;
 
 	@Comment("Default gravity for non-Astromine dimensions.")
 	public double defaultGravity = 0.08D;
@@ -660,14 +660,14 @@ public class AstromineConfig implements ConfigData {
 	@Comment("Chance for Piglins to realize if you try to trick them. (1 in x)")
 	public int piglinAngerChance = 5;
 
-	@Comment("Stack ssize transferred by Inserters.")
+	@Comment("Stack size transferred by Inserters.")
 	public int inserterStackSize = 8;
 
 	@Comment("Whether Conveyors should merge their contents with others or not.")
 	public boolean conveyorsMergeStacks = false;
 
 	public static AstromineConfig get() {
-		if (instance == null) {
+		if (INSTANCE == null) {
 			try {
 				AutoConfig.register(AstromineConfig.class, JanksonConfigSerializer::new);
 				try {
@@ -675,13 +675,13 @@ public class AstromineConfig implements ConfigData {
 				} catch (Throwable throwable) {
 					throwable.printStackTrace();
 				}
-				instance = AutoConfig.getConfigHolder(AstromineConfig.class).getConfig();
+				INSTANCE = AutoConfig.getConfigHolder(AstromineConfig.class).getConfig();
 			} catch (Throwable throwable) {
 				throwable.printStackTrace();
-				instance = new AstromineConfig();
+				INSTANCE = new AstromineConfig();
 			}
 		}
 
-		return instance;
+		return INSTANCE;
 	}
 }

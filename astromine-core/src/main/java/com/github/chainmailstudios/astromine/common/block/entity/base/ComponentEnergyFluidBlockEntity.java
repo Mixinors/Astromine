@@ -38,7 +38,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponents;
  * A {@link ComponentBlockEntity} with an attached
  * {@link EnergyComponent} and {@link ItemComponent}.
  */
-public abstract class ComponentEnergyFluidBlockEntity extends ComponentEnergyBlockEntity implements ComponentEnergyProvider, EnergyComponentProvider, FluidComponentProvider {
+public abstract class ComponentEnergyFluidBlockEntity extends ComponentBlockEntity implements ComponentEnergyProvider, EnergyComponentProvider, FluidComponentProvider {
 	private final EnergyComponent energyComponent = createEnergyComponent();
 
 	private final FluidComponent fluidComponent = createFluidComponent();

@@ -65,10 +65,10 @@ public class AstromineTechnologiesItems extends AstromineItems {
 	public static final Item ELITE_BATTERY_PACK = register("elite_battery_pack", EnergyVolumeItem.of(getBasicSettings().maxCount(1), AstromineConfig.get().eliteBatteryPackEnergy));
 	public static final Item CREATIVE_BATTERY_PACK = register("creative_battery_pack", EnergyVolumeItem.ofCreative(getBasicSettings().maxCount(1)));
 
-	public static final Item PRIMITIVE_DRILL = register("primitive_drill", new DrillItem(AstromineTechnologiesToolMaterials.PRIMITIVE_DRILL, 1, -2.8F, 3, AstromineConfig.get().primitiveDrillEnergy, getBasicSettings().maxCount(1)));
-	public static final Item BASIC_DRILL = register("basic_drill", new DrillItem(AstromineTechnologiesToolMaterials.BASIC_DRILL, 1, -2.8F, 3, AstromineConfig.get().basicDrillEnergy, getBasicSettings().maxCount(1)));
-	public static final Item ADVANCED_DRILL = register("advanced_drill", new DrillItem(AstromineTechnologiesToolMaterials.ADVANCED_DRILL, 1, -2.8F, 3, AstromineConfig.get().advancedDrillEnergy, getBasicSettings().maxCount(1)));
-	public static final Item ELITE_DRILL = register("elite_drill", new DrillItem(AstromineTechnologiesToolMaterials.ELITE_DRILL, 1, -2.8F, 3, AstromineConfig.get().eliteDrillEnergy, getBasicSettings().maxCount(1)));
+	public static final Item PRIMITIVE_DRILL = register("primitive_drill", new DrillItem(AstromineTechnologiesToolMaterials.PRIMITIVE_DRILL, 1, -2.8F, 1, AstromineConfig.get().primitiveDrillEnergy, getBasicSettings().maxCount(1)));
+	public static final Item BASIC_DRILL = register("basic_drill", new DrillItem(AstromineTechnologiesToolMaterials.BASIC_DRILL, 1, -2.8F, 1, AstromineConfig.get().basicDrillEnergy, getBasicSettings().maxCount(1)));
+	public static final Item ADVANCED_DRILL = register("advanced_drill", new DrillItem(AstromineTechnologiesToolMaterials.ADVANCED_DRILL, 1, -2.8F, 1, AstromineConfig.get().advancedDrillEnergy, getBasicSettings().maxCount(1)));
+	public static final Item ELITE_DRILL = register("elite_drill", new DrillItem(AstromineTechnologiesToolMaterials.ELITE_DRILL, 1, -2.8F, 1, AstromineConfig.get().eliteDrillEnergy, getBasicSettings().maxCount(1)));
 
 	public static final Item DRILL_HEAD = register("drill_head", new Item(getBasicSettings()));
 

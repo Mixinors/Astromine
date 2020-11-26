@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "astromine:primitive_drill",
     "astromine:basic_drill",
     "astromine:advanced_drill",
     "astromine:elite_drill"
