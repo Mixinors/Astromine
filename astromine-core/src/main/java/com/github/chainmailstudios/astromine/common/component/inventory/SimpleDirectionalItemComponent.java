@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.ItemComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
@@ -9,25 +10,25 @@ import java.util.function.Supplier;
 
 /**
  * An {@link ItemComponent} which bases insertion and
- * extraction on a {@link BlockEntityTransferComponent}.
+ * extraction on a {@link TransferComponent}.
  */
 public class SimpleDirectionalItemComponent extends SimpleItemComponent {
-    private BlockEntityTransferComponent transferComponent;
+    private TransferComponent transferComponent;
 
-    private Supplier<BlockEntityTransferComponent> transferComponentSupplier;
+    private Supplier<TransferComponent> transferComponentSupplier;
 
     /** Instantiates a {@link SimpleDirectionalItemComponent}. */
     protected <V> SimpleDirectionalItemComponent(V v, int size) {
         super(size);
 
-        transferComponentSupplier = () -> BlockEntityTransferComponent.get(v);
+        transferComponentSupplier = () -> TransferComponent.get(v);
     }
 
     /** Instantiates a {@link SimpleDirectionalItemComponent}. */
     protected  <V> SimpleDirectionalItemComponent(V v, ItemStack... stacks) {
         super(stacks);
 
-        transferComponentSupplier = () -> BlockEntityTransferComponent.get(v);
+        transferComponentSupplier = () -> TransferComponent.get(v);
     }
 
     /** Updates the transfer component if not yet acquired. */
@@ -47,7 +48,10 @@ public class SimpleDirectionalItemComponent extends SimpleItemComponent {
     public boolean canInsert(@Nullable Direction direction, ItemStack stack, int slot) {
         if (transferComponent == null && transferComponentSupplier != null) {
             transferComponent = transferComponentSupplier.get();
-            transferComponentSupplier = null;
+        }
+
+        if (transferComponent == null) {
+            return false;
         }
 
         return direction == null ? super.canInsert(direction, stack, slot) : transferComponent.getItem(direction).canInsert() && super.canInsert(direction, stack, slot);
@@ -58,7 +62,10 @@ public class SimpleDirectionalItemComponent extends SimpleItemComponent {
     public boolean canExtract(@Nullable Direction direction, ItemStack stack, int slot) {
         if (transferComponent == null && transferComponentSupplier != null) {
             transferComponent = transferComponentSupplier.get();
-            transferComponentSupplier = null;
+        }
+
+        if (transferComponent == null) {
+            return false;
         }
 
         return direction == null ? super.canExtract(direction, stack, slot) : transferComponent.getItem(direction).canExtract() && super.canExtract(direction, stack, slot);

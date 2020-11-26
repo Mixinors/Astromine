@@ -29,7 +29,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import dev.onyxstudios.cca.api.v3.component.Component;

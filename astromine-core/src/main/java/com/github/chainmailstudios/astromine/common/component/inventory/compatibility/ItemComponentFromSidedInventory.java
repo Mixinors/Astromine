@@ -24,10 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.component.inventory.compatibility;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;

@@ -1,6 +1,7 @@
 package com.github.chainmailstudios.astromine.common.component.inventory;
 
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
+import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
@@ -9,25 +10,25 @@ import java.util.function.Supplier;
 
 /**
  * A {@link FluidComponent} which bases insertion and
- * extraction on a {@link BlockEntityTransferComponent}.
+ * extraction on a {@link TransferComponent}.
  */
 public class SimpleDirectionalFluidComponent extends SimpleFluidComponent {
-    private BlockEntityTransferComponent transferComponent;
+    private TransferComponent transferComponent;
 
-    private Supplier<BlockEntityTransferComponent> transferComponentSupplier;
+    private Supplier<TransferComponent> transferComponentSupplier;
 
     /** Instantiates a {@link SimpleDirectionalFluidComponent}. */
     protected <V> SimpleDirectionalFluidComponent(V v, int size) {
         super(size);
 
-        transferComponentSupplier = () -> BlockEntityTransferComponent.get(v);
+        transferComponentSupplier = () -> TransferComponent.get(v);
     }
 
     /** Instantiates a {@link SimpleDirectionalFluidComponent}. */
     protected  <V> SimpleDirectionalFluidComponent(V v, FluidVolume... volumes) {
         super(volumes);
 
-        transferComponentSupplier = () -> BlockEntityTransferComponent.get(v);
+        transferComponentSupplier = () -> TransferComponent.get(v);
     }
 
     /** Instantiates a {@link SimpleDirectionalFluidComponent}. */
@@ -45,7 +46,10 @@ public class SimpleDirectionalFluidComponent extends SimpleFluidComponent {
     public boolean canInsert(@Nullable Direction direction, FluidVolume volume, int slot) {
         if (transferComponent == null && transferComponentSupplier != null) {
             transferComponent = transferComponentSupplier.get();
-            transferComponentSupplier = null;
+        }
+
+        if (transferComponent == null) {
+            return false;
         }
 
         return direction == null ? super.canInsert(direction, volume, slot) : transferComponent.getFluid(direction).canInsert() && super.canInsert(direction, volume, slot);
@@ -56,7 +60,10 @@ public class SimpleDirectionalFluidComponent extends SimpleFluidComponent {
     public boolean canExtract(@Nullable Direction direction, FluidVolume volume, int slot) {
         if (transferComponent == null && transferComponentSupplier != null) {
             transferComponent = transferComponentSupplier.get();
-            transferComponentSupplier = null;
+        }
+
+        if (transferComponent == null) {
+            return false;
         }
 
         return direction == null ? super.canExtract(direction, volume, slot) : transferComponent.getFluid(direction).canExtract() && super.canExtract(direction, volume, slot);

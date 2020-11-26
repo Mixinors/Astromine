@@ -22,9 +22,13 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.component.inventory;
+package com.github.chainmailstudios.astromine.common.component.inventory.base;
 
-import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
+import com.github.chainmailstudios.astromine.common.component.inventory.IdentifiableComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleAutoSyncedFluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleDirectionalFluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.provider.FluidComponentProvider;
 import com.github.chainmailstudios.astromine.common.utilities.VolumeUtilities;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
@@ -55,7 +59,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static com.github.chainmailstudios.astromine.common.volume.fraction.Fraction.minimum;
-import static java.lang.Integer.min;
 
 /**
  * A {@link IdentifiableComponent} representing a fluid reserve.
@@ -351,23 +354,27 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 	/** Returns the {@link FluidComponent} of the given {@link V}. */
 	@Nullable
 	static <V> FluidComponent get(V v) {
-		if (v instanceof ItemStack) {
-			ItemStack stack = (ItemStack) v;
-			Item item = stack.getItem();
-
-			if (item instanceof BucketItem) {
-				BucketItem bucket = (BucketItem) item;
-
-				return SimpleFluidComponent.of(FluidVolume.of(Fraction.BUCKET, bucket.fluid));
-			} else if (item instanceof PotionItem) {
-				if(PotionUtil.getPotion(stack).equals(Potions.WATER))
-					return SimpleFluidComponent.of(FluidVolume.of(Fraction.BOTTLE, Fluids.WATER));
-			}
+		if (v instanceof FluidComponentProvider) {
+			return ((FluidComponentProvider) v).getFluidComponent();
 		}
 
-		try {
+		if (v != null && AstromineComponents.FLUID_INVENTORY_COMPONENT.isProvidedBy(v)) {
 			return AstromineComponents.FLUID_INVENTORY_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
+		} else {
+			if (v instanceof ItemStack) {
+				ItemStack stack = (ItemStack) v;
+				Item item = stack.getItem();
+
+				if (item instanceof BucketItem) {
+					BucketItem bucket = (BucketItem) item;
+
+					return SimpleFluidComponent.of(FluidVolume.of(Fraction.BUCKET, bucket.fluid));
+				} else if (item instanceof PotionItem) {
+					if(PotionUtil.getPotion(stack).equals(Potions.WATER))
+						return SimpleFluidComponent.of(FluidVolume.of(Fraction.BOTTLE, Fluids.WATER));
+				}
+			}
+
 			return null;
 		}
 	}

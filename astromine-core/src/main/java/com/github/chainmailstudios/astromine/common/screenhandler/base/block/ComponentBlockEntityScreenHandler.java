@@ -24,6 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.block;
 
+import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.provider.EnergyComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.inventory.provider.FluidComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.inventory.provider.ItemComponentProvider;
+import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerType;
@@ -34,7 +40,6 @@ import net.minecraft.util.math.Direction;
 
 import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.IdentifiableComponent;
 import com.github.chainmailstudios.astromine.common.utilities.WidgetUtilities;
 import com.github.chainmailstudios.astromine.common.widget.blade.RedstoneWidget;
@@ -49,6 +54,8 @@ import com.github.vini2003.blade.common.widget.base.TextWidget;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * A {@link BlockStateScreenHandler}with an attached
@@ -140,33 +147,42 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 
 		final Direction finalRotation = rotation;
 
-		BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(blockEntity);
-
-		transferComponent.getComponents().forEach((key, entry) -> {
-			if (key.get(blockEntity) instanceof IdentifiableComponent) {
-				IdentifiableComponent identifiableComponent = (IdentifiableComponent) key.get(blockEntity);
-				TabWidgetCollection current = (TabWidgetCollection) tabs.addTab(identifiableComponent.getSymbol(), () -> Collections.singletonList(identifiableComponent.getName()));
-				WidgetUtilities.createTransferTab(current, Position.of(tabs, tabs.getWidth() / 2 - 38, getTabWidgetExtendedHeight() / 2), finalRotation, transferComponent, blockEntity.getPos(), key);
-				TextWidget invTabTitle = new TextWidget();
-				invTabTitle.setPosition(Position.of(invPos, 0, -10));
-				invTabTitle.setText(getPlayer().inventory.getName());
-				invTabTitle.setColor(4210752);
-				current.addWidget(invTabTitle);
-				playerSlots.addAll(Slots.addPlayerInventory(invPos, Size.of(18F, 18F), current, getPlayer().inventory));
-
-				TextWidget tabTitle = new TextWidget();
-				tabTitle.setPosition(Position.of(mainTab, 8, 0));
-				tabTitle.setText(identifiableComponent.getName());
-				tabTitle.setColor(4210752);
-				current.addWidget(tabTitle);
-			}
-		});
-
 		RedstoneWidget redstoneWidget = new RedstoneWidget();
 		redstoneWidget.setPosition(Position.of(tabs, tabs.getWidth() - 20, 0));
 		redstoneWidget.setSize(Size.of(20, 19));
 		redstoneWidget.setBlockEntity(blockEntity);
 
 		addWidget(redstoneWidget);
+
+		TransferComponent transferComponent = TransferComponent.get(blockEntity);
+
+		BiConsumer<IdentifiableComponent, ComponentKey<? extends IdentifiableComponent>> tabAdder = (identifiableComponent, key) -> {
+			TabWidgetCollection current = (TabWidgetCollection) tabs.addTab(identifiableComponent.getSymbol(), () -> Collections.singletonList(identifiableComponent.getName()));
+			WidgetUtilities.createTransferTab(current, Position.of(tabs, tabs.getWidth() / 2 - 38, getTabWidgetExtendedHeight() / 2), finalRotation, transferComponent, blockEntity.getPos(), key);
+			TextWidget invTabTitle = new TextWidget();
+			invTabTitle.setPosition(Position.of(invPos, 0, -10));
+			invTabTitle.setText(getPlayer().inventory.getName());
+			invTabTitle.setColor(4210752);
+			current.addWidget(invTabTitle);
+			playerSlots.addAll(Slots.addPlayerInventory(invPos, Size.of(18F, 18F), current, getPlayer().inventory));
+
+			TextWidget tabTitle = new TextWidget();
+			tabTitle.setPosition(Position.of(mainTab, 8, 0));
+			tabTitle.setText(identifiableComponent.getName());
+			tabTitle.setColor(4210752);
+			current.addWidget(tabTitle);
+		};
+
+		if (blockEntity instanceof ItemComponentProvider) {
+			tabAdder.accept(((ItemComponentProvider) blockEntity).getItemComponent(), AstromineComponents.ITEM_INVENTORY_COMPONENT);
+		}
+
+		if (blockEntity instanceof FluidComponentProvider) {
+			tabAdder.accept(((FluidComponentProvider) blockEntity).getFluidComponent(), AstromineComponents.FLUID_INVENTORY_COMPONENT);
+		}
+
+		if (blockEntity instanceof EnergyComponentProvider) {
+			tabAdder.accept(((EnergyComponentProvider) blockEntity).getEnergyComponent(), AstromineComponents.ENERGY_INVENTORY_COMPONENT);
+		}
 	}
 }

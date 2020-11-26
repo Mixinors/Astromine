@@ -45,8 +45,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
@@ -68,7 +68,7 @@ public class AbstractBlockMixin {
 		final FluidComponent stackFluidComponent = FluidComponent.get(stack);
 
 		if (state.getBlock().hasBlockEntity()) {
-			BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(world.getBlockEntity(pos));
+			TransferComponent transferComponent = TransferComponent.get(world.getBlockEntity(pos));
 
 			if (transferComponent != null && transferComponent.hasFluid()) {
 				TransferType type = transferComponent.getFluid(result.getSide());

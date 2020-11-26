@@ -28,7 +28,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.ItemComponent;
 
 import static java.lang.Integer.min;
 

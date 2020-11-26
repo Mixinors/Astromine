@@ -43,7 +43,7 @@ import net.minecraft.util.Lazy;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleItemComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.InventoryFromItemComponent;
 import com.github.chainmailstudios.astromine.discoveries.common.recipe.AltarRecipe;

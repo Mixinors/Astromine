@@ -24,16 +24,19 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.provider.FluidComponentProvider;
 import net.minecraft.block.entity.BlockEntityType;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 
 /**
  * A {@link ComponentBlockEntity} with an attached
  * {@link FluidComponent}.
  */
-public abstract class ComponentFluidBlockEntity extends ComponentBlockEntity {
+public abstract class ComponentFluidBlockEntity extends ComponentBlockEntity implements FluidComponentProvider {
+	private final FluidComponent fluidComponent = createFluidComponent();
+
 	/** Instantiates a {@link ComponentFluidBlockEntity}. */
 	public ComponentFluidBlockEntity(BlockEntityType<?> type) {
 		super(type);
@@ -46,7 +49,8 @@ public abstract class ComponentFluidBlockEntity extends ComponentBlockEntity {
 	public abstract FluidComponent createFluidComponent();
 
 	/** Returns the attached {@link FluidComponent}. */
+	@Override
 	public FluidComponent getFluidComponent() {
-		return FluidComponent.get(this);
+		return fluidComponent;
 	}
 }

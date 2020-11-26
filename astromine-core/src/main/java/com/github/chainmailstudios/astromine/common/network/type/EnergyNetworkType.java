@@ -24,10 +24,10 @@
 
 package com.github.chainmailstudios.astromine.common.network.type;
 
+import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
 import net.minecraft.block.entity.BlockEntity;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
@@ -77,7 +77,7 @@ public final class EnergyNetworkType implements NetworkType {
 			if (networkMember.acceptsType(this)) {
 				TransferType type = TransferType.NONE;
 
-				BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(blockEntity);
+				TransferComponent transferComponent = TransferComponent.get(blockEntity);
 
 				if (transferComponent != null && transferComponent.get(AstromineComponents.ENERGY_INVENTORY_COMPONENT) != null) {
 					type = transferComponent.getEnergy(memberNode.getDirection());

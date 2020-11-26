@@ -24,10 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.provider.FluidComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.inventory.provider.ItemComponentProvider;
 import net.minecraft.block.entity.BlockEntityType;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.ItemComponent;
 import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ComponentInventoryProvider;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 
@@ -35,7 +37,11 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponents;
  * A {@link ComponentBlockEntity} with an attached
  * {@link FluidComponent} and {@link ItemComponent}.
  */
-public abstract class ComponentFluidItemBlockEntity extends ComponentBlockEntity implements ComponentInventoryProvider {
+public abstract class ComponentFluidItemBlockEntity extends ComponentBlockEntity implements ComponentInventoryProvider, FluidComponentProvider, ItemComponentProvider {
+	private final FluidComponent fluidComponent = createFluidComponent();
+
+	private final ItemComponent itemComponent = createItemComponent();
+
 	/** Instantiates a {@link ComponentFluidItemBlockEntity}. */
 	public ComponentFluidItemBlockEntity(BlockEntityType<?> type) {
 		super(type);
@@ -51,15 +57,17 @@ public abstract class ComponentFluidItemBlockEntity extends ComponentBlockEntity
 	public abstract FluidComponent createFluidComponent();
 
 	/** Returns the attached {@link FluidComponent}. */
+	@Override
 	public FluidComponent getFluidComponent() {
-		return FluidComponent.get(this);
+		return fluidComponent;
 	}
 
 	/** Returns the {@link ItemComponent} to be attached. */
 	public abstract ItemComponent createItemComponent();
 
 	/** Returns the attached {@link ItemComponent}. */
+	@Override
 	public ItemComponent getItemComponent() {
-		return ItemComponent.get(this);
+		return itemComponent;
 	}
 }

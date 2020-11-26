@@ -22,9 +22,13 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.common.component.inventory;
+package com.github.chainmailstudios.astromine.common.component.inventory.base;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.IdentifiableComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleAutoSyncedEnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.SimpleEnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.compatibility.EnergyComponentFromEnergyStorage;
+import com.github.chainmailstudios.astromine.common.component.inventory.provider.EnergyComponentProvider;
 import net.fabricmc.fabric.api.util.NbtType;
 
 import net.minecraft.item.Item;
@@ -191,9 +195,13 @@ public interface EnergyComponent extends IdentifiableComponent {
 	/** Returns the {@link EnergyComponent} of the given {@link V}. */
 	@Nullable
 	static <V> EnergyComponent get(V v) {
-		try {
+		if (v instanceof EnergyComponentProvider) {
+			return ((EnergyComponentProvider) v).getEnergyComponent();
+		}
+
+		if (v != null && AstromineComponents.ENERGY_INVENTORY_COMPONENT.isProvidedBy(v)) {
 			return AstromineComponents.ENERGY_INVENTORY_COMPONENT.get(v);
-		} catch (Exception justShutUpAlready) {
+		} else {
 			if (v instanceof EnergyStorage) {
 				return of((EnergyStorage) v);
 			}

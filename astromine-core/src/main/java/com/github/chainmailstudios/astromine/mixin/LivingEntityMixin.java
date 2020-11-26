@@ -54,7 +54,7 @@ import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
 import com.github.chainmailstudios.astromine.common.registry.BreathableRegistry;

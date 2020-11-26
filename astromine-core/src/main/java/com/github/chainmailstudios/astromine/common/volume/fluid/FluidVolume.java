@@ -32,7 +32,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.component.inventory.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;

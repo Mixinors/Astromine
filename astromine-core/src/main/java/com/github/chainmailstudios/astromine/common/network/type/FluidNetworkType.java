@@ -24,29 +24,25 @@
 
 package com.github.chainmailstudios.astromine.common.network.type;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.FluidComponent;
+import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import net.minecraft.block.entity.BlockEntity;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
-import com.github.chainmailstudios.astromine.common.component.block.entity.BlockEntityTransferComponent;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
-import com.github.chainmailstudios.astromine.common.utilities.VolumeUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.Direction;
-import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.Lists;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
+
 import java.util.List;
-import java.util.stream.Collectors;
+
 /**
  * A {@link NetworkType} for fluids.
  */
@@ -70,7 +66,7 @@ public final class FluidNetworkType implements NetworkType {
 
 				TransferType type = TransferType.NONE;
 
-				BlockEntityTransferComponent transferComponent = BlockEntityTransferComponent.get(blockEntity);
+				TransferComponent transferComponent = TransferComponent.get(blockEntity);
 
 				if (transferComponent != null) {
 					type = transferComponent.getFluid(memberNode.getDirection());

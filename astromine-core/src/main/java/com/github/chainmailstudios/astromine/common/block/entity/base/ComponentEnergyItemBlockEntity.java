@@ -24,10 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
+import com.github.chainmailstudios.astromine.common.component.inventory.provider.EnergyComponentProvider;
+import com.github.chainmailstudios.astromine.common.component.inventory.provider.ItemComponentProvider;
 import net.minecraft.block.entity.BlockEntityType;
 
-import com.github.chainmailstudios.astromine.common.component.inventory.EnergyComponent;
-import com.github.chainmailstudios.astromine.common.component.inventory.ItemComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.EnergyComponent;
+import com.github.chainmailstudios.astromine.common.component.inventory.base.ItemComponent;
 import com.github.chainmailstudios.astromine.common.utilities.capability.energy.ComponentEnergyProvider;
 import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ComponentInventoryProvider;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
@@ -36,7 +38,11 @@ import com.github.chainmailstudios.astromine.registry.AstromineComponents;
  * A {@link ComponentBlockEntity} with an attached
  * {@link EnergyComponent} and {@link ItemComponent}.
  */
-public abstract class ComponentEnergyItemBlockEntity extends ComponentBlockEntity implements ComponentEnergyProvider, ComponentInventoryProvider {
+public abstract class ComponentEnergyItemBlockEntity extends ComponentBlockEntity implements ComponentEnergyProvider, ComponentInventoryProvider, EnergyComponentProvider, ItemComponentProvider {
+	private final EnergyComponent energyComponent = createEnergyComponent();
+
+	private final ItemComponent itemComponent = createItemComponent();
+
 	/** Instantiates a {@link ComponentEnergyItemBlockEntity}. */
 	public ComponentEnergyItemBlockEntity(BlockEntityType<?> type) {
 		super(type);
@@ -53,14 +59,15 @@ public abstract class ComponentEnergyItemBlockEntity extends ComponentBlockEntit
 
 	/** Returns the attached {@link EnergyComponent}. */
 	public EnergyComponent getEnergyComponent() {
-		return EnergyComponent.get(this);
+		return energyComponent;
 	}
 
 	/** Returns the {@link ItemComponent} to be attached. */
 	public abstract ItemComponent createItemComponent();
 
 	/** Returns the attached {@link ItemComponent}. */
+	@Override
 	public ItemComponent getItemComponent() {
-		return ItemComponent.get(this);
+		return itemComponent;
 	}
 }
