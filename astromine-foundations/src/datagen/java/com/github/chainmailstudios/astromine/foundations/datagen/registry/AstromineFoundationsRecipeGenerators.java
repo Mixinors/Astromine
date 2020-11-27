@@ -97,7 +97,7 @@ public class AstromineFoundationsRecipeGenerators extends AstromineRecipeGenerat
 	public final RecipeGenerator TINY_DUST_TO_FRAGMENT_BLASTING = register(new BlastingSetRecipeGenerator(TINY_DUST, FRAGMENT));
 
 	public final RecipeGenerator INGOT_TO_PLATES_CRAFTING = register(new ShapedCraftingSetRecipeGenerator(INGOT, PLATE, "#", "#"));
-	public final RecipeGenerator INGOT_TO_GEAR_CRAFTING = register(new ShapedCraftingSetRecipeGenerator(INGOT, GEAR, 2, " # ", "# #", " # "));
+	public final RecipeGenerator INGOT_TO_GEAR_CRAFTING = register(new ShapedCraftingSetRecipeGenerator(INGOT, GEAR, 1, " # ", "# #", " # "));
 
 	public final RecipeGenerator PLATE_TO_WIRE_CRAFTING = register(new WireFromPlateRecipeGenerator(PLATE, Ingredient.fromTag(FabricToolTags.SHEARS), WIRE, 1));
 

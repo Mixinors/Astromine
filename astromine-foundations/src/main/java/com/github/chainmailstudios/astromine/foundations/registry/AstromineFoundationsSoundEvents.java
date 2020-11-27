@@ -31,25 +31,9 @@ import com.github.chainmailstudios.astromine.registry.AstromineSoundEvents;
 public class AstromineFoundationsSoundEvents extends AstromineSoundEvents {
 	public static final SoundEvent FIRE_EXTINGUISHER_OPEN = register("fire_extinguisher_open");
 
-	// Armory
 	public static final SoundEvent COPPER_ARMOR_EQUIPPED = register("item.armor.equip_copper");
 	public static final SoundEvent TIN_ARMOR_EQUIPPED = register("item.armor.equip_tin");
-	public static final SoundEvent SILVER_ARMOR_EQUIPPED = register("item.armor.equip_silver");
 	public static final SoundEvent LEAD_ARMOR_EQUIPPED = register("item.armor.equip_lead");
-
 	public static final SoundEvent BRONZE_ARMOR_EQUIPPED = register("item.armor.equip_bronze");
 	public static final SoundEvent STEEL_ARMOR_EQUIPPED = register("item.armor.equip_steel");
-	public static final SoundEvent ELECTRUM_ARMOR_EQUIPPED = register("item.armor.equip_electrum");
-	public static final SoundEvent ROSE_GOLD_ARMOR_EQUIPPED = register("item.armor.equip_rose_gold");
-	public static final SoundEvent STERLING_SILVER_ARMOR_EQUIPPED = register("item.armor.equip_sterling_silver");
-	public static final SoundEvent FOOLS_GOLD_ARMOR_EQUIPPED = register("item.armor.equip_fools_gold");
-
-	public static final SoundEvent METITE_ARMOR_EQUIPPED = register("item.armor.equip_metite");
-	public static final SoundEvent ASTERITE_ARMOR_EQUIPPED = register("item.armor.equip_asterite");
-	public static final SoundEvent STELLUM_ARMOR_EQUIPPED = register("item.armor.equip_stellum");
-	public static final SoundEvent GALAXIUM_ARMOR_EQUIPPED = register("item.armor.equip_galaxium");
-	public static final SoundEvent UNIVITE_ARMOR_EQUIPPED = register("item.armor.equip_univite");
-	public static final SoundEvent LUNUM_ARMOR_EQUIPPED = register("item.armor.equip_lunum");
-
-	public static final SoundEvent METEORIC_STEEL_ARMOR_EQUIPPED = register("item.armor.equip_meteoric_steel");
 }

@@ -1,6 +1,6 @@
 {
   "type": "minecraft:crafting_shaped", "pattern": ["010", "343", "878"], "key": {
-  "0": {"tag": "c:steel_plates"}, "1": {"item": "astromine:elite_circuit"}, "3": {"item": "minecraft:brick"},
+  "0": {"tag": "c:meteoric_steel_plates"}, "1": {"item": "astromine:elite_circuit"}, "3": {"item": "minecraft:brick"},
   "4": {"item": "astromine:elite_machine_chassis"}, "7": {"item": "astromine:elite_battery_pack"},
   "8": {"item": "minecraft:piston"}
 }, "result": {"item": "astromine:elite_press", "count": 1}

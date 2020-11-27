@@ -1,6 +1,6 @@
 {
   "type": "minecraft:crafting_shaped", "pattern": ["010", "141", "010"], "key": {
-  "0": {"tag": "c:steel_plates"}, "1": {"item": "astromine:large_portable_tank"},
+  "0": {"tag": "c:meteoric_steel_plates"}, "1": {"item": "astromine:large_portable_tank"},
   "4": {"item": "astromine:elite_machine_chassis"}
 }, "result": {"item": "astromine:elite_tank", "count": 1}
 }

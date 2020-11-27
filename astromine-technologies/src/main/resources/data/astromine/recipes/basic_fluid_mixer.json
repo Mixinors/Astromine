@@ -1,6 +1,6 @@
 {
   "type": "minecraft:crafting_shaped", "pattern": ["212", "545", "676"], "key": {
-  "1": {"item": "astromine:basic_circuit"}, "2": {"tag": "c:steel_plates"},
+  "1": {"item": "astromine:basic_circuit"}, "2": {"tag": "c:bronze_plates"},
   "4": {"item": "astromine:basic_machine_chassis"}, "5": {"item": "astromine:blades"},
   "6": {"item": "astromine:large_portable_tank"}, "7": {"item": "astromine:basic_battery_pack"}
 }, "result": {"item": "astromine:basic_fluid_mixer", "count": 1}

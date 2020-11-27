@@ -30,6 +30,7 @@ import com.github.chainmailstudios.astromine.common.component.general.SimpleDire
 import com.github.chainmailstudios.astromine.common.component.general.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.component.general.provider.FluidComponentProvider;
 import com.github.chainmailstudios.astromine.common.utilities.VolumeUtilities;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
@@ -135,7 +136,7 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 	}
 
 	/** Returns this component's contents. */
-	Map<Integer, FluidVolume> getContents();
+	Int2ObjectOpenHashMap<FluidVolume> getContents();
 
 	/** Returns this component's contents matching the given predicate. */
 	default List<FluidVolume> getVolumes(Predicate<FluidVolume> predicate) {

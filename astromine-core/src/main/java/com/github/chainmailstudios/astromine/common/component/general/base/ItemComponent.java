@@ -32,6 +32,7 @@ import com.github.chainmailstudios.astromine.common.component.general.compatibil
 import com.github.chainmailstudios.astromine.common.component.general.compatibility.ItemComponentFromSidedInventory;
 import com.github.chainmailstudios.astromine.common.component.general.provider.ItemComponentProvider;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.Item;

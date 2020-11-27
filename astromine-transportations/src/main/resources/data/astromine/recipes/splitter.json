@@ -1,1 +1,12 @@
-{"type":"minecraft:crafting_shaped","pattern":["010","343","070"],"key":{"0":{"tag":"c:lead_plates"},"1":{"item":"astromine:primitive_circuit"},"3":{"item":"astromine:blades"},"4":{"item":"minecraft:trapped_chest"},"7":{"item":"astromine:primitive_battery_pack"}},"result":{"item":"astromine:splitter","count":1}}
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["010", "343", "070"],
+  "key": {
+    "0": { "tag": "c:lead_plates" },
+    "1": { "item": "astromine:primitive_circuit" },
+    "3": { "item": "astromine:blades" },
+    "4": { "item": "minecraft:trapped_chest" },
+    "7": { "item": "astromine:primitive_battery_pack" }
+  },
+  "result": { "item": "astromine:splitter", "count": 1 }
+}

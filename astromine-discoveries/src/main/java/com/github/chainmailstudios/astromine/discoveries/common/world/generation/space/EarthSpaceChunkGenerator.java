@@ -107,9 +107,7 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 					noise -= computeNoiseFalloff(y);
 
 					if (noise > AstromineConfig.get().asteroidNoiseThreshold) {
-						if (random.nextInt(64) != 0) {
-							chunk.setBlockState(mutable.set(x, y, z), AstromineDiscoveriesBlocks.ASTEROID_STONE.getDefaultState(), false);
-						}
+						chunk.setBlockState(mutable.set(x, y, z), AstromineDiscoveriesBlocks.ASTEROID_STONE.getDefaultState(), false);
 					}
 				}
 			}

@@ -43,9 +43,6 @@ public class AstromineFoundationsOres {
 	public static final Identifier COPPER_ORE_ID = AstromineCommon.identifier("copper_ore");
 	public static final RegistryKey<ConfiguredFeature<?, ?>> COPPER_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, COPPER_ORE_ID);
 
-	public static final Identifier SILVER_ORE_ID = AstromineCommon.identifier("silver_ore");
-	public static final RegistryKey<ConfiguredFeature<?, ?>> SILVER_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, SILVER_ORE_ID);
-
 	public static final Identifier LEAD_ORE_ID = AstromineCommon.identifier("lead_ore");
 	public static final RegistryKey<ConfiguredFeature<?, ?>> LEAD_ORE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, LEAD_ORE_ID);
 
@@ -56,8 +53,6 @@ public class AstromineFoundationsOres {
 					BiomesRegistry.registerFeature(manager, biome, GenerationStep.Feature.UNDERGROUND_ORES, TIN_ORE_KEY);
 				if (AstromineFoundationsConfig.get().overworldCopperOre)
 					BiomesRegistry.registerFeature(manager, biome, GenerationStep.Feature.UNDERGROUND_ORES, COPPER_ORE_KEY);
-				if (AstromineFoundationsConfig.get().overworldSilverOre)
-					BiomesRegistry.registerFeature(manager, biome, GenerationStep.Feature.UNDERGROUND_ORES, SILVER_ORE_KEY);
 				if (AstromineFoundationsConfig.get().overworldLeadOre)
 					BiomesRegistry.registerFeature(manager, biome, GenerationStep.Feature.UNDERGROUND_ORES, LEAD_ORE_KEY);
 			}

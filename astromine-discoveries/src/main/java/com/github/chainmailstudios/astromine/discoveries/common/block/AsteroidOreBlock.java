@@ -24,27 +24,21 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.block;
 
+import net.minecraft.block.OreBlock;
 import net.minecraft.util.math.MathHelper;
 
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
-import com.github.chainmailstudios.astromine.foundations.common.block.AstromineOreBlock;
 
 import java.util.Random;
 
-public class AsteroidOreBlock extends AstromineOreBlock {
+public class AsteroidOreBlock extends OreBlock {
 	public AsteroidOreBlock(Settings settings) {
 		super(settings);
 	}
 
 	@Override
 	protected int getExperienceWhenMined(Random random) {
-		if (this == AstromineDiscoveriesBlocks.ASTEROID_ASTERITE_ORE) {
-			return MathHelper.nextInt(random, 5, 8);
-		} else if (this == AstromineDiscoveriesBlocks.ASTEROID_GALAXIUM_ORE || this == AstromineDiscoveriesBlocks.ASTEROID_STELLUM_ORE) {
-			return MathHelper.nextInt(random, 6, 9);
-		} else if (this == AstromineDiscoveriesBlocks.ASTEROID_METITE_ORE) {
-			return MathHelper.nextInt(random, 4, 7);
-		} else if (this == AstromineDiscoveriesBlocks.ASTEROID_COAL_ORE) {
+		if (this == AstromineDiscoveriesBlocks.ASTEROID_COAL_ORE) {
 			return MathHelper.nextInt(random, 0, 2);
 		} else if (this == AstromineDiscoveriesBlocks.ASTEROID_TIN_ORE || this == AstromineDiscoveriesBlocks.ASTEROID_COPPER_ORE) {
 			return MathHelper.nextInt(random, 1, 2);

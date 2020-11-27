@@ -1,6 +1,6 @@
 {
   "type": "minecraft:crafting_shaped", "pattern": ["212", "545", "676"], "key": {
-  "1": {"item": "astromine:elite_circuit"}, "2": {"tag": "c:steel_plates"},
+  "1": {"item": "astromine:elite_circuit"}, "2": {"tag": "c:meteoric_steel_plates"},
   "4": {"item": "astromine:elite_machine_chassis"}, "5": {"item": "minecraft:iron_bars"},
   "6": {"item": "minecraft:piston"}, "7": {"item": "astromine:elite_battery_pack"}
 }, "result": {"item": "astromine:elite_triturator", "count": 1}

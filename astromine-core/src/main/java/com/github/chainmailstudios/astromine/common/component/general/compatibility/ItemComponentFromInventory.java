@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.component.general.compatibility;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
@@ -71,11 +72,12 @@ public class ItemComponentFromInventory extends SimpleItemComponent {
 	/** Returns this component's contents. */
 	@Override
 	public Map<Integer, ItemStack> getContents() {
-		Int2ObjectArrayMap<ItemStack> contents = new Int2ObjectArrayMap<>();
+		Int2ObjectOpenHashMap<ItemStack> contents = new Int2ObjectOpenHashMap<>();
+
 		for (int i = 0; i < this.inventory.size(); ++i) {
 			contents.put(i, this.inventory.getStack(i));
 		}
-		contents.defaultReturnValue(ItemStack.EMPTY);
+
 		return contents;
 	}
 

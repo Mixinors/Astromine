@@ -42,9 +42,6 @@ public class AstromineFoundationsConfig implements ConfigData {
 	@Comment("Whether generation of Tin Ore in the Overworld is enabled.")
 	public boolean overworldTinOre = true;
 
-	@Comment("Whether generation of Silver Ore in the Overworld is enabled.")
-	public boolean overworldSilverOre = true;
-
 	@Comment("Whether generation of Lead Ore in the Overworld is enabled.")
 	public boolean overworldLeadOre = true;
 
@@ -108,18 +105,6 @@ public class AstromineFoundationsConfig implements ConfigData {
 	@Comment("Maximum Size of Asteroid Tin Ore veins.")
 	public int asteroidTinOreMaximumSize = 48;
 
-	@Comment("Minimum range of Asteroid Silver Ore weight.")
-	public int asteroidSilverOreMinimumRange = 0;
-
-	@Comment("Maximum range of Asteroid Silver Ore weight.")
-	public int asteroidSilverOreMaximumRange = 100;
-
-	@Comment("Minimum size of Asteroid Silver Ore veins.")
-	public int asteroidSilverOreMinimumSize = 8;
-
-	@Comment("Maximum Size of Asteroid Silver Ore veins.")
-	public int asteroidSilverOreMaximumSize = 48;
-
 	@Comment("Minimum range of Asteroid Lead Ore weight.")
 	public int asteroidLeadOreMinimumRange = 0;
 
@@ -179,54 +164,6 @@ public class AstromineFoundationsConfig implements ConfigData {
 
 	@Comment("Maximum Size of Asteroid Emerald Ore veins.")
 	public int asteroidEmeraldOreMaximumSize = 48;
-
-	@Comment("Minimum range of Asteroid Metite Ore weight.")
-	public int asteroidMetiteOreMinimumRange = 0;
-
-	@Comment("Maximum range of Asteroid Metite Ore weight.")
-	public int asteroidMetiteOreMaximumRange = 50;
-
-	@Comment("Minimum size of Asteroid Metite Ore veins.")
-	public int asteroidMetiteOreMinimumSize = 8;
-
-	@Comment("Maximum Size of Asteroid Metite Ore veins.")
-	public int asteroidMetiteOreMaximumSize = 48;
-
-	@Comment("Minimum range of Asteroid Asterite Ore weight.")
-	public int asteroidAsteriteOreMinimumRange = 0;
-
-	@Comment("Maximum range of Asteroid Asterite Ore weight.")
-	public int asteroidAsteriteOreMaximumRange = 40;
-
-	@Comment("Minimum size of Asteroid Asterite Ore veins.")
-	public int asteroidAsteriteOreMinimumSize = 8;
-
-	@Comment("Maximum Size of Asteroid Asterite Ore veins.")
-	public int asteroidAsteriteOreMaximumSize = 48;
-
-	@Comment("Minimum range of Asteroid Stellum Ore weight.")
-	public int asteroidStellumOreMinimumRange = 0;
-
-	@Comment("Maximum range of Asteroid Stellum Ore weight.")
-	public int asteroidStellumOreMaximumRange = 30;
-
-	@Comment("Minimum size of Asteroid Stellum Ore veins.")
-	public int asteroidStellumOreMinimumSize = 8;
-
-	@Comment("Maximum Size of Asteroid Stellum Ore veins.")
-	public int asteroidStellumOreMaximumSize = 48;
-
-	@Comment("Minimum range of Asteroid Galaxium Ore weight.")
-	public int asteroidGalaxiumOreMinimumRange = 0;
-
-	@Comment("Maximum range of Asteroid Galaxium Ore weight.")
-	public int asteroidGalaxiumOreMaximumRange = 20;
-
-	@Comment("Minimum size of Asteroid Galaxium Ore veins.")
-	public int asteroidGalaxiumOreMinimumSize = 8;
-
-	@Comment("Maximum Size of Asteroid Galaxium Ore veins.")
-	public int asteroidGalaxiumOreMaximumSize = 48;
 
 	public static AstromineFoundationsConfig get() {
 		if (INSTANCE == null) {

@@ -33,8 +33,6 @@ import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.discoveries.common.world.decorator.MoonOreDecorator;
 
 public class AstromineDiscoveriesDecorators {
-	public static Decorator<CountConfig> MOON_ORE = register("moon_ore_decorator", new MoonOreDecorator(CountConfig.CODEC));
-
 	public static void initialize() {
 
 	}

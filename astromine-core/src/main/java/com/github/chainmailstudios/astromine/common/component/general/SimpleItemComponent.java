@@ -57,8 +57,6 @@ public class SimpleItemComponent implements ItemComponent {
 		for (int i = 0; i < size; ++i) {
 			contents.put(i, ItemStack.EMPTY);
 		}
-
-		this.contents.defaultReturnValue(ItemStack.EMPTY);
 	}
 
 	/** Instantiates a {@link SimpleItemComponent}. */

@@ -58,8 +58,6 @@ public class SimpleFluidComponent implements FluidComponent {
 		for (int i = 0; i < size; ++i) {
 			setVolume(i, FluidVolume.ofEmpty(this::updateListeners));
 		}
-
-		this.contents.defaultReturnValue(FluidVolume.ofEmpty(this::updateListeners));
 	}
 
 	/** Instantiates a {@link SimpleFluidComponent}. */
@@ -115,7 +113,7 @@ public class SimpleFluidComponent implements FluidComponent {
 
 	/** Returns this component's contents. */
 	@Override
-	public @NotNull Map<Integer, FluidVolume> getContents() {
+	public @NotNull Int2ObjectOpenHashMap<FluidVolume> getContents() {
 		return contents;
 	}
 

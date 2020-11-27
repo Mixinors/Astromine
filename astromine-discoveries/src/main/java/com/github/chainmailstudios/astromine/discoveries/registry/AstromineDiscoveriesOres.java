@@ -40,28 +40,15 @@ public class AstromineDiscoveriesOres {
 			AstromineFoundationsConfig.get().asteroidCopperOreMaximumSize), AstromineDiscoveriesBlocks.ASTEROID_COPPER_ORE);
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineFoundationsConfig.get().asteroidTinOreMinimumRange, AstromineFoundationsConfig.get().asteroidTinOreMaximumRange), Range.of(AstromineFoundationsConfig.get().asteroidTinOreMinimumSize, AstromineFoundationsConfig
 			.get().asteroidTinOreMaximumSize), AstromineDiscoveriesBlocks.ASTEROID_TIN_ORE);
-		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineFoundationsConfig.get().asteroidSilverOreMinimumRange, AstromineFoundationsConfig.get().asteroidSilverOreMaximumRange), Range.of(AstromineFoundationsConfig.get().asteroidSilverOreMinimumSize,
-			AstromineFoundationsConfig.get().asteroidSilverOreMaximumSize), AstromineDiscoveriesBlocks.ASTEROID_SILVER_ORE);
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineFoundationsConfig.get().asteroidLeadOreMinimumRange, AstromineFoundationsConfig.get().asteroidLeadOreMaximumRange), Range.of(AstromineFoundationsConfig.get().asteroidLeadOreMinimumSize, AstromineFoundationsConfig
 			.get().asteroidLeadOreMaximumSize), AstromineDiscoveriesBlocks.ASTEROID_LEAD_ORE);
-
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineFoundationsConfig.get().asteroidRedstoneOreMinimumRange, AstromineFoundationsConfig.get().asteroidRedstoneOreMaximumRange), Range.of(AstromineFoundationsConfig.get().asteroidRedstoneOreMinimumSize,
 			AstromineFoundationsConfig.get().asteroidRedstoneOreMaximumSize), AstromineDiscoveriesBlocks.ASTEROID_REDSTONE_ORE);
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineFoundationsConfig.get().asteroidLapisOreMinimumRange, AstromineFoundationsConfig.get().asteroidLapisOreMaximumRange), Range.of(AstromineFoundationsConfig.get().asteroidLapisOreMinimumSize, AstromineFoundationsConfig
 			.get().asteroidLapisOreMaximumSize), AstromineDiscoveriesBlocks.ASTEROID_LAPIS_ORE);
-
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineFoundationsConfig.get().asteroidDiamondOreMinimumRange, AstromineFoundationsConfig.get().asteroidDiamondOreMaximumRange), Range.of(AstromineFoundationsConfig.get().asteroidDiamondOreMinimumSize,
 			AstromineFoundationsConfig.get().asteroidDiamondOreMaximumSize), AstromineDiscoveriesBlocks.ASTEROID_DIAMOND_ORE);
 		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineFoundationsConfig.get().asteroidEmeraldOreMinimumRange, AstromineFoundationsConfig.get().asteroidEmeraldOreMaximumRange), Range.of(AstromineFoundationsConfig.get().asteroidEmeraldOreMinimumSize,
 			AstromineFoundationsConfig.get().asteroidEmeraldOreMaximumSize), AstromineDiscoveriesBlocks.ASTEROID_EMERALD_ORE);
-
-		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineFoundationsConfig.get().asteroidMetiteOreMinimumRange, AstromineFoundationsConfig.get().asteroidMetiteOreMaximumRange), Range.of(AstromineFoundationsConfig.get().asteroidMetiteOreMinimumSize,
-			AstromineFoundationsConfig.get().asteroidMetiteOreMaximumSize), AstromineDiscoveriesBlocks.ASTEROID_METITE_ORE);
-		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineFoundationsConfig.get().asteroidAsteriteOreMinimumRange, AstromineFoundationsConfig.get().asteroidAsteriteOreMaximumRange), Range.of(AstromineFoundationsConfig.get().asteroidAsteriteOreMinimumSize,
-			AstromineFoundationsConfig.get().asteroidAsteriteOreMaximumSize), AstromineDiscoveriesBlocks.ASTEROID_ASTERITE_ORE);
-		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineFoundationsConfig.get().asteroidStellumOreMinimumRange, AstromineFoundationsConfig.get().asteroidStellumOreMaximumRange), Range.of(AstromineFoundationsConfig.get().asteroidStellumOreMinimumSize,
-			AstromineFoundationsConfig.get().asteroidStellumOreMaximumSize), AstromineDiscoveriesBlocks.ASTEROID_STELLUM_ORE);
-		AsteroidOreRegistry.INSTANCE.register(Range.of(AstromineFoundationsConfig.get().asteroidGalaxiumOreMinimumRange, AstromineFoundationsConfig.get().asteroidGalaxiumOreMaximumRange), Range.of(AstromineFoundationsConfig.get().asteroidGalaxiumOreMinimumSize,
-			AstromineFoundationsConfig.get().asteroidGalaxiumOreMaximumSize), AstromineDiscoveriesBlocks.ASTEROID_GALAXIUM_ORE);
 	}
 }

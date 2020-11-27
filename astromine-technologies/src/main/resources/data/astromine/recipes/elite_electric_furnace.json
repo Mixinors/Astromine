@@ -2,6 +2,6 @@
   "type": "minecraft:crafting_shaped", "pattern": ["818", "545", "878"], "key": {
   "1": {"item": "astromine:elite_circuit"}, "4": {"item": "astromine:elite_machine_chassis"},
   "5": {"item": "minecraft:blast_furnace"}, "7": {"item": "astromine:elite_battery_pack"},
-  "8": {"tag": "c:steel_plates"}
+  "8": {"tag": "c:meteoric_steel_plates"}
 }, "result": {"item": "astromine:elite_electric_furnace", "count": 1}
 }
