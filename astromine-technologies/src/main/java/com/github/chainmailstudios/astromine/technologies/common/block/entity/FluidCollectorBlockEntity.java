@@ -24,7 +24,10 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.FluidDrainable;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.sound.SoundCategory;
@@ -112,9 +115,12 @@ public class FluidCollectorBlockEntity extends ComponentEnergyFluidBlockEntity i
 
 					BlockPos targetPos = pos.offset(direction);
 
+					BlockState targetBlockState = world.getBlockState(targetPos);
 					FluidState targetFluidState = world.getFluidState(targetPos);
 
-					if (targetFluidState.isStill()) {
+					Block targetBlock = targetBlockState.getBlock();
+
+					if (targetBlock instanceof FluidDrainable && targetFluidState.isStill()) {
 						FluidVolume toInsert = FluidVolume.of(Fraction.BUCKET, targetFluidState.getFluid());
 
 						if (toInsert.test(fluidVolume)) {
@@ -122,7 +128,7 @@ public class FluidCollectorBlockEntity extends ComponentEnergyFluidBlockEntity i
 
 							energyVolume.take(getEnergyConsumed());
 
-							world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
+							((FluidDrainable)targetBlock).tryDrainFluid(world, targetPos, targetBlockState);
 							world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1, 1);
 						}
 					}
