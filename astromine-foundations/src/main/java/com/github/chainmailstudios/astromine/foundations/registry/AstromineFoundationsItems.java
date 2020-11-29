@@ -72,8 +72,6 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item COPPER_WIRE = register("copper_wire", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item TIN_WIRE = register("tin_wire", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item SILVER_WIRE = register("silver_wire", new Item(AstromineFoundationsItems.getBasicSettings()));
-	public static final Item LEAD_WIRE = register("lead_wire", new Item(AstromineFoundationsItems.getBasicSettings()));
-	public static final Item STEEL_WIRE = register("steel_wire", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item ELECTRUM_WIRE = register("electrum_wire", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item GOLD_WIRE = register("gold_wire", new Item(AstromineFoundationsItems.getBasicSettings()));
 

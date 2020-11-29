@@ -244,13 +244,13 @@ public class AstromineFoundationsMaterialSets extends AstromineMaterialSets {
 	);
 	public static final MaterialSet LEAD = register(
 			new MaterialSet.Builder("lead")
-					.basics().metal().ore().asteroid().wire().allTools().armor()
+					.basics().metal().ore().asteroid().allTools().armor()
 					.apple()
 					.build()
 	);
 	public static final MaterialSet STEEL = register(
 			new MaterialSet.Builder("steel")
-					.basics().metal().wire().allTools().armor().wrench()
+					.basics().metal().allTools().armor().wrench()
 					.build()
 	);
 	public static final MaterialSet BRONZE = register(
