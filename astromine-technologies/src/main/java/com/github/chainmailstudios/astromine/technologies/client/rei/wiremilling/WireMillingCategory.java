@@ -49,7 +49,7 @@ import java.util.List;
 public class WireMillingCategory implements RecipeCategory<WireMillingDisplay> {
 	@Override
 	public Identifier getIdentifier() {
-		return AstromineTechnologiesRoughlyEnoughItemsPlugin.WIREMILLING;
+		return AstromineTechnologiesRoughlyEnoughItemsPlugin.WIRE_MILLING;
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class WireMillingCategory implements RecipeCategory<WireMillingDisplay> {
 
 	@Override
 	public EntryStack getLogo() {
-		return EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_WIREMILL);
+		return EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_WIRE_MILL);
 	}
 
 	@Override

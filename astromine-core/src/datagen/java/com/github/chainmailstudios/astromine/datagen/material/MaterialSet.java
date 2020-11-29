@@ -207,17 +207,13 @@ public class MaterialSet {
 		}
 
 		public Builder dusts() {
-			dust();
-			return tinyDust();
+			return dust();
 		}
 
 		public Builder dust() {
 			return addType(DUST, new Identifier("c", name + "_dusts"));
 		}
 
-		public Builder tinyDust() {
-			return addType(TINY_DUST, new Identifier("c", name + "_tiny_dusts"));
-		}
 
 		public Builder gear() {
 			return addType(GEAR, new Identifier("c", name + "_gears"));

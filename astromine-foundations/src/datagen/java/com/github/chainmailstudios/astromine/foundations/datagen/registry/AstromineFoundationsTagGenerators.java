@@ -72,18 +72,15 @@ public class AstromineFoundationsTagGenerators extends AstromineTagGenerators {
 
 	public final SetTagGenerator PIGLIN_LOVED_NUGGETS = register(new PiglinNuggetTagGenerator(MaterialItemType.NUGGET));
 	public final SetTagGenerator PIGLIN_LOVED_FRAGMENTS = register(new PiglinNuggetTagGenerator(MaterialItemType.FRAGMENT));
-	public final SetTagGenerator PIGLIN_LOVED_TINY_DUSTS = register(new PiglinNuggetTagGenerator(MaterialItemType.TINY_DUST));
+
 
 	public final SetTagGenerator PIGLIN_SAFE_HELMETS = register(new PiglinArmorTagGenerator(MaterialItemType.HELMET));
 	public final SetTagGenerator PIGLIN_SAFE_CHESTPLATES = register(new PiglinArmorTagGenerator(MaterialItemType.CHESTPLATE));
 	public final SetTagGenerator PIGLIN_SAFE_LEGGINGS = register(new PiglinArmorTagGenerator(MaterialItemType.LEGGINGS));
 	public final SetTagGenerator PIGLIN_SAFE_BOOTS = register(new PiglinArmorTagGenerator(MaterialItemType.BOOTS));
 
-	public final SetTagGenerator TRICKS_PIGLINS = register(new TricksPiglinsTagGenerator());
-
 	public final SetTagGenerator METEOR_ORES = register(new OreTagGenerator(MaterialItemType.METEOR_ORE));
 
-	public final SetTagGenerator PYRITE = register(new PyriteTagGenerator());
 	public final SetTagGenerator GEM_NUGGETS = register(new GemNuggetTagGenerator());
 	public final OneTimeTagGenerator NETHER_GOLD_ORE = register(new ItemInTagGenerator(new Identifier("c", "gold_ores"), new Identifier("nether_gold_ore")));
 	public final SetTagGenerator CARBON_DUSTS = register(new CarbonDustTagGenerator());

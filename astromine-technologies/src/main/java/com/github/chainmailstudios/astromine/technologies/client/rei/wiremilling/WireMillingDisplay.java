@@ -84,7 +84,7 @@ public class WireMillingDisplay implements RecipeDisplay {
 
 	@Override
 	public Identifier getRecipeCategory() {
-		return AstromineTechnologiesRoughlyEnoughItemsPlugin.WIREMILLING;
+		return AstromineTechnologiesRoughlyEnoughItemsPlugin.WIRE_MILLING;
 	}
 
 	@Override

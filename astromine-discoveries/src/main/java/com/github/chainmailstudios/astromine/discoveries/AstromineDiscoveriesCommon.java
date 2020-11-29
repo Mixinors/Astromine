@@ -52,5 +52,6 @@ public class AstromineDiscoveriesCommon extends AstromineCommon {
 		AstromineDiscoveriesRecipeSerializers.initialize();
 		AstromineDiscoveriesScreenHandlers.initialize();
 		AstromineDiscoveriesParticles.initialize();
+		AstromineDiscoveriesTooltips.initialize();
 	}
 }

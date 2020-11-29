@@ -41,5 +41,6 @@ public class AstromineTechnologiesCommon extends AstromineCommon {
 		AstromineTechnologiesEntityTypes.initialize();
 		AstromineTechnologiesCommonPackets.initialize();
 		AstromineTechnologiesIdentifierFixes.initialize();
+		AstromineTechnologiesTooltips.initialize();
 	}
 }

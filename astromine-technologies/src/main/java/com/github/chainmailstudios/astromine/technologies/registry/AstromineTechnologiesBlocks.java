@@ -52,10 +52,10 @@ public class AstromineTechnologiesBlocks extends AstromineBlocks {
 	public static final Block ADVANCED_SOLID_GENERATOR = register("advanced_solid_generator", new SolidGeneratorBlock.Advanced(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block ELITE_SOLID_GENERATOR = register("elite_solid_generator", new SolidGeneratorBlock.Elite(getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
 
-	public static final Block PRIMITIVE_LIQUID_GENERATOR = register("primitive_fluid_generator", new FluidGeneratorBlock.Primitive(getPrimitiveSettings()), AstromineTechnologiesItems.getBasicSettings());
-	public static final Block BASIC_LIQUID_GENERATOR = register("basic_fluid_generator", new FluidGeneratorBlock.Basic(getBasicSettings()), AstromineTechnologiesItems.getBasicSettings());
-	public static final Block ADVANCED_LIQUID_GENERATOR = register("advanced_fluid_generator", new FluidGeneratorBlock.Advanced(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
-	public static final Block ELITE_LIQUID_GENERATOR = register("elite_fluid_generator", new FluidGeneratorBlock.Elite(getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block PRIMITIVE_FLUID_GENERATOR = register("primitive_fluid_generator", new FluidGeneratorBlock.Primitive(getPrimitiveSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block BASIC_FLUID_GENERATOR = register("basic_fluid_generator", new FluidGeneratorBlock.Basic(getBasicSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block ADVANCED_FLUID_GENERATOR = register("advanced_fluid_generator", new FluidGeneratorBlock.Advanced(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block ELITE_FLUID_GENERATOR = register("elite_fluid_generator", new FluidGeneratorBlock.Elite(getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
 
 	public static final Block PRIMITIVE_ELECTRIC_FURNACE = register("primitive_electric_furnace", new ElectricFurnaceBlock.Primitive(getPrimitiveSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block BASIC_ELECTRIC_FURNACE = register("basic_electric_furnace", new ElectricFurnaceBlock.Basic(getBasicSettings()), AstromineTechnologiesItems.getBasicSettings());
@@ -72,15 +72,15 @@ public class AstromineTechnologiesBlocks extends AstromineBlocks {
 	public static final Block ADVANCED_TRITURATOR = register("advanced_triturator", new TrituratorBlock.Advanced(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block ELITE_TRITURATOR = register("elite_triturator", new TrituratorBlock.Elite(getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
 
-	public static final Block PRIMITIVE_PRESSER = register("primitive_press", new PressBlock.Primitive(getPrimitiveSettings()), AstromineTechnologiesItems.getBasicSettings());
-	public static final Block BASIC_PRESSER = register("basic_press", new PressBlock.Basic(getBasicSettings()), AstromineTechnologiesItems.getBasicSettings());
-	public static final Block ADVANCED_PRESSER = register("advanced_press", new PressBlock.Advanced(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
-	public static final Block ELITE_PRESSER = register("elite_press", new PressBlock.Elite(getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block PRIMITIVE_PRESS = register("primitive_press", new PressBlock.Primitive(getPrimitiveSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block BASIC_PRESS = register("basic_press", new PressBlock.Basic(getBasicSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block ADVANCED_PRESS = register("advanced_press", new PressBlock.Advanced(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block ELITE_PRESS = register("elite_press", new PressBlock.Elite(getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
 
-	public static final Block PRIMITIVE_WIREMILL = register("primitive_wire_mill", new WireMillBlock.Primitive(getPrimitiveSettings()), AstromineTechnologiesItems.getBasicSettings());
-	public static final Block BASIC_WIREMILL = register("basic_wire_mill", new WireMillBlock.Basic(getBasicSettings()), AstromineTechnologiesItems.getBasicSettings());
-	public static final Block ADVANCED_WIREMILL = register("advanced_wire_mill", new WireMillBlock.Advanced(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
-	public static final Block ELITE_WIREMILL = register("elite_wire_mill", new WireMillBlock.Elite(getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block PRIMITIVE_WIRE_MILL = register("primitive_wire_mill", new WireMillBlock.Primitive(getPrimitiveSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block BASIC_WIRE_MILL = register("basic_wire_mill", new WireMillBlock.Basic(getBasicSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block ADVANCED_WIRE_MILL = register("advanced_wire_mill", new WireMillBlock.Advanced(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block ELITE_WIRE_MILL = register("elite_wire_mill", new WireMillBlock.Elite(getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
 
 	public static final Block PRIMITIVE_ELECTROLYZER = register("primitive_electrolyzer", new ElectrolyzerBlock.Primitive(getPrimitiveSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block BASIC_ELECTROLYZER = register("basic_electrolyzer", new ElectrolyzerBlock.Basic(getBasicSettings()), AstromineTechnologiesItems.getBasicSettings());
@@ -113,8 +113,8 @@ public class AstromineTechnologiesBlocks extends AstromineBlocks {
 	public static final Block ELITE_BUFFER = register("elite_buffer", new BufferBlock.Elite(getEliteSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block CREATIVE_BUFFER = register("creative_buffer", new BufferBlock.Creative(getCreativeSettings()), AstromineTechnologiesItems.getBasicSettings());
 
-	public static final Block FLUID_EXTRACTOR = register("fluid_collector", new FluidCollectorBlock(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
-	public static final Block FLUID_INSERTER = register("fluid_placer", new FluidPlacerBlock(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block FLUID_COLLECTOR = register("fluid_collector", new FluidCollectorBlock(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
+	public static final Block FLUID_PLACER = register("fluid_placer", new FluidPlacerBlock(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block BLOCK_BREAKER = register("block_breaker", new BlockBreakerBlock(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
 	public static final Block BLOCK_PLACER = register("block_placer", new BlockPlacerBlock(getAdvancedSettings()), AstromineTechnologiesItems.getBasicSettings());
 

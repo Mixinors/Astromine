@@ -41,7 +41,7 @@
   "text.astromine.rocket.launch": "Launch",
   "text.astromine.rocket.destroy": "Destroy!",
   "text.astromine.rocket.fuel_status": "Fuel sufficient for %s of flight time.",
-  "item.astromine.primitive_machine_chassis": "Primitive Machine Chassis",
+  "item.astromine.machine_chassis": "Primitive Machine Chassis",
   "item.astromine.basic_machine_chassis": "Basic Machine Chassis",
   "item.astromine.advanced_machine_chassis": "Advanced Machine Chassis",
   "item.astromine.elite_machine_chassis": "Elite Machine Chassis",

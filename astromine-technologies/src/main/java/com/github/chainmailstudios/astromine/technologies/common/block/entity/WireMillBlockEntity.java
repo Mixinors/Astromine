@@ -165,7 +165,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 
 	public static class Primitive extends WireMillBlockEntity {
 		public Primitive() {
-			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_WIREMILL);
+			super(AstromineTechnologiesBlockEntityTypes.PRIMITIVE_WIRE_MILL);
 		}
 
 		@Override
@@ -186,7 +186,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 
 	public static class Basic extends WireMillBlockEntity {
 		public Basic() {
-			super(AstromineTechnologiesBlockEntityTypes.BASIC_WIREMILL);
+			super(AstromineTechnologiesBlockEntityTypes.BASIC_WIRE_MILL);
 		}
 
 		@Override
@@ -207,7 +207,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 
 	public static class Advanced extends WireMillBlockEntity {
 		public Advanced() {
-			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_WIREMILL);
+			super(AstromineTechnologiesBlockEntityTypes.ADVANCED_WIRE_MILL);
 		}
 
 		@Override
@@ -228,7 +228,7 @@ public abstract class WireMillBlockEntity extends ComponentEnergyItemBlockEntity
 
 	public static class Elite extends WireMillBlockEntity {
 		public Elite() {
-			super(AstromineTechnologiesBlockEntityTypes.ELITE_WIREMILL);
+			super(AstromineTechnologiesBlockEntityTypes.ELITE_WIRE_MILL);
 		}
 
 		@Override

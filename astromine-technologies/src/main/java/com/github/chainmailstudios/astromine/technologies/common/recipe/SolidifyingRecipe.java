@@ -165,7 +165,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_LIQUID_GENERATOR);
+		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_FLUID_GENERATOR);
 	}
 
 	public Identifier getIdentifier() {

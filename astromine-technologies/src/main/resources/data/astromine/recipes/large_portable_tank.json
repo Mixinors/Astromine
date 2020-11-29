@@ -1,1 +1,1 @@
-{"type":"minecraft:crafting_shaped","pattern":["878","7 7","878"],"key":{"7":{"tag":"c:sterling_silver_ingots"},"8":{"tag":"c:iron_ingots"}},"result":{"item":"astromine:large_portable_tank","count":1}}
+{"type":"minecraft:crafting_shaped","pattern":["010","1 1","010"],"key":{"0":{"tag":"c:iron_ingots"},"1":{"tag":"c:bronze_ingots"}},"result":{"item":"astromine:large_portable_tank","count":1}}

@@ -40,7 +40,7 @@ public class WireMillScreenHandler extends ComponentBlockEntityEnergyItemScreenH
 	private WireMillBlockEntity wiremill;
 
 	public WireMillScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
-		super(AstromineTechnologiesScreenHandlers.WIREMILL, syncId, player, position);
+		super(AstromineTechnologiesScreenHandlers.WIRE_MILL, syncId, player, position);
 
 		wiremill = (WireMillBlockEntity) blockEntity;
 	}

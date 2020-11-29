@@ -24,7 +24,9 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.component.general.SimpleDirectionalFluidComponent;
 import net.minecraft.block.FacingBlock;
+import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
@@ -54,7 +56,7 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 
 	@Override
 	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleFluidComponent.of(1);
+		FluidComponent fluidComponent = SimpleDirectionalFluidComponent.of(this, 1);
 		fluidComponent.getFirst().setSize(getFluidSize());
 		return fluidComponent;
 	}
@@ -95,10 +97,11 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 
 		if (fluidComponent != null) {
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();
+
 			if (energyVolume.hasStored(Fraction.of(1, 8))) {
 				BlockPos position = getPos();
 
-				Direction direction = world.getBlockState(position).get(FacingBlock.FACING);
+				Direction direction = world.getBlockState(position).get(HorizontalFacingBlock.FACING);
 
 				BlockPos output = position.offset(direction);
 

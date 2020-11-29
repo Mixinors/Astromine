@@ -84,7 +84,7 @@ public class AstromineTechnologiesRoughlyEnoughItemsPlugin extends AstromineRoug
 	public static final Identifier ELECTROLYZING = AstromineCommon.identifier("electrolyzing");
 	public static final Identifier REFINING = AstromineCommon.identifier("refining");
 	public static final Identifier PRESSING = AstromineCommon.identifier("pressing");
-	public static final Identifier WIREMILLING = AstromineCommon.identifier("wire_milling");
+	public static final Identifier WIRE_MILLING = AstromineCommon.identifier("wire_milling");
 	public static final Identifier ALLOY_SMELTING = AstromineCommon.identifier("alloy_smelting");
 	public static final Identifier SOLIDIFYING = AstromineCommon.identifier("solidifying");
 
@@ -109,7 +109,7 @@ public class AstromineTechnologiesRoughlyEnoughItemsPlugin extends AstromineRoug
 		recipeHelper.registerRecipes(ELECTROLYZING, ElectrolyzingRecipe.class, ElectrolyzingDisplay::new);
 		recipeHelper.registerRecipes(REFINING, RefiningRecipe.class, RefiningDisplay::new);
 		recipeHelper.registerRecipes(PRESSING, PressingRecipe.class, PressingDisplay::new);
-		recipeHelper.registerRecipes(WIREMILLING, WireMillingRecipe.class, WireMillingDisplay::new);
+		recipeHelper.registerRecipes(WIRE_MILLING, WireMillingRecipe.class, WireMillingDisplay::new);
 		recipeHelper.registerRecipes(ALLOY_SMELTING, AlloySmeltingRecipe.class, AlloySmeltingDisplay::new);
 		recipeHelper.registerRecipes(SOLIDIFYING, SolidifyingRecipe.class, SolidifyingDisplay::new);
 
@@ -126,8 +126,8 @@ public class AstromineTechnologiesRoughlyEnoughItemsPlugin extends AstromineRoug
 			AstromineTechnologiesBlocks.ELITE_TRITURATOR));
 		recipeHelper.registerWorkingStations(ELECTRIC_SMELTING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_ELECTRIC_FURNACE), EntryStack.create(AstromineTechnologiesBlocks.BASIC_ELECTRIC_FURNACE), EntryStack.create(
 			AstromineTechnologiesBlocks.ADVANCED_ELECTRIC_FURNACE), EntryStack.create(AstromineTechnologiesBlocks.ELITE_ELECTRIC_FURNACE));
-		recipeHelper.registerWorkingStations(LIQUID_GENERATING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_LIQUID_GENERATOR), EntryStack.create(AstromineTechnologiesBlocks.BASIC_LIQUID_GENERATOR), EntryStack.create(
-			AstromineTechnologiesBlocks.ADVANCED_LIQUID_GENERATOR), EntryStack.create(AstromineTechnologiesBlocks.ELITE_LIQUID_GENERATOR));
+		recipeHelper.registerWorkingStations(LIQUID_GENERATING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_FLUID_GENERATOR), EntryStack.create(AstromineTechnologiesBlocks.BASIC_FLUID_GENERATOR), EntryStack.create(
+			AstromineTechnologiesBlocks.ADVANCED_FLUID_GENERATOR), EntryStack.create(AstromineTechnologiesBlocks.ELITE_FLUID_GENERATOR));
 		recipeHelper.registerWorkingStations(SOLID_GENERATING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_SOLID_GENERATOR), EntryStack.create(AstromineTechnologiesBlocks.BASIC_SOLID_GENERATOR), EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_SOLID_GENERATOR),
 			EntryStack.create(AstromineTechnologiesBlocks.ELITE_SOLID_GENERATOR));
 		recipeHelper.registerWorkingStations(FLUID_MIXING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_FLUID_MIXER), EntryStack.create(AstromineTechnologiesBlocks.BASIC_FLUID_MIXER), EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_FLUID_MIXER), EntryStack
@@ -136,10 +136,10 @@ public class AstromineTechnologiesRoughlyEnoughItemsPlugin extends AstromineRoug
 			.create(AstromineTechnologiesBlocks.ELITE_ELECTROLYZER));
 		recipeHelper.registerWorkingStations(REFINING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_REFINERY), EntryStack.create(AstromineTechnologiesBlocks.BASIC_REFINERY), EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_REFINERY), EntryStack.create(
 			AstromineTechnologiesBlocks.ELITE_REFINERY));
-		recipeHelper.registerWorkingStations(PRESSING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_PRESSER), EntryStack.create(AstromineTechnologiesBlocks.BASIC_PRESSER), EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_PRESSER), EntryStack.create(
-			AstromineTechnologiesBlocks.ELITE_PRESSER));
-		recipeHelper.registerWorkingStations(WIREMILLING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_WIREMILL), EntryStack.create(AstromineTechnologiesBlocks.BASIC_WIREMILL), EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_WIREMILL), EntryStack.create(
-			AstromineTechnologiesBlocks.ELITE_WIREMILL));
+		recipeHelper.registerWorkingStations(PRESSING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_PRESS), EntryStack.create(AstromineTechnologiesBlocks.BASIC_PRESS), EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_PRESS), EntryStack.create(
+			AstromineTechnologiesBlocks.ELITE_PRESS));
+		recipeHelper.registerWorkingStations(WIRE_MILLING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_WIRE_MILL), EntryStack.create(AstromineTechnologiesBlocks.BASIC_WIRE_MILL), EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_WIRE_MILL), EntryStack.create(
+			AstromineTechnologiesBlocks.ELITE_WIRE_MILL));
 		recipeHelper.registerWorkingStations(ALLOY_SMELTING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_ALLOY_SMELTER), EntryStack.create(AstromineTechnologiesBlocks.BASIC_ALLOY_SMELTER), EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_ALLOY_SMELTER),
 			EntryStack.create(AstromineTechnologiesBlocks.ELITE_ALLOY_SMELTER));
 		recipeHelper.registerWorkingStations(SOLIDIFYING, EntryStack.create(AstromineTechnologiesBlocks.PRIMITIVE_SOLIDIFIER), EntryStack.create(AstromineTechnologiesBlocks.BASIC_SOLIDIFIER), EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_SOLIDIFIER),

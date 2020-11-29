@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "tag": "c:asteroid_galaxium_ores"
-  },
-  "result": "astromine:galaxium",
-  "experience": 0.1,
-  "cookingtime": 100
-}

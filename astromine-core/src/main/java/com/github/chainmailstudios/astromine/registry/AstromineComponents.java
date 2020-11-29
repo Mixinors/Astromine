@@ -59,7 +59,7 @@ import dev.onyxstudios.cca.api.v3.item.ItemComponentInitializer;
 import dev.onyxstudios.cca.api.v3.world.WorldComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.world.WorldComponentInitializer;
 
-public class AstromineComponents implements WorldComponentInitializer, ChunkComponentInitializer, ItemComponentInitializer, EntityComponentInitializer, BlockComponentInitializer {
+public class AstromineComponents implements WorldComponentInitializer, ChunkComponentInitializer, ItemComponentInitializer, EntityComponentInitializer {
 	public static final ComponentKey<WorldNetworkComponent> WORLD_NETWORK_COMPONENT = ComponentRegistry.getOrCreate(AstromineCommon.identifier("world_network_component"), WorldNetworkComponent.class);
 	public static final ComponentKey<ChunkAtmosphereComponent> CHUNK_ATMOSPHERE_COMPONENT = ComponentRegistry.getOrCreate(AstromineCommon.identifier("chunk_atmosphere_component"), ChunkAtmosphereComponent.class);
 	public static final ComponentKey<WorldBridgeComponent> WORLD_BRIDGE_COMPONENT = ComponentRegistry.getOrCreate(AstromineCommon.identifier("world_bridge_component"), WorldBridgeComponent.class);
@@ -111,7 +111,4 @@ public class AstromineComponents implements WorldComponentInitializer, ChunkComp
 
 		registry.registerFor(ComponentEnergyEntity.class, ENERGY_INVENTORY_COMPONENT, ComponentEnergyEntity::createEnergyComponent);
 	}
-
-	@Override
-	public void registerBlockComponentFactories(BlockComponentFactoryRegistry registry) {}
 }

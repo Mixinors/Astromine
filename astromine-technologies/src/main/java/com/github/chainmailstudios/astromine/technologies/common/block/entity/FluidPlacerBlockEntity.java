@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.component.general.SimpleDirectionalFluidComponent;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.sound.SoundCategory;
@@ -54,7 +55,7 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 
 	@Override
 	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleFluidComponent.of(1);
+		FluidComponent fluidComponent = SimpleDirectionalFluidComponent.of(this, 1);
 		fluidComponent.getFirst().setSize(Fraction.of(8));
 		return fluidComponent;
 	}

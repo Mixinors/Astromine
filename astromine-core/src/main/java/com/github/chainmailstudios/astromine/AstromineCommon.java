@@ -86,5 +86,6 @@ public class AstromineCommon implements ModInitializer {
 		AstromineCriteria.initialize();
 		AstromineFluidEffects.initialize();
 		AstromineAttributes.initialize();
+		AstromineTooltips.initialize();
 	}
 }

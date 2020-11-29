@@ -1,1 +1,1 @@
-{"type":"minecraft:crafting_shaped","pattern":["070","747","070"],"key":{"0":{"tag":"c:steel_plates"},"4":{"item":"astromine:advanced_machine_chassis"},"7":{"item":"astromine:advanced_battery_pack"}},"result":{"item":"astromine:advanced_capacitor","count":1}}
+{"type":"minecraft:crafting_shaped","pattern":["010","545","010"],"key":{"0":{"item":"astromine:advanced_plating"},"1":{"tag":"c:gold_ingots"},"4":{"item":"astromine:basic_capacitor"},"5":{"item":"astromine:advanced_battery_pack"}},"result":{"item":"astromine:advanced_capacitor","count":1}}

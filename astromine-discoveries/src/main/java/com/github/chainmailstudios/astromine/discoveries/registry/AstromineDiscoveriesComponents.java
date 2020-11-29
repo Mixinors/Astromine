@@ -37,6 +37,6 @@ import dev.onyxstudios.cca.api.v3.item.ItemComponentInitializer;
 public class AstromineDiscoveriesComponents implements ItemComponentInitializer {
 	@Override
 	public void registerItemComponentFactories(ItemComponentFactoryRegistry registry) {
-		registry.registerFor(item -> item == AstromineDiscoveriesItems.SPACE_SUIT_CHESTPLATE, AstromineComponents.FLUID_INVENTORY_COMPONENT, stack -> SimpleFluidComponent.of(FluidVolume.of(Fraction.of(AstromineConfig.get().spaceSuitFluid), Fluids.EMPTY)));
+		registry.registerFor(item -> item == AstromineDiscoveriesItems.SPACE_SUIT_CHESTPLATE, AstromineComponents.FLUID_INVENTORY_COMPONENT, stack -> SimpleFluidComponent.of(FluidVolume.of(Fraction.of(AstromineConfig.get().spaceSuitFluid), Fraction.EMPTY, Fluids.EMPTY)));
 	}
 }

@@ -110,7 +110,7 @@ public class AstromineFoundationsMaterialSets extends AstromineMaterialSets {
 					.setType(MaterialItemType.MISC_RESOURCE, new MaterialEntry(new Identifier("redstone")))
 					.setType(MaterialItemType.BLOCK, new MaterialEntry(new Identifier("redstone_block"), "redstone_blocks"))
 					.setType(MaterialItemType.ORE, new MaterialEntry(new Identifier("redstone_ore"), "redstone_ores"))
-					.tinyDust().asteroid()
+					.asteroid()
 					.build()
 	);
 	public static final MaterialSet COAL = register(
@@ -131,7 +131,6 @@ public class AstromineFoundationsMaterialSets extends AstromineMaterialSets {
 			new MaterialSet.Builder("glowstone")
 					.setType(MaterialItemType.DUST, new MaterialEntry(new Identifier("glowstone_dust"), "glowstone_dusts"))
 					.setType(MaterialItemType.BLOCK_2x2, new MaterialEntry(new Identifier("glowstone"), "glowstone_blocks"))
-					.tinyDust()
 					.build()
 	);
 	public static final MaterialSet BONE = register(
@@ -237,11 +236,7 @@ public class AstromineFoundationsMaterialSets extends AstromineMaterialSets {
 					.basics().metal().ore().asteroid().wire().allTools().armor().wrench()
 					.build()
 	);
-	public static final MaterialSet SILVER = register(
-			new MaterialSet.Builder("silver")
-					.basics().metal().ore().asteroid().wire().allTools().armor()
-					.build()
-	);
+
 	public static final MaterialSet LEAD = register(
 			new MaterialSet.Builder("lead")
 					.basics().metal().ore().asteroid().wire().allTools().armor()
@@ -256,64 +251,6 @@ public class AstromineFoundationsMaterialSets extends AstromineMaterialSets {
 	public static final MaterialSet BRONZE = register(
 			new MaterialSet.Builder("bronze")
 					.basics().metal().allTools().armor().wrench()
-					.build()
-	);
-	public static final MaterialSet ELECTRUM = register(
-			new MaterialSet.Builder("electrum")
-					.basics().metal().wire().allTools().armor()
-					.build()
-	);
-	public static final MaterialSet ROSE_GOLD = register(
-			new MaterialSet.Builder("rose_gold")
-					.basics().metal().allTools().armor()
-					.piglinLoved().apple()
-					.build()
-	);
-	public static final MaterialSet STERLING_SILVER = register(
-			new MaterialSet.Builder("sterling_silver")
-					.basics().metal().allTools().armor()
-					.build()
-	);
-	public static final MaterialSet FOOLS_GOLD = register(
-			new MaterialSet.Builder("fools_gold")
-					.basics().metal().allTools().armor()
-					.piglinLoved().apple()
-					.build()
-	);
-	public static final MaterialSet METITE = register(
-			new MaterialSet.Builder("metite")
-					.basics().metal().asteroid().meteor().allTools().armor()
-					.build()
-	);
-	public static final MaterialSet ASTERITE = register(
-			new MaterialSet.Builder("asterite")
-					.basics().gem().fragment().asteroid().allTools().armor()
-					.build()
-	);
-	public static final MaterialSet STELLUM = register(
-			new MaterialSet.Builder("stellum")
-					.basics().metal().asteroid().allTools().armor()
-					.build()
-	);
-	public static final MaterialSet GALAXIUM = register(
-			new MaterialSet.Builder("galaxium")
-					.basics().gem().fragment().asteroid().allTools().armor()
-					.build()
-	);
-	public static final MaterialSet UNIVITE = register(
-			new MaterialSet.Builder("univite")
-					.basics().metal().allTools().armor()
-					.smithingBaseSet(GALAXIUM)
-					.build()
-	);
-	public static final MaterialSet LUNUM = register(
-			new MaterialSet.Builder("lunum")
-					.basics().metal().moonOre().allTools().armor()
-					.build()
-	);
-	public static final MaterialSet METEORIC_STEEL = register(
-			new MaterialSet.Builder("meteoric_steel")
-					.basics().metal().allTools().armor()
 					.build()
 	);
 }

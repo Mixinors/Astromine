@@ -3,16 +3,20 @@ package com.github.chainmailstudios.astromine.common.utilities;
 import net.fabricmc.loader.api.FabricLoader;
 
 import net.minecraft.fluid.Fluid;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
+import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
+
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class TextUtilities {
+    private static final Pattern HEX_PATTERN = Pattern.compile("^<#([a-fA-F0-9]{6})>$");
+
     /** Returns the "Astromine" text, formatted with {@link Formatting#BLUE}
      * and {@link Formatting#ITALIC}. */
     public static Text getAstromine() {
@@ -26,7 +30,7 @@ public class TextUtilities {
 
     /** Returns the "16k/32k" text. */
     public static Text getVolume(Volume<?> volume) {
-        return new LiteralText(NumberUtilities.shorten(volume.getAmount().doubleValue(), "") + "/" + NumberUtilities.shorten(volume.getSize().doubleValue(), "")).formatted(Formatting.GRAY);
+        return new LiteralText(NumberUtilities.shorten(volume.getAmount().doubleValue()) + "/" + NumberUtilities.shorten(volume.getSize().doubleValue())).formatted(Formatting.GRAY);
     }
 
     /** Returns the "Water" / "Lava" / "Hydrogen" / ... text. */

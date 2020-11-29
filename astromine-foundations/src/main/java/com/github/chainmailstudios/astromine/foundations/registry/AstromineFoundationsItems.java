@@ -54,7 +54,9 @@ public class AstromineFoundationsItems extends AstromineItems {
 
 	public static final Item COPPER_WIRE = register("copper_wire", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item TIN_WIRE = register("tin_wire", new Item(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item LEAD_WIRE = register("lead_wire", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item GOLD_WIRE = register("gold_wire", new Item(AstromineFoundationsItems.getBasicSettings()));
+	public static final Item STEEL_WIRE = register("steel_wire", new Item(AstromineFoundationsItems.getBasicSettings()));
 
 	public static final Item COPPER_INGOT = register("copper_ingot", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item TIN_INGOT = register("tin_ingot", new Item(AstromineFoundationsItems.getBasicSettings()));
@@ -78,12 +80,6 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item CHARCOAL_DUST = register("charcoal_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item QUARTZ_DUST = register("quartz_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item RAW_NETHERITE_DUST = register("raw_netherite_dust", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
-
-	public static final Item COPPER_TINY_DUST = register("copper_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
-	public static final Item TIN_TINY_DUST = register("tin_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
-	public static final Item LEAD_TINY_DUST = register("lead_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
-	public static final Item STEEL_TINY_DUST = register("steel_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
-	public static final Item BRONZE_TINY_DUST = register("bronze_tiny_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 
 	public static final Item COPPER_PLATE = register("copper_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item TIN_PLATE = register("tin_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
@@ -198,70 +194,10 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item STEEL_LEGGINGS = register("steel_leggings", new ArmorItem(AstromineFoundationsArmorMaterials.STEEL, EquipmentSlot.LEGS, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item STEEL_BOOTS = register("steel_boots", new ArmorItem(AstromineFoundationsArmorMaterials.STEEL, EquipmentSlot.FEET, AstromineFoundationsItems.getBasicSettings()));
 
-	
-	
-	
-	
-
-	
-	
-	
-	
-
-	
-	
-	
-	
-
-	
-	
-	
-	
-
-	
-	
-	
-	
-
-	
-	
-	
-	
-
-	
-	
-	
-	
-
-	
-	
-	
-	
-
-	
-	
-	
-	
-
-	
-	
-	
-	
-
-	
-	
-	
-	
-
-	
-
-	public static final Item COPPER_WRENCH = register("copper_wrench", new WrenchItem(AstromineFoundationsToolMaterials.COPPER, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item BRONZE_WRENCH = register("bronze_wrench", new WrenchItem(AstromineFoundationsToolMaterials.BRONZE, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item STEEL_WRENCH = register("steel_wrench", new WrenchItem(AstromineFoundationsToolMaterials.STEEL, AstromineFoundationsItems.getBasicSettings()));
 
 	public static final Item FIRE_EXTINGUISHER = register("fire_extinguisher", new FireExtinguisherItem(AstromineFoundationsItems.getBasicSettings().maxCount(1)));
 
-	// Apples
 	public static final FoodComponent LEAD_APPLE_COMPONENT = new FoodComponent.Builder().hunger(2).saturationModifier(0.4F).statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 40, 1), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 1000, 2), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.POISON, 500, 1), 1.0F).alwaysEdible().build();
 	public static final Item LEAD_APPLE = register("lead_apple", new Item(AstromineFoundationsItems.getBasicSettings().food(LEAD_APPLE_COMPONENT).rarity(Rarity.RARE)));
 

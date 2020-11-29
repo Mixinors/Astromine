@@ -42,7 +42,7 @@ import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingB
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.general.miscellaneous.IdentifiableComponent;
 import com.github.chainmailstudios.astromine.common.utilities.WidgetUtilities;
-import com.github.chainmailstudios.astromine.common.widget.blade.RedstoneWidget;
+import com.github.chainmailstudios.astromine.common.widget.blade.RedstoneButtonWidget;
 import com.github.vini2003.blade.common.collection.TabWidgetCollection;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
@@ -146,12 +146,12 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 
 		final Direction finalRotation = rotation;
 
-		RedstoneWidget redstoneWidget = new RedstoneWidget();
-		redstoneWidget.setPosition(Position.of(tabs, tabs.getWidth() - 20, 0));
-		redstoneWidget.setSize(Size.of(20, 19));
-		redstoneWidget.setBlockEntity(blockEntity);
+		RedstoneButtonWidget redstoneButtonWidget = new RedstoneButtonWidget();
+		redstoneButtonWidget.setPosition(Position.of(tabs, tabs.getWidth() - 20, 0));
+		redstoneButtonWidget.setSize(Size.of(20, 19));
+		redstoneButtonWidget.setBlockEntity(blockEntity);
 
-		addWidget(redstoneWidget);
+		addWidget(redstoneButtonWidget);
 
 		TransferComponent transferComponent = TransferComponent.get(blockEntity);
 

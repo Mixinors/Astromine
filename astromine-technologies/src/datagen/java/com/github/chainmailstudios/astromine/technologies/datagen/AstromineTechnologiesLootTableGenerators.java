@@ -23,10 +23,10 @@ public class AstromineTechnologiesLootTableGenerators extends AstromineLootTable
 			AstromineTechnologiesBlocks.ADVANCED_SOLID_GENERATOR,
 			AstromineTechnologiesBlocks.ELITE_SOLID_GENERATOR,
 
-			AstromineTechnologiesBlocks.PRIMITIVE_LIQUID_GENERATOR,
-			AstromineTechnologiesBlocks.BASIC_LIQUID_GENERATOR,
-			AstromineTechnologiesBlocks.ADVANCED_LIQUID_GENERATOR,
-			AstromineTechnologiesBlocks.ELITE_LIQUID_GENERATOR,
+			AstromineTechnologiesBlocks.PRIMITIVE_FLUID_GENERATOR,
+			AstromineTechnologiesBlocks.BASIC_FLUID_GENERATOR,
+			AstromineTechnologiesBlocks.ADVANCED_FLUID_GENERATOR,
+			AstromineTechnologiesBlocks.ELITE_FLUID_GENERATOR,
 
 			AstromineTechnologiesBlocks.PRIMITIVE_ELECTRIC_FURNACE,
 			AstromineTechnologiesBlocks.BASIC_ELECTRIC_FURNACE,
@@ -43,15 +43,15 @@ public class AstromineTechnologiesLootTableGenerators extends AstromineLootTable
 			AstromineTechnologiesBlocks.ADVANCED_TRITURATOR,
 			AstromineTechnologiesBlocks.ELITE_TRITURATOR,
 
-			AstromineTechnologiesBlocks.PRIMITIVE_PRESSER,
-			AstromineTechnologiesBlocks.BASIC_PRESSER,
-			AstromineTechnologiesBlocks.ADVANCED_PRESSER,
-			AstromineTechnologiesBlocks.ELITE_PRESSER,
+			AstromineTechnologiesBlocks.PRIMITIVE_PRESS,
+			AstromineTechnologiesBlocks.BASIC_PRESS,
+			AstromineTechnologiesBlocks.ADVANCED_PRESS,
+			AstromineTechnologiesBlocks.ELITE_PRESS,
 
-			AstromineTechnologiesBlocks.PRIMITIVE_WIREMILL,
-			AstromineTechnologiesBlocks.BASIC_WIREMILL,
-			AstromineTechnologiesBlocks.ADVANCED_WIREMILL,
-			AstromineTechnologiesBlocks.ELITE_WIREMILL,
+			AstromineTechnologiesBlocks.PRIMITIVE_WIRE_MILL,
+			AstromineTechnologiesBlocks.BASIC_WIRE_MILL,
+			AstromineTechnologiesBlocks.ADVANCED_WIRE_MILL,
+			AstromineTechnologiesBlocks.ELITE_WIRE_MILL,
 
 			AstromineTechnologiesBlocks.PRIMITIVE_ELECTROLYZER,
 			AstromineTechnologiesBlocks.BASIC_ELECTROLYZER,
@@ -84,8 +84,8 @@ public class AstromineTechnologiesLootTableGenerators extends AstromineLootTable
 			AstromineTechnologiesBlocks.ELITE_BUFFER,
 			AstromineTechnologiesBlocks.CREATIVE_BUFFER,
 
-			AstromineTechnologiesBlocks.FLUID_EXTRACTOR,
-			AstromineTechnologiesBlocks.FLUID_INSERTER,
+			AstromineTechnologiesBlocks.FLUID_COLLECTOR,
+			AstromineTechnologiesBlocks.FLUID_PLACER,
 			AstromineTechnologiesBlocks.BLOCK_BREAKER,
 			AstromineTechnologiesBlocks.BLOCK_PLACER,
 

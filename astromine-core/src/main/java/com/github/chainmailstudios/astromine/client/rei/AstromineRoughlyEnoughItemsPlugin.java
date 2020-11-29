@@ -80,7 +80,7 @@ public abstract class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
 
 			@Override
 			public @Nullable Tooltip getTooltip(Point mouse) {
-				return Tooltip.create(mouse, new TranslatableText("text.astromine.energy"), new LiteralText(NumberUtilities.shorten(energy, "")).formatted(Formatting.GRAY), new LiteralText("Astromine").formatted(Formatting.BLUE, Formatting.ITALIC));
+				return Tooltip.create(mouse, new TranslatableText("text.astromine.energy"), new LiteralText(NumberUtilities.shorten(energy)).formatted(Formatting.GRAY), new LiteralText("Astromine").formatted(Formatting.BLUE, Formatting.ITALIC));
 			}
 		}).notFavoritesInteractable());
 	}

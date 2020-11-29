@@ -57,7 +57,7 @@ public class LiquidGeneratingCategory extends AbstractEnergyGeneratingCategory<L
 
 	@Override
 	public EntryStack getLogo() {
-		return EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_LIQUID_GENERATOR);
+		return EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_FLUID_GENERATOR);
 	}
 
 	@Override

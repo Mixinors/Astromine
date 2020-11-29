@@ -59,7 +59,7 @@ public class PressingCategory implements RecipeCategory<PressingDisplay> {
 
 	@Override
 	public EntryStack getLogo() {
-		return EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_PRESSER);
+		return EntryStack.create(AstromineTechnologiesBlocks.ADVANCED_PRESS);
 	}
 
 	@Override

@@ -32,6 +32,7 @@ import net.minecraft.client.texture.Sprite;
 import net.minecraft.data.client.model.Texture;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.tag.TagManager;

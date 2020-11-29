@@ -153,7 +153,7 @@ public final class PressingRecipe implements EnergyConsumingRecipe<Inventory> {
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_PRESSER);
+		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_PRESS);
 	}
 
 	public Identifier getIdentifier() {

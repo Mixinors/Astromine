@@ -1,7 +1,1 @@
-{
-  "type": "minecraft:crafting_shaped", "pattern": ["818", "545", "878"], "key": {
-  "1": {"item": "astromine:basic_circuit"}, "4": {"item": "astromine:basic_machine_chassis"},
-  "5": {"item": "minecraft:blast_furnace"}, "7": {"item": "astromine:basic_battery_pack"},
-  "8": {"tag": "c:bronze_plates"}
-}, "result": {"item": "astromine:basic_electric_furnace", "count": 1}
-}
+{"type":"minecraft:crafting_shaped","pattern":["616","343","616"],"key":{"1":{"tag":"c:bronze_ingots"},"3":{"item":"astromine:basic_circuit"},"4":{"item":"astromine:primitive_electric_furnace"},"6":{"item":"astromine:basic_plating"}},"result":{"item":"astromine:basic_electric_furnace","count":1}}

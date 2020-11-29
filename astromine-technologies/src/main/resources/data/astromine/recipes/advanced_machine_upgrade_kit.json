@@ -1,6 +1,1 @@
-{
-  "type": "minecraft:crafting_shaped", "pattern": ["818", "848", "878"], "key": {
-  "1": {"item": "astromine:advanced_circuit"}, "4": {"item": "astromine:advanced_machine_chassis"},
-  "7": {"item": "astromine:advanced_battery_pack"}, "8": {"tag": "c:steel_plates"}
-}, "result": {"item": "astromine:advanced_machine_upgrade_kit", "count": 1}
-}
+{"type":"minecraft:crafting_shaped","pattern":["676","343","676"],"key":{"3":{"item":"astromine:advanced_circuit"},"4":{"item":"astromine:advanced_battery_pack"},"6":{"item":"astromine:advanced_plating"},"7":{"tag":"c:gold_ingots"}},"result":{"item":"astromine:advanced_machine_upgrade_kit","count":1}}

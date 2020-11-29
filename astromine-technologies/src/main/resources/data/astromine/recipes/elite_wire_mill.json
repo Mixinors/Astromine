@@ -1,6 +1,1 @@
-{
-  "type": "minecraft:crafting_shaped", "pattern": ["212", "343", "272"], "key": {
-  "1": {"item": "astromine:elite_circuit"}, "2": {"tag": "c:meteoric_steel_plates"}, "3": {"tag": "c:meteoric_steel_gears"},
-  "4": {"item": "astromine:elite_machine_chassis"}, "7": {"item": "astromine:elite_battery_pack"}
-}, "result": {"item": "astromine:elite_wire_mill", "count": 1}
-}
+{"type":"minecraft:crafting_shaped","pattern":["616","343","616"],"key":{"1":{"item":"minecraft:diamond"},"3":{"item":"astromine:elite_circuit"},"4":{"item":"astromine:advanced_wire_mill"},"6":{"item":"astromine:elite_plating"}},"result":{"item":"astromine:elite_wire_mill","count":1}}

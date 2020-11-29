@@ -31,7 +31,7 @@ public class AstromineFoundationsModelStateGenerators extends AstromineModelStat
 	public final ModelStateGenerator METEOR_CLUSTER = register(new GenericItemSetModelGenerator(MaterialItemType.METEOR_CLUSTER));
 
 	public final ModelStateGenerator DUST = register(new GenericItemSetModelGenerator(MaterialItemType.DUST));
-	public final ModelStateGenerator TINY_DUST = register(new GenericItemSetModelGenerator(MaterialItemType.TINY_DUST));
+
 
 	public final ModelStateGenerator GEAR = register(new GenericItemSetModelGenerator(MaterialItemType.GEAR));
 	public final ModelStateGenerator PLATES = register(new GenericItemSetModelGenerator(MaterialItemType.PLATE));
@@ -74,10 +74,6 @@ public class AstromineFoundationsModelStateGenerators extends AstromineModelStat
 			AstromineFoundationsBlocks.POLISHED_METEOR_STONE_STAIRS,
 			AstromineFoundationsBlocks.METEOR_STONE_BRICK_SLAB,
 			AstromineFoundationsBlocks.METEOR_STONE_BRICK_STAIRS
-	));
-
-	public final ModelStateGenerator EXTRA_PLATES = register(new GenericItemModelGenerator(
-			AstromineFoundationsItems.STONE_PLATE
 	));
 
 	public final ModelStateGenerator BLADES = register(new HandheldItemModelGenerator(

@@ -44,7 +44,7 @@ public class NumberUtilities {
 	 * > 1,000,000,000,000,000,000,000,000 has the "Y" suffix.
 	 * > 1,000,000,000,000,000,000,000,000,000 has the "∞" suffix.
 	 */
-	public static java.lang.String shorten(double value, java.lang.String unit) {
+	public static java.lang.String shorten(double value) {
 		if (value < 1000) {
 			return Fraction.FORMAT.format(value);
 		}
@@ -54,6 +54,6 @@ public class NumberUtilities {
 			++exponent;
 		}
 
-		return java.lang.String.format("%.1f%s", value, exponent - 1 > units.length - 1 ? "∞" : units[exponent - 1] + unit);
+		return java.lang.String.format("%.1f%s", value, exponent - 1 > units.length - 1 ? "∞" : units[exponent - 1]);
 	}
 }

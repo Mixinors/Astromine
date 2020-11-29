@@ -1,1 +1,1 @@
-{"type":"minecraft:crafting_shaped","pattern":["070","747","070"],"key":{"0":{"tag":"c:lead_plates"},"4":{"item":"astromine:primitive_machine_chassis"},"7":{"item":"minecraft:chest"}},"result":{"item":"astromine:primitive_buffer","count":1}}
+{"type":"minecraft:crafting_shaped","pattern":["010","141","010"],"key":{"0":{"tag":"c:iron_ingots"},"1":{"item":"minecraft:chest"},"4":{"item":"astromine:machine_chassis"}},"result":{"item":"astromine:primitive_buffer","count":1}}

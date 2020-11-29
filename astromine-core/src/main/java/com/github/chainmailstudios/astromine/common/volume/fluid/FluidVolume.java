@@ -99,22 +99,22 @@ public class FluidVolume extends Volume<Fraction> {
 
 	/** Instantiates an empty {@link FluidVolume}. */
 	public static FluidVolume ofEmpty() {
-		return new FluidVolume(Fraction.EMPTY, Fraction.MAX_VALUE, Fluids.EMPTY);
+		return new FluidVolume(Fraction.EMPTY, Fraction.of(Integer.MAX_VALUE), Fluids.EMPTY);
 	}
 
 	/** Instantiates an empty {@link FluidVolume} with a listener. */
 	public static FluidVolume ofEmpty(Runnable runnable) {
-		return new FluidVolume(Fraction.EMPTY, Fraction.MAX_VALUE, Fluids.EMPTY, runnable);
+		return new FluidVolume(Fraction.EMPTY, Fraction.of(Integer.MAX_VALUE), Fluids.EMPTY, runnable);
 	}
 
 	/** Instantiates a {@link FluidVolume}. */
 	public static FluidVolume of(Fraction amount, Fluid fluid) {
-		return new FluidVolume(amount, Fraction.MAX_VALUE, fluid);
+		return new FluidVolume(amount, Fraction.of(Integer.MAX_VALUE), fluid);
 	}
 
 	/** Instantiates a {@link FluidVolume} and a listener. */
 	public static FluidVolume of(Fraction amount, Fluid fluid, Runnable runnable) {
-		return new FluidVolume(amount, Fraction.MAX_VALUE, fluid, runnable);
+		return new FluidVolume(amount, Fraction.of(Integer.MAX_VALUE), fluid, runnable);
 	}
 
 	/** Instantiates a {@link FluidVolume}. */
@@ -293,7 +293,7 @@ public class FluidVolume extends Volume<Fraction> {
 	 * For example, it may be "minecraft:water, 16.50 of 32.00 Buckets" */
 	@Override
 	public String toString() {
-		return getFluidId().toString() + ", " + NumberUtilities.shorten(getAmount().doubleValue(), "") + "/" + NumberUtilities.shorten(getSize().doubleValue(), "") + " Buckets";
+		return getFluidId().toString() + ", " + NumberUtilities.shorten(getAmount().doubleValue()) + "/" + NumberUtilities.shorten(getSize().doubleValue()) + " Buckets";
 	}
 
 	/** Deserializes a volume from a {@link CompoundTag}. */

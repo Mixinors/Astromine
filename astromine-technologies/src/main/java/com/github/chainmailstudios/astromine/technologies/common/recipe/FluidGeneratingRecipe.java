@@ -147,7 +147,7 @@ public final class FluidGeneratingRecipe implements Recipe<Inventory>, EnergyGen
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_LIQUID_GENERATOR);
+		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_FLUID_GENERATOR);
 	}
 
 	public FluidIngredient getFirstInput() {

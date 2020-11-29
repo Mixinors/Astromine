@@ -9,20 +9,8 @@
     "minecraft:netherite_sword",
     "astromine:copper_sword",
     "astromine:tin_sword",
-    "astromine:silver_sword",
     "astromine:lead_sword",
     "astromine:bronze_sword",
-    "astromine:steel_sword",
-    "astromine:electrum_sword",
-    "astromine:rose_gold_sword",
-    "astromine:sterling_silver_sword",
-    "astromine:fools_gold_sword",
-    "astromine:metite_sword",
-    "astromine:asterite_sword",
-    "astromine:stellum_sword",
-    "astromine:galaxium_sword",
-    "astromine:univite_sword",
-    "astromine:lunum_sword",
-    "astromine:meteoric_steel_sword"
+    "astromine:steel_sword"
   ]
 }

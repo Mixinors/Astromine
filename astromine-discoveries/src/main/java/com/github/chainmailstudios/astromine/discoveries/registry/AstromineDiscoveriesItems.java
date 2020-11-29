@@ -36,8 +36,6 @@ public class AstromineDiscoveriesItems extends AstromineItems {
 
 	public static final Item SPACE_SLIME_BALL = register("space_slime_ball", new Item(AstromineDiscoveriesItems.getBasicSettings()));
 
-	public static final Item ASTEROID_METITE_CLUSTER = register("asteroid_metite_cluster", new Item(AstromineDiscoveriesItems.getBasicSettings()));
-
 	public static final Item ASTEROID_COPPER_CLUSTER = register("asteroid_copper_cluster", new Item(AstromineDiscoveriesItems.getBasicSettings()));
 	public static final Item ASTEROID_TIN_CLUSTER = register("asteroid_tin_cluster", new Item(AstromineDiscoveriesItems.getBasicSettings()));
 	public static final Item ASTEROID_LEAD_CLUSTER = register("asteroid_lead_cluster", new Item(AstromineDiscoveriesItems.getBasicSettings()));

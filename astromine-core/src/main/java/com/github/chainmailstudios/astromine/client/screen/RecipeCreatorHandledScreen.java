@@ -36,7 +36,8 @@ import org.jetbrains.annotations.NotNull;
  * A {@link BaseHandledScreen} used by {@link RecipeCreatorScreenHandler}.
  */
 public class RecipeCreatorHandledScreen extends BaseHandledScreen<RecipeCreatorScreenHandler> {
-	/** Instantiates a {@link RecipeCreatorHandledScreen}. */public RecipeCreatorHandledScreen(@NotNull BaseScreenHandler handler, @NotNull PlayerInventory inventory, @NotNull Text title) {
+	/** Instantiates a {@link RecipeCreatorHandledScreen}. */
+	public RecipeCreatorHandledScreen(@NotNull BaseScreenHandler handler, @NotNull PlayerInventory inventory, @NotNull Text title) {
 		super(handler, inventory, title);
 
 		playerInventoryTitleX = -Integer.MAX_VALUE;

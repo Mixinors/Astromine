@@ -16,6 +16,7 @@
     "HoneyBlockMixin",
     "IdentifierMixin",
     "ItemEntityMixin",
+    "ItemStackMixin",
     "LivingEntityMixin",
     "PiglinBrainMixin",
     "ServerChunkManagerMixin",

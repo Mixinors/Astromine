@@ -1,1 +1,1 @@
-{"type":"minecraft:crafting_shaped","pattern":["   ","444","878"],"key":{"4":{"tag":"c:lunum_plates"},"7":{"item":"astromine:space_slime_ball"},"8":{"item":"astromine:blades"}},"result":{"item":"astromine:elite_conveyor","count":16}}
+{"type":"minecraft:crafting_shaped","pattern":["010","343","   "],"key":{"0":{"item":"minecraft:diamond"},"1":{"tag":"c:iron_ingots"},"3":{"item":"astromine:blades"},"4":{"item":"minecraft:slime_ball"}},"result":{"item":"astromine:elite_conveyor","count":16}}

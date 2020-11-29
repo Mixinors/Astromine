@@ -18,7 +18,6 @@ public class AstromineFoundationsRecipeGenerators extends AstromineRecipeGenerat
 	public final RecipeGenerator MISC_TO_BLOCK = register(new Crafting3x3SetRecipeGenerator(MISC_RESOURCE, BLOCK));
 	public final RecipeGenerator NUGGET_TO_INGOT = register(new Crafting3x3SetRecipeGenerator(NUGGET, INGOT));
 	public final RecipeGenerator FRAGMENT_TO_GEM = register(new Crafting3x3SetRecipeGenerator(FRAGMENT, GEM));
-	public final RecipeGenerator TINY_DUST_TO_DUST = register(new Crafting3x3SetRecipeGenerator(TINY_DUST, DUST));
 
 	public final RecipeGenerator INGOT_TO_BLOCK_2x2 = register(new Crafting2x2SetRecipeGenerator(INGOT, BLOCK_2x2));
 	public final RecipeGenerator GEM_TO_BLOCK_2x2 = register(new Crafting2x2SetRecipeGenerator(GEM, BLOCK_2x2));
@@ -29,7 +28,6 @@ public class AstromineFoundationsRecipeGenerators extends AstromineRecipeGenerat
 	public final RecipeGenerator BLOCK_TO_MISC = register(new ShapelessCraftingSetRecipeGenerator(BLOCK, MISC_RESOURCE, 9));
 	public final RecipeGenerator INGOT_TO_NUGGETS = register(new ShapelessCraftingSetRecipeGenerator(INGOT, NUGGET, 9));
 	public final RecipeGenerator GEM_TO_FRAGMENTS = register(new ShapelessCraftingSetRecipeGenerator(GEM, FRAGMENT, 9));
-	public final RecipeGenerator DUST_TO_TINY_DUSTS = register(new ShapelessCraftingSetRecipeGenerator(DUST, TINY_DUST, 9));
 
 	public final RecipeGenerator INGOT_TO_PICKAXE = register(new ToolCraftingRecipeGenerators.PickaxeCraftingRecipeGenerator(INGOT));
 	public final RecipeGenerator GEM_TO_PICKAXE = register(new ToolCraftingRecipeGenerators.PickaxeCraftingRecipeGenerator(GEM));
@@ -81,8 +79,6 @@ public class AstromineFoundationsRecipeGenerators extends AstromineRecipeGenerat
 	public final RecipeGenerator DUST_TO_GEM = register(new SmeltingSetRecipeGenerator(DUST, GEM));
 	public final RecipeGenerator METEOR_CLUSTER_TO_NUGGET = register(new SmeltingSetRecipeGenerator(METEOR_CLUSTER, NUGGET));
 	public final RecipeGenerator METEOR_CLUSTER_TO_FRAGMENT = register(new SmeltingSetRecipeGenerator(METEOR_CLUSTER, FRAGMENT));
-	public final RecipeGenerator TINY_DUST_TO_NUGGET = register(new SmeltingSetRecipeGenerator(TINY_DUST, NUGGET));
-	public final RecipeGenerator TINY_DUST_TO_FRAGMENT = register(new SmeltingSetRecipeGenerator(TINY_DUST, FRAGMENT));
 
 	public final RecipeGenerator ORE_TO_INGOT_BLASTING = register(new BlastingSetRecipeGenerator(ORE, INGOT));
 	public final RecipeGenerator ORE_TO_GEM_BLASTING = register(new BlastingSetRecipeGenerator(ORE, GEM));
@@ -93,8 +89,6 @@ public class AstromineFoundationsRecipeGenerators extends AstromineRecipeGenerat
 	public final RecipeGenerator DUST_TO_GEM_BLASTING = register(new BlastingSetRecipeGenerator(DUST, GEM));
 	public final RecipeGenerator METEOR_CLUSTER_TO_NUGGET_BLASTING = register(new BlastingSetRecipeGenerator(METEOR_CLUSTER, NUGGET));
 	public final RecipeGenerator METEOR_CLUSTER_TO_FRAGMENT_BLASTING = register(new BlastingSetRecipeGenerator(METEOR_CLUSTER, FRAGMENT));
-	public final RecipeGenerator TINY_DUST_TO_NUGGET_BLASTING = register(new BlastingSetRecipeGenerator(TINY_DUST, NUGGET));
-	public final RecipeGenerator TINY_DUST_TO_FRAGMENT_BLASTING = register(new BlastingSetRecipeGenerator(TINY_DUST, FRAGMENT));
 
 	public final RecipeGenerator INGOT_TO_PLATES_CRAFTING = register(new ShapedCraftingSetRecipeGenerator(INGOT, PLATE, "#", "#"));
 	public final RecipeGenerator INGOT_TO_GEAR_CRAFTING = register(new ShapedCraftingSetRecipeGenerator(INGOT, GEAR, 1, " # ", "# #", " # "));

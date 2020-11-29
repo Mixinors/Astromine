@@ -15,11 +15,11 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 			AstromineTechnologiesBlocks.PRIMITIVE_ELECTROLYZER,
 			AstromineTechnologiesBlocks.PRIMITIVE_REFINERY,
 			AstromineTechnologiesBlocks.PRIMITIVE_FLUID_MIXER,
-			AstromineTechnologiesBlocks.PRIMITIVE_LIQUID_GENERATOR,
-			AstromineTechnologiesBlocks.PRIMITIVE_PRESSER,
+			AstromineTechnologiesBlocks.PRIMITIVE_FLUID_GENERATOR,
+			AstromineTechnologiesBlocks.PRIMITIVE_PRESS,
 			AstromineTechnologiesBlocks.PRIMITIVE_SOLID_GENERATOR,
 			AstromineTechnologiesBlocks.PRIMITIVE_TRITURATOR,
-			AstromineTechnologiesBlocks.PRIMITIVE_WIREMILL,
+			AstromineTechnologiesBlocks.PRIMITIVE_WIRE_MILL,
 			AstromineTechnologiesBlocks.PRIMITIVE_SOLIDIFIER,
 			AstromineTechnologiesBlocks.PRIMITIVE_MELTER,
 			AstromineTechnologiesBlocks.PRIMITIVE_BUFFER,
@@ -33,11 +33,11 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 			AstromineTechnologiesBlocks.BASIC_ELECTROLYZER,
 			AstromineTechnologiesBlocks.BASIC_REFINERY,
 			AstromineTechnologiesBlocks.BASIC_FLUID_MIXER,
-			AstromineTechnologiesBlocks.BASIC_LIQUID_GENERATOR,
-			AstromineTechnologiesBlocks.BASIC_PRESSER,
+			AstromineTechnologiesBlocks.BASIC_FLUID_GENERATOR,
+			AstromineTechnologiesBlocks.BASIC_PRESS,
 			AstromineTechnologiesBlocks.BASIC_SOLID_GENERATOR,
 			AstromineTechnologiesBlocks.BASIC_TRITURATOR,
-			AstromineTechnologiesBlocks.BASIC_WIREMILL,
+			AstromineTechnologiesBlocks.BASIC_WIRE_MILL,
 			AstromineTechnologiesBlocks.BASIC_SOLIDIFIER,
 			AstromineTechnologiesBlocks.BASIC_MELTER,
 			AstromineTechnologiesBlocks.BASIC_BUFFER,
@@ -51,11 +51,11 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 			AstromineTechnologiesBlocks.ADVANCED_ELECTROLYZER,
 			AstromineTechnologiesBlocks.ADVANCED_REFINERY,
 			AstromineTechnologiesBlocks.ADVANCED_FLUID_MIXER,
-			AstromineTechnologiesBlocks.ADVANCED_LIQUID_GENERATOR,
-			AstromineTechnologiesBlocks.ADVANCED_PRESSER,
+			AstromineTechnologiesBlocks.ADVANCED_FLUID_GENERATOR,
+			AstromineTechnologiesBlocks.ADVANCED_PRESS,
 			AstromineTechnologiesBlocks.ADVANCED_SOLID_GENERATOR,
 			AstromineTechnologiesBlocks.ADVANCED_TRITURATOR,
-			AstromineTechnologiesBlocks.ADVANCED_WIREMILL,
+			AstromineTechnologiesBlocks.ADVANCED_WIRE_MILL,
 			AstromineTechnologiesBlocks.ADVANCED_SOLIDIFIER,
 			AstromineTechnologiesBlocks.ADVANCED_MELTER,
 			AstromineTechnologiesBlocks.ADVANCED_BUFFER,
@@ -69,11 +69,11 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 			AstromineTechnologiesBlocks.ELITE_ELECTROLYZER,
 			AstromineTechnologiesBlocks.ELITE_REFINERY,
 			AstromineTechnologiesBlocks.ELITE_FLUID_MIXER,
-			AstromineTechnologiesBlocks.ELITE_LIQUID_GENERATOR,
-			AstromineTechnologiesBlocks.ELITE_PRESSER,
+			AstromineTechnologiesBlocks.ELITE_FLUID_GENERATOR,
+			AstromineTechnologiesBlocks.ELITE_PRESS,
 			AstromineTechnologiesBlocks.ELITE_SOLID_GENERATOR,
 			AstromineTechnologiesBlocks.ELITE_TRITURATOR,
-			AstromineTechnologiesBlocks.ELITE_WIREMILL,
+			AstromineTechnologiesBlocks.ELITE_WIRE_MILL,
 			AstromineTechnologiesBlocks.ELITE_SOLIDIFIER,
 			AstromineTechnologiesBlocks.ELITE_MELTER,
 			AstromineTechnologiesBlocks.ELITE_BUFFER,
@@ -88,10 +88,7 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 	));
 
 	public final ModelStateGenerator MACHINE_CHASSIS = register(new GenericItemModelGenerator(
-			AstromineTechnologiesItems.PRIMITIVE_MACHINE_CHASSIS,
-			AstromineTechnologiesItems.BASIC_MACHINE_CHASSIS,
-			AstromineTechnologiesItems.ADVANCED_MACHINE_CHASSIS,
-			AstromineTechnologiesItems.ELITE_MACHINE_CHASSIS
+			AstromineTechnologiesItems.MACHINE_CHASSIS
 	));
 
 	public final ModelStateGenerator UPGRADE_KIT = register(new GenericItemModelGenerator(
@@ -110,6 +107,13 @@ public class AstromineTechnologiesModelStateGenerators extends AstromineModelSta
 			AstromineTechnologiesItems.BASIC_CIRCUIT,
 			AstromineTechnologiesItems.ADVANCED_CIRCUIT,
 			AstromineTechnologiesItems.ELITE_CIRCUIT
+	));
+
+	public final ModelStateGenerator PLATING = register(new GenericItemModelGenerator(
+			AstromineTechnologiesItems.PRIMITIVE_PLATING,
+			AstromineTechnologiesItems.BASIC_PLATING,
+			AstromineTechnologiesItems.ADVANCED_PLATING,
+			AstromineTechnologiesItems.ELITE_PLATING
 	));
 
 	public final ModelStateGenerator BATTERIES = register(new GenericItemModelGenerator(

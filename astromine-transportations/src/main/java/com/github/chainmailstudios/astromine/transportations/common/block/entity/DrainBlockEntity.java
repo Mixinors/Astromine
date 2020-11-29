@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.component.general.SimpleDirectionalFluidComponent;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.Direction;
@@ -47,7 +48,7 @@ public class DrainBlockEntity extends ComponentFluidBlockEntity implements Ticka
 
 	@Override
 	public FluidComponent createFluidComponent() {
-		FluidComponent fluidComponent = SimpleFluidComponent.of(1).withInsertPredicate((direction, volume, slot) -> {
+		FluidComponent fluidComponent = SimpleDirectionalFluidComponent.of(this, 1).withInsertPredicate((direction, volume, slot) -> {
 			return tickRedstone();
 		});
 

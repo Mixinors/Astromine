@@ -13,7 +13,6 @@ public enum MaterialItemType {
 	METEOR_CLUSTER("meteor", "cluster"),
 	ASTEROID_CLUSTER("asteroid", "cluster", true),
 	DUST,
-	TINY_DUST,
 	GEAR,
 	PLATE,
 	WIRE,

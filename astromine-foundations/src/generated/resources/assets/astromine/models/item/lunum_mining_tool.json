@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/handheld",
-  "textures": {
-    "layer0": "astromine:item/lunum_mining_tool"
-  }
-}

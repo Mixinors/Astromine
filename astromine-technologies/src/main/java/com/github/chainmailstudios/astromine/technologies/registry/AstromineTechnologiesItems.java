@@ -36,10 +36,7 @@ import com.github.chainmailstudios.astromine.technologies.common.item.GravityGau
 import com.github.chainmailstudios.astromine.technologies.common.item.HolographicConnectorItem;
 
 public class AstromineTechnologiesItems extends AstromineItems {
-	public static final Item PRIMITIVE_MACHINE_CHASSIS = register("primitive_machine_chassis", new Item(getBasicSettings()));
-	public static final Item BASIC_MACHINE_CHASSIS = register("basic_machine_chassis", new Item(getBasicSettings()));
-	public static final Item ADVANCED_MACHINE_CHASSIS = register("advanced_machine_chassis", new Item(getBasicSettings()));
-	public static final Item ELITE_MACHINE_CHASSIS = register("elite_machine_chassis", new Item(getBasicSettings()));
+	public static final Item MACHINE_CHASSIS = register("machine_chassis", new Item(getBasicSettings()));
 
 	public static final Item BASIC_MACHINE_UPGRADE_KIT = register("basic_machine_upgrade_kit", new Item(getBasicSettings()));
 	public static final Item ADVANCED_MACHINE_UPGRADE_KIT = register("advanced_machine_upgrade_kit", new Item(getBasicSettings()));
@@ -53,6 +50,11 @@ public class AstromineTechnologiesItems extends AstromineItems {
 	public static final Item ADVANCED_CIRCUIT = register("advanced_circuit", new Item(getBasicSettings()));
 	public static final Item ELITE_CIRCUIT = register("elite_circuit", new Item(getBasicSettings()));
 
+	public static final Item PRIMITIVE_PLATING = register("primitive_plating", new Item(getBasicSettings()));
+	public static final Item BASIC_PLATING = register("basic_plating", new Item(getBasicSettings()));
+	public static final Item ADVANCED_PLATING = register("advanced_plating", new Item(getBasicSettings()));
+	public static final Item ELITE_PLATING = register("elite_plating", new Item(getBasicSettings()));
+	
 	public static final Item PRIMITIVE_BATTERY = register("primitive_battery", EnergyVolumeItem.of(getBasicSettings().maxCount(1), AstromineConfig.get().primitiveBatteryEnergy));
 	public static final Item BASIC_BATTERY = register("basic_battery", EnergyVolumeItem.of(getBasicSettings().maxCount(1), AstromineConfig.get().basicBatteryEnergy));
 	public static final Item ADVANCED_BATTERY = register("advanced_battery", EnergyVolumeItem.of(getBasicSettings().maxCount(1), AstromineConfig.get().advancedBatteryEnergy));
