@@ -19,8 +19,6 @@ public class AstromineDiscoveriesModelStateGenerators extends AstromineModelStat
 
 	public final ModelStateGenerator ASTEROID_CLUSTER = register(new GenericItemSetModelGenerator(MaterialItemType.ASTEROID_CLUSTER));
 
-	public final ModelStateGenerator MOON_ORE = register(new GenericBlockSetModelStateGenerator(MaterialItemType.MOON_ORE));
-
 	public final ModelStateGenerator STANDARD_ITEMS = register(new GenericItemModelGenerator(
 			AstromineDiscoveriesItems.SPACE_SUIT_HELMET,
 			AstromineDiscoveriesItems.SPACE_SUIT_CHESTPLATE,

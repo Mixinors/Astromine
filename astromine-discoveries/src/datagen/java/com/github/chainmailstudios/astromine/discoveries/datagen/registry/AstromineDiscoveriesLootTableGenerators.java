@@ -11,7 +11,6 @@ import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDisco
 
 public class AstromineDiscoveriesLootTableGenerators extends AstromineLootTableGenerators {
 	public final LootTableGenerator ASTEROID_ORE = register(new FortuneOreSetLootTableGenerator(MaterialItemType.ASTEROID_ORE, MaterialItemType.ASTEROID_CLUSTER));
-	public final LootTableGenerator MOON_ORE = register(new DropSelfSetLootTableGenerator(MaterialItemType.MOON_ORE));
 
 	public final LootTableGenerator DROP_SELF = register(new DropSelfLootTableGenerator(
 			AstromineDiscoveriesBlocks.ALTAR,

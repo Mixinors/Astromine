@@ -58,9 +58,6 @@ project.ext.setDefaultApis = {
 
     // Maybe Data
     useAsApi("com.github.Draylar:maybe-data:${maybe_data_version}")
-
-    // Piglib
-    useAsApi("com.github.Shnupbups:Piglib:${piglib_version}")
 }
 
 project.ext.setRuntimeTestMods = {

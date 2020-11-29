@@ -243,11 +243,13 @@ public class AstromineFoundationsMaterialSets extends AstromineMaterialSets {
 					.apple()
 					.build()
 	);
+
 	public static final MaterialSet STEEL = register(
 			new MaterialSet.Builder("steel")
 					.basics().metal().wire().allTools().armor().wrench()
 					.build()
 	);
+
 	public static final MaterialSet BRONZE = register(
 			new MaterialSet.Builder("bronze")
 					.basics().metal().allTools().armor().wrench()

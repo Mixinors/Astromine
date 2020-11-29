@@ -102,32 +102,20 @@ public class AstromineDiscoveriesBlocks extends AstromineBlocks {
 	public static final Block VULCAN_STONE_BRICK_WALL = register("vulcan_stone_brick_wall", new WallBlock(FabricBlockSettings.copyOf(VULCAN_STONE_BRICKS)), AstromineDiscoveriesItems.getBasicSettings());
 	public static final Block MARTIAN_STONE_BRICK_WALL = register("martian_stone_brick_wall", new WallBlock(FabricBlockSettings.copyOf(MARTIAN_STONE_BRICKS)), AstromineDiscoveriesItems.getBasicSettings());
 
-	public static final Block ASTEROID_COPPER_ORE = register("asteroid_copper_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems
-		.getBasicSettings().fireproof());
-	public static final Block ASTEROID_TIN_ORE = register("asteroid_tin_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems
-		.getBasicSettings().fireproof());
-	public static final Block ASTEROID_LEAD_ORE = register("asteroid_lead_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems
-		.getBasicSettings().fireproof());
+	public static final Block ASTEROID_COPPER_ORE = register("asteroid_copper_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems.getBasicSettings().fireproof());
+	public static final Block ASTEROID_TIN_ORE = register("asteroid_tin_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems.getBasicSettings().fireproof());
+	public static final Block ASTEROID_LEAD_ORE = register("asteroid_lead_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems.getBasicSettings().fireproof());
 
-	public static final Block ASTEROID_COAL_ORE = register("asteroid_coal_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems
-		.getBasicSettings().fireproof());
-	public static final Block ASTEROID_IRON_ORE = register("asteroid_iron_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems
-		.getBasicSettings().fireproof());
-	public static final Block ASTEROID_GOLD_ORE = register("asteroid_gold_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems
-		.getBasicSettings().fireproof());
-	public static final Block ASTEROID_REDSTONE_ORE = register("asteroid_redstone_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems
-		.getBasicSettings().fireproof());
-	public static final Block ASTEROID_LAPIS_ORE = register("asteroid_lapis_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems
-		.getBasicSettings().fireproof());
-	public static final Block ASTEROID_DIAMOND_ORE = register("asteroid_diamond_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems
-		.getBasicSettings().fireproof());
-	public static final Block ASTEROID_EMERALD_ORE = register("asteroid_emerald_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems
-		.getBasicSettings().fireproof());
+	public static final Block ASTEROID_COAL_ORE = register("asteroid_coal_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems.getBasicSettings().fireproof());
+	public static final Block ASTEROID_IRON_ORE = register("asteroid_iron_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems.getBasicSettings().fireproof());
+	public static final Block ASTEROID_GOLD_ORE = register("asteroid_gold_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems.getBasicSettings().fireproof());
+	public static final Block ASTEROID_REDSTONE_ORE = register("asteroid_redstone_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems.getBasicSettings().fireproof());
+	public static final Block ASTEROID_LAPIS_ORE = register("asteroid_lapis_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems.getBasicSettings().fireproof());
+	public static final Block ASTEROID_DIAMOND_ORE = register("asteroid_diamond_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems.getBasicSettings().fireproof());
+	public static final Block ASTEROID_EMERALD_ORE = register("asteroid_emerald_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 4).strength(15, 100).sounds(BlockSoundGroup.STONE)), AstromineDiscoveriesItems.getBasicSettings().fireproof());
 
-	public static final Block ALTAR_PEDESTAL = register("altar_pedestal", new AltarPedestalBlock(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5, 6).sounds(BlockSoundGroup.METAL).nonOpaque()),
-		AstromineDiscoveriesItems.getBasicSettings());
-	public static final Block ALTAR = register("altar", new AltarBlock(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5, 6).sounds(BlockSoundGroup.METAL).nonOpaque()), AstromineDiscoveriesItems
-		.getBasicSettings());
+	public static final Block ALTAR_PEDESTAL = register("altar_pedestal", new AltarPedestalBlock(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5, 6).sounds(BlockSoundGroup.METAL).nonOpaque()), AstromineDiscoveriesItems.getBasicSettings());
+	public static final Block ALTAR = register("altar", new AltarBlock(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(5, 6).sounds(BlockSoundGroup.METAL).nonOpaque()), AstromineDiscoveriesItems.getBasicSettings());
 
 	public static final Block SPACE_SLIME_BLOCK = register("space_slime_block", new SlimeBlock(FabricBlockSettings.copyOf(Blocks.SLIME_BLOCK).materialColor(MaterialColor.PURPLE)), AstromineDiscoveriesItems.getBasicSettings());
 

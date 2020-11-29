@@ -34,6 +34,7 @@ import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 public class AstromineFoundationsBlocks extends AstromineBlocks {
 	// Materials - Ores
 	public static final Block COPPER_ORE = register("copper_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(3, 3).sounds(BlockSoundGroup.STONE)), AstromineFoundationsItems.getBasicSettings());
+	public static final Block IRIDIUM_ORE = register("iridium_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(3, 3).sounds(BlockSoundGroup.STONE)), AstromineFoundationsItems.getBasicSettings());
 	public static final Block TIN_ORE = register("tin_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 1).strength(3, 3).sounds(BlockSoundGroup.STONE)), AstromineFoundationsItems.getBasicSettings());
 	public static final Block LEAD_ORE = register("lead_ore", new OreBlock(FabricBlockSettings.of(Material.STONE).requiresTool().breakByTool(FabricToolTags.PICKAXES, 2).strength(3, 3).sounds(BlockSoundGroup.STONE)), AstromineFoundationsItems.getBasicSettings());
 
