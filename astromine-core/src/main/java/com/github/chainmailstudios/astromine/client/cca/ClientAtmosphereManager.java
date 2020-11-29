@@ -24,11 +24,10 @@
 
 package com.github.chainmailstudios.astromine.client.cca;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import io.netty.buffer.Unpooled;
@@ -39,11 +38,11 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
  * A manager for gasses on the client side.
  */
 public class ClientAtmosphereManager {
-	public static final Identifier GAS_ADDED = AstromineCommon.identifier("gas_added");
+	public static final ResourceLocation GAS_ADDED = AstromineCommon.identifier("gas_added");
 
-	public static final Identifier GAS_REMOVED = AstromineCommon.identifier("gas_removed");
+	public static final ResourceLocation GAS_REMOVED = AstromineCommon.identifier("gas_removed");
 
-	public static final Identifier GAS_ERASED = AstromineCommon.identifier("gas_erased");
+	public static final ResourceLocation GAS_ERASED = AstromineCommon.identifier("gas_erased");
 
 	private static final Long2ObjectMap<FluidVolume> VOLUMES = new Long2ObjectOpenHashMap<>();
 
@@ -52,42 +51,42 @@ public class ClientAtmosphereManager {
 		return VOLUMES;
 	}
 
-	/** Returns a {@link PacketByteBuf} for when all gasses are erased. */
-	public static PacketByteBuf ofGasErased() {
-		return new PacketByteBuf(Unpooled.buffer());
+	/** Returns a {@link FriendlyByteBuf} for when all gasses are erased. */
+	public static FriendlyByteBuf ofGasErased() {
+		return new FriendlyByteBuf(Unpooled.buffer());
 	}
 
-	/** Returns a {@link PacketByteBuf} for when a gas is added. */
-	public static PacketByteBuf ofGasAdded(BlockPos gasPosition, FluidVolume gasVolume) {
+	/** Returns a {@link FriendlyByteBuf} for when a gas is added. */
+	public static FriendlyByteBuf ofGasAdded(BlockPos gasPosition, FluidVolume gasVolume) {
 		CompoundTag gasPayload = new CompoundTag();
 		gasPayload.putLong("gasPosition", gasPosition.asLong());
 		gasPayload.put("gasVolume", gasVolume.toTag());
 
-		PacketByteBuf gasBuffer = new PacketByteBuf(Unpooled.buffer());
-		gasBuffer.writeCompoundTag(gasPayload);
+		FriendlyByteBuf gasBuffer = new FriendlyByteBuf(Unpooled.buffer());
+		gasBuffer.writeNbt(gasPayload);
 
 		return gasBuffer;
 	}
 
-	/** Returns a {@link PacketByteBuf} for when a gas is removed. */
-	public static PacketByteBuf ofGasRemoved(BlockPos gasPosition) {
+	/** Returns a {@link FriendlyByteBuf} for when a gas is removed. */
+	public static FriendlyByteBuf ofGasRemoved(BlockPos gasPosition) {
 		CompoundTag gasPayload = new CompoundTag();
 		gasPayload.putLong("gasPosition", gasPosition.asLong());
 
-		PacketByteBuf gasBuffer = new PacketByteBuf(Unpooled.buffer());
-		gasBuffer.writeCompoundTag(gasPayload);
+		FriendlyByteBuf gasBuffer = new FriendlyByteBuf(Unpooled.buffer());
+		gasBuffer.writeNbt(gasPayload);
 
 		return gasBuffer;
 	}
 
-	/** Handles {@link #GAS_ERASED} {@link PacketByteBuf}s. */
-	public static void onGasErased(PacketByteBuf gasBuffer) {
+	/** Handles {@link #GAS_ERASED} {@link FriendlyByteBuf}s. */
+	public static void onGasErased(FriendlyByteBuf gasBuffer) {
 		VOLUMES.clear();
 	}
 
-	/** Handles {@link #GAS_ADDED} {@link PacketByteBuf}s. */
-	public static void onGasAdded(PacketByteBuf gasBuffer) {
-		CompoundTag gasPayload = gasBuffer.readCompoundTag();
+	/** Handles {@link #GAS_ADDED} {@link FriendlyByteBuf}s. */
+	public static void onGasAdded(FriendlyByteBuf gasBuffer) {
+		CompoundTag gasPayload = gasBuffer.readNbt();
 		long gasPosition = gasPayload.getLong("gasPosition");
 
 		FluidVolume gasVolume = FluidVolume.fromTag(gasPayload.getCompound("gasVolume"));
@@ -95,9 +94,9 @@ public class ClientAtmosphereManager {
 		VOLUMES.put(gasPosition, gasVolume);
 	}
 
-	/** Handles {@link #GAS_REMOVED} {@link PacketByteBuf}s. */
-	public static void onGasRemoved(PacketByteBuf gasBuffer) {
-		CompoundTag gasPayload = gasBuffer.readCompoundTag();
+	/** Handles {@link #GAS_REMOVED} {@link FriendlyByteBuf}s. */
+	public static void onGasRemoved(FriendlyByteBuf gasBuffer) {
+		CompoundTag gasPayload = gasBuffer.readNbt();
 		long gasPosition = gasPayload.getLong("gasPosition");
 
 		VOLUMES.remove(gasPosition);

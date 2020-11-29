@@ -24,37 +24,36 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-
 import com.github.chainmailstudios.astromine.common.utilities.ExplosionUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class NuclearWarheadBlock extends Block {
-	public NuclearWarheadBlock(Settings settings) {
+	public NuclearWarheadBlock(Properties settings) {
 		super(settings);
 	}
 
 	@Override
-	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
+	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
 		this.tryDetonate(world, pos);
 	}
 
 	@Override
-	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+	public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean notify) {
 		this.tryDetonate(world, pos);
 	}
 
-	private void tryDetonate(World world, BlockPos pos) {
-		if (world.isClient)
+	private void tryDetonate(Level world, BlockPos pos) {
+		if (world.isClientSide)
 			return;
-		if (world.isReceivingRedstonePower(pos)) {
+		if (world.hasNeighborSignal(pos)) {
 			if (AstromineConfig.get().nuclearWarheadEnabled) {
 				ExplosionUtilities.attemptExplosion(world, pos.getX(), pos.getY(), pos.getZ(), 128);
 			} else {
-				world.breakBlock(pos, true);
+				world.destroyBlock(pos, true);
 			}
 		}
 	}

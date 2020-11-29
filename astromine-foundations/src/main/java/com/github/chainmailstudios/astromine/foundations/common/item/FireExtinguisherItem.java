@@ -24,102 +24,101 @@
 
 package com.github.chainmailstudios.astromine.foundations.common.item;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.CampfireBlock;
-import net.minecraft.block.FireBlock;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
-
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsCriteria;
 import com.github.chainmailstudios.astromine.foundations.registry.AstromineFoundationsSoundEvents;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CampfireBlock;
+import net.minecraft.world.level.block.FireBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 
 public class FireExtinguisherItem extends Item {
-	public FireExtinguisherItem(Item.Settings settings) {
+	public FireExtinguisherItem(Item.Properties settings) {
 		super(settings);
 	}
 
 	@Override
-	public ActionResult useOnBlock(ItemUsageContext context) {
-		this.use(context.getWorld(), context.getPlayer(), context.getHand());
+	public InteractionResult useOn(UseOnContext context) {
+		this.use(context.getLevel(), context.getPlayer(), context.getHand());
 
-		return ActionResult.PASS;
+		return InteractionResult.PASS;
 	}
 
 	@Override
-	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-		Vec3d placeVec = user.getCameraPosVec(0);
+	public InteractionResultHolder<ItemStack> use(Level world, Player user, InteractionHand hand) {
+		Vec3 placeVec = user.getEyePosition(0);
 
-		Vec3d thrustVec = new Vec3d(0.8, 0.8, 0.8);
+		Vec3 thrustVec = new Vec3(0.8, 0.8, 0.8);
 
-		thrustVec = thrustVec.multiply(user.getRotationVector());
+		thrustVec = thrustVec.multiply(user.getLookAngle());
 
 		for (int i = 0; i < world.random.nextInt(64); ++i) {
 			float r = world.random.nextFloat();
 			world.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, placeVec.x + thrustVec.x, placeVec.y + thrustVec.y, placeVec.z + thrustVec.z, thrustVec.x * r, thrustVec.y * r, thrustVec.z * r);
 		}
 
-		thrustVec = thrustVec.multiply(-1);
+		thrustVec = thrustVec.scale(-1);
 
-		if (!user.isSneaking()) {
-			user.addVelocity(thrustVec.x, thrustVec.y, thrustVec.z);
-			if (user instanceof ServerPlayerEntity) {
-				((ServerPlayerEntity) user).networkHandler.floatingTicks = 0;
-				AstromineFoundationsCriteria.USE_FIRE_EXTINGUISHER.trigger((ServerPlayerEntity) user);
+		if (!user.isShiftKeyDown()) {
+			user.push(thrustVec.x, thrustVec.y, thrustVec.z);
+			if (user instanceof ServerPlayer) {
+				((ServerPlayer) user).connection.aboveGroundTickCount = 0;
+				AstromineFoundationsCriteria.USE_FIRE_EXTINGUISHER.trigger((ServerPlayer) user);
 			}
-			user.getItemCooldownManager().set(this, AstromineConfig.get().fireExtinguisherStandingDelay);
+			user.getCooldowns().addCooldown(this, AstromineConfig.get().fireExtinguisherStandingDelay);
 		} else {
-			user.getItemCooldownManager().set(this, AstromineConfig.get().fireExtinguisherSneakingDelay);
+			user.getCooldowns().addCooldown(this, AstromineConfig.get().fireExtinguisherSneakingDelay);
 		}
 
-		BlockHitResult result = (BlockHitResult) user.raycast(6, 0, false);
+		BlockHitResult result = (BlockHitResult) user.pick(6, 0, false);
 
-		BlockPos.Mutable.stream(new Box(result.getBlockPos()).expand(2)).forEach(position -> {
+		BlockPos.MutableBlockPos.betweenClosedStream(new AABB(result.getBlockPos()).inflate(2)).forEach(position -> {
 			BlockState state = world.getBlockState(position);
 
 			if (state.getBlock() instanceof FireBlock) {
-				world.setBlockState(position, Blocks.AIR.getDefaultState());
+				world.setBlockAndUpdate(position, Blocks.AIR.defaultBlockState());
 			} else if (state.getBlock() instanceof CampfireBlock) {
-				if (state.get(CampfireBlock.LIT))
-					world.setBlockState(position, state.with(CampfireBlock.LIT, false));
+				if (state.getValue(CampfireBlock.LIT))
+					world.setBlockAndUpdate(position, state.setValue(CampfireBlock.LIT, false));
 			}
 		});
 
-		world.getOtherEntities(null, new Box(result.getBlockPos()).expand(3)).forEach(entity -> {
+		world.getEntities(null, new AABB(result.getBlockPos()).inflate(3)).forEach(entity -> {
 			if (entity.isOnFire()) {
-				entity.setFireTicks(0);
-				if (user instanceof ServerPlayerEntity) {
-					AstromineFoundationsCriteria.PROPERLY_USE_FIRE_EXTINGUISHER.trigger((ServerPlayerEntity) user);
+				entity.setRemainingFireTicks(0);
+				if (user instanceof ServerPlayer) {
+					AstromineFoundationsCriteria.PROPERLY_USE_FIRE_EXTINGUISHER.trigger((ServerPlayer) user);
 				}
 			}
 		});
 
-		if (world.isClient) {
-			world.playSound(user, user.getBlockPos(), AstromineFoundationsSoundEvents.FIRE_EXTINGUISHER_OPEN, SoundCategory.PLAYERS, 1f, 1f);
+		if (world.isClientSide) {
+			world.playSound(user, user.blockPosition(), AstromineFoundationsSoundEvents.FIRE_EXTINGUISHER_OPEN, SoundSource.PLAYERS, 1f, 1f);
 		}
 
 		return super.use(world, user, hand);
 	}
 
 	@Override
-	public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
-		this.use(user.world, user, hand);
+	public InteractionResult interactLivingEntity(ItemStack stack, Player user, LivingEntity entity, InteractionHand hand) {
+		this.use(user.level, user, hand);
 
-		return ActionResult.PASS;
+		return InteractionResult.PASS;
 	}
 }

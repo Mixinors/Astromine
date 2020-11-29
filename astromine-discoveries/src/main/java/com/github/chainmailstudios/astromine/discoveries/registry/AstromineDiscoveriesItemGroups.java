@@ -24,12 +24,11 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry;
 
-import net.minecraft.item.ItemGroup;
-
 import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
+import net.minecraft.world.item.CreativeModeTab;
 
 public class AstromineDiscoveriesItemGroups extends AstromineItemGroups {
-	public static final ItemGroup DISCOVERIES = register("discoveries", () -> AstromineDiscoveriesItems.SPACE_SLIME_BALL);
+	public static final CreativeModeTab DISCOVERIES = register("discoveries", () -> AstromineDiscoveriesItems.SPACE_SLIME_BALL);
 
 	public static void initialize() {
 

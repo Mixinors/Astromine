@@ -24,17 +24,6 @@
 
 package com.github.chainmailstudios.astromine.foundations.common.world.feature;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.FluidBlock;
-import net.minecraft.util.Lazy;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
 import com.mojang.serialization.Codec;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
@@ -46,41 +35,52 @@ import com.terraformersmc.shapes.impl.layer.transform.NoiseTranslateLayer;
 import com.terraformersmc.shapes.impl.layer.transform.TranslateLayer;
 
 import java.util.Random;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
+import net.minecraft.util.LazyLoadedValue;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class CrudeOilFeature extends Feature<DefaultFeatureConfig> {
-	private static final Lazy<Block> CRUDE_OIL_BLOCK = new Lazy<>(() -> Registry.BLOCK.get(AstromineCommon.identifier("crude_oil")));
+public class CrudeOilFeature extends Feature<NoneFeatureConfiguration> {
+	private static final LazyLoadedValue<Block> CRUDE_OIL_BLOCK = new LazyLoadedValue<>(() -> Registry.BLOCK.get(AstromineCommon.identifier("crude_oil")));
 
-	public CrudeOilFeature(Codec<DefaultFeatureConfig> configCodec) {
+	public CrudeOilFeature(Codec<NoneFeatureConfiguration> configCodec) {
 		super(configCodec);
 	}
 
 	@Override
-	public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos pos, DefaultFeatureConfig config) {
+	public boolean place(WorldGenLevel world, ChunkGenerator chunkGenerator, Random random, BlockPos pos, NoneFeatureConfiguration config) {
 		if (random.nextInt(AstromineConfig.get().crudeOilThreshold) > 1)
 			return false;
 
-		int offsetY = MathHelper.clamp(random.nextInt(20), 8, 20);
+		int offsetY = Mth.clamp(random.nextInt(20), 8, 20);
 
-		Shapes.ellipsoid(8, 8, 8).applyLayer(TranslateLayer.of(Position.of(pos.offset(Direction.UP, offsetY)))).stream().forEach(position -> {
-			world.setBlockState(position.toBlockPos(), CRUDE_OIL_BLOCK.get().getDefaultState(), 0);
+		Shapes.ellipsoid(8, 8, 8).applyLayer(TranslateLayer.of(Position.of(pos.relative(Direction.UP, offsetY)))).stream().forEach(position -> {
+			world.setBlock(position.toBlockPos(), CRUDE_OIL_BLOCK.get().defaultBlockState(), 0);
 		});
 
-		Shapes.ellipsoid(12, 12, 4).applyLayer(TranslateLayer.of(Position.of(pos.offset(Direction.UP, 64)))).applyLayer(NoiseTranslateLayer.of(8, random)).stream().forEach(position -> {
-			if (world.getBlockState(position.toBlockPos()).getBlock() instanceof FluidBlock) {
-				world.setBlockState(position.toBlockPos(), CRUDE_OIL_BLOCK.get().getDefaultState(), 0);
+		Shapes.ellipsoid(12, 12, 4).applyLayer(TranslateLayer.of(Position.of(pos.relative(Direction.UP, 64)))).applyLayer(NoiseTranslateLayer.of(8, random)).stream().forEach(position -> {
+			if (world.getBlockState(position.toBlockPos()).getBlock() instanceof LiquidBlock) {
+				world.setBlock(position.toBlockPos(), CRUDE_OIL_BLOCK.get().defaultBlockState(), 0);
 			}
 		});
 
 		int airBlocks = 0;
 
-		for (int y = pos.getY() + offsetY; !world.getBlockState(pos.offset(Direction.UP, y)).isAir() || (world.getBlockState(pos.offset(Direction.UP, y)).isAir() && ++airBlocks < offsetY); ++y) {
-			world.setBlockState(pos.offset(Direction.UP, y), CRUDE_OIL_BLOCK.get().getDefaultState(), 0);
+		for (int y = pos.getY() + offsetY; !world.getBlockState(pos.relative(Direction.UP, y)).isAir() || (world.getBlockState(pos.relative(Direction.UP, y)).isAir() && ++airBlocks < offsetY); ++y) {
+			world.setBlock(pos.relative(Direction.UP, y), CRUDE_OIL_BLOCK.get().defaultBlockState(), 0);
 
 			for (Direction direction : new Direction[]{ Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST }) {
-				world.removeBlock(pos.offset(Direction.UP, y).offset(direction), false);
+				world.removeBlock(pos.relative(Direction.UP, y).relative(direction), false);
 			}
 
-			world.getFluidTickScheduler().schedule(pos.offset(Direction.UP, y), AstromineFoundationsFluids.CRUDE_OIL, 0);
+			world.getLiquidTicks().scheduleTick(pos.relative(Direction.UP, y), AstromineFoundationsFluids.CRUDE_OIL, 0);
 		}
 
 		return true;

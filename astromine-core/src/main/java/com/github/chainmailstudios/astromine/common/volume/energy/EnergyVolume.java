@@ -25,8 +25,8 @@
 package com.github.chainmailstudios.astromine.common.volume.energy;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
@@ -67,10 +67,10 @@ import com.google.gson.JsonObject;
  * Serialization and deserialization methods are provided for:
  * - {@link CompoundTag} - through {@link #toTag()} and {@link #fromTag(CompoundTag)}.
  * - {@link JsonElement} - through {@link #toJson()} and {@link #fromJson(JsonElement)}.
- * - {@link ByteBuf} - through {@link #toPacket(PacketByteBuf)} and {@link #fromPacket(PacketByteBuf)}.
+ * - {@link ByteBuf} - through {@link #toPacket(FriendlyByteBuf)} and {@link #fromPacket(FriendlyByteBuf)}.
  */
 public class EnergyVolume extends Volume<Double> {
-	public static final Identifier ID = AstromineCommon.identifier("energy");
+	public static final ResourceLocation ID = AstromineCommon.identifier("energy");
 
 	/** Instantiates an {@link EnergyVolume} with. */
 	protected EnergyVolume(double amount, double size) {
@@ -219,7 +219,7 @@ public class EnergyVolume extends Volume<Double> {
 	}
 
 	/** Deserializes a volume from a {@link ByteBuf}. */
-	public PacketByteBuf toPacket(PacketByteBuf buffer) {
+	public FriendlyByteBuf toPacket(FriendlyByteBuf buffer) {
 		buffer.writeDouble(getAmount());
 		buffer.writeDouble(getSize());
 
@@ -227,7 +227,7 @@ public class EnergyVolume extends Volume<Double> {
 	}
 
 	/** Serializes this volume to a {@link JsonElement}. */
-	public static EnergyVolume fromPacket(PacketByteBuf buffer) {
+	public static EnergyVolume fromPacket(FriendlyByteBuf buffer) {
 		return EnergyVolume.of(buffer.readDouble(), buffer.readDouble());
 	}
 }

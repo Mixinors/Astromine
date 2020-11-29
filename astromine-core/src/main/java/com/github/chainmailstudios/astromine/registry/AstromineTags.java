@@ -22,17 +22,15 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.registry;
-
-import net.fabricmc.fabric.api.tag.TagRegistry;
-
-import net.minecraft.entity.EntityType;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.Item;
-import net.minecraft.tag.Tag;
+package com.github.chainmailstudios.astromine. registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.mixin.FluidTagsAccess;
+import net.fabricmc.fabric.api.tag.TagRegistry;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.material.Fluid;
 
 public class AstromineTags {
 	public static final Tag<Item> TRICKS_PIGLINS = TagRegistry.item(AstromineCommon.identifier("tricks_piglins"));
@@ -45,7 +43,7 @@ public class AstromineTags {
 
 	public static final Tag<EntityType<?>> DOES_NOT_BREATHE = TagRegistry.entityType(AstromineCommon.identifier("does_not_breathe"));
 
-	private static Tag.Identified<Fluid> registerRequired(String path) {
-		return FluidTagsAccess.invokeRegister(AstromineCommon.MOD_ID + ":" + path);
+	private static Tag.Named<Fluid> registerRequired(String path) {
+		return FluidTagsAccess.invokeBind(AstromineCommon.MOD_ID + ":" + path);
 	}
 }

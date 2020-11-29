@@ -24,14 +24,13 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry;
 
-import net.minecraft.util.registry.Registry;
-
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.glacios.GlaciosBiomeSource;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.mars.MarsBiomeSource;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.moon.MoonBiomeSource;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.space.EarthSpaceBiomeSource;
 import com.github.chainmailstudios.astromine.discoveries.common.world.generation.vulcan.VulcanBiomeSource;
 import com.github.chainmailstudios.astromine.registry.AstromineBiomeSources;
+import net.minecraft.core.Registry;
 
 public class AstromineDiscoveriesBiomeSources extends AstromineBiomeSources {
 	public static void initialize() {

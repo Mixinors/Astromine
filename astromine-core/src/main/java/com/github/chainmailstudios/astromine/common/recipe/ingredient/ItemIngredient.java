@@ -24,19 +24,19 @@
 
 package com.github.chainmailstudios.astromine.common.recipe.ingredient;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.tag.ServerTagManagerHolder;
-import net.minecraft.tag.Tag;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.SerializationTags;
+import net.minecraft.tags.Tag;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import com.mojang.serialization.JsonOps;
-
+import com.github.chainmailstudios.astromine.common.recipe.ingredient.ItemIngredient.Entry;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import io.netty.buffer.ByteBuf;
 
@@ -57,7 +57,7 @@ import java.util.stream.StreamSupport;
  *
  * Serialization and deserialization methods are provided for:
  * - {@link JsonElement} - through {@link #toJson()} and {@link #fromJson(JsonElement)}.
- * - {@link ByteBuf} - through {@link #toPacket(PacketByteBuf)} and {@link #fromPacket(PacketByteBuf)}.
+ * - {@link ByteBuf} - through {@link #toPacket(FriendlyByteBuf)} and {@link #fromPacket(FriendlyByteBuf)}.
  */
 public final  class ItemIngredient implements Predicate<ItemStack> {
 	private final Entry[] entries;
@@ -100,7 +100,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 					return ofEntries(StreamSupport.stream(jsonArray.spliterator(), false).map((jsonElement) -> Entry.fromJson(jsonElement.getAsJsonObject().get("item"))));
 				}
 			} else if (json.isJsonPrimitive() && json.getAsJsonPrimitive().isString()) {
-				return ofEntries(Stream.generate(() -> new SimpleEntry(new ItemStack(Registry.ITEM.get(new Identifier(json.getAsString())), 1))));
+				return ofEntries(Stream.generate(() -> new SimpleEntry(new ItemStack(Registry.ITEM.get(new ResourceLocation(json.getAsString())), 1))));
 			} else {
 				throw new JsonSyntaxException("Expected item to be object or array of objects");
 			}
@@ -114,7 +114,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 		if (entries.length == 1 && entries[0] instanceof TagEntry) {
 			JsonObject jsonObject = new JsonObject();
 
-			jsonObject.addProperty("tag", ServerTagManagerHolder.getTagManager().getItems().getTagId(((TagEntry) entries[0]).tag).toString());
+			jsonObject.addProperty("tag", SerializationTags.getInstance().getItems().getIdOrThrow(((TagEntry) entries[0]).tag).toString());
 			jsonObject.addProperty("amount", ((TagEntry) entries[0]).count);
 
 			return jsonObject;
@@ -132,18 +132,18 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 	}
 
 	/** Deserializes an {@link ItemIngredient} from a {@link ByteBuf}. */
-	public static ItemIngredient fromPacket(PacketByteBuf buffer) {
+	public static ItemIngredient fromPacket(FriendlyByteBuf buffer) {
 		int size = buffer.readVarInt();
-		return ofEntries(Stream.generate(() -> new SimpleEntry(buffer.readItemStack())).limit(size));
+		return ofEntries(Stream.generate(() -> new SimpleEntry(buffer.readItem())).limit(size));
 	}
 
 	/** Serializes an {@link ItemIngredient} to a {@link ByteBuf}. */
-	public void toPacket(PacketByteBuf buffer) {
+	public void toPacket(FriendlyByteBuf buffer) {
 		this.cacheMatchingStacks();
 		buffer.writeVarInt(this.matchingStacks.length);
 
 		for (ItemStack matchingStack : this.matchingStacks) {
-			buffer.writeItemStack(matchingStack);
+			buffer.writeItem(matchingStack);
 		}
 	}
 
@@ -163,7 +163,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 	/** Returns this {@link ItemIngredient} as the standard {@link Ingredient}. */
 	public Ingredient asIngredient() {
 		if (ingredient == null) {
-			ingredient = Ingredient.ofStacks(Stream.of(getMatchingStacks()));
+			ingredient = Ingredient.of(Stream.of(getMatchingStacks()));
 		}
 		return ingredient;
 	}
@@ -183,7 +183,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 		if (this.matchingStacks.length == 0)
 			return false;
 		for (ItemStack matchingStack : matchingStacks) {
-			if (ItemStack.areItemsEqual(stack, matchingStack) && (!matchingStack.hasTag() || ItemStack.areTagsEqual(stack, matchingStack))) return true;
+			if (ItemStack.isSameIgnoreDurability(stack, matchingStack) && (!matchingStack.hasTag() || ItemStack.tagMatches(stack, matchingStack))) return true;
 		}
 		return false;
 	}
@@ -198,7 +198,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 		if (this.matchingStacks.length == 0)
 			return ItemStack.EMPTY;
 		for (ItemStack matchingStack : matchingStacks) {
-			if (ItemStack.areItemsEqual(matchingStack, stack) && (!matchingStack.hasTag() || ItemStack.areTagsEqual(matchingStack, stack)) && stack.getCount() >= matchingStack.getCount())
+			if (ItemStack.isSameIgnoreDurability(matchingStack, stack) && (!matchingStack.hasTag() || ItemStack.tagMatches(matchingStack, stack)) && stack.getCount() >= matchingStack.getCount())
 				return matchingStack.copy();
 		}
 		return ItemStack.EMPTY;
@@ -226,7 +226,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 				CompoundTag stackTag = null;
 
 				if (jsonObject.has("count")) {
-					count = JsonHelper.getInt(jsonObject, "count");
+					count = GsonHelper.getAsInt(jsonObject, "count");
 				}
 
 				if (jsonObject.has("item")) {
@@ -234,9 +234,9 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 						stackTag = (CompoundTag) JsonOps.INSTANCE.convertTo(NbtOps.INSTANCE, jsonObject.get("nbt"));
 					}
 
-					Identifier itemId = new Identifier(JsonHelper.getString(jsonObject, "item"));
+					ResourceLocation itemId = new ResourceLocation(GsonHelper.getAsString(jsonObject, "item"));
 
-					Item item = Registry.ITEM.getOrEmpty(itemId).orElseThrow(() -> new JsonSyntaxException("Unknown item '" + itemId + "'"));
+					Item item = Registry.ITEM.getOptional(itemId).orElseThrow(() -> new JsonSyntaxException("Unknown item '" + itemId + "'"));
 
 					ItemStack stack = new ItemStack(item, count);
 
@@ -246,9 +246,9 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 
 					return new SimpleEntry(stack);
 				} else if (jsonObject.has("tag")) {
-					Identifier tagId = new Identifier(JsonHelper.getString(jsonObject, "tag"));
+					ResourceLocation tagId = new ResourceLocation(GsonHelper.getAsString(jsonObject, "tag"));
 
-					Tag<Item> tag = ServerTagManagerHolder.getTagManager().getItems().getTag(tagId);
+					Tag<Item> tag = SerializationTags.getInstance().getItems().getTag(tagId);
 
 					if (tag == null) {
 						throw new JsonSyntaxException("Unknown item tag '" + tagId + "'");
@@ -303,7 +303,7 @@ public final  class ItemIngredient implements Predicate<ItemStack> {
 		/** Returns the {@link ItemStack}s of this entry. */
 		@Override
 		public Stream<ItemStack> getStacks() {
-			return this.tag.values().stream().map(item -> new ItemStack(item, count));
+			return this.tag.getValues().stream().map(item -> new ItemStack(item, count));
 		}
 	}
 }

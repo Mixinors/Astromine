@@ -27,30 +27,28 @@ package com.github.chainmailstudios.astromine.common.fluid;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricMaterialBuilder;
 import net.fabricmc.loader.api.FabricLoader;
-
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FluidBlock;
-import net.minecraft.block.Material;
-import net.minecraft.block.MaterialColor;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.fluid.FlowableFluid;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.WaterFluid;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Items;
-import net.minecraft.state.StateManager;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.WorldAccess;
-import net.minecraft.world.WorldView;
-
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.WaterFluid;
 import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineBlocks;
 import com.github.chainmailstudios.astromine.registry.AstromineFluids;
@@ -62,13 +60,13 @@ import org.jetbrains.annotations.Nullable;
  * A class representing a {@link Fluid} with
  * extra properties.
  */
-public abstract class ExtendedFluid extends FlowableFluid {
-	public static final Material INDUSTRIAL_FLUID_MATERIAL = new FabricMaterialBuilder(MaterialColor.WATER).allowsMovement()
-			.lightPassesThrough()
-			.destroyedByPiston()
-			.replaceable()
+public abstract class ExtendedFluid extends FlowingFluid {
+	public static final Material INDUSTRIAL_FLUID_MATERIAL = new FabricMaterialBuilder(MaterialColor.WATER)
+			.nonSolid()
+			.noCollider()
 			.liquid()
-			.notSolid().build();
+			.replaceable()
+			.build();
 
 	private final int fogColor;
 	private final int tintColor;
@@ -99,13 +97,13 @@ public abstract class ExtendedFluid extends FlowableFluid {
 
 	/** Returns this fluid's {@link DamageSource}, used when
 	 * damaging entities it comes in contact with. */
-	public DamageSource getSource() {
+	public DamageSource getDamageSource() {
 		return source;
 	}
 
 	/** Returns this fluid's still form. */
 	@Override
-	public Fluid getStill() {
+	public Fluid getSource() {
 		return still;
 	}
 
@@ -117,7 +115,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 
 	/** Asserts whether this fluid is infinite or not. */
 	@Override
-	protected boolean isInfinite() {
+	protected boolean canConvertToSource() {
 		return isInfinite;
 	}
 
@@ -138,58 +136,58 @@ public abstract class ExtendedFluid extends FlowableFluid {
 
 	/** Override behavior to mimic {@link WaterFluid}. */
 	@Override
-	protected void beforeBreakingBlock(WorldAccess world, BlockPos position, BlockState state) {
-		BlockEntity blockEntity = state.getBlock().hasBlockEntity() ? world.getBlockEntity(position) : null;
-		Block.dropStacks(state, world, position, blockEntity);
+	protected void beforeDestroyingBlock(LevelAccessor world, BlockPos position, BlockState state) {
+		BlockEntity blockEntity = state.getBlock().isEntityBlock() ? world.getBlockEntity(position) : null;
+		Block.dropResources(state, world, position, blockEntity);
 	}
 
 	/** Asserts whether the given fluid equals
 	 * this fluid's still or flowable form, or not. */
 	@Override
-	public boolean matchesType(Fluid fluid) {
+	public boolean isSame(Fluid fluid) {
 		return fluid == flowing || fluid == still;
 	}
 
 	/** Override behavior to mimic {@link WaterFluid}. */
 	@Override
-	protected int getFlowSpeed(WorldView world) {
+	protected int getSlopeFindDistance(LevelReader world) {
 		return 4;
 	}
 
 	/** Override behavior to mimic {@link WaterFluid}. */
 	@Override
-	protected int getLevelDecreasePerBlock(WorldView world) {
+	protected int getDropOff(LevelReader world) {
 		return 1;
 	}
 
 	/** Returns this fluid's {@link Item} representation. */
 	@Override
-	public Item getBucketItem() {
+	public Item getBucket() {
 		return bucket;
 	}
 
 	/** Override behavior to mimic {@link WaterFluid}. */
 	@Override
-	protected boolean canBeReplacedWith(FluidState state, BlockView world, BlockPos pos, Fluid fluid, Direction direction) {
+	protected boolean canBeReplacedWith(FluidState state, BlockGetter world, BlockPos pos, Fluid fluid, Direction direction) {
 		return direction == Direction.DOWN && fluid != flowing && fluid != still;
 	}
 
 	/** Override behavior to mimic {@link WaterFluid}. */
 	@Override
-	public int getTickRate(WorldView world) {
+	public int getTickDelay(LevelReader world) {
 		return 5;
 	}
 
 	/** Override behavior to mimic {@link WaterFluid}. */
 	@Override
-	protected float getBlastResistance() {
+	protected float getExplosionResistance() {
 		return 100.0F;
 	}
 
 	/** Returns this fluid's {@link BlockState} representation. */
 	@Override
-	protected BlockState toBlockState(FluidState state) {
-		return block.getDefaultState().with(FluidBlock.LEVEL, method_15741(state));
+	protected BlockState createLegacyBlock(FluidState state) {
+		return block.defaultBlockState().setValue(LiquidBlock.LEVEL, getLegacyLevel(state));
 	}
 
 	/** A builder for {@link ExtendedFluid}s. */
@@ -212,7 +210,7 @@ public abstract class ExtendedFluid extends FlowableFluid {
 
 		DamageSource source;
 
-		ItemGroup group;
+		CreativeModeTab group;
 
 		/** We only want {@link ExtendedFluid#builder()} to
 		 * be able to instantiate a {@link Builder}. */
@@ -260,8 +258,8 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			return this;
 		}
 
-		/** Sets this builder's {@link ItemGroup} to the specified value. */
-		public Builder group(ItemGroup group) {
+		/** Sets this builder's {@link CreativeModeTab} to the specified value. */
+		public Builder group(CreativeModeTab group) {
 			this.group = group;
 			return this;
 		}
@@ -282,9 +280,9 @@ public abstract class ExtendedFluid extends FlowableFluid {
 			still.still = still;
 			this.still = still;
 
-			Block block = AstromineBlocks.register(name, new FluidBlock(still, AbstractBlock.Settings.of(INDUSTRIAL_FLUID_MATERIAL).noCollision().strength(100.0F).dropsNothing()));
+			Block block = AstromineBlocks.register(name, new LiquidBlock(still, BlockBehaviour.Properties.of(INDUSTRIAL_FLUID_MATERIAL).noCollission().strength(100.0F).noDrops()));
 
-			Item bucket = AstromineItems.register(name + "_bucket", new BucketItem(still, (new Item.Settings()).recipeRemainder(Items.BUCKET).maxCount(1).group(group)));
+			Item bucket = AstromineItems.register(name + "_bucket", new BucketItem(still, (new Item.Properties()).craftRemainder(Items.BUCKET).stacksTo(1).tab(group)));
 
 			flowing.block = block;
 			still.block = block;
@@ -315,22 +313,22 @@ public abstract class ExtendedFluid extends FlowableFluid {
 		/** Override behavior to add the {@link #LEVEL}
 		 * property to the given builder. */
 		@Override
-		protected void appendProperties(StateManager.Builder<Fluid, FluidState> builder) {
-			super.appendProperties(builder);
+		protected void createFluidStateDefinition(StateDefinition.Builder<Fluid, FluidState> builder) {
+			super.createFluidStateDefinition(builder);
 			builder.add(LEVEL);
 		}
 
 		/** Override behavior to return the fluid
 		 * level based on the {@link #LEVEL} property. */
 		@Override
-		public int getLevel(FluidState state) {
-			return state.get(LEVEL);
+		public int getAmount(FluidState state) {
+			return state.getValue(LEVEL);
 		}
 
 		/** Override behavior to always return false,
 		 * since this fluid is flowing. */
 		@Override
-		public boolean isStill(FluidState state) {
+		public boolean isSource(FluidState state) {
 			return false;
 		}
 	}
@@ -348,14 +346,14 @@ public abstract class ExtendedFluid extends FlowableFluid {
 		/** Override behavior to always return 8,
 		 * since this fluid is still. */
 		@Override
-		public int getLevel(FluidState state) {
+		public int getAmount(FluidState state) {
 			return 8;
 		}
 
 		/** Override behavior to always return true,
 		 * since this fluid is still. */
 		@Override
-		public boolean isStill(FluidState state) {
+		public boolean isSource(FluidState state) {
 			return true;
 		}
 	}

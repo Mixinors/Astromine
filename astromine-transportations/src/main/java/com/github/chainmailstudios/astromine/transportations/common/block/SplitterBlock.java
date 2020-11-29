@@ -24,82 +24,81 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.state.StateManager;
-import net.minecraft.util.ItemScatterer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
-
 import com.github.chainmailstudios.astromine.common.utilities.capability.block.FacingBlockWrenchable;
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.SplitterBlockEntity;
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.base.AbstractConveyableBlockEntity;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyable;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyableBlock;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.Containers;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 
-public class SplitterBlock extends HorizontalFacingBlock implements BlockEntityProvider, ConveyableBlock, FacingBlockWrenchable {
-	public SplitterBlock(Settings settings) {
+public class SplitterBlock extends HorizontalDirectionalBlock implements EntityBlock, ConveyableBlock, FacingBlockWrenchable {
+	public SplitterBlock(Properties settings) {
 		super(settings);
 	}
 
 	@Override
-	public BlockEntity createBlockEntity(BlockView blockView) {
+	public BlockEntity newBlockEntity(BlockGetter blockView) {
 		return new SplitterBlockEntity();
 	}
 
 	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> stateManagerBuilder) {
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateManagerBuilder) {
 		stateManagerBuilder.add(FACING);
 	}
 
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext itemPlacementContext) {
-		return this.getDefaultState().with(FACING, itemPlacementContext.getPlayer().isSneaking() ? itemPlacementContext.getPlayerFacing().getOpposite() : itemPlacementContext.getPlayerFacing());
+	public BlockState getStateForPlacement(BlockPlaceContext itemPlacementContext) {
+		return this.defaultBlockState().setValue(FACING, itemPlacementContext.getPlayer().isShiftKeyDown() ? itemPlacementContext.getHorizontalDirection().getOpposite() : itemPlacementContext.getHorizontalDirection());
 	}
 
 	@Override
-	public void onBlockAdded(BlockState blockState, World world, BlockPos blockPos, BlockState blockState2, boolean boolean_1) {
+	public void onPlace(BlockState blockState, Level world, BlockPos blockPos, BlockState blockState2, boolean boolean_1) {
 		updateDiagonals(world, this, blockPos);
 	}
 
 	@Override
-	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
 		if (state.getBlock() != newState.getBlock()) {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
 			if (blockEntity instanceof AbstractConveyableBlockEntity) {
-				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), ((AbstractConveyableBlockEntity) blockEntity).getItemComponent().getFirst());
-				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), ((AbstractConveyableBlockEntity) blockEntity).getItemComponent().getSecond());
+				Containers.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), ((AbstractConveyableBlockEntity) blockEntity).getItemComponent().getFirst());
+				Containers.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), ((AbstractConveyableBlockEntity) blockEntity).getItemComponent().getSecond());
 
-				blockEntity.markRemoved();
+				blockEntity.setRemoved();
 			}
 
-			super.onStateReplaced(state, world, pos, newState, moved);
+			super.onRemove(state, world, pos, newState, moved);
 		}
 
 		updateDiagonals(world, this, pos);
 	}
 
 	@Override
-	public void neighborUpdate(BlockState blockState, World world, BlockPos blockPos, Block block, BlockPos blockPos2, boolean boolean_1) {
-		Direction direction = blockState.get(FACING);
+	public void neighborChanged(BlockState blockState, Level world, BlockPos blockPos, Block block, BlockPos blockPos2, boolean boolean_1) {
+		Direction direction = blockState.getValue(FACING);
 
 		AbstractConveyableBlockEntity machineBlockEntity = (AbstractConveyableBlockEntity) world.getBlockEntity(blockPos);
 
-		BlockPos leftPos = blockPos.offset(direction.rotateYCounterclockwise());
-		BlockPos rightPos = blockPos.offset(direction.rotateYClockwise());
+		BlockPos leftPos = blockPos.relative(direction.getCounterClockWise());
+		BlockPos rightPos = blockPos.relative(direction.getClockWise());
 
 		BlockEntity leftBlockEntity = world.getBlockEntity(leftPos);
 
-		machineBlockEntity.setLeft(leftBlockEntity instanceof Conveyable && ((Conveyable) leftBlockEntity).canInsert(direction.rotateYClockwise()));
+		machineBlockEntity.setLeft(leftBlockEntity instanceof Conveyable && ((Conveyable) leftBlockEntity).canInsert(direction.getClockWise()));
 
 		BlockEntity rightBlockEntity = world.getBlockEntity(rightPos);
 
-		machineBlockEntity.setRight(rightBlockEntity instanceof Conveyable && ((Conveyable) rightBlockEntity).canInsert(direction.rotateYCounterclockwise()));
+		machineBlockEntity.setRight(rightBlockEntity instanceof Conveyable && ((Conveyable) rightBlockEntity).canInsert(direction.getCounterClockWise()));
 	}
 }

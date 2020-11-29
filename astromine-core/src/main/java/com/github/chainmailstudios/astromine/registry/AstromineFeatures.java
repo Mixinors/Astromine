@@ -22,20 +22,20 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.registry;
+package com.github.chainmailstudios.astromine. registry;
 
-import net.minecraft.structure.StructurePieceType;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.FeatureConfig;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 public class AstromineFeatures {
-	public static <T extends FeatureConfig> Feature<T> register(Feature<T> feature, Identifier id) {
+	public static <T extends FeatureConfiguration> Feature<T> register(Feature<T> feature, ResourceLocation id) {
 		return Registry.register(Registry.FEATURE, id, feature);
 	}
 
-	public static StructurePieceType register(StructurePieceType pieceType, Identifier id) {
+	public static StructurePieceType register(StructurePieceType pieceType, ResourceLocation id) {
 		return Registry.register(Registry.STRUCTURE_PIECE, id, pieceType);
 	}
 

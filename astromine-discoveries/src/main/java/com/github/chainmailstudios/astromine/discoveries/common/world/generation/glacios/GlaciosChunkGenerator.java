@@ -24,20 +24,6 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.generation.glacios;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryLookupCodec;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.ChunkRegion;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.WorldAccess;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.ChunkRandom;
-import net.minecraft.world.gen.StructureAccessor;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
-import net.minecraft.world.gen.chunk.StructuresConfig;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
@@ -46,9 +32,23 @@ import com.github.chainmailstudios.astromine.common.noise.OctaveNoiseSampler;
 import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
 
 import java.util.Random;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.RegistryLookupCodec;
+import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.StructureSettings;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
 
 public class GlaciosChunkGenerator extends ChunkGenerator {
-	public static Codec<GlaciosChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed), RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)).apply(instance,
+	public static Codec<GlaciosChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed), RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(source -> source.biomeRegistry)).apply(instance,
 		GlaciosChunkGenerator::new));
 	private final long seed;
 	private final Registry<Biome> biomeRegistry;
@@ -58,7 +58,7 @@ public class GlaciosChunkGenerator extends ChunkGenerator {
 	private final FastNoise fastNoise;
 
 	public GlaciosChunkGenerator(long seed, Registry<Biome> biomeRegistry) {
-		super(new GlaciosBiomeSource(biomeRegistry, seed), new StructuresConfig(false));
+		super(new GlaciosBiomeSource(biomeRegistry, seed), new StructureSettings(false));
 		this.seed = seed;
 		this.biomeRegistry = biomeRegistry;
 
@@ -75,7 +75,7 @@ public class GlaciosChunkGenerator extends ChunkGenerator {
 	}
 
 	@Override
-	protected Codec<? extends ChunkGenerator> getCodec() {
+	protected Codec<? extends ChunkGenerator> codec() {
 		return CODEC;
 	}
 
@@ -89,22 +89,22 @@ public class GlaciosChunkGenerator extends ChunkGenerator {
 	}
 
 	@Override
-	public void buildSurface(ChunkRegion region, Chunk chunk) {
+	public void buildSurfaceAndBedrock(WorldGenRegion region, ChunkAccess chunk) {
 
 	}
 
 	@Override
-	public void populateNoise(WorldAccess world, StructureAccessor accessor, Chunk chunk) {
-		int x1 = chunk.getPos().getStartX();
-		int z1 = chunk.getPos().getStartZ();
+	public void fillFromNoise(LevelAccessor world, StructureFeatureManager accessor, ChunkAccess chunk) {
+		int x1 = chunk.getPos().getMinBlockX();
+		int z1 = chunk.getPos().getMinBlockZ();
 
-		int x2 = chunk.getPos().getEndX();
-		int z2 = chunk.getPos().getEndZ();
+		int x2 = chunk.getPos().getMaxBlockX();
+		int z2 = chunk.getPos().getMaxBlockZ();
 
-		ChunkRandom chunkRandom = new ChunkRandom();
-		chunkRandom.setTerrainSeed(chunk.getPos().x, chunk.getPos().z);
+		WorldgenRandom chunkRandom = new WorldgenRandom();
+		chunkRandom.setBaseChunkSeed(chunk.getPos().x, chunk.getPos().z);
 
-		BlockPos.Mutable mutable = new BlockPos.Mutable();
+		BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
 		mutable.setY(1);
 
 		for (int x = x1; x <= x2; ++x) {
@@ -118,21 +118,21 @@ public class GlaciosChunkGenerator extends ChunkGenerator {
 				for (int y = 0; y < ceilingEnd; y++) {
 					mutable.setY(y);
 					if (y <= floorExtent) { // Packed ice floor
-						world.setBlockState(mutable, Blocks.PACKED_ICE.getDefaultState(), 3);
+						world.setBlock(mutable, Blocks.PACKED_ICE.defaultBlockState(), 3);
 					} else if (y >= ceilingStart) { // Ice roof
-						world.setBlockState(mutable, Blocks.ICE.getDefaultState(), 3);
+						world.setBlock(mutable, Blocks.ICE.defaultBlockState(), 3);
 					} else {
 						double voronoiAt = fastNoise.getCellular(x, y, z);
 
 						if (voronoiAt > -0.125) { // Ice spires
-							world.setBlockState(mutable, Blocks.ICE.getDefaultState(), 3);
+							world.setBlock(mutable, Blocks.ICE.defaultBlockState(), 3);
 						}
 					}
 
 					// Bedrock
 					if (y <= 5) {
 						if (chunkRandom.nextInt(y + 1) == 0) {
-							chunk.setBlockState(mutable, Blocks.BEDROCK.getDefaultState(), false);
+							chunk.setBlockState(mutable, Blocks.BEDROCK.defaultBlockState(), false);
 						}
 					}
 				}
@@ -141,12 +141,12 @@ public class GlaciosChunkGenerator extends ChunkGenerator {
 	}
 
 	@Override
-	public int getHeight(int x, int z, Heightmap.Type heightmapType) {
+	public int getBaseHeight(int x, int z, Heightmap.Types heightmapType) {
 		return 0;
 	}
 
 	@Override
-	public BlockView getColumnSample(int x, int z) {
+	public BlockGetter getBaseColumn(int x, int z) {
 		return null;
 	}
 }

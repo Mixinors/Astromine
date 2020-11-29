@@ -31,7 +31,7 @@ import com.github.chainmailstudios.astromine.common.utilities.capability.block.F
  */
 public abstract class WrenchableHorizontalFacingBlockWithEntity extends HorizontalFacingBlockWithEntity implements FacingBlockWrenchable {
 	/** Instantiates a {@link WrenchableHorizontalFacingBlockWithEntity}. */
-	public WrenchableHorizontalFacingBlockWithEntity(Settings settings) {
+	public WrenchableHorizontalFacingBlockWithEntity(Properties settings) {
 		super(settings);
 	}
 }

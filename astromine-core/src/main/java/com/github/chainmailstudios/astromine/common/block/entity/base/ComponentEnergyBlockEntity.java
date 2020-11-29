@@ -25,11 +25,10 @@
 package com.github.chainmailstudios.astromine.common.block.entity.base;
 
 import com.github.chainmailstudios.astromine.common.component.general.provider.EnergyComponentProvider;
-import net.minecraft.block.entity.BlockEntityType;
-
 import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.utilities.capability.energy.ComponentEnergyProvider;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
 /**
  * A {@link ComponentBlockEntity} with an attached

@@ -24,12 +24,11 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.patchouli;
 
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.TranslatableText;
 import com.mojang.blaze3d.systems.RenderSystem;
-
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.ItemStack;
 import com.github.chainmailstudios.astromine.client.patchouli.BasicEnergyConsumingPage;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.AlloySmeltingRecipe;
 import vazkii.patchouli.client.book.gui.GuiBook;
@@ -41,17 +40,17 @@ public class AlloySmeltingPage extends PageDoubleRecipeRegistry<AlloySmeltingRec
 	}
 
 	@Override
-	public void drawRecipe(MatrixStack ms, AlloySmeltingRecipe recipe, int recipeX, int recipeY, int mouseX, int mouseY, boolean second) {
-		mc.getTextureManager().bindTexture(book.craftingTexture);
+	public void drawRecipe(PoseStack ms, AlloySmeltingRecipe recipe, int recipeX, int recipeY, int mouseX, int mouseY, boolean second) {
+		mc.getTextureManager().bind(book.craftingTexture);
 		RenderSystem.enableBlend();
-		DrawableHelper.drawTexture(ms, recipeX, recipeY, 11, 135, 96, 43, 128, 256);
-		parent.drawCenteredStringNoShadow(ms, getTitle(second).asOrderedText(), GuiBook.PAGE_WIDTH / 2, recipeY - 10, book.headerColor);
+		GuiComponent.blit(ms, recipeX, recipeY, 11, 135, 96, 43, 128, 256);
+		parent.drawCenteredStringNoShadow(ms, getTitle(second).getVisualOrderText(), GuiBook.PAGE_WIDTH / 2, recipeY - 10, book.headerColor);
 
 		parent.renderIngredient(ms, recipeX + 4, recipeY + 4, mouseX, mouseY, recipe.getFirstInput().asIngredient());
 		parent.renderIngredient(ms, recipeX + 4, recipeY + 23, mouseX, mouseY, recipe.getSecondInput().asIngredient());
-		parent.renderItemStack(ms, recipeX + 40, recipeY + 13, mouseX, mouseY, recipe.getRecipeKindIcon());
-		parent.renderItemStack(ms, recipeX + 76, recipeY + 13, mouseX, mouseY, recipe.getOutput());
-		parent.drawCenteredStringNoShadow(ms, new TranslatableText("category.astromine.consuming.energy", "" + recipe.getEnergyInput()).asOrderedText(), GuiBook.PAGE_WIDTH / 2, recipeY + 45, BasicEnergyConsumingPage.ENERGY_CONSUMED_TEXT_COLOR);
+		parent.renderItemStack(ms, recipeX + 40, recipeY + 13, mouseX, mouseY, recipe.getToastSymbol());
+		parent.renderItemStack(ms, recipeX + 76, recipeY + 13, mouseX, mouseY, recipe.getResultItem());
+		parent.drawCenteredStringNoShadow(ms, new TranslatableComponent("category.astromine.consuming.energy", "" + recipe.getEnergyInput()).getVisualOrderText(), GuiBook.PAGE_WIDTH / 2, recipeY + 45, BasicEnergyConsumingPage.ENERGY_CONSUMED_TEXT_COLOR);
 	}
 
 	@Override
@@ -60,7 +59,7 @@ public class AlloySmeltingPage extends PageDoubleRecipeRegistry<AlloySmeltingRec
 			return ItemStack.EMPTY;
 		}
 
-		return recipe.getOutput();
+		return recipe.getResultItem();
 	}
 
 	@Override

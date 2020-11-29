@@ -24,11 +24,10 @@
 
 package com.github.chainmailstudios.astromine.common.component.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
-
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
@@ -71,8 +70,8 @@ public final class EntityOxygenComponent implements Component {
 
 	/** Simulate behavior, damaging the entity if out of oxygen. */
 	public void simulate(boolean isBreathing) {
-		if (entity instanceof PlayerEntity) {
-			PlayerEntity player = (PlayerEntity) entity;
+		if (entity instanceof Player) {
+			Player player = (Player) entity;
 
 			if (player.isCreative() || player.isSpectator()) {
 				return;
@@ -84,12 +83,12 @@ public final class EntityOxygenComponent implements Component {
 		if (oxygen == getMinimumOxygen()) {
 			boolean isAK9 = false;
 
-			if (entity instanceof PlayerEntity) {
-				isAK9 = ((PlayerEntity) entity).getGameProfile().getId().toString().equals("38113444-0bc0-4502-9a4c-17903067907c");
+			if (entity instanceof Player) {
+				isAK9 = ((Player) entity).getGameProfile().getId().toString().equals("38113444-0bc0-4502-9a4c-17903067907c");
 			}
 
 			if (!isAK9 || AstromineConfig.get().asphyxiateAK9) {
-				entity.damage(DamageSource.DROWN, 1.0F);
+				entity.hurt(DamageSource.DROWN, 1.0F);
 			}
 		}
 	}

@@ -22,15 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.registry;
-
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
+package com.github.chainmailstudios.astromine. registry;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.callback.TransferEntryCallback;
@@ -38,9 +30,14 @@ import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosph
 import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityScreenHandler;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import me.shedaniel.cloth.api.common.events.v1.BlockPlaceCallback;
-
 import com.google.common.collect.Lists;
+import me.shedaniel.cloth.api.common.events.v1.BlockPlaceCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.BlockState;
 import java.util.Collections;
 import java.util.List;
 
@@ -59,7 +56,7 @@ public class AstromineCommonCallbacks {
 				Collections.shuffle(directions);
 
 				for (Direction direction : directions) {
-					BlockPos sidePos = pos.offset(direction);
+					BlockPos sidePos = pos.relative(direction);
 					BlockState sideState = world.getBlockState(sidePos);
 
 					ChunkAtmosphereComponent sideAtmosphereComponent = atmosphereComponent;
@@ -82,13 +79,13 @@ public class AstromineCommonCallbacks {
 				atmosphereComponent.remove(centerPos);
 			}
 
-			return ActionResult.PASS;
+			return InteractionResult.PASS;
 		}));
 
 		ServerTickEvents.START_SERVER_TICK.register((server) -> {
-			for (PlayerEntity playerEntity : server.getPlayerManager().getPlayerList()) {
-				if (playerEntity.currentScreenHandler instanceof ComponentBlockEntityScreenHandler) {
-					ComponentBlockEntityScreenHandler screenHandler = (ComponentBlockEntityScreenHandler) playerEntity.currentScreenHandler;
+			for (Player playerEntity : server.getPlayerList().getPlayers()) {
+				if (playerEntity.containerMenu instanceof ComponentBlockEntityScreenHandler) {
+					ComponentBlockEntityScreenHandler screenHandler = (ComponentBlockEntityScreenHandler) playerEntity.containerMenu;
 
 					if (screenHandler.getBlockEntity() != null) {
 						screenHandler.getBlockEntity().sync();

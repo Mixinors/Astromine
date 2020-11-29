@@ -1,21 +1,19 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import net.minecraft.network.PacketByteBuf;
-
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import io.netty.buffer.ByteBuf;
-
+import net.minecraft.network.FriendlyByteBuf;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 
 public class DoubleUtilities {
     /** Serializes the given double to a {@link ByteBuf}. */
-    public static void toPacket(PacketByteBuf buffer, double number) {
+    public static void toPacket(FriendlyByteBuf buffer, double number) {
         buffer.writeDouble(number);
     }
 
     /** Deserializes a double from a {@link ByteBuf}. */
-    public static double fromPacket(PacketByteBuf buffer) {
+    public static double fromPacket(FriendlyByteBuf buffer) {
         return buffer.readDouble();
     }
 

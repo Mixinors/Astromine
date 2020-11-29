@@ -25,10 +25,9 @@
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.component.general.SimpleDirectionalFluidComponent;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
-
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
@@ -75,9 +74,9 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 				return false;
 			}
 
-			return FluidGeneratingRecipe.allows(world, FluidComponent.of(volume, getFluidComponent().getFirst().copy()));
+			return FluidGeneratingRecipe.allows(level, FluidComponent.of(volume, getFluidComponent().getFirst().copy()));
 		}).withExtractPredicate((direction, volume, slot) -> false).withListener((inventory) -> {
-			if (world != null && !world.isClient) {
+			if (level != null && !level.isClientSide) {
 				System.out.println("");
 			}
 			shouldTry = true;
@@ -93,7 +92,7 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 	public void tick() {
 		super.tick();
 
-		if (world == null || world.isClient || !tickRedstone())
+		if (level == null || level.isClientSide || !tickRedstone())
 			return;
 
 		FluidComponent fluidComponent = getFluidComponent();
@@ -104,7 +103,7 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 			EnergyVolume energyVolume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = FluidGeneratingRecipe.matching(world, fluidComponent);
+				optionalRecipe = FluidGeneratingRecipe.matching(level, fluidComponent);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -143,17 +142,17 @@ public abstract class FluidGeneratorBlockEntity extends ComponentEnergyFluidBloc
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public CompoundTag save(CompoundTag tag) {
 		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
-		return super.toTag(tag);
+		return super.save(tag);
 	}
 
 	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+	public void load(BlockState state, @NotNull CompoundTag tag) {
 		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
-		super.fromTag(state, tag);
+		super.load(state, tag);
 	}
 
 	public static class Primitive extends FluidGeneratorBlockEntity {

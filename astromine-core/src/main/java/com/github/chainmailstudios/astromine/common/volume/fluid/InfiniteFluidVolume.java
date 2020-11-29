@@ -24,10 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.volume.fluid;
 
-import net.minecraft.fluid.Fluid;
-
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import net.minecraft.world.level.material.Fluid;
 
 /**
  * A variation of {@link FluidVolume}, with infinite

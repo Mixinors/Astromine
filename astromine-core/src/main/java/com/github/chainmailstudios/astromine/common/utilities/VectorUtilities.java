@@ -24,8 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import net.minecraft.client.util.math.Vector3f;
-import net.minecraft.util.math.Vec3i;
+import com.mojang.math.Vector3f;
+import net.minecraft.core.Vec3i;
 
 public class VectorUtilities {
 	/** Returns a {@link Vec3i} converted to a {@link Vector3f}. */

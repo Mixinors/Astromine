@@ -26,10 +26,7 @@ package com.github.chainmailstudios.astromine.technologies.client.rei.electricsm
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.TranslatableText;
-
+import net.minecraft.network.chat.TranslatableComponent;
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
@@ -43,6 +40,7 @@ import me.shedaniel.rei.plugin.cooking.DefaultCookingCategory;
 import me.shedaniel.rei.plugin.cooking.DefaultCookingDisplay;
 
 import com.google.common.collect.Lists;
+import com.mojang.blaze3d.vertex.PoseStack;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -62,7 +60,7 @@ public class ElectricSmeltingCategory extends DefaultCookingCategory {
 		widgets.add(Widgets.createResultSlotBackground(new Point(startPoint.x + 61, startPoint.y + 19)));
 		if (display instanceof ElectricSmeltingDisplay)
 			widgets.addAll(AstromineRoughlyEnoughItemsPlugin.createEnergyDisplay(new Rectangle(bounds.getX() + 10, bounds.getCenterY() - 23, 12, 48), ((ElectricSmeltingDisplay) display).getEnergyRequired(), false, (long) (cookingTime / 10 * 500)));
-		widgets.add(Widgets.createLabel(new Point(bounds.x + bounds.width - 5, bounds.y + 5), new TranslatableText("category.astromine.cooking.time", df.format(cookingTime / 40.0F))).noShadow().rightAligned().color(0xFF404040, 0xFFBBBBBB));
+		widgets.add(Widgets.createLabel(new Point(bounds.x + bounds.width - 5, bounds.y + 5), new TranslatableComponent("category.astromine.cooking.time", df.format(cookingTime / 40.0F))).noShadow().rightAligned().color(0xFF404040, 0xFFBBBBBB));
 		widgets.add(Widgets.createArrow(new Point(startPoint.x + 27, startPoint.y + 18)).animationDurationTicks(cookingTime / 3));
 		widgets.add(Widgets.createSlot(new Point(startPoint.x + 4, startPoint.y + 19)).entries(display.getInputEntries().get(0)).markInput());
 		widgets.add(Widgets.createSlot(new Point(startPoint.x + 61, startPoint.y + 19)).entries(display.getResultingEntries().get(0)).disableBackground().markOutput());
@@ -75,5 +73,5 @@ public class ElectricSmeltingCategory extends DefaultCookingCategory {
 	}
 
 	@Override
-	public void renderRedSlots(MatrixStack matrices, List<Widget> widgets, Rectangle bounds, DefaultCookingDisplay display, IntList redSlots) {}
+	public void renderRedSlots(PoseStack matrices, List<Widget> widgets, Rectangle bounds, DefaultCookingDisplay display, IntList redSlots) {}
 }

@@ -24,14 +24,14 @@
 
 package com.github.chainmailstudios.astromine.common.entity.placer;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.world.TeleportTarget;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.portal.PortalInfo;
 
 /**
  * An interface describing a placer for
  * {@link Entity}-ies.
  */
 public interface EntityPlacer {
-	/** Returns a {@link TeleportTarget} for the given entity. */
-	TeleportTarget placeEntity(Entity entity);
+	/** Returns a {@link PortalInfo} for the given entity. */
+	PortalInfo placeEntity(Entity entity);
 }

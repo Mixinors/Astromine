@@ -24,41 +24,40 @@
 
 package com.github.chainmailstudios.astromine.common.inventory;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.InventoryChangedListener;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.RecipeFinder;
-import net.minecraft.recipe.RecipeInputProvider;
-import net.minecraft.util.collection.DefaultedList;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.ContainerListener;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.StackedContents;
+import net.minecraft.world.inventory.StackedContentsCompatible;
+import net.minecraft.world.item.ItemStack;
 
 /**
- * A standard implementation of an {@link Inventory}.
+ * A standard implementation of an {@link Container}.
  */
-public class BaseInventory implements Inventory, RecipeInputProvider {
+public class BaseInventory implements Container, StackedContentsCompatible {
 	private final int size;
 
-	private final DefaultedList<ItemStack> stacks;
+	private final NonNullList<ItemStack> stacks;
 
-	private final List<InventoryChangedListener> listeners = new ArrayList<>();
+	private final List<ContainerListener> listeners = new ArrayList<>();
 
 	/** Instantiates a {@link BaseInventory}. */
 	private BaseInventory(int size) {
 		this.size = size;
-		this.stacks = DefaultedList.ofSize(size, ItemStack.EMPTY);
+		this.stacks = NonNullList.withSize(size, ItemStack.EMPTY);
 	}
 
 	/** Instantiates a {@link BaseInventory}. */
 	private BaseInventory(ItemStack... items) {
 		this.size = items.length;
-		this.stacks = DefaultedList.copyOf(ItemStack.EMPTY, items);
+		this.stacks = NonNullList.of(ItemStack.EMPTY, items);
 	}
 
 	/** Instantiates a {@link BaseInventory}. */
@@ -71,19 +70,19 @@ public class BaseInventory implements Inventory, RecipeInputProvider {
 		return new BaseInventory(items);
 	}
 
-	/** Adds an {@link InventoryChangedListener} to this inventory. */
-	public void addListener(InventoryChangedListener... listeners) {
+	/** Adds an {@link ContainerListener} to this inventory. */
+	public void addListener(ContainerListener... listeners) {
 		this.listeners.addAll(Arrays.asList(listeners));
 	}
 
-	/** Removes an {@link InventoryChangedListener} from this inventory. */
-	public void removeListener(InventoryChangedListener... listeners) {
+	/** Removes an {@link ContainerListener} from this inventory. */
+	public void removeListener(ContainerListener... listeners) {
 		this.listeners.removeAll(Arrays.asList(listeners));
 	}
 
 	/** Returns this inventory's size. */
 	@Override
-	public int size() {
+	public int getContainerSize() {
 		return this.size;
 	}
 
@@ -95,7 +94,7 @@ public class BaseInventory implements Inventory, RecipeInputProvider {
 
 	/** Returns the {@link ItemStack} at the given slot. */
 	@Override
-	public ItemStack getStack(int slot) {
+	public ItemStack getItem(int slot) {
 		if (slot >= 0 && slot < size) {
 			return stacks.get(slot);
 		} else {
@@ -106,24 +105,24 @@ public class BaseInventory implements Inventory, RecipeInputProvider {
 	/** Sets the {@link ItemStack} at the given slot to the specified value.
 	 * If the count is bigger than this inventory allows, it is set to the maximum allowed. */
 	@Override
-	public void setStack(int slot, ItemStack stack) {
+	public void setItem(int slot, ItemStack stack) {
 		stacks.set(slot, stack);
 
-		if (stack.getCount() > getMaxCountPerStack()) {
-			stack.setCount(getMaxCountPerStack());
+		if (stack.getCount() > getMaxStackSize()) {
+			stack.setCount(getMaxStackSize());
 		}
 
-		markDirty();
+		setChanged();
 	}
 
 	/** Removes the {@link ItemStack} at the given slot,
 	 * or a part of it as per the specified count, and returns it. */
 	@Override
-	public ItemStack removeStack(int slot, int amount) {
-		ItemStack stack = Inventories.splitStack(this.stacks, slot, amount);
+	public ItemStack removeItem(int slot, int amount) {
+		ItemStack stack = ContainerHelper.removeItem(this.stacks, slot, amount);
 
 		if (!stack.isEmpty()) {
-			this.markDirty();
+			this.setChanged();
 		}
 
 		return stack;
@@ -132,7 +131,7 @@ public class BaseInventory implements Inventory, RecipeInputProvider {
 	/** Removes the {@link ItemStack} at the given slot
 	 * and returns it. */
 	@Override
-	public ItemStack removeStack(int slot) {
+	public ItemStack removeItemNoUpdate(int slot) {
 		ItemStack stack = stacks.get(slot);
 
 		if (stack.isEmpty()) {
@@ -140,39 +139,39 @@ public class BaseInventory implements Inventory, RecipeInputProvider {
 		} else {
 			stacks.set(slot, ItemStack.EMPTY);
 
-			markDirty();
+			setChanged();
 
 			return stack;
 		}
 	}
 
-	/** Triggers this inventory's {@link InventoryChangedListener}s. */
+	/** Triggers this inventory's {@link ContainerListener}s. */
 	@Override
-	public void markDirty() {
-		for (InventoryChangedListener listener : listeners) {
-			listener.onInventoryChanged(this);
+	public void setChanged() {
+		for (ContainerListener listener : listeners) {
+			listener.containerChanged(this);
 		}
 	}
 
 	/** Allow the player to use this inventory by default. */
 	@Override
-	public boolean canPlayerUse(PlayerEntity player) {
+	public boolean stillValid(Player player) {
 		return true;
 	}
 
 	/** Clear this inventory's contents. */
 	@Override
-	public void clear() {
+	public void clearContent() {
 		for (int slot = 0; slot < size; ++slot) {
-			setStack(slot, ItemStack.EMPTY);
+			setItem(slot, ItemStack.EMPTY);
 		}
 
-		markDirty();
+		setChanged();
 	}
 
 	/** Override behavior to do nothing. */
 	@Override
-	public void provideRecipeInputs(RecipeFinder recipeFinder) {}
+	public void fillStackedContents(StackedContents recipeFinder) {}
 
 	/** Returns this inventory's string representation. */
 	public String toString() {

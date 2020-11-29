@@ -25,13 +25,21 @@
 package com.github.chainmailstudios.astromine.foundations.registry;
 
 import net.fabricmc.fabric.impl.content.registry.FuelRegistryImpl;
-
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.*;
-import net.minecraft.util.Rarity;
-
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.DiggerItem;
+import net.minecraft.world.item.HoeItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.ShovelItem;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tiers;
 import com.github.chainmailstudios.astromine.common.item.AnimatedArmorItem;
 import com.github.chainmailstudios.astromine.common.item.DynamicToolItemItem;
 import com.github.chainmailstudios.astromine.common.item.WrenchItem;
@@ -46,7 +54,7 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item LEAD_NUGGET = register("lead_nugget", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item STEEL_NUGGET = register("steel_nugget", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item BRONZE_NUGGET = register("bronze_nugget", new Item(AstromineFoundationsItems.getBasicSettings()));
-	public static final Item NETHERITE_NUGGET = register("netherite_nugget", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item NETHERITE_NUGGET = register("netherite_nugget", new Item(AstromineFoundationsItems.getBasicSettings().fireResistant()));
 
 	public static final Item DIAMOND_FRAGMENT = register("diamond_fragment", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item EMERALD_FRAGMENT = register("emerald_fragment", new Item(AstromineFoundationsItems.getBasicSettings()));
@@ -75,11 +83,11 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item LAPIS_DUST = register("lapis_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item DIAMOND_DUST = register("diamond_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item EMERALD_DUST = register("emerald_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
-	public static final Item NETHERITE_DUST = register("netherite_dust", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item NETHERITE_DUST = register("netherite_dust", new Item(AstromineFoundationsItems.getBasicSettings().fireResistant()));
 	public static final Item COAL_DUST = register("coal_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item CHARCOAL_DUST = register("charcoal_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item QUARTZ_DUST = register("quartz_dust", new Item(AstromineFoundationsItems.getBasicSettings()));
-	public static final Item RAW_NETHERITE_DUST = register("raw_netherite_dust", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item RAW_NETHERITE_DUST = register("raw_netherite_dust", new Item(AstromineFoundationsItems.getBasicSettings().fireResistant()));
 
 	public static final Item COPPER_PLATE = register("copper_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item TIN_PLATE = register("tin_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
@@ -89,7 +97,7 @@ public class AstromineFoundationsItems extends AstromineItems {
 
 	public static final Item IRON_PLATE = register("iron_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item GOLD_PLATE = register("gold_plate", new Item(AstromineFoundationsItems.getBasicSettings()));
-	public static final Item NETHERITE_PLATE = register("netherite_plate", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item NETHERITE_PLATE = register("netherite_plate", new Item(AstromineFoundationsItems.getBasicSettings().fireResistant()));
 
 	public static final Item COPPER_GEAR = register("copper_gear", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item TIN_GEAR = register("tin_gear", new Item(AstromineFoundationsItems.getBasicSettings()));
@@ -99,25 +107,25 @@ public class AstromineFoundationsItems extends AstromineItems {
 
 	public static final Item IRON_GEAR = register("iron_gear", new Item(AstromineFoundationsItems.getBasicSettings()));
 	public static final Item GOLD_GEAR = register("gold_gear", new Item(AstromineFoundationsItems.getBasicSettings()));
-	public static final Item NETHERITE_GEAR = register("netherite_gear", new Item(AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item NETHERITE_GEAR = register("netherite_gear", new Item(AstromineFoundationsItems.getBasicSettings().fireResistant()));
 
-	public static final Item WOODEN_MINING_TOOL = register("wooden_mining_tool", new DynamicToolItemItem((MiningToolItem) Items.WOODEN_SHOVEL, (MiningToolItem) Items.WOODEN_PICKAXE, ToolMaterials.WOOD, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item WOODEN_MATTOCK = register("wooden_mattock", new DynamicToolItemItem((MiningToolItem) Items.WOODEN_HOE, (MiningToolItem) Items.WOODEN_AXE, ToolMaterials.WOOD, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item WOODEN_MINING_TOOL = register("wooden_mining_tool", new DynamicToolItemItem((DiggerItem) Items.WOODEN_SHOVEL, (DiggerItem) Items.WOODEN_PICKAXE, Tiers.WOOD, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item WOODEN_MATTOCK = register("wooden_mattock", new DynamicToolItemItem((DiggerItem) Items.WOODEN_HOE, (DiggerItem) Items.WOODEN_AXE, Tiers.WOOD, AstromineFoundationsItems.getBasicSettings()));
 
-	public static final Item STONE_MINING_TOOL = register("stone_mining_tool", new DynamicToolItemItem((MiningToolItem) Items.STONE_SHOVEL, (MiningToolItem) Items.STONE_PICKAXE, ToolMaterials.STONE, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item STONE_MATTOCK = register("stone_mattock", new DynamicToolItemItem((MiningToolItem) Items.STONE_HOE, (MiningToolItem) Items.STONE_AXE, ToolMaterials.STONE, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item STONE_MINING_TOOL = register("stone_mining_tool", new DynamicToolItemItem((DiggerItem) Items.STONE_SHOVEL, (DiggerItem) Items.STONE_PICKAXE, Tiers.STONE, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item STONE_MATTOCK = register("stone_mattock", new DynamicToolItemItem((DiggerItem) Items.STONE_HOE, (DiggerItem) Items.STONE_AXE, Tiers.STONE, AstromineFoundationsItems.getBasicSettings()));
 
-	public static final Item IRON_MINING_TOOL = register("iron_mining_tool", new DynamicToolItemItem((MiningToolItem) Items.IRON_SHOVEL, (MiningToolItem) Items.IRON_PICKAXE, ToolMaterials.IRON, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item IRON_MATTOCK = register("iron_mattock", new DynamicToolItemItem((MiningToolItem) Items.IRON_HOE, (MiningToolItem) Items.IRON_AXE, ToolMaterials.IRON, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item IRON_MINING_TOOL = register("iron_mining_tool", new DynamicToolItemItem((DiggerItem) Items.IRON_SHOVEL, (DiggerItem) Items.IRON_PICKAXE, Tiers.IRON, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item IRON_MATTOCK = register("iron_mattock", new DynamicToolItemItem((DiggerItem) Items.IRON_HOE, (DiggerItem) Items.IRON_AXE, Tiers.IRON, AstromineFoundationsItems.getBasicSettings()));
 
-	public static final Item GOLDEN_MINING_TOOL = register("golden_mining_tool", new DynamicToolItemItem((MiningToolItem) Items.GOLDEN_SHOVEL, (MiningToolItem) Items.GOLDEN_PICKAXE, ToolMaterials.GOLD, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item GOLDEN_MATTOCK = register("golden_mattock", new DynamicToolItemItem((MiningToolItem) Items.GOLDEN_HOE, (MiningToolItem) Items.GOLDEN_AXE, ToolMaterials.GOLD, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item GOLDEN_MINING_TOOL = register("golden_mining_tool", new DynamicToolItemItem((DiggerItem) Items.GOLDEN_SHOVEL, (DiggerItem) Items.GOLDEN_PICKAXE, Tiers.GOLD, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item GOLDEN_MATTOCK = register("golden_mattock", new DynamicToolItemItem((DiggerItem) Items.GOLDEN_HOE, (DiggerItem) Items.GOLDEN_AXE, Tiers.GOLD, AstromineFoundationsItems.getBasicSettings()));
 
-	public static final Item DIAMOND_MINING_TOOL = register("diamond_mining_tool", new DynamicToolItemItem((MiningToolItem) Items.DIAMOND_SHOVEL, (MiningToolItem) Items.DIAMOND_PICKAXE, ToolMaterials.DIAMOND, AstromineFoundationsItems.getBasicSettings()));
-	public static final Item DIAMOND_MATTOCK = register("diamond_mattock", new DynamicToolItemItem((MiningToolItem) Items.DIAMOND_HOE, (MiningToolItem) Items.DIAMOND_AXE, ToolMaterials.DIAMOND, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item DIAMOND_MINING_TOOL = register("diamond_mining_tool", new DynamicToolItemItem((DiggerItem) Items.DIAMOND_SHOVEL, (DiggerItem) Items.DIAMOND_PICKAXE, Tiers.DIAMOND, AstromineFoundationsItems.getBasicSettings()));
+	public static final Item DIAMOND_MATTOCK = register("diamond_mattock", new DynamicToolItemItem((DiggerItem) Items.DIAMOND_HOE, (DiggerItem) Items.DIAMOND_AXE, Tiers.DIAMOND, AstromineFoundationsItems.getBasicSettings()));
 
-	public static final Item NETHERITE_MINING_TOOL = register("netherite_mining_tool", new DynamicToolItemItem((MiningToolItem) Items.NETHERITE_SHOVEL, (MiningToolItem) Items.NETHERITE_PICKAXE, ToolMaterials.NETHERITE, AstromineFoundationsItems.getBasicSettings().fireproof()));
-	public static final Item NETHERITE_MATTOCK = register("netherite_mattock", new DynamicToolItemItem((MiningToolItem) Items.NETHERITE_HOE, (MiningToolItem) Items.NETHERITE_AXE, ToolMaterials.NETHERITE, AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item NETHERITE_MINING_TOOL = register("netherite_mining_tool", new DynamicToolItemItem((DiggerItem) Items.NETHERITE_SHOVEL, (DiggerItem) Items.NETHERITE_PICKAXE, Tiers.NETHERITE, AstromineFoundationsItems.getBasicSettings().fireResistant()));
+	public static final Item NETHERITE_MATTOCK = register("netherite_mattock", new DynamicToolItemItem((DiggerItem) Items.NETHERITE_HOE, (DiggerItem) Items.NETHERITE_AXE, Tiers.NETHERITE, AstromineFoundationsItems.getBasicSettings().fireResistant()));
 
 	public static final PickaxeItem COPPER_PICKAXE = register("copper_pickaxe", new PickaxeItem(AstromineFoundationsToolMaterials.COPPER, 1, -2.8f, AstromineFoundationsItems.getBasicSettings()));
 	public static final AxeItem COPPER_AXE = register("copper_axe", new AxeItem(AstromineFoundationsToolMaterials.COPPER, 5f, -3.0f, AstromineFoundationsItems.getBasicSettings()));
@@ -184,10 +192,10 @@ public class AstromineFoundationsItems extends AstromineItems {
 	public static final Item LEAD_LEGGINGS = register("lead_leggings", new ArmorItem(AstromineFoundationsArmorMaterials.LEAD, EquipmentSlot.LEGS, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item LEAD_BOOTS = register("lead_boots", new ArmorItem(AstromineFoundationsArmorMaterials.LEAD, EquipmentSlot.FEET, AstromineFoundationsItems.getBasicSettings()));
 
-	public static final Item BRONZE_HELMET = register("bronze_helmet", new ArmorItem(AstromineFoundationsArmorMaterials.BRONZE, EquipmentSlot.HEAD, AstromineFoundationsItems.getBasicSettings().fireproof()));
-	public static final Item BRONZE_CHESTPLATE = register("bronze_chestplate", new ArmorItem(AstromineFoundationsArmorMaterials.BRONZE, EquipmentSlot.CHEST, AstromineFoundationsItems.getBasicSettings().fireproof()));
-	public static final Item BRONZE_LEGGINGS = register("bronze_leggings", new ArmorItem(AstromineFoundationsArmorMaterials.BRONZE, EquipmentSlot.LEGS, AstromineFoundationsItems.getBasicSettings().fireproof()));
-	public static final Item BRONZE_BOOTS = register("bronze_boots", new ArmorItem(AstromineFoundationsArmorMaterials.BRONZE, EquipmentSlot.FEET, AstromineFoundationsItems.getBasicSettings().fireproof()));
+	public static final Item BRONZE_HELMET = register("bronze_helmet", new ArmorItem(AstromineFoundationsArmorMaterials.BRONZE, EquipmentSlot.HEAD, AstromineFoundationsItems.getBasicSettings().fireResistant()));
+	public static final Item BRONZE_CHESTPLATE = register("bronze_chestplate", new ArmorItem(AstromineFoundationsArmorMaterials.BRONZE, EquipmentSlot.CHEST, AstromineFoundationsItems.getBasicSettings().fireResistant()));
+	public static final Item BRONZE_LEGGINGS = register("bronze_leggings", new ArmorItem(AstromineFoundationsArmorMaterials.BRONZE, EquipmentSlot.LEGS, AstromineFoundationsItems.getBasicSettings().fireResistant()));
+	public static final Item BRONZE_BOOTS = register("bronze_boots", new ArmorItem(AstromineFoundationsArmorMaterials.BRONZE, EquipmentSlot.FEET, AstromineFoundationsItems.getBasicSettings().fireResistant()));
 
 	public static final Item STEEL_HELMET = register("steel_helmet", new ArmorItem(AstromineFoundationsArmorMaterials.STEEL, EquipmentSlot.HEAD, AstromineFoundationsItems.getBasicSettings()));
 	public static final Item STEEL_CHESTPLATE = register("steel_chestplate", new ArmorItem(AstromineFoundationsArmorMaterials.STEEL, EquipmentSlot.CHEST, AstromineFoundationsItems.getBasicSettings()));
@@ -196,15 +204,15 @@ public class AstromineFoundationsItems extends AstromineItems {
 
 	public static final Item BRONZE_WRENCH = register("bronze_wrench", new WrenchItem(AstromineFoundationsToolMaterials.BRONZE, AstromineFoundationsItems.getBasicSettings()));
 
-	public static final Item FIRE_EXTINGUISHER = register("fire_extinguisher", new FireExtinguisherItem(AstromineFoundationsItems.getBasicSettings().maxCount(1)));
+	public static final Item FIRE_EXTINGUISHER = register("fire_extinguisher", new FireExtinguisherItem(AstromineFoundationsItems.getBasicSettings().stacksTo(1)));
 
-	public static final FoodComponent LEAD_APPLE_COMPONENT = new FoodComponent.Builder().hunger(2).saturationModifier(0.4F).statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 40, 1), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 1000, 2), 1.0F).statusEffect(new StatusEffectInstance(StatusEffects.POISON, 500, 1), 1.0F).alwaysEdible().build();
+	public static final FoodProperties LEAD_APPLE_COMPONENT = new FoodProperties.Builder().nutrition(2).saturationMod(0.4F).effect(new MobEffectInstance(MobEffects.CONFUSION, 40, 1), 1.0F).effect(new MobEffectInstance(MobEffects.WEAKNESS, 1000, 2), 1.0F).effect(new MobEffectInstance(MobEffects.POISON, 500, 1), 1.0F).alwaysEat().build();
 	public static final Item LEAD_APPLE = register("lead_apple", new Item(AstromineFoundationsItems.getBasicSettings().food(LEAD_APPLE_COMPONENT).rarity(Rarity.RARE)));
 
 	public static final Item BLADES = register("blades", new Item(getBasicSettings()));
 
-	public static Item.Settings getBasicSettings() {
-		return AstromineItems.getBasicSettings().group(AstromineFoundationsItemGroups.FOUNDATIONS);
+	public static Item.Properties getBasicSettings() {
+		return AstromineItems.getBasicSettings().tab(AstromineFoundationsItemGroups.FOUNDATIONS);
 	}
 
 	public static void initialize() {

@@ -24,24 +24,23 @@
 
 package com.github.chainmailstudios.astromine.common.block.base;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.state.property.Property;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
-
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.phys.BlockHitResult;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 
 import java.util.Locale;
@@ -54,7 +53,7 @@ import java.util.Random;
  * A {@link HorizontalFacingBlockWithEntity} with wrenching behavior.
  */
 public abstract class WrenchableHorizontalFacingTieredBlockWithEntity extends WrenchableHorizontalFacingBlockWithEntity {
-	public WrenchableHorizontalFacingTieredBlockWithEntity(Settings settings) {
+	public WrenchableHorizontalFacingTieredBlockWithEntity(Properties settings) {
 		super(settings);
 	}
 
@@ -65,26 +64,26 @@ public abstract class WrenchableHorizontalFacingTieredBlockWithEntity extends Wr
 	 * Just to suffer?
 	 * Is there a point anymore? */
 	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		Identifier blockId = Registry.BLOCK.getId(this);
+	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		ResourceLocation blockId = Registry.BLOCK.getKey(this);
 
 		Tier blockTier = Tier.fromId(blockId);
 
 		if (blockTier != null) {
-			ItemStack stack = player.getStackInHand(hand);
+			ItemStack stack = player.getItemInHand(hand);
 
-			Identifier itemId = Registry.ITEM.getId(stack.getItem());
+			ResourceLocation itemId = Registry.ITEM.getKey(stack.getItem());
 
 			if (itemId.getNamespace().equals(AstromineCommon.MOD_ID) && itemId.getPath().endsWith("_machine_upgrade_kit")) {
 				Tier itemTier = Tier.fromId(itemId);
 
 				if (itemTier != null && itemTier.ordinal() != 0 && Tier.values()[itemTier.ordinal() - 1] == blockTier) {
-					Identifier newBlockId = new Identifier(blockId.toString().replace(blockTier.name().toLowerCase(Locale.ROOT) + "_", itemTier.name().toLowerCase(Locale.ROOT) + "_"));
+					ResourceLocation newBlockId = new ResourceLocation(blockId.toString().replace(blockTier.name().toLowerCase(Locale.ROOT) + "_", itemTier.name().toLowerCase(Locale.ROOT) + "_"));
 
-					Optional<Block> newBlock = Registry.BLOCK.getOrEmpty(newBlockId);
+					Optional<Block> newBlock = Registry.BLOCK.getOptional(newBlockId);
 
 					if (newBlock.isPresent()) {
-						if (world.isClient) {
+						if (world.isClientSide) {
 							Random random = world.random;
 
 							double x = pos.getX() - 0.3;
@@ -95,17 +94,17 @@ public abstract class WrenchableHorizontalFacingTieredBlockWithEntity extends Wr
 								world.addParticle(ParticleTypes.COMPOSTER, x + random.nextDouble() * 1.6, y + random.nextDouble() * 1.6, z + random.nextDouble() * 1.6, -0.2 + random.nextDouble() * 0.4, -0.2 + random.nextDouble() * 0.4, -0.2 + random.nextDouble() * 0.4);
 							}
 
-							world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 1, 1, false);
+							world.playLocalSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS, 1, 1, false);
 
-							return ActionResult.CONSUME;
+							return InteractionResult.CONSUME;
 						}
 
 						if (!player.isCreative()) {
 							ItemStack copy = stack.copy();
 
-							copy.decrement(1);
+							copy.shrink(1);
 
-							player.setStackInHand(hand, copy);
+							player.setItemInHand(hand, copy);
 						}
 
 						BlockEntity blockEntity = world.getBlockEntity(pos);
@@ -113,7 +112,7 @@ public abstract class WrenchableHorizontalFacingTieredBlockWithEntity extends Wr
 						CompoundTag beTag = null;
 
 						if (blockEntity != null) {
-							beTag = blockEntity.toTag(new CompoundTag());
+							beTag = blockEntity.save(new CompoundTag());
 							beTag.putInt("x", pos.getX());
 							beTag.putInt("y", pos.getY());
 							beTag.putInt("z", pos.getZ());
@@ -121,29 +120,29 @@ public abstract class WrenchableHorizontalFacingTieredBlockWithEntity extends Wr
 
 						world.removeBlockEntity(pos);
 
-						BlockState newState = newBlock.get().getDefaultState();
+						BlockState newState = newBlock.get().defaultBlockState();
 
 						for (Property property : state.getProperties()) {
-							if (newState.contains(property)) {
-								newState = newState.with(property, state.get(property));
+							if (newState.hasProperty(property)) {
+								newState = newState.setValue(property, state.getValue(property));
 							}
 						}
 
-						world.setBlockState(pos, newState, 3, 512);
+						world.setBlock(pos, newState, 3, 512);
 
 						BlockEntity newBlockEntity = world.getBlockEntity(pos);
 
 						if (newBlockEntity != null && beTag != null) {
-							newBlockEntity.fromTag(newState, beTag);
+							newBlockEntity.load(newState, beTag);
 						}
 
-						return ActionResult.SUCCESS;
+						return InteractionResult.SUCCESS;
 					}
 				}
 			}
 		}
 
-		return super.onUse(state, world, pos, player, hand, hit);
+		return super.use(state, world, pos, player, hand, hit);
 	}
 
 	/**
@@ -155,8 +154,8 @@ public abstract class WrenchableHorizontalFacingTieredBlockWithEntity extends Wr
 		ADVANCED,
 		ELITE;
 
-		/** Returns the {@link Tier} of the given {@link Identifier}'s path. */
-		static Tier fromId(Identifier identifier) {
+		/** Returns the {@link Tier} of the given {@link ResourceLocation}'s path. */
+		static Tier fromId(ResourceLocation identifier) {
 			String path = identifier.getPath();
 			for (Tier tier : values()) {
 				if (path.startsWith(tier.name().toLowerCase(Locale.ROOT) + "_")) {

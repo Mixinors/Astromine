@@ -22,12 +22,11 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.registry.client;
+package com.github.chainmailstudios.astromine. registry.client;
 
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-
-import net.minecraft.block.Block;
-import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.world.level.block.Block;
 
 public class AstromineRenderLayers {
 	public static void initialize() {
@@ -42,7 +41,7 @@ public class AstromineRenderLayers {
 	 *
 	 * @return Block instance registered
 	 */
-	public static <T extends Block> T register(T block, RenderLayer renderLayer) {
+	public static <T extends Block> T register(T block, RenderType renderLayer) {
 		BlockRenderLayerMap.INSTANCE.putBlock(block, renderLayer);
 		return block;
 	}

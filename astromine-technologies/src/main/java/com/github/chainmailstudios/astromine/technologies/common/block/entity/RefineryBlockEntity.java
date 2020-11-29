@@ -25,10 +25,9 @@
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.component.general.SimpleDirectionalFluidComponent;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
-
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
@@ -75,7 +74,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 				return false;
 			}
 
-			return RefiningRecipe.allows(world, FluidComponent.of(volume, getFluidComponent().getSecond(), getFluidComponent().getThird(), getFluidComponent().getFourth(), getFluidComponent().getFifth(), getFluidComponent().getSixth(), getFluidComponent().getSeventh(), getFluidComponent().getEighth()));
+			return RefiningRecipe.allows(level, FluidComponent.of(volume, getFluidComponent().getSecond(), getFluidComponent().getThird(), getFluidComponent().getFourth(), getFluidComponent().getFifth(), getFluidComponent().getSixth(), getFluidComponent().getSeventh(), getFluidComponent().getEighth()));
 		}).withExtractPredicate((direction, volume, slot) -> {
 			return slot == 1 || slot == 2 || slot == 3 || slot == 4 || slot == 5 || slot == 6 || slot == 7;
 		}).withListener((inventory) -> {
@@ -92,7 +91,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 	public void tick() {
 		super.tick();
 
-		if (world == null || world.isClient || !tickRedstone())
+		if (level == null || level.isClientSide || !tickRedstone())
 			return;
 
 		FluidComponent fluidComponent = getFluidComponent();
@@ -103,7 +102,7 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 			EnergyVolume volume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = RefiningRecipe.matching(world, fluidComponent);
+				optionalRecipe = RefiningRecipe.matching(level, fluidComponent);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -151,17 +150,17 @@ public abstract class RefineryBlockEntity extends ComponentEnergyFluidBlockEntit
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public CompoundTag save(CompoundTag tag) {
 		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
-		return super.toTag(tag);
+		return super.save(tag);
 	}
 
 	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+	public void load(BlockState state, @NotNull CompoundTag tag) {
 		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
-		super.fromTag(state, tag);
+		super.load(state, tag);
 	}
 
 	public static class Primitive extends RefineryBlockEntity {

@@ -24,10 +24,9 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.entity.ai.superspaceslime;
 
-import net.minecraft.entity.ai.control.MoveControl;
-import net.minecraft.entity.attribute.EntityAttributes;
-
 import com.github.chainmailstudios.astromine.discoveries.common.entity.SuperSpaceSlimeEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
 
 public class SuperSpaceSlimeMoveControl extends MoveControl {
 
@@ -39,22 +38,22 @@ public class SuperSpaceSlimeMoveControl extends MoveControl {
 	public SuperSpaceSlimeMoveControl(SuperSpaceSlimeEntity slime) {
 		super(slime);
 		this.slime = slime;
-		this.targetYaw = 180.0F * slime.yaw / 3.1415927F;
+		this.targetYaw = 180.0F * slime.yRot / 3.1415927F;
 	}
 
 	@Override
 	public void tick() {
-		this.entity.yaw = this.changeAngle(this.entity.yaw, this.targetYaw, 90.0F);
-		this.entity.headYaw = this.entity.yaw;
-		this.entity.bodyYaw = this.entity.yaw;
+		this.mob.yRot = this.rotlerp(this.mob.yRot, this.targetYaw, 90.0F);
+		this.mob.yHeadRot = this.mob.yRot;
+		this.mob.yBodyRot = this.mob.yRot;
 
-		if (this.state != MoveControl.State.MOVE_TO) {
-			this.entity.setForwardSpeed(0.0F);
+		if (this.operation != MoveControl.Operation.MOVE_TO) {
+			this.mob.setZza(0.0F);
 		} else {
-			this.state = MoveControl.State.WAIT;
+			this.operation = MoveControl.Operation.WAIT;
 
-			if (this.entity.isOnGround()) {
-				this.entity.setMovementSpeed((float) (this.speed * this.entity.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED)));
+			if (this.mob.isOnGround()) {
+				this.mob.setSpeed((float) (this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
 				if (this.ticksUntilJump-- <= 0) {
 					this.ticksUntilJump = this.slime.getTicksUntilNextJump();
 
@@ -62,15 +61,15 @@ public class SuperSpaceSlimeMoveControl extends MoveControl {
 						this.ticksUntilJump /= 3;
 					}
 
-					this.slime.getJumpControl().setActive();
+					this.slime.getJumpControl().jump();
 					this.slime.playSound(this.slime.getJumpSound(), this.slime.getSoundVolume(), this.slime.getJumpSoundPitch());
 				} else {
-					this.slime.sidewaysSpeed = 0.0F;
-					this.slime.forwardSpeed = 0.0F;
-					this.entity.setMovementSpeed(0.0F);
+					this.slime.xxa = 0.0F;
+					this.slime.zza = 0.0F;
+					this.mob.setSpeed(0.0F);
 				}
 			} else {
-				this.entity.setMovementSpeed((float) (this.speed * this.entity.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED)));
+				this.mob.setSpeed((float) (this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
 			}
 		}
 	}
@@ -81,7 +80,7 @@ public class SuperSpaceSlimeMoveControl extends MoveControl {
 	}
 
 	public void move(double speed) {
-		this.speed = speed;
-		this.state = MoveControl.State.MOVE_TO;
+		this.speedModifier = speed;
+		this.operation = MoveControl.Operation.MOVE_TO;
 	}
 }

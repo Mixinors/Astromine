@@ -27,8 +27,6 @@ package com.github.chainmailstudios.astromine.common.network.type;
 import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import net.minecraft.block.entity.BlockEntity;
-
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMember;
@@ -36,12 +34,12 @@ import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.NetworkMemberRegistry;
 import com.github.chainmailstudios.astromine.common.utilities.data.position.WorldPos;
-import net.minecraft.util.Pair;
-import net.minecraft.util.math.Direction;
-
 import com.google.common.collect.Lists;
 
 import java.util.List;
+import net.minecraft.core.Direction;
+import net.minecraft.util.Tuple;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
  * A {@link NetworkType} for fluids.
@@ -51,8 +49,8 @@ public final class FluidNetworkType implements NetworkType {
 	 * transferring energy between them. */
 	@Override
 	public void tick(NetworkInstance instance) {
-		List<Pair<FluidComponent, Direction>> providers = Lists.newArrayList();
-		List<Pair<FluidComponent, Direction>> requesters = Lists.newArrayList();
+		List<Tuple<FluidComponent, Direction>> providers = Lists.newArrayList();
+		List<Tuple<FluidComponent, Direction>> requesters = Lists.newArrayList();
 
 		for (NetworkMemberNode memberNode : instance.members) {
 			WorldPos memberPos = WorldPos.of(instance.getWorld(), memberNode.getBlockPosition());
@@ -74,19 +72,19 @@ public final class FluidNetworkType implements NetworkType {
 
 				if (!type.isNone()) {
 					if (type.canExtract() && (networkMember.isProvider(this) || networkMember.isBuffer(this))) {
-						providers.add(new Pair<>(fluidComponent, memberNode.getDirection()));
+						providers.add(new Tuple<>(fluidComponent, memberNode.getDirection()));
 					}
 
 					if (type.canInsert() && (networkMember.isRequester(this) || networkMember.isBuffer(this))) {
-						requesters.add(new Pair<>(fluidComponent, memberNode.getDirection()));
+						requesters.add(new Tuple<>(fluidComponent, memberNode.getDirection()));
 					}
 				}
 			}
 		}
 
-		for (Pair<FluidComponent, Direction> provider : providers) {
-			for (Pair<FluidComponent, Direction> requester : requesters) {
-				provider.getLeft().into(requester.getLeft(), Fraction.TRANSFER, requester.getRight());
+		for (Tuple<FluidComponent, Direction> provider : providers) {
+			for (Tuple<FluidComponent, Direction> requester : requesters) {
+				provider.getA().into(requester.getA(), Fraction.TRANSFER, requester.getB());
 			}
 		}
 	}

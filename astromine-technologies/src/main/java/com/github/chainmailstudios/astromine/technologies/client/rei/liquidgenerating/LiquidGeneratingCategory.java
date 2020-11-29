@@ -26,10 +26,8 @@ package com.github.chainmailstudios.astromine.technologies.client.rei.liquidgene
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.resources.ResourceLocation;
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.technologies.client.rei.generating.AbstractEnergyGeneratingCategory;
@@ -46,13 +44,13 @@ import java.util.List;
 @Environment(EnvType.CLIENT)
 public class LiquidGeneratingCategory extends AbstractEnergyGeneratingCategory<LiquidGeneratingDisplay> {
 	@Override
-	public Identifier getIdentifier() {
+	public ResourceLocation getIdentifier() {
 		return AstromineTechnologiesRoughlyEnoughItemsPlugin.LIQUID_GENERATING;
 	}
 
 	@Override
 	public String getCategoryName() {
-		return I18n.translate("category.astromine.fluid_generating");
+		return I18n.get("category.astromine.fluid_generating");
 	}
 
 	@Override

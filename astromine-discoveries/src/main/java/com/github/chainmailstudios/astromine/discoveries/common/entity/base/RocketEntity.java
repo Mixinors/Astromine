@@ -24,25 +24,6 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.entity.base;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MovementType;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Arm;
-import net.minecraft.util.ItemScatterer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
-import net.minecraft.world.explosion.Explosion;
-
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidItemEntity;
 import com.github.chainmailstudios.astromine.common.registry.GravityRegistry;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
@@ -52,13 +33,31 @@ import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 import java.util.Collection;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Containers;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 import static java.lang.Math.min;
 
 public abstract class RocketEntity extends ComponentFluidItemEntity {
-	public static final TrackedData<Boolean> IS_RUNNING = DataTracker.registerData(RocketEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> IS_RUNNING = SynchedEntityData.defineId(RocketEntity.class, EntityDataSerializers.BOOLEAN);
 
-	public RocketEntity(EntityType<?> type, World world) {
+	public RocketEntity(EntityType<?> type, Level world) {
 		super(type, world);
 	}
 
@@ -73,15 +72,15 @@ public abstract class RocketEntity extends ComponentFluidItemEntity {
 	protected abstract Collection<ItemStack> getDroppedStacks();
 
 	@Override
-	protected void initDataTracker() {
-		this.getDataTracker().startTracking(IS_RUNNING, false);
+	protected void defineSynchedData() {
+		this.getEntityData().define(IS_RUNNING, false);
 	}
 
 	@Override
-	public void updatePassengerPosition(Entity passenger) {
+	public void positionRider(Entity passenger) {
 		if (this.hasPassenger(passenger)) {
 			Vector3f position = getPassengerPosition();
-			passenger.updatePosition(getX() + position.x, getY() + position.y, getZ() + position.z);
+			passenger.setPos(getX() + position.x, getY() + position.y, getZ() + position.z);
 		}
 	}
 
@@ -89,57 +88,57 @@ public abstract class RocketEntity extends ComponentFluidItemEntity {
 	public void tick() {
 		super.tick();
 
-		if (this.getDataTracker().get(IS_RUNNING)) {
+		if (this.getEntityData().get(IS_RUNNING)) {
 			if (isFuelMatching()) {
 				consumeFuel();
 
 				Vector3d acceleration = getAcceleration();
 
-				this.addVelocity(0, acceleration.y, 0);
-				this.move(MovementType.SELF, this.getVelocity());
+				this.push(0, acceleration.y, 0);
+				this.move(MoverType.SELF, this.getDeltaMovement());
 
-				if (!this.world.isClient) {
-					Box box = getBoundingBox();
+				if (!this.level.isClientSide) {
+					AABB box = getBoundingBox();
 
 					double y = getY();
 
 					for (double x = box.minX; x < box.maxX; x += 0.0625) {
 						for (double z = box.minZ; z < box.maxZ; z += 0.0625) {
-							((ServerWorld) world).spawnParticles(AstromineDiscoveriesParticles.ROCKET_FLAME, x, y, z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
+							((ServerLevel) level).sendParticles(AstromineDiscoveriesParticles.ROCKET_FLAME, x, y, z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
 						}
 					}
 				}
 
-				if (BlockPos.Mutable.stream(getBoundingBox()).anyMatch(pos -> !world.getBlockState(pos).isAir()) && !world.isClient) {
+				if (BlockPos.MutableBlockPos.betweenClosedStream(getBoundingBox()).anyMatch(pos -> !level.getBlockState(pos).isAir()) && !level.isClientSide) {
 					this.tryDisassemble(false);
 				}
-			} else if (!world.isClient) {
-				this.addVelocity(0, -GravityRegistry.INSTANCE.get(world.getRegistryKey()), 0);
-				this.move(MovementType.SELF, this.getVelocity());
+			} else if (!level.isClientSide) {
+				this.push(0, -GravityRegistry.INSTANCE.get(level.dimension()), 0);
+				this.move(MoverType.SELF, this.getDeltaMovement());
 
-				if (getVelocity().y < -GravityRegistry.INSTANCE.get(world.getRegistryKey())) {
-					if (BlockPos.Mutable.stream(getBoundingBox().offset(0, -1, 0)).anyMatch(pos -> !world.getBlockState(pos).isAir()) && !world.isClient) {
+				if (getDeltaMovement().y < -GravityRegistry.INSTANCE.get(level.dimension())) {
+					if (BlockPos.MutableBlockPos.betweenClosedStream(getBoundingBox().move(0, -1, 0)).anyMatch(pos -> !level.getBlockState(pos).isAir()) && !level.isClientSide) {
 						this.tryDisassemble(false);
 					}
 				}
 			}
 		} else {
-			setVelocity(Vec3d.ZERO);
+			setDeltaMovement(Vec3.ZERO);
 
-			this.velocityDirty = true;
+			this.hasImpulse = true;
 		}
 	}
 
 	public void tryDisassemble(boolean intentional) {
 		this.tryExplode();
 
-		this.getDroppedStacks().forEach(stack -> ItemScatterer.spawn(world, getX(), getY(), getZ(), stack.copy()));
+		this.getDroppedStacks().forEach(stack -> Containers.dropItemStack(level, getX(), getY(), getZ(), stack.copy()));
 
-		Collection<Entity> passengers = this.getPassengersDeep();
+		Collection<Entity> passengers = this.getIndirectPassengers();
 
 		for (Entity passenger : passengers) {
-			if (passenger instanceof ServerPlayerEntity) {
-				AstromineDiscoveriesCriteria.DESTROY_ROCKET.trigger((ServerPlayerEntity) passenger, intentional);
+			if (passenger instanceof ServerPlayer) {
+				AstromineDiscoveriesCriteria.DESTROY_ROCKET.trigger((ServerPlayer) passenger, intentional);
 			}
 
 			passenger.stopRiding();
@@ -153,21 +152,21 @@ public abstract class RocketEntity extends ComponentFluidItemEntity {
 
 		getFluidComponent().forEach(volume -> strength[0] += volume.getAmount().floatValue());
 
-		world.createExplosion(this, getX(), getY(), getZ(), min(strength[0], 32F) + 3F, Explosion.DestructionType.BREAK);
+		level.explode(this, getX(), getY(), getZ(), min(strength[0], 32F) + 3F, Explosion.BlockInteraction.BREAK);
 	}
 
-	public Vec3d updatePassengerForDismount(LivingEntity passenger) {
-		Vec3d vec3d = getPassengerDismountOffset(this.getWidth(), passenger.getWidth(), this.yaw + (passenger.getMainArm() == Arm.RIGHT ? 90.0F : -90.0F));
-		return new Vec3d(vec3d.getX() + this.getX(), vec3d.getY() + this.getY(), vec3d.getZ() + this.getZ());
+	public Vec3 getDismountLocationForPassenger(LivingEntity passenger) {
+		Vec3 vec3d = getCollisionHorizontalEscapeVector(this.getBbWidth(), passenger.getBbWidth(), this.yRot + (passenger.getMainArm() == HumanoidArm.RIGHT ? 90.0F : -90.0F));
+		return new Vec3(vec3d.x() + this.getX(), vec3d.y() + this.getY(), vec3d.z() + this.getZ());
 	}
 
-	public abstract void openInventory(PlayerEntity player);
+	public abstract void openInventory(Player player);
 
-	public void tryLaunch(PlayerEntity launcher) {
+	public void tryLaunch(Player launcher) {
 		if (this.getFluidComponent().getFirst().biggerThan(Fraction.EMPTY)) {
-			this.getDataTracker().set(RocketEntity.IS_RUNNING, true);
-			if (launcher instanceof ServerPlayerEntity) {
-				AstromineDiscoveriesCriteria.LAUNCH_ROCKET.trigger((ServerPlayerEntity) launcher);
+			this.getEntityData().set(RocketEntity.IS_RUNNING, true);
+			if (launcher instanceof ServerPlayer) {
+				AstromineDiscoveriesCriteria.LAUNCH_ROCKET.trigger((ServerPlayer) launcher);
 			}
 		}
 	}

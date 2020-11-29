@@ -26,10 +26,8 @@ package com.github.chainmailstudios.astromine.technologies.client.rei.liquidgene
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import net.minecraft.fluid.Fluid;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.material.Fluid;
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
@@ -47,7 +45,7 @@ import java.util.stream.Collectors;
 @Environment(EnvType.CLIENT)
 public class LiquidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
 	private final FluidIngredient input;
-	private final Identifier id;
+	private final ResourceLocation id;
 
 	public LiquidGeneratingDisplay(FluidGeneratingRecipe recipe) {
 		super(recipe.getEnergyOutput());
@@ -66,7 +64,7 @@ public class LiquidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
 	}
 
 	@Override
-	public Identifier getRecipeCategory() {
+	public ResourceLocation getRecipeCategory() {
 		return AstromineTechnologiesRoughlyEnoughItemsPlugin.LIQUID_GENERATING;
 	}
 
@@ -79,7 +77,7 @@ public class LiquidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
 	}
 
 	@Override
-	public Optional<Identifier> getRecipeLocation() {
+	public Optional<ResourceLocation> getRecipeLocation() {
 		return Optional.ofNullable(this.id);
 	}
 }

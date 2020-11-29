@@ -24,14 +24,13 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.screenhandler;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
-
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyFluidScreenHandler;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 
 public class FluidPlacerScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
-	public FluidPlacerScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+	public FluidPlacerScreenHandler(int syncId, Player player, BlockPos position) {
 		super(AstromineTechnologiesScreenHandlers.FLUID_INSERTER, syncId, player, position);
 	}
 }

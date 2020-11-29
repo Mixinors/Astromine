@@ -24,20 +24,19 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.screenhandler;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
-
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.ComponentBlockEntityEnergyFluidScreenHandler;
 import com.github.chainmailstudios.astromine.common.widget.blade.HorizontalArrowWidget;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.FluidGeneratorBlockEntity;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 
 public class FluidGeneratorScreenHandler extends ComponentBlockEntityEnergyFluidScreenHandler {
 	private FluidGeneratorBlockEntity generator;
 
-	public FluidGeneratorScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+	public FluidGeneratorScreenHandler(int syncId, Player player, BlockPos position) {
 		super(AstromineTechnologiesScreenHandlers.LIQUID_GENERATOR, syncId, player, position);
 
 		generator = (FluidGeneratorBlockEntity) blockEntity;

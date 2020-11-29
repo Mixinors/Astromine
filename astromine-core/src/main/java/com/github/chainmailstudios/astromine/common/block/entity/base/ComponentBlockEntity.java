@@ -33,18 +33,16 @@ import com.github.chainmailstudios.astromine.common.component.general.provider.T
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.network.PacketContext;
-
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
-import net.minecraft.util.Tickable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Tuple;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.block.base.BlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
@@ -66,11 +64,11 @@ import java.util.function.BiConsumer;
 /**
  * A {@link BlockEntity} which is synchronized to the client
  * through {@link BlockEntityClientSerializable}, which is
- * {@link Tickable}, updates its {@link BlockState} based on
+ * {@link TickableBlockEntity}, updates its {@link BlockState} based on
  * its activity, and handles redstone behavior.
  */
-public abstract class ComponentBlockEntity extends BlockEntity implements BlockEntityClientSerializable, Tickable, TransferComponentProvider, RedstoneComponentProvider {
-	public static final Identifier TRANSFER_UPDATE_PACKET = AstromineCommon.identifier("transfer_update_packet");
+public abstract class ComponentBlockEntity extends BlockEntity implements BlockEntityClientSerializable, TickableBlockEntity, TransferComponentProvider, RedstoneComponentProvider {
+	public static final ResourceLocation TRANSFER_UPDATE_PACKET = AstromineCommon.identifier("transfer_update_packet");
 
 	private final TransferComponent transferComponent = createTransferComponent();
 
@@ -78,7 +76,7 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 
 	protected final Map<ComponentKey<?>, Component> allComponents = Maps.newHashMap();
 
-	protected final Map<Identifier, BiConsumer<PacketByteBuf, PacketContext>> allHandlers = Maps.newHashMap();
+	protected final Map<ResourceLocation, BiConsumer<FriendlyByteBuf, PacketContext>> allHandlers = Maps.newHashMap();
 
 	private boolean isActive = false;
 
@@ -93,12 +91,12 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 		super(type);
 
 		addPacketConsumer(TRANSFER_UPDATE_PACKET, ((buffer, context) -> {
-			Identifier packetIdentifier = buffer.readIdentifier();
-			Direction packetDirection = buffer.readEnumConstant(Direction.class);
-			TransferType packetTransferType = buffer.readEnumConstant(TransferType.class);
+			ResourceLocation packetResourceLocation = buffer.readResourceLocation();
+			Direction packetDirection = buffer.readEnum(Direction.class);
+			TransferType packetTransferType = buffer.readEnum(TransferType.class);
 
-			getTransferComponent().get(ComponentRegistry.get(packetIdentifier)).set(packetDirection, packetTransferType);
-			markDirty();
+			getTransferComponent().get(ComponentRegistry.get(packetResourceLocation)).set(packetDirection, packetTransferType);
+			setChanged();
 			sync();
 		}));
 	}
@@ -138,15 +136,15 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 		getTransferComponent().add(type);
 	}
 
-	/** Adds a {@link BiConsumer} that handles a {@link PacketByteBuf}
-	 * whose header is the given {@link Identifier}. */
-	public void addPacketConsumer(Identifier identifier, BiConsumer<PacketByteBuf, PacketContext> consumer) {
+	/** Adds a {@link BiConsumer} that handles a {@link FriendlyByteBuf}
+	 * whose header is the given {@link ResourceLocation}. */
+	public void addPacketConsumer(ResourceLocation identifier, BiConsumer<FriendlyByteBuf, PacketContext> consumer) {
 		allHandlers.put(identifier, consumer);
 	}
 
-	/** Consumes a {@link PacketByteBuf}, with the read header {@link Identifier},
+	/** Consumes a {@link FriendlyByteBuf}, with the read header {@link ResourceLocation},
 	 * repassing it to the matching {@link BiConsumer}. */
-	public void consumePacket(Identifier identifier, PacketByteBuf buffer, PacketContext context) {
+	public void consumePacket(ResourceLocation identifier, FriendlyByteBuf buffer, PacketContext context) {
 		allHandlers.get(identifier).accept(buffer, context);
 	}
 
@@ -163,7 +161,7 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 	/** Ticks this {@link ComponentBlockEntity}'s redstone behavior,
 	 * returning whether it should work or not. */
 	public boolean tickRedstone() {
-		boolean powered = world.getReceivedRedstonePower(getPos()) > 0;
+		boolean powered = level.getBestNeighborSignal(getBlockPos()) > 0;
 
 		switch (getRedstoneComponent().getType()) {
 			case WORK_WHEN_ON: {
@@ -189,17 +187,17 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 	 * based on its activity, or lack thereof. */
 	@Override
 	public void tick() {
-		if (!hasWorld() || world.isClient)
+		if (!hasLevel() || level.isClientSide)
 			return;
 
-		List<Pair<EnergyHandler, EnergyHandler>> energyTransfers = Lists.newArrayList();
+		List<Tuple<EnergyHandler, EnergyHandler>> energyTransfers = Lists.newArrayList();
 
 		for (Direction offsetDirection : Direction.values()) {
 			Direction neighborDirection = offsetDirection.getOpposite();
 
-			BlockPos neighborPos = getPos().offset(offsetDirection);
+			BlockPos neighborPos = getBlockPos().relative(offsetDirection);
 
-			BlockEntity neighborBlockEntity = world.getBlockEntity(neighborPos);
+			BlockEntity neighborBlockEntity = level.getBlockEntity(neighborPos);
 
 			if (getTransferComponent().hasItem()) {
 				ItemComponent ourComponent = ItemComponent.get(this);
@@ -241,23 +239,23 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 			}
 		}
 
-		if (world.getBlockState(getPos()).contains(BlockWithEntity.ACTIVE)) {
+		if (level.getBlockState(getBlockPos()).hasProperty(BlockWithEntity.ACTIVE)) {
 			if (activity.length - 1 >= 0)
 				System.arraycopy(activity, 1, activity, 0, activity.length - 1);
 
 			activity[4] = isActive;
 
 			if (isActive && !activity[0]) {
-				world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, true));
+				level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(BlockWithEntity.ACTIVE, true));
 			} else if (!isActive && activity[0]) {
-				world.setBlockState(getPos(), world.getBlockState(getPos()).with(BlockWithEntity.ACTIVE, false));
+				level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(BlockWithEntity.ACTIVE, false));
 			}
 		}
 	}
 
 	/** Serializes this {@link ComponentBlockEntity} to a {@link CompoundTag}. */
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public CompoundTag save(CompoundTag tag) {
 		CompoundTag transferTag = new CompoundTag();
 		getTransferComponent().writeToNbt(transferTag);
 
@@ -274,12 +272,12 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 			tag.put(type.getId().toString(), componentTag);
 		});
 
-		return super.toTag(tag);
+		return super.save(tag);
 	}
 
 	/** Deserializes this {@link ComponentBlockEntity} from a {@link CompoundTag}. */
 	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+	public void load(BlockState state, @NotNull CompoundTag tag) {
 		getTransferComponent().readFromNbt(tag.getCompound("transfer"));
 		getRedstoneComponent().readFromNbt(tag.getCompound("redstone"));
 
@@ -289,14 +287,14 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 			}
 		});
 
-		this.pos = new BlockPos(tag.getInt("x"), tag.getInt("y"), tag.getInt("z"));
+		this.worldPosition = new BlockPos(tag.getInt("x"), tag.getInt("y"), tag.getInt("z"));
 	}
 
 	/** Serializes this {@link ComponentBlockEntity} to a {@link CompoundTag},
 	 * for synchronization usage. */
 	@Override
 	public CompoundTag toClientTag(CompoundTag compoundTag) {
-		compoundTag = toTag(compoundTag);
+		compoundTag = save(compoundTag);
 		if (skipInventory) {
 			compoundTag.remove(AstromineComponents.ITEM_INVENTORY_COMPONENT.getId().toString());
 		} else {
@@ -309,6 +307,6 @@ public abstract class ComponentBlockEntity extends BlockEntity implements BlockE
 	 * for synchronization usage. */
 	@Override
 	public void fromClientTag(CompoundTag compoundTag) {
-		fromTag(null, compoundTag);
+		load(null, compoundTag);
 	}
 }

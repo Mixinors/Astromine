@@ -3,7 +3,7 @@ package com.github.chainmailstudios.astromine.foundations.datagen.generators.rec
 import net.fabricmc.fabric.api.tag.TagRegistry;
 
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.util.Identifier;
+import net.minecraft.util.ResourceLocation;
 
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.ShapedCraftingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
@@ -12,7 +12,7 @@ import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 public abstract class ToolCraftingRecipeGenerators extends ShapedCraftingSetRecipeGenerator {
 	public ToolCraftingRecipeGenerators(MaterialItemType input, MaterialItemType output, String... pattern) {
 		super(input, output, pattern);
-		this.addIngredient('s', Ingredient.fromTag(TagRegistry.item(new Identifier("c", "wood_sticks"))));
+		this.addIngredient('s', Ingredient.fromTag(TagRegistry.item(new ResourceLocation("c", "wood_sticks"))));
 	}
 
 	@Override

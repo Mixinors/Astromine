@@ -25,13 +25,6 @@
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.component.general.SimpleDirectionalFluidComponent;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
@@ -45,6 +38,12 @@ import com.github.chainmailstudios.astromine.technologies.common.block.entity.ma
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.EnergySizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity implements EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	private Fraction cooldown = Fraction.EMPTY;
@@ -84,7 +83,7 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 	public void tick() {
 		super.tick();
 
-		if (world == null || world.isClient || !tickRedstone())
+		if (level == null || level.isClientSide || !tickRedstone())
 			return;
 
 		FluidComponent fluidComponent = getFluidComponent();
@@ -108,11 +107,11 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 
 					FluidVolume fluidVolume = fluidComponent.getFirst();
 
-					Direction direction = getCachedState().get(HorizontalFacingBlock.FACING);
+					Direction direction = getBlockState().getValue(HorizontalDirectionalBlock.FACING);
 
-					BlockPos targetPos = pos.offset(direction);
+					BlockPos targetPos = worldPosition.relative(direction);
 
-					BlockState targetState = world.getBlockState(targetPos);
+					BlockState targetState = level.getBlockState(targetPos);
 
 					if (targetState.isAir()) {
 						if (fluidVolume.hasStored(Fraction.BUCKET)) {
@@ -122,8 +121,8 @@ public class FluidPlacerBlockEntity extends ComponentEnergyFluidBlockEntity impl
 
 							energyVolume.take(getEnergyConsumed());
 
-							world.setBlockState(targetPos, toInsert.getFluid().getDefaultState().getBlockState());
-							world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1, 1);
+							level.setBlockAndUpdate(targetPos, toInsert.getFluid().defaultFluidState().createLegacyBlock());
+							level.playSound(null, worldPosition, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1, 1);
 						}
 					}
 				}

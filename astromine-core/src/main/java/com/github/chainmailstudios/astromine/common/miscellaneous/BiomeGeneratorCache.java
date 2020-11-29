@@ -24,13 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.miscellaneous;
 
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.source.BiomeSource;
-
 import it.unimi.dsi.fastutil.HashCommon;
 
 import java.util.Arrays;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeSource;
 
 /**
  * A non-threadsafe cache used to lossily store biome data. Best used with thread locals.
@@ -56,14 +55,14 @@ public class BiomeGeneratorCache {
 	}
 
 	public Biome getBiome(int x, int z) {
-		long key = ChunkPos.toLong(x, z);
+		long key = ChunkPos.asLong(x, z);
 		int idx = (int) HashCommon.mix(key) & this.mask;
 
 		if (this.keys[idx] == key) {
 			return this.values[idx];
 		}
 
-		Biome biome = source.getBiomeForNoiseGen(x, 0, z);
+		Biome biome = source.getNoiseBiome(x, 0, z);
 
 		this.keys[idx] = key;
 		this.values[idx] = biome;

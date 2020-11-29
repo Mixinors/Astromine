@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.datagen.generator.recipe.set.base;
 
-import net.minecraft.util.Identifier;
+import net.minecraft.util.ResourceLocation;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.datagen.generator.SetGenerator;
@@ -21,7 +21,7 @@ public interface SetRecipeGenerator extends SetGenerator<RecipeData>, RecipeGene
 		return getOutput(set).getName();
 	}
 
-	default Identifier getRecipeId(MaterialSet set) {
+	default ResourceLocation getRecipeId(MaterialSet set) {
 		return AstromineCommon.identifier(getRecipeName(set));
 	}
 

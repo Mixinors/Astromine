@@ -24,12 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.registry;
 
-import net.minecraft.util.Identifier;
-
 import com.github.chainmailstudios.astromine.common.registry.base.UniRegistry;
 import com.github.chainmailstudios.astromine.mixin.IdentifierMixin;
 
 import java.util.Optional;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * An {@link UniRegistry} for registration of
@@ -44,7 +43,7 @@ public class IdentifierFixRegistry extends UniRegistry<String, String> {
 	/** We only want one instance of this. */
 	private IdentifierFixRegistry() {}
 
-	/** Returns the fixed path for an {@link Identifier#getPath()},
+	/** Returns the fixed path for an {@link ResourceLocation#getPath()},
 	 * or the value passed if no fixes are registered. */
 	@Override
 	public String get(String oldPath) {
@@ -53,15 +52,15 @@ public class IdentifierFixRegistry extends UniRegistry<String, String> {
 		return containsKey(newPath) ? get(newPath) : newPath;
 	}
 
-	/** Register a fix for an {@link Identifier#getPath()}. */
+	/** Register a fix for an {@link ResourceLocation#getPath()}. */
 	@Override
 	public String register(String oldPath, String newPath) {
 		if (oldPath.equals(newPath))
 			{
-			throw new IllegalArgumentException(String.format("Invalid Identifier path fix attempted: '%s' and '%s' are the same!", newPath , oldPath));
+			throw new IllegalArgumentException(String.format("Invalid ResourceLocation path fix attempted: '%s' and '%s' are the same!", newPath , oldPath));
 		}  else if (containsKey(newPath)) {
 			if (get(newPath).equals(oldPath)) {
-				throw new IllegalArgumentException(String.format("Invalid Identifier path fix attempted: '%s' and '%s' would cause recursion!", oldPath, newPath));
+				throw new IllegalArgumentException(String.format("Invalid ResourceLocation path fix attempted: '%s' and '%s' would cause recursion!", oldPath, newPath));
 			} else {
 				return register(oldPath, get(newPath));
 			}

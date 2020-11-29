@@ -24,12 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.registry;
 
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.World;
-
 import com.github.chainmailstudios.astromine.common.registry.base.UniRegistry;
 
 import java.util.Optional;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 
 /**
  * An {@link UniRegistry}, for registration of
@@ -38,7 +37,7 @@ import java.util.Optional;
  * The specified {@link Boolean} is checked to verify
  * if the given dimension does not have a natural atmosphere.
  */
-public class AtmosphereRegistry extends UniRegistry<RegistryKey<World>, Boolean> {
+public class AtmosphereRegistry extends UniRegistry<ResourceKey<Level>, Boolean> {
 	public static final AtmosphereRegistry INSTANCE = new AtmosphereRegistry();
 
 	/** We only want one instance of this. */
@@ -46,7 +45,7 @@ public class AtmosphereRegistry extends UniRegistry<RegistryKey<World>, Boolean>
 
 	/** Asserts whether the given dimension does not have a natural atmosphere, or not. */
 	@Override
-	public Boolean get(RegistryKey<World> worldRegistryKey) {
+	public Boolean get(ResourceKey<Level> worldRegistryKey) {
 		return Optional.ofNullable(super.get(worldRegistryKey)).orElse(false);
 	}
 }

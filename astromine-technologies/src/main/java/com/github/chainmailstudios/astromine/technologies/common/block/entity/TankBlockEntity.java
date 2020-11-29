@@ -27,14 +27,13 @@ package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 import com.github.chainmailstudios.astromine.common.component.general.*;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentFluidItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.utilities.VolumeUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
@@ -84,23 +83,23 @@ public abstract class TankBlockEntity extends ComponentFluidItemBlockEntity impl
 	public void tick() {
 		super.tick();
 
-		if (world == null || world.isClient || !tickRedstone())
+		if (level == null || level.isClientSide || !tickRedstone())
 			return;
 
 		VolumeUtilities.transferBetween(getItemComponent(), getFluidComponent(), 0, 1, 0);
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		tag.putString("fluid", Registry.FLUID.getId(filter).toString());
-		return super.toTag(tag);
+	public CompoundTag save(CompoundTag tag) {
+		tag.putString("fluid", Registry.FLUID.getKey(filter).toString());
+		return super.save(tag);
 	}
 
 	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
-		Registry.FLUID.getOrEmpty(new Identifier(tag.getString("fluid"))).ifPresent(filter -> this.filter = filter);
+	public void load(BlockState state, @NotNull CompoundTag tag) {
+		Registry.FLUID.getOptional(new ResourceLocation(tag.getString("fluid"))).ifPresent(filter -> this.filter = filter);
 
-		super.fromTag(state, tag);
+		super.load(state, tag);
 	}
 
 	public static class Primitive extends TankBlockEntity {

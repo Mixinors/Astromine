@@ -1,21 +1,19 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import net.minecraft.network.PacketByteBuf;
-
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import io.netty.buffer.ByteBuf;
-
+import net.minecraft.network.FriendlyByteBuf;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 
 public class BooleanUtilities {
     /** Serializes the given boolean to a {@link ByteBuf}. */
-    public static void toPacket(PacketByteBuf buffer, boolean value) {
+    public static void toPacket(FriendlyByteBuf buffer, boolean value) {
         buffer.writeBoolean(value);
     }
 
     /** Deserializes a boolean from a {@link ByteBuf}. */
-    public static boolean fromPacket(PacketByteBuf buffer) {
+    public static boolean fromPacket(FriendlyByteBuf buffer) {
         return buffer.readBoolean();
     }
 

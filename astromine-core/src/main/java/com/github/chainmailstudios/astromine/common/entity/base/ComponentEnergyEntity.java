@@ -24,17 +24,16 @@
 
 package com.github.chainmailstudios.astromine.common.entity.base;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.world.World;
-
 import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
 
 /**
  * A{@link ComponentEntity} with an attached {@link EnergyComponent}.
  */
 public abstract class ComponentEnergyEntity extends ComponentEntity {
 	/** Instantiates a {@link ComponentEnergyEntity} */
-	public ComponentEnergyEntity(EntityType<?> type, World world) {
+	public ComponentEnergyEntity(EntityType<?> type, Level world) {
 		super(type, world);
 	}
 

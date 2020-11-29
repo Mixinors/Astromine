@@ -24,31 +24,31 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.feature;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
 import com.mojang.serialization.Codec;
 
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
 
 import java.util.Random;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class MoonLakeFeature extends Feature<DefaultFeatureConfig> {
-	public MoonLakeFeature(Codec<DefaultFeatureConfig> configCodec) {
+public class MoonLakeFeature extends Feature<NoneFeatureConfiguration> {
+	public MoonLakeFeature(Codec<NoneFeatureConfiguration> configCodec) {
 		super(configCodec);
 	}
 
 	@Override
-	public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos pos, DefaultFeatureConfig featureConfig) {
-		BlockPos.Mutable mutable = pos.mutableCopy();
+	public boolean place(WorldGenLevel world, ChunkGenerator chunkGenerator, Random random, BlockPos pos, NoneFeatureConfiguration featureConfig) {
+		BlockPos.MutableBlockPos mutable = pos.mutable();
 
 		for (int x = -4; x <= 4; x++) {
 			for (int z = -4; z <= 4; z++) {
 				for (int y = -4; y <= 4; y++) {
-					if (!world.getBlockState(mutable.set(pos, x, y, z)).isOf(AstromineDiscoveriesBlocks.MOON_STONE)) {
+					if (!world.getBlockState(mutable.setWithOffset(pos, x, y, z)).is(AstromineDiscoveriesBlocks.MOON_STONE)) {
 						return false;
 					}
 				}
@@ -63,9 +63,9 @@ public class MoonLakeFeature extends Feature<DefaultFeatureConfig> {
 					double dist = (x * x) + (y * y) + (z * z);
 					if (dist <= radius) {
 						if (y < -1) {
-							world.setBlockState(mutable.set(pos, x, y, z), Blocks.ICE.getDefaultState(), 3);
+							world.setBlock(mutable.setWithOffset(pos, x, y, z), Blocks.ICE.defaultBlockState(), 3);
 						} else {
-							world.setBlockState(mutable.set(pos, x, y, z), Blocks.AIR.getDefaultState(), 3);
+							world.setBlock(mutable.setWithOffset(pos, x, y, z), Blocks.AIR.defaultBlockState(), 3);
 						}
 					}
 				}

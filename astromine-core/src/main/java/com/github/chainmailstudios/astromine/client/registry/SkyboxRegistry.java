@@ -24,21 +24,20 @@
 
 package com.github.chainmailstudios.astromine.client.registry;
 
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.World;
-
 import com.github.chainmailstudios.astromine.client.render.sky.skybox.Skybox;
 import com.github.chainmailstudios.astromine.common.registry.base.BiRegistry;
 import com.github.chainmailstudios.astromine.mixin.WorldRendererMixin;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 
 /**
  * A {@link BiRegistry} for registration of
- * {@link RegistryKey<World>}s mapped to {@link Skybox}s.
+ * {@link ResourceKey<Level>}s mapped to {@link Skybox}s.
  *
  * The registered gravity value will then be used for {@link Skybox}
  * rendering, through {@link WorldRendererMixin}.
  */
-public class SkyboxRegistry extends BiRegistry<RegistryKey<World>, Skybox> {
+public class SkyboxRegistry extends BiRegistry<ResourceKey<Level>, Skybox> {
 	public static final SkyboxRegistry INSTANCE = new SkyboxRegistry();
 
 	/** We only want one instance of this. */

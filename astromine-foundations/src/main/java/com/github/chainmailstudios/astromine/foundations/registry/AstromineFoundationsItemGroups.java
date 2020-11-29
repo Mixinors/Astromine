@@ -24,12 +24,11 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
-import net.minecraft.item.ItemGroup;
-
 import com.github.chainmailstudios.astromine.registry.AstromineItemGroups;
+import net.minecraft.world.item.CreativeModeTab;
 
 public class AstromineFoundationsItemGroups extends AstromineItemGroups {
-	public static final ItemGroup FOUNDATIONS = register("foundations", () -> AstromineFoundationsItems.BRONZE_INGOT);
+	public static final CreativeModeTab FOUNDATIONS = register("foundations", () -> AstromineFoundationsItems.BRONZE_INGOT);
 
 	public static void initialize() {
 

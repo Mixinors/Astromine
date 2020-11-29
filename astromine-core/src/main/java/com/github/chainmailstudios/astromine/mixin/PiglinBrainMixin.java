@@ -24,38 +24,36 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
+import com.github.chainmailstudios.astromine. registry.AstromineConfig;
+import com.github.chainmailstudios.astromine. registry.AstromineCriteria;
+import com.github.chainmailstudios.astromine. registry.AstromineTags;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import net.minecraft.entity.ai.brain.MemoryModuleType;
-import net.minecraft.entity.mob.PiglinBrain;
-import net.minecraft.entity.mob.PiglinEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundEvents;
-
-import com.github.chainmailstudios.astromine.registry.AstromineConfig;
-import com.github.chainmailstudios.astromine.registry.AstromineCriteria;
-import com.github.chainmailstudios.astromine.registry.AstromineTags;
-
 import java.util.Optional;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.monster.piglin.Piglin;
+import net.minecraft.world.entity.monster.piglin.PiglinAi;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
-@Mixin(PiglinBrain.class)
+@Mixin(PiglinAi.class)
 public abstract class PiglinBrainMixin {
-	@Inject(method = "consumeOffHandItem(Lnet/minecraft/entity/mob/PiglinEntity;Z)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/mob/PiglinBrain;acceptsForBarter(Lnet/minecraft/item/Item;)Z"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-	private static void astromine_consumeOffHandItem(PiglinEntity entity, boolean bl, CallbackInfo ci, ItemStack stack, boolean bl2) {
-		if (bl && bl2 && stack.getItem().isIn(AstromineTags.TRICKS_PIGLINS)) {
-			Optional<PlayerEntity> optional = entity.getBrain().getOptionalMemory(MemoryModuleType.NEAREST_VISIBLE_PLAYER);
-			if (optional.isPresent() && optional.get() instanceof ServerPlayerEntity) {
+	@Inject(method = "stopHoldingOffHandItem(Lnet/minecraft/world/entity/monster/piglin/Piglin;Z)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/entity/monster/piglin/PiglinAi;isBarterCurrency(Lnet/minecraft/world/item/Item;)Z"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
+	private static void astromine_consumeOffHandItem(Piglin entity, boolean bl, CallbackInfo ci, ItemStack stack, boolean bl2) {
+		if (bl && bl2 && stack.getItem().is(AstromineTags.TRICKS_PIGLINS)) {
+			Optional<Player> optional = entity.getBrain().getMemory(MemoryModuleType.NEAREST_VISIBLE_PLAYER);
+			if (optional.isPresent() && optional.get() instanceof ServerPlayer) {
 				boolean noticed = entity.getRandom().nextInt(AstromineConfig.get().piglinAngerChance) == 0;
-				AstromineCriteria.TRICKED_PIGLIN.trigger((ServerPlayerEntity) optional.get(), !noticed);
+				AstromineCriteria.TRICKED_PIGLIN.trigger((ServerPlayer) optional.get(), !noticed);
 				if(noticed) {
-					entity.playSound(SoundEvents.ENTITY_PIGLIN_ANGRY, 1.0f, 1.0f);
-					PiglinBrain.becomeAngryWith(entity, optional.get());
+					entity.playSound(SoundEvents.PIGLIN_ANGRY, 1.0f, 1.0f);
+					PiglinAi.setAngerTarget(entity, optional.get());
 					ci.cancel();
 				}
 			}

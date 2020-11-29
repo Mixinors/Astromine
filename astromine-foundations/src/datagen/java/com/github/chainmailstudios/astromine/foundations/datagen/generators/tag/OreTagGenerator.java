@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.generators.tag;
 
-import net.minecraft.util.Identifier;
+import net.minecraft.util.ResourceLocation;
 
 import com.github.chainmailstudios.astromine.datagen.generator.tag.set.SetTagGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
@@ -16,8 +16,8 @@ public class OreTagGenerator implements SetTagGenerator {
 
 	@Override
 	public void generate(TagData tags, MaterialSet set) {
-		tags.item(new Identifier("c", set.getName() + "_ores")).appendTag(set.getItemTagId(type));
-		tags.block(new Identifier("c", set.getName() + "_ores")).appendTag(set.getItemTagId(type));
+		tags.item(new ResourceLocation("c", set.getName() + "_ores")).appendTag(set.getItemTagId(type));
+		tags.block(new ResourceLocation("c", set.getName() + "_ores")).appendTag(set.getItemTagId(type));
 	}
 
 	@Override

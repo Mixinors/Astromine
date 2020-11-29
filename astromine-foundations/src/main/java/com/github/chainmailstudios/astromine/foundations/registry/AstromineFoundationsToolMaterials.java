@@ -25,17 +25,15 @@
 package com.github.chainmailstudios.astromine.foundations.registry;
 
 import net.fabricmc.fabric.api.tag.TagRegistry;
-
-import net.minecraft.item.ToolMaterial;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.crafting.Ingredient;
 import com.github.chainmailstudios.astromine.registry.AstromineToolMaterials;
 
 public class AstromineFoundationsToolMaterials extends AstromineToolMaterials {
-	public static final ToolMaterial COPPER = register(1, 200, 4f, 1.5f, 10, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:copper_ingots"))));
-	public static final ToolMaterial TIN = register(1, 200, 5f, 1.0f, 10, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:tin_ingots"))));
-	public static final ToolMaterial LEAD = register(2, 496, 4.5f, 1.5f, 5, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:lead_ingots"))));
-	public static final ToolMaterial BRONZE = register(2, 539, 7f, 2.5f, 18, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:bronze_ingots"))));
-	public static final ToolMaterial STEEL = register(3, 1043, 7.5f, 3f, 16, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:steel_ingots"))));
+	public static final Tier COPPER = register(1, 200, 4f, 1.5f, 10, () -> Ingredient.of(TagRegistry.item(ResourceLocation.tryParse("c:copper_ingots"))));
+	public static final Tier TIN = register(1, 200, 5f, 1.0f, 10, () -> Ingredient.of(TagRegistry.item(ResourceLocation.tryParse("c:tin_ingots"))));
+	public static final Tier LEAD = register(2, 496, 4.5f, 1.5f, 5, () -> Ingredient.of(TagRegistry.item(ResourceLocation.tryParse("c:lead_ingots"))));
+	public static final Tier BRONZE = register(2, 539, 7f, 2.5f, 18, () -> Ingredient.of(TagRegistry.item(ResourceLocation.tryParse("c:bronze_ingots"))));
+	public static final Tier STEEL = register(3, 1043, 7.5f, 3f, 16, () -> Ingredient.of(TagRegistry.item(ResourceLocation.tryParse("c:steel_ingots"))));
 }

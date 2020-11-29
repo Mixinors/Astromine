@@ -24,16 +24,6 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.world.World;
-
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
@@ -53,17 +43,26 @@ import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 
-public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory> {
-	private final Identifier identifier;
+public final class SolidifyingRecipe implements EnergyConsumingRecipe<Container> {
+	private final ResourceLocation identifier;
 	private final FluidIngredient firstInput;
 	private final ItemStack firstOutput;
 	private final double energyInput;
 	private final int time;
 
-	private static final Map<World, SolidifyingRecipe[]> RECIPE_CACHE = new HashMap<>();
+	private static final Map<Level, SolidifyingRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public SolidifyingRecipe(Identifier identifier, FluidIngredient firstInput, ItemStack firstOutput, double energyInput, int time) {
+	public SolidifyingRecipe(ResourceLocation identifier, FluidIngredient firstInput, ItemStack firstOutput, double energyInput, int time) {
 		this.identifier = identifier;
 		this.firstInput = firstInput;
 		this.firstOutput = firstOutput;
@@ -71,9 +70,9 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 		this.time = time;
 	}
 
-	public static boolean allows(World world, FluidComponent fluidComponent) {
+	public static boolean allows(Level world, FluidComponent fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (SolidifyingRecipe) it).toArray(SolidifyingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().byType(Type.INSTANCE).values().stream().map(it -> (SolidifyingRecipe) it).toArray(SolidifyingRecipe[]::new));
 		}
 
 		for (SolidifyingRecipe recipe : RECIPE_CACHE.get(world)) {
@@ -85,9 +84,9 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 		return false;
 	}
 
-	public static Optional<SolidifyingRecipe> matching(World world, ItemComponent itemComponent, FluidComponent fluidComponent) {
+	public static Optional<SolidifyingRecipe> matching(Level world, ItemComponent itemComponent, FluidComponent fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (SolidifyingRecipe) it).toArray(SolidifyingRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().byType(Type.INSTANCE).values().stream().map(it -> (SolidifyingRecipe) it).toArray(SolidifyingRecipe[]::new));
 		}
 
 		for (SolidifyingRecipe recipe : RECIPE_CACHE.get(world)) {
@@ -124,27 +123,27 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 	}
 
 	@Override
-	public boolean matches(Inventory inventory, World world) {
+	public boolean matches(Container inventory, Level world) {
 		return false;
 	}
 
 	@Override
-	public ItemStack craft(Inventory inventory) {
+	public ItemStack assemble(Container inventory) {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public boolean fits(int width, int height) {
+	public boolean canCraftInDimensions(int width, int height) {
 		return false;
 	}
 
 	@Override
-	public ItemStack getOutput() {
+	public ItemStack getResultItem() {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public Identifier getId() {
+	public ResourceLocation getId() {
 		return identifier;
 	}
 
@@ -159,16 +158,16 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 	}
 
 	@Override
-	public DefaultedList<Ingredient> getPreviewInputs() {
-		return DefaultedList.of();
+	public NonNullList<Ingredient> getIngredients() {
+		return NonNullList.create();
 	}
 
 	@Override
-	public ItemStack getRecipeKindIcon() {
+	public ItemStack getToastSymbol() {
 		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_FLUID_GENERATOR);
 	}
 
-	public Identifier getIdentifier() {
+	public ResourceLocation getIdentifier() {
 		return identifier;
 	}
 
@@ -190,14 +189,14 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 	}
 
 	public static final class Serializer implements RecipeSerializer<SolidifyingRecipe> {
-		public static final Identifier ID = AstromineCommon.identifier("solidifying");
+		public static final ResourceLocation ID = AstromineCommon.identifier("solidifying");
 
 		public static final Serializer INSTANCE = new Serializer();
 
 		private Serializer() {}
 
 		@Override
-		public SolidifyingRecipe read(Identifier identifier, JsonObject object) {
+		public SolidifyingRecipe fromJson(ResourceLocation identifier, JsonObject object) {
 			SolidifyingRecipe.Format format = new Gson().fromJson(object, SolidifyingRecipe.Format.class);
 
 			return new SolidifyingRecipe(
@@ -210,7 +209,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 		}
 
 		@Override
-		public SolidifyingRecipe read(Identifier identifier, PacketByteBuf buffer) {
+		public SolidifyingRecipe fromNetwork(ResourceLocation identifier, FriendlyByteBuf buffer) {
 			return new SolidifyingRecipe(
 					identifier,
 					FluidIngredient.fromPacket(buffer),
@@ -221,7 +220,7 @@ public final class SolidifyingRecipe implements EnergyConsumingRecipe<Inventory>
 		}
 
 		@Override
-		public void write(PacketByteBuf buffer, SolidifyingRecipe recipe) {
+		public void toNetwork(FriendlyByteBuf buffer, SolidifyingRecipe recipe) {
 			recipe.firstInput.toPacket(buffer);
 			StackUtilities.toPacket(buffer, recipe.getFirstOutput());
 			DoubleUtilities.toPacket(buffer, recipe.energyInput);

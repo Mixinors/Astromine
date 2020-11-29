@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.registry;
+package com.github.chainmailstudios.astromine. registry;
 
 public class AstromineGravities {
 	public static void initialize() {

@@ -2,7 +2,7 @@ package com.github.chainmailstudios.astromine.technologies.datagen.generators.re
 
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.util.Identifier;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
@@ -31,7 +31,7 @@ public class TrituratingRecipeGenerator extends EnergyProcessingRecipeGenerator 
 	}
 
 	@Override
-	public Identifier getRecipeId() {
+	public ResourceLocation getRecipeId() {
 		return AstromineCommon.identifier(name);
 	}
 

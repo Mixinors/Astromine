@@ -22,14 +22,13 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.registry;
-
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+package com.github.chainmailstudios.astromine. registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 
 public class AstromineEntityTypes {
 	public static void initialize() {
@@ -40,7 +39,7 @@ public class AstromineEntityTypes {
 		return register(AstromineCommon.identifier(id), builder);
 	}
 
-	public static <T extends Entity> EntityType<T> register(Identifier id, EntityType.Builder<T> builder) {
+	public static <T extends Entity> EntityType<T> register(ResourceLocation id, EntityType.Builder<T> builder) {
 		return Registry.register(Registry.ENTITY_TYPE, id, builder.build(id.getPath()));
 	}
 
@@ -56,7 +55,7 @@ public class AstromineEntityTypes {
 		return register(AstromineCommon.identifier(id), type);
 	}
 
-	public static <T extends Entity> EntityType<T> register(Identifier id, EntityType<T> type) {
+	public static <T extends Entity> EntityType<T> register(ResourceLocation id, EntityType<T> type) {
 		return Registry.register(Registry.ENTITY_TYPE, id, type);
 	}
 }

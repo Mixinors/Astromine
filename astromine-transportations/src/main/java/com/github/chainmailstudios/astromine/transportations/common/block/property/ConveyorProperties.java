@@ -24,14 +24,14 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block.property;
 
-import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
 public class ConveyorProperties {
-	public static final BooleanProperty FRONT = BooleanProperty.of("front");
-	public static final BooleanProperty LEFT = BooleanProperty.of("left");
-	public static final BooleanProperty RIGHT = BooleanProperty.of("right");
-	public static final BooleanProperty BACK = BooleanProperty.of("back");
-	public static final BooleanProperty UP = BooleanProperty.of("up");
-	public static final BooleanProperty CONVEYOR = BooleanProperty.of("conveyor");
-	public static final BooleanProperty NO_FLOOR = BooleanProperty.of("floor");
+	public static final BooleanProperty FRONT = BooleanProperty.create("front");
+	public static final BooleanProperty LEFT = BooleanProperty.create("left");
+	public static final BooleanProperty RIGHT = BooleanProperty.create("right");
+	public static final BooleanProperty BACK = BooleanProperty.create("back");
+	public static final BooleanProperty UP = BooleanProperty.create("up");
+	public static final BooleanProperty CONVEYOR = BooleanProperty.create("conveyor");
+	public static final BooleanProperty NO_FLOOR = BooleanProperty.create("floor");
 }

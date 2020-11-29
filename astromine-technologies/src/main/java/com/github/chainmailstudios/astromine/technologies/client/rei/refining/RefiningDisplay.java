@@ -26,9 +26,7 @@ package com.github.chainmailstudios.astromine.technologies.client.rei.refining;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import net.minecraft.util.Identifier;
-
+import net.minecraft.resources.ResourceLocation;
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
@@ -54,9 +52,9 @@ public class RefiningDisplay implements RecipeDisplay {
 	private final FluidVolume fifthOutput;
 	private final FluidVolume sixthOutput;
 	private final FluidVolume seventhOutput;
-	private final Identifier id;
+	private final ResourceLocation id;
 
-	public RefiningDisplay(double energy, FluidIngredient input, FluidVolume firstOutput, FluidVolume secondOutput, FluidVolume thirdOutput, FluidVolume fourthOutput, FluidVolume fifthOutput, FluidVolume sixthOutput, FluidVolume seventhOutput, Identifier id) {
+	public RefiningDisplay(double energy, FluidIngredient input, FluidVolume firstOutput, FluidVolume secondOutput, FluidVolume thirdOutput, FluidVolume fourthOutput, FluidVolume fifthOutput, FluidVolume sixthOutput, FluidVolume seventhOutput, ResourceLocation id) {
 		this.energy = energy;
 		this.input = input;
 		this.firstOutput = firstOutput;
@@ -75,7 +73,7 @@ public class RefiningDisplay implements RecipeDisplay {
 	}
 
 	@Override
-	public Optional<Identifier> getRecipeLocation() {
+	public Optional<ResourceLocation> getRecipeLocation() {
 		return Optional.ofNullable(id);
 	}
 
@@ -90,7 +88,7 @@ public class RefiningDisplay implements RecipeDisplay {
 	}
 
 	@Override
-	public Identifier getRecipeCategory() {
+	public ResourceLocation getRecipeCategory() {
 		return AstromineTechnologiesRoughlyEnoughItemsPlugin.REFINING;
 	}
 

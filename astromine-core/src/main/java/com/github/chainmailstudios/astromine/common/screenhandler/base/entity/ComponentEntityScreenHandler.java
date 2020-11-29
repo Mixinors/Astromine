@@ -24,12 +24,6 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
-
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentEntity;
 import com.github.chainmailstudios.astromine.common.screenhandler.base.block.BlockStateScreenHandler;
@@ -44,6 +38,11 @@ import com.github.vini2003.blade.common.widget.base.TextWidget;
 
 import java.util.Collection;
 import java.util.HashSet;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * A {@link BlockStateScreenHandler} with an attached
@@ -60,10 +59,10 @@ public abstract class ComponentEntityScreenHandler extends BaseScreenHandler {
 
 	/** Instantiates a {@link ComponentEntityScreenHandler},
 	 * synchronizing its attached {@link ComponentEntity}. */
-	public ComponentEntityScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, int entityId) {
+	public ComponentEntityScreenHandler(MenuType<?> type, int syncId, Player player, int entityId) {
 		super(type, syncId, player);
 
-		entity = (ComponentEntity) player.world.getEntityById(entityId);
+		entity = (ComponentEntity) player.level.getEntity(entityId);
 	}
 
 	/** Returns an {@link ItemStack} representing this entity in the {@link TabWidget}. */
@@ -75,11 +74,11 @@ public abstract class ComponentEntityScreenHandler extends BaseScreenHandler {
 		return 0;
 	}
 
-	/** Override behavior to only allow the {@link ScreenHandler} to be open
+	/** Override behavior to only allow the {@link AbstractContainerMenu} to be open
 	 * when possible, and while the associated {@link Entity} has not died
 	 * or moved too far away. */
 	@Override
-	public boolean canUse(PlayerEntity player) {
+	public boolean stillValid(Player player) {
 		return this.entity.isAlive() && this.entity.distanceTo(player) < 8.0F;
 	}
 

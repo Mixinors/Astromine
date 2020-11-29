@@ -26,14 +26,12 @@ package com.github.chainmailstudios.astromine.common.callback;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-
-import net.minecraft.client.render.SkyProperties;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.resources.ResourceLocation;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 
 /**
- * A callback called when initializing {@link SkyProperties}
+ * A callback called when initializing {@link DimensionSpecialEffects}
  * statically and adding new properties for custom
  * dimensions.
  */
@@ -45,5 +43,5 @@ public interface SkyPropertiesCallback {
 	});
 
 	/** Handle the properties. */
-	void handle(Object2ObjectMap<Identifier, SkyProperties> properties);
+	void handle(Object2ObjectMap<ResourceLocation, DimensionSpecialEffects> properties);
 }

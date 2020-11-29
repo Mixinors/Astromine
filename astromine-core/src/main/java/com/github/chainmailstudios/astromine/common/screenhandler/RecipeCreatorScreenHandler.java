@@ -26,20 +26,6 @@ package com.github.chainmailstudios.astromine.common.screenhandler;
 
 import com.github.chainmailstudios.astromine.common.utilities.ClientUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.texture.AbstractTexture;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.data.client.model.Texture;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.CraftingRecipe;
-import net.minecraft.tag.TagManager;
-import net.minecraft.text.LiteralText;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-
 import com.github.chainmailstudios.astromine.common.inventory.BaseInventory;
 import com.github.chainmailstudios.astromine.registry.AstromineScreenHandlers;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
@@ -63,6 +49,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingRecipe;
 
 /**
  * A {@link BaseScreenHandler}
@@ -70,13 +63,13 @@ import java.util.Map;
  * creation as {@link JsonElement}.
  */
 public class RecipeCreatorScreenHandler extends BaseScreenHandler {
-	public static final Inventory[] craftingInventories = new Inventory[] { BaseInventory.of(10), BaseInventory.of(10) };
+	public static final Container[] craftingInventories = new Container[] { BaseInventory.of(10), BaseInventory.of(10) };
 
-	public Inventory getInventory() {
+	public Container getInventory() {
 		return getClient() ? craftingInventories[0] : craftingInventories[1];
 	}
 
-	public RecipeCreatorScreenHandler(int syncId, @NotNull PlayerEntity player) {
+	public RecipeCreatorScreenHandler(int syncId, @NotNull Player player) {
 		super(AstromineScreenHandlers.RECIPE_CREATOR, syncId, player);
 	}
 
@@ -97,7 +90,7 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
         final Map<String, String> TAGS = new HashMap<String, String>() {
             {
                 Registry.ITEM.forEach((item) -> {
-                    Identifier id = Registry.ITEM.getId(item);
+                    ResourceLocation id = Registry.ITEM.getKey(item);
 
                     TYPES.forEach((type) -> {
                         if (id.getPath().contains(type)) {
@@ -126,7 +119,7 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 		ButtonWidget saveButton = new ButtonWidget();
 		saveButton.setPosition(Position.of(panel.getX() + 7, panel.getY() + 7 + 14 + 18 * 3));
 		saveButton.setSize(Size.of(18 * 3, 18));
-		saveButton.setLabel(new LiteralText("Save"));
+		saveButton.setLabel(new TextComponent("Save"));
 		saveButton.setClickAction(() -> {
 			Map<Integer, String> table = new HashMap<>();
 			Map<String, Integer> inverseTable = new HashMap<>();
@@ -135,10 +128,10 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 			inputSlots.forEach((it) -> {
 				int slot = it.getSlot();
 
-				ItemStack stack = it.getBackendSlot().getStack();
+				ItemStack stack = it.getBackendSlot().getItem();
 
 				if (!stack.isEmpty()) {
-					String name = Registry.ITEM.getId(stack.getItem()).toString();
+					String name = Registry.ITEM.getKey(stack.getItem()).toString();
 
 					if (inverseTable.containsKey(name)) {
 						grid.put(slot, Integer.toString(inverseTable.get(name)));
@@ -152,9 +145,9 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 				}
 			});
 
-			ItemStack outputStack = outputSlot.getBackendSlot().getStack();
+			ItemStack outputStack = outputSlot.getBackendSlot().getItem();
 
-			String outputName = Registry.ITEM.getId(outputStack.getItem()).toString();
+			String outputName = Registry.ITEM.getKey(outputStack.getItem()).toString();
 
 			JsonObject recipeJson = new JsonObject();
 
@@ -212,7 +205,7 @@ public class RecipeCreatorScreenHandler extends BaseScreenHandler {
 	}
 
 	@Override
-	public boolean canUse(PlayerEntity player) {
+	public boolean stillValid(Player player) {
 		return true;
 	}
 }

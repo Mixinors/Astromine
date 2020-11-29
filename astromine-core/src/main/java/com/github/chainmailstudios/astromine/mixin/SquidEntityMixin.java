@@ -24,17 +24,15 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
+import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
+import net.minecraft.world.entity.animal.Squid;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-import net.minecraft.entity.passive.SquidEntity;
-
-import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
-
-@Mixin(SquidEntity.class)
+@Mixin(Squid.class)
 public abstract class SquidEntityMixin implements GravityEntity {
-	@ModifyConstant(method = "tickMovement()V", constant = @Constant(doubleValue = 0.08D))
+	@ModifyConstant(method = "aiStep()V", constant = @Constant(doubleValue = 0.08D))
 	double getGravity(double original) {
 		return this.astromine_getGravity();
 	}

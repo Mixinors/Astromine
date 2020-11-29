@@ -24,11 +24,10 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.entity.ai.superspaceslime;
 
-import net.minecraft.entity.ai.goal.Goal;
-
 import com.github.chainmailstudios.astromine.discoveries.common.entity.SuperSpaceSlimeEntity;
 
 import java.util.EnumSet;
+import net.minecraft.world.entity.ai.goal.Goal;
 
 public class SuperSpaceSlimeExplosionGoal extends Goal {
 
@@ -37,7 +36,7 @@ public class SuperSpaceSlimeExplosionGoal extends Goal {
 
 	public SuperSpaceSlimeExplosionGoal(SuperSpaceSlimeEntity slime) {
 		this.slime = slime;
-		this.setControls(EnumSet.of(Control.MOVE, Control.JUMP));
+		this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP));
 	}
 
 	/**
@@ -52,12 +51,12 @@ public class SuperSpaceSlimeExplosionGoal extends Goal {
 	 * @return whether the current {@link SuperSpaceSlimeEntity} can explode
 	 */
 	@Override
-	public boolean canStart() {
+	public boolean canUse() {
 		return this.slime.getHealth() <= this.slime.getMaxHealth() * .5 && !this.slime.hasExploded();
 	}
 
 	@Override
-	public boolean shouldContinue() {
+	public boolean canContinueToUse() {
 		return this.ticksLeft > 0;
 	}
 

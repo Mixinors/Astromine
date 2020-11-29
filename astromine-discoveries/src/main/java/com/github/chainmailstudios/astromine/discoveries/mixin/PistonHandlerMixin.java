@@ -29,13 +29,11 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.piston.PistonHandler;
-
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.piston.PistonStructureResolver;
 
-@Mixin(PistonHandler.class)
+@Mixin(PistonStructureResolver.class)
 public abstract class PistonHandlerMixin {
 
 	@Shadow

@@ -24,15 +24,14 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.screen;
 
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.text.Text;
-
 import com.github.chainmailstudios.astromine.client.screen.base.block.ComponentBlockEntityEnergyHandledScreen;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.CreativeCapacitorScreenHandler;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Inventory;
 
 public class CreativeCapacitorHandledScreen extends ComponentBlockEntityEnergyHandledScreen<CreativeCapacitorScreenHandler> {
-	public CreativeCapacitorHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
+	public CreativeCapacitorHandledScreen(BaseScreenHandler handler, Inventory inventory, Component title) {
 		super(handler, inventory, title);
 	}
 }

@@ -24,25 +24,24 @@
 
 package com.github.chainmailstudios.astromine.discoveries.client.model;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.entity.model.SlimeEntityModel;
-import net.minecraft.client.render.model.json.ModelTransformation;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-
 import com.github.chainmailstudios.astromine.discoveries.common.entity.SpaceSlimeEntity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.SlimeModel;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
-public class SpaceSlimeEntityModel extends SlimeEntityModel<SpaceSlimeEntity> {
+public class SpaceSlimeEntityModel extends SlimeModel<SpaceSlimeEntity> {
 
 	public SpaceSlimeEntityModel(int size) {
 		super(size);
 	}
 
 	@Override
-	public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
-		this.getParts().forEach((modelPart) -> {
+	public void renderToBuffer(PoseStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
+		this.parts().forEach((modelPart) -> {
 			modelPart.render(matrices, vertices, light, overlay, red, green, blue, alpha);
 		});
 
@@ -51,7 +50,7 @@ public class SpaceSlimeEntityModel extends SlimeEntityModel<SpaceSlimeEntity> {
 		matrices.scale(1.25f, 1.25f, 1.25f);
 
 		// render glass block
-		MinecraftClient.getInstance().getItemRenderer().renderItem(new ItemStack(Items.GLASS), ModelTransformation.Mode.FIXED, light, overlay, matrices, MinecraftClient.getInstance().getBufferBuilders().getEffectVertexConsumers());
+		Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(Items.GLASS), ItemTransforms.TransformType.FIXED, light, overlay, matrices, Minecraft.getInstance().renderBuffers().crumblingBufferSource());
 
 		// undo translation & scale
 		matrices.scale(.75f, .75f, .75f);

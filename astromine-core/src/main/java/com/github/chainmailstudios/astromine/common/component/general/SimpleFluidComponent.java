@@ -27,7 +27,6 @@ package com.github.chainmailstudios.astromine.common.component.general;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.utilities.data.predicate.TriPredicate;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
-import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import net.minecraft.core.Direction;
 
 public class SimpleFluidComponent implements FluidComponent {
 	private final List<FluidVolume> contents;
@@ -169,6 +169,6 @@ public class SimpleFluidComponent implements FluidComponent {
 	 */
 	@Override
 	public String toString() {
-		return streamIndexed().map((entry) -> String.format("%s - [%s]", entry.getLeft(), entry.getRight().toString())).collect(Collectors.joining(", "));
+		return streamIndexed().map((entry) -> String.format("%s - [%s]", entry.getA(), entry.getB().toString())).collect(Collectors.joining(", "));
 	}
 }

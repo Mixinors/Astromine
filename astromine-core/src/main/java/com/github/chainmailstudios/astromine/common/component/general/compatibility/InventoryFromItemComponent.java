@@ -24,18 +24,17 @@
 
 package com.github.chainmailstudios.astromine.common.component.general.compatibility;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 import static java.lang.Integer.min;
 
 /**
- * An {@link Inventory} wrapped over an {@link ItemComponent}.
+ * An {@link Container} wrapped over an {@link ItemComponent}.
  */
-public interface InventoryFromItemComponent extends Inventory {
+public interface InventoryFromItemComponent extends Container {
 	ItemComponent getItemComponent();
 	
 	/** Instantiates an {@link InventoryFromItemComponent}. */
@@ -45,33 +44,33 @@ public interface InventoryFromItemComponent extends Inventory {
 
 	/** Returns this inventory's size. */
 	@Override
-	default int size() {
+	default int getContainerSize() {
 		return getItemComponent().getSize();
 	}
 
 	/** Returns the {@link ItemStack} at the given slot. */
 	@Override
-	default ItemStack getStack(int slot) {
+	default ItemStack getItem(int slot) {
 		return getItemComponent().getStack(slot);
 	}
 
 	/** Sets the {@link ItemStack} at the given slot to the specified value. */
 	@Override
-	default void setStack(int slot, ItemStack stack) {
+	default void setItem(int slot, ItemStack stack) {
 		getItemComponent().setStack(slot, stack);
 	}
 
 	/** Removes the {@link ItemStack} at the given slot,
 	 * or a part of it as per the specified count, and returns it. */
 	@Override
-	default ItemStack removeStack(int slot, int count) {
+	default ItemStack removeItem(int slot, int count) {
 		ItemStack removed = getItemComponent().removeStack(slot);
 
 		ItemStack returned = removed.copy();
 
 		returned.setCount(min(count, removed.getCount()));
 
-		removed.decrement(count);
+		removed.shrink(count);
 
 		getItemComponent().setStack(slot, removed);
 
@@ -80,7 +79,7 @@ public interface InventoryFromItemComponent extends Inventory {
 
 	/** Removes the {@link ItemStack} at the given slot, and returns it. */
 	@Override
-	default ItemStack removeStack(int slot) {
+	default ItemStack removeItemNoUpdate(int slot) {
 		return getItemComponent().removeStack(slot);
 	}
 
@@ -92,19 +91,19 @@ public interface InventoryFromItemComponent extends Inventory {
 
 	/** Clears this inventory's contents. */
 	@Override
-	default void clear() {
+	default void clearContent() {
 		getItemComponent().clear();
 	}
 
 	/** Marks this inventory as dirt, or, pending update. */
 	@Override
-	default void markDirty() {
+	default void setChanged() {
 		getItemComponent().updateListeners();
 	}
 
 	/** Allow the player to use this inventory by default. */
 	@Override
-	default boolean canPlayerUse(PlayerEntity player) {
+	default boolean stillValid(Player player) {
 		return true;
 	}
 }

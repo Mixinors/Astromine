@@ -4,7 +4,7 @@ import net.minecraft.advancement.criterion.ImpossibleCriterion;
 import net.minecraft.data.server.recipe.CookingRecipeJsonFactory;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.util.Identifier;
+import net.minecraft.util.ResourceLocation;
 
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.base.CookingRecipeGenerator;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
@@ -23,9 +23,9 @@ public class BlastingRecipeGenerator extends CookingRecipeGenerator {
 	}
 
 	@Override
-	public Identifier getRecipeId() {
-		Identifier id = super.getRecipeId();
-		return new Identifier(id.getNamespace(), id.getPath() + "_from_blasting");
+	public ResourceLocation getRecipeId() {
+		ResourceLocation id = super.getRecipeId();
+		return new ResourceLocation(id.getNamespace(), id.getPath() + "_from_blasting");
 	}
 
 	@Override

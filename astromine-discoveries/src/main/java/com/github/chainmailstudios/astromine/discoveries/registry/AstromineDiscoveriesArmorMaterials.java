@@ -25,15 +25,13 @@
 package com.github.chainmailstudios.astromine.discoveries.registry;
 
 import net.fabricmc.fabric.api.tag.TagRegistry;
-
-import net.minecraft.item.ArmorMaterial;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.crafting.Ingredient;
 import com.github.chainmailstudios.astromine.registry.AstromineArmorMaterials;
 
 public class AstromineDiscoveriesArmorMaterials extends AstromineArmorMaterials {
-	public static final ArmorMaterial SPACE_SUIT = register("space_suit", 50, new int[]{ 1, 2, 3, 1 }, 2, AstromineDiscoveriesSoundEvents.SPACE_SUIT_EQUIPPED, 0.0f, 0.0f, () -> Ingredient.fromTag(TagRegistry.item(Identifier.tryParse("c:metite_ingots"))));
+	public static final ArmorMaterial SPACE_SUIT = register("space_suit", 50, new int[]{ 1, 2, 3, 1 }, 2, AstromineDiscoveriesSoundEvents.SPACE_SUIT_EQUIPPED, 0.0f, 0.0f, () -> Ingredient.of(TagRegistry.item(ResourceLocation.tryParse("c:metite_ingots"))));
 
 	public static void initialize() {
 

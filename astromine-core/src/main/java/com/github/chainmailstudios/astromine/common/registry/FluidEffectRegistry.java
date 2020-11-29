@@ -24,12 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.registry;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.fluid.Fluid;
-
 import com.github.chainmailstudios.astromine.common.registry.base.UniRegistry;
 
 import java.util.function.BiConsumer;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.material.Fluid;
 
 /**
  * An {@link UniRegistry} for registration of

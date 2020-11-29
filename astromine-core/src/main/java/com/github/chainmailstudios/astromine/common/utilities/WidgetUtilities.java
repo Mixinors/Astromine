@@ -25,8 +25,8 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
 import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 
 import com.github.chainmailstudios.astromine.common.widget.blade.TransferTypeSelectorButtonWidget;
 import com.github.vini2003.blade.common.collection.TabWidgetCollection;

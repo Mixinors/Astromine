@@ -22,27 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.mixin;
-
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+package com.github.chainmailstudios.astromine.transportations.mixin;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
@@ -50,14 +30,32 @@ import com.github.chainmailstudios.astromine.common.component.general.base.Fluid
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(AbstractBlock.class)
+@Mixin(BlockBehaviour.class)
 public class AbstractBlockMixin {
 	@SuppressWarnings("all")
 	@Inject(at = @At("HEAD"),
 		method = "onUse(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;", cancellable = true)
-	void astromine_onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult result, CallbackInfoReturnable<ActionResult> cir) {
-		final ItemStack stack = player.getStackInHand(hand);
+	void astromine_onUse(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result, CallbackInfoReturnable<InteractionResult> cir) {
+		final ItemStack stack = player.getItemInHand(hand);
 
 		final Item stackItem = stack.getItem();
 
@@ -67,11 +65,11 @@ public class AbstractBlockMixin {
 
 		final FluidComponent stackFluidComponent = FluidComponent.get(stack);
 
-		if (state.getBlock().hasBlockEntity()) {
+		if (state.getBlock().isEntityBlock()) {
 			TransferComponent transferComponent = TransferComponent.get(world.getBlockEntity(pos));
 
 			if (transferComponent != null && transferComponent.hasFluid()) {
-				TransferType type = transferComponent.getFluid(result.getSide());
+				TransferType type = transferComponent.getFluid(result.getDirection());
 
 				if (!type.canInsert() && !type.canExtract()) {
 					return;
@@ -84,7 +82,7 @@ public class AbstractBlockMixin {
 		if (stackFluidComponent != null) {
 			final Block block = state.getBlock();
 
-			if (block.hasBlockEntity()) {
+			if (block.isEntityBlock()) {
 				final BlockEntity blockEntity = world.getBlockEntity(pos);
 
 				FluidComponent blockEntityFluidComponent = FluidComponent.get(blockEntity);
@@ -93,37 +91,37 @@ public class AbstractBlockMixin {
 					FluidVolume stackVolume = stackFluidComponent.getFirst();
 
 					if (stackVolume.isEmpty()) {
-						FluidVolume extractable = blockEntityFluidComponent.getFirstExtractableVolume(result.getSide());
+						FluidVolume extractable = blockEntityFluidComponent.getFirstExtractableVolume(result.getDirection());
 
 						if (isBucket && extractable != null) {
 							if (extractable.hasStored(Fraction.BUCKET)) {
-								if (stack.getCount() == 1 || (player.inventory.getEmptySlot() == -1 && stack.getCount() == 1)) {
+								if (stack.getCount() == 1 || (player.inventory.getFreeSlot() == -1 && stack.getCount() == 1)) {
 									stackVolume.take(extractable, Fraction.BUCKET);
-									player.setStackInHand(hand, new ItemStack(stackVolume.getFluid().getBucketItem()));
-								} else if (player.inventory.getEmptySlot() != -1 && stack.getCount() > 1) {
+									player.setItemInHand(hand, new ItemStack(stackVolume.getFluid().getBucket()));
+								} else if (player.inventory.getFreeSlot() != -1 && stack.getCount() > 1) {
 									stackVolume.take(extractable, Fraction.BUCKET);
-									stack.decrement(1);
-									player.giveItemStack(new ItemStack(stackVolume.getFluid().getBucketItem()));
+									stack.shrink(1);
+									player.addItem(new ItemStack(stackVolume.getFluid().getBucket()));
 								}
 							}
 						} else if (extractable != null) {
 							stackVolume.take(extractable, Fraction.BUCKET);
 						}
 					} else {
-						FluidVolume insertable = blockEntityFluidComponent.getFirstInsertableVolume(result.getSide(), stackVolume);
+						FluidVolume insertable = blockEntityFluidComponent.getFirstInsertableVolume(result.getDirection(), stackVolume);
 
 						if (isBucket && insertable != null) {
 							if (insertable.hasAvailable(Fraction.BUCKET)) {
-								if (stack.getCount() == 1 || (player.inventory.getEmptySlot() == -1 && stack.getCount() == 1)) {
+								if (stack.getCount() == 1 || (player.inventory.getFreeSlot() == -1 && stack.getCount() == 1)) {
 									insertable.take(stackVolume, Fraction.BUCKET);
 									if (!player.isCreative()) {
-										player.setStackInHand(hand, new ItemStack(Items.BUCKET));
+										player.setItemInHand(hand, new ItemStack(Items.BUCKET));
 									}
-								} else if (player.inventory.getEmptySlot() != -1 && stack.getCount() > 1) {
+								} else if (player.inventory.getFreeSlot() != -1 && stack.getCount() > 1) {
 									insertable.take(stackVolume, Fraction.BUCKET);
 									if (!player.isCreative()) {
-										stack.decrement(1);
-										player.giveItemStack(new ItemStack(Items.BUCKET));
+										stack.shrink(1);
+										player.addItem(new ItemStack(Items.BUCKET));
 									}
 								}
 							} else if (insertable != null) {
@@ -138,7 +136,7 @@ public class AbstractBlockMixin {
 		}
 
 		if (shouldSkip) {
-			cir.setReturnValue(ActionResult.SUCCESS);
+			cir.setReturnValue(InteractionResult.SUCCESS);
 		}
 	}
 }

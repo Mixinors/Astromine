@@ -24,31 +24,30 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry;
 
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
-
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.discoveries.common.world.feature.AsteroidOreFeature;
 import com.github.chainmailstudios.astromine.discoveries.common.world.feature.MoonCraterFeature;
 import com.github.chainmailstudios.astromine.discoveries.common.world.feature.MoonLakeFeature;
 import com.github.chainmailstudios.astromine.registry.AstromineFeatures;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 public class AstromineDiscoveriesFeatures extends AstromineFeatures {
-	public static final Identifier ASTEROID_ORES_ID = AstromineCommon.identifier("asteroid_ores");
-	public static final Feature<DefaultFeatureConfig> ASTEROID_ORES = register(new AsteroidOreFeature(DefaultFeatureConfig.CODEC), ASTEROID_ORES_ID);
-	public static final RegistryKey<ConfiguredFeature<?, ?>> ASTEROID_ORES_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, ASTEROID_ORES_ID);
+	public static final ResourceLocation ASTEROID_ORES_ID = AstromineCommon.identifier("asteroid_ores");
+	public static final Feature<NoneFeatureConfiguration> ASTEROID_ORES = register(new AsteroidOreFeature(NoneFeatureConfiguration.CODEC), ASTEROID_ORES_ID);
+	public static final ResourceKey<ConfiguredFeature<?, ?>> ASTEROID_ORES_KEY = ResourceKey.create(Registry.CONFIGURED_FEATURE_REGISTRY, ASTEROID_ORES_ID);
 
-	public static final Identifier MOON_CRATER_ID = AstromineCommon.identifier("moon_crater");
-	public static final Feature<DefaultFeatureConfig> MOON_CRATER = register(new MoonCraterFeature(DefaultFeatureConfig.CODEC), MOON_CRATER_ID);
-	public static final RegistryKey<ConfiguredFeature<?, ?>> MOON_CRATER_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, MOON_CRATER_ID);
+	public static final ResourceLocation MOON_CRATER_ID = AstromineCommon.identifier("moon_crater");
+	public static final Feature<NoneFeatureConfiguration> MOON_CRATER = register(new MoonCraterFeature(NoneFeatureConfiguration.CODEC), MOON_CRATER_ID);
+	public static final ResourceKey<ConfiguredFeature<?, ?>> MOON_CRATER_KEY = ResourceKey.create(Registry.CONFIGURED_FEATURE_REGISTRY, MOON_CRATER_ID);
 
-	public static final Identifier MOON_LAKE_ID = AstromineCommon.identifier("moon_lake");
-	public static final Feature<DefaultFeatureConfig> MOON_LAKE = register(new MoonLakeFeature(DefaultFeatureConfig.CODEC), MOON_LAKE_ID);
-	public static final RegistryKey<ConfiguredFeature<?, ?>> MOON_LAKE_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, MOON_LAKE_ID);
+	public static final ResourceLocation MOON_LAKE_ID = AstromineCommon.identifier("moon_lake");
+	public static final Feature<NoneFeatureConfiguration> MOON_LAKE = register(new MoonLakeFeature(NoneFeatureConfiguration.CODEC), MOON_LAKE_ID);
+	public static final ResourceKey<ConfiguredFeature<?, ?>> MOON_LAKE_KEY = ResourceKey.create(Registry.CONFIGURED_FEATURE_REGISTRY, MOON_LAKE_ID);
 
 	public static void initialize() {
 

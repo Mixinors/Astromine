@@ -22,15 +22,13 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.registry.client;
+package com.github.chainmailstudios.astromine. registry.client;
 
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
-
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import java.util.function.Function;
 
 public class AstromineBlockEntityRenderers {

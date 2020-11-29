@@ -1,14 +1,14 @@
 package com.github.chainmailstudios.astromine.datagen.material;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.datagen.generator.SetGenerator;
 import me.shedaniel.cloth.api.datagen.v1.TagData;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +41,7 @@ public class MaterialSet {
 		return items.get(type);
 	}
 
-	public Identifier getItemId(MaterialItemType type) {
+	public ResourceLocation getItemId(MaterialItemType type) {
 		return getEntry(type).getItemId();
 	}
 
@@ -49,7 +49,7 @@ public class MaterialSet {
 		return getItemId(type).getPath();
 	}
 
-	public Identifier getItemTagId(MaterialItemType type) {
+	public ResourceLocation getItemTagId(MaterialItemType type) {
 		return getEntry(type).getItemTagId();
 	}
 
@@ -111,23 +111,23 @@ public class MaterialSet {
 			return this;
 		}
 
-		public Builder setType(MaterialItemType type, Identifier itemId, Identifier tagId) {
+		public Builder setType(MaterialItemType type, ResourceLocation itemId, ResourceLocation tagId) {
 			return setType(type, new MaterialEntry(itemId, tagId));
 		}
 
-		public Builder setType(MaterialItemType type, Identifier itemId) {
+		public Builder setType(MaterialItemType type, ResourceLocation itemId) {
 			return setType(type, new MaterialEntry(itemId));
 		}
 
-		public Builder setType(MaterialItemType type, ItemConvertible item) {
-			return setType(type, Registry.ITEM.getId(item.asItem()));
+		public Builder setType(MaterialItemType type, ItemLike item) {
+			return setType(type, Registry.ITEM.getKey(item.asItem()));
 		}
 
-		public Builder setType(MaterialItemType type, ItemConvertible item, Identifier tagId) {
-			return setType(type, Registry.ITEM.getId(item.asItem()), tagId);
+		public Builder setType(MaterialItemType type, ItemLike item, ResourceLocation tagId) {
+			return setType(type, Registry.ITEM.getKey(item.asItem()), tagId);
 		}
 
-		public Builder addType(MaterialItemType type, Identifier tagId) {
+		public Builder addType(MaterialItemType type, ResourceLocation tagId) {
 			return setType(type, AstromineCommon.identifier(type.getItemId(name)), tagId);
 		}
 
@@ -149,31 +149,31 @@ public class MaterialSet {
 		}
 
 		public Builder ingot() {
-			return addType(INGOT, new Identifier("c", name + "_ingots"));
+			return addType(INGOT, new ResourceLocation("c", name + "_ingots"));
 		}
 
 		public Builder nugget() {
-			return addType(NUGGET, new Identifier("c", name + "_nuggets"));
+			return addType(NUGGET, new ResourceLocation("c", name + "_nuggets"));
 		}
 
 		public Builder gem() {
-			return addType(GEM, new Identifier("c", name + "s"));
+			return addType(GEM, new ResourceLocation("c", name + "s"));
 		}
 
 		public Builder fragment() {
-			return addType(FRAGMENT, new Identifier("c", name + "_fragments"));
+			return addType(FRAGMENT, new ResourceLocation("c", name + "_fragments"));
 		}
 
 		public Builder block() {
-			return addType(BLOCK, new Identifier("c", name + "_blocks"));
+			return addType(BLOCK, new ResourceLocation("c", name + "_blocks"));
 		}
 
 		public Builder block2x2() {
-			return addType(BLOCK_2x2, new Identifier("c", name + "_blocks"));
+			return addType(BLOCK_2x2, new ResourceLocation("c", name + "_blocks"));
 		}
 
 		public Builder ore() {
-			return addType(ORE, new Identifier("c", name + "_ores"));
+			return addType(ORE, new ResourceLocation("c", name + "_ores"));
 		}
 
 		public Builder asteroid() {
@@ -187,23 +187,23 @@ public class MaterialSet {
 		}
 
 		public Builder asteroidOre() {
-			return addType(ASTEROID_ORE, new Identifier("c", "asteroid_" + name + "_ores"));
+			return addType(ASTEROID_ORE, new ResourceLocation("c", "asteroid_" + name + "_ores"));
 		}
 
 		public Builder meteorOre() {
-			return addType(METEOR_ORE, new Identifier("c", "meteor_" + name + "_ores"));
+			return addType(METEOR_ORE, new ResourceLocation("c", "meteor_" + name + "_ores"));
 		}
 
 		public Builder moonOre() {
-			return addType(MOON_ORE, new Identifier("c", "moon_" + name + "_ores"));
+			return addType(MOON_ORE, new ResourceLocation("c", "moon_" + name + "_ores"));
 		}
 
 		public Builder asteroidCluster() {
-			return addType(ASTEROID_CLUSTER, new Identifier("c", "asteroid_" + name + "_clusters"));
+			return addType(ASTEROID_CLUSTER, new ResourceLocation("c", "asteroid_" + name + "_clusters"));
 		}
 
 		public Builder meteorCluster() {
-			return addType(METEOR_CLUSTER, new Identifier("c", "meteor_" + name + "_clusters"));
+			return addType(METEOR_CLUSTER, new ResourceLocation("c", "meteor_" + name + "_clusters"));
 		}
 
 		public Builder dusts() {
@@ -211,20 +211,20 @@ public class MaterialSet {
 		}
 
 		public Builder dust() {
-			return addType(DUST, new Identifier("c", name + "_dusts"));
+			return addType(DUST, new ResourceLocation("c", name + "_dusts"));
 		}
 
 
 		public Builder gear() {
-			return addType(GEAR, new Identifier("c", name + "_gears"));
+			return addType(GEAR, new ResourceLocation("c", name + "_gears"));
 		}
 
 		public Builder plate() {
-			return addType(PLATE, new Identifier("c", name + "_plates"));
+			return addType(PLATE, new ResourceLocation("c", name + "_plates"));
 		}
 
 		public Builder wire() {
-			return addType(WIRE, new Identifier("c", name + "_wires"));
+			return addType(WIRE, new ResourceLocation("c", name + "_wires"));
 		}
 
 		public Builder allTools() {
@@ -270,7 +270,7 @@ public class MaterialSet {
 			return addType(MATTOCK);
 		}
 
-		public Builder mattock(Identifier id) {
+		public Builder mattock(ResourceLocation id) {
 			return setType(MATTOCK, id);
 		}
 
@@ -278,7 +278,7 @@ public class MaterialSet {
 			return addType(MINING_TOOL);
 		}
 
-		public Builder miningTool(Identifier id) {
+		public Builder miningTool(ResourceLocation id) {
 			return setType(MINING_TOOL, id);
 		}
 
@@ -323,7 +323,7 @@ public class MaterialSet {
 		}
 
 		public Builder apple() {
-			return addType(APPLE, new Identifier("c", name + "_apples"));
+			return addType(APPLE, new ResourceLocation("c", name + "_apples"));
 		}
 
 		public Builder smithingBaseSet(MaterialSet set) {

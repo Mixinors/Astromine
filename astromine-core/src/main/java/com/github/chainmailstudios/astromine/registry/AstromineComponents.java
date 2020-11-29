@@ -22,32 +22,23 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.registry;
-
-import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.fluid.Fluids;
+package com.github.chainmailstudios.astromine. registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.block.entity.RedstoneComponent;
+import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
 import com.github.chainmailstudios.astromine.common.component.entity.EntityOxygenComponent;
+import com.github.chainmailstudios.astromine.common.component.general.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
-import com.github.chainmailstudios.astromine.common.component.general.SimpleFluidComponent;
 import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
 import com.github.chainmailstudios.astromine.common.component.world.WorldNetworkComponent;
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentEnergyEntity;
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentEnergyItemEntity;
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidEntity;
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidItemEntity;
-import com.github.chainmailstudios.astromine.common.entity.base.ComponentItemEntity;
+import com.github.chainmailstudios.astromine.common.entity.base.*;
 import com.github.chainmailstudios.astromine.common.item.base.FluidVolumeItem;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import dev.onyxstudios.cca.api.v3.block.BlockComponentFactoryRegistry;
-import dev.onyxstudios.cca.api.v3.block.BlockComponentInitializer;
 import dev.onyxstudios.cca.api.v3.chunk.ChunkComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.chunk.ChunkComponentInitializer;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
@@ -58,6 +49,8 @@ import dev.onyxstudios.cca.api.v3.item.ItemComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.item.ItemComponentInitializer;
 import dev.onyxstudios.cca.api.v3.world.WorldComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.world.WorldComponentInitializer;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.material.Fluids;
 
 public class AstromineComponents implements WorldComponentInitializer, ChunkComponentInitializer, ItemComponentInitializer, EntityComponentInitializer {
 	public static final ComponentKey<WorldNetworkComponent> WORLD_NETWORK_COMPONENT = ComponentRegistry.getOrCreate(AstromineCommon.identifier("world_network_component"), WorldNetworkComponent.class);

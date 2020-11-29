@@ -26,9 +26,7 @@ package com.github.chainmailstudios.astromine.technologies.client.rei.solidgener
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import net.minecraft.util.Identifier;
-
+import net.minecraft.resources.ResourceLocation;
 import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.technologies.client.rei.generating.AbstractEnergyGeneratingDisplay;
 import me.shedaniel.rei.api.EntryStack;
@@ -40,10 +38,10 @@ import java.util.Optional;
 @Environment(EnvType.CLIENT)
 public class SolidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
 	private final List<EntryStack> stacks;
-	private final Identifier id;
+	private final ResourceLocation id;
 	private final Double time;
 
-	public SolidGeneratingDisplay(double energyGenerated, List<EntryStack> stacks, Identifier id, Double time) {
+	public SolidGeneratingDisplay(double energyGenerated, List<EntryStack> stacks, ResourceLocation id, Double time) {
 		super(energyGenerated);
 		this.stacks = stacks;
 		this.id = id;
@@ -61,12 +59,12 @@ public class SolidGeneratingDisplay extends AbstractEnergyGeneratingDisplay {
 	}
 
 	@Override
-	public Identifier getRecipeCategory() {
+	public ResourceLocation getRecipeCategory() {
 		return AstromineTechnologiesRoughlyEnoughItemsPlugin.SOLID_GENERATING;
 	}
 
 	@Override
-	public Optional<Identifier> getRecipeLocation() {
+	public Optional<ResourceLocation> getRecipeLocation() {
 		return Optional.ofNullable(this.id);
 	}
 

@@ -25,42 +25,41 @@
 package com.github.chainmailstudios.astromine.common.utilities.capability.inventory;
 
 import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.InventoryProvider;
-import net.minecraft.inventory.SidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.WorldAccess;
-
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.general.compatibility.InventoryFromItemComponent;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 
 import java.util.stream.IntStream;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.WorldlyContainerHolder;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 
-public interface ComponentInventoryProvider extends InventoryProvider, SidedInventory, InventoryFromItemComponent {
+public interface ComponentInventoryProvider extends WorldlyContainerHolder, WorldlyContainer, InventoryFromItemComponent {
 	/** Returns this inventory. */
 	@Override
-	default SidedInventory getInventory(BlockState state, WorldAccess world, BlockPos pos) {
+	default WorldlyContainer getContainer(BlockState state, LevelAccessor world, BlockPos pos) {
 		return this;
 	}
 
 	/** Returns this inventory's input slots, defaulting to all slots. */
 	default IntSet getItemInputSlots() {
-		return new IntArraySet(IntStream.range(0, size()).toArray());
+		return new IntArraySet(IntStream.range(0, getContainerSize()).toArray());
 	}
 
 	/** Returns this inventory's output slots, defaulting to all slots. */
 	default IntSet getItemOutputSlots() {
-		return new IntArraySet(IntStream.range(0, size()).toArray());
+		return new IntArraySet(IntStream.range(0, getContainerSize()).toArray());
 	}
 
 	/** Override behavior to redirect calls to this inventory's
 	 * {@link TransferComponent}, if present. */
 	@Override
-	default boolean canInsert(int slot, ItemStack stack, Direction direction) {
+	default boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction direction) {
 		TransferComponent transferComponent = TransferComponent.get(this);
 		
 		if (transferComponent != null) {
@@ -73,7 +72,7 @@ public interface ComponentInventoryProvider extends InventoryProvider, SidedInve
 	/** Override behavior to redirect calls to this inventory's
 	 * {@link TransferComponent}, if present. */
 	@Override
-	default boolean canExtract(int slot, ItemStack stack, Direction direction) {
+	default boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction direction) {
 		TransferComponent transferComponent = TransferComponent.get(this);
 
 		if (transferComponent != null) {
@@ -86,15 +85,15 @@ public interface ComponentInventoryProvider extends InventoryProvider, SidedInve
 	/** Override behavior to redirect calls to this inventory's
 	 * {@link TransferComponent}, if present. */
 	@Override
-	default int[] getAvailableSlots(Direction direction) {
+	default int[] getSlotsForFace(Direction direction) {
 		TransferComponent transferComponent = TransferComponent.get(this);
 
 		if (transferComponent != null) {
 			if (transferComponent.hasItem()) {
 				if (transferComponent.getItem(direction).canInsert()) {
-					return IntStream.range(0, size()).filter(slot -> getItemInputSlots().contains(slot)).toArray();
+					return IntStream.range(0, getContainerSize()).filter(slot -> getItemInputSlots().contains(slot)).toArray();
 				} else if (transferComponent.getItem(direction).canExtract()) {
-					return IntStream.range(0, size()).filter(slot -> getItemOutputSlots().contains(slot)).toArray();
+					return IntStream.range(0, getContainerSize()).filter(slot -> getItemOutputSlots().contains(slot)).toArray();
 				}
 			}
 		}

@@ -24,13 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.screenhandler.base.entity;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.screen.ScreenHandlerType;
-
 import com.github.chainmailstudios.astromine.common.entity.base.ComponentFluidItemEntity;
 import com.github.chainmailstudios.astromine.common.widget.blade.FluidVerticalBarWidget;
 import com.github.vini2003.blade.common.miscellaneous.Position;
 import com.github.vini2003.blade.common.miscellaneous.Size;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MenuType;
 
 /**
  * A {@link ComponentEntityScreenHandler}
@@ -42,10 +41,10 @@ public abstract class ComponentEntityFluidItemScreenHandler extends ComponentEnt
 	public FluidVerticalBarWidget fluidBar;
 
 	/** Instantiates a {@link ComponentEntityFluidScreenHandler}. */
-	public ComponentEntityFluidItemScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, int entityId) {
+	public ComponentEntityFluidItemScreenHandler(MenuType<?> type, int syncId, Player player, int entityId) {
 		super(type, syncId, player, entityId);
 
-		entity = (ComponentFluidItemEntity) player.world.getEntityById(entityId);
+		entity = (ComponentFluidItemEntity) player.level.getEntity(entityId);
 	}
 
 	/** Override behavior to add a fluid bar. */

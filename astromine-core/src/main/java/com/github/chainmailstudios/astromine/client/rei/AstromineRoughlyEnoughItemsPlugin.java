@@ -26,27 +26,25 @@ package com.github.chainmailstudios.astromine.client.rei;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.screen.PlayerScreenHandler;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
-
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.level.material.Fluids;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.render.sprite.SpriteRenderer;
 import com.github.chainmailstudios.astromine.common.utilities.FluidUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.NumberUtilities;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
+import com.mojang.blaze3d.vertex.PoseStack;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.EntryStack;
@@ -62,8 +60,8 @@ import java.util.List;
 
 @Environment(EnvType.CLIENT)
 public abstract class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
-	private static final Identifier ENERGY_BACKGROUND = AstromineCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_background_thin.png");
-	private static final Identifier ENERGY_FOREGROUND = AstromineCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_foreground_thin.png");
+	private static final ResourceLocation ENERGY_BACKGROUND = AstromineCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_background_thin.png");
+	private static final ResourceLocation ENERGY_FOREGROUND = AstromineCommon.identifier("textures/widget/energy_volume_fractional_vertical_bar_foreground_thin.png");
 
 	public static me.shedaniel.rei.api.fractions.Fraction convertA2R(Fraction fraction) {
 		return me.shedaniel.rei.api.fractions.Fraction.of(fraction.getNumerator(), fraction.getDenominator());
@@ -76,11 +74,11 @@ public abstract class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
 	public static List<Widget> createEnergyDisplay(Rectangle bounds, double energy, boolean generating, long speed) {
 		return Collections.singletonList(new EnergyEntryWidget(bounds, speed, generating).entry(new RenderingEntry() {
 			@Override
-			public void render(MatrixStack matrices, Rectangle bounds, int mouseX, int mouseY, float delta) {}
+			public void render(PoseStack matrices, Rectangle bounds, int mouseX, int mouseY, float delta) {}
 
 			@Override
 			public @Nullable Tooltip getTooltip(Point mouse) {
-				return Tooltip.create(mouse, new TranslatableText("text.astromine.energy"), new LiteralText(NumberUtilities.shorten(energy)).formatted(Formatting.GRAY), new LiteralText("Astromine").formatted(Formatting.BLUE, Formatting.ITALIC));
+				return Tooltip.create(mouse, new TranslatableComponent("text.astromine.energy"), new TextComponent(NumberUtilities.shorten(energy)).withStyle(ChatFormatting.GRAY), new TextComponent("Astromine").withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC));
 			}
 		}).notFavoritesInteractable());
 	}
@@ -105,22 +103,22 @@ public abstract class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
 		}
 
 		@Override
-		protected void drawBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		protected void drawBackground(PoseStack matrices, int mouseX, int mouseY, float delta) {
 			if (background) {
 				Rectangle bounds = getBounds();
-				MinecraftClient.getInstance().getTextureManager().bindTexture(ENERGY_BACKGROUND);
-				DrawableHelper.drawTexture(matrices, bounds.x, bounds.y, 0, 0, bounds.width, bounds.height, bounds.width, bounds.height);
-				MinecraftClient.getInstance().getTextureManager().bindTexture(ENERGY_FOREGROUND);
+				Minecraft.getInstance().getTextureManager().bind(ENERGY_BACKGROUND);
+				GuiComponent.blit(matrices, bounds.x, bounds.y, 0, 0, bounds.width, bounds.height, bounds.width, bounds.height);
+				Minecraft.getInstance().getTextureManager().bind(ENERGY_FOREGROUND);
 				int height;
 				if (generating)
-					height = bounds.height - MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
-				else height = MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
-				DrawableHelper.drawTexture(matrices, bounds.x, bounds.y + height, 0, height, bounds.width - 1, bounds.height - height - 1, bounds.width, bounds.height);
+					height = bounds.height - Mth.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
+				else height = Mth.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
+				GuiComponent.blit(matrices, bounds.x, bounds.y + height, 0, height, bounds.width - 1, bounds.height - height - 1, bounds.width, bounds.height);
 			}
 		}
 
 		@Override
-		protected void drawCurrentEntry(MatrixStack matrices, int mouseX, int mouseY, float delta) {}
+		protected void drawCurrentEntry(PoseStack matrices, int mouseX, int mouseY, float delta) {}
 	}
 
 	private static class FluidEntryWidget extends EntryWidget {
@@ -135,28 +133,28 @@ public abstract class AstromineRoughlyEnoughItemsPlugin implements REIPluginV0 {
 		}
 
 		@Override
-		protected void drawBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		protected void drawBackground(PoseStack matrices, int mouseX, int mouseY, float delta) {
 			if (background) {
 				Rectangle bounds = getBounds();
-				MinecraftClient.getInstance().getTextureManager().bindTexture(ENERGY_BACKGROUND);
-				DrawableHelper.drawTexture(matrices, bounds.x, bounds.y, 0, 0, bounds.width, bounds.height, bounds.width, bounds.height);
+				Minecraft.getInstance().getTextureManager().bind(ENERGY_BACKGROUND);
+				GuiComponent.blit(matrices, bounds.x, bounds.y, 0, 0, bounds.width, bounds.height, bounds.width, bounds.height);
 			}
 		}
 
 		@Override
-		protected void drawCurrentEntry(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		protected void drawCurrentEntry(PoseStack matrices, int mouseX, int mouseY, float delta) {
 			EntryStack entry = getCurrentEntry();
 			if (entry.getType() == EntryStack.Type.FLUID && entry.getFluid() != Fluids.EMPTY) {
 				Rectangle bounds = getBounds();
 				int height;
 				if (!generating)
-					height = bounds.height - MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
-				else height = MathHelper.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
-				VertexConsumerProvider.Immediate consumers = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
-				SpriteRenderer.beginPass().setup(consumers, RenderLayer.getSolid()).sprite(FluidUtilities.getSprites(entry.getFluid())[0]).color(FluidUtilities.getColor(MinecraftClient.getInstance().player, entry.getFluid())).light(0x00f000f0).overlay(OverlayTexture.DEFAULT_UV).alpha(
-					0xff).normal(matrices.peek().getNormal(), 0, 0, 0).position(matrices.peek().getModel(), bounds.x + 1, bounds.y + bounds.height - height + 1, bounds.x + bounds.width - 1, bounds.y + bounds.height - 1, getZOffset() + 1).next(
-						PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
-				consumers.draw();
+					height = bounds.height - Mth.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
+				else height = Mth.ceil((System.currentTimeMillis() / (speed / bounds.height) % bounds.height) / 1f);
+				MultiBufferSource.BufferSource consumers = Minecraft.getInstance().renderBuffers().bufferSource();
+				SpriteRenderer.beginPass().setup(consumers, RenderType.solid()).sprite(FluidUtilities.getSprites(entry.getFluid())[0]).color(FluidUtilities.getColor(Minecraft.getInstance().player, entry.getFluid())).light(0x00f000f0).overlay(OverlayTexture.NO_OVERLAY).alpha(
+					0xff).normal(matrices.last().normal(), 0, 0, 0).position(matrices.last().pose(), bounds.x + 1, bounds.y + bounds.height - height + 1, bounds.x + bounds.width - 1, bounds.y + bounds.height - 1, getBlitOffset() + 1).next(
+						InventoryMenu.BLOCK_ATLAS);
+				consumers.endBatch();
 			}
 		}
 	}

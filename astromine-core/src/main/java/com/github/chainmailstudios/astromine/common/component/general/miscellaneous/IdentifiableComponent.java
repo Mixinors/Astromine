@@ -24,21 +24,19 @@
 
 package com.github.chainmailstudios.astromine.common.component.general.miscellaneous;
 
-import net.minecraft.item.Item;
-import net.minecraft.text.Text;
-
 import dev.onyxstudios.cca.api.v3.component.Component;
+import net.minecraft.world.item.Item;
 
 /**
  * An interface which should be implemented
  * by {@link Component}s which require
  * an {@link Item} symbol and
- * {@link Text} name.
+ * {@link net.minecraft.network.chat.Component} name.
  */
 public interface IdentifiableComponent extends Component {
 	/** Returns this component's {@link Item} symbol. */
 	Item getSymbol();
 
-	/** Returns this component's {@link Text} name. */
-	Text getName();
+	/** Returns this component's {@link net.minecraft.network.chat.Component} name. */
+	net.minecraft.network.chat.Component getName();
 }

@@ -24,13 +24,12 @@
 
 package com.github.chainmailstudios.astromine.common.entity.base;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.world.World;
-
 import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.general.compatibility.InventoryFromItemComponent;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
 
 /**
  * A {@link ComponentEntity} with an attached {@link EnergyComponent},
@@ -38,7 +37,7 @@ import com.github.chainmailstudios.astromine.common.component.general.compatibil
  */
 public abstract class ComponentEnergyFluidItemEntity extends ComponentEntity implements InventoryFromItemComponent {
 	/** Instantiates a {@link ComponentEnergyFluidItemEntity}. */
-	public ComponentEnergyFluidItemEntity(EntityType<?> type, World world) {
+	public ComponentEnergyFluidItemEntity(EntityType<?> type, Level world) {
 		super(type, world);
 	}
 

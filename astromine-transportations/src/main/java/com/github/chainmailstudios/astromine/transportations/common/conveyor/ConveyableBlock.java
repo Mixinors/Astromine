@@ -24,16 +24,16 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.conveyor;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 
 public interface ConveyableBlock {
-	default void updateDiagonals(World world, Block block, BlockPos pos) {
-		world.updateNeighbors(pos, block);
+	default void updateDiagonals(Level world, Block block, BlockPos pos) {
+		world.blockUpdated(pos, block);
 		for (Direction direction : Direction.values()) {
-			world.updateNeighbor(pos.offset(direction).down(1), block, pos);
+			world.neighborChanged(pos.relative(direction).below(1), block, pos);
 		}
 	}
 }

@@ -25,12 +25,8 @@
 package com.github.chainmailstudios.astromine.common.volume.fluid;
 
 import com.github.chainmailstudios.astromine.common.utilities.NumberUtilities;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.component.general.SimpleFluidComponent;
@@ -42,6 +38,11 @@ import com.google.common.base.Objects;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
+
 import java.text.DecimalFormat;
 
 /**
@@ -78,7 +79,7 @@ import java.text.DecimalFormat;
  * Serialization and deserialization methods are provided for:
  * - {@link CompoundTag} - through {@link #toTag()} and {@link #fromTag(CompoundTag)}.
  * - {@link JsonElement} - through {@link #toJson()} and {@link #fromJson(JsonElement)}.
- * - {@link ByteBuf} - through {@link #toPacket(PacketByteBuf)} and {@link #fromPacket(PacketByteBuf)}.
+ * - {@link ByteBuf} - through {@link #toPacket(FriendlyByteBuf)} and {@link #fromPacket(FriendlyByteBuf)}.
  */
 public class FluidVolume extends Volume<Fraction> {
 	public static final DecimalFormat FORMAT = new DecimalFormat("#0.00");
@@ -148,8 +149,8 @@ public class FluidVolume extends Volume<Fraction> {
 	}
 
 	/** Returns the identifier of the volume's fluid. */
-	public Identifier getFluidId() {
-		return Registry.FLUID.getId(getFluid());
+	public ResourceLocation getFluidId() {
+		return Registry.FLUID.getKey(getFluid());
 	}
 
 	/** Asserts whether the fluid can be inserted into this volume or not. */
@@ -298,7 +299,7 @@ public class FluidVolume extends Volume<Fraction> {
 
 	/** Deserializes a volume from a {@link CompoundTag}. */
 	public static FluidVolume fromTag(CompoundTag tag) {
-		return of(Fraction.fromTag(tag.getCompound("amount")), Fraction.fromTag(tag.getCompound("size")), Registry.FLUID.get(new Identifier(tag.getString("fluid"))));
+		return of(Fraction.fromTag(tag.getCompound("amount")), Fraction.fromTag(tag.getCompound("size")), Registry.FLUID.get(new ResourceLocation(tag.getString("fluid"))));
 	}
 
 	/** Serializes this volume to a {@link CompoundTag}. */
@@ -307,7 +308,7 @@ public class FluidVolume extends Volume<Fraction> {
 		CompoundTag tag = new CompoundTag();
 		tag.put("amount", getAmount().toTag());
 		tag.put("size", getSize().toTag());
-		tag.putString("fluid", Registry.FLUID.getId(getFluid()).toString());
+		tag.putString("fluid", Registry.FLUID.getKey(getFluid()).toString());
 		return tag;
 	}
 
@@ -318,7 +319,7 @@ public class FluidVolume extends Volume<Fraction> {
 				JsonPrimitive jsonPrimitive = jsonElement.getAsJsonPrimitive();
 
 				if (jsonPrimitive.isString()) {
-					return of(Fraction.BUCKET, Registry.FLUID.get(new Identifier(jsonPrimitive.getAsString())));
+					return of(Fraction.BUCKET, Registry.FLUID.get(new ResourceLocation(jsonPrimitive.getAsString())));
 				} else {
 					return null;
 				}
@@ -330,9 +331,9 @@ public class FluidVolume extends Volume<Fraction> {
 
 			if (!jsonObject.has("fluid")) return null;
 			if (!jsonObject.has("amount")) {
-				return of(Fraction.BUCKET, Registry.FLUID.get(new Identifier(jsonObject.get("fluid").getAsString())));
+				return of(Fraction.BUCKET, Registry.FLUID.get(new ResourceLocation(jsonObject.get("fluid").getAsString())));
 			} else {
-				return of(Fraction.fromJson(jsonObject.get("amount")), Registry.FLUID.get(new Identifier(jsonObject.get("fluid").getAsString())));
+				return of(Fraction.fromJson(jsonObject.get("amount")), Registry.FLUID.get(new ResourceLocation(jsonObject.get("fluid").getAsString())));
 			}
 		}
 	}
@@ -340,14 +341,14 @@ public class FluidVolume extends Volume<Fraction> {
 	/** Serializes this volume to a {@link JsonElement}. */
 	public JsonElement toJson() {
 		JsonObject object = new JsonObject();
-		object.addProperty("fluid", Registry.FLUID.getId(getFluid()).toString());
+		object.addProperty("fluid", Registry.FLUID.getKey(getFluid()).toString());
 		object.add("amount", getAmount().toJson());
 		object.add("size", getSize().toJson());
 		return object;
 	}
 
 	/** Deserializes a volume from a {@link ByteBuf}. */
-	public static FluidVolume fromPacket(PacketByteBuf buffer) {
+	public static FluidVolume fromPacket(FriendlyByteBuf buffer) {
 		if (!buffer.readBoolean()) {
 			return ofEmpty();
 		} else {
@@ -356,18 +357,18 @@ public class FluidVolume extends Volume<Fraction> {
 			Fraction amount = Fraction.fromPacket(buffer);
 			Fraction size = Fraction.fromPacket(buffer);
 
-			return of(amount, size, Registry.FLUID.get(id));
+			return of(amount, size, Registry.FLUID.byId(id));
 		}
 	}
 
 	/** Serialize this volume to a {@link ByteBuf}. */
-	public PacketByteBuf toPacket(PacketByteBuf buffer) {
+	public FriendlyByteBuf toPacket(FriendlyByteBuf buffer) {
 		if (this.isEmpty()) {
 			buffer.writeBoolean(false);
 		} else {
 			buffer.writeBoolean(true);
 
-			buffer.writeVarInt(Registry.FLUID.getRawId(getFluid()));
+			buffer.writeVarInt(Registry.FLUID.getId(getFluid()));
 
 			getAmount().toPacket(buffer);
 			getSize().toPacket(buffer);

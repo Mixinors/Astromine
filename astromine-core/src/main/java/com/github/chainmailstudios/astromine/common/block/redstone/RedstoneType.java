@@ -24,9 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.block.redstone;
 
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 /**
  * An enum representing redstone behavior.
@@ -36,19 +36,19 @@ public enum RedstoneType {
 	WORK_WHEN_OFF,
 	WORK_ALWAYS;
 
-    /** Returns this type as a {@link Text}. */
-    public Text asText() {
+    /** Returns this type as a {@link Component}. */
+    public Component asText() {
         switch (this) {
             case WORK_WHEN_OFF: {
-                return new TranslatableText("text.astromine.work_when_off").formatted(Formatting.RED);
+                return new TranslatableComponent("text.astromine.work_when_off").withStyle(ChatFormatting.RED);
             }
 
             case WORK_WHEN_ON: {
-                return new TranslatableText("text.astromine.work_when_on").formatted(Formatting.GREEN);
+                return new TranslatableComponent("text.astromine.work_when_on").withStyle(ChatFormatting.GREEN);
             }
 
             case WORK_ALWAYS: {
-                return new TranslatableText("text.astromine.work_always").formatted(Formatting.YELLOW);
+                return new TranslatableComponent("text.astromine.work_always").withStyle(ChatFormatting.YELLOW);
             }
 
             default: {

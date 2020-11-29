@@ -24,10 +24,9 @@
 
 package com.github.chainmailstudios.astromine.technologies.registry;
 
-import net.minecraft.block.entity.BlockEntityType;
-
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.*;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class AstromineTechnologiesBlockEntityTypes extends AstromineBlockEntityTypes {
 	public static final BlockEntityType<HolographicBridgeProjectorBlockEntity> HOLOGRAPHIC_BRIDGE = register("holographic_bridge", HolographicBridgeProjectorBlockEntity::new, AstromineTechnologiesBlocks.HOLOGRAPHIC_BRIDGE_PROJECTOR);

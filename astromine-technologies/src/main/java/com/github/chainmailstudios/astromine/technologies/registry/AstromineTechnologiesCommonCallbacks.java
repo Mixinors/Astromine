@@ -27,12 +27,6 @@ package com.github.chainmailstudios.astromine.technologies.registry;
 import com.github.chainmailstudios.astromine.registry.AstromineCommonCallbacks;
 import com.google.common.collect.Lists;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.minecraft.item.Item;
-import net.minecraft.text.LiteralText;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-
 import java.util.List;
 
 public class AstromineTechnologiesCommonCallbacks extends AstromineCommonCallbacks {

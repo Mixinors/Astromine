@@ -24,8 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import net.minecraft.util.math.Direction;
-
+import net.minecraft.core.Direction;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.EnergySide;
 

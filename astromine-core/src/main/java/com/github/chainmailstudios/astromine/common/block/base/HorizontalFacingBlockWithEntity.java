@@ -24,58 +24,57 @@
 
 package com.github.chainmailstudios.astromine.common.block.base;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
-
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * A {@link BlockWithEntity} with a {@link DirectionProperty}
- * of {@link Properties#HORIZONTAL_FACING}.
+ * of {@link BlockStateProperties#HORIZONTAL_FACING}.
  */
 public abstract class HorizontalFacingBlockWithEntity extends BlockWithEntity {
 	/** Instantiates a {@link HorizontalFacingBlockWithEntity}. */
-	public HorizontalFacingBlockWithEntity(Settings settings) {
+	public HorizontalFacingBlockWithEntity(Properties settings) {
 		super(settings);
 	}
 
 	/** Override behavior to add the {@link DirectionProperty}. */
 	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		DirectionProperty directionProperty = getDirectionProperty();
 
 		if (directionProperty != null) {
 			builder.add(directionProperty);
 		}
 
-		super.appendProperties(builder);
+		super.createBlockStateDefinition(builder);
 	}
 
 	/** Override behavior to add the {@link DirectionProperty}. */
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext context) {
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		DirectionProperty directionProperty = getDirectionProperty();
 
 		if (directionProperty != null) {
-			return super.getPlacementState(context).with(getDirectionProperty(), context.getPlayerFacing().getOpposite());
+			return super.getStateForPlacement(context).setValue(getDirectionProperty(), context.getHorizontalDirection().getOpposite());
 		}
 
-		return super.getPlacementState(context);
+		return super.getStateForPlacement(context);
 	}
 
 	/** Override behavior to add the {@link DirectionProperty}. */
 	@Override
-	public BlockState rotate(BlockState state, BlockRotation rotation) {
+	public BlockState rotate(BlockState state, Rotation rotation) {
 		DirectionProperty directionProperty = getDirectionProperty();
 
 		if (directionProperty != null) {
-			return state.with(getDirectionProperty(), rotation.rotate(state.get(getDirectionProperty())));
+			return state.setValue(getDirectionProperty(), rotation.rotate(state.getValue(getDirectionProperty())));
 		}
 
 		return super.rotate(state, rotation);
@@ -83,11 +82,11 @@ public abstract class HorizontalFacingBlockWithEntity extends BlockWithEntity {
 
 	/** Override behavior to add the {@link DirectionProperty}. */
 	@Override
-	public BlockState mirror(BlockState state, BlockMirror mirror) {
+	public BlockState mirror(BlockState state, Mirror mirror) {
 		DirectionProperty directionProperty = getDirectionProperty();
 
 		if (directionProperty != null) {
-			return state.rotate(mirror.getRotation(state.get(getDirectionProperty())));
+			return state.rotate(mirror.getRotation(state.getValue(getDirectionProperty())));
 		}
 
 		return super.mirror(state, mirror);
@@ -96,6 +95,6 @@ public abstract class HorizontalFacingBlockWithEntity extends BlockWithEntity {
 	/** Returns the {@link DirectionProperty} of this block. */
 	@Nullable
 	public DirectionProperty getDirectionProperty() {
-		return Properties.HORIZONTAL_FACING;
+		return BlockStateProperties.HORIZONTAL_FACING;
 	}
 }

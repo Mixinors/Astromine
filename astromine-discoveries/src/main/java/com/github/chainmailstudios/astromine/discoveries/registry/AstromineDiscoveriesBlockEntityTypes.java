@@ -24,16 +24,9 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry;
 
-import net.minecraft.block.entity.BlockEntityType;
-
-import com.github.chainmailstudios.astromine.discoveries.common.block.entity.AltarBlockEntity;
-import com.github.chainmailstudios.astromine.discoveries.common.block.entity.AltarPedestalBlockEntity;
 import com.github.chainmailstudios.astromine.registry.AstromineBlockEntityTypes;
 
 public class AstromineDiscoveriesBlockEntityTypes extends AstromineBlockEntityTypes {
-	public static final BlockEntityType<AltarPedestalBlockEntity> ALTAR_PEDESTAL = register("altar_pedestal", AltarPedestalBlockEntity::new, AstromineDiscoveriesBlocks.ALTAR_PEDESTAL);
-	public static final BlockEntityType<AltarBlockEntity> ALTAR = register("altar", AltarBlockEntity::new, AstromineDiscoveriesBlocks.ALTAR);
-
 	public static void initialize() {
 
 	}

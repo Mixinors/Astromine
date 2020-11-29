@@ -33,17 +33,16 @@ import com.github.chainmailstudios.astromine.common.component.general.compatibil
 import com.github.chainmailstudios.astromine.common.component.general.provider.ItemComponentProvider;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SidedInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Pair;
-import net.minecraft.util.math.Direction;
-
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.Tuple;
+import net.minecraft.world.Container;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import com.github.chainmailstudios.astromine.common.component.general.compatibility.InventoryFromItemComponent;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
@@ -101,9 +100,9 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 		return AstromineItems.ITEM;
 	}
 
-	/** Returns this component's {@link Text} name. */
-	default Text getName() {
-		return new TranslatableText("text.astromine.item");
+	/** Returns this component's {@link Component} name. */
+	default Component getName() {
+		return new TranslatableComponent("text.astromine.item");
 	}
 
 	/** Returns this component's size. */
@@ -221,16 +220,16 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 
 					if (!sourceStack.isEmpty() && count > 0) {
 						ItemStack insertionStack = sourceStack.copy();
-						insertionStack.setCount(min(min(count, insertionStack.getCount()), targetStack.getMaxCount() - targetStack.getCount()));
+						insertionStack.setCount(min(min(count, insertionStack.getCount()), targetStack.getMaxStackSize() - targetStack.getCount()));
 
 						int insertionCount = insertionStack.getCount();
 
 						if (target.canInsert(insertionDirection, insertionStack, targetSlot)) {
-							Pair<ItemStack, ItemStack> merge = StackUtilities.merge(insertionStack, targetStack);
+							Tuple<ItemStack, ItemStack> merge = StackUtilities.merge(insertionStack, targetStack);
 
-							sourceStack.decrement(insertionCount - merge.getLeft().getCount());
+							sourceStack.shrink(insertionCount - merge.getA().getCount());
 							setStack(sourceSlot, sourceStack);
-							target.setStack(targetSlot, merge.getRight());
+							target.setStack(targetSlot, merge.getB());
 						}
 					} else {
 						break;
@@ -261,7 +260,7 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 	/** Asserts whether the given stack can be inserted through the specified
 	 * direction into the supplied slot. */
 	default boolean canInsert(@Nullable Direction direction, ItemStack stack, int slot) {
-		return getStack(slot).isEmpty() || (ItemStack.areItemsEqual(stack, getStack(slot)) && ItemStack.areTagsEqual(stack, getStack(slot)) && getStack(slot).getMaxCount() - getStack(slot).getCount() >= stack.getCount());
+		return getStack(slot).isEmpty() || (ItemStack.isSameIgnoreDurability(stack, getStack(slot)) && ItemStack.tagMatches(stack, getStack(slot)) && getStack(slot).getMaxStackSize() - getStack(slot).getCount() >= stack.getCount());
 	}
 
 	/** Asserts whether the given stack can be extracted through the specified
@@ -307,8 +306,8 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 		getContents().forEach((slot, stack) -> setStack(slot, ItemStack.EMPTY));
 	}
 
-	/** Returns an {@link Inventory} wrapped over this component. */
-	default Inventory asInventory() {
+	/** Returns an {@link Container} wrapped over this component. */
+	default Container asInventory() {
 		return InventoryFromItemComponent.of(this);
 	}
 
@@ -320,7 +319,7 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 		for (int i = 0; i < getSize(); ++i) {
 			ItemStack stack = getStack(i);
 
-			listTag.add(i, stack.toTag(new CompoundTag()));
+			listTag.add(i, stack.save(new CompoundTag()));
 		}
 
 		CompoundTag dataTag = new CompoundTag();
@@ -343,7 +342,7 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 		for (int i = 0; i < size; ++i) {
 			CompoundTag stackTag = stacksTag.getCompound(i);
 
-			setStack(i, ItemStack.fromTag(stackTag));
+			setStack(i, ItemStack.of(stackTag));
 		}
 	}
 
@@ -357,12 +356,12 @@ public interface ItemComponent extends Iterable<ItemStack>, IdentifiableComponen
 		if (v != null && AstromineComponents.ITEM_INVENTORY_COMPONENT.isProvidedBy(v)) {
 			return AstromineComponents.ITEM_INVENTORY_COMPONENT.get(v);
 		} else {
-			if (v instanceof SidedInventory) {
-				return ItemComponentFromSidedInventory.of((SidedInventory) v);
+			if (v instanceof WorldlyContainer) {
+				return ItemComponentFromSidedInventory.of((WorldlyContainer) v);
 			}
 
-			if (v instanceof Inventory) {
-				return ItemComponentFromInventory.of((Inventory) v);
+			if (v instanceof Container) {
+				return ItemComponentFromInventory.of((Container) v);
 			}
 
 			return null;

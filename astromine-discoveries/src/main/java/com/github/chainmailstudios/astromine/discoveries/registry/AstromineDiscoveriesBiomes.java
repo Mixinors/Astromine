@@ -24,35 +24,34 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry;
 
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.biome.Biome;
-
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.registry.AstromineBiomes;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.biome.Biome;
 
 public class AstromineDiscoveriesBiomes extends AstromineBiomes {
-	public static final Identifier ASTEROID_BELT_ID = AstromineCommon.identifier("asteroid_belt");
-	public static final RegistryKey<Biome> ASTEROID_BELT = register(Registry.BIOME_KEY, ASTEROID_BELT_ID);
+	public static final ResourceLocation ASTEROID_BELT_ID = AstromineCommon.identifier("asteroid_belt");
+	public static final ResourceKey<Biome> ASTEROID_BELT = register(Registry.BIOME_REGISTRY, ASTEROID_BELT_ID);
 
-	public static final Identifier VULCAN_PLAINS_ID = AstromineCommon.identifier("vulcan_plains");
-	public static final RegistryKey<Biome> VULCAN_PLAINS = register(Registry.BIOME_KEY, VULCAN_PLAINS_ID);
+	public static final ResourceLocation VULCAN_PLAINS_ID = AstromineCommon.identifier("vulcan_plains");
+	public static final ResourceKey<Biome> VULCAN_PLAINS = register(Registry.BIOME_REGISTRY, VULCAN_PLAINS_ID);
 
-	public static final Identifier LUNAR_PLAINS_ID = AstromineCommon.identifier("lunar_plains");
-	public static final RegistryKey<Biome> LUNAR_PLAINS = register(Registry.BIOME_KEY, LUNAR_PLAINS_ID);
-	public static final Identifier LUNAR_HILLS_ID = AstromineCommon.identifier("lunar_hills");
-	public static final RegistryKey<Biome> LUNAR_HILLS = register(Registry.BIOME_KEY, LUNAR_HILLS_ID);
-	public static final Identifier LUNAR_LOWLANDS_ID = AstromineCommon.identifier("lunar_lowlands");
-	public static final RegistryKey<Biome> LUNAR_LOWLANDS = register(Registry.BIOME_KEY, LUNAR_LOWLANDS_ID);
+	public static final ResourceLocation LUNAR_PLAINS_ID = AstromineCommon.identifier("lunar_plains");
+	public static final ResourceKey<Biome> LUNAR_PLAINS = register(Registry.BIOME_REGISTRY, LUNAR_PLAINS_ID);
+	public static final ResourceLocation LUNAR_HILLS_ID = AstromineCommon.identifier("lunar_hills");
+	public static final ResourceKey<Biome> LUNAR_HILLS = register(Registry.BIOME_REGISTRY, LUNAR_HILLS_ID);
+	public static final ResourceLocation LUNAR_LOWLANDS_ID = AstromineCommon.identifier("lunar_lowlands");
+	public static final ResourceKey<Biome> LUNAR_LOWLANDS = register(Registry.BIOME_REGISTRY, LUNAR_LOWLANDS_ID);
 
-	public static final Identifier MARTIAN_PLAINS_ID = AstromineCommon.identifier("martian_plains");
-	public static final RegistryKey<Biome> MARTIAN_PLAINS = register(Registry.BIOME_KEY, MARTIAN_PLAINS_ID);
-	public static final Identifier MARTIAN_RIVERBED_ID = AstromineCommon.identifier("martian_riverbed");
-	public static final RegistryKey<Biome> MARTIAN_RIVERBED = register(Registry.BIOME_KEY, MARTIAN_RIVERBED_ID);
+	public static final ResourceLocation MARTIAN_PLAINS_ID = AstromineCommon.identifier("martian_plains");
+	public static final ResourceKey<Biome> MARTIAN_PLAINS = register(Registry.BIOME_REGISTRY, MARTIAN_PLAINS_ID);
+	public static final ResourceLocation MARTIAN_RIVERBED_ID = AstromineCommon.identifier("martian_riverbed");
+	public static final ResourceKey<Biome> MARTIAN_RIVERBED = register(Registry.BIOME_REGISTRY, MARTIAN_RIVERBED_ID);
 
-	public static final Identifier GLACIOS_ID = AstromineCommon.identifier("glacios");
-	public static final RegistryKey<Biome> GLACIOS = register(Registry.BIOME_KEY, GLACIOS_ID);
+	public static final ResourceLocation GLACIOS_ID = AstromineCommon.identifier("glacios");
+	public static final ResourceKey<Biome> GLACIOS = register(Registry.BIOME_REGISTRY, GLACIOS_ID);
 
 	public static void initialize() {
 

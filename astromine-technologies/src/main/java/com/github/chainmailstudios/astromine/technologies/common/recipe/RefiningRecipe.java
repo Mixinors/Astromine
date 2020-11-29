@@ -24,15 +24,6 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.recipe;
 
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
-
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.recipe.AstromineRecipeType;
@@ -51,9 +42,17 @@ import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 
-public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingRecipe<Inventory> {
-	private final Identifier identifier;
+public final class RefiningRecipe implements Recipe<Container>, EnergyConsumingRecipe<Container> {
+	private final ResourceLocation identifier;
 	private final FluidIngredient firstInput;
 	private final FluidVolume firstOutput;
 	private final FluidVolume secondOutput;
@@ -65,9 +64,9 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 	private final double energyInput;
 	private final int time;
 
-	private static final Map<World, RefiningRecipe[]> RECIPE_CACHE = new HashMap<>();
+	private static final Map<Level, RefiningRecipe[]> RECIPE_CACHE = new HashMap<>();
 
-	public RefiningRecipe(Identifier identifier, FluidIngredient firstInput, FluidVolume firstOutput, FluidVolume secondOutput, FluidVolume thirdOutput, FluidVolume fourthOutput, FluidVolume fifthOutput, FluidVolume sixthOutput, FluidVolume seventhOutput, double energyInput,
+	public RefiningRecipe(ResourceLocation identifier, FluidIngredient firstInput, FluidVolume firstOutput, FluidVolume secondOutput, FluidVolume thirdOutput, FluidVolume fourthOutput, FluidVolume fifthOutput, FluidVolume sixthOutput, FluidVolume seventhOutput, double energyInput,
 		int time) {
 		this.identifier = identifier;
 		this.firstInput = firstInput;
@@ -82,9 +81,9 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 		this.time = time;
 	}
 
-	public static boolean allows(World world, FluidComponent fluidComponent) {
+	public static boolean allows(Level world, FluidComponent fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (RefiningRecipe) it).toArray(RefiningRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().byType(Type.INSTANCE).values().stream().map(it -> (RefiningRecipe) it).toArray(RefiningRecipe[]::new));
 		}
 
 		for (RefiningRecipe recipe : RECIPE_CACHE.get(world)) {
@@ -96,9 +95,9 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 		return false;
 	}
 	
-	public static Optional<RefiningRecipe> matching(World world, FluidComponent fluidComponent) {
+	public static Optional<RefiningRecipe> matching(Level world, FluidComponent fluidComponent) {
 		if (RECIPE_CACHE.get(world) == null) {
-			RECIPE_CACHE.put(world, world.getRecipeManager().getAllOfType(Type.INSTANCE).values().stream().map(it -> (RefiningRecipe) it).toArray(RefiningRecipe[]::new));
+			RECIPE_CACHE.put(world, world.getRecipeManager().byType(Type.INSTANCE).values().stream().map(it -> (RefiningRecipe) it).toArray(RefiningRecipe[]::new));
 		}
 
 		for (RefiningRecipe recipe : RECIPE_CACHE.get(world)) {
@@ -155,7 +154,7 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 	}
 
 	@Override
-	public Identifier getId() {
+	public ResourceLocation getId() {
 		return identifier;
 	}
 
@@ -170,31 +169,31 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 	}
 
 	@Override
-	public boolean matches(Inventory inventory, World world) {
+	public boolean matches(Container inventory, Level world) {
 		return false;
 	}
 
 	@Override
-	public ItemStack craft(Inventory inventory) {
+	public ItemStack assemble(Container inventory) {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public boolean fits(int width, int height) {
+	public boolean canCraftInDimensions(int width, int height) {
 		return false;
 	}
 
 	@Override
-	public ItemStack getOutput() {
+	public ItemStack getResultItem() {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public ItemStack getRecipeKindIcon() {
+	public ItemStack getToastSymbol() {
 		return new ItemStack(AstromineTechnologiesBlocks.ADVANCED_ELECTROLYZER);
 	}
 
-	public Identifier getIdentifier() {
+	public ResourceLocation getIdentifier() {
 		return identifier;
 	}
 
@@ -240,14 +239,14 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 	}
 
 	public static final class Serializer implements RecipeSerializer<RefiningRecipe> {
-		public static final Identifier ID = AstromineCommon.identifier("refining");
+		public static final ResourceLocation ID = AstromineCommon.identifier("refining");
 
 		public static final Serializer INSTANCE = new Serializer();
 
 		private Serializer() {}
 
 		@Override
-		public RefiningRecipe read(Identifier identifier, JsonObject object) {
+		public RefiningRecipe fromJson(ResourceLocation identifier, JsonObject object) {
 			RefiningRecipe.Format format = new Gson().fromJson(object, RefiningRecipe.Format.class);
 
 			return new RefiningRecipe(
@@ -266,7 +265,7 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 		}
 
 		@Override
-		public RefiningRecipe read(Identifier identifier, PacketByteBuf buffer) {
+		public RefiningRecipe fromNetwork(ResourceLocation identifier, FriendlyByteBuf buffer) {
 			return new RefiningRecipe(
 					identifier,
 					FluidIngredient.fromPacket(buffer),
@@ -283,7 +282,7 @@ public final class RefiningRecipe implements Recipe<Inventory>, EnergyConsumingR
 		}
 
 		@Override
-		public void write(PacketByteBuf buffer, RefiningRecipe recipe) {
+		public void toNetwork(FriendlyByteBuf buffer, RefiningRecipe recipe) {
 			recipe.firstInput.toPacket(buffer);
 			recipe.firstOutput.toPacket(buffer);
 			recipe.secondOutput.toPacket(buffer);

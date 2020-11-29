@@ -22,27 +22,25 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.registry;
-
-import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-
-import net.minecraft.particle.DefaultParticleType;
-import net.minecraft.util.registry.Registry;
+package com.github.chainmailstudios.astromine. registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
+import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
+import net.minecraft.core.Registry;
+import net.minecraft.core.particles.SimpleParticleType;
 
 public class AstromineParticles {
 	/**
-	 * Registers a new {@link DefaultParticleType} instance under the given name.
+	 * Registers a new {@link SimpleParticleType} instance under the given name.
 	 *
 	 * @param name
-	 *        Name of {@link DefaultParticleType} to register
+	 *        Name of {@link SimpleParticleType} to register
 	 * @param alwaysShow
 	 *        Whether or not the com.github.chainmailstudios.astromine.technologies.client.particle should always appear visible
 	 *
-	 * @return Registered {@link DefaultParticleType}
+	 * @return Registered {@link SimpleParticleType}
 	 */
-	public static DefaultParticleType register(String name, boolean alwaysShow) {
+	public static SimpleParticleType register(String name, boolean alwaysShow) {
 		return Registry.register(Registry.PARTICLE_TYPE, AstromineCommon.identifier(name), FabricParticleTypes.simple(alwaysShow));
 	}
 }

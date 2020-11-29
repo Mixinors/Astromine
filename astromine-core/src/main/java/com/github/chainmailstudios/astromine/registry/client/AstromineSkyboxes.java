@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.registry.client;
+package com.github.chainmailstudios.astromine. registry.client;
 
 public class AstromineSkyboxes {
 	public static void initialize() {

@@ -28,8 +28,6 @@ import com.github.chainmailstudios.astromine.common.component.general.*;
 import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
-import net.minecraft.block.entity.BlockEntityType;
-
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
@@ -46,6 +44,7 @@ import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.ints.IntSets;
 
 import java.util.Optional;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBlockEntity implements TierProvider, EnergySizeProvider, FluidSizeProvider, SpeedProvider {
 	public double progress = 0;
@@ -69,7 +68,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 				return false;
 			}
 
-			return SolidifyingRecipe.allows(world, FluidComponent.of(volume));
+			return SolidifyingRecipe.allows(level, FluidComponent.of(volume));
 		});
 
 		fluidComponent.getFirst().setSize(getFluidSize());
@@ -108,7 +107,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 	public void tick() {
 		super.tick();
 
-		if (world == null || world.isClient || !tickRedstone())
+		if (level == null || level.isClientSide || !tickRedstone())
 			return;
 
 		ItemComponent itemComponent = getItemComponent();
@@ -121,7 +120,7 @@ public abstract class SolidifierBlockEntity extends ComponentEnergyFluidItemBloc
 			EnergyVolume energyVolume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = SolidifyingRecipe.matching(world, itemComponent, fluidComponent);
+				optionalRecipe = SolidifyingRecipe.matching(level, itemComponent, fluidComponent);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {

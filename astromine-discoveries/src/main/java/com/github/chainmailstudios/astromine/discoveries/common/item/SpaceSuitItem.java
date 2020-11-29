@@ -24,12 +24,12 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.item;
 
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ArmorMaterial;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
 
 public class SpaceSuitItem extends ArmorItem {
-	public SpaceSuitItem(ArmorMaterial material, EquipmentSlot slot, Settings settings) {
+	public SpaceSuitItem(ArmorMaterial material, EquipmentSlot slot, Properties settings) {
 		super(material, slot, settings);
 	}
 }

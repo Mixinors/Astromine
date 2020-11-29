@@ -24,13 +24,12 @@
 
 package com.github.chainmailstudios.astromine.technologies.registry.client;
 
-import net.minecraft.client.render.RenderLayer;
-
 import com.github.chainmailstudios.astromine.registry.client.AstromineRenderLayers;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
+import net.minecraft.client.renderer.RenderType;
 
 public class AstromineTechnologiesRenderLayers extends AstromineRenderLayers {
 	public static void initialize() {
-		register(AstromineTechnologiesBlocks.AIRLOCK, RenderLayer.getTranslucent());
+		register(AstromineTechnologiesBlocks.AIRLOCK, RenderType.translucent());
 	}
 }

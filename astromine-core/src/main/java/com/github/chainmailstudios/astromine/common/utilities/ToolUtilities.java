@@ -24,30 +24,29 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.MiningToolItem;
-
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.DiggerItem;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.UUID;
 
 public class ToolUtilities {
-	/** Returns half of the sum of the attack damage of two {@link MiningToolItem}s. */
-	public static float getAttackDamage(MiningToolItem first, MiningToolItem second) {
+	/** Returns half of the sum of the attack damage of two {@link DiggerItem}s. */
+	public static float getAttackDamage(DiggerItem first, DiggerItem second) {
 		return (first.getAttackDamage() + second.getAttackDamage()) / 2F;
 	}
 
-	/** Returns a third of the sum of the attack speed of two {@link MiningToolItem}s. */
-	public static float getAttackSpeed(MiningToolItem first, MiningToolItem second) {
+	/** Returns a third of the sum of the attack speed of two {@link DiggerItem}s. */
+	public static float getAttackSpeed(DiggerItem first, DiggerItem second) {
 		return (getAttackSpeed(first) + getAttackSpeed(second)) / 3F;
 	}
 
-	/** Returns the attack speed of a {@link MiningToolItem}. */
-	private static float getAttackSpeed(MiningToolItem item) {
-		return item.getAttributeModifiers(EquipmentSlot.MAINHAND).get(EntityAttributes.GENERIC_ATTACK_SPEED).stream().filter((EntityAttributeModifier modifier) -> modifier.getId().equals(UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3"))).map(EntityAttributeModifier::getValue).findFirst().orElse(0d).floatValue();
+	/** Returns the attack speed of a {@link DiggerItem}. */
+	private static float getAttackSpeed(DiggerItem item) {
+		return item.getDefaultAttributeModifiers(EquipmentSlot.MAINHAND).get(Attributes.ATTACK_SPEED).stream().filter((AttributeModifier modifier) -> modifier.getId().equals(UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3"))).map(AttributeModifier::getAmount).findFirst().orElse(0d).floatValue();
 	}
 
 	/** Returns an {@link ItemStack} of our manual. */

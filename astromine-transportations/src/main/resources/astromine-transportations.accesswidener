@@ -1,10 +1,9 @@
 accessWidener v1 named
 
-accessible method net/minecraft/block/FluidBlock <init> (Lnet/minecraft/fluid/FlowableFluid;Lnet/minecraft/block/AbstractBlock$Settings;)V
-accessible method net/minecraft/block/StairsBlock <init> (Lnet/minecraft/block/BlockState;Lnet/minecraft/block/AbstractBlock$Settings;)V
-accessible method net/minecraft/com.github.chainmailstudios.astromine.technologies.client.particle/DefaultParticleType <init> (Z)V
-accessible method net/minecraft/item/Item rayTrace (Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/world/RayTraceContext$FluidHandling;)Lnet/minecraft/util/hit/BlockHitResult
-accessible method net/minecraft/recipe/RecipeManager getAllOfType (Lnet/minecraft/recipe/RecipeType;)Ljava/util/Map;
-accessible method net/minecraft/entity/SpawnRestriction register (Lnet/minecraft/entity/EntityType;Lnet/minecraft/entity/SpawnRestriction$Location;Lnet/minecraft/world/Heightmap$Type;Lnet/minecraft/entity/SpawnRestriction$SpawnPredicate;)V
-accessible method net/minecraft/client/com.github.chainmailstudios.astromine.technologies.client.particle/CrackParticle <init> (Lnet/minecraft/client/world/ClientWorld;DDDLnet/minecraft/item/ItemStack;)V
-accessible field net/minecraft/block/EntityShapeContext heldItem Lnet/minecraft/item/Item;
+accessible method net/minecraft/world/level/block/LiquidBlock <init> (Lnet/minecraft/world/level/material/FlowingFluid;Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;)V
+accessible method net/minecraft/world/level/block/StairBlock <init> (Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;)V
+accessible method net/minecraft/world/item/Item getPlayerPOVHitResult (Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/level/ClipContext$Fluid;)Lnet/minecraft/world/phys/BlockHitResult;
+accessible method net/minecraft/world/item/crafting/RecipeManager byType (Lnet/minecraft/world/item/crafting/RecipeType;)Ljava/util/Map;
+accessible method net/minecraft/world/entity/SpawnPlacements register (Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/entity/SpawnPlacements$Type;Lnet/minecraft/world/level/levelgen/Heightmap$Types;Lnet/minecraft/world/entity/SpawnPlacements$SpawnPredicate;)V
+accessible field net/minecraft/world/phys/shapes/EntityCollisionContext heldItem Lnet/minecraft/world/item/Item;
+accessible method net/minecraft/client/particle/BreakingItemParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/particle/BreakingItemParticle$1;)V

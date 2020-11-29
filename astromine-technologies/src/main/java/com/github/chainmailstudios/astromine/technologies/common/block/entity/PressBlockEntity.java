@@ -27,10 +27,9 @@ package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 import com.github.chainmailstudios.astromine.common.component.general.*;
 import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.CompoundTag;
-
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
@@ -69,7 +68,7 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 				return false;
 			}
 
-			return PressingRecipe.allows(world, ItemComponent.of(stack));
+			return PressingRecipe.allows(level, ItemComponent.of(stack));
 		}).withExtractPredicate((direction, stack, slot) -> {
 			return slot == 0;
 		}).withListener((inventory) -> {
@@ -97,7 +96,7 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 	public void tick() {
 		super.tick();
 
-		if (world == null || world.isClient || !tickRedstone())
+		if (level == null || level.isClientSide || !tickRedstone())
 			return;
 
 		ItemComponent itemComponent = getItemComponent();
@@ -108,7 +107,7 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 			EnergyVolume volume = energyComponent.getVolume();
 
 			if (!optionalRecipe.isPresent() && shouldTry) {
-				optionalRecipe = PressingRecipe.matching(world, itemComponent);
+				optionalRecipe = PressingRecipe.matching(level, itemComponent);
 				shouldTry = false;
 
 				if (!optionalRecipe.isPresent()) {
@@ -131,7 +130,7 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 					if (progress + speed >= limit) {
 						optionalRecipe = Optional.empty();
 
-						itemComponent.getSecond().decrement(recipe.getFirstInput().testMatching(itemComponent.getSecond()).getCount());
+						itemComponent.getSecond().shrink(recipe.getFirstInput().testMatching(itemComponent.getSecond()).getCount());
 
 						itemComponent.setFirst(StackUtilities.into(itemComponent.getFirst(), recipe.getFirstOutput()));
 
@@ -151,17 +150,17 @@ public abstract class PressBlockEntity extends ComponentEnergyItemBlockEntity im
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
+	public CompoundTag save(CompoundTag tag) {
 		tag.putDouble("progress", progress);
 		tag.putInt("limit", limit);
-		return super.toTag(tag);
+		return super.save(tag);
 	}
 
 	@Override
-	public void fromTag(BlockState state, @NotNull CompoundTag tag) {
+	public void load(BlockState state, @NotNull CompoundTag tag) {
 		progress = tag.getDouble("progress");
 		limit = tag.getInt("limit");
-		super.fromTag(state, tag);
+		super.load(state, tag);
 	}
 
 	public static class Primitive extends PressBlockEntity {

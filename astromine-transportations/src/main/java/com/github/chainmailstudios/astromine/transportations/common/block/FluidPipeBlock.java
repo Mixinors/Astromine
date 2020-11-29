@@ -30,7 +30,7 @@ import com.github.chainmailstudios.astromine.common.network.type.base.NetworkTyp
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
 
 public class FluidPipeBlock extends CableBlock implements NetworkBlock.FluidNode {
-	public FluidPipeBlock(Settings settings) {
+	public FluidPipeBlock(Properties settings) {
 		super(settings);
 	}
 

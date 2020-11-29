@@ -24,9 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.recipe.base;
 
-import net.minecraft.inventory.Inventory;
-import net.minecraft.recipe.Recipe;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.crafting.Recipe;
 
-public interface EnergyGeneratingRecipe<C extends Inventory> extends Recipe<C> {
+public interface EnergyGeneratingRecipe<C extends Container> extends Recipe<C> {
 	double getEnergyOutput();
 }

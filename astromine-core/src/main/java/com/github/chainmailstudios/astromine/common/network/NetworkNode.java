@@ -24,9 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.network;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.math.BlockPos;
-
 import com.google.common.base.Objects;
 
 /**
@@ -61,7 +60,7 @@ public final class NetworkNode {
 
 	/** Returns this node's {@link BlockPos} from its long representation. */
 	public BlockPos getBlockPosition() {
-		return BlockPos.fromLong(this.pos);
+		return BlockPos.of(this.pos);
 	}
 
 	/** Sets this node's {@link BlockPos} to the long representation of the specified value. */

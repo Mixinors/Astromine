@@ -1,12 +1,10 @@
 package com.github.chainmailstudios.astromine.common.widget.blade;
 
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import com.github.chainmailstudios.astromine.client.BaseRenderer;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
@@ -14,6 +12,8 @@ import com.github.vini2003.blade.Blade;
 import com.github.vini2003.blade.client.data.PartitionedTexture;
 import com.github.vini2003.blade.common.widget.base.AbstractWidget;
 import com.github.vini2003.blade.common.widget.base.ButtonWidget;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -57,16 +57,16 @@ public class RedstoneButtonWidget extends ButtonWidget {
     /** Returns this widget's tooltip. */
     @NotNull
     @Override
-    public List<Text> getTooltip() {
+    public List<Component> getTooltip() {
         switch (blockEntity.getRedstoneComponent().getType()) {
             case WORK_WHEN_ON: {
-                return Collections.singletonList(new TranslatableText("tooltip.astromine.work_when_on").formatted(Formatting.RED));
+                return Collections.singletonList(new TranslatableComponent("tooltip.astromine.work_when_on").withStyle(ChatFormatting.RED));
             }
             case WORK_WHEN_OFF: {
-                return Collections.singletonList(new TranslatableText("tooltip.astromine.work_when_off").formatted(Formatting.GRAY));
+                return Collections.singletonList(new TranslatableComponent("tooltip.astromine.work_when_off").withStyle(ChatFormatting.GRAY));
             }
             case WORK_ALWAYS: {
-                return Collections.singletonList(new TranslatableText("tooltip.astromine.work_always").formatted(Formatting.YELLOW));
+                return Collections.singletonList(new TranslatableComponent("tooltip.astromine.work_always").withStyle(ChatFormatting.YELLOW));
             }
             default: {
                 return Collections.emptyList();
@@ -76,7 +76,7 @@ public class RedstoneButtonWidget extends ButtonWidget {
 
     /** Renders this widget. */
     @Override
-    public void drawWidget(@NotNull MatrixStack matrices, @NotNull VertexConsumerProvider provider) {
+    public void drawWidget(@NotNull PoseStack matrices, @NotNull MultiBufferSource provider) {
         if (getHidden()) {
             return;
         }
@@ -91,17 +91,17 @@ public class RedstoneButtonWidget extends ButtonWidget {
 
         switch (blockEntity.getRedstoneComponent().getType()) {
             case WORK_WHEN_ON: {
-                BaseRenderer.getDefaultItemRenderer().renderGuiItemIcon(REDSTONE, (int) x + (int) Math.max((sX - 16) / 2, 0), (int) y + (int) Math.max((sY - 16) / 2, 0));
+                BaseRenderer.getDefaultItemRenderer().renderGuiItem(REDSTONE, (int) x + (int) Math.max((sX - 16) / 2, 0), (int) y + (int) Math.max((sY - 16) / 2, 0));
                 break;
             }
 
             case WORK_WHEN_OFF: {
-                BaseRenderer.getDefaultItemRenderer().renderGuiItemIcon(GUNPOWDER, (int) x + (int) Math.max((sX - 16) / 2, 0), (int) y + (int) Math.max((sY - 16) / 2, 0));
+                BaseRenderer.getDefaultItemRenderer().renderGuiItem(GUNPOWDER, (int) x + (int) Math.max((sX - 16) / 2, 0), (int) y + (int) Math.max((sY - 16) / 2, 0));
                 break;
             }
 
             case WORK_ALWAYS: {
-                BaseRenderer.getDefaultItemRenderer().renderGuiItemIcon(GLOWSTONE, (int) x + (int) Math.max((sX - 16) / 2, 0), (int) y + (int) Math.max((sY - 16) / 2, 0));
+                BaseRenderer.getDefaultItemRenderer().renderGuiItem(GLOWSTONE, (int) x + (int) Math.max((sX - 16) / 2, 0), (int) y + (int) Math.max((sY - 16) / 2, 0));
                 break;
             }
         }

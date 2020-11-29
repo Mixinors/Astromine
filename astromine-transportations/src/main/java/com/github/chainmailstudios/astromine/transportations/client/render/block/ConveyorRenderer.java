@@ -26,66 +26,63 @@ package com.github.chainmailstudios.astromine.transportations.client.render.bloc
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.enums.DoubleBlockHalf;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.LightmapTextureManager;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.render.model.json.ModelTransformation;
-import net.minecraft.client.util.ModelIdentifier;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.TallBlockItem;
-import net.minecraft.screen.PlayerScreenHandler;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.LightType;
-
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DoubleHighBlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.registry.ConveyorSpecialScaleRegistry;
 import com.github.chainmailstudios.astromine.transportations.common.block.property.ConveyorProperties;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorTypes;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.PositionalConveyable;
-
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import java.util.Random;
 
 @Environment(EnvType.CLIENT)
 public interface ConveyorRenderer<T extends BlockEntity> {
-	default void renderSupport(T blockEntity, ConveyorTypes type, float position, float speed, float horizontalPosition, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider) {
+	default void renderSupport(T blockEntity, ConveyorTypes type, float position, float speed, float horizontalPosition, PoseStack matrixStack, MultiBufferSource vertexConsumerProvider) {
 		PositionalConveyable conveyor = (PositionalConveyable) blockEntity;
-		Direction direction = blockEntity.getCachedState().get(Properties.HORIZONTAL_FACING);
+		Direction direction = blockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
 		int rotation = type == ConveyorTypes.DOWN_VERTICAL ? -90 : 90;
 
-		matrixStack.push();
+		matrixStack.pushPose();
 
 		matrixStack.translate(0.5, 4F / 16F, 0.5);
 
 		if (type == ConveyorTypes.DOWN_VERTICAL) {
-			matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
+			matrixStack.mulPose(Vector3f.YP.rotationDegrees(180));
 		}
 
 		if (direction == Direction.NORTH && rotation == 90) {
-			matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
+			matrixStack.mulPose(Vector3f.YP.rotationDegrees(180));
 		} else if (direction == Direction.SOUTH && rotation == -90) {
-			matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
+			matrixStack.mulPose(Vector3f.YP.rotationDegrees(180));
 		} else if (direction == Direction.EAST) {
-			matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(rotation));
+			matrixStack.mulPose(Vector3f.YP.rotationDegrees(rotation));
 		} else if (direction == Direction.WEST) {
-			matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-rotation));
+			matrixStack.mulPose(Vector3f.YP.rotationDegrees(-rotation));
 		}
 
 		matrixStack.translate(-0.5F, -1.001F, -0.5F);
 
-		if (type == ConveyorTypes.VERTICAL && blockEntity.getCachedState().get(ConveyorProperties.CONVEYOR) && conveyor.getPosition() == 16)
+		if (type == ConveyorTypes.VERTICAL && blockEntity.getBlockState().getValue(ConveyorProperties.CONVEYOR) && conveyor.getPosition() == 16)
 			matrixStack.translate(0, -1F / 16F, 0);
 
 		if (type == ConveyorTypes.NORMAL) {
@@ -93,23 +90,23 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 		} else if (type == ConveyorTypes.VERTICAL) {
 			matrixStack.translate(0, position / speed, horizontalPosition / speed);
 		} else if (type == ConveyorTypes.DOWN_VERTICAL) {
-			matrixStack.translate(0, (position / (speed)) + (blockEntity.getCachedState().get(ConveyorProperties.CONVEYOR) ? 1 : 0), horizontalPosition / speed);
+			matrixStack.translate(0, (position / (speed)) + (blockEntity.getBlockState().getValue(ConveyorProperties.CONVEYOR) ? 1 : 0), horizontalPosition / speed);
 		}
 
-		MinecraftClient.getInstance().getTextureManager().bindTexture(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE);
+		Minecraft.getInstance().getTextureManager().bind(InventoryMenu.BLOCK_ATLAS);
 
-		BakedModel model = MinecraftClient.getInstance().getBakedModelManager().getModel(new ModelIdentifier(new Identifier(AstromineCommon.MOD_ID, "conveyor_supports"), ""));
+		BakedModel model = Minecraft.getInstance().getModelManager().getModel(new ModelResourceLocation(new ResourceLocation(AstromineCommon.MOD_ID, "conveyor_supports"), ""));
 
-		int light = LightmapTextureManager.pack(blockEntity.getWorld().getLightLevel(LightType.BLOCK, blockEntity.getPos()), blockEntity.getWorld().getLightLevel(LightType.SKY, blockEntity.getPos()));
-		MinecraftClient.getInstance().getBlockRenderManager().getModelRenderer().render(matrixStack.peek(), vertexConsumerProvider.getBuffer(RenderLayer.getCutout()), null, model, blockEntity.getPos().getX(), blockEntity.getPos().getY(), blockEntity.getPos().getZ(), light,
-			OverlayTexture.DEFAULT_UV);
+		int light = LightTexture.pack(blockEntity.getLevel().getBrightness(LightLayer.BLOCK, blockEntity.getBlockPos()), blockEntity.getLevel().getBrightness(LightLayer.SKY, blockEntity.getBlockPos()));
+		Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(matrixStack.last(), vertexConsumerProvider.getBuffer(RenderType.cutout()), null, model, blockEntity.getBlockPos().getX(), blockEntity.getBlockPos().getY(), blockEntity.getBlockPos().getZ(), light,
+			OverlayTexture.NO_OVERLAY);
 
-		matrixStack.pop();
+		matrixStack.popPose();
 	}
 
-	default void renderItem(T blockEntity, ItemStack stack, float position, int speed, float horizontalPosition, ConveyorTypes type, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider) {
+	default void renderItem(T blockEntity, ItemStack stack, float position, int speed, float horizontalPosition, ConveyorTypes type, PoseStack matrixStack, MultiBufferSource vertexConsumerProvider) {
 		Random random = new Random();
-		Direction direction = blockEntity.getCachedState().get(Properties.HORIZONTAL_FACING);
+		Direction direction = blockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
 		int rotation = type == ConveyorTypes.DOWN_VERTICAL ? -90 : 90;
 		int int_1 = 1;
 		if (stack.getCount() > 48) {
@@ -122,24 +119,24 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 			int_1 = 2;
 		}
 
-		int seed = stack.isEmpty() ? 187 : Item.getRawId(stack.getItem()) + stack.getDamage();
+		int seed = stack.isEmpty() ? 187 : Item.getId(stack.getItem()) + stack.getDamageValue();
 		random.setSeed(seed);
 
 		if (!stack.isEmpty() && stack.getItem() instanceof BlockItem && !ConveyorSpecialScaleRegistry.INSTANCE.containsKey(stack.getItem())) {
-			int light = LightmapTextureManager.pack(blockEntity.getWorld().getLightLevel(LightType.BLOCK, blockEntity.getPos()), blockEntity.getWorld().getLightLevel(LightType.SKY, blockEntity.getPos()));
+			int light = LightTexture.pack(blockEntity.getLevel().getBrightness(LightLayer.BLOCK, blockEntity.getBlockPos()), blockEntity.getLevel().getBrightness(LightLayer.SKY, blockEntity.getBlockPos()));
 			Block block = ((BlockItem) stack.getItem()).getBlock();
 
 			for (int i = 0; i < int_1; i++) {
-				matrixStack.push();
+				matrixStack.pushPose();
 				matrixStack.translate(0.5F, 4F / 16F, 0.5F);
 				if (direction == Direction.NORTH && rotation == 90) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
+					matrixStack.mulPose(Vector3f.YP.rotationDegrees(180));
 				} else if (direction == Direction.SOUTH && rotation == -90) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
+					matrixStack.mulPose(Vector3f.YP.rotationDegrees(180));
 				} else if (direction == Direction.EAST) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(rotation));
+					matrixStack.mulPose(Vector3f.YP.rotationDegrees(rotation));
 				} else if (direction == Direction.WEST) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-rotation));
+					matrixStack.mulPose(Vector3f.YP.rotationDegrees(-rotation));
 				}
 
 				if (type == ConveyorTypes.NORMAL) {
@@ -147,7 +144,7 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 				} else if (type == ConveyorTypes.VERTICAL) {
 					matrixStack.translate(0, position / speed, horizontalPosition / speed);
 				} else if (type == ConveyorTypes.DOWN_VERTICAL) {
-					matrixStack.translate(0, (position / (speed)) + (blockEntity.getCachedState().get(ConveyorProperties.CONVEYOR) ? 1 : 0), horizontalPosition / speed);
+					matrixStack.translate(0, (position / (speed)) + (blockEntity.getBlockState().getValue(ConveyorProperties.CONVEYOR) ? 1 : 0), horizontalPosition / speed);
 				}
 				matrixStack.scale(0.5F, 0.5F, 0.5F);
 				matrixStack.translate(-0.5F, 0, -0.5F);
@@ -159,33 +156,33 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 					matrixStack.translate(x * 2, y * 0.5F, z * 2);
 				}
 
-				MinecraftClient.getInstance().getBlockRenderManager().renderBlockAsEntity(block.getDefaultState(), matrixStack, vertexConsumerProvider, light, OverlayTexture.DEFAULT_UV);
-				if (stack.getItem() instanceof TallBlockItem) {
+				Minecraft.getInstance().getBlockRenderer().renderSingleBlock(block.defaultBlockState(), matrixStack, vertexConsumerProvider, light, OverlayTexture.NO_OVERLAY);
+				if (stack.getItem() instanceof DoubleHighBlockItem) {
 					matrixStack.translate(0, 1, 0);
-					MinecraftClient.getInstance().getBlockRenderManager().renderBlockAsEntity(block.getDefaultState().with(Properties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER), matrixStack, vertexConsumerProvider, light, OverlayTexture.DEFAULT_UV);
+					Minecraft.getInstance().getBlockRenderer().renderSingleBlock(block.defaultBlockState().setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER), matrixStack, vertexConsumerProvider, light, OverlayTexture.NO_OVERLAY);
 				}
 
-				matrixStack.pop();
+				matrixStack.popPose();
 			}
 		} else if (!stack.isEmpty()) {
-			int light = LightmapTextureManager.pack(blockEntity.getWorld().getLightLevel(LightType.BLOCK, blockEntity.getPos()), blockEntity.getWorld().getLightLevel(LightType.SKY, blockEntity.getPos()));
+			int light = LightTexture.pack(blockEntity.getLevel().getBrightness(LightLayer.BLOCK, blockEntity.getBlockPos()), blockEntity.getLevel().getBrightness(LightLayer.SKY, blockEntity.getBlockPos()));
 
-			matrixStack.push();
-			matrixStack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90.0F));
+			matrixStack.pushPose();
+			matrixStack.mulPose(Vector3f.XP.rotationDegrees(90.0F));
 			matrixStack.translate(0.5, 0.5, -4.5F / 16F);
 
-			if (stack.getItem() instanceof BlockItem && ConveyorSpecialScaleRegistry.INSTANCE.containsKey(stack.getItem()) && ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getRight()) {
+			if (stack.getItem() instanceof BlockItem && ConveyorSpecialScaleRegistry.INSTANCE.containsKey(stack.getItem()) && ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getB()) {
 				matrixStack.translate(0, 0, -3.5F / 16F);
 			}
 
 			if (direction == Direction.NORTH && rotation == 90) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180));
+				matrixStack.mulPose(Vector3f.ZP.rotationDegrees(180));
 			} else if (direction == Direction.SOUTH && rotation == -90) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180));
+				matrixStack.mulPose(Vector3f.ZP.rotationDegrees(180));
 			} else if (direction == Direction.EAST) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(-rotation));
+				matrixStack.mulPose(Vector3f.ZP.rotationDegrees(-rotation));
 			} else if (direction == Direction.WEST) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
+				matrixStack.mulPose(Vector3f.ZP.rotationDegrees(rotation));
 			}
 
 			if (type == ConveyorTypes.NORMAL) {
@@ -193,46 +190,46 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 			} else if (type == ConveyorTypes.VERTICAL) {
 				matrixStack.translate(0, horizontalPosition / speed, -position / speed);
 			} else if (type == ConveyorTypes.DOWN_VERTICAL) {
-				matrixStack.translate(0, horizontalPosition / speed, -(position / (speed)) + (blockEntity.getCachedState().get(ConveyorProperties.CONVEYOR) ? -1 : 0));
+				matrixStack.translate(0, horizontalPosition / speed, -(position / (speed)) + (blockEntity.getBlockState().getValue(ConveyorProperties.CONVEYOR) ? -1 : 0));
 			}
 
 			if (ConveyorSpecialScaleRegistry.INSTANCE.containsKey(stack.getItem())) {
-				float scale = ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getLeft();
+				float scale = ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getA();
 				matrixStack.scale(scale, scale, scale);
 
 				for (int i = 1; i < int_1; i++) {
-					matrixStack.push();
-					if (ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getRight()) {
+					matrixStack.pushPose();
+					if (ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getB()) {
 						float x = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
 						float y = (random.nextFloat() * 2.0F) * 0.15F;
 						float z = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
 						matrixStack.translate(x, z, y * 0.5F);
 					}
-					MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
-					matrixStack.pop();
+					Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.FIXED, light, OverlayTexture.NO_OVERLAY, matrixStack, vertexConsumerProvider);
+					matrixStack.popPose();
 				}
 			} else {
 				matrixStack.scale(0.8F, 0.8F, 0.8F);
 			}
 
-			MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
-			matrixStack.pop();
+			Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.FIXED, light, OverlayTexture.NO_OVERLAY, matrixStack, vertexConsumerProvider);
+			matrixStack.popPose();
 		}
 	}
 
-	default void renderItem(T blockEntity, ItemStack stack, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider) {
+	default void renderItem(T blockEntity, ItemStack stack, PoseStack matrixStack, MultiBufferSource vertexConsumerProvider) {
 		if (!stack.isEmpty()) {
-			int light = LightmapTextureManager.pack(blockEntity.getWorld().getLightLevel(LightType.BLOCK, blockEntity.getPos()), blockEntity.getWorld().getLightLevel(LightType.SKY, blockEntity.getPos()));
+			int light = LightTexture.pack(blockEntity.getLevel().getBrightness(LightLayer.BLOCK, blockEntity.getBlockPos()), blockEntity.getLevel().getBrightness(LightLayer.SKY, blockEntity.getBlockPos()));
 
-			matrixStack.push();
+			matrixStack.pushPose();
 			if (!(stack.getItem() instanceof BlockItem))
 				matrixStack.scale(0.8F, 0.8F, 0.8F);
-			MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
-			matrixStack.pop();
+			Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.FIXED, light, OverlayTexture.NO_OVERLAY, matrixStack, vertexConsumerProvider);
+			matrixStack.popPose();
 		}
 	}
 
-	default void renderItem(T blockEntity, Direction direction, ItemStack stack, float position, int speed, float horizontalPosition, ConveyorTypes type, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider) {
+	default void renderItem(T blockEntity, Direction direction, ItemStack stack, float position, int speed, float horizontalPosition, ConveyorTypes type, PoseStack matrixStack, MultiBufferSource vertexConsumerProvider) {
 		Random random = new Random();
 		int rotation = type == ConveyorTypes.DOWN_VERTICAL ? -90 : 90;
 		int int_1 = 1;
@@ -246,24 +243,24 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 			int_1 = 2;
 		}
 
-		int seed = stack.isEmpty() ? 187 : Item.getRawId(stack.getItem()) + stack.getDamage();
+		int seed = stack.isEmpty() ? 187 : Item.getId(stack.getItem()) + stack.getDamageValue();
 		random.setSeed(seed);
 
 		if (!stack.isEmpty() && stack.getItem() instanceof BlockItem && !ConveyorSpecialScaleRegistry.INSTANCE.containsKey(stack.getItem())) {
-			int light = LightmapTextureManager.pack(blockEntity.getWorld().getLightLevel(LightType.BLOCK, blockEntity.getPos().offset(direction)), blockEntity.getWorld().getLightLevel(LightType.SKY, blockEntity.getPos().offset(direction)));
+			int light = LightTexture.pack(blockEntity.getLevel().getBrightness(LightLayer.BLOCK, blockEntity.getBlockPos().relative(direction)), blockEntity.getLevel().getBrightness(LightLayer.SKY, blockEntity.getBlockPos().relative(direction)));
 			Block block = ((BlockItem) stack.getItem()).getBlock();
 
 			for (int i = 0; i < int_1; i++) {
-				matrixStack.push();
+				matrixStack.pushPose();
 				matrixStack.translate(0.5F, 4F / 16F, 0.5F);
 				if (direction == Direction.NORTH && rotation == 90) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
+					matrixStack.mulPose(Vector3f.YP.rotationDegrees(180));
 				} else if (direction == Direction.SOUTH && rotation == -90) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180));
+					matrixStack.mulPose(Vector3f.YP.rotationDegrees(180));
 				} else if (direction == Direction.EAST) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(rotation));
+					matrixStack.mulPose(Vector3f.YP.rotationDegrees(rotation));
 				} else if (direction == Direction.WEST) {
-					matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-rotation));
+					matrixStack.mulPose(Vector3f.YP.rotationDegrees(-rotation));
 				}
 
 				if (type == ConveyorTypes.NORMAL) {
@@ -271,7 +268,7 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 				} else if (type == ConveyorTypes.VERTICAL) {
 					matrixStack.translate(0, position / speed, horizontalPosition / speed);
 				} else if (type == ConveyorTypes.DOWN_VERTICAL) {
-					matrixStack.translate(0, (position / (speed)) + (blockEntity.getCachedState().get(ConveyorProperties.CONVEYOR) ? 1 : 0), horizontalPosition / speed);
+					matrixStack.translate(0, (position / (speed)) + (blockEntity.getBlockState().getValue(ConveyorProperties.CONVEYOR) ? 1 : 0), horizontalPosition / speed);
 				}
 				matrixStack.scale(0.5F, 0.5F, 0.5F);
 				matrixStack.translate(-0.5F, 0, -0.5F);
@@ -283,33 +280,33 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 					matrixStack.translate(x * 2, y * 0.5F, z * 2);
 				}
 
-				MinecraftClient.getInstance().getBlockRenderManager().renderBlockAsEntity(block.getDefaultState(), matrixStack, vertexConsumerProvider, light, OverlayTexture.DEFAULT_UV);
-				if (stack.getItem() instanceof TallBlockItem) {
+				Minecraft.getInstance().getBlockRenderer().renderSingleBlock(block.defaultBlockState(), matrixStack, vertexConsumerProvider, light, OverlayTexture.NO_OVERLAY);
+				if (stack.getItem() instanceof DoubleHighBlockItem) {
 					matrixStack.translate(0, 1, 0);
-					MinecraftClient.getInstance().getBlockRenderManager().renderBlockAsEntity(block.getDefaultState().with(Properties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER), matrixStack, vertexConsumerProvider, light, OverlayTexture.DEFAULT_UV);
+					Minecraft.getInstance().getBlockRenderer().renderSingleBlock(block.defaultBlockState().setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER), matrixStack, vertexConsumerProvider, light, OverlayTexture.NO_OVERLAY);
 				}
 
-				matrixStack.pop();
+				matrixStack.popPose();
 			}
 		} else if (!stack.isEmpty()) {
-			int light = LightmapTextureManager.pack(blockEntity.getWorld().getLightLevel(LightType.BLOCK, blockEntity.getPos()), blockEntity.getWorld().getLightLevel(LightType.SKY, blockEntity.getPos()));
+			int light = LightTexture.pack(blockEntity.getLevel().getBrightness(LightLayer.BLOCK, blockEntity.getBlockPos()), blockEntity.getLevel().getBrightness(LightLayer.SKY, blockEntity.getBlockPos()));
 
-			matrixStack.push();
-			matrixStack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90.0F));
+			matrixStack.pushPose();
+			matrixStack.mulPose(Vector3f.XP.rotationDegrees(90.0F));
 			matrixStack.translate(0.5, 0.5, -4.5F / 16F);
 
-			if (stack.getItem() instanceof BlockItem && ConveyorSpecialScaleRegistry.INSTANCE.containsKey(stack.getItem()) && ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getRight()) {
+			if (stack.getItem() instanceof BlockItem && ConveyorSpecialScaleRegistry.INSTANCE.containsKey(stack.getItem()) && ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getB()) {
 				matrixStack.translate(0, 0, -3.5F / 16F);
 			}
 
 			if (direction == Direction.NORTH && rotation == 90) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180));
+				matrixStack.mulPose(Vector3f.ZP.rotationDegrees(180));
 			} else if (direction == Direction.SOUTH && rotation == -90) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180));
+				matrixStack.mulPose(Vector3f.ZP.rotationDegrees(180));
 			} else if (direction == Direction.EAST) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(-rotation));
+				matrixStack.mulPose(Vector3f.ZP.rotationDegrees(-rotation));
 			} else if (direction == Direction.WEST) {
-				matrixStack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotation));
+				matrixStack.mulPose(Vector3f.ZP.rotationDegrees(rotation));
 			}
 
 			if (type == ConveyorTypes.NORMAL) {
@@ -317,30 +314,30 @@ public interface ConveyorRenderer<T extends BlockEntity> {
 			} else if (type == ConveyorTypes.VERTICAL) {
 				matrixStack.translate(0, horizontalPosition / speed, -position / speed);
 			} else if (type == ConveyorTypes.DOWN_VERTICAL) {
-				matrixStack.translate(0, horizontalPosition / speed, -(position / (speed)) + (blockEntity.getCachedState().get(ConveyorProperties.CONVEYOR) ? -1 : 0));
+				matrixStack.translate(0, horizontalPosition / speed, -(position / (speed)) + (blockEntity.getBlockState().getValue(ConveyorProperties.CONVEYOR) ? -1 : 0));
 			}
 
 			if (ConveyorSpecialScaleRegistry.INSTANCE.containsKey(stack.getItem())) {
-				float scale = ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getLeft();
+				float scale = ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getA();
 				matrixStack.scale(scale, scale, scale);
 
 				for (int i = 1; i < int_1; i++) {
-					matrixStack.push();
-					if (ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getRight()) {
+					matrixStack.pushPose();
+					if (ConveyorSpecialScaleRegistry.INSTANCE.get(stack.getItem()).getB()) {
 						float x = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
 						float y = (random.nextFloat() * 2.0F) * 0.15F;
 						float z = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
 						matrixStack.translate(x, z, y * 0.5F);
 					}
-					MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
-					matrixStack.pop();
+					Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.FIXED, light, OverlayTexture.NO_OVERLAY, matrixStack, vertexConsumerProvider);
+					matrixStack.popPose();
 				}
 			} else {
 				matrixStack.scale(0.8F, 0.8F, 0.8F);
 			}
 
-			MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
-			matrixStack.pop();
+			Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.FIXED, light, OverlayTexture.NO_OVERLAY, matrixStack, vertexConsumerProvider);
+			matrixStack.popPose();
 		}
 	}
 }

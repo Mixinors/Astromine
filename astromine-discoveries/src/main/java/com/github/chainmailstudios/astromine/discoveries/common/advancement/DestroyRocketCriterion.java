@@ -24,49 +24,48 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.advancement;
 
-import net.minecraft.advancement.criterion.AbstractCriterion;
-import net.minecraft.advancement.criterion.AbstractCriterionConditions;
-import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
-import net.minecraft.predicate.entity.EntityPredicate;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
-
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesCriteria;
 
 import com.google.gson.JsonObject;
+import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 
-public class DestroyRocketCriterion extends AbstractCriterion<DestroyRocketCriterion.Conditions> {
-	public final Identifier id;
+public class DestroyRocketCriterion extends SimpleCriterionTrigger<DestroyRocketCriterion.Conditions> {
+	public final ResourceLocation id;
 
-	public DestroyRocketCriterion(Identifier id) {
+	public DestroyRocketCriterion(ResourceLocation id) {
 		this.id = id;
 	}
 
 	@Override
-	protected DestroyRocketCriterion.Conditions conditionsFromJson(JsonObject obj, EntityPredicate.Extended playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
+	protected DestroyRocketCriterion.Conditions createInstance(JsonObject obj, EntityPredicate.Composite playerPredicate, DeserializationContext predicateDeserializer) {
 		if (obj.has("intentional"))
 			return new Conditions(this.id, playerPredicate, obj.get("intentional").getAsBoolean());
 		else return new Conditions(this.id, playerPredicate);
 	}
 
 	@Override
-	public Identifier getId() {
+	public ResourceLocation getId() {
 		return id;
 	}
 
-	public void trigger(ServerPlayerEntity player, boolean intentional) {
-		this.test(player, conditions -> conditions.matches(intentional));
+	public void trigger(ServerPlayer player, boolean intentional) {
+		this.trigger(player, conditions -> conditions.matches(intentional));
 	}
 
-	public static class Conditions extends AbstractCriterionConditions {
+	public static class Conditions extends AbstractCriterionTriggerInstance {
 		private final Boolean intentional;
 
-		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate, Boolean intentional) {
+		public Conditions(ResourceLocation id, EntityPredicate.Composite playerPredicate, Boolean intentional) {
 			super(id, playerPredicate);
 			this.intentional = intentional;
 		}
 
-		public Conditions(Identifier id, EntityPredicate.Extended playerPredicate) {
+		public Conditions(ResourceLocation id, EntityPredicate.Composite playerPredicate) {
 			super(id, playerPredicate);
 			this.intentional = null;
 		}
@@ -80,11 +79,11 @@ public class DestroyRocketCriterion extends AbstractCriterion<DestroyRocketCrite
 		}
 
 		public static Conditions create(boolean intentional) {
-			return new Conditions(AstromineDiscoveriesCriteria.DESTROY_ROCKET.getId(), EntityPredicate.Extended.EMPTY, intentional);
+			return new Conditions(AstromineDiscoveriesCriteria.DESTROY_ROCKET.getId(), EntityPredicate.Composite.ANY, intentional);
 		}
 
 		public static Conditions create() {
-			return new Conditions(AstromineDiscoveriesCriteria.DESTROY_ROCKET.getId(), EntityPredicate.Extended.EMPTY);
+			return new Conditions(AstromineDiscoveriesCriteria.DESTROY_ROCKET.getId(), EntityPredicate.Composite.ANY);
 		}
 	}
 }

@@ -24,13 +24,12 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.entity.ai.superspaceslime;
 
-import net.minecraft.entity.MovementType;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.math.Vec3d;
-
 import com.github.chainmailstudios.astromine.discoveries.common.entity.SpaceSlimeEntity;
 
 import java.util.EnumSet;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.phys.Vec3;
 
 public class SpaceSlimeJumpHoverGoal extends Goal {
 
@@ -39,18 +38,18 @@ public class SpaceSlimeJumpHoverGoal extends Goal {
 
 	public SpaceSlimeJumpHoverGoal(SpaceSlimeEntity slime) {
 		this.slime = slime;
-		this.setControls(EnumSet.of(Control.JUMP, Control.LOOK, Control.MOVE));
+		this.setFlags(EnumSet.of(Flag.JUMP, Flag.LOOK, Flag.MOVE));
 	}
 
 	@Override
-	public boolean canStart() {
+	public boolean canUse() {
 		// todo: ensure slime has space
-		return this.slime.getFloatingCooldown() <= 0 && this.slime.world.random.nextInt(10) == 0;
+		return this.slime.getFloatingCooldown() <= 0 && this.slime.level.random.nextInt(10) == 0;
 	}
 
 	@Override
-	public boolean shouldContinue() {
-		return --this.ticksLeft > 0 && !this.slime.isOnGround() && this.slime.world.getBlockState(this.slime.getBlockPos().down()).isAir();
+	public boolean canContinueToUse() {
+		return --this.ticksLeft > 0 && !this.slime.isOnGround() && this.slime.level.getBlockState(this.slime.blockPosition().below()).isAir();
 	}
 
 	@Override
@@ -72,7 +71,7 @@ public class SpaceSlimeJumpHoverGoal extends Goal {
 	public void tick() {
 		// wait till slime is on ground
 		if (this.slime.isOnGround()) {
-			this.slime.move(MovementType.SELF, new Vec3d(0, 0.1, 0));
+			this.slime.move(MoverType.SELF, new Vec3(0, 0.1, 0));
 		}
 
 		this.slime.setFloatingProgress(this.slime.getFloatingProgress() + 1);

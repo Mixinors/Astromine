@@ -24,32 +24,31 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.block;
 
-import net.minecraft.block.OreBlock;
-import net.minecraft.util.math.MathHelper;
-
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
 
 import java.util.Random;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.block.OreBlock;
 
 public class AsteroidOreBlock extends OreBlock {
-	public AsteroidOreBlock(Settings settings) {
+	public AsteroidOreBlock(Properties settings) {
 		super(settings);
 	}
 
 	@Override
-	protected int getExperienceWhenMined(Random random) {
+	protected int xpOnDrop(Random random) {
 		if (this == AstromineDiscoveriesBlocks.ASTEROID_COAL_ORE) {
-			return MathHelper.nextInt(random, 0, 2);
+			return Mth.nextInt(random, 0, 2);
 		} else if (this == AstromineDiscoveriesBlocks.ASTEROID_TIN_ORE || this == AstromineDiscoveriesBlocks.ASTEROID_COPPER_ORE) {
-			return MathHelper.nextInt(random, 1, 2);
+			return Mth.nextInt(random, 1, 2);
 		} else if (this == AstromineDiscoveriesBlocks.ASTEROID_IRON_ORE) {
-			return MathHelper.nextInt(random, 1, 3);
+			return Mth.nextInt(random, 1, 3);
 		} else if (this == AstromineDiscoveriesBlocks.ASTEROID_GOLD_ORE) {
-			return MathHelper.nextInt(random, 2, 3);
+			return Mth.nextInt(random, 2, 3);
 		} else if (this == AstromineDiscoveriesBlocks.ASTEROID_DIAMOND_ORE || this == AstromineDiscoveriesBlocks.ASTEROID_EMERALD_ORE) {
-			return MathHelper.nextInt(random, 3, 7);
+			return Mth.nextInt(random, 3, 7);
 		} else if (this == AstromineDiscoveriesBlocks.ASTEROID_LAPIS_ORE || this == AstromineDiscoveriesBlocks.ASTEROID_REDSTONE_ORE) {
-			return MathHelper.nextInt(random, 2, 5);
+			return Mth.nextInt(random, 2, 5);
 		} else {
 			return 0;
 		}

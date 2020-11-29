@@ -35,19 +35,19 @@ import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.google.common.collect.UnmodifiableIterator;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.PotionItem;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.potion.PotionUtil;
-import net.minecraft.potion.Potions;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Pair;
-import net.minecraft.util.math.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.Tuple;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.PotionItem;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -117,10 +117,10 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 	}
 
 	/**
-	 * Returns this component's {@link Text} name.
+	 * Returns this component's {@link Component} name.
 	 */
-	default Text getName() {
-		return new TranslatableText("text.astromine.fluid");
+	default Component getName() {
+		return new TranslatableComponent("text.astromine.fluid");
 	}
 
 	/**
@@ -302,11 +302,11 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 						Fraction insertionCount = insertionVolume.getAmount();
 
 						if (target.canInsert(insertionDirection, insertionVolume, targetSlot)) {
-							Pair<FluidVolume, FluidVolume> merge = VolumeUtilities.merge(insertionVolume, targetVolume);
+							Tuple<FluidVolume, FluidVolume> merge = VolumeUtilities.merge(insertionVolume, targetVolume);
 
-							sourceVolume.take(insertionCount.subtract(merge.getLeft().getAmount()));
+							sourceVolume.take(insertionCount.subtract(merge.getA().getAmount()));
 							setVolume(sourceSlot, sourceVolume);
-							target.setVolume(targetSlot, merge.getRight());
+							target.setVolume(targetSlot, merge.getB());
 						}
 					} else {
 						break;
@@ -469,9 +469,9 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 				if (item instanceof BucketItem) {
 					BucketItem bucket = (BucketItem) item;
 
-					return SimpleFluidComponent.of(FluidVolume.of(Fraction.BUCKET, bucket.fluid));
+					return SimpleFluidComponent.of(FluidVolume.of(Fraction.BUCKET, bucket.content));
 				} else if (item instanceof PotionItem) {
-					if (PotionUtil.getPotion(stack).equals(Potions.WATER))
+					if (PotionUtils.getPotion(stack).equals(Potions.WATER))
 						return SimpleFluidComponent.of(FluidVolume.of(Fraction.BOTTLE, Fluids.WATER));
 				}
 			}
@@ -500,15 +500,15 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 	 * Applies the given action to all of this component's contents.
 	 */
 	default void forEachIndexed(BiConsumer<Integer, ? super FluidVolume> action) {
-		iteratorIndexed().forEachRemaining(pair -> action.accept(pair.getLeft(), pair.getRight()));
+		iteratorIndexed().forEachRemaining(pair -> action.accept(pair.getA(), pair.getB()));
 	}
 
-	default Stream<Pair<Integer, FluidVolume>> streamIndexed() {
+	default Stream<Tuple<Integer, FluidVolume>> streamIndexed() {
 		return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iteratorIndexed(), Spliterator.ORDERED), false);
 	}
 
-	default Iterator<Pair<Integer, FluidVolume>> iteratorIndexed() {
-		return new UnmodifiableIterator<Pair<Integer, FluidVolume>>() {
+	default Iterator<Tuple<Integer, FluidVolume>> iteratorIndexed() {
+		return new UnmodifiableIterator<Tuple<Integer, FluidVolume>>() {
 			private final int size = getSize();
 			private final List<FluidVolume> contents = getContents();
 			private int position;
@@ -519,12 +519,12 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 			}
 
 			@Override
-			public Pair<Integer, FluidVolume> next() {
+			public Tuple<Integer, FluidVolume> next() {
 				if (!hasNext()) {
 					throw new NoSuchElementException();
 				}
 				int i = position++;
-				return new Pair<>(i, contents.get(i));
+				return new Tuple<>(i, contents.get(i));
 			}
 		};
 	}

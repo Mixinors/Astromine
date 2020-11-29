@@ -26,55 +26,53 @@ package com.github.chainmailstudios.astromine.technologies.common.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Material;
-import net.minecraft.block.MaterialColor;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.item.Items;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
-
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import com.github.chainmailstudios.astromine.common.component.world.WorldBridgeComponent;
 
 public class HolographicBridgeInvisibleBlock extends Block {
-	public static final Material MATERIAL = new Material.Builder(MaterialColor.CLEAR).build();
+	public static final Material MATERIAL = new Material.Builder(MaterialColor.NONE).build();
 
-	public HolographicBridgeInvisibleBlock(AbstractBlock.Settings settings) {
+	public HolographicBridgeInvisibleBlock(BlockBehaviour.Properties settings) {
 		super(settings);
 	}
 
 	@Override
-	public boolean isTranslucent(BlockState state, BlockView world, BlockPos pos) {
+	public boolean propagatesSkylightDown(BlockState state, BlockGetter world, BlockPos pos) {
 		return true;
 	}
 
 	@Override
-	public BlockRenderType getRenderType(BlockState state) {
-		return BlockRenderType.INVISIBLE;
+	public RenderShape getRenderShape(BlockState state) {
+		return RenderShape.INVISIBLE;
 	}
 
 	@Override
 	@Environment(EnvType.CLIENT)
-	public float getAmbientOcclusionLightLevel(BlockState state, BlockView world, BlockPos pos) {
+	public float getShadeBrightness(BlockState state, BlockGetter world, BlockPos pos) {
 		return 1.0F;
 	}
 
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos position, ShapeContext context) {
-		return context.isHolding(Items.DEBUG_STICK) ? getCollisionShape(state, world, position, context) : VoxelShapes.empty();
+	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos position, CollisionContext context) {
+		return context.isHoldingItem(Items.DEBUG_STICK) ? getCollisionShape(state, world, position, context) : Shapes.empty();
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos position, ShapeContext context) {
-		if (!(world instanceof World)) {
-			return VoxelShapes.empty();
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos position, CollisionContext context) {
+		if (!(world instanceof Level)) {
+			return Shapes.empty();
 		} else {
 			WorldBridgeComponent bridgeComponent = WorldBridgeComponent.get(world);
 

@@ -24,16 +24,15 @@
 
 package com.github.chainmailstudios.astromine.common.registry;
 
-import net.minecraft.util.Identifier;
-
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.common.registry.base.BiRegistry;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * A {@link BiRegistry} for registration of
- * {@link NetworkType}s mapped to {@link Identifier}s.
+ * {@link NetworkType}s mapped to {@link ResourceLocation}s.
  */
-public class NetworkTypeRegistry extends BiRegistry<Identifier, NetworkType> {
+public class NetworkTypeRegistry extends BiRegistry<ResourceLocation, NetworkType> {
 	public static final NetworkTypeRegistry INSTANCE = new NetworkTypeRegistry();
 
 	/** We only want one instance of this. */

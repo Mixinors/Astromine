@@ -24,22 +24,6 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.generation.moon;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryLookupCodec;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.ChunkRegion;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.WorldAccess;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.ChunkRandom;
-import net.minecraft.world.gen.StructureAccessor;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
-import net.minecraft.world.gen.chunk.StructuresConfig;
-import net.minecraft.world.gen.chunk.VerticalBlockSample;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
@@ -48,10 +32,26 @@ import com.github.chainmailstudios.astromine.common.noise.OpenSimplexNoise;
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
 
 import java.util.Arrays;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.RegistryLookupCodec;
+import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.NoiseColumn;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.StructureSettings;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
 
 public class MoonChunkGenerator extends ChunkGenerator {
 	private static final double SCALE = 1.0 / 126.3;
-	public static Codec<MoonChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed), RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)).apply(instance,
+	public static Codec<MoonChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed), RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(source -> source.biomeRegistry)).apply(instance,
 		MoonChunkGenerator::new));
 
 	private final long seed;
@@ -64,7 +64,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 	private final ThreadLocal<BiomeGeneratorCache> cache;
 
 	public MoonChunkGenerator(long seed, Registry<Biome> biomeRegistry) {
-		super(new MoonBiomeSource(seed, biomeRegistry), new StructuresConfig(false));
+		super(new MoonBiomeSource(seed, biomeRegistry), new StructureSettings(false));
 		this.seed = seed;
 		this.biomeRegistry = biomeRegistry;
 		this.mainNoise1 = new OpenSimplexNoise(seed);
@@ -72,7 +72,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 		this.ridgedNoise = new OpenSimplexNoise(seed - 79);
 		this.detailNoise = new OpenSimplexNoise(seed + 2003);
 		this.caveNoise = new OpenSimplexNoise(seed - 2003);
-		this.cache = ThreadLocal.withInitial(() -> new BiomeGeneratorCache(biomeSource));
+		this.cache = ThreadLocal.withInitial(() -> new BiomeGeneratorCache(runtimeBiomeSource));
 	}
 
 	private static double computeNoiseFalloff(int y) {
@@ -80,7 +80,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 	}
 
 	@Override
-	protected Codec<? extends ChunkGenerator> getCodec() {
+	protected Codec<? extends ChunkGenerator> codec() {
 		return CODEC;
 	}
 
@@ -94,21 +94,21 @@ public class MoonChunkGenerator extends ChunkGenerator {
 	}
 
 	@Override
-	public void buildSurface(ChunkRegion region, Chunk chunk) {
+	public void buildSurfaceAndBedrock(WorldGenRegion region, ChunkAccess chunk) {
 
 	}
 
 	@Override
-	public void populateNoise(WorldAccess world, StructureAccessor accessor, Chunk chunk) {
-		int x1 = chunk.getPos().getStartX();
-		int z1 = chunk.getPos().getStartZ();
+	public void fillFromNoise(LevelAccessor world, StructureFeatureManager accessor, ChunkAccess chunk) {
+		int x1 = chunk.getPos().getMinBlockX();
+		int z1 = chunk.getPos().getMinBlockZ();
 
-		int x2 = chunk.getPos().getEndX();
-		int z2 = chunk.getPos().getEndZ();
-		ChunkRandom chunkRandom = new ChunkRandom();
-		chunkRandom.setTerrainSeed(chunk.getPos().x, chunk.getPos().z);
+		int x2 = chunk.getPos().getMaxBlockX();
+		int z2 = chunk.getPos().getMaxBlockZ();
+		WorldgenRandom chunkRandom = new WorldgenRandom();
+		chunkRandom.setBaseChunkSeed(chunk.getPos().x, chunk.getPos().z);
 
-		BlockPos.Mutable mutable = new BlockPos.Mutable();
+		BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
 
 		for (int x = x1; x <= x2; ++x) {
 			mutable.setX(x);
@@ -147,12 +147,12 @@ public class MoonChunkGenerator extends ChunkGenerator {
 					double caveExtent = caveNoise.sample(x * SCALE, y / 32.0, z * SCALE) + computeNoiseFalloff(y);
 
 					if (caveExtent > -0.575) {
-						chunk.setBlockState(mutable, AstromineDiscoveriesBlocks.MOON_STONE.getDefaultState(), false);
+						chunk.setBlockState(mutable, AstromineDiscoveriesBlocks.MOON_STONE.defaultBlockState(), false);
 					}
 
 					if (y <= 5) {
 						if (chunkRandom.nextInt(y + 1) == 0) {
-							chunk.setBlockState(mutable, Blocks.BEDROCK.getDefaultState(), false);
+							chunk.setBlockState(mutable, Blocks.BEDROCK.defaultBlockState(), false);
 						}
 					}
 				}
@@ -161,14 +161,14 @@ public class MoonChunkGenerator extends ChunkGenerator {
 	}
 
 	@Override
-	public int getHeight(int x, int z, Heightmap.Type heightmapType) {
+	public int getBaseHeight(int x, int z, Heightmap.Types heightmapType) {
 		return 0;
 	}
 
 	@Override
-	public BlockView getColumnSample(int x, int z) {
+	public BlockGetter getBaseColumn(int x, int z) {
 		BlockState[] states = new BlockState[256];
-		Arrays.fill(states, Blocks.AIR.getDefaultState());
-		return new VerticalBlockSample(states);
+		Arrays.fill(states, Blocks.AIR.defaultBlockState());
+		return new NoiseColumn(states);
 	}
 }

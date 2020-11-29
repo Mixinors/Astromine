@@ -22,14 +22,12 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.registry;
-
-import net.fabricmc.fabric.api.object.builder.v1.advancement.CriterionRegistry;
-
-import net.minecraft.advancement.criterion.Criterion;
+package com.github.chainmailstudios.astromine. registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.advancement.TrickedPiglinCriterion;
+import net.fabricmc.fabric.api.object.builder.v1.advancement.CriterionRegistry;
+import net.minecraft.advancements.CriterionTrigger;
 
 public class AstromineCriteria {
 	public static final TrickedPiglinCriterion TRICKED_PIGLIN = register(new TrickedPiglinCriterion(AstromineCommon.identifier("tricked_piglin")));
@@ -38,7 +36,7 @@ public class AstromineCriteria {
 
 	}
 
-	public static <T extends Criterion<?>> T register(Criterion<?> criterion) {
+	public static <T extends CriterionTrigger<?>> T register(CriterionTrigger<?> criterion) {
 		return (T) CriterionRegistry.register(criterion);
 	}
 }

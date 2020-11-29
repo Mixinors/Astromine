@@ -24,10 +24,9 @@
 
 package com.github.chainmailstudios.astromine.common.network;
 
-import net.minecraft.block.Block;
-
 import com.github.chainmailstudios.astromine.common.network.type.base.NetworkType;
 import com.github.chainmailstudios.astromine.registry.AstromineNetworkTypes;
+import net.minecraft.world.level.block.Block;
 
 /**
  * A {@link Block} which

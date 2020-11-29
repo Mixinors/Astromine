@@ -24,11 +24,10 @@
 
 package com.github.chainmailstudios.astromine.client.patchouli;
 
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.text.TranslatableText;
-
 import com.github.chainmailstudios.astromine.common.recipe.base.EnergyConsumingRecipe;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.crafting.RecipeType;
 import vazkii.patchouli.client.book.gui.GuiBook;
 import vazkii.patchouli.client.book.page.abstr.PageSimpleProcessingRecipe;
 
@@ -40,9 +39,9 @@ public abstract class BasicEnergyConsumingPage<T extends EnergyConsumingRecipe<?
 	}
 
 	@Override
-	public void drawRecipe(MatrixStack ms, T recipe, int recipeX, int recipeY, int mouseX, int mouseY, boolean second) {
+	public void drawRecipe(PoseStack ms, T recipe, int recipeX, int recipeY, int mouseX, int mouseY, boolean second) {
 		super.drawRecipe(ms, recipe, recipeX, recipeY, mouseX, mouseY, second);
-		parent.drawCenteredStringNoShadow(ms, new TranslatableText("category.astromine.consuming.energy", "" + recipe.getEnergyInput()).asOrderedText(), GuiBook.PAGE_WIDTH / 2, recipeY + 25, ENERGY_CONSUMED_TEXT_COLOR);
+		parent.drawCenteredStringNoShadow(ms, new TranslatableComponent("category.astromine.consuming.energy", "" + recipe.getEnergyInput()).getVisualOrderText(), GuiBook.PAGE_WIDTH / 2, recipeY + 25, ENERGY_CONSUMED_TEXT_COLOR);
 	}
 
 	@Override

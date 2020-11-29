@@ -11,7 +11,7 @@ import net.minecraft.data.client.model.VariantSettings;
 import net.minecraft.data.client.model.VariantsBlockStateSupplier;
 import net.minecraft.item.Item;
 import net.minecraft.state.property.Properties;
-import net.minecraft.util.Identifier;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 
@@ -29,16 +29,16 @@ public class MachineModelStateGenerator extends GenericBlockModelStateGenerator 
 		super(blocks);
 	}
 
-	public static BlockStateVariantMap getActiveMap(Identifier active, Identifier inactive) {
+	public static BlockStateVariantMap getActiveMap(ResourceLocation active, ResourceLocation inactive) {
 		return BlockStateVariantMap.create(BlockWithEntity.ACTIVE).register(Boolean.TRUE, BlockStateVariant.create().put(VariantSettings.MODEL, active)).register(Boolean.FALSE, BlockStateVariant.create().put(VariantSettings.MODEL, inactive));
 	}
 
 	private static Model getModel(String parent, TextureKey... requiredTextures) {
-		return new Model(Optional.of(new Identifier("minecraft", "block/" + parent)), Optional.empty(), requiredTextures);
+		return new Model(Optional.of(new ResourceLocation("minecraft", "block/" + parent)), Optional.empty(), requiredTextures);
 	}
 
 	private static String getPathNoTier(Block block) {
-		Identifier id = Registry.BLOCK.getId(block);
+		ResourceLocation id = Registry.BLOCK.getId(block);
 		// astromine:primitive_alloy_smelter
 
 		String path = id.getPath();
@@ -60,7 +60,7 @@ public class MachineModelStateGenerator extends GenericBlockModelStateGenerator 
 	}
 
 	private static String getPath(Block block) {
-		Identifier id = Registry.BLOCK.getId(block);
+		ResourceLocation id = Registry.BLOCK.getId(block);
 		// astromine:primitive_alloy_smelter
 
 		return id.getPath();
@@ -88,11 +88,11 @@ public class MachineModelStateGenerator extends GenericBlockModelStateGenerator 
 		blocks.forEach((block) -> {
 			Texture activeTexture = getTexture(block, true);
 
-			Identifier active = MACHINE.upload(block, "_active", activeTexture, data::addModel);
+			ResourceLocation active = MACHINE.upload(block, "_active", activeTexture, data::addModel);
 
 			Texture inactiveTexture = getTexture(block, false);
 
-			Identifier inactive = MACHINE.upload(block, "_inactive", inactiveTexture, data::addModel);
+			ResourceLocation inactive = MACHINE.upload(block, "_inactive", inactiveTexture, data::addModel);
 
 			data.addState(block, VariantsBlockStateSupplier.create(block).coordinate(facingMap()).coordinate(getActiveMap(active, inactive)));
 

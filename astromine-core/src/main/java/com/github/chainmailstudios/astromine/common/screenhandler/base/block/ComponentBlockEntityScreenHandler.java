@@ -30,14 +30,6 @@ import com.github.chainmailstudios.astromine.common.component.general.provider.F
 import com.github.chainmailstudios.astromine.common.component.general.provider.ItemComponentProvider;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-
 import com.github.chainmailstudios.astromine.common.block.base.HorizontalFacingBlockWithEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.general.miscellaneous.IdentifiableComponent;
@@ -55,6 +47,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.function.BiConsumer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 
 /**
  * A {@link BlockStateScreenHandler}with an attached
@@ -71,12 +70,12 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 
 	/** Instantiates a {@link ComponentBlockEntityScreenHandler},
 	 * synchronizing its attached {@link ComponentBlockEntity}. */
-	public ComponentBlockEntityScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerEntity player, BlockPos position) {
+	public ComponentBlockEntityScreenHandler(MenuType<?> type, int syncId, Player player, BlockPos position) {
 		super(type, syncId, player, position);
 
-		this.blockEntity = (ComponentBlockEntity) player.world.getBlockEntity(position);
+		this.blockEntity = (ComponentBlockEntity) player.level.getBlockEntity(position);
 
-		if (!player.world.isClient) {
+		if (!player.level.isClientSide) {
 			blockEntity.doNotSkipInventory();
 			blockEntity.sync();
 		}
@@ -117,13 +116,13 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 
 		addWidget(tabs);
 
-		mainTab = (TabWidgetCollection) tabs.addTab(blockEntity.getCachedState().getBlock().asItem(), () -> Collections.singletonList(new TranslatableText(blockEntity.getCachedState().getBlock().getTranslationKey())));
+		mainTab = (TabWidgetCollection) tabs.addTab(blockEntity.getBlockState().getBlock().asItem(), () -> Collections.singletonList(new TranslatableComponent(blockEntity.getBlockState().getBlock().getDescriptionId())));
 		mainTab.setPosition(Position.of(tabs, 0, 25F + 7F));
 		mainTab.setSize(Size.of(176F, 184F));
 
 		TextWidget title = new TextWidget();
 		title.setPosition(Position.of(mainTab, 8, 0));
-		title.setText(new TranslatableText(blockEntity.getCachedState().getBlock().asItem().getTranslationKey()));
+		title.setText(new TranslatableComponent(blockEntity.getBlockState().getBlock().asItem().getDescriptionId()));
 		title.setColor(4210752);
 		mainTab.addWidget(title);
 
@@ -136,12 +135,12 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 		playerSlots = Slots.addPlayerInventory(invPos, Size.of(18F, 18F), mainTab, getPlayer().inventory);
 
 		Direction rotation = Direction.NORTH;
-		Block block = blockEntity.getCachedState().getBlock();
+		Block block = blockEntity.getBlockState().getBlock();
 
 		if (block instanceof HorizontalFacingBlockWithEntity) {
 			DirectionProperty property = ((HorizontalFacingBlockWithEntity) block).getDirectionProperty();
 			if (property != null)
-				rotation = blockEntity.getCachedState().get(property);
+				rotation = blockEntity.getBlockState().getValue(property);
 		}
 
 		final Direction finalRotation = rotation;
@@ -157,7 +156,7 @@ public abstract class ComponentBlockEntityScreenHandler extends BlockStateScreen
 
 		BiConsumer<IdentifiableComponent, ComponentKey<? extends IdentifiableComponent>> tabAdder = (identifiableComponent, key) -> {
 			TabWidgetCollection current = (TabWidgetCollection) tabs.addTab(identifiableComponent.getSymbol(), () -> Collections.singletonList(identifiableComponent.getName()));
-			WidgetUtilities.createTransferTab(current, Position.of(tabs, tabs.getWidth() / 2 - 38, getTabWidgetExtendedHeight() / 2), finalRotation, transferComponent, blockEntity.getPos(), key);
+			WidgetUtilities.createTransferTab(current, Position.of(tabs, tabs.getWidth() / 2 - 38, getTabWidgetExtendedHeight() / 2), finalRotation, transferComponent, blockEntity.getBlockPos(), key);
 			TextWidget invTabTitle = new TextWidget();
 			invTabTitle.setPosition(Position.of(invPos, 0, -10));
 			invTabTitle.setText(getPlayer().inventory.getName());

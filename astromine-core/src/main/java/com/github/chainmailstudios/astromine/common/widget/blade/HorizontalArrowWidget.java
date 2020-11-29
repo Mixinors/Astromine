@@ -25,16 +25,15 @@
 package com.github.chainmailstudios.astromine.common.widget.blade;
 
 import com.github.chainmailstudios.astromine.common.utilities.TextUtilities;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.client.BaseRenderer;
@@ -53,8 +52,8 @@ import java.util.function.IntSupplier;
  * to the {@link #limitSupplier}.
  */
 public class HorizontalArrowWidget extends AbstractWidget {
-	private static final Identifier BACKGROUND = AstromineCommon.identifier("textures/widget/horizontal_arrow_background.png");
-	private static final Identifier FOREGROUND = AstromineCommon.identifier("textures/widget/horizontal_arrow_foreground.png");
+	private static final ResourceLocation BACKGROUND = AstromineCommon.identifier("textures/widget/horizontal_arrow_background.png");
+	private static final ResourceLocation FOREGROUND = AstromineCommon.identifier("textures/widget/horizontal_arrow_foreground.png");
 
 	private IntSupplier progressSupplier = () -> 0;
 	private IntSupplier limitSupplier = () -> 100;
@@ -82,14 +81,14 @@ public class HorizontalArrowWidget extends AbstractWidget {
 	/** Returns this widget's tooltip. */
 	@NotNull
 	@Override
-	public List<Text> getTooltip() {
+	public List<Component> getTooltip() {
 		return Collections.singletonList(TextUtilities.getRatio(progressSupplier.getAsInt(), limitSupplier.getAsInt()));
 	}
 
 	/** Renders this widget. */
 	@Environment(EnvType.CLIENT)
 	@Override
-	public void drawWidget(MatrixStack matrices, VertexConsumerProvider provider) {
+	public void drawWidget(PoseStack matrices, MultiBufferSource provider) {
 		if (getHidden()) {
 			return;
 		}
@@ -100,13 +99,13 @@ public class HorizontalArrowWidget extends AbstractWidget {
 		float sX = getSize().getWidth();
 		float sY = getSize().getHeight();
 
-		float rawHeight = MinecraftClient.getInstance().getWindow().getHeight();
-		float scale = (float) MinecraftClient.getInstance().getWindow().getScaleFactor();
+		float rawHeight = Minecraft.getInstance().getWindow().getHeight();
+		float scale = (float) Minecraft.getInstance().getWindow().getGuiScale();
 
 		float sBGX = (int) (((sX / limitSupplier.getAsInt()) * progressSupplier.getAsInt()));
 
-		RenderLayer backgroundLayer = Layers.get(BACKGROUND);
-		RenderLayer foregroundLayer = Layers.get(FOREGROUND);
+		RenderType backgroundLayer = Layers.get(BACKGROUND);
+		RenderType foregroundLayer = Layers.get(FOREGROUND);
 
 		Scissors area = new Scissors(provider, (int) (x * scale), (int) (rawHeight - ((y + sY) * scale)), (int) (sX * scale), (int) (sY * scale));
 

@@ -22,11 +22,10 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.registry;
-
-import net.minecraft.entity.EntityType;
+package com.github.chainmailstudios.astromine. registry;
 
 import com.github.chainmailstudios.astromine.common.registry.BreathableRegistry;
+import net.minecraft.world.entity.EntityType;
 
 public class AstromineBreathables {
 	public static void initialize() {

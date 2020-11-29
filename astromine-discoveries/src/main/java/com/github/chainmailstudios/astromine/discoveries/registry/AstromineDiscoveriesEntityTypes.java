@@ -27,43 +27,41 @@ package com.github.chainmailstudios.astromine.discoveries.registry;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
-
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.entity.SpawnRestriction;
-import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.world.Heightmap;
-
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.level.levelgen.Heightmap;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.PrimitiveRocketEntity;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.SpaceSlimeEntity;
 import com.github.chainmailstudios.astromine.discoveries.common.entity.SuperSpaceSlimeEntity;
 import com.github.chainmailstudios.astromine.registry.AstromineEntityTypes;
 
 public class AstromineDiscoveriesEntityTypes extends AstromineEntityTypes {
-	public static final EntityType<PrimitiveRocketEntity> PRIMITIVE_ROCKET = register("primitive_rocket", FabricEntityTypeBuilder.create(SpawnGroup.MISC, PrimitiveRocketEntity::new).dimensions(EntityDimensions.changing(1.5f, 22.5f)).trackable(256, 4).build());
+	public static final EntityType<PrimitiveRocketEntity> PRIMITIVE_ROCKET = register("primitive_rocket", FabricEntityTypeBuilder.create(MobCategory.MISC, PrimitiveRocketEntity::new).dimensions(EntityDimensions.scalable(1.5f, 22.5f)).trackable(256, 4).build());
 
-	public static final EntityType<SpaceSlimeEntity> SPACE_SLIME = register("space_slime", FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, SpaceSlimeEntity::new).dimensions(EntityDimensions.changing(2.04F, 2.04F)).trackable(128, 4).build());
+	public static final EntityType<SpaceSlimeEntity> SPACE_SLIME = register("space_slime", FabricEntityTypeBuilder.create(MobCategory.MONSTER, SpaceSlimeEntity::new).dimensions(EntityDimensions.scalable(2.04F, 2.04F)).trackable(128, 4).build());
 
-	public static final EntityType<SuperSpaceSlimeEntity> SUPER_SPACE_SLIME = register("super_space_slime", FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, SuperSpaceSlimeEntity::new).dimensions(EntityDimensions.changing(6.125F, 6.125F)).trackable(128, 4).build());
+	public static final EntityType<SuperSpaceSlimeEntity> SUPER_SPACE_SLIME = register("super_space_slime", FabricEntityTypeBuilder.create(MobCategory.MONSTER, SuperSpaceSlimeEntity::new).dimensions(EntityDimensions.scalable(6.125F, 6.125F)).trackable(128, 4).build());
 
 	public static void initialize() {
-		FabricDefaultAttributeRegistry.register(SPACE_SLIME, HostileEntity.createHostileAttributes());
+		FabricDefaultAttributeRegistry.register(SPACE_SLIME, Monster.createMonsterAttributes());
 		FabricDefaultAttributeRegistry.register(SUPER_SPACE_SLIME, SuperSpaceSlimeEntity.createAttributes());
 
 		AttackEntityCallback.EVENT.register((playerEntity, world, hand, entity, entityHitResult) -> {
 			if (entity instanceof SuperSpaceSlimeEntity) {
 				if (world.random.nextInt(10) == 0) {
 					SpaceSlimeEntity spaceSlimeEntity = AstromineDiscoveriesEntityTypes.SPACE_SLIME.create(world);
-					spaceSlimeEntity.setPos(entity.getX(), entity.getY(), entity.getZ());
-					world.spawnEntity(spaceSlimeEntity);
+					spaceSlimeEntity.setPosRaw(entity.getX(), entity.getY(), entity.getZ());
+					world.addFreshEntity(spaceSlimeEntity);
 				}
 			}
 
-			return ActionResult.PASS;
+			return InteractionResult.PASS;
 		});
 
-		SpawnRestriction.register(AstromineDiscoveriesEntityTypes.SPACE_SLIME, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SpaceSlimeEntity::canSpawnInDark);
+		SpawnPlacements.register(AstromineDiscoveriesEntityTypes.SPACE_SLIME, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SpaceSlimeEntity::canSpawnInDark);
 	}
 }

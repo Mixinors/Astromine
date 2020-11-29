@@ -24,6 +24,11 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
+import com.github.chainmailstudios.astromine.access.WorldChunkAccess;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.LevelChunkSection;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -31,29 +36,22 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.ChunkSection;
-import net.minecraft.world.chunk.WorldChunk;
-
-import com.github.chainmailstudios.astromine.access.WorldChunkAccess;
-
-@Mixin(WorldChunk.class)
+@Mixin(LevelChunk.class)
 public class WorldChunkMixin implements WorldChunkAccess {
 	@Shadow
 	@Final
-	private World world;
+	private Level level;
 	@Shadow
 	@Final
-	private ChunkPos pos;
+	private ChunkPos chunkPos;
 	@Shadow
 	@Final
-	private ChunkSection[] sections;
+	private LevelChunkSection[] sections;
 
-	private WorldChunk astromine_east;
-	private WorldChunk astromine_west;
-	private WorldChunk astromine_north;
-	private WorldChunk astromine_south;
+	private LevelChunk astromine_east;
+	private LevelChunk astromine_west;
+	private LevelChunk astromine_north;
+	private LevelChunk astromine_south;
 
 	private Runnable astromine_unload;
 
@@ -78,88 +76,88 @@ public class WorldChunkMixin implements WorldChunkAccess {
 	}
 
 	@Override
-	public void astromine_attachEast(WorldChunk chunk) {
+	public void astromine_attachEast(LevelChunk chunk) {
 		this.astromine_east = chunk;
 		((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_east = null);
 	}
 
 	@Override
-	public void astromine_attachWest(WorldChunk chunk) {
+	public void astromine_attachWest(LevelChunk chunk) {
 		this.astromine_west = chunk;
 		((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_west = null);
 	}
 
 	@Override
-	public void astromine_attachNorth(WorldChunk chunk) {
+	public void astromine_attachNorth(LevelChunk chunk) {
 		this.astromine_north = chunk;
 		((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_north = null);
 	}
 
 	@Override
-	public void astromine_attachSouth(WorldChunk chunk) {
+	public void astromine_attachSouth(LevelChunk chunk) {
 		this.astromine_south = chunk;
 		((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_south = null);
 	}
 
 	@Override
 	public void astromine_removeSubchunk(int subchunk) {
-		this.sections[subchunk] = WorldChunk.EMPTY_SECTION;
+		this.sections[subchunk] = LevelChunk.EMPTY_SECTION;
 
 	}
 
 	@Override
-	public WorldChunk astromine_east() {
-		WorldChunk chunk = this.astromine_east;
+	public LevelChunk astromine_east() {
+		LevelChunk chunk = this.astromine_east;
 		if (chunk == null) {
-			ChunkPos pos = this.pos;
-			chunk = this.astromine_east = this.world.getChunk(pos.x + 1, pos.z);
+			ChunkPos pos = this.chunkPos;
+			chunk = this.astromine_east = this.level.getChunk(pos.x + 1, pos.z);
 			((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_east = null);
-			((WorldChunkAccess) chunk).astromine_attachWest((WorldChunk) (Object) this);
+			((WorldChunkAccess) chunk).astromine_attachWest((LevelChunk) (Object) this);
 		}
 
 		return chunk;
 	}
 
 	@Override
-	public WorldChunk astromine_west() {
-		WorldChunk chunk = this.astromine_west;
+	public LevelChunk astromine_west() {
+		LevelChunk chunk = this.astromine_west;
 		if (chunk == null) {
-			ChunkPos pos = this.pos;
-			chunk = this.astromine_west = this.world.getChunk(pos.x - 1, pos.z);
+			ChunkPos pos = this.chunkPos;
+			chunk = this.astromine_west = this.level.getChunk(pos.x - 1, pos.z);
 			((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_west = null);
-			((WorldChunkAccess) chunk).astromine_attachEast((WorldChunk) (Object) this);
+			((WorldChunkAccess) chunk).astromine_attachEast((LevelChunk) (Object) this);
 		}
 
 		return chunk;
 	}
 
 	@Override
-	public WorldChunk astromine_north() {
-		WorldChunk chunk = this.astromine_north;
+	public LevelChunk astromine_north() {
+		LevelChunk chunk = this.astromine_north;
 		if (chunk == null) {
-			ChunkPos pos = this.pos;
-			chunk = this.astromine_north = this.world.getChunk(pos.x, pos.z - 1);
+			ChunkPos pos = this.chunkPos;
+			chunk = this.astromine_north = this.level.getChunk(pos.x, pos.z - 1);
 			((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_north = null);
-			((WorldChunkAccess) chunk).astromine_attachSouth((WorldChunk) (Object) this);
+			((WorldChunkAccess) chunk).astromine_attachSouth((LevelChunk) (Object) this);
 		}
 
 		return chunk;
 	}
 
 	@Override
-	public WorldChunk astromine_south() {
-		WorldChunk chunk = this.astromine_south;
+	public LevelChunk astromine_south() {
+		LevelChunk chunk = this.astromine_south;
 		if (chunk == null) {
-			ChunkPos pos = this.pos;
-			chunk = this.astromine_south = this.world.getChunk(pos.x, pos.z + 1);
+			ChunkPos pos = this.chunkPos;
+			chunk = this.astromine_south = this.level.getChunk(pos.x, pos.z + 1);
 			((WorldChunkAccess) chunk).astromine_addUnloadListener(() -> this.astromine_south = null);
-			((WorldChunkAccess) chunk).astromine_attachNorth((WorldChunk) (Object) this);
+			((WorldChunkAccess) chunk).astromine_attachNorth((LevelChunk) (Object) this);
 		}
 
 		return chunk;
 	}
 
-	@Inject(method = "setLoadedToWorld", at = @At("RETURN"))
+	@Inject(method = "setLoaded", at = @At("RETURN"))
 	private void astromine_setLoadedToWorld(boolean loaded, CallbackInfo ci) {
 		if (!loaded) { // if unloading
 			this.astromine_runUnloadListeners();

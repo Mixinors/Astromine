@@ -1,7 +1,8 @@
 accessWidener v1 named
 
-accessible field net/minecraft/server/world/ServerChunkManager chunkGenerator Lnet/minecraft/world/gen/chunk/ChunkGenerator;
-mutable field net/minecraft/server/world/ServerChunkManager chunkGenerator Lnet/minecraft/world/gen/chunk/ChunkGenerator;
-accessible method net/minecraft/block/StairsBlock <init> (Lnet/minecraft/block/BlockState;Lnet/minecraft/block/AbstractBlock$Settings;)V
-accessible method net/minecraft/entity/SpawnRestriction register (Lnet/minecraft/entity/EntityType;Lnet/minecraft/entity/SpawnRestriction$Location;Lnet/minecraft/world/Heightmap$Type;Lnet/minecraft/entity/SpawnRestriction$SpawnPredicate;)V
-accessible method net/minecraft/client/particle/CrackParticle <init> (Lnet/minecraft/client/world/ClientWorld;DDDLnet/minecraft/item/ItemStack;)V
+accessible field net/minecraft/server/level/ServerChunkCache generator Lnet/minecraft/world/level/chunk/ChunkGenerator;
+mutable field net/minecraft/server/level/ServerChunkCache generator Lnet/minecraft/world/level/chunk/ChunkGenerator;
+accessible method net/minecraft/client/particle/BreakingItemParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/particle/BreakingItemParticle$1;)V
+accessible method net/minecraft/world/level/block/StairBlock <init> (Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;)V
+accessible method net/minecraft/world/entity/SpawnPlacements register (Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/entity/SpawnPlacements$Type;Lnet/minecraft/world/level/levelgen/Heightmap$Types;Lnet/minecraft/world/entity/SpawnPlacements$SpawnPredicate;)V
+accessible method net/minecraft/client/particle/BreakingItemParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/particle/BreakingItemParticle$1;)V

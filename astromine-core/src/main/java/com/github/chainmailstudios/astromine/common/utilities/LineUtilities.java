@@ -24,9 +24,8 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import net.minecraft.client.util.math.Vector3f;
-
 import com.google.common.collect.Lists;
+import com.mojang.math.Vector3f;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,16 +35,16 @@ public class LineUtilities {
 	public static Collection<Vector3f> getBezierSegments(Vector3f posA, Vector3f posB, Vector3f posC, float segments) {
 		ArrayList<Vector3f> positions = new ArrayList<>();
 
-		double x1 = posA.getX();
-		double y1 = posA.getY();
-		double z1 = posA.getZ();
+		double x1 = posA.x();
+		double y1 = posA.y();
+		double z1 = posA.z();
 
-		double x3 = posB.getX();
-		double y3 = posB.getY();
-		double z3 = posB.getZ();
+		double x3 = posB.x();
+		double y3 = posB.y();
+		double z3 = posB.z();
 
-		double x2 = posC.getX();
-		double y2 = posC.getY();
+		double x2 = posC.x();
+		double y2 = posC.y();
 
 		double dZ = (z3 - z1) / segments;
 		double cZ = 0;
@@ -82,13 +81,13 @@ public class LineUtilities {
 
 	/** Returns points of a Bresenham line between the two given points with the specified amount of segments. */
 	public static Collection<Vector3f> getBresenhamSegments(Vector3f posA, Vector3f posB, float segments) {
-		float x1 = posA.getX();
-		float y1 = posA.getY();
-		float z1 = posA.getZ();
+		float x1 = posA.x();
+		float y1 = posA.y();
+		float z1 = posA.z();
 
-		float x2 = posB.getX();
-		float y2 = posB.getY();
-		float z2 = posB.getZ();
+		float x2 = posB.x();
+		float y2 = posB.y();
+		float z2 = posB.z();
 
 		List<Vector3f> points = Lists.newArrayList();
 
@@ -124,7 +123,7 @@ public class LineUtilities {
 			float p1 = 2 * dy - dx;
 			float p2 = 2 * dz - dx;
 
-			while (posA.getX() < posB.getX() ? x1 < x2 : x1 > x2) {
+			while (posA.x() < posB.x() ? x1 < x2 : x1 > x2) {
 				x1 += xs;
 
 				if (p1 >= 0) {
@@ -146,7 +145,7 @@ public class LineUtilities {
 			float p1 = 2 * dx - dy;
 			float p2 = 2 * dz - dy;
 
-			while (posA.getY() < posB.getY() ? y1 < y2 : y1 > y2) {
+			while (posA.y() < posB.y() ? y1 < y2 : y1 > y2) {
 				y1 += ys;
 
 				if (p1 >= 0) {
@@ -168,7 +167,7 @@ public class LineUtilities {
 			float p1 = 2 * dy - dz;
 			float p2 = 2 * dx - dz;
 
-			while (posA.getZ() < posB.getZ() ? z1 < z2 : z1 > z2) {
+			while (posA.z() < posB.z() ? z1 < z2 : z1 > z2) {
 				z1 += zs;
 
 				if (p1 >= 0) {

@@ -22,21 +22,20 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.registry;
-
-import net.minecraft.item.Item;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+package com.github.chainmailstudios.astromine. registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.common.item.ManualItem;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 
 public class AstromineItems {
-	public static final Item ENERGY = register("energy", new Item(new Item.Settings()));
-	public static final Item FLUID = register("fluid", new Item(new Item.Settings()));
-	public static final Item ITEM = register("item", new Item(new Item.Settings()));
+	public static final Item ENERGY = register("energy", new Item(new Item.Properties()));
+	public static final Item FLUID = register("fluid", new Item(new Item.Properties()));
+	public static final Item ITEM = register("item", new Item(new Item.Properties()));
 
-	public static final Item MANUAL = register("manual", new ManualItem(getBasicSettings().maxCount(1)));
+	public static final Item MANUAL = register("manual", new ManualItem(getBasicSettings().stacksTo(1)));
 
 	public static void initialize() {}
 
@@ -54,17 +53,17 @@ public class AstromineItems {
 
 	/**
 	 * @param name
-	 *        Identifier of item instance to be registered
+	 *        ResourceLocation of item instance to be registered
 	 * @param item
 	 *        Item instance to be registered
 	 *
 	 * @return Item instance registered
 	 */
-	public static <T extends Item> T register(Identifier name, T item) {
+	public static <T extends Item> T register(ResourceLocation name, T item) {
 		return Registry.register(Registry.ITEM, name, item);
 	}
 
-	public static Item.Settings getBasicSettings() {
-		return new Item.Settings().group(AstromineItemGroups.CORE);
+	public static Item.Properties getBasicSettings() {
+		return new Item.Properties().tab(AstromineItemGroups.CORE);
 	}
 }

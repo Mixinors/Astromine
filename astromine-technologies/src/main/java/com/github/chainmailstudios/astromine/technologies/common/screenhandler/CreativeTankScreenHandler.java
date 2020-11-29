@@ -24,17 +24,16 @@
 
 package com.github.chainmailstudios.astromine.technologies.common.screenhandler;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
-
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesScreenHandlers;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 
 // TODO! - 07/08/2020 - 17:13:28
 // TODO! - 21/08/2020 - 17:31:08
 // TODO! - 27/08/2020 - 07:56:00
 // DONE? - 20/11/2020 - 05:47:47
 public class CreativeTankScreenHandler extends TankScreenHandler {
-	public CreativeTankScreenHandler(int syncId, PlayerEntity player, BlockPos position) {
+	public CreativeTankScreenHandler(int syncId, Player player, BlockPos position) {
 		super(AstromineTechnologiesScreenHandlers.CREATIVE_TANK, syncId, player, position);
 	}
 }

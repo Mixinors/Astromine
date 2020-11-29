@@ -25,7 +25,7 @@
 package com.github.chainmailstudios.astromine.common.volume.base;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.FriendlyByteBuf;
 
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
 import io.netty.buffer.ByteBuf;
@@ -223,5 +223,5 @@ public abstract class Volume<N extends Number> {
 	public abstract JsonElement toJson();
 
 	/** Serialize this volume to a {@link ByteBuf}. */
-	public abstract PacketByteBuf toPacket(PacketByteBuf buffer);
+	public abstract FriendlyByteBuf toPacket(FriendlyByteBuf buffer);
 }

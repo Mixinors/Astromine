@@ -24,15 +24,9 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry;
 
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.util.registry.Registry;
-
-import com.github.chainmailstudios.astromine.discoveries.common.recipe.AltarRecipe;
 import com.github.chainmailstudios.astromine.registry.AstromineRecipeSerializers;
 
 public class AstromineDiscoveriesRecipeSerializers extends AstromineRecipeSerializers {
-	public static final RecipeSerializer<AltarRecipe> INFUSING = Registry.register(Registry.RECIPE_SERIALIZER, AltarRecipe.Serializer.ID, AltarRecipe.Serializer.INSTANCE);
-
 	public static void initialize() {
 
 	}

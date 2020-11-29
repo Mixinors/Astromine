@@ -24,14 +24,13 @@
 
 package com.github.chainmailstudios.astromine.common.registry;
 
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.World;
-
 import com.github.chainmailstudios.astromine.common.registry.base.BiRegistry;
 import com.github.chainmailstudios.astromine.mixin.*;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 import java.util.Optional;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 
 /**
  * A {@link BiRegistry} for registration of
@@ -51,7 +50,7 @@ import java.util.Optional;
  * - {@link SquidEntityMixin}
  * - {@link StepAndDestroyBlockGoalMixin}
  */
-public class GravityRegistry extends BiRegistry<RegistryKey<World>, Double> {
+public class GravityRegistry extends BiRegistry<ResourceKey<Level>, Double> {
 	public static final GravityRegistry INSTANCE = new GravityRegistry();
 
 	/** We only want one instance of this. */
@@ -59,7 +58,7 @@ public class GravityRegistry extends BiRegistry<RegistryKey<World>, Double> {
 
 	/** Returns the gravity for the given registry key, or the default value. */
 	@Override
-	public Double get(RegistryKey<World> worldRegistryKey) {
+	public Double get(ResourceKey<Level> worldRegistryKey) {
 		return Optional.ofNullable(super.get(worldRegistryKey)).orElse(AstromineConfig.get().defaultGravity);
 	}
 }

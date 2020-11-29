@@ -24,17 +24,16 @@
 
 package com.github.chainmailstudios.astromine.common.entity.base;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.world.World;
-
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
 
 /**
  * A {@link ComponentEntity} with an attached {@link FluidComponent}.
  */
 public abstract class ComponentFluidEntity extends ComponentEntity {
 	/** Instantiates a {@link ComponentFluidEntity}. */
-	public ComponentFluidEntity(EntityType<?> type, World world) {
+	public ComponentFluidEntity(EntityType<?> type, Level world) {
 		super(type, world);
 	}
 

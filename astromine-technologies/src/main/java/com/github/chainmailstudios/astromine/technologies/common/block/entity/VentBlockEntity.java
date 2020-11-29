@@ -25,12 +25,6 @@
 package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 
 import com.github.chainmailstudios.astromine.common.component.general.SimpleDirectionalFluidComponent;
-import net.minecraft.block.FacingBlock;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.Direction;
-
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyFluidBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.FluidComponent;
@@ -46,6 +40,10 @@ import com.github.chainmailstudios.astromine.technologies.common.block.entity.ma
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.FluidSizeProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 
 public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements FluidSizeProvider, EnergySizeProvider, SpeedProvider, EnergyConsumedProvider {
 	public VentBlockEntity() {
@@ -90,7 +88,7 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 	public void tick() {
 		super.tick();
 
-		if (world == null || world.isClient || !tickRedstone())
+		if (level == null || level.isClientSide || !tickRedstone())
 			return;
 
 		FluidComponent fluidComponent = getFluidComponent();
@@ -99,18 +97,18 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 			EnergyVolume energyVolume = getEnergyComponent().getVolume();
 
 			if (energyVolume.hasStored(Fraction.of(1, 8))) {
-				BlockPos position = getPos();
+				BlockPos position = getBlockPos();
 
-				Direction direction = world.getBlockState(position).get(HorizontalFacingBlock.FACING);
+				Direction direction = level.getBlockState(position).getValue(HorizontalDirectionalBlock.FACING);
 
-				BlockPos output = position.offset(direction);
+				BlockPos output = position.relative(direction);
 
-				if (energyVolume.hasStored(getEnergyConsumed()) && (world.getBlockState(output).isAir() || world.getBlockState(output).isSideSolidFullSquare(world, pos, direction.getOpposite()))) {
-					ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(getPos()));
+				if (energyVolume.hasStored(getEnergyConsumed()) && (level.getBlockState(output).isAir() || level.getBlockState(output).isFaceSturdy(level, worldPosition, direction.getOpposite()))) {
+					ChunkAtmosphereComponent atmosphereComponent = ChunkAtmosphereComponent.get(level.getChunk(getBlockPos()));
 
 					FluidVolume centerVolume = fluidComponent.getFirst();
 
-					if (ChunkAtmosphereComponent.isInChunk(world.getChunk(output).getPos(), pos)) {
+					if (ChunkAtmosphereComponent.isInChunk(level.getChunk(output).getPos(), worldPosition)) {
 						FluidVolume sideVolume = atmosphereComponent.get(output);
 
 						if ((sideVolume.test(centerVolume.getFluid())) && sideVolume.smallerThan(centerVolume.getAmount())) {
@@ -125,9 +123,9 @@ public class VentBlockEntity extends ComponentEnergyFluidBlockEntity implements 
 							tickInactive();
 						}
 					} else {
-						ChunkPos neighborPos = ChunkAtmosphereComponent.getNeighborFromPos(world.getChunk(output).getPos(), output);
+						ChunkPos neighborPos = ChunkAtmosphereComponent.getNeighborFromPos(level.getChunk(output).getPos(), output);
 
-						ChunkAtmosphereComponent neighborAtmosphereComponent = ChunkAtmosphereComponent.get(world.getChunk(neighborPos.x, neighborPos.z));
+						ChunkAtmosphereComponent neighborAtmosphereComponent = ChunkAtmosphereComponent.get(level.getChunk(neighborPos.x, neighborPos.z));
 
 						FluidVolume sideVolume = neighborAtmosphereComponent.get(output);
 

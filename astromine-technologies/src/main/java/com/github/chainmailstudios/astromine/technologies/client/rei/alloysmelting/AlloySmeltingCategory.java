@@ -26,11 +26,9 @@ package com.github.chainmailstudios.astromine.technologies.client.rei.alloysmelt
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlocks;
@@ -48,13 +46,13 @@ import java.util.List;
 @Environment(EnvType.CLIENT)
 public class AlloySmeltingCategory implements RecipeCategory<AlloySmeltingDisplay> {
 	@Override
-	public Identifier getIdentifier() {
+	public ResourceLocation getIdentifier() {
 		return AstromineTechnologiesRoughlyEnoughItemsPlugin.ALLOY_SMELTING;
 	}
 
 	@Override
 	public String getCategoryName() {
-		return I18n.translate("category.astromine.alloy_smelting");
+		return I18n.get("category.astromine.alloy_smelting");
 	}
 
 	@Override
@@ -69,7 +67,7 @@ public class AlloySmeltingCategory implements RecipeCategory<AlloySmeltingDispla
 		List<Widget> widgets = Lists.newArrayList();
 		widgets.add(Widgets.createRecipeBase(bounds));
 		widgets.addAll(AstromineRoughlyEnoughItemsPlugin.createEnergyDisplay(new Rectangle(bounds.getX() + 10, bounds.getCenterY() - 23, 12, 48), display.getEnergyRequired(), false, display.getTimeRequired() * 500));
-		widgets.add(Widgets.createLabel(new Point(bounds.x + bounds.width - 5, bounds.y + 5), new TranslatableText("category.astromine.cooking.time", df.format(display.getTimeRequired() / 20d))).noShadow().rightAligned().color(0xFF404040, 0xFFBBBBBB));
+		widgets.add(Widgets.createLabel(new Point(bounds.x + bounds.width - 5, bounds.y + 5), new TranslatableComponent("category.astromine.cooking.time", df.format(display.getTimeRequired() / 20d))).noShadow().rightAligned().color(0xFF404040, 0xFFBBBBBB));
 		widgets.add(Widgets.createArrow(new Point(startPoint.x + 27, startPoint.y + 18)).animationDurationTicks(display.getTimeRequired()));
 		widgets.add(Widgets.createResultSlotBackground(new Point(startPoint.x + 61, startPoint.y + 19)));
 		widgets.add(Widgets.createSlot(new Point(startPoint.x + 4, startPoint.y + 19 - 9)).entries(display.getInputEntries().get(0)).markInput());

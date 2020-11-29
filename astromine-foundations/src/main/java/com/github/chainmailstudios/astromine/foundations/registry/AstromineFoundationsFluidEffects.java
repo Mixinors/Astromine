@@ -24,24 +24,21 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
-
 import com.github.chainmailstudios.astromine.common.registry.FluidEffectRegistry;
 import com.github.chainmailstudios.astromine.registry.AstromineFluidEffects;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.player.Player;
 
 public class AstromineFoundationsFluidEffects extends AstromineFluidEffects {
 	public static void initialize() {
 		AstromineFoundationsFluids.OIL_DERIVATIVES.forEach(fluid -> {
 			FluidEffectRegistry.INSTANCE.register(fluid, (submerged, entity) -> {
-				if(entity.isAlive() && !entity.isSpectator() && (!(entity instanceof PlayerEntity) || !((PlayerEntity)entity).isCreative())) {
-					entity.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 30 * 20, 3));
-					entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 30 * 20, 3));
-					entity.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 30 * 20, 1));
-					entity.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 30 * 20, 1));
+				if(entity.isAlive() && !entity.isSpectator() && (!(entity instanceof Player) || !((Player)entity).isCreative())) {
+					entity.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 30 * 20, 3));
+					entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 30 * 20, 3));
+					entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 30 * 20, 1));
+					entity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 30 * 20, 1));
 				}
 			});
 		});

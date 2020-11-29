@@ -27,9 +27,6 @@ package com.github.chainmailstudios.astromine.technologies.common.block.entity;
 import com.github.chainmailstudios.astromine.common.component.general.*;
 import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.ItemStack;
-
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentEnergyItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.utilities.tier.MachineTier;
 import com.github.chainmailstudios.astromine.common.volume.energy.InfiniteEnergyVolume;
@@ -38,6 +35,8 @@ import com.github.chainmailstudios.astromine.technologies.common.block.entity.ma
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.SpeedProvider;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.machine.TierProvider;
 import com.github.chainmailstudios.astromine.technologies.registry.AstromineTechnologiesBlockEntityTypes;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import team.reborn.energy.Energy;
 import team.reborn.energy.EnergyHandler;
 
@@ -64,7 +63,7 @@ public abstract class CapacitorBlockEntity extends ComponentEnergyItemBlockEntit
 	public void tick() {
 		super.tick();
 
-		if (world == null || world.isClient || !tickRedstone())
+		if (level == null || level.isClientSide || !tickRedstone())
 			return;
 
 		ItemComponent itemComponent = getItemComponent();

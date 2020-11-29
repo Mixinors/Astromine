@@ -24,21 +24,20 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.render.block;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3i;
-
 import com.github.chainmailstudios.astromine.client.render.layer.Layer;
 import com.github.chainmailstudios.astromine.technologies.common.block.HolographicBridgeProjectorBlock;
 import com.github.chainmailstudios.astromine.technologies.common.block.entity.HolographicBridgeProjectorBlockEntity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector3f;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<HolographicBridgeProjectorBlockEntity> {
 	public HolographicBridgeBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
@@ -46,17 +45,17 @@ public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<Ho
 	}
 
 	@Override
-	public void render(HolographicBridgeProjectorBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider provider, int light, int overlay) {
-		BlockState state = entity.getWorld().getBlockState(entity.getPos());
+	public void render(HolographicBridgeProjectorBlockEntity entity, float tickDelta, PoseStack matrices, MultiBufferSource provider, int light, int overlay) {
+		BlockState state = entity.getLevel().getBlockState(entity.getBlockPos());
 
 		if (!(state.getBlock() instanceof HolographicBridgeProjectorBlock)) {
 			return;
 		}
 
 		if (entity.hasChild()) {
-			Vec3i pA = entity.getPos();
+			Vec3i pA = entity.getBlockPos();
 
-			Direction direction = state.get(HorizontalFacingBlock.FACING);
+			Direction direction = state.getValue(HorizontalDirectionalBlock.FACING);
 
 			int offsetX = direction == Direction.NORTH ? 1 : 0;
 			int offsetZ = direction == Direction.WEST ? 1 : 0;
@@ -68,32 +67,32 @@ public class HolographicBridgeBlockEntityRenderer extends BlockEntityRenderer<Ho
 			Vector3f start = entity.segments.get(0);
 			Vector3f end = entity.segments.get(entity.segments.size() - 1);
 
-			matrices.push();
+			matrices.pushPose();
 
 			VertexConsumer consumer = provider.getBuffer(Layer.getHolographicBridge());
 
-			float xA = end.getX() - pA.getX();
-			float xB = start.getX() - pA.getX();
+			float xA = end.x() - pA.getX();
+			float xB = start.x() - pA.getX();
 
-			float yA = end.getY() - pA.getY();
-			float yB = start.getY() - pA.getY();
+			float yA = end.y() - pA.getY();
+			float yB = start.y() - pA.getY();
 
-			float zA = end.getZ() - pA.getZ();
-			float zB = start.getZ() - pA.getZ();
+			float zA = end.z() - pA.getZ();
+			float zB = start.z() - pA.getZ();
 
-			consumer.vertex(matrices.peek().getModel(), xA, yA, zA).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(0, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
-			consumer.vertex(matrices.peek().getModel(), xB, yB, zB).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(0, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(), 0, 1, 0).next();
-			consumer.vertex(matrices.peek().getModel(), xB + offsetX, yB, zB + offsetZ).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(1, 1).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(),
-				0, 1, 0).next();
-			consumer.vertex(matrices.peek().getModel(), xA + offsetX, yA, zA + offsetZ).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).texture(1, 0).overlay(OverlayTexture.DEFAULT_UV).light(0x00f000f0).normal(matrices.peek().getNormal(),
-				0, 1, 0).next();
+			consumer.vertex(matrices.last().pose(), xA, yA, zA).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).uv(0, 0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(0x00f000f0).normal(matrices.last().normal(), 0, 1, 0).endVertex();
+			consumer.vertex(matrices.last().pose(), xB, yB, zB).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).uv(0, 1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(0x00f000f0).normal(matrices.last().normal(), 0, 1, 0).endVertex();
+			consumer.vertex(matrices.last().pose(), xB + offsetX, yB, zB + offsetZ).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).uv(1, 1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(0x00f000f0).normal(matrices.last().normal(),
+				0, 1, 0).endVertex();
+			consumer.vertex(matrices.last().pose(), xA + offsetX, yA, zA + offsetZ).color(entity.color.getR(), entity.color.getG(), entity.color.getB(), entity.color.getA()).uv(1, 0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(0x00f000f0).normal(matrices.last().normal(),
+				0, 1, 0).endVertex();
 
-			matrices.pop();
+			matrices.popPose();
 		}
 	}
 
 	@Override
-	public boolean rendersOutsideBoundingBox(HolographicBridgeProjectorBlockEntity blockEntity) {
+	public boolean shouldRenderOffScreen(HolographicBridgeProjectorBlockEntity blockEntity) {
 		return true;
 	}
 }

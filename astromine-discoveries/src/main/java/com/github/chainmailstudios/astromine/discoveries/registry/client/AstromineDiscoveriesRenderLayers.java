@@ -24,15 +24,12 @@
 
 package com.github.chainmailstudios.astromine.discoveries.registry.client;
 
-import net.minecraft.client.render.RenderLayer;
-
 import com.github.chainmailstudios.astromine.discoveries.registry.AstromineDiscoveriesBlocks;
 import com.github.chainmailstudios.astromine.registry.client.AstromineRenderLayers;
+import net.minecraft.client.renderer.RenderType;
 
 public class AstromineDiscoveriesRenderLayers {
 	public static void initialize() {
-		AstromineRenderLayers.register(AstromineDiscoveriesBlocks.ALTAR, RenderLayer.getCutout());
-		AstromineRenderLayers.register(AstromineDiscoveriesBlocks.ALTAR_PEDESTAL, RenderLayer.getCutout());
-		AstromineRenderLayers.register(AstromineDiscoveriesBlocks.SPACE_SLIME_BLOCK, RenderLayer.getTranslucent());
+		AstromineRenderLayers.register(AstromineDiscoveriesBlocks.SPACE_SLIME_BLOCK, RenderType.translucent());
 	}
 }

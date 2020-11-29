@@ -26,13 +26,12 @@ package com.github.chainmailstudios.astromine.common.callback;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.chunk.WorldChunk;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.chunk.LevelChunk;
 
 /**
- * A callback called when a {@link ServerWorld}'s
- * {@link WorldChunk} is ticked.
+ * A callback called when a {@link ServerLevel}'s
+ * {@link LevelChunk} is ticked.
  */
 @FunctionalInterface
 public interface ServerChunkTickCallback {
@@ -42,6 +41,6 @@ public interface ServerChunkTickCallback {
 		}
 	});
 
-	/** Handle the {@link ServerWorld} and its {@link WorldChunk}. */
-	void tickChunk(ServerWorld world, WorldChunk chunk);
+	/** Handle the {@link ServerLevel} and its {@link LevelChunk}. */
+	void tickChunk(ServerLevel world, LevelChunk chunk);
 }

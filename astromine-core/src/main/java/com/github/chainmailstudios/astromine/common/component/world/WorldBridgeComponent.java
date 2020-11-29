@@ -24,15 +24,14 @@
 
 package com.github.chainmailstudios.astromine.common.component.world;
 
-import net.minecraft.block.Block;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3i;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.World;
-
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import com.github.chainmailstudios.astromine.common.utilities.VoxelShapeUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineComponents;
 import dev.onyxstudios.cca.api.v3.component.Component;
@@ -45,7 +44,7 @@ import java.util.Set;
 
 /**
  * A {@link Component} which stores information about
- * a {@link World}'s holographic bridges.
+ * a {@link Level}'s holographic bridges.
  *
  * It is important to understand how information is stored here.
  * A {@link Map} of {@link Long}-represented {@link BlockPos} positions
@@ -64,15 +63,15 @@ public final class WorldBridgeComponent implements Component {
 
 	private final Long2ObjectArrayMap<VoxelShape> cache = new Long2ObjectArrayMap<>();
 
-	private final World world;
+	private final Level world;
 
 	/** Instantiates a {@link WorldBridgeComponent}. */
-	public WorldBridgeComponent(World world) {
+	public WorldBridgeComponent(Level world) {
 		this.world = world;
 	}
 
 	/** Returns this component's world. */
-	public World getWorld() {
+	public Level getWorld() {
 		return world;
 	}
 
@@ -123,7 +122,7 @@ public final class WorldBridgeComponent implements Component {
 		Set<Vec3i> vecs = get(pos);
 
 		if (vecs == null)
-			return VoxelShapes.fullCube();
+			return Shapes.block();
 
 		VoxelShape shape = getShape(vecs);
 
@@ -135,7 +134,7 @@ public final class WorldBridgeComponent implements Component {
 	/** Returns the {@link VoxelShape} formed by the given {@link Set} of steps.
 	 * I made this work months ago; and I don't know how. Accept it, or suffer. */
 	private VoxelShape getShape(Set<Vec3i> vecs) {
-		VoxelShape shape = VoxelShapes.empty();
+		VoxelShape shape = Shapes.empty();
 
 		boolean a = vecs.stream().allMatch(vec -> vec.getZ() == 0);
 		boolean b = vecs.stream().allMatch(vec -> vec.getX() == 0);
@@ -148,7 +147,7 @@ public final class WorldBridgeComponent implements Component {
 			if (!d && vec.getZ() < 0)
 				d = true;
 
-			shape = VoxelShapes.union(shape, Block.createCuboidShape(Math.abs(vec.getX()), Math.abs(vec.getY()) - 1, Math.abs(vec.getZ()), b ? 16 : Math.abs(vec.getX() + 1), Math.abs(vec.getY()) + 1, a ? 16 : Math.abs(vec.getZ() + 1)));
+			shape = Shapes.or(shape, Block.box(Math.abs(vec.getX()), Math.abs(vec.getY()) - 1, Math.abs(vec.getZ()), b ? 16 : Math.abs(vec.getX() + 1), Math.abs(vec.getY()) + 1, a ? 16 : Math.abs(vec.getZ() + 1)));
 		}
 
 		if (c || d) {
@@ -194,14 +193,14 @@ public final class WorldBridgeComponent implements Component {
 	public void readFromNbt(CompoundTag tag) {
 		CompoundTag dataTag = tag.getCompound("data");
 
-		for (String key : dataTag.getKeys()) {
+		for (String key : dataTag.getAllKeys()) {
 			CompoundTag pointTag = dataTag.getCompound(key);
 			CompoundTag vecTag = pointTag.getCompound("vecs");
 
 			long pos = pointTag.getLong("pos");
 
-			for (String vecKey : vecTag.getKeys()) {
-				add(pos, BlockPos.fromLong(vecTag.getLong(vecKey)));
+			for (String vecKey : vecTag.getAllKeys()) {
+				add(pos, BlockPos.of(vecTag.getLong(vecKey)));
 			}
 		}
 	}

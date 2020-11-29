@@ -24,22 +24,22 @@
 
 package com.github.chainmailstudios.astromine.common.widget.vanilla;
 
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.slot.Slot;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * A slot with no insertion.
  */
 public class ExtractionSlot extends Slot {
 	/** Instantiates an {@link ExtractionSlot}. */
-	public ExtractionSlot(Inventory inventory, int index, int x, int y) {
+	public ExtractionSlot(Container inventory, int index, int x, int y) {
 		super(inventory, index, x, y);
 	}
 
 	/** Override behavior to stop insertion. */
 	@Override
-	public boolean canInsert(ItemStack stack) {
+	public boolean mayPlace(ItemStack stack) {
 		return false;
 	}
 }

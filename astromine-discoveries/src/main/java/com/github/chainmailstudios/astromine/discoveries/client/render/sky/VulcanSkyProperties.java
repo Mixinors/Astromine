@@ -26,23 +26,22 @@ package com.github.chainmailstudios.astromine.discoveries.client.render.sky;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import net.minecraft.client.render.SkyProperties;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.world.phys.Vec3;
 
 @Environment(EnvType.CLIENT)
-public class VulcanSkyProperties extends SkyProperties {
+public class VulcanSkyProperties extends DimensionSpecialEffects {
 	public VulcanSkyProperties() {
 		super(Float.NaN, false, SkyType.NORMAL, true, true);
 	}
 
 	@Override
-	public Vec3d adjustFogColor(Vec3d color, float sunHeight) {
-		return new Vec3d(0.4, 0.35, 0.31);
+	public Vec3 getBrightnessDependentFogColor(Vec3 color, float sunHeight) {
+		return new Vec3(0.4, 0.35, 0.31);
 	}
 
 	@Override
-	public boolean useThickFog(int camX, int camY) {
+	public boolean isFoggyAt(int camX, int camY) {
 		return false;
 	}
 }

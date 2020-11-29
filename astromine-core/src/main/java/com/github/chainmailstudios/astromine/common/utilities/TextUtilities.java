@@ -2,13 +2,15 @@ package com.github.chainmailstudios.astromine.common.utilities;
 
 import net.fabricmc.loader.api.FabricLoader;
 
-import net.minecraft.fluid.Fluid;
-import net.minecraft.text.*;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 
 import com.github.chainmailstudios.astromine.common.volume.base.Volume;
+import net.minecraft.world.level.material.Fluid;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 import java.util.List;
@@ -17,44 +19,44 @@ import java.util.regex.Pattern;
 public class TextUtilities {
     private static final Pattern HEX_PATTERN = Pattern.compile("^<#([a-fA-F0-9]{6})>$");
 
-    /** Returns the "Astromine" text, formatted with {@link Formatting#BLUE}
-     * and {@link Formatting#ITALIC}. */
-    public static Text getAstromine() {
-        return new LiteralText("Astromine").formatted(Formatting.BLUE, Formatting.ITALIC);
+    /** Returns the "Astromine" text, formatted with {@link ChatFormatting#BLUE}
+     * and {@link ChatFormatting#ITALIC}. */
+    public static Component getAstromine() {
+        return new TextComponent("Astromine").withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC);
     }
 
     /** Returns the "Energy" text. */
-    public static Text getEnergy() {
-        return new TranslatableText("text.astromine.energy");
+    public static Component getEnergy() {
+        return new TranslatableComponent("text.astromine.energy");
     }
 
     /** Returns the "16k/32k" text. */
-    public static Text getVolume(Volume<?> volume) {
-        return new LiteralText(NumberUtilities.shorten(volume.getAmount().doubleValue()) + "/" + NumberUtilities.shorten(volume.getSize().doubleValue())).formatted(Formatting.GRAY);
+    public static Component getVolume(Volume<?> volume) {
+        return new TextComponent(NumberUtilities.shorten(volume.getAmount().doubleValue()) + "/" + NumberUtilities.shorten(volume.getSize().doubleValue())).withStyle(ChatFormatting.GRAY);
     }
 
     /** Returns the "Water" / "Lava" / "Hydrogen" / ... text. */
-    public static Text getFluid(Identifier fluidId) {
-        return new TranslatableText(String.format("block.%s.%s", fluidId.getNamespace(), fluidId.getPath()));
+    public static Component getFluid(ResourceLocation fluidId) {
+        return new TranslatableComponent(String.format("block.%s.%s", fluidId.getNamespace(), fluidId.getPath()));
     }
 
     /** Returns the "Water" / "Lava" / "Hydrogen" / "... text. */
-    public static Text getFluid(Fluid fluid) {
-        return getFluid(Registry.FLUID.getId(fluid));
+    public static Component getFluid(Fluid fluid) {
+        return getFluid(Registry.FLUID.getKey(fluid));
     }
 
     /** Returns the "astromine:oxygen" / "minecraft:stone" ... text. */
-    public static Text getIdentifier(Identifier identifier) {
-        return new LiteralText(identifier.toString()).formatted(Formatting.DARK_GRAY);
+    public static Component getIdentifier(ResourceLocation identifier) {
+        return new TextComponent(identifier.toString()).withStyle(ChatFormatting.DARK_GRAY);
     }
 
     /** Returns the "Astromine" / "TechReborn" / "Minecraft" ... text. */
-    public static Text getMod(Identifier identifier) {
-        return new LiteralText(FabricLoader.getInstance().getModContainer(identifier.getNamespace()).get().getMetadata().getName()).formatted(Formatting.BLUE, Formatting.ITALIC);
+    public static Component getMod(ResourceLocation identifier) {
+        return new TextComponent(FabricLoader.getInstance().getModContainer(identifier.getNamespace()).get().getMetadata().getName()).withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC);
     }
 
     /** Returns the "75%" text. */
-    public static Text getRatio(int progress, int limit) {
-        return new LiteralText("" + (int) ((float) progress / (float) limit * 100) + "%");
+    public static Component getRatio(int progress, int limit) {
+        return new TextComponent("" + (int) ((float) progress / (float) limit * 100) + "%");
     }
 }

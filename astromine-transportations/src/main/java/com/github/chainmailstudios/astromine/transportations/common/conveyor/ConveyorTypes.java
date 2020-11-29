@@ -24,9 +24,9 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.conveyor;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 
-public enum ConveyorTypes implements StringIdentifiable {
+public enum ConveyorTypes implements StringRepresentable {
 	NORMAL("normal"),
 	VERTICAL("vertical"),
 	DOWN_VERTICAL("down_vertical");
@@ -38,7 +38,7 @@ public enum ConveyorTypes implements StringIdentifiable {
 	}
 
 	@Override
-	public String asString() {
+	public String getSerializedName() {
 		return name;
 	}
 }

@@ -1,6 +1,6 @@
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.FriendlyByteBuf;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import io.netty.buffer.ByteBuf;
@@ -10,13 +10,13 @@ import com.google.gson.JsonPrimitive;
 
 public class StringUtilities {
     /** Serializes the given {@link String} to a {@link ByteBuf}. */
-    public static void toPacket(PacketByteBuf buffer, String string) {
-        buffer.writeString(string);
+    public static void toPacket(FriendlyByteBuf buffer, String string) {
+        buffer.writeUtf(string);
     }
 
     /** Deserializes a {@link String} from a {@link ByteBuf}. */
-    public static String fromPacket(PacketByteBuf buffer) {
-        return buffer.readString();
+    public static String fromPacket(FriendlyByteBuf buffer) {
+        return buffer.readUtf();
     }
 
     /** Serializes the given {@link String} to a {@link JsonElement}. */

@@ -24,16 +24,15 @@
 
 package com.github.chainmailstudios.astromine.transportations.client.render.block;
 
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.Direction;
-
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.base.AbstractConveyableBlockEntity;
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorTypes;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 
 public class AbstractConveyableBlockEntityRenderer extends BlockEntityRenderer<AbstractConveyableBlockEntity> implements ConveyorRenderer<AbstractConveyableBlockEntity> {
 	public AbstractConveyableBlockEntityRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher) {
@@ -41,17 +40,17 @@ public class AbstractConveyableBlockEntityRenderer extends BlockEntityRenderer<A
 	}
 
 	@Override
-	public void render(AbstractConveyableBlockEntity blockEntity, float partialTicks, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int i1) {
+	public void render(AbstractConveyableBlockEntity blockEntity, float partialTicks, PoseStack matrixStack, MultiBufferSource vertexConsumerProvider, int i, int i1) {
 		int speed = 16;
-		Direction direction = blockEntity.getCachedState().get(HorizontalFacingBlock.FACING);
+		Direction direction = blockEntity.getBlockState().getValue(HorizontalDirectionalBlock.FACING);
 
-		if (!blockEntity.getWorld().getBlockState(blockEntity.getPos()).isAir()) {
+		if (!blockEntity.getLevel().getBlockState(blockEntity.getBlockPos()).isAir()) {
 			if (!blockEntity.getItemComponent().getFirst().isEmpty()) {
 				ItemStack leftStack = blockEntity.getItemComponent().getFirst();
 
 				float leftPosition = blockEntity.getRenderAttachmentData()[1] + (blockEntity.getRenderAttachmentData()[0] - blockEntity.getRenderAttachmentData()[1]) * partialTicks;
 
-				renderItem(blockEntity, direction.rotateYCounterclockwise(), leftStack, leftPosition, speed, 0, ConveyorTypes.NORMAL, matrixStack, vertexConsumerProvider);
+				renderItem(blockEntity, direction.getCounterClockWise(), leftStack, leftPosition, speed, 0, ConveyorTypes.NORMAL, matrixStack, vertexConsumerProvider);
 			}
 
 			if (!blockEntity.getItemComponent().getSecond().isEmpty()) {
@@ -59,7 +58,7 @@ public class AbstractConveyableBlockEntityRenderer extends BlockEntityRenderer<A
 
 				float rightPosition = blockEntity.getRenderAttachmentData()[3] + (blockEntity.getRenderAttachmentData()[2] - blockEntity.getRenderAttachmentData()[3]) * partialTicks;
 
-				renderItem(blockEntity, direction.rotateYClockwise(), rightStack, rightPosition, speed, 0, ConveyorTypes.NORMAL, matrixStack, vertexConsumerProvider);
+				renderItem(blockEntity, direction.getClockWise(), rightStack, rightPosition, speed, 0, ConveyorTypes.NORMAL, matrixStack, vertexConsumerProvider);
 			}
 		}
 	}

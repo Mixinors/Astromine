@@ -24,12 +24,11 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.entity.placer;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.TeleportTarget;
-
 import com.github.chainmailstudios.astromine.common.entity.placer.EntityPlacer;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.portal.PortalInfo;
+import net.minecraft.world.phys.Vec3;
 
 public class SpaceEntityPlacer implements EntityPlacer {
 	public static final SpaceEntityPlacer TO_PLANET = new SpaceEntityPlacer(AstromineConfig.get().overworldSpawnYLevel);
@@ -42,7 +41,7 @@ public class SpaceEntityPlacer implements EntityPlacer {
 	}
 
 	@Override
-	public TeleportTarget placeEntity(Entity entity) {
-		return new TeleportTarget(new Vec3d(entity.getX(), y, entity.getZ()), entity.getVelocity(), entity.getHeadYaw(), entity.pitch);
+	public PortalInfo placeEntity(Entity entity) {
+		return new PortalInfo(new Vec3(entity.getX(), y, entity.getZ()), entity.getDeltaMovement(), entity.getYHeadRot(), entity.xRot);
 	}
 }

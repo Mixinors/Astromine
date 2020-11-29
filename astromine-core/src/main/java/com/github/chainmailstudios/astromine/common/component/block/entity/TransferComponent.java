@@ -25,11 +25,10 @@
 package com.github.chainmailstudios.astromine.common.component.block.entity;
 
 import com.github.chainmailstudios.astromine.common.component.general.provider.TransferComponentProvider;
-import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
-
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.callback.TransferEntryCallback;
 import com.github.chainmailstudios.astromine.common.component.general.base.EnergyComponent;
@@ -136,8 +135,8 @@ public class TransferComponent implements Component {
 	public void readFromNbt(CompoundTag tag) {
 		CompoundTag dataTag = tag.getCompound("data");
 
-		for (String key : dataTag.getKeys()) {
-			Identifier keyId = new Identifier(key);
+		for (String key : dataTag.getAllKeys()) {
+			ResourceLocation keyId = new ResourceLocation(key);
 
 			TransferEntry entry = new TransferEntry(ComponentRegistry.get(keyId));
 
@@ -184,7 +183,7 @@ public class TransferComponent implements Component {
 
 		/** Deserializes this {@link TransferEntry} from a {@link CompoundTag}. */
 		public void fromTag(CompoundTag tag) {
-			for (String directionKey : tag.getKeys()) {
+			for (String directionKey : tag.getAllKeys()) {
 				if (tag.contains(directionKey)) {
 					types.put(DirectionUtilities.byNameOrId(directionKey), TransferType.valueOf(tag.getString(directionKey)));
 				}

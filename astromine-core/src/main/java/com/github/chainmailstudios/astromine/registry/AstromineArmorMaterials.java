@@ -22,16 +22,14 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.registry;
+package com.github.chainmailstudios.astromine. registry;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.ArmorMaterial;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.sound.SoundEvent;
-
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.crafting.Ingredient;
 import java.util.function.Supplier;
 
 public class AstromineArmorMaterials {
@@ -62,17 +60,17 @@ public class AstromineArmorMaterials {
 		}
 
 		@Override
-		public int getDurability(EquipmentSlot slot) {
-			return BASE_DURABILITY[slot.getEntitySlotId()] * this.durabilityMultiplier;
+		public int getDurabilityForSlot(EquipmentSlot slot) {
+			return BASE_DURABILITY[slot.getIndex()] * this.durabilityMultiplier;
 		}
 
 		@Override
-		public int getProtectionAmount(EquipmentSlot slot) {
-			return this.protectionAmounts[slot.getEntitySlotId()];
+		public int getDefenseForSlot(EquipmentSlot slot) {
+			return this.protectionAmounts[slot.getIndex()];
 		}
 
 		@Override
-		public int getEnchantability() {
+		public int getEnchantmentValue() {
 			return this.enchantability;
 		}
 

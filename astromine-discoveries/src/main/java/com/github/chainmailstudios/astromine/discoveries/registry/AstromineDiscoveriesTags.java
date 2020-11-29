@@ -25,10 +25,8 @@
 package com.github.chainmailstudios.astromine.discoveries.registry;
 
 import net.fabricmc.fabric.api.tag.TagRegistry;
-
-import net.minecraft.fluid.Fluid;
-import net.minecraft.tag.Tag;
-
+import net.minecraft.tags.Tag;
+import net.minecraft.world.level.material.Fluid;
 import com.github.chainmailstudios.astromine.AstromineCommon;
 import com.github.chainmailstudios.astromine.registry.AstromineTags;
 

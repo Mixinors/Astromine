@@ -24,13 +24,12 @@
 
 package com.github.chainmailstudios.astromine.foundations.registry;
 
-import net.minecraft.fluid.Fluid;
-
 import com.github.chainmailstudios.astromine.common.fluid.ExtendedFluid;
 import com.github.chainmailstudios.astromine.registry.AstromineFluids;
 
 import com.google.common.collect.Lists;
 import java.util.List;
+import net.minecraft.world.level.material.Fluid;
 
 public class AstromineFoundationsFluids extends AstromineFluids {
 	public static final Fluid CRUDE_OIL = ExtendedFluid.builder().fog(0x7e675005).tint(0x7e675005).damage(0).toxic(false).infinite(false).name("crude_oil").group(AstromineFoundationsItemGroups.FOUNDATIONS).build();

@@ -24,17 +24,17 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
+import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.level.material.Fluid;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-import net.minecraft.fluid.Fluid;
-import net.minecraft.tag.FluidTags;
-import net.minecraft.tag.Tag;
-
 @Mixin(FluidTags.class)
 public interface FluidTagsAccess {
+	// Swap this for an AW.
 	@Invoker
-	static Tag.Identified<Fluid> invokeRegister(String id) {
+	static Tag.Named<Fluid> invokeBind(String id) {
 		throw new IllegalStateException(id);
 	}
 }

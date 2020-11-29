@@ -24,14 +24,13 @@
 
 package com.github.chainmailstudios.astromine.transportations.registry;
 
-import net.minecraft.item.Item;
-
 import com.github.chainmailstudios.astromine.registry.AstromineItems;
 import com.github.chainmailstudios.astromine.transportations.registry.client.AstromineTransportationsItemGroups;
+import net.minecraft.world.item.Item;
 
 public class AstromineTransportationsItems extends AstromineItems {
-	public static Item.Settings getBasicSettings() {
-		return new Item.Settings().group(AstromineTransportationsItemGroups.TRANSPORTATIONS);
+	public static Item.Properties getBasicSettings() {
+		return new Item.Properties().tab(AstromineTransportationsItemGroups.TRANSPORTATIONS);
 	}
 
 	public static void initialize() {

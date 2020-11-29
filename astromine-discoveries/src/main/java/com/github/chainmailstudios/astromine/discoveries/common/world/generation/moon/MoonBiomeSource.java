@@ -24,16 +24,6 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.generation.moon;
 
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryLookupCodec;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.layer.ScaleLayer;
-import net.minecraft.world.biome.layer.util.CachingLayerContext;
-import net.minecraft.world.biome.layer.util.LayerFactory;
-import net.minecraft.world.biome.layer.util.LayerSampleContext;
-import net.minecraft.world.biome.layer.util.LayerSampler;
-import net.minecraft.world.biome.source.BiomeLayerSampler;
-import net.minecraft.world.biome.source.BiomeSource;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
@@ -41,13 +31,23 @@ import com.github.chainmailstudios.astromine.discoveries.common.world.layer.moon
 
 import com.google.common.collect.ImmutableList;
 import java.util.function.LongFunction;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.RegistryLookupCodec;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.newbiome.area.Area;
+import net.minecraft.world.level.newbiome.area.AreaFactory;
+import net.minecraft.world.level.newbiome.context.BigContext;
+import net.minecraft.world.level.newbiome.context.LazyAreaContext;
+import net.minecraft.world.level.newbiome.layer.Layer;
+import net.minecraft.world.level.newbiome.layer.ZoomLayer;
 
 public class MoonBiomeSource extends BiomeSource {
-	public static Codec<MoonBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").stable().forGetter(source -> source.seed), RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)).apply(instance,
+	public static Codec<MoonBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").stable().forGetter(source -> source.seed), RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(source -> source.biomeRegistry)).apply(instance,
 		instance.stable(MoonBiomeSource::new)));
 	private final long seed;
 	private final Registry<Biome> biomeRegistry;
-	private final BiomeLayerSampler sampler;
+	private final Layer sampler;
 
 	public MoonBiomeSource(long seed, Registry<Biome> biomeRegistry) {
 		super(ImmutableList.of());
@@ -57,7 +57,7 @@ public class MoonBiomeSource extends BiomeSource {
 	}
 
 	@Override
-	protected Codec<? extends BiomeSource> getCodec() {
+	protected Codec<? extends BiomeSource> codec() {
 		return CODEC;
 	}
 
@@ -67,18 +67,18 @@ public class MoonBiomeSource extends BiomeSource {
 	}
 
 	@Override
-	public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
-		return sampler.sample(biomeRegistry, biomeX, biomeZ);
+	public Biome getNoiseBiome(int biomeX, int biomeY, int biomeZ) {
+		return sampler.get(biomeRegistry, biomeX, biomeZ);
 	}
 
-	public BiomeLayerSampler build(long seed) {
-		return new BiomeLayerSampler(build((salt) -> new CachingLayerContext(25, seed, salt)));
+	public Layer build(long seed) {
+		return new Layer(build((salt) -> new LazyAreaContext(25, seed, salt)));
 	}
 
-	private <T extends LayerSampler, C extends LayerSampleContext<T>> LayerFactory<T> build(LongFunction<C> contextProvider) {
-		LayerFactory<T> mainLayer = new MoonBiomeLayer(biomeRegistry).create(contextProvider.apply(4L));
+	private <T extends Area, C extends BigContext<T>> AreaFactory<T> build(LongFunction<C> contextProvider) {
+		AreaFactory<T> mainLayer = new MoonBiomeLayer(biomeRegistry).run(contextProvider.apply(4L));
 		for (int i = 0; i < 5; i++) {
-			mainLayer = ScaleLayer.FUZZY.create(contextProvider.apply(43 + i), mainLayer);
+			mainLayer = ZoomLayer.FUZZY.run(contextProvider.apply(43 + i), mainLayer);
 		}
 
 		return mainLayer;

@@ -24,48 +24,47 @@
 
 package com.github.chainmailstudios.astromine.discoveries.client.particle;
 
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleFactory;
-import net.minecraft.client.particle.ParticleTextureSheet;
-import net.minecraft.client.particle.SpriteBillboardParticle;
-import net.minecraft.client.particle.SpriteProvider;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particle.DefaultParticleType;
-
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.core.particles.SimpleParticleType;
 import java.util.Random;
 
-public class MarsDustParticle extends SpriteBillboardParticle {
-	protected MarsDustParticle(ClientWorld clientWorld, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+public class MarsDustParticle extends TextureSheetParticle {
+	protected MarsDustParticle(ClientLevel clientWorld, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
 		super(clientWorld, x, y - 0.125D, z, velocityX, velocityY, velocityZ);
-		this.collidesWithWorld = true;
+		this.hasPhysics = true;
 
-		this.colorRed = 0.7F;
-		this.colorGreen = 0.4F;
-		this.colorBlue = 0.225F;
+		this.rCol = 0.7F;
+		this.gCol = 0.4F;
+		this.bCol = 0.225F;
 
-		this.setBoundingBoxSpacing(0.01F, 0.01F);
-		this.scale *= this.random.nextFloat() * 0.4F + 0.7F;
-		this.maxAge = 120;
+		this.setSize(0.01F, 0.01F);
+		this.quadSize *= this.random.nextFloat() * 0.4F + 0.7F;
+		this.lifetime = 120;
 	}
 
 	@Override
-	public ParticleTextureSheet getType() {
-		return ParticleTextureSheet.PARTICLE_SHEET_OPAQUE;
+	public ParticleRenderType getRenderType() {
+		return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
 	}
 
-	public static class Factory implements ParticleFactory<DefaultParticleType> {
-		private final SpriteProvider spriteProvider;
+	public static class Factory implements ParticleProvider<SimpleParticleType> {
+		private final SpriteSet spriteProvider;
 
-		public Factory(SpriteProvider spriteProvider) {
+		public Factory(SpriteSet spriteProvider) {
 			this.spriteProvider = spriteProvider;
 		}
 
 		@Override
-		public Particle createParticle(DefaultParticleType parameters, ClientWorld clientWorld, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+		public Particle createParticle(SimpleParticleType parameters, ClientLevel clientWorld, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
 			Random random = clientWorld.getRandom();
 
 			MarsDustParticle particle = new MarsDustParticle(clientWorld, x, y, z, velocityX * random.nextDouble(), (random.nextDouble() - 0.5) * 0.05, velocityZ * random.nextDouble());
-			particle.setSprite(this.spriteProvider);
+			particle.pickSprite(this.spriteProvider);
 			return particle;
 		}
 	}

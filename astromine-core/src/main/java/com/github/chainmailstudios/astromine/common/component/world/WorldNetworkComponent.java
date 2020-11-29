@@ -25,16 +25,14 @@
 package com.github.chainmailstudios.astromine.common.component.world;
 
 import net.fabricmc.fabric.api.util.NbtType;
-
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.LongTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Tickable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
 import com.github.chainmailstudios.astromine.common.network.NetworkInstance;
 import com.github.chainmailstudios.astromine.common.network.NetworkMemberNode;
 import com.github.chainmailstudios.astromine.common.network.NetworkNode;
@@ -49,23 +47,23 @@ import java.util.Set;
 
 /**
  * A {@link Component} which stores information about
- * a {@link World}'s networks.
+ * a {@link Level}'s networks.
  *
  * Serialization and deserialization methods are provided for:
  * - {@link CompoundTag} - through {@link #writeToNbt(CompoundTag)} and {@link #readFromNbt(CompoundTag)}.
  */
-public final class WorldNetworkComponent implements Component, Tickable {
+public final class WorldNetworkComponent implements Component, TickableBlockEntity {
 	private final Set<NetworkInstance> instances = Sets.newConcurrentHashSet();
 
-	private final World world;
+	private final Level world;
 
 	/** Instantiates a {@link WorldNetworkComponent}. */
-	public WorldNetworkComponent(World world) {
+	public WorldNetworkComponent(Level world) {
 		this.world = world;
 	}
 
 	/** Returns this component's world. */
-	public World getWorld() {
+	public Level getWorld() {
 		return world;
 	}
 
@@ -107,7 +105,7 @@ public final class WorldNetworkComponent implements Component, Tickable {
 		for (NetworkInstance instance : instances) {
 			ListTag nodeList = new ListTag();
 			for (NetworkNode node : instance.nodes) {
-				nodeList.add(LongTag.of(node.getLongPosition()));
+				nodeList.add(LongTag.valueOf(node.getLongPosition()));
 			}
 
 			ListTag memberList = new ListTag();
@@ -136,11 +134,11 @@ public final class WorldNetworkComponent implements Component, Tickable {
 			ListTag nodeList = dataTag.getList("nodes", NbtType.LONG);
 			ListTag memberList = dataTag.getList("members", NbtType.COMPOUND);
 
-			NetworkType type = NetworkTypeRegistry.INSTANCE.get(new Identifier(dataTag.getString("type")));
+			NetworkType type = NetworkTypeRegistry.INSTANCE.get(new ResourceLocation(dataTag.getString("type")));
 			NetworkInstance instance = new NetworkInstance(world, type);
 
 			for (Tag nodeKey : nodeList) {
-				instance.addNode(NetworkNode.of(((LongTag) nodeKey).getLong()));
+				instance.addNode(NetworkNode.of(((LongTag) nodeKey).getAsLong()));
 			}
 
 			for (Tag memberTag : memberList) {

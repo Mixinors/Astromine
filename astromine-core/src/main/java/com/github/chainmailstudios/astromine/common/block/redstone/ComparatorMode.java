@@ -24,8 +24,7 @@
 
 package com.github.chainmailstudios.astromine.common.block.redstone;
 
-import net.minecraft.block.entity.BlockEntity;
-
+import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
 
 /**

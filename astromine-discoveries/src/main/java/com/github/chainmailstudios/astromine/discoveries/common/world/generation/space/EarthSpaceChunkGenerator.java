@@ -24,22 +24,6 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.generation.space;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryLookupCodec;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.ChunkRegion;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.WorldAccess;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.ChunkRandom;
-import net.minecraft.world.gen.StructureAccessor;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
-import net.minecraft.world.gen.chunk.StructuresConfig;
-import net.minecraft.world.gen.chunk.VerticalBlockSample;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
@@ -50,9 +34,25 @@ import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 
 import java.util.Arrays;
 import java.util.Random;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.RegistryLookupCodec;
+import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.NoiseColumn;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.StructureSettings;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
 
 public class EarthSpaceChunkGenerator extends ChunkGenerator {
-	public static Codec<EarthSpaceChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed), RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry)).apply(instance,
+	public static Codec<EarthSpaceChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.LONG.fieldOf("seed").forGetter(gen -> gen.seed), RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(source -> source.biomeRegistry)).apply(instance,
 		EarthSpaceChunkGenerator::new));
 
 	private final long seed;
@@ -61,14 +61,14 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 	private final OctaveNoiseSampler<OpenSimplexNoise> noise;
 
 	public EarthSpaceChunkGenerator(long seed, Registry<Biome> biomeRegistry) {
-		super(new EarthSpaceBiomeSource(biomeRegistry, seed), new StructuresConfig(false));
+		super(new EarthSpaceBiomeSource(biomeRegistry, seed), new StructureSettings(false));
 		this.seed = seed;
 		this.biomeRegistry = biomeRegistry;
 		this.noise = new OctaveNoiseSampler<>(OpenSimplexNoise.class, new Random(seed), 3, 200, 1.225, 1);
 	}
 
 	@Override
-	protected Codec<? extends ChunkGenerator> getCodec() {
+	protected Codec<? extends ChunkGenerator> codec() {
 		return CODEC;
 	}
 
@@ -82,23 +82,23 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 	}
 
 	@Override
-	public void buildSurface(ChunkRegion region, Chunk chunk) {
+	public void buildSurfaceAndBedrock(WorldGenRegion region, ChunkAccess chunk) {
 
 	}
 
 	@Override
-	public void populateNoise(WorldAccess world, StructureAccessor accessor, Chunk chunk) {
-		BlockPos.Mutable mutable = new BlockPos.Mutable();
-		int x1 = chunk.getPos().getStartX();
-		int z1 = chunk.getPos().getStartZ();
+	public void fillFromNoise(LevelAccessor world, StructureFeatureManager accessor, ChunkAccess chunk) {
+		BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+		int x1 = chunk.getPos().getMinBlockX();
+		int z1 = chunk.getPos().getMinBlockZ();
 		int y1 = 0;
 
-		int x2 = chunk.getPos().getEndX();
-		int z2 = chunk.getPos().getEndZ();
+		int x2 = chunk.getPos().getMaxBlockX();
+		int z2 = chunk.getPos().getMaxBlockZ();
 		int y2 = 256;
 
-		ChunkRandom random = new ChunkRandom();
-		random.setPopulationSeed(this.seed, x1, z1);
+		WorldgenRandom random = new WorldgenRandom();
+		random.setDecorationSeed(this.seed, x1, z1);
 
 		for (int x = x1; x <= x2; ++x) {
 			for (int z = z1; z <= z2; ++z) {
@@ -107,7 +107,7 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 					noise -= computeNoiseFalloff(y);
 
 					if (noise > AstromineConfig.get().asteroidNoiseThreshold) {
-						chunk.setBlockState(mutable.set(x, y, z), AstromineDiscoveriesBlocks.ASTEROID_STONE.getDefaultState(), false);
+						chunk.setBlockState(mutable.set(x, y, z), AstromineDiscoveriesBlocks.ASTEROID_STONE.defaultBlockState(), false);
 					}
 				}
 			}
@@ -121,14 +121,14 @@ public class EarthSpaceChunkGenerator extends ChunkGenerator {
 	}
 
 	@Override
-	public int getHeight(int x, int z, Heightmap.Type heightmapType) {
+	public int getBaseHeight(int x, int z, Heightmap.Types heightmapType) {
 		return 0;
 	}
 
 	@Override
-	public BlockView getColumnSample(int x, int z) {
+	public BlockGetter getBaseColumn(int x, int z) {
 		BlockState[] states = new BlockState[256];
-		Arrays.fill(states, Blocks.AIR.getDefaultState());
-		return new VerticalBlockSample(states);
+		Arrays.fill(states, Blocks.AIR.defaultBlockState());
+		return new NoiseColumn(states);
 	}
 }

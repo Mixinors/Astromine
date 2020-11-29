@@ -29,13 +29,13 @@ import com.github.chainmailstudios.astromine.common.component.general.base.Fluid
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
 import com.github.chainmailstudios.astromine.common.volume.fluid.FluidVolume;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.ComparatorBlockEntity;
-import net.minecraft.screen.ScreenHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.function.Function;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.ComparatorBlockEntity;
 
 /**
  * A handler of {@link ComparatorBlockEntity}
@@ -46,7 +46,7 @@ public class ComparatorOutput {
 	 * Returns the output level for a {@link BlockEntity} with an {@link ItemComponent}.
 	 */
 	public static int forItems(@Nullable BlockEntity entity) {
-		return ScreenHandler.calculateComparatorOutput(entity);
+		return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(entity);
 	}
 
 	/**

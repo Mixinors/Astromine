@@ -24,52 +24,51 @@
 
 package com.github.chainmailstudios.astromine.common.utilities;
 
-import net.minecraft.data.server.recipe.RecipeJsonProvider;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.util.Identifier;
-
 import com.google.gson.JsonObject;
 import java.util.function.Consumer;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 
 public class GeneratorUtilities {
 	public static final class Providers {
-		/** Returns a default implementation of a {@link RecipeJsonProvider}. */
-		public static DefaultedRecipeJsonProvider createProvider(RecipeSerializer<?> type, Identifier id, Consumer<JsonObject> serializer) {
+		/** Returns a default implementation of a {@link FinishedRecipe}. */
+		public static DefaultedRecipeJsonProvider createProvider(RecipeSerializer<?> type, ResourceLocation id, Consumer<JsonObject> serializer) {
 			return new DefaultedRecipeJsonProvider(type, id) {
 				@Override
-				public void serialize(JsonObject json) {
+				public void serializeRecipeData(JsonObject json) {
 					serializer.accept(json);
 				}
 			};
 		}
 
 		/** A class responsible for populating a recipe JSON. */
-		private static abstract class DefaultedRecipeJsonProvider implements RecipeJsonProvider {
+		private static abstract class DefaultedRecipeJsonProvider implements FinishedRecipe {
 			private final RecipeSerializer<?> type;
-			private final Identifier id;
+			private final ResourceLocation id;
 
-			public DefaultedRecipeJsonProvider(RecipeSerializer<?> type, Identifier id) {
+			public DefaultedRecipeJsonProvider(RecipeSerializer<?> type, ResourceLocation id) {
 				this.type = type;
 				this.id = id;
 			}
 
 			@Override
-			public Identifier getRecipeId() {
+			public ResourceLocation getId() {
 				return id;
 			}
 
 			@Override
-			public RecipeSerializer<?> getSerializer() {
+			public RecipeSerializer<?> getType() {
 				return type;
 			}
 
 			@Override
-			public JsonObject toAdvancementJson() {
+			public JsonObject serializeAdvancement() {
 				return null;
 			}
 
 			@Override
-			public Identifier getAdvancementId() {
+			public ResourceLocation getAdvancementId() {
 				return null;
 			}
 		}

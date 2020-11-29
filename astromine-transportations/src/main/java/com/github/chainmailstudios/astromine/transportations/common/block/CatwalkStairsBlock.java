@@ -25,58 +25,57 @@
 package com.github.chainmailstudios.astromine.transportations.common.block;
 
 import com.github.chainmailstudios.astromine.common.utilities.VoxelShapeUtilities;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.Waterloggable;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.WorldAccess;
-
 import com.github.chainmailstudios.astromine.common.utilities.RotationUtilities;
 import com.github.chainmailstudios.astromine.transportations.common.block.property.ConveyorProperties;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class CatwalkStairsBlock extends HorizontalFacingBlock implements Waterloggable {
-	private static final VoxelShape FIRST_STEP = VoxelShapes.cuboid(0, 0, (12F / 16F), 1, (3F / 16F), 1);
-	private static final VoxelShape SECOND_STEP = VoxelShapes.cuboid(0, 0, (8F / 16F), 1, (7F / 16F), (12F / 16F));
-	private static final VoxelShape THIRD_STEP = VoxelShapes.cuboid(0, 0, (4F / 16F), 1, (11F / 16F), (8F / 16F));
-	private static final VoxelShape FOURTH_STEP = VoxelShapes.cuboid(0, 0, 0, 1, (15F / 16F), (4F / 16F));
+public class CatwalkStairsBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
+	private static final VoxelShape FIRST_STEP = Shapes.box(0, 0, (12F / 16F), 1, (3F / 16F), 1);
+	private static final VoxelShape SECOND_STEP = Shapes.box(0, 0, (8F / 16F), 1, (7F / 16F), (12F / 16F));
+	private static final VoxelShape THIRD_STEP = Shapes.box(0, 0, (4F / 16F), 1, (11F / 16F), (8F / 16F));
+	private static final VoxelShape FOURTH_STEP = Shapes.box(0, 0, 0, 1, (15F / 16F), (4F / 16F));
 
 	private static final VoxelShape[] SHAPE_CACHE = new VoxelShape[6];
 
-	public CatwalkStairsBlock(Settings settings) {
+	public CatwalkStairsBlock(Properties settings) {
 		super(settings);
 
-		this.setDefaultState(this.getDefaultState().with(FACING, Direction.NORTH).with(ConveyorProperties.LEFT, false).with(ConveyorProperties.RIGHT, false).with(Properties.WATERLOGGED, false));
+		this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH).setValue(ConveyorProperties.LEFT, false).setValue(ConveyorProperties.RIGHT, false).setValue(BlockStateProperties.WATERLOGGED, false));
 	}
 
 	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(FACING, ConveyorProperties.LEFT, ConveyorProperties.RIGHT, Properties.WATERLOGGED);
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		builder.add(FACING, ConveyorProperties.LEFT, ConveyorProperties.RIGHT, BlockStateProperties.WATERLOGGED);
 	}
 
 	@Override
 	public FluidState getFluidState(BlockState state) {
-		return (state.contains(Properties.WATERLOGGED) && state.get(Properties.WATERLOGGED)) ? Fluids.WATER.getDefaultState() : super.getFluidState(state);
+		return (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) ? Fluids.WATER.defaultFluidState() : super.getFluidState(state);
 	}
 
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext context) {
-		return this.getDefaultState().with(FACING, context.getPlayer().isSneaking() ? context.getPlayerFacing().getOpposite() : context.getPlayerFacing()).with(Properties.WATERLOGGED, context.getWorld().getBlockState(context.getBlockPos()).getBlock() == Blocks.WATER);
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		return this.defaultBlockState().setValue(FACING, context.getPlayer().isShiftKeyDown() ? context.getHorizontalDirection().getOpposite() : context.getHorizontalDirection()).setValue(BlockStateProperties.WATERLOGGED, context.getLevel().getBlockState(context.getClickedPos()).getBlock() == Blocks.WATER);
 	}
 
-	public boolean isAdjacentBlockOfMyType(WorldAccess world, BlockPos position, Direction direction) {
-		BlockPos newPosition = position.offset(direction);
+	public boolean isAdjacentBlockOfMyType(LevelAccessor world, BlockPos position, Direction direction) {
+		BlockPos newPosition = position.relative(direction);
 
 		BlockState blockState = world.getBlockState(newPosition);
 
@@ -86,18 +85,18 @@ public class CatwalkStairsBlock extends HorizontalFacingBlock implements Waterlo
 	}
 
 	@Override
-	public BlockState getStateForNeighborUpdate(BlockState state, Direction facing, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-		return state.with(ConveyorProperties.RIGHT, this.isAdjacentBlockOfMyType(world, pos, state.get(FACING).rotateYClockwise())).with(ConveyorProperties.LEFT, this.isAdjacentBlockOfMyType(world, pos, state.get(FACING).rotateYCounterclockwise()));
+	public BlockState updateShape(BlockState state, Direction facing, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
+		return state.setValue(ConveyorProperties.RIGHT, this.isAdjacentBlockOfMyType(world, pos, state.getValue(FACING).getClockWise())).setValue(ConveyorProperties.LEFT, this.isAdjacentBlockOfMyType(world, pos, state.getValue(FACING).getCounterClockWise()));
 	}
 
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext entityContext) {
-		Direction facing = state.get(FACING);
+	public VoxelShape getShape(BlockState state, BlockGetter view, BlockPos pos, CollisionContext entityContext) {
+		Direction facing = state.getValue(FACING);
 
-		if (SHAPE_CACHE[facing.getId()] == null) {
-			SHAPE_CACHE[facing.getId()] = VoxelShapes.union(VoxelShapeUtilities.rotate(facing, FIRST_STEP), VoxelShapeUtilities.rotate(facing, SECOND_STEP), VoxelShapeUtilities.rotate(facing, THIRD_STEP), VoxelShapeUtilities.rotate(facing, FOURTH_STEP));
+		if (SHAPE_CACHE[facing.get3DDataValue()] == null) {
+			SHAPE_CACHE[facing.get3DDataValue()] = Shapes.or(VoxelShapeUtilities.rotate(facing, FIRST_STEP), VoxelShapeUtilities.rotate(facing, SECOND_STEP), VoxelShapeUtilities.rotate(facing, THIRD_STEP), VoxelShapeUtilities.rotate(facing, FOURTH_STEP));
 		}
 
-		return SHAPE_CACHE[facing.getId()];
+		return SHAPE_CACHE[facing.get3DDataValue()];
 	}
 }

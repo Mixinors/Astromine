@@ -26,9 +26,7 @@ package com.github.chainmailstudios.astromine.technologies.client.rei.pressing;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import net.minecraft.util.Identifier;
-
+import net.minecraft.resources.ResourceLocation;
 import com.github.chainmailstudios.astromine.technologies.client.rei.AstromineTechnologiesRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.technologies.common.recipe.PressingRecipe;
 import me.shedaniel.rei.api.EntryStack;
@@ -45,13 +43,13 @@ public class PressingDisplay implements RecipeDisplay {
 	private final List<EntryStack> outputs;
 	private final int timeRequired;
 	private final double energyRequired;
-	private final Identifier recipeId;
+	private final ResourceLocation recipeId;
 
 	public PressingDisplay(PressingRecipe recipe) {
 		this(Collections.singletonList(EntryStack.ofItemStacks(Arrays.asList(recipe.getFirstInput().getMatchingStacks()))), Collections.singletonList(EntryStack.create(recipe.getFirstOutput())), recipe.getTime(), recipe.getEnergyInput(), recipe.getId());
 	}
 
-	public PressingDisplay(List<List<EntryStack>> inputs, List<EntryStack> outputs, int timeRequired, double energyRequired, Identifier recipeId) {
+	public PressingDisplay(List<List<EntryStack>> inputs, List<EntryStack> outputs, int timeRequired, double energyRequired, ResourceLocation recipeId) {
 		this.inputs = inputs;
 		this.outputs = outputs;
 		this.timeRequired = timeRequired;
@@ -83,12 +81,12 @@ public class PressingDisplay implements RecipeDisplay {
 	}
 
 	@Override
-	public Identifier getRecipeCategory() {
+	public ResourceLocation getRecipeCategory() {
 		return AstromineTechnologiesRoughlyEnoughItemsPlugin.PRESSING;
 	}
 
 	@Override
-	public Optional<Identifier> getRecipeLocation() {
+	public Optional<ResourceLocation> getRecipeLocation() {
 		return Optional.ofNullable(this.recipeId);
 	}
 }

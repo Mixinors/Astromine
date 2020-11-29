@@ -24,14 +24,6 @@
 
 package com.github.chainmailstudios.astromine.discoveries.common.world.feature;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.Pair;
-import net.minecraft.util.collection.WeightedList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
 import com.mojang.serialization.Codec;
 
 import com.github.chainmailstudios.astromine.common.utilities.data.Range;
@@ -50,23 +42,31 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Tuple;
+import net.minecraft.world.entity.ai.behavior.WeightedList;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
-	public AsteroidOreFeature(Codec<DefaultFeatureConfig> codec) {
+public class AsteroidOreFeature extends Feature<NoneFeatureConfiguration> {
+	public AsteroidOreFeature(Codec<NoneFeatureConfiguration> codec) {
 		super(codec);
 	}
 
 	@Override
-	public boolean generate(StructureWorldAccess world, ChunkGenerator generator, Random random, BlockPos featurePosition, DefaultFeatureConfig config) {
+	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos featurePosition, NoneFeatureConfiguration config) {
 		featurePosition = new BlockPos(featurePosition.getX(), random.nextInt(256), featurePosition.getZ());
 
 		WeightedList<Block> ores = new WeightedList<>();
 
-		for (Map.Entry<Block, @Nullable Pair<Range<Integer>, Range<Integer>>> entry : AsteroidOreRegistry.INSTANCE.diameters.reference2ReferenceEntrySet()) {
-			Pair<Range<Integer>, Range<Integer>> pair = entry.getValue();
+		for (Map.Entry<Block, @Nullable Tuple<Range<Integer>, Range<Integer>>> entry : AsteroidOreRegistry.INSTANCE.diameters.reference2ReferenceEntrySet()) {
+			Tuple<Range<Integer>, Range<Integer>> pair = entry.getValue();
 
 			if (pair != null) {
-				ores.add(entry.getKey(), (int) ((pair.getLeft().getMaximum() - pair.getLeft().getMinimum()) * random.nextFloat() + pair.getLeft().getMinimum()));
+				ores.add(entry.getKey(), (int) ((pair.getA().getMaximum() - pair.getA().getMinimum()) * random.nextFloat() + pair.getA().getMinimum()));
 			}
 		}
 
@@ -74,7 +74,7 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 			return true;
 		}
 
-		Block ore = ores.pickRandom(random);
+		Block ore = ores.getOne(random);
 
 		double xSize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);
 		double ySize = AsteroidOreRegistry.INSTANCE.getDiameter(random, ore);
@@ -86,7 +86,7 @@ public class AsteroidOreFeature extends Feature<DefaultFeatureConfig> {
 			vein.stream().forEach(it -> {
 				if (world.getBlockState(it.toBlockPos()).getBlock() == AstromineDiscoveriesBlocks.ASTEROID_STONE) {
 					if (random.nextInt(AstromineConfig.get().asteroidOreThreshold) == 0) {
-						world.setBlockState(it.toBlockPos(), ore.getDefaultState(), 0b0110100);
+						world.setBlock(it.toBlockPos(), ore.defaultBlockState(), 0b0110100);
 					}
 				}
 			});

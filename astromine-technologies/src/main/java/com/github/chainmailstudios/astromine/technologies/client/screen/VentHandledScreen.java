@@ -24,15 +24,14 @@
 
 package com.github.chainmailstudios.astromine.technologies.client.screen;
 
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.text.Text;
-
 import com.github.chainmailstudios.astromine.client.screen.base.block.ComponentBlockEntityEnergyFluidHandledScreen;
 import com.github.chainmailstudios.astromine.technologies.common.screenhandler.VentScreenHandler;
 import com.github.vini2003.blade.common.handler.BaseScreenHandler;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Inventory;
 
 public class VentHandledScreen extends ComponentBlockEntityEnergyFluidHandledScreen<VentScreenHandler> {
-	public VentHandledScreen(BaseScreenHandler handler, PlayerInventory inventory, Text title) {
+	public VentHandledScreen(BaseScreenHandler handler, Inventory inventory, Component title) {
 		super(handler, inventory, title);
 	}
 }

@@ -25,10 +25,6 @@
 package com.github.chainmailstudios.astromine.common.component.general.compatibility;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.Direction;
-
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.general.SimpleItemComponent;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
@@ -37,30 +33,33 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import net.minecraft.core.Direction;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
 
 /**
- * An {@link ItemComponent} wrapped over an {@link Inventory}.
+ * An {@link ItemComponent} wrapped over an {@link Container}.
  */
 public class ItemComponentFromInventory extends SimpleItemComponent {
-	Inventory inventory;
+	Container inventory;
 
 	List<Runnable> listeners = new ArrayList<>();
 
 	/** Instantiates an {@link ItemComponentFromInventory}. */
-	private ItemComponentFromInventory(Inventory inventory) {
-		super(inventory.size());
+	private ItemComponentFromInventory(Container inventory) {
+		super(inventory.getContainerSize());
 		this.inventory = inventory;
 	}
 
 	/** Instantiates an {@link ItemComponentFromInventory}. */
-	public static ItemComponentFromInventory of(Inventory inventory) {
+	public static ItemComponentFromInventory of(Container inventory) {
 		return new ItemComponentFromInventory(inventory);
 	}
 
 	/** Returns this component's size. */
 	@Override
 	public int getSize() {
-		return this.inventory.size();
+		return this.inventory.getContainerSize();
 	}
 
 	/** Returns this component's listeners. */
@@ -74,8 +73,8 @@ public class ItemComponentFromInventory extends SimpleItemComponent {
 	public Map<Integer, ItemStack> getContents() {
 		Int2ObjectOpenHashMap<ItemStack> contents = new Int2ObjectOpenHashMap<>();
 
-		for (int i = 0; i < this.inventory.size(); ++i) {
-			contents.put(i, this.inventory.getStack(i));
+		for (int i = 0; i < this.inventory.getContainerSize(); ++i) {
+			contents.put(i, this.inventory.getItem(i));
 		}
 
 		return contents;
@@ -85,18 +84,18 @@ public class ItemComponentFromInventory extends SimpleItemComponent {
 	 * direction into the supplied slot. */
 	@Override
 	public boolean canInsert(@Nullable Direction direction, ItemStack stack, int slot) {
-		return this.inventory.isValid(slot, stack);
+		return this.inventory.canPlaceItem(slot, stack);
 	}
 
 	/* Returns the {@link ItemStack} at the given slot. */
 	@Override
 	public ItemStack getStack(int slot) {
-		return this.inventory.getStack(slot);
+		return this.inventory.getItem(slot);
 	}
 
 	/** Sets the {@link ItemStack} at the given slot to the specified value. */
 	@Override
 	public void setStack(int slot, ItemStack stack) {
-		this.inventory.setStack(slot, stack);
+		this.inventory.setItem(slot, stack);
 	}
 }

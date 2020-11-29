@@ -24,12 +24,11 @@
 
 package com.github.chainmailstudios.astromine.common.item;
 
-import net.minecraft.item.ToolItem;
-
 import com.github.chainmailstudios.astromine.mixin.EnchantmentTargetMixin;
+import net.minecraft.world.item.TieredItem;
 
 /**
- * A {@link ToolItem}
+ * A {@link TieredItem}
  * which may be enchanted, used in
  * {@link EnchantmentTargetMixin}.
  */

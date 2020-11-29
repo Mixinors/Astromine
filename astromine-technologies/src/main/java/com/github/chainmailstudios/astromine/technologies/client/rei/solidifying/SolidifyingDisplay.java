@@ -26,11 +26,9 @@ package com.github.chainmailstudios.astromine.technologies.client.rei.solidifyin
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluid;
 import com.github.chainmailstudios.astromine.client.rei.AstromineRoughlyEnoughItemsPlugin;
 import com.github.chainmailstudios.astromine.common.recipe.ingredient.FluidIngredient;
 import com.github.chainmailstudios.astromine.common.volume.fraction.Fraction;
@@ -49,7 +47,7 @@ import java.util.stream.Collectors;
 public class SolidifyingDisplay extends AbstractEnergyGeneratingDisplay {
 	private final FluidIngredient input;
 	private final ItemStack output;
-	private final Identifier id;
+	private final ResourceLocation id;
 
 	public SolidifyingDisplay(SolidifyingRecipe recipe) {
 		super(recipe.getEnergyInput());
@@ -74,7 +72,7 @@ public class SolidifyingDisplay extends AbstractEnergyGeneratingDisplay {
 	}
 
 	@Override
-	public Identifier getRecipeCategory() {
+	public ResourceLocation getRecipeCategory() {
 		return AstromineTechnologiesRoughlyEnoughItemsPlugin.SOLID_GENERATING;
 	}
 
@@ -87,7 +85,7 @@ public class SolidifyingDisplay extends AbstractEnergyGeneratingDisplay {
 	}
 
 	@Override
-	public Optional<Identifier> getRecipeLocation() {
+	public Optional<ResourceLocation> getRecipeLocation() {
 		return Optional.ofNullable(this.id);
 	}
 }

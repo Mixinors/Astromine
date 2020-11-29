@@ -24,30 +24,28 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
+import com.github.chainmailstudios.astromine.common.callback.ServerChunkManagerCallback;
+import com.mojang.datafixers.DataFixer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.server.WorldGenerationProgressListener;
-import net.minecraft.server.world.ServerChunkManager;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.structure.StructureManager;
-import net.minecraft.world.PersistentStateManager;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
-import net.minecraft.world.level.storage.LevelStorage;
-import com.mojang.datafixers.DataFixer;
-
-import com.github.chainmailstudios.astromine.common.callback.ServerChunkManagerCallback;
-
 import java.util.concurrent.Executor;
 import java.util.function.Supplier;
+import net.minecraft.server.level.ServerChunkCache;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.progress.ChunkProgressListener;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import net.minecraft.world.level.storage.DimensionDataStorage;
+import net.minecraft.world.level.storage.LevelStorageSource;
 
-@Mixin(ServerChunkManager.class)
+@Mixin(ServerChunkCache.class)
 public class ServerChunkManagerMixin {
 	@Inject(method = "<init>", at = @At("RETURN"))
-	private void astromine_init(ServerWorld world, LevelStorage.Session session, DataFixer dataFixer, StructureManager structureManager, Executor workerExecutor, ChunkGenerator chunkGenerator, int viewDistance, boolean bl,
-		WorldGenerationProgressListener worldGenerationProgressListener, Supplier<PersistentStateManager> supplier, CallbackInfo ci) {
-		ServerChunkManagerCallback.EVENT.invoker().handle((ServerChunkManager) (Object) this);
+	private void astromine_init(ServerLevel world, LevelStorageSource.LevelStorageAccess session, DataFixer dataFixer, StructureManager structureManager, Executor workerExecutor, ChunkGenerator chunkGenerator, int viewDistance, boolean bl,
+		ChunkProgressListener worldGenerationProgressListener, Supplier<DimensionDataStorage> supplier, CallbackInfo ci) {
+		ServerChunkManagerCallback.EVENT.invoker().handle((ServerChunkCache) (Object) this);
 	}
 }
