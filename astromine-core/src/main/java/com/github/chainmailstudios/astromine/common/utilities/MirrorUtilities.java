@@ -26,10 +26,7 @@ package com.github.chainmailstudios.astromine.common.utilities;
 
 import net.minecraft.core.Direction;
 
-import static net.minecraft.core.Direction.EAST;
-import static net.minecraft.core.Direction.NORTH;
-import static net.minecraft.core.Direction.SOUTH;
-import static net.minecraft.core.Direction.WEST;
+import static net.minecraft.core.Direction.*;
 
 public class MirrorUtilities {
 	public static Direction rotate(Direction origin, Direction rotation) {

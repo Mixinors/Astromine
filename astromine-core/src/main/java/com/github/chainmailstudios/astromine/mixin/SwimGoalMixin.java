@@ -31,7 +31,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(value = { FloatGoal.class }, targets = { "net.minecraft.entity.passive.FoxEntity$FoxSwimGoal" })
+@Mixin(value = { FloatGoal.class }, targets = { "net.minecraft.world.entity.animal.Fox$FoxFloatGoal" })
 public abstract class SwimGoalMixin implements SwimGoalAccess {
 	@Inject(method = "canUse()Z", at = @At("RETURN"), cancellable = true)
 	private void shouldRun(CallbackInfoReturnable<Boolean> cir) {

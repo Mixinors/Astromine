@@ -37,7 +37,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * leggings 10 = helmet 11 = sword 12 = digger 13 = fishing rod 14 = trident Note that these are for some reason in a
  * different order to what they appear in the class itself...
  */
-@Mixin(targets = { "net/minecraft/enchantment/EnchantmentCategory$6" })
+@Mixin(targets = { "net/minecraft/world/item/enchantment/EnchantmentCategory$6" })
 public class EnchantmentTargetMixin {
 	@Inject(at = @At("HEAD"), method = "canEnchant(Lnet/minecraft/world/item/Item;)Z", cancellable = true)
 	public void astromine_makeMultiToolEnchantable(Item item, CallbackInfoReturnable<Boolean> cir) {

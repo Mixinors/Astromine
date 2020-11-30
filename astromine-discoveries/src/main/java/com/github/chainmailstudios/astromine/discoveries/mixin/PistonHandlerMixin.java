@@ -37,21 +37,21 @@ import net.minecraft.world.level.block.piston.PistonStructureResolver;
 public abstract class PistonHandlerMixin {
 
 	@Shadow
-	private static boolean isBlockSticky(Block block) {
+	private static boolean isSticky(Block block) {
 		return false;
 	}
 
-	@Inject(method = "isBlockSticky(Lnet/minecraft/block/Block;)Z", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "isSticky", at = @At("HEAD"), cancellable = true)
 	private static void isBlockStickyInject(Block block, CallbackInfoReturnable<Boolean> cir) {
 		if (block.is(AstromineDiscoveriesBlocks.SPACE_SLIME_BLOCK))
 			cir.setReturnValue(true);
 	}
 
-	@Inject(method = "isAdjacentBlockStuck(Lnet/minecraft/block/Block;Lnet/minecraft/block/Block;)Z", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "canStickToEachOther", at = @At("HEAD"), cancellable = true)
 	private static void isAdjacentBlockStuckInject(Block block, Block block2, CallbackInfoReturnable<Boolean> cir) {
-		if (block.is(AstromineDiscoveriesBlocks.SPACE_SLIME_BLOCK) && !isBlockSticky(block2))
+		if (block.is(AstromineDiscoveriesBlocks.SPACE_SLIME_BLOCK) && !isSticky(block2))
 			cir.setReturnValue(false);
-		else if (block2.is(AstromineDiscoveriesBlocks.SPACE_SLIME_BLOCK) && !isBlockSticky(block))
+		else if (block2.is(AstromineDiscoveriesBlocks.SPACE_SLIME_BLOCK) && !isSticky(block))
 			cir.setReturnValue(false);
 	}
 }
