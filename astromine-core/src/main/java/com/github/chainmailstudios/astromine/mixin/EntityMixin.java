@@ -29,7 +29,7 @@ import com.github.chainmailstudios.astromine.client.cca.ClientAtmosphereManager;
 import com.github.chainmailstudios.astromine.common.component.world.ChunkAtmosphereComponent;
 import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
 import com.github.chainmailstudios.astromine.common.registry.DimensionLayerRegistry;
-import com.github.chainmailstudios.astromine. registry.AstromineTags;
+import com.github.chainmailstudios.astromine.registry.AstromineTags;
 import com.google.common.collect.Lists;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
@@ -147,7 +147,7 @@ public abstract class EntityMixin implements GravityEntity, EntityAccess {
 		}
 	}
 
-	@Inject(method = "getTeleportTarget", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "findDimensionEntryPoint", at = @At("HEAD"), cancellable = true)
 	protected void astromine_getTeleportTarget(ServerLevel destination, CallbackInfoReturnable<PortalInfo> cir) {
 		if (astromine_nextTeleportTarget != null) {
 			cir.setReturnValue(astromine_nextTeleportTarget);
@@ -171,7 +171,7 @@ public abstract class EntityMixin implements GravityEntity, EntityAccess {
 		}
 	}
 
-	@Inject(method = "updateWaterState", at = @At("RETURN"), cancellable = true)
+	@Inject(method = "updateInWaterStateAndDoFluidPushing", at = @At("RETURN"), cancellable = true)
 	private void astromine_updateIndustrialFluidState(CallbackInfoReturnable<Boolean> cir) {
 		if (this.updateFluidHeightAndDoFluidPushing(AstromineTags.INDUSTRIAL_FLUID, 0.014)) {
 			cir.setReturnValue(true);

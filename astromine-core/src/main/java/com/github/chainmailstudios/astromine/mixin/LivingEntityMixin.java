@@ -198,7 +198,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 	}
 
 	// A redirect would be the most efficient, but ModifyArg is the only compatible option
-	@ModifyArg(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isEyeInFluid(Lnet/minecraft/tags/Tag;)Z"))
+	@ModifyArg(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isEyeInFluid(Lnet/minecraft/tags/Tag;)Z"))
 	private Tag<Fluid> astromine_tickAirInFluid(Tag<Fluid> tag) {
 		if (this.isEyeInFluid(AstromineTags.INDUSTRIAL_FLUID)) {
 			return AstromineTags.INDUSTRIAL_FLUID;
@@ -212,7 +212,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements GravityEn
 		return touchingWater || this.getFluidHeight(AstromineTags.INDUSTRIAL_FLUID) > 0;
 	}
 
-	@Inject(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isInLava()Z"))
+	@Inject(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isInLava()Z"))
 	private void astromine_travelInIndustrialFluids(Vec3 movementInput, CallbackInfo ci) {
 		FAKE_BEING_IN_LAVA.set(Boolean.TRUE);
 	}

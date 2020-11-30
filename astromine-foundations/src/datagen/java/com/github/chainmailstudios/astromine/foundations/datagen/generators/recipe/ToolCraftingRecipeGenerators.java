@@ -1,18 +1,16 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.generators.recipe;
 
-import net.fabricmc.fabric.api.tag.TagRegistry;
-
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.resources.ResourceLocation;
-
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.ShapedCraftingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
+import net.fabricmc.fabric.api.tag.TagRegistry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Ingredient;
 
 public abstract class ToolCraftingRecipeGenerators extends ShapedCraftingSetRecipeGenerator {
 	public ToolCraftingRecipeGenerators(MaterialItemType input, MaterialItemType output, String... pattern) {
 		super(input, output, pattern);
-		this.addIngredient('s', Ingredient.fromTag(TagRegistry.item(new ResourceLocation("c", "wood_sticks"))));
+		this.addIngredient('s', Ingredient.of(TagRegistry.item(new ResourceLocation("c", "wood_sticks"))));
 	}
 
 	@Override

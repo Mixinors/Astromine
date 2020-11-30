@@ -43,7 +43,7 @@ public class BuiltinModelItemRendererMixin {
 	@Unique
 	private final PrimitiveRocketEntityModel primitiveRocketEntityModel = new PrimitiveRocketEntityModel();
 
-	@Inject(method = "render", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "renderByItem", at = @At("HEAD"), cancellable = true)
 	private void render(ItemStack stack, ItemTransforms.TransformType mode, PoseStack matrices, MultiBufferSource vertexConsumerProvider, int i, int j, CallbackInfo ci) {
 		if (stack.getItem() == AstromineDiscoveriesItems.PRIMITIVE_ROCKET) {
 			ci.cancel();

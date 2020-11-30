@@ -24,7 +24,7 @@
 
 package com.github.chainmailstudios.astromine.mixin;
 
-import com.github.chainmailstudios.astromine. registry.AstromineTags;
+import com.github.chainmailstudios.astromine.registry.AstromineTags;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ScreenEffectRenderer;
@@ -39,7 +39,8 @@ public abstract class InGameOverlayRendererMixin {
 	@Shadow
 	private static native void renderWater(Minecraft minecraftClient, PoseStack matrixStack);
 
-	@Inject(method = "renderScreenEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isEyeInFluid(Lnet/minecraft/tags/Tag;)Z"))
+	@Inject(method = "renderScreenEffect",
+	        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isEyeInFluid(Lnet/minecraft/tags/Tag;)Z"))
 	private static void astromine_renderFluidOverlay(Minecraft client, PoseStack matrixStack, CallbackInfo ci) {
 		if (client.player.isEyeInFluid(AstromineTags.INDUSTRIAL_FLUID)) {
 			renderWater(client, matrixStack);
