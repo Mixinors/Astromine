@@ -1,12 +1,11 @@
 package com.github.chainmailstudios.astromine.datagen.generator.modelstate.set;
 
-import net.minecraft.data.client.model.Models;
-import net.minecraft.data.client.model.Texture;
-import net.minecraft.util.ResourceLocation;
-
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.ModelStateData;
+import net.minecraft.data.models.model.ModelTemplates;
+import net.minecraft.data.models.model.TextureMapping;
+import net.minecraft.resources.ResourceLocation;
 
 public class ColumnBlockSetModelStateGenerator extends GenericBlockSetModelStateGenerator {
 	private final ResourceLocation endTexture;
@@ -18,8 +17,8 @@ public class ColumnBlockSetModelStateGenerator extends GenericBlockSetModelState
 
 	@Override
 	public void generate(ModelStateData data, MaterialSet set) {
-		Texture texture = Texture.sideEnd(Texture.getId(getBlock(set)), endTexture);
-		ResourceLocation identifier = Models.CUBE_COLUMN.upload(getBlock(set), texture, data::addModel);
+		TextureMapping texture = TextureMapping.column(TextureMapping.getBlockTexture(getBlock(set)), endTexture);
+		ResourceLocation identifier = ModelTemplates.CUBE_COLUMN.create(getBlock(set), texture, data::addModel);
 		data.addState(getBlock(set), ModelStateData.createSingletonBlockState(getBlock(set), identifier));
 		data.addSimpleBlockItemModel(getBlock(set));
 	}

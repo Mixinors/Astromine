@@ -1,7 +1,7 @@
 package com.github.chainmailstudios.astromine.foundations.datagen.generators.tag;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.resources.ResourceLocation;
 
 import com.github.chainmailstudios.astromine.datagen.generator.tag.set.GenericSetTagGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;

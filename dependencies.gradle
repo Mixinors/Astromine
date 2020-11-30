@@ -30,7 +30,6 @@ project.ext.setDefaultApis = {
     // Cloth API
     useAsApi("me.shedaniel.cloth.api:cloth-common-events-v1:${cloth_api_version}")
     useAsApi("me.shedaniel.cloth.api:cloth-durability-bar-api-v1:${cloth_api_version}")
-    useAsApi("me.shedaniel.cloth.api:cloth-dynamic-registry-api-v1:${cloth_api_version}")
     useAsApi("me.shedaniel.cloth.api:cloth-datagen-api-v1:${cloth_api_version}")
 
     // Cloth Config
@@ -38,9 +37,6 @@ project.ext.setDefaultApis = {
 
     // RoughlyEnoughItems
     useAsApiOptionally("me.shedaniel:RoughlyEnoughItems:${rei_version}")
-
-    // LibStructure
-    useAsApi("net.earthcomputer:libstructure:${libstructure_version}")
 
     // Magna
     useAsApi("com.github.Draylar:magna:${magna_version}")

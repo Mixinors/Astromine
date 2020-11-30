@@ -1,9 +1,8 @@
 package com.github.chainmailstudios.astromine.datagen.generator.worldgen.onetime;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-
 import me.shedaniel.cloth.api.datagen.v1.WorldGenData;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 
 public class GenericFeatureWorldGenGenerator implements OneTimeWorldGenGenerator {
 	private final ResourceLocation identifier;

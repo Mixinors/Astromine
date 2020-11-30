@@ -7,8 +7,8 @@ import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import com.github.chainmailstudios.astromine.foundations.common.recipe.WireCuttingRecipe;
 import com.google.gson.JsonObject;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.core.Registry;
 
 public class WireFromPlateRecipeGenerator implements SetRecipeGenerator {
 	private final MaterialItemType input;

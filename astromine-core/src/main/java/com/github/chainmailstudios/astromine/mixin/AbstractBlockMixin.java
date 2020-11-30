@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.transportations.mixin;
+package com.github.chainmailstudios.astromine.mixin;
 
 import com.github.chainmailstudios.astromine.common.block.transfer.TransferType;
 import com.github.chainmailstudios.astromine.common.component.block.entity.TransferComponent;
@@ -53,7 +53,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class AbstractBlockMixin {
 	@SuppressWarnings("all")
 	@Inject(at = @At("HEAD"),
-		method = "onUse(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;", cancellable = true)
+	        method = "onUse(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;",
+	        cancellable = true)
 	void astromine_onUse(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result, CallbackInfoReturnable<InteractionResult> cir) {
 		final ItemStack stack = player.getItemInHand(hand);
 
@@ -127,7 +128,8 @@ public class AbstractBlockMixin {
 							} else if (insertable != null) {
 								insertable.take(stackVolume, Fraction.BUCKET);
 							}
-						} else {}
+						} else {
+						}
 					}
 
 					shouldSkip = true;

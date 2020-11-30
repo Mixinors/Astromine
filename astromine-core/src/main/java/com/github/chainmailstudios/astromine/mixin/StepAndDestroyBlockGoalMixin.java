@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.chainmailstudios.astromine.transportations.mixin;
+package com.github.chainmailstudios.astromine.mixin;
 
 import com.github.chainmailstudios.astromine.common.entity.GravityEntity;
 import net.minecraft.world.entity.Mob;

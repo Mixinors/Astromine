@@ -2,8 +2,8 @@ package com.github.chainmailstudios.astromine.foundations.datagen.generators.rec
 
 import net.fabricmc.fabric.api.tag.TagRegistry;
 
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.resources.ResourceLocation;
 
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.ShapedCraftingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;

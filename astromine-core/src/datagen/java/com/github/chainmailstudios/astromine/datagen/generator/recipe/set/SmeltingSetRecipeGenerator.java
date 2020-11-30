@@ -1,12 +1,11 @@
 package com.github.chainmailstudios.astromine.datagen.generator.recipe.set;
 
-import net.minecraft.advancement.criterion.ImpossibleCriterion;
-import net.minecraft.data.server.recipe.CookingRecipeJsonFactory;
-
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.base.CookingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
+import net.minecraft.advancements.critereon.ImpossibleTrigger;
+import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 
 public class SmeltingSetRecipeGenerator extends CookingSetRecipeGenerator {
 	public SmeltingSetRecipeGenerator(MaterialItemType input, MaterialItemType output, int time, float experience) {
@@ -23,14 +22,14 @@ public class SmeltingSetRecipeGenerator extends CookingSetRecipeGenerator {
 
 	@Override
 	public void generate(RecipeData recipes, MaterialSet set) {
-		CookingRecipeJsonFactory
-				.createSmelting(
-						set.getIngredient(input),
-						set.getItem(output),
-						experience,
-						time)
-				.criterion("impossible", new ImpossibleCriterion.Conditions())
-				.offerTo(recipes, getRecipeId(set));
+		SimpleCookingRecipeBuilder
+			.smelting(
+				set.getIngredient(input),
+				set.getItem(output),
+				experience,
+				time)
+			.unlockedBy("impossible", new ImpossibleTrigger.TriggerInstance())
+			.save(recipes, getRecipeId(set));
 	}
 
 	@Override

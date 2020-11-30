@@ -1,9 +1,8 @@
 package com.github.chainmailstudios.astromine.datagen.generator.modelstate.onetime;
 
-import net.minecraft.block.Block;
-import net.minecraft.data.client.model.ModelIds;
-
 import me.shedaniel.cloth.api.datagen.v1.ModelStateData;
+import net.minecraft.data.models.model.ModelLocationUtils;
+import net.minecraft.world.level.block.Block;
 
 public class SimpleBlockItemModelStateGenerator extends GenericBlockModelStateGenerator {
 	public SimpleBlockItemModelStateGenerator(Block... blocks) {
@@ -13,7 +12,7 @@ public class SimpleBlockItemModelStateGenerator extends GenericBlockModelStateGe
 	@Override
 	public void generate(ModelStateData data) {
 		blocks.forEach((block) -> {
-			data.addState(block, ModelStateData.createSingletonBlockState(block, ModelIds.getBlockModelId(block)));
+			data.addState(block, ModelStateData.createSingletonBlockState(block, ModelLocationUtils.getModelLocation(block)));
 			data.addSimpleBlockItemModel(block);
 		});
 	}

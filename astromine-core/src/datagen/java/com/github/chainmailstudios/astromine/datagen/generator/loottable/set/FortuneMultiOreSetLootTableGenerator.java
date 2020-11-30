@@ -1,19 +1,18 @@
 package com.github.chainmailstudios.astromine.datagen.generator.loottable.set;
 
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.loot.LootTableRange;
-import net.minecraft.loot.entry.ItemEntry;
-import net.minecraft.loot.function.ApplyBonusLootFunction;
-import net.minecraft.loot.function.SetCountLootFunction;
-
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.LootTableData;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.storage.loot.RandomIntGenerator;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 
 public class FortuneMultiOreSetLootTableGenerator extends FortuneOreSetLootTableGenerator {
-	private final LootTableRange dropCountRange;
+	private final RandomIntGenerator dropCountRange;
 
-	public FortuneMultiOreSetLootTableGenerator(MaterialItemType ore, MaterialItemType drop, LootTableRange dropCountRange) {
+	public FortuneMultiOreSetLootTableGenerator(MaterialItemType ore, MaterialItemType drop, RandomIntGenerator dropCountRange) {
 		super(ore, drop);
 		this.dropCountRange = dropCountRange;
 	}
@@ -21,13 +20,13 @@ public class FortuneMultiOreSetLootTableGenerator extends FortuneOreSetLootTable
 	@Override
 	public void generate(LootTableData data, MaterialSet set) {
 		data.register(getBlock(set), LootTableData.dropsBlockWithSilkTouch(
+			getBlock(set),
+			LootTableData.addExplosionDecayLootFunction(
 				getBlock(set),
-				LootTableData.addExplosionDecayLootFunction(
-						getBlock(set),
-						ItemEntry.builder(set.getItem(drop))
-								.apply(SetCountLootFunction.builder(dropCountRange))
-								.apply(ApplyBonusLootFunction.oreDrops(Enchantments.FORTUNE))
-				)
+				LootItem.lootTableItem(set.getItem(drop))
+					.apply(SetItemCountFunction.setCount(dropCountRange))
+					.apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))
+			)
 		));
 	}
 

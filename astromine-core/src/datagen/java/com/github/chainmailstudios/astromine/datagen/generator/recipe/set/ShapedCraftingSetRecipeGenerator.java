@@ -1,13 +1,12 @@
 package com.github.chainmailstudios.astromine.datagen.generator.recipe.set;
 
-import net.minecraft.advancement.criterion.ImpossibleCriterion;
-import net.minecraft.data.server.recipe.ShapedRecipeJsonFactory;
-import net.minecraft.recipe.Ingredient;
-
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.set.base.CraftingSetRecipeGenerator;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
+import net.minecraft.advancements.critereon.ImpossibleTrigger;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,17 +41,17 @@ public class ShapedCraftingSetRecipeGenerator extends CraftingSetRecipeGenerator
 	public void generate(RecipeData recipes, MaterialSet set) {
 		if (pattern.length == 0) throw new IllegalStateException("recipe must have a pattern");
 		else {
-			ShapedRecipeJsonFactory factory = ShapedRecipeJsonFactory
-					.create(set.getItem(output), outputCount)
-					.criterion("impossible", new ImpossibleCriterion.Conditions());
+			ShapedRecipeBuilder factory = ShapedRecipeBuilder
+				.shaped(set.getItem(output), outputCount)
+				.unlockedBy("impossible", new ImpossibleTrigger.TriggerInstance());
 			for (String s : pattern) {
 				factory.pattern(s);
 			}
-			if (patternContains('#')) factory.input('#', set.getIngredient(input));
-			if (patternContains('I')) factory.input('I', set.getItem(input));
-			ingredients.forEach(factory::input);
-			types.forEach((c, type) -> factory.input(c, set.getIngredient(type)));
-			factory.offerTo(recipes, getRecipeId(set));
+			if (patternContains('#')) factory.define('#', set.getIngredient(input));
+			if (patternContains('I')) factory.define('I', set.getItem(input));
+			ingredients.forEach(factory::define);
+			types.forEach((c, type) -> factory.define(c, set.getIngredient(type)));
+			factory.save(recipes, getRecipeId(set));
 		}
 	}
 

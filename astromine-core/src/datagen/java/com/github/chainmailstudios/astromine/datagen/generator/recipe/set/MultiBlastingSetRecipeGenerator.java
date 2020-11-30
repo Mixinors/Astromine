@@ -1,13 +1,12 @@
 package com.github.chainmailstudios.astromine.datagen.generator.recipe.set;
 
-import net.minecraft.advancement.criterion.ImpossibleCriterion;
-import net.minecraft.data.server.recipe.CookingRecipeJsonFactory;
-import net.minecraft.item.Item;
-import net.minecraft.recipe.Ingredient;
-
 import com.github.chainmailstudios.astromine.datagen.material.MaterialItemType;
 import com.github.chainmailstudios.astromine.datagen.material.MaterialSet;
 import me.shedaniel.cloth.api.datagen.v1.RecipeData;
+import net.minecraft.advancements.critereon.ImpossibleTrigger;
+import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.Collection;
 
@@ -27,14 +26,14 @@ public class MultiBlastingSetRecipeGenerator extends MultiCookingSetRecipeGenera
 	@Override
 	public void generate(RecipeData recipes, MaterialSet set) {
 		Collection<Item> items = getInputs(set);
-		CookingRecipeJsonFactory
-				.createBlasting(
-						Ingredient.ofItems(items.toArray(new Item[0])),
-						set.getItem(output),
-						experience,
-						time)
-				.criterion("impossible", new ImpossibleCriterion.Conditions())
-				.offerTo(recipes, getRecipeId(set));
+		SimpleCookingRecipeBuilder
+			.blasting(
+				Ingredient.of(items.toArray(new Item[0])),
+				set.getItem(output),
+				experience,
+				time)
+			.unlockedBy("impossible", new ImpossibleTrigger.TriggerInstance())
+			.save(recipes, getRecipeId(set));
 	}
 
 	@Override

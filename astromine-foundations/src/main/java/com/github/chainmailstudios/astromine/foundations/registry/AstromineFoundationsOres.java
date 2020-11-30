@@ -25,9 +25,10 @@
 package com.github.chainmailstudios.astromine.foundations.registry;
 
 import com.github.chainmailstudios.astromine.AstromineCommon;
-import com.github.chainmailstudios.astromine.foundations.AstromineFoundationsCommon;
-import me.shedaniel.cloth.api.dynamic.registry.v1.BiomesRegistry;
-import me.shedaniel.cloth.api.dynamic.registry.v1.DynamicRegistryCallback;
+import net.fabricmc.fabric.api.biome.v1.BiomeModification;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
+import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -35,7 +36,10 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 
+import java.util.function.Predicate;
+
 public class AstromineFoundationsOres {
+	public static final ResourceLocation FOUNDATIONS_ORES_ID = AstromineCommon.identifier("foundations_ores");
 	public static final ResourceLocation TIN_ORE_ID = AstromineCommon.identifier("tin_ore");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> TIN_ORE_KEY = ResourceKey.create(Registry.CONFIGURED_FEATURE_REGISTRY, TIN_ORE_ID);
 
@@ -45,16 +49,18 @@ public class AstromineFoundationsOres {
 	public static final ResourceLocation LEAD_ORE_ID = AstromineCommon.identifier("lead_ore");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> LEAD_ORE_KEY = ResourceKey.create(Registry.CONFIGURED_FEATURE_REGISTRY, LEAD_ORE_ID);
 
+	@SuppressWarnings("deprecation")
 	public static void initialize() {
-		DynamicRegistryCallback.callback(Registry.BIOME_REGISTRY).register((manager, key, biome) -> {
-			if (biome.getBiomeCategory() != Biome.BiomeCategory.NETHER && biome.getBiomeCategory() != Biome.BiomeCategory.THEEND) {
-				if (AstromineFoundationsConfig.get().overworldTinOre)
-					BiomesRegistry.registerFeature(manager, biome, GenerationStep.Decoration.UNDERGROUND_ORES, TIN_ORE_KEY);
-				if (AstromineFoundationsConfig.get().overworldCopperOre)
-					BiomesRegistry.registerFeature(manager, biome, GenerationStep.Decoration.UNDERGROUND_ORES, COPPER_ORE_KEY);
-				if (AstromineFoundationsConfig.get().overworldLeadOre)
-					BiomesRegistry.registerFeature(manager, biome, GenerationStep.Decoration.UNDERGROUND_ORES, LEAD_ORE_KEY);
-			}
+		BiomeModification modification = BiomeModifications.create(FOUNDATIONS_ORES_ID);
+		Predicate<BiomeSelectionContext> baseOverworldOreContext = context -> context.getBiome().getBiomeCategory() != Biome.BiomeCategory.NETHER && context.getBiome().getBiomeCategory() != Biome.BiomeCategory.THEEND;
+		modification.add(ModificationPhase.ADDITIONS, baseOverworldOreContext.and(context -> AstromineFoundationsConfig.get().overworldTinOre), context -> {
+			context.getGenerationSettings().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, TIN_ORE_KEY);
+		});
+		modification.add(ModificationPhase.ADDITIONS, baseOverworldOreContext.and(context -> AstromineFoundationsConfig.get().overworldCopperOre), context -> {
+			context.getGenerationSettings().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, COPPER_ORE_KEY);
+		});
+		modification.add(ModificationPhase.ADDITIONS, baseOverworldOreContext.and(context -> AstromineFoundationsConfig.get().overworldLeadOre), context -> {
+			context.getGenerationSettings().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, LEAD_ORE_KEY);
 		});
 	}
 }

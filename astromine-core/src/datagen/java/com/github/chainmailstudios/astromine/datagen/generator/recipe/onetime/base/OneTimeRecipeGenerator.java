@@ -1,20 +1,19 @@
 package com.github.chainmailstudios.astromine.datagen.generator.recipe.onetime.base;
 
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-
 import com.github.chainmailstudios.astromine.datagen.generator.recipe.RecipeGenerator;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.ItemLike;
 
 public abstract class OneTimeRecipeGenerator implements RecipeGenerator {
-	public final ItemConvertible output;
+	public final ItemLike output;
 	public final int outputCount;
 	public ResourceLocation recipeId;
 
-	public OneTimeRecipeGenerator(ItemConvertible output, int outputCount) {
+	public OneTimeRecipeGenerator(ItemLike output, int outputCount) {
 		this.output = output;
 		this.outputCount = outputCount;
-		this.recipeId = Registry.ITEM.getId(output.asItem());
+		this.recipeId = Registry.ITEM.getKey(output.asItem());
 	}
 
 	public ResourceLocation getRecipeId() {
