@@ -127,6 +127,8 @@
   "itemGroup.astromine.technologies": "Astromine: Technologies",
   "block.astromine.electrolyzer": "Electrolyzer",
   "block.astromine.fluid_mixer": "Fluid Mixer",
+  "block.astromine.fluid_filter": "Fluid Filter",
+  "block.astromine.item_filter": "Item Filter",
   "block.astromine.creative_capacitor": "Creative Capacitor",
   "block.astromine.creative_buffer": "Creative Buffer",
   "block.astromine.primitive_buffer": "Primitive Buffer",
