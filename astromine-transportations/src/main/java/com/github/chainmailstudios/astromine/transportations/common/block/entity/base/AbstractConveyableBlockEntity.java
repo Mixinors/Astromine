@@ -120,19 +120,16 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 	}
 
 	public void handleLeftMovement(Conveyable conveyable, int speed, boolean transition) {
-		int accepted = conveyable.accepts(getItemComponent().getFirst());
+		boolean accepted = conveyable.accepts(getItemComponent().getFirst());
 
-		if (accepted > 0) {
+		if (accepted) {
 			if (leftPosition < speed) {
 				setLeftPosition(getLeftPosition() + 1);
 			} else if (transition) {
-				ItemStack split = getItemComponent().getFirst().copy();
-				split.setCount(Math.min(accepted, split.getCount()));
+				ItemStack given = getItemComponent().getFirst();
+				getItemComponent().setFirst(ItemStack.EMPTY);
 
-				getItemComponent().getFirst().shrink(accepted);
-				getItemComponent().updateListeners();
-
-				conveyable.give(split);
+				conveyable.give(given);
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
 			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
@@ -150,19 +147,16 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 	}
 
 	public void handleRightMovement(Conveyable conveyable, int speed, boolean transition) {
-		int accepted = conveyable.accepts(getItemComponent().getSecond());
+		boolean accepted = conveyable.accepts(getItemComponent().getSecond());
 
-		if (accepted > 0) {
+		if (accepted) {
 			if (rightPosition < speed) {
 				setRightPosition(getRightPosition() + 1);
 			} else if (transition) {
-				ItemStack split = getItemComponent().getSecond().copy();
-				split.setCount(Math.min(accepted, split.getCount()));
+				ItemStack given = getItemComponent().getSecond();
+				getItemComponent().setSecond(ItemStack.EMPTY);
 
-				getItemComponent().getSecond().shrink(accepted);
-				getItemComponent().updateListeners();
-
-				conveyable.give(split);
+				conveyable.give(given);
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
 			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
@@ -237,14 +231,8 @@ public abstract class AbstractConveyableBlockEntity extends ComponentItemBlockEn
 	}
 
 	@Override
-	public int accepts(ItemStack stack) {
-		if (getItemComponent().getFirst().isEmpty() || StackUtilities.areItemsAndTagsEqual(stack, getItemComponent().getFirst())) {
-			return getItemComponent().getFirst().getMaxStackSize() - getItemComponent().getFirst().getCount();
-		} else if (getItemComponent().getSecond().isEmpty() || StackUtilities.areItemsAndTagsEqual(stack, getItemComponent().getSecond())) {
-			return getItemComponent().getSecond().getMaxStackSize() - getItemComponent().getSecond().getCount();
-		} else {
-			return 0;
-		}
+	public boolean accepts(ItemStack stack) {
+		return  (getItemComponent().getFirst().isEmpty() || StackUtilities.areItemsAndTagsEqual(stack, getItemComponent().getFirst())) ||  (getItemComponent().getSecond().isEmpty() || StackUtilities.areItemsAndTagsEqual(stack, getItemComponent().getSecond()));
 	}
 
 	@Override

@@ -102,13 +102,13 @@ public class VerticalConveyorBlock extends HorizontalDirectionalBlock implements
 
 		if (!player.getItemInHand(hand).isEmpty() && Block.byItem(player.getItemInHand(hand).getItem()) instanceof Conveyor) {
 			return InteractionResult.PASS;
-		} else if (!player.getItemInHand(hand).isEmpty() && blockEntity.isEmpty()) {
+		} else if (!player.getItemInHand(hand).isEmpty() && blockEntity.getItemComponent().isEmpty()) {
 			blockEntity.getItemComponent().setFirst(player.getItemInHand(hand));
 
 			player.setItemInHand(hand, ItemStack.EMPTY);
 
 			return InteractionResult.SUCCESS;
-		} else if (!blockEntity.isEmpty()) {
+		} else if (!blockEntity.getItemComponent().isEmpty()) {
 			player.inventory.placeItemBackInInventory(world, blockEntity.getItemComponent().getFirst());
 
 			blockEntity.getItemComponent().setFirst(ItemStack.EMPTY);
@@ -213,7 +213,7 @@ public class VerticalConveyorBlock extends HorizontalDirectionalBlock implements
 
 	@Override
 	public int getAnalogOutputSignal(BlockState state, Level world, BlockPos pos) {
-		return ((ConveyorBlockEntity) world.getBlockEntity(pos)).isEmpty() ? 0 : 15;
+		return ((ConveyorBlockEntity) world.getBlockEntity(pos)).getItemComponent().isEmpty() ? 0 : 15;
 	}
 
 	@Override

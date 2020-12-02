@@ -44,12 +44,8 @@ public class ShredderBlockEntity extends ComponentBlockEntity implements Conveya
 	}
 
 	@Override
-	public int accepts(ItemStack stack) {
-		if (tickRedstone()) {
-			return stack.getCount();
-		} else {
-			return 0;
-		}
+	public boolean accepts(ItemStack stack) {
+		return tickRedstone();
 	}
 
 	@Override

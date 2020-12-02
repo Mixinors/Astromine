@@ -43,7 +43,7 @@ public class VerticalConveyorBlockEntityRenderer extends BlockEntityRenderer<Ver
 		int speed = ((Conveyor) blockEntity.getBlockState().getBlock()).getSpeed();
 		ConveyorTypes type = ((Conveyor) blockEntity.getBlockState().getBlock()).getType();
 
-		if (!blockEntity.getLevel().getBlockState(blockEntity.getBlockPos()).isAir() && !blockEntity.isEmpty()) {
+		if (!blockEntity.getLevel().getBlockState(blockEntity.getBlockPos()).isAir() && !blockEntity.getItemComponent().isEmpty()) {
 			ItemStack stack = blockEntity.getItemComponent().getFirst();
 			float position = blockEntity.getRenderAttachmentData()[1] + (blockEntity.getRenderAttachmentData()[0] - blockEntity.getRenderAttachmentData()[1]) * partialTicks;
 			float horizontalPosition = blockEntity.getRenderAttachmentData()[3] + (blockEntity.getRenderAttachmentData()[2] - blockEntity.getRenderAttachmentData()[3]) * partialTicks;

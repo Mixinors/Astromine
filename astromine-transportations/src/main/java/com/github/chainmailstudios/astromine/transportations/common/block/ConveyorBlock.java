@@ -98,7 +98,7 @@ public class ConveyorBlock extends HorizontalDirectionalBlock implements EntityB
 
 	@Override
 	public int getAnalogOutputSignal(BlockState state, Level world, BlockPos pos) {
-		return ((ConveyorBlockEntity) world.getBlockEntity(pos)).isEmpty() ? 0 : 15;
+		return ((ConveyorBlockEntity) world.getBlockEntity(pos)).getItemComponent().isEmpty() ? 0 : 15;
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class ConveyorBlock extends HorizontalDirectionalBlock implements EntityB
 		if (entity instanceof ItemEntity && pos.equals(pos) && world.getBlockEntity(pos) instanceof ConveyorBlockEntity) {
 			ConveyorBlockEntity blockEntity = (ConveyorBlockEntity) world.getBlockEntity(pos);
 			
-			if (blockEntity.isEmpty()) {
+			if (blockEntity.getItemComponent().isEmpty()) {
 				blockEntity.getItemComponent().setFirst(((ItemEntity) entity).getItem());
 
 				entity.remove();
@@ -266,13 +266,13 @@ public class ConveyorBlock extends HorizontalDirectionalBlock implements EntityB
 
 		if (!player.getItemInHand(hand).isEmpty() && Block.byItem(player.getItemInHand(hand).getItem()) instanceof Conveyor) {
 			return InteractionResult.PASS;
-		} else if (!player.getItemInHand(hand).isEmpty() && blockEntity.isEmpty()) {
+		} else if (!player.getItemInHand(hand).isEmpty() && blockEntity.getItemComponent().isEmpty()) {
 			blockEntity.getItemComponent().setFirst(player.getItemInHand(hand));
 
 			player.setItemInHand(hand, ItemStack.EMPTY);
 
 			return InteractionResult.SUCCESS;
-		} else if (!blockEntity.isEmpty()) {
+		} else if (!blockEntity.getItemComponent().isEmpty()) {
 			player.inventory.placeItemBackInInventory(world, blockEntity.getItemComponent().getFirst());
 
 			blockEntity.getItemComponent().setFirst(ItemStack.EMPTY);

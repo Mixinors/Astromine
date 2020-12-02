@@ -80,7 +80,7 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 		Direction direction = getBlockState().getValue(HorizontalDirectionalBlock.FACING);
 		int speed = ((Conveyor) getBlockState().getBlock()).getSpeed();
 
-		if (!isEmpty()) {
+		if (!getItemComponent().isEmpty()) {
 			if (getBlockState().getValue(ConveyorProperties.CONVEYOR)) {
 				BlockPos conveyorPos = getBlockPos().relative(direction).above();
 				if (getLevel().getBlockEntity(conveyorPos) instanceof Conveyable) {
@@ -107,19 +107,16 @@ public class VerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	}
 
 	public void handleMovementHorizontal(Conveyable conveyable, int speed, boolean transition) {
-		int accepted = conveyable.accepts(getItemComponent().getFirst());
+		boolean accepted = conveyable.accepts(getItemComponent().getFirst());
 
-		if (accepted > 0) {
+		if (accepted) {
 			if (horizontalPosition < speed) {
 				setHorizontalPosition(getHorizontalPosition() + 2);
 			} else if (transition && horizontalPosition >= speed) {
-				ItemStack split = getItemComponent().getFirst().copy();
-				split.setCount(Math.min(accepted, split.getCount()));
+				ItemStack given = getItemComponent().getFirst();
+				getItemComponent().setFirst(ItemStack.EMPTY);
 
-				getItemComponent().getFirst().shrink(accepted);
-				getItemComponent().updateListeners();
-
-				conveyable.give(split);
+				conveyable.give(given);
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
 			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;

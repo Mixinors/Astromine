@@ -55,9 +55,9 @@ project.ext.setDefaultApis = {
     // Maybe Data
     useAsApi("com.github.Draylar:maybe-data:${maybe_data_version}")
     
-    useAsApiOptionally("curse.maven:kubejs:${project.kubejs_version}")
-    useAsApiOptionally("curse.maven:rhino:${project.rhino_version}")
-    useAsRuntime("curse.maven:architectury-fabric:${project.architectury_version}")
+    //useAsApiOptionally("curse.maven:kubejs:${project.kubejs_version}")
+    //useAsApiOptionally("curse.maven:rhino:${project.rhino_version}")
+    //useAsRuntime("curse.maven:architectury-fabric:${project.architectury_version}")
 }
 
 project.ext.setRuntimeTestMods = {

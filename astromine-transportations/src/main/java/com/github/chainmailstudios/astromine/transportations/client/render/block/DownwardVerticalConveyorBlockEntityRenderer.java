@@ -50,11 +50,11 @@ public class DownwardVerticalConveyorBlockEntityRenderer extends BlockEntityRend
 
 		Direction direction = blockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
 
-		if (conveyor && blockEntity.isEmpty()) {
+		if (conveyor && blockEntity.getItemComponent().isEmpty()) {
 			matrixStack.pushPose();
 			renderSupport(blockEntity, type, -1, 16, 0, matrixStack, vertexConsumerProvider);
 			matrixStack.popPose();
-		} else if (conveyor && !front && !blockEntity.isEmpty() && blockEntity.getPosition() > speed) {
+		} else if (conveyor && !front && !blockEntity.getItemComponent().isEmpty() && blockEntity.getPosition() > speed) {
 			float position = (blockEntity.getRenderAttachmentData()[1] + (blockEntity.getRenderAttachmentData()[0] - blockEntity.getRenderAttachmentData()[1]) * partialTicks);
 
 			matrixStack.pushPose();
@@ -69,7 +69,7 @@ public class DownwardVerticalConveyorBlockEntityRenderer extends BlockEntityRend
 			}
 			renderSupport(blockEntity, type, -1, 16, 0, matrixStack, vertexConsumerProvider);
 			matrixStack.popPose();
-		} else if (conveyor && front && !blockEntity.isEmpty() && blockEntity.getHorizontalPosition() > 0) {
+		} else if (conveyor && front && !blockEntity.getItemComponent().isEmpty() && blockEntity.getHorizontalPosition() > 0) {
 			float horizontalPosition = (blockEntity.getRenderAttachmentData()[3] + (blockEntity.getRenderAttachmentData()[2] - blockEntity.getRenderAttachmentData()[3]) * partialTicks);
 
 			matrixStack.pushPose();
@@ -86,7 +86,7 @@ public class DownwardVerticalConveyorBlockEntityRenderer extends BlockEntityRend
 			matrixStack.popPose();
 		}
 
-		if (!blockEntity.getLevel().getBlockState(blockEntity.getBlockPos()).isAir() && !blockEntity.isEmpty()) {
+		if (!blockEntity.getLevel().getBlockState(blockEntity.getBlockPos()).isAir() && !blockEntity.getItemComponent().isEmpty()) {
 			ItemStack stack = blockEntity.getItemComponent().getFirst();
 			float position = -(blockEntity.getRenderAttachmentData()[1] + (blockEntity.getRenderAttachmentData()[0] - blockEntity.getRenderAttachmentData()[1]) * partialTicks);
 			float horizontalPosition = (blockEntity.getRenderAttachmentData()[3] + (blockEntity.getRenderAttachmentData()[2] - blockEntity.getRenderAttachmentData()[3]) * partialTicks);

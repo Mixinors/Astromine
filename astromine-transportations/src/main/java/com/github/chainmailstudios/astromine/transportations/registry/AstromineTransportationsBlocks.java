@@ -44,6 +44,9 @@ public class AstromineTransportationsBlocks extends AstromineBlocks {
 	public static final Block INSERTER = register("inserter", new InserterBlock("normal", AstromineConfig.get().inserterSpeed, getBasicSettings().noOcclusion()), AstromineTransportationsItems.getBasicSettings());
 	public static final Block FAST_INSERTER = register("fast_inserter", new InserterBlock("fast", AstromineConfig.get().fastInserterSpeed, getBasicSettings().noOcclusion()), AstromineTransportationsItems.getBasicSettings());
 
+	public static final Block ITEM_FILTER = register("item_filter", new ItemFilterBlock(getBasicSettings()), AstromineTransportationsItems.getBasicSettings());
+	public static final Block FLUID_FILTER = register("fluid_filter", new FluidFilterBlock(getBasicSettings()), AstromineTransportationsItems.getBasicSettings());
+
 	public static final Block BASIC_CONVEYOR = register("basic_conveyor", new ConveyorBlock(getBasicSettings().sound(SoundType.METAL).noOcclusion(), AstromineConfig.get().basicConveyorSpeed), AstromineTransportationsItems.getBasicSettings());
 	public static final Block BASIC_VERTICAL_CONVEYOR = register("basic_vertical_conveyor", new VerticalConveyorBlock(getBasicSettings().sound(SoundType.METAL).noOcclusion(), AstromineConfig.get().basicConveyorSpeed), AstromineTransportationsItems.getBasicSettings());
 	public static final Block BASIC_DOWNWARD_VERTICAL_CONVEYOR = register("basic_downward_vertical_conveyor", new DownwardVerticalConveyorBlock(getBasicSettings().sound(SoundType.METAL).noOcclusion(), AstromineConfig.get().basicConveyorSpeed), AstromineTransportationsItems.getBasicSettings());

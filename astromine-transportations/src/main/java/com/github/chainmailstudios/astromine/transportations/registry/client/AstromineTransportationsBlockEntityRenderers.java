@@ -38,6 +38,8 @@ public class AstromineTransportationsBlockEntityRenderers extends AstromineBlock
 		register(AstromineTransportationsBlockEntityTypes.SPLITTER, AbstractConveyableBlockEntityRenderer::new);
 		register(AstromineTransportationsBlockEntityTypes.INSERTER, InserterBlockEntityRenderer::new);
 
+		register(AstromineTransportationsBlockEntityTypes.ITEM_FILTER, ConveyorBlockEntityRenderer::new);
+
 		register(AstromineTransportationsBlockEntityTypes.CONVEYOR, ConveyorBlockEntityRenderer::new);
 		register(AstromineTransportationsBlockEntityTypes.VERTICAL_CONVEYOR, VerticalConveyorBlockEntityRenderer::new);
 		register(AstromineTransportationsBlockEntityTypes.DOWNWARD_VERTICAL_CONVEYOR, DownwardVerticalConveyorBlockEntityRenderer::new);

@@ -24,6 +24,7 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentBlockEntity;
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.general.SimpleItemComponent;
@@ -49,13 +50,15 @@ import com.github.chainmailstudios.astromine.transportations.common.conveyor.Con
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorTypes;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
 
-public class ConveyorBlockEntity extends ComponentItemBlockEntity implements ConveyorConveyable, BlockEntityClientSerializable, RenderAttachmentBlockEntity, TickableBlockEntity {
+public class ConveyorBlockEntity extends ComponentBlockEntity implements ConveyorConveyable, BlockEntityClientSerializable, RenderAttachmentBlockEntity, TickableBlockEntity {
 	protected boolean front = false;
 	protected boolean down = false;
 	protected boolean across = false;
 
 	protected int position = 0;
 	protected int prevPosition = 0;
+
+	private final ItemComponent itemComponent = createItemComponent();
 
 	public ConveyorBlockEntity() {
 		super(AstromineTransportationsBlockEntityTypes.CONVEYOR);
@@ -65,7 +68,6 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 		super(type);
 	}
 
-	@Override
 	public ItemComponent createItemComponent() {
 		return new SimpleItemComponent(1) {
 			@Override
@@ -75,11 +77,17 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 
 				return super.removeStack(slot);
 			}
-		}.withListener((inventory) -> {
+		}.withInsertPredicate(((direction, stack, slot) -> {
+			return accepts(stack);
+		})).withListener((inventory) -> {
 			if (level != null && !level.isClientSide) {
 				sendPacket((ServerLevel) level, save(new CompoundTag()));
 			}
 		});
+	}
+
+	public ItemComponent getItemComponent() {
+		return itemComponent;
 	}
 
 	@Override
@@ -87,7 +95,7 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 		Direction direction = getBlockState().getValue(HorizontalDirectionalBlock.FACING);
 		int speed = ((Conveyor) getBlockState().getBlock()).getSpeed();
 
-		if (!isEmpty()) {
+		if (!getItemComponent().isEmpty()) {
 			if (across) {
 				BlockPos frontPos = getBlockPos().relative(direction);
 				BlockPos frontAcrossPos = frontPos.relative(direction);
@@ -120,22 +128,21 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 		} else if (position != 0) {
 			setPosition(0);
 		}
+
+		getItemComponent().updateListeners();
 	}
 
 	public void handleMovement(Conveyable conveyable, int speed, boolean transition) {
-		int accepted = conveyable.accepts(getItemComponent().getFirst());
+		boolean accepted = conveyable.accepts(getItemComponent().getFirst());
 
-		if (accepted > 0) {
+		if (accepted) {
 			if (position < speed) {
 				setPosition(getPosition() + 1);
 			} else if (transition && position == speed) {
-				ItemStack split = getItemComponent().getFirst().copy();
-				split.setCount(Math.min(accepted, split.getCount()));
+				ItemStack given = getItemComponent().getFirst();
+				getItemComponent().setFirst(ItemStack.EMPTY);
 
-				getItemComponent().getFirst().shrink(accepted);
-				getItemComponent().updateListeners();
-
-				conveyable.give(split);
+				conveyable.give(given);
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
 			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
@@ -153,9 +160,9 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 	}
 
 	public void handleMovementAcross(Conveyable conveyable, Conveyable acrossConveyable, int speed, boolean transition) {
-		int accepted = conveyable.accepts(getItemComponent().getFirst());
+		boolean accepted = conveyable.accepts(getItemComponent().getFirst());
 
-		if (accepted > 0) {
+		if (accepted) {
 			if (position < speed) {
 				if (conveyable instanceof ConveyorConveyable && acrossConveyable instanceof ConveyorConveyable) {
 					ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
@@ -168,13 +175,10 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 					}
 				}
 			} else if (transition && position == speed) {
-				ItemStack split = getItemComponent().getFirst().copy();
-				split.setCount(Math.min(accepted, split.getCount()));
+				ItemStack given = getItemComponent().getFirst();
+				getItemComponent().setFirst(ItemStack.EMPTY);
 
-				getItemComponent().getFirst().shrink(accepted);
-				getItemComponent().updateListeners();
-
-				conveyable.give(split);
+				conveyable.give(given);
 			}
 		} else if (conveyable instanceof ConveyorConveyable && acrossConveyable instanceof ConveyorConveyable) {
 			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
@@ -198,12 +202,8 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 	}
 
 	@Override
-	public int accepts(ItemStack stack) {
-		if (getItemComponent().getFirst().isEmpty() || (AstromineConfig.get().conveyorsMergeStacks && StackUtilities.areItemsAndTagsEqual(stack, getItemComponent().getFirst()))) {
-			return getItemComponent().getFirst().getMaxStackSize() - getItemComponent().getFirst().getCount();
-		} else {
-			return 0;
-		}
+	public boolean accepts(ItemStack stack) {
+		return getItemComponent().isEmpty();
 	}
 
 	@Override

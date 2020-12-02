@@ -24,11 +24,17 @@
 
 package com.github.chainmailstudios.astromine.transportations.common.block.entity;
 
+import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
+import com.github.chainmailstudios.astromine.transportations.common.conveyor.Conveyable;
 import com.github.chainmailstudios.astromine.transportations.common.block.entity.base.AbstractConveyableBlockEntity;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsSoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class SplitterBlockEntity extends AbstractConveyableBlockEntity {
@@ -41,28 +47,72 @@ public class SplitterBlockEntity extends AbstractConveyableBlockEntity {
 	}
 
 	@Override
-	public void give(ItemStack stack) {
-		int size = stack.getCount();
-		int smallHalf = size / 2;
-		int largeHalf = size - smallHalf;
+	public boolean accepts(ItemStack stack) {
+		Direction facing = getBlockState().getValue(HorizontalDirectionalBlock.FACING);
 
-		if (isEmpty()) {
-			ItemStack smallStack = stack.copy();
-			ItemStack largeStack = stack.copy();
+		BlockPos leftPos = getBlockPos().relative(facing.getCounterClockWise());
+		BlockPos rightPos = getBlockPos().relative(facing.getClockWise());
 
-			smallStack.setCount(smallHalf);
-			largeStack.setCount(largeHalf);
+		BlockEntity leftBlockEntity = level.getBlockEntity(leftPos);
+		BlockEntity rightBlockEntity = level.getBlockEntity(rightPos);
 
-			if (smallStack.getCount() > 0)
-				getItemComponent().setFirst(smallStack);
-
-			if (largeStack.getCount() > 0)
-				getItemComponent().setSecond(largeStack);
-		} else if (!getItemComponent().getFirst().isEmpty() && getItemComponent().getSecond().isEmpty()) {
-			getItemComponent().setSecond(stack);
-		} else if (!getItemComponent().getSecond().isEmpty() && getItemComponent().getFirst().isEmpty()) {
-			getItemComponent().setFirst(stack);
+		if (leftBlockEntity instanceof Conveyable && ((Conveyable) leftBlockEntity).accepts(stack)) {
+			return getItemComponent().getFirst().isEmpty() || getItemComponent().getFirst().getMaxStackSize() - getItemComponent().getFirst().getCount() >= stack.getCount() && StackUtilities.areItemsAndTagsEqual(getItemComponent().getFirst(), stack);
 		}
+
+		if (rightBlockEntity instanceof Conveyable && ((Conveyable) rightBlockEntity).accepts(stack)) {
+			return getItemComponent().getSecond().isEmpty() || getItemComponent().getSecond().getMaxStackSize() - getItemComponent().getSecond().getCount() >= stack.getCount() && StackUtilities.areItemsAndTagsEqual(getItemComponent().getSecond(), stack);
+		}
+
+		return false;
+	}
+
+	@Override
+	public void give(ItemStack stack) {
+		Direction facing = getBlockState().getValue(HorizontalDirectionalBlock.FACING);
+
+		BlockPos leftPos = getBlockPos().relative(facing.getCounterClockWise());
+		BlockPos rightPos = getBlockPos().relative(facing.getClockWise());
+
+		BlockEntity leftBlockEntity = level.getBlockEntity(leftPos);
+		BlockEntity rightBlockEntity = level.getBlockEntity(rightPos);
+
+		boolean allowsLeft = false;
+		boolean allowsRight = false;
+
+		if (leftBlockEntity instanceof Conveyable && ((Conveyable) leftBlockEntity).accepts(stack)) {
+			allowsLeft = super.accepts(stack);
+		}
+
+		if (rightBlockEntity instanceof Conveyable && ((Conveyable) rightBlockEntity).accepts(stack)) {
+			allowsRight = super.accepts(stack);
+		}
+
+		int size = stack.getCount();
+		int smallHalf = allowsLeft ? size / 2 : 0;
+		int largeHalf = allowsRight ? size - smallHalf : 0;
+
+		if (allowsLeft && !allowsRight) {
+			smallHalf = stack.getCount();
+			largeHalf = 0;
+		}
+
+		if (allowsRight && !allowsLeft) {
+			largeHalf = stack.getCount();
+			smallHalf = 0;
+		}
+
+		ItemStack smallStack = stack.copy();
+		ItemStack largeStack = stack.copy();
+
+		smallStack.setCount(smallHalf);
+		largeStack.setCount(largeHalf);
+
+		if (smallStack.getCount() > 0)
+			getItemComponent().setFirst(smallStack);
+
+		if (largeStack.getCount() > 0)
+			getItemComponent().setSecond(largeStack);
 
 		level.playSound(null, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), AstromineTransportationsSoundEvents.MACHINE_CLICK, SoundSource.BLOCKS, 1.0F, 1.0F);
 	}
