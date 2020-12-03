@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class ItemStackMixin {
     @Shadow public abstract Item getItem();
 
-    @Inject(at = @At("RETURN"), method = "getDisplayName")
+    @Inject(at = @At("RETURN"), method = "getHoverName")
     void onGetName(CallbackInfoReturnable<Component> returnable) {
         MutableComponent text = (MutableComponent) returnable.getReturnValue();
         Style style = returnable.getReturnValue().getStyle();

@@ -42,17 +42,13 @@ import net.minecraft.world.level.block.entity.ComparatorBlockEntity;
  * output levels.
  */
 public class ComparatorOutput {
-	/**
-	 * Returns the output level for a {@link BlockEntity} with an {@link ItemComponent}.
-	 */
+	/** Returns the output level for a {@link BlockEntity} with an {@link ItemComponent}.*/
 	public static int forItems(@Nullable BlockEntity entity) {
 		return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(entity);
 	}
 
-	/**
-	 * Returns the output level for a {@link BlockEntity} with an {@link EnergyComponent}.
-	 */
-	public static int forEnergy(@Nullable BlockEntity entity) {
+    /** Returns the output level for a {@link BlockEntity} with an {@link EnergyComponent}. */
+    public static int forEnergy(@Nullable BlockEntity entity) {
 		if (entity == null) {
 			return 0;
 		}
@@ -64,16 +60,13 @@ public class ComparatorOutput {
 		}
 
 		if (component.getAmount() <= 0.0001) {
-			return 0;
-		}
+            return 0;
+        }
 
-		return 1 + (int) (component.getAmount() / component.getSize() * 14.0);
+        return 1 + (int) (component.getAmount() / component.getSize() * 14.0);
 	}
 
-	/**
-	 * Returns the output level for a {@link BlockEntity} with a {@link FluidComponent}.
-	 */
-	public static int forFluids(@Nullable BlockEntity entity) {
+	/** Returns the output level for a {@link BlockEntity} with a {@link FluidComponent}. */public static int forFluids(@Nullable BlockEntity entity) {
 		if (entity == null) {
 			return 0;
 		}
@@ -84,7 +77,7 @@ public class ComparatorOutput {
 			return 0;
 		}
 
-		Collection<FluidVolume> contents = fluidComponent.getContents();
+		Collection<FluidVolume> contents = fluidComponent.getContents().values();
 		Fraction amounts = sumBy(contents, FluidVolume::getAmount);
 
 		if (amounts.getNumerator() == 0) {
@@ -96,10 +89,7 @@ public class ComparatorOutput {
 		return 1 + (int) (ratio.floatValue() * 14.0f);
 	}
 
-	/**
-	 * Sums collection of {@link T} into a {@link Fraction} by the given {@link Function}.
-	 */
-	private static <T> Fraction sumBy(Collection<T> ts, Function<? super T, Fraction> extractor) {
+	/** Sums collection of {@link T} into a {@link Fraction} by the given {@link Function}. */private static <T> Fraction sumBy(Collection<T> ts, Function<? super T, Fraction> extractor) {
 		Fraction result = Fraction.EMPTY;
 
 		for (T t : ts) {
