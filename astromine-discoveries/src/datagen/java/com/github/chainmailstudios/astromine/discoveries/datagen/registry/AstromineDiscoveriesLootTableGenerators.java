@@ -13,8 +13,6 @@ public class AstromineDiscoveriesLootTableGenerators extends AstromineLootTableG
 	public final LootTableGenerator ASTEROID_ORE = register(new FortuneOreSetLootTableGenerator(MaterialItemType.ASTEROID_ORE, MaterialItemType.ASTEROID_CLUSTER));
 
 	public final LootTableGenerator DROP_SELF = register(new DropSelfLootTableGenerator(
-			AstromineDiscoveriesBlocks.ALTAR,
-			AstromineDiscoveriesBlocks.ALTAR_PEDESTAL,
 			AstromineDiscoveriesBlocks.ASTEROID_STONE,
 			AstromineDiscoveriesBlocks.ASTEROID_STONE_STAIRS,
 			AstromineDiscoveriesBlocks.ASTEROID_STONE_WALL,

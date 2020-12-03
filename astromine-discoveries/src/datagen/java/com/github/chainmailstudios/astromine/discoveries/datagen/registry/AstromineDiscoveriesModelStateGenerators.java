@@ -48,8 +48,6 @@ public class AstromineDiscoveriesModelStateGenerators extends AstromineModelStat
 	));
 
 	public final ModelStateGenerator CUSTOM_MODEL_BLOCKS = register(new SimpleBlockItemModelStateGenerator(
-			AstromineDiscoveriesBlocks.ALTAR,
-			AstromineDiscoveriesBlocks.ALTAR_PEDESTAL,
 			AstromineDiscoveriesBlocks.MARTIAN_SOIL,
 			AstromineDiscoveriesBlocks.MARTIAN_STONE,
 			AstromineDiscoveriesBlocks.SMOOTH_MARTIAN_STONE,

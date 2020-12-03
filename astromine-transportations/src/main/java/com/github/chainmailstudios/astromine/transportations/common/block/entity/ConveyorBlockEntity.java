@@ -79,6 +79,10 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 					prevPosition = 0;
 				}
 
+				if (front || across || down) {
+					prevPosition = -1;
+				}
+
 				if (level != null && !level.isClientSide) {
 					sendPacket((ServerLevel) level, save(new CompoundTag()));
 				}
@@ -243,10 +247,6 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 
 	@Override
 	public void give(ItemStack stack) {
-		if (front || across || down) {
-			prevPosition = -1;
-		}
-
 		if (!level.isClientSide) {
 			Tuple<ItemStack, ItemStack> merge = StackUtilities.merge(stack, getItemComponent().getFirst());
 			getItemComponent().setFirst(merge.getB());

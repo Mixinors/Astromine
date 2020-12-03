@@ -53,20 +53,57 @@ public class DownVerticalConveyorBlockEntity extends ConveyorBlockEntity {
 	public ItemComponent createItemComponent() {
 		return new SimpleItemComponent(1) {
 			@Override
+			public void setStack(int slot, ItemStack stack) {
+				super.setStack(slot, stack);
+
+				if (stack.isEmpty()) {
+					position = 0;
+					prevPosition = 0;
+				}
+
+				horizontalPosition = 0;
+				prevHorizontalPosition = 0;
+
+				if (level != null && !level.isClientSide) {
+					sendPacket((ServerLevel) level, save(new CompoundTag()));
+				}
+			}
+
+			@Override
 			public ItemStack removeStack(int slot) {
+				ItemStack stack = super.removeStack(slot);
+
 				position = 0;
 				prevPosition = 0;
 
 				horizontalPosition = 0;
 				prevHorizontalPosition = 0;
 
-				return super.removeStack(slot);
+				if (level != null && !level.isClientSide) {
+					sendPacket((ServerLevel) level, save(new CompoundTag()));
+				}
+
+				return stack;
+			}
+
+			@Override
+			public void clear() {
+				super.clear();
+
+				if (level != null && !level.isClientSide) {
+					sendPacket((ServerLevel) level, save(new CompoundTag()));
+				}
 			}
 		}.withListener((inventory) -> {
 			if (level != null && !level.isClientSide) {
 				sendPacket((ServerLevel) level, save(new CompoundTag()));
 			}
 		});
+	}
+
+	@Override
+	public void give(ItemStack stack) {
+		super.give(stack);
 	}
 
 	@Override
