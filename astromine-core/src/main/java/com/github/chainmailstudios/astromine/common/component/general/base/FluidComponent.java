@@ -220,7 +220,7 @@ public interface FluidComponent extends Iterable<FluidVolume>, IdentifiableCompo
 		ArrayList<FluidVolume> list = new ArrayList<>();
 		List<FluidVolume> contents = getContents();
 		for (int i = 0; i < contents.size(); i++) {
-			if (canExtract(direction, volume, i)) {
+			if (canInsert(direction, volume, i)) {
 				list.add(contents.get(i));
 			}
 		}

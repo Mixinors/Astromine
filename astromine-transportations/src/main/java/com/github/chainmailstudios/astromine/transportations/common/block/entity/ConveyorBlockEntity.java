@@ -32,6 +32,7 @@ import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -50,15 +51,13 @@ import com.github.chainmailstudios.astromine.transportations.common.conveyor.Con
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorTypes;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
 
-public class ConveyorBlockEntity extends ComponentBlockEntity implements ConveyorConveyable, BlockEntityClientSerializable, RenderAttachmentBlockEntity, TickableBlockEntity {
+public class ConveyorBlockEntity extends ComponentItemBlockEntity implements ConveyorConveyable, BlockEntityClientSerializable, RenderAttachmentBlockEntity, TickableBlockEntity {
 	protected boolean front = false;
 	protected boolean down = false;
 	protected boolean across = false;
 
 	protected int position = 0;
 	protected int prevPosition = 0;
-
-	private final ItemComponent itemComponent = createItemComponent();
 
 	public ConveyorBlockEntity() {
 		super(AstromineTransportationsBlockEntityTypes.CONVEYOR);
@@ -68,26 +67,48 @@ public class ConveyorBlockEntity extends ComponentBlockEntity implements Conveyo
 		super(type);
 	}
 
+	@Override
 	public ItemComponent createItemComponent() {
 		return new SimpleItemComponent(1) {
 			@Override
+			public void setStack(int slot, ItemStack stack) {
+				super.setStack(slot, stack);
+
+				if (stack.isEmpty()) {
+					position = 0;
+					prevPosition = 0;
+				}
+
+				if (level != null && !level.isClientSide) {
+					sendPacket((ServerLevel) level, save(new CompoundTag()));
+				}
+			}
+
+			@Override
 			public ItemStack removeStack(int slot) {
+				ItemStack stack = super.removeStack(slot);
+
 				position = 0;
 				prevPosition = 0;
 
-				return super.removeStack(slot);
+				if (level != null && !level.isClientSide) {
+					sendPacket((ServerLevel) level, save(new CompoundTag()));
+				}
+
+				return stack;
+			}
+
+			@Override
+			public void clear() {
+				super.clear();
+
+				if (level != null && !level.isClientSide) {
+					sendPacket((ServerLevel) level, save(new CompoundTag()));
+				}
 			}
 		}.withInsertPredicate(((direction, stack, slot) -> {
 			return accepts(stack);
-		})).withListener((inventory) -> {
-			if (level != null && !level.isClientSide) {
-				sendPacket((ServerLevel) level, save(new CompoundTag()));
-			}
-		});
-	}
-
-	public ItemComponent getItemComponent() {
-		return itemComponent;
+		}));
 	}
 
 	@Override
@@ -128,8 +149,6 @@ public class ConveyorBlockEntity extends ComponentBlockEntity implements Conveyo
 		} else if (position != 0) {
 			setPosition(0);
 		}
-
-		getItemComponent().updateListeners();
 	}
 
 	public void handleMovement(Conveyable conveyable, int speed, boolean transition) {
@@ -140,14 +159,17 @@ public class ConveyorBlockEntity extends ComponentBlockEntity implements Conveyo
 				setPosition(getPosition() + 1);
 			} else if (transition && position == speed) {
 				ItemStack given = getItemComponent().getFirst();
-				getItemComponent().setFirst(ItemStack.EMPTY);
 
 				conveyable.give(given);
+
+				if (!level.isClientSide || level.isClientSide && Minecraft.getInstance().player.distanceToSqr(Vec3.atCenterOf(getBlockPos())) > 40 * 40) {
+					getItemComponent().setFirst(ItemStack.EMPTY);
+				}
 			}
 		} else if (conveyable instanceof ConveyorConveyable) {
 			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
 
-			if (position < speed && position + 1 < conveyor.getPosition() && conveyor.getPosition() > 1) {
+			if (position < speed && position + 1 < conveyor.getPosition()) {
 				setPosition(getPosition() + 1);
 			} else {
 				prevPosition = position;
@@ -168,7 +190,7 @@ public class ConveyorBlockEntity extends ComponentBlockEntity implements Conveyo
 					ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
 					ConveyorConveyable acrossConveyor = (ConveyorConveyable) acrossConveyable;
 
-					if (position < speed && acrossConveyor.getPosition() == 0) {
+					if (acrossConveyor.getPosition() == 0) {
 						setPosition(getPosition() + 1);
 					} else {
 						prevPosition = position;
@@ -176,15 +198,18 @@ public class ConveyorBlockEntity extends ComponentBlockEntity implements Conveyo
 				}
 			} else if (transition && position == speed) {
 				ItemStack given = getItemComponent().getFirst();
-				getItemComponent().setFirst(ItemStack.EMPTY);
 
 				conveyable.give(given);
+
+				if (!level.isClientSide || level.isClientSide && Minecraft.getInstance().player.distanceToSqr(Vec3.atCenterOf(getBlockPos())) > 40 * 40) {
+					getItemComponent().setFirst(ItemStack.EMPTY);
+				}
 			}
 		} else if (conveyable instanceof ConveyorConveyable && acrossConveyable instanceof ConveyorConveyable) {
 			ConveyorConveyable conveyor = (ConveyorConveyable) conveyable;
 			ConveyorConveyable acrossConveyor = (ConveyorConveyable) acrossConveyable;
 
-			if (position < speed && acrossConveyor.getPosition() == 0 && position + 1 < conveyor.getPosition() && conveyor.getPosition() > 1) {
+			if (position < speed && acrossConveyor.getPosition() == 0 && position + 1 < conveyor.getPosition()) {
 				setPosition(getPosition() + 1);
 			} else {
 				prevPosition = position;
