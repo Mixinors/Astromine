@@ -28,7 +28,9 @@ import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentB
 import com.github.chainmailstudios.astromine.common.block.entity.base.ComponentItemBlockEntity;
 import com.github.chainmailstudios.astromine.common.component.general.base.ItemComponent;
 import com.github.chainmailstudios.astromine.common.component.general.SimpleItemComponent;
+import com.github.chainmailstudios.astromine.common.component.general.provider.ItemComponentProvider;
 import com.github.chainmailstudios.astromine.common.utilities.StackUtilities;
+import com.github.chainmailstudios.astromine.common.utilities.capability.inventory.ComponentInventoryProvider;
 import com.github.chainmailstudios.astromine.registry.AstromineConfig;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
@@ -51,13 +53,15 @@ import com.github.chainmailstudios.astromine.transportations.common.conveyor.Con
 import com.github.chainmailstudios.astromine.transportations.common.conveyor.ConveyorTypes;
 import com.github.chainmailstudios.astromine.transportations.registry.AstromineTransportationsBlockEntityTypes;
 
-public class ConveyorBlockEntity extends ComponentItemBlockEntity implements ConveyorConveyable, BlockEntityClientSerializable, RenderAttachmentBlockEntity, TickableBlockEntity {
+public class ConveyorBlockEntity extends ComponentBlockEntity implements ItemComponentProvider, ComponentInventoryProvider, ConveyorConveyable, BlockEntityClientSerializable, RenderAttachmentBlockEntity, TickableBlockEntity {
 	protected boolean front = false;
 	protected boolean down = false;
 	protected boolean across = false;
 
 	protected int position = 0;
 	protected int prevPosition = 0;
+
+	private final ItemComponent itemComponent = createItemComponent();
 
 	public ConveyorBlockEntity() {
 		super(AstromineTransportationsBlockEntityTypes.CONVEYOR);
@@ -67,7 +71,6 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 		super(type);
 	}
 
-	@Override
 	public ItemComponent createItemComponent() {
 		return new SimpleItemComponent(1) {
 			@Override
@@ -113,6 +116,11 @@ public class ConveyorBlockEntity extends ComponentItemBlockEntity implements Con
 		}.withInsertPredicate(((direction, stack, slot) -> {
 			return accepts(stack);
 		}));
+	}
+
+	@Override
+	public ItemComponent getItemComponent() {
+		return itemComponent;
 	}
 
 	@Override

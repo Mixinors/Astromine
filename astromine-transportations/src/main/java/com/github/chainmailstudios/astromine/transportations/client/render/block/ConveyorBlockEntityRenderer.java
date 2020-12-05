@@ -31,6 +31,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 
 public class ConveyorBlockEntityRenderer extends BlockEntityRenderer<ConveyorBlockEntity> implements ConveyorRenderer<ConveyorBlockEntity> {
@@ -46,7 +47,7 @@ public class ConveyorBlockEntityRenderer extends BlockEntityRenderer<ConveyorBlo
 		if (!blockEntity.getLevel().getBlockState(blockEntity.getBlockPos()).isAir() && !blockEntity.getItemComponent().isEmpty()) {
 			ItemStack stack = blockEntity.getItemComponent().getFirst();
 
-			float position = blockEntity.getRenderAttachmentData()[1] + (blockEntity.getRenderAttachmentData()[0] - blockEntity.getRenderAttachmentData()[1]) * partialTicks;
+			float position = Mth.lerp(partialTicks, blockEntity.getRenderAttachmentData()[0], blockEntity.getRenderAttachmentData()[1]);
 
 			renderItem(blockEntity, stack, position, speed, 0, type, matrixStack, vertexConsumerProvider);
 		}
