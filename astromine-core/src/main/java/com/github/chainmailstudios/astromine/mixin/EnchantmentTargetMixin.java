@@ -39,7 +39,7 @@ import com.github.chainmailstudios.astromine.common.item.EnchantableToolItem;
  * leggings 10 = helmet 11 = sword 12 = digger 13 = fishing rod 14 = trident Note that these are for some reason in a
  * different order to what they appear in the class itself...
  */
-@Mixin(targets = { "net/minecraft/world/item/enchantment/EnchantmentTarget$12" })
+@Mixin(targets = { "net/minecraft/enchantment/EnchantmentTarget$12" })
 public class EnchantmentTargetMixin {
 	@Inject(at = @At("HEAD"), method = "isAcceptableItem(Lnet/minecraft/item/Item;)Z", cancellable = true)
 	public void astromine_makeMultiToolEnchantable(Item item, CallbackInfoReturnable<Boolean> cir) {

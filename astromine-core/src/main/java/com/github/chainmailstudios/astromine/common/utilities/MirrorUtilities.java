@@ -26,67 +26,63 @@ package com.github.chainmailstudios.astromine.common.utilities;
 
 import net.minecraft.util.math.Direction;
 
-import static net.minecraft.util.math.Direction.EAST;
-import static net.minecraft.util.math.Direction.NORTH;
-import static net.minecraft.util.math.Direction.SOUTH;
-import static net.minecraft.util.math.Direction.WEST;
-
 public class MirrorUtilities {
 	public static Direction rotate(Direction origin, Direction rotation) {
-		if (rotation == NORTH) {
+		if (rotation == Direction.NORTH) {
 			switch (origin) {
 				case NORTH:
-					return NORTH;
+					return Direction.NORTH;
 				case SOUTH:
-					return SOUTH;
+					return Direction.SOUTH;
 				case WEST:
-					return WEST;
+					return Direction.WEST;
 				case EAST:
-					return EAST;
+					return Direction.EAST;
 				default:
 					return origin;
 			}
-		} else if (rotation == SOUTH) {
+		} else if (rotation == Direction.SOUTH) {
 			switch (origin) {
 				case NORTH:
-					return SOUTH;
+					return Direction.SOUTH;
 				case SOUTH:
-					return NORTH;
+					return Direction.NORTH;
 				case WEST:
-					return EAST;
+					return Direction.EAST;
 				case EAST:
-					return WEST;
+					return Direction.WEST;
 				default:
 					return origin;
 			}
-		} else if (rotation == WEST) {
+		} else if (rotation == Direction.WEST) {
 			switch (origin) {
 				case NORTH:
-					return EAST;
+					return Direction.EAST;
 				case SOUTH:
-					return WEST;
+					return Direction.WEST;
 				case EAST:
-					return SOUTH;
+					return Direction.SOUTH;
 				case WEST:
-					return NORTH;
+					return Direction.NORTH;
 				default:
 					return origin;
 			}
-		} else if (rotation == EAST) {
+		} else if (rotation == Direction.EAST) {
 			switch (origin) {
 				case NORTH:
-					return WEST;
+					return Direction.WEST;
 				case SOUTH:
-					return EAST;
+					return Direction.EAST;
 				case EAST:
-					return NORTH;
+					return Direction.NORTH;
 				case WEST:
-					return SOUTH;
+					return Direction.SOUTH;
 				default:
 					return origin;
 			}
 		} else {
-			return origin; /* TODO: {@link Direction#UP} and {@link Direction#DOWN}. */
+			/* TODO: {@link Direction#UP} and {@link Direction#DOWN}. */
+			return origin;
 		}
 	}
 }

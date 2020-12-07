@@ -33,7 +33,7 @@ import net.minecraft.entity.ai.goal.SwimGoal;
 
 import com.github.chainmailstudios.astromine.access.EntityAccess;
 
-@Mixin(value = { SwimGoal.class }, targets = { "net.minecraft.world.entity.animal.Fox$FoxFloatGoal" })
+@Mixin(value = { SwimGoal.class }, targets = { "net.minecraft.entity.passive.FoxEntity$FoxSwimGoal" })
 public abstract class SwimGoalMixin implements SwimGoalAccess {
 	@Inject(method = "canStart()Z", at = @At("RETURN"), cancellable = true)
 	private void shouldRun(CallbackInfoReturnable<Boolean> cir) {
